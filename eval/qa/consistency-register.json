@@ -302,7 +302,7 @@
           "q-scf-v7-changes",
           "q-scf-vs-sdf-enterprise-fund"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-13",
         "reSwept": {
           "date": "2026-07-13",
@@ -321,13 +321,17 @@
           "q-scf-how-to-apply": "1b874200302019faaa386cd5c7cd60c91ae948965c56a35b76c8e77a37d07f8b",
           "q-scf-instawards": "de0cc5be7ed0e01f5c6d5752fd7c2384069cbd5f2312a42b26297fe17a2a1d84",
           "q-scf-nqg-voting": "4f6e7b0cf62f2f0f8d6b56210e1b1555fe5c522ae489e68259f4f3542353160a",
-          "q-scf-open-rfps": "88539b974ad7f0a9b53d932be53da8fc86128011183b3c3535506af404149819",
+          "q-scf-open-rfps": "483ea91c24657e9d704b00f560e99904a147cc381f6c1811be0dc9f8a7acb91b",
           "q-scf-regional-india": "52f03ec1335aca9c3ec59044b39aff29eed122ed1a01c4707c169c4242f85559",
           "q-scf-rfp-tooling": "b92e7d3085dd576814017db39ca9c8864c96a4121a5c569c385fc532cadec83c",
           "q-scf-sdf-marketing-grant": "116228f80fe5ad918402f58030b9443ac50a9c501281ede85370325a042cd71d",
           "q-scf-total-distributed": "d23156d29517c533c1f5ce836e15d119deaa5838a3a119b6cae62b99c0d35b7d",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d",
           "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
+        },
+        "reopened": {
+          "date": "2026-07-31",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -877,7 +881,7 @@
           "q-scf-funding-by-category",
           "q-scf-open-rfps"
         ],
-        "verdict": "tension",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -889,7 +893,11 @@
           "q-defi-phoenix-what-is": "6bd374c5391470d6ae63a4ba09c18544d19d3054821b4cbf7be230f54e1e0671",
           "q-defi-reflector-oracle": "5d5110fe6e94db172516a5d248c7a1a0560c521232da27a2cba39c04b63af4f9",
           "q-scf-funding-by-category": "c701b00d849cc4da16124c30acb50986b466cedba05fef4cae79a6ad0f323a60",
-          "q-scf-open-rfps": "88539b974ad7f0a9b53d932be53da8fc86128011183b3c3535506af404149819"
+          "q-scf-open-rfps": "483ea91c24657e9d704b00f560e99904a147cc381f6c1811be0dc9f8a7acb91b"
+        },
+        "reopened": {
+          "date": "2026-07-31",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1996,12 +2004,16 @@
           "q-scf-open-rfps",
           "q-scf-rfp-tooling"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-10",
         "note": "sls-045; correction atom waits for GT-40 blind.",
         "memberContentSha256": {
-          "q-scf-open-rfps": "88539b974ad7f0a9b53d932be53da8fc86128011183b3c3535506af404149819",
+          "q-scf-open-rfps": "483ea91c24657e9d704b00f560e99904a147cc381f6c1811be0dc9f8a7acb91b",
           "q-scf-rfp-tooling": "b92e7d3085dd576814017db39ca9c8864c96a4121a5c569c385fc532cadec83c"
+        },
+        "reopened": {
+          "date": "2026-07-31",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2079,12 +2091,16 @@
           "q-scf-hummingbot-kelp-closed-rfp",
           "q-scf-open-rfps"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-10",
         "note": "The Q1-2026 Hummingbot/Kelp-replacement brief is closed and absent from the five current briefs. No unverified later #41 submission, official merge, or fulfillment claim was added.",
         "memberContentSha256": {
           "q-scf-hummingbot-kelp-closed-rfp": "bf9b4bdf328100fb02ec060d03357749246fcdb5fc325bda963fe32335ca4cc5",
-          "q-scf-open-rfps": "88539b974ad7f0a9b53d932be53da8fc86128011183b3c3535506af404149819"
+          "q-scf-open-rfps": "483ea91c24657e9d704b00f560e99904a147cc381f6c1811be0dc9f8a7acb91b"
+        },
+        "reopened": {
+          "date": "2026-07-31",
+          "reason": "member-content-changed"
         }
       },
       {
