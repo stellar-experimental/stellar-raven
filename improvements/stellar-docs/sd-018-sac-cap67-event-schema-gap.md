@@ -19,6 +19,10 @@ evidence:
   - author-side live recheck 2026-07-31 — PARTIAL. Shipped: the SAC page now carries the corrected CAP-67 comment shapes, so the trailing sep0011_asset topic is at least visible somewhere. Still missing on https://developers.stellar.org/docs/tokens/token-interface: zero occurrences of sep0011_asset, CAP-67, clawback, or set_authorized; it still presents generic three-topic transfer and two-topic burn with nothing telling a reader that direct SAC events differ
   - independent adversarial reviewer (gpt-5.6-sol xhigh, Solo 4137, 2026-07-31) was briefed to argue the opposite — that this finding IS fully resolved and should be retired — and could not sustain it: "PARTIAL is the only defensible verdict". solo://proj/49/scratchpad/sol-review-2026-07-3--746
   - upstream issue filed 2026-07-31: https://github.com/stellar/stellar-docs/issues/2715
+  - SDK residual re-scoped 2026-07-31 — six functions, not two (approve, transfer, transfer_from, burn, burn_from, set_admin); set_admin is wrong twice, omitting sep0011_asset and documenting a vec data payload where the host emits a bare Address. Verified against soroban-env-host 27.0.1 builtin_contracts/stellar_asset_contract/event.rs, where all seven SAC topic vecs end in read_name(e)?
+  - the doc-comment remedy is structurally blocked for the five shared functions: stellar-asset-spec/src/tests/spec.rs asserts token_entries.is_subset(&stellar_asset_entries) and ScSpecEntry carries the doc string, so TokenInterface and StellarAssetInterface must document the ten shared functions byte-identically. Reproduced by making the edit and watching the test fail. This also retracts the implication that sd-038's three-function scope was an oversight — those are the only SAC-only functions among the incorrect ones, so the scope was forced
+  - SDK residual filed upstream 2026-07-31 (design decision, not a doc edit): https://github.com/stellar/rs-soroban-sdk/issues/1979
+  - set_admin correction filed upstream 2026-07-31: https://github.com/stellar/rs-soroban-sdk/pull/1980
 ---
 
 ## Finding
@@ -122,3 +126,37 @@ the Docs `token-interface` page. It was missed because the reviewer read only
 the line range `sd-038` named rather than the whole trait — a correct verdict on
 a cherry-picked evidence window. Filing it upstream is tracked separately; do
 not read the paragraph above as "the SDK is now SAC-accurate".
+
+**Correction 2026-07-31 (second pass): the residual is now filed, it is larger
+than two functions, and — the part that matters — the remedy above is wrong.**
+The paragraph reads as though correcting the doc-comments is the fix. It is not,
+for five of the six affected functions, and anyone who takes it at face value
+will hit the wall described below rather than land a patch.
+
+- **Six functions, not two.** Reading the whole trait rather than the two named
+  lines: `approve`, `transfer`, `transfer_from`, `burn`, `burn_from`, and
+  `set_admin` all carry pre-CAP-67 shapes. `set_admin` is wrong twice — it omits
+  `sep0011_asset` *and* documents `data = [new_admin: Address]` where the host
+  passes a bare `Address`. That is the same cherry-picked-window error this
+  record already names, repeated one level up.
+- **The doc-comment fix is structurally blocked.**
+  `StellarAssetInterface` is a superset of `TokenInterface`, and
+  `stellar-asset-spec/src/tests/spec.rs` asserts
+  `token_entries.is_subset(&stellar_asset_entries)`. `ScSpecEntry` carries the
+  doc string, so the ten shared functions must stay byte-identical across both
+  traits. Appending `sep0011_asset` to the SAC copies fails that assertion —
+  reproduced by making the edit and running the test. Editing `TokenInterface`
+  to match is not available either: a generic SEP-41 token has no SEP-11 asset,
+  so the asset-free shapes are correct there.
+- **Which retracts a claim this record implies.** `sd-038`'s narrow
+  three-function scope was not a reviewer oversight — `set_authorized`, `mint`,
+  and `clawback` are exactly the SAC-only functions among the incorrect ones,
+  and they are the only ones the invariant permits. The scope was forced. This
+  record should not be read as evidence that upstream under-reviewed.
+- **Disposition.** `set_admin`, the one remaining SAC-only case, is fixed by
+  `rs-soroban-sdk#1980`. The other five are filed as `rs-soroban-sdk#1979`,
+  which asks for a design decision — relax the invariant, replace the inline
+  shapes with a pointer to the SAC page, accept the SDK text and correct only
+  the Docs copy, or split the traits' doc surfaces. Until that is answered, the
+  Docs-side residual this finding tracks cannot be closed by an SDK sync, so
+  `#2715` stands on its own rather than waiting on upstream.
