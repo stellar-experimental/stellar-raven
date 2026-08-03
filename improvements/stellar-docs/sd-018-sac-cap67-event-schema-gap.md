@@ -19,6 +19,12 @@ evidence:
   - author-side live recheck 2026-07-31 — PARTIAL. Shipped: the SAC page now carries the corrected CAP-67 comment shapes, so the trailing sep0011_asset topic is at least visible somewhere. Still missing on https://developers.stellar.org/docs/tokens/token-interface: zero occurrences of sep0011_asset, CAP-67, clawback, or set_authorized; it still presents generic three-topic transfer and two-topic burn with nothing telling a reader that direct SAC events differ
   - independent adversarial reviewer (gpt-5.6-sol xhigh, Solo 4137, 2026-07-31) was briefed to argue the opposite — that this finding IS fully resolved and should be retired — and could not sustain it: "PARTIAL is the only defensible verdict". solo://proj/49/scratchpad/sol-review-2026-07-3--746
   - upstream issue filed 2026-07-31: https://github.com/stellar/stellar-docs/issues/2715
+  - SDK residual re-scoped 2026-07-31 — six functions, not two (`approve`, `transfer`, `transfer_from`, `burn`, `burn_from`, `set_admin`); `set_admin` was wrong twice, omitting `sep0011_asset` and documenting a vec data payload where the host emits a bare `Address`. Verified against soroban-env-host 27.0.1 `builtin_contracts/stellar_asset_contract/event.rs`, where all seven SAC topic vecs end in `read_name(e)?`
+  - the first direct doc-comment edit failed the then-current `token_entries.is_subset(&stellar_asset_entries)` test because `ScSpecEntry` included doc strings; this was a real implementation obstacle, not a permanent design constraint. Upstream later changed the comparison to strip docs and normalize SEP-41 event entries to SAC shapes
+  - SDK residual filed upstream 2026-07-31 (design decision, not a doc edit): https://github.com/stellar/rs-soroban-sdk/issues/1979
+  - `set_admin` correction filed upstream 2026-07-31 and merged 2026-08-03: https://github.com/stellar/rs-soroban-sdk/pull/1980
+  - five shared-function corrections plus the invariant redesign merged 2026-08-03, closing issue 1979 COMPLETED: https://github.com/stellar/rs-soroban-sdk/pull/1984
+  - live recheck 2026-08-03 — current rs-soroban-sdk main `b23287480dd04c497ce36f0370a2a0b42c9977ca` carries the correct SAC shapes for all six residual functions. The deployed SAC page has not ingested those merges: it still has only three `sep0011_asset` occurrences and the old `set_admin` shape. The generic token-interface page still has zero `sep0011_asset` or `CAP-67` occurrences
 ---
 
 ## Finding
@@ -56,16 +62,21 @@ on the site — but it is split across two pages with no cross-reference, and th
 generic page never signals that a different schema applies. CAP-0067 is the
 normative source for the SAC `transfer`/`burn` shapes and Classic unification.
 
-## Status as of 2026-07-31
+## Status as of 2026-08-03
 
 Upstream closed `stellar/stellar-docs#2593` as COMPLETED, but the merged work
 covered the SDK-copy sync tracked as `sd-038`, not the recommendation below. A
 closed issue is evidence to inspect, not proof of resolution, so this finding
 stays active with its scope narrowed to what genuinely did not ship:
 
-- **Shipped** — the three `StellarAssetInterface` doc-comments are correct on
-  both the SDK and the embedded SAC-page copy, which makes the trailing
-  `sep0011_asset` topic visible for `mint`, `clawback`, and `set_authorized`.
+- **Shipped and deployed before this review** — the three SAC-only comments for
+  `mint`, `clawback`, and `set_authorized` are visible on the SAC page.
+- **Merged upstream, not yet deployed to Docs** — `rs-soroban-sdk#1980` fixed
+  `set_admin`; `rs-soroban-sdk#1984` fixed `approve`, `transfer`,
+  `transfer_from`, `burn`, and `burn_from` and redesigned the subset test to
+  compare normalized schemas without requiring byte-identical doc strings. The
+  live SAC page still has the old `set_admin` comment and only the three earlier
+  `sep0011_asset` occurrences.
 - **Not shipped** — a consolidated SEP-41-versus-SAC event table covering
   `transfer`, `mint`, `burn`, and `clawback` with topic counts and payload
   variants; the direct-SAC versus Classic-unified distinction; the note that
@@ -74,18 +85,11 @@ stays active with its scope narrowed to what genuinely did not ship:
   token-interface page — the page this finding is actually about — is unchanged
   and still teaches only the generic shapes.
 
-A successor upstream report should name that residual directly rather than
-reopening 2593, whose thread is now about the doc-comment sync.
-
-Read the `reported-upstream` status with that in mind. It is historically true —
-this was filed, as 2593 — but **both** refs on this record are now closed, and
-they closed covering the `sd-038` half, so no owner is currently tracking the
-residual above. The status cannot be walked back to `verified` while those refs
-are cited (the lint enforces that citing an upstream URL implies a filing, which
-is the right invariant), so the honest resolution is to make the status true
-again by filing the successor rather than by relabelling. `upstreamTitle` is
-already retitled to the residual so a filing generates the successor's heading
-instead of the original issue's.
+The successor report `stellar/stellar-docs#2715` names that Docs residual
+directly and remains open. The SDK merges remove one upstream source of stale
+generated prose; they do not resolve the generic page's missing distinction or
+prove that any generated Docs copy has deployed. `reported-upstream` therefore
+remains the truthful status.
 
 ## Recommendation
 
@@ -97,28 +101,23 @@ metadata to distinguish their path. Cross-link the existing payment and
 event-indexing guidance, and the SAC page that now carries the corrected
 `StellarAssetInterface` comments.
 
-The original report also asked that the stale `mint`/`clawback` comments be
-corrected in `rs-soroban-sdk` `token.rs`, since the Docs copy is generated from
-it and would otherwise re-drift. That is done **for the three functions
-`sd-038` scoped** — `rs-soroban-sdk#1956` merged 2026-07-27 and
-`stellar-docs#2704` re-synced the embedded copy 2026-07-28, both verified live
-2026-07-31.
+### SDK correction history
 
-**Correction 2026-07-31: the SDK half is NOT wholly done, and an earlier version
-of this section wrongly said it was.** `pub trait StellarAssetInterface`
-re-declares `transfer` (~`token.rs:296`) and `burn` (~`token.rs:340`) with its
-own doc-comments, and those still carry the generic SEP-41 shapes
-`["transfer", from, to]` and `["burn", from]` — omitting the trailing
-`sep0011_asset` topic. CAP-0067 specifies
-`["transfer", from:Address, to:Address, sep0011_asset:String]` and
-`["burn", from:Address, sep0011_asset:String]` for SAC events, and this
-finding's own host-test evidence says the same. The live SAC docs page embeds
-that block, so `sep0011_asset` appears there exactly three times — only the
-three functions `sd-038` covered.
+The first correction pass named only `transfer` and `burn`; reading the whole
+trait found six stale SAC comments: `approve`, `transfer`, `transfer_from`,
+`burn`, `burn_from`, and `set_admin`. The first direct edit of the five shared
+functions failed because the subset test compared full `ScSpecEntry` values,
+including doc strings. That failure correctly exposed a design decision, but it
+did not make the fix impossible.
 
-That residual is currently owned by nobody: `sd-038` retired against its own
-deliberately narrow three-function scope, and this finding plus `#2715` cover
-the Docs `token-interface` page. It was missed because the reviewer read only
-the line range `sd-038` named rather than the whole trait — a correct verdict on
-a cherry-picked evidence window. Filing it upstream is tracked separately; do
-not read the paragraph above as "the SDK is now SAC-accurate".
+Upstream resolved the SDK lane on 2026-08-03. `rs-soroban-sdk#1980` corrected
+`set_admin`. `rs-soroban-sdk#1984` corrected the other five and changed the
+subset test to strip documentation and compare SEP-41 entries after adding the
+SAC `sep0011_asset` event topic. Current SDK main now documents the six shapes
+accurately while preserving generic SEP-41 text in `TokenInterface`.
+
+That source fix is useful but not this finding's terminal condition. The live
+generic token-interface page still has no SAC/CAP-67 distinction, and the live
+SAC page has not yet ingested the two SDK merges. Keep `stellar/stellar-docs#2715`
+open until the reader-facing distinction and cross-links deploy and a fresh
+page recheck confirms them.
