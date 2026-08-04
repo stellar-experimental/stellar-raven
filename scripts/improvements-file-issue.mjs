@@ -49,6 +49,22 @@ if (args.renderBodyFile) {
   process.exit(0);
 }
 
+// A finding outside the repository has no public source record, so filing it points a public issue
+// at a path only the filer's machine can see. `path.relative` does not fail on an out-of-tree path
+// — it walks up with `../` until it reaches — and `renderBody` joins that onto a blob URL, so the
+// link is dead by construction. That is how a `mktemp` test fixture became
+// stellar/stellar-docs#2716 (reported in stellar-experimental/stellar-raven#4).
+//
+// The gate sits AFTER --dry-run and --render-body-file deliberately: inspecting the body of an
+// out-of-tree finding is useful and posts nothing. Only the path that writes to a public
+// repository fails closed.
+if (finding.relPath.split(path.sep)[0] === "..") {
+  console.error(`${finding.frontmatter.id}: ${args.file} resolves outside the repository`);
+  console.error(`Its source record would render as ${finding.relPath}, which is not a repo path.`);
+  console.error("Use --dry-run to inspect the body without posting.");
+  process.exit(2);
+}
+
 // The dedupe guard and the lint's "a cited GitHub URL implies a filing" rule are both correct,
 // but together they deadlock one real case: a finding that WAS filed, whose issue then closed
 // covering something else, and whose residual now needs a fresh report. It cannot stay
