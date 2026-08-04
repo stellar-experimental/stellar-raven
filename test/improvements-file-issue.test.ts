@@ -3,6 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
+import { escapesRepo } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 
@@ -549,5 +550,16 @@ Do not file.
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
+  });
+  // The gate's predicate, exercised directly. `path.relative` has two out-of-tree shapes and the
+  // absolute one is unreachable from a POSIX integration test: it is what Windows returns when the
+  // finding sits on another drive letter, where a `..`-only check silently passes.
+  test("escapesRepo rejects both out-of-tree shapes and keeps in-tree paths", () => {
+    expect(escapesRepo("../var/folders/T/fixture/sd-996.md")).toBe(true);
+    expect(escapesRepo("/var/folders/T/fixture/sd-996.md")).toBe(true);
+
+    expect(escapesRepo("improvements/stellar-docs/sd-018-sac-cap67-event-schema-gap.md")).toBe(false);
+    // Not `startsWith("..")`: a leading-dots directory name is a repo path, not an escape.
+    expect(escapesRepo("..hidden/sd-001.md")).toBe(false);
   });
 });

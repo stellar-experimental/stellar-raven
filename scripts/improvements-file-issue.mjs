@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import {
+  escapesRepo,
   GITHUB_REPO_RE,
   oneLineTitle,
   parseFinding,
@@ -51,14 +52,14 @@ if (args.renderBodyFile) {
 
 // A finding outside the repository has no public source record, so filing it points a public issue
 // at a path only the filer's machine can see. `path.relative` does not fail on an out-of-tree path
-// — it walks up with `../` until it reaches — and `renderBody` joins that onto a blob URL, so the
-// link is dead by construction. That is how a `mktemp` test fixture became
-// stellar/stellar-docs#2716 (reported in stellar-experimental/stellar-raven#4).
+// — it walks up with `../`, or returns the target absolute when it cannot reach — and `renderBody`
+// joins that onto a blob URL, so the link is dead by construction. That is how a `mktemp` fixture
+// became stellar/stellar-docs#2716 (reported in stellar-experimental/stellar-raven#4).
 //
 // The gate sits AFTER --dry-run and --render-body-file deliberately: inspecting the body of an
 // out-of-tree finding is useful and posts nothing. Only the path that writes to a public
 // repository fails closed.
-if (finding.relPath.split(path.sep)[0] === "..") {
+if (escapesRepo(finding.relPath)) {
   console.error(`${finding.frontmatter.id}: ${args.file} resolves outside the repository`);
   console.error(`Its source record would render as ${finding.relPath}, which is not a repo path.`);
   console.error("Use --dry-run to inspect the body without posting.");
