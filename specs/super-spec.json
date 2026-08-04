@@ -513,6 +513,24 @@
             "description": "Winner entries. Ordering contract: placementRank is the ONLY per-entry ordering signal — never infer finishing order from array position; check winnersRanked first.",
             "items": {
               "properties": {
+                "award": {
+                  "description": "Official award title (e.g. '$10,000 XLM Prize').",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "demoUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "description": {
+                  "description": "Project blurb from the submission (markdown stripped).",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "githubUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
                 "hackathonPlacement": {
                   "nullable": true,
                   "type": "string"
@@ -521,11 +539,38 @@
                   "nullable": true,
                   "type": "number"
                 },
+                "id": {
+                  "description": "Stable row id (dorahacks-buidl-{id} for live rows).",
+                  "type": "string"
+                },
+                "isWinner": {
+                  "type": "boolean"
+                },
                 "name": {
                   "type": "string"
                 },
                 "placementRank": {
                   "nullable": true,
+                  "type": "integer"
+                },
+                "source": {
+                  "description": "'dorahacks' for live rows.",
+                  "type": "string"
+                },
+                "track": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "url": {
+                  "description": "The submission's DoraHacks buidl page.",
+                  "type": "string"
+                },
+                "videoUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "voteCount": {
+                  "description": "Always 0 since 2026-08: the DoraHacks v1 hub API no longer exposes vote counts. Kept for shape stability — never read as 'zero votes'.",
                   "type": "integer"
                 }
               },
@@ -715,15 +760,27 @@
           },
           "filters": {
             "additionalProperties": true,
+            "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
             "type": "object"
           },
           "generatedAt": {
             "format": "date-time",
             "type": "string"
           },
+          "note": {
+            "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+            "type": "string"
+          },
           "source": {
             "format": "uri",
             "type": "string"
+          },
+          "warnings": {
+            "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
           }
         },
         "type": "object"
@@ -951,7 +1008,30 @@
       "scout.PartnersResponse": {
         "properties": {
           "meta": {
-            "$ref": "#/components/schemas/scout.Meta"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/scout.Meta"
+              },
+              {
+                "properties": {
+                  "validRamps": {
+                    "description": "Every value the ramps filter accepts (unknown values 400 with this list).",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "validTypes": {
+                    "description": "Every value the type filter accepts (unknown values 400 with this list).",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            ]
           },
           "partners": {
             "items": {
@@ -1454,9 +1534,29 @@
             "type": "boolean"
           },
           "scfAwardedRounds": {
-            "description": "SCF round numbers this project was awarded in (e.g. [2, 17, 22]), from official award pages. Rounds are authoritative; dollar TOTALS are in-house reconstructions (per-award amounts aren't published for all rounds) and can legitimately differ between aggregators — reconcile on rounds, not totals.",
+            "description": "SCF round numbers this project was awarded in (e.g. [2, 17, 22]), from official award pages. Rounds are authoritative. Per-round official amounts live in scfRoundAwards; scfTotalAwardedUSD is the project's SCF-page total and can exceed their sum (top-ups SCF doesn't itemize per round).",
             "items": {
               "type": "integer"
+            },
+            "type": "array"
+          },
+          "scfRoundAwards": {
+            "description": "The official submission record per awarded round — the reconciling basis for scfTotalAwardedUSD. Each entry: the round number, the published submission budget in USD (null = award confirmed, budget not published — never guessed), and the official award type (e.g. 'Legacy v5.0 Community Award'). The page-level total can legitimately exceed the sum of these budgets; treat rounds+budgets as the per-round truth and the total as SCF's own aggregate.",
+            "items": {
+              "properties": {
+                "amountUSD": {
+                  "nullable": true,
+                  "type": "number"
+                },
+                "awardType": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "round": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
             },
             "type": "array"
           },
@@ -1662,6 +1762,14 @@
                   },
                   "matchModeLabel": {
                     "type": "string"
+                  },
+                  "scfCountBasis": {
+                    "description": "Counting basis for the SCF fields on rows (sls-011/sls-058): scfTotalAwardedUSD is the project's own SCF-page total (SDF's figure); scfRoundAwards carries each awarded round's official submission record, and the total can exceed the sum of round budgets (un-itemized top-ups).",
+                    "type": "string"
+                  },
+                  "semantic": {
+                    "description": "True when the keyword pass was thin and vector-similarity rows filled the page (each such row tagged via:'semantic'). Distinct from matchMode='semantic', which means NO keyword tier matched at all.",
+                    "type": "boolean"
                   }
                 },
                 "type": "object"
@@ -2344,7 +2452,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-07-31T16:16:46.632Z"
+    "x-generatedAt": "2026-08-04T13:34:45.072Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -3945,9 +4053,36 @@
               "application/json": {
                 "schema": {
                   "properties": {
+                    "categories": {
+                      "additionalProperties": true,
+                      "description": "Present for dimension=all|categories: project counts by category over the active population (see meta.population).",
+                      "type": "object"
+                    },
+                    "developers": {
+                      "additionalProperties": true,
+                      "description": "Present for dimension=all|developers: Electric Capital ecosystem developer counts with their snapshot date — cite the snapshot date, not generatedAt.",
+                      "type": "object"
+                    },
                     "funding": {
                       "description": "Present for dimension=all|funding. Carries computedAt, methodologyVersion, countBasis, byRound — and projectSetHash (sls-044): a stable sha256-prefix digest of the sorted awarded-project slug set. Same hash across your snapshots ⇒ same project SET (only amounts/labels can differ); different hash ⇒ membership changed (adds/removals/reclassifications) — the honest explanation for a moving cumulative total under an unchanged methodology. #520 delta provenance: snapshotAsOf / previousSnapshot / snapshotDelta make the set change ANSWER-VISIBLE — which slugs were added/removed vs the preceding persisted snapshot and mechanical reason codes for removals; deltaBasis documents the semantics and deltaUnavailable states explicitly when the comparison cannot be served (no differing prior snapshot yet, or store unavailable).",
                       "properties": {
+                        "byRound": {
+                          "description": "Per-round totals (round number, projects, USD) — the breakdown scfCountBasis points at.",
+                          "items": {
+                            "additionalProperties": true,
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "computedAt": {
+                          "description": "When THIS response's funding rollup was computed.",
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "countBasis": {
+                          "description": "Plain-language statement of what the funding numbers count (in-house rollup basis vs SDF's own counters).",
+                          "type": "string"
+                        },
                         "deltaBasis": {
                           "type": "string"
                         },
@@ -3955,6 +4090,18 @@
                           "description": "Non-null when snapshotDelta cannot be served, stating WHY (no differing prior snapshot recorded yet, or snapshot store unavailable) — an explicit reason, never a silent omission.",
                           "nullable": true,
                           "type": "string"
+                        },
+                        "meanAwardUSD": {
+                          "nullable": true,
+                          "type": "number"
+                        },
+                        "methodologyVersion": {
+                          "type": "string"
+                        },
+                        "postHackathonStatusFunnel": {
+                          "additionalProperties": true,
+                          "description": "Outcome funnel for hackathon-origin awarded projects (still-building / live / inactive).",
+                          "type": "object"
                         },
                         "previousSnapshot": {
                           "description": "The most recent persisted snapshot with a DIFFERENT project set. Null when none exists yet (see deltaUnavailable).",
@@ -3981,6 +4128,14 @@
                         },
                         "projectSetHash": {
                           "type": "string"
+                        },
+                        "scfAwardedProjects": {
+                          "description": "Projects in the awarded set this rollup sums over.",
+                          "type": "integer"
+                        },
+                        "scfTotalDistributedUSD": {
+                          "description": "Sum of scfTotalAwardedUSD over the awarded set — an in-house rollup; reconcile per-project via scfRoundAwards.",
+                          "type": "number"
                         },
                         "snapshotAsOf": {
                           "description": "When the CURRENT projectSetHash was first observed (persisted snapshot time). computedAt is when THIS response was computed; snapshotAsOf dates the set state.",
@@ -4043,12 +4198,46 @@
                       },
                       "type": "object"
                     },
+                    "gaps": {
+                      "additionalProperties": true,
+                      "description": "Present for dimension=gaps: whitespace analysis — product types unproven/underbuilt/absent in the active population. SUPPLY-side evidence only, never demand proof.",
+                      "type": "object"
+                    },
+                    "hackathons": {
+                      "additionalProperties": true,
+                      "description": "Present for dimension=all|hackathons: cross-event rollup (events, submissions, winners) from the live DoraHacks feed.",
+                      "type": "object"
+                    },
                     "meta": {
                       "properties": {
+                        "dimension": {
+                          "description": "The dimension this response was computed for.",
+                          "type": "string"
+                        },
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
                         "population": {
                           "$ref": "#/components/schemas/scout.PopulationScope"
+                        },
+                        "source": {
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "validDimensions": {
+                          "description": "Every value the dimension param accepts (unknown values 400 with this list).",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
                         }
                       },
+                      "type": "object"
+                    },
+                    "tvl": {
+                      "additionalProperties": true,
+                      "description": "Present for dimension=all|tvl: DefiLlama-verified TVL rollup — null/absent projects are NOT tracked there, never 'zero TVL'.",
                       "type": "object"
                     }
                   },
@@ -4158,6 +4347,11 @@
                     },
                     "answer": {
                       "description": "DeepWiki source-grounded answer; null if DeepWiki had no answer (routed repo still returned).",
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "answerSource": {
+                      "description": "Where the answer text came from (e.g. 'deepwiki'); null when no answer was produced — cite it alongside the answer.",
                       "nullable": true,
                       "type": "string"
                     },
@@ -4370,13 +4564,20 @@
                       "type": "array"
                     },
                     "meta": {
-                      "properties": {
-                        "matchBasis": {
-                          "description": "What a skill match IS (sls-041): free-text hits over profile + project prose = candidate discovery, NOT verified experience/seniority/availability. Read each row's `match` for where the query hit, and `codeEvidence` for repository-backed facts.",
-                          "type": "string"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/scout.Meta"
+                        },
+                        {
+                          "properties": {
+                            "matchBasis": {
+                              "description": "What a skill match IS (sls-041): free-text hits over profile + project prose = candidate discovery, NOT verified experience/seniority/availability. Read each row's `match` for where the query hit, and `codeEvidence` for repository-backed facts.",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
                         }
-                      },
-                      "type": "object"
+                      ]
                     }
                   },
                   "type": "object"
@@ -4552,12 +4753,33 @@
                       "type": "array"
                     },
                     "meta": {
-                      "properties": {
-                        "population": {
-                          "$ref": "#/components/schemas/scout.PopulationScope"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/scout.Meta"
+                        },
+                        {
+                          "properties": {
+                            "dimensions": {
+                              "description": "Every value the dimension param accepts — the live vocabulary for cluster views.",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "notes": {
+                              "description": "Reading notes for the active dimension (counting caveats, taxonomy conventions). May be empty.",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "population": {
+                              "$ref": "#/components/schemas/scout.PopulationScope"
+                            }
+                          },
+                          "type": "object"
                         }
-                      },
-                      "type": "object"
+                      ]
                     }
                   },
                   "type": "object"
@@ -4840,10 +5062,28 @@
                     "meta": {
                       "description": "Carries filters, metricDefinitions (what each served metric IS), generatedAt, and dataAsOf.",
                       "properties": {
+                        "counts": {
+                          "additionalProperties": true,
+                          "description": "Row counts for this response (returned rows; population size where stated).",
+                          "type": "object"
+                        },
                         "dataAsOf": {
                           "description": "sls-036: the repository-index rollup timestamp — the most recent index refresh across the repo rows this response aggregated. Every github.* number (stars/issues/lastActivityAt) is as-of THIS moment, not a live GitHub read. Distinct from generatedAt (response serialization time). Null when no indexed repos matched.",
                           "format": "date-time",
                           "nullable": true,
+                          "type": "string"
+                        },
+                        "docs": {
+                          "description": "Pointer to the metric documentation for this endpoint (what each column means and how it is computed).",
+                          "type": "string"
+                        },
+                        "filters": {
+                          "additionalProperties": true,
+                          "description": "Echo of the applied sort/range/category/type scope (null = not applied).",
+                          "type": "object"
+                        },
+                        "generatedAt": {
+                          "format": "date-time",
                           "type": "string"
                         },
                         "metricDefinitions": {
@@ -4851,6 +5091,10 @@
                             "type": "string"
                           },
                           "type": "object"
+                        },
+                        "source": {
+                          "format": "uri",
+                          "type": "string"
                         }
                       },
                       "type": "object"
@@ -5074,28 +5318,35 @@
                 "schema": {
                   "properties": {
                     "meta": {
-                      "properties": {
-                        "matchBasis": {
-                          "description": "This is an org/people reference index, NOT a builder/contributor index — roster facts, not verified availability.",
-                          "type": "string"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/scout.Meta"
                         },
-                        "observedAt": {
-                          "description": "Date the roster was last observed from the source (YYYY-MM-DD).",
-                          "type": "string"
-                        },
-                        "sections": {
-                          "description": "Distinct roster sections present (Leadership, Board of directors, Advisors).",
-                          "items": {
-                            "type": "string"
+                        {
+                          "properties": {
+                            "matchBasis": {
+                              "description": "This is an org/people reference index, NOT a builder/contributor index — roster facts, not verified availability.",
+                              "type": "string"
+                            },
+                            "observedAt": {
+                              "description": "Date the roster was last observed from the source (YYYY-MM-DD).",
+                              "type": "string"
+                            },
+                            "sections": {
+                              "description": "Distinct roster sections present (Leadership, Board of directors, Advisors).",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "source": {
+                              "description": "The roster page each row is quoted from (stellar.org/foundation/team).",
+                              "type": "string"
+                            }
                           },
-                          "type": "array"
-                        },
-                        "source": {
-                          "description": "The roster page each row is quoted from (stellar.org/foundation/team).",
-                          "type": "string"
+                          "type": "object"
                         }
-                      },
-                      "type": "object"
+                      ]
                     },
                     "people": {
                       "items": {
@@ -5185,6 +5436,17 @@
                         "activeQuarter": {
                           "type": "string"
                         },
+                        "activeQuarterLabel": {
+                          "description": "Human label for activeQuarter (e.g. 'Q3 2026').",
+                          "type": "string"
+                        },
+                        "categories": {
+                          "description": "Every category value present in the current brief set — the category filter's live vocabulary.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
                         "countBasis": {
                           "description": "Plain-language statement of what each count counts and how to count briefs (filter rowType === 'rfp').",
                           "type": "string"
@@ -5213,6 +5475,22 @@
                             }
                           },
                           "type": "object"
+                        },
+                        "filters": {
+                          "additionalProperties": true,
+                          "description": "Echo of the filter values this response was computed under (null = not applied).",
+                          "type": "object"
+                        },
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "quarters": {
+                          "description": "Every quarter key the quarter filter accepts, newest first.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
                         },
                         "scfRound": {
                           "description": "SCF round identity + submission window (curated — SCF publishes no machine-readable round feed): fields are null when unconfirmed rather than guessed. Always cite asOf alongside answers built on this.",
@@ -5255,6 +5533,15 @@
                             }
                           },
                           "type": "object"
+                        },
+                        "source": {
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "submitNewBriefAt": {
+                          "description": "Where a team submits a NEW brief/idea (the SCF ideas board) — hand off here when asked how to propose one.",
+                          "format": "uri",
+                          "type": "string"
                         }
                       },
                       "type": "object"
@@ -5382,7 +5669,30 @@
                 "schema": {
                   "properties": {
                     "meta": {
-                      "$ref": "#/components/schemas/scout.Meta"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/scout.Meta"
+                        },
+                        {
+                          "properties": {
+                            "dataAsOf": {
+                              "description": "When the upstream market-cap snapshot was taken — cite this as the as-of date for every ranking answer.",
+                              "format": "date-time",
+                              "type": "string"
+                            },
+                            "methodology": {
+                              "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars.",
+                              "type": "string"
+                            },
+                            "upstream": {
+                              "description": "The upstream data service this snapshot proxies (stablecoin.stellarlight.xyz).",
+                              "format": "uri",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      ]
                     },
                     "stablecoins": {
                       "items": {
@@ -5600,7 +5910,30 @@
                 "schema": {
                   "properties": {
                     "meta": {
-                      "$ref": "#/components/schemas/scout.Meta"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/scout.Meta"
+                        },
+                        {
+                          "properties": {
+                            "validKinds": {
+                              "description": "Every value the kind filter accepts (unknown values 400 with this list).",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "validSources": {
+                              "description": "Every value the source filter accepts (unknown values 400 with this list).",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      ]
                     },
                     "skills": {
                       "items": {
@@ -5792,14 +6125,20 @@
             }
           },
           {
-            "description": "Set to 1 to return only prize-winning builds.",
+            "description": "Set to 1 to return only prize-winning builds. Accepts 1/true/yes/on (and 0/false/no/off for explicit off); any other value returns 400 with the accepted forms — never silently ignored.",
             "in": "query",
             "name": "winnersOnly",
             "required": false,
             "schema": {
               "enum": [
                 "1",
-                "true"
+                "true",
+                "yes",
+                "on",
+                "0",
+                "false",
+                "no",
+                "off"
               ],
               "type": "string"
             }
@@ -6128,7 +6467,37 @@
                 "schema": {
                   "properties": {
                     "meta": {
-                      "$ref": "#/components/schemas/scout.Meta"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/scout.Meta"
+                        },
+                        {
+                          "properties": {
+                            "mode": {
+                              "description": "How this page was retrieved: 'vector' = semantic similarity over embeddings (the normal path); 'keyword' = literal-match fallback when embeddings are unavailable. Scores are not comparable across modes.",
+                              "enum": [
+                                "vector",
+                                "keyword"
+                              ],
+                              "type": "string"
+                            },
+                            "model": {
+                              "description": "Embedding model used for vector retrieval (e.g. voyage-3); null in keyword mode.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "query": {
+                              "description": "The query as the server parsed it.",
+                              "type": "string"
+                            },
+                            "scoreModel": {
+                              "description": "What `score` measures in this response (e.g. cosine similarity 0-1) — read it before comparing scores across sources.",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      ]
                     },
                     "results": {
                       "items": {
@@ -7806,7 +8175,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 276,
-    "generatedAt": "2026-07-31T16:16:46.632Z"
+    "generatedAt": "2026-08-04T13:34:45.072Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7818,7 +8187,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-07-31T16:16:46.632Z",
+      "fetchedAt": "2026-08-04T13:34:45.072Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },

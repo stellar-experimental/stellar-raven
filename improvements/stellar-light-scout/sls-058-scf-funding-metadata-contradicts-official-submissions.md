@@ -1,7 +1,7 @@
 ---
 id: sls-058
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-27
 upstreamTitle: Reconcile project SCF funding metadata against official submission records
 evidence:
@@ -14,6 +14,12 @@ evidence:
   - 2026-07-28 adversarial review added a third case: live scout.searchProjects({ query "WageLink" }) returned scfAwarded false / null / [] against an official SCF #24 award of 50000; re-verified by the lead the same day
   - 2026-07-28 Fluxity claim narrowed after review: scfCountBasis documents scfTotalAwardedUSD as an in-house reconstruction, so the defect is the missing reconciling basis, not an asserted wrong number
   - filed upstream 2026-07-28 as a new issue cross-referencing closed #511 (the linkage class survived that fix): https://github.com/Stellar-Light/stellarlight/issues/744
+  - upstream https://github.com/Stellar-Light/stellarlight/issues/744 CLOSED completed 2026-08-03T19:41:48Z
+  - fixed by openapi@1.8.31 plus a data backfill, NOT by the 1.8.32 contract-honesty release absorbed in the same drift pass; live changelog 2026-08-03 names the finding directly - "scfRoundAwards - each awarded round's official submission record (published budget + award type), the reconciling basis sls-058 asked for (openapi@1.8.31)"
+  - author live re-check 2026-08-04 re-running the ORIGINAL trigger against production Scout - defect 1 cleared - SStream now scfAwarded true, scfTotalAwardedUSD 36000, scfAwardedRounds [16] (filed as false/null/[]); Wagelink now true, 50000, [24] (filed as false/null/[])
+  - author live re-check 2026-08-04 - defect 2 cleared - Fluxity carries scfRoundAwards [{round 21, amountUSD 68000, awardType "Legacy v5.0 Community Award"}], the reconciling basis between the official round budget and the 82750 SCF-page total that the narrowed finding asked for
+  - independent reviewer (Solo process 4209, distinct from the author) re-ran the same trigger the same day and reproduced all three, and confirmed no other open sls finding is closed by this release
+  - residual noted, not blocking: scfRoundAwards is still [] for sstream and wagelink while their scfAwardedRounds are populated - a population gap on some curated legacy rows; their totals already equal the official award amounts, so no reconciliation is owed for those two
 ---
 
 ## Finding

@@ -28,7 +28,7 @@ Total findings: 60
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question           | declined-upstream | 2026-07-10 | 0           |
 | sls-055 | Scout research does not reliably expose quotable canonical SDF organizational pages | reported-upstream | 2026-07-13 | 4           |
 | sls-057 | Scout's people-discovery surface does not currently provide a route to              | proposed          | 2026-07-27 | 0           |
-| sls-058 | Scout's structured SCF funding fields disagree with the official SCF submission     | reported-upstream | 2026-07-27 | 0           |
+| sls-058 | Scout's structured SCF funding fields disagree with the official SCF submission     | fixed-upstream    | 2026-07-27 | 0           |
 
 ## stellar-docs
 

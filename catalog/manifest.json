@@ -1673,11 +1673,14 @@
         "type": "object"
       },
       "keywords": [
+        "computed",
         "delta",
         "unavailable",
+        "methodology",
+        "version",
+        "post",
         "previous",
         "snapshot",
-        "computed",
         "set",
         "hash",
         "awarded",
@@ -1695,14 +1698,43 @@
         "included",
         "scope",
         "available",
-        "truncated"
+        "truncated",
+        "valid",
+        "dimensions"
       ],
       "kind": "operation",
       "outputSchema": {
         "properties": {
+          "categories": {
+            "additionalProperties": true,
+            "description": "Present for dimension=all|categories: project counts by category over the active population (see meta.population).",
+            "type": "object"
+          },
+          "developers": {
+            "additionalProperties": true,
+            "description": "Present for dimension=all|developers: Electric Capital ecosystem developer counts with their snapshot date — cite the snapshot date, not generatedAt.",
+            "type": "object"
+          },
           "funding": {
             "description": "Present for dimension=all|funding. Carries computedAt, methodologyVersion, countBasis, byRound — and projectSetHash (sls-044): a stable sha256-prefix digest of the sorted awarded-project slug set. Same hash across your snapshots ⇒ same project SET (only amounts/labels can differ); different hash ⇒ membership changed (adds/removals/reclassifications) — the honest explanation for a moving cumulative total under an unchanged methodology. #520 delta provenance: snapshotAsOf / previousSnapshot / snapshotDelta make the set change ANSWER-VISIBLE — which slugs were added/removed vs the preceding persisted snapshot and mechanical reason codes for removals; deltaBasis documents the semantics and deltaUnavailable states explicitly when the comparison cannot be served (no differing prior snapshot yet, or store unavailable).",
             "properties": {
+              "byRound": {
+                "description": "Per-round totals (round number, projects, USD) — the breakdown scfCountBasis points at.",
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "computedAt": {
+                "description": "When THIS response's funding rollup was computed.",
+                "format": "date-time",
+                "type": "string"
+              },
+              "countBasis": {
+                "description": "Plain-language statement of what the funding numbers count (in-house rollup basis vs SDF's own counters).",
+                "type": "string"
+              },
               "deltaBasis": {
                 "type": "string"
               },
@@ -1710,6 +1742,18 @@
                 "description": "Non-null when snapshotDelta cannot be served, stating WHY (no differing prior snapshot recorded yet, or snapshot store unavailable) — an explicit reason, never a silent omission.",
                 "nullable": true,
                 "type": "string"
+              },
+              "meanAwardUSD": {
+                "nullable": true,
+                "type": "number"
+              },
+              "methodologyVersion": {
+                "type": "string"
+              },
+              "postHackathonStatusFunnel": {
+                "additionalProperties": true,
+                "description": "Outcome funnel for hackathon-origin awarded projects (still-building / live / inactive).",
+                "type": "object"
               },
               "previousSnapshot": {
                 "description": "The most recent persisted snapshot with a DIFFERENT project set. Null when none exists yet (see deltaUnavailable).",
@@ -1736,6 +1780,14 @@
               },
               "projectSetHash": {
                 "type": "string"
+              },
+              "scfAwardedProjects": {
+                "description": "Projects in the awarded set this rollup sums over.",
+                "type": "integer"
+              },
+              "scfTotalDistributedUSD": {
+                "description": "Sum of scfTotalAwardedUSD over the awarded set — an in-house rollup; reconcile per-project via scfRoundAwards.",
+                "type": "number"
               },
               "snapshotAsOf": {
                 "description": "When the CURRENT projectSetHash was first observed (persisted snapshot time). computedAt is when THIS response was computed; snapshotAsOf dates the set state.",
@@ -1798,8 +1850,26 @@
             },
             "type": "object"
           },
+          "gaps": {
+            "additionalProperties": true,
+            "description": "Present for dimension=gaps: whitespace analysis — product types unproven/underbuilt/absent in the active population. SUPPLY-side evidence only, never demand proof.",
+            "type": "object"
+          },
+          "hackathons": {
+            "additionalProperties": true,
+            "description": "Present for dimension=all|hackathons: cross-event rollup (events, submissions, winners) from the live DoraHacks feed.",
+            "type": "object"
+          },
           "meta": {
             "properties": {
+              "dimension": {
+                "description": "The dimension this response was computed for.",
+                "type": "string"
+              },
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
               "population": {
                 "description": "sls-048: the population a quantitative response aggregated, made answer-visible. Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations — never merge/sum them without labeling the scopes. `truncated: true` means the result is a sample of the population, not a census. Null when the underlying fetch failed.",
                 "nullable": true,
@@ -1837,16 +1907,32 @@
                   }
                 },
                 "type": "object"
+              },
+              "source": {
+                "format": "uri",
+                "type": "string"
+              },
+              "validDimensions": {
+                "description": "Every value the dimension param accepts (unknown values 400 with this list).",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               }
             },
+            "type": "object"
+          },
+          "tvl": {
+            "additionalProperties": true,
+            "description": "Present for dimension=all|tvl: DefiLlama-verified TVL rollup — null/absent projects are NOT tracked there, never 'zero TVL'.",
             "type": "object"
           }
         },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -1952,8 +2038,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -2039,6 +2125,11 @@
           },
           "answer": {
             "description": "DeepWiki source-grounded answer; null if DeepWiki had no answer (routed repo still returned).",
+            "nullable": true,
+            "type": "string"
+          },
+          "answerSource": {
+            "description": "Where the answer text came from (e.g. 'deepwiki'); null when no answer was produced — cite it alongside the answer.",
             "nullable": true,
             "type": "string"
           },
@@ -2179,8 +2270,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -2434,20 +2525,79 @@
             "type": "array"
           },
           "meta": {
-            "properties": {
-              "matchBasis": {
-                "description": "What a skill match IS (sls-041): free-text hits over profile + project prose = candidate discovery, NOT verified experience/seniority/availability. Read each row's `match` for where the query hit, and `codeEvidence` for repository-backed facts.",
-                "type": "string"
+            "allOf": [
+              {
+                "description": "Standard meta block included on every list response",
+                "properties": {
+                  "counts": {
+                    "properties": {
+                      "returned": {
+                        "description": "Rows in this page (post limit/offset slice)",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "semantic": {
+                        "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "total": {
+                        "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
+                        "minimum": 0,
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "totalBasis": {
+                        "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "filters": {
+                    "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
+                    "type": "object"
+                  },
+                  "generatedAt": {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
+                  "source": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "matchBasis": {
+                    "description": "What a skill match IS (sls-041): free-text hits over profile + project prose = candidate discovery, NOT verified experience/seniority/availability. Read each row's `match` for where the query hit, and `codeEvidence` for repository-backed facts.",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
               }
-            },
-            "type": "object"
+            ]
           }
         },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -2638,8 +2788,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -2679,6 +2829,8 @@
         "awarded",
         "short",
         "usd",
+        "dimensions",
+        "notes",
         "population",
         "included",
         "scope",
@@ -2758,54 +2910,127 @@
             "type": "array"
           },
           "meta": {
-            "properties": {
-              "population": {
-                "description": "sls-048: the population a quantitative response aggregated, made answer-visible. Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations — never merge/sum them without labeling the scopes. `truncated: true` means the result is a sample of the population, not a census. Null when the underlying fetch failed.",
-                "nullable": true,
+            "allOf": [
+              {
+                "description": "Standard meta block included on every list response",
                 "properties": {
-                  "basis": {
-                    "type": "string"
+                  "counts": {
+                    "properties": {
+                      "returned": {
+                        "description": "Rows in this page (post limit/offset slice)",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "semantic": {
+                        "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "total": {
+                        "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
+                        "minimum": 0,
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "totalBasis": {
+                        "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "filters": {
+                    "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
+                    "type": "object"
                   },
                   "generatedAt": {
                     "format": "date-time",
                     "type": "string"
                   },
-                  "id": {
-                    "description": "Stable digest of collection + filters (NOT count/time), e.g. 'projects|status:Development+Live+Pre-Release'. /api/status sources use 'projects|status:all' (full collection).",
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
                     "type": "string"
                   },
-                  "included": {
-                    "description": "Docs actually aggregated into this response.",
-                    "type": "integer"
+                  "source": {
+                    "format": "uri",
+                    "type": "string"
                   },
-                  "statusScope": {
-                    "description": "Status filter applied; null = no status filter.",
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
                     "items": {
                       "type": "string"
                     },
-                    "nullable": true,
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "dimensions": {
+                    "description": "Every value the dimension param accepts — the live vocabulary for cluster views.",
+                    "items": {
+                      "type": "string"
+                    },
                     "type": "array"
                   },
-                  "totalAvailable": {
-                    "description": "Docs matching the scope in the DB at generation time.",
-                    "type": "integer"
+                  "notes": {
+                    "description": "Reading notes for the active dimension (counting caveats, taxonomy conventions). May be empty.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   },
-                  "truncated": {
-                    "description": "included < totalAvailable — the response is a sample, not the population.",
-                    "type": "boolean"
+                  "population": {
+                    "description": "sls-048: the population a quantitative response aggregated, made answer-visible. Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations — never merge/sum them without labeling the scopes. `truncated: true` means the result is a sample of the population, not a census. Null when the underlying fetch failed.",
+                    "nullable": true,
+                    "properties": {
+                      "basis": {
+                        "type": "string"
+                      },
+                      "generatedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "id": {
+                        "description": "Stable digest of collection + filters (NOT count/time), e.g. 'projects|status:Development+Live+Pre-Release'. /api/status sources use 'projects|status:all' (full collection).",
+                        "type": "string"
+                      },
+                      "included": {
+                        "description": "Docs actually aggregated into this response.",
+                        "type": "integer"
+                      },
+                      "statusScope": {
+                        "description": "Status filter applied; null = no status filter.",
+                        "items": {
+                          "type": "string"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      },
+                      "totalAvailable": {
+                        "description": "Docs matching the scope in the DB at generation time.",
+                        "type": "integer"
+                      },
+                      "truncated": {
+                        "description": "included < totalAvailable — the response is a sample, not the population.",
+                        "type": "boolean"
+                      }
+                    },
+                    "type": "object"
                   }
                 },
                 "type": "object"
               }
-            },
-            "type": "object"
+            ]
           }
         },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -2858,6 +3083,11 @@
         "type": "object"
       },
       "keywords": [
+        "award",
+        "demo",
+        "github",
+        "video",
+        "vote",
         "ranked"
       ],
       "kind": "operation",
@@ -2896,15 +3126,27 @@
               },
               "filters": {
                 "additionalProperties": true,
+                "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
                 "type": "object"
               },
               "generatedAt": {
                 "format": "date-time",
                 "type": "string"
               },
+              "note": {
+                "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                "type": "string"
+              },
               "source": {
                 "format": "uri",
                 "type": "string"
+              },
+              "warnings": {
+                "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               }
             },
             "type": "object"
@@ -2925,6 +3167,24 @@
             "description": "Winner entries. Ordering contract: placementRank is the ONLY per-entry ordering signal — never infer finishing order from array position; check winnersRanked first.",
             "items": {
               "properties": {
+                "award": {
+                  "description": "Official award title (e.g. '$10,000 XLM Prize').",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "demoUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "description": {
+                  "description": "Project blurb from the submission (markdown stripped).",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "githubUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
                 "hackathonPlacement": {
                   "nullable": true,
                   "type": "string"
@@ -2933,11 +3193,38 @@
                   "nullable": true,
                   "type": "number"
                 },
+                "id": {
+                  "description": "Stable row id (dorahacks-buidl-{id} for live rows).",
+                  "type": "string"
+                },
+                "isWinner": {
+                  "type": "boolean"
+                },
                 "name": {
                   "type": "string"
                 },
                 "placementRank": {
                   "nullable": true,
+                  "type": "integer"
+                },
+                "source": {
+                  "description": "'dorahacks' for live rows.",
+                  "type": "string"
+                },
+                "track": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "url": {
+                  "description": "The submission's DoraHacks buidl page.",
+                  "type": "string"
+                },
+                "videoUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "voteCount": {
+                  "description": "Always 0 since 2026-08: the DoraHacks v1 hub API no longer exposes vote counts. Kept for shape stability — never read as 'zero votes'.",
                   "type": "integer"
                 }
               },
@@ -2954,8 +3241,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -3173,15 +3460,27 @@
                   },
                   "filters": {
                     "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
                     "type": "object"
                   },
                   "generatedAt": {
                     "format": "date-time",
                     "type": "string"
                   },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
                   "source": {
                     "format": "uri",
                     "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
@@ -3224,8 +3523,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -3389,6 +3688,7 @@
         "devs28d",
         "one",
         "data",
+        "docs",
         "code",
         "github",
         "rank",
@@ -3439,10 +3739,28 @@
           "meta": {
             "description": "Carries filters, metricDefinitions (what each served metric IS), generatedAt, and dataAsOf.",
             "properties": {
+              "counts": {
+                "additionalProperties": true,
+                "description": "Row counts for this response (returned rows; population size where stated).",
+                "type": "object"
+              },
               "dataAsOf": {
                 "description": "sls-036: the repository-index rollup timestamp — the most recent index refresh across the repo rows this response aggregated. Every github.* number (stars/issues/lastActivityAt) is as-of THIS moment, not a live GitHub read. Distinct from generatedAt (response serialization time). Null when no indexed repos matched.",
                 "format": "date-time",
                 "nullable": true,
+                "type": "string"
+              },
+              "docs": {
+                "description": "Pointer to the metric documentation for this endpoint (what each column means and how it is computed).",
+                "type": "string"
+              },
+              "filters": {
+                "additionalProperties": true,
+                "description": "Echo of the applied sort/range/category/type scope (null = not applied).",
+                "type": "object"
+              },
+              "generatedAt": {
+                "format": "date-time",
                 "type": "string"
               },
               "metricDefinitions": {
@@ -3450,6 +3768,10 @@
                   "type": "string"
                 },
                 "type": "object"
+              },
+              "source": {
+                "format": "uri",
+                "type": "string"
               }
             },
             "type": "object"
@@ -3555,8 +3877,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -3668,8 +3990,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -3748,6 +4070,8 @@
         "other",
         "all",
         "fields",
+        "valid",
+        "types",
         "assets",
         "case",
         "studies",
@@ -3773,7 +4097,6 @@
         "pricing",
         "model",
         "notes",
-        "types",
         "regions",
         "response",
         "sla",
@@ -3800,47 +4123,82 @@
       "outputSchema": {
         "properties": {
           "meta": {
-            "description": "Standard meta block included on every list response",
-            "properties": {
-              "counts": {
+            "allOf": [
+              {
+                "description": "Standard meta block included on every list response",
                 "properties": {
-                  "returned": {
-                    "description": "Rows in this page (post limit/offset slice)",
-                    "minimum": 0,
-                    "type": "integer"
+                  "counts": {
+                    "properties": {
+                      "returned": {
+                        "description": "Rows in this page (post limit/offset slice)",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "semantic": {
+                        "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "total": {
+                        "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
+                        "minimum": 0,
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "totalBasis": {
+                        "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
                   },
-                  "semantic": {
-                    "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
-                    "minimum": 0,
-                    "type": "integer"
+                  "filters": {
+                    "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
+                    "type": "object"
                   },
-                  "total": {
-                    "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "totalBasis": {
-                    "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                  "generatedAt": {
+                    "format": "date-time",
                     "type": "string"
+                  },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
+                  "source": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
               },
-              "filters": {
-                "additionalProperties": true,
+              {
+                "properties": {
+                  "validRamps": {
+                    "description": "Every value the ramps filter accepts (unknown values 400 with this list).",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "validTypes": {
+                    "description": "Every value the type filter accepts (unknown values 400 with this list).",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
                 "type": "object"
-              },
-              "generatedAt": {
-                "format": "date-time",
-                "type": "string"
-              },
-              "source": {
-                "format": "uri",
-                "type": "string"
               }
-            },
-            "type": "object"
+            ]
           },
           "partners": {
             "items": {
@@ -4069,8 +4427,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -4176,28 +4534,87 @@
       "outputSchema": {
         "properties": {
           "meta": {
-            "properties": {
-              "matchBasis": {
-                "description": "This is an org/people reference index, NOT a builder/contributor index — roster facts, not verified availability.",
-                "type": "string"
-              },
-              "observedAt": {
-                "description": "Date the roster was last observed from the source (YYYY-MM-DD).",
-                "type": "string"
-              },
-              "sections": {
-                "description": "Distinct roster sections present (Leadership, Board of directors, Advisors).",
-                "items": {
-                  "type": "string"
+            "allOf": [
+              {
+                "description": "Standard meta block included on every list response",
+                "properties": {
+                  "counts": {
+                    "properties": {
+                      "returned": {
+                        "description": "Rows in this page (post limit/offset slice)",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "semantic": {
+                        "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "total": {
+                        "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
+                        "minimum": 0,
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "totalBasis": {
+                        "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "filters": {
+                    "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
+                    "type": "object"
+                  },
+                  "generatedAt": {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
+                  "source": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
                 },
-                "type": "array"
+                "type": "object"
               },
-              "source": {
-                "description": "The roster page each row is quoted from (stellar.org/foundation/team).",
-                "type": "string"
+              {
+                "properties": {
+                  "matchBasis": {
+                    "description": "This is an org/people reference index, NOT a builder/contributor index — roster facts, not verified availability.",
+                    "type": "string"
+                  },
+                  "observedAt": {
+                    "description": "Date the roster was last observed from the source (YYYY-MM-DD).",
+                    "type": "string"
+                  },
+                  "sections": {
+                    "description": "Distinct roster sections present (Leadership, Board of directors, Advisors).",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "source": {
+                    "description": "The roster page each row is quoted from (stellar.org/foundation/team).",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
               }
-            },
-            "type": "object"
+            ]
           },
           "people": {
             "items": {
@@ -4234,8 +4651,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -4355,15 +4772,18 @@
       "keywords": [
         "category",
         "offset",
+        "label",
+        "categories",
         "matched",
         "synthetic",
+        "quarters",
         "confirmed",
-        "note",
         "closes",
         "opens",
         "verify",
+        "submit",
+        "new",
         "author",
-        "label",
         "row",
         "type",
         "technical",
@@ -4381,6 +4801,17 @@
             "properties": {
               "activeQuarter": {
                 "type": "string"
+              },
+              "activeQuarterLabel": {
+                "description": "Human label for activeQuarter (e.g. 'Q3 2026').",
+                "type": "string"
+              },
+              "categories": {
+                "description": "Every category value present in the current brief set — the category filter's live vocabulary.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               },
               "countBasis": {
                 "description": "Plain-language statement of what each count counts and how to count briefs (filter rowType === 'rfp').",
@@ -4410,6 +4841,22 @@
                   }
                 },
                 "type": "object"
+              },
+              "filters": {
+                "additionalProperties": true,
+                "description": "Echo of the filter values this response was computed under (null = not applied).",
+                "type": "object"
+              },
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "quarters": {
+                "description": "Every quarter key the quarter filter accepts, newest first.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               },
               "scfRound": {
                 "description": "SCF round identity + submission window (curated — SCF publishes no machine-readable round feed): fields are null when unconfirmed rather than guessed. Always cite asOf alongside answers built on this.",
@@ -4452,6 +4899,15 @@
                   }
                 },
                 "type": "object"
+              },
+              "source": {
+                "format": "uri",
+                "type": "string"
+              },
+              "submitNewBriefAt": {
+                "description": "Where a team submits a NEW brief/idea (the SCF ideas board) — hand off here when asked how to propose one.",
+                "format": "uri",
+                "type": "string"
               }
             },
             "type": "object"
@@ -4529,8 +4985,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -4614,8 +5070,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -4667,6 +5123,9 @@
         "type": "object"
       },
       "keywords": [
+        "data",
+        "methodology",
+        "upstream",
         "company",
         "country",
         "domain",
@@ -4681,47 +5140,82 @@
       "outputSchema": {
         "properties": {
           "meta": {
-            "description": "Standard meta block included on every list response",
-            "properties": {
-              "counts": {
+            "allOf": [
+              {
+                "description": "Standard meta block included on every list response",
                 "properties": {
-                  "returned": {
-                    "description": "Rows in this page (post limit/offset slice)",
-                    "minimum": 0,
-                    "type": "integer"
+                  "counts": {
+                    "properties": {
+                      "returned": {
+                        "description": "Rows in this page (post limit/offset slice)",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "semantic": {
+                        "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "total": {
+                        "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
+                        "minimum": 0,
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "totalBasis": {
+                        "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
                   },
-                  "semantic": {
-                    "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
-                    "minimum": 0,
-                    "type": "integer"
+                  "filters": {
+                    "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
+                    "type": "object"
                   },
-                  "total": {
-                    "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "totalBasis": {
-                    "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                  "generatedAt": {
+                    "format": "date-time",
                     "type": "string"
+                  },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
+                  "source": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
               },
-              "filters": {
-                "additionalProperties": true,
+              {
+                "properties": {
+                  "dataAsOf": {
+                    "description": "When the upstream market-cap snapshot was taken — cite this as the as-of date for every ranking answer.",
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "methodology": {
+                    "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars.",
+                    "type": "string"
+                  },
+                  "upstream": {
+                    "description": "The upstream data service this snapshot proxies (stablecoin.stellarlight.xyz).",
+                    "format": "uri",
+                    "type": "string"
+                  }
+                },
                 "type": "object"
-              },
-              "generatedAt": {
-                "format": "date-time",
-                "type": "string"
-              },
-              "source": {
-                "format": "uri",
-                "type": "string"
               }
-            },
-            "type": "object"
+            ]
           },
           "stablecoins": {
             "items": {
@@ -4809,8 +5303,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -4999,8 +5493,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -5213,15 +5707,27 @@
               },
               "filters": {
                 "additionalProperties": true,
+                "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
                 "type": "object"
               },
               "generatedAt": {
                 "format": "date-time",
                 "type": "string"
               },
+              "note": {
+                "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                "type": "string"
+              },
               "source": {
                 "format": "uri",
                 "type": "string"
+              },
+              "warnings": {
+                "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               }
             },
             "type": "object"
@@ -5230,8 +5736,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -5340,6 +5846,9 @@
         "stellarlight",
         "lumenloop",
         "external",
+        "valid",
+        "kinds",
+        "sources",
         "argument",
         "hint",
         "compatibility",
@@ -5359,47 +5868,82 @@
       "outputSchema": {
         "properties": {
           "meta": {
-            "description": "Standard meta block included on every list response",
-            "properties": {
-              "counts": {
+            "allOf": [
+              {
+                "description": "Standard meta block included on every list response",
                 "properties": {
-                  "returned": {
-                    "description": "Rows in this page (post limit/offset slice)",
-                    "minimum": 0,
-                    "type": "integer"
+                  "counts": {
+                    "properties": {
+                      "returned": {
+                        "description": "Rows in this page (post limit/offset slice)",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "semantic": {
+                        "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "total": {
+                        "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
+                        "minimum": 0,
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "totalBasis": {
+                        "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
                   },
-                  "semantic": {
-                    "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
-                    "minimum": 0,
-                    "type": "integer"
+                  "filters": {
+                    "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
+                    "type": "object"
                   },
-                  "total": {
-                    "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "totalBasis": {
-                    "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                  "generatedAt": {
+                    "format": "date-time",
                     "type": "string"
+                  },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
+                  "source": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
               },
-              "filters": {
-                "additionalProperties": true,
+              {
+                "properties": {
+                  "validKinds": {
+                    "description": "Every value the kind filter accepts (unknown values 400 with this list).",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "validSources": {
+                    "description": "Every value the source filter accepts (unknown values 400 with this list).",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
                 "type": "object"
-              },
-              "generatedAt": {
-                "format": "date-time",
-                "type": "string"
-              },
-              "source": {
-                "format": "uri",
-                "type": "string"
               }
-            },
-            "type": "object"
+            ]
           },
           "skills": {
             "items": {
@@ -5515,8 +6059,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -5560,8 +6104,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -5624,8 +6168,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -5656,10 +6200,16 @@
             "type": "string"
           },
           "winnersOnly": {
-            "description": "Set to 1 to return only prize-winning builds.",
+            "description": "Set to 1 to return only prize-winning builds. Accepts 1/true/yes/on (and 0/false/no/off for explicit off); any other value returns 400 with the accepted forms — never silently ignored.",
             "enum": [
               "1",
-              "true"
+              "true",
+              "yes",
+              "on",
+              "0",
+              "false",
+              "no",
+              "off"
             ],
             "type": "string"
           }
@@ -5667,15 +6217,18 @@
         "type": "object"
       },
       "keywords": [
-        "true"
+        "true",
+        "yes",
+        "false",
+        "off"
       ],
       "kind": "operation",
       "outputSchema": {
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -6124,15 +6677,27 @@
                   },
                   "filters": {
                     "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
                     "type": "object"
                   },
                   "generatedAt": {
                     "format": "date-time",
                     "type": "string"
                   },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
                   "source": {
                     "format": "uri",
                     "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
@@ -6204,6 +6769,14 @@
                   },
                   "matchModeLabel": {
                     "type": "string"
+                  },
+                  "scfCountBasis": {
+                    "description": "Counting basis for the SCF fields on rows (sls-011/sls-058): scfTotalAwardedUSD is the project's own SCF-page total (SDF's figure); scfRoundAwards carries each awarded round's official submission record, and the total can exceed the sum of round budgets (un-itemized top-ups).",
+                    "type": "string"
+                  },
+                  "semantic": {
+                    "description": "True when the keyword pass was thin and vector-similarity rows filled the page (each such row tagged via:'semantic'). Distinct from matchMode='semantic', which means NO keyword tier matched at all.",
+                    "type": "boolean"
                   }
                 },
                 "type": "object"
@@ -6829,9 +7402,29 @@
                   "type": "boolean"
                 },
                 "scfAwardedRounds": {
-                  "description": "SCF round numbers this project was awarded in (e.g. [2, 17, 22]), from official award pages. Rounds are authoritative; dollar TOTALS are in-house reconstructions (per-award amounts aren't published for all rounds) and can legitimately differ between aggregators — reconcile on rounds, not totals.",
+                  "description": "SCF round numbers this project was awarded in (e.g. [2, 17, 22]), from official award pages. Rounds are authoritative. Per-round official amounts live in scfRoundAwards; scfTotalAwardedUSD is the project's SCF-page total and can exceed their sum (top-ups SCF doesn't itemize per round).",
                   "items": {
                     "type": "integer"
+                  },
+                  "type": "array"
+                },
+                "scfRoundAwards": {
+                  "description": "The official submission record per awarded round — the reconciling basis for scfTotalAwardedUSD. Each entry: the round number, the published submission budget in USD (null = award confirmed, budget not published — never guessed), and the official award type (e.g. 'Legacy v5.0 Community Award'). The page-level total can legitimately exceed the sum of these budgets; treat rounds+budgets as the per-round truth and the total as SCF's own aggregate.",
+                  "items": {
+                    "properties": {
+                      "amountUSD": {
+                        "nullable": true,
+                        "type": "number"
+                      },
+                      "awardType": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "round": {
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
                   },
                   "type": "array"
                 },
@@ -6966,8 +7559,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -7242,15 +7835,27 @@
                   },
                   "filters": {
                     "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
                     "type": "object"
                   },
                   "generatedAt": {
                     "format": "date-time",
                     "type": "string"
                   },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
                   "source": {
                     "format": "uri",
                     "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
@@ -7477,8 +8082,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -7682,57 +8287,101 @@
         "low",
         "informational",
         "fields",
+        "mode",
+        "model",
+        "score",
         "results",
         "chunk",
         "content",
-        "score",
         "title"
       ],
       "kind": "operation",
       "outputSchema": {
         "properties": {
           "meta": {
-            "description": "Standard meta block included on every list response",
-            "properties": {
-              "counts": {
+            "allOf": [
+              {
+                "description": "Standard meta block included on every list response",
                 "properties": {
-                  "returned": {
-                    "description": "Rows in this page (post limit/offset slice)",
-                    "minimum": 0,
-                    "type": "integer"
+                  "counts": {
+                    "properties": {
+                      "returned": {
+                        "description": "Rows in this page (post limit/offset slice)",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "semantic": {
+                        "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "total": {
+                        "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
+                        "minimum": 0,
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "totalBasis": {
+                        "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
                   },
-                  "semantic": {
-                    "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
-                    "minimum": 0,
-                    "type": "integer"
+                  "filters": {
+                    "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
+                    "type": "object"
                   },
-                  "total": {
-                    "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "totalBasis": {
-                    "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                  "generatedAt": {
+                    "format": "date-time",
                     "type": "string"
+                  },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
+                  "source": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
               },
-              "filters": {
-                "additionalProperties": true,
+              {
+                "properties": {
+                  "mode": {
+                    "description": "How this page was retrieved: 'vector' = semantic similarity over embeddings (the normal path); 'keyword' = literal-match fallback when embeddings are unavailable. Scores are not comparable across modes.",
+                    "enum": [
+                      "vector",
+                      "keyword"
+                    ],
+                    "type": "string"
+                  },
+                  "model": {
+                    "description": "Embedding model used for vector retrieval (e.g. voyage-3); null in keyword mode.",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "query": {
+                    "description": "The query as the server parsed it.",
+                    "type": "string"
+                  },
+                  "scoreModel": {
+                    "description": "What `score` measures in this response (e.g. cosine similarity 0-1) — read it before comparing scores across sources.",
+                    "type": "string"
+                  }
+                },
                 "type": "object"
-              },
-              "generatedAt": {
-                "format": "date-time",
-                "type": "string"
-              },
-              "source": {
-                "format": "uri",
-                "type": "string"
               }
-            },
-            "type": "object"
+            ]
           },
           "results": {
             "items": {
@@ -7816,8 +8465,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-07-31T16:16:46.632Z",
-        "openapiVersion": "1.8.30",
+        "fetchedAt": "2026-08-04T13:34:45.072Z",
+        "openapiVersion": "1.8.32",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -15057,6 +15706,6 @@
       }
     }
   ],
-  "generatedAt": "2026-07-31T16:16:46.632Z",
+  "generatedAt": "2026-08-04T13:34:45.072Z",
   "version": 1
 }

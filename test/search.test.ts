@@ -816,6 +816,10 @@ describe("search-hit signature compaction (todo 841)", () => {
     // `meta` prose (nullable `total` + `totalBasis`) that carried scout.getHackathon
     // (1631 -> 2253) and scout.searchResearch (1769 -> 2391) over it too; pin the complete
     // set so a later schema refresh cannot silently widen compaction coverage.
+    // 1.8.32 (the contract-honesty release: 69 already-served meta fields finally declared)
+    // carried exactly ONE more op over the line — scout.getPeople, 1099 -> 3196 — so its
+    // output type is now stubbed in search hits and reaching the full shape costs a
+    // codemode.describe("scout.getPeople") round-trip. Every other member was already over.
     expect(compacted.sort()).toEqual([
       "scout.analyzeEcosystem",
       "scout.explainRepo",
@@ -825,6 +829,7 @@ describe("search-hit signature compaction (todo 841)", () => {
       "scout.getHackathons",
       "scout.getLeaderboard",
       "scout.getPartners",
+      "scout.getPeople",
       "scout.getRfps",
       "scout.getStablecoins",
       "scout.listAudits",
