@@ -58,7 +58,8 @@ derivation). Named API-key token digests live in `OAUTH_KV`, not Worker secrets.
 > hostname-sniffing": it requires the var to be the exact string `"true"` **AND** the request
 > hostname to be loopback (`localhost` / `127.0.0.1` / `::1`). The hostname check is a hard
 > second factor — the var is inert even if it is ever mistakenly deployed, because the public
-> hosts (`raven.stellar.buzz`, its `agents.stellar.buzz` alias) are not loopback. The historical
+> hosts (`raven.stellar.org`, its `raven.stellar.buzz` / `agents.stellar.buzz` aliases) are not
+> loopback. The historical
 > reasoning above (explicit local-only var, no bypass in prior art) still stands as the *why*;
 > the loopback gate is the belt-and-braces we added on top.
 
@@ -136,9 +137,10 @@ developers.cloudflare.com/agents/model-context-protocol/protocol/authorization/,
 
 ## Teardown facts (historical — for the agents.stellar.buzz cutover)
 
-> Current state: this Worker serves the default route **raven.stellar.buzz** with
-> **agents.stellar.buzz** as an alias (both in `wrangler.jsonc` routes). The notes below are the
-> historical cutover record for releasing the domain from the retired prior-art workers.
+> Current state (2026-08-04): this Worker serves the canonical host **raven.stellar.org** with
+> **raven.stellar.buzz** and **agents.stellar.buzz** as aliases (all three in `wrangler.jsonc`
+> routes). The notes below are the historical cutover record for releasing the
+> `agents.stellar.buzz` domain from the retired prior-art workers.
 
 Account `ba55b7ae9acfb3ed152103e3497c0752`. Two workers: `stellar-raven-next` and
 `stellar-raven`; both declare custom domain `agents.stellar.buzz` (only the last-deployed owns

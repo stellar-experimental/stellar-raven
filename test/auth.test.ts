@@ -252,7 +252,7 @@ describe("allowDevUnauthenticated", () => {
   });
 
   it("is refused on a production-looking hostname even with the var set (deployed var is inert)", () => {
-    for (const host of ["agents.stellar.buzz", "raven.stellar.buzz", "evil.example.com", "127.0.0.1.evil.com"]) {
+    for (const host of ["raven.stellar.org", "agents.stellar.buzz", "raven.stellar.buzz", "evil.example.com", "127.0.0.1.evil.com"]) {
       expect(allowDevUnauthenticated({ DEV_ALLOW_UNAUTHENTICATED: "true" }, host)).toBe(false);
     }
   });
@@ -401,7 +401,7 @@ describe("WorkOSAuthHandler", () => {
     expect(terms.status).toBe(200);
     const page = await terms.text();
     expect(page).toContain("Stellar Raven Terms of Service");
-    expect(page).toContain(`<link rel="canonical" href="https://raven.stellar.buzz/terms"/>`);
+    expect(page).toContain(`<link rel="canonical" href="https://raven.stellar.org/terms"/>`);
     // Script-free legal surface: CSP must not allow inline script.
     expect(terms.headers.get("content-security-policy")).not.toContain("script-src");
     expect(page).not.toContain("<script");

@@ -49,7 +49,7 @@ writeFileSync(p("globe_half.png"), renderGlobePng({
   front: [1.0, 0.333, 0.0], // #ff5500 orange (lit near-hemisphere)
   back: [0.0549, 0.0824, 0.051], // #0e150d deep green (unlit field == canvas)
   // smaller (larger scale shrinks the sphere) and pulled left (more-negative
-  // offX) so the bottom-right terminator clears the raven.stellar.buzz/mcp link.
+  // offX) so the bottom-right terminator clears the raven.stellar.org/mcp link.
   scale: 1.62, offX: -0.46, offY: -0.42
 }));
 // 4) upscale the globe to 1200x630 (crisp pixel-doubling), then a legibility
@@ -79,7 +79,7 @@ magick([p("og_base.png"),
   "-font", SERIF, "-weight", "700", "-pointsize", "96", "-fill", "#ff5500", "-annotate", `+${RX}+362`, "Raven",
   "-font", SANS, "-weight", "600", "-pointsize", "29", "-fill", "#eef0e2", "-annotate", `+${RX}+442`, "All of Stellar, one connection.",
   "-font", SANS, "-weight", "400", "-pointsize", "22", "-fill", "#9aa890", "-annotate", `+${RX}+484`, "Docs · data · intel · playbooks. No keys.",
-  "-font", MONO, "-pointsize", "21", "-fill", "#ff5500", "-annotate", `+${RX}+560`, "raven.stellar.buzz/mcp",
+  "-font", MONO, "-pointsize", "21", "-fill", "#ff5500", "-annotate", `+${RX}+560`, "raven.stellar.org/mcp",
   "-resize", "1200x630!", "-strip", p("og_final.png")]);
 
 const b64 = readFileSync(p("og_final.png")).toString("base64");

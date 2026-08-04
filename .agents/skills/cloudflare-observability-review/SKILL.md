@@ -94,7 +94,7 @@ BODY=$(node -e 'const m=process.argv[1]; console.log(JSON.stringify({
   params:{protocolVersion:"2025-06-18", capabilities:{},
   clientInfo:{name:m, version:"0.0.0"}}
 }))' "$MARK")
-curl -i -sS https://raven.stellar.buzz/mcp \
+curl -i -sS https://raven.stellar.org/mcp \
   -H "Authorization: Bearer $MCP_ADMIN_TOKEN_PRODUCTION" \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \

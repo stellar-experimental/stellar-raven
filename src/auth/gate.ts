@@ -9,7 +9,8 @@
  *     local (localhost / 127.0.0.1 / ::1). wrangler dev serves on localhost so
  *     local dev keeps working; the local-host gate is a second factor so a
  *     mistakenly-deployed var does NOTHING on the public custom domains
- *     (raven.stellar.buzz / agents.stellar.buzz). Still set ONLY in `.dev.vars`.
+ *     (raven.stellar.org and its stellar.buzz aliases). Still set ONLY in
+ *     `.dev.vars`.
  *
  * Pure module: no cloudflare:workers import (the OAuthProvider class itself
  * imports it, so `new OAuthProvider(...)` lives in src/server.ts; tests
@@ -78,7 +79,7 @@ const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
  * Local-dev bypass: the var must be the exact string "true" (only ever set via
  * `.dev.vars`) AND the request must be to a loopback hostname. The hostname
  * gate is a hard second factor — a var mistakenly deployed to production does
- * nothing, because raven.stellar.buzz / agents.stellar.buzz are not local hosts.
+ * nothing, because raven.stellar.org and its aliases are not local hosts.
  */
 export function allowDevUnauthenticated(
   env: Partial<Pick<Env, "DEV_ALLOW_UNAUTHENTICATED">>,

@@ -61,20 +61,12 @@
       "preview_bucket_name": "stellar-raven-artifacts-dev"
     }
   ],
-  // Production hostnames: raven.stellar.buzz is the default/primary route;
-  // agents.stellar.buzz is retained (keeps the WorkOS redirect-URI
-  // registration valid + back-compat for existing clients). Ignored by local
-  // wrangler dev. workers.dev stays off: the custom domains are the only
-  // front door.
+  // Production hostnames: raven.stellar.org is the canonical route (canonical
+  // since 2026-08-04); the two stellar.buzz hosts are retained as aliases (they keep
+  // the WorkOS redirect-URI registrations valid + back-compat for existing
+  // clients). Ignored by local wrangler dev. workers.dev stays off: the custom
+  // domains are the only front door.
   "routes": [
-    {
-      "pattern": "agents.stellar.buzz",
-      "custom_domain": true
-    },
-    {
-      "pattern": "raven.stellar.buzz",
-      "custom_domain": true
-    },
     // raven.stellar.org arrives via Cloudflare for SaaS on the stellar.buzz
     // zone (custom hostname + CNAME to proxy-fallback.stellar.buzz). Without
     // this route the custom-hostname traffic falls through to the zone's
@@ -82,6 +74,14 @@
     {
       "pattern": "raven.stellar.org/*",
       "zone_name": "stellar.buzz"
+    },
+    {
+      "pattern": "raven.stellar.buzz",
+      "custom_domain": true
+    },
+    {
+      "pattern": "agents.stellar.buzz",
+      "custom_domain": true
     }
   ],
   "workers_dev": false,

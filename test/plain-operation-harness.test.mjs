@@ -50,7 +50,7 @@ describe("plain operation eval harness", () => {
   it("accepts only a loopback MCP upstream", () => {
     expect(assertLoopbackMcpUrl("http://localhost:8787/mcp")).toBe("http://localhost:8787/mcp");
     expect(assertLoopbackMcpUrl("http://127.0.0.1:8787/mcp")).toBe("http://127.0.0.1:8787/mcp");
-    expect(() => assertLoopbackMcpUrl("https://raven.stellar.buzz/mcp")).toThrow(/loopback/);
+    expect(() => assertLoopbackMcpUrl("https://raven.stellar.org/mcp")).toThrow(/loopback/);
     expect(() => assertLoopbackMcpUrl("http://localhost:8787/not-mcp")).toThrow(/loopback/);
   });
 

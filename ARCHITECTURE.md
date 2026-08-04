@@ -23,8 +23,9 @@ For `/mcp` paths the auth gate runs in this order:
 2. **Local-dev bypass** — `allowDevUnauthenticated`: requires `DEV_ALLOW_UNAUTHENTICATED`
    to be the exact string `"true"` **and** the request hostname to be loopback
    (`localhost` / `127.0.0.1` / `::1`). The hostname gate is a hard second factor: a var
-   mistakenly deployed to production is inert, because the public hosts (`raven.stellar.buzz`,
-   its `agents.stellar.buzz` alias) are not local hosts. The var itself is only ever set in
+   mistakenly deployed to production is inert, because the public hosts (`raven.stellar.org`,
+   its `raven.stellar.buzz` / `agents.stellar.buzz` aliases) are not local hosts. The var itself
+   is only ever set in
    `.dev.vars`.
 3. **OAuth** — everything else goes through `@cloudflare/workers-oauth-provider`
    (options built by `oauthProviderOptions` in `src/auth/gate.ts`): the Worker is its own
@@ -72,8 +73,9 @@ Each authorized request gets a **fresh, stateless `McpServer`** (MCP SDK 2.0,
 the 2026-07-28 revision (`server/discover` negotiation, pinned end-to-end by
 `test/smoke/mcp-modern-client.test.ts`) and the 2025 `initialize` lifecycle via its built-in
 stateless legacy fallback. Custom domains skip the SDK's Host allowlist (Cloudflare routing
-is the Host authority). Browser Origins are explicitly allowlisted for both production routes and
-the localhost class; foreign Origins are rejected. Requests without an Origin header — ordinary
+is the Host authority). Browser Origins are explicitly allowlisted for the production hostnames
+(`raven.stellar.org` plus its two stellar.buzz aliases) and the localhost class; foreign
+Origins are rejected. Requests without an Origin header — ordinary
 non-browser MCP clients — still pass Origin validation. Tool
 registration and all model-facing prose live in `src/mcp/tools.ts`; the initialize-time
 `SERVER_INSTRUCTIONS` (workflow + envelope contract + generated source-family micro-map)

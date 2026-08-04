@@ -32,9 +32,9 @@ import {
 import { escapeHtml } from "./html";
 import { CONSENT_GLOBE_PNG_BASE64 } from "./consent-globe";
 
-const MCP_ENDPOINT = "https://raven.stellar.buzz/mcp";
-export const HOST = "raven.stellar.buzz";
-export const OG_IMAGE = "https://raven.stellar.buzz/og.png";
+const MCP_ENDPOINT = "https://raven.stellar.org/mcp";
+export const HOST = "raven.stellar.org";
+export const OG_IMAGE = "https://raven.stellar.org/og.png";
 
 // Orange raven/star mark — reads as both a bird in flight and a four-point
 // stellar spark. Inline SVG data URI (favicon) + raw path (in-page marks).
@@ -465,7 +465,7 @@ const SCRIPT = `
 
 export const OG_ALT =
   "Stellar Raven — Stellar docs and ecosystem context, one connection. A Bayer-dithered orange globe " +
-  "beside the endpoint raven.stellar.buzz/mcp.";
+  "beside the endpoint raven.stellar.org/mcp.";
 
 function head(
   title: string,
@@ -1156,7 +1156,7 @@ export const CONSENT_HEADERS: Record<string, string> = {
 
 // ---------------------------------------------------------------------------
 // Crawler surfaces — robots.txt + sitemap.xml. Canonical host is HOST
-// (raven.stellar.buzz); the OAuth/API paths are disallowed since they carry no
+// (raven.stellar.org); the OAuth/API paths are disallowed since they carry no
 // indexable content. Wired to routes in auth/workos.ts.
 // ---------------------------------------------------------------------------
 

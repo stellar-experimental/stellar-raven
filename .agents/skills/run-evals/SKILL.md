@@ -218,9 +218,9 @@ Solo has no matching command, and stop it before finalizing:
 npx wrangler dev --port 8788 --host localhost
 ```
 
-`--host localhost` is REQUIRED: the custom-domain routes make wrangler present request.url
-as agents.stellar.buzz, so the `DEV_ALLOW_UNAUTHENTICATED` loopback gate never fires and
-every request 401s. Routing/plan lanes need no server.
+`--host localhost` is REQUIRED: the production routes make wrangler present request.url as a
+public hostname, so the `DEV_ALLOW_UNAUTHENTICATED` loopback gate never fires and every
+request 401s. Routing/plan lanes need no server.
 
 Loopback dev-bypass sessions carry a fixed `dev-local` artifact owner, so eval runs exercise
 the full artifact lane (writes go to the local simulated R2 binding, never production).

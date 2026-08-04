@@ -57,14 +57,14 @@ describe("demo page states", () => {
     expect(lockedHtml).toContain('<meta name="robots" content="noindex"/>');
     expect(lockedHtml).toContain('<meta property="og:type" content="website"/>');
     expect(lockedHtml).toContain('<meta property="og:title" content="Playground · Stellar Raven"/>');
-    expect(lockedHtml).toContain('<meta property="og:image" content="https://raven.stellar.buzz/og.png"/>');
+    expect(lockedHtml).toContain('<meta property="og:image" content="https://raven.stellar.org/og.png"/>');
     expect(lockedHtml).toContain('<meta property="og:image:width" content="1200"/>');
     expect(lockedHtml).toContain('<meta property="og:image:height" content="630"/>');
-    expect(lockedHtml).toContain('<meta property="og:url" content="https://raven.stellar.buzz/playground"/>');
+    expect(lockedHtml).toContain('<meta property="og:url" content="https://raven.stellar.org/playground"/>');
     expect(lockedHtml).toContain('<meta name="twitter:card" content="summary_large_image"/>');
-    expect(lockedHtml).toContain('<meta name="twitter:image" content="https://raven.stellar.buzz/og.png"/>');
+    expect(lockedHtml).toContain('<meta name="twitter:image" content="https://raven.stellar.org/og.png"/>');
     expect(lockedHtml).toContain('<link rel="apple-touch-icon"');
-    expect(lockedHtml).toContain('<link rel="canonical" href="https://raven.stellar.buzz/playground"/>');
+    expect(lockedHtml).toContain('<link rel="canonical" href="https://raven.stellar.org/playground"/>');
   });
 
   it("locked: sign-in link, static example trace, zero script", () => {

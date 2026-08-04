@@ -286,10 +286,11 @@ the versioning page designates 2026-07-28 as current, and `agents` pins the stab
 
 ## 7. Phased build
 
-> Status (end of Round 4): **all 8 phases are shipped and live** on the default route, including
+> Status (end of Round 4): **all 8 phases are shipped and live** in production, including
 > the evidence-poor recovery and build-stage prior-art additions deployed on 2026-07-13.
-> The current production route is **https://raven.stellar.buzz** (with **https://agents.stellar.buzz** served as an alias — both
-> in `wrangler.jsonc` routes) (Solo todos 788–825; evidence: `eval/README.md`,
+> The canonical production route is **https://raven.stellar.org** (canonical since 2026-08-04), with
+> **https://raven.stellar.buzz** and **https://agents.stellar.buzz** served as aliases — all three
+> in `wrangler.jsonc` routes (Solo todos 788–825; evidence: `eval/README.md`,
 > `eval/agentic/README.md`, `eval/plan/README.md`, `research/decisions/0001-search-tool-shape.md`,
 > `research/decisions/0002-skills-retirement-twin-dedup.md`,
 > `research/decisions/0003-build-time-exposure-filtering.md`, `research/auth-workos.md`,
@@ -347,7 +348,7 @@ the versioning page designates 2026-07-28 as current, and `agents` pins the stab
    design-stage cases with a known-step no-detour control. *(shipped, including the 2026-07-13
    controls; see `eval/EVALS.md`)*
 8. **Deploy + auth** — WorkOS-backed OAuth at `/mcp` with named-key + local-dev bypasses;
-   deployed on the default route and alias. *(shipped)*
+   deployed on the canonical host and its aliases. *(shipped)*
 
 Phases 2–3 are independently parallelizable after 1; 4–6 after 3.
 

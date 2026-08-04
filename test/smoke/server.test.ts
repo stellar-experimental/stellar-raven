@@ -18,7 +18,7 @@ import { canaryPins } from "../../src/skills/canary.ts";
 import { getCatalog } from "../../src/catalog/load.ts";
 import { beforeAll, describe, expect, it } from "vitest";
 
-const PUBLIC = "https://raven.stellar.buzz";
+const PUBLIC = "https://raven.stellar.org";
 const LOCAL = "http://localhost";
 const TOKENS = {
   admin: "a".repeat(43),
@@ -204,10 +204,16 @@ describe("/mcp auth dispatch", () => {
 
   it("allows configured public Origins, rejects foreign Origins, and permits no Origin", async () => {
     const authorization = `Bearer admin:${TOKENS.admin}`;
-    expect(
-      (await postInitialize(`${PUBLIC}/mcp`, { Authorization: authorization, Origin: PUBLIC }))
-        .status
-    ).toBe(200);
+    // Every production origin, not just the canonical one: the stellar.buzz hosts
+    // are documented as working aliases, so dropping one from the allowlist must
+    // fail here rather than pass silently.
+    for (const origin of [PUBLIC, "https://raven.stellar.buzz", "https://agents.stellar.buzz"]) {
+      expect(
+        (await postInitialize(`${PUBLIC}/mcp`, { Authorization: authorization, Origin: origin }))
+          .status,
+        `Origin ${origin} must be allowed`
+      ).toBe(200);
+    }
     expect(
       (
         await postInitialize(`${PUBLIC}/mcp`, {

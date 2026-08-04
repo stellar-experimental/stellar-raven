@@ -12,7 +12,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { Client } from "@modelcontextprotocol/client";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
 
-const PUBLIC = "https://raven.stellar.buzz";
+const PUBLIC = "https://raven.stellar.org";
 const TOKEN = "m".repeat(43);
 
 beforeAll(async () => {

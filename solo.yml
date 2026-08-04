@@ -14,7 +14,7 @@ processes:
     auto_restart: false
     restart_when_changed: []
     env: {}
-  # Deploy to production (raven.stellar.buzz / agents.stellar.buzz). One-shot.
+  # Deploy to production (raven.stellar.org + stellar.buzz aliases). One-shot.
   deploy:
     command: npm run deploy
     working_dir: null

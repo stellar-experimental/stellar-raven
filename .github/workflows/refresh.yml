@@ -80,7 +80,7 @@ jobs:
           # job timeout instead of producing the `error` state, so the
           # check-error path below would never run.
           code=$(curl -sS --connect-timeout 5 --max-time 20 -o canary.json \
-            -w '%{http_code}' https://raven.stellar.buzz/health/skills || echo "000")
+            -w '%{http_code}' https://raven.stellar.org/health/skills || echo "000")
           cat canary.json || true
           echo
           # Classifier lives in a tested script, not inline here: YAML-embedded

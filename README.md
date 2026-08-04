@@ -14,14 +14,16 @@ question before searching.
 Design: [PLAN.md](./PLAN.md). Code-verified mechanics and operating limits:
 [ARCHITECTURE.md](./ARCHITECTURE.md).
 
-Deployed as the Cloudflare worker `stellar-raven-codemode` at https://raven.stellar.buzz — the
+Deployed as the Cloudflare worker `stellar-raven-codemode` at https://raven.stellar.org — the
 worker/service name deliberately keeps the `codemode` suffix even though the repo is `stellar-raven`.
 
 ## Quickstart
 
 ```
-Server URL:   https://raven.stellar.buzz        (live since 2026-07-02; alias: https://agents.stellar.buzz still works)
-MCP endpoint: POST https://raven.stellar.buzz/mcp   (streamable HTTP)  # or https://agents.stellar.buzz/mcp
+Server URL:   https://raven.stellar.org         (canonical since 2026-08-04; service live since 2026-07-02)
+MCP endpoint: POST https://raven.stellar.org/mcp    (streamable HTTP)
+Aliases:      https://raven.stellar.buzz and https://agents.stellar.buzz still serve the same
+              worker (`/mcp` included) — kept for existing clients.
 Health:       GET  /health          # service heartbeat
               GET  /health/skills   # last skill-retrieval canary verdict (503 = failing/never ran)
 ```
@@ -32,7 +34,7 @@ restart it after changing them.
 
 ## Connect
 
-Add `https://raven.stellar.buzz/mcp` in an MCP client that supports streamable HTTP and OAuth
+Add `https://raven.stellar.org/mcp` in an MCP client that supports streamable HTTP and OAuth
 (Claude, Cursor, or any compatible client). The Worker is its own OAuth authorization server and
 hands sign-in to WorkOS AuthKit; clients should discover and complete that flow automatically.
 Access tokens last 1 hour, and compatible clients refresh them automatically within a fixed
