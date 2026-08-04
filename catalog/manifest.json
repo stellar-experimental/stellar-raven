@@ -5379,7 +5379,7 @@
       }
     },
     {
-      "description": "Service health + endpoint enumeration. Self-describe / health endpoint — service ok + versions, per-source freshness and counts (sources[]), recent usage, and an enumeration of every /api/ endpoint. Cheap, no params. Use to check how fresh/large the data is or to discover endpoints. Not for the data itself → call the matching search operation.\n\nCatalog note: the upstream payload carries its own ok health/status flag at data.ok — distinct from the envelope call-status ok.",
+      "description": "Service health + endpoint enumeration. Self-describe / health endpoint — service ok + versions, per-source freshness and counts (sources[]), recent usage, and an enumeration of every /api/ endpoint. Cheap, no params. Use to check how fresh/large the data is. Not for the data itself → call the matching search operation.\n\nCatalog note: the upstream payload carries its own ok health/status flag at data.ok — distinct from the envelope call-status ok. Its endpoint enumeration is upstream's raw HTTP surface, not this gateway's callable surface: some of those paths are deliberately not exposed here, so discover callable operations with search or codemode.catalog() rather than planning around /api/... paths.",
       "id": "scout.getStatus",
       "inputSchema": {
         "properties": {},
@@ -5500,6 +5500,7 @@
       "routingKeywords": [
         "count",
         "projects",
+        "endpoints",
         "discovery",
         "many",
         "indexed",

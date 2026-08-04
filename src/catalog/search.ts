@@ -564,7 +564,20 @@ function interleaveSelectedPage(
  * response's ranking drew from, not a hypothetical deeper search.
  */
 export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): SearchPage {
-  const limit = Math.max(1, Math.min(opts.limit ?? DEFAULT_SEARCH_LIMIT, MAX_SEARCH_LIMIT));
+  // Number.isFinite, not `?? DEFAULT`: `codemode.search` inside the sandbox
+  // admits any `typeof opts.limit === "number"` (src/executor/providers.ts),
+  // and `typeof NaN === "number"`. Model-authored code computing a limit
+  // (`n * 2` over undefined, `+"ten"`, `0/0`) yields NaN, and every comparison
+  // against NaN is false — so the clamp AND the pagination below silently
+  // disappear and the page returns EVERY gated candidate with
+  // `truncated: false`, i.e. the contract claims a complete answer while
+  // having dropped its own bounds. Clamp here, at the one chokepoint every
+  // caller (public tool, demo, codemode.search, eval lanes) routes through.
+  const requested = opts.limit;
+  const limit = Math.max(
+    1,
+    Math.min(Number.isFinite(requested) ? (requested as number) : DEFAULT_SEARCH_LIMIT, MAX_SEARCH_LIMIT)
+  );
 
   const gated = scoreCandidates(catalog, opts, scoreEntryWeighted);
   let selected = diversifyByService(gated, limit, (s) => s.entry.service);

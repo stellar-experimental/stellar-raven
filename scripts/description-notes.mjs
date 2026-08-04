@@ -184,6 +184,18 @@ export function rewriteScoutRefs(text, pairs) {
 // stale scrub = the leak comes back).
 // ---------------------------------------------------------------------------
 export const SCOUT_DESCRIPTION_SCRUBS = {
+  getStatus: [
+    // "Use to check how fresh/large the data is or to discover endpoints." —
+    // the endpoint-enumeration RECOMMENDATION is ours, not upstream's payload,
+    // and it steers models at upstream's raw /api/ namespace, part of which is
+    // deliberately not exposed here. The build works to displace exactly that
+    // vocabulary (scoutRefRewrites turns REST refs into callable scout.<op>
+    // ids), so recommending it back is our own emitted surface undoing that.
+    // The payload's endpoint array itself stays described — this drops the
+    // recommendation, not the fact; SCOUT_DESCRIPTION_NOTES.getStatus carries
+    // the boundary.
+    " or to discover endpoints"
+  ],
   matchPartners: [
     // "Not for: ... → GET /api/partners; interactive human chat → the
     // /partners/chat page (backed by /api/partners/assistant)." — the chat
@@ -247,7 +259,7 @@ export const SCOUT_DESCRIPTION_NOTES = {
   getSkill:
     "Catalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills.* catalog entries via codemode.skill.read (sectioned, curated, pinned).",
   getStatus:
-    "Catalog note: the upstream payload carries its own `ok` health/status flag at `data.ok` — distinct from the envelope call-status `ok`.",
+    "Catalog note: the upstream payload carries its own `ok` health/status flag at `data.ok` — distinct from the envelope call-status `ok`. Its endpoint enumeration is upstream's raw HTTP surface, not this gateway's callable surface: some of those paths are deliberately not exposed here, so discover callable operations with `search` or `codemode.catalog()` rather than planning around `/api/...` paths.",
   getChangelog:
     "Catalog note: the upstream payload carries its own `ok` flag at `data.ok` — distinct from the envelope call-status `ok`.",
   explainRepo:

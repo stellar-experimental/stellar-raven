@@ -139,4 +139,4 @@ export const SKILL_EXPOSURE_CLASSIFICATION_BY_ID = new Map(
 // rather than vendored, so every served body is scrubbed on the way out. One
 // implementation, re-exported here so the builders keep importing exposure
 // data from one place.
-export { scrubRetiredSkillRefs } from "../src/skills/scrub.ts";
+export { scrubRetiredSkillRefs, RETIRED_SKILL_REF_RE } from "../src/skills/scrub.ts";

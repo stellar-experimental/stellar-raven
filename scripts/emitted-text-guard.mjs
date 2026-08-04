@@ -18,12 +18,17 @@
  * (demo page copy, demo system/tool prompts): it only knows what must NOT
  * appear (the exclusion data), not the full set of what's currently exposed.
  */
-import { EXCLUDED_LUMENLOOP_OPS, EXCLUDED_SCOUT_OPS, RETIRED_ONBOARDING_SKILLS } from "./exposure.mjs";
+import { EXCLUDED_LUMENLOOP_OPS, EXCLUDED_SCOUT_OPS, RETIRED_SKILL_REF_RE } from "./exposure.mjs";
 
-// Built from the exclusion data, never hand-written — a future retired skill
-// with a different naming shape must not silently escape the guard.
-const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const RETIRED_SKILL_RE = new RegExp([...RETIRED_ONBOARDING_SKILLS].map(escapeRe).join("|"));
+// THE pattern the runtime scrub uses (src/skills/scrub.ts), not a second list.
+//
+// This guard used to build its own regex from RETIRED_ONBOARDING_SKILLS alone,
+// so it knew exactly one retired id while the runtime scrub stripped three
+// families — the six lumenloop-api-* partner skills and the internal-guidance
+// stellar-developer-activity id would have sailed through emitted text. Same
+// half-applied-exclusion-data shape as the super-spec coverage hole. Sharing
+// the pattern makes drift structurally impossible rather than merely tested.
+const RETIRED_SKILL_RE = RETIRED_SKILL_REF_RE;
 const RAW_SCOUT_PATHS = [...EXCLUDED_SCOUT_OPS].map((k) => k.split(" ")[1]);
 const EXCLUDED_LUMENLOOP_RE = new RegExp(`\\b(?:${[...EXCLUDED_LUMENLOOP_OPS].join("|")})\\b`);
 // Service-qualified form ("lumenloop.request_research") — same dotted-token
@@ -50,7 +55,11 @@ export function assertNoNonExposedRefsInText(text, label) {
     if (text.includes(path)) {
       throw new Error(
         `ADR-0003 leak: ${label} emits excluded scout endpoint path "${path}" — ` +
-          `add the clause to SCOUT_DESCRIPTION_SCRUBS in scripts/description-notes.mjs.`
+          `if it came from an exposed OPERATION's description, add the clause to ` +
+          `SCOUT_DESCRIPTION_SCRUBS in scripts/description-notes.mjs. That scrub is keyed by ` +
+          `operationId and cannot reach COMPONENT prose: a component describing only an excluded ` +
+          `op should be unreachable and pruned by build-super-spec.mjs, and a reachable ` +
+          `component whose description names the path needs the text fixed at the source.`
       );
     }
   }

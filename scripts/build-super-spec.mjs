@@ -47,6 +47,7 @@ import {
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts } from "./lib/skill-mirror.mjs";
 import { RETIRED_ONBOARDING_SKILLS, scrubRetiredSkillRefs } from "./exposure.mjs";
+import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
 // The runnable-skill allowlist-as-data (research/skill-run-design.md §5):
 // the SAME registry scripts/build-catalog.mjs attaches to the manifest, so
 // the two model-facing surfaces cannot drift (native type stripping, as for
@@ -171,15 +172,116 @@ function namespaceRefs(node, service) {
   const out = {};
   for (const [key, value] of Object.entries(node)) {
     if (key === "$ref" && typeof value === "string") {
-      out[key] = value.replace(
-        /^#\/components\/(schemas|parameters|responses|requestBodies)\//,
-        `#/components/$1/${service}.`
-      );
+      // Every component group, not an allowlist of four: definitions in ANY
+      // group get renamed to "<service>.<name>" below, so a ref into a group
+      // missing from an allowlist would keep pointing at the pre-rename name
+      // and dangle (and, since the prune, be dropped as unreachable).
+      out[key] = value.replace(/^#\/components\/([^/]+)\//, `#/components/$1/${service}.`);
     } else {
       out[key] = namespaceRefs(value, service);
     }
   }
   return out;
+}
+
+/**
+ * Every local component pointer reachable from `node`, normalized to
+ * "<group>/<name>".
+ *
+ * Deliberately matches any STRING VALUE shaped like a local component pointer,
+ * not just values under a `$ref` key: OpenAPI puts real component pointers in
+ * `discriminator.mapping` values, and JSON Schema adds `$dynamicRef`. A
+ * `$ref`-key-only walk misses both and would prune a live schema. Deep pointers
+ * (`#/components/schemas/B/$defs/X`) normalize to their CONTAINING component
+ * (`schemas/B`), which is the unit pruning operates on.
+ *
+ * Over-collecting is safe here (it only keeps a component); under-collecting
+ * deletes live schema, so this errs toward keeping. `assertEveryComponentRefResolves`
+ * is the fail-closed backstop for anything this still misses.
+ */
+function componentPointersIn(node, acc = new Set()) {
+  if (!node || typeof node !== "object") return acc;
+  if (Array.isArray(node)) {
+    for (const item of node) componentPointersIn(item, acc);
+    return acc;
+  }
+  for (const value of Object.values(node)) {
+    if (typeof value === "string") {
+      const match = value.match(/^#\/components\/([^/]+)\/([^/]+)/);
+      // JSON Pointer escapes, decoded in the required order (~1 then ~0).
+      if (match) acc.add(`${match[1]}/${match[2].replace(/~1/g, "/").replace(/~0/g, "~")}`);
+    } else {
+      componentPointersIn(value, acc);
+    }
+  }
+  return acc;
+}
+
+/**
+ * Fail closed: after pruning, every local component pointer in the emitted
+ * document must resolve to a definition that still exists.
+ *
+ * This is the invariant that makes the reachability walk above safe to be
+ * imperfect. Without it, an unhandled reference shape silently deletes a live
+ * schema and the sandbox receives a spec whose $ref resolves to `undefined` —
+ * which JSON serialization then drops entirely, so the model sees a
+ * silently-degraded contract instead of an error. A dangling ref must break the
+ * build, not ship.
+ */
+function assertEveryComponentRefResolves(doc) {
+  for (const pointer of componentPointersIn(doc)) {
+    const [group, name] = pointer.split("/");
+    if (!doc.components?.[group]?.[name]) {
+      throw new Error(
+        `super-spec: dangling component reference "#/components/${pointer}" after pruning — ` +
+          `pruneUnreachableComponents did not see the edge that reaches it. Widen ` +
+          `componentPointersIn (scripts/build-super-spec.mjs) rather than skipping this check.`
+      );
+    }
+  }
+}
+
+/**
+ * Drop component definitions no exposed path can reach (ADR-0003).
+ *
+ * Upstream components are copied wholesale, so a component that exists only to
+ * describe an EXCLUDED operation rides along into the sandbox spec — dead
+ * weight that also carries the excluded endpoint's prose. `scout.FeedbackRequest`
+ * did exactly that: the request body of the excluded `POST /api/feedback`, whose
+ * description named the raw path, which is the leak the emitted-text guard below
+ * now catches. Pruning is the general fix (a scrub-list entry would only silence
+ * that one sentence and keep shipping the dead schema); it also makes the spec's
+ * own "nothing uncallable is described" claim true of components, not just paths.
+ *
+ * Reachability is transitive: a kept component's own $refs are kept too.
+ */
+function pruneUnreachableComponents(paths, components) {
+  const reachable = componentPointersIn(paths);
+  for (let grew = true; grew; ) {
+    grew = false;
+    for (const key of [...reachable]) {
+      const [group, name] = key.split("/");
+      const def = components[group]?.[name];
+      if (!def) continue;
+      for (const ref of componentPointersIn(def)) {
+        if (!reachable.has(ref)) {
+          reachable.add(ref);
+          grew = true;
+        }
+      }
+    }
+  }
+
+  const pruned = {};
+  const dropped = [];
+  for (const [group, defs] of Object.entries(components)) {
+    pruned[group] = {};
+    for (const [name, def] of Object.entries(defs)) {
+      if (reachable.has(`${group}/${name}`)) pruned[group][name] = def;
+      else dropped.push(`${group}/${name}`);
+    }
+  }
+  return { components: pruned, dropped };
 }
 
 function buildScout(inv, exposed) {
@@ -607,6 +709,11 @@ async function main() {
     }
   ];
 
+  const { components: prunedComponents, dropped: droppedComponents } = pruneUnreachableComponents(
+    paths,
+    scout.components
+  );
+
   const spec = {
     openapi: "3.1.0",
     info: {
@@ -627,7 +734,7 @@ async function main() {
     },
     tags: [...serviceTags, ...scout.tags],
     paths,
-    components: scout.components,
+    components: prunedComponents,
     "x-services": {
       lumenloop: {
         base: lumenloop.source.base,
@@ -668,6 +775,19 @@ async function main() {
   // Deterministic serialization: sort keys everywhere (arrays keep order;
   // `paths` key order therefore also becomes lexicographic — stable).
   const sorted = sortKeysDeep(spec);
+
+  // Fail closed before anything ships: pruning must never have removed a
+  // component something still points at.
+  assertEveryComponentRefResolves(sorted);
+
+  // ADR-0003 leak guard over the WHOLE emitted spec, not just its paths. This
+  // artifact is serialized into the sandbox and returned by codemode.spec(), so
+  // it is emitted text by the same definition build-catalog.mjs and
+  // build-micro-map.mjs already guard. Running it here closes the coverage hole
+  // that let scout.FeedbackRequest's description ship the excluded
+  // "/api/feedback" path; fail the build rather than write the leak.
+  assertNoNonExposedRefsInText(JSON.stringify(sorted), "specs/super-spec.json");
+
   mkdirSync(dirname(OUT_PATH), { recursive: true });
   const pretty = `${JSON.stringify(sorted, null, 2)}\n`;
   writeFileAtomic(OUT_PATH, pretty);
@@ -684,6 +804,9 @@ async function main() {
     }
   }
   console.log(`specs/super-spec.json — ${Object.keys(sorted.paths).length} paths (all callable)`);
+  if (droppedComponents.length) {
+    console.log(`  pruned ${droppedComponents.length} unreachable component(s): ${droppedComponents.join(", ")}`);
+  }
   for (const [svc, c] of Object.entries(counts).sort()) {
     console.log(`  ${svc}: ${c} operations`);
   }

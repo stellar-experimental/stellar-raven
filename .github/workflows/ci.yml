@@ -114,6 +114,16 @@ jobs:
       # Generated artifacts must match their sources exactly (they are rebuilt,
       # never hand-edited). op-classes reads the freshly-rebuilt
       # catalog/manifest.json (so it runs after build-catalog).
+      # Deliberately NOT gated here: src/og.ts and src/fonts.ts. Both are
+      # committed generated artifacts, but their generators fetch IBM Plex from
+      # github.com/google/fonts at unpinned URLs and shell out to ImageMagick,
+      # so gating would trade a flaky network dependency for staleness in a
+      # social-preview image and a font blob — cosmetic surfaces with no policy,
+      # data, or exposure impact. Consequence to accept knowingly: an edit to
+      # scripts/lib/dither-globe.mjs regenerates the gated globes while og.ts
+      # keeps the old one, so /og.png stops mirroring the playground backdrop
+      # its own header claims to match. Rerun `npm run site:og && npm run
+      # site:fonts` by hand when touching the globe or FACES list.
       - name: generated artifacts in sync
         run: |
           node scripts/build-catalog.mjs

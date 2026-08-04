@@ -31,7 +31,8 @@
  * it as a companion skill, but ADR-0003 says non-exposed ids cannot appear in
  * emitted model-facing text.
  */
-const RETIRED_SKILL_REF_RE = /lumenloop-api-[a-z]+|lumenloop-mcp-connect|stellar-developer-activity/;
+export const RETIRED_SKILL_REF_RE =
+  /lumenloop-api-[a-z]+|lumenloop-mcp-connect|stellar-developer-activity/;
 
 export function scrubRetiredSkillRefs(text: string, context: string): string {
   if (!RETIRED_SKILL_REF_RE.test(text)) return text;

@@ -8,7 +8,12 @@
  */
 import { describe, expect, it } from "vitest";
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
-import { EXCLUDED_LUMENLOOP_OPS, RETIRED_ONBOARDING_SKILLS } from "../scripts/exposure.mjs";
+import {
+  EXCLUDED_LUMENLOOP_OPS,
+  RETIRED_ONBOARDING_SKILLS,
+  RETIRED_PARTNER_ONBOARDING_SKILLS
+} from "../scripts/exposure.mjs";
+import { RETIRED_SKILL_REF_RE } from "../src/skills/scrub.ts";
 
 describe("assertNoNonExposedRefsInText", () => {
   it("passes clean text with no non-exposed references", () => {
@@ -52,6 +57,27 @@ describe("assertNoNonExposedRefsInText", () => {
         "demo page copy"
       )
     ).toThrow(/retired-skill reference/);
+  });
+
+  it("catches EVERY retired family the runtime scrub strips, not just the onboarding one", () => {
+    // The guard once built its own regex from RETIRED_ONBOARDING_SKILLS alone,
+    // so it knew one id while src/skills/scrub.ts stripped three families —
+    // emitted text could have carried a partner-retired or internal-guidance
+    // id past the build. Both now share RETIRED_SKILL_REF_RE; this pins the
+    // behavior so a future "simplification" back to a local list is caught.
+    const everyRetiredId = [
+      ...RETIRED_ONBOARDING_SKILLS,
+      ...RETIRED_PARTNER_ONBOARDING_SKILLS,
+      "stellar-developer-activity" // internal-guidance, non-exposed (scrub.ts)
+    ];
+    expect(everyRetiredId.length).toBeGreaterThan(6);
+    for (const id of everyRetiredId) {
+      expect(RETIRED_SKILL_REF_RE.test(id), `scrub does not strip ${id}`).toBe(true);
+      expect(
+        () => assertNoNonExposedRefsInText(`see the ${id} skill`, "emitted text"),
+        `guard does not catch retired id ${id}`
+      ).toThrow(/retired-skill reference/);
+    }
   });
 
   it("names the offending reference and the label in the thrown message", () => {

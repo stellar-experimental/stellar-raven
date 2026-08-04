@@ -495,6 +495,30 @@ describe("searchCatalog — tiered gate-rescue backfill (round 4, M1)", () => {
   });
 });
 
+describe("searchCatalogPage — non-finite limit cannot disable the clamp", () => {
+  // `codemode.search` inside the sandbox forwards any `typeof opts.limit ===
+  // "number"`, and `typeof NaN === "number"`. Before the guard, a NaN limit
+  // made every comparison false, so the page returned EVERY gated candidate
+  // with `truncated: false` — the contract asserting a complete answer while
+  // silently dropping its own bounds. Model-authored code reaches this by
+  // ordinary arithmetic (`n * 2` over undefined, `+"ten"`, `0/0`).
+  it("falls back to the default limit for NaN and infinities, and still honors real limits", () => {
+    const query = "search directory";
+    const baseline = searchCatalogPage(catalog, { query });
+
+    for (const bad of [NaN, Infinity, -Infinity]) {
+      const page = searchCatalogPage(catalog, { query, limit: bad });
+      expect(page.hits.length, `limit ${bad} must clamp to the default`).toBe(baseline.hits.length);
+      expect(page.truncated, `limit ${bad} must not claim a complete page`).toBe(baseline.truncated);
+      expect(page.hits.length).toBeLessThanOrEqual(DEFAULT_SEARCH_LIMIT);
+    }
+
+    // Real values keep working — the guard must not swallow legitimate limits.
+    expect(searchCatalogPage(catalog, { query, limit: 1 }).hits).toHaveLength(1);
+    expect(searchCatalogPage(catalog, { query, limit: 3 }).hits).toHaveLength(3);
+  });
+});
+
 describe("searchCatalogPage — tier marker + total/truncated (todos 838/840)", () => {
   /** Hand-built operation entry (passes loadManifest's structural invariants). */
   function op(name: string, description: string) {

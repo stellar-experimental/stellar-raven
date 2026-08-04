@@ -14,6 +14,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { EXCLUDED_SCOUT_OPS } from "../scripts/exposure.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SPEC_PATH = join(ROOT, "specs", "super-spec.json");
@@ -159,6 +160,57 @@ describe("consistency with the catalog (single source of truth)", () => {
       if (op["x-service"] === "skills") continue; // synthetic core service
       expect(manifestIds.has(op.operationId), `spec-only op ${op.operationId}`).toBe(true);
     }
+  });
+
+  it("leaks no excluded endpoint and leaves no dangling component ref (ADR-0003)", () => {
+    // The spec is serialized into the sandbox and returned by codemode.spec(),
+    // so it is emitted text. Components are copied wholesale from upstream, so
+    // a schema describing only an EXCLUDED operation rode along and carried
+    // that endpoint's prose with it: scout.FeedbackRequest — the request body
+    // of the excluded POST /api/feedback — shipped the raw path this way.
+    // build-super-spec.mjs now prunes unreachable components and guards the
+    // emitted text.
+    // Derived from the exclusion data, never a hand-copied list — a fourth
+    // exclusion must tighten this test automatically (house rule, same as
+    // test/demo-page.test.ts).
+    const serialized = JSON.stringify(spec);
+    const excludedPaths = [...EXCLUDED_SCOUT_OPS].map((op) => op.split(" ")[1]!);
+    expect(excludedPaths.length).toBeGreaterThan(0);
+    for (const path of excludedPaths) {
+      expect(serialized.includes(path), `super-spec emits excluded endpoint ${path}`).toBe(false);
+    }
+    const components = (spec as unknown as { components?: Record<string, Record<string, unknown>> })
+      .components ?? {};
+    expect(components.schemas?.["scout.FeedbackRequest"]).toBeUndefined();
+
+    // The dangerous direction is the OPPOSITE of the leak: pruning too much.
+    // A dropped-but-still-referenced component resolves to `undefined` at
+    // runtime (src/executor/spec-sandbox.ts) and vanishes on serialization, so
+    // the model would silently receive a degraded contract instead of an error.
+    // Verify by RESOLUTION, deliberately not by re-running the build's own
+    // reachability walk — a copy of that walk would share any bug it has.
+    const dangling: string[] = [];
+    const walk = (node: unknown, path: string): void => {
+      if (!node || typeof node !== "object") return;
+      if (Array.isArray(node)) {
+        node.forEach((item, i) => walk(item, `${path}/${i}`));
+        return;
+      }
+      for (const [key, value] of Object.entries(node as Record<string, unknown>)) {
+        if (typeof value === "string") {
+          const match = value.match(/^#\/components\/([^/]+)\/([^/]+)/);
+          if (match) {
+            const group = match[1]!;
+            const name = match[2]!.replace(/~1/g, "/").replace(/~0/g, "~");
+            if (!components[group]?.[name]) dangling.push(`${path}/${key} -> ${value}`);
+          }
+        } else {
+          walk(value, `${path}/${key}`);
+        }
+      }
+    };
+    walk(spec, "");
+    expect(dangling, "component refs that no longer resolve — the build pruned something live").toEqual([]);
   });
 
   it("the skills index matches the catalog's exposed (allowed) skills and its section slugs resolve", () => {

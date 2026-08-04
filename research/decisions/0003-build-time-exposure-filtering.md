@@ -143,3 +143,45 @@ The exposure property that matters is unaffected: an excluded skill has no entry
 resolution fails and there is nothing to serve. The retired-reference scrub moved from bundle
 time to read time (`src/skills/scrub.ts`, shared with the builders) so live content cannot carry
 a leak in.
+
+## Amendment (2026-08-04): scope of "emitted text" — authored surface vs relayed evidence
+
+The decision is unchanged. This amendment writes down a scope line the ADR left implicit, because
+leaving it implicit cost a review round: a competent reviewer sweeping for leaks rated live
+upstream response payloads a P0 violation, and the classification was wrong in a way the text
+above does not actually rule out.
+
+**What this ADR governs — the gateway speaking about its own surface.** The manifest, the super
+spec, the micro-map, catalog descriptions and notes, demo/prompt copy, and the skill bodies we
+serve at read time. A non-exposed reference here mints a false affordance about *our* capabilities,
+which is the incident that produced this ADR. These surfaces are guarded by
+`assertNoNonExposedRefsInText` (`scripts/emitted-text-guard.mjs`) and, for skill bodies, by the
+our-namespace scrub in `src/skills/scrub.ts`.
+
+**What it does not govern — upstream speaking about upstream, relayed as evidence.** A service
+response body is data. `scout.getStatus` enumerating upstream's own `/api/` endpoints,
+`scout.getChangelog` reporting that an endpoint was added or removed, a `searchResearch` chunk
+quoting a URL, or an upstream-authored SKILL.md documenting its own REST API are all facts about
+the world, not claims about this gateway's callable surface. Adapters pass bodies through
+unchanged (`src/adapters/scout.ts`) and that is load-bearing: the eval, golden-truth, and drift
+apparatus all treat `.data` as upstream's answer, and attribution discipline is meaningless over a
+doctored payload. Note also that a rule requiring redaction here would make `getChangelog`, whose
+entire purpose is reporting endpoint changes, unable to function.
+
+**Excluded is not secret.** Exclusion removes an *affordance*, not knowledge. The excluded Scout
+endpoints are public upstream HTTP; a model that reads one in a payload and tells a user "scout
+accepts feedback at that path" has said something true and actionable outside the sandbox. The
+worst in-sandbox case is a call to a non-existent binding, which fails exact-match with a
+nearest-id suggestion — the recovery this ADR deliberately designed.
+
+**Therefore: never add a runtime payload scrubber.** That is the runtime allow/deny layer this ADR
+deleted, resurrected on the data plane with a worse failure mode — silent false-positive rewrites
+corrupting evidence instead of loud, inspectable denials. The correction discipline's closing rule
+("never reintroduce runtime allow/deny") covers it.
+
+**The line still binds our own words about relayed data.** Fixed in this round:
+`scout.getStatus`'s description recommended the payload "to discover endpoints", which is *our*
+emitted text steering models at upstream's raw namespace — the exact vocabulary
+`scoutRefRewrites` exists to displace. The recommendation is scrubbed and a boundary note now says
+the enumeration is upstream's HTTP surface, not this gateway's callable one. The payload itself is
+untouched.

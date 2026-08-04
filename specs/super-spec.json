@@ -363,49 +363,6 @@
         ],
         "type": "object"
       },
-      "scout.FeedbackRequest": {
-        "description": "Optional reporting context is NESTED under `context` (matches the live endpoint + the GET /api/feedback self-schema).",
-        "properties": {
-          "context": {
-            "description": "Optional context about what triggered the feedback.",
-            "properties": {
-              "agentName": {
-                "type": "string"
-              },
-              "endpoint": {
-                "type": "string"
-              },
-              "query": {
-                "type": "string"
-              },
-              "skillVersion": {
-                "type": "string"
-              }
-            },
-            "type": "object"
-          },
-          "kind": {
-            "enum": [
-              "bug",
-              "missing-data",
-              "wrong-answer",
-              "suggestion",
-              "other"
-            ],
-            "type": "string"
-          },
-          "message": {
-            "maxLength": 4000,
-            "minLength": 10,
-            "type": "string"
-          }
-        },
-        "required": [
-          "kind",
-          "message"
-        ],
-        "type": "object"
-      },
       "scout.Hackathon": {
         "description": "One hackathon event row from /api/hackathons — merged from the curated collection and the live DoraHacks feed (`source` says which). prizePoolUSD/hackersCount are ABSENT when the source publishes none: unknown, never zero.",
         "properties": {
@@ -5733,7 +5690,7 @@
     },
     "/scout/getStatus": {
       "get": {
-        "description": "Self-describe / health endpoint — service ok + versions, per-source freshness and counts (sources[]), recent usage, and an enumeration of every /api/ endpoint. Cheap, no params. Use to check how fresh/large the data is or to discover endpoints. Not for the data itself → call the matching search operation.\n\nCatalog note: the upstream payload carries its own ok health/status flag at data.ok — distinct from the envelope call-status ok.",
+        "description": "Self-describe / health endpoint — service ok + versions, per-source freshness and counts (sources[]), recent usage, and an enumeration of every /api/ endpoint. Cheap, no params. Use to check how fresh/large the data is. Not for the data itself → call the matching search operation.\n\nCatalog note: the upstream payload carries its own ok health/status flag at data.ok — distinct from the envelope call-status ok. Its endpoint enumeration is upstream's raw HTTP surface, not this gateway's callable surface: some of those paths are deliberately not exposed here, so discover callable operations with search or codemode.catalog() rather than planning around /api/... paths.",
         "operationId": "scout.getStatus",
         "responses": {
           "200": {
