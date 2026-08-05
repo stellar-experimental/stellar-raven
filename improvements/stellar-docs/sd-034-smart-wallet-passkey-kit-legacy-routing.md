@@ -10,6 +10,7 @@ evidence:
   - Solo scratchpad 575 GT-56 sealed blind process 3398, independently reconciled with primary process 3394 only after its 12-row seal
   - 2026-08-05 freshness recheck: stellar/passkey-kit and stellar/smart-account-kit are maintained, non-drop-in siblings; former kalepail repositories are archived move pointers
   - upstream issue remains open and needs its stale filed premise corrected while retaining this model-selection gap: https://github.com/stellar/stellar-docs/issues/2700
+  - 2026-08-05 premise correction posted and read back: https://github.com/stellar/stellar-docs/issues/2700#issuecomment-5196210824
   - original combined review context: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-4971409358
   - issue-tracker follow-up context: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5091971087
 recurrences:
