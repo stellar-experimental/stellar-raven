@@ -1,7 +1,7 @@
 ---
 id: sd-018
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-11
 upstreamTitle: Distinguish generic SEP-41 from current SAC/CAP-67 asset events in one schema
 evidence:
@@ -25,6 +25,11 @@ evidence:
   - `set_admin` correction filed upstream 2026-07-31 and merged 2026-08-03: https://github.com/stellar/rs-soroban-sdk/pull/1980
   - five shared-function corrections plus the invariant redesign merged 2026-08-03, closing issue 1979 COMPLETED: https://github.com/stellar/rs-soroban-sdk/pull/1984
   - live recheck 2026-08-03 — current rs-soroban-sdk main `b23287480dd04c497ce36f0370a2a0b42c9977ca` carries the correct SAC shapes for all six residual functions. The deployed SAC page has not ingested those merges: it still has only three `sep0011_asset` occurrences and the old `set_admin` shape. The generic token-interface page still has zero `sep0011_asset` or `CAP-67` occurrences
+  - successor issue closed completed 2026-08-04 and its implementation deployed: https://github.com/stellar/stellar-docs/issues/2715 and https://github.com/stellar/stellar-docs/pull/2720
+  - CAP-0067 citation follow-up merged and deployed 2026-08-04: https://github.com/stellar/stellar-docs/pull/2725
+  - Docs maintainer deployment handoff with before/after markers: https://github.com/stellar-experimental/stellar-raven/issues/6
+  - author-side live recheck 2026-08-05T23:46Z — token-interface contains seven sep0011_asset markers, four clawback markers, four set_authorized markers, two CAP-0067 markers, the full SEP-41/SAC comparison, classic-operation distinction, and required cross-links; SAC page contains four sep0011_asset markers and the corrected set_admin shape
+  - distinct adversarial reviewer Solo process 4358 / Todo 1394 comment 3749 independently repeated the live trigger and every upstream reference on 2026-08-05 and approved retirement
 ---
 
 ## Finding
@@ -62,34 +67,18 @@ on the site — but it is split across two pages with no cross-reference, and th
 generic page never signals that a different schema applies. CAP-0067 is the
 normative source for the SAC `transfer`/`burn` shapes and Classic unification.
 
-## Status as of 2026-08-03
+## Status as of 2026-08-05
 
-Upstream closed `stellar/stellar-docs#2593` as COMPLETED, but the merged work
-covered the SDK-copy sync tracked as `sd-038`, not the recommendation below. A
-closed issue is evidence to inspect, not proof of resolution, so this finding
-stays active with its scope narrowed to what genuinely did not ship:
+The reader-facing residual is fixed live. `stellar/stellar-docs#2715` closed via
+PR #2720, and PR #2725 added the missing CAP-0067 citation. The generic
+token-interface page now carries the full SEP-41-versus-SAC event table, the
+direct-SAC versus Classic-unified distinction, the operation-metadata note, and
+the required payment/event cross-links. The SAC page has also ingested the SDK
+corrections, including the current `set_admin` topics and data payload.
 
-- **Shipped and deployed before this review** — the three SAC-only comments for
-  `mint`, `clawback`, and `set_authorized` are visible on the SAC page.
-- **Merged upstream, not yet deployed to Docs** — `rs-soroban-sdk#1980` fixed
-  `set_admin`; `rs-soroban-sdk#1984` fixed `approve`, `transfer`,
-  `transfer_from`, `burn`, and `burn_from` and redesigned the subset test to
-  compare normalized schemas without requiring byte-identical doc strings. The
-  live SAC page still has the old `set_admin` comment and only the three earlier
-  `sep0011_asset` occurrences.
-- **Not shipped** — a consolidated SEP-41-versus-SAC event table covering
-  `transfer`, `mint`, `burn`, and `clawback` with topic counts and payload
-  variants; the direct-SAC versus Classic-unified distinction; the note that
-  transaction/operation metadata is what separates those two paths; and the
-  cross-links to the existing payment and event-indexing guidance. The generic
-  token-interface page — the page this finding is actually about — is unchanged
-  and still teaches only the generic shapes.
-
-The successor report `stellar/stellar-docs#2715` names that Docs residual
-directly and remains open. The SDK merges remove one upstream source of stale
-generated prose; they do not resolve the generic page's missing distinction or
-prove that any generated Docs copy has deployed. `reported-upstream` therefore
-remains the truthful status.
+An independent 2026-08-05 reviewer repeated the live trigger and upstream-ref
+sweep and found no residual. This active record may be retired after the normal
+immutable-source and upstream-comment gates.
 
 ## Recommendation
 
@@ -116,8 +105,6 @@ subset test to strip documentation and compare SEP-41 entries after adding the
 SAC `sep0011_asset` event topic. Current SDK main now documents the six shapes
 accurately while preserving generic SEP-41 text in `TokenInterface`.
 
-That source fix is useful but not this finding's terminal condition. The live
-generic token-interface page still has no SAC/CAP-67 distinction, and the live
-SAC page has not yet ingested the two SDK merges. Keep `stellar/stellar-docs#2715`
-open until the reader-facing distinction and cross-links deploy and a fresh
-page recheck confirms them.
+That source fix was useful but not this finding's terminal condition. The
+reader-facing distinction, cross-links, and generated SAC documentation have
+now deployed and passed a fresh page recheck.

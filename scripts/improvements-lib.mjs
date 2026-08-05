@@ -199,8 +199,8 @@ export function section(body, heading) {
 export function oneLineTitle(finding) {
   const findingText = section(finding.body, "Finding");
   const first = findingText
-    .split(/\n+/)
-    .map((line) => line.trim())
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
     .find(Boolean) ?? "";
   return first
     .replace(/[`*_]/g, "")

@@ -42,6 +42,16 @@
         "note": "class inferred at migration"
       },
       {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/status",
+        "note": "Live Scout inventory/status surface used for the source-relative sdfSkills count."
+      },
+      {
+        "class": "A",
+        "ref": "https://skills.stellar.org/",
+        "note": "Official current skill roster and host-specific install routes."
+      },
+      {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-cli",
         "note": "class inferred at migration"
@@ -60,6 +70,11 @@
         "class": "B",
         "ref": "https://github.com/Stellar-Light/scout-mcp",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.npmjs.com/package/@stellar-light/scout-mcp",
+        "note": "Current package metadata for the returned Scout MCP row."
       },
       {
         "class": "B",
@@ -109,7 +124,7 @@
     ],
     "verified": {
       "date": "2026-08-05",
-      "by": "Post-QA Harvest freshness lane (Solo todo 1377; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
+      "by": "Post-QA Harvest freshness lane plus Solo Todo 1390 independent source-list reconciliation.",
       "evidence": [
         "C: https://stellarlight.xyz/api/skills at 2026-08-05T20:45:26.922Z returned 42 rows and six valid kinds/five valid sources; filtered kind=agent-kit and source=community each returned 0 rows, confirming that accepted filters do not promise populated categories.",
         "A/B: https://skills.stellar.org/, https://github.com/stellar/stellar-dev-skill, https://github.com/stellar/stellar-cli, and https://www.npmjs.com/package/@stellar-light/scout-mcp independently confirmed row-level ownership/install details and the need to preserve community-tool caveats.",

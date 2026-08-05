@@ -29,8 +29,8 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-28",
-    "reverifyBy": "2026-08-13",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-09-24",
     "sources": [
       {
         "class": "C",
@@ -97,15 +97,15 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+      "date": "2026-08-05",
+      "by": "Solo Todo 1390 independent early scheduled Scout skill-detail re-verification.",
       "evidence": [
-        "C: scout.getSkill({name:'soroban'}) now returned 404 soft-empty, while scout.listSkills({source:'sdf'}) and scout.getSkill({name:'smart-contracts'}) returned the current Smart Contracts detail whose text explicitly covers anything called Soroban.",
-        "B: https://github.com/stellar/stellar-dev-skill lists smart-contracts among the seven current skill directories and was pushed 2026-07-27; its source agrees with Scout.",
+        "C: https://stellarlight.xyz/api/skills/soroban returned a 404 soft-empty on 2026-08-05, while the source=sdf list and /api/skills/smart-contracts returned the current Smart Contracts detail whose text explicitly covers anything called Soroban and names development.md, testing.md, and security.md.",
+        "B: https://github.com/stellar/stellar-dev-skill lists smart-contracts among the seven current skill directories and was pushed 2026-08-05; its source agrees with Scout.",
         "Sibling sweep: q-gap-scout-get-skill-detail remains valid for a known exact slug; q-tool-cli-skills-discovery owns broad catalog discovery."
       ],
       "rootCause": [
-        "freshness-drift"
+        "scheduled freshness re-verification found no semantic drift and refreshed live slug/detail provenance"
       ]
     },
     "origin": "raven-next q-tool-skill-detail-install"

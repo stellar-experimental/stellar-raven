@@ -220,8 +220,8 @@ emitted in a single model step):
   limit still enabled. The public-demo logging policy is no retained AI
   Gateway prompt/response logs; revisit that posture if the gate ever loosens.
   Read-only verification on 2026-08-05 found the gateway-wide default had drifted to
-  `collect_logs: true`; the Worker now sets `cf-aig-collect-log: false` on every
-  playground model request, so privacy does not depend on that mutable default.
+  `collect_logs: true`; the Worker now uses the native per-call `collectLog: false`
+  control on every playground transport, so privacy does not depend on that mutable default.
 - If a hard cross-request cap ever becomes a requirement, that is an explicit
   new design (atomic limiter: DO or Cloudflare rate-limiting product) — not a
   KV patch.

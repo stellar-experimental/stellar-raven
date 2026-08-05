@@ -49,7 +49,7 @@ Live re-check on 2026-07-27:
   `{"passphrase":"Public Global Stellar Network ; September 2015","protocolVersion":27}`.
 - CAP-0067 is Final and shipped in Protocol 23.
 
-This is distinct from `sd-018`, which owns the SAC and CAP-67 event *schema*
+This is distinct from resolved-ledger entry `sd-018`, which owned the SAC and CAP-67 event *schema*
 documentation gap. This finding covers only the migration guide's tense and its
 interim-workaround framing.
 

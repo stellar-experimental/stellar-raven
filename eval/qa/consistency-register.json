@@ -184,14 +184,14 @@
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "Post-review provenance-only CAP-0071 timestamp correction; member claims and the accepted 2026-08-05 disposition are unchanged.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF/Soroswap truth refresh; the documented protocol or lifecycle tension remains intentional.",
           "verdict": "tension"
         },
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Implemented/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "0c7f2cf1a6afb878e347f69066c7963342f49803711387bd6a0eaa8c3667c25e",
           "q-comp-clawback-holder-risk": "35de6b3c1352355daf670a1eaf7fff660911168e06b68d34b35138e8590392a8",
-          "q-edge-factcheck-soroswap-first-amm": "c1efe67692acb6c4f42572484145964ebc477d87ffe14d8968deb65a3066bf67",
+          "q-edge-factcheck-soroswap-first-amm": "fd9baa4e2cd3077dc0d948c8fcac79907dc70af1c4794937d131fde0b7f2662a",
           "q-infra-secp256r1-passkeys": "b6b88399a7b9f11733b5570eebe7c98adab9aa223f3ac8e9540a1c6f709120ff",
           "q-protocol-23-whisk-caps": "06d3060bc86235dadcf1606821dcadd93a97fcd47905d9603f8689ac0745cce5",
           "q-protocol-27-cap-0071": "5bc53b2fce60c54979f594e86ed28300dd6f0e6ea116172ef680a33d7b34e967",
@@ -294,7 +294,7 @@
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
@@ -306,7 +306,7 @@
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
           "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
           "q-scf-hackathons-active": "67d54e68f5e839b863b03f4d293f0cbe90ca1328f94de31905500250390b7cfb",
-          "q-scf-how-to-apply": "01e7accf1c72443b3409bab0d03fed4a1a7e90506dcade97ec6af37b2d222e22",
+          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
           "q-scf-instawards": "de0cc5be7ed0e01f5c6d5752fd7c2384069cbd5f2312a42b26297fe17a2a1d84",
           "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
           "q-scf-open-rfps": "8992b28315305ec998f55f9f5d05528455f3e48ddfc673dde2845df3058c2977",
@@ -402,20 +402,16 @@
         "verdict": "consistent",
         "lastChecked": "2026-07-28",
         "reSwept": {
-          "date": "2026-07-28",
-          "reason": "2026-07-28 reopened-cluster sweep: re-read Soroswap chronology after the dated-TVL refresh; firstness attribution, the native P18 counterexample, and metric boundaries remain consistent.",
+          "date": "2026-08-05",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         },
         "note": "Soroswap firstness remains attributed operator/Soroban scope, never independent broad-Stellar chronology. The classic SDEX is an older order-book venue; Protocol-18/CAP-0038 constant-product pools are the direct pre-Soroswap AMM counterexample. TVL, routed volume, and cumulative trading volume remain distinct; dated Soroswap current/max examples are non-gating. Re-swept 2026-07-28: re-read Soroswap chronology after the dated-TVL refresh; firstness attribution, the native P18 counterexample, and metric boundaries remain consistent.",
         "memberContentSha256": {
           "q-defi-soroswap-vs-stellarx": "2029c303131f07f42f04fc4897140fd058f605063ae398281cbd5bc8786ab267",
           "q-defi-soroswap-what-is": "86daa625039419f533796797b2b9cb2ef2fe9a6d2fcaa1900e9791c5c1e1602f",
-          "q-edge-factcheck-soroswap-first-amm": "c1efe67692acb6c4f42572484145964ebc477d87ffe14d8968deb65a3066bf67",
+          "q-edge-factcheck-soroswap-first-amm": "fd9baa4e2cd3077dc0d948c8fcac79907dc70af1c4794937d131fde0b7f2662a",
           "q-protocol-amm-cap-0038": "43fb785cf05f8436cd71f9287dad88d0ec3b7eeefc56febb7f306e104c88a78e"
-        },
-        "reopened": {
-          "date": "2026-07-28",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -665,7 +661,7 @@
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         },
         "note": "Freighter = SDF-maintained; LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed and its SCF totals disputed. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/unaudited-demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
@@ -675,7 +671,7 @@
           "q-eco-lobstr-wallet": "d9cb16d6099add68fc6dcdcd52e6666ab280c6a8aeb029975e4f3b42abb781e2",
           "q-eco-stellar-wallets-list": "daea249828c1ac446a1f3aff0cc7dc2a0501430620f08424c84e998e35fe4cd6",
           "q-tool-passkeykit-smart-wallet": "f4cc9e4398a9f8afeb3fb0e78093225c74f775ed02b1f7220ad7c05588af7ddc",
-          "q-tool-smart-wallet-repos-discovery": "1f4220e3234bb1f9f31015c124d18ef915b3499ff06001bfe127d8444201ed76"
+          "q-tool-smart-wallet-repos-discovery": "0348664e448f99cdbd94f18d0baed6821c5bff16c1f0c64fce2aeca22be12035"
         }
       },
       {
@@ -1103,7 +1099,7 @@
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         },
         "note": "The dated Build schedule is 10/20/30/40 with current 90-day completion-form/unpaid-tranche terms. Grant administration and normative fairness are distinct from protocol authority. Current round/phase/deadline facts stay in the dedicated round cases rather than standing in for award terms.",
@@ -1111,7 +1107,7 @@
           "q-edge-fresh-latest-scf-round": "6f3e44496c82fa1f7775f1021846ba904a8231da9fe9cc33b95bdcf775428374",
           "q-edge-scf-v7-centralization-myths": "82fd53acdbb9e5198d8a35ea43bb2188672afbb2d51b0cf8945d7f633ed5ebf5",
           "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
-          "q-scf-how-to-apply": "01e7accf1c72443b3409bab0d03fed4a1a7e90506dcade97ec6af37b2d222e22",
+          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
         }
       },
@@ -1855,13 +1851,13 @@
         "note": "Open interest form precedes eligibility/referral confirmation and invitation to a full proposal; revision, track-specific review/Open vote, and later KYC/KYB remain distinct. Reverified against the current official application flow on 2026-08-05.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "19238d0361b840e2d14cffadc029300b44042a3ed99aad71561f5e0d17c1ec06",
-          "q-scf-how-to-apply": "01e7accf1c72443b3409bab0d03fed4a1a7e90506dcade97ec6af37b2d222e22",
+          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
           "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d",
           "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
         },
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         }
       },
@@ -1901,11 +1897,11 @@
         "memberContentSha256": {
           "q-scf-academic-research-grant": "e03bdf74c8c85bfba8598acd9c367e7c535129389dbb1d01f6811e10efb8c62b",
           "q-scf-eligibility-criteria": "19238d0361b840e2d14cffadc029300b44042a3ed99aad71561f5e0d17c1ec06",
-          "q-scf-how-to-apply": "01e7accf1c72443b3409bab0d03fed4a1a7e90506dcade97ec6af37b2d222e22"
+          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258"
         },
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         }
       },
@@ -1921,14 +1917,14 @@
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         },
         "note": "Single award cap is $150K USD-equivalent paid in XLM. Open/Integration/RFP are the three tracks; only Open project awards use community vote. Current mechanics are four payments: acceptance plus three deliverable tranches.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
           "q-scf-build-tracks": "142edb2a6a1254d6454411084074c99b6a8986fa63caec6efee43d646fd31767",
-          "q-scf-how-to-apply": "01e7accf1c72443b3409bab0d03fed4a1a7e90506dcade97ec6af37b2d222e22"
+          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258"
         }
       },
       {
@@ -2130,12 +2126,12 @@
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members; the documented source or lifecycle tension remains intentional.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF/Soroswap truth refresh; the documented protocol or lifecycle tension remains intentional.",
           "verdict": "tension"
         },
         "note": "accept either label only with the correct 10/20/30/40 mechanics and acceptance distinction.",
         "memberContentSha256": {
-          "q-scf-how-to-apply": "01e7accf1c72443b3409bab0d03fed4a1a7e90506dcade97ec6af37b2d222e22",
+          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
           "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
         }
@@ -2154,13 +2150,13 @@
         "note": "Rolling interest precedes eligibility/referral and invitation to a full proposal. Only Open uses project-level community voting; Integration/RFP are panel-led.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "19238d0361b840e2d14cffadc029300b44042a3ed99aad71561f5e0d17c1ec06",
-          "q-scf-how-to-apply": "01e7accf1c72443b3409bab0d03fed4a1a7e90506dcade97ec6af37b2d222e22",
+          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
           "q-scf-rfp-tooling": "94a91ba22192f4fad171bde562ee454b683c8a08fe8d0ad28ee86a1fd1fb0003",
           "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d"
         },
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         }
       },
@@ -2504,13 +2500,13 @@
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         },
         "note": "Official docs/soroban-examples/SDKs/OZ remain current; Wallets Kit is optional multi-wallet abstraction, not mandatory for Freighter-only flows. Re-swept 2026-07-28: after Scout began returning the two direct repository rows, wallet-library and source-bound discovery claims remain consistent.",
         "memberContentSha256": {
           "q-ti-connect-wallet-button-code": "a8ed70870eb800d5b50c48821af0071902f9351b83729bf0b44d467eff9b099f",
-          "q-tool-smart-wallet-repos-discovery": "1f4220e3234bb1f9f31015c124d18ef915b3499ff06001bfe127d8444201ed76"
+          "q-tool-smart-wallet-repos-discovery": "0348664e448f99cdbd94f18d0baed6821c5bff16c1f0c64fce2aeca22be12035"
         }
       },
       {
@@ -2862,7 +2858,7 @@
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
         },
         "note": "All cases distinguish the current SCF Build cap of $150,000 worth of XLM from project-history amounts and other SDF programs.",
@@ -2871,7 +2867,7 @@
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
           "q-scf-build-tracks": "142edb2a6a1254d6454411084074c99b6a8986fa63caec6efee43d646fd31767",
           "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
-          "q-scf-how-to-apply": "01e7accf1c72443b3409bab0d03fed4a1a7e90506dcade97ec6af37b2d222e22",
+          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
           "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
         }
       },
@@ -3123,17 +3119,13 @@
           "q-tool-oracle-repo-live": "a3b41b87a96c9746af98afdb137cf145c0e13c3c73a98386f8c52c4fd9ee42fc",
           "q-tool-passkey-repo-live": "f26aa896e61edaac95d492774eefc4f227d25e934a353a126efb99e25acccd9f",
           "q-tool-sdk-repos-discovery": "1c02179bf497f6afed37e2d12c1a12a950c93fb1ae54abe9d59d5cfac2c32868",
-          "q-tool-smart-wallet-repos-discovery": "1f4220e3234bb1f9f31015c124d18ef915b3499ff06001bfe127d8444201ed76",
+          "q-tool-smart-wallet-repos-discovery": "0348664e448f99cdbd94f18d0baed6821c5bff16c1f0c64fce2aeca22be12035",
           "q-tool-zk-repo-live": "266eff3a9c057b4656d1239b2dd98878ab9c16394bf0f56f8946f4e26d16f063"
         },
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 golden-freshness sweep: re-read all six members after dated provenance-only updates to the indexer and SDK discovery cases; discovery-table contracts, live-roster discipline, and repoScore non-inferences remain unchanged and mutually consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
-        },
-        "reopened": {
-          "date": "2026-08-05",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -3151,17 +3143,13 @@
         "memberContentSha256": {
           "q-gap-scout-get-skill-detail": "96371833d9b0f5c68dfb5aedb28f94f5c01a2ce01d30a5b4983cd7c3116a02ca",
           "q-gap-scout-list-skill-directory": "f53e28dbfd110024498617fc9626011e86d54eba8c769c193215817aff545ac6",
-          "q-tool-cli-skills-discovery": "8eb116a565c90e7a007aa9d538a0184ff6949128d903e1f6ec65f96e31e2ef4c",
-          "q-tool-skill-detail-install": "0685645027b5087c99333eac46b1b7b0fed7016e977ebfc0fb19b9262c34c5f8"
+          "q-tool-cli-skills-discovery": "93df03478c2bd1a7837ec3bfdb919d2d4b35ee1a695880d65935fbabab67ada1",
+          "q-tool-skill-detail-install": "9d7d4b9cf09237e215b322f3e8e139c67bc6dc5f14456cb0a606b355df9d1c58"
         },
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 golden-freshness sweep: re-read all four members after a dated provenance-only update to q-tool-cli-skills-discovery; filter-enum, live-row, soft-empty, and exact-slug semantics remain unchanged and mutually consistent.",
+          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
           "verdict": "consistent"
-        },
-        "reopened": {
-          "date": "2026-08-05",
-          "reason": "member-content-changed"
         }
       },
       {
