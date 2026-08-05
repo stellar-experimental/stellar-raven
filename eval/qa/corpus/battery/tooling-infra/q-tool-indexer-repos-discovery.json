@@ -28,8 +28,8 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-28",
-    "reverifyBy": "2026-08-06",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-09-03",
     "sources": [
       {
         "class": "C",
@@ -124,12 +124,13 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+      "date": "2026-08-05",
+      "by": "Post-QA Harvest freshness lane (Solo todo 1378; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
       "evidence": [
-        "C: scout.searchRepos indexer and role/alias probes at 2026-07-28T14:05Z returned stellar-ledger-data-indexer, stellar-galexie, go-stellar-sdk, stellar-etl, and SubQuery rows; broad Soroban-events search returned 420 candidates, including adjacent contracts.",
-        "A/B: https://github.com/stellar/stellar-ledger-data-indexer, https://github.com/stellar/stellar-galexie, and the Stellar Galexie/indexing docs confirm distinct indexer, exporter, SDK, and ETL roles.",
-        "Sibling sweep: q-tool-sdk-repos-discovery shares the no-static-roster/no-repoScore-quality boundary; no owned sibling contradicts it."
+        "C: live https://stellarlight.xyz/api/repos/search probes at 2026-08-05T20:45-20:46Z returned current stellar/stellar-ledger-data-indexer, stellar/stellar-galexie, stellar/go-stellar-sdk, stellar/stellar-etl, and subquery/stellar-subql-starter rows with answer-time activity metadata.",
+        "A/B: https://developers.stellar.org/docs/data/indexers, https://developers.stellar.org/docs/build/guides/events/ingest, and the four direct stellar/* repositories independently confirmed distinct indexer, exporter/data-lake, ingest-library, and ETL roles plus the seven-day getEvents retention ceiling.",
+        "Uncertainty remains source-bounded: Scout rows and timestamps do not prove global repository coverage, deployment, security, or quality.",
+        "Sibling sweep: q-tool-sdk-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight, q-tool-go-sdk-ingest, and q-ti-parse-raw-ledger-data preserve the same fresh-row, direct-verification, and role-separation boundaries."
       ],
       "rootCause": [
         "freshness-recheck"
