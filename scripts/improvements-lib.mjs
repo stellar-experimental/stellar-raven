@@ -35,6 +35,20 @@ export function listFindingFiles() {
   return files.sort();
 }
 
+/**
+ * True when a `relPath` produced by `parseFinding` does not name a path inside the repository.
+ *
+ * Two shapes, because `path.relative` produces two. It walks up with `..` when it can reach the
+ * target, and returns the target ABSOLUTE when it cannot — on Windows that is any file on another
+ * drive letter, where a `..`-only check silently passes and an out-of-tree finding would file.
+ *
+ * The `..` test splits on the separator rather than `startsWith("..")`, which would also reject a
+ * legitimate `..hidden/finding.md`.
+ */
+export function escapesRepo(relPath) {
+  return path.isAbsolute(relPath) || relPath.split(path.sep)[0] === "..";
+}
+
 export function parseFinding(file) {
   const raw = readFileSync(file, "utf8");
   const match = raw.match(/^---\n([\s\S]*?)\n---\n?/);

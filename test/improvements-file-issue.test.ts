@@ -3,15 +3,23 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
+import { escapesRepo } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
+
+// Fixtures live inside the repo, not in os.tmpdir(). The filer refuses to post a finding that
+// resolves outside the repository, so an out-of-tree fixture would be blocked by THAT gate before
+// reaching the guard a given test is actually exercising — every "did not reach filing" assertion
+// below would then pass even if its own guard were deleted. `tmp/` is already gitignored.
+const FIXTURE_ROOT = path.join(ROOT, "tmp");
+mkdirSync(FIXTURE_ROOT, { recursive: true });
 
 // These two assertions are about the TEMPLATE, not about any particular finding, so they run
 // against a fixture. Pointing them at a live finding file coupled the suite to the improvements
 // queue: retiring that finding — the normal, expected end of its lifecycle — turned the build red
 // for a reason that had nothing to do with the template.
 function withFixtureFinding<T>(body: (findingPath: string) => T): T {
-  const dir = mkdtempSync(path.join(tmpdir(), "improvement-template-test-"));
+  const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-template-test-"));
   try {
     const finding = path.join(dir, "sd-998-template-fixture.md");
     writeFileSync(
@@ -101,7 +109,7 @@ describe("improvements issue filing template", () => {
       stubPath: string;
     }) => T,
   ): T {
-    const dir = mkdtempSync(path.join(tmpdir(), "improvement-successor-test-"));
+    const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-successor-test-"));
     try {
       const bin = path.join(dir, "bin");
       mkdirSync(bin);
@@ -215,7 +223,7 @@ File a successor rather than reopening it.
   // Checking only the named ref is not dedupe: once a successor is filed it joins the evidence,
   // so naming the ORIGINAL closed ref again would open a third issue while the second is live.
   test("a finding with any still-open recorded ref cannot file another successor", () => {
-    const dir = mkdtempSync(path.join(tmpdir(), "improvement-openref-test-"));
+    const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-openref-test-"));
     try {
       const bin = path.join(dir, "bin");
       mkdirSync(bin);
@@ -279,7 +287,7 @@ Follow up on the open successor, do not file again.
   // The sibling loop must fail CLOSED too. Blocking only on literal "open" let an UNREADABLE
   // sibling through — a transient gh failure is not evidence that a live report closed.
   test("an unreadable recorded ref blocks a successor rather than being waved through", () => {
-    const dir = mkdtempSync(path.join(tmpdir(), "improvement-unreadable-test-"));
+    const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-unreadable-test-"));
     try {
       const bin = path.join(dir, "bin");
       mkdirSync(bin);
@@ -341,7 +349,7 @@ Refuse until it can be.
 
   test("declined and fixed findings are never re-filable, even with --successor-to", () => {
     for (const status of ["declined-upstream", "fixed-upstream"]) {
-      const dir = mkdtempSync(path.join(tmpdir(), "improvement-terminal-test-"));
+      const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-terminal-test-"));
       try {
         const finding = path.join(dir, "sd-996-terminal.md");
         writeFileSync(
@@ -399,7 +407,7 @@ Do not re-file.
   });
 
   test("omits an immutable snapshot when no matching committed blob exists", () => {
-    const dir = mkdtempSync(path.join(tmpdir(), "improvement-template-test-"));
+    const dir = mkdtempSync(path.join(FIXTURE_ROOT, "improvement-template-test-"));
     try {
       const finding = path.join(dir, "sd-999-uncommitted.md");
       writeFileSync(finding, `---
@@ -472,5 +480,86 @@ Keep the main link and omit the immutable snapshot.
     expect(output).toContain("template=upstream-improvement-ready.yml");
     expect(output).toContain("Raven independently verifies the upstream surface");
     expect(output).toContain("retired to Raven's resolved ledger");
+  });
+  // The incident this guards: a fixture in os.tmpdir() reached the live `gh issue create` and
+  // became stellar/stellar-docs#2716. `path.relative` does not fail on an out-of-tree path, it
+  // walks up with `../`, and that string is joined onto a blob URL — so the published source
+  // record was a link that could never resolve.
+  test("refuses to file a finding that resolves outside the repository", () => {
+    const dir = mkdtempSync(path.join(tmpdir(), "improvement-outoftree-test-"));
+    try {
+      const findingPath = path.join(dir, "sd-996-outside.md");
+      writeFileSync(
+        findingPath,
+        `---
+id: sd-996
+service: stellar-docs
+status: verified
+discovered: 2026-08-04
+upstreamTitle: Out of tree fixture for the repository path guard
+evidence:
+  - fixture
+---
+
+## Finding
+
+Out of tree.
+
+## Evidence
+
+Fixture.
+
+## Recommendation
+
+Do not file.
+`,
+      );
+      // Stub `gh` so a regression posts nothing and is observable instead.
+      const bin = path.join(dir, "bin");
+      mkdirSync(bin);
+      writeFileSync(path.join(bin, "gh"), `#!/bin/sh\necho "STUB_GH_REACHED_FILING $*" >&2\nexit 42\n`, {
+        mode: 0o755,
+      });
+      const env = { ...process.env, PATH: `${bin}:${process.env.PATH}` };
+
+      const blocked = spawnSync(
+        process.execPath,
+        ["scripts/improvements-file-issue.mjs", "--file", findingPath, "--repo", "stellar/stellar-docs"],
+        { cwd: ROOT, encoding: "utf8", env },
+      );
+      expect(blocked.status).toBe(2);
+      expect(blocked.stderr).toContain("resolves outside the repository");
+      expect(blocked.stderr).not.toContain("STUB_GH_REACHED_FILING");
+
+      // --dry-run is the deliberate carve-out: it posts nothing, so inspecting the body of an
+      // out-of-tree finding stays available.
+      const dry = spawnSync(
+        process.execPath,
+        [
+          "scripts/improvements-file-issue.mjs",
+          "--file",
+          findingPath,
+          "--repo",
+          "stellar/stellar-docs",
+          "--dry-run",
+        ],
+        { cwd: ROOT, encoding: "utf8", env },
+      );
+      expect(dry.status).toBe(0);
+      expect(dry.stdout).toContain("## Source Record");
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+  // The gate's predicate, exercised directly. `path.relative` has two out-of-tree shapes and the
+  // absolute one is unreachable from a POSIX integration test: it is what Windows returns when the
+  // finding sits on another drive letter, where a `..`-only check silently passes.
+  test("escapesRepo rejects both out-of-tree shapes and keeps in-tree paths", () => {
+    expect(escapesRepo("../var/folders/T/fixture/sd-996.md")).toBe(true);
+    expect(escapesRepo("/var/folders/T/fixture/sd-996.md")).toBe(true);
+
+    expect(escapesRepo("improvements/stellar-docs/sd-018-sac-cap67-event-schema-gap.md")).toBe(false);
+    // Not `startsWith("..")`: a leading-dots directory name is a repo path, not an escape.
+    expect(escapesRepo("..hidden/sd-001.md")).toBe(false);
   });
 });
