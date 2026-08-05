@@ -1443,6 +1443,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b8acfff36ec6a4587b63457efba530350f22c3ee/improvements/stellar-light-scout/sls-056-deduped-project-count-metadata.md"
     },
     {
+      "id": "sls-058",
+      "title": "Scout's structured SCF funding fields disagree with the official SCF submission",
+      "service": "stellar-light-scout",
+      "discovered": "2026-07-27",
+      "resolved": "2026-08-05",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/744"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/745",
+        "https://github.com/Stellar-Light/stellarlight/pull/759"
+      ],
+      "liveRecheck": "2026-08-05 original SStream/WageLink linkage and Fluxity per-round basis reproduced fixed live; separate scfRoundAwards population gap routed to sls-061 / Stellar-Light/stellarlight#767",
+      "reviewEvidence": "Independent Claude Opus verification in Solo Todo 1354 comment 3683, reconciled by root in scratchpad 763; earlier process 4209 independently repeated the live trigger",
+      "sourceCommit": "aaef9b7ad7ba465630759de89fd3d84910e8dafe",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaef9b7ad7ba465630759de89fd3d84910e8dafe/improvements/stellar-light-scout/sls-058-scf-funding-metadata-contradicts-official-submissions.md"
+    },
+    {
       "id": "sls-059",
       "title": "The Scout OpenAPI's get-one-skill operation still advertises the retired",
       "service": "stellar-light-scout",

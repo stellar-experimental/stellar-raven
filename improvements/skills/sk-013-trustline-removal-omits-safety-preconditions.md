@@ -1,7 +1,7 @@
 ---
 id: sk-013
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-08-04
 upstreamTitle: Add trustline-removal preconditions to the ChangeTrust example
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - full QA round Todo 1346 c3593 and solo://proj/49/scratchpad/truth-maintenance-20--761
   - 2026-08-05 live primary-source recheck: stellar/stellar-dev-skill main (381ca32a) assets SKILL.md still presents limit 0 as removal without balance, liability, offer, or pool-reference preconditions
   - 2026-08-05 primary-source check: Stellar XDR and CAP-0038 define CHANGE_TRUST_INVALID_LIMIT for an uncleared balance/liability and CHANGE_TRUST_CANNOT_DELETE for a pool reference
+  - upstream issue filed 2026-08-05: https://github.com/stellar/stellar-dev-skill/issues/81
 ---
 
 ## Finding
