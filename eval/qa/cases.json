@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "b99cffee8cd43d26aacba0b1ade40b6b5a4ce3ce78c06c824f75b7025c298b38",
+  "corpusContentSha256": "1d4357e475e4eca81dd03386cc47da6ba2d84678e389800447aeea079cc6a831",
   "counts": {
     "total": 490,
     "byCategory": {
@@ -25,8 +25,8 @@
     },
     "byFreshness": {
       "live": 153,
-      "scheduled": 136,
-      "stable": 201
+      "scheduled": 137,
+      "stable": 200
     },
     "traps": {
       "ambiguous": 2,
@@ -8981,7 +8981,7 @@
         "lumenloop.search_directory"
       ],
       "golden": {
-        "answer": "**Phoenix DeFi Hub** is a Soroban AMM/DEX suite with constant-product and stable pools, a factory, routing/multihop swaps, LP share tokens, staking/rewards, and add/remove-liquidity flows. **PHO** is the protocol's classic Stellar asset with a SAC representation; the operator TOML identifies issuer `GAX5…SXJO`. Phoenix's **2024 initial whitepaper** describes PHO as a utility/incentive token for DEX/NFT rewards and proposed supply, buyback, and distribution mechanics. Attribute those claims to that dated initial design rather than promising they remain current; do not call PHO a governance token without current evidence.\n\nPhoenix's official SCF page reports four awarded submissions totaling $394.5K. It is a DEX/AMM, not a lender, oracle, or bridge, and no TVL number is required.",
+        "answer": "**Phoenix DeFi Hub** is a Soroban AMM/DEX suite with constant-product and stable pools, a factory, routing/multihop swaps, LP share tokens, staking/rewards, and add/remove-liquidity flows. **PHO** is the protocol's classic Stellar asset with a SAC representation; the operator TOML identifies issuer `GAX5…SXJO`. Phoenix's **2024 initial whitepaper** describes PHO as a utility/incentive token for DEX/NFT rewards and proposed supply, buyback, and distribution mechanics. Attribute those claims to that dated initial design rather than promising they remain current; do not call PHO a governance token without current evidence.\n\nAs of 2026-08-05, Phoenix's official SCF page reports seven awarded submissions totaling $394.5K. It is a DEX/AMM, not a lender, oracle, or bridge, and no TVL number is required.",
         "keyFacts": [
           "Identifies Phoenix as a Soroban AMM/DEX suite and explains its core pool/routing/liquidity functions.",
           "Identifies PHO as the protocol's classic asset/SAC utility-incentive token and attributes tokenomics to the dated 2024 initial whitepaper."
@@ -8995,11 +8995,13 @@
       "tags": {
         "category": "defi-ecosystem",
         "service": "lumenloop",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-11-19",
         "sources": [
           {
             "class": "D",
@@ -9014,7 +9016,7 @@
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/project/recafjXSgVbrp8svj",
-            "note": "class inferred at migration"
+            "note": "Official SCF project record; re-fetched 2026-08-05 and reports 7 Awarded Submissions and $394.5K total awarded."
           }
         ],
         "corroboration": [
@@ -9050,13 +9052,16 @@
           }
         ],
         "verified": {
-          "date": "2026-07-10",
-          "by": "Golden-truth sweep import — GT-16 lanes confirmed Phoenix mechanics but found the answer to 'what is PHO' incomplete and its SCF provenance stale. Current operator TOML/Horizon establish the classic PHO asset and SAC; tokenomics claims belong to the attributed 2024 initial whitepaper rather than timeless guarantees.",
+          "date": "2026-08-05",
+          "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
           "evidence": [
-            "Solo scratchpad 575 GT-16 processes 3244/3245; PHO issuer/SAC verified 2026-07-10"
+            "https://communityfund.stellar.org/project/recafjXSgVbrp8svj — current primary record reports 7 Awarded Submissions and $394.5K total awarded, observed 2026-08-05.",
+            "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
+            "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
+            "Sibling sweep: cluster-012 project-award cases preserve Phoenix's $394.5K aggregate and distinct Hana/Soroswap award histories; no sibling asserts the stale count of four."
           ],
           "rootCause": [
-            "eval-side answer completeness and time-scoped tokenomics/provenance error"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-defi-phoenix-what-is"
@@ -12797,7 +12802,7 @@
         "asOf": "2026-07-10",
         "sources": [
           {
-            "class": "A",
+            "class": "C",
             "ref": "https://horizon.stellar.org/ledgers/63386819",
             "note": "class inferred at migration"
           },
@@ -22651,7 +22656,7 @@
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md"
           },
           {
-            "class": "F",
+            "class": "C",
             "ref": "https://horizon.stellar.org/"
           }
         ],
@@ -22667,7 +22672,7 @@
                 "note": "Official guide gives the July 8 vote schedule."
               },
               {
-                "class": "F",
+                "class": "C",
                 "ref": "https://horizon.stellar.org/",
                 "observedAt": "2026-07-11",
                 "note": "Live Horizon root and latest-ledger probe returned current_protocol_version/protocol_version 27."
@@ -22745,7 +22750,7 @@
         "asOf": "2026-07-11",
         "sources": [
           {
-            "class": "A",
+            "class": "C",
             "ref": "https://horizon.stellar.org/ledgers/63386819",
             "note": "class inferred at migration"
           },
@@ -23734,7 +23739,7 @@
         "asOf": "2026-08-04",
         "sources": [
           {
-            "class": "A",
+            "class": "C",
             "ref": "https://horizon.stellar.org/ledgers/63386819",
             "note": "class inferred at migration"
           },
@@ -23774,9 +23779,9 @@
             "evidence": [
               {
                 "class": "B",
-                "ref": "B: current stellar/stellar-protocol core/cap-0071.md — Accepted, protocol version 27",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "B: current stellar/stellar-protocol core/cap-0071.md — Final, protocol version 27",
+                "observedAt": "2026-08-05",
+                "note": "Re-fetched from the current stellar/stellar-protocol registry; status is Final and protocol version is 27."
               },
               {
                 "class": "A",
@@ -25271,7 +25276,7 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "A",
+            "class": "C",
             "ref": "https://horizon.stellar.org/ledgers/63386819",
             "note": "class inferred at migration"
           },
@@ -29688,17 +29693,16 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP** (Open = brand-new builds with a community vote; Integration and RFP are panel-only). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review (Track Delegate Panels)**, and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- **Do not apply to the SDF Enterprise Fund** for this — it has no open application; **SCF is the open path** for builders. (https://communityfund.stellar.org/awards)",
+        "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP** (Open = brand-new builds with a community vote; Integration and RFP are panel-only). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review (Track Delegate Panels)**, and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)",
         "keyFacts": [
           "Applicants start by submitting an interest form on communityfund.stellar.org.",
           "Eligible applicants are invited to submit a full proposal to a specific track (Open/Integration/RFP).",
           "Awardees must complete KYC/KYB before receiving (tranche) payments."
         ],
         "avoid": [
-          "Do NOT tell the user to apply to the SDF Enterprise Fund — it has no open application; SCF is the open path.",
           "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real)."
         ],
-        "notes": "Dossier §2.5. Trap: pointing applicants at the application-less Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org."
+        "notes": "Dossier §2.5. Trap: confusing the SCF Build application flow with the separate Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -29718,13 +29722,24 @@
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/enterprise-fund/apply",
+            "note": "Current Enterprise application surface; re-fetched 2026-08-05."
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "GT-38-growth-hackathons-project-award-histories accepted in Solo scratchpad 575 rev 291",
+          "date": "2026-08-05",
+          "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575"
+            "https://stellar.org/enterprise-fund and https://stellar.org/enterprise-fund/apply — current primary pages expose Apply Now / Submit your application, observed 2026-08-05.",
+            "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
+            "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
+            "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap."
+          ],
+          "rootCause": [
+            "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current"
           ]
         },
         "origin": "raven-next q-scf-how-to-apply"
@@ -30062,7 +30077,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, the live RFP response returned six open rows, including the SCF #45 round row, Trustline Onboarder, and Passkey UI Kit.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-08-05, the current Q3 roster contains exactly two open RFP briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response also includes a synthetic SCF #45 round row; that row represents the open submission round and is not a third RFP brief.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -30074,7 +30089,7 @@
           "Do NOT present the roster as permanent, invent per-RFP bounties, or claim RFP projects use NQG voting.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Dossier §4.2. scout_rfps is the exact card for 'what is SCF asking to be built'. Freshness item — confidence stays medium because the open set rotates. HISTORICAL, SUPERSEDED — do not grade against this roster: a 2026-06-29 observation recorded activeQuarter q2-2026 with 5 open / 9 closed (Trustline Onboarder, Passkey UI Kit, Account Demolisher, Contract Source Verification Service, OZ Accounts Policy Builder). As of 2026-07-31 the quarter rolled to q3-2026 and ALL of those q2-2026 briefs report status closed; the open curated set is now LayerZero DVN and x402 Facilitator with Bazaar, beside the synthetic SCF round row. An answer naming the current open set is CORRECT and must not be marked down for differing from the older list. The rubric gates on dated-observation behaviour, never on the exact roster.\nAlso good if the answer: RFPs are reviewed via the SCF Build RFP Track (panel-only, no community vote). | RFP awards follow the standard SCF Build $150K XLM cap (per-RFP bounties are not separately published).\nGolden cites: The SCF RFP Track handbook page and/or the live RFPs feed.\nGT-39/40 independently corrected 2026-07-10. The earlier corpus-only note is superseded: the official RFP page now carries the five headings, but its #43 label is stale and Scout injects a synthetic #45 row (sls-045). Grade the dated reconciled roster and source conflict."
+        "notes": "Dossier §4.2. Freshness item — confidence stays medium because the open set rotates. HISTORICAL, SUPERSEDED — do not grade against this roster: a 2026-06-29 observation recorded activeQuarter q2-2026 with 5 open / 9 closed (Trustline Onboarder, Passkey UI Kit, Account Demolisher, Contract Source Verification Service, OZ Accounts Policy Builder). As of 2026-08-05 the current Q3 official page and live feed agree on exactly two open briefs, LayerZero DVN and x402 Facilitator with Bazaar, beside the synthetic SCF #45 round row. An answer naming the current open set is CORRECT and must not be marked down for differing from the older list. The rubric gates on dated-observation behaviour, never on the exact roster. SCF #43 remains an explicitly historical concluded round and must not be substituted for current #45.\nAlso good if the answer: RFPs are reviewed via the SCF Build RFP Track (panel-only, no community vote). | RFP awards follow the standard SCF Build $150K XLM cap (per-RFP bounties are not separately published).\nGolden cites: The SCF RFP Track handbook page and/or the live RFPs feed."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -30084,12 +30099,12 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-05",
         "sources": [
           {
             "class": "C",
-            "ref": "https://stellarlight.xyz/ideas",
-            "note": "class inferred at migration"
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "note": "Live open-RFP response observed 2026-08-05."
           },
           {
             "class": "A",
@@ -30104,38 +30119,35 @@
         ],
         "corroboration": [
           {
-            "claim": "Scout's dated RFP feed reported a particular active quarter and open roster.",
-            "verdict": "corpus-only",
+            "claim": "As of 2026-08-05, the current Q3 roster contains exactly two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—plus a synthetic SCF #45 round row that is not a brief.",
+            "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "C",
-                "ref": "C: Stellar Light scout_rfps feed is the roster witness",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-08-05",
+                "note": "Returned two actual open RFP briefs plus the synthetic SCF #45 round row."
               },
               {
                 "class": "A",
-                "ref": "A: SCF handbook confirms the Build RFP track and $150K Build cap but does not independently publish that live roster",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+                "observedAt": "2026-08-05",
+                "note": "Current official Q3 page names the same two briefs."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-05",
+          "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
           "evidence": [
-            "Solo scratchpad 569 Batch F, 2026-07-09; siblings q-scf-current-round, q-scf-rfp-tooling, and q-scf-build-tracks reviewed.",
-            "2026-07-11 localhost:8787 search→execute probe observed: the live RFP response returned six open rows, including the SCF #45 round row, Trustline Onboarder, and Passkey UI Kit.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — official/current A+C sources agree on two Q3 briefs; the API also returns one synthetic round row, observed 2026-08-05.",
+            "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
+            "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
+            "Sibling sweep: q-scf-rfp-tooling was refreshed in the same change; q-scf-open-rfps-live and q-scf-passkey-rfps-live require a fresh exhaustive live query rather than pinning the retired Q2 roster; q-scf-hummingbot-kelp-closed-rfp remains explicitly historical and closed."
           ],
           "rootCause": [
-            "A volatile directory feed was presented with enough exact detail to become a de facto world-truth gate.",
-            "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch F",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-scf-open-rfps"
@@ -30456,7 +30468,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live RFP response returned six open rows and distinguished its synthetic SCF #45 round row from five project briefs.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "Yes. A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any availability-sensitive claim. As of 2026-08-05, the current Q3 roster contains exactly two open infrastructure/tooling briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response also includes a synthetic SCF #45 round row, which is not a third RFP brief. RFP applicants start with an interest form and submit a full proposal only if invited.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -30468,7 +30480,7 @@
           "Do NOT claim anyone openly submits a full RFP proposal, that RFP awards use community vote, or that each brief has a published bounty.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Dossier §4.2/§6.4. scout_rfps idea→RFP matching. Freshness item (3rd freshness case) — confidence stays medium (set rotates). Re-verified live 2026-06-29 (/api/rfps?status=open): matching open tooling/infra briefs = Passkey UI Kit (developer-tooling), Contract Source Verification Service (infrastructure), OZ Accounts Policy Builder (developer-tooling). Rubric gates on the freshness caveat, not the exact list.\nAlso good if the answer: Flags that the matching RFP set is quarter-dependent and may change.\nGolden cites: The live SCF RFPs feed / RFP Track handbook page.\nGT-40 independently confirmed 2026-07-10. The official page's SCF #43 label is stale against current #45; grade the dated roster and source conflict rather than the banner."
+        "notes": "Dossier §4.2/§6.4. Freshness item (3rd freshness case) — confidence stays medium because the set rotates. HISTORICAL, SUPERSEDED — the 2026-06-29 tooling/infra matches were Passkey UI Kit, Contract Source Verification Service, and OZ Accounts Policy Builder. As of 2026-08-05 the current Q3 official page and live feed instead agree on exactly two open briefs, LayerZero DVN and x402 Facilitator with Bazaar, beside the synthetic SCF #45 round row. Rubric gates on the freshness caveat, not the exact list. SCF #43 remains an explicitly historical concluded round and must not be substituted for current #45.\nAlso good if the answer: Flags that the matching RFP set is quarter-dependent and may change.\nGolden cites: The live SCF RFPs feed / RFP Track handbook page."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -30478,7 +30490,7 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-05",
         "sources": [
           {
             "class": "A",
@@ -30487,56 +30499,41 @@
           },
           {
             "class": "C",
-            "ref": "https://stellarlight.xyz/ideas",
-            "note": "class inferred at migration"
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "note": "Live open-RFP response observed 2026-08-05."
           }
         ],
         "corroboration": [
           {
-            "claim": "Five current briefs and three tooling/infrastructure matches",
+            "claim": "As of 2026-08-05, the current Q3 roster contains exactly two open infrastructure/tooling briefs—LayerZero DVN and x402 Facilitator with Bazaar—plus a synthetic SCF #45 round row that is not a brief.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A/B: official RFP page/source",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "B",
-                "ref": "A/B: official RFP page/source",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+                "observedAt": "2026-08-05",
+                "note": "Current official Q3 page names the two briefs and documents the interest-to-invitation flow."
               },
               {
                 "class": "C",
-                "ref": "C: live scout.getRfps",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "F",
-                "ref": "F: GT-39/40 independent reviews",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://stellarlight.xyz/api/rfps?status=open",
+                "observedAt": "2026-08-05",
+                "note": "Returned the same two actual briefs plus the synthetic SCF #45 round row."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-05",
+          "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
           "evidence": [
-            "Solo scratchpad 575 GT-39/40; live 2026-07-10 official and Scout probes.",
-            "2026-07-11 localhost:8787 search→execute probe observed: the live RFP response returned six open rows and distinguished its synthetic SCF #45 round row from five project briefs.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — official/current A+C sources agree on two Q3 briefs; the API also returns one synthetic round row, observed 2026-08-05.",
+            "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
+            "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
+            "Sibling sweep: q-scf-open-rfps was refreshed in the same change; q-scf-hummingbot-kelp-closed-rfp remains historically closed; q-scf-how-to-apply, q-scf-eligibility-criteria, and q-scf-submission-lifecycle-deadlines preserve the interest-to-invitation flow."
           ],
           "rootCause": [
-            "Eval-side legacy operation references.",
-            "improvements/stellar-light-scout/sls-045-rfp-synthetic-round-row-count.md",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-scf-rfp-tooling"
@@ -36005,7 +36002,7 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "A",
+            "class": "C",
             "ref": "https://horizon.stellar.org/ledgers/63386819",
             "note": "class inferred at migration"
           }
@@ -46013,7 +46010,7 @@
           "evidence": [
             "C: Scout results are dated source-scoped retrieval evidence and may lag repository ownership moves; broaden exact and topic vocabulary.",
             "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework.",
-            "Sibling sweep found q-tool-passkeykit-smart-wallet still describes Passkey Kit as legacy/unaudited, which conflicts with its current README; this lane does not edit that sibling. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery."
+            "Sibling sweep: q-tool-passkeykit-smart-wallet now describes Passkey Kit as maintained rather than legacy/unaudited; the cases are consistent. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery."
           ],
           "rootCause": [
             "freshness-drift"

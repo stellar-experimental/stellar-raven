@@ -32,7 +32,7 @@
     "asOf": "2026-08-04",
     "sources": [
       {
-        "class": "A",
+        "class": "C",
         "ref": "https://horizon.stellar.org/ledgers/63386819",
         "note": "class inferred at migration"
       },
@@ -72,9 +72,9 @@
         "evidence": [
           {
             "class": "B",
-            "ref": "B: current stellar/stellar-protocol core/cap-0071.md — Accepted, protocol version 27",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "B: current stellar/stellar-protocol core/cap-0071.md — Final, protocol version 27",
+            "observedAt": "2026-08-05",
+            "note": "Re-fetched from the current stellar/stellar-protocol registry; status is Final and protocol version is 27."
           },
           {
             "class": "A",
