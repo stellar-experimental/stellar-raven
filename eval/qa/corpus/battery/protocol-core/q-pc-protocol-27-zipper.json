@@ -41,7 +41,7 @@
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md"
       },
       {
-        "class": "F",
+        "class": "C",
         "ref": "https://horizon.stellar.org/"
       }
     ],
@@ -57,7 +57,7 @@
             "note": "Official guide gives the July 8 vote schedule."
           },
           {
-            "class": "F",
+            "class": "C",
             "ref": "https://horizon.stellar.org/",
             "observedAt": "2026-07-11",
             "note": "Live Horizon root and latest-ledger probe returned current_protocol_version/protocol_version 27."

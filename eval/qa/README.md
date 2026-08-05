@@ -434,6 +434,19 @@ the UTC rollover of this 2026-08-04 local round. Register-wide, the four numeric
 date-contingent traps bring the totals to 49 reopened entries and 46 stamped on `2026-08-05`.
 These are explicit follow-up signals, not remeasurement results.
 
+Follow-up completed on 2026-08-05. Four evidence waves reconciled those 43 clusters, four numeric
+invariants, and two date traps. The accepted metadata and truth repairs then reopened five more
+shared clusters, so the final register drain covered **48 clusters + 4 numeric invariants + 2 date
+traps = 54 entries** and leaves zero `reopen` verdicts. Among that reconciled set, only clusters
+008, 009, 018, 030, and 088 retain their documented intentional tensions. The rebuilt 490-case
+corpus SHA-256 is `1d4357e475e4eca81dd03386cc47da6ba2d84678e389800447aeea079cc6a831`.
+
+Offline triage of the sealed run's 41 unique plan-coverage misses found only seven strict,
+below-correct gain candidates. A fixed 16-case treatment/control diagnostic received independent
+`LAUNCH-OK` with a $25 hard cap but was not launched. The plan grader was not loosened: top-level
+`search` output is catalog-navigation metadata, not evidence for live return values. No post-repair
+score or measured gain is claimed without a paid remeasurement.
+
 ## Current baseline of record
 
 The 2026-07-11 post-rebuild baseline is recorded in

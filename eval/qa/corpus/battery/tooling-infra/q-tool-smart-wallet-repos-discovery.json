@@ -102,7 +102,7 @@
       "evidence": [
         "C: Scout results are dated source-scoped retrieval evidence and may lag repository ownership moves; broaden exact and topic vocabulary.",
         "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework.",
-        "Sibling sweep found q-tool-passkeykit-smart-wallet still describes Passkey Kit as legacy/unaudited, which conflicts with its current README; this lane does not edit that sibling. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery."
+        "Sibling sweep: q-tool-passkeykit-smart-wallet now describes Passkey Kit as maintained rather than legacy/unaudited; the cases are consistent. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery."
       ],
       "rootCause": [
         "freshness-drift"
