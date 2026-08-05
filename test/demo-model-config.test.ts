@@ -19,6 +19,7 @@ import {
   demoOpenAiApiModeFromOverride,
   demoOpenAiProviderOptions,
   demoGatewayTransportSettings,
+  demoModelSettings,
   demoReasoningEffortFromOverride,
   demoReasoningEffortOverride,
   demoModelsFromOverride,
@@ -27,6 +28,15 @@ import {
 } from "../src/demo/model-config";
 
 describe("demo model config", () => {
+  it("disables AI Gateway logging for every model transport", () => {
+    for (const model of [DEMO_PRIMARY_MODEL, DEMO_GROK_CONTROL_MODEL, DEMO_KIMI_CONTROL_MODEL]) {
+      expect(demoModelSettings(model, "demo-affinity", "high").extraHeaders).toMatchObject({
+        "cf-aig-collect-log": "false",
+        "x-session-affinity": "demo-affinity"
+      });
+    }
+  });
+
   it("uses the gauntlet winner with a fast fallback, conservative sampling, and configured default reasoning", () => {
     expect(DEMO_PRIMARY_MODEL).toBe("openai/gpt-5.4");
     expect(DEMO_FALLBACK_MODEL).toBe("openai/gpt-5.4-mini");
@@ -154,10 +164,10 @@ describe("demo model config", () => {
 
     const workersai = createWorkersAI({ binding: binding as unknown as Ai });
     const result = streamText({
-      model: workersai(DEMO_KIMI_CONTROL_MODEL, {
-        sessionAffinity: "demo-test-affinity",
-        reasoning_effort: DEMO_REASONING_EFFORT
-      } as never),
+      model: workersai(
+        DEMO_KIMI_CONTROL_MODEL,
+        demoModelSettings(DEMO_KIMI_CONTROL_MODEL, "demo-test-affinity", DEMO_REASONING_EFFORT) as never
+      ),
       system: "system",
       messages: [{ role: "user", content: "hi" }],
       maxOutputTokens: 16,
@@ -170,7 +180,8 @@ describe("demo model config", () => {
     expect(calls).toHaveLength(1);
     expect(calls[0]?.model).toBe(DEMO_KIMI_CONTROL_MODEL);
     expect(calls[0]?.inputs.temperature).toBe(DEMO_TEMPERATURE);
-    expect(calls[0]?.inputs.reasoning_effort).toBe(DEMO_REASONING_EFFORT);
+    expect(calls[0]?.inputs.reasoning_effort).toBe(demoWorkersAiReasoningEffort(DEMO_REASONING_EFFORT));
     expect(calls[0]?.options?.extraHeaders?.["x-session-affinity"]).toBe("demo-test-affinity");
+    expect(calls[0]?.options?.extraHeaders?.["cf-aig-collect-log"]).toBe("false");
   });
 });

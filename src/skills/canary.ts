@@ -14,7 +14,7 @@
  * capacity, not across the colos serving user requests — so this samples ONE
  * execution location per run. It catches global and shared-infrastructure
  * failures, which is the realistic case; it cannot rule out a fault confined to
- * some other colo. Real-traffic `skill_read ok:false` remains the only signal
+ * some other colo. Real-traffic `skill_read outcome:error` remains the only signal
  * that covers user-selected colos, and neither replaces the other.
  *
  * WHY IT BYPASSES THE CACHES. Pinned URLs are cached `immutable` for a year and
@@ -129,7 +129,7 @@ export async function runSkillCanary(
     checked: verdict.checked,
     pins: pins.length,
     ms: verdict.ms,
-    ...(verdict.error ? { error: verdict.error } : {})
+    errorClass: verdict.error ? errorClass(verdict.error) : null
   });
 
   return verdict;
@@ -152,7 +152,7 @@ export async function runAndStoreSkillCanary(
     await kv.put(CANARY_KV_KEY, JSON.stringify(verdict));
   } catch (e) {
     logEvent("skill_canary_store_failed", {
-      error: e instanceof Error ? e.message : String(e)
+      errorName: e instanceof Error ? e.name : typeof e
     });
   }
   return verdict;
@@ -186,8 +186,7 @@ export async function skillHealthResponse(kv: KVNamespace): Promise<Response> {
   }
   // Project to a fixed shape rather than echoing the stored object. Two
   // reasons: the raw `error` carries internal wording and, on an integrity
-  // failure, expected/actual digests — detail that belongs in Workers Logs, not
-  // on an unauthenticated route; and a stable schema is what the classifier
+  // failure, expected/actual digests; and a stable schema is what the classifier
   // parses, so a future field cannot change what this endpoint promises.
   const body = {
     ok: stored.ok,
@@ -207,7 +206,7 @@ export async function skillHealthResponse(kv: KVNamespace): Promise<Response> {
   });
 }
 
-/** Coarse, non-identifying reason for a failed sweep. Detail stays in logs. */
+/** Coarse, non-identifying reason for a failed sweep. */
 function errorClass(message: string): string {
   if (/integrity check failed/.test(message)) return "integrity";
   if (/provenance check failed/.test(message)) return "provenance";

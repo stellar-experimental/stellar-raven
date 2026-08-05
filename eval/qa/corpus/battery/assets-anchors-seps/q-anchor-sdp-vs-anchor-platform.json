@@ -7,26 +7,28 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "All three are **SDF-maintained**, each for a different role [1][2][3]:\n\n- **Anchor Platform** — the **anchor operator's** backend (Java) that implements the anchor SEP endpoints (**SEP-1/6/10/12/24/31/38**). Run it to *be* an anchor [1].\n- **Stellar Disbursement Platform (SDP)** — a tool for a **disbursement organization** to send **bulk payments (up to 10,000 per batch)** to many recipients (payroll, aid, payouts) [2]. It *relies on* anchor SEP rails (SEP-12 KYC, SEP-31 cross-border) rather than replacing them.\n- **Wallet SDK** — a **wallet developer's** (TypeScript) client library wrapping the client-side SEP flows (**SEP-10/12/24/31/38**) [3].\n\nSo: Anchor Platform = anchor backend; SDP = bulk-payout app; Wallet SDK = wallet client library.",
+    "answer": "All three are **SDF-maintained**, each for a different role [1][2][3]:\n\n- **Anchor Platform** — the **anchor operator's** backend (Java) that implements anchor SEP endpoints (**SEP-1/6/10/12/24/31/38**). Run it to *be* an anchor [1].\n- **Stellar Disbursement Platform (SDP)** — the **disbursement organization's** bulk-payment application. Current SDP Core implements native **SEP-10/24**, publishes its own `stellar.toml`, and does not require an external Anchor Platform. A receiver wallet or cash-out route may use an anchor downstream, but that is optional deployment behavior rather than SDP's universal architecture [2].\n- **Wallet SDK** — a **wallet developer's** TypeScript client library wrapping client-side SEP flows (**SEP-10/12/24/31/38**) [3].\n\nSo: Anchor Platform = anchor backend; SDP = bulk-payout application; Wallet SDK = wallet client library.",
     "keyFacts": [
       "Anchor Platform = anchor-operator backend (Java) implementing the anchor SEP endpoints (SEP-6/10/12/24/31/38).",
-      "SDP = disbursement-org tool for sending bulk payments (up to 10,000/batch) to many recipients.",
+      "SDP = disbursement-org bulk-payment application whose current Core implements native SEP-10/24; downstream anchor rails are optional rather than universal.",
       "Wallet SDK = wallet-developer (TypeScript) library wrapping client-side SEP flows (SEP-10/12/24/31/38)."
     ],
     "avoid": [
       "Do NOT claim SDP and the Anchor Platform are the same product, or swap their roles.",
-      "Do NOT misnumber the SEPs each component covers."
+      "Do NOT misnumber the SEPs each component covers or present the product page's dated 10,000-payment advertisement as a hard SDP invariant."
     ],
-    "notes": "Three-way comparison. Dossier §6.4 table. All three SDF-maintained; roles verified.\nAlso good if the answer: All three are SDF-maintained; each targets a different role (anchor / disbursement org / wallet).\nGolden cites: developers.stellar.org pages for the Anchor Platform, SDP, and Wallet SDK."
+    "notes": "Three-way comparison reverified 2026-08-05. The declared Docs surfaces support the role and current-architecture comparison, not the stellar.org product page's numeric advertisement. As of 2026-08-05 that page advertises up to 10,000 payments per batch; treat it as dated product positioning, not a hard implementation ceiling, and do not require it here."
   },
   "tags": {
     "category": "assets-anchors-seps",
     "service": "stellarDocs",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
-    "domain": "corpus-grounded",
+    "domain": "mixed",
     "status": "confirmed",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-11-12",
     "sources": [
       {
         "class": "A",
@@ -42,13 +44,81 @@
         "class": "A",
         "ref": "https://stellar.org/products-and-tools/wallet-sdk",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+        "note": "Current product page; its 10,000-payment claim is dated advertising rather than an implementation invariant."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+        "note": "Canonical implementation source for current native SEP-10/24 and transaction orchestration."
+      },
+      {
+        "class": "D",
+        "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
+        "note": "Independent corpus record of SDF media that repeats the dated 10,000-transactions-per-batch product claim."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Anchor Platform, current SDP, and Wallet SDK serve distinct operator, disbursement, and wallet-client roles; current SDP implements native SEP-10/24 without universally requiring an external Anchor Platform.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform and https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+            "observedAt": "2026-08-05",
+            "note": "Official docs distinguish the product roles and describe current SDP architecture."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+            "observedAt": "2026-08-05",
+            "note": "Canonical source corroborates SDP's current application and native SEP integration paths."
+          }
+        ]
+      },
+      {
+        "claim": "The 10,000 figure is a dated advertised capacity; this verification did not establish it as a hard implementation or protocol ceiling.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+            "observedAt": "2026-08-05",
+            "note": "The product page advertises 'up to 10,000 payments' in one batch."
+          },
+          {
+            "class": "D",
+            "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
+            "observedAt": "2026-08-05",
+            "note": "The SDF-media corpus record repeats up to 10,000 transactions per batch."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+            "observedAt": "2026-08-05",
+            "note": "A bounded source search did not establish a corresponding hard cap; absence is not asserted."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-02-anchor-discovery-platform-disbursement accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-05",
+      "by": "Bounded truth repair from Solo Todo 1355 comment 3687",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/todo/reconcile-bounded-tr--1355",
+        "2026-08-05 exact-phrase lumenloop.search_content_semantic probe for 'up to 10,000 payments' returned 20 candidates and no exact matching row or primary-linked SDF evidence; the numeric requirement was therefore removed from the declared Docs-only comparison.",
+        "https://developers.stellar.org/docs/platforms/anchor-platform",
+        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+        "https://github.com/stellar/stellar-disbursement-platform-backend",
+        "Sibling sweep: q-anchor-sdp-what, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails."
+      ],
+      "rootCause": [
+        "freshness-drift",
+        "solo://proj/49/todo/reconcile-bounded-tr--1355"
       ]
     },
     "origin": "raven-next q-anchor-sdp-vs-anchor-platform"

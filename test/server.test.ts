@@ -531,8 +531,8 @@ describe("search behavior (host-side ranked)", () => {
           }
         })
         .filter((event): event is Record<string, unknown> => event?.evt === "search");
-      const valid = events.find((event) => event.queryPreview === "stellar soroban contract");
-      const invalid = events.find((event) => event.queryPreview === "docs search");
+      const valid = events.find((event) => event.queryChars === 24);
+      const invalid = events.find((event) => event.queryChars === 11);
 
       expect(valid).toMatchObject({
         source: "tool",
@@ -541,8 +541,9 @@ describe("search behavior (host-side ranked)", () => {
         effectiveLimit: 5,
         truncated: true
       });
-      expect(valid?.queryHash).toMatch(/^[a-f0-9]{16}$/);
       expect(valid).not.toHaveProperty("query");
+      expect(valid).not.toHaveProperty("queryPreview");
+      expect(valid).not.toHaveProperty("queryHash");
       expect(Number(valid?.gatedHits) + Number(valid?.backfillHits)).toBe(valid?.hits);
       expect(invalid).toMatchObject({
         requestedLimit: 3,
@@ -555,6 +556,8 @@ describe("search behavior (host-side ranked)", () => {
         truncated: false
       });
       expect(invalid).not.toHaveProperty("query");
+      expect(JSON.stringify(events)).not.toContain("stellar soroban contract");
+      expect(JSON.stringify(events)).not.toContain("docs search");
     } finally {
       logSpy.mockRestore();
     }
@@ -959,7 +962,7 @@ describe("execute behavior", () => {
     expect(text.length).toBeLessThan(11_000);
   });
 
-  it("caps structured sourceBasis calls in execute telemetry to first 12 plus totals", async () => {
+  it("caps structured sourceBasis calls and excludes execute content from telemetry", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const execClient = await connectedClient({
@@ -978,6 +981,7 @@ describe("execute behavior", () => {
                 ms: i
               };
             }),
+            canonicalUrls: ["https://sensitive.example/private-result"],
             artifact: { state: "absent", reason: "unavailable" }
           }
         })
@@ -1004,6 +1008,11 @@ describe("execute behavior", () => {
         error: 10,
         "soft-empty": 10
       });
+      expect(executeEvent?.sourceBasis).toMatchObject({ canonicalUrlCount: 1 });
+      expect(executeEvent).not.toHaveProperty("code");
+      expect(executeEvent).not.toHaveProperty("resultPreview");
+      expect(executeEvent).not.toHaveProperty("error");
+      expect(JSON.stringify(executeEvent)).not.toContain("sensitive.example");
     } finally {
       logSpy.mockRestore();
     }

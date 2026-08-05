@@ -818,15 +818,16 @@ describe("codemode fns", () => {
         .find((candidate) => candidate?.evt === "search" && candidate.source === "codemode");
 
       expect(event).toMatchObject({
-        queryPreview: "stellar soroban contract",
         queryChars: 24,
         requestedLimit: 5,
         effectiveLimit: 5,
         truncated: true,
         hits: r.hits.length
       });
-      expect(event?.queryHash).toMatch(/^[a-f0-9]{16}$/);
       expect(event).not.toHaveProperty("query");
+      expect(event).not.toHaveProperty("queryPreview");
+      expect(event).not.toHaveProperty("queryHash");
+      expect(JSON.stringify(event)).not.toContain("stellar soroban contract");
       expect(Number(event?.gatedHits) + Number(event?.backfillHits)).toBe(r.hits.length);
     } finally {
       logSpy.mockRestore();
@@ -1328,8 +1329,7 @@ describe("skill_read telemetry (ideas/skill-discovery-without-bundling.md)", () 
     expect(e.shape).toBe("whole");
     expect(e.requested).toBe(0);
     expect(e.retrievals).toBe(1);
-    expect(e.ok).toBe(true);
-    expect(e.error).toBeNull();
+    expect(e.outcome).toBe("ok");
     expect(typeof e.ms).toBe("number");
     expect(["memo", "cache", "upstream"]).toContain(e.from);
   });
@@ -1357,18 +1357,21 @@ describe("skill_read telemetry (ideas/skill-discovery-without-bundling.md)", () 
     expect(events[0]!.retrievals).toBe(3); // SKILL.md + the two companions
   });
 
-  it("records failures with the reason and no body content", async () => {
-    const events = await captureSkillReadEvents((fns) => fns.skill_read!("skills.no.such-skill", {}));
-    expect(events[0]!.ok).toBe(false);
+  it("records failures without logging the untrusted id or error text", async () => {
+    const invalidId = "skills.no.such-skill-sensitive";
+    const events = await captureSkillReadEvents((fns) => fns.skill_read!(invalidId, {}));
+    expect(events[0]!.outcome).toBe("error");
     expect(events[0]!.from).toBe("none");
-    expect(String(events[0]!.error)).toContain("exact catalog ids");
+    expect(events[0]!.id).toBeNull();
+    expect(events[0]).not.toHaveProperty("error");
+    expect(JSON.stringify(events[0])).not.toContain(invalidId);
   });
 
   it("records a TRANSPORT failure — the availability signal the posture depends on", async () => {
     // The test above fails at id resolution and never reaches the network, so
     // it cannot prove the case that actually matters: a real, cataloged pin
     // whose upstream fetch fails. `ARCHITECTURE.md` §6 accepts the availability
-    // risk on the grounds that it is OBSERVABLE — and `skill_read ok:false` is
+    // risk on the grounds that it is OBSERVABLE — and `skill_read outcome:error` is
     // the entire observation. If a transport failure escaped as a throw, or
     // logged nothing, the accepted risk would be an unmonitored one and the
     // only way to notice would be a user complaint.
@@ -1397,9 +1400,10 @@ describe("skill_read telemetry (ideas/skill-discovery-without-bundling.md)", () 
     }
     expect(events).toHaveLength(1);
     const e = events[0]!;
-    expect(e.ok).toBe(false);
+    expect(e.outcome).toBe("error");
     expect(e.id).toBe("skills.lumenloop.stellar-project-dossier");
-    expect(String(e.error)).toContain("could not fetch");
+    expect(e).not.toHaveProperty("error");
+    expect(JSON.stringify(e)).not.toContain("could not fetch");
     expect(typeof e.ms).toBe("number");
   });
 });

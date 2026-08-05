@@ -143,7 +143,8 @@ Skill bodies are fetched from their pinned upstream at read time, not bundled
 - **Latency profile:** group `ms` by `from` (`memo` | `cache` | `upstream`).
   Always split by `from` — a memo hit and an upstream fetch differ by orders of
   magnitude, so a mean over both is meaningless.
-- **Availability:** `evt = "skill_read"` with `ok = false`, grouped by `error`.
+- **Availability:** `evt = "skill_read"` with `outcome = "error"`, grouped by
+  canonical `id` and `from`.
   This is the accepted-risk dependency on raw.githubusercontent.com made
   observable; a rising `could not fetch` rate is the early signal from REAL
   traffic.
@@ -189,45 +190,35 @@ turn, or from a local browser that is replaying retained UI state. First search
 a wide recent window (usually 10 hours, or the user's stated window) for app
 events:
 
-- `evt = "demo-execute"` grouped by `ok` and `error`.
+- `evt = "demo-execute"` grouped by `ok` and `evidenceOutcome`.
 - `evt = "demo-chat"` with `executeFailures > 0`, grouped by
   `executeFailures`, `finishReason`, and Ray/request ID.
-- Needle searches for visible user-query terms in `demo-chat-start.latestUserPreview`
-  and bounded model search text in `demo-search.queryPreview`, e.g. `ecosystem gaps
-  builders` or `yield rwa bond asset`.
 - Span view for `codemode.execute`, grouped by `$metadata.message` and
   `sandbox.ok`, to separate model-code failures from sandbox/runtime failures.
 
 Then join each failing request by `$metadata.requestId`:
 
-- `demo-search`: bounded `queryPreview`, exact-match `queryHash`, query size,
-  requested/effective limits, kind/service filters, hit/total/omitted counts,
+- `demo-search`: query size, requested/effective limits, hit/total/omitted counts,
   gated/backfill counts, truncation, and top ids.
-- `demo-execute`: `ok`, `error`, `codeChars`, redacted/sampled `code`, `ms`.
+- `demo-execute`: `ok`, `evidenceOutcome`, `codeChars`, truncation/count fields, `ms`.
 - `op`: operation ids/outcomes/timings inside the execute attempt.
 - `demo-chat`: `searchCalls`, `executeCalls`, `executeFailures`,
-  `finishReason`, `budgetExhausted`, `finalNeededButMissing`, answer preview.
+  `finishReason`, `budgetExhausted`, and `finalNeededButMissing`.
 - `cf-worker-event`: path/method/status/user-agent and, when needed, the
   Cloudflare private/platform fields used to disambiguate same-user traffic.
 
-When the question text matters, start with `demo-chat-start`. It records the
-inbound browser message surface without storing the full transcript:
+`demo-chat-start` records only message counts/sizes and subject correlation:
 
 - `evt = "demo-chat-start"` grouped by `$metadata.requestId`, `model`,
   `openAiApiMode`, `reasoningEffort`, `auth`, `historyMessages`, and
   `userMessages`.
-- `latestUserPreview`: short sanitized preview of the latest user message.
-  Search this for visible screenshot terms.
-- `latestUserHash`: stable hash prefix for exact matching repeated prompts
-  without exposing the raw text.
 - `latestUserChars`, `historyChars`: sizing clues for truncation/body issues.
 - `subjectHash`: privacy-safe per-demo-session join key; do not infer real
   identity from it.
 
-Full chat transcripts are intentionally not logged. If `demo-chat-start` is
-absent in older logs or a nonstandard environment, reconstruct the user ask from
-`demo-search.queryPreview`/`queryHash`, `demo-execute.code`, answer preview, timestamp, Ray ID, and
-screenshot text; mark that reconstruction as best-effort.
+Question, code, result, answer, and provider-error content is intentionally not
+logged. When wording matters, use user-supplied screenshots/text and mark any
+inference from counts, operation ids, timestamps, and Ray IDs as best-effort.
 
 Common diagnosis patterns:
 
@@ -245,8 +236,8 @@ Common diagnosis patterns:
 ## Field Map
 
 Cloudflare's query/filter keyspace flattens app JSON log fields. If a returned
-event object displays app data under `source.evt` / `source.queryPreview`, filter and
-group by `evt` / `queryPreview` unless the keys endpoint shows the `source.*` variant
+event object displays app data under `source.evt`, filter and group by `evt` unless
+the keys endpoint shows the `source.*` variant
 for that dataset. A query using `source.evt = "demo-search"` can miss events
 that `evt = "demo-search"` finds.
 
@@ -257,11 +248,11 @@ High-value fields:
   (null outside attributed OAuth); rejected events omit them entirely.
 - The older `auth` app field is redacted to `*****` by Cloudflare and is not
   useful for grouping; the `/mcp` summary deliberately uses `accessMode`.
-- App JSON logs: `evt`, `queryPreview`, `queryHash`, `queryChars`,
+- App JSON logs: `evt`, `queryChars`,
   `requestedLimit`, `effectiveLimit`, `omittedCount`, `gatedHits`, `backfillHits`,
-  `kind`, `service`, `hits`, `total`, `truncated`, `top`,
-  `ok`, `error`, `code`, `resultPreview`, `answerPreview`, `finalPreview`,
-  `latestUserPreview`, `latestUserHash`, `latestUserChars`, `historyChars`,
+  `hits`, `total`, `truncated`, `top`,
+  `ok`, `evidenceOutcome`, `codeChars`, result/log truncation fields,
+  `latestUserChars`, `historyChars`,
   `historyMessages`, `userMessages`, `subjectHash`, `auth`, `model`,
   `openAiApiMode`, `reasoningEffort`
 
@@ -277,10 +268,7 @@ High-value fields:
   `cloudflare.asn`, `http.response.status_code`, `url.full`,
   `user_agent.original`, `traceId`, `spanId`
 
-`queryHash` is a stable 16-hex SHA-256 prefix of the exact raw query for
-equality grouping. It is not a secrecy mechanism: short queries are
-dictionary-recoverable, so the raw query is not logged and only the bounded
-preview is human-readable. `omittedCount` is `total - hits` for the scorer
+`omittedCount` is `total - hits` for the scorer
 tiers consulted by that page; like `total`, it is a floor rather than an
 exhaustive missed-result count. A null `effectiveLimit` means validation or a
 refusal prevented the search page from running.

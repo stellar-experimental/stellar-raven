@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-08-04",
+  "updated": "2026-08-05",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -102,10 +102,6 @@
     "sd-001": {
       "intake": "unclear",
       "reason": "Algolia ranking/tokenization behavior; not clearly owned by stellar/stellar-docs issue intake."
-    },
-    "sd-002": {
-      "intake": "unclear",
-      "reason": "Ranking-only finding and currently proposed/possibly fixed."
     },
     "sd-003": {
       "repo": "stellar/stellar-docs",
@@ -225,10 +221,6 @@
     "sls-055": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Scout research omits canonical non-blog SDF organizational pages, leaving current legal-structure, fund-scope, mandate, leadership, and report claims without quotable coverage."
-    },
-    "sls-058": {
-      "repo": "Stellar-Light/stellarlight",
-      "reason": "SCF funding linkage and per-round reconciliation metadata remain a Scout data-contract concern; legacy rows still omit scfRoundAwards."
     },
     "sls-060": {
       "repo": "Stellar-Light/stellarlight",

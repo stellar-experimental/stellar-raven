@@ -1,29 +1,31 @@
 {
   "id": "q-anchor-sdp-what",
-  "question": "What is the Stellar Disbursement Platform and how many payments can it send per batch?",
+  "question": "What is the Stellar Disbursement Platform, and how does its current disbursement architecture work?",
   "surface": [
     "stellarDocs.search_anchor_sep_docs"
   ],
   "golden": {
-    "answer": "The **Stellar Disbursement Platform (SDP)** is **SDF's open-source tool for organizations to make\nbulk payments** to many recipients over Stellar — an easier/faster/cheaper way to send cross-border\npayouts at scale [1]. Its headline capability: **send up to 10,000 payments in a single batch** by\nuploading a receiver list, rather than scripting raw transactions [1]. Listed use cases include\n**global payroll, cash/humanitarian assistance, gig-worker payouts, vendor payouts, and government\npayouts** [1][2]. Recipients complete **KYC via SEP-12** and payments ride **SEP-31 cross-border /\nSEP-24 anchor rails**; SDP coordinates the anchor(s), so the org never assembles raw transactions\nitself [2]. It is **not** the Anchor Platform (anchor backend) and it is **not** a wallet — it is the\ndisbursement orchestration layer.\n\nSources: [1] stellar.org Stellar Disbursement Platform product page; [2] developers.stellar.org SDP\nintroduction.",
+    "answer": "The **Stellar Disbursement Platform (SDP)** is SDF's open-source operational stack for creating, approving, submitting, and monitoring bulk payments such as payroll, aid, gig/vendor, and government distributions. Current SDP separates Dashboard/Admin APIs, Core, and the Transaction Submission Service (TSS): Core queues and coordinates payments and implements native **SEP-10 and SEP-24** endpoints, while TSS builds, submits, and monitors Stellar transactions. It publishes its own `stellar.toml` and does not universally require an external Anchor Platform.\n\nReceivers may use documented external wallets, direct Stellar accounts, or embedded passkey-controlled C-address wallets depending on the deployment. A wallet or cash-out provider may use downstream anchor rails, but those rails are optional, provider- and region-specific receiver choices rather than SDP's universal architecture. SDP is not the Anchor Platform and is not itself a wallet.",
     "keyFacts": [
-      "SDP is SDF's open-source tool for organizations to make bulk payments to many recipients over Stellar.",
-      "It can send up to 10,000 payments in a single batch (upload a receiver list)."
+      "SDP is SDF's open-source stack for creating, approving, submitting, and monitoring bulk payments.",
+      "Current SDP implements native SEP-10/24 and does not universally require an external Anchor Platform; downstream anchor or cash-out rails are optional deployment choices."
     ],
     "avoid": [
-      "Do NOT state a wrong batch ceiling (e.g. 1,000 or 100,000) as the canonical SDP limit.",
-      "Do NOT confuse SDP with the Anchor Platform or describe it as a wallet."
+      "Do NOT present the product page's dated 'up to 10,000 payments' advertisement as a hard implementation or protocol invariant.",
+      "Do NOT confuse SDP with the Anchor Platform, describe it as a wallet, or claim it universally depends on SEP-12/SEP-31 anchor rails."
     ],
-    "notes": "Dossier §6. Verified on stellar.org SDP product page: 'up to 10,000 payments' per batch by uploading a receiver list; open-source SDF tool for bulk cross-border payouts.\nAlso good if the answer: Use cases include payroll, aid/humanitarian disbursements, and government payouts. | Recipient KYC is collected via SEP-12 and payments use SEP-31/SEP-24 anchor rails.\nGolden cites: The SDP page on stellar.org or developers.stellar.org."
+    "notes": "Re-scoped 2026-08-05 because the declared developers.stellar.org search surface supports SDP's current architecture but not the stellar.org product page's numeric advertisement. As of 2026-08-05, the product page advertises up to 10,000 payments in one batch; treat that as dated product positioning, not a source-code-enforced ceiling, and do not require the number from a Docs-only answer."
   },
   "tags": {
     "category": "assets-anchors-seps",
     "service": "stellarDocs",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
-    "domain": "corpus-grounded",
+    "domain": "mixed",
     "status": "confirmed",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-11-05",
     "sources": [
       {
         "class": "A",
@@ -33,14 +35,77 @@
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform",
-        "note": "class inferred at migration"
+        "note": "Current official SDP product and architecture documentation."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+        "note": "Canonical implementation source for current native SEP-10/24 and transaction orchestration."
+      },
+      {
+        "class": "D",
+        "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
+        "note": "Independent corpus record of SDF media that repeats the dated 10,000-transactions-per-batch product claim."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Current SDP implements native SEP-10/24 and does not universally depend on an external Anchor Platform; downstream anchor rails are optional deployment choices.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+            "observedAt": "2026-08-05",
+            "note": "Official architecture documents Dashboard, Core, TSS, and current receiver workflows."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+            "observedAt": "2026-08-05",
+            "note": "Canonical source corroborates the current application and native SEP integration paths."
+          }
+        ]
+      },
+      {
+        "claim": "The 10,000 figure is a dated advertised capacity; this verification did not establish it as a hard implementation or protocol ceiling.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+            "observedAt": "2026-08-05",
+            "note": "The product page advertises 'up to 10,000 payments' in one batch."
+          },
+          {
+            "class": "D",
+            "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
+            "observedAt": "2026-08-05",
+            "note": "The SDF-media corpus record repeats up to 10,000 transactions per batch."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+            "observedAt": "2026-08-05",
+            "note": "A bounded source search did not establish a corresponding hard cap; absence is not asserted."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-02-anchor-discovery-platform-disbursement accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-05",
+      "by": "Bounded truth repair from Solo Todo 1355 comment 3687",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/todo/reconcile-bounded-tr--1355",
+        "2026-08-05 exact-phrase lumenloop.search_content_semantic probe for 'up to 10,000 payments' returned 20 candidates and no exact matching row or primary-linked SDF evidence; the numeric ask was therefore removed from the declared Docs-only surface.",
+        "https://stellar.org/products-and-tools/disbursement-platform",
+        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+        "https://github.com/stellar/stellar-disbursement-platform-backend",
+        "Sibling sweep: q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails."
+      ],
+      "rootCause": [
+        "freshness-drift",
+        "solo://proj/49/todo/reconcile-bounded-tr--1355"
       ]
     },
     "origin": "raven-next q-anchor-sdp-what"

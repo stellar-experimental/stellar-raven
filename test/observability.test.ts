@@ -1,16 +1,13 @@
 /**
  * Direct unit tests for the observability helpers (src/observability.ts).
- * `logEvent` and `preview` are the whole surface — no span helpers live here
+ * `logEvent` and identity hashes are the whole surface — no span helpers live here
  * (the sandbox-boundary span is in src/executor/run.ts via tracing.enterSpan).
  * Covers: event naming/shape, telemetry-never-throws (error swallowing), and
- * preview truncation/pass-through.
+ * content-free search telemetry.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { hashPrefix, logEvent, preview, PREVIEW_LOG_MAX } from "../src/observability.ts";
-import {
-  SEARCH_QUERY_PREVIEW_CHARS,
-  searchEventFields
-} from "../src/observability-search.ts";
+import { hashPrefix, logEvent } from "../src/observability.ts";
+import { searchEventFields } from "../src/observability-search.ts";
 import {
   authSubjectFromProps,
   buildMcpRequestObservability,
@@ -55,34 +52,11 @@ describe("logEvent", () => {
   });
 });
 
-describe("preview", () => {
-  it("returns the string unchanged when at or under the cap", () => {
-    const short = "hello world";
-    expect(preview(short)).toBe(short);
-    const exactly = "a".repeat(PREVIEW_LOG_MAX);
-    expect(preview(exactly)).toBe(exactly);
-  });
-
-  it("truncates over-cap text and appends the elided-count marker", () => {
-    const long = "x".repeat(PREVIEW_LOG_MAX + 25);
-    const out = preview(long);
-    expect(out.startsWith("x".repeat(PREVIEW_LOG_MAX))).toBe(true);
-    expect(out).toBe(`${"x".repeat(PREVIEW_LOG_MAX)}…[+25 chars]`);
-  });
-
-  it("honors a custom max", () => {
-    expect(preview("abcdef", 3)).toBe("abc…[+3 chars]");
-    expect(preview("abc", 3)).toBe("abc");
-  });
-});
-
 describe("searchEventFields", () => {
-  it("replaces the raw query with bounded join fields and honest page-shape counts", async () => {
+  it("keeps only content-free query and page-shape counts", () => {
     const query = "sensitive search ".repeat(30);
-    const queryHash = await hashPrefix(query);
     const fields = searchEventFields({
       query,
-      queryHash,
       requestedLimit: 5,
       page: {
         hits: [
@@ -97,8 +71,6 @@ describe("searchEventFields", () => {
     });
 
     expect(fields).toEqual({
-      queryPreview: preview(query, SEARCH_QUERY_PREVIEW_CHARS),
-      queryHash,
       queryChars: query.length,
       requestedLimit: 5,
       effectiveLimit: 5,
@@ -108,13 +80,14 @@ describe("searchEventFields", () => {
     });
     expect(JSON.stringify(fields)).not.toContain(query);
     expect(fields).not.toHaveProperty("query");
+    expect(fields).not.toHaveProperty("queryPreview");
+    expect(fields).not.toHaveProperty("queryHash");
   });
 
-  it("represents a validation/refusal path without pretending a clamp or page ran", async () => {
+  it("represents a validation/refusal path without pretending a clamp or page ran", () => {
     const query = "docs search";
     expect(searchEventFields({
       query,
-      queryHash: await hashPrefix(query),
       requestedLimit: null,
       page: null
     })).toMatchObject({

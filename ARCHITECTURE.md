@@ -117,8 +117,8 @@ ones instead of a silently-empty page — the frozen `searchCatalog` contract ke
 silent, so validation lives at the tool boundary (and, for `codemode.search`, at the
 sandbox boundary in `src/executor/providers.ts`, where an unknown `kind`/`service` is an
 error envelope listing the valid values). A `search` telemetry event
-(`src/observability.ts` → Workers Logs) records a bounded query preview, exact-match query hash
-and character count (never the full raw query), requested/effective limits, consulted-pool omitted
+(`src/observability.ts` → Workers Logs) records only the query character count, requested/effective
+limits, consulted-pool omitted
 count, returned gated/backfill hit counts, hit/total/truncated counts, top-3 ids, and response size
 in chars (`responseChars` — the measurement that set
 `COMPACT_OUTPUT_THRESHOLD`, §2; it stays on to verify the compaction holds), and latency.
@@ -354,7 +354,7 @@ Per call (`src/executor/run.ts`):
    - *error text*: `throw new Error(payload)` is the third channel — same budget.
 7. **Errors as data** — a failed run returns `isError: true` with `Execution failed: …`
    plus the console block; nothing throws across the tool boundary. The `execute`
-   telemetry event records ok/ms/code preview/result preview + all three truncation flags,
+   telemetry event records content-free status, timing, sizing, and truncation fields,
    artifact read counts/bytes, and structured source-basis detail when present. The
    telemetry copy caps `sourceBasis.calls` to totals plus the first 12 calls so call-heavy
    runs cannot turn the log event into a payload dump; `execute_logs_shaped` fires only
@@ -619,7 +619,7 @@ Detection, stated exactly, because the two halves are not equally covered:
   What the canary does NOT prove: Cron Triggers run wherever Cloudflare has spare capacity, not
   across the colos serving user requests, so each run samples one execution location. It catches
   global and shared-infrastructure failures — the realistic case — but real-traffic
-  `skill_read ok:false` remains the only signal covering user-selected colos.
+  `skill_read outcome:error` remains the only signal covering user-selected colos.
 
 The cache bypass is the load-bearing part, for the same reason it was at the build layer: pinned
 URLs are cached `immutable` for a year, so a canary on the normal read path would answer from a
@@ -719,7 +719,7 @@ These limits apply to the shared execute path unless a lane-specific wrapper ref
 
 Observability to query: `execute`, `op`, `skill_run`, `execute_logs_shaped`, and the
 `codemode.execute` span. A timeout generally appears as `execute`/`demo-execute` error
-`Execution timed out` with `ms` around 60,000.
+status with `ms` around 60,000.
 
 ### Playground-only `/playground/chat`
 
@@ -751,8 +751,8 @@ before model/tool execution, so later model or tool failure still counts.
 
 Observability to query: `demo-chat`, `demo-step`, `demo-search`, `demo-execute`,
 `demo-search-refused`, `demo-execute-refused`, and `demo-chat-rejected`. `demo-step`,
-`demo-execute`, and the final `demo-chat` event carry compact operation-outcome totals; bounded,
-redacted execute previews remain available for answer-quality forensics. The final `demo-chat`
+`demo-execute`, and the final `demo-chat` event carry compact operation-outcome totals and no
+query, code, result, answer, or provider-error content. The final `demo-chat`
 event also carries `searchTruncatedCalls`; it deliberately does not claim that a later execute was
 caused by or recovered a particular truncated search.
 

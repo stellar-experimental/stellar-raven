@@ -83,6 +83,38 @@ For cap/rate-limit reviews, start with [ARCHITECTURE.md §7](./ARCHITECTURE.md#7
 it lists the shared execute sandbox limits, demo-only chat limits, MCP-only artifact/auth limits,
 and the log event names to query.
 
+Raven's structured logs contain operational metadata only: counts, status, timing, exposed operation
+IDs, and pseudonymous subject/client joins. They exclude queries, execute code, tool results, answers,
+provider error messages, and content-derived hashes. Existing Cloudflare platform logs age out on
+Cloudflare's fixed retention schedule (at most seven days). Playground model requests also set
+Cloudflare AI Gateway's per-request logging override to off.
+
+### Account-data deletion runbook
+
+There is no deployed Raven admin endpoint or self-service deletion UI. Handle a verified request in
+the production consoles as follows:
+
+1. In WorkOS, find the user by the contact email and record the WorkOS user ID. With the production
+   `MCP_SERVER_SECRET`, compute `subject = SHA-256(workosUserId + ":" + MCP_SERVER_SECRET)`, exactly as
+   [`deriveSubject`](./src/auth/workos.ts) does. Never paste the ID, subject, or secret into logs/tickets.
+2. In Cloudflare's production `OAUTH_KV` namespace, list and delete every exact key under both
+   `grant:<subject>:` and `token:<subject>:`. This revokes Raven OAuth grants and tokens. Also list and
+   delete `demo-throttle:<subject>:` keys. Use the KV dashboard or Wrangler's documented remote
+   list/delete commands; verify each prefix is empty afterward. The signed demo cookie cannot be
+   individually revoked and remains valid until its two-hour expiry.
+3. Compute `ownerHash = SHA-256(subject).slice(0, 16)`. In the production R2 bucket
+   `stellar-raven-artifacts`, delete every object under `art/<ownerHash>/` and verify the prefix is empty.
+4. If the request includes deleting the identity account, delete the user in the WorkOS production
+   environment after the Raven cleanup. Otherwise leave the WorkOS account in place.
+
+The unscoped `login:<state>` records expire within ten minutes. Demo throttle records expire within two
+hours and R2 artifacts within seven days even without manual deletion. Already-ingested Workers Logs and
+Cloudflare platform request metadata cannot be selectively removed with this repository's tools; they
+expire on Cloudflare's fixed retention schedule, no later than seven days. See the official
+[WorkOS user API](https://workos.com/docs/reference/authkit/user),
+[Cloudflare KV commands](https://developers.cloudflare.com/kv/reference/kv-commands/), and
+[R2 object deletion](https://developers.cloudflare.com/r2/objects/delete-objects/).
+
 ## License
 
 [Apache-2.0](./LICENSE) © 2026 Tyler van der Hoeven — **except** vendored third-party code in

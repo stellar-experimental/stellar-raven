@@ -402,6 +402,9 @@ describe("WorkOSAuthHandler", () => {
     const page = await terms.text();
     expect(page).toContain("Stellar Raven Terms of Service");
     expect(page).toContain(`<link rel="canonical" href="https://raven.stellar.org/terms"/>`);
+    expect(page).toContain("Raven's structured content logging and AI Gateway request logging are disabled");
+    expect(page).toContain("currently no longer than seven days");
+    expect(page).not.toContain("may include the queries submitted and the responses returned");
     // Script-free legal surface: CSP must not allow inline script.
     expect(terms.headers.get("content-security-policy")).not.toContain("script-src");
     expect(page).not.toContain("<script");

@@ -117,6 +117,12 @@ What this project has enabled is at the bottom.
   `sandbox.operationTotal`, `sandbox.operationOk`, `sandbox.operationError`,
   and `sandbox.operationSoftEmpty` counts. No user/client identifiers or
   payloads are added to spans.
+- **Content policy (2026-08-05)**: Raven app logs retain operational counts,
+  status, timings, exposed operation ids, and pseudonymous subject/client joins.
+  Query/code/result/answer text, provider error messages, result-derived URLs,
+  and content-derived hashes are not emitted. Older app events and Cloudflare's
+  own request metadata remain until Workers Logs' fixed retention expires (no
+  later than seven days); Raven has no selective deletion control for them.
 - Not doing now: OTel export (no external sink in use), log/trace sampling <1 (traffic too low
   to matter), Logpush/Tail Workers (superseded by OTel destinations for our needs).
 

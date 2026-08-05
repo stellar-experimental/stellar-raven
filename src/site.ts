@@ -945,7 +945,7 @@ export function consentPage(args: {
 // authoritative copy lives here (this file is the source of truth).
 // ---------------------------------------------------------------------------
 
-export const TERMS_EFFECTIVE_DATE = "July 30, 2026";
+export const TERMS_EFFECTIVE_DATE = "August 5, 2026";
 
 const TERMS_CSS = `
 .stage{background:var(--green)}
@@ -1078,15 +1078,23 @@ receives only an account identifier from WorkOS, which is one-way hashed before 
 does not store your email address. Authentication tokens issued by WorkOS during sign-in are not
 retained. The Service does not collect names, addresses, payment information, wallet keys, or
 special-category data.</p>
-<p><b>Operational and quality logs.</b> To operate the Service and improve response quality, the Service
-stores observability data, which may include the queries submitted and the responses returned, for up
-to 30 days, after which it is deleted. This data is stored in SDF's Cloudflare environment.</p>
+<p><b>Operational logs.</b> The Service's own structured logs contain content-free operational data such
+as status, timing, counts, exposed operation identifiers, and pseudonymous account joins. They do not
+contain submitted queries, execute code, tool results, response or answer text, provider error messages,
+or hashes derived from that content. Cloudflare may separately retain platform request metadata under
+its fixed retention schedule, currently no longer than seven days.</p>
+<p><b>Temporary artifacts.</b> For authenticated MCP use, an oversized, secret-redacted execute result
+may be stored in SDF's Cloudflare R2 environment for up to seven days so the same authenticated account
+can inspect it. These artifacts have no public URL and expire automatically.</p>
 <p><b>No sensitive data.</b> You should not submit personal, confidential, or sensitive information to the
 Service. You are solely responsible for the content you or your agent submit, and for any consequences of
 submitting content you should not have submitted.</p>
-<p><b>Your choices.</b> You may opt out of query and response logging and you may request deletion of data
-associated with your account by contacting us at
-<a href="mailto:frontier@stellar.org">frontier@stellar.org</a>.</p>
+<p><b>Your choices.</b> Raven's structured content logging and AI Gateway request logging are disabled
+for every user. You may request deletion
+of data associated with your account by contacting us at
+<a href="mailto:frontier@stellar.org">frontier@stellar.org</a>. Active grants, rate-limit records, and
+temporary artifacts can be removed; platform logs already retained by Cloudflare expire on their fixed
+schedule rather than through selective deletion.</p>
 
 <h2>10. Changes; contact</h2>
 <p>We may modify these Terms or the Service at any time without prior notice. Your continued use of the

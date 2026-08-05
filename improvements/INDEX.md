@@ -16,7 +16,7 @@ Total findings: 62
 | sk-009 | The pinned Stellar Scout skill API reference has fallen behind the live Scout                 | reported-upstream | 2026-07-10 | 2           |
 | sk-011 | The served upstream ZK skill is stale after Protocol 25. It describes BN254 and               | reported-upstream | 2026-07-11 | 0           |
 | sk-012 | The served agentic-payments skill presents "MPP Channel mode" as the public                   | reported-upstream | 2026-07-11 | 0           |
-| sk-013 | The assets skill teaches ChangeTrust(limit: 0) as trustline removal without                   | proposed          | 2026-08-04 | 0           |
+| sk-013 | The assets skill teaches ChangeTrust(limit: 0) as trustline removal without                   | verified          | 2026-08-04 | 0           |
 
 ## stellar-light-scout
 
@@ -29,15 +29,15 @@ Total findings: 62
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question           | declined-upstream | 2026-07-10 | 0           |
 | sls-055 | Scout research does not reliably expose quotable canonical SDF organizational pages | reported-upstream | 2026-07-13 | 6           |
 | sls-057 | Scout's people-discovery surface does not currently provide a route to              | proposed          | 2026-07-27 | 0           |
-| sls-058 | Scout's structured SCF funding fields disagree with the official SCF submission     | reported-upstream | 2026-07-27 | 0           |
-| sls-060 | A closed Scout RFP detail page retains an unconditional funding application         | proposed          | 2026-08-04 | 0           |
+| sls-058 | Scout's structured SCF funding fields disagree with the official SCF submission     | fixed-upstream    | 2026-07-27 | 0           |
+| sls-060 | A closed Scout RFP detail page retains an unconditional funding application         | verified          | 2026-08-04 | 0           |
+| sls-061 | Some currently awarded Scout projects expose non-empty scfAwardedRounds and         | verified          | 2026-08-05 | 0           |
 
 ## stellar-docs
 
 | id     | title                                                                                          | status            | discovered | recurrences |
 | ------ | ---------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | sd-001 | Protocol-version queries against the main docs index surface SEP-24 pages:                     | verified          | 2026-07-03 | 1           |
-| sd-002 | Operation-level protocol vocabulary is under-represented in the docs search                    | proposed          | 2026-07-03 | 0           |
 | sd-003 | The Algolia docs index excludes the auto-generated RPC-method and                              | reported-upstream | 2026-07-03 | 4           |
 | sd-004 | The RPC method reference pages describe pagination limits as "hardcoded in                     | declined-upstream | 2026-07-03 | 1           |
 | sd-005 | The docs' agentic-payments coverage documents x402 and MPP mechanics in depth                  | reported-upstream | 2026-07-06 | 3           |

@@ -16,6 +16,20 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/29557089d9a315aeeff2ae9f5b01bf201e55aed1/improvements/lumenloop/ll-021-scf-43-recap-discoverability.md"
     },
     {
+      "id": "sd-002",
+      "title": "Operation-level protocol vocabulary is under-represented in the docs search",
+      "service": "stellar-docs",
+      "discovered": "2026-07-03",
+      "resolved": "2026-08-05",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-08-05 read-only npm run eval:algolia-raven: account merge, sponsored reserves, claimable-balance predicates, and require_auth controls ranked 1 or 2 with rules on and off; no direct Docs ranking defect reproduced (Solo Todo 1010 comment 3689)",
+      "reviewEvidence": "Independent Solo reviewer Todo 1355 comment 3687 re-derived the fixed-before-filing disposition from the read-only harness and Todo 822 comment 2208 catalog evidence",
+      "sourceCommit": "a4954b6a38f66de5ce4b28fc33535464df0818fb",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/a4954b6a38f66de5ce4b28fc33535464df0818fb/improvements/stellar-docs/sd-002-operation-vocabulary-underranked.md"
+    },
+    {
       "id": "sd-006",
       "title": "The Algolia crawler for developers.stellar.org strips code blocks, so the",
       "service": "stellar-docs",

@@ -44,9 +44,14 @@
         "note": "class inferred at migration"
       },
       {
-        "class": "D",
+        "class": "B",
         "ref": "https://github.com/kalepail/smart-account-kit",
-        "note": "class inferred at migration"
+        "note": "Canonical repository observed for the 2026-07-11 evidence; now an archived move pointer preserving history and tags."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/smart-account-kit",
+        "note": "Current canonical repository after the move, observed 2026-08-05."
       },
       {
         "class": "D",
@@ -75,6 +80,12 @@
             "ref": "B: current Smart Account Kit and OpenZeppelin account contract signer/policy interfaces",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/smart-account-kit",
+            "observedAt": "2026-08-05",
+            "note": "Current canonical continuation; the archived kalepail repository points here and says full history and tags moved."
           }
         ]
       },
@@ -104,15 +115,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer and avoid clause gave an unsafe blanket assurance that a lost passkey is not irrecoverable and promoted relayers/session keys as recovery mechanisms without proving independent surviving authorization.",
+      "date": "2026-08-05",
+      "by": "Bounded archived-pointer repair from Solo Todo 1355 comment 3687",
       "evidence": [
         "Solo scratchpad 575 GT-56 primary process 3394 and sealed blind process 3398 independently rejected the blanket recovery promise and relayer/session-key shortcut.",
-        "Sibling sweep checked q-aas-sep30-recoverable-wallets, q-soroban-add-signer-smart-wallet-howto, q-infra-secp256r1-passkeys, and q-soroban-auth-delegation-p27; the correction preserves their authorization boundaries."
+        "Sibling sweep checked q-aas-sep30-recoverable-wallets, q-soroban-add-signer-smart-wallet-howto, q-infra-secp256r1-passkeys, and q-soroban-auth-delegation-p27; the correction preserves their authorization boundaries.",
+        "https://github.com/kalepail/smart-account-kit — archived move page; historical 2026-07-11 evidence remains unchanged.",
+        "https://github.com/stellar/smart-account-kit — current canonical continuation observed 2026-08-05.",
+        "solo://proj/49/todo/reconcile-bounded-tr--1355"
       ],
       "rootCause": [
         "Eval-side security error: the existence of add/remove signer APIs was mistaken for a surviving authority after the only signer is lost.",
-        "Provenance correction: the false blanket assurance remains only in the read-only vendored corpus and is superseded by this override."
+        "Provenance correction: the false blanket assurance remains only in the read-only vendored corpus and is superseded by this override.",
+        "truth-metadata maintenance"
       ]
     },
     "origin": "raven-next q-tool-passkey-wallet-recovery"

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "256ff1bb7d18ffbc27b523383d9ab537d93b225d8e620b251a1d1221127c9397",
+  "corpusContentSha256": "b99cffee8cd43d26aacba0b1ade40b6b5a4ce3ce78c06c824f75b7025c298b38",
   "counts": {
     "total": 490,
     "byCategory": {
@@ -25,8 +25,8 @@
     },
     "byFreshness": {
       "live": 153,
-      "scheduled": 134,
-      "stable": 203
+      "scheduled": 136,
+      "stable": 201
     },
     "traps": {
       "ambiguous": 2,
@@ -1349,26 +1349,28 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "All three are **SDF-maintained**, each for a different role [1][2][3]:\n\n- **Anchor Platform** — the **anchor operator's** backend (Java) that implements the anchor SEP endpoints (**SEP-1/6/10/12/24/31/38**). Run it to *be* an anchor [1].\n- **Stellar Disbursement Platform (SDP)** — a tool for a **disbursement organization** to send **bulk payments (up to 10,000 per batch)** to many recipients (payroll, aid, payouts) [2]. It *relies on* anchor SEP rails (SEP-12 KYC, SEP-31 cross-border) rather than replacing them.\n- **Wallet SDK** — a **wallet developer's** (TypeScript) client library wrapping the client-side SEP flows (**SEP-10/12/24/31/38**) [3].\n\nSo: Anchor Platform = anchor backend; SDP = bulk-payout app; Wallet SDK = wallet client library.",
+        "answer": "All three are **SDF-maintained**, each for a different role [1][2][3]:\n\n- **Anchor Platform** — the **anchor operator's** backend (Java) that implements anchor SEP endpoints (**SEP-1/6/10/12/24/31/38**). Run it to *be* an anchor [1].\n- **Stellar Disbursement Platform (SDP)** — the **disbursement organization's** bulk-payment application. Current SDP Core implements native **SEP-10/24**, publishes its own `stellar.toml`, and does not require an external Anchor Platform. A receiver wallet or cash-out route may use an anchor downstream, but that is optional deployment behavior rather than SDP's universal architecture [2].\n- **Wallet SDK** — a **wallet developer's** TypeScript client library wrapping client-side SEP flows (**SEP-10/12/24/31/38**) [3].\n\nSo: Anchor Platform = anchor backend; SDP = bulk-payout application; Wallet SDK = wallet client library.",
         "keyFacts": [
           "Anchor Platform = anchor-operator backend (Java) implementing the anchor SEP endpoints (SEP-6/10/12/24/31/38).",
-          "SDP = disbursement-org tool for sending bulk payments (up to 10,000/batch) to many recipients.",
+          "SDP = disbursement-org bulk-payment application whose current Core implements native SEP-10/24; downstream anchor rails are optional rather than universal.",
           "Wallet SDK = wallet-developer (TypeScript) library wrapping client-side SEP flows (SEP-10/12/24/31/38)."
         ],
         "avoid": [
           "Do NOT claim SDP and the Anchor Platform are the same product, or swap their roles.",
-          "Do NOT misnumber the SEPs each component covers."
+          "Do NOT misnumber the SEPs each component covers or present the product page's dated 10,000-payment advertisement as a hard SDP invariant."
         ],
-        "notes": "Three-way comparison. Dossier §6.4 table. All three SDF-maintained; roles verified.\nAlso good if the answer: All three are SDF-maintained; each targets a different role (anchor / disbursement org / wallet).\nGolden cites: developers.stellar.org pages for the Anchor Platform, SDP, and Wallet SDK."
+        "notes": "Three-way comparison reverified 2026-08-05. The declared Docs surfaces support the role and current-architecture comparison, not the stellar.org product page's numeric advertisement. As of 2026-08-05 that page advertises up to 10,000 payments per batch; treat it as dated product positioning, not a hard implementation ceiling, and do not require it here."
       },
       "tags": {
         "category": "assets-anchors-seps",
         "service": "stellarDocs",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
-        "domain": "corpus-grounded",
+        "domain": "mixed",
         "status": "confirmed",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-11-12",
         "sources": [
           {
             "class": "A",
@@ -1384,13 +1386,81 @@
             "class": "A",
             "ref": "https://stellar.org/products-and-tools/wallet-sdk",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+            "note": "Current product page; its 10,000-payment claim is dated advertising rather than an implementation invariant."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+            "note": "Canonical implementation source for current native SEP-10/24 and transaction orchestration."
+          },
+          {
+            "class": "D",
+            "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
+            "note": "Independent corpus record of SDF media that repeats the dated 10,000-transactions-per-batch product claim."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Anchor Platform, current SDP, and Wallet SDK serve distinct operator, disbursement, and wallet-client roles; current SDP implements native SEP-10/24 without universally requiring an external Anchor Platform.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/platforms/anchor-platform and https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+                "observedAt": "2026-08-05",
+                "note": "Official docs distinguish the product roles and describe current SDP architecture."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+                "observedAt": "2026-08-05",
+                "note": "Canonical source corroborates SDP's current application and native SEP integration paths."
+              }
+            ]
+          },
+          {
+            "claim": "The 10,000 figure is a dated advertised capacity; this verification did not establish it as a hard implementation or protocol ceiling.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+                "observedAt": "2026-08-05",
+                "note": "The product page advertises 'up to 10,000 payments' in one batch."
+              },
+              {
+                "class": "D",
+                "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
+                "observedAt": "2026-08-05",
+                "note": "The SDF-media corpus record repeats up to 10,000 transactions per batch."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+                "observedAt": "2026-08-05",
+                "note": "A bounded source search did not establish a corresponding hard cap; absence is not asserted."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "GT-02-anchor-discovery-platform-disbursement accepted in Solo scratchpad 575 rev 291",
+          "date": "2026-08-05",
+          "by": "Bounded truth repair from Solo Todo 1355 comment 3687",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575"
+            "solo://proj/49/todo/reconcile-bounded-tr--1355",
+            "2026-08-05 exact-phrase lumenloop.search_content_semantic probe for 'up to 10,000 payments' returned 20 candidates and no exact matching row or primary-linked SDF evidence; the numeric requirement was therefore removed from the declared Docs-only comparison.",
+            "https://developers.stellar.org/docs/platforms/anchor-platform",
+            "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+            "https://github.com/stellar/stellar-disbursement-platform-backend",
+            "Sibling sweep: q-anchor-sdp-what, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails."
+          ],
+          "rootCause": [
+            "freshness-drift",
+            "solo://proj/49/todo/reconcile-bounded-tr--1355"
           ]
         },
         "origin": "raven-next q-anchor-sdp-vs-anchor-platform"
@@ -1398,30 +1468,32 @@
     },
     {
       "id": "q-anchor-sdp-what",
-      "question": "What is the Stellar Disbursement Platform and how many payments can it send per batch?",
+      "question": "What is the Stellar Disbursement Platform, and how does its current disbursement architecture work?",
       "surface": [
         "stellarDocs.search_anchor_sep_docs"
       ],
       "golden": {
-        "answer": "The **Stellar Disbursement Platform (SDP)** is **SDF's open-source tool for organizations to make\nbulk payments** to many recipients over Stellar — an easier/faster/cheaper way to send cross-border\npayouts at scale [1]. Its headline capability: **send up to 10,000 payments in a single batch** by\nuploading a receiver list, rather than scripting raw transactions [1]. Listed use cases include\n**global payroll, cash/humanitarian assistance, gig-worker payouts, vendor payouts, and government\npayouts** [1][2]. Recipients complete **KYC via SEP-12** and payments ride **SEP-31 cross-border /\nSEP-24 anchor rails**; SDP coordinates the anchor(s), so the org never assembles raw transactions\nitself [2]. It is **not** the Anchor Platform (anchor backend) and it is **not** a wallet — it is the\ndisbursement orchestration layer.\n\nSources: [1] stellar.org Stellar Disbursement Platform product page; [2] developers.stellar.org SDP\nintroduction.",
+        "answer": "The **Stellar Disbursement Platform (SDP)** is SDF's open-source operational stack for creating, approving, submitting, and monitoring bulk payments such as payroll, aid, gig/vendor, and government distributions. Current SDP separates Dashboard/Admin APIs, Core, and the Transaction Submission Service (TSS): Core queues and coordinates payments and implements native **SEP-10 and SEP-24** endpoints, while TSS builds, submits, and monitors Stellar transactions. It publishes its own `stellar.toml` and does not universally require an external Anchor Platform.\n\nReceivers may use documented external wallets, direct Stellar accounts, or embedded passkey-controlled C-address wallets depending on the deployment. A wallet or cash-out provider may use downstream anchor rails, but those rails are optional, provider- and region-specific receiver choices rather than SDP's universal architecture. SDP is not the Anchor Platform and is not itself a wallet.",
         "keyFacts": [
-          "SDP is SDF's open-source tool for organizations to make bulk payments to many recipients over Stellar.",
-          "It can send up to 10,000 payments in a single batch (upload a receiver list)."
+          "SDP is SDF's open-source stack for creating, approving, submitting, and monitoring bulk payments.",
+          "Current SDP implements native SEP-10/24 and does not universally require an external Anchor Platform; downstream anchor or cash-out rails are optional deployment choices."
         ],
         "avoid": [
-          "Do NOT state a wrong batch ceiling (e.g. 1,000 or 100,000) as the canonical SDP limit.",
-          "Do NOT confuse SDP with the Anchor Platform or describe it as a wallet."
+          "Do NOT present the product page's dated 'up to 10,000 payments' advertisement as a hard implementation or protocol invariant.",
+          "Do NOT confuse SDP with the Anchor Platform, describe it as a wallet, or claim it universally depends on SEP-12/SEP-31 anchor rails."
         ],
-        "notes": "Dossier §6. Verified on stellar.org SDP product page: 'up to 10,000 payments' per batch by uploading a receiver list; open-source SDF tool for bulk cross-border payouts.\nAlso good if the answer: Use cases include payroll, aid/humanitarian disbursements, and government payouts. | Recipient KYC is collected via SEP-12 and payments use SEP-31/SEP-24 anchor rails.\nGolden cites: The SDP page on stellar.org or developers.stellar.org."
+        "notes": "Re-scoped 2026-08-05 because the declared developers.stellar.org search surface supports SDP's current architecture but not the stellar.org product page's numeric advertisement. As of 2026-08-05, the product page advertises up to 10,000 payments in one batch; treat that as dated product positioning, not a source-code-enforced ceiling, and do not require the number from a Docs-only answer."
       },
       "tags": {
         "category": "assets-anchors-seps",
         "service": "stellarDocs",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
-        "domain": "corpus-grounded",
+        "domain": "mixed",
         "status": "confirmed",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-11-05",
         "sources": [
           {
             "class": "A",
@@ -1431,14 +1503,77 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform",
-            "note": "class inferred at migration"
+            "note": "Current official SDP product and architecture documentation."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+            "note": "Canonical implementation source for current native SEP-10/24 and transaction orchestration."
+          },
+          {
+            "class": "D",
+            "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
+            "note": "Independent corpus record of SDF media that repeats the dated 10,000-transactions-per-batch product claim."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Current SDP implements native SEP-10/24 and does not universally depend on an external Anchor Platform; downstream anchor rails are optional deployment choices.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+                "observedAt": "2026-08-05",
+                "note": "Official architecture documents Dashboard, Core, TSS, and current receiver workflows."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+                "observedAt": "2026-08-05",
+                "note": "Canonical source corroborates the current application and native SEP integration paths."
+              }
+            ]
+          },
+          {
+            "claim": "The 10,000 figure is a dated advertised capacity; this verification did not establish it as a hard implementation or protocol ceiling.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://stellar.org/products-and-tools/disbursement-platform",
+                "observedAt": "2026-08-05",
+                "note": "The product page advertises 'up to 10,000 payments' in one batch."
+              },
+              {
+                "class": "D",
+                "ref": "https://lumenloop.com/media/around-block-overview-stellar-disbursement-platform-tori",
+                "observedAt": "2026-08-05",
+                "note": "The SDF-media corpus record repeats up to 10,000 transactions per batch."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-disbursement-platform-backend",
+                "observedAt": "2026-08-05",
+                "note": "A bounded source search did not establish a corresponding hard cap; absence is not asserted."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "GT-02-anchor-discovery-platform-disbursement accepted in Solo scratchpad 575 rev 291",
+          "date": "2026-08-05",
+          "by": "Bounded truth repair from Solo Todo 1355 comment 3687",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575"
+            "solo://proj/49/todo/reconcile-bounded-tr--1355",
+            "2026-08-05 exact-phrase lumenloop.search_content_semantic probe for 'up to 10,000 payments' returned 20 candidates and no exact matching row or primary-linked SDF evidence; the numeric ask was therefore removed from the declared Docs-only surface.",
+            "https://stellar.org/products-and-tools/disbursement-platform",
+            "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+            "https://github.com/stellar/stellar-disbursement-platform-backend",
+            "Sibling sweep: q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails."
+          ],
+          "rootCause": [
+            "freshness-drift",
+            "solo://proj/49/todo/reconcile-bounded-tr--1355"
           ]
         },
         "origin": "raven-next q-anchor-sdp-what"
@@ -2754,7 +2889,12 @@
           {
             "class": "B",
             "ref": "https://github.com/kalepail/passkey-kit",
-            "note": "Direct repository observed 2026-07-13; README describes Passkey Kit v1 and Smart Account Kit as a non-drop-in sibling, not a successor that makes this repository merely legacy."
+            "note": "Direct repository observed 2026-07-13; that historical README description remains true. The repository is now an archived move pointer to stellar/passkey-kit."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/passkey-kit",
+            "note": "Current canonical continuation after the repository move, observed 2026-08-05."
           },
           {
             "class": "B",
@@ -2784,19 +2924,28 @@
                 "ref": "https://github.com/kalepail/passkey-kit",
                 "observedAt": "2026-07-13",
                 "note": "Direct current repository context, including the explicit non-drop-in Smart Account Kit relationship."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/passkey-kit",
+                "observedAt": "2026-08-05",
+                "note": "Current canonical continuation; the archived kalepail repository says full history and tags moved here."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-13",
-          "by": "Evidence-poor retrieval truth reconciliation with independent Opus and Sol review",
+          "date": "2026-08-05",
+          "by": "Bounded archived-pointer repair from Solo Todo 1355 comment 3687",
           "evidence": [
             "Solo scratchpad 575 GT-35 primary 3287 and blind 3289; exact-person probes and official-source roster.",
             "2026-07-13 recheck of https://developers.stellar.org/meetings/authors/kalepail, https://developers.stellar.org/meetings/2024/06/13, and https://github.com/kalepail/passkey-kit corrected the stale repository-status wording.",
             "solo://proj/49/scratchpad/evidence-poor-retrie--611 — durable multi-model review and current-source reconciliation",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "solo://proj/49/scratchpad/evidence-poor-retrie--611 — scheduled the mutable person/content result set and corrected repository source class without changing the inherited as-of claim."
+            "solo://proj/49/scratchpad/evidence-poor-retrie--611 — scheduled the mutable person/content result set and corrected repository source class without changing the inherited as-of claim.",
+            "https://github.com/kalepail/passkey-kit — archived move page; the answer's explicit 2026-07-13 observation and corroboration evidence remain unchanged.",
+            "https://github.com/stellar/passkey-kit — current canonical continuation observed 2026-08-05.",
+            "solo://proj/49/todo/reconcile-bounded-tr--1355"
           ],
           "rootCause": [
             "Route recipe was treated as truth and an empty data-shaped response was mistaken for absence.",
@@ -35694,16 +35843,16 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "A smart wallet is a contract account: its signer set lives in contract storage, so add a signer by invoking that deployed contract's signer-management method and authorizing the mutation through an existing valid signer. Exact method/signature schemas are implementation-specific—inspect the live contract spec. For new projects, use **Smart Account Kit** over audited OpenZeppelin smart-account contracts; current examples expose `signers.addPasskey`, while OpenZeppelin's generic contract entry point is `add_signer(context_rule_id, signer)`. Passkey Kit/launchtube is a legacy demo/deployment path and explicitly is not the current audited starting point. P-256/WebAuthn passkeys are one signer type, not a universal schema. This is not classic SetOptions and an unauthenticated caller must never mutate signers.",
+        "answer": "A smart wallet is a contract account: its signer set lives in contract storage, so add a signer by invoking the **deployed contract's** signer-management method and authorizing the mutation through an existing valid signer. Inspect the live contract spec and use the SDK/release that matches that account; exact methods and signer schemas are implementation-specific.\n\nFor new work, **Passkey Kit** and **Smart Account Kit** are maintained siblings: neither is a legacy path nor a universal successor. Passkey Kit uses its own flat multi-signer `Signatures` model; Smart Account Kit targets OpenZeppelin smart-account contracts with context rules, auth digests, signers, and policies. They are not drop-in compatible, so choose by the application's authorization/account model rather than treating either as the default. P-256/WebAuthn passkeys are one signer type, not a universal schema. This is not classic `SetOptions`, and an unauthenticated caller must never mutate signers.",
         "keyFacts": [
           "Treats signer mutation as contract-specific state authorized by an existing signer.",
-          "Routes new work to Smart Account Kit/OpenZeppelin and labels Passkey Kit legacy."
+          "Presents Passkey Kit and Smart Account Kit as maintained, non-drop-in siblings and chooses between them by the deployed authorization/account model."
         ],
         "avoid": [
           "Do NOT use classic SetOptions on a C-address, assume one universal signer ABI, or permit unauthenticated mutation.",
-          "Do NOT present legacy Passkey Kit as the current audited default."
+          "Do NOT call Passkey Kit legacy/demo-only or present Smart Account Kit as a universal successor/default; audit claims remain component- and release-specific."
         ],
-        "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Axis-C how-to rebalance. Procedure → stellar_docs_mcp (scout_repos acceptable for PasskeyKit code). Distinct from q-soroban-check-auth-custom-account (concept) and q-tool-passkeykit-smart-wallet. Trap = treating the contract account like a classic account (SetOptions) or skipping existing-signer authorization. Verified: smart wallets are custom-account Soroban contracts using __check_auth; secp256r1 verification is a Soroban host function; PasskeyKit is the practical signer-management tooling.\nAlso good if the answer: Notes a passkey signer is a secp256r1 public key, verified on-chain (CAP-51 / secp256r1 host function) inside __check_auth. | References PasskeyKit / smart-wallet tooling as the practical path to manage signers.\nGolden cites: A smart-wallet / custom-account / passkey page on developers.stellar.org or the PasskeyKit docs/repo.\nGT-44 independently confirmed current versus legacy paths on 2026-07-11."
+        "notes": "Reverified 2026-08-05 after both canonical repositories moved under stellar/*. The stable procedure is contract-specific signer mutation authorized by an existing signer. Passkey Kit and Smart Account Kit are maintained siblings with different authorization models; neither is a universal successor or default. Distinct from q-soroban-check-auth-custom-account (concept) and q-tool-passkeykit-smart-wallet (library choice)."
       },
       "tags": {
         "category": "soroban",
@@ -35713,8 +35862,8 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-09-01",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-11-19",
         "sources": [
           {
             "class": "A",
@@ -35722,24 +35871,34 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "D",
+            "class": "B",
             "ref": "https://github.com/kalepail/smart-account-kit",
-            "note": "class inferred at migration"
+            "note": "Canonical repository for the 2026-07-11 observation; now an archived move pointer to stellar/smart-account-kit."
           },
           {
-            "class": "D",
+            "class": "B",
+            "ref": "https://github.com/stellar/smart-account-kit",
+            "note": "Current canonical Smart Account Kit repository, observed 2026-08-05."
+          },
+          {
+            "class": "B",
             "ref": "https://github.com/OpenZeppelin/stellar-contracts",
-            "note": "class inferred at migration"
+            "note": "Canonical OpenZeppelin smart-account contract source."
           },
           {
-            "class": "D",
+            "class": "B",
             "ref": "https://github.com/kalepail/passkey-kit",
-            "note": "class inferred at migration"
+            "note": "Canonical repository for the 2026-07-11 observation; now an archived move pointer to stellar/passkey-kit."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/passkey-kit",
+            "note": "Current canonical Passkey Kit repository, observed 2026-08-05."
           }
         ],
         "corroboration": [
           {
-            "claim": "Current smart-wallet signer-management path",
+            "claim": "Current smart-wallet signer management is contract-specific; Passkey Kit and Smart Account Kit are maintained non-drop-in siblings selected by authorization/account model, with no universal successor or default.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
@@ -35759,15 +35918,33 @@
                 "ref": "F: GT-44 primary/blind and OZ tests",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/passkey-kit and https://github.com/stellar/smart-account-kit",
+                "observedAt": "2026-08-05",
+                "note": "Current canonical READMEs document maintained sibling SDKs with different, non-drop-in authorization models."
+              },
+              {
+                "class": "A",
+                "ref": "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+                "observedAt": "2026-08-05",
+                "note": "Official OpenZeppelin documentation defines the context-rule smart-account model used by Smart Account Kit."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited practical recommendation promoted legacy unaudited Passkey Kit as the current starting point; its own source now directs new projects to Smart Account Kit/OpenZeppelin.",
+          "date": "2026-08-05",
+          "by": "Bounded smart-wallet truth repair from Solo Todo 1355 comment 3687",
           "evidence": [
-            "Solo scratchpad 575 GT-44 primary 3316 and blind 3324."
+            "Solo scratchpad 575 GT-44 primary 3316 and blind 3324; historical 2026-07-11 observedAt text remains preserved.",
+            "https://github.com/kalepail/passkey-kit and https://github.com/kalepail/smart-account-kit — archived move pages.",
+            "https://github.com/stellar/passkey-kit",
+            "https://github.com/stellar/smart-account-kit",
+            "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+            "Sibling sweep: q-tool-passkeykit-smart-wallet already states the maintained non-drop-in relationship and no universal default.",
+            "solo://proj/49/todo/reconcile-bounded-tr--1355"
           ],
           "rootCause": [
             "Eval-side vendor/tooling freshness drift."
@@ -45026,9 +45203,14 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "D",
+            "class": "B",
             "ref": "https://github.com/kalepail/smart-account-kit",
-            "note": "class inferred at migration"
+            "note": "Canonical repository observed for the 2026-07-11 evidence; now an archived move pointer preserving history and tags."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/smart-account-kit",
+            "note": "Current canonical repository after the move, observed 2026-08-05."
           },
           {
             "class": "D",
@@ -45057,6 +45239,12 @@
                 "ref": "B: current Smart Account Kit and OpenZeppelin account contract signer/policy interfaces",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/smart-account-kit",
+                "observedAt": "2026-08-05",
+                "note": "Current canonical continuation; the archived kalepail repository points here and says full history and tags moved."
               }
             ]
           },
@@ -45086,15 +45274,19 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited answer and avoid clause gave an unsafe blanket assurance that a lost passkey is not irrecoverable and promoted relayers/session keys as recovery mechanisms without proving independent surviving authorization.",
+          "date": "2026-08-05",
+          "by": "Bounded archived-pointer repair from Solo Todo 1355 comment 3687",
           "evidence": [
             "Solo scratchpad 575 GT-56 primary process 3394 and sealed blind process 3398 independently rejected the blanket recovery promise and relayer/session-key shortcut.",
-            "Sibling sweep checked q-aas-sep30-recoverable-wallets, q-soroban-add-signer-smart-wallet-howto, q-infra-secp256r1-passkeys, and q-soroban-auth-delegation-p27; the correction preserves their authorization boundaries."
+            "Sibling sweep checked q-aas-sep30-recoverable-wallets, q-soroban-add-signer-smart-wallet-howto, q-infra-secp256r1-passkeys, and q-soroban-auth-delegation-p27; the correction preserves their authorization boundaries.",
+            "https://github.com/kalepail/smart-account-kit — archived move page; historical 2026-07-11 evidence remains unchanged.",
+            "https://github.com/stellar/smart-account-kit — current canonical continuation observed 2026-08-05.",
+            "solo://proj/49/todo/reconcile-bounded-tr--1355"
           ],
           "rootCause": [
             "Eval-side security error: the existence of add/remove signer APIs was mistaken for a surviving authority after the only signer is lost.",
-            "Provenance correction: the false blanket assurance remains only in the read-only vendored corpus and is superseded by this override."
+            "Provenance correction: the false blanket assurance remains only in the read-only vendored corpus and is superseded by this override.",
+            "truth-metadata maintenance"
           ]
         },
         "origin": "raven-next q-tool-passkey-wallet-recovery"

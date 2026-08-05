@@ -43,13 +43,11 @@ import {
   demoEffectiveOpenAiApiMode,
   demoOpenAiApiModeFromOverride,
   demoOpenAiProviderOptions,
-  demoGatewayTransportSettings,
+  demoModelSettings,
   demoReasoningEffortFromOverride,
   demoReasoningEffortOverride,
   demoModelsFromOverride,
-  demoSessionAffinity,
-  demoWorkersAiReasoningEffort,
-  type DemoReasoningEffort
+  demoSessionAffinity
 } from "./model-config.ts";
 import {
   demoInputTelemetry,
@@ -280,7 +278,7 @@ async function runTurn(
       };
       try {
         const result = streamText({
-          model: workersai(config.model, modelSettings(config.model, sessionAffinity, reasoningEffort)),
+          model: workersai(config.model, demoModelSettings(config.model, sessionAffinity, reasoningEffort)),
           system: DEMO_SYSTEM_PROMPT,
           messages,
           tools: tools as ToolSet,
@@ -339,7 +337,6 @@ async function runTurn(
               finishReason = "error";
               lastProviderError = demoProviderErrorTelemetry(
                 part.error,
-                errorText(part.error),
                 config.model,
                 index + 1
               );
@@ -376,13 +373,12 @@ async function runTurn(
         finishReason = "exception";
         lastProviderError = demoProviderErrorTelemetry(
           error,
-          errorText(error),
           config.model,
           index + 1
         );
         if (abortSignal.aborted && !emittedUsefulOutput) throw error;
         if (emittedUsefulOutput || index === demoModels.length - 1) throw error;
-        fallbackToNextModel(lastProviderError.providerErrorMessagePreview ?? "provider error");
+        fallbackToNextModel("provider-error");
       }
     }
   } catch (e) {
@@ -390,7 +386,6 @@ async function runTurn(
     finishReason = "exception";
     lastProviderError ??= demoProviderErrorTelemetry(
       e,
-      errorText(e),
       selectedModel,
       attemptedModels.length
     );
@@ -448,35 +443,6 @@ async function runTurn(
       ms: Date.now() - t0
     });
   }
-}
-
-function modelSettings(model: string, sessionAffinity: string, reasoningEffort: DemoReasoningEffort) {
-  // Cloudflare prompt caching is automatic; session affinity routes a demo
-  // subject's turns to the same backend to improve prefix cache hit rate. Keep
-  // the raw auth subject out of the model header. Third-party catalog models
-  // must use the AI Gateway delegate option shape; Workers-AI-only settings
-  // like `reasoning_effort` are rejected by provider-native endpoints.
-  if (model.startsWith("@")) {
-    return {
-      sessionAffinity,
-      reasoning_effort: demoWorkersAiReasoningEffort(reasoningEffort)
-    } as const;
-  }
-  // Newly released xAI models can exist behind a gateway's stored Grok key
-  // before they enter Cloudflare's unified env.AI.run catalog. Force the
-  // provider-native gateway path for xAI/Grok slugs; omitting `byok: true` is
-  // intentional because that flag forwards a caller-supplied key, while this
-  // playground uses the gateway's stored default alias.
-  if (model.startsWith("xai/") || model.startsWith("grok/")) {
-    return {
-      ...demoGatewayTransportSettings(model),
-      extraHeaders: { "x-session-affinity": sessionAffinity }
-    } as const;
-  }
-  return {
-    ...demoGatewayTransportSettings(model),
-    extraHeaders: { "x-session-affinity": sessionAffinity }
-  } as const;
 }
 
 const cloudflareAnthropic = {

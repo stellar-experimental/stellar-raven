@@ -362,7 +362,7 @@ export async function runSkill(
     outputSchemaOk = false;
     logEvent("skill_run_schema_mismatch", {
       id: entry.id,
-      issues: issues.slice(0, 10).map((i) => `${i.path}: ${i.message}`)
+      issueCount: issues.length
     });
   }
 

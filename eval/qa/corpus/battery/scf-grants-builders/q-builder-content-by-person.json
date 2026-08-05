@@ -57,7 +57,12 @@
       {
         "class": "B",
         "ref": "https://github.com/kalepail/passkey-kit",
-        "note": "Direct repository observed 2026-07-13; README describes Passkey Kit v1 and Smart Account Kit as a non-drop-in sibling, not a successor that makes this repository merely legacy."
+        "note": "Direct repository observed 2026-07-13; that historical README description remains true. The repository is now an archived move pointer to stellar/passkey-kit."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/passkey-kit",
+        "note": "Current canonical continuation after the repository move, observed 2026-08-05."
       },
       {
         "class": "B",
@@ -87,19 +92,28 @@
             "ref": "https://github.com/kalepail/passkey-kit",
             "observedAt": "2026-07-13",
             "note": "Direct current repository context, including the explicit non-drop-in Smart Account Kit relationship."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/passkey-kit",
+            "observedAt": "2026-08-05",
+            "note": "Current canonical continuation; the archived kalepail repository says full history and tags moved here."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Evidence-poor retrieval truth reconciliation with independent Opus and Sol review",
+      "date": "2026-08-05",
+      "by": "Bounded archived-pointer repair from Solo Todo 1355 comment 3687",
       "evidence": [
         "Solo scratchpad 575 GT-35 primary 3287 and blind 3289; exact-person probes and official-source roster.",
         "2026-07-13 recheck of https://developers.stellar.org/meetings/authors/kalepail, https://developers.stellar.org/meetings/2024/06/13, and https://github.com/kalepail/passkey-kit corrected the stale repository-status wording.",
         "solo://proj/49/scratchpad/evidence-poor-retrie--611 — durable multi-model review and current-source reconciliation",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "solo://proj/49/scratchpad/evidence-poor-retrie--611 — scheduled the mutable person/content result set and corrected repository source class without changing the inherited as-of claim."
+        "solo://proj/49/scratchpad/evidence-poor-retrie--611 — scheduled the mutable person/content result set and corrected repository source class without changing the inherited as-of claim.",
+        "https://github.com/kalepail/passkey-kit — archived move page; the answer's explicit 2026-07-13 observation and corroboration evidence remain unchanged.",
+        "https://github.com/stellar/passkey-kit — current canonical continuation observed 2026-08-05.",
+        "solo://proj/49/todo/reconcile-bounded-tr--1355"
       ],
       "rootCause": [
         "Route recipe was treated as truth and an empty data-shaped response was mistaken for absence.",

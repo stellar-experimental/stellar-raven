@@ -1873,15 +1873,15 @@
           "q-defi-wisdomtree-crdt"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-13",
+        "lastChecked": "2026-08-05",
         "reSwept": {
-          "date": "2026-07-13",
-          "reason": "Release closeout confirmed the person-lane recovery/provenance change does not alter the independent project, organization, or token entity facts in sibling cases.",
+          "date": "2026-08-05",
+          "reason": "Archived-pointer repair added the current stellar/passkey-kit continuation without changing the dated person-content claim or any project/entity sibling fact.",
           "verdict": "consistent"
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "d5037f61d44095be01a71457cd316e7d9b44f2196db4597163412a1f7cc63c7a",
+          "q-builder-content-by-person": "ddd30cf13b7d8b049b3e62fcc335cfb9bf223b6937d3fb4fc7adb6d246c4d68d",
           "q-defi-benji-franklin-templeton": "4013b5d48f17b52495c9c282db319e6a97e3442d04fe30c1b4d7557e61967a4b",
           "q-defi-ondo-usdy": "084bf1b02daebdc1f0ddfcc018a104f9d28917e9aa902890a6fc937136074308",
           "q-defi-wisdomtree-crdt": "b3c9cfb60942105cefe352f526d44e480a0b2bbfd9641f26f2ab2159e9555622"
@@ -3159,15 +3159,15 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-13",
+        "lastChecked": "2026-08-05",
         "reSwept": {
-          "date": "2026-07-13",
-          "reason": "Release closeout rechecked all four new identity/history cases plus corrected siblings after replacing pseudo-anchors with durable source symbols.",
+          "date": "2026-08-05",
+          "reason": "Archived-pointer repair preserved the 2026-07-13 person-content observation and added only its current canonical repository continuation; closed-world and open-world recovery boundaries are unchanged.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "d5037f61d44095be01a71457cd316e7d9b44f2196db4597163412a1f7cc63c7a",
+          "q-builder-content-by-person": "ddd30cf13b7d8b049b3e62fcc335cfb9bf223b6937d3fb4fc7adb6d246c4d68d",
           "q-builder-justin-rice-history": "7ebc1f8beb22ea7347698b6b332b37bd635e82b67e7017467e58efd17e979974",
           "q-edge-closed-world-builder-directory-miss": "dfbfb41a8d5128bc8697c7a9e2549178e32d57bab617c55c1c34554f5ebee95b",
           "q-edge-lumenloop-person-entity-empty": "8fd57c5a935d1c21d49da72dcbe3d72e5b395f1ce52ea935c97dc799ebc41251",
@@ -3280,6 +3280,30 @@
           "q-gap-leaderboard-project-not-builder": "941d05d5bed43a0957dba2bf116b099a84c8b7fac47245798d2e3e5e3499c584",
           "q-tool-developer-leaderboard-live": "638b62d50f869f281dca14ff6875120b981c6c90e862b5b247314466b2e9fa1a",
           "q-tool-leaderboard-open-issues": "dce6f985a87f75023cc2b67d0a598bc5f3a02edd7904425567108f70501b49d3"
+        }
+      },
+      {
+        "id": "cluster-135",
+        "label": "SDP advertised batch capacity versus current native architecture and optional downstream rails",
+        "members": [
+          "q-anchor-sdp-what",
+          "q-anchor-sdp-vs-anchor-platform",
+          "q-crp-sdp-operation",
+          "q-pay-sdp-disbursement"
+        ],
+        "verdict": "consistent",
+        "lastChecked": "2026-08-05",
+        "reSwept": {
+          "date": "2026-08-05",
+          "reason": "Todo 1355 bounded SDP truth repair re-read all four answers and reconciled the numeric and architecture claims.",
+          "verdict": "consistent"
+        },
+        "note": "All four cases agree that current SDP is a bulk-disbursement application whose Core implements native SEP-10/24 and does not universally require an external Anchor Platform; downstream wallet, cash-out, or anchor rails are optional deployment choices. The stellar.org product page's as-of 2026-08-05 'up to 10,000 payments' statement is advertised capacity, not a hard implementation or protocol invariant, and is not required by the two Docs-only questions after the exact-phrase Lumenloop probe returned no exact primary-linked evidence.",
+        "memberContentSha256": {
+          "q-anchor-sdp-vs-anchor-platform": "ac51118497fb7419f320ec975f88ff2fbcc1e419851acd0ca1f229b71f8decad",
+          "q-anchor-sdp-what": "4de8a8ff25060939290d3666ce3b89ce42f409e1df662e355721411dfe266ae6",
+          "q-crp-sdp-operation": "f8823508c2f843b01caeea62eda59f6e2cfe19d542209cc4edad6a69041e99a3",
+          "q-pay-sdp-disbursement": "c2eca75b720ab12301f296e85704b38a963e25d46ad4845fa5670c87731771ce"
         }
       }
     ]
