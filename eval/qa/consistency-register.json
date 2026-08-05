@@ -3119,17 +3119,21 @@
         "lastChecked": "2026-08-05",
         "note": "All six members are mutually compatible on one boundary, and each grades the subset its own golden states: repository rows come from the live index at answer time (no static roster), and repoScore never establishes properties outside its freshness/traction/authority formula — correctness, security, audit scope, maintenance, production readiness (no member grades every property; e.g. the indexer and sdk discovery cases do not grade the audit-scope non-inference and the smart-wallet case does not grade the correctness one, but no member permits any inference the others forbid). The three DISCOVERY-TABLE members (q-tool-indexer-repos-discovery, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery) additionally grade the richer per-row contract — response generatedAt/as-of, exact owner/name URL, role, maintainer tier, archive state, dated activity, external-supplement labelling, exact-zero source scoping, and extending the non-inference rule to ownership and to stars/semantic rank — which the three REPO-LIVE members (q-tool-passkey-repo-live, q-tool-oracle-repo-live, q-tool-zk-repo-live) do not grade; the repo-live members instead grade explicit repoScore comparison/sort with superlatives scoped to the checked rows, plus their own signal separations (codeVerified is scan evidence not a security audit; hackathonWinner stays index-relative absent exact event evidence). Verified 2026-07-28 (todo 1253 Lane B for the discovery trio; todo 1256 F5 for the repo-live trio, each read in full). 2026-07-28 adversarial review (ADV-2, two passes) corrected this note: earlier revisions attributed the full discovery-table contract, the ownership clause, and the stars/semantic-rank scope to all six members; membership asserts only the all-six rule above. Re-swept 2026-07-28 (ADV-1 reconciliation): hash churn from scoping the repo-live members blanket quality-verdict wording to the specific non-inferences and adding upstream-schema evidence plus durable rootCause pointers; the edits move the members further toward this cluster rule. Re-swept 2026-07-28 (G-GT-1): hash churn from aligning two corroboration claims (oracle/passkey) to ranking/scan wording; claim meaning unchanged.",
         "memberContentSha256": {
-          "q-tool-indexer-repos-discovery": "6a9a805425fd5a93dfae0cce9b0aba796b666c097b1fa8532b35bfddb50ee1cb",
+          "q-tool-indexer-repos-discovery": "1ebceb7620e72f1080f47616c01333400e248e14f136d6b78ee121b540534b76",
           "q-tool-oracle-repo-live": "a3b41b87a96c9746af98afdb137cf145c0e13c3c73a98386f8c52c4fd9ee42fc",
           "q-tool-passkey-repo-live": "f26aa896e61edaac95d492774eefc4f227d25e934a353a126efb99e25acccd9f",
-          "q-tool-sdk-repos-discovery": "108f1a96ba785319b504854d6b4ffb29ea8f220affcad7e6fc5f494e9bc7eb87",
+          "q-tool-sdk-repos-discovery": "1c02179bf497f6afed37e2d12c1a12a950c93fb1ae54abe9d59d5cfac2c32868",
           "q-tool-smart-wallet-repos-discovery": "1f4220e3234bb1f9f31015c124d18ef915b3499ff06001bfe127d8444201ed76",
           "q-tool-zk-repo-live": "266eff3a9c057b4656d1239b2dd98878ab9c16394bf0f56f8946f4e26d16f063"
         },
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 golden-freshness sweep: re-read all six members after dated provenance-only updates to the indexer and SDK discovery cases; discovery-table contracts, live-roster discipline, and repoScore non-inferences remain unchanged and mutually consistent.",
           "verdict": "consistent"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3147,13 +3151,17 @@
         "memberContentSha256": {
           "q-gap-scout-get-skill-detail": "96371833d9b0f5c68dfb5aedb28f94f5c01a2ce01d30a5b4983cd7c3116a02ca",
           "q-gap-scout-list-skill-directory": "f53e28dbfd110024498617fc9626011e86d54eba8c769c193215817aff545ac6",
-          "q-tool-cli-skills-discovery": "614374974b486b40f6bb2a2dd636220337de549c9511a98662a24cef01fc4dff",
+          "q-tool-cli-skills-discovery": "8eb116a565c90e7a007aa9d538a0184ff6949128d903e1f6ec65f96e31e2ef4c",
           "q-tool-skill-detail-install": "0685645027b5087c99333eac46b1b7b0fed7016e977ebfc0fb19b9262c34c5f8"
         },
         "reSwept": {
           "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "reason": "2026-08-05 golden-freshness sweep: re-read all four members after a dated provenance-only update to q-tool-cli-skills-discovery; filter-enum, live-row, soft-empty, and exact-slug semantics remain unchanged and mutually consistent.",
           "verdict": "consistent"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3166,13 +3174,22 @@
           "q-eco-most-active-defi-projects"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-28",
+        "lastChecked": "2026-08-05",
         "note": "All four members are mutually consistent on the scout.getLeaderboard contract; the invariant graded by EVERY member is the project-vs-person boundary — the leaderboard ranks PROJECTS (with aggregate developer metrics) and is not a people directory; getBuilders answers person-level questions. Member-level grading beyond that boundary: q-tool-leaderboard-open-issues grades the metric separations (open-issue volume is a backlog signal, never activity/quality/popularity or a stand-in for stars/activity/repoScore) plus an explicit sort/range and response generatedAt/scope; q-tool-developer-leaderboard-live grades an explicit current sort/range and generatedAt without the detailed issues/stars/TVL distinctions; q-eco-most-active-defi-projects requires a visible as-of date, an explicit activity basis (activity is meta.metricDefinitions latest-commit recency, not commit volume and not repoScore, which is a repo-level scout.searchRepos signal), and a DeFi inclusion rule, satisfiable from live directory or research evidence rather than the leaderboard alone; q-gap-leaderboard-project-not-builder grades only the shared boundary. Verified 2026-07-28 (todo 1253 Lane B for the original trio; todo 1256 F6 for q-eco-most-active-defi-projects after its metric-conflation note was corrected to the served schema — catalog/manifest.json scout.getLeaderboard metricDefinitions). 2026-07-28 adversarial review (ADV-3, two passes) corrected this note: earlier revisions attributed sort/range/generatedAt, metric semantics, and the no-stored-ordering rule to every member; the opening now distinguishes cluster-wide compatibility from member-level grading.",
         "memberContentSha256": {
           "q-eco-most-active-defi-projects": "9e28de74b4d7d72aaed87f7af97ecadfd8219cab95806818f88ba0e0d73fab97",
           "q-gap-leaderboard-project-not-builder": "941d05d5bed43a0957dba2bf116b099a84c8b7fac47245798d2e3e5e3499c584",
           "q-tool-developer-leaderboard-live": "638b62d50f869f281dca14ff6875120b981c6c90e862b5b247314466b2e9fa1a",
-          "q-tool-leaderboard-open-issues": "dce6f985a87f75023cc2b67d0a598bc5f3a02edd7904425567108f70501b49d3"
+          "q-tool-leaderboard-open-issues": "79026b5c100ad33eeec0b1e46815b8270284a0d9910ab24bd0ed47213a1c1f66"
+        },
+        "reSwept": {
+          "date": "2026-08-05",
+          "reason": "2026-08-05 golden-freshness sweep: re-read all four members after a dated provenance-only update to q-tool-leaderboard-open-issues; project-vs-person scope and the separation of issue backlog, activity, stars, TVL, and repoScore remain unchanged and mutually consistent.",
+          "verdict": "consistent"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {

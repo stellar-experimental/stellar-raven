@@ -28,8 +28,8 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-28",
-    "reverifyBy": "2026-08-06",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-09-03",
     "sources": [
       {
         "class": "C",
@@ -97,12 +97,13 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+      "date": "2026-08-05",
+      "by": "Post-QA Harvest freshness lane (Solo todo 1377; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
       "evidence": [
-        "C: Scout SDK/client/XDR probes at 2026-07-28T14:05Z returned current rows including stellar/js-stellar-sdk, stellar/rs-soroban-sdk, stellar/go-stellar-sdk, stellar/stellar-xdr, and stellar/rs-stellar-xdr with changing rank/activity metadata.",
-        "B/A: direct repository URLs and https://developers.stellar.org/docs/tools/sdks/client-sdks corroborate identity and role; they do not turn Scout score/rank into a quality or ownership proof.",
-        "Sibling sweep: q-tool-indexer-repos-discovery uses the same no-static-roster/no-repoScore-quality rule."
+        "C: https://stellarlight.xyz/api/repos/search?q=sdk&limit=10 at 2026-08-05T20:47:26.563Z returned 10 of 334 current rows, including stellar/js-stellar-sdk, stellar/rs-soroban-sdk, and stellar/go-stellar-sdk with answer-time rank/activity metadata; an XDR probe separately returned stellar/stellar-xdr and stellar/rs-stellar-xdr.",
+        "A/B: https://developers.stellar.org/docs/tools/sdks/client-sdks, https://developers.stellar.org/docs/tools/sdks/contract-sdks, the direct repository APIs, and the @stellar/stellar-sdk package independently confirmed role, owner, language, archive state, activity, and package identity.",
+        "Uncertainty remains source-bounded: Scout rank, score, stars, and current rows do not establish global coverage, security, correctness, ownership, or production readiness.",
+        "Sibling sweep: q-tool-indexer-repos-discovery preserves the same no-static-roster/no-repoScore-quality rule, and q-tool-skill-detail-install remains a separate exact-detail lane."
       ],
       "rootCause": [
         "freshness-recheck"

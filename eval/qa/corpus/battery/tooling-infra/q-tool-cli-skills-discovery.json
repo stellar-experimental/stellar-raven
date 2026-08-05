@@ -28,8 +28,8 @@
   "truth": {
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-28",
-    "reverifyBy": "2026-08-06",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-09-03",
     "sources": [
       {
         "class": "C",
@@ -108,13 +108,13 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+      "date": "2026-08-05",
+      "by": "Post-QA Harvest freshness lane (Solo todo 1377; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
       "evidence": [
-        "C: scout.listSkills({}) at 2026-07-28T14:05Z returned 42 rows and the six kind/five source enums; filtered kind=agent-kit returned 0 rows and source=community was 0 in the response counts.",
-        "B: sampled returned tooling against https://github.com/stellar/stellar-cli and https://github.com/Stellar-Light/scout-mcp; Scout's install metadata remains row-level, not enum-derived.",
-        "Sibling sweep: q-tool-mcp-servers-skills-discovery (routing corpus, not an owned battery case) remains the narrow MCP filter lane; q-tool-skill-detail-install is the exact-detail lane.",
-        "Todo 1253 Lane B review (2026-07-28, F4): the sibling-sweep reference is to a routing-corpus id with no owned-battery counterpart; re-scoped explicitly so the sweep is verifiable against the corpus it actually names."
+        "C: https://stellarlight.xyz/api/skills at 2026-08-05T20:45:26.922Z returned 42 rows and six valid kinds/five valid sources; filtered kind=agent-kit and source=community each returned 0 rows, confirming that accepted filters do not promise populated categories.",
+        "A/B: https://skills.stellar.org/, https://github.com/stellar/stellar-dev-skill, https://github.com/stellar/stellar-cli, and https://www.npmjs.com/package/@stellar-light/scout-mcp independently confirmed row-level ownership/install details and the need to preserve community-tool caveats.",
+        "Dated uncertainty: Scout /api/status reported nine upstream SDF skills while /api/skills?source=sdf returned seven rows; no reconciliation or frozen count is inferred from those source-relative values.",
+        "Sibling sweep: q-tool-skill-detail-install remains the exact-detail lane, q-gap-scout-list-skill-directory keeps its historical roster date-scoped, and the routing-corpus q-tool-mcp-servers-skills-discovery remains the narrow MCP-only lane."
       ],
       "rootCause": [
         "freshness-recheck"

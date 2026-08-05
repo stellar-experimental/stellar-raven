@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "1d4357e475e4eca81dd03386cc47da6ba2d84678e389800447aeea079cc6a831",
+  "corpusContentSha256": "ee91cc4a85a4daf3fd17ecfb2b595605029bf9d684034729e45da8f96543c9e0",
   "counts": {
     "total": 490,
     "byCategory": {
@@ -43726,8 +43726,8 @@
       "truth": {
         "domain": "corpus-grounded",
         "status": "confirmed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-06",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-09-03",
         "sources": [
           {
             "class": "C",
@@ -43806,13 +43806,13 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+          "date": "2026-08-05",
+          "by": "Post-QA Harvest freshness lane (Solo todo 1377; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
           "evidence": [
-            "C: scout.listSkills({}) at 2026-07-28T14:05Z returned 42 rows and the six kind/five source enums; filtered kind=agent-kit returned 0 rows and source=community was 0 in the response counts.",
-            "B: sampled returned tooling against https://github.com/stellar/stellar-cli and https://github.com/Stellar-Light/scout-mcp; Scout's install metadata remains row-level, not enum-derived.",
-            "Sibling sweep: q-tool-mcp-servers-skills-discovery (routing corpus, not an owned battery case) remains the narrow MCP filter lane; q-tool-skill-detail-install is the exact-detail lane.",
-            "Todo 1253 Lane B review (2026-07-28, F4): the sibling-sweep reference is to a routing-corpus id with no owned-battery counterpart; re-scoped explicitly so the sweep is verifiable against the corpus it actually names."
+            "C: https://stellarlight.xyz/api/skills at 2026-08-05T20:45:26.922Z returned 42 rows and six valid kinds/five valid sources; filtered kind=agent-kit and source=community each returned 0 rows, confirming that accepted filters do not promise populated categories.",
+            "A/B: https://skills.stellar.org/, https://github.com/stellar/stellar-dev-skill, https://github.com/stellar/stellar-cli, and https://www.npmjs.com/package/@stellar-light/scout-mcp independently confirmed row-level ownership/install details and the need to preserve community-tool caveats.",
+            "Dated uncertainty: Scout /api/status reported nine upstream SDF skills while /api/skills?source=sdf returned seven rows; no reconciliation or frozen count is inferred from those source-relative values.",
+            "Sibling sweep: q-tool-skill-detail-install remains the exact-detail lane, q-gap-scout-list-skill-directory keeps its historical roster date-scoped, and the routing-corpus q-tool-mcp-servers-skills-discovery remains the narrow MCP-only lane."
           ],
           "rootCause": [
             "freshness-recheck"
@@ -44543,8 +44543,8 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-06",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-09-03",
         "sources": [
           {
             "class": "C",
@@ -44639,12 +44639,13 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+          "date": "2026-08-05",
+          "by": "Post-QA Harvest freshness lane (Solo todo 1378; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
           "evidence": [
-            "C: scout.searchRepos indexer and role/alias probes at 2026-07-28T14:05Z returned stellar-ledger-data-indexer, stellar-galexie, go-stellar-sdk, stellar-etl, and SubQuery rows; broad Soroban-events search returned 420 candidates, including adjacent contracts.",
-            "A/B: https://github.com/stellar/stellar-ledger-data-indexer, https://github.com/stellar/stellar-galexie, and the Stellar Galexie/indexing docs confirm distinct indexer, exporter, SDK, and ETL roles.",
-            "Sibling sweep: q-tool-sdk-repos-discovery shares the no-static-roster/no-repoScore-quality boundary; no owned sibling contradicts it."
+            "C: live https://stellarlight.xyz/api/repos/search probes at 2026-08-05T20:45-20:46Z returned current stellar/stellar-ledger-data-indexer, stellar/stellar-galexie, stellar/go-stellar-sdk, stellar/stellar-etl, and subquery/stellar-subql-starter rows with answer-time activity metadata.",
+            "A/B: https://developers.stellar.org/docs/data/indexers, https://developers.stellar.org/docs/build/guides/events/ingest, and the four direct stellar/* repositories independently confirmed distinct indexer, exporter/data-lake, ingest-library, and ETL roles plus the seven-day getEvents retention ceiling.",
+            "Uncertainty remains source-bounded: Scout rows and timestamps do not prove global repository coverage, deployment, security, or quality.",
+            "Sibling sweep: q-tool-sdk-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight, q-tool-go-sdk-ingest, and q-ti-parse-raw-ledger-data preserve the same fresh-row, direct-verification, and role-separation boundaries."
           ],
           "rootCause": [
             "freshness-recheck"
@@ -44850,8 +44851,8 @@
       "truth": {
         "domain": "corpus-grounded",
         "status": "confirmed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-06",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-09-03",
         "sources": [
           {
             "class": "C",
@@ -44926,12 +44927,13 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+          "date": "2026-08-05",
+          "by": "Post-QA Harvest freshness lane (Solo todo 1378; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
           "evidence": [
-            "C: scout.getLeaderboard({sort:'issues',range:'all',limit:10}) at 2026-07-28T14:05Z returned /api/leaderboard metadata, generatedAt/dataAsOf, project rank, github.openIssuesTotal, repoCount, lastActivityAt, and metricDefinitions.",
-            "D: Scout's metricDefinitions says issues are GraphQL open issues excluding pull requests; GitHub's https://docs.github.com/en/rest/repos/repos#get-a-repository documents that repository open_issues_count includes pull requests.",
-            "Sibling sweep: q-tool-developer-leaderboard-live and q-gap-leaderboard-project-not-builder retain the project-scope and metric-separation boundary."
+            "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 at 2026-08-05T20:45:09.140Z returned 880 project rows in scope, dataAsOf 2026-08-05T19:33:42.232Z, and rank/openIssuesTotal/repoCount/lastActivityAt fields with explicit metric definitions.",
+            "A/F: GitHub issue-search semantics and a live keybase/client sample independently separated 4,046 open issues from 210 open pull requests while REST open_issues_count reported 4,257, confirming that the REST field is not issue-only.",
+            "Uncertainty remains scope-bound: Scout confirms its cached included-repository rollup, not every project aggregate or a live GitHub census.",
+            "Sibling sweep: q-tool-developer-leaderboard-live and q-gap-leaderboard-project-not-builder preserve project scope and keep issue backlog distinct from activity, quality, and people directories."
           ],
           "rootCause": [
             "freshness-recheck"
@@ -45587,8 +45589,8 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-06",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-09-03",
         "sources": [
           {
             "class": "C",
@@ -45656,12 +45658,13 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+          "date": "2026-08-05",
+          "by": "Post-QA Harvest freshness lane (Solo todo 1377; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
           "evidence": [
-            "C: Scout SDK/client/XDR probes at 2026-07-28T14:05Z returned current rows including stellar/js-stellar-sdk, stellar/rs-soroban-sdk, stellar/go-stellar-sdk, stellar/stellar-xdr, and stellar/rs-stellar-xdr with changing rank/activity metadata.",
-            "B/A: direct repository URLs and https://developers.stellar.org/docs/tools/sdks/client-sdks corroborate identity and role; they do not turn Scout score/rank into a quality or ownership proof.",
-            "Sibling sweep: q-tool-indexer-repos-discovery uses the same no-static-roster/no-repoScore-quality rule."
+            "C: https://stellarlight.xyz/api/repos/search?q=sdk&limit=10 at 2026-08-05T20:47:26.563Z returned 10 of 334 current rows, including stellar/js-stellar-sdk, stellar/rs-soroban-sdk, and stellar/go-stellar-sdk with answer-time rank/activity metadata; an XDR probe separately returned stellar/stellar-xdr and stellar/rs-stellar-xdr.",
+            "A/B: https://developers.stellar.org/docs/tools/sdks/client-sdks, https://developers.stellar.org/docs/tools/sdks/contract-sdks, the direct repository APIs, and the @stellar/stellar-sdk package independently confirmed role, owner, language, archive state, activity, and package identity.",
+            "Uncertainty remains source-bounded: Scout rank, score, stars, and current rows do not establish global coverage, security, correctness, ownership, or production readiness.",
+            "Sibling sweep: q-tool-indexer-repos-discovery preserves the same no-static-roster/no-repoScore-quality rule, and q-tool-skill-detail-install remains a separate exact-detail lane."
           ],
           "rootCause": [
             "freshness-recheck"
