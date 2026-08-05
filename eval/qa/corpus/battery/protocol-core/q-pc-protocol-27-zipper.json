@@ -6,7 +6,7 @@
     "lumenloop.search_content_semantic"
   ],
   "golden": {
-    "answer": "The Protocol 27 Zipper Mainnet upgrade vote was scheduled for July 8, 2026, and live Horizon reported protocol version 27 on July 11, confirming activation. Zipper comprises CAP-0071-01, which adds built-in authentication delegation for custom accounts, and CAP-0071-02, which adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential. The older SOROBAN_CREDENTIALS_ADDRESS remains valid only through Protocol 27 and is replaced in Protocol 28. A vote schedule alone is not proof of passage; use a dated live-network or post-vote source for activation.",
+    "answer": "The Protocol 27 Zipper Mainnet upgrade vote was scheduled for July 8, 2026, and live Horizon reported protocol version 27 on July 11, confirming activation. Zipper comprises CAP-0071-01, which adds built-in authentication delegation for custom accounts, and CAP-0071-02, which adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential. The older SOROBAN_CREDENTIALS_ADDRESS remains valid in Protocol 27; CAP-0071-02 says deprecation may be considered in Protocol 28 **or later**, not that Protocol 28 definitely replaces it. A vote schedule alone is not proof of passage; use a dated live-network or post-vote source for activation.",
     "keyFacts": [
       "The Mainnet vote date was July 8, 2026, and Protocol 27 was live when independently checked on July 11, 2026.",
       "CAP-0071-01 adds authentication delegation for custom accounts.",
@@ -82,8 +82,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 N2 primary+blind (Solo 3417/3423)",
+      "date": "2026-08-04",
+      "by": "Full golden QA CAP-0071-02 recheck; accepted in Todo 1347 c3625/c3627",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
@@ -94,7 +94,8 @@
         "https://horizon.stellar.org/"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        "The golden promoted a possible Protocol 28-or-later deprecation into a definite Protocol 28 replacement."
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

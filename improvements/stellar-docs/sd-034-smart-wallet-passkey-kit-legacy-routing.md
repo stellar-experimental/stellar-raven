@@ -4,50 +4,53 @@ service: stellar-docs
 status: reported-upstream
 discovered: 2026-07-11
 evidence:
-  - current developers.stellar.org smart-wallet guide routes builders to Passkey Kit
-  - current kalepail/passkey-kit README calls the package a legacy precursor, directs new projects to smart-account-kit, labels the code unaudited demo material, and warns against securing real value
-  - current kalepail/smart-account-kit and OpenZeppelin Stellar account documentation establish the successor SDK and underlying account-contract path
+  - current developers.stellar.org smart-wallet guide routes builders to Passkey Kit without presenting the separate Smart Account Kit authorization model
+  - current stellar/passkey-kit README presents Passkey Kit as maintained and warns readers to review its contract, SDK, and caveats before holding meaningful value
+  - current stellar/smart-account-kit and OpenZeppelin Stellar account documentation establish a sibling, non-drop-in context-rule/auth-digest/policy model rather than a universal successor
   - Solo scratchpad 575 GT-56 sealed blind process 3398, independently reconciled with primary process 3394 only after its 12-row seal
-  - 2026-07-14 combined review request on the then-green successor PR: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-4971409358
-  - ref health 2026-07-27: PR 2367 is a third-party branch (author AshFrancis), is now mergeable=CONFLICTING, and has had no activity since 2026-07-14, so that PR is not a reliable tracker for this finding
-  - standalone upstream issue filed 2026-07-27 after PR 2367 stalled, covering this finding jointly with sd-027: https://github.com/stellar/stellar-docs/issues/2700
-  - PR-state follow-up posted and read back 2026-07-27: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5091971087
+  - 2026-08-04 freshness recheck: canonical repositories moved to stellar/passkey-kit and stellar/smart-account-kit; former kalepail repositories are archived move pointers, and the previously reported legacy/successor premise is stale
+  - upstream issue remains open and needs its stale legacy/successor premise corrected while retaining this model-selection gap: https://github.com/stellar/stellar-docs/issues/2700
+  - original combined review context: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-4971409358
+  - issue-tracker follow-up context: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5091971087
+recurrences:
+  - date: 2026-08-04
+    evidence: eval/qa/results/2026-08-04T22-41-34-variantA.json q-soroban-add-signer-smart-wallet-howto repeated the legacy/successor framing while current canonical READMEs describe sibling authorization models
 ---
 
 ## Finding
 
-The current Stellar smart-wallet guide still routes a greenfield reader to
-Passkey Kit without carrying the package owner's current safety and successor
-notice. Passkey Kit's own repository now calls it the legacy precursor to Smart
-Account Kit, labels its code unaudited demo material, and warns not to use it to
-secure real value. Current Smart Account Kit and OpenZeppelin account sources
-provide the maintained successor path.
+The current Stellar smart-wallet guide routes a greenfield reader to Passkey
+Kit without presenting the separate Smart Account Kit authorization model.
+Both kits are currently maintained sibling projects, not a legacy/successor
+pair and not drop-in compatible: Passkey Kit uses its flat `Signatures` model,
+while Smart Account Kit builds on OpenZeppelin context rules, auth digests,
+signers, and policies.
 
-This is related to, but not a duplicate of, `sd-027`. That finding concerns the
-discontinued LaunchTube submitter, its replacement, and the separate indexing
-role. This finding concerns which smart-account SDK/contracts the core guide
-recommends and whether the legacy SDK's explicit safety warning reaches the
-reader.
+The original legacy/unaudited-demo premise expired after the Passkey Kit README
+rewrite and repository transfer. The remaining documentation gap is model
+selection and component-specific review scope. This remains distinct from
+`sd-027`, which concerns the discontinued LaunchTube submitter and indexing
+role.
+
+The still-open upstream issue predates that correction and continues to call
+Passkey Kit legacy. It therefore remains the upstream tracker, but its premise
+must be amended rather than copied into a fix.
 
 ## Evidence
 
-GT-56's external-only blind lane checked the current guide, both Kalepail
-repositories, package metadata, and OpenZeppelin account documentation before
-reading the existing golden or primary report. Its sealed result and the
-independent primary audit agreed on the greenfield successor and audit-scope
-boundary. The direct reproduction URLs are:
+The 2026-08-04 recheck compared the current guide, both canonical repositories,
+and OpenZeppelin account documentation. The direct reproduction URLs are:
 
 - https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets
-- https://github.com/kalepail/passkey-kit
-- https://github.com/kalepail/smart-account-kit
+- https://github.com/stellar/passkey-kit
+- https://github.com/stellar/smart-account-kit
 - https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account
 
 ## Recommendation
 
-Update the smart-wallet guide to route new projects to Smart Account Kit plus
-the relevant versioned OpenZeppelin Stellar account contracts. Mark Passkey Kit
-as legacy and reproduce its unaudited-demo/no-real-value warning wherever the
-old path remains for historical users. Add a dated migration note and a small
-role table for SDK, signer/verifier/context/policy contracts, submitter/relayer,
-and indexer. State audit scope per exact artifact/release rather than implying
-the whole application stack inherits an OpenZeppelin audit.
+Present Passkey Kit and Smart Account Kit as current, separate choices and give
+the shortest model-selection boundary: flat multi-signer `Signatures` versus
+OpenZeppelin context-rule/auth-digest/policy authorization. Link both canonical
+repositories, carry their current review/caveat language, and state audit scope
+per exact artifact/release rather than implying the SDK, relayer, indexer,
+frontend, policies, and deployment inherit one contract review.

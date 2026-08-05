@@ -8,7 +8,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nYes. As of **2026-07-10**, the official Stellar Ambassador Program lists **Stellar India** among its active Asia-Pacific chapters, with the status **Exploratory Chapter**. Its dedicated page names Sahitya Roy of Rise In as Chapter Lead and links current joining, events, community, and education channels.\n\nThere is also direct, dated activity beyond the directory label: 2026 operator/event records include Build Station sprints and community events in several Indian cities. One current example is the **Jaipur Builders Camp, August 14–18, 2026**, a five-day Rise In / Stellar India builder residency. Treat individual events as dated operator evidence, not proof that SDF centrally runs every activation or that participation is paid.\n\nRegional chapters may guide eligible builders toward Instawards, but chapter support is not a funding commitment: SDF makes the final decision, typical initial Instawards are $1K–$5K in USD value paid in XLM, and $15K is the conditional aggregate maximum over time rather than an automatic first award.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults current official chapter and event sources and dates changeable claims. As of **2026-08-04**, the official Stellar Ambassador Program lists **Stellar India** among its active Asia-Pacific chapters, with the status **Exploratory Chapter**. Its dedicated page names Sahitya Roy of Rise In as Chapter Lead. Direct event evidence includes the **Jaipur Builders Camp, August 21–25, 2026**, a five-day Rise In / Stellar India builder residency. Treat events as dated operator evidence, not proof that SDF centrally runs every activation or that participation is paid. Regional chapters may guide eligible builders toward Instawards, but chapter support is not a funding commitment; SDF retains final approval.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -31,7 +31,7 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-08-04",
     "sources": [
       {
         "class": "A",
@@ -98,19 +98,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-04",
+      "by": "Full golden QA direct event recheck; accepted in Todo 1347 c3625/c3627",
       "evidence": [
         "Solo scratchpad 575, GT-39 primary process 3300 and blind process 3303, independently executed 2026-07-10.",
         "Official Ambassador APAC index and dedicated India Chapter page list Stellar India as an active Exploratory Chapter led by Sahitya Roy of Rise In.",
-        "Direct Luma ajcns4mc records Jaipur Builders Camp on 2026-08-14 through 2026-08-18; Lumenloop's structured title/date agree while generated summary/slug retain Goa wording.",
+        "Direct Luma ajcns4mc records Jaipur Builders Camp on 2026-08-21 through 2026-08-25.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ],
       "rootCause": [
         "solo://proj/49/todo/judge-rubric-corpus--826 — the avoid-clause judge-artifact class (FIXED: rubric v2.1 + eval:qa:lint, commit 18e234f)",
-        "eval-side freshness drift: the corpus-first snapshot did not incorporate the current official chapter pages or direct event record",
+        "eval-side freshness drift: the direct Jaipur event dates moved from August 14–18 to August 21–25.",
         "improvements/lumenloop/ll-007-event-summary-date-prose-mismatch.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"

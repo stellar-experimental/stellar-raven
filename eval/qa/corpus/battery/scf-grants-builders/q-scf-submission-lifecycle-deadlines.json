@@ -6,12 +6,12 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThe interest form is rolling/open; teams first undergo eligibility/referral review and only invited teams receive the full-proposal deadline. The published Build cadence is roughly six weeks: **2 weeks** for the full proposal, **1 week** for prescreen and panel review, a conditional revision step when requested, **1 week** for the Open Track community vote, then decision/notification and **1 week** for information collection/KYC. Integration and RFP decisions are panel-led and do not use the project community vote. After selection, KYC/KYB and award acceptance are distinct from delivery payments: current mechanics are four payments—10% acceptance plus three deliverable tranches of 20/30/40, generally with the next completion form due within 90 days of the prior payment. Use live round dates for a specific application.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the current official SCF Build workflow and dates a specific round's calendar. The interest form is rolling; teams first undergo eligibility/referral review and only invited teams receive a full-proposal deadline. The workflow then covers full proposal, prescreen/panel review, possible revision, an Open-only community vote, selection/notification, and information collection/KYC. Integration and RFP decisions are panel-led. Official materials describe roughly six-week Build rounds, but do not support a universal 2/1/1/1-week stage formula or guaranteed results week. After selection, KYC/KYB and award acceptance are distinct from deliverable payments; use the current award rules for payment mechanics and live round dates for a specific application.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Separates rolling interest, eligibility/invitation, proposal, prescreen/panel, revision, Open-only vote, decision, and KYC.",
-      "Gives the 2/1/1/1-week stage labels.",
+      "Uses roughly six-week Build rounds only as a dated cadence and does not invent universal per-stage durations.",
       "Keeps post-award payments separate."
     ],
     "avoid": [
@@ -19,7 +19,7 @@
       "Do NOT call acceptance a fourth deliverable milestone or invent a universal results week.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "DIFFERENTIATED 2026-06-29: re-scoped to the review-side timeline + round cadence. Dropped the specific current-round number/deadline (owned by q-scf-current-round) and the applicant how-to-apply steps (owned by q-scf-how-to-apply). Build cadence ~6 weeks confirmed; exact per-stage review dates are not reliably published in static sources, so the rubric requires live checking rather than fabricated dates.\nAlso good if the answer: Distinguishes durable review mechanics/cadence from any one round's specific calendar dates. | Notes track-specific review variation: the Open Track has a community (NQG) vote, while Integration and RFP tracks are panel-oriented.\nGolden cites: The live/current SCF Community Fund source for round deadlines, plus SCF handbook/process documentation for lifecycle mechanics.\nGT-40 independently confirmed 2026-07-10. Exact calendar dates remain live; the stage-duration model and four-payment/three-deliverable distinction are the durable grading core."
+    "notes": "CORRECTION 2026-08-04: current Build workflow supports rolling interest → eligibility/referral → invitation/full-proposal deadline → review/possible revision → Open-only vote → selection/KYC. Roughly six weeks is a dated cadence, not a universal 2/1/1/1-week stage model."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -29,7 +29,7 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-08-04",
     "sources": [
       {
         "class": "A",
@@ -74,8 +74,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-04",
+      "by": "Full golden QA current Build workflow recheck; accepted in Todo 1347 c3625/c3627",
       "evidence": [
         "Solo scratchpad 575 GT-40 processes 3301/3304, 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -83,7 +83,7 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ],
       "rootCause": [
-        "Eval-side lifecycle under-specification.",
+        "Eval-side lifecycle over-specification: the golden invented a mandatory 2/1/1/1-week stage formula.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ]

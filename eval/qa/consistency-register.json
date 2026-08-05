@@ -134,7 +134,7 @@
           "q-soroban-constructor-lifecycle",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -150,7 +150,7 @@
           "q-pc-protocol-upgrade-timing": "6ac860b7548a5e9beee9842c793265d1301116f3cbee1573ed0dd2a7b6d801a1",
           "q-protocol-23-whisk-caps": "06d3060bc86235dadcf1606821dcadd93a97fcd47905d9603f8689ac0745cce5",
           "q-protocol-24-whisk-incident": "ab20fc1e57bac81dc235394042b073a7bdc509ecf02b15e0fcbf3051d83ebf6b",
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-amm-cap-0038": "43fb785cf05f8436cd71f9287dad88d0ec3b7eeefc56febb7f306e104c88a78e",
           "q-protocol-bls12-381-cap59": "d4bc4977e5484b4f97ca70b3485fb903688ca9818762b366c6995e22dbfed8e6",
           "q-protocol-bn254-poseidon-xray": "3b1c66c28f7257a71959326dccf9c2c166931589fd472f490e3bc9305c2d4f0d",
@@ -161,7 +161,7 @@
           "q-tool-rust-soroban-sdk": "7200f3e8673c9c0f3668b1bba26a42cb36c3ab7c2691f469706fa93651257ebf"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -184,7 +184,7 @@
           "q-soroban-constructor-lifecycle",
           "q-ti-rpc-gettransactions-pagination-xdr"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -198,10 +198,10 @@
           "q-edge-factcheck-soroswap-first-amm": "c1efe67692acb6c4f42572484145964ebc477d87ffe14d8968deb65a3066bf67",
           "q-infra-secp256r1-passkeys": "b6b88399a7b9f11733b5570eebe7c98adab9aa223f3ac8e9540a1c6f709120ff",
           "q-protocol-23-whisk-caps": "06d3060bc86235dadcf1606821dcadd93a97fcd47905d9603f8689ac0745cce5",
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-bls12-381-cap59": "d4bc4977e5484b4f97ca70b3485fb903688ca9818762b366c6995e22dbfed8e6",
           "q-protocol-bn254-poseidon-xray": "3b1c66c28f7257a71959326dccf9c2c166931589fd472f490e3bc9305c2d4f0d",
-          "q-sep-41-token-interface": "61feeda011b8564c02b50509a67a5e8e17e17a2d8fef1b88b90c7b9930cd9d2e",
+          "q-sep-41-token-interface": "fd653e16d746539eae5064717ba28b9fb705dc4b1627c198da6e08e249a9337c",
           "q-sor-confidential-tokens": "9c83a6d23252e30d4aeaa8b5988cce33d3ef4f652f26eb1b151ff91c76d6500b",
           "q-sor-contract-trustlines-c-address": "e89a7f3dc71cb6b24ba93e21f71b6dac7e6d1bd7c5967ab5012dcd36992ad184",
           "q-soroban-auth-delegation-p27": "524de606abd96d28a102ff4fac12efb8a45e191ae102b70a27d99231d82c05f9",
@@ -209,7 +209,7 @@
           "q-ti-rpc-gettransactions-pagination-xdr": "f850792c240b69efc83e0a9dab8f56ec45b890eca9f6d3689a1f43ae9b8a5105"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -233,7 +233,7 @@
           "q-soroban-oz-token",
           "q-tool-lab-what-is"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -249,17 +249,17 @@
           "q-sep-12-kyc": "6510a9b0102ea22bef0c1f1520be925dfe5583cd2b5ffdd3ec5c96a845c65f88",
           "q-sep-31-cross-border": "ab2fbde621e8d7d68c96bfa7f22496ff8956477d489edce55f3b957bec9a0463",
           "q-sep-38-quotes": "3ccfc451935748bb2bbb8299c1b4bbc1f6e553430fc69b339b6c0d7a7975c240",
-          "q-sep-41-token-interface": "61feeda011b8564c02b50509a67a5e8e17e17a2d8fef1b88b90c7b9930cd9d2e",
+          "q-sep-41-token-interface": "fd653e16d746539eae5064717ba28b9fb705dc4b1627c198da6e08e249a9337c",
           "q-sep-45-contract-auth": "ba1d42a11b4ecd7659c2219e2cece9daed4cf530981f155578ec4d9032eb572b",
           "q-sep-6-24-deprecation": "c3679723957e3690445a081917bdbc1c319b60621032c8244774a20ac5108242",
           "q-sep-catalog-list": "a0d9ad9232cff22cee1b08343c99a0d875b701efa502158af35751811c0cb421",
           "q-sep-interactive-deposit-withdraw": "de645a85ad7e3311342803e552f542cf5ed4ac06637f09f246bca15b85c3929f",
-          "q-soroban-contract-build-verification": "27b56173a7c95bda30143cb1bc9f5c9f4a18ca1edc3864a74682ce1c74ce9e43",
+          "q-soroban-contract-build-verification": "c1d4685d6d03e390b1f3b8fef9a4e8418d76faddc7c93d68dc03d02e1d22b65e",
           "q-soroban-oz-token": "67a2308fe3e30654f43915588a34ba1dd9728f6f3807f6a485ba374e96082b17",
           "q-tool-lab-what-is": "0d9b1beecfd35c15f26a02c70a496cfce92efac39d7c715a1117ec111c679480"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -313,16 +313,16 @@
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "82fd53acdbb9e5198d8a35ea43bb2188672afbb2d51b0cf8945d7f633ed5ebf5",
           "q-org-sdf-enterprise-fund": "cd9b822d53fc0e9b7b7fc82aee6dbc27c302f598cda72cc031d5ff4d83bab1dd",
-          "q-scf-ambassador-program": "a4521ba9e66fe04356d4266180d55ea872b518ef2e72e152a7927d637139be1b",
+          "q-scf-ambassador-program": "d3dbf467174c58536c54ecd3948876031933fea1c1f3566d0fcd4e7545a4f320",
           "q-scf-audit-bank": "eafff8d4f82f024e59dd59a56d50d5b3472ea9cff31896773c2ec207bd7b1832",
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb",
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
           "q-scf-hackathons-active": "67d54e68f5e839b863b03f4d293f0cbe90ca1328f94de31905500250390b7cfb",
           "q-scf-how-to-apply": "1b874200302019faaa386cd5c7cd60c91ae948965c56a35b76c8e77a37d07f8b",
           "q-scf-instawards": "de0cc5be7ed0e01f5c6d5752fd7c2384069cbd5f2312a42b26297fe17a2a1d84",
-          "q-scf-nqg-voting": "4f6e7b0cf62f2f0f8d6b56210e1b1555fe5c522ae489e68259f4f3542353160a",
+          "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
           "q-scf-open-rfps": "483ea91c24657e9d704b00f560e99904a147cc381f6c1811be0dc9f8a7acb91b",
-          "q-scf-regional-india": "52f03ec1335aca9c3ec59044b39aff29eed122ed1a01c4707c169c4242f85559",
+          "q-scf-regional-india": "f4cad2e56d2c3218c68663d797f03a32d39b7c62079449d48bc79e6402a3d8bf",
           "q-scf-rfp-tooling": "b92e7d3085dd576814017db39ca9c8864c96a4121a5c569c385fc532cadec83c",
           "q-scf-sdf-marketing-grant": "116228f80fe5ad918402f58030b9443ac50a9c501281ede85370325a042cd71d",
           "q-scf-total-distributed": "d23156d29517c533c1f5ce836e15d119deaa5838a3a119b6cae62b99c0d35b7d",
@@ -330,7 +330,7 @@
           "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
         },
         "reopened": {
-          "date": "2026-07-31",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -351,7 +351,7 @@
           "q-scf-history-soroswap",
           "q-scf-verified-members"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -365,13 +365,17 @@
           "q-defi-blend-what-is": "906b4a21d9c324ad903bca3e1fd4f8b297c268580d6cfb2020bce1da65377cdf",
           "q-defi-phoenix-what-is": "6bd374c5391470d6ae63a4ba09c18544d19d3054821b4cbf7be230f54e1e0671",
           "q-defi-reflector-oracle": "5d5110fe6e94db172516a5d248c7a1a0560c521232da27a2cba39c04b63af4f9",
-          "q-defi-rwa-scf-similar": "9d23029b63e13caec8595e3840e4c6f6125eef00ff94dcd92e522d2f79e0f4c9",
+          "q-defi-rwa-scf-similar": "ae109f9e913773e920418611e26ed2771d1c2d9854394dd09fcc03164ef65599",
           "q-defi-soroswap-what-is": "86daa625039419f533796797b2b9cb2ef2fe9a6d2fcaa1900e9791c5c1e1602f",
           "q-defi-x402-on-stellar-what": "7db2a172fc2b1e4d29dc67d4a9b19db6a4282c165641d5017042574e0e093a6d",
           "q-eco-hana-wallet-scf": "76900c4257c93b31cad7eee7cc826a9fda1536895b2e85bb7958502d009b040e",
           "q-eco-stellar-wallets-list": "daea249828c1ac446a1f3aff0cc7dc2a0501430620f08424c84e998e35fe4cd6",
           "q-scf-history-soroswap": "9bd65ac751a1bed21d21b7dca28fa0e0727b0668c532639cbe2cdb98f306311c",
           "q-scf-verified-members": "3ff7a8f7be683d3b952829d57f46657b6818ff8b3f213be0d67c8e6f369edefb"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -485,14 +489,18 @@
           "q-hist-remittance-corridors",
           "q-pay-moneygram-ramps"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-03",
         "note": "174 (dev docs, exact) with 170+ marketing rounding, SEP-24 + USDC rails, $5-$2,500 off-ramp per tx, launched via Vibrant/LOBSTR 2022 — consistent across all four (the 180+ provenance question is filed under tensions).",
         "memberContentSha256": {
-          "q-anchor-moneygram-ramps": "4db6ff0f2a65fee40b4c3261c4a3f1a976f898361d1b9e777d8c9c222b57b8f6",
+          "q-anchor-moneygram-ramps": "5446f64570f1e37d3f211d42427a8efe3ae7cb2c1bdb5d5726d584d873fc08f0",
           "q-crp-anchors-by-corridor": "e7efa4310d84087692e4f8524b5cee2ac0e828d2d311c58daf461b9e34bb5465",
           "q-hist-remittance-corridors": "dd838f5d6f8d8869d02c695f4c19468ec607f611e9d3c902197aa90f847e91bd",
-          "q-pay-moneygram-ramps": "d9bca22145dd0de916a04926ca2e6e77bd301f0b92d23bb5b30982815d351ea1"
+          "q-pay-moneygram-ramps": "d35cd632670607d1160a84818139f50f16618894746f70ba70a3c5806f4b2a1a"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -562,7 +570,7 @@
           "q-ti-rpc-gettransactions-pagination-xdr",
           "q-ti-self-host-retention-backfill"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -575,17 +583,17 @@
           "q-infra-hubble-bigquery": "4e680dbee5f23fa86d8497df5a5ae70a17fb7b29b800728f2b9dce4bfb2bc11f",
           "q-infra-rpc-methods-list": "81bdd363b72c4ea52f25c2e17cef3e879d3aa6d3b12c1a4280e7f4668b7e17d6",
           "q-infra-rpc-provider-archive-tier": "fd8190fa9bcd6ad146cdeba76f649ecc1c7febe2219b41b4a78310576e9df45c",
-          "q-infra-which-indexer": "ce3a02b43a9d5036c7813ae624bfe05928b9344dd68d6208bed51f308d608218",
+          "q-infra-which-indexer": "fea4a5396b84beb23c005c9b58dfb0b0910babcfbddacd201db3e1894451f3ec",
           "q-soroban-event-indexing-design": "ed85d1c5711a1eb21249ad0e8fa647bfe6453a1e8e3e4bcf7458756e749a7e06",
           "q-soroban-publish-events": "5ad6f9cb2e6f1c8eba9552338f94886a61309e48080af98c1ce92f8b55f81828",
-          "q-ti-compute-token-lp-market-data": "d9c154a09344dede26fd2e59a7a5fd62e9448e440b204d5f0fe59b87f1327d3d",
+          "q-ti-compute-token-lp-market-data": "a0db1a03d4295daae70d43e7a73a10ca2c4ae90e3dd1169b5eb191d734a55a30",
           "q-ti-enumerate-holders-airdrop": "0d3769a35dd3fc69290e4df4e54930b6fddfb582ef1ca7dfb247140dd84603a6",
           "q-ti-historical-pointintime-balances": "4e46b1cba6ee581630f428a44bb306bf5c01c34823b08a43344886c26f513194",
           "q-ti-rpc-gettransactions-pagination-xdr": "f850792c240b69efc83e0a9dab8f56ec45b890eca9f6d3689a1f43ae9b8a5105",
           "q-ti-self-host-retention-backfill": "825d44a145b653594b4729f9785371a0a7bc29e08fb6e30b044d775a89460c92"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -676,7 +684,7 @@
           "q-tool-passkeykit-smart-wallet",
           "q-tool-smart-wallet-repos-discovery"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -689,11 +697,11 @@
           "q-eco-dex-saturation": "b7ddea4105290d4f53c7667f5f77fadbf1c05a714a42aa5c679f1270705d0432",
           "q-eco-lobstr-wallet": "d9cb16d6099add68fc6dcdcd52e6666ab280c6a8aeb029975e4f3b42abb781e2",
           "q-eco-stellar-wallets-list": "daea249828c1ac446a1f3aff0cc7dc2a0501430620f08424c84e998e35fe4cd6",
-          "q-tool-passkeykit-smart-wallet": "5abd00779a76439e65bd5e02da16bc1f9077b77411d2d583b768c30659fb4972",
-          "q-tool-smart-wallet-repos-discovery": "d2b329ba8545fcf4b9e0e72205d58eb2283beb1cdc4ad2cb30152d6b4a3068b9"
+          "q-tool-passkeykit-smart-wallet": "f4cc9e4398a9f8afeb3fb0e78093225c74f775ed02b1f7220ad7c05588af7ddc",
+          "q-tool-smart-wallet-repos-discovery": "68ccb7c5f0c3fad8c53ed6904384ea6daa4bc54ac2e9cac11984019ba1bbe863"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -709,7 +717,7 @@
           "q-ti-testnet-usdc-faucet",
           "q-tool-cli-testnet-identity-howto"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -720,14 +728,14 @@
         "memberContentSha256": {
           "q-edge-jailbreak-generate-secret-keys": "3a689a5dbe9c5675b91b56cb7b0a674b5997cd78c189ed0cdb79a7c7e70c8686",
           "q-edge-send-me-free-xlm": "be3bf999862788c1a1ec8da972475056374640a58e27d4629580f29f647c945b",
-          "q-infra-testnet-vs-futurenet": "0bbec0e403b94e9f1d30bb07a2ad5254061c12a3a5772f8cbf47b761432bedf4",
+          "q-infra-testnet-vs-futurenet": "066d76eb94cd44a9e6e035476918a49d55e356002e980821f1f0ff4d07933afd",
           "q-ti-custodial-account-generation-c-address": "3ba70a2fe3b41c5fdafba93ac87f41b161fde2cf8d375f162e4cf3c3f5ec9a24",
-          "q-ti-stellar-lab-usage-and-new-ui": "5a7fa88f1ffd5c6cfabb70b558a3b55d54d7b0f2d66baf867e6d5adbad71ce53",
+          "q-ti-stellar-lab-usage-and-new-ui": "a608a05a5b044c543a2feb7edf6322e987d33736a0d2784571b3d9afde7e8500",
           "q-ti-testnet-usdc-faucet": "698fdb4fecb12cd170708f6d8a4c60ac0a4a4602b6f2dbd44dee5a18baad892b",
           "q-tool-cli-testnet-identity-howto": "c54a67a128f09221dd1b7046504c4b9db11bce3b81c498a0533286c98a16a01c"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -740,7 +748,7 @@
           "q-protocol-version-history-list",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -750,12 +758,12 @@
         "note": "grader caution + improvements/stellar-docs/sd-008 Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-pc-protocol-upgrade-timing": "6ac860b7548a5e9beee9842c793265d1301116f3cbee1573ed0dd2a7b6d801a1",
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3",
           "q-tool-rust-soroban-sdk": "7200f3e8673c9c0f3668b1bba26a42cb36c3ab7c2691f469706fa93651257ebf"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -771,7 +779,7 @@
           "q-soroban-auth-delegation-p27",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -782,14 +790,14 @@
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "eb1964bf14a5b3ff3cf52c1180d66442e3ff53822c3a0319537608f3e8f0d827",
           "q-pc-protocol-upgrade-timing": "6ac860b7548a5e9beee9842c793265d1301116f3cbee1573ed0dd2a7b6d801a1",
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
-          "q-protocol-scp-consensus-algorithm": "0d38abcf54cc8e29822dfa23d50f1920f5930bfbf9092b9468601b4af713e1dd",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
+          "q-protocol-scp-consensus-algorithm": "b0abcca6dd8fd672dba5a6accbd1c04cf999b9b9af135bb27bac4f1e74eed12b",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3",
           "q-soroban-auth-delegation-p27": "524de606abd96d28a102ff4fac12efb8a45e191ae102b70a27d99231d82c05f9",
           "q-tool-rust-soroban-sdk": "7200f3e8673c9c0f3668b1bba26a42cb36c3ab7c2691f469706fa93651257ebf"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -820,12 +828,16 @@
           "q-edge-scf-v7-centralization-myths",
           "q-scf-current-round"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-09",
         "note": "resolved with dated official-source overrides",
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "82fd53acdbb9e5198d8a35ea43bb2188672afbb2d51b0cf8945d7f633ed5ebf5",
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb"
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -928,7 +940,7 @@
           "q-soroban-auth-delegation-p27",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -937,13 +949,13 @@
         },
         "note": "P27/Zipper is active from ledger 63386819 at 2026-07-08T17:00:10Z; the earlier pending note is historical and explicitly superseded. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3",
           "q-soroban-auth-delegation-p27": "524de606abd96d28a102ff4fac12efb8a45e191ae102b70a27d99231d82c05f9",
           "q-tool-rust-soroban-sdk": "7200f3e8673c9c0f3668b1bba26a42cb36c3ab7c2691f469706fa93651257ebf"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -955,7 +967,7 @@
           "q-scf-current-round",
           "q-scf-history-soroswap"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -965,8 +977,12 @@
         "note": "Program maximum ($100K in XLM via $50K Base plus optional $50K Supplemental), individual Soroswap award, general Build cap, and current-round deadline are explicitly distinguished.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb",
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
           "q-scf-history-soroswap": "9bd65ac751a1bed21d21b7dca28fa0e0727b0668c532639cbe2cdb98f306311c"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1133,7 +1149,7 @@
           "q-scf-how-to-apply",
           "q-scf-v7-changes"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -1144,9 +1160,13 @@
         "memberContentSha256": {
           "q-edge-fresh-latest-scf-round": "6f3e44496c82fa1f7775f1021846ba904a8231da9fe9cc33b95bdcf775428374",
           "q-edge-scf-v7-centralization-myths": "82fd53acdbb9e5198d8a35ea43bb2188672afbb2d51b0cf8945d7f633ed5ebf5",
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb",
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
           "q-scf-how-to-apply": "1b874200302019faaa386cd5c7cd60c91ae948965c56a35b76c8e77a37d07f8b",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1278,7 +1298,7 @@
           "q-infra-rpc-provider-archive-tier",
           "q-infra-which-indexer"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -1290,10 +1310,10 @@
           "q-defi-soroswap-what-is": "86daa625039419f533796797b2b9cb2ef2fe9a6d2fcaa1900e9791c5c1e1602f",
           "q-edge-noinfo-sep-9999": "ebb480f4c44fa8e116af72eda2273d47f85b893eba694e389814245e2cbc9479",
           "q-infra-rpc-provider-archive-tier": "fd8190fa9bcd6ad146cdeba76f649ecc1c7febe2219b41b4a78310576e9df45c",
-          "q-infra-which-indexer": "ce3a02b43a9d5036c7813ae624bfe05928b9344dd68d6208bed51f308d608218"
+          "q-infra-which-indexer": "fea4a5396b84beb23c005c9b58dfb0b0910babcfbddacd201db3e1894451f3ec"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -1328,14 +1348,18 @@
           "q-edge-noinfo-stellar-pos-staking-rewards",
           "q-protocol-scp-consensus-algorithm"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-10",
         "note": "Stellar uses SCP/FBA and validators receive no monetary rewards. Issuer interest, lending, AMM/LP, vault, token-lock, RWA, and external-chain wrapper yield are not native staking. The no-live-native-XLM-LST result is dated and source-bounded to the 2026-07-10 sweep.",
         "memberContentSha256": {
           "q-defi-build-staking-for-own-token": "faaa3d6b8865b471981a6176f9019abf413dcde42d0464e2a951bc9b19dffe9c",
           "q-defi-liquid-staking-whitespace": "b8f039331db9b732f7c6c93e1735aab6bcb5d9b96732f1730ce060004ab29719",
           "q-edge-noinfo-stellar-pos-staking-rewards": "23b7f3e25cbbd6121be7c3fd8029e7eb3ddef8a7ae7aea767b161fc0a2aa46e6",
-          "q-protocol-scp-consensus-algorithm": "0d38abcf54cc8e29822dfa23d50f1920f5930bfbf9092b9468601b4af713e1dd"
+          "q-protocol-scp-consensus-algorithm": "b0abcca6dd8fd672dba5a6accbd1c04cf999b9b9af135bb27bac4f1e74eed12b"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1660,12 +1684,16 @@
           "q-protocol-ledger-close-time",
           "q-protocol-max-tx-set-size"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-10",
         "note": "Observed Pubnet cadence is about 5–7 seconds from a multi-ledger sample. Classic maxTxSetSize is 1000 operations; live Soroban ledgerMaxTxCount is 2000 while Docs still say 100. All are dated/configuration-scoped.",
         "memberContentSha256": {
           "q-protocol-ledger-close-time": "1538fc8f452dfd22d1107a087331c6138eb053d9d30505e756b2dd43bc637ca3",
-          "q-protocol-max-tx-set-size": "4c65775f33fc6376ab0477a0d683791e65a49aa16aae804be3bd6387464ab555"
+          "q-protocol-max-tx-set-size": "0eee37e24141fb126830f86bf32bcc330e4a4033524c5fb3eddaed76b4384a12"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1675,7 +1703,7 @@
           "q-infra-testnet-vs-futurenet",
           "q-protocol-network-passphrases-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -1684,8 +1712,12 @@
         },
         "note": "Exact passphrases are stable; Testnet/Futurenet/Mainnet version alignment is stage-sensitive and live-verified.",
         "memberContentSha256": {
-          "q-infra-testnet-vs-futurenet": "0bbec0e403b94e9f1d30bb07a2ad5254061c12a3a5772f8cbf47b761432bedf4",
+          "q-infra-testnet-vs-futurenet": "066d76eb94cd44a9e6e035476918a49d55e356002e980821f1f0ff4d07933afd",
           "q-protocol-network-passphrases-list": "9c652507939b572e30b5725bbf245a3842efb8deb4afaa84c981793800d55e4f"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1696,7 +1728,7 @@
           "q-protocol-scp-consensus-algorithm",
           "q-protocol-version-history-list"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -1706,8 +1738,12 @@
         "note": "P20 activated Soroban on 2024-02-20; the March milestone raised capacity. Software major versions indicate protocol support but do not by themselves prove live activation. P27 is live from ledger 63386819. Duplicate version-history override keys were consolidated and stale pending-P27 grader notes replaced.",
         "memberContentSha256": {
           "q-hist-soroban-launch-protocol20": "84b2553a92c0e1be6aadb90a623d02a6b16c3abebecb2101df6e45bbfd6aa79a",
-          "q-protocol-scp-consensus-algorithm": "0d38abcf54cc8e29822dfa23d50f1920f5930bfbf9092b9468601b4af713e1dd",
+          "q-protocol-scp-consensus-algorithm": "b0abcca6dd8fd672dba5a6accbd1c04cf999b9b9af135bb27bac4f1e74eed12b",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1808,7 +1844,7 @@
           "q-scf-nqg-voting",
           "q-scf-verified-members"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -1819,11 +1855,11 @@
         "memberContentSha256": {
           "q-builder-by-scf-tier": "90fc76c2b5981fac3b630a01a4d15eca2cac025c42dd55ab23fdaca918761a04",
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-nqg-voting": "4f6e7b0cf62f2f0f8d6b56210e1b1555fe5c522ae489e68259f4f3542353160a",
+          "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
           "q-scf-verified-members": "3ff7a8f7be683d3b952829d57f46657b6818ff8b3f213be0d67c8e6f369edefb"
         },
         "reopened": {
-          "date": "2026-07-15",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -1882,14 +1918,18 @@
           "q-scf-submission-lifecycle-deadlines",
           "q-scf-vs-sdf-enterprise-fund"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-10",
         "note": "Open interest form precedes eligibility/referral confirmation and invitation to a full proposal; revision, track-specific review/Open vote, and later KYC/KYB remain distinct. Landing awaits GT-37 blind reconciliation.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "19238d0361b840e2d14cffadc029300b44042a3ed99aad71561f5e0d17c1ec06",
           "q-scf-how-to-apply": "1b874200302019faaa386cd5c7cd60c91ae948965c56a35b76c8e77a37d07f8b",
-          "q-scf-submission-lifecycle-deadlines": "2d9eab11c0bf87af311d304489c45e08451bf2707e1b9925f22890ef320d1b15",
+          "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d",
           "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1983,7 +2023,7 @@
           "q-scf-nqg-voting",
           "q-scf-verified-members"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -1993,8 +2033,12 @@
         "note": "Public Goods corrected with explicit conflict; NQG/Verified sibling atom waits for GT-40 blind.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-nqg-voting": "4f6e7b0cf62f2f0f8d6b56210e1b1555fe5c522ae489e68259f4f3542353160a",
+          "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
           "q-scf-verified-members": "3ff7a8f7be683d3b952829d57f46657b6818ff8b3f213be0d67c8e6f369edefb"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2025,7 +2069,7 @@
           "q-scf-instawards",
           "q-scf-v7-changes"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -2034,10 +2078,14 @@
         },
         "note": "Typical initial award is $1K–$5K USD value in XLM, with up to two conditional follow-ons and $15K aggregate over time; chapter guidance is non-binding and SDF approval is final. The coherent sibling atom awaits GT-40 blind.",
         "memberContentSha256": {
-          "q-scf-ambassador-program": "a4521ba9e66fe04356d4266180d55ea872b518ef2e72e152a7927d637139be1b",
+          "q-scf-ambassador-program": "d3dbf467174c58536c54ecd3948876031933fea1c1f3566d0fcd4e7545a4f320",
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
           "q-scf-instawards": "de0cc5be7ed0e01f5c6d5752fd7c2384069cbd5f2312a42b26297fe17a2a1d84",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2146,7 +2194,7 @@
           "q-scf-submission-lifecycle-deadlines",
           "q-scf-v7-changes"
         ],
-        "verdict": "tension",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -2156,8 +2204,12 @@
         "note": "accept either label only with the correct 10/20/30/40 mechanics and acceptance distinction.",
         "memberContentSha256": {
           "q-scf-how-to-apply": "1b874200302019faaa386cd5c7cd60c91ae948965c56a35b76c8e77a37d07f8b",
-          "q-scf-submission-lifecycle-deadlines": "2d9eab11c0bf87af311d304489c45e08451bf2707e1b9925f22890ef320d1b15",
+          "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2169,14 +2221,18 @@
           "q-scf-rfp-tooling",
           "q-scf-submission-lifecycle-deadlines"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-10",
         "note": "Rolling interest precedes eligibility/referral and invitation to a full proposal. Only Open uses project-level community voting; Integration/RFP are panel-led.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "19238d0361b840e2d14cffadc029300b44042a3ed99aad71561f5e0d17c1ec06",
           "q-scf-how-to-apply": "1b874200302019faaa386cd5c7cd60c91ae948965c56a35b76c8e77a37d07f8b",
           "q-scf-rfp-tooling": "b92e7d3085dd576814017db39ca9c8864c96a4121a5c569c385fc532cadec83c",
-          "q-scf-submission-lifecycle-deadlines": "2d9eab11c0bf87af311d304489c45e08451bf2707e1b9925f22890ef320d1b15"
+          "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2187,7 +2243,7 @@
           "q-scf-nqg-voting",
           "q-scf-verified-members"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -2197,8 +2253,12 @@
         "note": "Verified views, Pathfinder delegates, Navigator/Pilot actively vote, and Pilot may delegate/govern. Vote objects and Public Goods eligibility remain program-specific; payout KYC is separate.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-nqg-voting": "4f6e7b0cf62f2f0f8d6b56210e1b1555fe5c522ae489e68259f4f3542353160a",
+          "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
           "q-scf-verified-members": "3ff7a8f7be683d3b952829d57f46657b6818ff8b3f213be0d67c8e6f369edefb"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2381,7 +2441,7 @@
           "q-sor-recurring-escrow-patterns",
           "q-sor-sep41-transfer-vs-transferfrom"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2391,10 +2451,10 @@
         "note": "Allowance expiry is one absolute-ledger mechanism under two names; direct spender-contract auth is automatic; storage TTL and business cancellation are separate. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-sor-recurring-escrow-patterns": "9cbf88179779a94a45ec00eca7445012037538d387d04fd515be507f6c2bc736",
-          "q-sor-sep41-transfer-vs-transferfrom": "cd602281463b934b9a36c640db343e4aeec979f2d1e9a0d4dccec83322420f15"
+          "q-sor-sep41-transfer-vs-transferfrom": "d91a7a23363c3a763f1f6500fd2ab5280d55846c249625b18944d26eaaea70fe"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -2498,7 +2558,7 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2507,12 +2567,12 @@
         },
         "note": "P27 live from ledger 63386819 and first-class CAP-0071 delegation. Legacy P20 custom-account delegation remains a distinct true statement. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3",
           "q-soroban-auth-delegation-p27": "524de606abd96d28a102ff4fac12efb8a45e191ae102b70a27d99231d82c05f9"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -2523,7 +2583,7 @@
           "q-ti-connect-wallet-button-code",
           "q-tool-smart-wallet-repos-discovery"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2533,10 +2593,10 @@
         "note": "Official docs/soroban-examples/SDKs/OZ remain current; Wallets Kit is optional multi-wallet abstraction, not mandatory for Freighter-only flows. Re-swept 2026-07-28: after Scout began returning the two direct repository rows, wallet-library and source-bound discovery claims remain consistent.",
         "memberContentSha256": {
           "q-ti-connect-wallet-button-code": "a8ed70870eb800d5b50c48821af0071902f9351b83729bf0b44d467eff9b099f",
-          "q-tool-smart-wallet-repos-discovery": "d2b329ba8545fcf4b9e0e72205d58eb2283beb1cdc4ad2cb30152d6b4a3068b9"
+          "q-tool-smart-wallet-repos-discovery": "68ccb7c5f0c3fad8c53ed6904384ea6daa4bc54ac2e9cac11984019ba1bbe863"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -2547,7 +2607,7 @@
           "q-sep-41-token-interface",
           "q-sor-sac-introspection"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2556,11 +2616,11 @@
         },
         "note": "corrected; sd-020. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-sep-41-token-interface": "61feeda011b8564c02b50509a67a5e8e17e17a2d8fef1b88b90c7b9930cd9d2e",
+          "q-sep-41-token-interface": "fd653e16d746539eae5064717ba28b9fb705dc4b1627c198da6e08e249a9337c",
           "q-sor-sac-introspection": "16a2ca0266d6632272804914fde90f34cc6949487a0ec908a7e2fb176b650fe3"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -2572,7 +2632,7 @@
           "q-sor-sep41-transfer-vs-transferfrom",
           "q-soroban-token-transfer-pattern"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2581,12 +2641,12 @@
         },
         "note": "corrected atomically. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-sep-41-token-interface": "61feeda011b8564c02b50509a67a5e8e17e17a2d8fef1b88b90c7b9930cd9d2e",
-          "q-sor-sep41-transfer-vs-transferfrom": "cd602281463b934b9a36c640db343e4aeec979f2d1e9a0d4dccec83322420f15",
+          "q-sep-41-token-interface": "fd653e16d746539eae5064717ba28b9fb705dc4b1627c198da6e08e249a9337c",
+          "q-sor-sep41-transfer-vs-transferfrom": "d91a7a23363c3a763f1f6500fd2ab5280d55846c249625b18944d26eaaea70fe",
           "q-soroban-token-transfer-pattern": "d518800c40e08681c3ca2290bb42f99ae15c2d36ba5f40c7b1c0b0c52ec171bc"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -2693,7 +2753,7 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2703,12 +2763,12 @@
         "note": "stale spans replaced; delegation/V2 mechanics and CAP Accepted-versus-network-live distinction retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-pc-protocol-upgrade-timing": "6ac860b7548a5e9beee9842c793265d1301116f3cbee1573ed0dd2a7b6d801a1",
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3",
           "q-soroban-auth-delegation-p27": "524de606abd96d28a102ff4fac12efb8a45e191ae102b70a27d99231d82c05f9"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -2765,13 +2825,17 @@
           "q-protocol-cap-vs-sep",
           "q-protocol-validator-upgrade-vote"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "note": "CAP-process target corrected; coherent CAP-vs-SEP and validator siblings retained.",
         "memberContentSha256": {
-          "q-protocol-cap-process": "2bdb93b5f756f37a616f8c66da92ee0e480567084a4a1a48a19080a1bcf77f5b",
+          "q-protocol-cap-process": "bc7c3625bacdc265ddc9e9745f4b091b174fe4f78e00559be0a955e068819cb4",
           "q-protocol-cap-vs-sep": "e2e7cf884ba4ef657e71acc45147dab5578f5515e5c26806568e77f0e7ff0b08",
           "q-protocol-validator-upgrade-vote": "808bed902c1e811ba3428e27ec037a3c6059d02bb13ffd86d5e692d978076e88"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2834,7 +2898,7 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2843,12 +2907,12 @@
         },
         "note": "Address-with-delegates chains and address-bound V2 credentials are P27/CAP-0071; Pubnet activated at ledger 63386819 even though the registry still says Accepted. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3",
           "q-soroban-auth-delegation-p27": "524de606abd96d28a102ff4fac12efb8a45e191ae102b70a27d99231d82c05f9"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -2863,7 +2927,7 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2873,14 +2937,14 @@
         "note": "P27 is current on Mainnet from ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features. P28/AddressV2 remains a future recheck, not current activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "eb1964bf14a5b3ff3cf52c1180d66442e3ff53822c3a0319537608f3e8f0d827",
-          "q-pc-protocol-27-zipper": "dbe40bb1ac78cd3d3de206c9ebfef4488a06b627b37b44168029fb60785181d2",
+          "q-pc-protocol-27-zipper": "8501d068e12ffb702a0337d58f94f619fea066c3e26dbff01702048549dbc981",
           "q-pc-protocol-upgrade-timing": "6ac860b7548a5e9beee9842c793265d1301116f3cbee1573ed0dd2a7b6d801a1",
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3",
           "q-soroban-auth-delegation-p27": "524de606abd96d28a102ff4fac12efb8a45e191ae102b70a27d99231d82c05f9"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -2895,7 +2959,7 @@
           "q-scf-how-to-apply",
           "q-scf-vs-sdf-enterprise-fund"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -2907,9 +2971,13 @@
           "q-edge-scf-v7-centralization-myths": "82fd53acdbb9e5198d8a35ea43bb2188672afbb2d51b0cf8945d7f633ed5ebf5",
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
           "q-scf-build-tracks": "142edb2a6a1254d6454411084074c99b6a8986fa63caec6efee43d646fd31767",
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb",
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
           "q-scf-how-to-apply": "1b874200302019faaa386cd5c7cd60c91ae948965c56a35b76c8e77a37d07f8b",
           "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2920,7 +2988,7 @@
           "q-scf-round-43-results",
           "q-scf-total-distributed"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-11",
         "reSwept": {
           "date": "2026-07-11",
@@ -2929,9 +2997,13 @@
         },
         "note": "SCF #43 is a dated round result (29 projects / $3,139,069 worth of XLM), not the cumulative program total or the current-round state.",
         "memberContentSha256": {
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb",
-          "q-scf-round-43-results": "93ac5cb3d49199eea2ee2a442cebcc37e06873e8a0d28a7136604888a7020690",
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
+          "q-scf-round-43-results": "2121ee826d497e68cbbc1131846eef55f1a8b782d8c6d1e1e0bfd23c3a077204",
           "q-scf-total-distributed": "d23156d29517c533c1f5ce836e15d119deaa5838a3a119b6cae62b99c0d35b7d"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3152,7 +3224,7 @@
           "q-tool-oracle-repo-live",
           "q-tool-zk-repo-live"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "note": "All six members are mutually compatible on one boundary, and each grades the subset its own golden states: repository rows come from the live index at answer time (no static roster), and repoScore never establishes properties outside its freshness/traction/authority formula — correctness, security, audit scope, maintenance, production readiness (no member grades every property; e.g. the indexer and sdk discovery cases do not grade the audit-scope non-inference and the smart-wallet case does not grade the correctness one, but no member permits any inference the others forbid). The three DISCOVERY-TABLE members (q-tool-indexer-repos-discovery, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery) additionally grade the richer per-row contract — response generatedAt/as-of, exact owner/name URL, role, maintainer tier, archive state, dated activity, external-supplement labelling, exact-zero source scoping, and extending the non-inference rule to ownership and to stars/semantic rank — which the three REPO-LIVE members (q-tool-passkey-repo-live, q-tool-oracle-repo-live, q-tool-zk-repo-live) do not grade; the repo-live members instead grade explicit repoScore comparison/sort with superlatives scoped to the checked rows, plus their own signal separations (codeVerified is scan evidence not a security audit; hackathonWinner stays index-relative absent exact event evidence). Verified 2026-07-28 (todo 1253 Lane B for the discovery trio; todo 1256 F5 for the repo-live trio, each read in full). 2026-07-28 adversarial review (ADV-2, two passes) corrected this note: earlier revisions attributed the full discovery-table contract, the ownership clause, and the stars/semantic-rank scope to all six members; membership asserts only the all-six rule above. Re-swept 2026-07-28 (ADV-1 reconciliation): hash churn from scoping the repo-live members blanket quality-verdict wording to the specific non-inferences and adding upstream-schema evidence plus durable rootCause pointers; the edits move the members further toward this cluster rule. Re-swept 2026-07-28 (G-GT-1): hash churn from aligning two corroboration claims (oracle/passkey) to ranking/scan wording; claim meaning unchanged.",
         "memberContentSha256": {
@@ -3160,11 +3232,11 @@
           "q-tool-oracle-repo-live": "a3b41b87a96c9746af98afdb137cf145c0e13c3c73a98386f8c52c4fd9ee42fc",
           "q-tool-passkey-repo-live": "f26aa896e61edaac95d492774eefc4f227d25e934a353a126efb99e25acccd9f",
           "q-tool-sdk-repos-discovery": "108f1a96ba785319b504854d6b4ffb29ea8f220affcad7e6fc5f494e9bc7eb87",
-          "q-tool-smart-wallet-repos-discovery": "d2b329ba8545fcf4b9e0e72205d58eb2283beb1cdc4ad2cb30152d6b4a3068b9",
+          "q-tool-smart-wallet-repos-discovery": "68ccb7c5f0c3fad8c53ed6904384ea6daa4bc54ac2e9cac11984019ba1bbe863",
           "q-tool-zk-repo-live": "266eff3a9c057b4656d1239b2dd98878ab9c16394bf0f56f8946f4e26d16f063"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-05",
           "reason": "member-content-changed"
         }
       },
@@ -3177,14 +3249,18 @@
           "q-tool-cli-skills-discovery",
           "q-tool-skill-detail-install"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-30",
         "note": "All four cases grade one scout.listSkills/scout.getSkill surface and are mutually compatible on it — the full filter-enum/as-of contract is owned by q-tool-cli-skills-discovery (with q-tool-skill-detail-install owning exact-slug miss semantics), while the two gap-lane cases assert the miss-semantics and discovery subset without contradicting the rest: the advertised kind and source enums describe accepted filters and never promise a populated row per category; an empty category is an honest current result rather than permanent absence; rows must be reported with an answer-time generatedAt/as-of plus row-level install, owner, and maturity provenance; a topical name must be resolved against the live catalog before an exact-slug detail call rather than guessed; and a getSkill call with a non-current slug is a SOFT-EMPTY source-scoped miss (src/adapters/scout.ts maps the 404 to kind 'soft-empty'), never an operation error and never open-world absence. Verified 2026-07-28 (todo 1253 Lane B, extended by the lead): Lane B initially recorded the two gap-lane cases as a TENSION cluster because q-gap-scout-get-skill-detail graded the miss as an operation error and q-gap-scout-list-skill-directory named the retired 'soroban' slug undated; both were corrected in the same change (F2, F3) against the served adapter contract and the 2026-07-28 slug re-verification, after which all four members were re-read and agree with no divergence. Re-swept 2026-07-28: hash churn from rewording the adapter-source reference in q-gap-scout-get-skill-detail to satisfy the ADR-0003 leak lint; no claim changed. Re-swept 2026-07-28: hash churn from the C1 date-scoping of q-gap-scout-list-skill-directory (answer and corroboration now carry the 2026-07-11 snapshot date and the smart-contracts slug retirement); the edit strengthens the dated-observation discipline, no claim changed. Re-swept 2026-07-30 (drift-surface audit, todo 1285): hash churn from the de-vendoring wording sweep — q-gap-scout-list-skill-directory and q-gap-scout-get-skill-detail said directory entries were not all \"bundled\"/\"mirrored bundled\" skills, describing a storage shape this repo no longer has; both now say \"skills this gateway serves\". The distinction they draw is unchanged and is exactly what the other two members rely on. Both unchanged members were re-read: q-tool-cli-skills-discovery grades live-rows-vs-enums and q-tool-skill-detail-install grades topic-vs-exact-slug resolution; neither asserts anything about how skill bodies are stored, so no member contradicts another. No claim changed.",
         "memberContentSha256": {
-          "q-gap-scout-get-skill-detail": "34b832914e5d1df98c2290a5dda4c47aee1c9a6fd1a81375d1cd644d37f7fe8b",
+          "q-gap-scout-get-skill-detail": "96371833d9b0f5c68dfb5aedb28f94f5c01a2ce01d30a5b4983cd7c3116a02ca",
           "q-gap-scout-list-skill-directory": "f53e28dbfd110024498617fc9626011e86d54eba8c769c193215817aff545ac6",
           "q-tool-cli-skills-discovery": "614374974b486b40f6bb2a2dd636220337de549c9511a98662a24cef01fc4dff",
           "q-tool-skill-detail-install": "0685645027b5087c99333eac46b1b7b0fed7016e977ebfc0fb19b9262c34c5f8"
+        },
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3250,7 +3326,12 @@
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "82fd53acdbb9e5198d8a35ea43bb2188672afbb2d51b0cf8945d7f633ed5ebf5",
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb"
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685"
+        },
+        "verdict": "reopen",
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3338,10 +3419,15 @@
         ],
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "eb1964bf14a5b3ff3cf52c1180d66442e3ff53822c3a0319537608f3e8f0d827",
-          "q-pc-protocol-27-zipper": "dbe40bb1ac78cd3d3de206c9ebfef4488a06b627b37b44168029fb60785181d2",
+          "q-pc-protocol-27-zipper": "8501d068e12ffb702a0337d58f94f619fea066c3e26dbff01702048549dbc981",
           "q-pc-protocol-upgrade-timing": "6ac860b7548a5e9beee9842c793265d1301116f3cbee1573ed0dd2a7b6d801a1",
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-soroban-auth-delegation-p27": "524de606abd96d28a102ff4fac12efb8a45e191ae102b70a27d99231d82c05f9"
+        },
+        "verdict": "reopen",
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3379,7 +3465,12 @@
           "q-scf-round-43-results"
         ],
         "memberContentSha256": {
-          "q-scf-round-43-results": "93ac5cb3d49199eea2ee2a442cebcc37e06873e8a0d28a7136604888a7020690"
+          "q-scf-round-43-results": "2121ee826d497e68cbbc1131846eef55f1a8b782d8c6d1e1e0bfd23c3a077204"
+        },
+        "verdict": "reopen",
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3502,7 +3593,12 @@
         ],
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "82fd53acdbb9e5198d8a35ea43bb2188672afbb2d51b0cf8945d7f633ed5ebf5",
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb"
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685"
+        },
+        "verdict": "reopen",
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3560,9 +3656,14 @@
         ],
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "eb1964bf14a5b3ff3cf52c1180d66442e3ff53822c3a0319537608f3e8f0d827",
-          "q-pc-protocol-27-zipper": "dbe40bb1ac78cd3d3de206c9ebfef4488a06b627b37b44168029fb60785181d2",
-          "q-protocol-27-cap-0071": "7fa767468113dff7fb46cb69d3caa451562dfdd27e820cd35acd10574af17fb1",
+          "q-pc-protocol-27-zipper": "8501d068e12ffb702a0337d58f94f619fea066c3e26dbff01702048549dbc981",
+          "q-protocol-27-cap-0071": "d232c2528afac6d313b530ed1ebdecfd8746b45020cb7b2c25b564686d275649",
           "q-protocol-version-history-list": "16fcda8caee456d795ddb1a05925156ff4251c1343c1d5deeeb4ac0d9a5537a3"
+        },
+        "verdict": "reopen",
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3591,9 +3692,14 @@
           "q-scf-total-distributed"
         ],
         "memberContentSha256": {
-          "q-scf-current-round": "e922bcecca92caf5228927dad8456fda093514cc8f9ab856e555d206e97f7dcb",
-          "q-scf-round-43-results": "93ac5cb3d49199eea2ee2a442cebcc37e06873e8a0d28a7136604888a7020690",
+          "q-scf-current-round": "3b91809bbadf049d7ef636bec4c83c31ab7edc0ecef0b1d78e63353618b76685",
+          "q-scf-round-43-results": "2121ee826d497e68cbbc1131846eef55f1a8b782d8c6d1e1e0bfd23c3a077204",
           "q-scf-total-distributed": "d23156d29517c533c1f5ce836e15d119deaa5838a3a119b6cae62b99c0d35b7d"
+        },
+        "verdict": "reopen",
+        "reopened": {
+          "date": "2026-08-05",
+          "reason": "member-content-changed"
         }
       },
       {

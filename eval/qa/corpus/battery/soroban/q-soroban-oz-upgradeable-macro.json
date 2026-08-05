@@ -14,7 +14,7 @@
       "Do NOT describe EVM proxy/delegatecall mechanics.",
       "Do NOT use retired UpgradeableMigratable/Internal derives as the current API or imply storage compatibility is automatic."
     ],
-    "notes": "OZ provides #[derive(Upgradeable)] / #[derive(UpgradeableMigratable)] over Soroban's native update_current_contract_wasm; access control left to implementor; Upgrader contract for atomic upgrade+migrate. Verified against OZ utils/upgradeable + the SDF upgrading-contracts guide.\nAlso good if the answer: Upgrades must be access-controlled (only an authorized admin/role can call upgrade). | Storage-key layout must remain compatible across the upgrade; a migrate hook handles state changes atomically.\nGolden cites: OpenZeppelin Stellar docs (Upgradeable module) or developers.stellar.org upgrade guide.\nGT-46 CORRECTION 2026-07-11: current OZ source replaces retired derive/Internal APIs; refresh per release."
+    "notes": "Current OpenZeppelin Stellar Contracts uses the direct `Upgradeable` trait/client/helper surface over Soroban's native update_current_contract_wasm; it does not expose the retired `#[derive(Upgradeable)]`, `UpgradeableMigratable`, or `*Internal` APIs as current. Access control remains with the implementor, and the Upgrader flow supports atomic upgrade+migrate. Verified against current OZ source/docs and the SDF upgrading-contracts guide on 2026-08-04.\nAlso good if the answer: Upgrades must be access-controlled (only an authorized admin/role can call upgrade). | Storage-key layout must remain compatible across the upgrade; a migrate hook handles state changes atomically.\nGolden cites: OpenZeppelin Stellar docs/source (Upgradeable module) or developers.stellar.org upgrade guide."
   },
   "tags": {
     "category": "soroban",
@@ -24,7 +24,7 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-04",
     "reverifyBy": "2026-12-24",
     "sources": [
       {
@@ -51,27 +51,27 @@
           {
             "class": "A",
             "ref": "A: current OpenZeppelin upgradeable documentation",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-04",
             "note": "verbatim legacy evidence descriptor imported at migration"
           },
           {
             "class": "B",
             "ref": "B: current stellar-contracts source and tests",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-04",
             "note": "verbatim legacy evidence descriptor imported at migration"
           },
           {
             "class": "A",
             "ref": "A: Stellar native contract-upgrade documentation",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-04",
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited golden described retired Upgradeable/UpgradeableMigratable derives and Internal traits as current. Current OpenZeppelin Stellar Contracts uses direct traits/helpers and explicit migration patterns over native Wasm replacement.",
+      "date": "2026-08-04",
+      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — current source still uses direct traits/helpers and explicit migration patterns over native Wasm replacement.",
       "evidence": [
         "Solo scratchpad 575 GT-46 primary 3326 and independent blind 3329 fully agreed the historical derives/Internal/Migratable surface must be replaced."
       ],

@@ -6,10 +6,10 @@
     "lumenloop.search_documents"
   ],
   "golden": {
-    "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. The recipients break down as 10 Open Track and 19 Integration Track projects; the round operated a third RFP Track but the recap lists no round-43 RFP recipients. A June 11 Stellar social post later repeated the results, so June 11 is a post date rather than an established conclusion date. A July 11 dashboard snapshot showed 28 visible selected cards totaling $3,049,069, with only 10 then labeled `Awarded`; those transient card/payment lifecycle states do not revise the official 29 / $3,139,069 selection result.",
+    "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. Its headline/prose says results span all three tracks, and a June 11 official Stellar social post repeats that wording. However, the recipient sections account for all 29 as 10 Open Track plus 19 Integration Track projects and list no RFP recipient. Report that primary-source inconsistency explicitly; do not invent an RFP winner or convert the absence of a recipient list into proof that the official all-three-tracks wording is false. June 11 is a post date, not an established conclusion date. Transient dashboard card/payment states do not revise the official 29 / $3,139,069 selection result.",
     "keyFacts": [
       "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions.",
-      "29 projects were awarded: 10 Open Track and 19 Integration Track; no round-43 RFP recipients are listed.",
+      "The official sources are internally inconsistent: headline/social say all three tracks, while recipient sections total 10 Open plus 19 Integration and list no RFP recipient.",
       "The official selection total was $3,139,069 worth of XLM; the dashboard’s transient 28 / $3,049,069 snapshot is not the final result."
     ],
     "avoid": [
@@ -18,7 +18,7 @@
       "Do NOT infer the round concluded June 11 merely from the date of a later social post.",
       "Do NOT treat the dashboard’s paid-state `Awarded` count or its incomplete 28-card / $3,049,069 snapshot as the final selection result."
     ],
-    "notes": "Official selection result: 29 / $3,139,069. Dashboard card and payment states are transient; do not use them to overwrite the recap."
+    "notes": "DISPUTED 2026-08-04: preserve 85 / 29 / $3,139,069 and the June 2 versus June 11 dates. Explicitly encode that official headline/social wording says all three tracks while section accounting is 10 Open + 19 Integration with no RFP recipient list."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -27,7 +27,8 @@
   },
   "truth": {
     "domain": "real-world",
-    "status": "confirmed",
+    "status": "disputed",
+    "asOf": "2026-08-04",
     "sources": [
       {
         "class": "A",
@@ -127,8 +128,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 N2 primary+blind (Solo 3417/3423)",
+      "date": "2026-08-04",
+      "by": "Full golden QA primary-source contradiction review; accepted in Todo 1347 c3625/c3627",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
@@ -139,7 +140,8 @@
         "Sibling sweep: q-edge-fresh-latest-scf-round identifies SCF #43 as concluded but pins no conflicting result date or amount."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        "The golden resolved an internal official-source contradiction categorically instead of representing it as disputed."
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

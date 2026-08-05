@@ -7,19 +7,19 @@
     "stellarDocs.search_rpc_horizon_data_docs"
   ],
   "golden": {
-    "answer": "There is no canonical API value that must exactly match StellarX or Scopuly unless you reproduce that product's private filters and methodology. Define the asset/pool identity, quote asset, `[start,end)` window, fee rule, price method, rounding, and stale/spam/failed-activity policy first.\n\nFor Classic SDEX/liquidity pools, use current Horizon resources/trades/effects for bounded reads and Hubble/indexers for bulk history. For Soroban/custom AMMs, use the contract's events/state through an indexer/provider schema. Compute volume by summing successful trades/swaps in the chosen quote/window; fees from the specific protocol rule; TVL from current reserves times timestamp-aligned reference prices; and price as an explicitly named last/mid/VWAP/oracle/route method. RPC is not an unbounded historical index, Hubble is historical SQL rather than guaranteed real-time, and Classic pools are not contract AMMs. If discussing Horizon lifecycle, disclose the current official wording conflict and rely on the durable endpoint-by-endpoint boundary.",
+    "answer": "There is no canonical API value that must exactly match StellarX or Scopuly unless you reproduce that product's private filters and methodology. Define the asset/pool identity, quote asset, `[start,end)` window, fee rule, price method, rounding, and stale/spam/failed-activity policy first.\n\nFor Classic SDEX/liquidity pools, use current Horizon resources/trades/effects for bounded reads and Hubble/indexers for bulk history. For Soroban/custom AMMs, use the contract's events/state through an indexer/provider schema. Compute volume by summing successful trades/swaps in the chosen quote/window; fees from the specific protocol rule; TVL from current reserves times timestamp-aligned reference prices; and price as an explicitly named last/mid/VWAP/oracle/route method. RPC is not an unbounded historical index, Hubble is historical SQL rather than guaranteed real-time, and Classic pools are not contract AMMs. Horizon remains necessary for some surfaces, but current official guidance says it is nearing end-of-life and will eventually be deprecated; use the durable endpoint-by-endpoint migration boundary.",
     "keyFacts": [
       "Requires explicit identity, quote, window, methodology, source, and as-of time.",
       "Separates Classic SDEX/pool data from Soroban AMM contract/indexer data.",
       "Provides volume, fee, TVL, and price formulas without calling one product number canonical.",
-      "Uses Hubble/indexers for history and treats Horizon lifecycle as disputed rather than a hard polarity."
+      "Uses Hubble/indexers for history and states the current official Horizon lifecycle without erasing endpoint-specific migration boundaries."
     ],
     "avoid": [
       "Do NOT claim a canonical TVL/price or exact product match without methodology.",
       "Do NOT use RPC alone for unbounded history or mix Classic pools with contract AMMs.",
-      "Do NOT inject the unrelated named COMPUTE asset or repeat one Horizon lifecycle label as undisputed."
+      "Do NOT inject the unrelated named COMPUTE asset or claim Horizon is already gone while current surfaces still require it."
     ],
-    "notes": "Verified docs on 2026-06-29. Explorer-specific formulas for StellarX/Scopuly are not public-canonical and should remain a caveat.\nAlso good if the answer: Cites official Horizon resources, Hubble/data analytics docs, and Horizon-to-RPC migration/indexer docs. | Warns that matching StellarX/Scopuly requires matching their filters, quote asset, rounding, stale-pool handling, and spam/illiquid asset policy.\nGolden cites: Official Stellar docs for Horizon resources or liquidity pools. | Official Hubble/BigQuery or data/indexer docs. | Official Horizon-to-RPC migration or RPC history docs for API boundaries.\nGT-51 CORRECTION 2026-07-11: the question uses 'compute' as a verb. Gate methodology/data boundaries, not a similarly named asset or a categorical Horizon lifecycle claim."
+    "notes": "Explorer-specific formulas for StellarX/Scopuly are not public-canonical and should remain a caveat. Current official guidance observed 2026-08-04 says Horizon remains needed for some surfaces but is nearing end-of-life and will eventually be deprecated.\nAlso good if the answer: Cites official Horizon resources, Hubble/data analytics docs, and Horizon-to-RPC migration/indexer docs. | Warns that matching StellarX/Scopuly requires matching their filters, quote asset, rounding, stale-pool handling, and spam/illiquid asset policy.\nGolden cites: Official Stellar docs for Horizon resources or liquidity pools. | Official Hubble/BigQuery or data/indexer docs. | Official Horizon-to-RPC migration or RPC history docs for API boundaries.\nGT-51: the question uses 'compute' as a verb. Gate methodology and durable data boundaries, not a similarly named asset."
   },
   "tags": {
     "category": "tooling-infra",
@@ -29,7 +29,7 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-28",
+    "asOf": "2026-08-04",
     "reverifyBy": "2027-04-08",
     "sources": [
       {
@@ -73,28 +73,28 @@
         ]
       },
       {
-        "claim": "Official Horizon lifecycle wording is disputed; durable answers should state endpoint/data-shape boundaries rather than one categorical label.",
+        "claim": "Official guidance says Horizon remains needed for some surfaces but is nearing end-of-life and will eventually be deprecated; durable answers should also retain endpoint/data-shape boundaries.",
         "verdict": "confirmed",
         "evidence": [
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc",
-            "observedAt": "2026-07-28",
+            "observedAt": "2026-08-04",
             "note": "The served endpoint mapping preserves resource-specific boundaries, including liquidity-pool trade mapping; it does not make one product's methodology canonical."
           },
           {
             "class": "F",
             "ref": "stellarDocs.search_rpc_horizon_data_docs({query:'Hubble historical data Horizon RPC indexers liquidity pools trades',hitsPerPage:10,includeContent:true})",
-            "observedAt": "2026-07-28",
-            "note": "Production Docs index returns Hubble historical pool/trade queries and the Horizon-to-RPC endpoint mapping; wording remains source-specific."
+            "observedAt": "2026-08-04",
+            "note": "Production Docs index returns Hubble historical pool/trade queries, the Horizon-to-RPC endpoint mapping, and the current end-of-life/deprecation wording."
           }
         ],
-        "note": "Legacy verdict: confirmed-with-source-conflict."
+        "note": "Current official wording converged after the earlier source conflict."
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane B Docs technical re-verification",
+      "date": "2026-08-04",
+      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
       "evidence": [
         "Production stellar-raven: stellarDocs.search_rpc_horizon_data_docs({query:'Hubble historical data Horizon RPC indexers liquidity pools trades',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data',includeContent:true}) — Hubble offers historical Horizon/RPC-like pool and trade queries.",
         "Production stellar-raven: stellarDocs.get_doc_page_sections({path:'/docs/data/apis/migrate-from-horizon-to-rpc',includeContent:true}) — resource-by-resource API mappings retained; no single explorer-market methodology is canonical.",

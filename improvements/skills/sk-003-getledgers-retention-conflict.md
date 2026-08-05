@@ -15,6 +15,8 @@ recurrences:
     evidence: upstream data skill still says getLedgers can reach genesis in four places, while official docs qualify history by provider retention and the SDF Testnet instance rejected ledger 2 outside its retained range
   - date: 2026-07-13
     evidence: structured HTTP probe returned 200 and still found both "Infinite Scroll" and "back to genesis" in the upstream data skill
+  - date: 2026-08-04
+    evidence: eval/qa/results/2026-08-04T23-25-53-variantA.json q-ti-compute-token-lp-market-data repeated the skill's unconditional getLedgers/"Infinite Scroll" reach-to-genesis claim; current official method guidance still limits pagination to provider retention unless archive/data-lake support is configured
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/data/SKILL.md

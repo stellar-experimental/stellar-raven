@@ -386,6 +386,54 @@ production change was ever in scope.** Durable side-products landed instead:
 arm is identifiable and verifiable against a known arm text, and `--judge-stored` gained crash-safe per-row
 persistence plus re-attemptable judge-side error verdicts (review findings 3 and 10).
 
+## 2026-08-04 full-battery truth-maintenance round (490 cases; not a re-baseline)
+
+Purpose: inspect every owned golden and every produced answer, not measure a product change. The
+run used clean runner/server revision `8fbeaf9641b969c9bf01239df33b8209dae11017`, variant A,
+`search-execute` / `search`, `claude-sonnet-5` for answering and judging, and rubric/pack v2.4/p3.
+The 49 immutable ten-row artifacts run from `2026-08-04T16-23-45-variantA.json` through
+`2026-08-05T00-32-54-variantA.json`; results remain local-only. Their ordered union is exactly
+490 canonical unique ids (JSON id hash `edbbfc36…a746`, newline id hash `b496a58d…902`) with
+uniform case, operation, manifest, source-revision, and two-tool-surface stamps.
+
+One primary row, `q-crp-remittance-founder-advisory`, carried a nonempty connection-closed
+payload plus `agent.error="success"`. It was therefore treated as a transport E despite its
+stored W, then rerun once in sealed repair artifact `2026-08-05T00-37-39-variantA.json`
+(file SHA-256 `09ecf09a…aebf`) and accepted as P. The primary artifacts were not modified. Raw
+stored verdicts were **179C / 218P / 93W / 0E**; replacing only that invalid row yields
+**179C / 219P / 92W / 0E**. A shared runner predicate now requires both a nonempty answer and
+no agent error before building evidence or spending on a judge, with a focused regression test.
+
+Every row then received independent answer-visible review against its transcript, owned golden,
+and current primary sources. The final repaired independent disposition is:
+
+| result | count | rate |
+| --- | ---: | ---: |
+| correct | **154** | **31.4286%** |
+| partial | **218** | **44.4898%** |
+| wrong | **118** | **24.0816%** |
+| error | **0** | **0%** |
+
+The explicit half-credit instrument is **(154 + 0.5×218) / 490 = 263 / 490 = 53.6735%**;
+strict correctness is **154 / 490 = 31.4286%**. This reviewed full-battery score is diagnostic,
+not a new baseline and not directly comparable to sample-30 checkpoints. Executed artifact cost
+was **$312.9159162**; including the precharge ledger, **$317.4159162**, below the $500 cap.
+
+Post-run truth maintenance corrected provenance-bearing stale or false goldens and hardened the
+improvements ledger. Those edits generated corpus SHA-256 `256ff1bb…9397` and were **not paid
+remeasured**, so no score gain is claimed. The sealed run remains evidence for its pinned input
+snapshots; the current generated corpus is the forward-looking truth source.
+
+The independent 154/218/118 disposition is preserved row by row in Solo Todo 1345 and scratchpad
+761 (`solo://proj/49/todo/1345`, `solo://proj/49/scratchpad/truth-maintenance-20--761`); unlike the
+artifact tallies, it is a reviewed classification rather than a locally reproducible judge output.
+Regenerating the consistency register leaves 43 clusters with a `reopen` verdict, 39 more than
+HEAD, because the corrected gospel fields intentionally invalidate prior cross-case confirmations.
+Forty clusters carry a `2026-08-05` reopening stamp (including one pre-existing reopened cluster),
+the UTC rollover of this 2026-08-04 local round. Register-wide, the four numeric invariants and two
+date-contingent traps bring the totals to 49 reopened entries and 46 stamped on `2026-08-05`.
+These are explicit follow-up signals, not remeasurement results.
+
 ## Current baseline of record
 
 The 2026-07-11 post-rebuild baseline is recorded in

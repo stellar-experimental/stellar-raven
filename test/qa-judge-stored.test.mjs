@@ -177,6 +177,35 @@ describe("run-qa --judge-stored", () => {
     }
   });
 
+  it("does not spend on a nonempty API-error answer", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      results.rows[1].answer = "API Error: connection closed";
+      results.rows[1].agent.error = "success";
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+
+      const calls = [];
+      await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: stubJudge(calls),
+        log: () => {}
+      });
+
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(calls.map((call) => call.id)).toEqual(["q-fixture-answered"]);
+      expect(written.rows[1].verdict).toMatchObject({
+        score: "error",
+        rationale: "agent returned a transport/API error despite CLI success subtype"
+      });
+      expect(written.meta.totalJudgeCostUsd).toBeCloseTo(0.25);
+      expect(written.meta.judgeStored.judgedIds).toEqual(["q-fixture-answered"]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("re-attempts judge-side error verdicts on answered rows, but not empty-answer errors", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {

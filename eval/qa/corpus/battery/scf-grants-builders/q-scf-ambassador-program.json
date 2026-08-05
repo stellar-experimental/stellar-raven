@@ -5,25 +5,27 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "- The **Stellar Ambassador Program** supports builders and educators forming **regional chapters** (events, meetups, documentation, local growth). (https://stellar.gitbook.io/ambassador-program)\n- Under **SCF v7.0**, ambassadors can **recommend Instawards — up to $15,000 in XLM per project** — for early-stage builders. (https://stellar.gitbook.io/scf-handbook/scf-awards/instawards)\n- **Instawards have no open application**: they come via **ambassador / local-chapter recommendation**, which makes reaching a local chapter a recommended first rung of the funding ladder. (https://stellar.gitbook.io/scf-handbook/scf-awards/instawards)\n- Ambassadors do **not** award the **$150K SCF Build grant** — their funding lever is the **Instawards (≤$15K)**, and the Ambassador Program is distinct from SCF Verified Member / NQG governance roles. (https://stellar.gitbook.io/ambassador-program)",
+    "answer": "- The **Stellar Ambassador Program** supports builders and educators forming regional chapters for events, meetups, documentation, and local growth.\n- Under SCF v7, ambassadors can recommend **Instawards**, up to $15,000 in XLM per project, for early-stage builders; there is no open Instaward application.\n- Chapters may recommend or referral-route teams, and an Instaward may help an eligible project prepare for a separate SCF Build application. This is a pipeline, not automatic progression or funding.\n- Ambassadors do **not** approve the $150K SCF Build award. SDF/SCF retains approval, and the Ambassador Program remains distinct from Verified Member/NQG governance roles.",
     "keyFacts": [
       "The Stellar Ambassador Program supports builders/educators forming regional chapters (events, meetups, docs).",
       "Under SCF v7.0, ambassadors can recommend Instawards (up to $15K XLM per project) for early-stage builders."
     ],
     "avoid": [
-      "Do NOT claim ambassadors directly award the $150K SCF Build grant — their funding power is Instawards (≤$15K), not Build.",
+      "Do NOT claim ambassadors directly approve the $150K SCF Build grant or that an Instaward guarantees progression; chapters may recommend/referral-route a separate SDF-reviewed Build application.",
       "Do NOT confuse the Ambassador Program with SCF Verified Members / NQG governance roles."
     ],
-    "notes": "Dossier §7.2. Trap: ambassador → Instawards (≤$15K), not Build ($150K).\nAlso good if the answer: Instawards have no open application — they come via ambassador/chapter recommendation.\nGolden cites: stellar.gitbook.io/ambassador-program and the SCF Instawards handbook page."
+    "notes": "CORRECTION 2026-08-04: preserve direct-award authority versus referral-pipeline progression. Chapters can recommend/referral-route and Instawards can prepare an eligible project for a separate Build application; SDF/SCF retains approval and no funding/progression is automatic."
   },
   "tags": {
     "category": "scf-grants-builders",
     "service": "scout",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
+    "asOf": "2026-08-04",
+    "reverifyBy": "2027-02-04",
     "sources": [
       {
         "class": "A",
@@ -34,13 +36,29 @@
         "class": "A",
         "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/introducing-the-stellar-ambassador-program",
+        "note": "Current One Pipeline description."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+        "note": "Ambassador-recommended Instawards can prepare teams for the Build pipeline; SDF retains approval."
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-36-scf-programs-tiers-tracks-ratios accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-04",
+      "by": "Full golden QA Ambassador pipeline verification; accepted in Todo 1347 c3625/c3627",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "https://stellar.org/blog/ecosystem/introducing-the-stellar-ambassador-program",
+        "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+        "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules"
+      ],
+      "rootCause": [
+        "freshness-drift",
+        "The golden collapsed direct award authority with the now-explicit referral and readiness pipeline."
       ]
     },
     "origin": "raven-next q-scf-ambassador-program"

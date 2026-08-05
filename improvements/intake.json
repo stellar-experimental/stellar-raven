@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-07-27",
+  "updated": "2026-08-04",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -153,7 +153,7 @@
     },
     "sd-034": {
       "repo": "stellar/stellar-docs",
-      "reason": "The current smart-wallet guide routes greenfield readers to legacy Passkey Kit without carrying its upstream unaudited-demo and no-real-value warning or its Smart Account Kit successor."
+      "reason": "The current smart-wallet guide presents only Passkey Kit and omits the separate, non-drop-in Smart Account Kit authorization model; the former legacy/successor premise expired."
     },
     "sd-035": {
       "repo": "stellar/stellar-docs",
@@ -166,6 +166,10 @@
     "sd-037": {
       "repo": "stellar/stellar-protocol",
       "reason": "SLP proposal-family discoverability is rooted in the normative stellar-protocol limits/ source and needs canonical family metadata/cross-links."
+    },
+    "sd-039": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Official Tools pages conflate the self-hosted OpenZeppelin Relayer with the managed Channels service."
     },
     "sk-003": {
       "repo": "stellar/stellar-dev-skill"
@@ -194,6 +198,10 @@
       "repo": "stellar/stellar-dev-skill",
       "reason": "The served upstream agentic-payments skill needs current MPP Session terminology."
     },
+    "sk-013": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The upstream assets skill's trustline-removal example omits balance, liability, offer, and liquidity-pool deletion preconditions."
+    },
     "sls-023": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Broad RWA discovery exposes entity-level status without product-level Stellar deployment state, allowing planned DTCC work and unverified/tooling rows to be presented as live tokenized products."
@@ -217,6 +225,14 @@
     "sls-055": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Scout research omits canonical non-blog SDF organizational pages, leaving current legal-structure, fund-scope, mandate, leadership, and report claims without quotable coverage."
+    },
+    "sls-058": {
+      "repo": "Stellar-Light/stellarlight",
+      "reason": "SCF funding linkage and per-round reconciliation metadata remain a Scout data-contract concern; legacy rows still omit scfRoundAwards."
+    },
+    "sls-060": {
+      "repo": "Stellar-Light/stellarlight",
+      "reason": "Closed RFP detail pages should suppress or replace funding-application calls to action."
     }
   }
 }
