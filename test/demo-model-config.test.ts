@@ -1,5 +1,6 @@
 import { streamText } from "ai";
 import { createWorkersAI } from "workers-ai-provider";
+import { openai } from "workers-ai-provider/openai";
 import { describe, expect, it } from "vitest";
 import {
   DEMO_FALLBACK_MODEL,
@@ -16,6 +17,7 @@ import {
   DEMO_REASONING_EFFORT_OVERRIDE_VAR,
   DEMO_TEMPERATURE,
   demoEffectiveOpenAiApiMode,
+  demoGatewayOptions,
   demoOpenAiApiModeFromOverride,
   demoOpenAiProviderOptions,
   demoGatewayTransportSettings,
@@ -27,14 +29,31 @@ import {
   demoWorkersAiReasoningEffort
 } from "../src/demo/model-config";
 
-describe("demo model config", () => {
-  it("disables AI Gateway logging for every model transport", () => {
-    for (const model of [DEMO_PRIMARY_MODEL, DEMO_GROK_CONTROL_MODEL, DEMO_KIMI_CONTROL_MODEL]) {
-      expect(demoModelSettings(model, "demo-affinity", "high").extraHeaders).toMatchObject({
-        "cf-aig-collect-log": "false",
-        "x-session-affinity": "demo-affinity"
-      });
+function openAiSseResponse(model: string): Response {
+  const chunks = [
+    {
+      id: "test",
+      object: "chat.completion.chunk",
+      created: 1,
+      model,
+      choices: [{ index: 0, delta: { role: "assistant", content: "ok" }, finish_reason: null }]
+    },
+    {
+      id: "test",
+      object: "chat.completion.chunk",
+      created: 1,
+      model,
+      choices: [{ index: 0, delta: {}, finish_reason: "stop" }],
+      usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 }
     }
+  ];
+  const body = `${chunks.map((chunk) => `data: ${JSON.stringify(chunk)}\n\n`).join("")}data: [DONE]\n\n`;
+  return new Response(body, { headers: { "content-type": "text/event-stream" } });
+}
+
+describe("demo model config", () => {
+  it("disables AI Gateway logging at the binding boundary", () => {
+    expect(demoGatewayOptions("test-gateway")).toEqual({ id: "test-gateway", collectLog: false });
   });
 
   it("uses the gauntlet winner with a fast fallback, conservative sampling, and configured default reasoning", () => {
@@ -104,12 +123,14 @@ describe("demo model config", () => {
     expect(demoGatewayTransportSettings("xai/grok-4.5")).toEqual({
       transport: "gateway",
       byokAlias: "default",
-      resume: false
+      resume: false,
+      collectLog: false
     });
     expect(demoGatewayTransportSettings("grok/grok-4.5")).toEqual({
       transport: "gateway",
       byokAlias: "default",
-      resume: false
+      resume: false,
+      collectLog: false
     });
     expect(demoGatewayTransportSettings("openai/gpt-5.4")).toEqual({ resume: false });
   });
@@ -150,8 +171,11 @@ describe("demo model config", () => {
   });
 
   it("passes reasoning effort, temperature, and session affinity for Workers AI catalog models", async () => {
-    const calls: Array<{ model: string; inputs: Record<string, unknown>; options?: { extraHeaders?: Record<string, string> } }> =
-      [];
+    const calls: Array<{
+      model: string;
+      inputs: Record<string, unknown>;
+      options?: { extraHeaders?: Record<string, string>; gateway?: { id: string; collectLog?: boolean } };
+    }> = [];
     const binding = {
       async run(model: string, inputs: Record<string, unknown>, options?: { extraHeaders?: Record<string, string> }) {
         calls.push({ model, inputs, options });
@@ -162,7 +186,10 @@ describe("demo model config", () => {
       }
     };
 
-    const workersai = createWorkersAI({ binding: binding as unknown as Ai });
+    const workersai = createWorkersAI({
+      binding: binding as unknown as Ai,
+      gateway: demoGatewayOptions("test-gateway")
+    });
     const result = streamText({
       model: workersai(
         DEMO_KIMI_CONTROL_MODEL,
@@ -182,6 +209,77 @@ describe("demo model config", () => {
     expect(calls[0]?.inputs.temperature).toBe(DEMO_TEMPERATURE);
     expect(calls[0]?.inputs.reasoning_effort).toBe(demoWorkersAiReasoningEffort(DEMO_REASONING_EFFORT));
     expect(calls[0]?.options?.extraHeaders?.["x-session-affinity"]).toBe("demo-test-affinity");
-    expect(calls[0]?.options?.extraHeaders?.["cf-aig-collect-log"]).toBe("false");
+    expect(calls[0]?.options?.gateway?.collectLog).toBe(false);
+  });
+
+  it("passes collectLog=false through the OpenAI catalog run transport", async () => {
+    const calls: Array<{
+      model: string;
+      options: { gateway?: { id: string; collectLog?: boolean }; extraHeaders?: Record<string, string> };
+    }> = [];
+    const binding = {
+      async run(model: string, _inputs: Record<string, unknown>, options: (typeof calls)[number]["options"]) {
+        calls.push({ model, options });
+        return openAiSseResponse(DEMO_PRIMARY_MODEL);
+      }
+    };
+    const workersai = createWorkersAI({
+      binding: binding as unknown as Ai,
+      gateway: demoGatewayOptions("test-gateway"),
+      providers: [openai],
+      resume: false
+    });
+    const result = streamText({
+      model: workersai(
+        DEMO_PRIMARY_MODEL,
+        demoModelSettings(DEMO_PRIMARY_MODEL, "demo-test-affinity", DEMO_REASONING_EFFORT) as never
+      ),
+      messages: [{ role: "user", content: "hi" }]
+    });
+    for await (const _ of result.fullStream) {
+      // Drain stream so the provider call runs.
+    }
+
+    expect(await result.text).toBe("ok");
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.model).toBe(DEMO_PRIMARY_MODEL);
+    expect(calls[0]?.options.gateway).toEqual({ id: "test-gateway", collectLog: false });
+    expect(calls[0]?.options.extraHeaders).toEqual({ "x-session-affinity": "demo-test-affinity" });
+  });
+
+  it("passes collectLog=false through the stored-key gateway transport", async () => {
+    let entries: Array<{ headers: Record<string, string> }> = [];
+    const binding = {
+      gateway(id: string) {
+        expect(id).toBe("test-gateway");
+        return {
+          async run(nextEntries: Array<{ headers: Record<string, string> }>) {
+            entries = nextEntries;
+            return openAiSseResponse(DEMO_GROK_CONTROL_MODEL);
+          }
+        };
+      }
+    };
+    const workersai = createWorkersAI({
+      binding: binding as unknown as Ai,
+      gateway: demoGatewayOptions("test-gateway"),
+      providers: [openai],
+      resume: false
+    });
+    const result = streamText({
+      model: workersai(
+        DEMO_GROK_CONTROL_MODEL,
+        demoModelSettings(DEMO_GROK_CONTROL_MODEL, "demo-test-affinity", DEMO_REASONING_EFFORT) as never
+      ),
+      messages: [{ role: "user", content: "hi" }]
+    });
+    for await (const _ of result.fullStream) {
+      // Drain stream so the provider call runs.
+    }
+
+    expect(await result.text).toBe("ok");
+    expect(entries).toHaveLength(1);
+    expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
+    expect(entries[0]?.headers["x-session-affinity"]).toBe("demo-test-affinity");
   });
 });
