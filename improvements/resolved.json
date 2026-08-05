@@ -1443,6 +1443,20 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b8acfff36ec6a4587b63457efba530350f22c3ee/improvements/stellar-light-scout/sls-056-deduped-project-count-metadata.md"
     },
     {
+      "id": "sls-057",
+      "title": "The proposed Denelle Dixon coverage gap does not reproduce on the current live",
+      "service": "stellar-light-scout",
+      "discovered": "2026-07-27",
+      "resolved": "2026-08-05",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-08-05T21:22Z independent live Scout: Denelle Dixon exact-name returned 1/1; CEO with Leadership returned 1/1; Leadership roster returned 12/12 with three adjacent exact-name controls; SDF primary team page matched. q=SDF CEO remained 0/0 because multi-token AND semantics leave SDF unmatched, not because the Denelle record is absent.",
+      "reviewEvidence": "Independent Grok 4.5 high reviewer Solo process 4351, todo 1384 comment 3742, repeated the live and primary-source checks and approved never-filed retirement.",
+      "sourceCommit": "ca496032405774b92bc90fc09eb1d100d3f0979e",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ca496032405774b92bc90fc09eb1d100d3f0979e/improvements/stellar-light-scout/sls-057-getpeople-sdf-leadership-recall.md"
+    },
+    {
       "id": "sls-058",
       "title": "Scout's structured SCF funding fields disagree with the official SCF submission",
       "service": "stellar-light-scout",
