@@ -3,7 +3,7 @@
  * unit tests can cover semantics without importing worker-only modules.
  */
 import type { DemoFrame } from "./frames.ts";
-import { hashPrefix, preview } from "../observability.ts";
+import { hashPrefix } from "../observability.ts";
 
 export type DemoUsage = {
   cacheReadTokens: number | undefined;
@@ -25,9 +25,7 @@ export type DemoStopReasonClass =
 export type DemoFinalTextTelemetry = {
   hadFinalText: boolean;
   answerChars: number;
-  answerPreview: string | null;
   finalTextChars: number;
-  finalPreview: string | null;
   endedWithToolCalls: boolean;
   missingFinalText: boolean;
   finalNeededButMissing: boolean;
@@ -35,9 +33,7 @@ export type DemoFinalTextTelemetry = {
   stopReasonClass: DemoStopReasonClass;
 };
 export type DemoInputTelemetry = {
-  latestUserHash: string | null;
   latestUserChars: number;
-  latestUserPreview: string | null;
   historyMessages: number;
   historyChars: number;
   userMessages: number;
@@ -46,19 +42,13 @@ export type DemoInputTelemetry = {
 export type DemoProviderErrorTelemetry = {
   providerErrorName: string;
   providerErrorStatus: number | null;
-  providerErrorReason: string | null;
   providerErrorProvider: string;
   providerErrorModel: string;
   providerErrorAttempt: number;
-  providerErrorMessagePreview: string | null;
 };
 export type DemoTerminalProviderErrorTelemetry = DemoProviderErrorTelemetry & {
   providerErrorTerminal: boolean;
 };
-
-const DEMO_FINAL_PREVIEW_CHARS = 180;
-const DEMO_INPUT_PREVIEW_CHARS = 180;
-const DEMO_PROVIDER_ERROR_PREVIEW_CHARS = 300;
 
 export function isMeaningfulDemoOutput(frame: DemoFrame): boolean {
   switch (frame.type) {
@@ -102,16 +92,13 @@ export function sumDemoUsage(reports: DemoUsage[]): DemoUsage | undefined {
 
 export function demoFinalTextTelemetry(finalText: string, finishReason: string): DemoFinalTextTelemetry {
   const hadFinalText = finalText.trim().length > 0;
-  const answerPreview = hadFinalText ? preview(sanitizeDemoPreviewText(finalText), DEMO_FINAL_PREVIEW_CHARS) : null;
   const endedWithToolCalls = finishReason === "tool-calls";
   const missingFinalText = !hadFinalText;
   const budgetExhausted = endedWithToolCalls || finishReason === "length";
   return {
     hadFinalText,
     answerChars: finalText.length,
-    answerPreview,
     finalTextChars: finalText.length,
-    finalPreview: answerPreview,
     endedWithToolCalls,
     missingFinalText,
     finalNeededButMissing: missingFinalText && finishReason !== "empty-fallback",
@@ -126,10 +113,7 @@ export async function demoInputTelemetry(
 ): Promise<DemoInputTelemetry> {
   const latestUser = [...messages].reverse().find((message) => message.role === "user")?.content ?? null;
   return {
-    latestUserHash: latestUser === null ? null : await hashPrefix(latestUser),
     latestUserChars: latestUser?.length ?? 0,
-    latestUserPreview:
-      latestUser === null ? null : preview(sanitizeDemoPreviewText(latestUser), DEMO_INPUT_PREVIEW_CHARS),
     historyMessages: messages.length,
     historyChars: messages.reduce((sum, message) => sum + message.content.length, 0),
     userMessages: messages.filter((message) => message.role === "user").length,
@@ -139,30 +123,20 @@ export async function demoInputTelemetry(
 
 export function demoProviderErrorTelemetry(
   error: unknown,
-  message: string,
   model: string,
   attempt: number
 ): DemoProviderErrorTelemetry {
   const errorRecord =
     typeof error === "object" && error !== null
-      ? (error as { name?: unknown; reason?: unknown })
+      ? (error as { name?: unknown })
       : undefined;
   const name = typeof errorRecord?.name === "string" ? errorRecord.name : typeof error;
-  const reason = errorRecord?.reason;
-  const sanitizedMessage = sanitizeDemoPreviewText(message);
   return {
-    providerErrorName: preview(sanitizeDemoPreviewText(name), 80),
+    providerErrorName: name.slice(0, 80),
     providerErrorStatus: providerErrorStatus(error),
-    providerErrorReason:
-      typeof reason === "string" ? preview(sanitizeDemoPreviewText(reason), 80) : null,
-    providerErrorProvider: preview(
-      sanitizeDemoPreviewText(model.startsWith("@") ? "workers-ai" : (model.split("/", 1)[0] || "unknown")),
-      80
-    ),
-    providerErrorModel: preview(sanitizeDemoPreviewText(model), 160),
-    providerErrorAttempt: attempt,
-    providerErrorMessagePreview:
-      sanitizedMessage.length > 0 ? preview(sanitizedMessage, DEMO_PROVIDER_ERROR_PREVIEW_CHARS) : null
+    providerErrorProvider: (model.startsWith("@") ? "workers-ai" : (model.split("/", 1)[0] || "unknown")).slice(0, 80),
+    providerErrorModel: model.slice(0, 160),
+    providerErrorAttempt: attempt
   };
 }
 
@@ -220,27 +194,4 @@ function classifyDemoStopReason(finishReason: string, hadFinalText: boolean): De
   if (finishReason === "error" || finishReason === "exception") return "provider-error";
   if (finishReason === "empty-fallback") return "fallback";
   return hadFinalText ? "complete" : "other";
-}
-
-function sanitizeDemoPreviewText(text: string): string {
-  return text
-    .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, "[redacted-email]")
-    .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
-    .replace(
-      /\b(authorization)\s*[:=]\s*(Bearer|Basic)\s+[A-Za-z0-9._~+/=-]{8,}\b/gi,
-      "$1: $2 [redacted-secret]"
-    )
-    .replace(/\b(authorization)\s*[:=]\s*(?!(?:Bearer|Basic)\b)["']?[^"'\s,;]{4,}/gi, "$1=[redacted-secret]")
-    .replace(/\b(?:Bearer|Basic)\s+[A-Za-z0-9._~+/=-]{8,}\b/gi, (match) => {
-      const [scheme] = match.split(/\s+/, 1);
-      return `${scheme} [redacted-secret]`;
-    })
-    .replace(/\bS[A-Z2-7]{55}\b/g, "[redacted-stellar-secret]")
-    .replace(/\b(?:sk|pk|rk|xox[baprs]|gh[pousr]|glpat|AKIA)[A-Za-z0-9_=-]{8,}\b/g, "[redacted-secret]")
-    .replace(
-      /\b(secret|token|api[_-]?key|password|cookie)\s*[:=]\s*["']?[^"'\s,;]{4,}/gi,
-      "$1=[redacted-secret]"
-    )
-    .replace(/\s+/g, " ")
-    .trim();
 }

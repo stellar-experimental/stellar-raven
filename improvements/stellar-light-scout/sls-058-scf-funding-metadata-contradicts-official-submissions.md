@@ -1,7 +1,7 @@
 ---
 id: sls-058
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-27
 upstreamTitle: Reconcile project SCF funding metadata against official submission records
 evidence:
@@ -19,7 +19,7 @@ evidence:
   - author live re-check 2026-08-04 re-running the ORIGINAL trigger against production Scout - defect 1 cleared - SStream now scfAwarded true, scfTotalAwardedUSD 36000, scfAwardedRounds [16] (filed as false/null/[]); Wagelink now true, 50000, [24] (filed as false/null/[])
   - author live re-check 2026-08-04 - defect 2 cleared - Fluxity carries scfRoundAwards [{round 21, amountUSD 68000, awardType "Legacy v5.0 Community Award"}], the reconciling basis between the official round budget and the 82750 SCF-page total that the narrowed finding asked for
   - independent reviewer (Solo process 4209, distinct from the author) re-ran the same trigger the same day and reproduced all three, and confirmed no other open sls finding is closed by this release
-  - resolution-blocking residual rechecked 2026-08-04: scfRoundAwards is still [] for sstream and wagelink while scfAwardedRounds is populated and the API contract says scfRoundAwards carries each awarded round's official submission record; retain this finding until legacy rows populate or a separately tracked successor owns that contract gap
+  - 2026-08-05 independent recheck confirmed both filed defects remain fixed: sstream and wagelink now carry true/disclosed aggregate/round linkage, and Fluxity carries its official round award; the distinct remaining scfRoundAwards population gap is tracked by sls-061
 ---
 
 ## Finding
@@ -109,3 +109,7 @@ Consumer-side workaround currently required: cross-check every Scout funding
 claim against `lumenloop.get_scf_submissions` before asserting it. That is an
 extra service call per project and it only works for consumers who happen to
 have both services available.
+
+The distinct residual in which awarded projects have populated
+`scfAwardedRounds` but an empty `scfRoundAwards` array is tracked separately
+in `sls-061`; it is not part of either filed defect above.

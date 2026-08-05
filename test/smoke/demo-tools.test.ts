@@ -260,7 +260,6 @@ describe("demo tools at the worker boundary", () => {
         })
         .find((candidate) => candidate?.evt === "demo-search");
       expect(event).toMatchObject({
-        queryPreview: "stellar",
         queryChars: 7,
         requestedLimit: 1,
         effectiveLimit: 1,
@@ -268,6 +267,8 @@ describe("demo tools at the worker boundary", () => {
         hits: 1
       });
       expect(event).not.toHaveProperty("query");
+      expect(event).not.toHaveProperty("queryPreview");
+      expect(event).not.toHaveProperty("queryHash");
     } finally {
       logSpy.mockRestore();
     }
@@ -310,8 +311,9 @@ describe("demo tools at the worker boundary", () => {
         gatedHits: 0,
         backfillHits: 0
       });
-      expect(event?.queryHash).toMatch(/^[a-f0-9]{16}$/);
       expect(event).not.toHaveProperty("query");
+      expect(event).not.toHaveProperty("queryPreview");
+      expect(event).not.toHaveProperty("queryHash");
       expect(JSON.stringify(event)).not.toContain(refusedQuery);
     } finally {
       logSpy.mockRestore();
@@ -605,11 +607,10 @@ describe("demo tools at the worker boundary", () => {
         artifactState: "absent"
       }
     });
-    expect(event).toHaveProperty("code");
-    expect(event).toHaveProperty("resultPreview");
-    expect(event).toHaveProperty("error", null);
+    expect(event).not.toHaveProperty("code");
+    expect(event).not.toHaveProperty("resultPreview");
+    expect(event).not.toHaveProperty("error");
     expect(event).toHaveProperty("recoveryAdviceDelivered");
     expect(event).not.toHaveProperty("recoveryAdviceConsumed");
-    expect(String(event?.resultPreview).length).toBeLessThanOrEqual(320);
   });
 });

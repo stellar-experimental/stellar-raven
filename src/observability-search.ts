@@ -8,13 +8,8 @@
  * count.
  */
 import type { SearchPage } from "./catalog/search.ts";
-import { preview } from "./observability.ts";
-
-export const SEARCH_QUERY_PREVIEW_CHARS = 180;
-
 export type SearchEventFieldsInput = {
   query: string;
-  queryHash: string;
   requestedLimit: number | null;
   /** Null when validation/refusal prevented searchCatalogPage from running. */
   page: SearchPage | null;
@@ -24,8 +19,6 @@ export function searchEventFields(input: SearchEventFieldsInput): Record<string,
   const { page } = input;
   const hits = page?.hits ?? [];
   return {
-    queryPreview: preview(input.query, SEARCH_QUERY_PREVIEW_CHARS),
-    queryHash: input.queryHash,
     queryChars: input.query.length,
     requestedLimit: input.requestedLimit,
     effectiveLimit: page?.effectiveLimit ?? null,

@@ -6,12 +6,13 @@
  * dashboard (Workers → Logs) or `wrangler tail`.
  *
  * Discipline:
- *  - `evt` names the event; keep the rest FLAT and SMALL (previews, counts,
- *    durations — never whole payloads).
- *  - Never log secret values. Model-authored text (queries, execute code) is
- *    logged only as bounded eval/debugging previews and must be treated as
- *    potentially sensitive. Adapter results are already secret-redacted before
- *    they reach any logging site.
+ *  - `evt` names the event; keep the rest FLAT and SMALL (counts, statuses,
+ *    operation/catalog ids, and durations — never user/model content or
+ *    content-derived hashes).
+ *  - Never log secret values, queries, execute code, results, answers, or
+ *    provider error messages. Adapter results are already secret-redacted
+ *    before they reach the model-facing boundary, but redaction is not
+ *    permission to log them.
  *
  * Second channel: trace spans (observability.traces in wrangler.jsonc).
  * Handler + host-side fetches are auto-instrumented; the sandbox boundary has
@@ -20,10 +21,6 @@
  * timing attribution (where the time went). Same no-payload discipline; spans
  * bill from the same event quota as logs (research/observability-cloudflare.md).
  */
-
-/** Truncation caps — previews, not payloads. */
-export const CODE_LOG_MAX = 4_000;
-export const PREVIEW_LOG_MAX = 300;
 
 export function logEvent(evt: string, fields: Record<string, unknown>): void {
   try {
@@ -51,7 +48,7 @@ export async function logArtifactWrite(fields: {
   ms: number;
   ok: boolean;
   skipped?: string;
-  error?: string;
+  errorName?: string;
 }): Promise<void> {
   logEvent("artifact_write", {
     ownerHash: await artifactOwnerHashPrefix(fields.owner),
@@ -59,7 +56,7 @@ export async function logArtifactWrite(fields: {
     ms: fields.ms,
     ok: fields.ok,
     skipped: fields.skipped ?? null,
-    error: fields.error ?? null
+    errorName: fields.errorName ?? null
   });
 }
 
@@ -111,9 +108,7 @@ export function logSkillRead(fields: {
   /** Retrieval provenance, most expensive wins: upstream > cache > memo. */
   from: "memo" | "cache" | "upstream" | "none";
   ms: number;
-  ok: boolean;
-  /** Present only on failure; the error message, never body content. */
-  error?: string;
+  outcome: "ok" | "error" | "soft-empty";
 }): void {
   logEvent("skill_read", {
     id: fields.id,
@@ -122,11 +117,6 @@ export function logSkillRead(fields: {
     retrievals: fields.retrievals,
     from: fields.from,
     ms: fields.ms,
-    ok: fields.ok,
-    error: fields.error ?? null
+    outcome: fields.outcome
   });
-}
-
-export function preview(text: string, max = PREVIEW_LOG_MAX): string {
-  return text.length > max ? `${text.slice(0, max)}…[+${text.length - max} chars]` : text;
 }

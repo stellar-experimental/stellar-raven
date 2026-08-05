@@ -48,7 +48,7 @@ import {
   type ExecuteOperationSummary,
   type ExecuteRunner
 } from "../executor/run.ts";
-import { hashPrefix, logEvent, preview, CODE_LOG_MAX } from "../observability.ts";
+import { logEvent } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import {
   modelBoundaryMaxTokensFromEnv,
@@ -275,7 +275,6 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
     execute: async (args) => {
       const id = crypto.randomUUID();
       emit({ type: "tool-start", id, tool: "search", input: args });
-      const queryHash = await hashPrefix(args.query);
       const t0 = Date.now();
       const catalog = getCatalog();
 
@@ -287,12 +286,9 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
         logEvent("demo-search", {
           ...searchEventFields({
             query: args.query,
-            queryHash,
             requestedLimit: args.limit ?? null,
             page
           }),
-          kind: args.kind ?? null,
-          service: args.service ?? null,
           hits: structured.hits.length,
           total: structured.total,
           truncated: structured.truncated,
@@ -322,7 +318,6 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
           reason: "call-limit",
           ...searchEventFields({
             query: args.query,
-            queryHash,
             requestedLimit: args.limit ?? null,
             page: null
           }),
@@ -498,18 +493,15 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
         ok: outcome.ok,
         ms: Date.now() - t0,
         codeChars: args.code.length,
-        code: preview(args.code, CODE_LOG_MAX),
         resultOriginalChars: outcome.ok ? (outcome.resultOriginalChars ?? outcome.result.length) : null,
         resultReturnedChars: outcome.ok ? (outcome.resultReturnedChars ?? outcome.result.length) : null,
         resultOriginalApproxTokens: outcome.ok ? outcome.resultApproxOriginalTokens : null,
         resultLimitTokens: outcome.ok ? outcome.resultMaxTokens : null,
         resultLimitChars: outcome.ok ? outcome.resultMaxChars : null,
-        resultPreview: outcome.ok ? preview(outcome.result) : null,
         resultTruncated: outcome.ok ? outcome.truncated : null,
         logLines: outcome.logs.length,
         logsTruncated: shapedLogs.truncated,
         errorTruncated: shapedError ? shapedError.truncated : null,
-        error: outcome.ok ? null : preview(outcome.error),
         artifactReadCount: outcome.artifactReadCount ?? 0,
         artifactReadBytes: outcome.artifactReadBytes ?? 0,
         operationSummary: outcome.operationSummary ?? null,

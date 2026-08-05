@@ -75,9 +75,7 @@ describe("demoFinalTextTelemetry", () => {
     expect(demoFinalTextTelemetry(text, "stop")).toEqual({
       hadFinalText: true,
       answerChars: text.length,
-      answerPreview: `Here is the grounded answer. ${"x".repeat(151)}…[+69 chars]`,
       finalTextChars: text.length,
-      finalPreview: `Here is the grounded answer. ${"x".repeat(151)}…[+69 chars]`,
       endedWithToolCalls: false,
       missingFinalText: false,
       finalNeededButMissing: false,
@@ -86,35 +84,11 @@ describe("demoFinalTextTelemetry", () => {
     });
   });
 
-  it("redacts obvious sensitive values from the short preview", () => {
-    const telemetry = demoFinalTextTelemetry(
-      "Contact ada@example.com from 192.0.2.4 with Authorization: Bearer abcdef1234567890",
-      "stop"
-    );
-
-    expect(telemetry.finalPreview).toContain("[redacted-email]");
-    expect(telemetry.finalPreview).toContain("[redacted-ip]");
-    expect(telemetry.finalPreview).toContain("Authorization: Bearer [redacted-secret]");
-    expect(telemetry.finalPreview).not.toContain("ada@example.com");
-    expect(telemetry.finalPreview).not.toContain("192.0.2.4");
-    expect(telemetry.finalPreview).not.toContain("abcdef1234567890");
-  });
-
-  it("redacts Stellar secret seeds from the short preview", () => {
-    const seed = `S${"A".repeat(55)}`;
-    const telemetry = demoFinalTextTelemetry(`Never expose ${seed}`, "stop");
-
-    expect(telemetry.finalPreview).toContain("[redacted-stellar-secret]");
-    expect(telemetry.finalPreview).not.toContain(seed);
-  });
-
   it("flags unfinished tool-call stops as budget exhaustion with missing final text", () => {
     expect(demoFinalTextTelemetry("", "tool-calls")).toEqual({
       hadFinalText: false,
       answerChars: 0,
-      answerPreview: null,
       finalTextChars: 0,
-      finalPreview: null,
       endedWithToolCalls: true,
       missingFinalText: true,
       finalNeededButMissing: true,
@@ -133,7 +107,7 @@ describe("demoFinalTextTelemetry", () => {
 });
 
 describe("demoInputTelemetry", () => {
-  it("records a compact sanitized latest-user preview plus hashes and counts", async () => {
+  it("records only counts and the subject join hash", async () => {
     const fakeStellarSeed = "SA" + "A".repeat(54);
     const latest = `Can you check ada@example.com and this Stellar secret ${fakeStellarSeed}?`;
     const telemetry = await demoInputTelemetry(
@@ -151,12 +125,11 @@ describe("demoInputTelemetry", () => {
       historyChars: "earlier".length + "reply".length + latest.length,
       userMessages: 2
     });
-    expect(telemetry.latestUserHash).toMatch(/^[a-f0-9]{16}$/);
     expect(telemetry.subjectHash).toMatch(/^[a-f0-9]{16}$/);
-    expect(telemetry.latestUserPreview).toContain("[redacted-email]");
-    expect(telemetry.latestUserPreview).toContain("[redacted-stellar-secret]");
-    expect(telemetry.latestUserPreview).not.toContain("ada@example.com");
-    expect(telemetry.latestUserPreview).not.toContain(fakeStellarSeed);
+    expect(telemetry).not.toHaveProperty("latestUserHash");
+    expect(telemetry).not.toHaveProperty("latestUserPreview");
+    expect(JSON.stringify(telemetry)).not.toContain("ada@example.com");
+    expect(JSON.stringify(telemetry)).not.toContain(fakeStellarSeed);
   });
 });
 
@@ -179,7 +152,6 @@ describe("demoProviderErrorTelemetry", () => {
 
     const telemetry = demoProviderErrorTelemetry(
       retryError,
-      retryError.message,
       "openai/gpt-5.4-mini",
       2
     );
@@ -187,13 +159,12 @@ describe("demoProviderErrorTelemetry", () => {
     expect(telemetry).toMatchObject({
       providerErrorName: "AI_RetryError",
       providerErrorStatus: 429,
-      providerErrorReason: "maxRetriesExceeded",
       providerErrorProvider: "openai",
       providerErrorModel: "openai/gpt-5.4-mini",
       providerErrorAttempt: 2
     });
-    expect(telemetry.providerErrorMessagePreview).toContain("Bearer [redacted-secret]");
-    expect(telemetry.providerErrorMessagePreview?.length).toBeLessThan(340);
+    expect(telemetry).not.toHaveProperty("providerErrorMessagePreview");
+    expect(telemetry).not.toHaveProperty("providerErrorReason");
     expect(JSON.stringify(telemetry)).not.toContain(sampleBearer);
     expect(JSON.stringify(telemetry)).not.toContain("raw body");
     expect(Object.values(telemetry).every((value) => value === null || typeof value !== "object")).toBe(true);
@@ -218,7 +189,7 @@ describe("demoProviderErrorTelemetry", () => {
       errors: [unauthorized, rateLimited, new TypeError("fetch failed")]
     });
 
-    expect(demoProviderErrorTelemetry(retryError, retryError.message, "openai/gpt-5.4", 1))
+    expect(demoProviderErrorTelemetry(retryError, "openai/gpt-5.4", 1))
       .toMatchObject({ providerErrorStatus: 401 });
   });
 
@@ -230,14 +201,14 @@ describe("demoProviderErrorTelemetry", () => {
       errors: [deepStatusless, { statusCode: 429 }]
     };
 
-    expect(demoProviderErrorTelemetry(error, "retry failed", "openai/gpt-5.4", 1))
+    expect(demoProviderErrorTelemetry(error, "openai/gpt-5.4", 1))
       .toMatchObject({ providerErrorStatus: 429 });
   });
 
   it("reaches a status exposed only through lastError", () => {
     const error = { lastError: { statusCode: 503 } };
 
-    expect(demoProviderErrorTelemetry(error, "retry failed", "openai/gpt-5.4", 1))
+    expect(demoProviderErrorTelemetry(error, "openai/gpt-5.4", 1))
       .toMatchObject({ providerErrorStatus: 503 });
   });
 
@@ -245,12 +216,12 @@ describe("demoProviderErrorTelemetry", () => {
     const error: { cause?: unknown } = {};
     error.cause = error;
 
-    expect(demoProviderErrorTelemetry(error, "retry failed", "openai/gpt-5.4", 1))
+    expect(demoProviderErrorTelemetry(error, "openai/gpt-5.4", 1))
       .toMatchObject({ providerErrorStatus: null });
   });
 
   it("emits provider diagnostics for unanswered failures and marks aborts non-provider-terminal", () => {
-    const telemetry = demoProviderErrorTelemetry(new Error("failed"), "failed", "openai/gpt-5.4", 1);
+    const telemetry = demoProviderErrorTelemetry(new Error("failed"), "openai/gpt-5.4", 1);
 
     expect(demoTerminalProviderErrorTelemetry(telemetry, "complete", true, false)).toBeUndefined();
     expect(demoTerminalProviderErrorTelemetry(telemetry, "provider-error", true, false))

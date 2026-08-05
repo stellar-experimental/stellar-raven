@@ -1,14 +1,17 @@
 ---
 id: sk-013
 service: skills
-status: proposed
+status: verified
 discovered: 2026-08-04
+upstreamTitle: Add trustline-removal preconditions to the ChangeTrust example
 evidence:
   - current skills.stellar-dev.assets removal example says only `limit: "10000", // 0 to remove trustline`
   - current skill best practices omit balance, buying-liability, open-offer, and liquidity-pool-use preconditions
   - official operation result documentation defines CHANGE_TRUST_INVALID_LIMIT and CHANGE_TRUST_CANNOT_DELETE
   - CAP-0038 defines liquidityPoolUseCount as a deletion constraint for asset trustlines
   - full QA round Todo 1346 c3593 and solo://proj/49/scratchpad/truth-maintenance-20--761
+  - 2026-08-05 live primary-source recheck: stellar/stellar-dev-skill main (381ca32a) assets SKILL.md still presents limit 0 as removal without balance, liability, offer, or pool-reference preconditions
+  - 2026-08-05 primary-source check: Stellar XDR and CAP-0038 define CHANGE_TRUST_INVALID_LIMIT for an uncleared balance/liability and CHANGE_TRUST_CANNOT_DELETE for a pool reference
 ---
 
 ## Finding
@@ -21,8 +24,7 @@ that must be cleared first.
 
 The omission is safety-relevant because a wallet-display entry, claimable
 balance, classic asset trustline, and pool-share position require different
-actions. A generic burn address is not a safe substitute for identifying the
-asset and resolving its actual state.
+actions.
 
 ## Evidence
 
@@ -39,4 +41,4 @@ Expand the one removal example just enough to require: identify the asset by
 code and issuer; distinguish an actual trustline from display or claimable-
 balance state; clear balance and relevant offers/liabilities; exit pool-share
 positions or references; then submit `ChangeTrust(limit: 0)` and surface the
-specific result code. Do not recommend a generic burn address.
+specific result code.

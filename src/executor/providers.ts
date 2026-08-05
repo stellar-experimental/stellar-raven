@@ -89,7 +89,7 @@ import { runSkill, assertRunnersWired } from "../skills/run.ts";
 import { RUNNERS } from "../skills/runners/index.ts";
 import type { OpsFacade, SkillRunner } from "../skills/runners/types.ts";
 import { resolveSpecRefs } from "./spec-sandbox.ts";
-import { hashPrefix, logArtifactRead, logEvent, logSkillRead } from "../observability.ts";
+import { logArtifactRead, logEvent, logSkillRead } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import { info as artifactInfo, read as artifactRead, type ArtifactMetadata } from "../artifacts/store.ts";
 
@@ -755,7 +755,6 @@ export function buildCodemodeProvider(
                 }
               };
             }
-            const queryHash = await hashPrefix(opts.query);
             const t0 = Date.now();
             const page = searchCatalogPage(catalog, {
               query: opts.query,
@@ -775,12 +774,9 @@ export function buildCodemodeProvider(
               source: "codemode",
               ...searchEventFields({
                 query: opts.query,
-                queryHash,
                 requestedLimit: typeof opts.limit === "number" ? opts.limit : null,
                 page
               }),
-              kind: typeof opts.kind === "string" ? opts.kind : null,
-              service: typeof opts.service === "string" ? opts.service : null,
               hits: hits.length,
               total,
               truncated,
@@ -823,13 +819,13 @@ export function buildCodemodeProvider(
         return got;
       };
       const r = await readSkill(catalog, instrumented, name, opts);
-      if (r.ok && typeof name === "string") {
-        const entry = catalog.entries.find((candidate) => candidate.id === name);
-        hooks?.onSkillRead?.(name, entry?.buildAuthorityRoles ?? []);
-      }
+      const entry = typeof name === "string"
+        ? catalog.entries.find((candidate) => candidate.id === name)
+        : undefined;
+      if (r.ok && entry) hooks?.onSkillRead?.(entry.id, entry.buildAuthorityRoles ?? []);
       const requestedKeys = requestedSectionKeys(name, opts);
       logSkillRead({
-        id: typeof name === "string" ? name : null,
+        id: entry?.id ?? null,
         shape: readShape(requestedKeys),
         requested: requestedKeys.length,
         retrievals: seen.length,
@@ -842,8 +838,7 @@ export function buildCodemodeProvider(
               ? "memo"
               : "none",
         ms: Date.now() - t0,
-        ok: r.ok,
-        ...(r.ok ? {} : { error: r.error.message })
+        outcome: r.ok ? "ok" : r.error.kind
       });
       return r;
     },

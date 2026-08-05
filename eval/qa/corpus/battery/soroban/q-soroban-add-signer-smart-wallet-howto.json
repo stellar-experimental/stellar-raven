@@ -7,16 +7,16 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "A smart wallet is a contract account: its signer set lives in contract storage, so add a signer by invoking that deployed contract's signer-management method and authorizing the mutation through an existing valid signer. Exact method/signature schemas are implementation-specific—inspect the live contract spec. For new projects, use **Smart Account Kit** over audited OpenZeppelin smart-account contracts; current examples expose `signers.addPasskey`, while OpenZeppelin's generic contract entry point is `add_signer(context_rule_id, signer)`. Passkey Kit/launchtube is a legacy demo/deployment path and explicitly is not the current audited starting point. P-256/WebAuthn passkeys are one signer type, not a universal schema. This is not classic SetOptions and an unauthenticated caller must never mutate signers.",
+    "answer": "A smart wallet is a contract account: its signer set lives in contract storage, so add a signer by invoking the **deployed contract's** signer-management method and authorizing the mutation through an existing valid signer. Inspect the live contract spec and use the SDK/release that matches that account; exact methods and signer schemas are implementation-specific.\n\nFor new work, **Passkey Kit** and **Smart Account Kit** are maintained siblings: neither is a legacy path nor a universal successor. Passkey Kit uses its own flat multi-signer `Signatures` model; Smart Account Kit targets OpenZeppelin smart-account contracts with context rules, auth digests, signers, and policies. They are not drop-in compatible, so choose by the application's authorization/account model rather than treating either as the default. P-256/WebAuthn passkeys are one signer type, not a universal schema. This is not classic `SetOptions`, and an unauthenticated caller must never mutate signers.",
     "keyFacts": [
       "Treats signer mutation as contract-specific state authorized by an existing signer.",
-      "Routes new work to Smart Account Kit/OpenZeppelin and labels Passkey Kit legacy."
+      "Presents Passkey Kit and Smart Account Kit as maintained, non-drop-in siblings and chooses between them by the deployed authorization/account model."
     ],
     "avoid": [
       "Do NOT use classic SetOptions on a C-address, assume one universal signer ABI, or permit unauthenticated mutation.",
-      "Do NOT present legacy Passkey Kit as the current audited default."
+      "Do NOT call Passkey Kit legacy/demo-only or present Smart Account Kit as a universal successor/default; audit claims remain component- and release-specific."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Axis-C how-to rebalance. Procedure → stellar_docs_mcp (scout_repos acceptable for PasskeyKit code). Distinct from q-soroban-check-auth-custom-account (concept) and q-tool-passkeykit-smart-wallet. Trap = treating the contract account like a classic account (SetOptions) or skipping existing-signer authorization. Verified: smart wallets are custom-account Soroban contracts using __check_auth; secp256r1 verification is a Soroban host function; PasskeyKit is the practical signer-management tooling.\nAlso good if the answer: Notes a passkey signer is a secp256r1 public key, verified on-chain (CAP-51 / secp256r1 host function) inside __check_auth. | References PasskeyKit / smart-wallet tooling as the practical path to manage signers.\nGolden cites: A smart-wallet / custom-account / passkey page on developers.stellar.org or the PasskeyKit docs/repo.\nGT-44 independently confirmed current versus legacy paths on 2026-07-11."
+    "notes": "Reverified 2026-08-05 after both canonical repositories moved under stellar/*. The stable procedure is contract-specific signer mutation authorized by an existing signer. Passkey Kit and Smart Account Kit are maintained siblings with different authorization models; neither is a universal successor or default. Distinct from q-soroban-check-auth-custom-account (concept) and q-tool-passkeykit-smart-wallet (library choice)."
   },
   "tags": {
     "category": "soroban",
@@ -26,8 +26,8 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-09-01",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-11-19",
     "sources": [
       {
         "class": "A",
@@ -35,24 +35,34 @@
         "note": "class inferred at migration"
       },
       {
-        "class": "D",
+        "class": "B",
         "ref": "https://github.com/kalepail/smart-account-kit",
-        "note": "class inferred at migration"
+        "note": "Canonical repository for the 2026-07-11 observation; now an archived move pointer to stellar/smart-account-kit."
       },
       {
-        "class": "D",
+        "class": "B",
+        "ref": "https://github.com/stellar/smart-account-kit",
+        "note": "Current canonical Smart Account Kit repository, observed 2026-08-05."
+      },
+      {
+        "class": "B",
         "ref": "https://github.com/OpenZeppelin/stellar-contracts",
-        "note": "class inferred at migration"
+        "note": "Canonical OpenZeppelin smart-account contract source."
       },
       {
-        "class": "D",
+        "class": "B",
         "ref": "https://github.com/kalepail/passkey-kit",
-        "note": "class inferred at migration"
+        "note": "Canonical repository for the 2026-07-11 observation; now an archived move pointer to stellar/passkey-kit."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/passkey-kit",
+        "note": "Current canonical Passkey Kit repository, observed 2026-08-05."
       }
     ],
     "corroboration": [
       {
-        "claim": "Current smart-wallet signer-management path",
+        "claim": "Current smart-wallet signer management is contract-specific; Passkey Kit and Smart Account Kit are maintained non-drop-in siblings selected by authorization/account model, with no universal successor or default.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
@@ -72,15 +82,33 @@
             "ref": "F: GT-44 primary/blind and OZ tests",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/passkey-kit and https://github.com/stellar/smart-account-kit",
+            "observedAt": "2026-08-05",
+            "note": "Current canonical READMEs document maintained sibling SDKs with different, non-drop-in authorization models."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+            "observedAt": "2026-08-05",
+            "note": "Official OpenZeppelin documentation defines the context-rule smart-account model used by Smart Account Kit."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited practical recommendation promoted legacy unaudited Passkey Kit as the current starting point; its own source now directs new projects to Smart Account Kit/OpenZeppelin.",
+      "date": "2026-08-05",
+      "by": "Bounded smart-wallet truth repair from Solo Todo 1355 comment 3687",
       "evidence": [
-        "Solo scratchpad 575 GT-44 primary 3316 and blind 3324."
+        "Solo scratchpad 575 GT-44 primary 3316 and blind 3324; historical 2026-07-11 observedAt text remains preserved.",
+        "https://github.com/kalepail/passkey-kit and https://github.com/kalepail/smart-account-kit — archived move pages.",
+        "https://github.com/stellar/passkey-kit",
+        "https://github.com/stellar/smart-account-kit",
+        "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+        "Sibling sweep: q-tool-passkeykit-smart-wallet already states the maintained non-drop-in relationship and no universal default.",
+        "solo://proj/49/todo/reconcile-bounded-tr--1355"
       ],
       "rootCause": [
         "Eval-side vendor/tooling freshness drift."

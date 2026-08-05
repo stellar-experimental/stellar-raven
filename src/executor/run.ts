@@ -454,7 +454,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
             bytes: serialized.body.length,
             ms: Date.now() - writeStart,
             ok: false,
-            error: e instanceof Error ? e.name : "error"
+            errorName: e instanceof Error ? e.name : "error"
           });
           artifact = { state: "absent", reason: "unavailable" };
         }

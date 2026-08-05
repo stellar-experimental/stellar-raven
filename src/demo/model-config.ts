@@ -103,6 +103,27 @@ export function demoGatewayTransportSettings(model: string) {
   return { resume: false } as const;
 }
 
+export function demoModelSettings(
+  model: string,
+  sessionAffinity: string,
+  reasoningEffort: DemoReasoningEffort
+) {
+  const extraHeaders = {
+    "cf-aig-collect-log": "false",
+    "x-session-affinity": sessionAffinity
+  } as const;
+  if (model.startsWith("@")) {
+    return {
+      extraHeaders,
+      reasoning_effort: demoWorkersAiReasoningEffort(reasoningEffort)
+    } as const;
+  }
+  return {
+    ...demoGatewayTransportSettings(model),
+    extraHeaders
+  } as const;
+}
+
 export function demoWorkersAiReasoningEffort(
   reasoningEffort: DemoReasoningEffort
 ): "low" | "medium" | "high" | null {

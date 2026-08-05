@@ -38,7 +38,7 @@ import { getCatalog } from "../catalog/load.ts";
 import { SEARCH_KINDS, RETRIEVAL_REASONS, type RetrievalReason } from "../catalog/types.ts";
 import type { ExecuteCallContext, ExecuteRunner } from "../executor/run.ts";
 import type { BuildSourceBasisManifestInput, SourceBasisCall } from "../policy/source-basis.ts";
-import { hashPrefix, logEvent, preview, CODE_LOG_MAX } from "../observability.ts";
+import { logEvent } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import { truncateForModel, truncateLogsForModel } from "../policy/truncate.ts";
 import { candidateEvidenceBlock, evidenceCheckpointBlock } from "../policy/evidence-checkpoint.ts";
@@ -211,13 +211,16 @@ function sourceBasisForTelemetry(sourceBasis: BuildSourceBasisManifestInput | un
   if (!sourceBasis) return null;
   const calls = sourceBasis.calls ?? [];
   return {
-    ...sourceBasis,
+    shape: sourceBasis.shape.kind,
     calls: {
       first: calls.slice(0, SOURCE_BASIS_TELEMETRY_CALL_LIMIT),
       total: calls.length,
       omitted: Math.max(0, calls.length - SOURCE_BASIS_TELEMETRY_CALL_LIMIT),
       totals: sourceBasisCallTotals(calls)
-    }
+    },
+    canonicalUrlCount: sourceBasis.canonicalUrls?.length ?? 0,
+    artifactState: sourceBasis.artifact?.state ?? "absent",
+    skillSectionAdvice: sourceBasis.skillSectionAdvice === true
   };
 }
 
@@ -347,7 +350,6 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
       outputSchema: z.object(rankedSearchOutputSchema)
     },
     async (args) => {
-      const queryHash = await hashPrefix(args.query);
       const t0 = Date.now();
       const catalog = getCatalog();
 
@@ -371,12 +373,9 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
           source: "tool",
           ...searchEventFields({
             query: args.query,
-            queryHash,
             requestedLimit: args.limit ?? null,
             page
           }),
-          kind: args.kind ?? null,
-          service: args.service ?? null,
           hits: structured.hits.length,
           total: structured.total,
           truncated: structured.truncated,
@@ -500,18 +499,15 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         ok: outcome.ok,
         ms: Date.now() - t0,
         codeChars: args.code.length,
-        code: preview(args.code, CODE_LOG_MAX),
         resultOriginalChars: outcome.ok ? (outcome.resultOriginalChars ?? outcome.result.length) : null,
         resultReturnedChars: outcome.ok ? (outcome.resultReturnedChars ?? outcome.result.length) : null,
         resultOriginalApproxTokens: outcome.ok ? outcome.resultApproxOriginalTokens : null,
         resultLimitTokens: outcome.ok ? outcome.resultMaxTokens : null,
         resultLimitChars: outcome.ok ? outcome.resultMaxChars : null,
-        resultPreview: outcome.ok ? preview(outcome.result) : null,
         resultTruncated: outcome.ok ? outcome.truncated : null,
         logLines: outcome.logs.length,
         logsTruncated: shapedLogs.truncated,
         errorTruncated: shapedError ? shapedError.truncated : null,
-        error: outcome.ok ? null : preview(outcome.error),
         artifactReadCount: outcome.artifactReadCount ?? 0,
         artifactReadBytes: outcome.artifactReadBytes ?? 0,
         operationSummary: outcome.operationSummary ?? null,
