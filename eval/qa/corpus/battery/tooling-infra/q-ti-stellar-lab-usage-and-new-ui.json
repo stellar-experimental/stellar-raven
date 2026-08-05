@@ -9,23 +9,23 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include an extension wallet through the wallet kit, Ledger/hash-with-Ledger, Trezor, external signatures, and raw secret input. Prefer wallet, hardware or a separately trusted external signer. Lab's current source performs raw-secret signing in browser JavaScript. Saved Keypairs is documented for **Testnet/Futurenet only, never Mainnet**; current master serializes saved keypair objects to browser `localStorage` as plaintext JSON, and tests persist the `S...` value directly. Do not treat Saved as encrypted custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
+    "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include an extension wallet through the wallet kit, Ledger/hash-with-Ledger, Trezor, external signatures, and raw secret input. Prefer wallet, hardware or a separately trusted external signer. Lab's current source performs raw-secret signing in browser JavaScript. Saved Keypairs is documented for **Testnet/Futurenet only, never Mainnet**. Current guidance says saved secrets are obfuscated, not encrypted; entries saved before September 2025 may remain plaintext until re-saved. Do not treat Saved as secure custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
     "keyFacts": [
       "Covers current transaction/XDR/contract/RPC/Horizon/share capabilities without freezing UI coordinates.",
       "Lists wallet-kit, hardware, external and raw-secret signer paths while preferring non-secret browser flows.",
-      "States Saved Keypairs is Testnet/Futurenet-only plaintext JSON localStorage and not secure custody.",
+      "States Saved Keypairs is Testnet/Futurenet-only, obfuscated rather than encrypted, with possible pre-September-2025 plaintext entries until re-saved, and not secure custody.",
       "Distinguishes self-hosted/local from deliberately isolated offline/air-gapped signing and avoids a universal non-egress claim.",
       "Distinguishes stellar contract asset deploy from contract id asset deterministic lookup.",
       "Keeps Friendbot and trustline behavior network/asset-specific."
     ],
     "avoid": [
-      "Do NOT call Saved Keypairs encrypted, secure, offline, air-gapped or appropriate for a Mainnet seed.",
+      "Do NOT call Saved Keypairs encrypted, secure, offline, air-gapped or appropriate for a Mainnet seed; do not claim every current entry is plaintext either.",
       "Do NOT assert hosted/self-hosted Lab universally never transmits secrets or require Freighter as the only signer.",
       "Do NOT paste/save production secrets, sign/submit during read-only verification, or treat Quickstart as production infrastructure.",
       "Do NOT claim contract id asset deploys a SAC or invent a dedicated current Lab SAC button without rechecking.",
       "Do NOT freeze old Laboratory URLs/screenshots/coordinates, use Mainnet Friendbot, or say a trustline credits tokens."
     ],
-    "notes": "GT-54 CORRECTION 2026-07-11: grade current capability and signer categories, plaintext test-only localStorage, the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise is explicitly false; source inspection cannot prove universal non-egress."
+    "notes": "GT-54 refreshed 2026-08-04: grade current capability and signer categories, test-only Saved Keypairs that are obfuscated rather than encrypted (with pre-September-2025 plaintext migration caveat), the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise remains false; source inspection cannot prove universal non-egress."
   },
   "tags": {
     "category": "tooling-infra",
@@ -35,7 +35,7 @@
   "truth": {
     "domain": "mixed",
     "status": "mixed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-04",
     "reverifyBy": "2026-10-01",
     "sources": [
       {
@@ -101,29 +101,29 @@
         "note": "Legacy verdict: confirmed-as-of-2026-07-11."
       },
       {
-        "claim": "Saved keypair objects, including secret values in tests, are serialized to browser localStorage; self-hosted/local Lab is not thereby air-gapped and universal non-egress is unverified",
-        "verdict": "unverifiable",
+        "claim": "Saved Keypairs are obfuscated rather than encrypted; entries saved before September 2025 may remain plaintext until re-saved. Self-hosted/local Lab is not thereby air-gapped and universal non-egress is unverified.",
+        "verdict": "confirmed",
         "evidence": [
           {
             "class": "A",
-            "ref": "A: Saved Keypairs documentation limits use to Testnet/Futurenet and says never Mainnet",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+            "observedAt": "2026-08-04",
+            "note": "Current guidance limits use to Testnet/Futurenet, says never Mainnet, and describes obfuscation plus the pre-September-2025 plaintext migration caveat."
           },
           {
             "class": "B",
-            "ref": "B: current Laboratory storage/signing implementation and tests",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://github.com/stellar/laboratory",
+            "observedAt": "2026-08-04",
+            "note": "Current source preserves the browser-local signing and storage boundary; it does not turn Saved Keypairs into encrypted custody."
           },
           {
             "class": "F",
             "ref": "F: browser storage/network inspection using throwaway public data only",
             "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "note": "Historical browser inspection; the 2026-08-04 storage correction was documentation- and source-based, with no new empirical browser execution claimed."
           }
         ],
-        "note": "Legacy verdict: confirmed-with-unverifiable-universal-negative."
+        "note": "The storage format is confirmed; the universal non-egress negative remains intentionally unclaimed."
       },
       {
         "claim": "stellar contract asset deploy deploys a SAC while stellar contract id asset only derives its deterministic ID",
@@ -151,11 +151,11 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited workflow froze UI details, implied Saved Keypairs/Transactions could provide a safe offline-ish path, treated Freighter as the default signer, and confused deterministic SAC ID lookup with deployment. GT-54 confirmed current Lab capabilities while finding plaintext secret persistence and a non-air-gap boundary.",
+      "date": "2026-08-04",
+      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed Saved Keypairs from blanket plaintext wording to the current obfuscated-not-encrypted migration boundary.",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently rejected the offline/SAC wording; blind helper 3388 was fully harvested before matrix seal.",
-        "Blind KV chronology records all helper cleanup before the ten-case seal and final adjudication 'Lab saved keypair JSON plaintext in localStorage'.",
+        "Current official Saved Keypairs guidance: obfuscated rather than encrypted; pre-September-2025 entries may remain plaintext until re-saved.",
         "Sibling sweep checked q-tool-lab-what-is, Quickstart/local network, native XLM SAC, SAC/custom-token, secret recovery and faucet cases; no sibling may equate local browser state with an air gap or ID derivation with deployment."
       ],
       "rootCause": [

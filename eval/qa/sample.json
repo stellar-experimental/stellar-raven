@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "d277de426172263629f2cc0b160d62dea705fbec59c0368e239934dc30b6e2c2",
+  "corpusContentSha256": "256ff1bb7d18ffbc27b523383d9ab537d93b225d8e620b251a1d1221127c9397",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -1606,12 +1606,12 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nThe question's word **queued** is stale: **Protocol 27 (Zipper)** has been live on Stellar Mainnet since **ledger 63386819**, closed **2026-07-08 at 17:00:10 UTC**; ledger 63386818 was the final P26 ledger. Two independent Pubnet RPCs still reported protocol 27 on **2026-07-11**.\n\n**CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds the credential to its account address to prevent cross-account credential reuse. This is a Soroban authorization/credential change, not ZK, consensus, or parallel execution. The current CAP registry still labels CAP-0071 **Accepted**; that normative document status is distinct from the already-completed software implementation and Mainnet activation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any status claim. Protocol 27 (Zipper) has been live on Stellar Mainnet since ledger 63386819, closed 2026-07-08 at 17:00:10 UTC. **CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds the credential to its account address to prevent cross-account credential reuse. This is a Soroban authorization/credential change, not ZK, consensus, or parallel execution. As observed **2026-08-04**, the CAP registry labels CAP-0071 **Final**; normative document status remains distinct from software implementation and per-network activation.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Explains CAP-0071 delegation chains and address-bound V2 credentials.",
-          "Distinguishes the CAP's Accepted registry status from implementation and network activation."
+          "Distinguishes the CAP's Final registry status from implementation and network activation."
         ],
         "avoid": [
           "Do NOT claim Protocol 27 is still queued or pending on Mainnet.",
@@ -1620,7 +1620,7 @@
           "Do NOT present network status without a dated live source or freshness caveat.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "GT-31 CORRECTION 2026-07-11: the queued premise and pending/future judge prose are stale. P27 is live from ledger 63386819; CAP-0071 remains labelled Accepted in the registry, demonstrating that normative status and actual network activation are distinct. Grade delegation chains and address-bound V2 mechanics."
+        "notes": "CORRECTION 2026-08-04: P27 is historical and live from ledger 63386819; CAP-0071 is now Final. Preserve CAP-status versus network-activation separation."
       },
       "tags": {
         "category": "protocol-core",
@@ -1630,7 +1630,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -1687,8 +1687,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden QA CAP registry recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently retained the mechanics and required replacement of stale pending/future judge prose.",
             "2026-07-11 author re-check: Horizon P26/P27 boundary, two independent Pubnet RPCs, current CAP-0071 source, and official Zipper guide.",
@@ -1701,6 +1701,7 @@
             "solo://proj/49/todo/date-contingent-trap--831",
             "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
             "eval-authoring",
+            "CAP-0071 advanced from Accepted to Final after the earlier snapshot.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
         },
@@ -1837,15 +1838,14 @@
         "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live RFP response identified SCF #45 in Submission and carried a 2026-08-16 submission deadline.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Keeps the stable Build cap distinct from the changing round schedule."
+          "Makes the as-of date visible for every changeable roster, status, version, or measurement."
         ],
         "avoid": [
           "Do NOT present the expired July 26 deadline as current.",
           "Do NOT assert any round/deadline as permanent or fabricate a date not grounded in a live source.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Dossier §4. Freshness item — rotates every ~6 weeks; reward staleness-flagging. scout_rfps surfaces activeQuarter signal.\nAlso good if the answer: States the SCF Build cadence is roughly every 6 weeks. | Notes the standard $150K XLM Build cap for the round.\nGolden cites: communityfund.stellar.org/awards (the live awards page) for the current round/deadline.\nFRESHNESS CORRECTION 2026-07-09 (todo 901): SCF #45 remains current, but its deadline is August 16, 2026, not July 26. Official awards and Scout live-round metadata agree. Continue gating on dated lookup behavior rather than one frozen round."
+        "notes": "Freshness item: identify the current round/status/deadline from a dated live source. The Build cap is owned by separate cases and is not a requirement for this question."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -1901,7 +1901,7 @@
         ],
         "verified": {
           "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "by": "P4 conversions rework after independent Fable copy/quality review; scope-only correction does not claim a later live-round observation",
           "evidence": [
             "Solo scratchpad 569 Batch B, 2026-07-09.",
             "Sibling expansion found and corrected the same July 26 date in q-edge-scf-v7-centralization-myths.",
@@ -1913,6 +1913,7 @@
             "Ordinary freshness drift in a roughly six-week round schedule; the old case correctly warned that its date would expire.",
             "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch B",
             "eval-authoring",
+            "Removed an unrelated Build-cap key fact duplicated from another case.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
         },
@@ -2521,12 +2522,12 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. Hosted service billing/top-up policy is a Channels contract; it is not a generic address or rule that applies to every self-hosted Relayer. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-07-11**, the repository's latest release was **v1.6.0**, while rendered documentation still exposed 1.5.x/current paths inconsistently. The hosted endpoints returned authentication responses, which proves reachability rather than successful relaying, and the official status feed reported partial degradation/timeouts during the review. Recheck the current release, supported networks, funding terms, and status before production use.",
+        "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. Hosted service billing/top-up policy is a Channels contract; it is not a generic address or rule that applies to every self-hosted Relayer. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-08-04**, the repository's latest release was **v1.7.0**, published 2026-07-28, while rendered documentation still exposed 1.5.x/current paths inconsistently. A hosted endpoint's authentication response proves reachability rather than successful relaying; recheck the current release, supported networks, funding terms, and official service status before production use.",
         "keyFacts": [
           "Distinguishes self-hosted OpenZeppelin Relayer from managed OpenZeppelin Channels.",
           "Describes Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support without turning managed features into protocol guarantees.",
           "Separates self-hosted account funding from managed Channels billing/top-up policy.",
-          "Dates version/provider-health claims and discloses the v1.6.0-versus-rendered-1.5.x disagreement as of 2026-07-11."
+          "Dates version/provider-health claims and discloses the v1.7.0-versus-rendered-1.5.x disagreement as of 2026-08-04."
         ],
         "avoid": [
           "Do NOT conflate self-hosted Relayer with managed Channels.",
@@ -2534,7 +2535,7 @@
           "Do NOT interpret HTTP 401 as downtime or one reachable request as successful full service health.",
           "Do NOT pin release, network support, or provider health without an as-of date."
         ],
-        "notes": "GT-53 CORRECTION 2026-07-11: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. Repository v1.6.0 and rendered 1.5.x docs disagreed; the official status feed showed partial degradation. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally."
+        "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-08-04, repository v1.7.0 and rendered 1.5.x docs disagreed. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally."
       },
       "tags": {
         "category": "tooling-infra",
@@ -2544,7 +2545,7 @@
       "truth": {
         "domain": "mixed",
         "status": "disputed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-09-01",
         "sources": [
           {
@@ -2564,7 +2565,7 @@
           },
           {
             "class": "D",
-            "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.6.0",
+            "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.7.0",
             "note": "class inferred at migration"
           },
           {
@@ -2586,8 +2587,8 @@
               },
               {
                 "class": "B",
-                "ref": "B: OpenZeppelin Relayer v1.6.0 release/source",
-                "observedAt": "2026-07-11",
+                "ref": "B: OpenZeppelin Relayer v1.7.0 release/source",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
@@ -2610,16 +2611,16 @@
               },
               {
                 "class": "B",
-                "ref": "B: repository latest release is v1.6.0 as of 2026-07-11",
-                "observedAt": "2026-07-11",
+                "ref": "B: repository latest release is v1.7.0 as of 2026-08-04",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited answer collapsed self-hosted OpenZeppelin Relayer and managed OpenZeppelin Channels into one service and treated hosted fee policy as if it were the self-hosted funding model. GT-53 independently confirmed the product split, current capabilities, and dated release/docs/status disagreement.",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the release while preserving the Relayer/Channels and funding boundaries.",
           "evidence": [
             "Solo scratchpad 575, GT-53 primary 3372 and blind 3378, independently reviewed 2026-07-11.",
             "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime."
@@ -2642,23 +2643,23 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include an extension wallet through the wallet kit, Ledger/hash-with-Ledger, Trezor, external signatures, and raw secret input. Prefer wallet, hardware or a separately trusted external signer. Lab's current source performs raw-secret signing in browser JavaScript. Saved Keypairs is documented for **Testnet/Futurenet only, never Mainnet**; current master serializes saved keypair objects to browser `localStorage` as plaintext JSON, and tests persist the `S...` value directly. Do not treat Saved as encrypted custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
+        "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include an extension wallet through the wallet kit, Ledger/hash-with-Ledger, Trezor, external signatures, and raw secret input. Prefer wallet, hardware or a separately trusted external signer. Lab's current source performs raw-secret signing in browser JavaScript. Saved Keypairs is documented for **Testnet/Futurenet only, never Mainnet**. Current guidance says saved secrets are obfuscated, not encrypted; entries saved before September 2025 may remain plaintext until re-saved. Do not treat Saved as secure custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
         "keyFacts": [
           "Covers current transaction/XDR/contract/RPC/Horizon/share capabilities without freezing UI coordinates.",
           "Lists wallet-kit, hardware, external and raw-secret signer paths while preferring non-secret browser flows.",
-          "States Saved Keypairs is Testnet/Futurenet-only plaintext JSON localStorage and not secure custody.",
+          "States Saved Keypairs is Testnet/Futurenet-only, obfuscated rather than encrypted, with possible pre-September-2025 plaintext entries until re-saved, and not secure custody.",
           "Distinguishes self-hosted/local from deliberately isolated offline/air-gapped signing and avoids a universal non-egress claim.",
           "Distinguishes stellar contract asset deploy from contract id asset deterministic lookup.",
           "Keeps Friendbot and trustline behavior network/asset-specific."
         ],
         "avoid": [
-          "Do NOT call Saved Keypairs encrypted, secure, offline, air-gapped or appropriate for a Mainnet seed.",
+          "Do NOT call Saved Keypairs encrypted, secure, offline, air-gapped or appropriate for a Mainnet seed; do not claim every current entry is plaintext either.",
           "Do NOT assert hosted/self-hosted Lab universally never transmits secrets or require Freighter as the only signer.",
           "Do NOT paste/save production secrets, sign/submit during read-only verification, or treat Quickstart as production infrastructure.",
           "Do NOT claim contract id asset deploys a SAC or invent a dedicated current Lab SAC button without rechecking.",
           "Do NOT freeze old Laboratory URLs/screenshots/coordinates, use Mainnet Friendbot, or say a trustline credits tokens."
         ],
-        "notes": "GT-54 CORRECTION 2026-07-11: grade current capability and signer categories, plaintext test-only localStorage, the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise is explicitly false; source inspection cannot prove universal non-egress."
+        "notes": "GT-54 refreshed 2026-08-04: grade current capability and signer categories, test-only Saved Keypairs that are obfuscated rather than encrypted (with pre-September-2025 plaintext migration caveat), the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise remains false; source inspection cannot prove universal non-egress."
       },
       "tags": {
         "category": "tooling-infra",
@@ -2668,7 +2669,7 @@
       "truth": {
         "domain": "mixed",
         "status": "mixed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-10-01",
         "sources": [
           {
@@ -2734,29 +2735,29 @@
             "note": "Legacy verdict: confirmed-as-of-2026-07-11."
           },
           {
-            "claim": "Saved keypair objects, including secret values in tests, are serialized to browser localStorage; self-hosted/local Lab is not thereby air-gapped and universal non-egress is unverified",
-            "verdict": "unverifiable",
+            "claim": "Saved Keypairs are obfuscated rather than encrypted; entries saved before September 2025 may remain plaintext until re-saved. Self-hosted/local Lab is not thereby air-gapped and universal non-egress is unverified.",
+            "verdict": "confirmed",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: Saved Keypairs documentation limits use to Testnet/Futurenet and says never Mainnet",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+                "observedAt": "2026-08-04",
+                "note": "Current guidance limits use to Testnet/Futurenet, says never Mainnet, and describes obfuscation plus the pre-September-2025 plaintext migration caveat."
               },
               {
                 "class": "B",
-                "ref": "B: current Laboratory storage/signing implementation and tests",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/stellar/laboratory",
+                "observedAt": "2026-08-04",
+                "note": "Current source preserves the browser-local signing and storage boundary; it does not turn Saved Keypairs into encrypted custody."
               },
               {
                 "class": "F",
                 "ref": "F: browser storage/network inspection using throwaway public data only",
                 "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "note": "Historical browser inspection; the 2026-08-04 storage correction was documentation- and source-based, with no new empirical browser execution claimed."
               }
             ],
-            "note": "Legacy verdict: confirmed-with-unverifiable-universal-negative."
+            "note": "The storage format is confirmed; the universal non-egress negative remains intentionally unclaimed."
           },
           {
             "claim": "stellar contract asset deploy deploys a SAC while stellar contract id asset only derives its deterministic ID",
@@ -2784,11 +2785,11 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited workflow froze UI details, implied Saved Keypairs/Transactions could provide a safe offline-ish path, treated Freighter as the default signer, and confused deterministic SAC ID lookup with deployment. GT-54 confirmed current Lab capabilities while finding plaintext secret persistence and a non-air-gap boundary.",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed Saved Keypairs from blanket plaintext wording to the current obfuscated-not-encrypted migration boundary.",
           "evidence": [
             "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently rejected the offline/SAC wording; blind helper 3388 was fully harvested before matrix seal.",
-            "Blind KV chronology records all helper cleanup before the ten-case seal and final adjudication 'Lab saved keypair JSON plaintext in localStorage'.",
+            "Current official Saved Keypairs guidance: obfuscated rather than encrypted; pre-September-2025 entries may remain plaintext until re-saved.",
             "Sibling sweep checked q-tool-lab-what-is, Quickstart/local network, native XLM SAC, SAC/custom-token, secret recovery and faucet cases; no sibling may equate local browser state with an air gap or ID derivation with deployment."
           ],
           "rootCause": [

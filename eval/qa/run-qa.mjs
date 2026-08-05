@@ -87,6 +87,14 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function hasSuccessfulAnswer(answer, error) {
+  return Boolean(answer) && !error;
+}
+
+function agentErrorRationale(error) {
+  return error === "success" ? "agent returned a transport/API error despite CLI success subtype" : (error ?? "empty answer");
+}
+
 function gitValue(args) {
   const result = spawnSync("git", args, { cwd: path.resolve(QA_DIR, "..", ".."), encoding: "utf8" });
   return result.status === 0 ? String(result.stdout).trim() : null;
@@ -345,7 +353,7 @@ export async function judgeStoredResults(
   const unjudged = results.rows.filter(
     (row) =>
       typeof row.verdict?.score !== "string" ||
-      (row.verdict.score === "error" && Boolean(row.answer))
+      (row.verdict.score === "error" && hasSuccessfulAnswer(row.answer, row.agent?.error))
   );
 
   // Every persisted state must be internally consistent, so finalize stamps
@@ -404,7 +412,7 @@ export async function judgeStoredResults(
   for (const [i, row] of unjudged.entries()) {
     log(`[${i + 1}/${unjudged.length}] ${row.id} …`);
     const kase = identity.caseById.get(row.id);
-    if (row.answer) {
+    if (hasSuccessfulAnswer(row.answer, row.agent?.error)) {
       if (!Array.isArray(row.transcript)) {
         throw new Error(`--judge-stored: row ${row.id} has no saved transcript array`);
       }
@@ -437,7 +445,7 @@ export async function judgeStoredResults(
         score: "error",
         missingFacts: [],
         wrongClaims: [],
-        rationale: row.agent?.error ?? "empty answer",
+        rationale: agentErrorRationale(row.agent?.error),
         rubric: JUDGE_RUBRIC,
         packVersion: PACK_VERSION,
         promptSha256: null
@@ -522,12 +530,13 @@ async function main() {
       const t0 = Date.now();
       process.stdout.write(`[${i + 1}/${cases.length}] ${c.id} … `);
       const run = runAgent(c.question, { surface, searchTool, allowedTools, mcpConfigPath, model });
-      const transcriptEvidence = run.answer
+      const successfulAnswer = hasSuccessfulAnswer(run.answer, run.error);
+      const transcriptEvidence = successfulAnswer
         ? buildTranscriptEvidence({ ...c, candidateAnswer: run.answer, transcript: run.transcript })
         : "";
       let verdict = null;
       if (!noJudge) {
-        verdict = run.answer
+        verdict = successfulAnswer
           ? await judgeCase(
               { ...c, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
               { model: judgeModel }
@@ -536,7 +545,7 @@ async function main() {
               score: "error",
               missingFacts: [],
               wrongClaims: [],
-              rationale: run.error ?? "empty answer",
+              rationale: agentErrorRationale(run.error),
               rubric: JUDGE_RUBRIC,
               packVersion: PACK_VERSION,
               promptSha256: null

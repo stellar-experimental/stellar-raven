@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "d277de426172263629f2cc0b160d62dea705fbec59c0368e239934dc30b6e2c2",
+  "corpusContentSha256": "256ff1bb7d18ffbc27b523383d9ab537d93b225d8e620b251a1d1221127c9397",
   "counts": {
     "total": 490,
     "byCategory": {
@@ -25,8 +25,8 @@
     },
     "byFreshness": {
       "live": 153,
-      "scheduled": 131,
-      "stable": 206
+      "scheduled": 134,
+      "stable": 203
     },
     "traps": {
       "ambiguous": 2,
@@ -756,9 +756,9 @@
         "stellarDocs.search_docs"
       ],
       "golden": {
-        "answer": "Choose by interaction and settlement model, then isolate it behind an adapter covering quote/payment intent, payment evidence, settlement, fulfillment, idempotency, and refunds. x402 V2 and MPP both use HTTP 402 but have different payloads and infrastructure; x402 V2 also has extensions, discovery, and session mechanisms, so it is not purely stateless. MPP Charge settles on-chain while Session uses a channel for repeated traffic. AP2 supplies authorization, mandate, and audit semantics that can sit above a rail; ACP is a beta commerce protocol for catalog, cart, checkout, and orders, not Stellar settlement. Cite each protocol's own specification and keep entitlement independent.",
+        "answer": "Choose by interaction and settlement model, then isolate it behind an adapter covering quote/payment intent, payment evidence, settlement, fulfillment, idempotency, and refunds. x402 V2 and MPP both use HTTP 402 but have different payloads and infrastructure. x402 V2 has extensions and discovery, but its core specification leaves session handling to applications. MPP Charge settles on-chain while Session uses a channel for repeated traffic. AP2 supplies authorization, mandate, and audit semantics that can sit above a rail; ACP is a beta commerce protocol for catalog, cart, checkout, and orders, not Stellar settlement. Cite each protocol's own specification and keep entitlement independent.",
         "keyFacts": [
-          "x402 V2 and MPP are distinct HTTP-402 protocols with different payloads, settlement, and infrastructure; x402 V2 is not purely stateless.",
+          "x402 V2 and MPP are distinct HTTP-402 protocols with different payloads, settlement, and infrastructure; x402 V2 has extensions and discovery, while session handling is application-level and outside its core specification.",
           "MPP Charge settles on-chain, while MPP Session uses cumulative off-chain channel commitments.",
           "AP2 supplies authorization/mandate/audit semantics above a rail; ACP is a beta commerce protocol, not Stellar settlement.",
           "A protocol adapter covers quote/payment intent, payment evidence, settlement, fulfillment, idempotency, and refunds."
@@ -767,7 +767,7 @@
           "x402, MPP, AP2, and ACP are interchangeable names for the same protocol.",
           "MPP always requires one on-chain transaction for every paid response."
         ],
-        "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence."
+        "notes": "Status-sensitive details are stated as of 2026-08-04; grade later sourced changes leniently and require dated primary evidence."
       },
       "tags": {
         "category": "compliance-rwa-payments",
@@ -777,12 +777,16 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-10-15",
         "sources": [
           {
             "class": "A",
             "ref": "https://docs.x402.org/"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/x402-foundation/x402/blob/main/specs/x402-specification-v2.md"
           },
           {
             "class": "A",
@@ -803,7 +807,7 @@
         ],
         "corroboration": [
           {
-            "claim": "x402 V2 and MPP are distinct HTTP-402 protocols with different payloads, settlement, and infrastructure; x402 V2 is not purely stateless.",
+            "claim": "x402 V2 and MPP are distinct HTTP-402 protocols with different payloads, settlement, and infrastructure; x402 V2 has extensions and discovery, while session handling is application-level and outside its core specification.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
@@ -990,14 +994,19 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H2 primary+blind (Solo 3411/3412)",
+          "date": "2026-08-04",
+          "by": "Full golden QA truth maintenance; independently verified in Todo 1347 c3625/c3627",
           "evidence": [
             "https://docs.x402.org/",
+            "https://github.com/x402-foundation/x402/blob/main/specs/x402-specification-v2.md",
             "https://ap2-protocol.org/",
             "https://developers.openai.com/commerce/",
             "https://github.com/stellar/mpp",
             "https://github.com/google-agentic-commerce/AP2"
+          ],
+          "rootCause": [
+            "eval-authoring",
+            "The golden attributed session handling to x402 V2 core although its specification declares sessions out of scope."
           ]
         },
         "origin": "kaan agentic-payment-standard-choice"
@@ -1203,25 +1212,27 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "- **MoneyGram Access / Ramps** is an **anchor** (built on Stellar) that lets wallet/exchange users **cash-in (deposit) and cash-out (withdraw)** physical cash at MoneyGram locations, settling in **Stellar USDC** — no bank account required [1][2].\n- Wallets integrate the **client side of SEP-24** (interactive hosted deposit/withdrawal) authenticated via **SEP-10**; MoneyGram opens a hosted webview for KYC, then the wallet sends/receives USDC with a memo [1].\n- It runs on the **Stellar Ramps** standard, so a **single integration** reaches MoneyGram's cash network across **~170+ countries** (MoneyGram dev docs cite 174) without per-anchor custom work [2].\n- The wallet never deals with the underlying bank/cash rails; MoneyGram abstracts them behind the SEP flow [2].",
+        "answer": "- **MoneyGram Access / Ramps** is an **anchor** (built on Stellar) that lets wallet/exchange users **cash-in (deposit) and cash-out (withdraw)** physical cash at MoneyGram locations, settling in **Stellar USDC** — no bank account required [1][2].\n- Wallets integrate the **client side of SEP-24** (interactive hosted deposit/withdrawal) authenticated via **SEP-10**; MoneyGram opens a hosted webview for KYC, then the wallet sends/receives USDC with a memo [1].\n- It runs on the **Stellar Ramps** standard, so a **single integration** reaches the operator guide's dated **170+ off-ramp countries** without per-anchor custom work [2]. Recheck the direction and coverage before quoting a total.\n- The wallet never deals with the underlying bank/cash rails; MoneyGram abstracts them behind the SEP flow [2].",
         "keyFacts": [
           "MoneyGram Ramps is an anchor implementation providing fiat on/off ramps (cash-in/cash-out) on Stellar.",
           "It runs on the Stellar Ramps standard so wallets get one integration to many cash points."
         ],
         "avoid": [
-          "Do NOT claim MoneyGram runs its own Stellar validator or issues its own L1 token.",
-          "Do NOT fabricate a partnership detail or a settlement asset not backed by the corpus (it is USDC, not a MoneyGram coin)."
+          "Do NOT claim MoneyGram was fully integrated into Stellar's Tier-1 quorum in July or early August 2026; SDF announced operation on 2026-07-16 and targeted full integration for mid-August.",
+          "Do NOT substitute MGUSD for USDC in MoneyGram Ramps: the SEP-24 Ramps flow settles in Stellar USDC, while MGUSD is a separate MoneyGram-branded stablecoin legally issued by Bridge."
         ],
-        "notes": "Dossier §5.3, §5.5. Verified: MoneyGram Access/Ramps is an anchor doing cash-in/out of Stellar USDC; wallets integrate via SEP-24 + SEP-10 (not primarily SEP-38). ~170+ countries (MoneyGram dev docs cite 174); on-ramp 5-950 USDC/tx per MoneyGram dev portal.\nAlso good if the answer: Uses Stellar USDC as the on-chain settlement asset between the cash legs. | Wallets integrate via SEP-24 (hosted deposit/withdrawal) with SEP-10 auth; one integration reaches all MoneyGram locations.\nGolden cites: A stellar.org MoneyGram/ramps page or the developers.stellar.org MoneyGram Access integration guide."
+        "notes": "Verified 2026-08-04: MoneyGram Access/Ramps is an anchor doing cash-in/out of Stellar USDC; wallets integrate via SEP-24 + SEP-10 (not primarily SEP-38). The current operator guide is Version 1.2, Stellar + USDC, July 2026. MGUSD and MoneyGram's Tier-1 validator announcement are separate facts and must not replace the Ramps settlement asset or be presented ahead of their dated status.\nAlso good if the answer: Uses Stellar USDC as the on-chain settlement asset between the cash legs. | Wallets integrate via SEP-24 (hosted deposit/withdrawal) with SEP-10 auth; one integration reaches all MoneyGram locations."
       },
       "tags": {
         "category": "assets-anchors-seps",
         "service": "stellarDocs",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "corpus-grounded",
         "status": "confirmed",
+        "asOf": "2026-08-04",
+        "reverifyBy": "2026-08-18",
         "sources": [
           {
             "class": "A",
@@ -1232,13 +1243,25 @@
             "class": "A",
             "ref": "https://stellar.org/products-and-tools/moneygram",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "note": "Current MoneyGram Ramps operator guide."
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "GT-02-anchor-discovery-platform-disbursement accepted in Solo scratchpad 575 rev 291",
+          "date": "2026-08-04",
+          "by": "Full golden QA MoneyGram truth matrix; blind-verified and accepted in Todo 1347 c3625/c3627",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575"
+            "https://xramps.moneygram.com/ops/dev/stellar",
+            "SDF 2026-07-16 MoneyGram Tier-1 validator announcement",
+            "MoneyGram MGUSD release and current MGUSD SEP-1",
+            "solo://proj/49/scratchpad/truth-maintenance-20--761"
+          ],
+          "rootCause": [
+            "freshness-drift",
+            "Date-contingent MoneyGram token and validator traps became overbroad."
           ]
         },
         "origin": "raven-next q-anchor-moneygram-ramps"
@@ -6472,9 +6495,9 @@
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: pinned SEP-41 primary record, Draft v0.4.1",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — Draft v0.5.0",
+                "observedAt": "2026-08-04",
+                "note": "Narrow metadata refresh; the protocol-comparison observation otherwise retains its original date."
               },
               {
                 "class": "B",
@@ -6492,17 +6515,19 @@
           }
         ],
         "verified": {
-          "date": "2026-07-14",
-          "by": "P4 conversions rework plus independent Terra coverage-placement verification",
+          "date": "2026-08-04",
+          "by": "P4 conversions rework plus independent Terra coverage-placement verification; narrow SEP-41 metadata refresh",
           "evidence": [
             "Solo scratchpad 575: GT-12 primary process 3237 and blind process 3241",
             "Primary x402, MPP, AP2/FIDO, ACP, SEP-41, and current Stellar integration records rechecked 2026-07-10",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Independent Terra review 2026-07-14 rechecked current Stellar agentic-payments Docs/skill plus primary AP2 and ACP sources; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review"
+            "Independent Terra review 2026-07-14 rechecked current Stellar agentic-payments Docs/skill plus primary AP2 and ACP sources; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review",
+            "SEP-41 Draft v0.5.0 / updated 2026-06-08 observed from the normative source on 2026-08-04; other protocol claims were not re-dated."
           ],
           "rootCause": [
+            "freshness-drift: the pinned SEP-41 metadata lagged the normative v0.5.0 record",
             "eval-side protocol-layer conflation: external standard identity, network method, settlement substrate, and optional composition were merged",
             "coverage diagnostic: the exposed Stellar agentic-payments skill does not cover external AP2/ACP, which does not by itself establish a Stellar Docs content obligation",
             "eval-authoring",
@@ -9097,7 +9122,7 @@
         "lumenloop.search_directory"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current LumenLoop corpus, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n**Yes.** Search the current official SCF submissions and report the submission's explicit status and URL—not only a semantic match, directory flag, `award_type`, or reconstructed aggregate. As of **2026-07-10**, official pages marked these representative RWA/tokenization submissions **Awarded**:\n\n- 0xAuth — SCF #27, $45,000\n- Metafyed RWA marketplace — SCF #27, $50,000\n- Verseprop real-estate tokenization — SCF #33 Build, $112,020\n- KYC Token & UI for RWA — SCF #22, $45,000\n- Spydra RWA Tokenization — SCF #31 Build, $132,000\n- Bando Tokenized CETES — SCF #42 Build, $75,000\n- Constellation Protocol — SCF #23, $100,000\n- Excellar — SCF #17, $88,750\n\nBy contrast, Talwex was at **Test Transaction**, Lend tokenized real estate at **Ready for Payment**, and TERWA Wine Asset Vault at **Information Collection** even though their rows carried a Build award type/amount. Do not call those Awarded. No exact BENJI/FOBXX, CRDT, or USDY match appeared on the official funded-projects page in this read; phrase that as a dated source-relative result, not proof that no SCF relationship ever existed.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults current official SCF submission pages, directly answers the question with source-supported content, and dates any status or amount. **Yes:** Stellar has funded RWA/tokenization work, but semantic matches, directory flags, `award_type`, proposed budgets, and reconstructed totals are discovery evidence only. Report each submission's official URL and distinguish **Awarded**, requested budget, and `totalPaid`.\n\nAs observed **2026-08-04**, the official pages marked Talwex SCF #43, Lend SCF #43, and TERWA SCF #43 **Awarded**, superseding their earlier workflow labels. For example, Lend showed a requested budget of **$120,560** and `totalPaid` of **$72,336**; those are different fields and neither should be silently presented as the other. Historical examples such as 0xAuth SCF #27 remain historical awards; a current status claim requires a current official page.\n\nNo exact BENJI/FOBXX, CRDT, or USDY match on a dated official search is only a source-relative result, not proof that no SCF relationship ever existed.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -9120,7 +9145,7 @@
       "truth": {
         "domain": "mixed",
         "status": "mixed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -9146,6 +9171,11 @@
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+            "note": "Lend SCF43 current official submission page."
           }
         ],
         "corroboration": [
@@ -9199,10 +9229,11 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden QA current SCF status verification; accepted in Todo 1347 c3625/c3627",
           "evidence": [
-            "Solo scratchpad 575 GT-17 primary process 3247 and blind process 3248, including exact official submission IDs/statuses asOf 2026-07-10.",
+            "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+            "Current official Talwex and TERWA SCF43 submission pages observed 2026-08-04.",
             "Sibling sweep: q-scf-funded-similar-oracle, q-scf-history-orbit-cdp, q-defi-orbit-cdp, and BENJI/CRDT/USDY product cases.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
@@ -9213,6 +9244,7 @@
             "improvements/lumenloop/ll-013-scf-submission-award-fields.md",
             "improvements/stellar-light-scout/sls-026-scf-status-aggregate-conflict.md",
             "eval-authoring",
+            "Official SCF workflow labels changed; the former Talwex/Lend/TERWA counterexamples became Awarded and require requested-budget versus totalPaid separation.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
         },
@@ -15514,7 +15546,7 @@
         "scout.listSkills"
       ],
       "golden": {
-        "answer": "After identifying the slug, call `scout.getSkill({name: 'agentic-payments'})`. The observed result contained metadata plus full `skill.content`; an unknown name comes back as a soft-empty miss with a hint to discover the current slug via listSkills first — a source-scoped miss, not evidence the skill does not exist. Prefer bundled `codemode.skill.read` for sectioned, pinned build playbooks when that is the requested surface.",
+        "answer": "After identifying the slug, call `scout.getSkill({name: 'agentic-payments'})`. The observed result contained metadata plus full `skill.content`; an unknown name comes back as a soft-empty miss with a hint to discover the current slug via listSkills first — a source-scoped miss, not evidence the skill does not exist. Prefer `codemode.skill.read` for sectioned, pinned, hash-verified upstream playbooks when that is the requested surface; the bodies are not bundled in this repository.",
         "keyFacts": [
           "Uses `getSkill` for one known slug and full content.",
           "Uses `listSkills` first for discovery when the name is unknown."
@@ -15561,7 +15593,7 @@
         ],
         "verified": {
           "date": "2026-07-30",
-          "by": "drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh",
+          "by": "drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh; wording-only correction",
           "evidence": [
             "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
             "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
@@ -15572,7 +15604,8 @@
           "rootCause": [
             "solo://project/49/scratchpad/p4/n1-gapops",
             "Eval-authoring flaw: graded the served soft-empty contract as an operation error, contradicting the adapter and the sibling case.",
-            "eval-authoring"
+            "eval-authoring",
+            "The golden used stale bundled-playbook wording although current playbooks are pinned and hash-verified upstream."
           ]
         },
         "origin": "authored 2026-07 (gap-ops)"
@@ -18133,7 +18166,7 @@
         "stellarDocs.search_rpc_horizon_data_docs"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\n**Testnet** and **Futurenet** are separate public test networks with fake XLM and no real-value assets. Use Testnet for stable, near-production integration testing; use Futurenet to exercise the next/pre-release protocol and features. They have different passphrases, endpoints, ledgers, accounts, assets, and contract IDs, and neither promises production availability or permanent state. Testnet resets on a planned cadence; Futurenet resets as needed and is more volatile.\n\nFriendbot funds **accounts** on the applicable test network; it does not directly fund a contract. Provider coverage and live protocol versions change, so consult the current Networks/Providers pages and date any exact snapshot rather than using it to define the networks forever.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-08-04, the verified sources supported this observed answer:\n\n**Testnet** and **Futurenet** are separate public test networks with fake XLM and no real-value assets. Use Testnet for stable, near-production integration testing; use Futurenet to exercise the next/pre-release protocol and features. They have different passphrases, endpoints, ledgers, accounts, assets, and contract IDs, and neither promises production availability or permanent state. Testnet resets on a planned cadence; Futurenet resets as needed and is more volatile.\n\nFriendbot can fund both **G-account and C-contract addresses** on the applicable test network. Provider coverage and live protocol versions change, so consult the current Networks/Providers pages and date any exact snapshot rather than using it to define the networks forever.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -18147,7 +18180,7 @@
           "Do NOT freeze provider counts or protocol versions without an as-of date.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Verified against the networks docs: both are public, fake-XLM networks separate from Mainnet; Testnet is stable (resets ~2-4×/yr), Futurenet runs bleeding-edge/pre-release protocol features (irregular resets). Both fundable via Friendbot (~10,000 fake XLM). Role swap is the trap.\nAlso good if the answer: Use Testnet for normal app testing and Futurenet only when you need to exercise pre-release protocol features. | Far fewer RPC providers support Futurenet than Testnet/Mainnet.\nGolden cites: developers.stellar.org networks docs (testnet/futurenet).\nGT-50 CORRECTION 2026-07-11: gate durable roles and network separation, not a provider count or protocol snapshot. Friendbot funds accounts."
+        "notes": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries."
       },
       "tags": {
         "category": "tooling-infra",
@@ -18157,7 +18190,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -18209,8 +18242,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden QA primary-source correction; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "Solo scratchpad 575 GT-50 primary/blind matrices independently confirmed the durable roles and freshness correction.",
             "Sibling sweep checked q-protocol-futurenet-vs-testnet, q-protocol-network-passphrases, q-ti-testnet-mainnet-migration, and q-tool-cli-testnet-identity-howto.",
@@ -18219,7 +18252,7 @@
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ],
           "rootCause": [
-            "Plain freshness drift plus eval-side wording error: provider coverage was frozen and Friendbot account funding was misstated as contract funding.",
+            "Plain freshness drift plus eval-side wording error: Friendbot was incorrectly restricted to G-account funding although current docs accept G-account and C-contract addresses.",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
@@ -18236,19 +18269,18 @@
         "stellarDocs.search_rpc_horizon_data_docs"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nYou need an **indexer** rather than RPC alone for historical cross-account filtering: RPC event history is bounded and Horizon does not provide arbitrary cross-account filtered indexes ([Indexers Overview](https://developers.stellar.org/docs/data/indexers)).\n\nEstablished Stellar choices include **SubQuery**, **OBSRVR**, **Goldsky Mirrors/Pipelines**, **OnFinality**, **Mercury**, and **The Graph via Substreams only** (not Stellar Subgraphs or Token API). For deep historical SQL, **Hubble/BigQuery** is another fit.\n\n**Alchemy status requires a dated source note.** As of **2026-07-09**, Alchemy says its indexed Stellar Data API is live on Mainnet and Testnet, with transfer history, account/token balances, and NFT holdings across native, Classic, and Soroban assets; the indexed-API announcement is dated **2026-07-08**. The live Stellar Indexers Overview still says Alchemy was targeted for H1 2026, so that page is stale on this provider; corrective stellar/stellar-docs PR #2573 was still open and unmerged when checked. Treat this as a docs-surface disagreement, not evidence that Alchemy is unavailable.\n\nSelection: use **OBSRVR** for a Stellar-native stream-to-warehouse workflow, **SubQuery** for its multi-chain indexing stack, **Goldsky** if it matches an existing EVM data platform, **Alchemy** if its address-centric indexed APIs cover the needed query, or **Hubble/BigQuery** for SQL-oriented deep history. Verify retention, data model, and current network coverage before committing.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-08-04, the verified sources supported this observed answer:\n\nYou need an **indexer** rather than RPC alone for historical cross-account filtering: RPC event history is bounded and Horizon does not provide arbitrary cross-account filtered indexes ([Indexers Overview](https://developers.stellar.org/docs/data/indexers)).\n\nEstablished Stellar choices include **SubQuery**, **OBSRVR**, **Goldsky Mirrors/Pipelines**, **OnFinality**, **Mercury**, and **The Graph via Substreams only** (not Stellar Subgraphs or Token API). For deep historical SQL, **Hubble/BigQuery** is another fit.\n\nThe official Stellar Indexers Overview and Alchemy's provider documentation both describe Alchemy's indexed Stellar Data API as live. Its address-centric APIs cover transfer history, account/token balances, and NFT holdings across native, Classic, and Soroban assets.\n\nSelection: use **OBSRVR** for a Stellar-native stream-to-warehouse workflow, **SubQuery** for its multi-chain indexing stack, **Goldsky** if it matches an existing EVM data platform, **Alchemy** if its address-centric indexed APIs cover the needed query, or **Hubble/BigQuery** for SQL-oriented deep history. Verify retention, data model, and current network coverage before committing.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Preserves The Graph's actual boundary: Stellar support is via Substreams, not full Stellar Subgraph or Token API support."
         ],
         "avoid": [
-          "Do NOT state that Alchemy's Stellar indexed Data API is still merely targeted for H1 2026 without flagging the stale official-docs surface; Alchemy announced the live APIs on 2026-07-08.",
-          "Do NOT hide the source disagreement: the provider docs say live while developers.stellar.org still carries the expired roadmap sentence as of 2026-07-09.",
+          "Do NOT state that Alchemy's Stellar indexed Data API is still merely targeted for H1 2026; current official Docs describe it as live.",
           "Do NOT claim The Graph offers full Subgraph/Token API support for Stellar, or recommend RPC alone for arbitrary historical cross-account filtering.",
           "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
         ],
-        "notes": "Re-verified 2026-06-29 against the Indexers Overview: SubQuery, Goldsky (Mirrors), OnFinality, OBSRVR, Mercury support Stellar; The Graph quote confirmed exactly: 'offers Stellar support for Substreams, with no current plans to expand Subgraph or Token API support to Stellar.' Added Space and Time (Q4 2025); Allium (Q1 2026); Alchemy (H1 2026) — freshness-sensitive, retention phrasing matches normalized ~24h default/~7d max. Reward flagging staleness.\nAlso good if the answer: SubQuery is a safe default (multi-chain, dedicated Stellar starter); OBSRVR is the most Stellar-native; Goldsky Mirrors fit teams already on Goldsky for EVM. | Some providers (e.g. Alchemy, Allium) are launching/expanding Stellar support around 2026 (freshness-sensitive).\nGolden cites: developers.stellar.org Indexers Overview page.\nCORRECTION 2026-07-09 (todo 901), independently reverified by GT-50 on 2026-07-11: real-world/provider status and docs discoverability disagree. Alchemy's indexed Stellar Data API is confirmed live by its dated announcement and product docs, but the live Stellar Indexers Overview still says targeted H1 2026; PR #2573 remained open/unmerged. Grade the durable behavior: cite a dated provider-status source, keep Alchemy's scope address-centric, and flag the stale docs surface. Do not accept the expired roadmap wording as uncontested current status."
+        "notes": "CORRECTION 2026-08-04: the official Indexers Overview now says Alchemy is live, resolving the former roadmap disagreement. Preserve The Graph's Substreams-only boundary and require dated provider/network/retention checks."
       },
       "tags": {
         "category": "tooling-infra",
@@ -18257,8 +18289,8 @@
       },
       "truth": {
         "domain": "real-world",
-        "status": "disputed",
-        "asOf": "2026-07-11",
+        "status": "confirmed",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "D",
@@ -18363,8 +18395,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden QA current Docs recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "Independent re-derivation by Solo process 3158 recorded under scratchpad 569 Lane B (901): exact Alchemy announcement/docs excerpts, live Stellar docs excerpt, and read-only PR #2573 state/patch.",
             "Sibling sweep 2026-07-09: q-infra-rpc-providers-list names Alchemy as hosted RPC only and remains compatible; routing cases carry no status fact; the vendored corpus repeats the stale roadmap wording and remains read-only.",
@@ -18375,7 +18407,7 @@
           ],
           "rootCause": [
             "Plain freshness drift plus single-surface authoring: the 2026-06-29 review copied a roadmap date from the official Indexers Overview and pinned it instead of gating on a dated provider-status check.",
-            "The live developers.stellar.org Indexers Overview is stale for Alchemy; corrective stellar/stellar-docs PR #2573 remained open and unmerged when rechecked 2026-07-09.",
+            "The former Docs/provider disagreement resolved when the official Indexers Overview was updated to describe Alchemy as live.",
             "solo://proj/49/todo/golden-corpus-health--901",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
@@ -20931,7 +20963,7 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nAs of **2026-07-10**, Production Mainnet limits are direction-specific: **on-ramp 5–950 USDC per transaction** and **off-ramp 5–2,500 USDC per transaction**. Production Preview is a separate test tier at **10–20 USDC per transaction and 100 USDC aggregate**. Recheck these operator values before treating them as current.\n\nCoverage is disputed across MoneyGram's own surfaces. Integration prose says 174 off-ramp countries, while its linked live sheet currently yields 168 cash-out and 27 cash-in rows; consumer marketing says 170+ cash countries. Broader 180+ fiat-rail/presence and 200+ corporate-footprint figures are not Stellar cash-ramp coverage. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-08-04, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nThe MoneyGram operator guide identifies itself as **Version 1.2 · Stellar + USDC · July 2026**. Its Production Mainnet limits are direction-specific: **cash-in 15–950 USDC per transaction** and **cash-out 15–2,500 USDC per transaction**. Recheck these values before treating them as current.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -20945,7 +20977,7 @@
           "Do NOT conflate MoneyGram Ramps with SDP.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Verified: Ramps uses SEP-24 + USDC on Stellar; MainNet off-ramp limit 5 USDC min / 2,500 USDC max per tx; available in 174 countries (per MoneyGram dev docs, June 2026). Limits/country counts are freshness-sensitive. Trap: wrong SEP (it's SEP-24, not SEP-6/31).\nAlso good if the answer: Cites per-transaction off-ramp limits (e.g. ~$5 USDC min to ~$2,500 USDC max) and flags these can change. | Notes the global retail agent footprint (cash-out at hundreds of thousands of locations across 170+ countries).\nGolden cites: developers.stellar.org MoneyGram Ramps docs and/or MoneyGram developer docs.\nCORRECTION 2026-07-10: grade direction-specific limits and dated source scope. The 174 prose conflicts with the linked live sheet; accept honest dispute/omission, not a universal count."
+        "notes": "CORRECTION 2026-08-04: MoneyGram's current operator guide is Version 1.2, Stellar + USDC, July 2026, and gives 15–950 USDC cash-in / 15–2,500 USDC cash-out. Limits and country counts are freshness-sensitive. Trap: wrong SEP (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
       },
       "tags": {
         "category": "compliance-rwa-payments",
@@ -20955,12 +20987,12 @@
       "truth": {
         "domain": "real-world",
         "status": "disputed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-08-04",
         "sources": [
           {
-            "class": "D",
-            "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
-            "note": "class inferred at migration"
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "note": "Current MoneyGram Ramps operator guide, Version 1.2, July 2026."
           },
           {
             "class": "D",
@@ -20975,14 +21007,14 @@
         ],
         "corroboration": [
           {
-            "claim": "Current production limits are 5–950 USDC on-ramp and 5–2,500 USDC off-ramp per transaction",
+            "claim": "As observed 2026-08-04, current production limits are 15–950 USDC cash-in and 15–2,500 USDC cash-out per transaction.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: current MoneyGram integration documentation",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+                "observedAt": "2026-08-04",
+                "note": "MoneyGram operator guide, Version 1.2, Stellar + USDC, July 2026."
               },
               {
                 "class": "D",
@@ -21048,17 +21080,18 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 5B numeric corroboration backfill",
+          "date": "2026-08-04",
+          "by": "Full golden QA MoneyGram truth matrix; blind-verified and accepted in Todo 1347 c3625/c3627",
           "evidence": [
-            "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+            "https://xramps.moneygram.com/ops/dev/stellar",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0010.md",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            "MoneyGram moved the operator guide and raised both production minimums from 5 to 15 USDC."
           ]
         },
         "origin": "raven-next q-pay-moneygram-ramps"
@@ -22434,7 +22467,7 @@
         "lumenloop.search_content_semantic"
       ],
       "golden": {
-        "answer": "The Protocol 27 Zipper Mainnet upgrade vote was scheduled for July 8, 2026, and live Horizon reported protocol version 27 on July 11, confirming activation. Zipper comprises CAP-0071-01, which adds built-in authentication delegation for custom accounts, and CAP-0071-02, which adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential. The older SOROBAN_CREDENTIALS_ADDRESS remains valid only through Protocol 27 and is replaced in Protocol 28. A vote schedule alone is not proof of passage; use a dated live-network or post-vote source for activation.",
+        "answer": "The Protocol 27 Zipper Mainnet upgrade vote was scheduled for July 8, 2026, and live Horizon reported protocol version 27 on July 11, confirming activation. Zipper comprises CAP-0071-01, which adds built-in authentication delegation for custom accounts, and CAP-0071-02, which adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential. The older SOROBAN_CREDENTIALS_ADDRESS remains valid in Protocol 27; CAP-0071-02 says deprecation may be considered in Protocol 28 **or later**, not that Protocol 28 definitely replaces it. A vote schedule alone is not proof of passage; use a dated live-network or post-vote source for activation.",
         "keyFacts": [
           "The Mainnet vote date was July 8, 2026, and Protocol 27 was live when independently checked on July 11, 2026.",
           "CAP-0071-01 adds authentication delegation for custom accounts.",
@@ -22510,8 +22543,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 N2 primary+blind (Solo 3417/3423)",
+          "date": "2026-08-04",
+          "by": "Full golden QA CAP-0071-02 recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
@@ -22522,7 +22555,8 @@
             "https://horizon.stellar.org/"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            "The golden promoted a possible Protocol 28-or-later deprecation into a definite Protocol 28 replacement."
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -23524,12 +23558,12 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nThe question's word **queued** is stale: **Protocol 27 (Zipper)** has been live on Stellar Mainnet since **ledger 63386819**, closed **2026-07-08 at 17:00:10 UTC**; ledger 63386818 was the final P26 ledger. Two independent Pubnet RPCs still reported protocol 27 on **2026-07-11**.\n\n**CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds the credential to its account address to prevent cross-account credential reuse. This is a Soroban authorization/credential change, not ZK, consensus, or parallel execution. The current CAP registry still labels CAP-0071 **Accepted**; that normative document status is distinct from the already-completed software implementation and Mainnet activation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any status claim. Protocol 27 (Zipper) has been live on Stellar Mainnet since ledger 63386819, closed 2026-07-08 at 17:00:10 UTC. **CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds the credential to its account address to prevent cross-account credential reuse. This is a Soroban authorization/credential change, not ZK, consensus, or parallel execution. As observed **2026-08-04**, the CAP registry labels CAP-0071 **Final**; normative document status remains distinct from software implementation and per-network activation.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Explains CAP-0071 delegation chains and address-bound V2 credentials.",
-          "Distinguishes the CAP's Accepted registry status from implementation and network activation."
+          "Distinguishes the CAP's Final registry status from implementation and network activation."
         ],
         "avoid": [
           "Do NOT claim Protocol 27 is still queued or pending on Mainnet.",
@@ -23538,7 +23572,7 @@
           "Do NOT present network status without a dated live source or freshness caveat.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "GT-31 CORRECTION 2026-07-11: the queued premise and pending/future judge prose are stale. P27 is live from ledger 63386819; CAP-0071 remains labelled Accepted in the registry, demonstrating that normative status and actual network activation are distinct. Grade delegation chains and address-bound V2 mechanics."
+        "notes": "CORRECTION 2026-08-04: P27 is historical and live from ledger 63386819; CAP-0071 is now Final. Preserve CAP-status versus network-activation separation."
       },
       "tags": {
         "category": "protocol-core",
@@ -23548,7 +23582,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -23605,8 +23639,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden QA CAP registry recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently retained the mechanics and required replacement of stale pending/future judge prose.",
             "2026-07-11 author re-check: Horizon P26/P27 boundary, two independent Pubnet RPCs, current CAP-0071 source, and official Zipper guide.",
@@ -23619,6 +23653,7 @@
             "solo://proj/49/todo/date-contingent-trap--831",
             "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
             "eval-authoring",
+            "CAP-0071 advanced from Accepted to Final after the earlier snapshot.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
         },
@@ -24073,20 +24108,20 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "A proposed core-protocol change starts with public discussion, then a markdown CAP PR under `stellar/stellar-protocol/core/` in **Draft**. After iteration it moves to **Awaiting Decision** and CAP Core Team review. The decision is branched, not one automatic chain: unanimous support leads toward an acceptance disposition/FCP; majority concerns lead toward **FCP: Rejected**; minority concerns return it to Draft, and deliberation can span several meetings. The Final Comment Period lasts about one week. If no new major concern changes the disposition, it becomes **Accepted** or **Rejected**; a new major issue can send it back to Draft.\n\n**Accepted is a specification decision, not deployment.** After code is implemented, a PR moves the CAP to **Implementation Review** and records the target protocol version; the protocol group can still reject it or move it to **Implemented**. **Final** is the registry's normative finalization status after the released implementation has validator acceptance. Those labels must still be kept separate from an actual network upgrade: validators configure a scheduled upgrade proposal and SCP externalizes agreement according to their quorum sets under Stellar's federated Byzantine agreement model. That is not a simple global-majority-by-node-count or XLM-holder vote, and Testnet and Mainnet can activate at different times. CAP-0071 being labelled Accepted while P27 is already live is a current example of status lag.\n\nCAPs define Core/protocol behavior. **SEPs** specify ecosystem interoperability conventions and do not by themselves change ledger consensus rules.",
+        "answer": "A proposed core-protocol change starts with public discussion, then a markdown CAP PR under `stellar/stellar-protocol/core/` in **Draft**. After iteration it moves to **Awaiting Decision** and CAP Core Team review. The decision is branched: the Final Comment Period can lead to acceptance or rejection, while concerns can return it to Draft. **Accepted** is a specification decision, not deployment. The current registry workflow continues through **Implemented** and **Final**; `Implementation Review` is no longer a status. Those labels remain separate from network activation: validators configure scheduled upgrade proposals and SCP externalizes agreement through quorum sets under FBA, not a global node-count majority or XLM-holder vote. Testnet and Mainnet can activate at different times. CAPs define Core/protocol behavior; **SEPs** specify ecosystem interoperability conventions and do not by themselves change consensus rules.",
         "keyFacts": [
           "Describes Draft, Awaiting Decision, acceptance/rejection FCP branches, and possible return to Draft.",
-          "Includes Implementation Review between Accepted implementation and Implemented.",
+          "Uses the current Draft → Awaiting Decision → FCP → Accepted → Implemented → Final workflow, with rejection and return-to-Draft branches.",
           "Separates normative status/finalization, code implementation/release, and per-network SCP activation.",
           "Uses quorum-set/FBA semantics and distinguishes CAPs from SEPs and token-holder votes."
         ],
         "avoid": [
-          "Do NOT present the process as an unconditional Draft-to-Final line or omit Implementation Review and rejection/return branches.",
+          "Do NOT present the process as an unconditional Draft-to-Final line, resurrect retired Implementation Review status, or omit rejection/return branches.",
           "Do NOT equate Accepted, Implemented, or Final status with actual activation on every network.",
           "Do NOT reduce SCP/FBA activation to a simple majority of validators or an XLM token-holder vote.",
           "Do NOT confuse CAP protocol changes with SEP interoperability standards."
         ],
-        "notes": "GT-31 CORRECTION 2026-07-11: require the acceptance/rejection FCP branches and Implementation Review. CAP status/finalization, implementation/release, and actual network activation are separate; describe activation with SCP/FBA quorum-set semantics rather than a simple validator-count majority."
+        "notes": "CORRECTION 2026-08-04: current lifecycle is Draft → Awaiting Decision → FCP → Accepted → Implemented → Final; Implementation Review is retired. CAP status, implementation/release, and network activation remain separate."
       },
       "tags": {
         "category": "protocol-core",
@@ -24120,7 +24155,7 @@
         ],
         "corroboration": [
           {
-            "claim": "The CAP process includes acceptance/rejection FCP disposition, Accepted, Implementation Review, Implemented, and Final, with return-to-Draft/rejection branches.",
+            "claim": "The CAP process includes acceptance/rejection FCP disposition, Accepted, Implemented, and Final, with return-to-Draft/rejection branches.",
             "verdict": "confirmed",
             "evidence": [
               {
@@ -24163,14 +24198,14 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited linear lifecycle omitted Implementation Review, collapsed normative CAP status with implementation and activation, and described network agreement as a simple validator majority rather than SCP/FBA quorum semantics.",
+          "date": "2026-08-04",
+          "by": "Full golden QA current CAP workflow recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
-            "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required Implementation Review, FCP branches, and status/implementation/activation separation.",
+            "Current stellar-protocol core/README.md workflow observed 2026-08-04; independent Todo 1347 verifier c3625.",
             "2026-07-11 author re-check against stellar-protocol fbf05c9d CAP process and live P27/CAP-0071 counterexample."
           ],
           "rootCause": [
-            "Eval-side lifecycle linearization and governance-layer collapse."
+            "Eval-side lifecycle drift and governance-layer collapse; the golden retained retired Implementation Review status."
           ]
         },
         "origin": "raven-next q-protocol-cap-process"
@@ -24472,24 +24507,26 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "`maxTxSetSize` on Pubnet is **1,000 classic operations per ledger as of 2026-07-10**, not necessarily 1,000 transactions because classic transactions may contain multiple operations. Smart-contract capacity is configured separately. The live `CONFIG_SETTING_CONTRACT_EXECUTION_LANES` value reported `ledgerMaxTxCount=2000` (last modified at ledger 60993066), while current official Docs still say 100; disclose this Docs-versus-live conflict and prefer a dated direct config read for current operation. Resource budgets can reduce effective throughput below the count ceiling. These validator-controlled settings are not permanent constants.",
+        "answer": "As observed **2026-08-04**, Pubnet is configured for **1,000 classic operations per ledger**, not necessarily 1,000 transactions because classic transactions may contain multiple operations. Smart-contract capacity is configured separately at **2,000 smart-contract transactions per ledger**. Current official Docs and the v27 network-config schema agree on those values. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
         "keyFacts": [
           "Distinguishes classic maxTxSetSize operations from separately configured Soroban transaction/resource limits.",
-          "Reports the dated live 2,000 setting and official stale-100 conflict."
+          "Reports the dated current 2,000 smart-contract transaction setting without inventing a stale Docs conflict."
         ],
         "avoid": [
           "Do NOT equate 1,000 operations with 1,000 transactions, hard-code 100 Soroban transactions as current, or ignore resource constraints."
         ],
-        "notes": "Re-verified 2026-06-29 against official Fees/Resource-Limits/Metering docs: the public network is configured for 1,000 non-smart-contract operations per ledger and 100 smart-contract transactions per ledger (validator-configured). Value has been 1,000 ops/ledger since the Protocol 11 (2019) shift to measuring capacity in operations. Defining gate remains the validator-set-parameter caveat (not a fixed constant), not the exact number. Trap is treating it as immutable or claiming no limit. Confidence raised medium->high.\nAlso good if the answer: Notes smart-contract transactions have a separate ledger limit (currently 100 Soroban transactions per ledger) governed by resource limits, not the 1,000-op classic count. | Notes the limit balances ledger acceptance against fair fees, that exceeding it triggers surge pricing, and that it can be raised via validator-set upgrades as scaling work lands (Road to 5000 TPS).\nGolden cites: The official fees/resource-limits docs and/or the stellar.expert protocol-history page (the 'Parallelizing Stellar Core' scaling blog for the raise-the-limit roadmap).\nGT-32 CORRECTION 2026-07-10: live execution-lanes max is 2,000 versus Docs 100; sd-016 tracks the stale hand-maintained scalar."
+        "notes": "CORRECTION 2026-08-04: current official Docs support 1,000 classic operations and 2,000 smart-contract transactions per ledger. Preserve the operation-versus-transaction distinction, separate resource limits, and validator-controlled freshness caveat."
       },
       "tags": {
         "category": "protocol-core",
         "service": "stellarDocs",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
+        "asOf": "2026-08-04",
+        "reverifyBy": "2027-02-04",
         "sources": [
           {
             "class": "A",
@@ -24504,39 +24541,42 @@
         ],
         "corroboration": [
           {
-            "claim": "Pubnet maxTxSetSize is 1000 classic operations; live ledgerMaxTxCount is 2000 while official pages still state 100, and resource budgets further constrain effective throughput.",
+            "claim": "As observed 2026-08-04, official Docs and the v27 network-config schema agree on 1,000 classic operations and 2,000 smart-contract transactions per ledger; resource budgets can further constrain effective throughput.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "B",
-                "ref": "B/C: XDR/config semantics and live ledger/config reads",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
+                "observedAt": "2026-08-04",
+                "note": "The v27 schema separates the classic operation count from the smart-contract transaction limit."
               },
               {
                 "class": "C",
-                "ref": "B/C: XDR/config semantics and live ledger/config reads",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "Current network configuration corroboration recorded in Solo scratchpad 761",
+                "observedAt": "2026-08-04",
+                "note": "The current configured values match the official Docs values."
               },
               {
                 "class": "A",
-                "ref": "A: current Docs stale 100 statement",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+                "observedAt": "2026-08-04",
+                "note": "Official Docs state 1,000 non-smart-contract operations and 2,000 smart-contract transactions per ledger."
               }
             ],
-            "note": "Legacy verdict: confirmed-with-docs-live-conflict."
+            "note": "The former Docs-versus-live conflict is historical and no longer part of the current verdict."
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The classic 1,000-operation value is current, but the golden/docs' 100 Soroban-transaction scalar is stale versus live execution-lanes configuration at 2,000.",
+          "date": "2026-08-04",
+          "by": "Full golden QA current Docs/network-config recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
+            "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-04",
+            "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x observed 2026-08-04",
             "Solo scratchpad 575 GT-32 blind 3284, resolving primary reliance on stale prose."
           ],
           "rootCause": [
-            "improvements/stellar-docs/sd-016-live-network-limits-stale.md"
+            "freshness-drift",
+            "The former Docs-versus-live conflict resolved when official Docs adopted the 2,000 smart-contract transaction value."
           ]
         },
         "origin": "raven-next q-protocol-max-tx-set-size"
@@ -24816,8 +24856,7 @@
         "keyFacts": [
           "Names the Stellar Consensus Protocol (SCP) as Stellar's consensus mechanism.",
           "States SCP is a construction of Federated Byzantine Agreement (FBA).",
-          "Explains FBA reaches agreement via user-defined quorum sets / trusted nodes, NOT mining hashpower (PoW) or staked capital (PoS).",
-          "States stellar-core is the reference C++ implementation of SCP and the Stellar protocol that validators run to reach consensus and apply ledgers."
+          "Explains FBA reaches agreement via user-defined quorum sets / trusted nodes, NOT mining hashpower (PoW) or staked capital (PoS)."
         ],
         "avoid": [
           "Do NOT claim Stellar uses Proof-of-Work or mining.",
@@ -24847,8 +24886,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 Lane R absorb triage",
+          "date": "2026-08-04",
+          "by": "Full golden QA scope correction; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "solo://proj/49/scratchpad/truth-maintenance-20--575",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-protocol-stellar-core-what-is",
@@ -24856,28 +24895,11 @@
             "https://developers.stellar.org/docs/networks/software-versions"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            "Removed an unrelated stellar-core implementation fact that the question and golden answer did not ask for."
           ]
         },
-        "origin": "raven-next q-protocol-scp-consensus-algorithm",
-        "corroboration": [
-          {
-            "claim": "States stellar-core is the reference C++ implementation of SCP and the Stellar protocol that validators run to reach consensus and apply ledgers.",
-            "verdict": "confirmed",
-            "evidence": [
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-core",
-                "observedAt": "2026-07-11"
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/networks/software-versions",
-                "observedAt": "2026-07-11"
-              }
-            ]
-          }
-        ]
+        "origin": "raven-next q-protocol-scp-consensus-algorithm"
       }
     },
     {
@@ -27928,25 +27950,27 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "- The **Stellar Ambassador Program** supports builders and educators forming **regional chapters** (events, meetups, documentation, local growth). (https://stellar.gitbook.io/ambassador-program)\n- Under **SCF v7.0**, ambassadors can **recommend Instawards — up to $15,000 in XLM per project** — for early-stage builders. (https://stellar.gitbook.io/scf-handbook/scf-awards/instawards)\n- **Instawards have no open application**: they come via **ambassador / local-chapter recommendation**, which makes reaching a local chapter a recommended first rung of the funding ladder. (https://stellar.gitbook.io/scf-handbook/scf-awards/instawards)\n- Ambassadors do **not** award the **$150K SCF Build grant** — their funding lever is the **Instawards (≤$15K)**, and the Ambassador Program is distinct from SCF Verified Member / NQG governance roles. (https://stellar.gitbook.io/ambassador-program)",
+        "answer": "- The **Stellar Ambassador Program** supports builders and educators forming regional chapters for events, meetups, documentation, and local growth.\n- Under SCF v7, ambassadors can recommend **Instawards**, up to $15,000 in XLM per project, for early-stage builders; there is no open Instaward application.\n- Chapters may recommend or referral-route teams, and an Instaward may help an eligible project prepare for a separate SCF Build application. This is a pipeline, not automatic progression or funding.\n- Ambassadors do **not** approve the $150K SCF Build award. SDF/SCF retains approval, and the Ambassador Program remains distinct from Verified Member/NQG governance roles.",
         "keyFacts": [
           "The Stellar Ambassador Program supports builders/educators forming regional chapters (events, meetups, docs).",
           "Under SCF v7.0, ambassadors can recommend Instawards (up to $15K XLM per project) for early-stage builders."
         ],
         "avoid": [
-          "Do NOT claim ambassadors directly award the $150K SCF Build grant — their funding power is Instawards (≤$15K), not Build.",
+          "Do NOT claim ambassadors directly approve the $150K SCF Build grant or that an Instaward guarantees progression; chapters may recommend/referral-route a separate SDF-reviewed Build application.",
           "Do NOT confuse the Ambassador Program with SCF Verified Members / NQG governance roles."
         ],
-        "notes": "Dossier §7.2. Trap: ambassador → Instawards (≤$15K), not Build ($150K).\nAlso good if the answer: Instawards have no open application — they come via ambassador/chapter recommendation.\nGolden cites: stellar.gitbook.io/ambassador-program and the SCF Instawards handbook page."
+        "notes": "CORRECTION 2026-08-04: preserve direct-award authority versus referral-pipeline progression. Chapters can recommend/referral-route and Instawards can prepare an eligible project for a separate Build application; SDF/SCF retains approval and no funding/progression is automatic."
       },
       "tags": {
         "category": "scf-grants-builders",
         "service": "scout",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
+        "asOf": "2026-08-04",
+        "reverifyBy": "2027-02-04",
         "sources": [
           {
             "class": "A",
@@ -27957,13 +27981,29 @@
             "class": "A",
             "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/introducing-the-stellar-ambassador-program",
+            "note": "Current One Pipeline description."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+            "note": "Ambassador-recommended Instawards can prepare teams for the Build pipeline; SDF retains approval."
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "GT-36-scf-programs-tiers-tracks-ratios accepted in Solo scratchpad 575 rev 291",
+          "date": "2026-08-04",
+          "by": "Full golden QA Ambassador pipeline verification; accepted in Todo 1347 c3625/c3627",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575"
+            "https://stellar.org/blog/ecosystem/introducing-the-stellar-ambassador-program",
+            "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+            "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules"
+          ],
+          "rootCause": [
+            "freshness-drift",
+            "The golden collapsed direct award authority with the now-explicit referral and readiness pipeline."
           ]
         },
         "origin": "raven-next q-scf-ambassador-program"
@@ -28816,15 +28856,14 @@
         "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live RFP response identified SCF #45 in Submission and carried a 2026-08-16 submission deadline.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Keeps the stable Build cap distinct from the changing round schedule."
+          "Makes the as-of date visible for every changeable roster, status, version, or measurement."
         ],
         "avoid": [
           "Do NOT present the expired July 26 deadline as current.",
           "Do NOT assert any round/deadline as permanent or fabricate a date not grounded in a live source.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Dossier §4. Freshness item — rotates every ~6 weeks; reward staleness-flagging. scout_rfps surfaces activeQuarter signal.\nAlso good if the answer: States the SCF Build cadence is roughly every 6 weeks. | Notes the standard $150K XLM Build cap for the round.\nGolden cites: communityfund.stellar.org/awards (the live awards page) for the current round/deadline.\nFRESHNESS CORRECTION 2026-07-09 (todo 901): SCF #45 remains current, but its deadline is August 16, 2026, not July 26. Official awards and Scout live-round metadata agree. Continue gating on dated lookup behavior rather than one frozen round."
+        "notes": "Freshness item: identify the current round/status/deadline from a dated live source. The Build cap is owned by separate cases and is not a requirement for this question."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -28880,7 +28919,7 @@
         ],
         "verified": {
           "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "by": "P4 conversions rework after independent Fable copy/quality review; scope-only correction does not claim a later live-round observation",
           "evidence": [
             "Solo scratchpad 569 Batch B, 2026-07-09.",
             "Sibling expansion found and corrected the same July 26 date in q-edge-scf-v7-centralization-myths.",
@@ -28892,6 +28931,7 @@
             "Ordinary freshness drift in a roughly six-week round schedule; the old case correctly warned that its date would expire.",
             "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch B",
             "eval-authoring",
+            "Removed an unrelated Build-cap key fact duplicated from another case.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
         },
@@ -29780,12 +29820,12 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nNQG is Stellar Community Fund's reputation/delegation governance system, combining Neural Governance with Quorum Delegation; it is not XLM/token voting and not Stellar Consensus Protocol. The current four-tier permissions matter: **Verified** has identity/account verification and view/discussion access; **Pathfinder** may participate by delegating weight; **Navigator** and **Pilot** may vote actively on Build Open projects; **Pilot** may also serve as a delegate and act on governance proposals. Build project-level community voting applies to the **Open Track only**. Integration and RFP awards are panel-led. Public Goods and quarterly resource-governance votes also use NQG-related signals but are distinct vote objects with different eligibility/processes.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer derives current tier permissions from the official SCF governance pages and dates them. NQG is SCF's reputation/delegation governance system, combining Neural Governance with Quorum Delegation; it is not XLM/token voting and not Stellar Consensus Protocol. **Verified** has identity/account verification and view/discussion access; **Pathfinder** may participate by delegating weight; **Navigator** and **Pilot** may vote actively on Build Open projects; **Pilot** may also serve as a delegate and act on governance proposals. Build project-level community voting applies to the **Open Track only**. Integration and RFP awards are panel-led. Public Goods has a separate governance/process and must not be assigned the Build Open electorate without its own current source.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Gives the Verified/Pathfinder/Navigator/Pilot permission matrix.",
-          "Separates Build Open voting from Integration/RFP decisions and from Public Goods/quarterly governance.",
+          "Separates Build Open voting from Integration/RFP decisions and does not invent Public Goods eligibility.",
           "Explains NQG as reputation/delegation governance, not token voting or SCP."
         ],
         "avoid": [
@@ -29793,7 +29833,7 @@
           "Do NOT generalize Build Open voting to Integration/RFP or treat Public Goods as the same vote.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Dossier §3. Key trap: NQG (SCF grant governance) vs SCP quorum sets (protocol consensus) — different things despite both saying 'quorum'.\nAlso good if the answer: NQG was adopted by SCF in October 2023 and was co-developed with BlockScience. | The community vote applies to the Build Open Track (and the Public Goods Award).\nGolden cites: The SCF handbook Neural Quorum Governance / Verified Members pages.\nGT-39/40 atom independently confirmed 2026-07-10. Grade the role matrix and vote-object boundary, not the shorthand 'Verified members vote'."
+        "notes": "CORRECTION 2026-08-04: grade the verified tier roles and Build Open community-vote/delegation boundary. Public Goods has a separate process; do not state or require a Public Goods electorate from Build Open rules."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -29803,7 +29843,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -29848,8 +29888,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden QA NQG/Public Goods scope correction; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "Solo scratchpad 575 GT-39 processes 3300/3303 and GT-40 process 3304, 2026-07-10.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -29857,7 +29897,7 @@
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ],
           "rootCause": [
-            "Eval-side governance-role and vote-object collapse.",
+            "Eval-side governance-role and vote-object collapse; the prior golden implied Public Goods electorate details not established by the cited Build Open sources.",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
@@ -30148,7 +30188,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nYes. As of **2026-07-10**, the official Stellar Ambassador Program lists **Stellar India** among its active Asia-Pacific chapters, with the status **Exploratory Chapter**. Its dedicated page names Sahitya Roy of Rise In as Chapter Lead and links current joining, events, community, and education channels.\n\nThere is also direct, dated activity beyond the directory label: 2026 operator/event records include Build Station sprints and community events in several Indian cities. One current example is the **Jaipur Builders Camp, August 14–18, 2026**, a five-day Rise In / Stellar India builder residency. Treat individual events as dated operator evidence, not proof that SDF centrally runs every activation or that participation is paid.\n\nRegional chapters may guide eligible builders toward Instawards, but chapter support is not a funding commitment: SDF makes the final decision, typical initial Instawards are $1K–$5K in USD value paid in XLM, and $15K is the conditional aggregate maximum over time rather than an automatic first award.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults current official chapter and event sources and dates changeable claims. As of **2026-08-04**, the official Stellar Ambassador Program lists **Stellar India** among its active Asia-Pacific chapters, with the status **Exploratory Chapter**. Its dedicated page names Sahitya Roy of Rise In as Chapter Lead. Direct event evidence includes the **Jaipur Builders Camp, August 21–25, 2026**, a five-day Rise In / Stellar India builder residency. Treat events as dated operator evidence, not proof that SDF centrally runs every activation or that participation is paid. Regional chapters may guide eligible builders toward Instawards, but chapter support is not a funding commitment; SDF retains final approval.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -30171,7 +30211,7 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -30238,19 +30278,19 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden QA direct event recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "Solo scratchpad 575, GT-39 primary process 3300 and blind process 3303, independently executed 2026-07-10.",
             "Official Ambassador APAC index and dedicated India Chapter page list Stellar India as an active Exploratory Chapter led by Sahitya Roy of Rise In.",
-            "Direct Luma ajcns4mc records Jaipur Builders Camp on 2026-08-14 through 2026-08-18; Lumenloop's structured title/date agree while generated summary/slug retain Goa wording.",
+            "Direct Luma ajcns4mc records Jaipur Builders Camp on 2026-08-21 through 2026-08-25.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ],
           "rootCause": [
             "solo://proj/49/todo/judge-rubric-corpus--826 — the avoid-clause judge-artifact class (FIXED: rubric v2.1 + eval:qa:lint, commit 18e234f)",
-            "eval-side freshness drift: the corpus-first snapshot did not incorporate the current official chapter pages or direct event record",
+            "eval-side freshness drift: the direct Jaipur event dates moved from August 14–18 to August 21–25.",
             "improvements/lumenloop/ll-007-event-summary-date-prose-mismatch.md",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
@@ -30462,10 +30502,10 @@
         "lumenloop.search_documents"
       ],
       "golden": {
-        "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. The recipients break down as 10 Open Track and 19 Integration Track projects; the round operated a third RFP Track but the recap lists no round-43 RFP recipients. A June 11 Stellar social post later repeated the results, so June 11 is a post date rather than an established conclusion date. A July 11 dashboard snapshot showed 28 visible selected cards totaling $3,049,069, with only 10 then labeled `Awarded`; those transient card/payment lifecycle states do not revise the official 29 / $3,139,069 selection result.",
+        "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. Its headline/prose says results span all three tracks, and a June 11 official Stellar social post repeats that wording. However, the recipient sections account for all 29 as 10 Open Track plus 19 Integration Track projects and list no RFP recipient. Report that primary-source inconsistency explicitly; do not invent an RFP winner or convert the absence of a recipient list into proof that the official all-three-tracks wording is false. June 11 is a post date, not an established conclusion date. Transient dashboard card/payment states do not revise the official 29 / $3,139,069 selection result.",
         "keyFacts": [
           "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions.",
-          "29 projects were awarded: 10 Open Track and 19 Integration Track; no round-43 RFP recipients are listed.",
+          "The official sources are internally inconsistent: headline/social say all three tracks, while recipient sections total 10 Open plus 19 Integration and list no RFP recipient.",
           "The official selection total was $3,139,069 worth of XLM; the dashboard’s transient 28 / $3,049,069 snapshot is not the final result."
         ],
         "avoid": [
@@ -30474,7 +30514,7 @@
           "Do NOT infer the round concluded June 11 merely from the date of a later social post.",
           "Do NOT treat the dashboard’s paid-state `Awarded` count or its incomplete 28-card / $3,049,069 snapshot as the final selection result."
         ],
-        "notes": "Official selection result: 29 / $3,139,069. Dashboard card and payment states are transient; do not use them to overwrite the recap."
+        "notes": "DISPUTED 2026-08-04: preserve 85 / 29 / $3,139,069 and the June 2 versus June 11 dates. Explicitly encode that official headline/social wording says all three tracks while section accounting is 10 Open + 19 Integration with no RFP recipient list."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -30483,7 +30523,8 @@
       },
       "truth": {
         "domain": "real-world",
-        "status": "confirmed",
+        "status": "disputed",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -30583,8 +30624,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 N2 primary+blind (Solo 3417/3423)",
+          "date": "2026-08-04",
+          "by": "Full golden QA primary-source contradiction review; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
@@ -30595,7 +30636,8 @@
             "Sibling sweep: q-edge-fresh-latest-scf-round identifies SCF #43 as concluded but pins no conflicting result date or amount."
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            "The golden resolved an internal official-source contradiction categorically instead of representing it as disputed."
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -30896,12 +30938,12 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThe interest form is rolling/open; teams first undergo eligibility/referral review and only invited teams receive the full-proposal deadline. The published Build cadence is roughly six weeks: **2 weeks** for the full proposal, **1 week** for prescreen and panel review, a conditional revision step when requested, **1 week** for the Open Track community vote, then decision/notification and **1 week** for information collection/KYC. Integration and RFP decisions are panel-led and do not use the project community vote. After selection, KYC/KYB and award acceptance are distinct from delivery payments: current mechanics are four payments—10% acceptance plus three deliverable tranches of 20/30/40, generally with the next completion form due within 90 days of the prior payment. Use live round dates for a specific application.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the current official SCF Build workflow and dates a specific round's calendar. The interest form is rolling; teams first undergo eligibility/referral review and only invited teams receive a full-proposal deadline. The workflow then covers full proposal, prescreen/panel review, possible revision, an Open-only community vote, selection/notification, and information collection/KYC. Integration and RFP decisions are panel-led. Official materials describe roughly six-week Build rounds, but do not support a universal 2/1/1/1-week stage formula or guaranteed results week. After selection, KYC/KYB and award acceptance are distinct from deliverable payments; use the current award rules for payment mechanics and live round dates for a specific application.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Separates rolling interest, eligibility/invitation, proposal, prescreen/panel, revision, Open-only vote, decision, and KYC.",
-          "Gives the 2/1/1/1-week stage labels.",
+          "Uses roughly six-week Build rounds only as a dated cadence and does not invent universal per-stage durations.",
           "Keeps post-award payments separate."
         ],
         "avoid": [
@@ -30909,7 +30951,7 @@
           "Do NOT call acceptance a fourth deliverable milestone or invent a universal results week.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "DIFFERENTIATED 2026-06-29: re-scoped to the review-side timeline + round cadence. Dropped the specific current-round number/deadline (owned by q-scf-current-round) and the applicant how-to-apply steps (owned by q-scf-how-to-apply). Build cadence ~6 weeks confirmed; exact per-stage review dates are not reliably published in static sources, so the rubric requires live checking rather than fabricated dates.\nAlso good if the answer: Distinguishes durable review mechanics/cadence from any one round's specific calendar dates. | Notes track-specific review variation: the Open Track has a community (NQG) vote, while Integration and RFP tracks are panel-oriented.\nGolden cites: The live/current SCF Community Fund source for round deadlines, plus SCF handbook/process documentation for lifecycle mechanics.\nGT-40 independently confirmed 2026-07-10. Exact calendar dates remain live; the stage-duration model and four-payment/three-deliverable distinction are the durable grading core."
+        "notes": "CORRECTION 2026-08-04: current Build workflow supports rolling interest → eligibility/referral → invitation/full-proposal deadline → review/possible revision → Open-only vote → selection/KYC. Roughly six weeks is a dated cadence, not a universal 2/1/1/1-week stage model."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -30919,7 +30961,7 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -30964,8 +31006,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden QA current Build workflow recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
             "Solo scratchpad 575 GT-40 processes 3301/3304, 2026-07-10.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -30973,7 +31015,7 @@
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ],
           "rootCause": [
-            "Eval-side lifecycle under-specification.",
+            "Eval-side lifecycle over-specification: the golden invented a mandatory 2/1/1/1-week stage formula.",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
@@ -31689,7 +31731,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\n**SEP-41** is the Draft Soroban Token Interface: the common fungible-token surface shared by the SAC and custom contracts. It defines allowance/approve, balance, burn/burn_from, metadata, current direct `transfer(from, to: MuxedAddress, amount)`, and `transfer_from(spender, from, to: Address, amount)`. Approve's absolute expiry is named `live_until_ledger` in SEP-41 and `expiration_ledger` in some SDK/SAC docs; they are one mechanism. SEP-41 is explicitly a subset of and compatible with the CAP-46-6 SAC interface, so the SAC implements it while layering admin-specific functions. Mint/clawback are standardized events rather than required generic function names. Because SEP-41 remains Draft and signatures evolved, version-qualify current code.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-08-04, the verified sources supported this observed answer:\n\n**SEP-41 v0.5.0** is the Draft Soroban Token Interface: the common fungible-token surface shared by the SAC and custom contracts. It defines allowance/approve, balance, burn/burn_from, metadata, current direct `transfer(from, to: MuxedAddress, amount)`, and `transfer_from(spender, from, to: Address, amount)`. Approve's absolute expiry is named `live_until_ledger` in SEP-41 and `expiration_ledger` in some SDK/SAC docs; they are one mechanism. SEP-41 is explicitly a subset of and compatible with the CAP-46-6 SAC interface, so the SAC implements it while layering admin-specific functions. Mint/clawback are standardized events rather than required generic function names. Because SEP-41 remains Draft and signatures evolved, version-qualify current code.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -31701,7 +31743,7 @@
           "Do NOT misnumber/misclassify SEP-41, assume SAC-only admin functions are required generic methods, or freeze old signatures.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Dossier §7.1, Q18. Verified: SEP-0041 'Soroban Token Interface', Status Draft; spec is a subset of the SAC interface, compatible with CAP-46-6.\nAlso good if the answer: Defines common functions like transfer, allowance/approve, balance, and burn.\nGolden cites: SEP-0041 on the stellar-protocol repo or the SAC page on developers.stellar.org.\nGT-43 current SEP-41 v0.4.1 sibling correction."
+        "notes": "Dossier §7.1, Q18. Verified 2026-08-04: SEP-0041 'Soroban Token Interface' is Draft v0.5.0, updated 2026-06-08; the spec is a subset of the SAC interface, compatible with CAP-46-6.\nAlso good if the answer: Defines common functions like transfer, allowance/approve, balance, and burn.\nGolden cites: SEP-0041 on the stellar-protocol repo or the SAC page on developers.stellar.org."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -31711,7 +31753,8 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
+        "reverifyBy": "2027-02-04",
         "sources": [
           {
             "class": "B",
@@ -31731,20 +31774,20 @@
         ],
         "corroboration": [
           {
-            "claim": "Current SEP-41 v0.4.1 interface",
+            "claim": "Current SEP-41 v0.5.0 interface",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "B",
-                "ref": "B: SEP/SDK source",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+                "observedAt": "2026-08-04",
+                "note": "SEP-41 is Draft v0.5.0, updated 2026-06-08."
               },
               {
                 "class": "F",
-                "ref": "F: GT-43",
+                "ref": "F: GT-43 interface-semantics review",
                 "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "note": "Historical blind review supports the interface relationship and signatures observed then, not the later v0.5.0 metadata recheck."
               }
             ]
           },
@@ -31771,19 +31814,22 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — currentized SEP-41 metadata and preserved the reviewed interface semantics",
           "evidence": [
             "Solo scratchpad 575 GT-43 blind 3320.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-asset-sac-cap-sep",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+            "SEP-41 Draft v0.5.0 / updated 2026-06-08 observed 2026-08-04.",
             "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
             "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ],
           "rootCause": [
+            "freshness-drift",
+            "A sibling retained SEP-41 v0.4.1 after v0.5.0 was already current.",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
@@ -35346,7 +35392,7 @@
         "avoid": [
           "Do NOT type both destinations identically, require owner auth again during transfer_from, or treat expiry as duration/storage TTL."
         ],
-        "notes": "Also good if the answer: Mentions using the SDK token client for the SEP-41 surface and SAC-specific client only for extra SAC/admin functions.\nGolden cites: SEP-41 token interface. | Official SAC docs/token guide.\nGT-43 current Protocol-27/SEP-41 v0.4.1 signature correction."
+        "notes": "Also good if the answer: Mentions using the SDK token client for the SEP-41 surface and SAC-specific client only for extra SAC/admin functions.\nGolden cites: SEP-41 token interface. | Official SAC docs/token guide.\nGT-43 signatures remain current; SEP-41 is Draft v0.5.0, updated 2026-06-08, as observed 2026-08-04."
       },
       "tags": {
         "category": "soroban",
@@ -35356,7 +35402,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2027-02-25",
         "sources": [
           {
@@ -35377,27 +35423,27 @@
         ],
         "corroboration": [
           {
-            "claim": "Current SEP-41 v0.4.1 signatures/auth/expiry",
+            "claim": "Current SEP-41 v0.5.0 signatures/auth/expiry",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "B",
                 "ref": "B: SEP-41 and SDK27 source",
-                "observedAt": "2026-07-11",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
                 "class": "F",
                 "ref": "F: GT-43 primary/blind",
                 "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "note": "The sealed GT-43 lane supports the interface semantics observed then; the v0.5.0 metadata was separately rechecked on 2026-08-04."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited answer missed the current Protocol-27 direct-transfer MuxedAddress signature and needed exact allowance boundary terminology.",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the SEP preamble; the direct-transfer and allowance semantics remain current.",
           "evidence": [
             "Solo scratchpad 575 GT-43 processes 3311/3320."
           ],
@@ -36270,7 +36316,7 @@
           "Do NOT call contract build verification SEP-49 (SEP-49 is Upgradeable Contracts).",
           "Do NOT claim Stellar stores the contract source code on-chain."
         ],
-        "notes": "Freshness:true — SEP-55/SEP-58 are Draft and numbers/titles can change. VERIFIED against the SEP repo (2026-06): SEP-55 = 'Contract Build Verification' (Draft, v0.4.1), attestation-based via GitHub Attestations + contractmetav0 source_repo; SEP-58 = 'Contract Build Reproducibility for Verification' (Draft, v0.5.0), rebuild-based via bldimg/bldopt/source_sha256 meta, explicitly complementary to SEP-55. NOT SEP-49 (that is Upgradeable Contracts). Both confirm Stellar does not store source on-chain. SEP-58 title is 'Contract Build Reproducibility for Verification' (the rubric/body now match).\nAlso good if the answer: 'Build verified' attests that the published build workflow produced the WASM, not that the source is safe/audited.\nGolden cites: A primary developers.stellar.org / SEP repo source for SEP-55 / SEP-58 and the build-verification workflow."
+        "notes": "Freshness:true — SEP-55/SEP-58 are Draft and numbers/titles can change. As observed 2026-08-04, SEP-58 is Draft v0.6.0, updated 2026-07-15; its rebuild-based bldimg/bldopt/source_sha256 model remains complementary to SEP-55's attestation-based GitHub Attestations + contractmetav0 source_repo model. NOT SEP-49 (that is Upgradeable Contracts). Both confirm Stellar does not store source on-chain.\nAlso good if the answer: 'Build verified' attests that the published build workflow produced the WASM, not that the source is safe/audited.\nGolden cites: A primary developers.stellar.org / SEP repo source for SEP-55 / SEP-58 and the build-verification workflow."
       },
       "tags": {
         "category": "soroban",
@@ -36280,7 +36326,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-12-10",
         "sources": [
           {
@@ -36295,8 +36341,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 5B numeric corroboration backfill",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
           "evidence": [
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
@@ -36317,19 +36363,19 @@
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-                "observedAt": "2026-07-11",
+                "observedAt": "2026-08-04",
                 "note": "Official Stellar proposal documentation provides the current SEP catalog/status context."
               },
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
-                "observedAt": "2026-07-11",
+                "observedAt": "2026-08-04",
                 "note": "Fetched SEP-55 source defines CI build verification and attestations."
               },
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
-                "observedAt": "2026-07-11",
+                "observedAt": "2026-08-04",
                 "note": "Fetched SEP-58 source defines reproducible contract builds and byte comparison."
               }
             ]
@@ -37457,7 +37503,7 @@
           "Do NOT describe EVM proxy/delegatecall mechanics.",
           "Do NOT use retired UpgradeableMigratable/Internal derives as the current API or imply storage compatibility is automatic."
         ],
-        "notes": "OZ provides #[derive(Upgradeable)] / #[derive(UpgradeableMigratable)] over Soroban's native update_current_contract_wasm; access control left to implementor; Upgrader contract for atomic upgrade+migrate. Verified against OZ utils/upgradeable + the SDF upgrading-contracts guide.\nAlso good if the answer: Upgrades must be access-controlled (only an authorized admin/role can call upgrade). | Storage-key layout must remain compatible across the upgrade; a migrate hook handles state changes atomically.\nGolden cites: OpenZeppelin Stellar docs (Upgradeable module) or developers.stellar.org upgrade guide.\nGT-46 CORRECTION 2026-07-11: current OZ source replaces retired derive/Internal APIs; refresh per release."
+        "notes": "Current OpenZeppelin Stellar Contracts uses the direct `Upgradeable` trait/client/helper surface over Soroban's native update_current_contract_wasm; it does not expose the retired `#[derive(Upgradeable)]`, `UpgradeableMigratable`, or `*Internal` APIs as current. Access control remains with the implementor, and the Upgrader flow supports atomic upgrade+migrate. Verified against current OZ source/docs and the SDF upgrading-contracts guide on 2026-08-04.\nAlso good if the answer: Upgrades must be access-controlled (only an authorized admin/role can call upgrade). | Storage-key layout must remain compatible across the upgrade; a migrate hook handles state changes atomically.\nGolden cites: OpenZeppelin Stellar docs/source (Upgradeable module) or developers.stellar.org upgrade guide."
       },
       "tags": {
         "category": "soroban",
@@ -37467,7 +37513,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-12-24",
         "sources": [
           {
@@ -37494,27 +37540,27 @@
               {
                 "class": "A",
                 "ref": "A: current OpenZeppelin upgradeable documentation",
-                "observedAt": "2026-07-11",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
                 "class": "B",
                 "ref": "B: current stellar-contracts source and tests",
-                "observedAt": "2026-07-11",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
                 "class": "A",
                 "ref": "A: Stellar native contract-upgrade documentation",
-                "observedAt": "2026-07-11",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited golden described retired Upgradeable/UpgradeableMigratable derives and Internal traits as current. Current OpenZeppelin Stellar Contracts uses direct traits/helpers and explicit migration patterns over native Wasm replacement.",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — current source still uses direct traits/helpers and explicit migration patterns over native Wasm replacement.",
           "evidence": [
             "Solo scratchpad 575 GT-46 primary 3326 and independent blind 3329 fully agreed the historical derives/Internal/Migratable surface must be replaced."
           ],
@@ -39869,19 +39915,19 @@
         "stellarDocs.search_rpc_horizon_data_docs"
       ],
       "golden": {
-        "answer": "There is no canonical API value that must exactly match StellarX or Scopuly unless you reproduce that product's private filters and methodology. Define the asset/pool identity, quote asset, `[start,end)` window, fee rule, price method, rounding, and stale/spam/failed-activity policy first.\n\nFor Classic SDEX/liquidity pools, use current Horizon resources/trades/effects for bounded reads and Hubble/indexers for bulk history. For Soroban/custom AMMs, use the contract's events/state through an indexer/provider schema. Compute volume by summing successful trades/swaps in the chosen quote/window; fees from the specific protocol rule; TVL from current reserves times timestamp-aligned reference prices; and price as an explicitly named last/mid/VWAP/oracle/route method. RPC is not an unbounded historical index, Hubble is historical SQL rather than guaranteed real-time, and Classic pools are not contract AMMs. If discussing Horizon lifecycle, disclose the current official wording conflict and rely on the durable endpoint-by-endpoint boundary.",
+        "answer": "There is no canonical API value that must exactly match StellarX or Scopuly unless you reproduce that product's private filters and methodology. Define the asset/pool identity, quote asset, `[start,end)` window, fee rule, price method, rounding, and stale/spam/failed-activity policy first.\n\nFor Classic SDEX/liquidity pools, use current Horizon resources/trades/effects for bounded reads and Hubble/indexers for bulk history. For Soroban/custom AMMs, use the contract's events/state through an indexer/provider schema. Compute volume by summing successful trades/swaps in the chosen quote/window; fees from the specific protocol rule; TVL from current reserves times timestamp-aligned reference prices; and price as an explicitly named last/mid/VWAP/oracle/route method. RPC is not an unbounded historical index, Hubble is historical SQL rather than guaranteed real-time, and Classic pools are not contract AMMs. Horizon remains necessary for some surfaces, but current official guidance says it is nearing end-of-life and will eventually be deprecated; use the durable endpoint-by-endpoint migration boundary.",
         "keyFacts": [
           "Requires explicit identity, quote, window, methodology, source, and as-of time.",
           "Separates Classic SDEX/pool data from Soroban AMM contract/indexer data.",
           "Provides volume, fee, TVL, and price formulas without calling one product number canonical.",
-          "Uses Hubble/indexers for history and treats Horizon lifecycle as disputed rather than a hard polarity."
+          "Uses Hubble/indexers for history and states the current official Horizon lifecycle without erasing endpoint-specific migration boundaries."
         ],
         "avoid": [
           "Do NOT claim a canonical TVL/price or exact product match without methodology.",
           "Do NOT use RPC alone for unbounded history or mix Classic pools with contract AMMs.",
-          "Do NOT inject the unrelated named COMPUTE asset or repeat one Horizon lifecycle label as undisputed."
+          "Do NOT inject the unrelated named COMPUTE asset or claim Horizon is already gone while current surfaces still require it."
         ],
-        "notes": "Verified docs on 2026-06-29. Explorer-specific formulas for StellarX/Scopuly are not public-canonical and should remain a caveat.\nAlso good if the answer: Cites official Horizon resources, Hubble/data analytics docs, and Horizon-to-RPC migration/indexer docs. | Warns that matching StellarX/Scopuly requires matching their filters, quote asset, rounding, stale-pool handling, and spam/illiquid asset policy.\nGolden cites: Official Stellar docs for Horizon resources or liquidity pools. | Official Hubble/BigQuery or data/indexer docs. | Official Horizon-to-RPC migration or RPC history docs for API boundaries.\nGT-51 CORRECTION 2026-07-11: the question uses 'compute' as a verb. Gate methodology/data boundaries, not a similarly named asset or a categorical Horizon lifecycle claim."
+        "notes": "Explorer-specific formulas for StellarX/Scopuly are not public-canonical and should remain a caveat. Current official guidance observed 2026-08-04 says Horizon remains needed for some surfaces but is nearing end-of-life and will eventually be deprecated.\nAlso good if the answer: Cites official Horizon resources, Hubble/data analytics docs, and Horizon-to-RPC migration/indexer docs. | Warns that matching StellarX/Scopuly requires matching their filters, quote asset, rounding, stale-pool handling, and spam/illiquid asset policy.\nGolden cites: Official Stellar docs for Horizon resources or liquidity pools. | Official Hubble/BigQuery or data/indexer docs. | Official Horizon-to-RPC migration or RPC history docs for API boundaries.\nGT-51: the question uses 'compute' as a verb. Gate methodology and durable data boundaries, not a similarly named asset."
       },
       "tags": {
         "category": "tooling-infra",
@@ -39891,7 +39937,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-28",
+        "asOf": "2026-08-04",
         "reverifyBy": "2027-04-08",
         "sources": [
           {
@@ -39935,28 +39981,28 @@
             ]
           },
           {
-            "claim": "Official Horizon lifecycle wording is disputed; durable answers should state endpoint/data-shape boundaries rather than one categorical label.",
+            "claim": "Official guidance says Horizon remains needed for some surfaces but is nearing end-of-life and will eventually be deprecated; durable answers should also retain endpoint/data-shape boundaries.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc",
-                "observedAt": "2026-07-28",
+                "observedAt": "2026-08-04",
                 "note": "The served endpoint mapping preserves resource-specific boundaries, including liquidity-pool trade mapping; it does not make one product's methodology canonical."
               },
               {
                 "class": "F",
                 "ref": "stellarDocs.search_rpc_horizon_data_docs({query:'Hubble historical data Horizon RPC indexers liquidity pools trades',hitsPerPage:10,includeContent:true})",
-                "observedAt": "2026-07-28",
-                "note": "Production Docs index returns Hubble historical pool/trade queries and the Horizon-to-RPC endpoint mapping; wording remains source-specific."
+                "observedAt": "2026-08-04",
+                "note": "Production Docs index returns Hubble historical pool/trade queries, the Horizon-to-RPC endpoint mapping, and the current end-of-life/deprecation wording."
               }
             ],
-            "note": "Legacy verdict: confirmed-with-source-conflict."
+            "note": "Current official wording converged after the earlier source conflict."
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane B Docs technical re-verification",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
           "evidence": [
             "Production stellar-raven: stellarDocs.search_rpc_horizon_data_docs({query:'Hubble historical data Horizon RPC indexers liquidity pools trades',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data',includeContent:true}) — Hubble offers historical Horizon/RPC-like pool and trade queries.",
             "Production stellar-raven: stellarDocs.get_doc_page_sections({path:'/docs/data/apis/migrate-from-horizon-to-rpc',includeContent:true}) — resource-by-resource API mappings retained; no single explorer-market methodology is canonical.",
@@ -41070,7 +41116,7 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "As of **2026-07-11**, use **`network.lightsail:stellar-sdk:4.0.0`**; Maven Central metadata and the 2026-07-04 GitHub release agree. Recheck the current Maven/release record rather than treating that number as timeless.\n\nA fee bump wraps a **fully signed inner transaction** in a separately signed outer fee-bump envelope. With Java SDK 4.0.0, parse/build the signed inner `Transaction`, then call `FeeBumpTransaction.createWithBaseFee(feeSource, baseFee, inner)` or `createWithFee(...)`; the old `FeeBumpTransaction.Builder` is removed. The inner source still supplies sequence, time bounds, and required signatures. The fee-source account pays/signs the outer and needs the applicable low-threshold authorization/XLM; verify the total fee for the inner operation count plus wrapper and preserve Soroban resource fees.\n\nFor an external wallet, send only the XDR that wallet-controlled role should sign—usually inner XDR to the user wallet, then outer fee-bump XDR to the fee payer if it controls that account. Never export a wallet secret into Java. Submit/poll the final fee-bump envelope and handle inner failure separately.",
+        "answer": "As of **2026-08-04**, use **`network.lightsail:stellar-sdk:4.0.1`**; Maven Central metadata and the 2026-07-16 GitHub release agree. Recheck the current Maven/release record rather than treating that number as timeless.\n\nA fee bump wraps a **fully signed inner transaction** in a separately signed outer fee-bump envelope. With Java SDK 4.0.1, parse/build the signed inner `Transaction`, then call `FeeBumpTransaction.createWithBaseFee(feeSource, baseFee, inner)` or `createWithFee(...)`; the old `FeeBumpTransaction.Builder` is removed. The inner source still supplies sequence, time bounds, and required signatures. The fee-source account pays/signs the outer and needs the applicable low-threshold authorization/XLM; verify the total fee for the inner operation count plus wrapper and preserve Soroban resource fees.\n\nFor an external wallet, send only the XDR that wallet-controlled role should sign—usually inner XDR to the user wallet, then outer fee-bump XDR to the fee payer if it controls that account. Never export a wallet secret into Java. Submit/poll the final fee-bump envelope and handle inner failure separately.",
         "keyFacts": [
           "Dates the current Maven coordinates/version and current factory names.",
           "Separates fully signed inner authorization/sequence from outer fee-source signature/payment.",
@@ -41082,7 +41128,7 @@
           "Do NOT use the fee payer's sequence, remove inner signatures, or sign the outer with an unrelated inner signer.",
           "Do NOT invent buildFeeBumpTransaction/use removed Builder or expose a wallet secret to Java."
         ],
-        "notes": "Freshness-sensitive. Verified 2026-06-29 via Maven Central metadata: latest/release `4.0.0-beta0` lastUpdated 20260617081318; GitHub latest release remains `3.1.0` published 2026-06-12. Keep exact-version claims dated and source-specific.\nAlso good if the answer: Mentions the June 2026 version nuance: Maven Central reports `4.0.0-beta0` as latest/release metadata while GitHub's latest release tag is `3.1.0`; a production answer should state which source it is using.\nGolden cites: Current Java SDK repo/release or Maven Central plus official fee-bump transaction docs.\nGT-52 CORRECTION 2026-07-11: exact version is dated. Require createWithBaseFee/createWithFee, inner/outer role separation, safe wallet XDR flow, and no claim that the blocked local Java test passed."
+        "notes": "Freshness-sensitive. As observed 2026-08-04, Maven Central and the GitHub release record identify 4.0.1, published 2026-07-16. Keep exact-version claims dated and source-specific.\nGolden cites: Current Java SDK repo/release or Maven Central plus official fee-bump transaction docs.\nGT-52: require createWithBaseFee/createWithFee, inner/outer role separation, safe wallet XDR flow, and no claim that the blocked local Java test passed."
       },
       "tags": {
         "category": "tooling-infra",
@@ -41092,7 +41138,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2027-01-07",
         "sources": [
           {
@@ -41102,12 +41148,12 @@
           },
           {
             "class": "D",
-            "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases/tag/4.0.0",
+            "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases/tag/4.0.1",
             "note": "class inferred at migration"
           },
           {
             "class": "D",
-            "ref": "https://github.com/lightsail-network/java-stellar-sdk/blob/3836471cc08cdc2b2ed16f5f2523d70224adeb48/src/main/java/org/stellar/sdk/FeeBumpTransaction.java",
+            "ref": "https://github.com/lightsail-network/java-stellar-sdk/blob/4.0.1/src/main/java/org/stellar/sdk/FeeBumpTransaction.java",
             "note": "class inferred at migration"
           },
           {
@@ -41123,20 +41169,20 @@
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-07-11 the current Lightsail artifact is network.lightsail:stellar-sdk:4.0.0 and exposes createWithBaseFee/createWithFee rather than the old Builder.",
+            "claim": "As of 2026-08-04 the current Lightsail artifact is network.lightsail:stellar-sdk:4.0.1 and exposes createWithBaseFee/createWithFee rather than the old Builder.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "B",
-                "ref": "B: Maven Central metadata, 4.0.0 release, and version-pinned FeeBumpTransaction source",
-                "observedAt": "2026-07-11",
+                "ref": "B: Maven Central metadata, 4.0.1 release, and version-pinned FeeBumpTransaction source",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
                 "class": "F",
                 "ref": "F: source tests inspected; local execution was blocked by missing JRE and no pass claimed",
                 "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "note": "Historical source-test inspection; no 2026-08-04 local execution is claimed."
               }
             ]
           },
@@ -41160,10 +41206,10 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited dated version split became stale after Java SDK 4.0.0 shipped, and it omitted the removed Builder, role-specific external-wallet envelope flow, outer authorization, fee calculation, and Soroban resource-fee preservation.",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the dated release while preserving the factory, role, fee, and custody boundaries.",
           "evidence": [
-            "Solo scratchpad 575 GT-52 primary/blind matrices independently agreed on 4.0.0/current factories; blind added wallet-role, Builder, fee-auth, and resource-fee precision.",
+            "Solo scratchpad 575 GT-52 primary/blind matrices established the current factories and role boundaries; Todo 1347 correction verification refreshed the release to 4.0.1.",
             "Sibling sweep checked q-tool-java-sdk, q-pc-fee-bump-channel-accounts-feepool, and secret-custody cases."
           ],
           "rootCause": [
@@ -41180,12 +41226,12 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. Hosted service billing/top-up policy is a Channels contract; it is not a generic address or rule that applies to every self-hosted Relayer. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-07-11**, the repository's latest release was **v1.6.0**, while rendered documentation still exposed 1.5.x/current paths inconsistently. The hosted endpoints returned authentication responses, which proves reachability rather than successful relaying, and the official status feed reported partial degradation/timeouts during the review. Recheck the current release, supported networks, funding terms, and status before production use.",
+        "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. Hosted service billing/top-up policy is a Channels contract; it is not a generic address or rule that applies to every self-hosted Relayer. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-08-04**, the repository's latest release was **v1.7.0**, published 2026-07-28, while rendered documentation still exposed 1.5.x/current paths inconsistently. A hosted endpoint's authentication response proves reachability rather than successful relaying; recheck the current release, supported networks, funding terms, and official service status before production use.",
         "keyFacts": [
           "Distinguishes self-hosted OpenZeppelin Relayer from managed OpenZeppelin Channels.",
           "Describes Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support without turning managed features into protocol guarantees.",
           "Separates self-hosted account funding from managed Channels billing/top-up policy.",
-          "Dates version/provider-health claims and discloses the v1.6.0-versus-rendered-1.5.x disagreement as of 2026-07-11."
+          "Dates version/provider-health claims and discloses the v1.7.0-versus-rendered-1.5.x disagreement as of 2026-08-04."
         ],
         "avoid": [
           "Do NOT conflate self-hosted Relayer with managed Channels.",
@@ -41193,7 +41239,7 @@
           "Do NOT interpret HTTP 401 as downtime or one reachable request as successful full service health.",
           "Do NOT pin release, network support, or provider health without an as-of date."
         ],
-        "notes": "GT-53 CORRECTION 2026-07-11: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. Repository v1.6.0 and rendered 1.5.x docs disagreed; the official status feed showed partial degradation. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally."
+        "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-08-04, repository v1.7.0 and rendered 1.5.x docs disagreed. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally."
       },
       "tags": {
         "category": "tooling-infra",
@@ -41203,7 +41249,7 @@
       "truth": {
         "domain": "mixed",
         "status": "disputed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-09-01",
         "sources": [
           {
@@ -41223,7 +41269,7 @@
           },
           {
             "class": "D",
-            "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.6.0",
+            "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.7.0",
             "note": "class inferred at migration"
           },
           {
@@ -41245,8 +41291,8 @@
               },
               {
                 "class": "B",
-                "ref": "B: OpenZeppelin Relayer v1.6.0 release/source",
-                "observedAt": "2026-07-11",
+                "ref": "B: OpenZeppelin Relayer v1.7.0 release/source",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
@@ -41269,16 +41315,16 @@
               },
               {
                 "class": "B",
-                "ref": "B: repository latest release is v1.6.0 as of 2026-07-11",
-                "observedAt": "2026-07-11",
+                "ref": "B: repository latest release is v1.7.0 as of 2026-08-04",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited answer collapsed self-hosted OpenZeppelin Relayer and managed OpenZeppelin Channels into one service and treated hosted fee policy as if it were the self-hosted funding model. GT-53 independently confirmed the product split, current capabilities, and dated release/docs/status disagreement.",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the release while preserving the Relayer/Channels and funding boundaries.",
           "evidence": [
             "Solo scratchpad 575, GT-53 primary 3372 and blind 3378, independently reviewed 2026-07-11.",
             "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime."
@@ -42333,23 +42379,23 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include an extension wallet through the wallet kit, Ledger/hash-with-Ledger, Trezor, external signatures, and raw secret input. Prefer wallet, hardware or a separately trusted external signer. Lab's current source performs raw-secret signing in browser JavaScript. Saved Keypairs is documented for **Testnet/Futurenet only, never Mainnet**; current master serializes saved keypair objects to browser `localStorage` as plaintext JSON, and tests persist the `S...` value directly. Do not treat Saved as encrypted custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
+        "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include an extension wallet through the wallet kit, Ledger/hash-with-Ledger, Trezor, external signatures, and raw secret input. Prefer wallet, hardware or a separately trusted external signer. Lab's current source performs raw-secret signing in browser JavaScript. Saved Keypairs is documented for **Testnet/Futurenet only, never Mainnet**. Current guidance says saved secrets are obfuscated, not encrypted; entries saved before September 2025 may remain plaintext until re-saved. Do not treat Saved as secure custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
         "keyFacts": [
           "Covers current transaction/XDR/contract/RPC/Horizon/share capabilities without freezing UI coordinates.",
           "Lists wallet-kit, hardware, external and raw-secret signer paths while preferring non-secret browser flows.",
-          "States Saved Keypairs is Testnet/Futurenet-only plaintext JSON localStorage and not secure custody.",
+          "States Saved Keypairs is Testnet/Futurenet-only, obfuscated rather than encrypted, with possible pre-September-2025 plaintext entries until re-saved, and not secure custody.",
           "Distinguishes self-hosted/local from deliberately isolated offline/air-gapped signing and avoids a universal non-egress claim.",
           "Distinguishes stellar contract asset deploy from contract id asset deterministic lookup.",
           "Keeps Friendbot and trustline behavior network/asset-specific."
         ],
         "avoid": [
-          "Do NOT call Saved Keypairs encrypted, secure, offline, air-gapped or appropriate for a Mainnet seed.",
+          "Do NOT call Saved Keypairs encrypted, secure, offline, air-gapped or appropriate for a Mainnet seed; do not claim every current entry is plaintext either.",
           "Do NOT assert hosted/self-hosted Lab universally never transmits secrets or require Freighter as the only signer.",
           "Do NOT paste/save production secrets, sign/submit during read-only verification, or treat Quickstart as production infrastructure.",
           "Do NOT claim contract id asset deploys a SAC or invent a dedicated current Lab SAC button without rechecking.",
           "Do NOT freeze old Laboratory URLs/screenshots/coordinates, use Mainnet Friendbot, or say a trustline credits tokens."
         ],
-        "notes": "GT-54 CORRECTION 2026-07-11: grade current capability and signer categories, plaintext test-only localStorage, the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise is explicitly false; source inspection cannot prove universal non-egress."
+        "notes": "GT-54 refreshed 2026-08-04: grade current capability and signer categories, test-only Saved Keypairs that are obfuscated rather than encrypted (with pre-September-2025 plaintext migration caveat), the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise remains false; source inspection cannot prove universal non-egress."
       },
       "tags": {
         "category": "tooling-infra",
@@ -42359,7 +42405,7 @@
       "truth": {
         "domain": "mixed",
         "status": "mixed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-10-01",
         "sources": [
           {
@@ -42425,29 +42471,29 @@
             "note": "Legacy verdict: confirmed-as-of-2026-07-11."
           },
           {
-            "claim": "Saved keypair objects, including secret values in tests, are serialized to browser localStorage; self-hosted/local Lab is not thereby air-gapped and universal non-egress is unverified",
-            "verdict": "unverifiable",
+            "claim": "Saved Keypairs are obfuscated rather than encrypted; entries saved before September 2025 may remain plaintext until re-saved. Self-hosted/local Lab is not thereby air-gapped and universal non-egress is unverified.",
+            "verdict": "confirmed",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: Saved Keypairs documentation limits use to Testnet/Futurenet and says never Mainnet",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs",
+                "observedAt": "2026-08-04",
+                "note": "Current guidance limits use to Testnet/Futurenet, says never Mainnet, and describes obfuscation plus the pre-September-2025 plaintext migration caveat."
               },
               {
                 "class": "B",
-                "ref": "B: current Laboratory storage/signing implementation and tests",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/stellar/laboratory",
+                "observedAt": "2026-08-04",
+                "note": "Current source preserves the browser-local signing and storage boundary; it does not turn Saved Keypairs into encrypted custody."
               },
               {
                 "class": "F",
                 "ref": "F: browser storage/network inspection using throwaway public data only",
                 "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "note": "Historical browser inspection; the 2026-08-04 storage correction was documentation- and source-based, with no new empirical browser execution claimed."
               }
             ],
-            "note": "Legacy verdict: confirmed-with-unverifiable-universal-negative."
+            "note": "The storage format is confirmed; the universal non-egress negative remains intentionally unclaimed."
           },
           {
             "claim": "stellar contract asset deploy deploys a SAC while stellar contract id asset only derives its deterministic ID",
@@ -42475,11 +42521,11 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited workflow froze UI details, implied Saved Keypairs/Transactions could provide a safe offline-ish path, treated Freighter as the default signer, and confused deterministic SAC ID lookup with deployment. GT-54 confirmed current Lab capabilities while finding plaintext secret persistence and a non-air-gap boundary.",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed Saved Keypairs from blanket plaintext wording to the current obfuscated-not-encrypted migration boundary.",
           "evidence": [
             "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently rejected the offline/SAC wording; blind helper 3388 was fully harvested before matrix seal.",
-            "Blind KV chronology records all helper cleanup before the ten-case seal and final adjudication 'Lab saved keypair JSON plaintext in localStorage'.",
+            "Current official Saved Keypairs guidance: obfuscated rather than encrypted; pre-September-2025 entries may remain plaintext until re-saved.",
             "Sibling sweep checked q-tool-lab-what-is, Quickstart/local network, native XLM SAC, SAC/custom-token, secret recovery and faucet cases; no sibling may equate local browser state with an air gap or ID derivation with deployment."
           ],
           "rootCause": [
@@ -45077,7 +45123,7 @@
           "Do NOT imply that an OpenZeppelin contract audit covers Smart Account Kit, the relayer, indexer, frontend, policies, and deployment configuration as one inherited guarantee.",
           "Do NOT confuse transaction submission or fee sponsorship with smart-account authorization, or call Smart Account Kit SDF-maintained."
         ],
-        "notes": "Freshness correction 2026-07-28: the 2026-07-11 characterization was accurate for the then-current README, which called Passkey Kit a legacy precursor and unaudited demo material. Commit c6e46dab3ac1 rewrote the README on 2026-07-12; the current project is maintained and presents Passkey Kit and Smart Account Kit as sibling SDKs with different authorization models. Root cause is freshness-drift, not an original authoring flaw. Do not assume identical primitives or inherited full-stack audit coverage."
+        "notes": "Freshness correction reverified 2026-08-04: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage."
       },
       "tags": {
         "category": "tooling-infra",
@@ -45087,16 +45133,16 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-28",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-08-27",
         "sources": [
           {
             "class": "B",
-            "ref": "https://github.com/kalepail/passkey-kit"
+            "ref": "https://github.com/stellar/passkey-kit"
           },
           {
             "class": "B",
-            "ref": "https://github.com/kalepail/smart-account-kit"
+            "ref": "https://github.com/stellar/smart-account-kit"
           },
           {
             "class": "D",
@@ -45112,11 +45158,11 @@
           },
           {
             "class": "B",
-            "ref": "https://github.com/kalepail/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198"
+            "ref": "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198"
           },
           {
             "class": "B",
-            "ref": "https://github.com/kalepail/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526"
+            "ref": "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526"
           }
         ],
         "corroboration": [
@@ -45126,15 +45172,15 @@
             "evidence": [
               {
                 "class": "B",
-                "ref": "https://github.com/kalepail/passkey-kit",
-                "observedAt": "2026-07-28",
+                "ref": "https://github.com/stellar/passkey-kit",
+                "observedAt": "2026-08-04",
                 "note": "Current README documents the maintained SDK, flat Signatures model, review caveat, and sibling relationship."
               },
               {
                 "class": "C",
                 "ref": "scout.searchRepos({q:'passkey-kit smart-account-kit'})",
-                "observedAt": "2026-07-28",
-                "note": "Production Scout returned both active, unarchived canonical repositories with July 2026 activity."
+                "observedAt": "2026-08-04",
+                "note": "Current direct verification identifies the active stellar repositories; the former kalepail repositories are archived move pointers."
               }
             ]
           },
@@ -45144,14 +45190,14 @@
             "evidence": [
               {
                 "class": "B",
-                "ref": "https://github.com/kalepail/passkey-kit and https://github.com/kalepail/smart-account-kit",
-                "observedAt": "2026-07-28",
+                "ref": "https://github.com/stellar/passkey-kit and https://github.com/stellar/smart-account-kit",
+                "observedAt": "2026-08-04",
                 "note": "The canonical READMEs describe the two different SDK and authorization models."
               },
               {
                 "class": "A",
                 "ref": "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
-                "observedAt": "2026-07-28",
+                "observedAt": "2026-08-04",
                 "note": "OpenZeppelin documents the smart-account contract framework underlying Smart Account Kit."
               }
             ]
@@ -45162,14 +45208,14 @@
             "evidence": [
               {
                 "class": "B",
-                "ref": "https://github.com/kalepail/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
-                "observedAt": "2026-07-28",
+                "ref": "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
+                "observedAt": "2026-08-04",
                 "note": "The prior README snapshot contains the legacy precursor and unaudited demo-material wording."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/kalepail/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
-                "observedAt": "2026-07-28",
+                "ref": "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
+                "observedAt": "2026-08-04",
                 "note": "The 2026-07-12 README rewrite introduced the current maintained-project positioning and review caveat."
               },
               {
@@ -45182,15 +45228,15 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1251 Lane A — sibling contradictions (solo://proj/49/scratchpad/todo-1251-lane-a-sib--731)",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
           "evidence": [
-            "Production scout.searchRepos({q:'passkey-kit smart-account-kit'}) returned both canonical repositories as active and unarchived with July 2026 activity.",
-            "https://github.com/kalepail/passkey-kit",
-            "https://github.com/kalepail/smart-account-kit",
+            "Current primary verification found stellar/passkey-kit and stellar/smart-account-kit active and unarchived; former kalepail repositories are archived move pointers.",
+            "https://github.com/stellar/passkey-kit",
+            "https://github.com/stellar/smart-account-kit",
             "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
-            "https://github.com/kalepail/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
-            "https://github.com/kalepail/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
+            "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
+            "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
             "Sibling sweep: q-tool-smart-wallet-repos-discovery already describes the projects as separate current repositories with source-specific caveats; the other cluster-022 wallet/operator cases do not assert the stale Passkey Kit characterization.",
             "Adversarial review 2026-07-28: the prior avoid clause could punish a TRUE statement — both the pre-rewrite and current READMEs decline to claim a third-party audit. Trap rescoped to the composite legacy/demo/superseded characterization only."
           ],
@@ -45443,7 +45489,7 @@
         "stellarDocs.search_asset_token_docs"
       ],
       "golden": {
-        "answer": "Retrieve current SEP-41 and official token-interface documentation, cite both, describe the interface, and report the current preamble status/version/update date with an as-of. As observed 2026-07-11, the official preamble says Draft, version 0.4.1, updated 2025-08-28; re-check rather than trusting the archive.",
+        "answer": "Retrieve current SEP-41 and official token-interface documentation, cite both, describe the interface, and report the current preamble status/version/update date with an as-of. As observed 2026-08-04, the official preamble says Draft, version 0.5.0, updated 2026-06-08; re-check rather than trusting an archive or prior snapshot.",
         "keyFacts": [
           "Identifies SEP-41 as a token interface rather than the Stellar Asset Contract itself.",
           "Uses the current SEP/spec plus official token-interface documentation.",
@@ -45461,7 +45507,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-04",
         "sources": [
           {
             "class": "A",
@@ -45484,12 +45530,12 @@
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/tokens/token-interface",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-04"
               },
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-04"
               }
             ]
           },
@@ -45500,12 +45546,12 @@
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-04"
               },
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/research?q=SEP-41&source=sep",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-04"
               }
             ]
           },
@@ -45516,35 +45562,35 @@
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-04"
               }
             ]
           },
           {
-            "claim": "As observed 2026-07-11, the official SEP-41 preamble says Draft, version 0.4.1, updated 2025-08-28.",
+            "claim": "As observed 2026-08-04, the official SEP-41 preamble says Draft, version 0.5.0, updated 2026-06-08.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-04"
               },
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/tokens/token-interface",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-04"
               },
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/research?q=SEP-41&source=sep",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-04"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
           "evidence": [
             "solo://proj/49/process/3414",
             "solo://proj/49/process/3420",
@@ -45679,7 +45725,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "Run the **live Scout repository search** with exact owner/name and broader smart-account/passkey vocabulary, then report only the rows actually returned, with `generatedAt`/as-of, exact URL, role, owner, activity/archive state, and maturity/audit caveat. Preserve an exact zero honestly and broaden the query, but never turn either a zero or a returned row into an open-world repository or quality claim.\n\nFor direct current verification outside the Scout rows, label the source boundary explicitly: **`kalepail/smart-account-kit`** is a TypeScript integration SDK for OpenZeppelin Stellar smart accounts; **`OpenZeppelin/stellar-contracts` account packages** are the underlying account framework; and **`kalepail/passkey-kit`** is a separate passkey-wallet SDK with a different authorization model and its own security caveats. Direct links may supplement a current Scout result, but must not be attributed to Scout if absent from its response. Repository/indexer discovery neither proves control nor supplies signer recovery, and an audit claim applies only to the exact artifact/release reviewed.",
+        "answer": "Run the **live Scout repository search** with exact owner/name and broader smart-account/passkey vocabulary, then report only the rows actually returned, with `generatedAt`/as-of, exact URL, role, owner, activity/archive state, and maturity/audit caveat. Preserve an exact zero honestly and broaden the query, but never turn either a zero or a returned row into an open-world repository or quality claim.\n\nFor direct current verification outside the Scout rows, label the source boundary explicitly: **`stellar/smart-account-kit`** is a TypeScript integration SDK for OpenZeppelin Stellar smart accounts; **`OpenZeppelin/stellar-contracts` account packages** are the underlying account framework; and **`stellar/passkey-kit`** is a separate passkey-wallet SDK with a different authorization model and its own security caveats. The former kalepail repositories are archived move pointers. Direct links may supplement a current Scout result, but must not be attributed to Scout if absent from its response. Repository/indexer discovery neither proves control nor supplies signer recovery, and an audit claim applies only to the exact artifact/release reviewed.",
         "keyFacts": [
           "Returns only observed live Scout rows and dates the response.",
           "Treats either exact zeroes or returned rows as source-scoped retrieval results, not open-world proof, and broadens vocabulary.",
@@ -45692,7 +45738,7 @@
           "Do NOT collapse Passkey Kit and Smart Account Kit into one authorization or audit claim, or omit their source-specific security caveats.",
           "Do NOT call repository or indexer discovery proof of account control or a recovery mechanism."
         ],
-        "notes": "Todo 1248 correction 2026-07-28: current exact Scout searches return both repositories, so the golden grades source-bound live discovery rather than a pinned zero. Keep Smart Account Kit, OpenZeppelin accounts, and the separate Passkey Kit model/verification boundaries explicit."
+        "notes": "Reverified 2026-08-04: direct current references moved to stellar/smart-account-kit and stellar/passkey-kit; former kalepail repositories are archived move pointers. The golden still grades source-bound live discovery rather than a pinned zero and keeps Smart Account Kit, OpenZeppelin accounts, and Passkey Kit model/verification boundaries explicit."
       },
       "tags": {
         "category": "tooling-infra",
@@ -45702,7 +45748,7 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-28",
+        "asOf": "2026-08-04",
         "reverifyBy": "2026-08-13",
         "sources": [
           {
@@ -45712,7 +45758,7 @@
           },
           {
             "class": "D",
-            "ref": "https://github.com/kalepail/smart-account-kit",
+            "ref": "https://github.com/stellar/smart-account-kit",
             "note": "class inferred at migration"
           },
           {
@@ -45727,26 +45773,26 @@
           },
           {
             "class": "D",
-            "ref": "https://github.com/kalepail/passkey-kit",
+            "ref": "https://github.com/stellar/passkey-kit",
             "note": "class inferred at migration"
           }
         ],
         "corroboration": [
           {
-            "claim": "Current exact Scout searches return both Kalepail repositories; returned rows and zeroes alike are source-scoped retrieval results rather than open-world proof.",
+            "claim": "Current direct canonical repositories are under stellar; returned Scout rows and zeroes alike are source-scoped retrieval results rather than open-world proof.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "C",
                 "ref": "scout.searchRepos({q:'smart-account-kit'}) and scout.searchRepos({q:'passkey-kit'})",
-                "observedAt": "2026-07-28",
-                "note": "Both probes returned their exact Kalepail repository rows; broader queries produced additional candidates."
+                "observedAt": "2026-08-04",
+                "note": "Live index results remain source-scoped and may lag repository ownership moves; broader queries produce additional candidates."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/kalepail/smart-account-kit and https://github.com/kalepail/passkey-kit",
-                "observedAt": "2026-07-28",
-                "note": "Canonical repositories establish the direct-source boundary separately from Scout."
+                "ref": "https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit",
+                "observedAt": "2026-08-04",
+                "note": "Canonical repositories establish the current direct-source boundary separately from Scout; former kalepail repositories are archived move pointers."
               }
             ]
           },
@@ -45756,25 +45802,25 @@
             "evidence": [
               {
                 "class": "B",
-                "ref": "https://github.com/kalepail/smart-account-kit, https://github.com/kalepail/passkey-kit, and https://github.com/OpenZeppelin/stellar-contracts",
-                "observedAt": "2026-07-28",
+                "ref": "https://github.com/stellar/smart-account-kit, https://github.com/stellar/passkey-kit, and https://github.com/OpenZeppelin/stellar-contracts",
+                "observedAt": "2026-08-04",
                 "note": "READMEs describe different authorization models, caveats, and the OpenZeppelin accounts framework."
               },
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets",
-                "observedAt": "2026-07-28",
+                "observedAt": "2026-08-04",
                 "note": "Official Smart Wallet guidance treats passkey/account implementation details as source-specific."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
           "evidence": [
-            "C: scout.searchRepos({q:'smart-account-kit'}) and ({q:'passkey-kit'}) at 2026-07-28T14:05Z both returned the exact Kalepail repositories; broad smart-account/passkey queries returned additional candidates.",
-            "B: current READMEs at https://github.com/kalepail/smart-account-kit and https://github.com/kalepail/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework.",
+            "C: Scout results are dated source-scoped retrieval evidence and may lag repository ownership moves; broaden exact and topic vocabulary.",
+            "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework.",
             "Sibling sweep found q-tool-passkeykit-smart-wallet still describes Passkey Kit as legacy/unaudited, which conflicts with its current README; this lane does not edit that sibling. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery."
           ],
           "rootCause": [

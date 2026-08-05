@@ -8,15 +8,14 @@
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live RFP response identified SCF #45 in Submission and carried a 2026-08-16 submission deadline.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Keeps the stable Build cap distinct from the changing round schedule."
+      "Makes the as-of date visible for every changeable roster, status, version, or measurement."
     ],
     "avoid": [
       "Do NOT present the expired July 26 deadline as current.",
       "Do NOT assert any round/deadline as permanent or fabricate a date not grounded in a live source.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Dossier §4. Freshness item — rotates every ~6 weeks; reward staleness-flagging. scout_rfps surfaces activeQuarter signal.\nAlso good if the answer: States the SCF Build cadence is roughly every 6 weeks. | Notes the standard $150K XLM Build cap for the round.\nGolden cites: communityfund.stellar.org/awards (the live awards page) for the current round/deadline.\nFRESHNESS CORRECTION 2026-07-09 (todo 901): SCF #45 remains current, but its deadline is August 16, 2026, not July 26. Official awards and Scout live-round metadata agree. Continue gating on dated lookup behavior rather than one frozen round."
+    "notes": "Freshness item: identify the current round/status/deadline from a dated live source. The Build cap is owned by separate cases and is not a requirement for this question."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -72,7 +71,7 @@
     ],
     "verified": {
       "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "by": "P4 conversions rework after independent Fable copy/quality review; scope-only correction does not claim a later live-round observation",
       "evidence": [
         "Solo scratchpad 569 Batch B, 2026-07-09.",
         "Sibling expansion found and corrected the same July 26 date in q-edge-scf-v7-centralization-myths.",
@@ -84,6 +83,7 @@
         "Ordinary freshness drift in a roughly six-week round schedule; the old case correctly warned that its date would expire.",
         "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch B",
         "eval-authoring",
+        "Removed an unrelated Build-cap key fact duplicated from another case.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ]
     },

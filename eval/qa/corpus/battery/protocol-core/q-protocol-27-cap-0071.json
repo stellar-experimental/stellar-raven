@@ -5,12 +5,12 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nThe question's word **queued** is stale: **Protocol 27 (Zipper)** has been live on Stellar Mainnet since **ledger 63386819**, closed **2026-07-08 at 17:00:10 UTC**; ledger 63386818 was the final P26 ledger. Two independent Pubnet RPCs still reported protocol 27 on **2026-07-11**.\n\n**CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds the credential to its account address to prevent cross-account credential reuse. This is a Soroban authorization/credential change, not ZK, consensus, or parallel execution. The current CAP registry still labels CAP-0071 **Accepted**; that normative document status is distinct from the already-completed software implementation and Mainnet activation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any status claim. Protocol 27 (Zipper) has been live on Stellar Mainnet since ledger 63386819, closed 2026-07-08 at 17:00:10 UTC. **CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds the credential to its account address to prevent cross-account credential reuse. This is a Soroban authorization/credential change, not ZK, consensus, or parallel execution. As observed **2026-08-04**, the CAP registry labels CAP-0071 **Final**; normative document status remains distinct from software implementation and per-network activation.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Explains CAP-0071 delegation chains and address-bound V2 credentials.",
-      "Distinguishes the CAP's Accepted registry status from implementation and network activation."
+      "Distinguishes the CAP's Final registry status from implementation and network activation."
     ],
     "avoid": [
       "Do NOT claim Protocol 27 is still queued or pending on Mainnet.",
@@ -19,7 +19,7 @@
       "Do NOT present network status without a dated live source or freshness caveat.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "GT-31 CORRECTION 2026-07-11: the queued premise and pending/future judge prose are stale. P27 is live from ledger 63386819; CAP-0071 remains labelled Accepted in the registry, demonstrating that normative status and actual network activation are distinct. Grade delegation chains and address-bound V2 mechanics."
+    "notes": "CORRECTION 2026-08-04: P27 is historical and live from ledger 63386819; CAP-0071 is now Final. Preserve CAP-status versus network-activation separation."
   },
   "tags": {
     "category": "protocol-core",
@@ -29,7 +29,7 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-04",
     "sources": [
       {
         "class": "A",
@@ -86,8 +86,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-04",
+      "by": "Full golden QA CAP registry recheck; accepted in Todo 1347 c3625/c3627",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently retained the mechanics and required replacement of stale pending/future judge prose.",
         "2026-07-11 author re-check: Horizon P26/P27 boundary, two independent Pubnet RPCs, current CAP-0071 source, and official Zipper guide.",
@@ -100,6 +100,7 @@
         "solo://proj/49/todo/date-contingent-trap--831",
         "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
         "eval-authoring",
+        "CAP-0071 advanced from Accepted to Final after the earlier snapshot.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ]
     },

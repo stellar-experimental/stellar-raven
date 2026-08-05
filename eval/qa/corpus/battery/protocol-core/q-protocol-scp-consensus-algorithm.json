@@ -9,8 +9,7 @@
     "keyFacts": [
       "Names the Stellar Consensus Protocol (SCP) as Stellar's consensus mechanism.",
       "States SCP is a construction of Federated Byzantine Agreement (FBA).",
-      "Explains FBA reaches agreement via user-defined quorum sets / trusted nodes, NOT mining hashpower (PoW) or staked capital (PoS).",
-      "States stellar-core is the reference C++ implementation of SCP and the Stellar protocol that validators run to reach consensus and apply ledgers."
+      "Explains FBA reaches agreement via user-defined quorum sets / trusted nodes, NOT mining hashpower (PoW) or staked capital (PoS)."
     ],
     "avoid": [
       "Do NOT claim Stellar uses Proof-of-Work or mining.",
@@ -40,8 +39,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 Lane R absorb triage",
+      "date": "2026-08-04",
+      "by": "Full golden QA scope correction; accepted in Todo 1347 c3625/c3627",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-protocol-stellar-core-what-is",
@@ -49,27 +48,10 @@
         "https://developers.stellar.org/docs/networks/software-versions"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        "Removed an unrelated stellar-core implementation fact that the question and golden answer did not ask for."
       ]
     },
-    "origin": "raven-next q-protocol-scp-consensus-algorithm",
-    "corroboration": [
-      {
-        "claim": "States stellar-core is the reference C++ implementation of SCP and the Stellar protocol that validators run to reach consensus and apply ledgers.",
-        "verdict": "confirmed",
-        "evidence": [
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-core",
-            "observedAt": "2026-07-11"
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/networks/software-versions",
-            "observedAt": "2026-07-11"
-          }
-        ]
-      }
-    ]
+    "origin": "raven-next q-protocol-scp-consensus-algorithm"
   }
 }

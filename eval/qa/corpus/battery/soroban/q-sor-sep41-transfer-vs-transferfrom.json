@@ -16,7 +16,7 @@
     "avoid": [
       "Do NOT type both destinations identically, require owner auth again during transfer_from, or treat expiry as duration/storage TTL."
     ],
-    "notes": "Also good if the answer: Mentions using the SDK token client for the SEP-41 surface and SAC-specific client only for extra SAC/admin functions.\nGolden cites: SEP-41 token interface. | Official SAC docs/token guide.\nGT-43 current Protocol-27/SEP-41 v0.4.1 signature correction."
+    "notes": "Also good if the answer: Mentions using the SDK token client for the SEP-41 surface and SAC-specific client only for extra SAC/admin functions.\nGolden cites: SEP-41 token interface. | Official SAC docs/token guide.\nGT-43 signatures remain current; SEP-41 is Draft v0.5.0, updated 2026-06-08, as observed 2026-08-04."
   },
   "tags": {
     "category": "soroban",
@@ -26,7 +26,7 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-04",
     "reverifyBy": "2027-02-25",
     "sources": [
       {
@@ -47,27 +47,27 @@
     ],
     "corroboration": [
       {
-        "claim": "Current SEP-41 v0.4.1 signatures/auth/expiry",
+        "claim": "Current SEP-41 v0.5.0 signatures/auth/expiry",
         "verdict": "confirmed",
         "evidence": [
           {
             "class": "B",
             "ref": "B: SEP-41 and SDK27 source",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-04",
             "note": "verbatim legacy evidence descriptor imported at migration"
           },
           {
             "class": "F",
             "ref": "F: GT-43 primary/blind",
             "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "note": "The sealed GT-43 lane supports the interface semantics observed then; the v0.5.0 metadata was separately rechecked on 2026-08-04."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer missed the current Protocol-27 direct-transfer MuxedAddress signature and needed exact allowance boundary terminology.",
+      "date": "2026-08-04",
+      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the SEP preamble; the direct-transfer and allowance semantics remain current.",
       "evidence": [
         "Solo scratchpad 575 GT-43 processes 3311/3320."
       ],

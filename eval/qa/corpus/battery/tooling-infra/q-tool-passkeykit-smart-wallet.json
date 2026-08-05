@@ -21,7 +21,7 @@
       "Do NOT imply that an OpenZeppelin contract audit covers Smart Account Kit, the relayer, indexer, frontend, policies, and deployment configuration as one inherited guarantee.",
       "Do NOT confuse transaction submission or fee sponsorship with smart-account authorization, or call Smart Account Kit SDF-maintained."
     ],
-    "notes": "Freshness correction 2026-07-28: the 2026-07-11 characterization was accurate for the then-current README, which called Passkey Kit a legacy precursor and unaudited demo material. Commit c6e46dab3ac1 rewrote the README on 2026-07-12; the current project is maintained and presents Passkey Kit and Smart Account Kit as sibling SDKs with different authorization models. Root cause is freshness-drift, not an original authoring flaw. Do not assume identical primitives or inherited full-stack audit coverage."
+    "notes": "Freshness correction reverified 2026-08-04: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage."
   },
   "tags": {
     "category": "tooling-infra",
@@ -31,16 +31,16 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-28",
+    "asOf": "2026-08-04",
     "reverifyBy": "2026-08-27",
     "sources": [
       {
         "class": "B",
-        "ref": "https://github.com/kalepail/passkey-kit"
+        "ref": "https://github.com/stellar/passkey-kit"
       },
       {
         "class": "B",
-        "ref": "https://github.com/kalepail/smart-account-kit"
+        "ref": "https://github.com/stellar/smart-account-kit"
       },
       {
         "class": "D",
@@ -56,11 +56,11 @@
       },
       {
         "class": "B",
-        "ref": "https://github.com/kalepail/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198"
+        "ref": "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198"
       },
       {
         "class": "B",
-        "ref": "https://github.com/kalepail/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526"
+        "ref": "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526"
       }
     ],
     "corroboration": [
@@ -70,15 +70,15 @@
         "evidence": [
           {
             "class": "B",
-            "ref": "https://github.com/kalepail/passkey-kit",
-            "observedAt": "2026-07-28",
+            "ref": "https://github.com/stellar/passkey-kit",
+            "observedAt": "2026-08-04",
             "note": "Current README documents the maintained SDK, flat Signatures model, review caveat, and sibling relationship."
           },
           {
             "class": "C",
             "ref": "scout.searchRepos({q:'passkey-kit smart-account-kit'})",
-            "observedAt": "2026-07-28",
-            "note": "Production Scout returned both active, unarchived canonical repositories with July 2026 activity."
+            "observedAt": "2026-08-04",
+            "note": "Current direct verification identifies the active stellar repositories; the former kalepail repositories are archived move pointers."
           }
         ]
       },
@@ -88,14 +88,14 @@
         "evidence": [
           {
             "class": "B",
-            "ref": "https://github.com/kalepail/passkey-kit and https://github.com/kalepail/smart-account-kit",
-            "observedAt": "2026-07-28",
+            "ref": "https://github.com/stellar/passkey-kit and https://github.com/stellar/smart-account-kit",
+            "observedAt": "2026-08-04",
             "note": "The canonical READMEs describe the two different SDK and authorization models."
           },
           {
             "class": "A",
             "ref": "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
-            "observedAt": "2026-07-28",
+            "observedAt": "2026-08-04",
             "note": "OpenZeppelin documents the smart-account contract framework underlying Smart Account Kit."
           }
         ]
@@ -106,14 +106,14 @@
         "evidence": [
           {
             "class": "B",
-            "ref": "https://github.com/kalepail/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
-            "observedAt": "2026-07-28",
+            "ref": "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
+            "observedAt": "2026-08-04",
             "note": "The prior README snapshot contains the legacy precursor and unaudited demo-material wording."
           },
           {
             "class": "B",
-            "ref": "https://github.com/kalepail/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
-            "observedAt": "2026-07-28",
+            "ref": "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
+            "observedAt": "2026-08-04",
             "note": "The 2026-07-12 README rewrite introduced the current maintained-project positioning and review caveat."
           },
           {
@@ -126,15 +126,15 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1251 Lane A — sibling contradictions (solo://proj/49/scratchpad/todo-1251-lane-a-sib--731)",
+      "date": "2026-08-04",
+      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
       "evidence": [
-        "Production scout.searchRepos({q:'passkey-kit smart-account-kit'}) returned both canonical repositories as active and unarchived with July 2026 activity.",
-        "https://github.com/kalepail/passkey-kit",
-        "https://github.com/kalepail/smart-account-kit",
+        "Current primary verification found stellar/passkey-kit and stellar/smart-account-kit active and unarchived; former kalepail repositories are archived move pointers.",
+        "https://github.com/stellar/passkey-kit",
+        "https://github.com/stellar/smart-account-kit",
         "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
-        "https://github.com/kalepail/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
-        "https://github.com/kalepail/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
+        "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
+        "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
         "Sibling sweep: q-tool-smart-wallet-repos-discovery already describes the projects as separate current repositories with source-specific caveats; the other cluster-022 wallet/operator cases do not assert the stale Passkey Kit characterization.",
         "Adversarial review 2026-07-28: the prior avoid clause could punish a TRUE statement — both the pre-rewrite and current READMEs decline to claim a third-party audit. Trap rescoped to the composite legacy/demo/superseded characterization only."
       ],

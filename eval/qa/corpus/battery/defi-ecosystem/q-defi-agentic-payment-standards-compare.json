@@ -129,9 +129,9 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "A: pinned SEP-41 primary record, Draft v0.4.1",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — Draft v0.5.0",
+            "observedAt": "2026-08-04",
+            "note": "Narrow metadata refresh; the protocol-comparison observation otherwise retains its original date."
           },
           {
             "class": "B",
@@ -149,17 +149,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-14",
-      "by": "P4 conversions rework plus independent Terra coverage-placement verification",
+      "date": "2026-08-04",
+      "by": "P4 conversions rework plus independent Terra coverage-placement verification; narrow SEP-41 metadata refresh",
       "evidence": [
         "Solo scratchpad 575: GT-12 primary process 3237 and blind process 3241",
         "Primary x402, MPP, AP2/FIDO, ACP, SEP-41, and current Stellar integration records rechecked 2026-07-10",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Independent Terra review 2026-07-14 rechecked current Stellar agentic-payments Docs/skill plus primary AP2 and ACP sources; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review"
+        "Independent Terra review 2026-07-14 rechecked current Stellar agentic-payments Docs/skill plus primary AP2 and ACP sources; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review",
+        "SEP-41 Draft v0.5.0 / updated 2026-06-08 observed from the normative source on 2026-08-04; other protocol claims were not re-dated."
       ],
       "rootCause": [
+        "freshness-drift: the pinned SEP-41 metadata lagged the normative v0.5.0 record",
         "eval-side protocol-layer conflation: external standard identity, network method, settlement substrate, and optional composition were merged",
         "coverage diagnostic: the exposed Stellar agentic-payments skill does not cover external AP2/ACP, which does not by itself establish a Stellar Docs content obligation",
         "eval-authoring",

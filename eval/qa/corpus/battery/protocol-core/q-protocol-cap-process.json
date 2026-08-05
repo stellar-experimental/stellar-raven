@@ -5,20 +5,20 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A proposed core-protocol change starts with public discussion, then a markdown CAP PR under `stellar/stellar-protocol/core/` in **Draft**. After iteration it moves to **Awaiting Decision** and CAP Core Team review. The decision is branched, not one automatic chain: unanimous support leads toward an acceptance disposition/FCP; majority concerns lead toward **FCP: Rejected**; minority concerns return it to Draft, and deliberation can span several meetings. The Final Comment Period lasts about one week. If no new major concern changes the disposition, it becomes **Accepted** or **Rejected**; a new major issue can send it back to Draft.\n\n**Accepted is a specification decision, not deployment.** After code is implemented, a PR moves the CAP to **Implementation Review** and records the target protocol version; the protocol group can still reject it or move it to **Implemented**. **Final** is the registry's normative finalization status after the released implementation has validator acceptance. Those labels must still be kept separate from an actual network upgrade: validators configure a scheduled upgrade proposal and SCP externalizes agreement according to their quorum sets under Stellar's federated Byzantine agreement model. That is not a simple global-majority-by-node-count or XLM-holder vote, and Testnet and Mainnet can activate at different times. CAP-0071 being labelled Accepted while P27 is already live is a current example of status lag.\n\nCAPs define Core/protocol behavior. **SEPs** specify ecosystem interoperability conventions and do not by themselves change ledger consensus rules.",
+    "answer": "A proposed core-protocol change starts with public discussion, then a markdown CAP PR under `stellar/stellar-protocol/core/` in **Draft**. After iteration it moves to **Awaiting Decision** and CAP Core Team review. The decision is branched: the Final Comment Period can lead to acceptance or rejection, while concerns can return it to Draft. **Accepted** is a specification decision, not deployment. The current registry workflow continues through **Implemented** and **Final**; `Implementation Review` is no longer a status. Those labels remain separate from network activation: validators configure scheduled upgrade proposals and SCP externalizes agreement through quorum sets under FBA, not a global node-count majority or XLM-holder vote. Testnet and Mainnet can activate at different times. CAPs define Core/protocol behavior; **SEPs** specify ecosystem interoperability conventions and do not by themselves change consensus rules.",
     "keyFacts": [
       "Describes Draft, Awaiting Decision, acceptance/rejection FCP branches, and possible return to Draft.",
-      "Includes Implementation Review between Accepted implementation and Implemented.",
+      "Uses the current Draft → Awaiting Decision → FCP → Accepted → Implemented → Final workflow, with rejection and return-to-Draft branches.",
       "Separates normative status/finalization, code implementation/release, and per-network SCP activation.",
       "Uses quorum-set/FBA semantics and distinguishes CAPs from SEPs and token-holder votes."
     ],
     "avoid": [
-      "Do NOT present the process as an unconditional Draft-to-Final line or omit Implementation Review and rejection/return branches.",
+      "Do NOT present the process as an unconditional Draft-to-Final line, resurrect retired Implementation Review status, or omit rejection/return branches.",
       "Do NOT equate Accepted, Implemented, or Final status with actual activation on every network.",
       "Do NOT reduce SCP/FBA activation to a simple majority of validators or an XLM token-holder vote.",
       "Do NOT confuse CAP protocol changes with SEP interoperability standards."
     ],
-    "notes": "GT-31 CORRECTION 2026-07-11: require the acceptance/rejection FCP branches and Implementation Review. CAP status/finalization, implementation/release, and actual network activation are separate; describe activation with SCP/FBA quorum-set semantics rather than a simple validator-count majority."
+    "notes": "CORRECTION 2026-08-04: current lifecycle is Draft → Awaiting Decision → FCP → Accepted → Implemented → Final; Implementation Review is retired. CAP status, implementation/release, and network activation remain separate."
   },
   "tags": {
     "category": "protocol-core",
@@ -52,7 +52,7 @@
     ],
     "corroboration": [
       {
-        "claim": "The CAP process includes acceptance/rejection FCP disposition, Accepted, Implementation Review, Implemented, and Final, with return-to-Draft/rejection branches.",
+        "claim": "The CAP process includes acceptance/rejection FCP disposition, Accepted, Implemented, and Final, with return-to-Draft/rejection branches.",
         "verdict": "confirmed",
         "evidence": [
           {
@@ -95,14 +95,14 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited linear lifecycle omitted Implementation Review, collapsed normative CAP status with implementation and activation, and described network agreement as a simple validator majority rather than SCP/FBA quorum semantics.",
+      "date": "2026-08-04",
+      "by": "Full golden QA current CAP workflow recheck; accepted in Todo 1347 c3625/c3627",
       "evidence": [
-        "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required Implementation Review, FCP branches, and status/implementation/activation separation.",
+        "Current stellar-protocol core/README.md workflow observed 2026-08-04; independent Todo 1347 verifier c3625.",
         "2026-07-11 author re-check against stellar-protocol fbf05c9d CAP process and live P27/CAP-0071 counterexample."
       ],
       "rootCause": [
-        "Eval-side lifecycle linearization and governance-layer collapse."
+        "Eval-side lifecycle drift and governance-layer collapse; the golden retained retired Implementation Review status."
       ]
     },
     "origin": "raven-next q-protocol-cap-process"

@@ -8,7 +8,7 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current LumenLoop corpus, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n**Yes.** Search the current official SCF submissions and report the submission's explicit status and URL—not only a semantic match, directory flag, `award_type`, or reconstructed aggregate. As of **2026-07-10**, official pages marked these representative RWA/tokenization submissions **Awarded**:\n\n- 0xAuth — SCF #27, $45,000\n- Metafyed RWA marketplace — SCF #27, $50,000\n- Verseprop real-estate tokenization — SCF #33 Build, $112,020\n- KYC Token & UI for RWA — SCF #22, $45,000\n- Spydra RWA Tokenization — SCF #31 Build, $132,000\n- Bando Tokenized CETES — SCF #42 Build, $75,000\n- Constellation Protocol — SCF #23, $100,000\n- Excellar — SCF #17, $88,750\n\nBy contrast, Talwex was at **Test Transaction**, Lend tokenized real estate at **Ready for Payment**, and TERWA Wine Asset Vault at **Information Collection** even though their rows carried a Build award type/amount. Do not call those Awarded. No exact BENJI/FOBXX, CRDT, or USDY match appeared on the official funded-projects page in this read; phrase that as a dated source-relative result, not proof that no SCF relationship ever existed.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults current official SCF submission pages, directly answers the question with source-supported content, and dates any status or amount. **Yes:** Stellar has funded RWA/tokenization work, but semantic matches, directory flags, `award_type`, proposed budgets, and reconstructed totals are discovery evidence only. Report each submission's official URL and distinguish **Awarded**, requested budget, and `totalPaid`.\n\nAs observed **2026-08-04**, the official pages marked Talwex SCF #43, Lend SCF #43, and TERWA SCF #43 **Awarded**, superseding their earlier workflow labels. For example, Lend showed a requested budget of **$120,560** and `totalPaid` of **$72,336**; those are different fields and neither should be silently presented as the other. Historical examples such as 0xAuth SCF #27 remain historical awards; a current status claim requires a current official page.\n\nNo exact BENJI/FOBXX, CRDT, or USDY match on a dated official search is only a source-relative result, not proof that no SCF relationship ever existed.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -31,7 +31,7 @@
   "truth": {
     "domain": "mixed",
     "status": "mixed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-08-04",
     "sources": [
       {
         "class": "A",
@@ -57,6 +57,11 @@
         "class": "A",
         "ref": "https://communityfund.stellar.org/awards",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+        "note": "Lend SCF43 current official submission page."
       }
     ],
     "corroboration": [
@@ -110,10 +115,11 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-04",
+      "by": "Full golden QA current SCF status verification; accepted in Todo 1347 c3625/c3627",
       "evidence": [
-        "Solo scratchpad 575 GT-17 primary process 3247 and blind process 3248, including exact official submission IDs/statuses asOf 2026-07-10.",
+        "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+        "Current official Talwex and TERWA SCF43 submission pages observed 2026-08-04.",
         "Sibling sweep: q-scf-funded-similar-oracle, q-scf-history-orbit-cdp, q-defi-orbit-cdp, and BENJI/CRDT/USDY product cases.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
@@ -124,6 +130,7 @@
         "improvements/lumenloop/ll-013-scf-submission-award-fields.md",
         "improvements/stellar-light-scout/sls-026-scf-status-aggregate-conflict.md",
         "eval-authoring",
+        "Official SCF workflow labels changed; the former Talwex/Lend/TERWA counterexamples became Awarded and require requested-budget versus totalPaid separation.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ]
     },

@@ -5,12 +5,12 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. Hosted service billing/top-up policy is a Channels contract; it is not a generic address or rule that applies to every self-hosted Relayer. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-07-11**, the repository's latest release was **v1.6.0**, while rendered documentation still exposed 1.5.x/current paths inconsistently. The hosted endpoints returned authentication responses, which proves reachability rather than successful relaying, and the official status feed reported partial degradation/timeouts during the review. Recheck the current release, supported networks, funding terms, and status before production use.",
+    "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. Hosted service billing/top-up policy is a Channels contract; it is not a generic address or rule that applies to every self-hosted Relayer. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-08-04**, the repository's latest release was **v1.7.0**, published 2026-07-28, while rendered documentation still exposed 1.5.x/current paths inconsistently. A hosted endpoint's authentication response proves reachability rather than successful relaying; recheck the current release, supported networks, funding terms, and official service status before production use.",
     "keyFacts": [
       "Distinguishes self-hosted OpenZeppelin Relayer from managed OpenZeppelin Channels.",
       "Describes Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support without turning managed features into protocol guarantees.",
       "Separates self-hosted account funding from managed Channels billing/top-up policy.",
-      "Dates version/provider-health claims and discloses the v1.6.0-versus-rendered-1.5.x disagreement as of 2026-07-11."
+      "Dates version/provider-health claims and discloses the v1.7.0-versus-rendered-1.5.x disagreement as of 2026-08-04."
     ],
     "avoid": [
       "Do NOT conflate self-hosted Relayer with managed Channels.",
@@ -18,7 +18,7 @@
       "Do NOT interpret HTTP 401 as downtime or one reachable request as successful full service health.",
       "Do NOT pin release, network support, or provider health without an as-of date."
     ],
-    "notes": "GT-53 CORRECTION 2026-07-11: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. Repository v1.6.0 and rendered 1.5.x docs disagreed; the official status feed showed partial degradation. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally."
+    "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-08-04, repository v1.7.0 and rendered 1.5.x docs disagreed. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally."
   },
   "tags": {
     "category": "tooling-infra",
@@ -28,7 +28,7 @@
   "truth": {
     "domain": "mixed",
     "status": "disputed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-04",
     "reverifyBy": "2026-09-01",
     "sources": [
       {
@@ -48,7 +48,7 @@
       },
       {
         "class": "D",
-        "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.6.0",
+        "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.7.0",
         "note": "class inferred at migration"
       },
       {
@@ -70,8 +70,8 @@
           },
           {
             "class": "B",
-            "ref": "B: OpenZeppelin Relayer v1.6.0 release/source",
-            "observedAt": "2026-07-11",
+            "ref": "B: OpenZeppelin Relayer v1.7.0 release/source",
+            "observedAt": "2026-08-04",
             "note": "verbatim legacy evidence descriptor imported at migration"
           },
           {
@@ -94,16 +94,16 @@
           },
           {
             "class": "B",
-            "ref": "B: repository latest release is v1.6.0 as of 2026-07-11",
-            "observedAt": "2026-07-11",
+            "ref": "B: repository latest release is v1.7.0 as of 2026-08-04",
+            "observedAt": "2026-08-04",
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer collapsed self-hosted OpenZeppelin Relayer and managed OpenZeppelin Channels into one service and treated hosted fee policy as if it were the self-hosted funding model. GT-53 independently confirmed the product split, current capabilities, and dated release/docs/status disagreement.",
+      "date": "2026-08-04",
+      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the release while preserving the Relayer/Channels and funding boundaries.",
       "evidence": [
         "Solo scratchpad 575, GT-53 primary 3372 and blind 3378, independently reviewed 2026-07-11.",
         "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime."

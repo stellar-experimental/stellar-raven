@@ -22,6 +22,10 @@ recurrences:
     evidence: source=sdf-org now covers Mandate, Terms, Enterprise Fund, Team, Foundation, and report pages, but the Team page's embedded leadership-role text (Founder and Chief Scientist; VP of Ecosystem) is still absent and records lack per-record crawl-observation dates
   - date: 2026-07-15
     evidence: Team, Mandate, and Terms coverage now passes, but the canonical Enterprise Fund page's portfolio-totaling-over-$100m claim remains absent from an exact source=sdf-org query
+  - date: 2026-08-04
+    evidence: eval/qa/results/2026-08-04T21-12-30-variantA.json q-scf-academic-research-grant repeatedly searched exact research-grant vocabulary but did not retrieve https://research.stellar.org/research-grants or its eligibility, quarterly-deadline, $150K-cap, and two-submissions/year facts
+  - date: 2026-08-04
+    evidence: eval/qa/results/2026-08-04T21-45-25-variantA.json q-scf-vs-sdf-enterprise-fund said there was no public application despite the live canonical Enterprise Fund form, reproducing the non-blog page-family coverage gap
   - ref health 2026-07-27: https://github.com/Stellar-Light/stellarlight/issues/533 closed completed 2026-07-14 and the residual verification was posted after closure, so issue 533 no longer tracks the remaining gap; a consolidated successor issue carries it
   - consolidated successor issue filed 2026-07-27 carrying this residual on an open thread: https://github.com/Stellar-Light/stellarlight/issues/742
 ---
@@ -74,8 +78,9 @@ vocabulary; neither covers canonical non-blog organizational pages.
 
 Add a general canonical-SDF-site source family to `searchResearch` (for
 example `sdf-site`) and ingest the substantive sections of non-blog
-organizational pages, including Foundation, Team, current and historical
-Mandate, Enterprise Fund, Quarterly Reports, and Terms. Preserve canonical URL,
+organizational pages and canonical SDF subdomains, including Foundation, Team,
+current and historical Mandate, Enterprise Fund, Quarterly Reports, Terms, and
+`research.stellar.org/research-grants`. Preserve canonical URL,
 page/update date when present, crawl observation time, section heading, and
 verbatim text. Exclude navigation/listing boilerplate and retain rendered-page
 semantics when embedded page data differs from visible content.

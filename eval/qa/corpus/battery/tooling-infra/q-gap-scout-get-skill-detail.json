@@ -6,7 +6,7 @@
     "scout.listSkills"
   ],
   "golden": {
-    "answer": "After identifying the slug, call `scout.getSkill({name: 'agentic-payments'})`. The observed result contained metadata plus full `skill.content`; an unknown name comes back as a soft-empty miss with a hint to discover the current slug via listSkills first — a source-scoped miss, not evidence the skill does not exist. Prefer bundled `codemode.skill.read` for sectioned, pinned build playbooks when that is the requested surface.",
+    "answer": "After identifying the slug, call `scout.getSkill({name: 'agentic-payments'})`. The observed result contained metadata plus full `skill.content`; an unknown name comes back as a soft-empty miss with a hint to discover the current slug via listSkills first — a source-scoped miss, not evidence the skill does not exist. Prefer `codemode.skill.read` for sectioned, pinned, hash-verified upstream playbooks when that is the requested surface; the bodies are not bundled in this repository.",
     "keyFacts": [
       "Uses `getSkill` for one known slug and full content.",
       "Uses `listSkills` first for discovery when the name is unknown."
@@ -53,7 +53,7 @@
     ],
     "verified": {
       "date": "2026-07-30",
-      "by": "drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh",
+      "by": "drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh; wording-only correction",
       "evidence": [
         "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
         "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
@@ -64,7 +64,8 @@
       "rootCause": [
         "solo://project/49/scratchpad/p4/n1-gapops",
         "Eval-authoring flaw: graded the served soft-empty contract as an operation error, contradicting the adapter and the sibling case.",
-        "eval-authoring"
+        "eval-authoring",
+        "The golden used stale bundled-playbook wording although current playbooks are pinned and hash-verified upstream."
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

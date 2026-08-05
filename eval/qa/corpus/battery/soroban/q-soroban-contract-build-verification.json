@@ -16,7 +16,7 @@
       "Do NOT call contract build verification SEP-49 (SEP-49 is Upgradeable Contracts).",
       "Do NOT claim Stellar stores the contract source code on-chain."
     ],
-    "notes": "Freshness:true — SEP-55/SEP-58 are Draft and numbers/titles can change. VERIFIED against the SEP repo (2026-06): SEP-55 = 'Contract Build Verification' (Draft, v0.4.1), attestation-based via GitHub Attestations + contractmetav0 source_repo; SEP-58 = 'Contract Build Reproducibility for Verification' (Draft, v0.5.0), rebuild-based via bldimg/bldopt/source_sha256 meta, explicitly complementary to SEP-55. NOT SEP-49 (that is Upgradeable Contracts). Both confirm Stellar does not store source on-chain. SEP-58 title is 'Contract Build Reproducibility for Verification' (the rubric/body now match).\nAlso good if the answer: 'Build verified' attests that the published build workflow produced the WASM, not that the source is safe/audited.\nGolden cites: A primary developers.stellar.org / SEP repo source for SEP-55 / SEP-58 and the build-verification workflow."
+    "notes": "Freshness:true — SEP-55/SEP-58 are Draft and numbers/titles can change. As observed 2026-08-04, SEP-58 is Draft v0.6.0, updated 2026-07-15; its rebuild-based bldimg/bldopt/source_sha256 model remains complementary to SEP-55's attestation-based GitHub Attestations + contractmetav0 source_repo model. NOT SEP-49 (that is Upgradeable Contracts). Both confirm Stellar does not store source on-chain.\nAlso good if the answer: 'Build verified' attests that the published build workflow produced the WASM, not that the source is safe/audited.\nGolden cites: A primary developers.stellar.org / SEP repo source for SEP-55 / SEP-58 and the build-verification workflow."
   },
   "tags": {
     "category": "soroban",
@@ -26,7 +26,7 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-04",
     "reverifyBy": "2026-12-10",
     "sources": [
       {
@@ -41,8 +41,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-04",
+      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
@@ -63,19 +63,19 @@
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-04",
             "note": "Official Stellar proposal documentation provides the current SEP catalog/status context."
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-04",
             "note": "Fetched SEP-55 source defines CI build verification and attestations."
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-04",
             "note": "Fetched SEP-58 source defines reproducible contract builds and byte comparison."
           }
         ]

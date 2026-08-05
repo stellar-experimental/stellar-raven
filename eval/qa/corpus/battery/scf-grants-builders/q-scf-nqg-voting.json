@@ -5,12 +5,12 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nNQG is Stellar Community Fund's reputation/delegation governance system, combining Neural Governance with Quorum Delegation; it is not XLM/token voting and not Stellar Consensus Protocol. The current four-tier permissions matter: **Verified** has identity/account verification and view/discussion access; **Pathfinder** may participate by delegating weight; **Navigator** and **Pilot** may vote actively on Build Open projects; **Pilot** may also serve as a delegate and act on governance proposals. Build project-level community voting applies to the **Open Track only**. Integration and RFP awards are panel-led. Public Goods and quarterly resource-governance votes also use NQG-related signals but are distinct vote objects with different eligibility/processes.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives current tier permissions from the official SCF governance pages and dates them. NQG is SCF's reputation/delegation governance system, combining Neural Governance with Quorum Delegation; it is not XLM/token voting and not Stellar Consensus Protocol. **Verified** has identity/account verification and view/discussion access; **Pathfinder** may participate by delegating weight; **Navigator** and **Pilot** may vote actively on Build Open projects; **Pilot** may also serve as a delegate and act on governance proposals. Build project-level community voting applies to the **Open Track only**. Integration and RFP awards are panel-led. Public Goods has a separate governance/process and must not be assigned the Build Open electorate without its own current source.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Gives the Verified/Pathfinder/Navigator/Pilot permission matrix.",
-      "Separates Build Open voting from Integration/RFP decisions and from Public Goods/quarterly governance.",
+      "Separates Build Open voting from Integration/RFP decisions and does not invent Public Goods eligibility.",
       "Explains NQG as reputation/delegation governance, not token voting or SCP."
     ],
     "avoid": [
@@ -18,7 +18,7 @@
       "Do NOT generalize Build Open voting to Integration/RFP or treat Public Goods as the same vote.",
       "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "Dossier §3. Key trap: NQG (SCF grant governance) vs SCP quorum sets (protocol consensus) — different things despite both saying 'quorum'.\nAlso good if the answer: NQG was adopted by SCF in October 2023 and was co-developed with BlockScience. | The community vote applies to the Build Open Track (and the Public Goods Award).\nGolden cites: The SCF handbook Neural Quorum Governance / Verified Members pages.\nGT-39/40 atom independently confirmed 2026-07-10. Grade the role matrix and vote-object boundary, not the shorthand 'Verified members vote'."
+    "notes": "CORRECTION 2026-08-04: grade the verified tier roles and Build Open community-vote/delegation boundary. Public Goods has a separate process; do not state or require a Public Goods electorate from Build Open rules."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -28,7 +28,7 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-08-04",
     "sources": [
       {
         "class": "A",
@@ -73,8 +73,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-04",
+      "by": "Full golden QA NQG/Public Goods scope correction; accepted in Todo 1347 c3625/c3627",
       "evidence": [
         "Solo scratchpad 575 GT-39 processes 3300/3303 and GT-40 process 3304, 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -82,7 +82,7 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ],
       "rootCause": [
-        "Eval-side governance-role and vote-object collapse.",
+        "Eval-side governance-role and vote-object collapse; the prior golden implied Public Goods electorate details not established by the cited Build Open sources.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ]

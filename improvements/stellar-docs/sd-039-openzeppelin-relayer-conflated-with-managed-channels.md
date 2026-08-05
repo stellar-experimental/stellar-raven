@@ -11,6 +11,11 @@ evidence:
   - 2026-07-27 live production scout.explainRepo against that repo reported a self-hosted AGPL-3.0 service run via Cargo or Docker Compose with operator-owned .env/config.json, and an operator-controlled and operator-funded Stellar fee account
   - 2026-07-27 live production scout.searchResearch returned /docs/build/agentic-payments/x402, which already states the x402 plugin uses the Relayer framework and leverages managed Channels underneath
   - filed upstream 2026-07-28: https://github.com/stellar/stellar-docs/issues/2707
+recurrences:
+  - date: 2026-08-04
+    evidence: eval/qa/results/2026-08-04T22-02-07-variantA.json q-smart-wallet-fee-sponsorship repeated the served dapp skill's "Relayer (also called Stellar Channels Service)" alias, showing the product-identity error propagates beyond the two Tools pages
+  - date: 2026-08-04
+    evidence: eval/qa/results/2026-08-04T23-40-37-variantA.json q-ti-openzeppelin-relayer again conflated self-hosted Relayer and managed Channels; current OpenZeppelin release v1.7.0 and rendered 1.5.x docs preserve the need for dated, source-specific product boundaries
 ---
 
 ## Finding
