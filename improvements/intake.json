@@ -127,10 +127,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "Ledger, transaction-set, result, archive, and SCP documentation lacks one explicit transaction-inclusion verification recipe and trust-boundary explanation."
     },
-    "sd-018": {
-      "repo": "stellar/stellar-docs",
-      "reason": "Token-interface docs omit the current SAC/CAP-67 asset-appended event schema, leading direct SAC events to be misclassified as generic SEP-41."
-    },
     "sd-025": {
       "repo": "stellar/stellar-docs",
       "reason": "The Horizon-to-RPC migration guide still describes CAP-67 unified asset events as near-future despite Protocol 23 finality and live Protocol 27."

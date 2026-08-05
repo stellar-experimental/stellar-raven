@@ -206,6 +206,37 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/773857262d462506947a324b7437b8499f886287/improvements/stellar-docs/sd-017-horizon-lifecycle-wording-conflict.md"
     },
     {
+      "id": "sd-018",
+      "title": "The generic token-interface event documentation does not clearly distinguish custom SEP-41 events from current SAC events. Direct SAC transf",
+      "service": "stellar-docs",
+      "discovered": "2026-07-11",
+      "resolved": "2026-08-05",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/6",
+        "https://github.com/stellar/rs-soroban-sdk/issues/1955",
+        "https://github.com/stellar/rs-soroban-sdk/issues/1979",
+        "https://github.com/stellar/rs-soroban-sdk/pull/1980",
+        "https://github.com/stellar/rs-soroban-sdk/pull/1984",
+        "https://github.com/stellar/stellar-docs/issues/2593",
+        "https://github.com/stellar/stellar-docs/issues/2715",
+        "https://github.com/stellar/stellar-docs/pull/2704",
+        "https://github.com/stellar/stellar-docs/pull/2720",
+        "https://github.com/stellar/stellar-docs/pull/2725"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/rs-soroban-sdk/pull/1980",
+        "https://github.com/stellar/rs-soroban-sdk/pull/1984",
+        "https://github.com/stellar/stellar-docs/issues/2715",
+        "https://github.com/stellar/stellar-docs/pull/2720",
+        "https://github.com/stellar/stellar-docs/pull/2725"
+      ],
+      "liveRecheck": "2026-08-05T23:47:51Z token-interface: sep0011_asset x7, clawback x4, set_authorized x4, CAP-0067 x2; seven-row SEP-41/SAC table, classic-unification and operation-metadata note, and cross-links present. 23:48:30Z SAC page: sep0011_asset x4 and corrected set_admin data=new_admin:Address.",
+      "reviewEvidence": "Distinct adversarial reviewer Solo process 4358, Todo 1394 comment 3749, 2026-08-05; root independently repeated live and upstream-ref checks; resolution handoff read back at https://github.com/stellar/stellar-docs/issues/2715#issuecomment-5198753120.",
+      "sourceCommit": "61bd321d7d1318053446908bf17b33d4e8e11b71",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/61bd321d7d1318053446908bf17b33d4e8e11b71/improvements/stellar-docs/sd-018-sac-cap67-event-schema-gap.md"
+    },
+    {
       "id": "sd-019",
       "title": "The JavaScript persistent-entry extension guide says a single ExtendFootprintTTLOp cannot extend multiple ledger entries together. Current C",
       "service": "stellar-docs",
