@@ -97,10 +97,15 @@ export function demoGatewayTransportSettings(model: string) {
     return {
       transport: "gateway",
       byokAlias: "default",
-      resume: false
+      resume: false,
+      collectLog: false
     } as const;
   }
   return { resume: false } as const;
+}
+
+export function demoGatewayOptions(id: string) {
+  return { id, collectLog: false } as const;
 }
 
 export function demoModelSettings(
@@ -109,7 +114,6 @@ export function demoModelSettings(
   reasoningEffort: DemoReasoningEffort
 ) {
   const extraHeaders = {
-    "cf-aig-collect-log": "false",
     "x-session-affinity": sessionAffinity
   } as const;
   if (model.startsWith("@")) {

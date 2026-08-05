@@ -41,6 +41,7 @@ import {
   DEMO_REASONING_EFFORT_OVERRIDE_VAR,
   DEMO_TEMPERATURE,
   demoEffectiveOpenAiApiMode,
+  demoGatewayOptions,
   demoOpenAiApiModeFromOverride,
   demoOpenAiProviderOptions,
   demoModelSettings,
@@ -246,7 +247,7 @@ async function runTurn(
       // Gateway routing is mandatory: a missing gateway id/config fails model
       // calls. Spend/rate rules are account-side posture tracked in Solo todo
       // 848, not something this binding can enforce by itself.
-      gateway: { id: env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK },
+      gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK),
       providers: [openAiApiMode === "responses" ? openAiResponses : openaiChat, cloudflareAnthropic],
       resume: false
     });
