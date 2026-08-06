@@ -340,6 +340,18 @@ number looks plausible, and nothing signals the error.
   false. `verdict` is an object whose label is `verdict.score`, so comparing
   verdicts directly compares object identity and reports 100% change. Both
   mistakes fail silently and look like findings.
+- **The AI Gateway replays completions, so repeats are not samples.** The demo
+  gateway carries `cache_ttl: 300`; within that window an identical request
+  returns the recorded completion. It is invisible from inside the Worker — same
+  frames, same telemetry, no marker — and gateway logs will not settle it either,
+  because the demo sets `collectLog: false`. The tell is arithmetic: a repeat
+  that returns byte-identical answer text at a latency no inference could
+  produce. Measured 2026-08-06 before the fix: a 3-step agentic turn replayed
+  4567 identical chars in 1041 ms, a one-step turn in 129 ms. `demoModelSettings`
+  now sends `cf-aig-skip-cache: true` on every demo request, so repeats are
+  independent again — but any run predating that, and any NEW measured surface
+  that talks to a gateway, needs the header or the same trap returns. Compare
+  repeat latency AND output length before trusting a p50.
 
 ## Decision Heuristic
 

@@ -179,7 +179,17 @@ export function demoModelSettings(
 ) {
   const extraHeaders = {
     "x-session-affinity": sessionAffinity,
-    "cf-aig-collect-log-payload": "false"
+    "cf-aig-collect-log-payload": "false",
+    // The gateway carries `cache_ttl: 300`, and it silently replays completions.
+    // Measured 2026-08-06: a repeated `skill-routing` turn returned 4567
+    // identical answer chars over 3 agentic steps in 1041ms, and a repeated
+    // one-step turn in 129ms — neither is a possible live inference. Two reasons
+    // this is wrong here, either sufficient: a playground advertising live
+    // ecosystem data must not replay another visitor's answer for five minutes,
+    // and every measured A/B in this repo silently mixes cache hits into its
+    // latency and pass numbers. Spam is the rate limit's job (50/60s), not the
+    // cache's.
+    "cf-aig-skip-cache": "true"
   } as const;
   if (model.startsWith("@")) {
     const effort = demoWorkersAiReasoningEffort(reasoningEffort);

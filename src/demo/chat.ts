@@ -188,8 +188,10 @@ export async function handleDemoChat(
       clientGone.abort();
     }
   });
+  let emittedTerminal = false;
   const emit = (frame: DemoFrame): void => {
     if (!open) return;
+    if (frame.type === "done" || frame.type === "error") emittedTerminal = true;
     try {
       controller.enqueue(encoder.encode(encodeFrame(frame)));
     } catch {
@@ -204,6 +206,14 @@ export async function handleDemoChat(
   emit({ type: "ready" });
 
   ctx.waitUntil(runTurn(env, emit, history, subject, turnSignal).finally(() => {
+    // Every SSE turn ends on a terminal frame. `fullStream` is not guaranteed to
+    // yield `finish` — when it just ends, runTurn returns having emitted neither
+    // `done` nor `error`, and the client is left inferring a terminal from the
+    // socket closing. Seen in the 2026-08-06 gauntlet: 3 of gpt-5.6-sol's 8 turns
+    // closed with no terminal frame. `reason` is deliberately not "stop" so the
+    // client's own no-answer note still fires, and `finishReason: "none"` in
+    // demo-chat telemetry stays the signal that this path was taken.
+    if (!emittedTerminal) emit({ type: "done", reason: "incomplete" });
     open = false;
     try {
       controller.close();

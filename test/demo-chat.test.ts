@@ -71,13 +71,20 @@ async function runChat(streams: unknown[][], modelOverride?: string) {
     env,
     ctx
   );
-  await response.text();
+  const body = await response.text();
   await Promise.all(pending);
   const event = log.mock.calls
     .map(([line]) => JSON.parse(String(line)) as Record<string, unknown>)
     .find((item) => item.evt === "demo-chat");
   expect(event).toBeDefined();
-  return event!;
+  return { event: event!, frames: sseFrames(body) };
+}
+
+function sseFrames(body: string): Record<string, unknown>[] {
+  return body
+    .split("\n\n")
+    .flatMap((event) => event.split("\n").filter((line) => line.startsWith("data:")))
+    .map((line) => JSON.parse(line.slice(5)) as Record<string, unknown>);
 }
 
 afterEach(() => {
@@ -87,7 +94,7 @@ afterEach(() => {
 
 describe("demo chat provider failures", () => {
   it("keeps provider telemetry when a fallback finishes stop without text", async () => {
-    const finalEvent = await runChat([
+    const { event: finalEvent } = await runChat([
       [{ type: "error", error: providerError("provider unavailable", 503) }],
       [finish()]
     ]);
@@ -145,10 +152,35 @@ describe("demo chat provider failures", () => {
       }
     }
   ])("$name", async ({ streams, modelOverride, expected, providerFieldsAbsent }) => {
-    const finalEvent = await runChat(streams(), modelOverride);
+    const { event: finalEvent } = await runChat(streams(), modelOverride);
     expect(finalEvent).toMatchObject(expected);
     if (providerFieldsAbsent) {
       expect(Object.keys(finalEvent).filter((key) => key.startsWith("providerError"))).toEqual([]);
     }
+  });
+});
+
+describe("demo chat terminal frame", () => {
+  // `fullStream` is not contractually required to yield `finish`. When the last
+  // model's stream just ends, the turn used to close having emitted no terminal
+  // frame at all, leaving the client to infer one from the socket closing.
+  it("emits done when the last model's stream ends without finish", async () => {
+    const { event, frames } = await runChat(
+      [[{ type: "text-delta", text: "answer with no finish part" }]],
+      "openai/gpt-5.6-terra"
+    );
+    expect(frames.at(-1)).toEqual({ type: "done", reason: "incomplete" });
+    expect(frames.filter((f) => f.type === "done" || f.type === "error")).toHaveLength(1);
+    expect(event).toMatchObject({ finishReason: "none" });
+  });
+
+  it("does not add a second terminal frame when the stream finishes normally", async () => {
+    const { frames } = await runChat(
+      [[{ type: "text-delta", text: "grounded answer" }, finish()]],
+      "openai/gpt-5.6-terra"
+    );
+    expect(frames.filter((f) => f.type === "done" || f.type === "error")).toEqual([
+      { type: "done", reason: "stop" }
+    ]);
   });
 });
