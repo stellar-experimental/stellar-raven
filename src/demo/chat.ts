@@ -30,6 +30,7 @@ import { stepCountIs, streamText, type ToolSet } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createWorkersAI } from "workers-ai-provider";
 import { openai as openaiChat } from "workers-ai-provider/openai";
+import { google as googleGemini } from "workers-ai-provider/google";
 import { allowDevUnauthenticated } from "../auth/gate.ts";
 import { logEvent } from "../observability.ts";
 import { verifyDemoCookie } from "./auth.ts";
@@ -246,7 +247,18 @@ async function runTurn(
       // calls. Spend/rate rules are account-side posture tracked in Solo todo
       // 848, not something this binding can enforce by itself.
       gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK),
-      providers: [openAiApiMode === "responses" ? openAiResponses : openaiChat, cloudflareAnthropic],
+      // One plugin per WIRE FORMAT, not per vendor: the openai plugin already
+      // covers the whole OpenAI-compatible long tail (xai/, groq/, deepseek/…),
+      // which is why grok worked without its own entry. anthropic and google
+      // speak their own wire formats and need their own. A missing plugin fails
+      // in ~4ms with "No provider plugin for wire format …" — fast enough to
+      // look like a config error rather than a model outage, which is the one
+      // helpful thing about it.
+      providers: [
+        openAiApiMode === "responses" ? openAiResponses : openaiChat,
+        cloudflareAnthropic,
+        googleGemini
+      ],
       resume: false
     });
     const sessionAffinity = await demoSessionAffinity(subject);
