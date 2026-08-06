@@ -292,6 +292,9 @@ describe("demo model config", () => {
     expect(entries).toHaveLength(1);
     expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
     expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
+    // Gateway cache_ttl is 300; without this the demo replays another visitor's
+    // answer and every measured run mixes cache hits into its numbers.
+    expect(entries[0]?.headers["cf-aig-skip-cache"]).toBe("true");
     expect(entries[0]?.headers["x-session-affinity"]).toBe("demo-test-affinity");
   });
 
@@ -326,6 +329,9 @@ describe("demo model config", () => {
     expect(entries[0]?.endpoint).toBe("v1/responses");
     expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
     expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
+    // Gateway cache_ttl is 300; without this the demo replays another visitor's
+    // answer and every measured run mixes cache hits into its numbers.
+    expect(entries[0]?.headers["cf-aig-skip-cache"]).toBe("true");
   });
 
   it("passes collectLog=false through the stored-key gateway transport", async () => {
@@ -358,6 +364,9 @@ describe("demo model config", () => {
     expect(entries).toHaveLength(1);
     expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
     expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
+    // Gateway cache_ttl is 300; without this the demo replays another visitor's
+    // answer and every measured run mixes cache hits into its numbers.
+    expect(entries[0]?.headers["cf-aig-skip-cache"]).toBe("true");
     expect(entries[0]?.headers["x-session-affinity"]).toBe("demo-test-affinity");
   });
 });
