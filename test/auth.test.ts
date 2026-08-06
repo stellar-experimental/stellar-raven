@@ -14,7 +14,7 @@
  * thin fetch router is exercised through these same building blocks.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { OAuthProvider } from "@cloudflare/workers-oauth-provider";
+import { AuthorizationError, OAuthProvider, getOAuthApi } from "@cloudflare/workers-oauth-provider";
 import type { AuthRequest, OAuthHelpers } from "@cloudflare/workers-oauth-provider";
 import {
   ACCESS_TOKEN_TTL_SECONDS,
@@ -51,8 +51,18 @@ function memoryKv(): KVNamespace & { store: Map<string, string> } {
   const store = new Map<string, string>();
   return {
     store,
-    async get(key: string) {
-      return store.get(key) ?? null;
+    // Honors `{ type: "json" }`. The real provider reads client records that
+    // way, so a stub that always returns the raw string hands back a string
+    // where an object is expected and fails deep inside the library.
+    async get(key: string, options?: { type?: string } | string) {
+      const raw = store.get(key) ?? null;
+      const type = typeof options === "string" ? options : options?.type;
+      if (raw === null || type !== "json") return raw;
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return null;
+      }
     },
     async put(key: string, value: string) {
       store.set(key, value);
@@ -301,6 +311,72 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     expect(mcpFetch).not.toHaveBeenCalled();
   });
 
+  /**
+   * The load-bearing contract behind the error redirects in workos.ts: the REAL
+   * provider must refuse to attach `redirectUri` until it has validated the
+   * client and the redirect URI, because that field is what we treat as
+   * permission to redirect. Stub-based tests cannot see an upstream ordering
+   * regression — this can, and it is the reason to pay for a real-provider test.
+   */
+  it("real provider withholds redirect context until client + redirect_uri are validated", async () => {
+    const env = testEnv();
+    const registered = "https://client.example/cb";
+    const helpers = getOAuthApi(options as never, env as never);
+    const { clientId } = await helpers.createClient({
+      clientName: "Contract Test Client",
+      redirectUris: [registered],
+      responseTypes: ["code"],
+      grantTypes: ["authorization_code", "refresh_token"],
+      tokenEndpointAuthMethod: "none"
+    });
+
+    const authorizeUrl = (params: Record<string, string>) =>
+      new Request(`https://mcp.test/authorize?${new URLSearchParams(params)}`);
+
+    // Unregistered redirect_uri: MUST NOT carry redirect context (redirecting
+    // there would be the vulnerability, not the fix).
+    await expect(
+      helpers.parseAuthRequest(
+        authorizeUrl({
+          response_type: "code",
+          client_id: clientId,
+          redirect_uri: "https://attacker.example/steal",
+          code_challenge: "a".repeat(43),
+          code_challenge_method: "S256"
+        })
+      )
+    ).rejects.toSatisfy(
+      (e: unknown) => e instanceof AuthorizationError && e.redirectUri === undefined
+    );
+
+    // Unknown client: same — nothing to redirect to.
+    await expect(
+      helpers.parseAuthRequest(
+        authorizeUrl({ response_type: "code", client_id: "no-such-client", redirect_uri: registered })
+      )
+    ).rejects.toSatisfy(
+      (e: unknown) => e instanceof AuthorizationError && e.redirectUri === undefined
+    );
+
+    // Registered client + registered URI, failing a LATER check: redirect
+    // context present, which is what authorizationErrorResponse acts on.
+    await expect(
+      helpers.parseAuthRequest(
+        authorizeUrl({
+          response_type: "code",
+          client_id: clientId,
+          redirect_uri: registered,
+          state: "abc",
+          code_challenge: "a".repeat(43),
+          code_challenge_method: "plain"
+        })
+      )
+    ).rejects.toSatisfy(
+      (e: unknown) =>
+        e instanceof AuthorizationError && e.redirectUri === registered && e.state === "abc"
+    );
+  });
+
   it("garbage bearer token on /mcp → 401 naming invalid_token, handler untouched", async () => {
     mcpFetch.mockClear();
     const response = await provider.fetch(
@@ -452,7 +528,7 @@ describe("WorkOSAuthHandler", () => {
   // no challenge yields a grant whose code is redeemable with no verifier at all.
   // Both /authorize legs must refuse it before a consent page is ever rendered.
   it.each([
-    ["no code_challenge at all", { responseType: "code", clientId: "client-abc", redirectUri: "https://client.example/cb", scope: ["mcp"], state: "s", codeChallengeMethod: "S256" }],
+    ["no code_challenge at all", { responseType: "code", clientId: "client-abc", redirectUri: "https://client.example/cb", scope: ["mcp"], state: "client-state", codeChallengeMethod: "S256" }],
     ["a plain challenge", { ...AUTH_REQ, codeChallengeMethod: "plain" }],
     ["no method", { ...AUTH_REQ, codeChallengeMethod: undefined }]
   ])("GET /authorize refuses an authorization request with %s", async (_label, parsed) => {
@@ -465,10 +541,30 @@ describe("WorkOSAuthHandler", () => {
       new Request("https://mcp.test/authorize?client_id=client-abc"),
       env
     );
-    expect(response.status).toBe(400);
-    expect(await response.text()).toBe("Invalid authorization request");
+    // The client and redirect_uri parsed fine, so OAuth 2.1 §4.1.2.1 wants the
+    // error delivered to the client rather than rendered at the user.
+    expect(response.status).toBe(303);
+    const location = new URL(response.headers.get("location") ?? "");
+    expect(location.origin + location.pathname).toBe("https://client.example/cb");
+    expect(location.searchParams.get("error")).toBe("invalid_request");
+    expect(location.searchParams.get("state")).toBe("client-state");
     // Never mint a consent cookie for a request that could not be safely granted.
     expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
+  });
+
+  it("logs the error CODE, never the description, when redirecting an authorization error", async () => {
+    const env = testEnv({
+      OAUTH_PROVIDER: stubHelpers({
+        parseAuthRequest: vi.fn(async () => ({ ...AUTH_REQ, codeChallenge: undefined }) as AuthRequest)
+      })
+    });
+    const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    await WorkOSAuthHandler.fetch(new Request("https://mcp.test/authorize?client_id=client-abc"), env);
+    const events = log.mock.calls.map(([line]) => JSON.parse(String(line)));
+    // Upstream descriptions interpolate request-supplied values; a log field is
+    // the wrong home for attacker-chosen text.
+    expect(events).toContainEqual({ evt: "auth_reject", status: 303, reason: "invalid_request" });
+    log.mockRestore();
   });
 
   it("POST /authorize refuses a PKCE-less authorization request before parking state", async () => {
@@ -489,7 +585,11 @@ describe("WorkOSAuthHandler", () => {
       }),
       env
     );
-    expect(response.status).toBe(400);
+    // 303 and not 302 on this leg specifically: a 302 only PERMITS the agent to
+    // drop the method, so the consent form body — csrf_token included — could be
+    // replayed to the client's redirect URI.
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toContain("error=invalid_request");
     const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
     expect(kv.store.size).toBe(0);
   });

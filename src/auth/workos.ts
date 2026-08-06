@@ -31,6 +31,7 @@
  * Pure module: no cloudflare:workers import (type-only provider imports) —
  * unit-testable under plain Node (test/auth.test.ts).
  */
+import { AuthorizationError } from "@cloudflare/workers-oauth-provider";
 import type { AuthRequest, OAuthHelpers } from "@cloudflare/workers-oauth-provider";
 import {
   CONSENT_HEADERS,
@@ -149,8 +150,9 @@ export const WorkOSAuthHandler = {
     }
 
     if (url.pathname === "/authorize" && request.method === "GET") {
-      const oauthReq = await parseAuthRequest(provider, request);
-      if (!oauthReq) return text("Invalid authorization request", 400);
+      const resolved = await resolveAuthRequest(provider, request);
+      if (!resolved.ok) return resolved.response;
+      const oauthReq = resolved.request;
       const client = await provider.lookupClient(oauthReq.clientId);
       // Double-submit CSRF: random token goes into both a cookie and a
       // hidden form field; POST requires them to match.
@@ -170,8 +172,11 @@ export const WorkOSAuthHandler = {
     }
 
     if (url.pathname === "/authorize" && request.method === "POST") {
-      const oauthReq = await parseAuthRequest(provider, request);
-      if (!oauthReq) return text("Invalid authorization request", 400);
+      // Re-parsed (and re-validated) before the form is read or any state is
+      // parked, so an error redirect here still carries no consent decision.
+      const resolved = await resolveAuthRequest(provider, request);
+      if (!resolved.ok) return resolved.response;
+      const oauthReq = resolved.request;
 
       const form = await request.formData();
       const fromForm = form.get("csrf_token");
@@ -411,28 +416,81 @@ async function sha256Hex(input: string): Promise<string> {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+/** Either a validated request, or the response to send instead. */
+type ResolvedAuthRequest =
+  | { ok: true; request: AuthRequest }
+  | { ok: false; response: Response };
+
 /**
- * Both /authorize legs resolve the request through here, so this is where the
- * PKCE posture is actually enforced.
+ * Both /authorize legs resolve the request through here, so this owns two
+ * things: enforcing our PKCE posture, and turning a failure into the RIGHT
+ * kind of refusal.
  *
- * `allowPlainPKCE: false` (src/auth/gate.ts) is NOT sufficient on its own: the
- * provider only rejects the *method* `plain`, and it defaults an absent
- * `code_challenge_method` to `plain` while leaving an absent `code_challenge`
- * as `undefined`. So `?code_challenge_method=S256` with no `code_challenge`
- * sails past that guard, and at redemption the provider derives
- * `isPkceEnabled = !!grantData.codeChallenge` — false — and issues tokens to
- * anyone presenting the code with the (public) redirect_uri and no verifier.
- * An intercepted code is then redeemable. MCP (2025-11-25) requires S256, so
- * requiring the challenge outright is also the spec-correct posture.
+ * The provider (>=0.10.1) already gets the hard part right. `parseAuthRequest`
+ * throws a bare `AuthorizationError` for a missing/unknown `client_id` or an
+ * unregistered `redirect_uri` — the cases where redirecting would BE the
+ * vulnerability — and only after validating the redirect URI does it attach
+ * `redirectUri`/`state`/`issuer` to subsequent errors. A populated
+ * `redirectUri` is the documented signal that redirecting is safe
+ * ("Present only after client and redirect validation"). Catching everything
+ * and rendering one bare 400, as this wrapper used to, threw that away.
+ *
+ * Our own rule is stricter than upstream on purpose: 0.10.1 requires PKCE of
+ * PUBLIC clients, and rejects a method without a challenge, but still lets a
+ * CONFIDENTIAL client skip PKCE entirely. MCP (2025-11-25) requires S256 of
+ * clients, so we require it of all of them. Raising it as an
+ * `AuthorizationError` built from the ALREADY-VALIDATED `parsed` fields — never
+ * from raw query values — gets it the same spec-correct delivery.
  */
-async function parseAuthRequest(provider: OAuthHelpers, request: Request): Promise<AuthRequest | null> {
+async function resolveAuthRequest(
+  provider: OAuthHelpers,
+  request: Request
+): Promise<ResolvedAuthRequest> {
   try {
     const parsed = await provider.parseAuthRequest(request);
-    if (!parsed.codeChallenge || parsed.codeChallengeMethod !== "S256") return null;
-    return parsed;
-  } catch {
-    return null;
+    if (!parsed.codeChallenge || parsed.codeChallengeMethod !== "S256") {
+      throw new AuthorizationError("invalid_request", {
+        description: "PKCE is required: send code_challenge with code_challenge_method=S256.",
+        redirectUri: parsed.redirectUri,
+        state: parsed.state || undefined,
+        issuer: parsed.issuer
+      });
+    }
+    return { ok: true, request: parsed };
+  } catch (error) {
+    return { ok: false, response: authorizationErrorResponse(error) };
   }
+}
+
+/**
+ * 303, never 302: a 302 only *permits* the user agent to rewrite the method, so
+ * on the POST leg it can replay the consent form body — csrf_token included —
+ * to the client's redirect URI. 303 names a retrieval request (RFC 9110
+ * §15.4.4). 307 would be strictly wrong for the same reason.
+ *
+ * `iss` goes on error responses too: the provider advertises RFC 9207 support,
+ * and §2 requires the parameter on error responses for servers that do, so
+ * omitting it makes conforming clients reject the response.
+ *
+ * The log records `error.code`, not `error.description` — descriptions
+ * interpolate request-supplied values upstream, and a log field is the wrong
+ * place for attacker-chosen text. The description still goes to the client,
+ * percent-encoded by URLSearchParams, which is what it is for.
+ */
+function authorizationErrorResponse(error: unknown): Response {
+  if (!(error instanceof AuthorizationError) || !error.redirectUri) {
+    return text("Invalid authorization request", 400);
+  }
+  const target = new URL(error.redirectUri);
+  target.searchParams.set("error", error.code);
+  if (error.description) target.searchParams.set("error_description", error.description);
+  if (error.state) target.searchParams.set("state", error.state);
+  if (error.issuer) target.searchParams.set("iss", error.issuer);
+  logEvent("auth_reject", { status: 303, reason: error.code });
+  return new Response(null, {
+    status: 303,
+    headers: { location: target.toString(), "cache-control": "no-store" }
+  });
 }
 
 function readCookie(request: Request, name: string): string | null {
