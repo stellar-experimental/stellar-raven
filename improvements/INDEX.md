@@ -30,7 +30,7 @@ Total findings: 60
 | sls-055 | Scout research does not reliably expose quotable canonical SDF organizational pages. Its broad cited-research lane routes…                  | reported-upstream | 2026-07-13 | 6           |
 | sls-060 | A closed Scout RFP detail page retains an unconditional funding application call to action. The API marks Hummingbot Integration closed…    | reported-upstream | 2026-08-04 | 0           |
 | sls-061 | Some currently awarded Scout projects expose non-empty scfAwardedRounds and an aggregate, but leave scfRoundAwards empty even though the…   | reported-upstream | 2026-08-05 | 0           |
-| sls-062 | Scout's status endpoint reports nine SDF skills while its filterable skills directory and the canonical upstream roster each expose seven.… | verified          | 2026-08-06 | 0           |
+| sls-062 | Scout's status endpoint reports nine SDF skills while its filterable skills directory and the canonical upstream roster each expose seven.… | reported-upstream | 2026-08-06 | 0           |
 
 ## stellar-docs
 

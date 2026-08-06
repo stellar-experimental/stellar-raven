@@ -1,7 +1,7 @@
 ---
 id: sls-062
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-06
 upstreamTitle: Scout status reports nine SDF skills while its directory exposes seven
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - 2026-08-06 https://skills.stellar.org/sitemap.xml and https://github.com/stellar/stellar-dev-skill/tree/main/skills exposed the same 7-skill canonical roster
   - the latest canonical commit touching the skills path was 2026-07-20 and already contained the same 7 directories, so the documented 24-hour Scout cache does not explain the 9-vs-7 gap: https://github.com/stellar/stellar-dev-skill/commit/52baea1d8cb1aa9441004ce44b723f55cbc90901
   - independent adversarial live recheck: Solo Todo 1400 comment 3761
+  - upstream issue filed 2026-08-06: https://github.com/Stellar-Light/stellarlight/issues/768
 ---
 
 ## Finding
