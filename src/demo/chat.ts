@@ -191,12 +191,28 @@ export async function handleDemoChat(
   let emittedTerminal = false;
   const emit = (frame: DemoFrame): void => {
     if (!open) return;
-    if (frame.type === "done" || frame.type === "error") emittedTerminal = true;
+    if (frame.type === "done" || frame.type === "error") {
+      // First terminal wins. ai@7 treats an `error` part as terminal for the
+      // step but STILL emits `finish` from its flush (ai/dist/index.js:9911 +
+      // :9931), so an errored turn yields an error frame followed by a done
+      // frame. The client's done handler would then overwrite the real provider
+      // message with its generic "(error) without a text answer" note
+      // (page.ts) — the informative frame arrives first, so keep that one.
+      if (emittedTerminal) return;
+      emittedTerminal = true;
+    }
     try {
       controller.enqueue(encoder.encode(encodeFrame(frame)));
-    } catch {
+    } catch (error) {
       open = false; // client went away — keep the turn's tool caps honest, drop frames
       clientGone.abort();
+      // The one way a turn can end with NO terminal frame despite the catch-all
+      // below: the enqueue that carries it fails, and every later frame is
+      // dropped by the `!open` guard. That used to be entirely silent, which is
+      // why the 2026-08-06 fable/opus `http:200` turns had no worker-side trace.
+      // Ordinary client disconnects land here too, so this is expected volume,
+      // not an alarm — the signal is `frame` being a terminal.
+      logEvent("demo-stream-drop", { frame: frame.type, error: errorText(error) });
     }
   };
 
@@ -206,13 +222,29 @@ export async function handleDemoChat(
   emit({ type: "ready" });
 
   ctx.waitUntil(runTurn(env, emit, history, subject, turnSignal).finally(() => {
-    // Every SSE turn ends on a terminal frame. `fullStream` is not guaranteed to
-    // yield `finish` — when it just ends, runTurn returns having emitted neither
-    // `done` nor `error`, and the client is left inferring a terminal from the
-    // socket closing. Seen in the 2026-08-06 gauntlet: 3 of gpt-5.6-sol's 8 turns
-    // closed with no terminal frame. `reason` is deliberately not "stop" so the
-    // client's own no-answer note still fires, and `finishReason: "none"` in
-    // demo-chat telemetry stays the signal that this path was taken.
+    // Every SSE turn ends on a terminal frame, whatever settles runTurn.
+    //
+    // Read this as a belt-and-braces invariant, NOT as a fix for a known path —
+    // no known path reaches it. Under ai@7 `fullStream` cannot merely end: flush
+    // is exhaustive, emitting a NoOutputGeneratedError part when nothing terminal
+    // arrived and finish-step/finish otherwise (ai/dist/index.js:9931), and every
+    // analyzed exit from runTurn already emits a terminal.
+    //
+    // The `http:200` turns that motivated this were NOT this bug, and this guard
+    // would not have saved them. Demonstrated 2026-08-06 by deliberately touching
+    // a watched source file mid-turn: a `wrangler dev` hot reload tears the
+    // isolate down, the in-flight SSE closes with no terminal frame, and nothing
+    // here runs at all — the captured worker log ends on
+    // `⎔ Reloading local server...`. Same signature every time, including
+    // tool-start with no matching tool-result. So: never edit `src/` during a
+    // gauntlet run, and do not read a bare `http:200` as a product defect before
+    // checking `workerLog` in the artifact.
+    //
+    // `reason` is deliberately not "stop": the gauntlet's `pass.terminal` keeps
+    // failing it, and the client warns on it explicitly. `finishReason: "none"`
+    // in demo-chat is the usual telemetry signal — but note the event is logged
+    // in runTurn's own finally, so a throw before that try (demoInputTelemetry)
+    // gives an incomplete turn with NO demo-chat event at all.
     if (!emittedTerminal) emit({ type: "done", reason: "incomplete" });
     open = false;
     try {
@@ -352,7 +384,13 @@ async function runTurn(
               // Reasoning models can sit silent before answering; stream the
               // reasoning tail so the wait is visibly alive (client shows a
               // rolling tail, not a transcript).
-              attemptEmit({ type: "thinking", text: part.text });
+              //
+              // Empty deltas are dropped: the Claude family reports
+              // `thinkingChars: 0` across whole runs while still emitting
+              // reasoning parts — its thinking is signature/redacted, so the text
+              // is genuinely "". Forwarding those paints the pulse "thinking · "
+              // with nothing after it and costs a frame per delta.
+              if (part.text) attemptEmit({ type: "thinking", text: part.text });
               break;
             case "start-step":
               // Round boundaries are telemetry only (`steps` in demo-chat) —

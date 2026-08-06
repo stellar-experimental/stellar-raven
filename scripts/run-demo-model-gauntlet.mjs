@@ -9,6 +9,21 @@ import { mintDemoCookie } from "../src/demo/auth.ts";
 import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
 
 /**
+ * DO NOT EDIT ANYTHING UNDER `src/` WHILE A RUN IS IN FLIGHT, and keep heavy
+ * concurrent work (agent CLIs, `npm test`) off the machine. Each model gets its
+ * own `wrangler dev`, which watches the worker's module graph: one save
+ * hot-reloads the isolate and kills the turn that is streaming, which lands in
+ * the artifact as a bare `http:200` with no terminal frame — indistinguishable
+ * from a product bug by eye. Demonstrated 2026-08-06 by touching a watched file
+ * mid-turn (run id `2026-08-06-reload-repro`): both perturbed turns died,
+ * the one between the two reloads passed. Six turns of the same day's
+ * `2026-08-06-cache-off` run were lost this way and briefly read as an Anthropic
+ * regression; a clean re-probe of the same prompts went 6/6.
+ *
+ * A failing turn now carries `workerLog` in the JSON artifact. Read it before
+ * diagnosing anything: `⎔ Reloading local server...` as the last line means the
+ * turn was killed by a reload, not by the model.
+ *
  * Frontier model per family, so the matrix measures the edge rather than
  * whatever was current when it was written. Every slug below was verified to
  * ROUTE on 2026-08-06 (run ids 2026-08-06-latest-matrix / -route-probe) — a
@@ -148,6 +163,12 @@ export async function main(argv = process.argv.slice(2)) {
           for (const prompt of prompts) {
             const label = `${model} :: reasoning=${reasoningEffortLabel(reasoningEffort)} :: ${prompt.id} :: ${repeat}/${repeats}`;
             console.log(`[gauntlet] ${label}`);
+            // Mark the Wrangler log position so a failing turn can carry its own
+            // worker output. Without this the harness records the CLIENT's view
+            // only, and a turn that dies without a terminal frame is unexplainable
+            // from the artifact — exactly the 2026-08-06 claude-fable-5/open-rfps
+            // case (`ready` + two empty thinking frames, then silence).
+            const workerLogMark = server.output.join("").length;
             const result = await runPrompt({
               runId,
               url: `http://localhost:${port}/playground/chat`,
@@ -158,6 +179,9 @@ export async function main(argv = process.argv.slice(2)) {
               repeat,
               timeoutMs
             });
+            if (!result.pass.overall) {
+              result.workerLog = server.output.join("").slice(workerLogMark).slice(-8000);
+            }
             results.push(result);
             await writeArtifacts({ runId, outDir, prompts, results });
             console.log(

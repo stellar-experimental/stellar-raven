@@ -174,6 +174,19 @@ describe("demo chat terminal frame", () => {
     expect(event).toMatchObject({ finishReason: "none" });
   });
 
+  // ai@7 treats `error` as terminal for the step but still emits `finish` from
+  // its flush, so this ordering is what the real SDK produces on an errored
+  // turn — not a synthetic case.
+  it("keeps the provider error and drops the trailing done", async () => {
+    const { frames } = await runChat(
+      [[{ type: "error", error: providerError("provider exploded", 500) }, finish()]],
+      "openai/gpt-5.6-terra"
+    );
+    expect(frames.filter((f) => f.type === "done" || f.type === "error")).toEqual([
+      { type: "error", message: "provider exploded" }
+    ]);
+  });
+
   it("does not add a second terminal frame when the stream finishes normally", async () => {
     const { frames } = await runChat(
       [[{ type: "text-delta", text: "grounded answer" }, finish()]],

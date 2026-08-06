@@ -634,6 +634,12 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + `
       if (f.reason === "length") {
         setNote(acc ? "The answer hit the demo's output-token limit and was cut off."
           : "The model spent its whole output budget reasoning and produced no answer \\u2014 try a simpler question.", "err");
+      } else if (f.reason === "incomplete") {
+        // Must warn even with text: the turn ended without a real finish, so
+        // whatever streamed may be a partial answer. The !acc branch below
+        // would stay silent here and announce a clean "Reply finished".
+        setNote(acc ? "The stream ended without finishing \\u2014 this answer may be incomplete."
+          : "The turn ended without a text answer \\u2014 the trace above shows what ran.", "err");
       } else if (f.reason && f.reason !== "stop" && !acc) {
         setNote("The turn ended (" + f.reason + ") without a text answer \\u2014 the trace above shows what ran.", "err");
       }
@@ -763,7 +769,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + `
 // hard-coded (Web Crypto is async, and these headers are a sync module const);
 // test/demo-page.test.ts recomputes it from the rendered page, so an edit to
 // DEMO_SCRIPT fails the suite with the new value to paste here.
-const DEMO_SCRIPT_SHA256 = "sha256-J8a/H9N+aCWIWwXf1IKq4BxIWw7z+EF+b9sFqmSB+I4=";
+const DEMO_SCRIPT_SHA256 = "sha256-OeQEDNv2i8j9ly5c1JA8dWcys7Omawxbf2AxbIoFJAA=";
 
 export const DEMO_PAGE_HEADERS: Record<string, string> = {
   "content-type": "text/html; charset=utf-8",
