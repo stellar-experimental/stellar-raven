@@ -24,9 +24,7 @@
  */
 import { stepCountIs, streamText, type ToolSet } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
-import { createOpenAI } from "@ai-sdk/openai";
 import { createWorkersAI } from "workers-ai-provider";
-import type { ProviderPlugin } from "workers-ai-provider";
 import { openai as openaiChat } from "workers-ai-provider/openai";
 import { allowDevUnauthenticated } from "../auth/gate.ts";
 import { logEvent } from "../observability.ts";
@@ -48,6 +46,7 @@ import {
   demoReasoningEffortFromOverride,
   demoReasoningEffortOverride,
   demoModelsFromOverride,
+  openAiResponses,
   demoSessionAffinity
 } from "./model-config.ts";
 import {
@@ -84,11 +83,6 @@ declare global {
 const DEV_SUBJECT = "dev-loopback";
 const TOOL_BUDGET_MESSAGE =
   "The demo hit its tool/step budget before the model produced a final answer. The trace above shows the completed tool work, but the answer may be incomplete; ask a narrower follow-up.";
-const openAiResponses: ProviderPlugin = {
-  wireFormat: "openai",
-  create: ({ modelId, fetch, baseURL }) =>
-    createOpenAI({ apiKey: "unused", fetch, ...(baseURL ? { baseURL } : {}) }).responses(modelId)
-};
 /**
  * Whole-turn ceiling (design Decision 5: "abort/timeout on the whole turn").
  * Worst legitimate turn: 3 model steps + 1 sandbox execute; generous so it

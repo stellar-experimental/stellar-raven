@@ -1,3 +1,6 @@
+import { createOpenAI } from "@ai-sdk/openai";
+import type { ProviderPlugin } from "workers-ai-provider";
+
 export type DemoModelConfig = {
   model: string;
   role: "primary" | "fallback";
@@ -25,6 +28,12 @@ export const DEMO_OPENAI_API_MODE: DemoOpenAiApiMode = "responses";
 export const DEMO_REASONING_EFFORT: DemoReasoningEffort = "none";
 export const DEMO_TEMPERATURE = 0.1;
 export const DEMO_GATEWAY_ID_FALLBACK = "stellar-raven-demo";
+
+export const openAiResponses: ProviderPlugin = {
+  wireFormat: "openai",
+  create: ({ modelId, fetch, baseURL }) =>
+    createOpenAI({ apiKey: "unused", fetch, ...(baseURL ? { baseURL } : {}) }).responses(modelId)
+};
 
 export function demoModelsFromOverride(override: string | undefined): readonly DemoModelConfig[] {
   const models = (override ?? "")
@@ -101,7 +110,8 @@ export function demoGatewayTransportSettings(model: string) {
       collectLog: false
     } as const;
   }
-  return { resume: false } as const;
+  // The gateway transport materializes request-scoped controls as cf-aig-* entry headers.
+  return { transport: "gateway", resume: false, collectLog: false } as const;
 }
 
 export function demoGatewayOptions(id: string) {
@@ -114,7 +124,8 @@ export function demoModelSettings(
   reasoningEffort: DemoReasoningEffort
 ) {
   const extraHeaders = {
-    "x-session-affinity": sessionAffinity
+    "x-session-affinity": sessionAffinity,
+    "cf-aig-collect-log-payload": "false"
   } as const;
   if (model.startsWith("@")) {
     return {
