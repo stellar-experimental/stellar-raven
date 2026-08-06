@@ -16,6 +16,8 @@ evidence:
 recurrences:
   - date: 2026-08-04
     evidence: eval/qa/results/2026-08-04T22-41-34-variantA.json q-soroban-add-signer-smart-wallet-howto repeated stale filed framing while current canonical READMEs describe sibling authorization models
+  - date: 2026-08-06
+    evidence: the live smart-wallet guide still links the archived https://github.com/kalepail/passkey-kit move pointer instead of the canonical https://github.com/stellar/passkey-kit repository
 ---
 
 ## Finding
