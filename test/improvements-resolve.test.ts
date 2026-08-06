@@ -14,6 +14,14 @@ describe("improvements resolution lifecycle", () => {
     })).toBe("A wrapped finding title continues on the next physical line");
   });
 
+  test("truncates long titles on a word boundary", () => {
+    const title = oneLineTitle({ body: `## Finding\n\n${"complete ".repeat(30)}trailing` });
+    expect(title.length).toBeLessThanOrEqual(140);
+    expect(title).toMatch(/complete…$/);
+    expect(title).not.toContain("trailing");
+    expect(oneLineTitle({ body: `## Finding\n\n${"x".repeat(141)}` })).toBe("…");
+  });
+
   test("resolved receipt keeps immutable source auditable after active-file deletion", () => {
     const finding = "improvements/skills/sk-001-wasm-target-stale.md";
     const ledger = JSON.parse(readFileSync(path.join(ROOT, "improvements/resolved.json"), "utf8"));
