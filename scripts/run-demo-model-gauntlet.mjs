@@ -8,25 +8,42 @@ import { pathToFileURL } from "node:url";
 import { mintDemoCookie } from "../src/demo/auth.ts";
 import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
 
-// Anthropic slugs use DASHES in the version, not dots — `claude-sonnet-4.6`
-// reaches the gateway, authenticates, and comes back "model … was not found",
-// which reads like an outage rather than a typo. Both dashed ids verified
-// against the live gateway on 2026-08-06 (run id 2026-08-06-id-probe).
-// `claude-fable-5` is correct and fails only where ANTHROPIC_API_KEY is absent:
-// it resolves to the direct provider, not the gateway path the others take.
-// `google/*` needs a plugin this worker does not register — see
-// src/demo/model-config.ts; it fails in ~4ms with a plugin message, not a
-// model-id one.
+/**
+ * Frontier model per family, so the matrix measures the edge rather than
+ * whatever was current when it was written. Every slug below was verified to
+ * ROUTE on 2026-08-06 (run ids 2026-08-06-latest-matrix / -route-probe) — a
+ * slug that has not been probed does not belong here, because a wrong one does
+ * not look like a typo. Anthropic versions with DASHES (`claude-sonnet-4-6`,
+ * not `4.6`); a dotted id authenticates and returns "model … was not found",
+ * which reads like a provider outage.
+ *
+ * Two entries currently FAIL on gateway credentials, not on code, and are kept
+ * because they are the right models the moment that is fixed:
+ *   - anthropic/claude-fable-5  -> "x-api-key header is required"
+ *   - google/gemini-3.6-flash   -> "unregistered callers … use API Key"
+ * Both work on the account-level Unified Billing route (`POST /ai/run`) with no
+ * key at all, so this is the `stellar-raven-demo` gateway lacking provider keys
+ * — the `default` gateway has them. Sonnet 5 / Opus 5 resolve to Unified
+ * Billing through the same gateway, so coverage is per-model, not per-provider.
+ *
+ * Kimi K3 (`moonshotai/kimi-k3`) is the newest Kimi but is NOT here: it fails in
+ * ~39ms with `Unknown gateway provider "moonshotai"` because
+ * workers-ai-provider's registry has no entry for that vendor. The @cf-hosted
+ * K2.7 is the latest ROUTABLE Kimi until that lands upstream or we add a
+ * custom gateway provider.
+ */
 export const DEFAULT_MODELS = [
-  "openai/gpt-5.4",
-  "anthropic/claude-sonnet-4-6",
-  "openai/gpt-5.4-mini",
-  "anthropic/claude-haiku-4-5",
-  "google/gemini-3.5-flash",
+  "openai/gpt-5.6-sol",
+  "openai/gpt-5.6-terra",
+  "openai/gpt-5.6-luna",
+  "anthropic/claude-fable-5",
+  "anthropic/claude-opus-5",
+  "anthropic/claude-sonnet-5",
+  "google/gemini-3.6-flash",
   "xai/grok-4.5",
   "@cf/moonshotai/kimi-k2.7-code",
-  "anthropic/claude-fable-5",
-  "@cf/openai/gpt-oss-120b"
+  "@cf/zai-org/glm-5.2",
+  "@cf/zai-org/glm-4.7-flash"
 ];
 
 export const PROMPTS = [
