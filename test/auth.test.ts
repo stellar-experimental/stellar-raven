@@ -438,9 +438,10 @@ describe("WorkOSAuthHandler", () => {
     expect(page).toContain(`type="checkbox" name="tos_agree"`);
   });
 
-  it("POST /authorize rejects a missing/mismatched CSRF token", async () => {
+  it("POST /authorize rejects a missing/mismatched CSRF token, and logs a distinguishing reason", async () => {
     const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
     const form = new URLSearchParams({ csrf_token: "attacker-guess" });
+    const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
     const response = await WorkOSAuthHandler.fetch(
       new Request("https://mcp.test/authorize?client_id=client-abc", {
         method: "POST",
@@ -453,6 +454,16 @@ describe("WorkOSAuthHandler", () => {
       env
     );
     expect(response.status).toBe(400);
+    // Platform events only show `POST /authorize -> 400`, which is identical
+    // for every rejection on this route. The app event is the only thing that
+    // makes a user report of a CSRF mismatch answerable from logs.
+    const events = log.mock.calls.map(([line]) => JSON.parse(String(line)));
+    expect(events).toContainEqual({
+      evt: "auth_reject",
+      status: 400,
+      reason: "CSRF token mismatch"
+    });
+    log.mockRestore();
   });
 
   it("POST /authorize rejects a missing Terms/Privacy acknowledgement", async () => {

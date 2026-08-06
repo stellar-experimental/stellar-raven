@@ -45,6 +45,7 @@ import {
   termsPage
 } from "../site";
 import { OG_PNG_BASE64 } from "../og";
+import { logEvent } from "../observability.ts";
 import { skillHealthResponse } from "../skills/canary.ts";
 import { mintDemoCookie, parseDemoParkedState } from "../demo/auth";
 
@@ -408,7 +409,17 @@ function clearCookie(name: string): string {
   return `${name}=; ${COOKIE_ATTRS}; Max-Age=0`;
 }
 
+/**
+ * Every rejection in this module goes through here, so this is the one place
+ * that has to log. Platform events only ever showed `POST /authorize -> 400`,
+ * which is the same line for a CSRF mismatch, a missing terms acknowledgement,
+ * and an unparseable request — a user report of any of them was unanswerable
+ * from logs. `body` is a constant developer-authored string, never user or
+ * provider content, so it is safe as the reason. Mirrors `demo-chat-rejected`
+ * in src/demo/chat.ts.
+ */
 function text(body: string, status: number, headers: Record<string, string> = {}): Response {
+  logEvent("auth_reject", { status, reason: body });
   return new Response(body, {
     status,
     headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store", ...headers }
