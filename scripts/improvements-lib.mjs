@@ -202,11 +202,14 @@ export function oneLineTitle(finding) {
     .split(/\n\s*\n/)
     .map((paragraph) => paragraph.trim())
     .find(Boolean) ?? "";
-  return first
+  const title = first
     .replace(/[`*_]/g, "")
     .replace(/\s+/g, " ")
-    .replace(/\.$/, "")
-    .slice(0, 140);
+    .replace(/\.$/, "");
+  if (title.length <= 140) return title;
+  const truncated = title.slice(0, 139);
+  const boundary = truncated.lastIndexOf(" ");
+  return `${boundary === -1 ? "" : truncated.slice(0, boundary)}…`;
 }
 
 export function writeFindingFrontmatter(finding, updates) {
