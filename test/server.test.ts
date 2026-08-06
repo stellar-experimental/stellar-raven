@@ -531,8 +531,8 @@ describe("search behavior (host-side ranked)", () => {
           }
         })
         .filter((event): event is Record<string, unknown> => event?.evt === "search");
-      const valid = events.find((event) => event.queryChars === 24);
-      const invalid = events.find((event) => event.queryChars === 11);
+      const valid = events.find((event) => event.requestedLimit === 5 && event.effectiveLimit === 5);
+      const invalid = events.find((event) => event.requestedLimit === 3 && event.effectiveLimit === null);
 
       expect(valid).toMatchObject({
         source: "tool",
