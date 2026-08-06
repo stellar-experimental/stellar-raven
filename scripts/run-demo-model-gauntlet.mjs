@@ -8,11 +8,20 @@ import { pathToFileURL } from "node:url";
 import { mintDemoCookie } from "../src/demo/auth.ts";
 import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
 
+// Anthropic slugs use DASHES in the version, not dots — `claude-sonnet-4.6`
+// reaches the gateway, authenticates, and comes back "model … was not found",
+// which reads like an outage rather than a typo. Both dashed ids verified
+// against the live gateway on 2026-08-06 (run id 2026-08-06-id-probe).
+// `claude-fable-5` is correct and fails only where ANTHROPIC_API_KEY is absent:
+// it resolves to the direct provider, not the gateway path the others take.
+// `google/*` needs a plugin this worker does not register — see
+// src/demo/model-config.ts; it fails in ~4ms with a plugin message, not a
+// model-id one.
 export const DEFAULT_MODELS = [
   "openai/gpt-5.4",
-  "anthropic/claude-sonnet-4.6",
+  "anthropic/claude-sonnet-4-6",
   "openai/gpt-5.4-mini",
-  "anthropic/claude-haiku-4.5",
+  "anthropic/claude-haiku-4-5",
   "google/gemini-3.5-flash",
   "xai/grok-4.5",
   "@cf/moonshotai/kimi-k2.7-code",
