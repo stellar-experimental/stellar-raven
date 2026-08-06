@@ -5,12 +5,13 @@ export const ROOT = path.resolve(new URL("..", import.meta.url).pathname);
 export const IMPROVEMENTS_DIR = path.join(ROOT, "improvements");
 export const INTAKE_PATH = path.join(IMPROVEMENTS_DIR, "intake.json");
 export const RESOLVED_PATH = path.join(IMPROVEMENTS_DIR, "resolved.json");
-export const SERVICE_ORDER = ["skills", "stellar-light-scout", "stellar-docs", "lumenloop"];
+export const SERVICE_ORDER = ["skills", "stellar-light-scout", "stellar-docs", "lumenloop", "workers-ai-provider"];
 export const ALLOWED_SERVICES = new Set([
   "lumenloop",
   "stellar-light-scout",
   "stellar-docs",
   "skills",
+  "workers-ai-provider",
 ]);
 export const ALLOWED_STATUSES = new Set([
   "proposed",

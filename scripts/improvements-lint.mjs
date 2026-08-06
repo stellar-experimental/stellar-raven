@@ -167,6 +167,7 @@ function prefixForService(service) {
     "stellar-light-scout": "sls-",
     "stellar-docs": "sd-",
     skills: "sk-",
+    "workers-ai-provider": "wai-",
   }[service];
 }
 

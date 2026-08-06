@@ -16,6 +16,7 @@ import {
   DEMO_REASONING_EFFORT,
   DEMO_REASONING_EFFORT_OVERRIDE_VAR,
   DEMO_TEMPERATURE,
+  demoAnthropicProviderOptions,
   demoEffectiveOpenAiApiMode,
   demoGatewayOptions,
   demoOpenAiApiModeFromOverride,
@@ -136,6 +137,32 @@ describe("demo model config", () => {
       }
     });
     expect(demoOpenAiProviderOptions("@cf/openai/gpt-oss-120b", "low")).toEqual({});
+  });
+
+  it("configures Claude 5 reasoning without using the unified reasoning field", () => {
+    // Never `thinking: { type: "disabled" }` — Opus 5 400s on it above high
+    // effort and the SDK does not guard Fable 5 or Sonnet 5 at all.
+    for (const model of [
+      "anthropic/claude-opus-5",
+      "anthropic/claude-sonnet-5",
+      "anthropic/claude-fable-5",
+      "anthropic/claude-sonnet-5-20260101"
+    ]) {
+      expect(demoAnthropicProviderOptions(model, "none")).toEqual({
+        providerOptions: { anthropic: { thinking: { type: "adaptive" }, effort: "low" } }
+      });
+    }
+    expect(demoAnthropicProviderOptions("anthropic/claude-sonnet-5", "medium")).toEqual({
+      providerOptions: { anthropic: { thinking: { type: "adaptive" }, effort: "medium" } }
+    });
+    // "minimal" is not in Anthropic's effort enum; it must floor to "low".
+    expect(demoAnthropicProviderOptions("anthropic/claude-opus-5", "minimal")).toEqual({
+      providerOptions: { anthropic: { thinking: { type: "adaptive" }, effort: "low" } }
+    });
+    // Dashes, never dots — a dotted Anthropic id authenticates and returns
+    // "model … was not found", which reads like a provider outage.
+    expect(demoAnthropicProviderOptions("anthropic/claude-haiku-4-5", "none")).toEqual({});
+    expect(demoAnthropicProviderOptions("openai/gpt-5.6-terra", "none")).toEqual({});
   });
 
   it("pins provider models to the gateway transport so request-scoped privacy controls reach the wire", () => {

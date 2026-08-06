@@ -3,8 +3,8 @@
 ## Principle
 
 This MCP server's own tuning ceiling is limited. But running evals against it gives
-outsized leverage for **discovering gaps and errors in the four upstream surfaces it
-fronts**. From now on, a primary artifact of every eval run is a recorded,
+outsized leverage for **discovering gaps and errors in the upstream surfaces and
+provider package it depends on**. From now on, a primary artifact of every eval run is a recorded,
 evidence-backed improvement recommendation set for those services. This directory is
 that collection.
 
@@ -26,6 +26,8 @@ that collection.
   `ecosystem-skills/MANIFEST.json`. Recommendations target the source repos. Bodies are not
   vendored here (they are fetched from the pinned commit and hash-verified), so there is no
   local copy to patch — and re-pinning to a fork or a patched branch is not a fix either.
+- `workers-ai-provider/` — findings about Cloudflare's `workers-ai-provider` package and its
+  AI Gateway delegate surface. Recommendations target `cloudflare/ai`.
 
 Web findings are classified before filing as `docs-content`, `docs-search`, `site-content`,
 `site-search`, or `canonical-source`. The two search categories include the corresponding Algolia
@@ -42,7 +44,7 @@ One file per finding. YAML-ish frontmatter, then three short sections.
 ```
 ---
 id: <collection>-NNN
-service: lumenloop | stellar-light-scout | stellar-docs | skills
+service: lumenloop | stellar-light-scout | stellar-docs | skills | workers-ai-provider
 status: proposed | verified | reported-upstream | declined-upstream | fixed-upstream
 discovered: YYYY-MM-DD
 upstreamTitle: <reader-first issue title; required before filing>
@@ -98,6 +100,7 @@ Known channels (issue access confirmed 2026-07-09):
   (authenticated issue access confirmed 2026-07-13). Directory-record corrections belong in
   <https://github.com/lumenloop/stellar-ecosystem-db>; skill-content findings remain in
   <https://github.com/lumenloop/lumenloop-skills>. Record the exact issue URL in the finding.
+- `workers-ai-provider/` findings → <https://github.com/cloudflare/ai>.
 
 Use `npm run improvements:file -- --file improvements/<collection>/<finding>.md --dry-run` to
 review the resolved owner and standardized body, then omit `--dry-run` to file it. The generated

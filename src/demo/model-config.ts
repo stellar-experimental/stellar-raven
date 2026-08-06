@@ -102,6 +102,43 @@ export function demoOpenAiProviderOptions(model: string, reasoningEffort: DemoRe
 }
 
 /**
+ * Claude 5 reasoning, sent explicitly instead of inheriting the server default.
+ *
+ * NEVER `thinking: { type: "disabled" }`, even for effort "none". Anthropic's
+ * own guidance is that "where adaptive thinking is available, effort is the
+ * recommended way to control thinking depth", and disabled thinking is the
+ * restricted path: Opus 5 hard-400s on it at xhigh/max, which
+ * `@ai-sdk/anthropic` knows (`rejectsThinkingDisabledAboveHighEffort: true` for
+ * opus-5) but does NOT know for fable-5 or sonnet-5 — both are grouped with a
+ * `false`, so the SDK would happily send a request Fable rejects. Adaptive plus
+ * a low effort is the sanctioned way to buy latency, and it collapses every
+ * model to one path.
+ *
+ * This is also why the unified `streamText({ reasoning })` field is unusable
+ * here: it maps "none" straight to `thinking: { type: "disabled" }` for EVERY
+ * model, with no per-model guard.
+ *
+ * `adaptive` is a thinking MODE, never an effort value — the two are separate
+ * fields and Anthropic calls out the confusion explicitly. `effort` accepts
+ * low|medium|high|xhigh|max only, so "none" and "minimal" both floor to "low".
+ *
+ * Unmatched Claude ids (haiku, 4.x) fall through to `{}` and the server
+ * default on purpose: 5-family config 400s on older models, and the model
+ * override accepts arbitrary slugs.
+ */
+export function demoAnthropicProviderOptions(model: string, reasoningEffort: DemoReasoningEffort) {
+  if (!/^anthropic\/claude-(?:fable|opus|sonnet)-5(?:$|-)/.test(model)) return {};
+  return {
+    providerOptions: {
+      anthropic: {
+        thinking: { type: "adaptive" },
+        effort: reasoningEffort === "none" || reasoningEffort === "minimal" ? "low" : reasoningEffort
+      }
+    }
+  } as const;
+}
+
+/**
  * `transport` picks the DISPATCH, and the two dispatches have different Unified
  * Billing catalogs — which is why coverage looked per-model and unexplainable.
  *

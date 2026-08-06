@@ -24,6 +24,16 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * diagnosing anything: `⎔ Reloading local server...` as the last line means the
  * turn was killed by a reload, not by the model.
  *
+ * AND THE ARTIFACT IS NOT THE ONLY RECORD. `wrangler dev` persists spans and app
+ * logs to `.wrangler/state/v3/observability/miniflare-wobs-trace-store/*.sqlite`,
+ * which outlives a deleted JSON artifact — it is how the 2026-08-06 post-routing
+ * failures were resolved after theirs was gone. Copy the file before querying it.
+ * A killed turn is a root `POST` span with NULL `duration_ms`/`outcome` (the span
+ * never closed) and NO `demo-chat` log line. That pair is conclusive: `demo-chat`
+ * is emitted from runTurn's own `finally`, so any invocation that ran to any
+ * conclusion — including a gateway cache replay — logs it. No log plus no closed
+ * span means the invocation was destroyed, which no model behavior can cause.
+ *
  * Frontier model per family, so the matrix measures the edge rather than
  * whatever was current when it was written. Every slug below was verified to
  * ROUTE on 2026-08-06 (run ids 2026-08-06-latest-matrix / -route-probe) — a

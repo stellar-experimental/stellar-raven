@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-08-05",
+  "updated": "2026-08-06",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -40,6 +40,11 @@
       "repo": "lumenloop/lumenloop-backend",
       "directoryRepo": "lumenloop/stellar-ecosystem-db",
       "rule": "File API and content-pipeline findings in lumenloop/lumenloop-backend. Use lumenloop/stellar-ecosystem-db only for committed directory-record corrections."
+    },
+    "workers-ai-provider": {
+      "type": "github-issues",
+      "repo": "cloudflare/ai",
+      "rule": "The package metadata identifies cloudflare/ai as the issue owner for workers-ai-provider."
     }
   },
   "findings": {

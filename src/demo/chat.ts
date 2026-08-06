@@ -44,6 +44,7 @@ import {
   DEMO_REASONING_EFFORT_OVERRIDE_VAR,
   DEMO_TEMPERATURE,
   demoEffectiveOpenAiApiMode,
+  demoAnthropicProviderOptions,
   demoGatewayOptions,
   demoOpenAiApiModeFromOverride,
   demoOpenAiProviderOptions,
@@ -371,6 +372,7 @@ async function runTurn(
           },
           maxOutputTokens: DEMO_CAPS.maxOutputTokens,
           temperature: demoTemperatureFor(config.model),
+          ...demoAnthropicProviderOptions(config.model, reasoningEffort),
           ...demoOpenAiProviderOptions(config.model, openAiReasoningEffort),
           abortSignal
         });
