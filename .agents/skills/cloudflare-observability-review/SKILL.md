@@ -319,6 +319,18 @@ number looks plausible, and nothing signals the error.
 - **`sourceBasis` (and its `canonicalUrlCount`) exists only on truncated
   execute results.** It is computed from the full pre-truncation value, so a
   zero count can never demonstrate that truncation dropped something.
+- **A single wide-window `view: "events"` query returns a tiny, unrepresentative
+  slice — it is NOT "all the matching events under `limit`."** Measured
+  2026-08-06 on the same filter (`cf-worker-event`, `path = /authorize`,
+  `limit: 500`): one flat 7-day query returned **4** events; the identical
+  filter run over twenty-eight consecutive 6-hour windows returned **416**. Not
+  a 10x ABR ratio — roughly 100x, and the 4 survivors looked like a plausible
+  complete set, which is what makes this lethal. A returned count far below
+  `limit` is therefore NOT evidence that few events matched. Slice any window
+  wider than ~6h and sum, and never conclude "this never happens" from a flat
+  multi-day query. This trap produced a confidently wrong "zero POST /authorize
+  in the retention window" — the real number was 173, of which 31 were the
+  failure being investigated.
 - **ABR sampling is not an iid sample of the filtered set.** `abr_level` is 1
   for windows of about 12h or less and 10 for wider ones; concatenating windows
   at different levels biases any ratio computed across them. Query in equal,
