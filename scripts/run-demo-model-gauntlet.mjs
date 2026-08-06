@@ -28,13 +28,23 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  *     through a providers-less binding instance instead, and needs
  *     `temperature: 1` — it rejects anything else.
  *
- * `google/gemini-3.6-flash` is deliberately ABSENT and should not be re-added
- * without a library change. It is entitled and reachable, but unusable HERE: on
- * passthrough it is off the Unified Billing list (401), and on the run path
- * Google has no `runWireFormat`, so it resolves to the OpenAI wire and its
- * `thought_signature` is dropped when a tool result is replayed. Measured
- * `tools=1/0` and `2/0` — tool STARTS, zero tool RESULTS, then `Bad Request`.
- * A tool-using gauntlet cannot pass a model that cannot return a tool result.
+ * Deliberately ABSENT, with the reason so nobody re-adds them on a hunch:
+ *
+ *  - `google/gemini-*` — do not re-add without a library change. Entitled and
+ *    reachable, but unusable HERE: passthrough is off its Unified Billing list
+ *    (401), and the run path has no google `runWireFormat`, so it resolves to
+ *    the OpenAI wire and drops `thought_signature` when a tool result is
+ *    replayed. Measured `tools=1/0` and `2/0` — tool STARTS, zero tool RESULTS,
+ *    then `Bad Request`. A tool-using gauntlet cannot pass a model that cannot
+ *    return a tool result.
+ *  - `@cf/zai-org/glm-*` — routed fine after the `reasoning_effort` fix and
+ *    answered, but each dropped a tool call (`toolFailures=1`). Dropped on
+ *    quality, not plumbing; re-probe before re-adding.
+ *
+ * NOTE: no `@cf/`-hosted model remains in this matrix, so the `model.startsWith("@")`
+ * branch in demoModelSettings (the reasoning_effort omission that GLM forced) is
+ * no longer exercised by a LIVE run. It stays unit-covered via
+ * DEMO_KIMI_CONTROL_MODEL in test/demo-model-config.test.ts — keep that test.
  */
 export const DEFAULT_MODELS = [
   "openai/gpt-5.6-sol",
@@ -44,9 +54,7 @@ export const DEFAULT_MODELS = [
   "anthropic/claude-opus-5",
   "anthropic/claude-sonnet-5",
   "xai/grok-4.5",
-  "moonshotai/kimi-k3",
-  "@cf/zai-org/glm-5.2",
-  "@cf/zai-org/glm-4.7-flash"
+  "moonshotai/kimi-k3"
 ];
 
 export const PROMPTS = [
