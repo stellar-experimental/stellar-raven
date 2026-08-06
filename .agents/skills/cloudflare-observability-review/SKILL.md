@@ -248,6 +248,18 @@ High-value fields:
   (null outside attributed OAuth); rejected events omit them entirely.
 - The older `auth` app field is redacted to `*****` by Cloudflare and is not
   useful for grouping; the `/mcp` summary deliberately uses `accessMode`.
+- Browser auth-flow rejections: `evt = "auth_reject"` with `status` and
+  `reason`. Emitted from the single `text()` helper in `src/auth/workos.ts`,
+  so it covers every `/authorize` and `/callback` refusal. `reason` is the
+  constant response body — group by it, because the platform event alone is
+  the same `POST /authorize -> 400` line for a `CSRF token mismatch`, a
+  `Terms acknowledgement required`, and an `Invalid authorization request`.
+  `/callback` splits the same way into `Invalid or expired state`,
+  `Invalid login state`, and `State binding mismatch`. No identity fields: a
+  rejected flow has no attributed subject, and the rejected credential must
+  never be hashed. Token-exchange failures inside
+  `@cloudflare/workers-oauth-provider` (`/token`, `/register`) stay opaque —
+  status and path only.
 - App JSON logs: `evt`, `queryChars`,
   `requestedLimit`, `effectiveLimit`, `omittedCount`, `gatedHits`, `backfillHits`,
   `hits`, `total`, `truncated`, `top`,
