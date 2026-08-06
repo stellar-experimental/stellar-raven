@@ -226,7 +226,15 @@ describe("demo model config", () => {
     expect(calls).toHaveLength(1);
     expect(calls[0]?.model).toBe(DEMO_KIMI_CONTROL_MODEL);
     expect(calls[0]?.inputs.temperature).toBe(DEMO_TEMPERATURE);
-    expect(calls[0]?.inputs.reasoning_effort).toBe(demoWorkersAiReasoningEffort(DEMO_REASONING_EFFORT));
+    // At the default effort ("none") the key must be ABSENT, not null: GLM
+    // rejects an explicit null with `8006: Invalid data for reasoning_effort`,
+    // which took a live probe to find because every other @cf model ignores it.
+    expect(demoWorkersAiReasoningEffort(DEMO_REASONING_EFFORT)).toBeNull();
+    expect("reasoning_effort" in (calls[0]?.inputs ?? {})).toBe(false);
+    // A real effort still rides through.
+    expect(demoModelSettings(DEMO_KIMI_CONTROL_MODEL, "a", "high")).toMatchObject({
+      reasoning_effort: "high"
+    });
     expect(calls[0]?.options?.extraHeaders?.["x-session-affinity"]).toBe("demo-test-affinity");
     expect(calls[0]?.options?.gateway?.collectLog).toBe(false);
   });

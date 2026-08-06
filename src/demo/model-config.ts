@@ -128,10 +128,13 @@ export function demoModelSettings(
     "cf-aig-collect-log-payload": "false"
   } as const;
   if (model.startsWith("@")) {
-    return {
-      extraHeaders,
-      reasoning_effort: demoWorkersAiReasoningEffort(reasoningEffort)
-    } as const;
+    const effort = demoWorkersAiReasoningEffort(reasoningEffort);
+    // OMIT the key rather than sending `reasoning_effort: null`. Providers
+    // disagree about an explicit null: Workers AI's own models ignore it, but
+    // GLM rejects the whole request with `8006: Invalid data for
+    // reasoning_effort - reason value must be a string`. "No preference" is
+    // absence, not null, and absence is what every provider accepts.
+    return effort === null ? ({ extraHeaders } as const) : ({ extraHeaders, reasoning_effort: effort } as const);
   }
   return {
     ...demoGatewayTransportSettings(model),
