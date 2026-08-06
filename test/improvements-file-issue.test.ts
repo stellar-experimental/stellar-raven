@@ -3,6 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
+// @ts-expect-error — plain .mjs script, no type declarations
 import { escapesRepo } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");

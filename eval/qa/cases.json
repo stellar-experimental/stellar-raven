@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "ee91cc4a85a4daf3fd17ecfb2b595605029bf9d684034729e45da8f96543c9e0",
+  "corpusContentSha256": "dd5dc7e61f5680056d8d36d5223479eb905b5ec94a42bd2a7bda3111ba7bfe20",
   "counts": {
     "total": 490,
     "byCategory": {
@@ -12544,7 +12544,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "The draft contains two false-or-unsupported claims:\n\n- **'Soroswap is Stellar's first AMM' — false in the broad Stellar sense.** The classic SDEX is an older order-book venue, and the direct AMM counterexample is Stellar's protocol-native constant-product liquidity pools, activated with **CAP-0038 / Protocol 18 on 2021-11-03**. Soroswap's 'first DEX/aggregator' or 'first AMM on Soroban' wording remains attributed operator marketing unless independent chronology supports it.\n- **'just passed $1B in TVL' — false within the identified live Soroswap-AMM series and unsupported more broadly.** At a **2026-07-28** DefiLlama probe, that series was about **$1.20M current** and its recorded maximum was below **$10M**. Those examples are volatile and non-gating; other routed-volume or private metrics must be named separately and cumulative trading volume is not TVL.\n\nA safe correction is: Soroswap is a Soroban AMM and aggregation/API stack, not Stellar's first AMM, and no dated source checked supports $1B TVL.",
+        "answer": "The draft contains two false-or-unsupported claims:\n\n- **'Soroswap is Stellar's first AMM' — false in the broad Stellar sense.** The classic SDEX is an older order-book venue, and the direct AMM counterexample is Stellar's protocol-native constant-product liquidity pools, activated with **CAP-0038 / Protocol 18 on 2021-11-03**. Soroswap's 'first DEX/aggregator' or 'first AMM on Soroban' wording remains attributed operator marketing unless independent chronology supports it.\n- **'just passed $1B in TVL' — false within the identified live Soroswap-AMM series and unsupported more broadly.** At a **2026-08-05** DefiLlama probe, that series was about **$1.20M current** and its recorded maximum was below **$10M**. Those examples are volatile and non-gating; other routed-volume or private metrics must be named separately and cumulative trading volume is not TVL.\n\nA safe correction is: Soroswap is a Soroban AMM and aggregation/API stack, not Stellar's first AMM, and no dated source checked supports $1B TVL.",
         "keyFacts": [
           "Corrects the first-AMM claim using SDEX and CAP-0038/Protocol-18 chronology.",
           "Attributes Soroswap's first-aggregator wording and rejects the unsourced $1B TVL claim."
@@ -12564,8 +12564,8 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-13",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-09-17",
         "sources": [
           {
             "class": "A",
@@ -12644,15 +12644,16 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+          "date": "2026-08-05",
+          "by": "Solo Todo 1390 independent early scheduled re-verification, reproduced by the post-QA closeout lead.",
           "evidence": [
             "A/B: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md and https://stellar.org/blog/developers/protocol-18-upgrade-guide confirm Protocol 18/CAP-0038 AMM chronology before Soroswap.",
-            "D/F: https://api.llama.fi/protocol/soroswap on 2026-07-28 returned current TVL $1,197,418 and maximum $9,799,848; neither supports $1B, and TVL remains distinct from routed/cumulative volume.",
+            "D/F: https://api.llama.fi/protocol/soroswap on 2026-08-05 returned current Stellar TVL $1,196,894 and maximum $9,799,848; neither supports $1B, and TVL remains distinct from routed/cumulative volume.",
+            "A/D: current Soroswap operator docs call it the first DEX and exchange aggregator built on Stellar; that firstness remains attributed operator marketing rather than independent chronology.",
             "Sibling sweep: q-protocol-amm-cap-0038 and q-defi-soroswap-what-is agree on native Protocol-18 AMM versus Soroswap's Soroban product layer."
           ],
           "rootCause": [
-            "freshness-drift"
+            "scheduled freshness re-verification found no semantic drift; refreshed the dated TVL observation and operator wording"
           ]
         },
         "origin": "raven-next q-edge-factcheck-soroswap-first-amm"
@@ -29693,14 +29694,15 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP** (Open = brand-new builds with a community vote; Integration and RFP are panel-only). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review (Track Delegate Panels)**, and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)",
+        "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP**. Open is for experienced teams pursuing novel or brand-new Stellar use cases, with existing traction or deep Stellar/domain knowledge; Integration and RFP are panel-only. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects typically run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review** (the Open Track Delegate Panel or a Category Delegate Panel), and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)",
         "keyFacts": [
           "Applicants start by submitting an interest form on communityfund.stellar.org.",
           "Eligible applicants are invited to submit a full proposal to a specific track (Open/Integration/RFP).",
           "Awardees must complete KYC/KYB before receiving (tranche) payments."
         ],
         "avoid": [
-          "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real)."
+          "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real).",
+          "Do NOT present stellar.org/enterprise-fund or its application form as the SCF Build application path, and do not attach SCF Build mechanics — the $150K XLM cap, milestone tranches, KYC-before-payment, delegate-panel review, or Open-Track community vote — to the separate Enterprise Fund. The Enterprise Fund's own application is live; the conflation is wrong."
         ],
         "notes": "Dossier §2.5. Trap: confusing the SCF Build application flow with the separate Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org."
       },
@@ -29731,15 +29733,17 @@
         ],
         "verified": {
           "date": "2026-08-05",
-          "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
+          "by": "Solo Todo 1390 independent live re-verification, reproduced by the post-QA closeout lead",
           "evidence": [
+            "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award and its Open/Integration track pages, observed 2026-08-05T23:41–23:42Z, confirm the interest-form flow, three tracks, current panel names, typical 3–6 month timeline, $150K XLM cap, tranches, KYC/KYB gate, and Open-only community vote.",
             "https://stellar.org/enterprise-fund and https://stellar.org/enterprise-fund/apply — current primary pages expose Apply Now / Submit your application, observed 2026-08-05.",
             "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
             "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
             "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap."
           ],
           "rootCause": [
-            "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current"
+            "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current",
+            "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name"
           ]
         },
         "origin": "raven-next q-scf-how-to-apply"
@@ -38112,7 +38116,7 @@
         "scout.searchRepos"
       ],
       "golden": {
-        "answer": "As of **2026-07-28**, check the live advisory feeds rather than treating this list as permanent. The current three repository advisories are: CVE-2026-24889 / GHSA-96xm-fv9w-pf3f for `soroban-sdk` (fixed in 25.0.2, 23.5.1, 22.0.9); CVE-2026-26267 / GHSA-4chv-4c6w-w254 for `soroban-sdk-macros` (fixed in 25.1.1, 23.5.2, 22.0.10); and CVE-2026-32322 / GHSA-x2hw-px52-wp4m for `soroban-sdk` (fixed in 25.3.0, 23.5.3, 22.0.11). Prefer the latest supported SDK major—check the repository releases live rather than trusting any pinned version here—or a patched supported branch, then recompile/review affected deployed code. Impact conditions differ; do not describe every advisory as unconditional.",
+        "answer": "As of **2026-08-05**, check the live advisory feeds rather than treating this list as permanent. The current three repository advisories are: CVE-2026-24889 / GHSA-96xm-fv9w-pf3f for `soroban-sdk` (fixed in 25.0.2, 23.5.1, 22.0.9); CVE-2026-26267 / GHSA-4chv-4c6w-w254 for `soroban-sdk-macros` (fixed in 25.1.1, 23.5.2, 22.0.10); and CVE-2026-32322 / GHSA-x2hw-px52-wp4m for `soroban-sdk` (fixed in 25.3.0, 23.5.3, 22.0.11). Prefer the latest supported SDK major—check the repository releases live rather than trusting any pinned version here—or a patched supported branch, then recompile/review affected deployed code. Impact conditions differ; do not describe every advisory as unconditional.",
         "keyFacts": [
           "Names all three dated CVE/GHSA/package mappings and patched branch releases.",
           "Requires live re-checking and upgrade/recompile review."
@@ -38131,8 +38135,8 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-13",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-09-10",
         "sources": [
           {
             "class": "B",
@@ -38202,16 +38206,15 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane C — security/incident/disputed re-verification",
+          "date": "2026-08-05",
+          "by": "Solo Todo 1390 independent early scheduled security-advisory re-verification.",
           "evidence": [
-            "GitHub's canonical repository-advisory API returned exactly GHSA-96xm-fv9w-pf3f, GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m with the package and patched-version mappings stated above.",
-            "A recursive search of the RustSec advisory-db repository found no matching soroban/GHSA/CVE entry in that repository scope on 2026-07-28; this is not evidence that no other advisory source exists.",
-            "The repository release API returned v27.0.3 (published 2026-07-28T07:39:46Z) as the latest release when re-checked during adversarial review; the earlier v27.0.2 reading was already stale when stamped, so the answer no longer pins a current version at all."
+            "GitHub's canonical repository-advisory API returned exactly GHSA-96xm-fv9w-pf3f, GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m with the package and patched-version mappings stated above on 2026-08-05.",
+            "NVD independently listed all three CVEs as Analyzed with the same GHSA references; its prose for CVE-2026-24889 contains a garbled version range, so the structured repository advisory remains authoritative for patched versions.",
+            "The repository release API returned v27.0.5 (published 2026-08-03T20:52:03Z); the answer deliberately does not pin a current SDK version."
           ],
           "rootCause": [
-            "Scheduled security-advisory freshness re-verification found no new repository advisory, but refreshed the current release and replaced migrated source labels with canonical advisory URLs.",
-            "Adversarial review: a single-source currency claim was stamped confirmed while already stale. Removed the pinned-current-version form rather than re-pinning a value that rots between re-verifications."
+            "Scheduled security-advisory freshness re-verification found no new repository advisory and refreshed the current release observation without pinning it in the answer."
           ]
         },
         "origin": "raven-next q-soroban-sdk-cve"
@@ -43740,6 +43743,16 @@
             "note": "class inferred at migration"
           },
           {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/status",
+            "note": "Live Scout inventory/status surface used for the source-relative sdfSkills count."
+          },
+          {
+            "class": "A",
+            "ref": "https://skills.stellar.org/",
+            "note": "Official current skill roster and host-specific install routes."
+          },
+          {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-cli",
             "note": "class inferred at migration"
@@ -43758,6 +43771,11 @@
             "class": "B",
             "ref": "https://github.com/Stellar-Light/scout-mcp",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.npmjs.com/package/@stellar-light/scout-mcp",
+            "note": "Current package metadata for the returned Scout MCP row."
           },
           {
             "class": "B",
@@ -43807,7 +43825,7 @@
         ],
         "verified": {
           "date": "2026-08-05",
-          "by": "Post-QA Harvest freshness lane (Solo todo 1377; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
+          "by": "Post-QA Harvest freshness lane plus Solo Todo 1390 independent source-list reconciliation.",
           "evidence": [
             "C: https://stellarlight.xyz/api/skills at 2026-08-05T20:45:26.922Z returned 42 rows and six valid kinds/five valid sources; filtered kind=agent-kit and source=community each returned 0 rows, confirming that accepted filters do not promise populated categories.",
             "A/B: https://skills.stellar.org/, https://github.com/stellar/stellar-dev-skill, https://github.com/stellar/stellar-cli, and https://www.npmjs.com/package/@stellar-light/scout-mcp independently confirmed row-level ownership/install details and the need to preserve community-tool caveats.",
@@ -45827,8 +45845,8 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-13",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-09-24",
         "sources": [
           {
             "class": "C",
@@ -45895,15 +45913,15 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane A Scout roster re-verification (solo://proj/49/scratchpad/todo-1248-lane-a-sco--727).",
+          "date": "2026-08-05",
+          "by": "Solo Todo 1390 independent early scheduled Scout skill-detail re-verification.",
           "evidence": [
-            "C: scout.getSkill({name:'soroban'}) now returned 404 soft-empty, while scout.listSkills({source:'sdf'}) and scout.getSkill({name:'smart-contracts'}) returned the current Smart Contracts detail whose text explicitly covers anything called Soroban.",
-            "B: https://github.com/stellar/stellar-dev-skill lists smart-contracts among the seven current skill directories and was pushed 2026-07-27; its source agrees with Scout.",
+            "C: https://stellarlight.xyz/api/skills/soroban returned a 404 soft-empty on 2026-08-05, while the source=sdf list and /api/skills/smart-contracts returned the current Smart Contracts detail whose text explicitly covers anything called Soroban and names development.md, testing.md, and security.md.",
+            "B: https://github.com/stellar/stellar-dev-skill lists smart-contracts among the seven current skill directories and was pushed 2026-08-05; its source agrees with Scout.",
             "Sibling sweep: q-gap-scout-get-skill-detail remains valid for a known exact slug; q-tool-cli-skills-discovery owns broad catalog discovery."
           ],
           "rootCause": [
-            "freshness-drift"
+            "scheduled freshness re-verification found no semantic drift and refreshed live slug/detail provenance"
           ]
         },
         "origin": "raven-next q-tool-skill-detail-install"
@@ -45930,7 +45948,7 @@
           "Do NOT collapse Passkey Kit and Smart Account Kit into one authorization or audit claim, or omit their source-specific security caveats.",
           "Do NOT call repository or indexer discovery proof of account control or a recovery mechanism."
         ],
-        "notes": "Reverified 2026-08-04: direct current references moved to stellar/smart-account-kit and stellar/passkey-kit; former kalepail repositories are archived move pointers. The golden still grades source-bound live discovery rather than a pinned zero and keeps Smart Account Kit, OpenZeppelin accounts, and Passkey Kit model/verification boundaries explicit."
+        "notes": "Reverified 2026-08-05: direct current references live at stellar/smart-account-kit and stellar/passkey-kit; former kalepail repositories are archived move pointers, and Scout now reflects both current and archived rows. The golden still grades source-bound live discovery rather than a pinned zero and keeps Smart Account Kit, OpenZeppelin accounts, and Passkey Kit model/verification boundaries explicit."
       },
       "tags": {
         "category": "tooling-infra",
@@ -45940,8 +45958,8 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-04",
-        "reverifyBy": "2026-08-13",
+        "asOf": "2026-08-05",
+        "reverifyBy": "2026-09-29",
         "sources": [
           {
             "class": "C",
@@ -46008,15 +46026,16 @@
           }
         ],
         "verified": {
-          "date": "2026-08-04",
-          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
+          "date": "2026-08-05",
+          "by": "Solo Todo 1390 independent early scheduled repository-discovery re-verification.",
           "evidence": [
-            "C: Scout results are dated source-scoped retrieval evidence and may lag repository ownership moves; broaden exact and topic vocabulary.",
-            "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework.",
+            "C: Scout exact searches on 2026-08-05 returned the active stellar/smart-account-kit and stellar/passkey-kit rows alongside archived kalepail move pointers; results remain dated source-scoped retrieval evidence, not proof of quality or completeness.",
+            "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework. Direct repository metadata confirmed the stellar repositories active and the kalepail pointers archived.",
+            "A: the current developers.stellar.org smart-wallet guide still links the archived kalepail/passkey-kit pointer; that residual is already owned by active finding sd-034 rather than a new finding.",
             "Sibling sweep: q-tool-passkeykit-smart-wallet now describes Passkey Kit as maintained rather than legacy/unaudited; the cases are consistent. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery."
           ],
           "rootCause": [
-            "freshness-drift"
+            "scheduled freshness re-verification found no golden drift; refreshed current ownership/index evidence and routed the official-doc residual to existing sd-034"
           ]
         },
         "origin": "raven-next q-tool-smart-wallet-repos-discovery"

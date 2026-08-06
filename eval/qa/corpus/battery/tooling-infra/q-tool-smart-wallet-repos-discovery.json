@@ -19,7 +19,7 @@
       "Do NOT collapse Passkey Kit and Smart Account Kit into one authorization or audit claim, or omit their source-specific security caveats.",
       "Do NOT call repository or indexer discovery proof of account control or a recovery mechanism."
     ],
-    "notes": "Reverified 2026-08-04: direct current references moved to stellar/smart-account-kit and stellar/passkey-kit; former kalepail repositories are archived move pointers. The golden still grades source-bound live discovery rather than a pinned zero and keeps Smart Account Kit, OpenZeppelin accounts, and Passkey Kit model/verification boundaries explicit."
+    "notes": "Reverified 2026-08-05: direct current references live at stellar/smart-account-kit and stellar/passkey-kit; former kalepail repositories are archived move pointers, and Scout now reflects both current and archived rows. The golden still grades source-bound live discovery rather than a pinned zero and keeps Smart Account Kit, OpenZeppelin accounts, and Passkey Kit model/verification boundaries explicit."
   },
   "tags": {
     "category": "tooling-infra",
@@ -29,8 +29,8 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-04",
-    "reverifyBy": "2026-08-13",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-09-29",
     "sources": [
       {
         "class": "C",
@@ -97,15 +97,16 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
+      "date": "2026-08-05",
+      "by": "Solo Todo 1390 independent early scheduled repository-discovery re-verification.",
       "evidence": [
-        "C: Scout results are dated source-scoped retrieval evidence and may lag repository ownership moves; broaden exact and topic vocabulary.",
-        "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework.",
+        "C: Scout exact searches on 2026-08-05 returned the active stellar/smart-account-kit and stellar/passkey-kit rows alongside archived kalepail move pointers; results remain dated source-scoped retrieval evidence, not proof of quality or completeness.",
+        "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework. Direct repository metadata confirmed the stellar repositories active and the kalepail pointers archived.",
+        "A: the current developers.stellar.org smart-wallet guide still links the archived kalepail/passkey-kit pointer; that residual is already owned by active finding sd-034 rather than a new finding.",
         "Sibling sweep: q-tool-passkeykit-smart-wallet now describes Passkey Kit as maintained rather than legacy/unaudited; the cases are consistent. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery."
       ],
       "rootCause": [
-        "freshness-drift"
+        "scheduled freshness re-verification found no golden drift; refreshed current ownership/index evidence and routed the official-doc residual to existing sd-034"
       ]
     },
     "origin": "raven-next q-tool-smart-wallet-repos-discovery"

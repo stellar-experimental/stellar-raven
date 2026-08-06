@@ -5,14 +5,15 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP** (Open = brand-new builds with a community vote; Integration and RFP are panel-only). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review (Track Delegate Panels)**, and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)",
+    "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP**. Open is for experienced teams pursuing novel or brand-new Stellar use cases, with existing traction or deep Stellar/domain knowledge; Integration and RFP are panel-only. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects typically run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review** (the Open Track Delegate Panel or a Category Delegate Panel), and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)",
     "keyFacts": [
       "Applicants start by submitting an interest form on communityfund.stellar.org.",
       "Eligible applicants are invited to submit a full proposal to a specific track (Open/Integration/RFP).",
       "Awardees must complete KYC/KYB before receiving (tranche) payments."
     ],
     "avoid": [
-      "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real)."
+      "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real).",
+      "Do NOT present stellar.org/enterprise-fund or its application form as the SCF Build application path, and do not attach SCF Build mechanics — the $150K XLM cap, milestone tranches, KYC-before-payment, delegate-panel review, or Open-Track community vote — to the separate Enterprise Fund. The Enterprise Fund's own application is live; the conflation is wrong."
     ],
     "notes": "Dossier §2.5. Trap: confusing the SCF Build application flow with the separate Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org."
   },
@@ -43,15 +44,17 @@
     ],
     "verified": {
       "date": "2026-08-05",
-      "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
+      "by": "Solo Todo 1390 independent live re-verification, reproduced by the post-QA closeout lead",
       "evidence": [
+        "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award and its Open/Integration track pages, observed 2026-08-05T23:41–23:42Z, confirm the interest-form flow, three tracks, current panel names, typical 3–6 month timeline, $150K XLM cap, tranches, KYC/KYB gate, and Open-only community vote.",
         "https://stellar.org/enterprise-fund and https://stellar.org/enterprise-fund/apply — current primary pages expose Apply Now / Submit your application, observed 2026-08-05.",
         "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
         "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
         "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap."
       ],
       "rootCause": [
-        "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current"
+        "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current",
+        "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name"
       ]
     },
     "origin": "raven-next q-scf-how-to-apply"

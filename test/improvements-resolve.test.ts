@@ -2,10 +2,18 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
+// @ts-expect-error — plain .mjs script, no type declarations
+import { oneLineTitle } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 
 describe("improvements resolution lifecycle", () => {
+  test("uses the full first Finding paragraph for wrapped titles", () => {
+    expect(oneLineTitle({
+      body: "## Finding\n\nA wrapped finding title\ncontinues on the next physical line.\n\nSecond paragraph.\n",
+    })).toBe("A wrapped finding title continues on the next physical line");
+  });
+
   test("resolved receipt keeps immutable source auditable after active-file deletion", () => {
     const finding = "improvements/skills/sk-001-wasm-target-stale.md";
     const ledger = JSON.parse(readFileSync(path.join(ROOT, "improvements/resolved.json"), "utf8"));

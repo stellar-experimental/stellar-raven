@@ -3,7 +3,7 @@
   "entries": [
     {
       "id": "ll-021",
-      "title": "Lumenloop's SCF recap discovery lags the official round result. The accessible",
+      "title": "Lumenloop's SCF recap discovery lags the official round result. The accessible recap index stops at round 40, so current retrieval cannot gr",
       "service": "lumenloop",
       "discovered": "2026-07-11",
       "resolved": "2026-07-14",
@@ -17,7 +17,7 @@
     },
     {
       "id": "sd-002",
-      "title": "Operation-level protocol vocabulary is under-represented in the docs search",
+      "title": "Operation-level protocol vocabulary is under-represented in the docs search surface relative to how users phrase questions. Terms in the clu",
       "service": "stellar-docs",
       "discovered": "2026-07-03",
       "resolved": "2026-08-05",
@@ -31,7 +31,7 @@
     },
     {
       "id": "sd-006",
-      "title": "The Algolia crawler for developers.stellar.org strips code blocks, so the",
+      "title": "The Algolia crawler for developers.stellar.org strips code blocks, so the index carries the prose around commands but never the commands. Th",
       "service": "stellar-docs",
       "discovered": "2026-07-06",
       "resolved": "2026-07-14",
@@ -49,7 +49,7 @@
     },
     {
       "id": "sd-007",
-      "title": "The state-archival docs now correctly describe Protocol 23 automatic",
+      "title": "The state-archival docs now correctly describe Protocol 23 automatic restoration, but adjacent sections/pages still contain pre-Protocol-23 ",
       "service": "stellar-docs",
       "discovered": "2026-07-07",
       "resolved": "2026-07-27",
@@ -69,7 +69,7 @@
     },
     {
       "id": "sd-010",
-      "title": "The rendered Indexers page now describes Alchemy's live Stellar Data API accurately,",
+      "title": "The rendered Indexers page now describes Alchemy's live Stellar Data API accurately, but the Docs search record still describes it as a futu",
       "service": "stellar-docs",
       "discovered": "2026-07-09",
       "resolved": "2026-07-15",
@@ -87,7 +87,7 @@
     },
     {
       "id": "sd-011",
-      "title": "The current Stellar documentation surface can lead a bot author to rely on",
+      "title": "The current Stellar documentation surface can lead a bot author to rely on Horizon offercreated, offerupdated, and offerremoved effects for ",
       "service": "stellar-docs",
       "discovered": "2026-07-10",
       "resolved": "2026-07-27",
@@ -107,7 +107,7 @@
     },
     {
       "id": "sd-012",
-      "title": "Official Stellar documentation and the current SDF mandate page expose different",
+      "title": "Official Stellar documentation and the current SDF mandate page expose different generations of SDF wallet/bucket labels. Consumers can mist",
       "service": "stellar-docs",
       "discovered": "2026-07-10",
       "resolved": "2026-07-27",
@@ -127,7 +127,7 @@
     },
     {
       "id": "sd-013",
-      "title": "The account lifecycle documentation presents the ordinary unsponsored path as",
+      "title": "The account lifecycle documentation presents the ordinary unsponsored path as if it were universal and under-documents current merge behavio",
       "service": "stellar-docs",
       "discovered": "2026-07-10",
       "resolved": "2026-07-27",
@@ -147,7 +147,7 @@
     },
     {
       "id": "sd-015",
-      "title": "The current glossary describes Starlight in present tense as Stellar's Layer 2",
+      "title": "The current glossary describes Starlight in present tense as Stellar's Layer 2 protocol without surfacing that the SDF reference implementat",
       "service": "stellar-docs",
       "discovered": "2026-07-10",
       "resolved": "2026-07-27",
@@ -167,7 +167,7 @@
     },
     {
       "id": "sd-016",
-      "title": "Official network-capacity tables contain hand-maintained current scalars that",
+      "title": "Official network-capacity tables contain hand-maintained current scalars that have drifted from live network configuration. The most materia",
       "service": "stellar-docs",
       "discovered": "2026-07-10",
       "resolved": "2026-07-27",
@@ -187,7 +187,7 @@
     },
     {
       "id": "sd-017",
-      "title": "Official Docs publish incompatible lifecycle labels for Horizon. Some surfaces",
+      "title": "Official Docs publish incompatible lifecycle labels for Horizon. Some surfaces call it deprecated, while newer policy/stack material explici",
       "service": "stellar-docs",
       "discovered": "2026-07-10",
       "resolved": "2026-07-27",
@@ -206,8 +206,39 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/773857262d462506947a324b7437b8499f886287/improvements/stellar-docs/sd-017-horizon-lifecycle-wording-conflict.md"
     },
     {
+      "id": "sd-018",
+      "title": "The generic token-interface event documentation does not clearly distinguish custom SEP-41 events from current SAC events. Direct SAC transf",
+      "service": "stellar-docs",
+      "discovered": "2026-07-11",
+      "resolved": "2026-08-05",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/6",
+        "https://github.com/stellar/rs-soroban-sdk/issues/1955",
+        "https://github.com/stellar/rs-soroban-sdk/issues/1979",
+        "https://github.com/stellar/rs-soroban-sdk/pull/1980",
+        "https://github.com/stellar/rs-soroban-sdk/pull/1984",
+        "https://github.com/stellar/stellar-docs/issues/2593",
+        "https://github.com/stellar/stellar-docs/issues/2715",
+        "https://github.com/stellar/stellar-docs/pull/2704",
+        "https://github.com/stellar/stellar-docs/pull/2720",
+        "https://github.com/stellar/stellar-docs/pull/2725"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/rs-soroban-sdk/pull/1980",
+        "https://github.com/stellar/rs-soroban-sdk/pull/1984",
+        "https://github.com/stellar/stellar-docs/issues/2715",
+        "https://github.com/stellar/stellar-docs/pull/2720",
+        "https://github.com/stellar/stellar-docs/pull/2725"
+      ],
+      "liveRecheck": "2026-08-05T23:47:51Z token-interface: sep0011_asset x7, clawback x4, set_authorized x4, CAP-0067 x2; seven-row SEP-41/SAC table, classic-unification and operation-metadata note, and cross-links present. 23:48:30Z SAC page: sep0011_asset x4 and corrected set_admin data=new_admin:Address.",
+      "reviewEvidence": "Distinct adversarial reviewer Solo process 4358, Todo 1394 comment 3749, 2026-08-05; root independently repeated live and upstream-ref checks; resolution handoff read back at https://github.com/stellar/stellar-docs/issues/2715#issuecomment-5198753120.",
+      "sourceCommit": "61bd321d7d1318053446908bf17b33d4e8e11b71",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/61bd321d7d1318053446908bf17b33d4e8e11b71/improvements/stellar-docs/sd-018-sac-cap67-event-schema-gap.md"
+    },
+    {
       "id": "sd-019",
-      "title": "The JavaScript persistent-entry extension guide says a single",
+      "title": "The JavaScript persistent-entry extension guide says a single ExtendFootprintTTLOp cannot extend multiple ledger entries together. Current C",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-31",
@@ -227,7 +258,7 @@
     },
     {
       "id": "sd-020",
-      "title": "SAC documentation and derived guidance retain design-era XDR names and omit the",
+      "title": "SAC documentation and derived guidance retain design-era XDR names and omit the current executable-based identification path. They also enco",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-31",
@@ -247,7 +278,7 @@
     },
     {
       "id": "sd-021",
-      "title": "Current official P25/ZK documentation links the wrong CAP for BN254 and does",
+      "title": "Current official P25/ZK documentation links the wrong CAP for BN254 and does not distinguish host permutation functions, feature-gated raw S",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-27",
@@ -267,7 +298,7 @@
     },
     {
       "id": "sd-022",
-      "title": "Current introductory wording turns the default no-allocator configuration into",
+      "title": "Current introductory wording turns the default no-allocator configuration into an absolute platform restriction. Soroban contracts are nostd",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-27",
@@ -287,7 +318,7 @@
     },
     {
       "id": "sd-023",
-      "title": "The getEvents and getTransaction pages still present universal time-based",
+      "title": "The getEvents and getTransaction pages still present universal time-based retention guidance that disagrees with current stellar-rpc source.",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-27",
@@ -307,7 +338,7 @@
     },
     {
       "id": "sd-024",
-      "title": "The transaction-resource documentation contains a runtime-broken JavaScript",
+      "title": "The transaction-resource documentation contains a runtime-broken JavaScript example and retired XDR field names from before Protocol 23/CAP-",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-31",
@@ -327,7 +358,7 @@
     },
     {
       "id": "sd-026",
-      "title": "Current contract-build documentation still presents the standalone optimize",
+      "title": "Current contract-build documentation still presents the standalone optimize command as an active workflow even though CLI v23.2.0 deprecated",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-27",
@@ -347,7 +378,7 @@
     },
     {
       "id": "sd-028",
-      "title": "Official Horizon administration pages disagree on the executable default for",
+      "title": "Official Horizon administration pages disagree on the executable default for HISTORYRETENTIONCOUNT. The configuring/source-backed behavior i",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-27",
@@ -367,7 +398,7 @@
     },
     {
       "id": "sd-030",
-      "title": "Stellar Lab documentation does not make the Saved Keypairs storage and offline",
+      "title": "Stellar Lab documentation does not make the Saved Keypairs storage and offline boundary prominent enough for a secret-bearing browser tool. ",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-27",
@@ -387,7 +418,7 @@
     },
     {
       "id": "sd-031",
-      "title": "Current Stellar Docs still publish the removed",
+      "title": "Current Stellar Docs still publish the removed stellar network container start ... command. The English Lab/Quickstart page uses stellar net",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-27",
@@ -407,7 +438,7 @@
     },
     {
       "id": "sd-033",
-      "title": "The official Client & XDR SDKs page describes the current community Python SDK",
+      "title": "The official Client & XDR SDKs page describes the current community Python SDK as Horizon-only. It says py-stellar-base communicates with a ",
       "service": "stellar-docs",
       "discovered": "2026-07-11",
       "resolved": "2026-07-15",
@@ -429,7 +460,7 @@
     },
     {
       "id": "sd-038",
-      "title": "The StellarAssetInterface doc-comments in soroban-sdk/src/token.rs describe",
+      "title": "The StellarAssetInterface doc-comments in soroban-sdk/src/token.rs describe pre-CAP-67 Stellar Asset Contract event shapes. CAP-0067 removed",
       "service": "stellar-docs",
       "discovered": "2026-07-27",
       "resolved": "2026-07-31",
@@ -452,7 +483,7 @@
     },
     {
       "id": "sk-001",
-      "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build",
+      "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145, plus ",
       "service": "skills",
       "discovered": "2026-07-03",
       "resolved": "2026-07-15",
@@ -472,7 +503,7 @@
     },
     {
       "id": "sk-002",
-      "title": "stellar-dev/smart-contracts/security.md:17 states self-reentrancy is",
+      "title": "stellar-dev/smart-contracts/security.md:17 states self-reentrancy is \"possible but rarely exploitable\". This contradicts the host's actual f",
       "service": "skills",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -490,7 +521,7 @@
     },
     {
       "id": "sk-008",
-      "title": "The upstream Stellar-Light/stellar-scout skill API reference previously lagged the live",
+      "title": "The upstream Stellar-Light/stellar-scout skill API reference previously lagged the live Scout OpenAPI 1.7.0 contract for two exposed read en",
       "service": "skills",
       "discovered": "2026-07-09",
       "resolved": "2026-07-14",
@@ -508,7 +539,7 @@
     },
     {
       "id": "sk-010",
-      "title": "The official stellar/stellar-dev-skill dapp skill embedded a stale Stellar",
+      "title": "The official stellar/stellar-dev-skill dapp skill embedded a stale Stellar Wallets Kit integration. At pinned upstream commit c2f3c0728c3204",
       "service": "skills",
       "discovered": "2026-07-11",
       "resolved": "2026-07-27",
@@ -526,7 +557,7 @@
     },
     {
       "id": "sls-001",
-      "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but",
+      "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but in an order agents universally read as ranking. An eval ag",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -544,7 +575,7 @@
     },
     {
       "id": "sls-002",
-      "title": "Some SCF award entries carry null amounts — e.g. Liqvid.xyz is marked awarded",
+      "title": "Some SCF award entries carry null amounts — e.g. Liqvid.xyz is marked awarded with amount null. Null is a legitimate value here, but it is a",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -562,7 +593,7 @@
     },
     {
       "id": "sls-003",
-      "title": "Positive finding, recorded as a trust anchor: the audit corpus is excellent. All",
+      "title": "Positive finding, recorded as a trust anchor: the audit corpus is excellent. All five audit-report citations an eval agent made resolved exa",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -580,7 +611,7 @@
     },
     {
       "id": "sls-004",
-      "title": "404 responses were sometimes non-JSON (content-type inconsistency with the rest of",
+      "title": "404 responses were sometimes non-JSON (content-type inconsistency with the rest of the API). This repo still normalizes them host-side to so",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -600,7 +631,7 @@
     },
     {
       "id": "sls-005",
-      "title": "Successor to the fixed sls-001. On events whose winners were announced as a",
+      "title": "Successor to the fixed sls-001. On events whose winners were announced as a prize tier rather than an ordinal ranking, every winner entry ca",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -618,7 +649,7 @@
     },
     {
       "id": "sls-006",
-      "title": "The scout research corpus's sdf-blog source indexes blog listing,",
+      "title": "The scout research corpus's sdf-blog source indexes blog listing, filter, and tag pages rather than article bodies. Queries for SDF's \"Q1 20",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -636,7 +667,7 @@
     },
     {
       "id": "sls-007",
-      "title": "/api/rfps exposes activeQuarter plus per-RFP quarter and status,",
+      "title": "/api/rfps exposes activeQuarter plus per-RFP quarter and status, but no SCF round number and no submission-window open/close dates. \"What's ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -654,7 +685,7 @@
     },
     {
       "id": "sls-008",
-      "title": "The project directory carries two live, Lending-typed records that appear to be",
+      "title": "The project directory carries two live, Lending-typed records that appear to be the same lineage with no cross-link or dedupe signal: orbit-",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-15",
@@ -672,7 +703,7 @@
     },
     {
       "id": "sls-009",
-      "title": "searchProjects ranks authority/prominence above exact name match: the queries",
+      "title": "searchProjects ranks authority/prominence above exact name match: the queries q=\"Slender\" and q=\"Blend\" both ranked Reflector (an authority-",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -690,7 +721,7 @@
     },
     {
       "id": "sls-010",
-      "title": "Builder-directory filtering is literal substring over free-text fields, which",
+      "title": "Builder-directory filtering is literal substring over free-text fields, which breaks the two query shapes region questions actually take:",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-15",
@@ -708,7 +739,7 @@
     },
     {
       "id": "sls-011",
-      "title": "Scout and Lumenloop disagree on the same project's total SCF funding with no",
+      "title": "Scout and Lumenloop disagree on the same project's total SCF funding with no documented counting basis on either side: for slug lobstr, Scou",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -726,7 +757,7 @@
     },
     {
       "id": "sls-012",
-      "title": "Anchor corridor/coverage data exists only as free-text prose; no structured",
+      "title": "Anchor corridor/coverage data exists only as free-text prose; no structured fields anywhere in the stack. Scout's 19 Live Anchor-type projec",
       "service": "stellar-light-scout",
       "discovered": "2026-07-03",
       "resolved": "2026-07-14",
@@ -762,7 +793,7 @@
     },
     {
       "id": "sls-014",
-      "title": "Successor to the fixed sls-007 — and its cautionary sequel. The scfRound",
+      "title": "Successor to the fixed sls-007 — and its cautionary sequel. The scfRound object on getRfps meta is exactly the mechanism sls-007 recommended",
       "service": "stellar-light-scout",
       "discovered": "2026-07-06",
       "resolved": "2026-07-14",
@@ -782,7 +813,7 @@
     },
     {
       "id": "sls-015",
-      "title": "First, credit where due: the 1.4.4/1.5.0 enrichments to searchProjects'",
+      "title": "First, credit where due: the 1.4.4/1.5.0 enrichments to searchProjects' upstream description legitimately improved routing to scout for scou",
       "service": "stellar-light-scout",
       "discovered": "2026-07-06",
       "resolved": "2026-07-14",
@@ -802,7 +833,7 @@
     },
     {
       "id": "sls-016",
-      "title": "Per-winner award amounts are not structured. Winner entries on completed",
+      "title": "Per-winner award amounts are not structured. Winner entries on completed hackathons carry hackathonPlacement/placementRank (fixed in sls-001",
       "service": "stellar-light-scout",
       "discovered": "2026-07-07",
       "resolved": "2026-07-14",
@@ -820,7 +851,7 @@
     },
     {
       "id": "sls-017",
-      "title": "LOBSTR's directory records omit its XRP Ledger support. LOBSTR's own site",
+      "title": "LOBSTR's directory records omit its XRP Ledger support. LOBSTR's own site self-describes as a \"Stellar & XRPL Wallet\", but the wallet's dire",
       "service": "stellar-light-scout",
       "discovered": "2026-07-07",
       "resolved": "2026-07-14",
@@ -838,7 +869,7 @@
     },
     {
       "id": "sls-018",
-      "title": "Structured coverage exists for Etherfuse, but generic Mexico on-ramp queries",
+      "title": "Structured coverage exists for Etherfuse, but generic Mexico on-ramp queries do not retrieve it. A named Etherfuse query returns a high-conf",
       "service": "stellar-light-scout",
       "discovered": "2026-07-08",
       "resolved": "2026-07-14",
@@ -856,7 +887,7 @@
     },
     {
       "id": "sls-019",
-      "title": "Scout 1.7.11 adds source=cap to GET /api/research, but exact canonical CAP",
+      "title": "Scout 1.7.11 adds source=cap to GET /api/research, but exact canonical CAP identifiers are not reliable retrieval keys. In a seven-identifie",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -874,7 +905,7 @@
     },
     {
       "id": "sls-020",
-      "title": "Scout research retrieval does not surface the May 7, 2026 Stellar Development",
+      "title": "Scout research retrieval does not surface the May 7, 2026 Stellar Development Foundation security-program migration. An exact live query for",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-15",
@@ -894,7 +925,7 @@
     },
     {
       "id": "sls-021",
-      "title": "Scout's partner search and structured partner fields omit current HoneyCoin",
+      "title": "Scout's partner search and structured partner fields omit current HoneyCoin mobile-money/off-ramp coverage. A live partner query for mobile ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -912,7 +943,7 @@
     },
     {
       "id": "sls-022",
-      "title": "Scout's YieldBlox incident research record conflates event and publication",
+      "title": "Scout's YieldBlox incident research record conflates event and publication dates, token quantity and dollar valuation, and distinct incident",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -930,7 +961,7 @@
     },
     {
       "id": "sls-025",
-      "title": "Scout can retrieve Stellar ERC-8004-style implementation records under broad",
+      "title": "Scout can retrieve Stellar ERC-8004-style implementation records under broad 8004 vocabulary while missing exact identifiers and repository ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -948,7 +979,7 @@
     },
     {
       "id": "sls-026",
-      "title": "Scout's Aquarius SCF summary collapses incompatible award statuses into one",
+      "title": "Scout's Aquarius SCF summary collapses incompatible award statuses into one total and round list. On 2026-07-10 Scout reported $391,000 and ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -966,7 +997,7 @@
     },
     {
       "id": "sls-027",
-      "title": "Scout's Phoenix total is correct, but its awarded-round membership is not",
+      "title": "Scout's Phoenix total is correct, but its awarded-round membership is not. The official SCF project page shows seven submissions and exactly",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -984,7 +1015,7 @@
     },
     {
       "id": "sls-028",
-      "title": "Scout can retain a Live/project discovery row after its linked domain becomes",
+      "title": "Scout can retain a Live/project discovery row after its linked domain becomes dead, unrelated, or no longer substantiates the recorded Stell",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1002,7 +1033,7 @@
     },
     {
       "id": "sls-030",
-      "title": "Scout's Comet record reports scfAwarded: false and does not represent the",
+      "title": "Scout's Comet record reports scfAwarded: false and does not represent the project's current embedded deployment identity. Official SCF pages",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1020,7 +1051,7 @@
     },
     {
       "id": "sls-031",
-      "title": "Scout exposes a DeFindex TVL value and timestamp but not enough calculation",
+      "title": "Scout exposes a DeFindex TVL value and timestamp but not enough calculation provenance to reconcile it with other current sources. The GT-15",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1038,7 +1069,7 @@
     },
     {
       "id": "sls-032",
-      "title": "Bridge discovery is project-level, while safe route selection is asset- and",
+      "title": "Bridge discovery is project-level, while safe route selection is asset- and direction-level. A result that says Axelar, Allbridge, or Squid ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1056,7 +1087,7 @@
     },
     {
       "id": "sls-034",
-      "title": "Scout's stablecoin discovery surface is neither an exhaustive asset registry nor",
+      "title": "Scout's stablecoin discovery surface is neither an exhaustive asset registry nor a consistently asset-level taxonomy. On 2026-07-10, a pagin",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1074,7 +1105,7 @@
     },
     {
       "id": "sls-035",
-      "title": "Scout's DEX type/cluster cannot answer how many independent liquidity venues or",
+      "title": "Scout's DEX type/cluster cannot answer how many independent liquidity venues or \"serious players\" exist. It mixes native Stellar liquidity, ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1092,7 +1123,7 @@
     },
     {
       "id": "sls-036",
-      "title": "The leaderboard does not make the exact activity calculation or repository",
+      "title": "The leaderboard does not make the exact activity calculation or repository source timestamp answer-visible, and its coarse filtering cannot ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-30",
@@ -1114,7 +1145,7 @@
     },
     {
       "id": "sls-037",
-      "title": "One Live project status cannot represent partial deployment. Rarible has",
+      "title": "One Live project status cannot represent partial deployment. Rarible has official Stellar award/schema evidence, while its current public AP",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1132,7 +1163,7 @@
     },
     {
       "id": "sls-038",
-      "title": "The live analyze response omits the TVL rollup promised by the exposed catalog",
+      "title": "The live analyze response omits the TVL rollup promised by the exposed catalog description. A caller cannot tell whether TVL is unavailable,",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1150,7 +1181,7 @@
     },
     {
       "id": "sls-040",
-      "title": "Scout presents mutually incompatible builder contracts. Descriptions and the",
+      "title": "Scout presents mutually incompatible builder contracts. Descriptions and the README advertise SCF-tier/award-track filtering, but the callab",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-15",
@@ -1170,7 +1201,7 @@
     },
     {
       "id": "sls-041",
-      "title": "Builder skill search returns useful candidates but does not explain why a row",
+      "title": "Builder skill search returns useful candidates but does not explain why a row matched. A bio, role title, project text, or adjacent ecosyste",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1188,7 +1219,7 @@
     },
     {
       "id": "sls-042",
-      "title": "The category-cluster endpoint silently truncates its active-project input at",
+      "title": "The category-cluster endpoint silently truncates its active-project input at 500 rows without pagination. The categories analyze endpoint co",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1206,7 +1237,7 @@
     },
     {
       "id": "sls-043",
-      "title": "Scout exposes two canonically linked Band identities with opposite SCF histories",
+      "title": "Scout exposes two canonically linked Band identities with opposite SCF histories. The alias row matches the authoritative project record ($6",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1224,7 +1255,7 @@
     },
     {
       "id": "sls-044",
-      "title": "Funding-v2 now documents its methodology, fixing the earlier provenance defect, but",
+      "title": "Funding-v2 now documents its methodology, fixing the earlier provenance defect, but the reconstructed cumulative total and distinct-project ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1242,7 +1273,7 @@
     },
     {
       "id": "sls-045",
-      "title": "The RFP discovery response prepends a synthetic current-round row to the",
+      "title": "The RFP discovery response prepends a synthetic current-round row to the actual RFP records. The same response reports five open RFPs in met",
       "service": "stellar-light-scout",
       "discovered": "2026-07-10",
       "resolved": "2026-07-14",
@@ -1260,7 +1291,7 @@
     },
     {
       "id": "sls-046",
-      "title": "Scout marks stellar/stellar-core as codeVerified.isDeployableContract:true",
+      "title": "Scout marks stellar/stellar-core as codeVerified.isDeployableContract:true even though the returned explanation identifies the repository as",
       "service": "stellar-light-scout",
       "discovered": "2026-07-11",
       "resolved": "2026-07-14",
@@ -1278,7 +1309,7 @@
     },
     {
       "id": "sls-047",
-      "title": "Scout's generic repository score can outrank Stellar-specific implementations",
+      "title": "Scout's generic repository score can outrank Stellar-specific implementations with a general-purpose ZK dependency for a Stellar-scoped quer",
       "service": "stellar-light-scout",
       "discovered": "2026-07-11",
       "resolved": "2026-07-14",
@@ -1296,7 +1327,7 @@
     },
     {
       "id": "sls-048",
-      "title": "Scout quantitative operations expose locally plausible totals but lack a common",
+      "title": "Scout quantitative operations expose locally plausible totals but lack a common population identifier and scope digest. The full collection,",
       "service": "stellar-light-scout",
       "discovered": "2026-07-11",
       "resolved": "2026-07-14",
@@ -1314,7 +1345,7 @@
     },
     {
       "id": "sls-049",
-      "title": "Scout's Bitso project narrative claims live anchor/corridor activity while its",
+      "title": "Scout's Bitso project narrative claims live anchor/corridor activity while its embedded anchorProfile returns empty arrays for assets, SEPs,",
       "service": "stellar-light-scout",
       "discovered": "2026-07-11",
       "resolved": "2026-07-14",
@@ -1332,7 +1363,7 @@
     },
     {
       "id": "sls-050",
-      "title": "Scout directory identity handling does not make the Vibrant-to-Vesseo naming",
+      "title": "Scout directory identity handling does not make the Vibrant-to-Vesseo naming continuity explicit. A consumer looking up one name can miss cu",
       "service": "stellar-light-scout",
       "discovered": "2026-07-11",
       "resolved": "2026-07-14",
@@ -1350,7 +1381,7 @@
     },
     {
       "id": "sls-051",
-      "title": "searchProjects' upstream description is broad enough to lexically capture",
+      "title": "searchProjects' upstream description is broad enough to lexically capture documentation-shaped questions — a distinct slice from the editori",
       "service": "stellar-light-scout",
       "discovered": "2026-07-11",
       "resolved": "2026-07-14",
@@ -1368,7 +1399,7 @@
     },
     {
       "id": "sls-052",
-      "title": "The 1.7.16 structural fix (sls-051) moved routing vocabulary out of operation",
+      "title": "The 1.7.16 structural fix (sls-051) moved routing vocabulary out of operation descriptions into the machine-readable x-routing extension, an",
       "service": "stellar-light-scout",
       "discovered": "2026-07-12",
       "resolved": "2026-07-14",
@@ -1386,7 +1417,7 @@
     },
     {
       "id": "sls-053",
-      "title": "The Scout ecosystem-skills directory (GET /api/skills) still advertises the",
+      "title": "The Scout ecosystem-skills directory (GET /api/skills) still advertises the legacy soroban skill, which stellar-dev-skill has superseded wit",
       "service": "stellar-light-scout",
       "discovered": "2026-07-12",
       "resolved": "2026-07-14",
@@ -1404,7 +1435,7 @@
     },
     {
       "id": "sls-054",
-      "title": "The live sls-050 changelog entry contradicts itself about the project rename-continuity response shape",
+      "title": "The live sls-050 changelog entry contradicts itself about the project rename-continuity response shape. Its summary matches the OpenAPI cont",
       "service": "stellar-light-scout",
       "discovered": "2026-07-13",
       "resolved": "2026-07-14",
@@ -1424,7 +1455,7 @@
     },
     {
       "id": "sls-056",
-      "title": "Scout project search applies canonical deduplication to the returned projects",
+      "title": "Scout project search applies canonical deduplication to the returned projects array after computing meta.counts. The payload can therefore r",
       "service": "stellar-light-scout",
       "discovered": "2026-07-15",
       "resolved": "2026-07-30",
@@ -1444,7 +1475,7 @@
     },
     {
       "id": "sls-057",
-      "title": "The proposed Denelle Dixon coverage gap does not reproduce on the current live",
+      "title": "The proposed Denelle Dixon coverage gap does not reproduce on the current live Scout surface.",
       "service": "stellar-light-scout",
       "discovered": "2026-07-27",
       "resolved": "2026-08-05",
@@ -1458,7 +1489,7 @@
     },
     {
       "id": "sls-058",
-      "title": "Scout's structured SCF funding fields disagree with the official SCF submission",
+      "title": "Scout's structured SCF funding fields disagree with the official SCF submission records. There are two distinct defects, and they need separ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-27",
       "resolved": "2026-08-05",
@@ -1477,7 +1508,7 @@
     },
     {
       "id": "sls-059",
-      "title": "The Scout OpenAPI's get-one-skill operation still advertises the retired",
+      "title": "The Scout OpenAPI's get-one-skill operation still advertises the retired soroban skill slug in three places: the x-routing exampleQuestions ",
       "service": "stellar-light-scout",
       "discovered": "2026-07-28",
       "resolved": "2026-07-30",

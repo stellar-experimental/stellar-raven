@@ -177,7 +177,7 @@ describe("demo model config", () => {
       options?: { extraHeaders?: Record<string, string>; gateway?: { id: string; collectLog?: boolean } };
     }> = [];
     const binding = {
-      async run(model: string, inputs: Record<string, unknown>, options?: { extraHeaders?: Record<string, string> }) {
+      async run(model: string, inputs: Record<string, unknown>, options?: (typeof calls)[number]["options"]) {
         calls.push({ model, inputs, options });
         return {
           choices: [{ index: 0, finish_reason: "stop", message: { role: "assistant", content: "ok" } }],
@@ -200,9 +200,7 @@ describe("demo model config", () => {
       maxOutputTokens: 16,
       temperature: DEMO_TEMPERATURE
     });
-    for await (const _ of result.fullStream) {
-      // Drain stream so the provider call runs.
-    }
+    expect(await result.text).toBe("ok");
 
     expect(calls).toHaveLength(1);
     expect(calls[0]?.model).toBe(DEMO_KIMI_CONTROL_MODEL);
@@ -236,10 +234,6 @@ describe("demo model config", () => {
       ),
       messages: [{ role: "user", content: "hi" }]
     });
-    for await (const _ of result.fullStream) {
-      // Drain stream so the provider call runs.
-    }
-
     expect(await result.text).toBe("ok");
     expect(calls).toHaveLength(1);
     expect(calls[0]?.model).toBe(DEMO_PRIMARY_MODEL);
@@ -273,10 +267,6 @@ describe("demo model config", () => {
       ),
       messages: [{ role: "user", content: "hi" }]
     });
-    for await (const _ of result.fullStream) {
-      // Drain stream so the provider call runs.
-    }
-
     expect(await result.text).toBe("ok");
     expect(entries).toHaveLength(1);
     expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");

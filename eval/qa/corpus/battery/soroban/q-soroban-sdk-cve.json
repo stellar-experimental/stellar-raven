@@ -5,7 +5,7 @@
     "scout.searchRepos"
   ],
   "golden": {
-    "answer": "As of **2026-07-28**, check the live advisory feeds rather than treating this list as permanent. The current three repository advisories are: CVE-2026-24889 / GHSA-96xm-fv9w-pf3f for `soroban-sdk` (fixed in 25.0.2, 23.5.1, 22.0.9); CVE-2026-26267 / GHSA-4chv-4c6w-w254 for `soroban-sdk-macros` (fixed in 25.1.1, 23.5.2, 22.0.10); and CVE-2026-32322 / GHSA-x2hw-px52-wp4m for `soroban-sdk` (fixed in 25.3.0, 23.5.3, 22.0.11). Prefer the latest supported SDK major—check the repository releases live rather than trusting any pinned version here—or a patched supported branch, then recompile/review affected deployed code. Impact conditions differ; do not describe every advisory as unconditional.",
+    "answer": "As of **2026-08-05**, check the live advisory feeds rather than treating this list as permanent. The current three repository advisories are: CVE-2026-24889 / GHSA-96xm-fv9w-pf3f for `soroban-sdk` (fixed in 25.0.2, 23.5.1, 22.0.9); CVE-2026-26267 / GHSA-4chv-4c6w-w254 for `soroban-sdk-macros` (fixed in 25.1.1, 23.5.2, 22.0.10); and CVE-2026-32322 / GHSA-x2hw-px52-wp4m for `soroban-sdk` (fixed in 25.3.0, 23.5.3, 22.0.11). Prefer the latest supported SDK major—check the repository releases live rather than trusting any pinned version here—or a patched supported branch, then recompile/review affected deployed code. Impact conditions differ; do not describe every advisory as unconditional.",
     "keyFacts": [
       "Names all three dated CVE/GHSA/package mappings and patched branch releases.",
       "Requires live re-checking and upgrade/recompile review."
@@ -24,8 +24,8 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-28",
-    "reverifyBy": "2026-08-13",
+    "asOf": "2026-08-05",
+    "reverifyBy": "2026-09-10",
     "sources": [
       {
         "class": "B",
@@ -95,16 +95,15 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane C — security/incident/disputed re-verification",
+      "date": "2026-08-05",
+      "by": "Solo Todo 1390 independent early scheduled security-advisory re-verification.",
       "evidence": [
-        "GitHub's canonical repository-advisory API returned exactly GHSA-96xm-fv9w-pf3f, GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m with the package and patched-version mappings stated above.",
-        "A recursive search of the RustSec advisory-db repository found no matching soroban/GHSA/CVE entry in that repository scope on 2026-07-28; this is not evidence that no other advisory source exists.",
-        "The repository release API returned v27.0.3 (published 2026-07-28T07:39:46Z) as the latest release when re-checked during adversarial review; the earlier v27.0.2 reading was already stale when stamped, so the answer no longer pins a current version at all."
+        "GitHub's canonical repository-advisory API returned exactly GHSA-96xm-fv9w-pf3f, GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m with the package and patched-version mappings stated above on 2026-08-05.",
+        "NVD independently listed all three CVEs as Analyzed with the same GHSA references; its prose for CVE-2026-24889 contains a garbled version range, so the structured repository advisory remains authoritative for patched versions.",
+        "The repository release API returned v27.0.5 (published 2026-08-03T20:52:03Z); the answer deliberately does not pin a current SDK version."
       ],
       "rootCause": [
-        "Scheduled security-advisory freshness re-verification found no new repository advisory, but refreshed the current release and replaced migrated source labels with canonical advisory URLs.",
-        "Adversarial review: a single-source currency claim was stamped confirmed while already stale. Removed the pinned-current-version form rather than re-pinning a value that rots between re-verifications."
+        "Scheduled security-advisory freshness re-verification found no new repository advisory and refreshed the current release observation without pinning it in the answer."
       ]
     },
     "origin": "raven-next q-soroban-sdk-cve"
