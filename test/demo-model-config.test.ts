@@ -25,6 +25,7 @@ import {
   demoReasoningEffortFromOverride,
   demoReasoningEffortOverride,
   demoModelsFromOverride,
+  openAiResponses,
   demoSessionAffinity,
   demoWorkersAiReasoningEffort
 } from "../src/demo/model-config";
@@ -49,6 +50,22 @@ function openAiSseResponse(model: string): Response {
   ];
   const body = `${chunks.map((chunk) => `data: ${JSON.stringify(chunk)}\n\n`).join("")}data: [DONE]\n\n`;
   return new Response(body, { headers: { "content-type": "text/event-stream" } });
+}
+
+function openAiResponsesSseResponse(model: string): Response {
+  const chunks = [
+    { type: "response.created", response: { id: "resp-test", created_at: 1, model } },
+    { type: "response.output_item.added", output_index: 0, item: { type: "message", id: "msg-test" } },
+    { type: "response.output_text.delta", item_id: "msg-test", delta: "ok" },
+    { type: "response.output_item.done", output_index: 0, item: { type: "message", id: "msg-test" } },
+    {
+      type: "response.completed",
+      response: { usage: { input_tokens: 1, output_tokens: 1 } }
+    }
+  ];
+  return new Response(chunks.map((chunk) => `data: ${JSON.stringify(chunk)}\n\n`).join(""), {
+    headers: { "content-type": "text/event-stream" }
+  });
 }
 
 describe("demo model config", () => {
@@ -119,7 +136,7 @@ describe("demo model config", () => {
     expect(demoOpenAiProviderOptions("@cf/openai/gpt-oss-120b", "low")).toEqual({});
   });
 
-  it("pins Grok to the stored-key gateway transport rather than the unified catalog", () => {
+  it("pins provider models to the gateway transport so request-scoped privacy controls reach the wire", () => {
     expect(demoGatewayTransportSettings("xai/grok-4.5")).toEqual({
       transport: "gateway",
       byokAlias: "default",
@@ -132,7 +149,11 @@ describe("demo model config", () => {
       resume: false,
       collectLog: false
     });
-    expect(demoGatewayTransportSettings("openai/gpt-5.4")).toEqual({ resume: false });
+    expect(demoGatewayTransportSettings("openai/gpt-5.4")).toEqual({
+      transport: "gateway",
+      resume: false,
+      collectLog: false
+    });
   });
 
   it("defaults OpenAI API mode to responses unless chat is explicitly requested", () => {
@@ -210,15 +231,17 @@ describe("demo model config", () => {
     expect(calls[0]?.options?.gateway?.collectLog).toBe(false);
   });
 
-  it("passes collectLog=false through the OpenAI catalog run transport", async () => {
-    const calls: Array<{
-      model: string;
-      options: { gateway?: { id: string; collectLog?: boolean }; extraHeaders?: Record<string, string> };
-    }> = [];
+  it("emits both privacy controls through the OpenAI gateway transport", async () => {
+    let entries: Array<{ headers: Record<string, string> }> = [];
     const binding = {
-      async run(model: string, _inputs: Record<string, unknown>, options: (typeof calls)[number]["options"]) {
-        calls.push({ model, options });
-        return openAiSseResponse(DEMO_PRIMARY_MODEL);
+      gateway(id: string) {
+        expect(id).toBe("test-gateway");
+        return {
+          async run(nextEntries: Array<{ headers: Record<string, string> }>) {
+            entries = nextEntries;
+            return openAiSseResponse(DEMO_PRIMARY_MODEL);
+          }
+        };
       }
     };
     const workersai = createWorkersAI({
@@ -235,10 +258,43 @@ describe("demo model config", () => {
       messages: [{ role: "user", content: "hi" }]
     });
     expect(await result.text).toBe("ok");
-    expect(calls).toHaveLength(1);
-    expect(calls[0]?.model).toBe(DEMO_PRIMARY_MODEL);
-    expect(calls[0]?.options.gateway).toEqual({ id: "test-gateway", collectLog: false });
-    expect(calls[0]?.options.extraHeaders).toEqual({ "x-session-affinity": "demo-test-affinity" });
+    expect(entries).toHaveLength(1);
+    expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
+    expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
+    expect(entries[0]?.headers["x-session-affinity"]).toBe("demo-test-affinity");
+  });
+
+  it("emits both privacy controls through the production OpenAI Responses transport", async () => {
+    let entries: Array<{ endpoint: string; headers: Record<string, string> }> = [];
+    const binding = {
+      gateway(id: string) {
+        expect(id).toBe("test-gateway");
+        return {
+          async run(nextEntries: Array<{ endpoint: string; headers: Record<string, string> }>) {
+            entries = nextEntries;
+            return openAiResponsesSseResponse(DEMO_PRIMARY_MODEL);
+          }
+        };
+      }
+    };
+    const workersai = createWorkersAI({
+      binding: binding as unknown as Ai,
+      gateway: demoGatewayOptions("test-gateway"),
+      providers: [openAiResponses],
+      resume: false
+    });
+    const result = streamText({
+      model: workersai(
+        DEMO_PRIMARY_MODEL,
+        demoModelSettings(DEMO_PRIMARY_MODEL, "demo-test-affinity", DEMO_REASONING_EFFORT) as never
+      ),
+      messages: [{ role: "user", content: "hi" }]
+    });
+    expect(await result.text).toBe("ok");
+    expect(entries).toHaveLength(1);
+    expect(entries[0]?.endpoint).toBe("v1/responses");
+    expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
+    expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
   });
 
   it("passes collectLog=false through the stored-key gateway transport", async () => {
@@ -270,6 +326,7 @@ describe("demo model config", () => {
     expect(await result.text).toBe("ok");
     expect(entries).toHaveLength(1);
     expect(entries[0]?.headers["cf-aig-collect-log"]).toBe("false");
+    expect(entries[0]?.headers["cf-aig-collect-log-payload"]).toBe("false");
     expect(entries[0]?.headers["x-session-affinity"]).toBe("demo-test-affinity");
   });
 });
