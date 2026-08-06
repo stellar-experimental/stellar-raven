@@ -45,6 +45,16 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * branch in demoModelSettings (the reasoning_effort omission that GLM forced) is
  * no longer exercised by a LIVE run. It stays unit-covered via
  * DEMO_KIMI_CONTROL_MODEL in test/demo-model-config.test.ts — keep that test.
+ *
+ * `Payment Required` IS NOT A BROKEN MODEL. The stellar-raven-demo gateway
+ * carries a $100 / 24h SLIDING cost limit (spend_limits rule 70415088). Near the
+ * cap a cost-based limiter refuses the most EXPENSIVE request while cheaper ones
+ * still fit, so it presents as one model failing every prompt in ~180ms while
+ * the rest of the matrix stays green — which looks exactly like a dead model.
+ * Seen 2026-08-06: claude-fable-5 0/8 with `Payment Required`, then green again
+ * on re-probe once the window slid. A full run of this matrix is 64 turns on
+ * frontier models; back-to-back runs will hit it. Check the gateway's spend
+ * window before debugging the model.
  */
 export const DEFAULT_MODELS = [
   "openai/gpt-5.6-sol",

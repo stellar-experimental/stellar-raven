@@ -78,14 +78,21 @@ declare global {
   }
 }
 
-// The 2026-07-07 live /playground/chat gauntlet selected GPT-5.4 primary with
-// GPT-5.4 Mini fallback. Grok 4.3 and Kimi K2.7 Code remain useful controls,
-// but were slower or less stable in the exact SSE + tool-call path. Sonnet 4.6
-// is viable after the Cloudflare Anthropic system-field normalization below,
-// but slower and more likely to exhaust the demo's tight tool budget. Gemini
-// stays unregistered because its tool follow-up requires preserving Google's
-// provider-specific thought_signature in the OpenAI-compatible transcript.
-// See research/demo-model-gauntlet-2026-07-07.md for the measured matrix.
+// Model selection is measured, never assumed. The 2026-08-06 run moved primary
+// to GPT-5.6 Terra with Luna as fallback: at an identical 5/5 pass rate over 25
+// turns, Terra is ~19% faster p50 and 20% cheaper than the GPT-5.4 it replaced,
+// and Luna beats 5.4-mini at 3.75x lower input cost. Sol measured no better —
+// same pass rate, slowest first token, double the price — so the frontier tier
+// stays a gauntlet control rather than the demo default.
+//
+// Gemini is deliberately not a candidate: its tool follow-up needs Google's
+// provider-specific thought_signature preserved, and neither route here keeps
+// it (passthrough lacks Unified Billing coverage; the run path has no google
+// runWireFormat and falls back to the OpenAI wire). Measured tool starts with
+// zero tool results.
+//
+// Prior matrix: research/demo-model-gauntlet-2026-07-07.md. Current matrix and
+// the per-model routing notes: scripts/run-demo-model-gauntlet.mjs.
 /** Throttle-bucket subject for loopback dev requests (no cookie, no WorkOS). */
 const DEV_SUBJECT = "dev-loopback";
 const TOOL_BUDGET_MESSAGE =
