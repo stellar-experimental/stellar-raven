@@ -90,8 +90,10 @@ export function allowDevUnauthenticated(
 }
 
 /**
- * workers-oauth-provider 0.8.1 serves RFC 8414 metadata only at the EXACT
- * path `/.well-known/oauth-authorization-server` (verified in its dist).
+ * workers-oauth-provider 0.10.1 serves RFC 8414 metadata only at the EXACT
+ * path `/.well-known/oauth-authorization-server` (verified in its dist —
+ * re-checked on the 0.8.1 → 0.10.1 upgrade; still the only well-known path it
+ * answers besides `/.well-known/oauth-protected-resource`).
  * Two families of client requests are aliased onto that path:
  *  1. the RFC 8414 §3.1 path-suffixed form (`.../oauth-authorization-server/mcp`)
  *     — our issuer has no path component, so only non-conforming clients that

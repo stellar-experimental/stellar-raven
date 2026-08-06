@@ -287,17 +287,21 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     expect(response.status).toBe(401);
     const wwwAuthenticate = response.headers.get("www-authenticate") ?? "";
     expect(wwwAuthenticate).toContain("Bearer");
-    expect(wwwAuthenticate).toContain('error="invalid_token"');
     expect(wwwAuthenticate).toContain(
       'resource_metadata="https://mcp.test/.well-known/oauth-protected-resource/mcp"'
     );
-    const body = (await response.json()) as { error: string };
-    expect(body.error).toBe("invalid_token");
+    // RFC 6750 §3: a request carrying NO credentials must not be told which
+    // error occurred — there is no token to call invalid. The pointer to the
+    // protected-resource metadata is what the client actually needs.
+    expect(wwwAuthenticate).not.toContain("error=");
+    // No body to leak an error code into either — the challenge header carries
+    // everything a credential-less client is entitled to know.
+    expect(await response.text()).toBe("");
     // The MCP handler must never run without a valid token.
     expect(mcpFetch).not.toHaveBeenCalled();
   });
 
-  it("garbage bearer token on /mcp → 401, handler untouched", async () => {
+  it("garbage bearer token on /mcp → 401 naming invalid_token, handler untouched", async () => {
     mcpFetch.mockClear();
     const response = await provider.fetch(
       new Request("https://mcp.test/mcp", {
@@ -308,6 +312,9 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
       ctx()
     );
     expect(response.status).toBe(401);
+    // A token WAS presented and was rejected, so RFC 6750 §3 wants the reason.
+    // This is the half of the pair that must keep the error code.
+    expect(response.headers.get("www-authenticate") ?? "").toContain('error="invalid_token"');
     expect(mcpFetch).not.toHaveBeenCalled();
   });
 
