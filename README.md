@@ -71,6 +71,20 @@ npm run typegen    # regenerate env.d.ts after wrangler.jsonc/.dev.vars changes
 For local MCP testing, populate `.dev.vars`, run `npm run dev`, and point a client at
 `http://localhost:8787/mcp`. Restart `wrangler dev` after editing `.dev.vars`.
 
+`npm run deploy` needs Wrangler authenticated against the Cloudflare account that owns the
+worker, which is not the same account every contributor is logged into by default. Wrangler
+resolves credentials per directory, so bind the right profile once per clone:
+
+```
+wrangler auth list                 # profiles and their bound directories
+wrangler auth activate <name> .    # bind one to this repo
+```
+
+A stale or wrong-account credential surfaces as `Authentication error [code: 10000]`, then
+`Max auth failures reached [code: 9109]` once retries trip the limiter — not as a permissions
+message naming the account, so check the active profile before assuming the token expired.
+The binding lives in `~/.wrangler`, never in the repo.
+
 ## Observability
 
 Structured JSON events (`src/observability.ts`) land in Workers Logs; traces are enabled with a
