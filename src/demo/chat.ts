@@ -16,8 +16,12 @@
  * timeout stops model + tool spend, not just frame delivery.
  * tool-start/tool-result frames are emitted by the tools themselves
  * (src/demo/tools.ts); here only token/step/done/error mapping remains
- * (part names verified against ai v6: text-delta, start-step, finish,
- * abort, error, tool-error).
+ * (part names re-verified against ai v7's TextStreamPart union: text-delta,
+ * reasoning-delta, start-step, tool-error, abort, error, finish — all
+ * unchanged from v6, and `finish` still carries finishReason + totalUsage).
+ * The switch below is over a discriminated union, so a renamed part is a type
+ * error rather than a silent no-op — but the demo tests mock streamText, so
+ * only a live turn exercises the provider network path.
  *
  * WORKER-ONLY MODULE: imports src/demo/tools.ts (→ src/executor/run.ts →
  * cloudflare:workers). Route coverage lives in test/smoke/server.test.ts.
