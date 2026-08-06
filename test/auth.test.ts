@@ -35,6 +35,7 @@ import {
   parseApiKeyCredential
 } from "../src/auth/api-keys";
 import {
+  CONSENT_CSRF_TTL_SECONDS,
   LOGIN_STATE_TTL_SECONDS,
   WorkOSAuthHandler,
   demoLoginRedirect,
@@ -438,6 +439,54 @@ describe("WorkOSAuthHandler", () => {
     expect(page).toContain(`type="checkbox" name="tos_agree"`);
   });
 
+  // `allowPlainPKCE: false` only rejects the plain METHOD. The provider leaves an
+  // absent code_challenge undefined and, at redemption, derives
+  // `isPkceEnabled = !!grantData.codeChallenge` — so a request claiming S256 with
+  // no challenge yields a grant whose code is redeemable with no verifier at all.
+  // Both /authorize legs must refuse it before a consent page is ever rendered.
+  it.each([
+    ["no code_challenge at all", { responseType: "code", clientId: "client-abc", redirectUri: "https://client.example/cb", scope: ["mcp"], state: "s", codeChallengeMethod: "S256" }],
+    ["a plain challenge", { ...AUTH_REQ, codeChallengeMethod: "plain" }],
+    ["no method", { ...AUTH_REQ, codeChallengeMethod: undefined }]
+  ])("GET /authorize refuses an authorization request with %s", async (_label, parsed) => {
+    const env = testEnv({
+      OAUTH_PROVIDER: stubHelpers({
+        parseAuthRequest: vi.fn(async () => parsed as AuthRequest)
+      })
+    });
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/authorize?client_id=client-abc"),
+      env
+    );
+    expect(response.status).toBe(400);
+    expect(await response.text()).toBe("Invalid authorization request");
+    // Never mint a consent cookie for a request that could not be safely granted.
+    expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
+  });
+
+  it("POST /authorize refuses a PKCE-less authorization request before parking state", async () => {
+    const env = testEnv({
+      OAUTH_PROVIDER: stubHelpers({
+        parseAuthRequest: vi.fn(async () => ({ ...AUTH_REQ, codeChallenge: undefined }) as AuthRequest)
+      })
+    });
+    const form = new URLSearchParams({ csrf_token: "token-1", tos_agree: "on" });
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/authorize?client_id=client-abc", {
+        method: "POST",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          cookie: "__Host-MCP_CONSENT_CSRF=token-1"
+        },
+        body: form
+      }),
+      env
+    );
+    expect(response.status).toBe(400);
+    const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
+    expect(kv.store.size).toBe(0);
+  });
+
   it("POST /authorize rejects a missing/mismatched CSRF token, and logs a distinguishing reason", async () => {
     const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
     const form = new URLSearchParams({ csrf_token: "attacker-guess" });
@@ -453,14 +502,18 @@ describe("WorkOSAuthHandler", () => {
       }),
       env
     );
-    expect(response.status).toBe(400);
-    // Platform events only show `POST /authorize -> 400`, which is identical
-    // for every rejection on this route. The app event is the only thing that
-    // makes a user report of a CSRF mismatch answerable from logs.
+    // Recoverable, not a dead end: back to the form action so the GET handler
+    // issues a fresh token + cookie. The old bare 400 ALSO cleared the cookie,
+    // so every retry reported a CSRF mismatch no matter what failed first.
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe("/authorize?client_id=client-abc");
+    expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
+    // The reason still has to reach the logs — the redirect is indistinguishable
+    // from the terms-acknowledgement one in platform events.
     const events = log.mock.calls.map(([line]) => JSON.parse(String(line)));
     expect(events).toContainEqual({
       evt: "auth_reject",
-      status: 400,
+      status: 303,
       reason: "CSRF token mismatch"
     });
     log.mockRestore();
@@ -481,7 +534,10 @@ describe("WorkOSAuthHandler", () => {
       }),
       env
     );
-    expect(response.status).toBe(400);
+    // Same recovery path as the CSRF branch — the CSS gate on the button is
+    // mouse-only, so a keyboard submit lands here and must stay retryable.
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe("/authorize?client_id=client-abc");
     // No state parked when the acknowledgement is missing.
     const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
     expect(kv.store.size).toBe(0);
@@ -522,7 +578,17 @@ describe("WorkOSAuthHandler", () => {
     expect(parked.oauthReq.clientId).toBe("client-abc");
     // The browser-binding cookie matches what was parked.
     expect(cookieValue(response, "__Host-MCP_STATE")).toBe(parked.binding);
+    // The two clocks are deliberately different, and the parked-state one is the
+    // one that must stay short: /callback consumes `login:${state}` BEFORE it
+    // checks the binding cookie, so a leaked state is a login-DoS whose window
+    // this value sets. Consent dwell has no such surface.
     expect(LOGIN_STATE_TTL_SECONDS).toBe(600);
+    expect(CONSENT_CSRF_TTL_SECONDS).toBe(1800);
+    expect(cookieValue(response, "__Host-MCP_STATE")).toBeTruthy();
+    const bindingCookie = (response.headers as unknown as { getSetCookie(): string[] })
+      .getSetCookie()
+      .find((c) => c.startsWith("__Host-MCP_STATE="));
+    expect(bindingCookie).toContain(`Max-Age=${LOGIN_STATE_TTL_SECONDS}`);
   });
 
   it("GET /callback rejects unknown state and binding-cookie mismatches (single-use)", async () => {

@@ -60,8 +60,30 @@ declare global {
 const WORKOS_AUTHORIZE_URL = "https://api.workos.com/user_management/authorize";
 const WORKOS_AUTHENTICATE_URL = "https://api.workos.com/user_management/authenticate";
 
-/** Parked /authorize requests expire from OAUTH_KV after 10 minutes. */
+/**
+ * Parked /authorize requests expire from OAUTH_KV after 10 minutes, and the
+ * browser-binding cookie rides the same clock. Deliberately NOT raised
+ * alongside the consent window below: a parked state carries a login-DoS
+ * surface the consent cookie does not. `login:${state}` is read and deleted
+ * non-atomically over eventually-consistent KV, and /callback consumes the
+ * entry BEFORE it validates the binding cookie — so anyone holding a leaked
+ * state value can burn the victim's parked login with `?code=junk&state=...`.
+ * They cannot complete a grant (the binding cookie stops that), but they can
+ * destroy one, and a longer TTL only widens that window. WorkOS's own code
+ * lifetime starts when a code is ISSUED, so it does not cap this leg.
+ */
 export const LOGIN_STATE_TTL_SECONDS = 10 * 60;
+
+/**
+ * The consent page is a HUMAN dwell window, not an automated round trip: the
+ * page asks the user to read two legal documents that it opens in new tabs.
+ * The double-submit token has no server-side state tied to it and cannot
+ * approve a stale registration — POST re-parses the query and the provider
+ * re-validates client and redirect_uri on both the POST and at
+ * completeAuthorization — so a longer window costs only a longer-lived
+ * approval capability on a shared profile. Separate clock, separate reason.
+ */
+export const CONSENT_CSRF_TTL_SECONDS = 30 * 60;
 
 /** Consent-form double-submit CSRF cookie (GET sets, POST validates + clears). */
 const CONSENT_CSRF_COOKIE = "__Host-MCP_CONSENT_CSRF";
@@ -140,7 +162,10 @@ export const WorkOSAuthHandler = {
         formAction: `/authorize${url.search}`
       });
       return new Response(body, {
-        headers: { ...CONSENT_HEADERS, "set-cookie": setCookie(CONSENT_CSRF_COOKIE, csrfToken) }
+        headers: {
+          ...CONSENT_HEADERS,
+          "set-cookie": setCookie(CONSENT_CSRF_COOKIE, csrfToken, CONSENT_CSRF_TTL_SECONDS)
+        }
       });
     }
 
@@ -152,14 +177,15 @@ export const WorkOSAuthHandler = {
       const fromForm = form.get("csrf_token");
       const fromCookie = readCookie(request, CONSENT_CSRF_COOKIE);
       if (typeof fromForm !== "string" || !fromCookie || fromForm !== fromCookie) {
-        return text("CSRF token mismatch", 400, { "set-cookie": clearCookie(CONSENT_CSRF_COOKIE) });
+        return retryConsent("CSRF token mismatch", url);
       }
 
       // Explicit Terms/Privacy acknowledgement: the consent form's checkbox
-      // (name="tos_agree") only submits when ticked. The CSS-only gate is UX;
-      // this is the enforcement boundary — no ack, no grant.
+      // (name="tos_agree") only submits when ticked. The CSS gate on the
+      // button is UX and mouse-only — `pointer-events: none` does not stop a
+      // keyboard submit — so this is the enforcement boundary: no ack, no grant.
       if (!form.get("tos_agree")) {
-        return text("Terms acknowledgement required", 400, { "set-cookie": clearCookie(CONSENT_CSRF_COOKIE) });
+        return retryConsent("Terms acknowledgement required", url);
       }
 
       // Park the parsed request for /callback; the binding secret ties the
@@ -173,7 +199,7 @@ export const WorkOSAuthHandler = {
       );
 
       const headers = new Headers({ location: workosAuthorizeUrl(env, url.origin, state) });
-      headers.append("set-cookie", setCookie(STATE_BINDING_COOKIE, binding));
+      headers.append("set-cookie", setCookie(STATE_BINDING_COOKIE, binding, LOGIN_STATE_TTL_SECONDS));
       headers.append("set-cookie", clearCookie(CONSENT_CSRF_COOKIE));
       return new Response(null, { status: 302, headers });
     }
@@ -349,7 +375,7 @@ export async function demoLoginRedirect(request: Request, env: Env): Promise<Res
     location: workosAuthorizeUrl(env, url.origin, state),
     "cache-control": "no-store"
   });
-  headers.append("set-cookie", setCookie(STATE_BINDING_COOKIE, binding));
+  headers.append("set-cookie", setCookie(STATE_BINDING_COOKIE, binding, LOGIN_STATE_TTL_SECONDS));
   return new Response(null, { status: 302, headers });
 }
 
@@ -385,9 +411,25 @@ async function sha256Hex(input: string): Promise<string> {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+/**
+ * Both /authorize legs resolve the request through here, so this is where the
+ * PKCE posture is actually enforced.
+ *
+ * `allowPlainPKCE: false` (src/auth/gate.ts) is NOT sufficient on its own: the
+ * provider only rejects the *method* `plain`, and it defaults an absent
+ * `code_challenge_method` to `plain` while leaving an absent `code_challenge`
+ * as `undefined`. So `?code_challenge_method=S256` with no `code_challenge`
+ * sails past that guard, and at redemption the provider derives
+ * `isPkceEnabled = !!grantData.codeChallenge` — false — and issues tokens to
+ * anyone presenting the code with the (public) redirect_uri and no verifier.
+ * An intercepted code is then redeemable. MCP (2025-11-25) requires S256, so
+ * requiring the challenge outright is also the spec-correct posture.
+ */
 async function parseAuthRequest(provider: OAuthHelpers, request: Request): Promise<AuthRequest | null> {
   try {
-    return await provider.parseAuthRequest(request);
+    const parsed = await provider.parseAuthRequest(request);
+    if (!parsed.codeChallenge || parsed.codeChallengeMethod !== "S256") return null;
+    return parsed;
   } catch {
     return null;
   }
@@ -401,8 +443,8 @@ function readCookie(request: Request, name: string): string | null {
   return null;
 }
 
-function setCookie(name: string, value: string): string {
-  return `${name}=${value}; ${COOKIE_ATTRS}; Max-Age=${LOGIN_STATE_TTL_SECONDS}`;
+function setCookie(name: string, value: string, ttlSeconds: number): string {
+  return `${name}=${value}; ${COOKIE_ATTRS}; Max-Age=${ttlSeconds}`;
 }
 
 function clearCookie(name: string): string {
@@ -418,6 +460,35 @@ function clearCookie(name: string): string {
  * provider content, so it is safe as the reason. Mirrors `demo-chat-rejected`
  * in src/demo/chat.ts.
  */
+/**
+ * Recoverable consent failure: log the real reason, then send the browser back
+ * to its own form action so the GET handler above mints a FRESH token and
+ * cookie and re-renders the consent page.
+ *
+ * A bare 400 here was the actual defect behind "CSRF token mismatch" reports.
+ * Every failed consent POST used to clear the CSRF cookie, so whatever went
+ * wrong first — a stale tab, a second tab overwriting the cookie, a keyboard
+ * submit past the CSS checkbox gate — the RETRY reported a CSRF mismatch, and
+ * kept reporting it. One transient error turned into a sticky dead end that no
+ * cookie lifetime could fix, because the cookie was cleared, not expired.
+ *
+ * 303 (not 302) so the redirect is unambiguously a GET. `url.search` is safe to
+ * echo: parseAuthRequest already validated it on this request, and nothing has
+ * been granted or parked yet. Clearing the cookie is redundant — the GET's
+ * Set-Cookie supersedes it.
+ *
+ * Known ceiling: a browser that refuses the cookie loops consent→consent rather
+ * than dead-ending. It could never have completed the flow either way, and a
+ * live page beats a 400.
+ */
+function retryConsent(reason: string, url: URL): Response {
+  logEvent("auth_reject", { status: 303, reason });
+  return new Response(null, {
+    status: 303,
+    headers: { location: `/authorize${url.search}`, "cache-control": "no-store" }
+  });
+}
+
 function text(body: string, status: number, headers: Record<string, string> = {}): Response {
   logEvent("auth_reject", { status, reason: body });
   return new Response(body, {

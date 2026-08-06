@@ -1155,6 +1155,12 @@ export const LANDING_HEADERS: Record<string, string> = {
 export const CONSENT_HEADERS: Record<string, string> = {
   "content-type": "text/html; charset=utf-8",
   "cache-control": "no-store",
+  // The consent URL carries the client's `state` and `code_challenge` in its
+  // query string, and this page invites the user to click through to /terms
+  // and to the Stellar privacy policy. The default referrer policy would send
+  // that whole URL on the same-origin hop — straight into request logs — so
+  // send no referrer at all. Matches the /callback interstitial.
+  "referrer-policy": "no-referrer",
   "content-security-policy":
     "default-src 'none'; style-src 'unsafe-inline'; font-src data:; img-src data:; " +
     "frame-ancestors 'none'; base-uri 'none'",
