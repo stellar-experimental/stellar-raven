@@ -48,6 +48,8 @@ import {
   demoOpenAiApiModeFromOverride,
   demoOpenAiProviderOptions,
   demoModelSettings,
+  demoTemperatureFor,
+  demoUsesUnifiedRun,
   demoReasoningEffortFromOverride,
   demoReasoningEffortOverride,
   demoModelsFromOverride,
@@ -261,6 +263,15 @@ async function runTurn(
       ],
       resume: false
     });
+    // Second instance, deliberately WITHOUT `providers`: that selects the plain
+    // binding run path for slugs the delegate registry cannot resolve. It must
+    // stay separate — dropping `providers` globally would demote openai/* off
+    // Responses mode and strip the Claude family of the SDK layer that removes
+    // the `temperature` they reject, turning three green models red.
+    const unifiedRun = createWorkersAI({
+      binding: env.AI,
+      gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK)
+    });
     const sessionAffinity = await demoSessionAffinity(subject);
     for (let index = 0; index < demoModels.length; index += 1) {
       const config = demoModels[index];
@@ -288,8 +299,16 @@ async function runTurn(
         });
       };
       try {
+        // Vendors the plugin registry does not know (see DEMO_UNIFIED_RUN_PREFIXES)
+        // resolve through the plain binding instead. Same dispatch either way —
+        // binding.run(slug, body, { gateway }) — so the gateway's rate limit and
+        // spend rule still apply; only the SDK wrapper differs.
+        const viaUnifiedRun = demoUsesUnifiedRun(config.model);
+        const settings = demoModelSettings(config.model, sessionAffinity, reasoningEffort);
         const result = streamText({
-          model: workersai(config.model, demoModelSettings(config.model, sessionAffinity, reasoningEffort)),
+          model: viaUnifiedRun
+            ? unifiedRun(config.model, { extraHeaders: settings.extraHeaders })
+            : workersai(config.model, settings),
           system: DEMO_SYSTEM_PROMPT,
           messages,
           tools: tools as ToolSet,
@@ -302,7 +321,7 @@ async function runTurn(
             });
           },
           maxOutputTokens: DEMO_CAPS.maxOutputTokens,
-          temperature: DEMO_TEMPERATURE,
+          temperature: demoTemperatureFor(config.model),
           ...demoOpenAiProviderOptions(config.model, openAiReasoningEffort),
           abortSignal
         });
@@ -505,7 +524,13 @@ function bodyText(body: BodyInit): string {
   if (typeof body === "string") return body;
   if (body instanceof Uint8Array) return new TextDecoder().decode(body);
   if (body instanceof ArrayBuffer) return new TextDecoder().decode(body);
-  return "{}";
+  // Throw rather than return "{}". The caller feeds this straight back into the
+  // Anthropic request, so a shape this does not recognize would silently replace
+  // the entire request with empty JSON — every Anthropic turn quietly wrong, no
+  // error anywhere. @ai-sdk/anthropic posts string bodies today, so this is one
+  // dependency bump away from firing. Fail loud: the demo already converts a
+  // thrown turn into an error frame and falls through to the next model.
+  throw new TypeError(`Unsupported Anthropic request body type: ${Object.prototype.toString.call(body)}`);
 }
 
 /**

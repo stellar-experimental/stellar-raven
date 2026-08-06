@@ -17,20 +17,24 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * not `4.6`); a dotted id authenticates and returns "model … was not found",
  * which reads like a provider outage.
  *
- * Two entries currently FAIL on gateway credentials, not on code, and are kept
- * because they are the right models the moment that is fixed:
- *   - anthropic/claude-fable-5  -> "x-api-key header is required"
- *   - google/gemini-3.6-flash   -> "unregistered callers … use API Key"
- * Both work on the account-level Unified Billing route (`POST /ai/run`) with no
- * key at all, so this is the `stellar-raven-demo` gateway lacking provider keys
- * — the `default` gateway has them. Sonnet 5 / Opus 5 resolve to Unified
- * Billing through the same gateway, so coverage is per-model, not per-provider.
+ * Every entry is GREEN as of 2026-08-06. Two were unblocked by routing changes,
+ * not by credentials — see src/demo/model-config.ts:
+ *   - claude-fable-5 was failing `x-api-key header is required` because
+ *     `transport: "gateway"` selects provider PASSTHROUGH, whose Unified Billing
+ *     catalog is narrower than the run catalog. Omitting `transport` for
+ *     anthropic/ fixed it with no key.
+ *   - moonshotai/kimi-k3 was failing `Unknown gateway provider "moonshotai"`
+ *     because workers-ai-provider's registry has no such vendor. It routes
+ *     through a providers-less binding instance instead, and needs
+ *     `temperature: 1` — it rejects anything else.
  *
- * Kimi K3 (`moonshotai/kimi-k3`) is the newest Kimi but is NOT here: it fails in
- * ~39ms with `Unknown gateway provider "moonshotai"` because
- * workers-ai-provider's registry has no entry for that vendor. The @cf-hosted
- * K2.7 is the latest ROUTABLE Kimi until that lands upstream or we add a
- * custom gateway provider.
+ * `google/gemini-3.6-flash` is deliberately ABSENT and should not be re-added
+ * without a library change. It is entitled and reachable, but unusable HERE: on
+ * passthrough it is off the Unified Billing list (401), and on the run path
+ * Google has no `runWireFormat`, so it resolves to the OpenAI wire and its
+ * `thought_signature` is dropped when a tool result is replayed. Measured
+ * `tools=1/0` and `2/0` — tool STARTS, zero tool RESULTS, then `Bad Request`.
+ * A tool-using gauntlet cannot pass a model that cannot return a tool result.
  */
 export const DEFAULT_MODELS = [
   "openai/gpt-5.6-sol",
@@ -39,9 +43,8 @@ export const DEFAULT_MODELS = [
   "anthropic/claude-fable-5",
   "anthropic/claude-opus-5",
   "anthropic/claude-sonnet-5",
-  "google/gemini-3.6-flash",
   "xai/grok-4.5",
-  "@cf/moonshotai/kimi-k2.7-code",
+  "moonshotai/kimi-k3",
   "@cf/zai-org/glm-5.2",
   "@cf/zai-org/glm-4.7-flash"
 ];

@@ -92,7 +92,7 @@ describe("demo chat provider failures", () => {
       [finish()]
     ]);
     expect(finalEvent).toMatchObject({
-      attemptedModels: ["openai/gpt-5.4", "openai/gpt-5.4-mini"],
+      attemptedModels: ["openai/gpt-5.6-terra", "openai/gpt-5.6-luna"],
       finishReason: "stop",
       stopReasonClass: "missing-final-text",
       hadFinalText: false,
@@ -110,10 +110,10 @@ describe("demo chat provider failures", () => {
         [{ type: "error", error: providerError("latest rate limit", 429) }]
       ],
       expected: {
-        attemptedModels: ["openai/gpt-5.4", "openai/gpt-5.4-mini"],
+        attemptedModels: ["openai/gpt-5.6-terra", "openai/gpt-5.6-luna"],
         providerErrorStatus: 429,
         providerErrorAttempt: 2,
-        providerErrorModel: "openai/gpt-5.4-mini",
+        providerErrorModel: "openai/gpt-5.6-luna",
         providerErrorTerminal: true
       }
     },

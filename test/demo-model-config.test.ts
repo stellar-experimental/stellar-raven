@@ -22,6 +22,8 @@ import {
   demoOpenAiProviderOptions,
   demoGatewayTransportSettings,
   demoModelSettings,
+  demoTemperatureFor,
+  demoUsesUnifiedRun,
   demoReasoningEffortFromOverride,
   demoReasoningEffortOverride,
   demoModelsFromOverride,
@@ -74,8 +76,8 @@ describe("demo model config", () => {
   });
 
   it("uses the gauntlet winner with a fast fallback, conservative sampling, and configured default reasoning", () => {
-    expect(DEMO_PRIMARY_MODEL).toBe("openai/gpt-5.4");
-    expect(DEMO_FALLBACK_MODEL).toBe("openai/gpt-5.4-mini");
+    expect(DEMO_PRIMARY_MODEL).toBe("openai/gpt-5.6-terra");
+    expect(DEMO_FALLBACK_MODEL).toBe("openai/gpt-5.6-luna");
     expect(DEMO_GROK_CONTROL_MODEL).toBe("xai/grok-4.5");
     expect(DEMO_KIMI_CONTROL_MODEL).toBe("@cf/moonshotai/kimi-k2.7-code");
     expect(DEMO_MODEL).toBe(DEMO_PRIMARY_MODEL);
@@ -154,6 +156,27 @@ describe("demo model config", () => {
       resume: false,
       collectLog: false
     });
+    // Anthropic and Google MUST omit `transport`. That selects the binding run
+    // path, whose Unified Billing catalog is wider than provider passthrough's —
+    // passthrough strips auth headers and does not carry claude-fable-5, so it
+    // was reaching api.anthropic.com with no credential and 401ing. Asserting
+    // absence, not a value, because absence is the whole fix.
+    for (const model of ["anthropic/claude-fable-5", "anthropic/claude-sonnet-5", "google/gemini-3.6-flash"]) {
+      const settings = demoGatewayTransportSettings(model);
+      expect("transport" in settings, model).toBe(false);
+      expect(settings).toEqual({ resume: false, collectLog: false });
+    }
+  });
+
+  it("routes registry-unknown vendors through the plain binding, with their temperature quirk", () => {
+    // workers-ai-provider has no `moonshotai` entry, so the plugin delegate
+    // throws before any network call. The binding run path resolves it instead.
+    expect(demoUsesUnifiedRun("moonshotai/kimi-k3")).toBe(true);
+    expect(demoUsesUnifiedRun("anthropic/claude-fable-5")).toBe(false);
+    expect(demoUsesUnifiedRun("@cf/zai-org/glm-5.2")).toBe(false);
+    // That path has no SDK to normalize parameters, and K3 accepts only 1.
+    expect(demoTemperatureFor("moonshotai/kimi-k3")).toBe(1);
+    expect(demoTemperatureFor("openai/gpt-5.6-terra")).toBe(DEMO_TEMPERATURE);
   });
 
   it("defaults OpenAI API mode to responses unless chat is explicitly requested", () => {

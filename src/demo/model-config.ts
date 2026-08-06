@@ -9,8 +9,8 @@ export type DemoModelConfig = {
 export type DemoReasoningEffort = "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
 export type DemoOpenAiApiMode = "chat" | "responses";
 
-export const DEMO_PRIMARY_MODEL = "openai/gpt-5.4";
-export const DEMO_FALLBACK_MODEL = "openai/gpt-5.4-mini";
+export const DEMO_PRIMARY_MODEL = "openai/gpt-5.6-terra";
+export const DEMO_FALLBACK_MODEL = "openai/gpt-5.6-luna";
 export const DEMO_GROK_CONTROL_MODEL = "xai/grok-4.5";
 export const DEMO_KIMI_CONTROL_MODEL = "@cf/moonshotai/kimi-k2.7-code";
 export const DEMO_MODELS: readonly DemoModelConfig[] = [
@@ -101,7 +101,34 @@ export function demoOpenAiProviderOptions(model: string, reasoningEffort: DemoRe
   } as const;
 }
 
+/**
+ * `transport` picks the DISPATCH, and the two dispatches have different Unified
+ * Billing catalogs — which is why coverage looked per-model and unexplainable.
+ *
+ * `transport: "gateway"` uses provider-native PASSTHROUGH, which deliberately
+ * strips `x-api-key`/`authorization`. Passthrough's Unified Billing list is
+ * narrower than the run catalog: Sonnet 5 and Opus 5 are on it, Fable 5 and
+ * Gemini are not — so those two were forwarded to api.anthropic.com and
+ * generativelanguage.googleapis.com with NO credential, and the PROVIDER
+ * answered `x-api-key header is required` / `Method doesn't allow unregistered
+ * callers`. Provider errors, not gateway errors, which is what made it read as
+ * a billing problem.
+ *
+ * Omitting `transport` selects `"run"` -> `binding.run(slug, body, { gateway })`,
+ * the Unified Billing path. The gateway is NOT dropped: the rate limit and the
+ * account spend rule still apply, and extraHeaders (`cf-aig-collect-log-payload`,
+ * `x-session-affinity`) are still forwarded. What passthrough uniquely offers —
+ * response caching, server-side fallback, BYOK aliases — this demo never uses,
+ * and chat.ts runs its own client-side fallback loop.
+ *
+ * Deliberately narrow: openai/* and xai/* stay on passthrough because both are
+ * green today and Responses-mode over the run path is unverified. Do not widen
+ * this without probing the models it would move.
+ */
 export function demoGatewayTransportSettings(model: string) {
+  if (model.startsWith("anthropic/") || model.startsWith("google/")) {
+    return { resume: false, collectLog: false } as const;
+  }
   if (model.startsWith("xai/") || model.startsWith("grok/")) {
     return {
       transport: "gateway",
@@ -116,6 +143,33 @@ export function demoGatewayTransportSettings(model: string) {
 
 export function demoGatewayOptions(id: string) {
   return { id, collectLog: false } as const;
+}
+
+/**
+ * Vendors absent from workers-ai-provider's slug registry (26 keys, no
+ * registration hook), so the plugin delegate throws `Unknown gateway provider`
+ * before any network call. They are still reachable keyless through the plain
+ * binding run path, which resolves slugs against Cloudflare's catalog instead.
+ *
+ * Kept as a narrow allowlist rather than a fallback-on-error, because that
+ * route has NO provider-SDK layer: nothing strips parameters a model rejects,
+ * which is exactly what protects the Claude 5 family (they reject `temperature`
+ * outright and `@ai-sdk/anthropic` drops it for us). Routing a model here that
+ * did not need it would turn a working model red.
+ */
+export const DEMO_UNIFIED_RUN_PREFIXES = ["moonshotai/"] as const;
+
+export function demoUsesUnifiedRun(model: string): boolean {
+  return DEMO_UNIFIED_RUN_PREFIXES.some((prefix) => model.startsWith(prefix));
+}
+
+/**
+ * Kimi K3 accepts only `temperature: 1` ("only 1 is allowed"), and the unified
+ * run path has no SDK to normalize that away. Returning undefined lets the
+ * caller omit the field entirely where a model has no opinion.
+ */
+export function demoTemperatureFor(model: string): number | undefined {
+  return demoUsesUnifiedRun(model) ? 1 : DEMO_TEMPERATURE;
 }
 
 export function demoModelSettings(
