@@ -3,6 +3,7 @@ id: sls-062
 service: stellar-light-scout
 status: verified
 discovered: 2026-08-06
+upstreamTitle: Scout status reports nine SDF skills while its directory exposes seven
 evidence:
   - 2026-08-06 https://stellarlight.xyz/api/status (API 1.8.36) reported count 9 on the sources entry named sdfSkills and described it as proxied from skills.stellar.org
   - 2026-08-06 https://stellarlight.xyz/api/skills?source=sdf returned 7 rows and meta.counts.bySource.sdf 7: agentic-payments, assets, dapp, data, smart-contracts, standards, and zk-proofs
