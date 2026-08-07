@@ -86,6 +86,6 @@ Total findings: 61
 
 ## workers-ai-provider
 
-| id      | title                                                                                                                                    | status   | discovered | recurrences |
-| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ----------- |
-| wai-001 | workers-ai-provider 4.0.0 cannot delegate the Unified Billing catalog slug moonshotai/kimi-k3 when provider plugins are configured. The… | verified | 2026-08-06 | 0           |
+| id      | title                                                                                                                                    | status            | discovered | recurrences |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
+| wai-001 | workers-ai-provider 4.0.0 cannot delegate the Unified Billing catalog slug moonshotai/kimi-k3 when provider plugins are configured. The… | reported-upstream | 2026-08-06 | 0           |

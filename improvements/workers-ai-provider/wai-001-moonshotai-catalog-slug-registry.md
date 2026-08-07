@@ -1,7 +1,7 @@
 ---
 id: wai-001
 service: workers-ai-provider
-status: verified
+status: reported-upstream
 discovered: 2026-08-06
 upstreamTitle: workers-ai-provider rejects the Unified Billing moonshotai/Kimi catalog slug before AI.run
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - registry exports 26 entries; `moonshotai` is absent, while `findProviderBySlug("moonshotai")` returns undefined
   - source: node_modules/workers-ai-provider/src/gateway-delegate.ts:112-120 resolves slugs and throws the reproduced error
   - consumer impact: src/demo/model-config.ts:148-164 and src/demo/chat.ts:315-360 need a separate providers-less createWorkersAI instance to use the binding run path
+  - upstream issue filed 2026-08-07: https://github.com/cloudflare/ai/issues/634
 ---
 
 ## Finding
