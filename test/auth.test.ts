@@ -377,6 +377,70 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     );
   });
 
+  /**
+   * `clientIdMetadataDocumentEnabled: true` is an advertised surface, and
+   * ChatGPT is its largest consumer: OpenAI's connector prefers CIMD whenever
+   * `client_id_metadata_document_supported` is true and never falls back to
+   * dynamic registration. On 2026-08-09 every ChatGPT connect to production
+   * answered 400 while the whole suite stayed green, because provider 0.10.1
+   * rejected the document's SCALAR `token_endpoint_auth_method` before it
+   * looked at the plural field offering the `none` we do support.
+   *
+   * The shape below is ChatGPT's real live document. This test fails on
+   * 0.10.1 and guards the negotiation across every future provider bump —
+   * the one thing our own code cannot assert about itself.
+   */
+  it("resolves a ChatGPT-shaped CIMD client_id by negotiating down to `none`", async () => {
+    // CIMD is gated on the compat flag (wrangler.jsonc sets it in production).
+    vi.stubGlobal("Cloudflare", { compatibilityFlags: { global_fetch_strictly_public: true } });
+    const clientId = "https://chatgpt.com/oauth/TESTCLIENT/client.json";
+    const redirectUri = "https://chatgpt.com/connector/oauth/TESTCLIENT";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        Response.json({
+          client_id: clientId,
+          client_name: "ChatGPT",
+          client_uri: "https://chatgpt.com/",
+          redirect_uris: [redirectUri],
+          // The pair that broke it: prefers an asymmetric method we do not
+          // support, while offering one we do.
+          token_endpoint_auth_method: "private_key_jwt",
+          token_endpoint_auth_methods_supported: ["none", "private_key_jwt"],
+          token_endpoint_auth_signing_alg: "RS256",
+          jwks_uri: "https://chatgpt.com/oauth/jwks.json",
+          grant_types: ["authorization_code", "refresh_token"],
+          response_types: ["code"]
+        })
+      )
+    );
+
+    const helpers = getOAuthApi(options as never, testEnv() as never);
+    const parsed = await helpers.parseAuthRequest(
+      new Request(
+        `https://mcp.test/authorize?${new URLSearchParams({
+          response_type: "code",
+          client_id: clientId,
+          redirect_uri: redirectUri,
+          scope: "mcp",
+          state: "chatgpt-state",
+          // ChatGPT sends RFC 8707 `resource` on both legs.
+          resource: "https://mcp.test/mcp",
+          code_challenge: "a".repeat(43),
+          code_challenge_method: "S256"
+        })}`
+      )
+    );
+    expect(parsed.clientId).toBe(clientId);
+    expect(parsed.redirectUri).toBe(redirectUri);
+
+    // Negotiated to the public method, which is what keeps PKCE load-bearing
+    // and lets the /token exchange succeed with no client credentials.
+    const client = await helpers.lookupClient(clientId);
+    expect(client?.tokenEndpointAuthMethod).toBe("none");
+    expect(client?.redirectUris).toEqual([redirectUri]);
+  });
+
   it("garbage bearer token on /mcp → 401 naming invalid_token, handler untouched", async () => {
     mcpFetch.mockClear();
     const response = await provider.fetch(

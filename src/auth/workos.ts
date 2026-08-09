@@ -479,7 +479,7 @@ async function resolveAuthRequest(
  */
 function authorizationErrorResponse(error: unknown): Response {
   if (!(error instanceof AuthorizationError) || !error.redirectUri) {
-    return text("Invalid authorization request", 400);
+    return text("Invalid authorization request", 400, {}, unredirectableReason(error));
   }
   const target = new URL(error.redirectUri);
   target.searchParams.set("error", error.code);
@@ -491,6 +491,22 @@ function authorizationErrorResponse(error: unknown): Response {
     status: 303,
     headers: { location: target.toString(), "cache-control": "no-store" }
   });
+}
+
+/**
+ * Every unredirectable /authorize failure renders the same seven words, so the
+ * log line is the ONLY thing that separates them. Without this they were all
+ * `reason: "Invalid authorization request"`, and diagnosing the 2026-08-09
+ * ChatGPT outage meant joining app events to `cf-worker-event` by Ray ID just
+ * to recover the query string. Both values are developer-authored constants —
+ * an `AuthorizationError.code` is a fixed OAuth code, and `name` is a class
+ * name (`CimdFetchError` when a client-metadata document fails to resolve) —
+ * so this keeps the no-attacker-text rule that excludes `error.description`.
+ */
+function unredirectableReason(error: unknown): string {
+  if (error instanceof AuthorizationError) return `unredirectable:${error.code}`;
+  if (error instanceof Error) return `unredirectable:${error.name}`;
+  return "unredirectable:unknown";
 }
 
 function readCookie(request: Request, name: string): string | null {
@@ -547,8 +563,13 @@ function retryConsent(reason: string, url: URL): Response {
   });
 }
 
-function text(body: string, status: number, headers: Record<string, string> = {}): Response {
-  logEvent("auth_reject", { status, reason: body });
+function text(
+  body: string,
+  status: number,
+  headers: Record<string, string> = {},
+  reason: string = body
+): Response {
+  logEvent("auth_reject", { status, reason });
   return new Response(body, {
     status,
     headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store", ...headers }
