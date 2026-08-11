@@ -35,15 +35,16 @@ body{display:flex;flex-direction:column}
    globe in both states, no page script and no CSP change — a CSS
    background-image is governed by img-src 'self' data:.
    image-rendering:pixelated keeps the dither dots hard squares as the 560x350
-   frame upscales to 160vmin. */
+   frame upscales to 240vmin. */
 .stage{background:var(--green)}
-/* Match the homepage WebGL globe exactly: same 160vmin size, and the sphere
-   centred on 50vw − 61.92vmin (the shader's 0.5·u_res + offX·min·scale) rather
-   than pinned to the left edge — so the baked frame's left edge goes to
-   calc(50vw − 79.9vmin) (that centre minus the sphere's 17.94vmin inset). */
+/* Match the homepage WebGL globe exactly: same sphere size (the 840px frame is
+   240vmin wide at the same px-per-vmin as the old 560px/160vmin one), and the
+   sphere centred on 50vw − 61.92vmin (the shader's 0.5·u_res + offX·min·scale)
+   rather than pinned to the left edge — so the baked frame's left edge goes to
+   calc(50vw − 159.86vmin) (that centre minus the sphere's 97.94vmin inset). */
 .stage::after{content:"";position:absolute;inset:0;
   background-image:url("data:image/png;base64,${DEMO_GLOBE_PNG_BASE64}");
-  background-position:calc(50vw - 79.9vmin) bottom;background-size:160vmin auto;background-repeat:no-repeat;
+  background-position:calc(50vw - 159.86vmin) bottom;background-size:240vmin auto;background-repeat:no-repeat;
   image-rendering:pixelated}
 /* The globe now sits a touch DARKER than the field, so it never threatens
    legibility — the scrim is just a gentle top veil for depth and fades to

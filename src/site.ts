@@ -801,10 +801,10 @@ body{display:flex;flex-direction:column}
    the field — the inverse of the playground's darker, recessed sphere. */
 .stage{background:var(--green)}
 /* Match the homepage WebGL globe exactly (see the demo page for the derivation):
-   same 160vmin size, sphere centred on 50vw − 61.92vmin rather than left-pinned. */
+   same sphere size (840px frame = 240vmin), centred on 50vw − 61.92vmin rather than left-pinned. */
 .stage::after{content:"";position:absolute;inset:0;
   background-image:url("data:image/png;base64,${CONSENT_GLOBE_PNG_BASE64}");
-  background-position:calc(50vw - 79.9vmin) bottom;background-size:160vmin auto;background-repeat:no-repeat;
+  background-position:calc(50vw - 159.86vmin) bottom;background-size:240vmin auto;background-repeat:no-repeat;
   image-rendering:pixelated}
 /* gentle top veil for depth; fades clear over the bottom-left sphere so the
    olive glow reads (the centred card carries its own contrast for its text). */
@@ -951,7 +951,7 @@ const TERMS_CSS = `
 .stage{background:var(--green)}
 .stage::after{content:"";position:absolute;inset:0;
   background-image:url("data:image/png;base64,${CONSENT_GLOBE_PNG_BASE64}");
-  background-position:calc(50vw - 79.9vmin) bottom;background-size:160vmin auto;background-repeat:no-repeat;
+  background-position:calc(50vw - 159.86vmin) bottom;background-size:240vmin auto;background-repeat:no-repeat;
   image-rendering:pixelated;opacity:.5}
 .scrim{background:linear-gradient(180deg,rgba(14,21,13,.86) 0%,rgba(14,21,13,.92) 40%,rgba(14,21,13,.96) 100%)}
 /* header + footer share the prose column so the page reads as one measure */

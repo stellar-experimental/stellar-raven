@@ -25,7 +25,20 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 // One PNG pixel == one shader "cell" (the shader pixelates to cells and upscales;
 // we do the same via image-rendering:pixelated). Geometry depends only on
 // cols/rows + scale/off, so both surfaces share the framing the landing hero uses.
-const FRAME = { cols: 560, rows: 350, scale: 1.72, offX: -0.36, offY: -0.46, time: 2.5 };
+// PAD_LEFT widens the frame leftwards so the WHOLE sphere fits: at 560 cols the
+// sphere ran ~238px past the left edge, and on wide viewports (aspect > ~1.6 the
+// frame's left edge moves on-screen) that cut showed as a hard vertical seam
+// through the dither. Multiple of 4 → the 4x4 Bayer phase is unchanged, and
+// 560+280 = 840 keeps the CSS background-size a round 240vmin.
+const PAD_LEFT = 280;
+const BASE = { cols: 560, rows: 350, scale: 1.72, offX: -0.36, offY: -0.46, time: 2.5 };
+const FRAME = {
+  ...BASE,
+  cols: BASE.cols + PAD_LEFT,
+  // Re-centre so the sphere lands in the same place it did in the 560px frame,
+  // just PAD_LEFT px further from the left edge (offX is in uv, hence /m/scale).
+  offX: BASE.offX + PAD_LEFT / 2 / (Math.min(BASE.cols, BASE.rows) * BASE.scale)
+};
 
 // --green #151f14 — the .stage field colour both pages paint under the globe, so
 // the sphere's unlit dither blends seamlessly into the page background.
