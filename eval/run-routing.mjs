@@ -15,8 +15,8 @@
  * compile-routing.mjs (which regenerates routing-cases.json) never wipes them:
  *   - eval/skills-cases.json          hand-authored supplement; expected_service=skills.
  *     Graded as its own lane ("skills lane"), NEVER mixed into the legacy aggregate.
- *   - eval/build-question-overlay.json hand-reviewed ids of legacy cases that get
- *     expected_any (accept-either) applied. Those cases are reported BOTH ways:
+ *   - eval/build-question-overlay.json hand-reviewed per-case expected_any records
+ *     for legacy or extended cases. Those cases are reported BOTH ways:
  *     strict (expected_service only — the legacy numbers, unchanged) and
  *     accept-either (any service in expected_any counts).
  *
@@ -48,6 +48,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, resolve, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { aggregate, cardMatchesExact, gradeCase, tableRows } from "./lib/grade.mjs";
+import { overlayExpectedAnyById, unionExpectedAny } from "./lib/labels.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(EVAL_DIR, "..");
@@ -149,20 +150,16 @@ async function main() {
   const catalog = loadManifest(manifestJson);
   const compiled = JSON.parse(readFileSync(CASES, "utf8"));
 
-  // --- overlay: attach expected_any to hand-reviewed legacy case ids (load-time, so
+  // --- overlay: attach expected_any to hand-reviewed case ids (load-time, so
   // compile-routing.mjs regenerating routing-cases.json never wipes it) ---------------
   let overlay = null;
   const expectedAnyById = new Map();
   if (existsSync(OVERLAY)) {
     overlay = JSON.parse(readFileSync(OVERLAY, "utf8"));
-    const known = new Set(compiled.cases.map((c) => c.id));
-    for (const id of overlay.case_ids) {
-      if (!known.has(id)) {
-        console.warn(`overlay warning: case id "${id}" not present in routing-cases.json — ignored`);
-        continue;
-      }
-      expectedAnyById.set(id, overlay.expected_any);
-    }
+    const known = new Set([...compiled.cases, ...(compiled.extendedCases ?? [])].map((c) => c.id));
+    for (const [id, expectedAny] of overlayExpectedAnyById(overlay, known, (id) => {
+      console.warn(`overlay warning: case id "${id}" not present in routing-cases.json — ignored`);
+    })) expectedAnyById.set(id, expectedAny);
   }
 
   const runCase = (c) => {
@@ -170,8 +167,7 @@ async function main() {
     // todo 817) and the hand-reviewed overlay (adds "skills" on build questions). Strict
     // top1/3/5 grading ignores expected_any entirely, so legacy numbers are unaffected.
     const overlayAny = expectedAnyById.get(c.id);
-    const union = new Set([...(c.expected_any ?? []), ...(overlayAny ?? [])]);
-    const expectedAny = union.size > 0 ? [c.expected_service, ...[...union].filter((s) => s !== c.expected_service).sort()] : undefined;
+    const expectedAny = unionExpectedAny(c.expected_service, c.expected_any, overlayAny);
     const hits = searchCatalog(catalog, { query: c.question, limit: 5 });
     const grade = gradeCase(hits, c.expected_service, c.expected_cards, expectedAny);
     return {
@@ -195,21 +191,6 @@ async function main() {
   // (strict `agg` above is untouched; this is the corpus-authored-tolerance view)
   const acceptEitherAgg = aggregate(perCase.map(asAny));
 
-  // --- overlay dual grading: strict vs accept-either, over the overlay subset only ----
-  let overlayReport = null;
-  if (overlay) {
-    const overlayCases = perCase.filter((r) => expectedAnyById.has(r.id));
-    overlayReport = {
-      expected_any: overlay.expected_any,
-      n: overlayCases.length,
-      strict: aggregate(overlayCases).overall,
-      acceptEither: aggregate(overlayCases.map(asAny)).overall,
-      // legacy overall recomputed with overlay cases graded accept-either (context only;
-      // `overall` above stays the strict legacy number)
-      legacyOverallAcceptEither: aggregate(perCase.map((r) => (expectedAnyById.has(r.id) ? asAny(r) : r))).overall,
-    };
-  }
-
   // --- extended lane: net-new 538-corpus cases (own aggregate, never merged) ----------
   let extendedLane = null;
   let extendedPerCase = [];
@@ -218,6 +199,28 @@ async function main() {
     extendedLane = {
       strict: aggregate(extendedPerCase),
       acceptEither: aggregate(extendedPerCase.map(asAny)).overall,
+    };
+  }
+
+  // --- overlay dual grading: keep legacy and extended subsets separate ----------------
+  let overlayReport = null;
+  if (overlay) {
+    const report = (cases) => {
+      const selected = cases.filter((r) => expectedAnyById.has(r.id));
+      return {
+        n: selected.length,
+        strict: aggregate(selected).overall,
+        acceptEither: aggregate(selected.map(asAny)).overall,
+      };
+    };
+    overlayReport = {
+      cases: [...expectedAnyById].map(([id, expected_any]) => ({ id, expected_any })),
+      legacy: {
+        ...report(perCase),
+        // Context only; the strict legacy aggregate above remains the gate.
+        overallAcceptEither: aggregate(perCase.map((r) => (expectedAnyById.has(r.id) ? asAny(r) : r))).overall,
+      },
+      extended: report(extendedPerCase),
     };
   }
 
@@ -413,13 +416,18 @@ async function main() {
     console.log(`holdout forbidden captures: ${holdoutLane.forbiddenCaptures}/${holdoutLane.n}`);
   }
   if (overlayReport) {
-    const p = (num) => `${((100 * num) / overlayReport.n).toFixed(1)}%`;
-    console.log(`\noverlay — ${overlayReport.n} build-shaped stellarDocs cases, dual grading (accept set: ${overlayReport.expected_any.join(", ")})\n`);
-    console.table([
-      { grading: "strict (legacy)", "top-1": p(overlayReport.strict.top1), "top-3": p(overlayReport.strict.top3), "top-5": p(overlayReport.strict.top5) },
-      { grading: "accept-either", "top-1": p(overlayReport.acceptEither.top1), "top-3": p(overlayReport.acceptEither.top3), "top-5": p(overlayReport.acceptEither.top5) },
-    ]);
-    const lo = overlayReport.legacyOverallAcceptEither;
+    const printOverlayLane = (name, lane) => {
+      if (lane.n === 0) return;
+      const p = (num) => `${((100 * num) / lane.n).toFixed(1)}%`;
+      console.log(`\noverlay ${name} — ${lane.n} cases, dual grading\n`);
+      console.table([
+        { grading: "strict", "top-1": p(lane.strict.top1), "top-3": p(lane.strict.top3), "top-5": p(lane.strict.top5) },
+        { grading: "accept-either", "top-1": p(lane.acceptEither.top1), "top-3": p(lane.acceptEither.top3), "top-5": p(lane.acceptEither.top5) },
+      ]);
+    };
+    printOverlayLane("legacy", overlayReport.legacy);
+    printOverlayLane("extended", overlayReport.extended);
+    const lo = overlayReport.legacy.overallAcceptEither;
     console.log(
       `legacy overall if overlay cases were graded accept-either (context only): ` +
         `top-1 ${((100 * lo.top1) / lo.n).toFixed(1)}%, top-3 ${((100 * lo.top3) / lo.n).toFixed(1)}%, top-5 ${((100 * lo.top5) / lo.n).toFixed(1)}%`,

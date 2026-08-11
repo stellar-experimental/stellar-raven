@@ -226,21 +226,21 @@ stellar-scout ×1). Active cases carry `expected_cards` in the
 containment bridges the `<source>` segment in `skills.<source>.<name>` ids). Graded
 strictly as its own scope — **never merged into the legacy 338-case aggregate**.
 
-**2. `eval/build-question-overlay.json` — accept-either for genuinely ambiguous legacy
-cases.** 32 hand-reviewed ids of existing stellarDocs-labeled questions that are
-build/how-do-I-shaped (deploy a contract, establish a trustline, write unit tests, wire
-Wallets Kit…) where the mirrored skills cover the same procedure — reviewed
+**2. `eval/build-question-overlay.json` — per-case accept-either labels for genuinely
+ambiguous cases.** 34 hand-reviewed records (33 legacy, 1 extended) attach an
+`expected_any` set to a specific case at load time. Most are stellarDocs-labeled
+build/how-do-I questions where a mirrored skill covers the same procedure; the
+extended Axelar bridge case accepts scout, lumenloop, or skills. Records are reviewed
 question-by-question against actual skill content, precision over recall (what-is /
-which-SEP / lookup / comparison questions excluded). These get
-`expected_any: ["stellarDocs", "skills"]` applied at load time and are reported **both
-ways**: strict (expected_service only) and accept-either (any accepted service counts).
+which-SEP / lookup / comparison questions excluded), and reported **both ways**:
+strict (expected_service only) and accept-either (any accepted service counts).
 The headline `overall` / `perService` numbers stay strict-only, so legacy comparability
 is never lost — grader-side, `gradeCase`'s strict fields are computed identically whether
 or not an accept set is passed (fixture-proved in `self-test.mjs`).
 
-**How to run:** nothing new — `node eval/run-routing.mjs` prints three tables (legacy
-strict, skills lane, overlay dual) and writes `skillsLane` + `overlay` sections into the
-results JSON alongside the unchanged legacy keys.
+**How to run:** nothing new — `node eval/run-routing.mjs` prints the normal lane tables
+plus separate legacy and extended overlay dual-grading tables, and writes `skillsLane`
++ `overlay` sections into the results JSON alongside the unchanged legacy keys.
 
 **BEFORE numbers** (`routing-2026-07-02T20-41-03-868Z.json`, same catalog + shipped
 scoring as Round 2; legacy strict verified byte-identical to the

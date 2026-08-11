@@ -27,8 +27,8 @@
   "truth": {
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-08-04",
-    "reverifyBy": "2026-08-18",
+    "asOf": "2026-08-11",
+    "reverifyBy": "2026-11-12",
     "sources": [
       {
         "class": "A",
@@ -47,12 +47,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA MoneyGram truth matrix; blind-verified and accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-11",
+      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra payments matrix",
       "evidence": [
         "https://xramps.moneygram.com/ops/dev/stellar",
-        "SDF 2026-07-16 MoneyGram Tier-1 validator announcement",
-        "MoneyGram MGUSD release and current MGUSD SEP-1",
+        "https://stellar.org/products-and-tools/moneygram",
+        "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+        "https://www.prnewswire.com/news-releases/moneygram-launches-mgusd-a-stablecoin-to-power-its-own-global-network-302787799.html",
+        "https://www.coindesk.com/business/2026/06/02/moneygram-launches-stablecoin-on-stellar-joining-rush-toward-digital-dollar-payments",
         "solo://proj/49/scratchpad/truth-maintenance-20--761"
       ],
       "rootCause": [

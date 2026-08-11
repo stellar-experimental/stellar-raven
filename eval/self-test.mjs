@@ -11,7 +11,13 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { aggregate, cardMatches, cardMatchesExact, canonToken, gradeCase, tableRows } from "./lib/grade.mjs";
-import { deriveExpectedAny, frontmatterRouting, parseFrontmatterList } from "./lib/labels.mjs";
+import {
+  deriveExpectedAny,
+  frontmatterRouting,
+  overlayExpectedAnyById,
+  parseFrontmatterList,
+  unionExpectedAny,
+} from "./lib/labels.mjs";
 
 // --- fake catalog: 3 entries across our namespaces --------------------------------
 const E = {
@@ -203,6 +209,35 @@ check("deriveExpectedAny: same-service and out-of-catalog cards contribute nothi
   assert.equal(deriveExpectedAny("stellarDocs", ["perplexity_search", "parallel_extract"]), null);
   assert.equal(deriveExpectedAny("stellarDocs", []), null);
   assert.equal(deriveExpectedAny("stellarDocs", undefined), null);
+});
+check("per-case overlay applies to legacy and extended labels", () => {
+  const overlay = JSON.parse(readFileSync(new URL("./build-question-overlay.json", import.meta.url), "utf8"));
+  const byId = overlayExpectedAnyById(overlay, new Set([
+    "q-tool-cctp-stellar-integration",
+    "q-defi-bridge-evm-to-stellar-axelar",
+  ]));
+  assert.deepEqual(
+    unionExpectedAny("stellarDocs", undefined, byId.get("q-tool-cctp-stellar-integration")),
+    ["stellarDocs", "skills"],
+  );
+  assert.deepEqual(
+    unionExpectedAny("scout", ["scout", "lumenloop"], byId.get("q-defi-bridge-evm-to-stellar-axelar")),
+    ["scout", "lumenloop", "skills"],
+  );
+});
+check("per-case overlay rejects malformed and duplicate records", () => {
+  const known = new Set(["q-x"]);
+  assert.throws(
+    () => overlayExpectedAnyById({ cases: [{ id: "q-x", expected_any: "skills" }] }, known),
+    /non-empty expected_any string array/,
+  );
+  assert.throws(
+    () => overlayExpectedAnyById({ cases: [
+      { id: "q-unknown", expected_any: ["skills"] },
+      { id: "q-unknown", expected_any: ["skills"] },
+    ] }, known),
+    /duplicate overlay case id/,
+  );
 });
 check("parseFrontmatterList: inline style with comments", () => {
   const txt = "id: q-x\nexpected_cards: [stellar_docs_mcp]  # the docs card\nacceptable_cards: [scout_research, scout_repos]\n";

@@ -8,7 +8,7 @@
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "Before committing the architecture, make one bounded prior-art pass in the same research step as the smart-contract skill and current official Docs lookup. Use it to discover requirements, failure modes, and whether an existing protocol should be integrated instead of rebuilt; do not copy a repository or treat popularity as authority. Return no more than three materially distinct candidates.\n\nAs of 2026-07-13, illustrative verified categories included: the official classic Claimable Balances \"Escrow-Style Payment\" pattern; the Apache-2.0 `stellar/soroban-examples` timelock and atomic-exchange teaching patterns (adjacent primitives, not production escrow); Trustless Work, an exact non-custodial milestone-escrow product surfaced in an SDF developer call and later listed by the SDF Audit Bank with Runtime Verification, whose contract repository did not expose an in-tree license in this verification; and DevAsign's Apache-2.0 bounty-escrow contract, for which no audit was verified in the repository or bounded sources. These names are examples, not a permanent required roster.\n\nTurn the review into a short design delta before writing code: custody/token flow, milestone and partial releases, approval roles, explicit dispute state, deadline/refund behavior, fee splits, upgrade/admin boundaries, events, and invariant-focused tests. The initial skeleton should reflect that delta with an explicit lifecycle enum, escrow/milestone records, role-authenticated fund/approve/release/dispute/resolve/refund entry points, conservation and one-way-transition checks, and events/tests for every state change. Current APIs and security procedure still come from the smart-contract skill and official Docs. Raven can report exact URLs and indexed freshness/provenance, but its repo rows do not expose license; mark license/audit/deployment/compatibility unknown unless a source-backed result establishes them, and treat the candidate as study-only until direct repository inspection clears reuse. If no close implementation appears, state the searched scope and proceed from the official playbook; do not claim the ecosystem has none.",
+    "answer": "Before committing the architecture, make one bounded prior-art pass in the same research step as the smart-contract skill and current official Docs lookup. Use it to discover requirements, failure modes, and whether an existing protocol should be integrated instead of rebuilt; do not copy a repository or treat popularity as authority. Return no more than three materially distinct candidates.\n\nAs of 2026-08-11, illustrative verified categories included: the official classic Claimable Balances \"Escrow-Style Payment\" pattern; the Apache-2.0 `stellar/soroban-examples` timelock and atomic-exchange teaching patterns (adjacent primitives, not production escrow); Trustless Work, an exact non-custodial milestone-escrow product surfaced in an SDF developer call and described by a dated Runtime Verification public report, whose contract repository did not expose an in-tree license in this verification; and DevAsign's Apache-2.0 bounty-escrow contract, for which no audit was verified in the repository or bounded sources. These names are examples, not a permanent required roster.\n\nTurn the review into a short design delta before writing code: custody/token flow, milestone and partial releases, approval roles, explicit dispute state, deadline/refund behavior, fee splits, upgrade/admin boundaries, events, and invariant-focused tests. The initial skeleton should reflect that delta with an explicit lifecycle enum, escrow/milestone records, role-authenticated fund/approve/release/dispute/resolve/refund entry points, conservation and one-way-transition checks, and events/tests for every state change. Current APIs and security procedure still come from the smart-contract skill and official Docs. Raven can report exact URLs and indexed freshness/provenance, but its repo rows do not expose license; mark license/audit/deployment/compatibility unknown unless a source-backed result establishes them, and treat the candidate as study-only until direct repository inspection clears reuse. If no close implementation appears, state the searched scope and proceed from the official playbook; do not claim the ecosystem has none.",
     "keyFacts": [
       "Performs a bounded repos/projects prior-art pass before committing a substantial greenfield architecture, alongside the smart-contract skill and current official Docs.",
       "Uses prior art for requirements, pitfalls, and build-vs-integrate decisions while keeping skills/docs authoritative for current APIs and security procedure.",
@@ -31,8 +31,8 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-13",
-    "reverifyBy": "2026-08-20",
+    "asOf": "2026-08-11",
+    "reverifyBy": "2026-11-19",
     "sources": [
       {
         "class": "A",
@@ -46,8 +46,8 @@
       },
       {
         "class": "A",
-        "ref": "https://stellar.org/audit-bank/projects",
-        "note": "Live SDF Audit Bank project listing observed 2026-07-13 for the Trustless Work Runtime Verification audit."
+        "ref": "https://runtimeverification.com/public-report/trustless-work",
+        "note": "Runtime Verification public report observed 2026-08-11; it describes the Trustless Work Stellar code-review audit and milestone-approval escrow flow."
       },
       {
         "class": "B",
@@ -61,8 +61,8 @@
       },
       {
         "class": "B",
-        "ref": "https://github.com/devasignhq/soroban-contract",
-        "note": "Direct bounty-escrow repository inspected 2026-07-13; Apache-2.0 license was visible and no audit evidence was found in the bounded repository review."
+        "ref": "https://github.com/devasignhq/bounty-escrow",
+        "note": "Direct bounty-escrow repository inspected 2026-08-11; Apache-2.0 license was visible and no audit evidence was found in the bounded repository/web sweep."
       },
       {
         "class": "C",
@@ -95,8 +95,8 @@
           },
           {
             "class": "B",
-            "ref": "https://github.com/devasignhq/soroban-contract",
-            "observedAt": "2026-07-13",
+            "ref": "https://github.com/devasignhq/bounty-escrow",
+            "observedAt": "2026-08-11",
             "note": "Direct adjacent bounty-escrow source, license, and bounded audit-evidence inspection."
           },
           {
@@ -109,15 +109,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Opus 4.8 independent golden-truth lane, Solo process 3526; coordinator encoded behavior-first golden",
+      "date": "2026-08-11",
+      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
       "evidence": [
-        "solo://proj/49/scratchpad/prior-art-build-rout--613#opus-escrow-truth-matrix"
+        "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment",
+        "https://developers.stellar.org/meetings/2024/12/05",
+        "https://runtimeverification.com/public-report/trustless-work",
+        "https://api.github.com/repos/Trustless-Work/trustlesswork-smart-contract-stellar",
+        "https://api.github.com/repos/devasignhq/bounty-escrow",
+        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
       ],
       "rootCause": [
-        "The build workflow paired skills with official docs but did not proactively route substantial design requests through the already-exposed prior-art operations.",
-        "solo://proj/49/scratchpad/prior-art-build-rout--613#opus-escrow-truth-matrix",
-        "solo://proj/49/scratchpad/prior-art-build-rout--613#post-authoring-review-corrections-for-the-two-preflight-cases"
+        "freshness-drift"
       ]
     },
     "origin": "authored prior-art build-route review 2026-07-13"

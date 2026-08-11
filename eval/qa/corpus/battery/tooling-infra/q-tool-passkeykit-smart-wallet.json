@@ -19,9 +19,9 @@
       "Do NOT present either kit as the universal greenfield default without matching its authorization model to the application.",
       "Do NOT say both kits expose identical primitives or APIs across versions.",
       "Do NOT imply that an OpenZeppelin contract audit covers Smart Account Kit, the relayer, indexer, frontend, policies, and deployment configuration as one inherited guarantee.",
-      "Do NOT confuse transaction submission or fee sponsorship with smart-account authorization, or call Smart Account Kit SDF-maintained."
+      "Do NOT confuse transaction submission or fee sponsorship with smart-account authorization."
     ],
-    "notes": "Freshness correction reverified 2026-08-04: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage."
+    "notes": "Freshness correction reverified 2026-08-11: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage."
   },
   "tags": {
     "category": "tooling-infra",
@@ -31,8 +31,8 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
-    "reverifyBy": "2026-08-27",
+    "asOf": "2026-08-11",
+    "reverifyBy": "2026-11-26",
     "sources": [
       {
         "class": "B",
@@ -126,17 +126,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
+      "date": "2026-08-11",
+      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
       "evidence": [
-        "Current primary verification found stellar/passkey-kit and stellar/smart-account-kit active and unarchived; former kalepail repositories are archived move pointers.",
         "https://github.com/stellar/passkey-kit",
         "https://github.com/stellar/smart-account-kit",
         "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+        "https://registry.npmjs.org/passkey-kit/latest",
+        "https://registry.npmjs.org/smart-account-kit/latest",
         "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
         "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
-        "Sibling sweep: q-tool-smart-wallet-repos-discovery already describes the projects as separate current repositories with source-specific caveats; the other cluster-022 wallet/operator cases do not assert the stale Passkey Kit characterization.",
-        "Adversarial review 2026-07-28: the prior avoid clause could punish a TRUE statement — both the pre-rewrite and current READMEs decline to claim a third-party audit. Trap rescoped to the composite legacy/demo/superseded characterization only."
+        "https://api.github.com/repos/kalepail/passkey-kit",
+        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
       ],
       "rootCause": [
         "freshness-drift"

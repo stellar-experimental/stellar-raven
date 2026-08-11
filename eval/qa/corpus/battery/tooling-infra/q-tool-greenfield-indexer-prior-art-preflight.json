@@ -32,8 +32,8 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-13",
-    "reverifyBy": "2026-08-27",
+    "asOf": "2026-08-11",
+    "reverifyBy": "2026-11-26",
     "sources": [
       {
         "class": "A",
@@ -122,17 +122,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Behavioral derivative of q-tool-indexer-repos-discovery, independently reviewed by Sol blind non-escrow truth lane",
+      "date": "2026-08-11",
+      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
       "evidence": [
-        "eval/qa/corpus/battery/tooling-infra/q-tool-indexer-repos-discovery.json",
-        "solo://proj/49/scratchpad/prior-art-build-rout--613#sol-blind-non-escrow-truth-matrix",
-        "solo://proj/49/scratchpad/prior-art-build-rout--613#post-authoring-review-corrections-for-the-two-preflight-cases"
+        "https://developers.stellar.org/docs/data/indexers",
+        "https://developers.stellar.org/docs/build/guides/events/ingest",
+        "https://github.com/stellar/stellar-ledger-data-indexer",
+        "https://github.com/stellar/stellar-galexie",
+        "https://github.com/stellar/go-stellar-sdk/tree/main/ingest",
+        "https://github.com/stellar/stellar-etl",
+        "https://stellarlight.xyz/api/repos/search?q=stellar-ledger-data-indexer",
+        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
       ],
       "rootCause": [
-        "Existing corpus covered explicit repo discovery but not proactive prior-art review from a greenfield architecture request.",
-        "solo://proj/49/scratchpad/prior-art-build-rout--613#sol-blind-non-escrow-truth-matrix",
-        "solo://proj/49/scratchpad/prior-art-build-rout--613#post-authoring-review-corrections-for-the-two-preflight-cases"
+        "freshness-drift"
       ]
     },
     "origin": "authored prior-art build-route review 2026-07-13"

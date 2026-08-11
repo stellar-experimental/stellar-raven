@@ -199,6 +199,14 @@
       "repo": "stellar/stellar-dev-skill",
       "reason": "The upstream assets skill's trustline-removal example omits balance, liability, offer, and liquidity-pool deletion preconditions."
     },
+    "sk-014": {
+      "repo": "OpenZeppelin/openzeppelin-skills",
+      "reason": "The develop-secure-contracts description is owned by the OpenZeppelin skills repository."
+    },
+    "sk-015": {
+      "repo": "OpenZeppelin/openzeppelin-skills",
+      "reason": "The setup-stellar-contracts and upgrade-stellar-contracts descriptions are owned by the OpenZeppelin skills repository."
+    },
     "sls-023": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Broad RWA discovery exposes entity-level status without product-level Stellar deployment state, allowing planned DTCC work and unverified/tooling rows to be presented as live tokenized products."

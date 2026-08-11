@@ -8,6 +8,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { loadManifest, searchCatalog } from "../../src/catalog/search.ts";
+import { overlayExpectedAnyById, unionExpectedAny } from "../lib/labels.mjs";
 import { MODEL, POLICY, REPO } from "./frontier-config.mjs";
 import { rerankSearchPage } from "./retrieval.mjs";
 import { resultStamp, writeResult } from "../discovery/lib.mjs";
@@ -36,12 +37,10 @@ function counts(cases, hitsById, acceptable = false) {
   };
 }
 
-function withOverlay(cases) {
-  const overlay = JSON.parse(readFileSync(OVERLAY, "utf8"));
-  const ids = new Set(overlay.case_ids ?? []);
+function withOverlay(cases, expectedAnyById) {
   return cases.map((c) => ({
     ...c,
-    expected_any: [...new Set([...(c.expected_any ?? []), ...(ids.has(c.id) ? overlay.expected_any ?? [] : [])])]
+    expected_any: unionExpectedAny(c.expected_service, c.expected_any, expectedAnyById.get(c.id))
   }));
 }
 
@@ -135,8 +134,13 @@ export function shouldFailFrontier(triggerCleared) {
 async function main() {
   const compiled = JSON.parse(readFileSync(ROUTING_CASES, "utf8"));
   const skillsData = JSON.parse(readFileSync(SKILLS_CASES, "utf8"));
-  const legacyCases = withOverlay(compiled.cases);
-  const extendedCases = compiled.extendedCases;
+  const overlay = JSON.parse(readFileSync(OVERLAY, "utf8"));
+  const expectedAnyById = overlayExpectedAnyById(
+    overlay,
+    new Set([...compiled.cases, ...compiled.extendedCases].map((c) => c.id)),
+  );
+  const legacyCases = withOverlay(compiled.cases, expectedAnyById);
+  const extendedCases = withOverlay(compiled.extendedCases, expectedAnyById);
   const skillsCases = skillsData.cases;
   const all = [...legacyCases, ...extendedCases, ...skillsCases];
 

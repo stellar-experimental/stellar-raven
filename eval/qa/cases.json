@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "dd5dc7e61f5680056d8d36d5223479eb905b5ec94a42bd2a7bda3111ba7bfe20",
+  "corpusContentSha256": "2044bce64891ab614a5a660f0b105ebdd6751b96dab75390e52ccfc70c40c6f2",
   "counts": {
     "total": 490,
     "byCategory": {
@@ -1231,8 +1231,8 @@
       "truth": {
         "domain": "corpus-grounded",
         "status": "confirmed",
-        "asOf": "2026-08-04",
-        "reverifyBy": "2026-08-18",
+        "asOf": "2026-08-11",
+        "reverifyBy": "2026-11-12",
         "sources": [
           {
             "class": "A",
@@ -1251,12 +1251,14 @@
           }
         ],
         "verified": {
-          "date": "2026-08-04",
-          "by": "Full golden QA MoneyGram truth matrix; blind-verified and accepted in Todo 1347 c3625/c3627",
+          "date": "2026-08-11",
+          "by": "Todo 1406 Lane C scheduled re-verification; independent Terra payments matrix",
           "evidence": [
             "https://xramps.moneygram.com/ops/dev/stellar",
-            "SDF 2026-07-16 MoneyGram Tier-1 validator announcement",
-            "MoneyGram MGUSD release and current MGUSD SEP-1",
+            "https://stellar.org/products-and-tools/moneygram",
+            "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+            "https://www.prnewswire.com/news-releases/moneygram-launches-mgusd-a-stablecoin-to-power-its-own-global-network-302787799.html",
+            "https://www.coindesk.com/business/2026/06/02/moneygram-launches-stablecoin-on-stellar-joining-rush-toward-digital-dollar-payments",
             "solo://proj/49/scratchpad/truth-maintenance-20--761"
           ],
           "rootCause": [
@@ -34338,17 +34340,18 @@
         "skills.stellar-dev.zk-proofs"
       ],
       "golden": {
-        "answer": "The SCF #33 'Warmancer: Black Friday' proposal describes a free-to-play strategy game that wants zero-knowledge proofs to conceal board positions, explicitly qualifying that plan as pending technology availability. As observed on 2026-07-11, Scout lists Warmancer as a live, SCF-funded on-chain strategy game on Stellar. The served ZK skill says the presently native route is Groth16 over BLS12-381, for example Circom/snarkjs configured with `-p bls12381`, using BLS12-381 host operations from CAP-0059 (available from Protocol 22). BN254-based defaults remain gated on CAP-0074. That platform answer does not prove which proving stack Warmancer actually deployed.",
+        "answer": "The SCF #33 'Warmancer: Black Friday' proposal describes a free-to-play strategy game that wants zero-knowledge proofs to conceal board positions, explicitly qualifying that plan as pending technology availability. As observed on 2026-07-11, Scout lists Warmancer as a live, SCF-funded on-chain strategy game on Stellar. As verified on 2026-08-10, the served ZK skill says Groth16 is natively verifiable over either BLS12-381—for example, Circom/snarkjs configured with `-p bls12381`, using CAP-0059 host operations from Protocol 22—or BN254, including Circom's default `bn128`, using CAP-0074 host operations from Protocol 25, provided the circuit and verifier use the same curve. CAP-0080 adds BN254 MSM, scalar-field arithmetic, and on-curve checks from Protocol 26 for stacks that need them; it is not a gate on CAP-0074's base BN254 route. That platform-capability answer does not prove which proving stack Warmancer actually deployed.",
         "keyFacts": [
           "Identifies Warmancer: Black Friday as the SCF #33 hidden-information strategy-game proposal and preserves its 'pending technology availability' qualification.",
           "Uses Scout to identify Warmancer as a live SCF-funded Stellar on-chain strategy game.",
-          "States that Groth16 over BLS12-381 is verifiable natively via CAP-0059, while BN254-based defaults remain gated on CAP-0074."
+          "States that Groth16 is natively verifiable with a matching verifier over BLS12-381 via CAP-0059 from Protocol 22 or BN254 via Final CAP-0074 from Protocol 25, while CAP-0080's additional BN254 operations are available from Protocol 26."
         ],
         "avoid": [
-          "Do NOT claim the proposal proves Warmancer deployed Groth16/BLS12-381 in production.",
-          "Do NOT say Circom's default BN254 proofs are natively verifiable on Stellar today."
+          "Do NOT claim the proposal proves Warmancer deployed any particular proving stack in production.",
+          "Do NOT repeat the outdated claim that Circom's default BN254 proofs remain unavailable or gated on CAP-0074.",
+          "Do NOT treat native curve operations as a complete proof system or imply CAP-0080 is required for every BN254 Groth16 verifier."
         ],
-        "notes": "The question composes a project/proposal lookup with a platform-capability lookup; the exact deployed Warmancer proof system is deliberately not pinned."
+        "notes": "The question composes a project/proposal lookup with the served skill's platform-capability guidance; the exact deployed Warmancer proof system remains deliberately unpinned. Grade either curve route as correct when the answer requires a matching verifier. CAP-0080 is Implemented for Protocol 26 and extends BN254 support for proof systems that need MSM/Fr operations; it does not replace CAP-0074's Protocol-25 base operations."
       },
       "tags": {
         "category": "soroban",
@@ -34358,8 +34361,8 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-10-29",
+        "asOf": "2026-08-10",
+        "reverifyBy": "2026-11-19",
         "sources": [
           {
             "class": "C",
@@ -34371,11 +34374,27 @@
           },
           {
             "class": "B",
-            "ref": "skills.stellar-dev.zk-proofs"
+            "ref": "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md"
           },
           {
             "class": "A",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md"
+            "ref": "https://developers.stellar.org/docs/build/apps/zk"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md"
           }
         ],
         "corroboration": [
@@ -34396,31 +34415,84 @@
             ]
           },
           {
-            "claim": "Groth16/BLS12-381 is the currently available native verification route, while BN254 is status-gated.",
+            "claim": "The served ZK skill's Groth16 route is natively verifiable with a matching verifier over BLS12-381 from Protocol 22 or BN254 from Protocol 25; Protocol 26 adds CAP-0080 BN254 extensions without determining Warmancer's deployed stack.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "B",
-                "ref": "skills.stellar-dev.zk-proofs#what-s-available-verify-before-building",
-                "observedAt": "2026-07-11"
+                "ref": "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md",
+                "observedAt": "2026-08-10"
               },
               {
                 "class": "A",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
-                "observedAt": "2026-07-11"
+                "ref": "https://developers.stellar.org/docs/build/apps/zk",
+                "observedAt": "2026-08-10"
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/networks/software-versions",
+                "observedAt": "2026-08-10"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md",
+                "observedAt": "2026-08-10"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md",
+                "observedAt": "2026-08-10"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md",
+                "observedAt": "2026-08-10"
+              }
+            ]
+          },
+          {
+            "claim": "Circom's default BN254 proofs remain unavailable on Stellar or gated on CAP-0074.",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md",
+                "observedAt": "2026-08-10"
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/apps/zk",
+                "observedAt": "2026-08-10"
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/networks/software-versions",
+                "observedAt": "2026-08-10"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md",
+                "observedAt": "2026-08-10"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 Lane X cross-service live composition probe",
+          "date": "2026-08-10",
+          "by": "Lane D golden-truth correction (Solo scratchpad 795)",
           "evidence": [
-            "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
-            "Sibling sweep: Warmancer and CAP-0059/CAP-0074 cases reviewed; no exact-deployment claim imported"
+            "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md",
+            "https://developers.stellar.org/docs/build/apps/zk",
+            "https://developers.stellar.org/docs/networks/software-versions",
+            "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md",
+            "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md",
+            "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0075.md",
+            "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md",
+            "Sibling sweep: q-zk-host-functions-status, q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick, and q-protocol-bls12-381-cap59 agree on Protocol-25 BN254 availability and Protocol-26 CAP-0080 extensions; no Warmancer deployment claim imported",
+            "solo://proj/49/scratchpad/drift-issue-19-resol--795"
           ],
           "rootCause": [
-            "eval-authoring"
+            "freshness-drift"
           ]
         },
         "origin": "authored 2026-07 (cross-service)"
@@ -37168,7 +37240,7 @@
         "skills.stellar-dev.smart-contracts"
       ],
       "golden": {
-        "answer": "Before committing the architecture, make one bounded prior-art pass in the same research step as the smart-contract skill and current official Docs lookup. Use it to discover requirements, failure modes, and whether an existing protocol should be integrated instead of rebuilt; do not copy a repository or treat popularity as authority. Return no more than three materially distinct candidates.\n\nAs of 2026-07-13, illustrative verified categories included: the official classic Claimable Balances \"Escrow-Style Payment\" pattern; the Apache-2.0 `stellar/soroban-examples` timelock and atomic-exchange teaching patterns (adjacent primitives, not production escrow); Trustless Work, an exact non-custodial milestone-escrow product surfaced in an SDF developer call and later listed by the SDF Audit Bank with Runtime Verification, whose contract repository did not expose an in-tree license in this verification; and DevAsign's Apache-2.0 bounty-escrow contract, for which no audit was verified in the repository or bounded sources. These names are examples, not a permanent required roster.\n\nTurn the review into a short design delta before writing code: custody/token flow, milestone and partial releases, approval roles, explicit dispute state, deadline/refund behavior, fee splits, upgrade/admin boundaries, events, and invariant-focused tests. The initial skeleton should reflect that delta with an explicit lifecycle enum, escrow/milestone records, role-authenticated fund/approve/release/dispute/resolve/refund entry points, conservation and one-way-transition checks, and events/tests for every state change. Current APIs and security procedure still come from the smart-contract skill and official Docs. Raven can report exact URLs and indexed freshness/provenance, but its repo rows do not expose license; mark license/audit/deployment/compatibility unknown unless a source-backed result establishes them, and treat the candidate as study-only until direct repository inspection clears reuse. If no close implementation appears, state the searched scope and proceed from the official playbook; do not claim the ecosystem has none.",
+        "answer": "Before committing the architecture, make one bounded prior-art pass in the same research step as the smart-contract skill and current official Docs lookup. Use it to discover requirements, failure modes, and whether an existing protocol should be integrated instead of rebuilt; do not copy a repository or treat popularity as authority. Return no more than three materially distinct candidates.\n\nAs of 2026-08-11, illustrative verified categories included: the official classic Claimable Balances \"Escrow-Style Payment\" pattern; the Apache-2.0 `stellar/soroban-examples` timelock and atomic-exchange teaching patterns (adjacent primitives, not production escrow); Trustless Work, an exact non-custodial milestone-escrow product surfaced in an SDF developer call and described by a dated Runtime Verification public report, whose contract repository did not expose an in-tree license in this verification; and DevAsign's Apache-2.0 bounty-escrow contract, for which no audit was verified in the repository or bounded sources. These names are examples, not a permanent required roster.\n\nTurn the review into a short design delta before writing code: custody/token flow, milestone and partial releases, approval roles, explicit dispute state, deadline/refund behavior, fee splits, upgrade/admin boundaries, events, and invariant-focused tests. The initial skeleton should reflect that delta with an explicit lifecycle enum, escrow/milestone records, role-authenticated fund/approve/release/dispute/resolve/refund entry points, conservation and one-way-transition checks, and events/tests for every state change. Current APIs and security procedure still come from the smart-contract skill and official Docs. Raven can report exact URLs and indexed freshness/provenance, but its repo rows do not expose license; mark license/audit/deployment/compatibility unknown unless a source-backed result establishes them, and treat the candidate as study-only until direct repository inspection clears reuse. If no close implementation appears, state the searched scope and proceed from the official playbook; do not claim the ecosystem has none.",
         "keyFacts": [
           "Performs a bounded repos/projects prior-art pass before committing a substantial greenfield architecture, alongside the smart-contract skill and current official Docs.",
           "Uses prior art for requirements, pitfalls, and build-vs-integrate decisions while keeping skills/docs authoritative for current APIs and security procedure.",
@@ -37191,8 +37263,8 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-13",
-        "reverifyBy": "2026-08-20",
+        "asOf": "2026-08-11",
+        "reverifyBy": "2026-11-19",
         "sources": [
           {
             "class": "A",
@@ -37206,8 +37278,8 @@
           },
           {
             "class": "A",
-            "ref": "https://stellar.org/audit-bank/projects",
-            "note": "Live SDF Audit Bank project listing observed 2026-07-13 for the Trustless Work Runtime Verification audit."
+            "ref": "https://runtimeverification.com/public-report/trustless-work",
+            "note": "Runtime Verification public report observed 2026-08-11; it describes the Trustless Work Stellar code-review audit and milestone-approval escrow flow."
           },
           {
             "class": "B",
@@ -37221,8 +37293,8 @@
           },
           {
             "class": "B",
-            "ref": "https://github.com/devasignhq/soroban-contract",
-            "note": "Direct bounty-escrow repository inspected 2026-07-13; Apache-2.0 license was visible and no audit evidence was found in the bounded repository review."
+            "ref": "https://github.com/devasignhq/bounty-escrow",
+            "note": "Direct bounty-escrow repository inspected 2026-08-11; Apache-2.0 license was visible and no audit evidence was found in the bounded repository/web sweep."
           },
           {
             "class": "C",
@@ -37255,8 +37327,8 @@
               },
               {
                 "class": "B",
-                "ref": "https://github.com/devasignhq/soroban-contract",
-                "observedAt": "2026-07-13",
+                "ref": "https://github.com/devasignhq/bounty-escrow",
+                "observedAt": "2026-08-11",
                 "note": "Direct adjacent bounty-escrow source, license, and bounded audit-evidence inspection."
               },
               {
@@ -37269,15 +37341,18 @@
           }
         ],
         "verified": {
-          "date": "2026-07-13",
-          "by": "Opus 4.8 independent golden-truth lane, Solo process 3526; coordinator encoded behavior-first golden",
+          "date": "2026-08-11",
+          "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
           "evidence": [
-            "solo://proj/49/scratchpad/prior-art-build-rout--613#opus-escrow-truth-matrix"
+            "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment",
+            "https://developers.stellar.org/meetings/2024/12/05",
+            "https://runtimeverification.com/public-report/trustless-work",
+            "https://api.github.com/repos/Trustless-Work/trustlesswork-smart-contract-stellar",
+            "https://api.github.com/repos/devasignhq/bounty-escrow",
+            "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
           ],
           "rootCause": [
-            "The build workflow paired skills with official docs but did not proactively route substantial design requests through the already-exposed prior-art operations.",
-            "solo://proj/49/scratchpad/prior-art-build-rout--613#opus-escrow-truth-matrix",
-            "solo://proj/49/scratchpad/prior-art-build-rout--613#post-authoring-review-corrections-for-the-two-preflight-cases"
+            "freshness-drift"
           ]
         },
         "origin": "authored prior-art build-route review 2026-07-13"
@@ -39285,8 +39360,8 @@
       "truth": {
         "domain": "real-world",
         "status": "disputed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-20",
+        "asOf": "2026-08-11",
+        "reverifyBy": "2026-11-19",
         "sources": [
           {
             "class": "A",
@@ -39390,16 +39465,19 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane C — security/incident/disputed re-verification",
+          "date": "2026-08-11",
+          "by": "Todo 1406 Lane C scheduled re-verification; independent Terra payments matrix",
           "evidence": [
-            "Production stellarDocs.search_wallet_dapp_docs and the live stellar-dev agentic-payments skill returned the official six-wallet roster and Freighter Mobile exclusion.",
-            "Freighter's extension docs and mobile owner repository confirm raw auth-entry methods; Stellar Wallets Kit's current Albedo module directly contradicts the official Albedo roster entry.",
-            "Wallets Kit implements Hana/HOT/Klever/OneKey adapters, but no wallet-owner source proving every wallet's current end-to-end x402 compatibility was found.",
-            "solo://proj/49/todo/2026-07-28-reconcile-lane-c--1251"
+            "https://developers.stellar.org/docs/build/agentic-payments/x402",
+            "https://docs.freighter.app/extension-freighter-api/signing",
+            "https://docs.freighter.app/mobile-walletconnect/signing",
+            "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts",
+            "https://github.com/OpenZeppelin/relayer-plugin-x402-facilitator",
+            "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
           ],
           "rootCause": [
-            "Eval-authoring flaw and upstream documentation conflict: the prior golden treated one ecosystem roster as wallet-owner verification and conflated raw auth-entry capability with end-to-end x402 support; todo 1251 tracks reconciliation."
+            "freshness-drift",
+            "Official wallet roster and independently checked implementation evidence still conflict; preserve the dispute rather than pinning either source."
           ]
         },
         "origin": "raven-next q-soroban-x402-auth-entry-signing"
@@ -43483,7 +43561,7 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "SDF and Circle publicly announced CCTP V2 live for **native Circle USDC** on Stellar on 2026-05-19; treat earlier deployment/technical milestones separately rather than calling every date the launch. Stellar uses Circle **domain 27** on Mainnet and Testnet; that is a CCTP domain, not a Stellar network ID. Select deployments by network/passphrase and recheck Circle's current reference. As of **2026-07-28**, Mainnet used TokenMessengerMinter `CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL`, MessageTransmitter `CACMENFFJPJMSDAJQLX4R7K3SFZIW2LJSE3R2UMLGSWHFHS353FVXAZV`, CctpForwarder `CBZL2IH7F6BIDAA3WBNXYKIXSATJGMSW7K5P5MJ6STX5RXN47TZJDF5T` and USDC SAC `CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75`; Testnet used `CDNG7HXAPBWICI2E3AUBP3YZWZELJLYSB6F5CC7WLDTLTHVM74SLRTHP`, `CBJ6MTCKKZG73PMDZCJMSFRD7DQEMI4FKDH7CGDSV4W6FHCRBCQAVVJY`, `CA66Q2WFBND6V4UEB7RD4SAXSVIWMD6RA4X3U32ELVFGXV5PJK4T4VSZ` and `CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA`. These addresses are dated, not permanent gates.\n\n**Outbound from Stellar:** approve the correct network's USDC **SAC** and call TokenMessengerMinter `deposit_for_burn` or `deposit_for_burn_with_hook` with the destination domain and local seven-decimal `i128` `amount`/`max_fee`. Poll Iris `/v2/messages/27` by the burn transaction hash, then submit the message/attestation on the destination. Classic Circle USDC and its deterministic SAC are the same underlying asset exposed through trustline versus contract storage—not wrapped variants. Stellar calls use 7 decimal places while CCTP messages use 6: outbound normalization truncates the seventh-decimal dust and leaves it with the sender; inbound canonical units multiply by 10. Use integer/BigInt arithmetic, never float or the term stroops for token units.\n\n**Inbound to Stellar:** burn on the source chain to destination domain 27. Set **both** `mintRecipient` and `destinationCaller` to the correct Stellar **CctpForwarder** raw contract payload, and encode the actual recipient's full G/M/C StrKey in the versioned hook. Hook v0 uses 24 zero/reserved bytes, a 4-byte big-endian version, a 4-byte big-endian recipient length, UTF-8 StrKey, then optional bytes. Poll Iris with the actual **source** domain, then call `mint_and_forward`; the mint and forward are atomic. Wrong recipient/caller/hook values can strand funds. Circle's managed **Forwarding Service** is a different product from the on-chain CctpForwarder.\n\nTwo current Circle conflicts must be disclosed. The Stellar→Arc quickstart passes threshold **1000** and labels it Fast, while Circle's supported-chain/finality/fee matrices mark Stellar-as-source Fast **N/A** or omit it. Do not pin support either way; use Standard threshold **2000** for Stellar-originated transfers until Circle reconciles the docs. Finalized/unfinalized receive handlers allow Stellar to receive eligible messages from Fast-capable sources, but do not prove Stellar-source Fast support. Circle's rendered Stellar contracts reference spells `handle_receive_finalized_message`/`handle_receive_unfinalized_message`, while official source and deployed interfaces use `handle_recv_finalized_message`/`handle_recv_unfinalized_message`; call the deployed `handle_recv_*` interface.",
+        "answer": "SDF and Circle publicly announced CCTP V2 live for **native Circle USDC** on Stellar on 2026-05-19; treat earlier deployment/technical milestones separately rather than calling every date the launch. Stellar uses Circle **domain 27** on Mainnet and Testnet; that is a CCTP domain, not a Stellar network ID. Select deployments by network/passphrase and recheck Circle's current reference. As of **2026-08-11**, Mainnet used TokenMessengerMinter `CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL`, MessageTransmitter `CACMENFFJPJMSDAJQLX4R7K3SFZIW2LJSE3R2UMLGSWHFHS353FVXAZV`, CctpForwarder `CBZL2IH7F6BIDAA3WBNXYKIXSATJGMSW7K5P5MJ6STX5RXN47TZJDF5T` and USDC SAC `CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75`; Testnet used `CDNG7HXAPBWICI2E3AUBP3YZWZELJLYSB6F5CC7WLDTLTHVM74SLRTHP`, `CBJ6MTCKKZG73PMDZCJMSFRD7DQEMI4FKDH7CGDSV4W6FHCRBCQAVVJY`, `CA66Q2WFBND6V4UEB7RD4SAXSVIWMD6RA4X3U32ELVFGXV5PJK4T4VSZ` and `CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA`. These addresses are dated, not permanent gates.\n\n**Outbound from Stellar:** approve the correct network's USDC **SAC** and call TokenMessengerMinter `deposit_for_burn` or `deposit_for_burn_with_hook` with the destination domain and local seven-decimal `i128` `amount`/`max_fee`. Poll Iris `/v2/messages/27` by the burn transaction hash, then submit the message/attestation on the destination. Classic Circle USDC and its deterministic SAC are the same underlying asset exposed through trustline versus contract storage—not wrapped variants. Stellar calls use 7 decimal places while CCTP messages use 6: outbound normalization truncates the seventh-decimal dust and leaves it with the sender; inbound canonical units multiply by 10. Use integer/BigInt arithmetic, never float or the term stroops for token units.\n\n**Inbound to Stellar:** burn on the source chain to destination domain 27. Set **both** `mintRecipient` and `destinationCaller` to the correct Stellar **CctpForwarder** raw contract payload, and encode the actual recipient's full G/M/C StrKey in the versioned hook. Hook v0 uses 24 zero/reserved bytes, a 4-byte big-endian version, a 4-byte big-endian recipient length, UTF-8 StrKey, then optional bytes. Poll Iris with the actual **source** domain, then call `mint_and_forward`; the mint and forward are atomic. Wrong recipient/caller/hook values can strand funds. Circle's managed **Forwarding Service** is a different product from the on-chain CctpForwarder.\n\nTwo current Circle conflicts must be disclosed. The Stellar→Arc quickstart passes threshold **1000** and labels it Fast, while Circle's supported-chain/finality/fee matrices mark Stellar-as-source Fast **N/A** or omit it. Do not pin support either way; use Standard threshold **2000** for Stellar-originated transfers until Circle reconciles the docs. Finalized/unfinalized receive handlers allow Stellar to receive eligible messages from Fast-capable sources, but do not prove Stellar-source Fast support. Circle's rendered Stellar contracts reference spells `handle_receive_finalized_message`/`handle_receive_unfinalized_message`, while official source and deployed interfaces use `handle_recv_finalized_message`/`handle_recv_unfinalized_message`; call the deployed `handle_recv_*` interface.",
         "keyFacts": [
           "States CCTP V2/native USDC, Circle domain 27 and network-specific dated deployments.",
           "Explains classic USDC and its deterministic SAC are the same asset and uses the SAC for contract burn/approval.",
@@ -43502,7 +43580,7 @@
           "Do NOT pin Fast support/fees, copy threshold 1000 without the conflict, or infer Stellar-source Fast from receive handlers.",
           "Do NOT call docs handle_receive_* against the deployed interface or freeze addresses/fees/finality without an as-of date."
         ],
-        "notes": "GT-54 CORRECTION 2026-07-11: remove the stale 23-chain gate. Require V2/domain 27, dated deployment/SAC identity, source-domain Iris flow, forwarding-hook safety, 7↔6 decimal handling, explicit Stellar-source Fast dispute, and docs handle_receive_* versus deployed handle_recv_* conflict.\nRe-verified 2026-07-28: the two Circle conflicts persist. The 2026-05-19 date is specifically the public-live announcement; do not collapse it with earlier deployment/technical milestones."
+        "notes": "GT-54 CORRECTION 2026-07-11: remove the stale 23-chain gate. Require V2/domain 27, dated deployment/SAC identity, source-domain Iris flow, forwarding-hook safety, 7↔6 decimal handling, explicit Stellar-source Fast dispute, and docs handle_receive_* versus deployed handle_recv_* conflict.\nRe-verified 2026-08-11: the two Circle conflicts persist. The 2026-05-19 date is specifically the public-live announcement; do not collapse it with earlier deployment/technical milestones."
       },
       "tags": {
         "category": "tooling-infra",
@@ -43512,8 +43590,8 @@
       "truth": {
         "domain": "mixed",
         "status": "disputed",
-        "asOf": "2026-07-28",
-        "reverifyBy": "2026-08-27",
+        "asOf": "2026-08-11",
+        "reverifyBy": "2026-11-26",
         "sources": [
           {
             "class": "A",
@@ -43681,19 +43759,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane C — security/incident/disputed re-verification",
+          "date": "2026-08-11",
+          "by": "Todo 1406 Lane C scheduled re-verification; independent Terra payments matrix",
           "evidence": [
-            "Production stellarDocs searches recovered the official Stellar CCTP integration page but delegated deployment/support specifics to Circle; direct Circle pages and circlefin/stellar-cctp source were therefore checked.",
-            "Circle's current reference retains domain 27 and the stated Mainnet/Testnet deployments; Stellar CLI v27 public-RPC derivation reproduced both stated USDC SACs.",
-            "Circle's quickstart-versus-matrix Fast conflict and rendered handle_receive_* versus source/deployed handle_recv_* conflict both remain on 2026-07-28.",
-            "Todo 1232's zero-gated-hit behavior is a separate own-repo retrievability/routing problem; it does not resolve or invalidate these factual Circle-source conflicts.",
-            "solo://proj/49/todo/2026-07-28-reconcile-lane-c--1251"
+            "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+            "https://developers.circle.com/cctp/references/stellar",
+            "https://developers.circle.com/cctp/references/stellar-contracts",
+            "https://developers.circle.com/cctp/concepts/supported-chains-and-domains",
+            "https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc",
+            "https://github.com/circlefin/stellar-cctp/blob/master/contracts/cctp-forwarder/src/contract.rs",
+            "https://github.com/circlefin/stellar-cctp/blob/master/contracts/token-messenger-minter-v2/src/contract.rs",
+            "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
           ],
           "rootCause": [
-            "The golden remains disputed because official Circle surfaces still conflict on Stellar-source Fast support and handler naming; this is a factual-source dispute, not a grading convenience.",
-            "The zero-hit behavior from todo 1232 is retrievability drift in this repository's search/routing surface and must not be papered over by rewriting the factual golden.",
-            "A separate eval-authoring milestone inconsistency remains in q-cctp-v2-usdc-stellar and is tracked by todo 1251; this lane only clarifies the May 19 public-announcement milestone."
+            "freshness-drift",
+            "Official Circle source disagreement on Stellar-source Fast eligibility and handler naming persists; preserve the dispute rather than pinning either source."
           ]
         },
         "origin": "raven-next q-tool-cctp-stellar-integration"
@@ -44425,8 +44505,8 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-13",
-        "reverifyBy": "2026-08-27",
+        "asOf": "2026-08-11",
+        "reverifyBy": "2026-11-26",
         "sources": [
           {
             "class": "A",
@@ -44515,17 +44595,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-13",
-          "by": "Behavioral derivative of q-tool-indexer-repos-discovery, independently reviewed by Sol blind non-escrow truth lane",
+          "date": "2026-08-11",
+          "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
           "evidence": [
-            "eval/qa/corpus/battery/tooling-infra/q-tool-indexer-repos-discovery.json",
-            "solo://proj/49/scratchpad/prior-art-build-rout--613#sol-blind-non-escrow-truth-matrix",
-            "solo://proj/49/scratchpad/prior-art-build-rout--613#post-authoring-review-corrections-for-the-two-preflight-cases"
+            "https://developers.stellar.org/docs/data/indexers",
+            "https://developers.stellar.org/docs/build/guides/events/ingest",
+            "https://github.com/stellar/stellar-ledger-data-indexer",
+            "https://github.com/stellar/stellar-galexie",
+            "https://github.com/stellar/go-stellar-sdk/tree/main/ingest",
+            "https://github.com/stellar/stellar-etl",
+            "https://stellarlight.xyz/api/repos/search?q=stellar-ledger-data-indexer",
+            "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
           ],
           "rootCause": [
-            "Existing corpus covered explicit repo discovery but not proactive prior-art review from a greenfield architecture request.",
-            "solo://proj/49/scratchpad/prior-art-build-rout--613#sol-blind-non-escrow-truth-matrix",
-            "solo://proj/49/scratchpad/prior-art-build-rout--613#post-authoring-review-corrections-for-the-two-preflight-cases"
+            "freshness-drift"
           ]
         },
         "origin": "authored prior-art build-route review 2026-07-13"
@@ -45330,9 +45413,9 @@
           "Do NOT present either kit as the universal greenfield default without matching its authorization model to the application.",
           "Do NOT say both kits expose identical primitives or APIs across versions.",
           "Do NOT imply that an OpenZeppelin contract audit covers Smart Account Kit, the relayer, indexer, frontend, policies, and deployment configuration as one inherited guarantee.",
-          "Do NOT confuse transaction submission or fee sponsorship with smart-account authorization, or call Smart Account Kit SDF-maintained."
+          "Do NOT confuse transaction submission or fee sponsorship with smart-account authorization."
         ],
-        "notes": "Freshness correction reverified 2026-08-04: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage."
+        "notes": "Freshness correction reverified 2026-08-11: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage."
       },
       "tags": {
         "category": "tooling-infra",
@@ -45342,8 +45425,8 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-08-04",
-        "reverifyBy": "2026-08-27",
+        "asOf": "2026-08-11",
+        "reverifyBy": "2026-11-26",
         "sources": [
           {
             "class": "B",
@@ -45437,17 +45520,18 @@
           }
         ],
         "verified": {
-          "date": "2026-08-04",
-          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
+          "date": "2026-08-11",
+          "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
           "evidence": [
-            "Current primary verification found stellar/passkey-kit and stellar/smart-account-kit active and unarchived; former kalepail repositories are archived move pointers.",
             "https://github.com/stellar/passkey-kit",
             "https://github.com/stellar/smart-account-kit",
             "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+            "https://registry.npmjs.org/passkey-kit/latest",
+            "https://registry.npmjs.org/smart-account-kit/latest",
             "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
             "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
-            "Sibling sweep: q-tool-smart-wallet-repos-discovery already describes the projects as separate current repositories with source-specific caveats; the other cluster-022 wallet/operator cases do not assert the stale Passkey Kit characterization.",
-            "Adversarial review 2026-07-28: the prior avoid clause could punish a TRUE statement — both the pre-rewrite and current READMEs decline to claim a third-party audit. Trap rescoped to the composite legacy/demo/superseded characterization only."
+            "https://api.github.com/repos/kalepail/passkey-kit",
+            "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
           ],
           "rootCause": [
             "freshness-drift"

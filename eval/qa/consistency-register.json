@@ -430,7 +430,7 @@
           "q-token-circle-usdc-on-stellar",
           "q-tool-cctp-stellar-integration"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -449,10 +449,10 @@
           "q-eco-stablecoins-on-stellar": "cade1ccac1aa6bf2cc56584a388f57777af236f71b2df554d4685e941b7053b4",
           "q-rwa-projects-tokenizing-stellar": "485df7eb0211a7bf2f6a3493d7a5907fa99bb4bbcd803cf232a90c0329364043",
           "q-token-circle-usdc-on-stellar": "9dde11c6f861287c9565810f1b8d5c3cd48e50a415d6c8e73a17311be0b71520",
-          "q-tool-cctp-stellar-integration": "7832915690b1ee68e1f0d517ba88d06d3bae2abb04fdb1b7f2bf5e2c3961b48a"
+          "q-tool-cctp-stellar-integration": "2c87fc83efbe501d669814b9c7a8aa163a46932dcbb9adf5459312651ee70737"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-11",
           "reason": "member-content-changed"
         }
       },
@@ -465,11 +465,11 @@
           "q-hist-remittance-corridors",
           "q-pay-moneygram-ramps"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-05",
         "note": "174 (dev docs, exact) with 170+ marketing rounding, SEP-24 + USDC rails, $5-$2,500 off-ramp per tx, launched via Vibrant/LOBSTR 2022 — consistent across all four (the 180+ provenance question is filed under tensions).",
         "memberContentSha256": {
-          "q-anchor-moneygram-ramps": "5446f64570f1e37d3f211d42427a8efe3ae7cb2c1bdb5d5726d584d873fc08f0",
+          "q-anchor-moneygram-ramps": "7acb916052b426d65ed0e7f5624aea190bccfed52153bd6b35e256bb313d4371",
           "q-crp-anchors-by-corridor": "e7efa4310d84087692e4f8524b5cee2ac0e828d2d311c58daf461b9e34bb5465",
           "q-hist-remittance-corridors": "dd838f5d6f8d8869d02c695f4c19468ec607f611e9d3c902197aa90f847e91bd",
           "q-pay-moneygram-ramps": "d35cd632670607d1160a84818139f50f16618894746f70ba70a3c5806f4b2a1a"
@@ -478,6 +478,10 @@
           "date": "2026-08-05",
           "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
           "verdict": "consistent"
+        },
+        "reopened": {
+          "date": "2026-08-11",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -657,7 +661,7 @@
           "q-tool-passkeykit-smart-wallet",
           "q-tool-smart-wallet-repos-discovery"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-05",
         "reSwept": {
           "date": "2026-08-05",
@@ -670,8 +674,12 @@
           "q-eco-dex-saturation": "b7ddea4105290d4f53c7667f5f77fadbf1c05a714a42aa5c679f1270705d0432",
           "q-eco-lobstr-wallet": "d9cb16d6099add68fc6dcdcd52e6666ab280c6a8aeb029975e4f3b42abb781e2",
           "q-eco-stellar-wallets-list": "daea249828c1ac446a1f3aff0cc7dc2a0501430620f08424c84e998e35fe4cd6",
-          "q-tool-passkeykit-smart-wallet": "f4cc9e4398a9f8afeb3fb0e78093225c74f775ed02b1f7220ad7c05588af7ddc",
+          "q-tool-passkeykit-smart-wallet": "13e6002892df351d813df933b981477cf5be23acd79ec46fed72a60ca46b249f",
           "q-tool-smart-wallet-repos-discovery": "0348664e448f99cdbd94f18d0baed6821c5bff16c1f0c64fce2aeca22be12035"
+        },
+        "reopened": {
+          "date": "2026-08-11",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2934,7 +2942,7 @@
           "q-token-circle-usdc-on-stellar",
           "q-tool-cctp-stellar-integration"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2946,10 +2954,10 @@
           "q-cctp-v2-usdc-stellar": "ca0f59432c1e8de9718cdb9dd7bac3b276be5059d37f0225575b4f007d021d2e",
           "q-hist-cctp-stellar-live-announcement": "6bb786283a9ec21438fab1cbbf9227794a6b8c1fbf3f3b66f2fda4f3fc1b0d5d",
           "q-token-circle-usdc-on-stellar": "9dde11c6f861287c9565810f1b8d5c3cd48e50a415d6c8e73a17311be0b71520",
-          "q-tool-cctp-stellar-integration": "7832915690b1ee68e1f0d517ba88d06d3bae2abb04fdb1b7f2bf5e2c3961b48a"
+          "q-tool-cctp-stellar-integration": "2c87fc83efbe501d669814b9c7a8aa163a46932dcbb9adf5459312651ee70737"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-11",
           "reason": "member-content-changed"
         }
       },
@@ -2962,7 +2970,7 @@
           "q-soroban-x402-auth-entry-signing",
           "q-x402-payment-verification"
         ],
-        "verdict": "tension",
+        "verdict": "reopen",
         "lastChecked": "2026-07-28",
         "reSwept": {
           "date": "2026-07-28",
@@ -2973,11 +2981,11 @@
         "memberContentSha256": {
           "q-defi-x402-on-stellar-what": "7db2a172fc2b1e4d29dc67d4a9b19db6a4282c165641d5017042574e0e093a6d",
           "q-hist-x402-stellar-announcement": "ca26c13709468a5d5c0157951d268f1aef1f982ed316eb4f5cbdecb99e0385e7",
-          "q-soroban-x402-auth-entry-signing": "542c27828e24211ef0ead836f7697190bee07c8ccab2ab8e6392031e3ab7b768",
+          "q-soroban-x402-auth-entry-signing": "2065b64f2debfc6237f0458928985f02fc1939313eb7d30dad6a11f7f14fed0c",
           "q-x402-payment-verification": "52bbb38d8c8ba2408339cf26ce992080ee92f4d4c62d62a278a23afc9fb19f6f"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-11",
           "reason": "member-content-changed"
         }
       },
@@ -3071,7 +3079,7 @@
           "q-soroban-greenfield-escrow-prior-art-preflight",
           "q-tool-greenfield-indexer-prior-art-preflight"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-07-13",
         "reSwept": {
           "date": "2026-07-13",
@@ -3081,8 +3089,12 @@
         "note": "Substantial greenfield architecture requests make one bounded repos/projects pass alongside authoritative skills/docs, label candidate roles, and leave unsupported license/audit/deployment/compatibility claims unknown. A scoped build/debug question stays on current official mechanics without an ecosystem landscape detour.",
         "memberContentSha256": {
           "q-sor-build-target-wasm32v1": "bf62592393191f3af68fc8800c82a925f545bd707ec033984a525f48ebcb3fae",
-          "q-soroban-greenfield-escrow-prior-art-preflight": "20155c422e305d2cc50b0057bf754d7e7a81d80c4e59163128adf78d8fc909ba",
-          "q-tool-greenfield-indexer-prior-art-preflight": "60e5e2b975858b67aad3005a51dd3eac5f667971052418a926979eb00934b2cc"
+          "q-soroban-greenfield-escrow-prior-art-preflight": "81d97ce6f762e028dc5b48f51e349b876aef2b165e352eba7345f7eef03fb5a4",
+          "q-tool-greenfield-indexer-prior-art-preflight": "6b34af826a75a9ef5151f5e2feaebd73a76c7a0360dcb1de349326bc1c58788a"
+        },
+        "reopened": {
+          "date": "2026-08-11",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3439,7 +3451,12 @@
           "q-cctp-v2-usdc-stellar": "ca0f59432c1e8de9718cdb9dd7bac3b276be5059d37f0225575b4f007d021d2e",
           "q-hist-cctp-stellar-live-announcement": "6bb786283a9ec21438fab1cbbf9227794a6b8c1fbf3f3b66f2fda4f3fc1b0d5d",
           "q-token-circle-usdc-on-stellar": "9dde11c6f861287c9565810f1b8d5c3cd48e50a415d6c8e73a17311be0b71520",
-          "q-tool-cctp-stellar-integration": "7832915690b1ee68e1f0d517ba88d06d3bae2abb04fdb1b7f2bf5e2c3961b48a"
+          "q-tool-cctp-stellar-integration": "2c87fc83efbe501d669814b9c7a8aa163a46932dcbb9adf5459312651ee70737"
+        },
+        "verdict": "reopen",
+        "reopened": {
+          "date": "2026-08-11",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3596,7 +3613,7 @@
       {
         "triggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",
         "requiredRecheck": "Re-fetch Circle Stellar support, fee/finality, release-note, and forwarder pages; reconcile technical-support dates separately from the May 19 public announcement.",
-        "disposition": "open — mutable route/fee claims remain as-of; q-tool-cctp-stellar-integration reverifyBy 2026-08-27 and q-cctp-v2-usdc-stellar reverifyBy 2026-10-29 (both re-verified 2026-07-28).",
+        "disposition": "open — mutable route/fee claims remain as-of; q-tool-cctp-stellar-integration reverifyBy 2026-11-26 (re-verified 2026-08-11) and q-cctp-v2-usdc-stellar reverifyBy 2026-10-29.",
         "caseIds": [
           "q-cctp-v2-usdc-stellar",
           "q-tool-cctp-stellar-integration",
@@ -3606,7 +3623,12 @@
         "memberContentSha256": {
           "q-cctp-v2-usdc-stellar": "ca0f59432c1e8de9718cdb9dd7bac3b276be5059d37f0225575b4f007d021d2e",
           "q-hist-cctp-stellar-live-announcement": "6bb786283a9ec21438fab1cbbf9227794a6b8c1fbf3f3b66f2fda4f3fc1b0d5d",
-          "q-tool-cctp-stellar-integration": "7832915690b1ee68e1f0d517ba88d06d3bae2abb04fdb1b7f2bf5e2c3961b48a"
+          "q-tool-cctp-stellar-integration": "2c87fc83efbe501d669814b9c7a8aa163a46932dcbb9adf5459312651ee70737"
+        },
+        "verdict": "reopen",
+        "reopened": {
+          "date": "2026-08-11",
+          "reason": "member-content-changed"
         }
       },
       {

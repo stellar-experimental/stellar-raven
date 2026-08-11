@@ -26,8 +26,8 @@
   "truth": {
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-07-28",
-    "reverifyBy": "2026-08-20",
+    "asOf": "2026-08-11",
+    "reverifyBy": "2026-11-19",
     "sources": [
       {
         "class": "A",
@@ -131,16 +131,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane C — security/incident/disputed re-verification",
+      "date": "2026-08-11",
+      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra payments matrix",
       "evidence": [
-        "Production stellarDocs.search_wallet_dapp_docs and the live stellar-dev agentic-payments skill returned the official six-wallet roster and Freighter Mobile exclusion.",
-        "Freighter's extension docs and mobile owner repository confirm raw auth-entry methods; Stellar Wallets Kit's current Albedo module directly contradicts the official Albedo roster entry.",
-        "Wallets Kit implements Hana/HOT/Klever/OneKey adapters, but no wallet-owner source proving every wallet's current end-to-end x402 compatibility was found.",
-        "solo://proj/49/todo/2026-07-28-reconcile-lane-c--1251"
+        "https://developers.stellar.org/docs/build/agentic-payments/x402",
+        "https://docs.freighter.app/extension-freighter-api/signing",
+        "https://docs.freighter.app/mobile-walletconnect/signing",
+        "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts",
+        "https://github.com/OpenZeppelin/relayer-plugin-x402-facilitator",
+        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
       ],
       "rootCause": [
-        "Eval-authoring flaw and upstream documentation conflict: the prior golden treated one ecosystem roster as wallet-owner verification and conflated raw auth-entry capability with end-to-end x402 support; todo 1251 tracks reconciliation."
+        "freshness-drift",
+        "Official wallet roster and independently checked implementation evidence still conflict; preserve the dispute rather than pinning either source."
       ]
     },
     "origin": "raven-next q-soroban-x402-auth-entry-signing"
