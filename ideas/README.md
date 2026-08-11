@@ -27,3 +27,7 @@ Research notes and possible future work that are not committed product plans.
   the content-ownership question is CLOSED (bodies are served from pinned upstream, never stored).
   Two measurable questions survive: whether the `skills.*` read surface earns its place at all
   versus navigation-only, and whether 204 exact-read section entries do.
+- [Raven as a Codegen Correctness Substrate](./codegen-correctness-substrate.md) — an external partner
+  ran long-horizon Soroban codegen with Raven merely installed alongside. Guidance for many reported
+  defect classes is present in what we serve, yet the defects occurred; the cause is unattributed and
+  n=1. The durable point is that no instrument measures that mode at all.

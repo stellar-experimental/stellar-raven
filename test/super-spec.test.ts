@@ -73,10 +73,11 @@ describe("build determinism", () => {
     const first = readFileSync(SPEC_PATH);
     execFileSync("node", [join(ROOT, "scripts", "build-super-spec.mjs")], { cwd: ROOT });
     const second = readFileSync(SPEC_PATH);
-    expect(first.equals(second)).toBe(true);
-    expect(before.equals(first), "specs/super-spec.json is stale — run npm run spec:build").toBe(
-      true
-    );
+    expect(Buffer.compare(first, second)).toBe(0);
+    expect(
+      Buffer.compare(before, first),
+      "specs/super-spec.json is stale — run npm run spec:build"
+    ).toBe(0);
   });
 });
 
