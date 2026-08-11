@@ -1,14 +1,14 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers in the same commit as the change that moves them, with the decision recorded in Solo (EVALS.md rule 1). Counts are absolute hits, not percentages.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-07-26T23:51:48Z",
-  "baselineResults": "routing-2026-07-26T23-51-48-789Z.json",
-  "note": "Re-baselined for Scout 1.8.28 operation/routing drift and the current ecosystem-skills mirrors. Four public read-only Scout collections were exposed (24 of 28 operations); existing upstream summaries and x-routing also changed. The prior committed legacy baseline was 209/285/316 (2026-07-13), which main's catalog no longer matched; measured pristine-main pre-change was 210/282/318, so this drift's actual legacy-strict effect is 210/282/318 -> 210/282/317 (one top-5 loss). Extended strict measured 93/110/117. The skills lane retained 23/23 top-3, top-5, and card@5; its top-1 floor moved 18 -> 17 because q-skill-builder-quickstart-remittance now ranks the newly sharpened Scout project/prior-art lookup first and the intended builder-quickstart skill second. That mixed query explicitly asks for prior art, the expected skill remains top-3/card@5, and weakening accurate Scout routing to preserve the old strict winner was rejected. No runner operation intersects this drift. Prior baseline: routing-2026-07-13T08-54-21-839Z.json (skills-form arm-B ship).",
+  "baselinedAt": "2026-08-11T14:11:22Z",
+  "baselineResults": "routing-2026-08-11T14-11-22-115Z.json",
+  "note": "Re-baselined on the catalog movement accepted in d2d7c16, completing that commit's deferred live-drift Step-4 obligation (controlled ablation: Solo scratchpad 795, Lane C §3). This is an accepted decline, not a win: legacy strict 210/282/317 -> 207/281/314. The old manifest under the current scorer reproduces 210/282/317 exactly, proving the scorer did not move; isolated variants attribute the gate movement to the new searchable cross-chain skill (-1/-1/-2), Scout schema-derived keywords (-1/0/-1), and re-pinned existing skill descriptions (-1 top-1), with combination interactions, while the two removed Stellar Docs titles move zero gate counts. The current full manifest measures 207/281/314 of 338. Skills remain 17/23 top-1 and 23/23 top-3/top-5/card@5, so minTop1 stays 17; bandPct stays 1. No per-question tuning or scorer change. Prior baseline: routing-2026-07-26T23-51-48-789Z.json (Scout 1.8.28 + ecosystem-skills drift).",
   "legacy": {
     "n": 338,
-    "top1": 210,
-    "top3": 282,
-    "top5": 317,
+    "top1": 207,
+    "top3": 281,
+    "top5": 314,
     "bandPct": 1
   },
   "skills": {
