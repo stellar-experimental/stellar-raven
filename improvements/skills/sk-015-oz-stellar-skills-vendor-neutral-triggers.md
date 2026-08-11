@@ -1,7 +1,7 @@
 ---
 id: sk-015
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-08-11
 upstreamTitle: Scope generic Stellar triggers to OpenZeppelin-specific skills
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - A live setup query ranked the OpenZeppelin skill first at 303.
   - A live upgrade query ranked the OpenZeppelin skill first at 262.
   - Solo todo 1438 items 2 and 3, solo://proj/49/scratchpad/independent-holdout--798
+  - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/14
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/main/skills/setup-stellar-contracts/SKILL.md

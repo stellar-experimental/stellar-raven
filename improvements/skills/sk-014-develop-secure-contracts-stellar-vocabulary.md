@@ -1,7 +1,7 @@
 ---
 id: sk-014
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-08-11
 upstreamTitle: develop-secure-contracts omits Stellar terms and overstates its security scope
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - The body does not cover audits or vulnerability review.
   - A live security query ranked `stellar-dev.smart-contracts` first. `develop-secure-contracts` ranked fourth.
   - Solo todo 1438 item 1, solo://proj/49/scratchpad/independent-holdout--798
+  - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/13
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/main/skills/develop-secure-contracts/SKILL.md

@@ -17,8 +17,8 @@ Total findings: 63
 | sk-011 | The served upstream ZK skill is stale after Protocol 25. It describes BN254 and Poseidon/Poseidon2 changes as proposed or gated and tells… | fixed-upstream    | 2026-07-11 | 0           |
 | sk-012 | The served agentic-payments skill presents "MPP Channel mode" as the public mode name. Current MPP material uses Session for the payment…  | fixed-upstream    | 2026-07-11 | 0           |
 | sk-013 | The assets skill teaches ChangeTrust(limit: 0) as trustline removal without the preconditions that make the operation safe and valid. A…   | reported-upstream | 2026-08-04 | 0           |
-| sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…   | verified          | 2026-08-11 | 0           |
-| sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                         | verified          | 2026-08-11 | 0           |
+| sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…   | reported-upstream | 2026-08-11 | 0           |
+| sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                         | reported-upstream | 2026-08-11 | 0           |
 
 ## stellar-light-scout
 
