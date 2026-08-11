@@ -1,7 +1,7 @@
 ---
 id: sls-060
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-04
 upstreamTitle: Show closed status and replace funding CTA on closed RFP pages
 evidence:
@@ -12,6 +12,8 @@ evidence:
   - 2026-08-05 API recheck: https://stellarlight.xyz/api/rfps returns Hummingbot Integration with status closed and says closed RFPs are past rounds and no longer fundable
   - 2026-08-05 rendered-page recheck: https://stellarlight.xyz/ideas/hummingbot-integration still renders Apply for Funding and Ready to build this? with no closed status or quarter boundary
   - upstream issue filed 2026-08-05: https://github.com/Stellar-Light/stellarlight/issues/766
+  - 2026-08-08 maintainer theboycoder reported the deployed status-aware detail-page fix in https://github.com/Stellar-Light/stellarlight/issues/766#issuecomment-5226567765
+  - 2026-08-11 `npm run improvements:probes -- --service stellar-light-scout` returned fixed-candidate for this probe: HTTP 200 and no `Apply for Funding`; the rendered page shows `Closed — past round` and `This brief is closed`
 probe:
   type: http-text
   url: https://stellarlight.xyz/ideas/hummingbot-integration

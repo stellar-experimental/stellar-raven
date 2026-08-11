@@ -12,6 +12,8 @@ evidence:
   - upstream issue filed 2026-07-09: https://github.com/stellar/stellar-docs/issues/2574
   - independent Docs-team audit 2026-07-14 reproduced the activation and release facts and found the P27 JavaScript SDK row still pinned to prerelease v16.0.0-rc.2 after stable v16.0.0/v16.0.1 releases: https://gist.githubusercontent.com/ElliotFriend/3b3641b929b4408a834b85bcb4e75449/raw/a90e6b453ee3505ef2525b4428eaa75752e3ae08/raven-audit-rebuttal.md
 recurrences:
+  - date: 2026-08-11
+    evidence: live source recheck — software-versions.mdx still heads Protocol 27 as Testnet and Protocol 26 as Mainnet. Issue #2574 remains open; its latest substantive maintainer comment is ElliotFriend's 2026-07-21 verification, and the other recorded comments are Claude/Codex error messages.
   - date: 2026-07-13
     evidence: structured HTTP probe returned 200 and still rendered Protocol 27 as Testnet while retaining Protocol 26 as the Mainnet heading
   - date: 2026-07-14

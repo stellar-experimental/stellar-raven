@@ -16,6 +16,8 @@ recurrences:
     evidence: N2's independent on-chain/primary matrix confirms the existing amount-role and status defect: borrowed XLM and USDC, quarantined XLM, and valuation-dependent USD estimates must remain separate; the Lumenloop summaries still need those typed fields and attribution.
   - date: 2026-08-04
     evidence: live research 66 and article 6520 remain internally inconsistent; article short summary retains "$61M XLM", while research 66 broadens the affected component to Blend and frames quarantine as preventing full exfiltration despite the completed YieldBlox community-pool drain
+  - date: 2026-08-11
+    evidence: "Live documents 66 and 6520 still conflict on scope, loss, quarantine, and recovery; issue #24 remains open."
 ---
 
 ## Finding

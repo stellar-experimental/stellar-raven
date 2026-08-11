@@ -11,6 +11,8 @@ evidence:
   - live Algolia recheck 2026-07-14: SLP-0004 and SLP-0006 queries route to the SEP overview rather than a canonical SLP family page
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-protocol/issues/1981
 recurrences:
+  - date: 2026-08-11
+    evidence: live stellar-protocol recheck — README still names only CAPs and SEPs, limits/README.md still has no SLP index, and limits still contains slp-0001.md through slp-0006.md. Docs search still returns SEP material for SLP-0004/SLP-0006. Issue #1981 remains open without comments or maintainer activity.
   - date: 2026-08-04
     evidence: eval/qa/results/2026-08-04T20-23-20-variantA.json q-pc-slp-0004-0006-status searched the available proposal/docs surfaces and concluded the SLP family did not exist, while canonical limits/slp-0004.md and limits/slp-0006.md directly establish both proposals
 ---

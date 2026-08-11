@@ -19,6 +19,8 @@ recurrences:
     evidence: Scout 1.7.26 improves project-level basis/source values, but oracleDeployments, deployments, and products remain null across the named provider rows; residual posted and read back at https://github.com/Stellar-Light/stellarlight/issues/514#issuecomment-4982290253
   - ref health 2026-07-27: https://github.com/Stellar-Light/stellarlight/issues/514 closed completed 2026-07-14 and the residual verification was posted after closure, so issue 514 no longer tracks the remaining gap; a consolidated successor issue carries it
   - consolidated successor issue filed 2026-07-27 carrying this residual on an open thread: https://github.com/Stellar-Light/stellarlight/issues/742
+  - date: 2026-08-11
+    evidence: Production API 1.8.41 serves project-level status provenance for Band, DIA, RedStone, and Lightecho, but has no oracleDeployments, deployments, or products data; closed #514 remains unfixed and open #742 records the unmodelled product/network dimension
 ---
 
 ## Finding

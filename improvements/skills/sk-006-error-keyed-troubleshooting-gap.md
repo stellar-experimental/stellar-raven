@@ -17,6 +17,8 @@ recurrences:
     evidence: GT-41 reproduced distinct no-contract-context, non-root auth, event-testutils, ledger-testutils, and Bad-union-switch failures that remain absent from error-keyed troubleshooting
   - date: 2026-07-13
     evidence: structured HTTP probe returned 200 and still found no "No such file or directory" troubleshooting row in the upstream smart-contracts development guide
+  - date: 2026-08-11
+    evidence: structured HTTP probe returned 200 and still found no verbatim "No such file or directory" troubleshooting row in the upstream smart-contracts development guide
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/smart-contracts/development.md

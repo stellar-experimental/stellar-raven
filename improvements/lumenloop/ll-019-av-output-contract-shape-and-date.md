@@ -11,6 +11,9 @@ evidence:
   - Solo scratchpad 575 GT-44 primary 3316 and blind 3324
   - live recheck 2026-07-13: authenticated POST returned success:true with data as a top-level array; the public detail/OpenAPI still declare data.results
   - reported upstream 2026-07-13: https://github.com/lumenloop/lumenloop-backend/issues/35
+recurrences:
+  - date: 2026-08-11
+    evidence: "Live A/V output remains a top-level array despite the declared results object; issue #35 remains open."
 ---
 
 ## Finding

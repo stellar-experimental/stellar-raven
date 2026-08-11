@@ -15,6 +15,8 @@ evidence:
   - independent Docs-team audit 2026-07-14 confirmed generated method pages remain unindexed and #2566 is the only crawler-inclusion tracker; close only after the Algolia-dashboard owner has a durable replacement task: https://gist.githubusercontent.com/ElliotFriend/3b3641b929b4408a834b85bcb4e75449/raw/0183ead04f484e7b870499d9f12129d1673f1a3f/raven-issues-audit.md
   - scope/disposition correction posted and read back 2026-07-15: https://github.com/stellar/stellar-docs/issues/2566#issuecomment-4981955612
 recurrences:
+  - date: 2026-08-11
+    evidence: live recheck — get_doc_page_sections for the generated getTransactions path remains soft-empty; `getTransactions API reference limit 200 default 50` ranks the configuring page first, but the generated method page remains unindexed. Issue #2566 remains open; its latest maintainer comment is ElliotFriend's 2026-07-21 partial-fix note, while the latest comment is Raven's 2026-07-27 reply. PR #2572 remains merged with all recorded checks successful and ElliotFriend approval.
   - date: 2026-07-10
     evidence: architecture A/B todo 903 — both QA arms answered q-ti-rpc-gettransactions-pagination-xdr only partially; a fresh live execute re-check still returned soft-empty for the generated getTransactions method page, while the targeted admin query surfaced 200/default-50 and API-reference phrasing did not
   - date: 2026-07-10

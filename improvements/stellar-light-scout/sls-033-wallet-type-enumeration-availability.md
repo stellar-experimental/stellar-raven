@@ -21,6 +21,8 @@ recurrences:
     evidence: exact type=Wallet returned 62 deduplicated rows with returned=62 and total=62, but MXlet still had null productKind and only 13 rows exposed nonempty availability, leaving 49 without platform availability
   - ref health 2026-07-27: https://github.com/Stellar-Light/stellarlight/issues/519 closed completed 2026-07-14 and the residual verification was posted after closure, so issue 519 no longer tracks the remaining gap; a consolidated successor issue carries it
   - consolidated successor issue filed 2026-07-27 carrying this residual on an open thread: https://github.com/Stellar-Light/stellarlight/issues/742
+  - date: 2026-08-11
+    evidence: Production API 1.8.41 exact type=Wallet returns 63 of 63 rows, with 2 null productKind values and only 13 rows with nonempty availability; closed #519 remains a partial fix and open #742 still tracks the residual
 ---
 
 ## Finding

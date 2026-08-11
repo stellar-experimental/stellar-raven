@@ -9,6 +9,9 @@ evidence:
   - official Band project record establishes one Band identity and award history
   - Solo scratchpad 575 GT-37 primary 3296 and blind 3298
   - https://github.com/lumenloop/lumenloop-backend/issues/34
+recurrences:
+  - date: 2026-08-11
+    evidence: "Live slug band lookup still returns canonical slugs bando and band; issue #34 remains open."
 ---
 
 ## Finding

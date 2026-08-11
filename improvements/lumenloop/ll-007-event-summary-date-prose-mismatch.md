@@ -15,6 +15,8 @@ recurrences:
     evidence: POST search_content_semantic for Bhopal/Jabalpur Build On Stellar returned ids 1597/1598 with June 27 structured timestamps and July 27 summary prose
   - date: 2026-07-10
     evidence: GT-39 independently found the Jaipur Builders Camp structured title/date aligned to the direct Luma record while generated summary/slug retained the stale Goa identity
+  - date: 2026-08-11
+    evidence: event ids 1597 and 1598 still have June 27 structured `start_at` values and summary prose that says July 27; upstream #20 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity
 probe:
   type: http-text
   url: https://api.lumenloop.com/v1/tools/search_content_semantic

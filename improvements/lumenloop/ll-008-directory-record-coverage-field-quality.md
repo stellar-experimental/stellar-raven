@@ -10,6 +10,9 @@ evidence:
   - live re-verified 2026-07-10 (golden audit GT-10, Solo process 3230): MoneyGram still described with the 200+ corporate footprint, while current operator surfaces report 170+/174 cash coverage and separately label bank/mobile/card rails coming soon
   - GT-18 recurrence 2026-07-10: Soroswap resolves as Financial Protocols in Lumenloop while sibling Scout records use Protocol/Contract and DEX type fields
   - https://github.com/lumenloop/stellar-ecosystem-db/issues/3
+recurrences:
+  - date: 2026-08-11
+    evidence: `lobstr` still reports operating_region ["Indonesia"] and based_in "Estonia"; `moneygram` still says "operating in over 200 countries and territories" without rail scope or an as-of date. Upstream stellar-ecosystem-db#3 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity.
 ---
 
 ## Finding

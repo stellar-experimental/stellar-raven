@@ -13,6 +13,9 @@ evidence:
   - A live security query ranked `stellar-dev.smart-contracts` first. `develop-secure-contracts` ranked fourth.
   - Solo todo 1438 item 1, solo://proj/49/scratchpad/independent-holdout--798
   - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/13
+recurrences:
+  - date: 2026-08-11
+    evidence: the current main source still has a Solidity-only component trigger list, while its body supports Stellar and names its Stellar packages. The description still frames the skill as secure-contract development without excluding audits or vulnerability review.
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/main/skills/develop-secure-contracts/SKILL.md

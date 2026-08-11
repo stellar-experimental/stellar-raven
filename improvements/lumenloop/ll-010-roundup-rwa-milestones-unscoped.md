@@ -9,6 +9,9 @@ evidence:
   - live verification 2026-07-06: lumenloop search_content_semantic returned the Jun-19 and May-29 roundup quotes verbatim
   - Solo project 49, todo 846
   - https://github.com/lumenloop/lumenloop-backend/issues/27
+recurrences:
+  - date: 2026-08-11
+    evidence: "Live semantic search returned the Jun 19 and May 29 roundups with unscoped RWA milestones; issue #27 remains open."
 ---
 
 ## Finding

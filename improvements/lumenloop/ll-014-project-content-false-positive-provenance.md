@@ -8,6 +8,9 @@ evidence:
   - repeated Soroswap semantic-similarity calls changed from an empty result to a ranked list during the same audit
   - Solo scratchpad 575 GT-18 primary process 3249 and independent blind process 3252
   - https://github.com/lumenloop/lumenloop-backend/issues/30 (filed 2026-07-13)
+recurrences:
+  - date: 2026-08-11
+    evidence: "Live Soroswap content retrieval still includes adjacent rows without match class or evidence span; issue #30 remains open."
 ---
 
 ## Finding

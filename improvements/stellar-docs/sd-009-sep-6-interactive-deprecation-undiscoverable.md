@@ -11,6 +11,8 @@ evidence:
   - upstream issue filed 2026-07-09: https://github.com/stellar/stellar-docs/issues/2575
   - maintainer response 2026-07-13: https://github.com/stellar/stellar-docs/issues/2575#issuecomment-4962781289 — adding a six-year-old deprecation notice would be noise because the retired SEP-6 interactive components are not otherwise documented on the site
 recurrences:
+  - date: 2026-08-11
+    evidence: live Docs search for `SEP-6 interactive deprecated SEP-24` still returns no deprecated-status text. Issue #2575 remains closed by the docs owner; the recorded maintainer rationale is ElliotFriend's 2026-07-13 noise-and-placement decision.
   - date: 2026-07-10
     evidence: architecture A/B todo 903 — q-sep-6-24-deprecation remained wrong/partial across the two QA arms, and a fresh live stellarDocs search for `SEP-6 interactive deprecated SEP-24` returned no `deprecated` text
   - date: 2026-07-13

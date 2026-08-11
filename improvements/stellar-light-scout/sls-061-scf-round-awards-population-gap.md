@@ -1,7 +1,7 @@
 ---
 id: sls-061
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-05
 upstreamTitle: Populate scfRoundAwards for awarded projects outside the parser population
 evidence:
@@ -10,6 +10,8 @@ evidence:
   - 2026-08-05 official submission rechecks via lumenloop.get_scf_submissions exactly reconstructed Scout totals for comet (141000 + 150000 = 291000), bondhive (100000 + 40000 + 50000 = 190000), and coins-ph (50000)
   - the predecessor sls-058 is fixed-upstream for its filed linkage and aggregate defects; this successor owns only the remaining scfRoundAwards population gap
   - upstream issue filed 2026-08-05: https://github.com/Stellar-Light/stellarlight/issues/767
+  - 2026-08-08 maintainer theboycoder documented the deployed backfill and BondHive correction in https://github.com/Stellar-Light/stellarlight/issues/767#issuecomment-5226594028 and https://github.com/Stellar-Light/stellarlight/issues/767#issuecomment-5226650993
+  - 2026-08-11 production API 1.8.41 returns nonempty scfRoundAwards for all seven original affected rows, with every award round represented: comet, bondhive, stellar-security-portal, coins-ph, honey-coin, airswift, and idos
 ---
 
 ## Finding

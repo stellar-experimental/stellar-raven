@@ -11,6 +11,9 @@ evidence:
   - source: node_modules/workers-ai-provider/src/gateway-delegate.ts:112-120 resolves slugs and throws the reproduced error
   - consumer impact: src/demo/model-config.ts:148-164 and src/demo/chat.ts:315-360 need a separate providers-less createWorkersAI instance to use the binding run path
   - upstream issue filed 2026-08-07: https://github.com/cloudflare/ai/issues/634
+recurrences:
+  - date: 2026-08-11
+    evidence: npm latest remains workers-ai-provider 4.0.0. The local minimal reproduction still throws Unknown gateway provider "moonshotai" before the mock binding run method is called; calls remains 0.
 ---
 
 ## Finding

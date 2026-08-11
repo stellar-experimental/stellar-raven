@@ -15,6 +15,8 @@ recurrences:
     evidence: current upstream stellar-project-dossier frontmatter still omits audience/transport metadata while remaining user-invocable
   - date: 2026-07-13
     evidence: structured HTTP probe returned 200, retained user-invocable true, and still found neither audience nor transport metadata
+  - date: 2026-08-11
+    evidence: structured HTTP probe returned 200, retained user-invocable true, and still found neither audience nor transport metadata
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-project-dossier/SKILL.md

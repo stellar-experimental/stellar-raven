@@ -15,6 +15,9 @@ evidence:
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-docs/issues/2609
   - narrowed residual posted and read back 2026-07-15: https://github.com/stellar/stellar-docs/issues/2609#issuecomment-4982273197
   - premise correction acknowledged upstream 2026-07-27: https://github.com/stellar/stellar-docs/issues/2609#issuecomment-5091976739
+recurrences:
+  - date: 2026-08-11
+    evidence: live main source keeps the @^1 pin and explicitly says the tutorial uses new StellarWalletsKit(...) until the joint v2 migration. Issue #2609 remains open; the latest maintainer comment is ElliotFriend's 2026-07-21 stopgap note. PR #2659 remains merged with all recorded checks successful and kaankacar approval.
 ---
 
 ## Finding

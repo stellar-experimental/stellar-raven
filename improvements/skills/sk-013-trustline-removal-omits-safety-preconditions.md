@@ -13,6 +13,9 @@ evidence:
   - 2026-08-05 live primary-source recheck: stellar/stellar-dev-skill main (381ca32a) assets SKILL.md still presents limit 0 as removal without balance, liability, offer, or pool-reference preconditions
   - 2026-08-05 primary-source check: Stellar XDR and CAP-0038 define CHANGE_TRUST_INVALID_LIMIT for an uncleared balance/liability and CHANGE_TRUST_CANNOT_DELETE for a pool reference
   - upstream issue filed 2026-08-05: https://github.com/stellar/stellar-dev-skill/issues/81
+recurrences:
+  - date: 2026-08-11
+    evidence: current upstream assets SKILL.md still gives only `limit: "10000", // 0 to remove trustline` in its ChangeTrust example. The surrounding trustline section still omits balance, buying-liability, open-offer, and liquidity-pool-reference removal preconditions.
 ---
 
 ## Finding

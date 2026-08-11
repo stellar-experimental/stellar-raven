@@ -13,6 +13,8 @@ evidence:
   - ref health 2026-07-27 - the only prior durable reference was a comment on stellar/stellar-docs#1585, but that issue closed completed 2026-07-13T22:11Z and the follow-up was posted 2026-07-14T16:14Z; a comment on an already-closed issue never created a live tracker, so this finding is treated as unfiled
   - upstream issue filed 2026-07-27: https://github.com/stellar/stellar-docs/issues/2699
 recurrences:
+  - date: 2026-08-11
+    evidence: live source and indexed-page recheck — migrate-from-horizon-to-rpc.mdx still says CAP-67 expansion is in the near future and retains the `when available` and `when expanded` qualifiers. Issue #2699 remains open with no comments or maintainer activity.
   - date: 2026-07-14
     evidence: independent Fable recheck confirmed the rendered migration page and stellar/stellar-docs main still say CAP-67 expansion is "in the near future"; issue 1585 fixed a different events page and has no response to the migration-page follow-up, so no additional comment was posted
   - date: 2026-07-27

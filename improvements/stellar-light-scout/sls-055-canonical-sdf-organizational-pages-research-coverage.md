@@ -28,6 +28,8 @@ recurrences:
     evidence: eval/qa/results/2026-08-04T21-45-25-variantA.json q-scf-vs-sdf-enterprise-fund said there was no public application despite the live canonical Enterprise Fund form, reproducing the non-blog page-family coverage gap
   - ref health 2026-07-27: https://github.com/Stellar-Light/stellarlight/issues/533 closed completed 2026-07-14 and the residual verification was posted after closure, so issue 533 no longer tracks the remaining gap; a consolidated successor issue carries it
   - consolidated successor issue filed 2026-07-27 carrying this residual on an open thread: https://github.com/Stellar-Light/stellarlight/issues/742
+  - date: 2026-08-11
+    evidence: Production API 1.8.41 returns canonical Mandate, Terms, Team, and Enterprise Fund URLs for source=sdf-org queries and quotes the first three named claims, but the exact Enterprise Fund query does not expose its live portfolio-totaling-over-$100m wording; open #742 has no newer maintainer activity
 ---
 
 ## Finding

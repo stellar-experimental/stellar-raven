@@ -12,6 +12,9 @@ evidence:
   - Solo scratchpad 575 GT-55 pre-read-sealed blind process 3393 and author repro process 3397
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-docs/issues/2606
   - scope correction 2026-07-27 accepting maintainer triage https://github.com/stellar/stellar-docs/issues/2606#issuecomment-5035734827: pub backtracks to wallet SDK 1.0.7 and resolves, so this is silent staleness rather than a hard dependency conflict, and the Spanish half is moot because i18n was removed in https://github.com/stellar/stellar-docs/pull/2410
+recurrences:
+  - date: 2026-08-11
+    evidence: live main source still pins stellar_wallet_flutter_sdk ^1.0.6 with stellar_flutter_sdk ^2.1.3. Issue #2606 remains open; the latest maintainer comment is ElliotFriend's 2026-07-21 silent-staleness classification and update-sdk-examples routing.
 ---
 
 ## Finding

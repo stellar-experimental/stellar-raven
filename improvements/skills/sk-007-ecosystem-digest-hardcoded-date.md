@@ -14,6 +14,8 @@ recurrences:
     evidence: current upstream stellar-ecosystem-digest still contains the literal "Today is 2026-06-08" and frozen 2026-05-09→2026-06-08 window
   - date: 2026-07-13
     evidence: structured HTTP probe returned 200 and still found the literal "Today is 2026-06-08" in the upstream digest skill
+  - date: 2026-08-11
+    evidence: structured HTTP probe returned 200 and still found the literal "Today is 2026-06-08" in the upstream digest skill
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/main/skills/stellar-ecosystem-digest/SKILL.md

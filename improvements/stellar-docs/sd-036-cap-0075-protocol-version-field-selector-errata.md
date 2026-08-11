@@ -10,15 +10,16 @@ evidence:
   - research/audits/2026-07-11-gt31-protocol-caps-reserves.md
   - Solo scratchpad 575 GT-31 primary process 3280, blind process 3282, and queued author process 3403
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-protocol/issues/1980
+recurrences:
+  - date: 2026-08-11
+    evidence: live source recheck shows the former Protocol-24 availability contradiction no longer appears, but CAP-0075 still specifies field as U32Val with 0/1 while current rs-soroban-env specifies Symbol with BLS12_381/BN254 at Protocol 25. Issue #1980 remains open; its only recorded comment is leighmcculloch's 2026-07-15 author notification.
 ---
 
 ## Finding
 
-The current Final CAP-0075 source contains two internally reproducible protocol
-and interface contradictions. Its preamble says Protocol 25 and both host-function
-descriptors set `min_supported_protocol` to 25, but the Backwards
-Incompatibilities section says the functions are available in Protocol 24 and
-later. The interface blocks also type the `field` selector as `U32Val` with
+The current Final CAP-0075 source retains one reproducible interface
+contradiction. The former Protocol-24 availability contradiction no longer
+appears, but the interface blocks still type the `field` selector as `U32Val` with
 numeric values 0 and 1, while the shipped P25+ `rs-soroban-env` interface types
 it as `Symbol` and accepts `BLS12_381` or `BN254`.
 
@@ -29,11 +30,9 @@ the Docs content repository.
 
 ## Evidence
 
-At the pinned current heads on 2026-07-11, the contradictions reproduce with
+At the pinned current heads on 2026-07-11, the interface contradiction reproduced with
 read-only source checks:
 
-- `core/cap-0075.md` lines around the preamble and host descriptors say Protocol
-  25, while its Backwards Incompatibilities sentence says Protocol 24.
 - The same CAP's two JSON interface blocks declare `field: U32Val` and document
   0/1.
 - `soroban-env-common/env.json` declares `field: Symbol` for
@@ -46,8 +45,7 @@ needed to reproduce either defect.
 
 ## Recommendation
 
-Update CAP-0075's Backwards Incompatibilities sentence to Protocol 25 and make
-its interface blocks match the shipped `Symbol` selector and accepted symbol
+Make its interface blocks match the shipped `Symbol` selector and accepted symbol
 values. If the numeric form was a superseded design, label it explicitly as
 such rather than leaving two apparent current ABIs. Keep the CAP description
 precise that these exports are configurable permutation primitives from which

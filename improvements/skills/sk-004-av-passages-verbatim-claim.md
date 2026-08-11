@@ -9,6 +9,9 @@ evidence:
   - Solo project 49, todo 825 (skills-harvest verification pass)
   - live re-verified 2026-07-06 (eval round todo 846): find_av_passages still returns only AI-generated summary/long_summary + start_offset — no transcript/verbatim text field
   - upstream issue filed 2026-07-07: https://github.com/lumenloop/lumenloop-skills/issues/1
+recurrences:
+  - date: 2026-08-11
+    evidence: upstream dossier still labels find_av_passages output as Direct quotes and transcript passages to quote; upstream digest still says only find_av_passages gives verbatim passages. The current exposed operation description states that it returns AI summaries, an opaque start_offset, and a link, never transcript text.
 ---
 
 ## Finding

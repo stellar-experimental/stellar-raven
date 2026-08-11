@@ -14,6 +14,9 @@ evidence:
   - A live upgrade query ranked the OpenZeppelin skill first at 262.
   - Solo todo 1438 items 2 and 3, solo://proj/49/scratchpad/independent-holdout--798
   - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/14
+recurrences:
+  - date: 2026-08-11
+    evidence: the current main setup description still claims generic Stellar CLI installation and Soroban project creation. The current main upgrade description still claims generic native WASM replacement.
 probe:
   type: http-text
   url: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/main/skills/setup-stellar-contracts/SKILL.md

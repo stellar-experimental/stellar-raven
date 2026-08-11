@@ -11,6 +11,9 @@ evidence:
   - GT-23 recurrence 2026-07-10: a date-bounded July 6-10 query returned July 10/8/9/6 and undated rows in semantic rather than chronological order
   - Solo scratchpad 575 GT-23 primary 3264 and blind 3267
   - https://github.com/lumenloop/lumenloop-backend/issues/18 (filed 2026-07-13; production/configuration regression report against the public `lumenloop-mcp` owner)
+recurrences:
+  - date: 2026-08-11
+    evidence: the original query still omitted article 5945 while returning Q2 2021 and Q4 2020 reviews at ranks 4 and 6; `get_document({collection:"articles",id:5945})` still succeeds, while the focused `Q1 2026 quarterly report` query ranks it fourth. Upstream #18 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity.
 ---
 
 ## Finding

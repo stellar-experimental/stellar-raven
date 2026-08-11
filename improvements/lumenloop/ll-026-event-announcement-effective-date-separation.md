@@ -10,6 +10,10 @@ evidence:
   - https://www.cmegroup.com/content/dam/cmegroup/notices/ser/2026/01/ser-9663.pdf
   - https://www.cmegroup.com/media-room/press-releases/2026/2/11/cme_group_announcesfirsttradesfornewcardanochainlinkandstellarcr.html
   - https://github.com/lumenloop/lumenloop-backend/issues/40
+  - 2026-08-11 review: issue #40 is open. It has no linked PR, checks, or reviews. Its only comment and latest timeline activity are kalepail's Raven tracking comment at 2026-07-13T22:54:35Z. `get_document({collection: "articles", id: 5416})` still gives the January 15 publication date and February 9 target only in prose. Article 4809 remains a separate retrospective record with no typed lifecycle relation.
+recurrences:
+  - date: 2026-08-11
+    evidence: CME articles 5416 and 4809 remain separate, publication-dated summaries without typed announcement, effective, trade, or first-trade fields.
 ---
 
 ## Finding

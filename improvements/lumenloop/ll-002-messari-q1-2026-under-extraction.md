@@ -11,6 +11,9 @@ evidence:
   - live re-verified 2026-07-06 (eval round todo 846): same thin extraction persists — long_summary 694 chars / summary 344 chars for the full Messari report; item's collection drifted research→av (get_document collection:'av', id:2207), so the original types:['research'] probe no longer surfaces it
   - https://github.com/lumenloop/lumenloop-backend/issues/22
   - filed upstream 2026-07-13 after public-repo ownership and open/closed issue deduplication; root cause remains unconfirmed
+recurrences:
+  - date: 2026-08-11
+    evidence: `get_document({collection:"av",id:2207})` still returns summary 344 chars and long_summary 694 chars; upstream #22 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity
 ---
 
 ## Finding

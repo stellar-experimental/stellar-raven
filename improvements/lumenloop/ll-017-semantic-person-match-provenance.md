@@ -26,6 +26,8 @@ recurrences:
     evidence: eval/qa/results/2026-07-14T03-29-01-variantA.json covered every required broad/detail family yet q-builder-justin-rice-history scored wrong after fabricating an adjacent byline and omitting exact-name dated role evidence
   - date: 2026-07-14
     evidence: normalized {items,counts,meta} localhost probes recovered exact-name Justin Rice rows 3/3 at production reasoning-none; later scored playground and main-MCP answers consumed those rows but each added a different unsupported adjacent attribution
+  - date: 2026-08-11
+    evidence: "Live Tyler queries still mix exact and unrelated rows without exact-match relation or evidence span; issue #36 remains open."
 ---
 
 ## Finding

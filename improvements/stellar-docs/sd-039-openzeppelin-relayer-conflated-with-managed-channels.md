@@ -12,6 +12,8 @@ evidence:
   - 2026-07-27 live production scout.searchResearch returned /docs/build/agentic-payments/x402, which already states the x402 plugin uses the Relayer framework and leverages managed Channels underneath
   - filed upstream 2026-07-28: https://github.com/stellar/stellar-docs/issues/2707
 recurrences:
+  - date: 2026-08-11
+    evidence: live Tools recheck still returns the alias framing on both /docs/tools and /docs/tools/openzeppelin-relayer. Issue #2707 remains open without comments or maintainer activity.
   - date: 2026-08-04
     evidence: eval/qa/results/2026-08-04T22-02-07-variantA.json q-smart-wallet-fee-sponsorship repeated the served dapp skill's "Relayer (also called Stellar Channels Service)" alias, showing the product-identity error propagates beyond the two Tools pages
   - date: 2026-08-04

@@ -19,6 +19,8 @@ recurrences:
     evidence: upstream stellar-scout main at f2659ff still names the retired soroban skill in its SDF roster, skills.stellar.org URLs, and exact GET /api/skills/soroban examples, while live OpenAPI 1.8.30 names smart-contracts and production returns 200 for /api/skills/smart-contracts versus 404 for /api/skills/soroban
   - date: 2026-08-10
     evidence: refreshed inventory/stellar-light.json OpenAPI 1.8.40 adds Repo activityState/activitySignals, contractInterface, protocolCaps, stellarDeps, targetProtocol, the searchRepos activity parameter, and research source=repo-docs; the pinned f2659ff references/api-reference.md has no occurrences of those surface names
+  - date: 2026-08-11
+    evidence: live OpenAPI 1.8.41 still exposes Project tvlUSD/tvlAsOf, research source=repo-docs, Repo activityState/activitySignals, and the repos/search activity filter. The current source reference still omits semantic, tvlUSD, tvlAsOf, repo-docs, activityState, and activitySignals. It now documents sdf-org; contractInterface, protocolCaps, stellarDeps, and targetProtocol are absent from the current OpenAPI and are not a current recommendation.
 ---
 
 ## Finding
@@ -36,20 +38,16 @@ The live API now documents three capabilities absent from the served skill:
 - Project records can carry `tvlUSD` and `tvlAsOf`, where `null` means not
   tracked by DefiLlama rather than zero TVL.
 - `GET /api/research` accepts `source=cap` for CAP material.
-- `GET /api/research` also accepts `source=sdf-org`, and research rows can carry
-  `publishedAt` and `observedAt` provenance dates.
 - `GET /api/leaderboard` accepts repeatable or comma-separated exact `type`
   filters and returns the resolved filter plus metric definitions and data date
   in `meta.filters.type`, `meta.metricDefinitions`, and `meta.dataAsOf`.
-- Repo records now expose derived `activityState`, dated `activitySignals`,
-  Soroban `contractInterface`, `protocolCaps`, `stellarDeps`, and
-  `targetProtocol`; `GET /api/repos/search` accepts `activity`, and research
-  accepts `source=repo-docs`.
+- Repo records expose derived `activityState` and dated `activitySignals`.
+  `GET /api/repos/search` accepts `activity`, and research accepts
+  `source=repo-docs`.
 
 Agents that read the served skill can therefore misread semantic results as
-keyword-confirmed, collapse untracked TVL to zero, or omit the new CAP source
-filter, miss SDF organizational research, or overlook leaderboard filtering and
-provenance even though Raven's regenerated operation schemas expose them.
+keyword-confirmed, collapse untracked TVL to zero, omit the CAP or repository
+documentation source filter, or overlook leaderboard filtering and provenance.
 
 ## Evidence
 
@@ -62,10 +60,10 @@ Live verification on 2026-07-10 and the regenerated inventory show:
 - The research-source enum adds `cap`.
 
 The pinned upstream reference still says a `majority` miss returns an advisory
-to use `/api/research`, lists no `semantic` tier, omits the TVL fields, and its
-research source list omits `sdf-org`. Its leaderboard parameters omit `type`,
-and its result documentation omits the filter, metric-definition, and data-date
-metadata:
+to use `/api/research`, lists no `semantic` tier, and omits the TVL fields. Its
+research source list now includes `sdf-org` but omits `repo-docs`. Its leaderboard
+parameters omit `type`, and its result documentation omits the filter,
+metric-definition, and data-date metadata:
 
 - catalog id `skills.stellar-light.stellar-scout#file:references/api-reference.md`, served from
   the commit pinned in `ecosystem-skills/MANIFEST.json` — read it with
@@ -82,9 +80,8 @@ catalog/micro-map/spec/op-class rebuild → deploy).
 
 Update the Scout skill API reference to document the `semantic` result tier and
 its confidence caveat, Project `tvlUSD`/`tvlAsOf` null semantics, and the
-`source=cap` and `source=sdf-org` research filters with provenance dates. Also
-document leaderboard `type` filtering and its returned filter, metric, and data
-date metadata. Add the Repo activity, interface, dependency, and protocol
-fields; the `activity` filter; and the `repo-docs` research source. Add a small
-schema-to-reference drift check so a new enum value or documented field produces
-a review signal before the skill lags another live release.
+`source=cap` and `source=repo-docs` research filters. Also document leaderboard
+`type` filtering and its returned filter, metric, and data date metadata. Add the
+Repo activity fields and the `activity` filter. Add a small schema-to-reference
+drift check so a new enum value or documented field produces a review signal
+before the skill lags another live release.

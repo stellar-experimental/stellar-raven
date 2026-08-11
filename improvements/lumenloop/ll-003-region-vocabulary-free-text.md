@@ -17,6 +17,8 @@ recurrences:
     evidence: authenticated POST /v1/tools/get_regions returned count 95 with four case-insensitive duplicate pairs (africa/Africa, asia/Asia, global/Global, mena/MENA)
   - date: 2026-07-10
     evidence: GT-35 primary/blind re-execution returned count 95 and reproduced africa/Africa, asia/Asia, global/Global, and mena/MENA
+  - date: 2026-08-11
+    evidence: `get_regions` still returns 95 values and all four capitalization-only pairs; upstream #23 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity
 probe:
   type: http-text
   url: https://api.lumenloop.com/v1/tools/get_regions

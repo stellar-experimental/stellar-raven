@@ -13,6 +13,8 @@ evidence:
   - upstream PR https://github.com/stellar/stellar-docs/pull/2572 merged 2026-07-10 at final head fb4e8ecbb50218b52313c434a9d0d4e8571fdb3a after reverting its intermediate configurable-per-instance wording; the live Pagination page still says the upper limits are hardcoded
   - upstream issue https://github.com/stellar/stellar-docs/issues/2567 closed completed 2026-07-13 with maintainer guidance from ElliotFriend after confirmation with Shaptic: the limits are technically configurable but are not configured in practice, should not be, and may tighten later; advertising the settings would be counter-productive
 recurrences:
+  - date: 2026-08-11
+    evidence: live source and Docs recheck — the Pagination page still uses hardcoded-limit wording, while stellar-rpc retains the configuration options. Issue #2567 remains closed completed; its only and closing maintainer comment was ElliotFriend's 2026-07-13 operational-policy decision.
   - date: 2026-07-13
     evidence: closed-unfixed live re-check — the merged Pagination page and crawled record retain the hardcoded wording by explicit owner decision, while current stellar-rpc source continues to expose the max/default options
 ---

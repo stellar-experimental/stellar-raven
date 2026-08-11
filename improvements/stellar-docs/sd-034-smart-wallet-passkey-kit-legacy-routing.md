@@ -14,6 +14,8 @@ evidence:
   - original combined review context: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-4971409358
   - issue-tracker follow-up context: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5091971087
 recurrences:
+  - date: 2026-08-11
+    evidence: live smart-wallet and Guestbook source recheck still links archived kalepail/passkey-kit and omits Smart Account Kit, while Guestbook still requires LaunchTube. Issue #2700 remains open; its only recorded comment is Raven's 2026-08-05 premise correction, so no maintainer response exists.
   - date: 2026-08-04
     evidence: eval/qa/results/2026-08-04T22-41-34-variantA.json q-soroban-add-signer-smart-wallet-howto repeated stale filed framing while current canonical READMEs describe sibling authorization models
   - date: 2026-08-06

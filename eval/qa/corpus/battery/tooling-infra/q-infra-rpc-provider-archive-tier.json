@@ -92,15 +92,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The archive subset was correct, but the answer's final claim that most providers do not support getLedgers confused existence of the standard method with archive-backed full-history reach and included unsupported provider-preference copy.",
+      "date": "2026-08-11",
+      "by": "sk-003 provenance preservation — Solo todo 1452; independent fixed-review todo 1449 comment 3813.",
       "evidence": [
-        "Solo scratchpad 575 GT-50 processes 3349/3361 independently confirmed the seven rows; the blind lane caught the method-versus-tier wording defect.",
-        "Sibling sweep checked q-infra-rpc-providers-list, q-ti-self-host-core-rpc-full-history, q-ti-self-host-retention-backfill, and q-edge-noinfo-fake-project-quasarswap."
+        "A: https://developers.stellar.org/docs/data/apis/rpc/providers and https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers rechecked 2026-08-11; the Providers page limits RPC Archive to getLedgers, and the method page limits pagination to the provider's retained history.",
+        "B: https://raw.githubusercontent.com/stellar/stellar-dev-skill/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/data/SKILL.md rechecked 2026-08-11; deep getLedgers history depends on the provider's data lake, while a plain RPC is bounded by getHealth().oldestLedger and returns -32600 below that floor.",
+        "C: independent fixed-review todo 1449 comment 3813 re-read the production skills.stellar-dev.data surface through https://agents.stellar.buzz/mcp on 2026-08-11 and confirmed the same retained-range boundary with no unconditional genesis claim.",
+        "Sibling sweep 2026-08-11 re-read every member of consistency clusters cluster-018 and cluster-046; getLedgers-only archive reach, bounded event and transaction history, indexer/Hubble roles, and Quasar entity separation remain consistent."
       ],
       "rootCause": [
         "Eval-side method/tier conflation: a standard retention-bounded method was described as absent outside the archive subset.",
-        "improvements/skills/sk-003-getledgers-retention-conflict.md"
+        "improvements/resolved.json entry sk-003 — fixed upstream and refreshed locally at stellar-dev-skill commit 9e3d3fe0de8587205b020e0148ea67525e38e494; the current pinned and served data skill bounds deep getLedgers history by provider data-lake reach or getHealth().oldestLedger and documents -32600 outside retention."
       ]
     },
     "origin": "raven-next q-infra-rpc-provider-archive-tier"

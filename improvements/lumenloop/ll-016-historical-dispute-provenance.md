@@ -8,6 +8,9 @@ evidence:
   - Ripple's contemporaneous response disputes that causal interpretation
   - Solo scratchpad 575 GT-27 primary 3270 and blind 3272
   - https://github.com/lumenloop/lumenloop-backend/issues/31
+recurrences:
+  - date: 2026-08-11
+    evidence: "Live semantic rows still lack claimant, target event, dispute, and corroboration fields; issue #31 remains open."
 ---
 
 ## Finding

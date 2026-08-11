@@ -8,6 +8,9 @@ evidence:
   - linked official Stellar post and Horizon boundary establish July 8 activation
   - Solo scratchpad 575 GT-23 primary 3264 and blind 3267
   - reported upstream: https://github.com/lumenloop/lumenloop-backend/issues/28
+recurrences:
+  - date: 2026-08-11
+    evidence: "Research 141 still says July 9 while Horizon ledger 63386819 reports protocol 27 on July 8; issue #28 remains open."
 ---
 
 ## Finding

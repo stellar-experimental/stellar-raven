@@ -1,7 +1,7 @@
 ---
 id: sls-062
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-06
 upstreamTitle: Scout status reports nine SDF skills while its directory exposes seven
 evidence:
@@ -11,6 +11,8 @@ evidence:
   - the latest canonical commit touching the skills path was 2026-07-20 and already contained the same 7 directories, so the documented 24-hour Scout cache does not explain the 9-vs-7 gap: https://github.com/stellar/stellar-dev-skill/commit/52baea1d8cb1aa9441004ce44b723f55cbc90901
   - independent adversarial live recheck: Solo Todo 1400 comment 3761
   - upstream issue filed 2026-08-06: https://github.com/Stellar-Light/stellarlight/issues/768
+  - 2026-08-08 maintainer theboycoder documented the shared population derivation in https://github.com/Stellar-Light/stellarlight/issues/768#issuecomment-5226567870
+  - 2026-08-11 production API 1.8.41 reports sdfSkills.count 8 and `/api/skills?source=sdf` returns 8 rows with meta.counts.bySource.sdf 8; the original cross-surface mismatch no longer reproduces
 ---
 
 ## Finding

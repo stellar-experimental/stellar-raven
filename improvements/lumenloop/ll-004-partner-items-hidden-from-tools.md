@@ -17,6 +17,8 @@ evidence:
 recurrences:
   - date: 2026-07-14
     evidence: same-key authenticated /v1/tools=18 versus /v1/me available=21 and visible=21; regression reported at https://github.com/lumenloop/lumenloop-backend/issues/42
+  - date: 2026-08-11
+    evidence: the partner-key `GET /v1/tools` returned 18 guest rows and omitted all three account-scoped names, while same-key `GET /v1/me` reported tools.available=21 and tools.visible=21; the anonymous control also returned 18 rows. Upstream #42 remains open; both comments are by `kalepail` and no maintainer activity is recorded.
 ---
 
 ## Finding

@@ -21,6 +21,8 @@ recurrences:
     evidence: post-fix QA performed the broad pass but called the ok=true empty payload a lane defect, showing the catalog mitigation must explicitly distinguish data-shaped empty from transport and soft-empty failure
   - date: 2026-07-14
     evidence: Justin Rice exact-person live probe again returned ok=true with all groups empty; the paired broad semantic control returned exact-name historical event rows
+  - date: 2026-08-11
+    evidence: `find_content_by_entity({entity:"Denelle Dixon",entity_type:"person",limit:100})` returned empty articles/av/events/proposals/scf_submissions groups, while the organization control returned 100/100/100/13/100; upstream #19 remains open, with only the 2026-07-13 `kalepail` tracking comment and no maintainer activity
 ---
 
 ## Finding

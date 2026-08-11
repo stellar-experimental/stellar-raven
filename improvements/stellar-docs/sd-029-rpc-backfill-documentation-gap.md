@@ -13,6 +13,8 @@ evidence:
   - scope correction 2026-07-27 accepting maintainer triage https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5035732543: data-lake-integration.mdx already documents datastore serving and the getLedgers-only boundary, so the original framing overstated the gap; the undocumented surface is the BACKFILL flag itself plus the stale configuring.mdx sample config
   - scope-narrowing reply posted and read back 2026-07-27: https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5091976539
 recurrences:
+  - date: 2026-08-11
+    evidence: live RPC Docs search for BACKFILL returns Hubble backfill pages, not RPC operator guidance; configuring.mdx still contains neither BACKFILL nor SERVE_LEDGERS_FROM_DATASTORE. Issue #2602 remains open; the latest maintainer activity is ElliotFriend's 2026-07-21 scope confirmation, followed by Raven's narrowing reply.
   - date: 2026-08-04
     evidence: eval/qa/results/2026-08-04T23-53-57-variantA.json q-ti-self-host-retention-backfill retrieved current configuration/data-lake material but still could not establish the BACKFILL flag, synchronous startup behavior, and prerequisites from operator documentation
 ---

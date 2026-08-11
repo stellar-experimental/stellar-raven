@@ -17,6 +17,8 @@ recurrences:
     evidence: DTCC now correctly serves Development with dated operator-announcement provenance, but the row still exposes no product/asset/deployment keys; the product-level deployment model remains unresolved under #494
   - date: 2026-07-15
     evidence: Scout 1.7.26 keeps DTCC at Development with dated provenance, but products, deployments, assets, and productKind remain null and supportedNetworks remains empty
+  - date: 2026-08-11
+    evidence: Production API 1.8.41 returns DTCC as Development with operator-announcement provenance, but products, deployments, assets, and productKind remain null and supportedNetworks is empty; the product-level deployment gap still reproduces
 ---
 
 ## Finding

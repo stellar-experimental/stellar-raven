@@ -12,6 +12,9 @@ evidence:
   - Solo scratchpad 575 GT-29 primary 3276 and independent blind 3278
   - GT-41 recurrence: document timestamping guidance required historical transaction/result and ledger-close evidence because the current Manage Data entry is mutable
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-docs/issues/2611
+recurrences:
+  - date: 2026-08-11
+    evidence: live Docs search for `transaction inclusion proof` still returns adjacent material only, not a verification-boundaries guide. Issue #2611 remains open; ElliotFriend's 2026-07-21 comment classed it as a valid enhancement and confirmed no compact per-transaction Merkle branch.
 ---
 
 ## Finding

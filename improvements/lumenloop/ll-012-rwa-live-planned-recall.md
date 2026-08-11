@@ -9,6 +9,9 @@ evidence:
   - exact-name probes could retrieve Benji, WisdomTree, Figure, Spiko, and Etherfuse records
   - Solo scratchpad 575 GT-11 primary process 3231
   - https://github.com/lumenloop/lumenloop-backend/issues/29
+recurrences:
+  - date: 2026-08-11
+    evidence: "Broad RWA search still omits five exact-name records and lacks product state; issue #29 remains open."
 ---
 
 ## Finding
