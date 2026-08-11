@@ -92,7 +92,7 @@ describe("improvements issue filing template", { timeout: 30_000 }, () => {
 
     const marker = "<!-- generated-by-stellar-raven -->";
     const notice =
-      "This issue was filed from [Stellar Raven](https://github.com/stellar-experimental/stellar-raven)'s automated evaluation pipeline. Evidence and a public source record are included below. The finding may still be incomplete or incorrect — please verify against the live surface before acting on it.";
+      "[Stellar Raven](https://github.com/stellar-experimental/stellar-raven) filed this issue from its automated evaluation pipeline. The issue includes evidence and a public source record. Please verify the live surface before you act.";
     expect(output).toContain(`> **Automated notice:** ${notice}`);
     // The disclosure is the first thing in the body, above every substantive section.
     expect(output).toMatch(
@@ -482,8 +482,8 @@ Keep the main link and omit the immutable snapshot.
     expect(output).toMatch(new RegExp(`https://github\\.com/stellar-experimental/stellar-raven/blob/[0-9a-f]{40}/${finding}`));
     expect(output).toContain("## Resolution Handoff");
     expect(output).toContain("template=upstream-improvement-ready.yml");
-    expect(output).toContain("Raven independently verifies the upstream surface");
-    expect(output).toContain("retired to Raven's resolved ledger");
+    expect(output).toContain("Raven verifies the live surface");
+    expect(output).toContain("Raven retires the active finding");
   });
   // The incident this guards: a fixture in os.tmpdir() reached the live `gh issue create` and
   // became stellar/stellar-docs#2716. `path.relative` does not fail on an out-of-tree path, it

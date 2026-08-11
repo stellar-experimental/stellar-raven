@@ -24,7 +24,7 @@ const RAVEN_REPO = "stellar-experimental/stellar-raven";
 const HANDOFF_TEMPLATE = "upstream-improvement-ready.yml";
 const AUTOMATION_MARKER = "<!-- generated-by-stellar-raven -->";
 const AUTOMATION_NOTICE =
-  `This issue was filed from [Stellar Raven](https://github.com/${RAVEN_REPO})'s automated evaluation pipeline. Evidence and a public source record are included below. The finding may still be incomplete or incorrect — please verify against the live surface before acting on it.`;
+  `[Stellar Raven](https://github.com/${RAVEN_REPO}) filed this issue from its automated evaluation pipeline. The issue includes evidence and a public source record. Please verify the live surface before you act.`;
 if (!args.file) {
   console.error("usage: node scripts/improvements-file-issue.mjs --file improvements/...md [--repo owner/name] [--dry-run] [--render-body-file /tmp/body.md]");
   process.exit(2);
@@ -253,18 +253,24 @@ function renderBody(finding) {
     "",
     "## Source Record",
     "",
-    `This was found by the downstream Raven eval/improvements loop and recorded as ${fm.id} (${fm.service}, discovered ${fm.discovered}).`,
+    `Raven recorded this finding as ${fm.id} (${fm.service}, discovered ${fm.discovered}).`,
     "",
     `Public source record: [${finding.relPath}](${sourceUrl})`,
     ...(immutableSourceUrl ? ["", `Immutable source snapshot: [${sourceCommit.slice(0, 12)}](${immutableSourceUrl})`] : []),
     "",
     "## Resolution Handoff",
     "",
-    "When a fix is deployed, please link the resolving issue or PR to the source record above and notify Raven through:",
+    "When you deploy a fix, link the resolving issue or pull request to the source record.",
+    "Then notify Raven through:",
     "",
     handoffUrl,
     "",
-    "Include the finding id, resolving issue/PR, deployed version or timestamp, and the smallest live recheck. Raven independently verifies the upstream surface before changing the finding to `fixed-upstream`; issue closure or a merged PR alone is not treated as proof. After a distinct reviewer repeats the live check, the active finding is retired to Raven's resolved ledger; a commit-pinned snapshot is preserved when available.",
+    "Include the finding ID and the resolving issue or pull request.",
+    "Include the deployed version or timestamp. Include the smallest live recheck.",
+    "Raven verifies the live surface before it sets the finding to `fixed-upstream`.",
+    "An issue closure or merged pull request does not prove the fix.",
+    "A separate reviewer repeats the live check before Raven retires the active finding.",
+    "Raven keeps a commit-pinned snapshot when one is available.",
     "",
   ].join("\n");
 }

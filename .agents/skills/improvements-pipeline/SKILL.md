@@ -100,6 +100,9 @@ must state the affected surface and concrete defect without eval IDs, internal w
 a clipped transcript sentence. Put the smallest correction before optional context. Corpus/eval
 provenance belongs in compact evidence, not in the owner-facing ask.
 
+Read `references/upstream-writing-style.md` before drafting or filing upstream text. Use its
+ASD-STE100-inspired rules for owner-facing text. Preserve exact technical tokens.
+
 Before filing content/code drift, apply three cheap calibration checks:
 - distinguish the version where drift was observed from the version that introduced it; verify the
   first bad release/commit when the timeline matters, and cite the live successor repo rather than an
