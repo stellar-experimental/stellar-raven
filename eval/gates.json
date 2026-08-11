@@ -14,5 +14,13 @@
   "skills": {
     "n": 23,
     "minTop1": 17
+  },
+  "holdoutNote": "eval/holdout-cases.json is a FROZEN, blind-authored holdout: 49 cases written by three different model families that were forbidden from reading the scorer, any eval result, or any analysis of current ranking, and forbidden from probing where their queries rank. It exists because the development probe set for the todo-1436 coverage-gate defect is cross-chain-centric and therefore overfittable; the holdout deliberately EXCLUDES cross-chain so a fix that rescues one skill family by capturing another's territory shows up here instead of hiding. These floors are the first and only measurement, taken at commit time on an unmodified scorer — 12/25/27 of 49 with 11 forbidden captures, which is a poor score and is meant to be. It is a no-regression vector, never a target: do not iterate against it while tuning, and do not edit a case because it fails. Moving these numbers is a re-baseline like any other and needs the same explicit justification.",
+  "holdout": {
+    "n": 49,
+    "minTop1": 12,
+    "minTop3": 25,
+    "minTop5": 27,
+    "maxForbiddenCaptures": 11
   }
 }

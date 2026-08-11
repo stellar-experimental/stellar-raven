@@ -10,7 +10,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { aggregate, cardMatches, canonToken, gradeCase, tableRows } from "./lib/grade.mjs";
+import { aggregate, cardMatches, cardMatchesExact, canonToken, gradeCase, tableRows } from "./lib/grade.mjs";
 import { deriveExpectedAny, frontmatterRouting, parseFrontmatterList } from "./lib/labels.mjs";
 
 // --- fake catalog: 3 entries across our namespaces --------------------------------
@@ -41,6 +41,11 @@ check("canonToken unifies separators + case", () => {
 });
 check("cardMatches: exact canonical id match", () => {
   assert.equal(cardMatches("lumenloop_search_directory", E.llDirectory), true);
+});
+check("cardMatchesExact: uses mapped service + exact operation only", () => {
+  assert.equal(cardMatchesExact("stellar_docs_search_docs", E.docsSearch), true);
+  assert.equal(cardMatchesExact("scout_projects", E.scoutProjects), false);
+  assert.equal(cardMatchesExact("skills_smart_contracts", E.skillContracts), true);
 });
 check("cardMatches: stellar_docs_ prefix maps to stellarDocs service, tolerant op containment", () => {
   // expected op "search_docs" vs hit op "search_docs" via stellar_docs_ prefix

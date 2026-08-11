@@ -47,7 +47,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, resolve, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { aggregate, gradeCase, tableRows } from "./lib/grade.mjs";
+import { aggregate, cardMatchesExact, gradeCase, tableRows } from "./lib/grade.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(EVAL_DIR, "..");
@@ -61,6 +61,7 @@ const MANIFEST =
     : join(REPO, "catalog", "manifest.json");
 const CASES = join(EVAL_DIR, "routing-cases.json");
 const SKILLS_CASES = join(EVAL_DIR, "skills-cases.json");
+const HOLDOUT_CASES = join(EVAL_DIR, "holdout-cases.json");
 const OVERLAY = join(EVAL_DIR, "build-question-overlay.json");
 const GATES = join(EVAL_DIR, "gates.json");
 const RESULTS_DIR = join(EVAL_DIR, "results");
@@ -229,6 +230,56 @@ async function main() {
     skillsLane = { authoredAt: supplement.authoredAt, ...aggregate(skillsPerCase).overall };
   }
 
+  // --- frozen blind holdout (card rank + forbidden capture; diagnostic only) --------
+  let holdoutLane = null;
+  let holdoutPerCase = [];
+  if (existsSync(HOLDOUT_CASES)) {
+    const supplement = JSON.parse(readFileSync(HOLDOUT_CASES, "utf8"));
+    const searchableEntries = catalog.entries.filter((e) => e.searchable !== false && e.kind !== "skill-section");
+    for (const c of supplement.cases) {
+      for (const card of [...c.expected_cards, ...c.forbidden_cards]) {
+        const matches = searchableEntries.filter((entry) => cardMatchesExact(card, entry));
+        if (matches.length !== 1) {
+          throw new Error(`holdout card "${card}" resolves to ${matches.length} searchable catalog entries (case ${c.id})`);
+        }
+      }
+    }
+    holdoutPerCase = supplement.cases.map((c) => {
+      const hits = searchCatalog(catalog, { query: c.question, limit: 5 });
+      const expectedIndex = hits.findIndex((hit) => c.expected_cards.some((card) => cardMatchesExact(card, hit)));
+      const expectedRank = expectedIndex === -1 ? null : expectedIndex + 1;
+      const forbiddenHits = hits
+        .filter((hit) => c.forbidden_cards.some((card) => cardMatchesExact(card, hit)))
+        .map((hit) => hit.id);
+      const top1 = expectedRank === 1;
+      const top3 = expectedRank !== null && expectedRank <= 3;
+      const top5 = expectedRank !== null && expectedRank <= 5;
+      const forbiddenCapture = forbiddenHits.length > 0;
+      return {
+        id: c.id,
+        expected_service: c.expected_service,
+        expected_cards: c.expected_cards,
+        forbidden_cards: c.forbidden_cards,
+        expectedRank,
+        top1,
+        top3,
+        top5,
+        cardHit5: top5,
+        forbiddenCapture,
+        forbiddenHits,
+        pass: top5 && !forbiddenCapture,
+        topHits: hits.map((h) => ({ id: h.id, service: h.service, score: h.score })),
+      };
+    });
+    const holdoutAgg = aggregate(holdoutPerCase);
+    holdoutLane = {
+      authoredAt: supplement.authoredAt,
+      ...holdoutAgg.overall,
+      forbiddenCaptures: holdoutPerCase.filter((r) => r.forbiddenCapture).length,
+      passed: holdoutPerCase.filter((r) => r.pass).length,
+    };
+  }
+
   // --- gate check (eval/gates.json; EVALS.md: two gates, everything else diagnostic) --
   let gate = null;
   if (existsSync(GATES)) {
@@ -253,7 +304,33 @@ async function main() {
     } else if (skillsLane.top1 < g.skills.minTop1) {
       failures.push(`skills lane top-1=${skillsLane.top1} below floor ${g.skills.minTop1}`);
     }
-    gate = { pass: failures.length === 0, failures, baselinedAt: g.baselinedAt, baselineResults: g.baselineResults };
+    // Holdout: a no-regression vector, not a target. Each rank floor and the forbidden-capture
+    // ceiling are checked SEPARATELY so a gain in one metric cannot pay for damage in another —
+    // the failure this lane exists to catch is a scorer change that rescues one skill family by
+    // capturing another's territory, which a single combined score would hide. No ±band: at n=49
+    // one case is 2% of the denominator, so slack here would swallow real movement. These floors
+    // are the frozen first measurement; moving them is a re-baseline like any other.
+    if (g.holdout) {
+      if (!holdoutLane) {
+        failures.push("holdout lane absent (eval/holdout-cases.json missing) — the holdout gate cannot be evaluated");
+      } else if (holdoutLane.n !== g.holdout.n) {
+        failures.push(`holdout lane n=${holdoutLane.n} ≠ baselined n=${g.holdout.n} — the frozen set changed; re-baseline gates.json explicitly`);
+      } else {
+        for (const [k, floor] of [["top1", g.holdout.minTop1], ["top3", g.holdout.minTop3], ["top5", g.holdout.minTop5]]) {
+          if (holdoutLane[k] < floor) failures.push(`holdout lane ${k}=${holdoutLane[k]} below floor ${floor}`);
+        }
+        if (holdoutLane.forbiddenCaptures > g.holdout.maxForbiddenCaptures) {
+          failures.push(`holdout forbidden captures=${holdoutLane.forbiddenCaptures} above ceiling ${g.holdout.maxForbiddenCaptures}`);
+        }
+      }
+    }
+    gate = {
+      pass: failures.length === 0,
+      failures,
+      holdoutChecked: Boolean(g.holdout && holdoutLane),
+      baselinedAt: g.baselinedAt,
+      baselineResults: g.baselineResults,
+    };
   } else if (ENFORCE_GATE) {
     throw new Error(`--gate passed but ${GATES} is missing`);
   }
@@ -288,10 +365,12 @@ async function main() {
         skipped: compiled.counts.skipReasonCounts,
         ...(extendedLane ? { extendedLane: { strict: extendedLane.strict.overall, perService: extendedLane.strict.perService, acceptEither: extendedLane.acceptEither } } : {}),
         ...(skillsLane ? { skillsLane } : {}),
+        ...(holdoutLane ? { holdoutLane } : {}),
         ...(overlayReport ? { overlay: overlayReport } : {}),
         cases: perCase,
         ...(extendedPerCase.length > 0 ? { extendedCases: extendedPerCase } : {}),
         ...(skillsPerCase.length > 0 ? { skillsCases: skillsPerCase } : {}),
+        ...(holdoutPerCase.length > 0 ? { holdoutCases: holdoutPerCase } : {}),
       },
       null,
       2,
@@ -319,6 +398,20 @@ async function main() {
     console.log(`\nskills lane — ${skillsPerCase.length} hand-authored cases (eval/skills-cases.json), strict grading\n`);
     console.table(tableRows(aggregate(skillsPerCase)));
   }
+  if (holdoutLane) {
+    console.log(`\nholdout lane — ${holdoutPerCase.length} FROZEN blind-authored cases (expected exact-card rank; pass = expected top-5 and no forbidden top-5 capture)\n`);
+    console.table(tableRows(aggregate(holdoutPerCase)));
+    console.table(holdoutPerCase.map((r) => ({
+      id: r.id,
+      rank: r.expectedRank ?? "miss",
+      top1: r.top1 ? "PASS" : "FAIL",
+      top3: r.top3 ? "PASS" : "FAIL",
+      top5: r.top5 ? "PASS" : "FAIL",
+      forbidden: r.forbiddenCapture ? r.forbiddenHits.join(", ") : "none",
+      result: r.pass ? "PASS" : "FAIL",
+    })));
+    console.log(`holdout forbidden captures: ${holdoutLane.forbiddenCaptures}/${holdoutLane.n}`);
+  }
   if (overlayReport) {
     const p = (num) => `${((100 * num) / overlayReport.n).toFixed(1)}%`;
     console.log(`\noverlay — ${overlayReport.n} build-shaped stellarDocs cases, dual grading (accept set: ${overlayReport.expected_any.join(", ")})\n`);
@@ -335,7 +428,11 @@ async function main() {
   console.log("\nskipped at compile:", compiled.counts.skipReasonCounts);
   if (gate) {
     if (gate.pass) {
-      console.log(`\nGATE PASS — legacy 338 within band and skills lane at/above floor (baseline ${gate.baselineResults})`);
+      // Name every lane the gate actually checked. A PASS that only mentions two of three lanes
+      // reads as "the holdout was not evaluated" to anyone who did not open gates.json.
+      console.log(
+        `\nGATE PASS — legacy 338 within band, skills lane at/above floor${gate.holdoutChecked ? ", holdout lane at/above floors and under its capture ceiling" : ""} (baseline ${gate.baselineResults})`,
+      );
     } else {
       console.log(`\nGATE FAIL${ENFORCE_GATE ? "" : " (advisory — enforce with --gate)"}:`);
       for (const f of gate.failures) console.log(`  - ${f}`);

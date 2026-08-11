@@ -33,6 +33,21 @@ export function splitCard(token) {
   return { service: null, op: t };
 }
 
+/** Exact card-id match after applying the repository's card-prefix mapping. */
+export function cardMatchesExact(expectedCard, hit) {
+  const expected = splitCard(expectedCard);
+  if (!expected.service || canonToken(expected.service) !== canonToken(hit.service)) return false;
+  if (hit.service === "skills") {
+    return expected.op === canonToken(hit.id.split("#", 1)[0].split(".").at(-1));
+  }
+  const hitCanon = canonToken(hit.id);
+  const hitService = canonToken(hit.service);
+  const hitOp = hitCanon.startsWith(hitService + "_")
+    ? hitCanon.slice(hitService.length + 1)
+    : splitCard(hit.id).op;
+  return expected.op === hitOp;
+}
+
 /**
  * Tolerant card match between an expected card label (raven-next naming, e.g.
  * "lumenloop_search_directory") and a catalog hit (id "lumenloop.search_directory",
@@ -44,6 +59,7 @@ export function splitCard(token) {
  *      trivial substrings like "get").
  */
 export function cardMatches(expectedCard, hit) {
+  if (cardMatchesExact(expectedCard, hit)) return true;
   const exp = canonToken(expectedCard);
   const hitCanon = canonToken(hit.id);
   if (exp === hitCanon) return true;

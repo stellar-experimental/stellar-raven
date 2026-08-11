@@ -1,0 +1,350 @@
+{
+  "_comment": "FROZEN blind-authored routing holdout. Lane A (contracts / ZK), Lane B (assets / standards / dapp / data), and Lane C (LumenLoop / payments KEEP-LIST only) were authored deliberately by three different model families without scorer internals, current rankings, or eval results. Cross-chain, CCTP, Axelar, bridging, ITS, and NEAR Intents are excluded by design. This instrument is measured, never optimized toward: do not iterate its queries, labels, or forbidden captures while tuning a scorer.",
+  "authoredAt": "2026-08-11",
+  "author": "Lane A, Lane B, and Lane C blind authors (three different model families)",
+  "cases": [
+    {
+      "id": "q-holdout-a-01-oz-upgrade",
+      "question": "how do I make a soroban contract upgradeable with openzeppelin",
+      "expected_service": "skills",
+      "expected_cards": ["skills_upgrade_stellar_contracts"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_setup_stellar_contracts"]
+    },
+    {
+      "id": "q-holdout-a-02-oz-atomic-migration",
+      "question": "We shipped a fungible token built on the OpenZeppelin Stellar crates and v2 changes the shape of one persistent storage entry — is there a way to swap the wasm and run the migration in a single atomic call, and where exactly is the authorization check supposed to live?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_upgrade_stellar_contracts"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_develop_secure_contracts"]
+    },
+    {
+      "id": "q-holdout-a-03-oz-cargo",
+      "question": "add openzeppelin stellar crates to my Cargo.toml",
+      "expected_service": "skills",
+      "expected_cards": ["skills_setup_stellar_contracts"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_develop_secure_contracts"]
+    },
+    {
+      "id": "q-holdout-a-04-oz-workspace-setup",
+      "question": "Starting a fresh Soroban workspace and I want to build on OpenZeppelin's Stellar contracts — which of their crates do I actually need, do they belong in the root workspace Cargo.toml or the per-contract one, and why do the imports use underscores when the crate names have dashes?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_setup_stellar_contracts"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_develop_secure_contracts"]
+    },
+    {
+      "id": "q-holdout-a-05-groth16-soroban",
+      "question": "verify a groth16 proof inside a soroban contract",
+      "expected_service": "skills",
+      "expected_cards": ["skills_zk_proofs"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_develop_secure_contracts"]
+    },
+    {
+      "id": "q-holdout-a-06-circom-verifier",
+      "question": "I have a Circom circuit compiled with snarkjs and I want the proof checked on-chain rather than by our backend — what does the verifier contract look like on Stellar, which curve should I compile the circuit for, and how do I get the decimal-string points out of proof.json into whatever types the contract expects?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_zk_proofs"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_dapp"]
+    },
+    {
+      "id": "q-holdout-a-07-contract-audit-checklist",
+      "question": "audit checklist before mainnet for my soroban contract",
+      "expected_service": "skills",
+      "expected_cards": ["skills_smart_contracts"],
+      "forbidden_cards": ["scout_listAudits", "skills_develop_secure_contracts"]
+    },
+    {
+      "id": "q-holdout-a-08-contract-security-review",
+      "question": "Before we go to mainnet I want to review our escrow contract for the usual Soroban footguns — a middleware path that forgets require_auth, reinitialization, loops bounded by user-controlled input — is there a checklist for this and which static analyzers are worth running in CI?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_smart_contracts"],
+      "forbidden_cards": ["skills_develop_secure_contracts", "scout_listAudits"]
+    },
+    {
+      "id": "q-holdout-a-09-oz-pausable-ownable",
+      "question": "add pausable and ownable to my existing token contract",
+      "expected_service": "skills",
+      "expected_cards": ["skills_develop_secure_contracts"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_upgrade_stellar_contracts"]
+    },
+    {
+      "id": "q-holdout-a-10-oz-emergency-stop",
+      "question": "We already have a Soroban token contract in production and product wants an emergency stop plus a single admin who can flip it — I'd rather pull in the audited OpenZeppelin pieces than hand-roll a paused boolean, so what do I import and which of my functions need to be decorated?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_develop_secure_contracts"],
+      "forbidden_cards": ["skills_setup_stellar_contracts", "skills_smart_contracts"]
+    },
+    {
+      "id": "q-holdout-a-12-wasm-target",
+      "question": "cargo build fails, no wasm32v1-none target",
+      "expected_service": "skills",
+      "expected_cards": ["skills_smart_contracts"],
+      "forbidden_cards": ["skills_setup_stellar_contracts", "skills_data"]
+    },
+    {
+      "id": "q-holdout-a-13-zk-replay",
+      "question": "stop someone resubmitting the same zk proof twice",
+      "expected_service": "skills",
+      "expected_cards": ["skills_zk_proofs"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_develop_secure_contracts"]
+    },
+    {
+      "id": "q-holdout-a-14-poseidon-merkle",
+      "question": "Our circuit builds a Poseidon Merkle tree over the commitments and the contract has to check membership against the current root — can a Soroban contract recompute Poseidon hashes itself, or do we have to keep the whole tree check inside the SNARK?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_zk_proofs"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_standards"]
+    },
+    {
+      "id": "q-holdout-a-15-resource-profiling",
+      "question": "The pairing check in our verifier contract blows past the CPU instruction budget as soon as we add a second public input — how do I see where the resource usage is actually going during simulation, and what are the levers for staying under the limits?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_smart_contracts"],
+      "forbidden_cards": ["skills_zk_proofs", "skills_data"]
+    },
+    {
+      "id": "q-holdout-a-16-current-protocol",
+      "question": "what protocol version is stellar mainnet on right now",
+      "expected_service": "stellarDocs",
+      "expected_cards": ["stellar_docs_search_docs"],
+      "forbidden_cards": ["skills_zk_proofs", "skills_smart_contracts"]
+    },
+    {
+      "id": "q-holdout-a-17-audit-registry",
+      "question": "Before we design our own lending protocol I'd like to read a published audit report for an existing Stellar one — are there actual reports available anywhere, and which firms have really done Soroban audits recently rather than just claiming to?",
+      "expected_service": "scout",
+      "expected_cards": ["scout_listAudits"],
+      "forbidden_cards": ["skills_smart_contracts", "skills_develop_secure_contracts"]
+    },
+    {
+      "id": "q-holdout-a-18-zk-ecosystem-search",
+      "question": "is anyone already building zk privacy on stellar",
+      "expected_service": "lumenloop",
+      "expected_cards": ["lumenloop_search_directory", "scout_searchProjects"],
+      "forbidden_cards": ["skills_zk_proofs", "skills_standards"]
+    },
+    {
+      "id": "q-holdout-b-01-sep-asset-metadata",
+      "question": "Which SEP publishes asset metadata?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_standards"],
+      "forbidden_cards": ["skills_assets", "stellar_docs_search_asset_token_docs"]
+    },
+    {
+      "id": "q-holdout-b-02-asset-metadata-standard",
+      "question": "We are issuing a branded credit asset and need the canonical metadata file, its required conventions, and the SEP we should follow before wallets display it; where should we start?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_standards"],
+      "forbidden_cards": ["skills_assets", "stellar_docs_search_asset_token_docs"]
+    },
+    {
+      "id": "q-holdout-b-03-clawback-stablecoin",
+      "question": "Clawback-enabled stablecoin setup",
+      "expected_service": "skills",
+      "expected_cards": ["skills_assets"],
+      "forbidden_cards": ["skills_standards", "stellar_docs_search_asset_token_docs"]
+    },
+    {
+      "id": "q-holdout-b-04-regulated-asset",
+      "question": "Our regulated USD token needs issuer-controlled approval before holders can receive it, the ability to freeze a bad account, and a recovery path for funds; how should we configure and operate that asset?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_assets"],
+      "forbidden_cards": ["skills_standards", "stellar_docs_search_asset_token_docs"]
+    },
+    {
+      "id": "q-holdout-b-05-classic-or-sep41",
+      "question": "Classic asset or custom SEP-41 token?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_assets"],
+      "forbidden_cards": ["skills_standards", "stellar_docs_search_asset_token_docs"]
+    },
+    {
+      "id": "q-holdout-b-06-sac-or-sep41",
+      "question": "We need a fungible token for a consumer app with wallet and exchange compatibility, but may later add programmatic restrictions; should we issue a classic asset, use its SAC, or write a SEP-41 contract?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_assets"],
+      "forbidden_cards": ["skills_standards", "stellar_docs_search_asset_token_docs"]
+    },
+    {
+      "id": "q-holdout-b-07-sep24-fields",
+      "question": "SEP-24 withdrawal transaction fields?",
+      "expected_service": "stellarDocs",
+      "expected_cards": ["stellar_docs_search_anchor_sep_docs"],
+      "forbidden_cards": ["skills_standards", "skills_assets"]
+    },
+    {
+      "id": "q-holdout-b-08-sep24-validation",
+      "question": "Our anchor client already uses the hosted SEP-24 flow, and a returned withdrawal transaction is failing validation; which exact request and response fields are required today, including the identifiers used to resume it?",
+      "expected_service": "stellarDocs",
+      "expected_cards": ["stellar_docs_search_anchor_sep_docs"],
+      "forbidden_cards": ["skills_standards", "skills_assets"]
+    },
+    {
+      "id": "q-holdout-b-09-freighter-payment",
+      "question": "Freighter payment signing flow",
+      "expected_service": "skills",
+      "expected_cards": ["skills_dapp"],
+      "forbidden_cards": ["skills_data", "stellar_docs_search_rpc_horizon_data_docs"]
+    },
+    {
+      "id": "q-holdout-b-10-nextjs-payment",
+      "question": "In a Next.js payment page, how should we connect Freighter, build a classic XLM payment from the selected account, request the wallet signature, submit it, and present pending or failed status without double-submitting?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_dapp"],
+      "forbidden_cards": ["skills_data", "stellar_docs_search_rpc_horizon_data_docs"]
+    },
+    {
+      "id": "q-holdout-b-13-payments-history",
+      "question": "Index all payments since 2018",
+      "expected_service": "skills",
+      "expected_cards": ["skills_data"],
+      "forbidden_cards": ["skills_dapp", "stellar_docs_search_wallet_dapp_docs"]
+    },
+    {
+      "id": "q-holdout-b-14-compliance-backfill",
+      "question": "We are building internal reporting for a compliance team and must backfill every payment involving selected accounts from 2018 onward, then keep the dataset current; should we use Horizon, RPC, Hubble, or an indexer?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_data"],
+      "forbidden_cards": ["skills_dapp", "stellar_docs_search_wallet_dapp_docs"]
+    },
+    {
+      "id": "q-holdout-b-15-wallet-usdc-screen",
+      "question": "Wallet-connected USDC balance screen",
+      "expected_service": "skills",
+      "expected_cards": ["skills_dapp"],
+      "forbidden_cards": ["skills_data", "skills_assets"]
+    },
+    {
+      "id": "q-holdout-b-16-wallet-usdc-refresh",
+      "question": "In our React app, after a user connects a supported wallet, we need to show their USDC balance, gracefully handle an unfunded account, refresh after a transfer, and keep the network and asset issuer correct; what integration pattern should we use?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_dapp"],
+      "forbidden_cards": ["skills_data", "skills_assets"]
+    },
+    {
+      "id": "q-holdout-c-01-defi-map",
+      "question": "map Stellar DeFi projects",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_ecosystem_scout"],
+      "forbidden_cards": ["skills_stellar_ecosystem_digest", "skills_stellar_integration_finder"]
+    },
+    {
+      "id": "q-holdout-c-02-defi-landscape",
+      "question": "Can you survey the Stellar DeFi space and group what is already shipping by category so I can see which lanes look crowded versus empty?",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_ecosystem_scout"],
+      "forbidden_cards": ["skills_stellar_ecosystem_digest", "skills_scf_submission_radar"]
+    },
+    {
+      "id": "q-holdout-c-03-rwa-month",
+      "question": "what's new in Stellar RWA this month",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_ecosystem_digest"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "scout_searchProjects"]
+    },
+    {
+      "id": "q-holdout-c-04-rwa-digest",
+      "question": "I need a newsletter-style catch-up of recent Stellar real-world asset activity from the last few weeks, with links I can click through and a short list of entities worth watching.",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_ecosystem_digest"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "skills_stellar_project_dossier"]
+    },
+    {
+      "id": "q-holdout-c-05-oracle-pick",
+      "question": "what oracle should I use for prices on Stellar",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_integration_finder"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "skills_stellar_builder_quickstart"]
+    },
+    {
+      "id": "q-holdout-c-06-oracle-tradeoffs",
+      "question": "We are wiring price feeds into a Soroban lending market and need a recommendation on which existing Stellar oracle or price-feed project to integrate, with tradeoffs and a clear pick.",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_integration_finder"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "skills_agentic_payments"]
+    },
+    {
+      "id": "q-holdout-c-07-tipping-start",
+      "question": "how do I start building a tipping app on Stellar",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_builder_quickstart"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "skills_dapp"]
+    },
+    {
+      "id": "q-holdout-c-08-tipping-plan",
+      "question": "I have a half-formed idea for a creator tipping product on Stellar and need a one-page plan that picks the right primitives, checks what already ships, and tells me which build skill to read next.",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_builder_quickstart"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "skills_scf_submission_radar"]
+    },
+    {
+      "id": "q-holdout-c-09-scf-payroll",
+      "question": "has SCF already funded payroll streaming ideas",
+      "expected_service": "skills",
+      "expected_cards": ["skills_scf_submission_radar"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "scout_searchProjects"]
+    },
+    {
+      "id": "q-holdout-c-10-scf-positioning",
+      "question": "Before I write our Stellar Community Fund application for non-custodial payroll streaming for remote teams, I want a positioning brief against similar past proposals, award outcomes, and the right category bucket.",
+      "expected_service": "skills",
+      "expected_cards": ["skills_scf_submission_radar"],
+      "forbidden_cards": ["skills_stellar_builder_quickstart", "skills_stellar_ecosystem_digest"]
+    },
+    {
+      "id": "q-holdout-c-11-lobstr-diligence",
+      "question": "do diligence on LOBSTR for me",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_project_dossier"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "skills_stellar_content_auditor"]
+    },
+    {
+      "id": "q-holdout-c-12-blend-directory",
+      "question": "Look up Blend in the Stellar project directory — who built it, lifecycle or funding status, and the main links",
+      "expected_service": "scout",
+      "expected_cards": ["scout_searchProjects"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "skills_stellar_ecosystem_digest"]
+    },
+    {
+      "id": "q-holdout-c-13-scf-similarity",
+      "question": "Search the SCF submissions index for proposals similar to on-chain invoice financing",
+      "expected_service": "lumenloop",
+      "expected_cards": ["lumenloop_find_similar_scf_submissions"],
+      "forbidden_cards": ["skills_stellar_ecosystem_scout", "skills_stellar_project_dossier"]
+    },
+    {
+      "id": "q-holdout-c-14-aquarius-tweet",
+      "question": "fact-check this tweet about Aquarius before I post",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_content_auditor"],
+      "forbidden_cards": ["skills_stellar_project_dossier", "skills_stellar_ecosystem_digest"]
+    },
+    {
+      "id": "q-holdout-c-15-launch-copy",
+      "question": "Here is draft launch copy that mentions several Stellar AMMs and partner wallets — resolve official names and X handles, flag wrong @mentions, and attach citations for any funding claims before we publish.",
+      "expected_service": "skills",
+      "expected_cards": ["skills_stellar_content_auditor"],
+      "forbidden_cards": ["skills_stellar_project_dossier", "skills_scf_submission_radar"]
+    },
+    {
+      "id": "q-holdout-c-16-x402-express",
+      "question": "monetize my Express API with x402 USDC on Stellar",
+      "expected_service": "skills",
+      "expected_cards": ["skills_agentic_payments"],
+      "forbidden_cards": ["skills_dapp", "skills_stellar_builder_quickstart"]
+    },
+    {
+      "id": "q-holdout-c-17-freighter-nextjs",
+      "question": "connect Freighter in a Next.js app",
+      "expected_service": "skills",
+      "expected_cards": ["skills_dapp"],
+      "forbidden_cards": ["skills_agentic_payments", "skills_stellar_integration_finder"]
+    },
+    {
+      "id": "q-holdout-c-18-dapp-invoke",
+      "question": "We are building a React frontend that should connect Freighter, build and simulate a Soroban contract invocation, then sign and submit the transaction with proper error handling on testnet.",
+      "expected_service": "skills",
+      "expected_cards": ["skills_dapp"],
+      "forbidden_cards": ["skills_agentic_payments", "skills_smart_contracts"]
+    }
+  ]
+}
