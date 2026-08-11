@@ -11,17 +11,20 @@ evidence:
   - upstream issue filed 2026-07-13: https://github.com/Stellar-Light/stellar-scout/issues/11
   - 2026-07-14 follow-up narrows the residual after source=cap landed: https://github.com/Stellar-Light/stellar-scout/issues/11#issuecomment-4971409842
   - 2026-07-15 pin 7a5a27 and live OpenAPI 1.7.26 verification: research adds source=sdf-org and observedAt; leaderboard adds exact type filtering plus filter and metric metadata, while the mirrored reference omits them
+  - 2026-08-10 live OpenAPI 1.8.40 verification: Repo adds activityState/activitySignals, contractInterface, protocolCaps, stellarDeps, and targetProtocol; searchRepos adds activity; research adds source=repo-docs. The pinned f2659ff API reference contains none of those surface names.
 recurrences:
   - date: 2026-07-15
     evidence: the 1.7.26 mirror still omits live research source=sdf-org and observedAt plus leaderboard type, meta.filters.type, meta.metricDefinitions, and meta.dataAsOf
   - date: 2026-07-30
     evidence: upstream stellar-scout main at f2659ff still names the retired soroban skill in its SDF roster, skills.stellar.org URLs, and exact GET /api/skills/soroban examples, while live OpenAPI 1.8.30 names smart-contracts and production returns 200 for /api/skills/smart-contracts versus 404 for /api/skills/soroban
+  - date: 2026-08-10
+    evidence: refreshed inventory/stellar-light.json OpenAPI 1.8.40 adds Repo activityState/activitySignals, contractInterface, protocolCaps, stellarDeps, targetProtocol, the searchRepos activity parameter, and research source=repo-docs; the pinned f2659ff references/api-reference.md has no occurrences of those surface names
 ---
 
 ## Finding
 
 The pinned Stellar Scout skill API reference has fallen behind the live Scout
-OpenAPI contract from 1.7.11 through 1.7.26. This is new drift after `sk-008` was fixed for the
+OpenAPI contract from 1.7.11 through 1.8.40. This is new drift after `sk-008` was fixed for the
 earlier 1.7.0 partner and repository fields, so it is a successor rather than a
 reopening of that resolved finding.
 
@@ -38,6 +41,10 @@ The live API now documents three capabilities absent from the served skill:
 - `GET /api/leaderboard` accepts repeatable or comma-separated exact `type`
   filters and returns the resolved filter plus metric definitions and data date
   in `meta.filters.type`, `meta.metricDefinitions`, and `meta.dataAsOf`.
+- Repo records now expose derived `activityState`, dated `activitySignals`,
+  Soroban `contractInterface`, `protocolCaps`, `stellarDeps`, and
+  `targetProtocol`; `GET /api/repos/search` accepts `activity`, and research
+  accepts `source=repo-docs`.
 
 Agents that read the served skill can therefore misread semantic results as
 keyword-confirmed, collapse untracked TVL to zero, or omit the new CAP source
@@ -77,6 +84,7 @@ Update the Scout skill API reference to document the `semantic` result tier and
 its confidence caveat, Project `tvlUSD`/`tvlAsOf` null semantics, and the
 `source=cap` and `source=sdf-org` research filters with provenance dates. Also
 document leaderboard `type` filtering and its returned filter, metric, and data
-date metadata. Add a small schema-to-reference drift check so a new enum value
-or documented field produces a review signal before the skill lags another live
-release.
+date metadata. Add the Repo activity, interface, dependency, and protocol
+fields; the `activity` filter; and the `repo-docs` research source. Add a small
+schema-to-reference drift check so a new enum value or documented field produces
+a review signal before the skill lags another live release.

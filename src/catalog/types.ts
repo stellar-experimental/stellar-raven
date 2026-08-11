@@ -178,7 +178,7 @@ export const catalogEntrySchema = z.object({
    * `false` ONLY — absence means searchable. An entry with `searchable:
    * false` stays fully exposed (exact-id describe/read/run, codemode.catalog,
    * super spec) but never enters search scoring or results. SHIPPED on all
-   * 204 skill-section entries since the 2026-07-13 skills-form A/B (arm B
+   * 210 skill-section entries since the 2026-07-13 skills-form A/B (arm B
    * won: sections crowded operations in search while whole-skill entries
    * carried every measured discovery need — scratchpad 608 P4).
    */

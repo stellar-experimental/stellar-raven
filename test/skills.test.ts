@@ -329,6 +329,10 @@ describe("builder invariant: read-time sectionize agrees with build-catalog sect
         ).toBe(true);
       }
     }
-    expect(skillsChecked).toBe(18); // the exposed (allowed) mirror skills
+    // Every exposed mirror skill must have passed the file-transport gate above;
+    // catalog.test.ts separately pins the public skill count.
+    expect(skillsChecked).toBe(
+      catalog.entries.filter((e) => e.kind === "skill" && e.service === "skills").length
+    );
   });
 });

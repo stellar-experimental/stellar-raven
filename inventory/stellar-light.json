@@ -1,15 +1,15 @@
 {
-  "changelogEntryCount": 120,
+  "changelogEntryCount": 129,
   "changelogLatest": {
-    "date": "2026-08-03",
-    "detail": "Closes the served-but-unspecced class the contract-honesty sweep isolated: every meta field the API serves is now declared in the OpenAPI spec with honest semantics — including the shared `note`/`warnings` on the standard meta block, per-endpoint vocabularies (`validTypes`, `validRamps`, `validKinds`, `validSources`, `dimensions`, `quarters`, `categories`), retrieval provenance on research (`mode`, `model`, `scoreModel`), stablecoins snapshot provenance (`dataAsOf`, `methodology`, `upstream`), the analyze dimension payloads and funding rollup fields, the full hackathon winners row shape (with `voteCount` honestly documented as always 0 since the DoraHacks v1 hub migration), and `answerSource` on explainRepo. One behavior fix rides along: `winnersOnly` on hackathon builds now returns 400 with the accepted forms on a garbage value instead of silently ignoring it (the invalid-accepted class; same treatment as partners' `accepting`). Response data is unchanged — this release makes the contract say what the API already does.",
-    "summary": "spec: every served meta field is now documented — 69 previously-undocumented fields across 13 endpoints, plus the `warnings` unknown-param disclosure; bogus `winnersOnly` values now 400 (openapi@1.8.32).",
+    "date": "2026-08-10",
+    "detail": "Curated ingest of documentation that lives INSIDE canonical ecosystem repos and was invisible to retrieval — the motivating case: Stellar-Indexer-SDK ships per-protocol extension guides under src/protocols/*/README.md, so 'how do I index Blend state' had nothing to surface. Initial sources: Stellar-Indexer-SDK, Stellar-Wallets-Kit, colibri (+examples), passkey-kit. Chunked, hashed, embedded like SEPs/CAPs; filter with ?source=repo-docs. Curated allowlist, not a corpus-wide README sweep — extended as consumers ask.",
+    "summary": "research: `repo-docs` source — canonical in-repo documentation (per-protocol guides, kit docs) joins the research corpus (openapi@1.8.40).",
     "surfaces": [
       "api"
     ],
-    "type": "changed"
+    "type": "added"
   },
-  "fetchedAt": "2026-08-04T13:34:45.072Z",
+  "fetchedAt": "2026-08-11T01:06:14.101Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -1804,6 +1804,46 @@
         "Repo": {
           "description": "An indexed Stellar ecosystem GitHub repository graded by repoScore. Cite the repo's url / homepageUrl as the primary source.",
           "properties": {
+            "activitySignals": {
+              "description": "Velocity + release snapshot captured by the enrich pass, dated by asOf. Null = not yet captured for this repo (rows backfill on the weekly refresh), never zero-activity. commits90d counts default-branch commits in the 90 days before asOf — the velocity discriminator WITHIN activityState (two 'active' repos can differ 50x here).",
+              "nullable": true,
+              "properties": {
+                "asOf": {
+                  "format": "date-time",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "commits90d": {
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "lastReleaseAt": {
+                  "format": "date-time",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "openPRs": {
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "releaseTag": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "activityState": {
+              "description": "Observable activity state derived at serve time from lastCommitAt + isArchived: active = commit ≤45d; maintained = ≤180d; dormant = a KNOWN commit older than 180d (an observation — dormant repos can be complete, not dead); archived = the owner's own declaration (the only death verdict); unknown = no commit date held — never read unknown or dormant as defunct.",
+              "enum": [
+                "active",
+                "maintained",
+                "dormant",
+                "archived",
+                "unknown"
+              ],
+              "type": "string"
+            },
             "builderReputation": {
               "type": "number"
             },
@@ -1820,6 +1860,13 @@
                   "nullable": true,
                   "type": "number"
                 },
+                "contractInterface": {
+                  "description": "Soroban contract ABI: full pub fn signatures per #[contractimpl] block, formatted `Contract.fn(arg: Type, …) -> Ret` (host-injected env param stripped, matching the SDK contractspec). Symbols say WHAT a repo implements; this says HOW TO CALL IT. Empty for non-contract repos or repos scanned before 2026-08-08.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
                 "isDeployableContract": {
                   "description": "This repo's PRODUCT is a deployable Soroban contract (Cargo cdylib — vs a CLI/indexer/frontend that only uses Stellar). Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE even though they vendor cdylib crates — those are runtime/fixtures, not a deployable contract product (sls-046).",
                   "type": "boolean"
@@ -1828,6 +1875,28 @@
                   "description": "README-claimed contract id VERIFIED to exist on Stellar mainnet at scan time (stellar.expert echo-check) — unfakeable deployment evidence. Null when no verified address.",
                   "nullable": true,
                   "type": "string"
+                },
+                "protocolCaps": {
+                  "description": "CAPs (Core Advancement Proposals) whose declared protocolVersion matches targetProtocol — the protocol-change grounding for this repo's SDK line, joined from the committed cap-registry. Answers 'which consensus/protocol changes are relevant to this contract's SDK pin'. Empty when targetProtocol is null.",
+                  "items": {
+                    "properties": {
+                      "cap": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 },
                 "scannedAt": {
                   "description": "When the code was last scanned.",
@@ -1847,6 +1916,13 @@
                   "nullable": true,
                   "type": "string"
                 },
+                "stellarDeps": {
+                  "description": "Stellar-ecosystem dependencies from the repo's manifests (Cargo.toml dependency sections + package.json dep maps), allowlist-matched package names stored verbatim — the dependency graph. Forward read: the repo's stack. Reverse read: search the package name to find dependents (adoption evidence no README mention can fake). Empty until a post-2026-08-10 scan.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
                 "stellarProof": {
                   "description": "How we verified it's Stellar, strongest→weakest: cargo-sdk (soroban-sdk dep) / contract-macros (#[contract] usage) / lang-sdk (Swift/Kotlin/Go/Python Stellar SDK) / js-sdk / stellar-toml. 'none' = the repo WAS scanned and no direct Stellar code evidence was found (a scanned general-purpose dependency) — such repos rank below Stellar-evidenced ones and carry stellarEvidence 'none' unless their own text mentions Stellar.",
                   "enum": [
@@ -1865,6 +1941,11 @@
                     "type": "string"
                   },
                   "type": "array"
+                },
+                "targetProtocol": {
+                  "description": "Stellar protocol the pinned soroban-sdk MAJOR targets, derived from the maintained sdk→protocol table (dated; the mapping has documented irregularities — 23.x spans P24→P25). ADVISORY, not an attestation: null = unknown major, never guessed.",
+                  "nullable": true,
+                  "type": "integer"
                 },
                 "versionStatus": {
                   "description": "soroban-sdk status vs the latest protocol at scan time. 'unknown' (rc/git/unpinned) never implies staleness.",
@@ -1912,6 +1993,25 @@
             "judgedHackathon": {
               "nullable": true,
               "type": "string"
+            },
+            "knowledgeNotes": {
+              "description": "Dated FACTS about this repo with named sources — curated (hand-verified: packaging, doc maps, companion repos) or derived:audit (the owning project has verified security-audit reports in the registry; exact projectSlug join). Never summaries, never guesses; empty when nothing is on record.",
+              "items": {
+                "properties": {
+                  "asOf": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
             },
             "lastCommitAt": {
               "format": "date-time",
@@ -2041,6 +2141,16 @@
                 "string",
                 "null"
               ]
+            },
+            "capProtocolVersion": {
+              "description": "source=cap only: the protocol version this CAP shipped in, from its own preamble. Null = not declared upstream (drafts/TBD) — never guessed. The join key between protocol history and soroban-sdk versions.",
+              "nullable": true,
+              "type": "integer"
+            },
+            "capStatus": {
+              "description": "source=cap only: the CAP's own declared Status from its preamble (Final, Implemented, Accepted, Draft, Rejected). Cite it before treating a CAP as protocol truth — a Draft describes an intention, not the network.",
+              "nullable": true,
+              "type": "string"
             },
             "chunkIndex": {
               "type": "integer"
@@ -2473,7 +2583,7 @@
       },
       "summary": "Agent-native data layer for the Stellar ecosystem — projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.8.32"
+      "version": "1.8.40"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -4855,6 +4965,12 @@
                             "nullable": true,
                             "type": "number"
                           },
+                          "contractInterface": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
                           "isDeployableContract": {
                             "description": "The routed repo's PRODUCT is a deployable Soroban contract. Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE — they vendor cdylib crates as runtime/fixtures, and this flag must never be read as 'Stellar Core itself is deployable' (sls-046).",
                             "type": "boolean"
@@ -4862,6 +4978,12 @@
                           "mainnetContractId": {
                             "nullable": true,
                             "type": "string"
+                          },
+                          "protocolCaps": {
+                            "items": {
+                              "type": "object"
+                            },
+                            "type": "array"
                           },
                           "scannedAt": {
                             "format": "date-time",
@@ -4878,6 +5000,12 @@
                             "nullable": true,
                             "type": "string"
                           },
+                          "stellarDeps": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
                           "stellarProof": {
                             "type": "string"
                           },
@@ -4886,6 +5014,10 @@
                               "type": "string"
                             },
                             "type": "array"
+                          },
+                          "targetProtocol": {
+                            "nullable": true,
+                            "type": "integer"
                           },
                           "versionStatus": {
                             "nullable": true,
@@ -5054,6 +5186,21 @@
               }
             },
             {
+              "description": "Filter by observable activity state (each row also carries it as activityState). 'archived' is the owner's own verdict; 'dormant' means a KNOWN commit older than 180 days — an observation, not a death verdict; 'unknown' means no commit date held. Unknown values return 400 with the valid list.",
+              "in": "query",
+              "name": "activity",
+              "schema": {
+                "enum": [
+                  "active",
+                  "maintained",
+                  "dormant",
+                  "archived",
+                  "unknown"
+                ],
+                "type": "string"
+              }
+            },
+            {
               "$ref": "#/components/parameters/limit"
             },
             {
@@ -5183,6 +5330,7 @@
                   "scf-proposal",
                   "lumenloop",
                   "lumenloop-research",
+                  "repo-docs",
                   "audit",
                   "incident",
                   "security-program",
@@ -6091,7 +6239,7 @@
       }
     ]
   },
-  "openapiVersion": "1.8.32",
+  "openapiVersion": "1.8.40",
   "operationCount": 28,
   "service": "stellar-light",
   "source": {
@@ -6103,7 +6251,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.8.32",
+    "apiVersion": "1.8.40",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",

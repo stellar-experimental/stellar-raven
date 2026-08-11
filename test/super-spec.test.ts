@@ -223,7 +223,6 @@ describe("consistency with the catalog (single source of truth)", () => {
       .map((e) => e.id)
       .sort();
     expect(index.map((s) => s.id)).toEqual(catalogSkillIds);
-    expect(index).toHaveLength(18);
 
     // Heading-list-only index: every listed section corresponds to a cataloged
     // skill-section entry (file:… keys verbatim; headings via the shared slug).

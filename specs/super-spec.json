@@ -1749,6 +1749,46 @@
       "scout.Repo": {
         "description": "An indexed Stellar ecosystem GitHub repository graded by repoScore. Cite the repo's url / homepageUrl as the primary source.",
         "properties": {
+          "activitySignals": {
+            "description": "Velocity + release snapshot captured by the enrich pass, dated by asOf. Null = not yet captured for this repo (rows backfill on the weekly refresh), never zero-activity. commits90d counts default-branch commits in the 90 days before asOf — the velocity discriminator WITHIN activityState (two 'active' repos can differ 50x here).",
+            "nullable": true,
+            "properties": {
+              "asOf": {
+                "format": "date-time",
+                "nullable": true,
+                "type": "string"
+              },
+              "commits90d": {
+                "nullable": true,
+                "type": "integer"
+              },
+              "lastReleaseAt": {
+                "format": "date-time",
+                "nullable": true,
+                "type": "string"
+              },
+              "openPRs": {
+                "nullable": true,
+                "type": "integer"
+              },
+              "releaseTag": {
+                "nullable": true,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "activityState": {
+            "description": "Observable activity state derived at serve time from lastCommitAt + isArchived: active = commit ≤45d; maintained = ≤180d; dormant = a KNOWN commit older than 180d (an observation — dormant repos can be complete, not dead); archived = the owner's own declaration (the only death verdict); unknown = no commit date held — never read unknown or dormant as defunct.",
+            "enum": [
+              "active",
+              "maintained",
+              "dormant",
+              "archived",
+              "unknown"
+            ],
+            "type": "string"
+          },
           "builderReputation": {
             "type": "number"
           },
@@ -1765,6 +1805,13 @@
                 "nullable": true,
                 "type": "number"
               },
+              "contractInterface": {
+                "description": "Soroban contract ABI: full pub fn signatures per #[contractimpl] block, formatted `Contract.fn(arg: Type, …) -> Ret` (host-injected env param stripped, matching the SDK contractspec). Symbols say WHAT a repo implements; this says HOW TO CALL IT. Empty for non-contract repos or repos scanned before 2026-08-08.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "isDeployableContract": {
                 "description": "This repo's PRODUCT is a deployable Soroban contract (Cargo cdylib — vs a CLI/indexer/frontend that only uses Stellar). Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE even though they vendor cdylib crates — those are runtime/fixtures, not a deployable contract product (sls-046).",
                 "type": "boolean"
@@ -1773,6 +1820,28 @@
                 "description": "README-claimed contract id VERIFIED to exist on Stellar mainnet at scan time (stellar.expert echo-check) — unfakeable deployment evidence. Null when no verified address.",
                 "nullable": true,
                 "type": "string"
+              },
+              "protocolCaps": {
+                "description": "CAPs (Core Advancement Proposals) whose declared protocolVersion matches targetProtocol — the protocol-change grounding for this repo's SDK line, joined from the committed cap-registry. Answers 'which consensus/protocol changes are relevant to this contract's SDK pin'. Empty when targetProtocol is null.",
+                "items": {
+                  "properties": {
+                    "cap": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
               },
               "scannedAt": {
                 "description": "When the code was last scanned.",
@@ -1792,6 +1861,13 @@
                 "nullable": true,
                 "type": "string"
               },
+              "stellarDeps": {
+                "description": "Stellar-ecosystem dependencies from the repo's manifests (Cargo.toml dependency sections + package.json dep maps), allowlist-matched package names stored verbatim — the dependency graph. Forward read: the repo's stack. Reverse read: search the package name to find dependents (adoption evidence no README mention can fake). Empty until a post-2026-08-10 scan.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "stellarProof": {
                 "description": "How we verified it's Stellar, strongest→weakest: cargo-sdk (soroban-sdk dep) / contract-macros (#[contract] usage) / lang-sdk (Swift/Kotlin/Go/Python Stellar SDK) / js-sdk / stellar-toml. 'none' = the repo WAS scanned and no direct Stellar code evidence was found (a scanned general-purpose dependency) — such repos rank below Stellar-evidenced ones and carry stellarEvidence 'none' unless their own text mentions Stellar.",
                 "enum": [
@@ -1810,6 +1886,11 @@
                   "type": "string"
                 },
                 "type": "array"
+              },
+              "targetProtocol": {
+                "description": "Stellar protocol the pinned soroban-sdk MAJOR targets, derived from the maintained sdk→protocol table (dated; the mapping has documented irregularities — 23.x spans P24→P25). ADVISORY, not an attestation: null = unknown major, never guessed.",
+                "nullable": true,
+                "type": "integer"
               },
               "versionStatus": {
                 "description": "soroban-sdk status vs the latest protocol at scan time. 'unknown' (rc/git/unpinned) never implies staleness.",
@@ -1857,6 +1938,25 @@
           "judgedHackathon": {
             "nullable": true,
             "type": "string"
+          },
+          "knowledgeNotes": {
+            "description": "Dated FACTS about this repo with named sources — curated (hand-verified: packaging, doc maps, companion repos) or derived:audit (the owning project has verified security-audit reports in the registry; exact projectSlug join). Never summaries, never guesses; empty when nothing is on record.",
+            "items": {
+              "properties": {
+                "asOf": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
           },
           "lastCommitAt": {
             "format": "date-time",
@@ -1986,6 +2086,16 @@
               "string",
               "null"
             ]
+          },
+          "capProtocolVersion": {
+            "description": "source=cap only: the protocol version this CAP shipped in, from its own preamble. Null = not declared upstream (drafts/TBD) — never guessed. The join key between protocol history and soroban-sdk versions.",
+            "nullable": true,
+            "type": "integer"
+          },
+          "capStatus": {
+            "description": "source=cap only: the CAP's own declared Status from its preamble (Final, Implemented, Accepted, Draft, Rejected). Cite it before treating a CAP as protocol truth — a Draft describes an intention, not the network.",
+            "nullable": true,
+            "type": "string"
           },
           "chunkIndex": {
             "type": "integer"
@@ -2409,7 +2519,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-08-04T13:34:45.072Z"
+    "x-generatedAt": "2026-08-11T01:07:17Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4324,6 +4434,12 @@
                           "nullable": true,
                           "type": "number"
                         },
+                        "contractInterface": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
                         "isDeployableContract": {
                           "description": "The routed repo's PRODUCT is a deployable Soroban contract. Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE — they vendor cdylib crates as runtime/fixtures, and this flag must never be read as 'Stellar Core itself is deployable' (sls-046).",
                           "type": "boolean"
@@ -4331,6 +4447,12 @@
                         "mainnetContractId": {
                           "nullable": true,
                           "type": "string"
+                        },
+                        "protocolCaps": {
+                          "items": {
+                            "type": "object"
+                          },
+                          "type": "array"
                         },
                         "scannedAt": {
                           "format": "date-time",
@@ -4347,6 +4469,12 @@
                           "nullable": true,
                           "type": "string"
                         },
+                        "stellarDeps": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
                         "stellarProof": {
                           "type": "string"
                         },
@@ -4355,6 +4483,10 @@
                             "type": "string"
                           },
                           "type": "array"
+                        },
+                        "targetProtocol": {
+                          "nullable": true,
+                          "type": "integer"
                         },
                         "versionStatus": {
                           "nullable": true,
@@ -6288,6 +6420,21 @@
             }
           },
           {
+            "description": "Filter by observable activity state (each row also carries it as activityState). 'archived' is the owner's own verdict; 'dormant' means a KNOWN commit older than 180 days — an observation, not a death verdict; 'unknown' means no commit date held. Unknown values return 400 with the valid list.",
+            "in": "query",
+            "name": "activity",
+            "schema": {
+              "enum": [
+                "active",
+                "maintained",
+                "dormant",
+                "archived",
+                "unknown"
+              ],
+              "type": "string"
+            }
+          },
+          {
             "$ref": "#/components/parameters/scout.limit"
           },
           {
@@ -6360,6 +6507,7 @@
                 "scf-proposal",
                 "lumenloop",
                 "lumenloop-research",
+                "repo-docs",
                 "audit",
                 "incident",
                 "security-program",
@@ -6485,14 +6633,14 @@
     },
     "/skills/list_skills": {
       "get": {
-        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 18 skills across 4 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light), 204 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
+        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 19 skills across 4 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light), 210 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
         "operationId": "skills.list_skills",
         "responses": {
           "200": {
             "description": "The x-skill-index array on this operation."
           }
         },
-        "summary": "List all 18 pinned skills (agent playbooks) with descriptions and section headings.",
+        "summary": "List all 19 pinned skills (agent playbooks) with descriptions and section headings.",
         "tags": [
           "skills"
         ],
@@ -6644,7 +6792,7 @@
             "source": "openzeppelin-stellar"
           },
           {
-            "description": "Agentic and machine-to-machine payments on Stellar. Covers x402 (HTTP 402 paid APIs via OZ Channels facilitator, fee-sponsored clients) and MPP (Machine Payments Protocol) in both Charge mode (per-request SAC) and Channel mode (off-chain commits, high-frequency). Defaults to USDC (SEP-41 SAC) on `stellar:testnet`/`stellar:pubnet` (CAIP-2). Use when selling a paid API to AI agents, building an x402 client, or designing a payment-channel architecture for high-frequency agent traffic.",
+            "description": "Agentic and machine-to-machine payments on Stellar. Covers x402 (HTTP 402 paid APIs via OZ Channels facilitator, fee-sponsored clients) and MPP (Machine Payments Protocol) in both Charge mode (per-request SAC) and Session mode (channel-backed off-chain commits, high-frequency; formerly called Channel mode). Defaults to USDC (SEP-41 SAC) on `stellar:testnet`/`stellar:pubnet` (CAIP-2). Use when selling a paid API to AI agents, building an x402 client, or designing a payment-channel architecture for high-frequency agent traffic.",
             "id": "skills.stellar-dev.agentic-payments",
             "sections": [
               "Quick decision",
@@ -6660,7 +6808,7 @@
               "Common pitfalls",
               "When to use MPP",
               "Charge mode: per-request payments",
-              "Channel mode: high-frequency off-chain payments",
+              "Session mode: high-frequency off-chain payments",
               "Packages and subpath imports",
               "Testnet runbook",
               "Common pitfalls"
@@ -6683,6 +6831,19 @@
               "Querying Assets",
               "SEP Standards for Assets",
               "Best Practices"
+            ],
+            "source": "stellar-dev"
+          },
+          {
+            "description": "Cross-chain interoperability for Stellar. Entry point with a rail-selection decision table and shared pitfalls, routing to two companion files — cctp.md (Circle CCTP V2, native USDC burn-and-mint between Stellar and EVM/Solana chains, domain 27, the CctpForwarder requirement for Stellar recipients) and axelar.md (Axelar GMP for Soroban contracts calling contracts on other chains, and the Interchain Token Service for multichain tokens). Also covers NEAR Intents (intent-based cross-chain swaps into XLM or Stellar USDC) at the routing level. Use when bridging USDC to or from Stellar, sending messages between a Stellar contract and another blockchain, making a token exist on multiple chains, or adding cross-chain swaps to an app.",
+            "id": "skills.stellar-dev.cross-chain",
+            "sections": [
+              "When to use this skill",
+              "Related skills",
+              "Pitfalls shared by every rail",
+              "NEAR Intents (intent-based swaps)",
+              "file:axelar.md",
+              "file:cctp.md"
             ],
             "source": "stellar-dev"
           },
@@ -6789,16 +6950,16 @@
             "source": "stellar-dev"
           },
           {
-            "description": "Zero-knowledge proofs and privacy patterns on Stellar. Covers Groth16 verification in smart contracts via BLS12-381 host functions (CAP-0059, available), the BN254 + Poseidon proposals (CAP-0074/0075, status-sensitive), and concrete toolchain walkthroughs for Circom (on-chain verifiable today), Noir, and RISC Zero (attestation pattern until BN254 lands). Use when building privacy-preserving applications, ZK-verifier contracts, or wiring a proving toolchain to Stellar.",
+            "description": "Zero-knowledge proofs and privacy patterns on Stellar. Covers Groth16 verification in smart contracts via BLS12-381 (CAP-0059, Protocol 22+) and BN254 (CAP-0074, Protocol 25+; MSM and Fr arithmetic via CAP-0080, Protocol 26+) host functions, Poseidon/Poseidon2 permutation primitives (CAP-0075, Protocol 25+), and concrete toolchain walkthroughs for Circom, Noir (UltraHonk verifiable on-chain via a community verifier, Protocol 26+), and RISC Zero (Groth16-wrapped receipts verify natively). Use when building privacy-preserving applications, ZK-verifier contracts, or wiring a proving toolchain to Stellar.",
             "id": "skills.stellar-dev.zk-proofs",
             "sections": [
               "When to use this skill",
               "Related skills",
               "What's available — verify before building",
               "The on-chain verifier (Groth16 over BLS12-381)",
-              "Walkthrough: Circom → on-chain verification (works today)",
-              "Walkthrough: Noir (off-chain verify + attestation, for now)",
-              "Walkthrough: RISC Zero (same gate, clear path)",
+              "Walkthrough: Circom → on-chain verification",
+              "Walkthrough: Noir (UltraHonk, on-chain verifiable since Protocol 26)",
+              "Walkthrough: RISC Zero (Groth16 wrap, on-chain verifiable since Protocol 25)",
               "Architecture patterns",
               "Pitfalls",
               "Testing",
@@ -6857,6 +7018,7 @@
                       "skills.openzeppelin-stellar.upgrade-stellar-contracts",
                       "skills.stellar-dev.agentic-payments",
                       "skills.stellar-dev.assets",
+                      "skills.stellar-dev.cross-chain",
                       "skills.stellar-dev.dapp",
                       "skills.stellar-dev.data",
                       "skills.stellar-dev.smart-contracts",
@@ -8131,8 +8293,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 276,
-    "generatedAt": "2026-08-04T13:34:45.072Z"
+    "catalogEntries": 283,
+    "generatedAt": "2026-08-11T01:07:17Z"
   },
   "x-services": {
     "lumenloop": {
@@ -8144,7 +8306,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-08-04T13:34:45.072Z",
+      "fetchedAt": "2026-08-11T01:06:14.101Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -8152,7 +8314,7 @@
       "mirror": "ecosystem-skills/",
       "note": "Deliberately 4 operations, not one path per skill/section — the index lives in /skills/list_skills x-skill-index (design doc §3); runnable-skill contracts live in /skills/run_skill x-runnable-index (research/skill-run-design.md §5).",
       "runnableSkillCount": 1,
-      "skillCount": 18,
+      "skillCount": 19,
       "sources": [
         {
           "id": "lumenloop",
@@ -8164,14 +8326,14 @@
         },
         {
           "id": "stellar-dev",
-          "skills": 7
+          "skills": 8
         },
         {
           "id": "stellar-light",
           "skills": 1
         }
       ],
-      "syncedAt": "2026-07-30T15:21:10Z"
+      "syncedAt": "2026-08-11T01:07:17Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",

@@ -71,6 +71,7 @@ const REQUIRED_INVENTORY_IDS = [
   "legacy-soroban",
   "skills.stellar-dev.agentic-payments",
   "skills.stellar-dev.assets",
+  "skills.stellar-dev.cross-chain",
   "skills.stellar-dev.dapp",
   "skills.stellar-dev.data",
   "skills.stellar-dev.standards",

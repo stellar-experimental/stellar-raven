@@ -1,11 +1,24 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, test } from "vitest";
 // @ts-expect-error — plain .mjs script, no type declarations
 import { oneLineTitle } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
+
+function findNotFixedUpstreamFinding(): string {
+  const improvementsDir = path.join(ROOT, "improvements");
+  for (const relativePath of readdirSync(improvementsDir, { recursive: true, encoding: "utf8" }).sort()) {
+    if (!relativePath.endsWith(".md")) continue;
+    const absolutePath = path.join(improvementsDir, relativePath);
+    const raw = readFileSync(absolutePath, "utf8");
+    const id = raw.match(/^id:\s*(\S+)\s*$/m)?.[1];
+    const status = raw.match(/^status:\s*(\S+)\s*$/m)?.[1];
+    if (id && status && status !== "fixed-upstream") return path.relative(ROOT, absolutePath);
+  }
+  throw new Error("expected an active improvements finding whose status is not fixed-upstream");
+}
 
 describe("improvements resolution lifecycle", () => {
   test("uses the full first Finding paragraph for wrapped titles", () => {
@@ -40,11 +53,12 @@ describe("improvements resolution lifecycle", () => {
   });
 
   test("refuses to retire a finding before fixed-upstream", () => {
+    const finding = findNotFixedUpstreamFinding();
     const result = spawnSync(
       process.execPath,
       [
         "scripts/improvements-resolve.mjs",
-        "--file", "improvements/skills/sk-003-getledgers-retention-conflict.md",
+        "--file", finding,
         "--live-recheck", "still reproduces",
         "--review-evidence", "reviewed",
         "--references-reviewed",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-07",
+  "generatedAt": "2026-08-10",
   "columns": [
     "id",
     "aliases",
@@ -221,7 +221,7 @@
       "acceptedLesson": "Canonical SDF smart-contract skill supersedes old Soroban copies.",
       "rejectedLessons": "Do not resurrect the retired terminal id as a separate exposed skill.",
       "targetSurface": "manifest,bundle,skill.read",
-      "rationale": "Official current SDF skill set has seven skills and uses smart-contracts for Soroban contract development.",
+      "rationale": "Official current SDF skill set has eight skills and uses smart-contracts for Soroban contract development.",
       "evidenceRefs": ["todo852:2254", "catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
     },
     {
@@ -263,6 +263,19 @@
       "targetSurface": "manifest,bundle,skill.read",
       "rationale": "Official current SDF skill and useful user-facing build playbook.",
       "evidenceRefs": ["todo852:2254", "catalog/manifest.json"]
+    },
+    {
+      "id": "skills.stellar-dev.cross-chain",
+      "aliases": ["cross-chain"],
+      "canonicalSource": "stellar/stellar-dev-skill skills/cross-chain; local mirror ecosystem-skills/skills/stellar-dev/cross-chain",
+      "sourceFamily": "sdf-official",
+      "currentState": "exposed",
+      "rawBodyPublic": "yes",
+      "acceptedLesson": "Already exposed as canonical SDF guidance, including its Axelar and CCTP companion files.",
+      "rejectedLessons": "Do not split companion files into parallel skill ids or revive stale copied bridge guidance.",
+      "targetSurface": "manifest,bundle,skill.read",
+      "rationale": "Official current SDF skill covers cross-chain Stellar integrations through one playbook and its companion files.",
+      "evidenceRefs": ["catalog/manifest.json", "ecosystem-skills/MANIFEST.json"]
     },
     {
       "id": "skills.stellar-dev.dapp",

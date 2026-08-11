@@ -596,9 +596,9 @@ describe("searchCatalogPage — tier marker + total/truncated (todos 838/840)", 
         "stellarDocs.search_meeting_notes"
       ].sort()
     );
-    // total counts searchable candidates only — 204 sections left search at
+    // total counts searchable candidates only — 210 sections left search at
     // the 2026-07-13 A/B, so the candidate pool shrank from 272.
-    expect(page.total).toBe(72);
+    expect(page.total).toBe(73);
     expect(page.truncated).toBe(true);
   });
 

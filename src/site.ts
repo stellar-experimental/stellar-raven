@@ -687,8 +687,8 @@ export function landingPage(): string {
     `<div class="below">
   <div class="stats" aria-label="What one connection covers">
     <span class="st"><b>54</b> live operations</span>
-    <span class="st"><b>276</b> catalog entries</span>
-    <span class="st"><b>18</b> playbooks</span>
+    <span class="st"><b>283</b> catalog entries</span>
+    <span class="st"><b>19</b> playbooks</span>
     <span class="st"><b>1</b> sign-in</span>
     <span class="st"><b>0</b> API keys</span>
   </div>
@@ -760,7 +760,7 @@ export function landingPage(): string {
         </ul>
       </div>
     </div>
-    <p class="hood">Under the hood: two MCP tools. <code>search</code> ranks 276 catalog entries — operations, docs, and
+    <p class="hood">Under the hood: two MCP tools. <code>search</code> ranks 283 catalog entries — operations, docs, and
       skill sections; <code>execute</code> runs your agent's JavaScript in a no-network sandbox where
       every call is validated against the catalog.</p>
   </section>

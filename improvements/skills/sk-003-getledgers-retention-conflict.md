@@ -1,7 +1,7 @@
 ---
 id: sk-003
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-03
 evidence:
   - eval/qa/results/2026-07-03T03-49-35-variantA.json
@@ -10,6 +10,8 @@ evidence:
   - live SDF Testnet RPC 2026-07-09: getHealth returned oldestLedger 3402817 / latestLedger 3523776 / ledgerRetentionWindow 120960; getLedgers(startLedger=2) returned JSON-RPC -32600 requiring start within that retained range
   - Solo project 49, todo 822, comments 2204-2210
   - upstream issue filed 2026-07-09: https://github.com/stellar/stellar-dev-skill/issues/52
+  - 2026-08-10 upstream re-pin 9e3d3fe0de85 live recheck: /tmp/skilldiff/stellar-dev__data__SKILL.md.new now says a data-lake-backed provider reaches only as far as its data lake, while plain RPC is bounded by getHealth().oldestLedger and older requests fail -32600; the former "back to genesis" trigger is absent
+  - 2026-08-10 resolving upstream record read back: https://github.com/stellar/stellar-dev-skill/issues/52 is closed by maintainer kaankacar's comment citing merged PR https://github.com/stellar/stellar-dev-skill/pull/73; the recheck observed getHealth oldestLedger 3955974 / latestLedger 4076933 and getLedgers(startLedger=2) -32600
 recurrences:
   - date: 2026-07-09
     evidence: upstream data skill still says getLedgers can reach genesis in four places, while official docs qualify history by provider retention and the SDF Testnet instance rejected ledger 2 outside its retained range

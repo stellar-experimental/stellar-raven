@@ -194,16 +194,16 @@ describe("build-catalog.mjs", () => {
       expect(op.inputSchema).not.toBeNull();
     }
 
-    // Skills mirror: 18 whole-skill entries — the 7 retired Lumenloop
+    // Skills mirror: 19 whole-skill entries — the 7 retired Lumenloop
     // API-onboarding skills are never emitted, skill or sections (see
     // build-catalog.mjs RETIRED_ONBOARDING_SKILLS + the rename-guard).
-    expect(count((e) => e.service === "skills" && e.kind === "skill")).toBe(18);
+    expect(count((e) => e.service === "skills" && e.kind === "skill")).toBe(19);
     expect(count((e) => e.service === "skills" && e.kind === "skill-section")).toBeGreaterThan(0);
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
     // Grand total: everything in the manifest is exposed (ADR-0003).
-    expect(catalog.entries).toHaveLength(276);
+    expect(catalog.entries).toHaveLength(283);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {

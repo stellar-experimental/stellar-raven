@@ -13,9 +13,12 @@ evidence:
   - correct service-owner record confirmed 2026-07-13: https://github.com/Stellar-Light/stellarlight/issues/494 documents the additive lifecycle-provenance fields and their zero-migration legacy-row boundary; the residual population gap remains tracked by the source issue above
   - 2026-07-14 live Fluxity residual follow-up: https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-4971408499
   - partial-fix verification posted and read back 2026-07-15: https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-4982290048
+  - 2026-08-10 Scout OpenAPI 1.8.40 adds Repo activityState and activitySignals as a partial upstream response, but does not populate project statusBasis or statusSourceUrl; its activity semantics say dormant is a known commit older than 180 days (an observation, not a death verdict) and unknown is no commit date held
 recurrences:
   - date: 2026-07-15
     evidence: Scout 1.7.26 gives Fluxity and Freighter dated source-inherited statusBasis values, but statusSourceUrl remains null and supportedNetworks remains empty
+  - date: 2026-08-10
+    evidence: OpenAPI 1.8.40 adds Repo activityState/activitySignals, but this is only a partial response: it does not supply the requested project statusBasis/statusSourceUrl or deployment scope, and explicitly defines dormant/unknown as non-defunct observations rather than lifecycle death verdicts
 ---
 
 ## Finding
@@ -31,6 +34,12 @@ The label is not necessarily wrong when it conflicts with an operator surface:
 an operator page can be stale, an app can remain reachable after abandonment,
 and a project can be active without a mainnet product. The missing qualifiers
 make those distinct states indistinguishable.
+
+Scout 1.8.40's Repo `activityState` and `activitySignals` are a useful partial
+response, but they cannot replace project lifecycle provenance: `dormant` is a
+known commit older than 180 days and `unknown` has no commit date, neither a
+defunct verdict. They provide neither a project `statusBasis` nor a
+`statusSourceUrl`, nor a deployment qualifier.
 
 ## Evidence
 

@@ -44,12 +44,13 @@
     {
       "id": "stellar-appdev",
       "title": "Stellar app dev & data",
-      "description": "SDF's developer skills for building on Stellar off-chain: dapps/wallets, chain data via RPC/Horizon, classic assets + SAC, agentic payments, SEP/standards, and ZK. Reference + selective execution micro-skill candidates.",
+      "description": "SDF's developer skills for building on Stellar off-chain: dapps/wallets, chain data via RPC/Horizon, classic assets + SAC, agentic payments, cross-chain rails, SEP/standards, and ZK. Reference + selective execution micro-skill candidates.",
       "members": [
         "stellar-dev/dapp",
         "stellar-dev/data",
         "stellar-dev/assets",
         "stellar-dev/agentic-payments",
+        "stellar-dev/cross-chain",
         "stellar-dev/standards",
         "stellar-dev/zk-proofs"
       ]

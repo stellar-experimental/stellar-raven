@@ -88,7 +88,7 @@ export async function logArtifactRead(fields: {
  *
  * Two questions this is the instrument for, both recorded in
  * ideas/skill-discovery-without-bundling.md: whether agents use SECTION reads at
- * all (if they only ever read whole skills, 204 section entries are dead
+ * all (if they only ever read whole skills, 210 section entries are dead
  * weight), and what the live-fetch latency profile actually is. `from` makes the
  * latency interpretable — a memo hit and an upstream fetch differ by orders of
  * magnitude and a mean over both is meaningless.

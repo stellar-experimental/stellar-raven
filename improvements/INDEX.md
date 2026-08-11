@@ -8,14 +8,14 @@ Total findings: 61
 
 | id     | title                                                                                                                                      | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- | ---------- | ----------- |
-| sk-003 | The data skill promises getLedgers history back to genesis despite provider retention limits                                               | reported-upstream | 2026-07-03 | 3           |
+| sk-003 | The data skill promises getLedgers history back to genesis despite provider retention limits                                               | fixed-upstream    | 2026-07-03 | 3           |
 | sk-004 | Two lumenloop-skills playbooks teach that findavpassages yields verbatim, quotable transcript passages: stellar-project-dossier labels it… | reported-upstream | 2026-07-03 | 0           |
 | sk-005 | The Lumenloop skill corpus lacks machine-readable audience and transport metadata                                                          | reported-upstream | 2026-07-03 | 2           |
 | sk-006 | The smart-contracts skill lacks error-keyed troubleshooting for common CLI and build failures                                              | reported-upstream | 2026-07-03 | 3           |
 | sk-007 | The ecosystem-digest skill hard-codes a stale 2026-06-08 recency window                                                                    | reported-upstream | 2026-07-03 | 2           |
-| sk-009 | The pinned Stellar Scout skill API reference has fallen behind the live Scout OpenAPI contract from 1.7.11 through 1.7.26. This is new…    | reported-upstream | 2026-07-10 | 2           |
-| sk-011 | The served upstream ZK skill is stale after Protocol 25. It describes BN254 and Poseidon/Poseidon2 changes as proposed or gated and tells… | reported-upstream | 2026-07-11 | 0           |
-| sk-012 | The served agentic-payments skill presents "MPP Channel mode" as the public mode name. Current MPP material uses Session for the payment…  | reported-upstream | 2026-07-11 | 0           |
+| sk-009 | The pinned Stellar Scout skill API reference has fallen behind the live Scout OpenAPI contract from 1.7.11 through 1.8.40. This is new…    | reported-upstream | 2026-07-10 | 3           |
+| sk-011 | The served upstream ZK skill is stale after Protocol 25. It describes BN254 and Poseidon/Poseidon2 changes as proposed or gated and tells… | fixed-upstream    | 2026-07-11 | 0           |
+| sk-012 | The served agentic-payments skill presents "MPP Channel mode" as the public mode name. Current MPP material uses Session for the payment…  | fixed-upstream    | 2026-07-11 | 0           |
 | sk-013 | The assets skill teaches ChangeTrust(limit: 0) as trustline removal without the preconditions that make the operation safe and valid. A…   | reported-upstream | 2026-08-04 | 0           |
 
 ## stellar-light-scout
@@ -23,7 +23,7 @@ Total findings: 61
 | id      | title                                                                                                                                       | status            | discovered | recurrences |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | sls-023 | Scout's broad RWA discovery does not separate entity/project status from the deployment status of a particular product on Stellar. A live…  | reported-upstream | 2026-07-10 | 2           |
-| sls-024 | Scout lifecycle labels lack populated provenance and deployment qualifiers. The schema exposes statusAsOf, statusBasis, statusSourceUrl,…   | reported-upstream | 2026-07-10 | 1           |
+| sls-024 | Scout lifecycle labels lack populated provenance and deployment qualifiers. The schema exposes statusAsOf, statusBasis, statusSourceUrl,…   | reported-upstream | 2026-07-10 | 2           |
 | sls-029 | Oracle discovery collapses provider identity, product family, network, and evidence tier into a project-level status. This makes…           | reported-upstream | 2026-07-10 | 2           |
 | sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 4           |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
