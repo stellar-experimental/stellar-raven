@@ -31,9 +31,9 @@ causal claim the evidence here cannot support — see "What this does not establ
 Checked live on 2026-08-07 against `skills.stellar-dev.smart-contracts` (served from pinned commit
 `52baea1d8cb1aa9441004ce44b723f55cbc90901`) and the `stellarDocs.*` surface:
 
-Verdicts below were independently re-derived by an adversarial reviewer instructed to refute them
-(Codex/Sol high, 2026-08-07, todo 1427). Three of the original eight did not survive. The table
-carries the corrected verdicts.
+Verdicts below were independently re-derived by an adversarial reviewer instructed to refute them.
+The consolidated evidence is in Solo scratchpad 784. Three of the original eight did not survive.
+The table carries the corrected verdicts.
 
 | His defect class | What Raven serves | Verdict |
 |---|---|---|
@@ -176,8 +176,8 @@ Unranked, none committed. Each needs its own evidence before it becomes work.
 ## Golden-question gaps found while checking
 
 Real, narrow, and independent of everything above. All four were independently re-verified against
-all 490 battery cases (Claude, 2026-08-07, todo 1429), which sharpened two of them and found a fifth
-issue nobody was looking for. Full analysis in scratchpad 784.
+all 490 battery cases. The review sharpened two claims and found a fifth issue. Full evidence is in
+Solo scratchpad 784.
 
 - **Persistent unbounded collection vs the entry cap** (#9) — **gap real, narrower than first
   stated.** The closest case is not the one originally named: `q-zk-nullifier-storage` already
@@ -218,9 +218,9 @@ The "building with AI" page is what sold him ("very impressed"), install followe
 and Jane has since told him the feedback goes "to the Raven team". That sequence creates a
 correctness expectation which this note's non-goals then disclaim. The gap between what the on-ramp
 implies and what the non-goals reserve has not been examined, and it is being carried by a partner
-heading into DTCC and SEC processes. Partner-side handling is in scratchpad 785; the product
-question — whether the on-ramp promises something the server does not own — belongs here and is
-open.
+heading into DTCC and SEC processes. The product question — whether the on-ramp promises something
+the server does not own — belongs here and is open. The consolidated partner-side handling is in
+Solo scratchpad 784.
 
 ## Non-goals
 
