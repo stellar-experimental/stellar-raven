@@ -520,6 +520,26 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/a4954b6a38f66de5ce4b28fc33535464df0818fb/improvements/skills/sk-002-security-md-reentrancy-claim.md"
     },
     {
+      "id": "sk-003",
+      "title": "The data skill promises getLedgers history back to genesis despite provider retention limits",
+      "service": "skills",
+      "discovered": "2026-07-03",
+      "resolved": "2026-08-11",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/52",
+        "https://github.com/stellar/stellar-dev-skill/pull/73"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/52",
+        "https://github.com/stellar/stellar-dev-skill/pull/73"
+      ],
+      "liveRecheck": "2026-08-11 production read via agents.stellar.buzz/mcp of skills.stellar-dev.data at pin 9e3d3fe0de85: no unconditional genesis claim; Infinite Scroll qualified by provider data-lake reach and getHealth().oldestLedger/-32600 guidance",
+      "reviewEvidence": "Independent Fable reviewer, Solo process 4492 / todo 1449, re-derived upstream state, pin ancestry, live trigger, and repository references",
+      "sourceCommit": "d2d7c161a4362445c6db59bf5989de98f130fe55",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d2d7c161a4362445c6db59bf5989de98f130fe55/improvements/skills/sk-003-getledgers-retention-conflict.md"
+    },
+    {
       "id": "sk-008",
       "title": "The upstream Stellar-Light/stellar-scout skill API reference previously lagged the live Scout OpenAPI 1.7.0 contract for two exposed read…",
       "service": "skills",
@@ -554,6 +574,46 @@
       "reviewEvidence": "distinct reviewer: Lane C read-only review 2026-07-27 (Solo todo 1205, scratchpad improvements-upstream-review-2026-07-27) independently re-ran each trigger against the live surface rather than accepting the maintainer handoff; Lane E (todo 1208) re-verified before retirement",
       "sourceCommit": "773857262d462506947a324b7437b8499f886287",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/773857262d462506947a324b7437b8499f886287/improvements/skills/sk-010-wallets-kit-jsr-scope-dapp-skill.md"
+    },
+    {
+      "id": "sk-011",
+      "title": "The served upstream ZK skill is stale after Protocol 25. It describes BN254 and Poseidon/Poseidon2 changes as proposed or gated and tells…",
+      "service": "skills",
+      "discovered": "2026-07-11",
+      "resolved": "2026-08-11",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/51",
+        "https://github.com/stellar/stellar-dev-skill/pull/72"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/51",
+        "https://github.com/stellar/stellar-dev-skill/pull/72"
+      ],
+      "liveRecheck": "2026-08-11 production read of skills.stellar-dev.zk-proofs at pin 9e3d3fe0de85: CAP-0074/0075 Available (Protocol 25+), CAP-0080 Available (Protocol 26+), verified-against-Protocol-27 header; proposed/gated trigger absent",
+      "reviewEvidence": "Independent Fable reviewer, Solo process 4492 / todo 1449, re-derived upstream state, pin ancestry, live trigger, and repository references",
+      "sourceCommit": "d2d7c161a4362445c6db59bf5989de98f130fe55",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d2d7c161a4362445c6db59bf5989de98f130fe55/improvements/skills/sk-011-zk-proofs-protocol-25-status.md"
+    },
+    {
+      "id": "sk-012",
+      "title": "The served agentic-payments skill presents \"MPP Channel mode\" as the public mode name. Current MPP material uses Session for the payment…",
+      "service": "skills",
+      "discovered": "2026-07-11",
+      "resolved": "2026-08-11",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/57",
+        "https://github.com/stellar/stellar-dev-skill/pull/71"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/57",
+        "https://github.com/stellar/stellar-dev-skill/pull/71"
+      ],
+      "liveRecheck": "2026-08-11 production read of skills.stellar-dev.agentic-payments at pin 9e3d3fe0de85: MPP Session is the public mode name; channel is the settlement mechanism; MPP Channel mode is absent",
+      "reviewEvidence": "Independent Fable reviewer, Solo process 4492 / todo 1449, re-derived upstream state, pin ancestry, live trigger, and repository references",
+      "sourceCommit": "d2d7c161a4362445c6db59bf5989de98f130fe55",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d2d7c161a4362445c6db59bf5989de98f130fe55/improvements/skills/sk-012-mpp-session-mode-terminology.md"
     },
     {
       "id": "sls-001",
@@ -1525,6 +1585,60 @@
       "reviewEvidence": "distinct reviewer: gpt-5.6-sol at xhigh effort independently repeated the original live trigger on 2026-07-30 (author was Solo process 4111); resolution comment posted at https://github.com/Stellar-Light/stellarlight/issues/746#issuecomment-5133759906",
       "sourceCommit": "b8acfff36ec6a4587b63457efba530350f22c3ee",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b8acfff36ec6a4587b63457efba530350f22c3ee/improvements/stellar-light-scout/sls-059-get-skill-routing-example-names-retired-soroban-slug.md"
+    },
+    {
+      "id": "sls-060",
+      "title": "A closed Scout RFP detail page retains an unconditional funding application call to action. The API marks Hummingbot Integration closed…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-04",
+      "resolved": "2026-08-11",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/766"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/766"
+      ],
+      "liveRecheck": "2026-08-11 Hummingbot page has no Apply CTA and renders Closed — past round plus This brief is closed; adjacent closed pages are fixed while open layerzero-dvn retains its CTA",
+      "reviewEvidence": "Independent Fable reviewer, Solo process 4500 / todo 1451, repeated the live trigger, adjacent-page checks, upstream state, and repository reference scan",
+      "sourceCommit": "dbb3eee51e96515d6dd4d118e87adbf7246a712b",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/dbb3eee51e96515d6dd4d118e87adbf7246a712b/improvements/stellar-light-scout/sls-060-closed-rfp-detail-keeps-apply-cta.md"
+    },
+    {
+      "id": "sls-061",
+      "title": "Some currently awarded Scout projects expose non-empty scfAwardedRounds and an aggregate, but leave scfRoundAwards empty even though the…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-05",
+      "resolved": "2026-08-11",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/767"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/767"
+      ],
+      "liveRecheck": "2026-08-11 production API 1.8.41 returns populated scfRoundAwards for all seven original rows and every recorded award round; residual rows are separated into reviewed successor issue 806",
+      "reviewEvidence": "Independent Fable reviewer, Solo process 4500 / todo 1451, verified the original trigger; separate Fable reviewer process 4502 / todo 1455 verified the 467-row successor evidence filed as issue 806",
+      "sourceCommit": "dbb3eee51e96515d6dd4d118e87adbf7246a712b",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/dbb3eee51e96515d6dd4d118e87adbf7246a712b/improvements/stellar-light-scout/sls-061-scf-round-awards-population-gap.md"
+    },
+    {
+      "id": "sls-062",
+      "title": "Scout's status endpoint reports nine SDF skills while its filterable skills directory and the canonical upstream roster each expose seven.…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-06",
+      "resolved": "2026-08-11",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/768"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/768"
+      ],
+      "liveRecheck": "2026-08-11 /api/status sdfSkills.count=8; /api/skills?source=sdf returns 8 rows and meta.counts.bySource.sdf=8; the canonical sitemap lists the same 8 skills",
+      "reviewEvidence": "Independent Fable reviewer, Solo process 4500 / todo 1451, repeated the three-surface trigger, upstream state, and repository reference scan",
+      "sourceCommit": "dbb3eee51e96515d6dd4d118e87adbf7246a712b",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/dbb3eee51e96515d6dd4d118e87adbf7246a712b/improvements/stellar-light-scout/sls-062-status-sdf-skill-count-mismatch.md"
     }
   ]
 }

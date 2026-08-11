@@ -168,9 +168,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "Official Tools pages conflate the self-hosted OpenZeppelin Relayer with the managed Channels service."
     },
-    "sk-003": {
-      "repo": "stellar/stellar-dev-skill"
-    },
     "sk-004": {
       "repo": "lumenloop/lumenloop-skills"
     },
@@ -186,14 +183,6 @@
     "sk-009": {
       "repo": "Stellar-Light/stellar-scout",
       "reason": "The finding concerns the upstream Scout skill API reference, not the live service implementation."
-    },
-    "sk-011": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The served upstream zk-proofs skill needs Protocol 25 status correction."
-    },
-    "sk-012": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The served upstream agentic-payments skill needs current MPP Session terminology."
     },
     "sk-013": {
       "repo": "stellar/stellar-dev-skill",
@@ -230,10 +219,6 @@
     "sls-055": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Scout research omits canonical non-blog SDF organizational pages, leaving current legal-structure, fund-scope, mandate, leadership, and report claims without quotable coverage."
-    },
-    "sls-060": {
-      "repo": "Stellar-Light/stellarlight",
-      "reason": "Closed RFP detail pages should suppress or replace funding-application calls to action."
     }
   }
 }

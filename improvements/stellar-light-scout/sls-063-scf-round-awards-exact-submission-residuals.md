@@ -1,7 +1,7 @@
 ---
 id: sls-063
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-11
 upstreamTitle: Populate verified SCF round award records for remaining awarded projects
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-08-11 production sweep of https://stellarlight.xyz/api/projects/search?scfAwarded=true used limit=100 and offsets 0, 100, 200, 300, and 400; it returned all 467 of 467 awarded rows and found 26 rows with non-empty scfAwardedRounds but scfRoundAwards []
   - 2026-08-11 official submission recheck matched the Scout slug and awarded round for 17 residual rows with published budgets; all 17 records are listed in this finding
   - 2026-08-11 predecessor sls-061 and Stellar-Light/stellarlight#767 cover seven earlier rows that now return populated scfRoundAwards; this independently verified residual does not rely on their prose
+  - upstream issue filed 2026-08-11: https://github.com/Stellar-Light/stellarlight/issues/806
 ---
 
 ## Finding
