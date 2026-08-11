@@ -35,6 +35,11 @@ permissions:
   contents: read
   issues: write
 
+env:
+  # Assignment subscribes the maintainer to later plain comments without requiring repo watch.
+  # Do not replace it with a bot @mention: delivery is undocumented and would direct-ping daily.
+  REFRESH_ISSUE_ASSIGNEE: kalepail # Future maintainer changes belong in this one place.
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
@@ -323,9 +328,15 @@ jobs:
           gh label create drift --description "live service surface drifted from committed inventory" --color D93F0B 2>/dev/null || true
           existing=$(gh issue list --label drift --state open --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then
+            if ! gh issue view "$existing" --json assignees --jq '.assignees[].login' | grep -Fxq "$REFRESH_ISSUE_ASSIGNEE"; then
+              gh issue edit "$existing" --add-assignee "$REFRESH_ISSUE_ASSIGNEE" \
+                || echo "::warning::Could not assign $REFRESH_ISSUE_ASSIGNEE to drift issue #$existing"
+            fi
             gh issue comment "$existing" --body-file drift-report.md
           else
-            gh issue create --title "Live service drift detected" --label drift --body-file drift-report.md
+            created=$(gh issue create --title "Live service drift detected" --label drift --body-file drift-report.md)
+            gh issue edit "$created" --add-assignee "$REFRESH_ISSUE_ASSIGNEE" \
+              || echo "::warning::Could not assign $REFRESH_ISSUE_ASSIGNEE to new drift issue $created"
           fi
       # Runs after the issue step so an inventory-only drift issue (if any) is
       # still opened/updated before the job fails on the skills-check error.
@@ -393,7 +404,13 @@ jobs:
           gh label create refresh-failure --description "daily refresh job crashed before drift detection" --color B60205 2>/dev/null || true
           existing=$(gh issue list --label refresh-failure --state open --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then
+            if ! gh issue view "$existing" --json assignees --jq '.assignees[].login' | grep -Fxq "$REFRESH_ISSUE_ASSIGNEE"; then
+              gh issue edit "$existing" --add-assignee "$REFRESH_ISSUE_ASSIGNEE" \
+                || echo "::warning::Could not assign $REFRESH_ISSUE_ASSIGNEE to refresh-failure issue #$existing"
+            fi
             gh issue comment "$existing" --body-file refresh-failure.md
           else
-            gh issue create --title "Refresh job crashed" --label refresh-failure --body-file refresh-failure.md
+            created=$(gh issue create --title "Refresh job crashed" --label refresh-failure --body-file refresh-failure.md)
+            gh issue edit "$created" --add-assignee "$REFRESH_ISSUE_ASSIGNEE" \
+              || echo "::warning::Could not assign $REFRESH_ISSUE_ASSIGNEE to new refresh-failure issue $created"
           fi
