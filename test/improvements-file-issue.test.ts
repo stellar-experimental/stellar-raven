@@ -50,7 +50,10 @@ Use the upstreamTitle, never the bare finding id.
   }
 }
 
-describe("improvements issue filing template", () => {
+// Same reason as test/scan-secrets-gitleaks.test.mjs: every case spawns the filer plus git
+// plumbing over a fixture repo, so the 5s default times out under parallel load and passes in
+// isolation. Bound the real hang, not the subprocess cost.
+describe("improvements issue filing template", { timeout: 30_000 }, () => {
   test("uses an explicit reader-first upstream title for an unreported finding", () => {
     const output = withFixtureFinding((finding) =>
       execFileSync(

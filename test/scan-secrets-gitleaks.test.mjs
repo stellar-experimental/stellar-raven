@@ -31,7 +31,11 @@ function scan(files) {
   }
 }
 
-describe("gitleaks config semantics", () => {
+// Each case shells out several times — `git init`/`add`/`commit` in a throwaway repo, then the
+// gitleaks binary — so the 5s default is not a meaningful deadline here; under full-suite parallel
+// load it fires as a flake while the same cases pass in isolation. The timeout still bounds a real
+// hang, just at a scale that matches the work.
+describe("gitleaks config semantics", { timeout: 30_000 }, () => {
   if (!GITLEAKS_AVAILABLE) {
     it.skip("requires gitleaks on PATH; CI may omit it", () => {});
     return;
