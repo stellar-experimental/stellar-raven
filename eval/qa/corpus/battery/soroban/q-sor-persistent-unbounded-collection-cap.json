@@ -1,0 +1,96 @@
+{
+  "id": "q-sor-persistent-unbounded-collection-cap",
+  "question": "I append items to a Vec stored under one Persistent key. Why can later Soroban writes fail, and how should I store the collection?",
+  "surface": [
+    "stellarDocs.search_soroban_contract_docs"
+  ],
+  "golden": {
+    "answer": "Persistent storage changes durability, not entry layout. One key still maps to one serialized contract-data ledger entry, so a growing `Vec` or `Map` under that key grows one entry. The write fails when the serialized entry exceeds the target network's configured contract-data entry limit. Do not freeze a byte value or error string because the limit is network-controlled. Keep a one-entry collection explicitly bounded, or split an unbounded collection across distinct composite keys or bounded chunks. Fine-grained keys also avoid rewriting and contending on the whole collection.",
+    "keyFacts": [
+      "A Vec or Map under one Persistent key remains one serialized contract-data ledger entry.",
+      "The collection can exceed the network-configured entry limit; bound it or split it across keys or chunks."
+    ],
+    "avoid": [
+      "Do NOT claim Persistent storage automatically shards a growing value across ledger entries.",
+      "Do NOT freeze a universal byte limit or exact failure string."
+    ],
+    "notes": "This case tests one Persistent value, not the separate Instance-storage DoS or nullifier-retention cases. Reward bounded one-entry layouts, composite per-item keys, or bounded chunks. The exact entry limit is network-controlled."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "stellarDocs",
+    "freshness": "stable"
+  },
+  "truth": {
+    "domain": "real-world",
+    "status": "confirmed",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/storage.rs"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-core/blob/f951722e83cf81a652b0aa88b143ccedb3a298b2/src/transactions/TransactionUtils.cpp"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A Vec or Map stored under one Persistent key remains one complete contract-data ledger entry.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+            "observedAt": "2026-08-12",
+            "note": "The official data model defines one user key and one associated value per contract-data entry. Either can contain vectors or maps."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/storage.rs",
+            "observedAt": "2026-08-12",
+            "note": "The Persistent API reads and writes one value through one supplied key."
+          }
+        ]
+      },
+      {
+        "claim": "A growing one-entry collection can exceed the network-controlled contract-data entry limit and should be bounded or split.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+            "observedAt": "2026-08-12",
+            "note": "The official guide rejects unbounded vectors or maps under one key and recommends bounded or split layouts."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/f951722e83cf81a652b0aa88b143ccedb3a298b2/src/transactions/TransactionUtils.cpp",
+            "observedAt": "2026-08-12",
+            "note": "Core compares each contract-data entry size with the configured maximum and rejects an oversized entry."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-12",
+      "by": "2026-08 public-source verification",
+      "evidence": [
+        "solo://proj/49/scratchpad/784#persistent-collection-limits",
+        "Sibling sweep: q-soroban-resource-limits covers the generic limit; q-soroban-instance-storage-dos covers Instance storage; q-zk-nullifier-storage covers nullifier safety. No sibling owns one growing Persistent value."
+      ],
+      "rootCause": [
+        "eval-authoring"
+      ]
+    },
+    "origin": "authored 2026-08 (storage coverage closure)"
+  }
+}

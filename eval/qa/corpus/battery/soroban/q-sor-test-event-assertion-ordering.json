@@ -1,0 +1,94 @@
+{
+  "id": "q-sor-test-event-assertion-ordering",
+  "question": "Contract A emits an event, calls contract B which emits another event, then A emits again. How should my Soroban test assert the events?",
+  "surface": [
+    "stellarDocs.search_soroban_contract_docs"
+  ],
+  "golden": {
+    "answer": "Import `soroban_sdk::testutils::Events as _` and inspect `env.events().all()` immediately after the successful outer client call. The result contains successful events from that last top-level invocation, including nested calls, in emission order. For A → B → A, the combined list keeps that order. Use `filter_by_contract(&a)` when the assertion should contain only A's first and third events. Reading `all()` does not clear the list, but a later top-level client call replaces the observable result with that later invocation's events.",
+    "keyFacts": [
+      "The last successful top-level invocation exposes its ordered events, including nested contract calls.",
+      "Use filter_by_contract for one contract and assert before a later top-level invocation replaces the observed list."
+    ],
+    "avoid": [
+      "Do NOT claim env.events().all() accumulates events from every top-level client call in the test.",
+      "Do NOT omit nested-call events from the successful outer invocation or reorder them by contract."
+    ],
+    "notes": "This case tests event assertions after nested calls. Event publication syntax, RPC retention, diagnostics, and general HostError debugging belong to other cases."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-08-12",
+    "reverifyBy": "2026-12-31",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/_migrating/v25_event_testing.rs"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/tests/contract_event.rs"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "env.events().all() reports successful events from the last top-level invocation, and a later client call replaces the observed list.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events",
+            "observedAt": "2026-08-12",
+            "note": "The official test reads events after each client call and describes them as events from the last contract invocation."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/_migrating/v25_event_testing.rs",
+            "observedAt": "2026-08-12",
+            "note": "The SDK migration example defines the current per-invocation test-event surface."
+          }
+        ]
+      },
+      {
+        "claim": "Nested calls contribute to the outer invocation's ordered event list, and filter_by_contract preserves one contract's event order.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events",
+            "observedAt": "2026-08-12",
+            "note": "The guide recommends filter_by_contract when called contracts also emit events."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/tests/contract_event.rs",
+            "observedAt": "2026-08-12",
+            "note": "The SDK test verifies A, B, A emission order and A-only filtering."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-12",
+      "by": "2026-08 public-source verification",
+      "evidence": [
+        "solo://proj/49/scratchpad/784#event-assertion-ordering",
+        "Sibling sweep: q-soroban-publish-events owns publication and RPC retention; q-sor-decode-hosterror-codes owns failed-call rollback and diagnostics. Neither owns nested-call ordering."
+      ],
+      "rootCause": [
+        "eval-authoring"
+      ]
+    },
+    "origin": "authored 2026-08 (event-testing coverage closure)"
+  }
+}

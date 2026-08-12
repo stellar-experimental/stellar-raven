@@ -15,7 +15,7 @@
       "Do NOT claim unit tests require Testnet/RPC deployment.",
       "Do NOT treat mock_all_auths success as proof that authorization was required correctly."
     ],
-    "notes": "Env::default() + register + mock_all_auths is the canonical in-process test surface; runs under cargo test, no network. Foundry/Hardhat is the EVM trap. 2026-06-29 differentiation: this file is the happy-path unit-testing how-to where mock_all_auths is the recommended convenience; the failure-path concern (proving an UNAUTHORIZED caller is rejected — where mock_all_auths is the wrong tool) is owned by q-sor-testing-negative-auth-events.\nAlso good if the answer: Tests run with normal `cargo test`; no live network is needed (the host is in-process). | You can assert emitted events, returned values, and authorizations via `env` test utilities.\nGolden cites: The developers.stellar.org testing documentation.\nGT-48 CORRECTION 2026-07-11: native in-process tests; blanket auth mocking is not an authorization assertion."
+    "notes": "Env::default() + register + mock_all_auths is the canonical in-process test surface; runs under cargo test, no network. Foundry/Hardhat is the EVM trap. 2026-08-12 differentiation: this file is the happy-path unit-testing how-to where mock_all_auths is the recommended convenience; q-sor-decode-hosterror-codes owns exact negative-auth failure classes, generated `try_*` results, and failed-call event rollback.\nAlso good if the answer: Tests run with normal `cargo test`; no live network is needed (the host is in-process). | You can assert emitted events, returned values, and authorizations via `env` test utilities.\nGolden cites: The developers.stellar.org testing documentation.\nGT-48 CORRECTION 2026-07-11: native in-process tests; blanket auth mocking is not an authorization assertion."
   },
   "tags": {
     "category": "soroban",
@@ -25,7 +25,7 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-12",
     "reverifyBy": "2027-03-04",
     "sources": [
       {
@@ -37,6 +37,14 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/guides/auth/contract-authorization",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/testing/test-contract-auth"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization"
       },
       {
         "class": "B",
@@ -87,14 +95,15 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 Lane R absorb triage",
+      "date": "2026-08-12",
+      "by": "2026-08 stale-pointer repair with public-source verification",
       "evidence": [
-        "Solo scratchpad 575 GT-48 primary 3333 and pre-read-locked blind 3342; independent agreement on precision correction.",
+        "solo://proj/49/scratchpad/784#authorization-failures-and-generated-try-clients",
+        "https://developers.stellar.org/docs/build/guides/testing/test-contract-auth",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+        "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/auth/src/lib.rs",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-sor-testing-negative-auth-events",
-        "https://developers.stellar.org/docs/build/guides/testing/integration-tests",
-        "https://github.com/stellar/rs-soroban-sdk",
-        "Solo scratchpad 575 GT-43 processes 3311/3320."
+        "Sibling sweep: q-soroban-unit-testing keeps the happy-path test surface; q-sor-decode-hosterror-codes owns exact failure interpretation."
       ],
       "rootCause": [
         "eval-authoring"

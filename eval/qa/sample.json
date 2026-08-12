@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "2039cc824055efc812b04d08b00d83fa54a2b3bc0bc8ae4b18153d52a763ee34",
+  "corpusContentSha256": "ede4486840a6726fb11745257b57f243dff2a37472d5a92ef04c1e2e1c4ab599",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -24,13 +24,13 @@
       "stellarDocs": 15
     },
     "byFreshness": {
-      "live": 11,
-      "scheduled": 7,
-      "stable": 12
+      "live": 9,
+      "scheduled": 8,
+      "stable": 13
     },
     "traps": {
       "fabrication-bait": 1,
-      "scam-check": 1
+      "scam-check": 2
     }
   },
   "cases": [
@@ -1600,86 +1600,93 @@
       }
     },
     {
-      "id": "q-protocol-27-cap-0071",
-      "question": "What does the queued Protocol 27 / CAP-0071 change on Stellar?",
+      "id": "q-protocol-accounts-signers-thresholds",
+      "question": "How do Stellar accounts handle signing — what are signers, weights, thresholds, and the sequence number for?",
       "surface": [
-        "stellarDocs.search_protocol_concepts_docs"
+        "stellarDocs.search_protocol_concepts_docs",
+        "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any status claim. Protocol 27 (Zipper) has been live on Stellar Mainnet since ledger 63386819, closed 2026-07-08 at 17:00:10 UTC. **CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds the credential to its account address to prevent cross-account credential reuse. This is a Soroban authorization/credential change, not ZK, consensus, or parallel execution. As observed **2026-08-04**, the CAP registry labels CAP-0071 **Final**; normative document status remains distinct from software implementation and per-network activation.",
+        "answer": "A classic Stellar account has a master key and optional additional **signers**, each with a weight. Operations are assigned **low, medium, or high** thresholds, and the valid signatures' combined weight must meet the transaction's required threshold; this is Stellar's native multisig model. Classic `SignerKey` has exactly four forms: **ed25519**, **pre-authorized transaction hash**, **hashX**, and **ed25519 signed payload** (the last added by CAP-0040 in Protocol 19). **secp256r1 is not a classic SignerKey**: CAP-0051/P21 exposed secp256r1 verification for Soroban custom-account/passkey authorization.\n\nThe transaction source account's sequence number provides replay protection and source-local ordering. Under the default precondition, a transaction's sequence must be exactly current + 1. That rule is not unconditional: CAP-0021/P19 `minSeqNum` makes a transaction valid when `minSeqNum <= current account sequence < transaction sequence`; if it succeeds, the account advances directly to the transaction sequence. Failed or unapplied transactions do not automatically consume the sequence.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Explains CAP-0071 delegation chains and address-bound V2 credentials.",
-          "Distinguishes the CAP's Final registry status from implementation and network activation."
+          "Explains signer weights and low/medium/high thresholds for classic native multisig.",
+          "Lists all four classic SignerKey forms and keeps secp256r1 in Soroban/custom auth.",
+          "States the default +1 rule and CAP-0021 minSeqNum exception precisely."
         ],
         "avoid": [
-          "Do NOT claim Protocol 27 is still queued or pending on Mainnet.",
-          "Do NOT mis-describe CAP-0071 as a consensus, ZK, or parallelism change.",
-          "Do NOT infer network activation or non-activation from the CAP status label alone.",
-          "Do NOT present network status without a dated live source or freshness caveat.",
-          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+          "Do NOT omit ed25519 signed-payload signers or list secp256r1 as a classic SignerKey.",
+          "Do NOT say accounts are single-key-only or confuse signer weight with an operation threshold.",
+          "Do NOT make exact +1 unconditional; a non-null minSeqNum can permit a sequence gap under CAP-0021."
         ],
-        "notes": "CORRECTION 2026-08-04: P27 is historical and live from ledger 63386819; CAP-0071 is now Final. Preserve CAP-status versus network-activation separation."
+        "notes": "Accounts subtopic. Traps: 'no native multisig' and Ethereum-style arbitrary nonce.\nAlso good if the answer: Notes the master key is itself a signer (with a weight); adding signers + setting thresholds yields multisig. | Notes different operations require different threshold categories (e.g. set_options/account-merge are high-threshold).\nGolden cites: The accounts / multisig / signature docs on developers.stellar.org.\nGT-31 CORRECTION 2026-07-11: classic SignerKey has four arms including signed payload; secp256r1 belongs to Soroban custom auth. Exact +1 is the default, not an unconditional rule when CAP-0021 minSeqNum is present."
       },
       "tags": {
         "category": "protocol-core",
         "service": "stellarDocs",
-        "freshness": "live"
+        "freshness": "stable"
       },
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-08-04",
         "sources": [
           {
-            "class": "C",
-            "ref": "https://horizon.stellar.org/ledgers/63386819",
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/master/Stellar-types.x",
             "note": "class inferred at migration"
           },
           {
             "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071.md",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0040.md",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md",
             "note": "class inferred at migration"
           },
           {
             "class": "A",
-            "ref": "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig",
             "note": "class inferred at migration"
           }
         ],
         "corroboration": [
           {
-            "claim": "Protocol 27 is active on Mainnet since ledger 63386819",
+            "claim": "Classic SignerKey has four arms: ed25519, pre-auth transaction, hashX, and ed25519 signed payload; secp256r1 is a Soroban/custom-auth primitive, not a classic signer arm.",
             "verdict": "confirmed",
             "evidence": [
               {
-                "class": "C",
-                "ref": "C: Horizon boundary ledgers report P26 at 63386818 and P27 at 63386819 (2026-07-08T17:00:10Z); two independent Pubnet RPCs still report P27 on 2026-07-11",
+                "class": "B",
+                "ref": "B: current stellar-xdr Stellar-types.x and CAP-0040",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
-                "class": "A",
-                "ref": "A: SDF Zipper guide scheduled the Mainnet upgrade vote for 2026-07-08",
-                "observedAt": "2026-07-08",
+                "class": "B",
+                "ref": "B: CAP-0051 and current Soroban host environment",
+                "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
           },
           {
-            "claim": "CAP-0071 is the P27 authentication-delegation/address-bound-credentials change, while its registry status and network activation are separate facts",
+            "claim": "Without minSeqNum the current account sequence must be tx.seqNum-1; with minSeqNum, CAP-0021 permits minSeqNum <= current sequence < tx.seqNum and success advances directly to tx.seqNum.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "B",
-                "ref": "B: current stellar/stellar-protocol core/cap-0071.md — Final, protocol version 27",
-                "observedAt": "2026-08-05",
-                "note": "Re-fetched from the current stellar/stellar-protocol registry; status is Final and protocol version is 27."
+                "ref": "B: CAP-0021 specification",
+                "observedAt": "2026-07-11",
+                "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
-                "class": "A",
-                "ref": "A: SDF Zipper guide describes delegation and AddressV2",
+                "class": "B",
+                "ref": "B: current Core precondition implementation and official transaction documentation",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
@@ -1687,47 +1694,38 @@
           }
         ],
         "verified": {
-          "date": "2026-08-04",
-          "by": "Full golden QA CAP registry recheck; accepted in Todo 1347 c3625/c3627",
+          "date": "2026-07-11",
+          "by": "Golden-truth sweep import — The inherited signer list omitted signed-payload signers, incorrectly placed secp256r1 in classic SignerKey, and made exact sequence +1 unconditional despite CAP-0021's minSeqNum precondition.",
           "evidence": [
-            "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently retained the mechanics and required replacement of stale pending/future judge prose.",
-            "2026-07-11 author re-check: Horizon P26/P27 boundary, two independent Pubnet RPCs, current CAP-0071 source, and official Zipper guide.",
-            "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently found the classic/Soroban signer-category error and the minSeqNum exception.",
+            "2026-07-11 author re-check against stellar-xdr 8521b97b, CAP-0021, CAP-0040, and CAP-0051."
           ],
           "rootCause": [
-            "eval-side date-contingent status trap expired after the scheduled Mainnet vote and survived as contradictory inherited judge prose",
-            "solo://proj/49/todo/date-contingent-trap--831",
-            "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
-            "eval-authoring",
-            "CAP-0071 advanced from Accepted to Final after the earlier snapshot.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "Eval-side conflation of classic account SignerKey with Soroban custom-account authentication, plus pre-CAP-0021 sequence shorthand."
           ]
         },
-        "origin": "raven-next q-protocol-27-cap-0071"
+        "origin": "raven-next q-protocol-accounts-signers-thresholds"
       }
     },
     {
-      "id": "q-protocol-quorum-slice-vs-quorum",
-      "question": "In Stellar's SCP, what is the difference between a quorum slice and a quorum, and what is a quorum set?",
+      "id": "q-protocol-scp-consensus-algorithm",
+      "question": "What consensus algorithm does Stellar use, and how is it different from Proof-of-Work or Proof-of-Stake?",
       "surface": [
-        "stellarDocs.search_protocol_concepts_docs",
-        "stellarDocs.search_soroban_contract_docs"
+        "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "- **Quorum set**: the set of other nodes a given node chooses to trust — its configured trust list, with a **threshold** (the minimum number of those trusted nodes that must agree) [1].\n- **Quorum slice**: a threshold-sized **subset** of a node's quorum set that is sufficient to convince *that* node to agree [1].\n- **Quorum**: a set of nodes sufficient to reach **network-wide** agreement, where each node in the set has at least one of its quorum slices contained in the set [1].\n- Quorums form through nodes' **overlapping / intersecting slices**, which enables open membership — each node configures its own quorum set, with **no central authority** assigning it [1].\n- A **blocking set** is a subset of nodes that can prevent the network from reaching agreement [1].",
+        "answer": "- Stellar uses the **Stellar Consensus Protocol (SCP)**, a construction of **Federated Byzantine Agreement (FBA)** [1][2].\n- Unlike Proof-of-Work (mining hashpower) or Proof-of-Stake (staked capital), FBA reaches agreement through **user-defined quorum sets** — each node chooses which other nodes it trusts [1].\n- There are **no monetary or block rewards** for running a Stellar validator; participation is not incentivized by staking or mining [1][2].\n- SCP favors **safety over liveness**: rather than fork, the network can **halt** until agreement is restored [1].\n- SCP was authored by **David Mazières** and is grounded in an academic whitepaper [2].",
         "keyFacts": [
-          "Defines a quorum set as the set of other nodes a given node chooses to trust (its configured trust list).",
-          "Defines a quorum slice as a threshold-sized subset of a node's quorum set sufficient to convince that node to agree.",
-          "Defines a quorum as a set of nodes sufficient to reach network agreement, where each node has a quorum slice in the set."
+          "Names the Stellar Consensus Protocol (SCP) as Stellar's consensus mechanism.",
+          "States SCP is a construction of Federated Byzantine Agreement (FBA).",
+          "Explains FBA reaches agreement via user-defined quorum sets / trusted nodes, NOT mining hashpower (PoW) or staked capital (PoS)."
         ],
         "avoid": [
-          "Do NOT define a quorum slice as the global set of all validators or a fixed network-wide committee.",
-          "Do NOT conflate quorum/slice with staking weight or PoS-style voting power.",
-          "Do NOT claim quorum sets are assigned by a central authority (each node configures its own)."
+          "Do NOT claim Stellar uses Proof-of-Work or mining.",
+          "Do NOT claim Stellar uses Proof-of-Stake / staking with validator rewards.",
+          "Do NOT call the consensus mechanism 'PBFT', 'Tendermint', 'DPoS', or any non-SCP/non-FBA name."
         ],
-        "notes": "Multi-term definitional question. Trap is swapping slice/quorum definitions or implying a central committee.\nAlso good if the answer: Mentions the threshold (minimum number of trusted nodes that must agree) as part of a quorum set's configuration. | Notes quorums are reached through nodes' overlapping/intersecting slices, enabling open membership.\nGolden cites: The SCP overview / quorum concepts page on developers.stellar.org."
+        "notes": "Foundational fact. The trap is conflating SCP with PoW/PoS or naming a different BFT family.\nAlso good if the answer: Notes there are no monetary/block rewards for running a Stellar validator. | Notes SCP prioritizes safety/fault-tolerance and can halt (favor safety over liveness) rather than fork.\nGolden cites: The SCP overview on developers.stellar.org (or the SCP whitepaper / stellar.org SCP page)."
       },
       "tags": {
         "category": "protocol-core",
@@ -1742,69 +1740,106 @@
             "class": "A",
             "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/learn/stellar-consensus-protocol",
+            "note": "class inferred at migration"
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "GT-33-passphrases-operations-parallel-passkeys-consensus accepted in Solo scratchpad 575 rev 291",
+          "date": "2026-08-04",
+          "by": "Full golden QA scope correction; accepted in Todo 1347 c3625/c3627",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575"
+            "solo://proj/49/scratchpad/truth-maintenance-20--575",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-protocol-stellar-core-what-is",
+            "https://github.com/stellar/stellar-core",
+            "https://developers.stellar.org/docs/networks/software-versions"
+          ],
+          "rootCause": [
+            "eval-authoring",
+            "Removed an unrelated stellar-core implementation fact that the question and golden answer did not ask for."
           ]
         },
-        "origin": "raven-next q-protocol-quorum-slice-vs-quorum"
+        "origin": "raven-next q-protocol-scp-consensus-algorithm"
       }
     },
     {
-      "id": "q-raph-offramp-xlm-usdc",
-      "question": "How do I cash out my XLM or Stellar USDC to my bank account?",
+      "id": "q-raph-phishing-pending-claim",
+      "question": "I got a DM saying I have pending XLM and need to sign in or pay to release it. Is that real?",
       "surface": [
-        "stellarDocs.search_anchor_sep_docs",
-        "stellarDocs.search_asset_token_docs"
+        "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "You normally use a regulated exchange or an anchor/off-ramp that serves your country: complete its required verification, send the exact supported Stellar asset to its supplied deposit instructions, then request a fiat withdrawal to your bank. Check asset issuer/network, memo or special M-address (a muxed address), fees, limits, settlement time, and local eligibility before sending. An XLM or USDC balance on-chain does not by itself guarantee a bank off-ramp in every country.",
+        "answer": "Treat an unsolicited message demanding a payment, a wallet connection, or recovery credentials to release XLM as a phishing/scam signal. Do not click its link, sign a transaction, pay a 'rectification' fee, or share a secret key or recovery phrase. Instead, open your wallet yourself, inspect any on-chain entry there, and verify announcements through an official Stellar or wallet channel that you navigate to independently. A legitimate claimable-balance mechanism exists, but a DM does not authenticate an offer.",
         "keyFacts": [
-          "Explains that off-ramping uses a country-eligible exchange or anchor.",
-          "Requires checking the exact asset/network and deposit instructions."
+          "Sets a safe boundary: no link, payment, signature, or secret disclosure.",
+          "Does not falsely equate every claimable balance with a scam."
         ],
         "avoid": [
-          "Do NOT promise bank payout in every country.",
-          "Do NOT say any USDC-like asset code is interchangeable with the provider's supported asset."
+          "Do NOT tell the user to connect a wallet to the message's site.",
+          "Do NOT say SDF asks users for private keys or deposits."
         ],
-        "notes": "Availability and compliance are volatile; answer should direct to a live eligible provider."
+        "notes": "Safety case; re-derive the negative claim blind."
       },
       "tags": {
         "category": "retail-consumer",
         "service": "stellarDocs",
-        "freshness": "live"
+        "freshness": "scheduled",
+        "trap": "scam-check"
       },
       "truth": {
-        "domain": "real-world",
+        "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-07-11",
+        "reverifyBy": "2026-11-19",
         "sources": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/platforms/anchor-platform"
+            "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers"
           },
           {
             "class": "D",
-            "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers"
+            "ref": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md"
           }
         ],
         "corroboration": [
           {
-            "claim": "Fiat off-ramping depends on a receiving provider's supported asset, jurisdiction, and deposit instructions.",
+            "claim": "Unsolicited demands for credentials, signatures, or payment through a message link are phishing signals; SDF says it never asks for private keys or deposits.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
-                "ref": "https://developers.stellar.org/platforms/anchor-platform",
+                "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
                 "observedAt": "2026-07-11"
               },
               {
                 "class": "D",
-                "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+                "ref": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+                "observedAt": "2026-07-11"
+              }
+            ]
+          },
+          {
+            "claim": "A legitimate claimable-balance mechanism exists independently of any unsolicited message.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+                "observedAt": "2026-07-11"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
                 "observedAt": "2026-07-11"
               }
             ]
@@ -1818,14 +1853,16 @@
             "solo://proj/49/process/3419",
             "scratchpad/p4/h3-raph/fable-voice-review.md",
             "scratchpad/p4/h3-raph-blind/reconciliation.md",
-            "https://developers.stellar.org/platforms/anchor-platform",
-            "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers"
+            "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+            "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+            "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md"
           ],
           "rootCause": [
             "eval-authoring"
           ]
         },
-        "origin": "raph offramp-xlm-usdc-to-bank-fiat"
+        "origin": "raph scam-stellar-phishing-pending-claim"
       }
     },
     {
@@ -2017,24 +2054,144 @@
       }
     },
     {
-      "id": "q-sep-38-quotes",
-      "question": "Which SEP provides a quote/RFQ API for exchanging between assets at an anchor?",
+      "id": "q-sep-41-token-interface",
+      "question": "What is SEP-41 and how does it relate to the Stellar Asset Contract?",
       "surface": [
-        "stellarDocs.search_anchor_sep_docs",
-        "stellarDocs.search_asset_token_docs"
+        "stellarDocs.search_asset_token_docs",
+        "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "- **SEP-38 — \"Anchor RFQ API\"** is the quote/RFQ standard for pricing an exchange between two assets at an anchor (e.g. fiat↔stablecoin or asset↔asset) [1].\n- It exposes `GET /info`, `GET /prices`, `GET /price` (indicative quotes) and `POST /quote` (a **firm/committed** quote with an `id` and `expires_at`) [1].\n- Quotes are fetched **before** a SEP-6 / SEP-24 / SEP-31 deposit, withdrawal, or send to present and lock a price [1]. Status: **Draft** (still widely adopted via the Anchor Platform).",
+        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-08-04, the verified sources supported this observed answer:\n\n**SEP-41 v0.5.0** is the Draft Soroban Token Interface: the common fungible-token surface shared by the SAC and custom contracts. It defines allowance/approve, balance, burn/burn_from, metadata, current direct `transfer(from, to: MuxedAddress, amount)`, and `transfer_from(spender, from, to: Address, amount)`. Approve's absolute expiry is named `live_until_ledger` in SEP-41 and `expiration_ledger` in some SDK/SAC docs; they are one mechanism. SEP-41 is explicitly a subset of and compatible with the CAP-46-6 SAC interface, so the SAC implements it while layering admin-specific functions. Mint/clawback are standardized events rather than required generic function names. Because SEP-41 remains Draft and signatures evolved, version-qualify current code.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
-          "Names SEP-38 as the Anchor RFQ / quote API for pricing between assets."
+          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+          "Names SEP-41 as the common token interface implemented by SAC and custom token contracts.",
+          "Names CAP-0046-06 as the SAC interface specification related to SEP-41.",
+          "Version-qualifies transfer and allowance signatures that can evolve while SEP-41 remains Draft."
         ],
         "avoid": [
-          "Do NOT misnumber the quote/RFQ standard (it is SEP-38, not SEP-31 or SEP-24)."
+          "Do NOT misnumber/misclassify SEP-41, assume SAC-only admin functions are required generic methods, or freeze old signatures.",
+          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Dossier §7.1, Q17. SEP-38 'Anchor RFQ API', Status Draft (ecosystem README).\nAlso good if the answer: Quotes are fetched before a SEP-6/SEP-24/SEP-31 deposit, withdrawal, or send to present a price.\nGolden cites: SEP-0038 on the stellar-protocol repo or developers.stellar.org."
+        "notes": "Dossier §7.1, Q18. Verified 2026-08-04: SEP-0041 'Soroban Token Interface' is Draft v0.5.0, updated 2026-06-08; the spec is a subset of the SAC interface, compatible with CAP-46-6.\nAlso good if the answer: Defines common functions like transfer, allowance/approve, balance, and burn.\nGolden cites: SEP-0041 on the stellar-protocol repo or the SAC page on developers.stellar.org."
       },
       "tags": {
         "category": "assets-anchors-seps",
+        "service": "stellarDocs",
+        "freshness": "live"
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-04",
+        "reverifyBy": "2027-02-04",
+        "sources": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/token-interface",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "note": "class inferred at migration"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Current SEP-41 v0.5.0 interface",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+                "observedAt": "2026-08-04",
+                "note": "SEP-41 is Draft v0.5.0, updated 2026-06-08."
+              },
+              {
+                "class": "F",
+                "ref": "F: GT-43 interface-semantics review",
+                "observedAt": "2026-07-11",
+                "note": "Historical blind review supports the interface relationship and signatures observed then, not the later v0.5.0 metadata recheck."
+              }
+            ]
+          },
+          {
+            "claim": "Names CAP-0046-06 and SEP-41 and their spec/interface relationship.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md",
+                "observedAt": "2026-07-11"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+                "observedAt": "2026-07-11"
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+                "observedAt": "2026-07-11"
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — currentized SEP-41 metadata and preserved the reviewed interface semantics",
+          "evidence": [
+            "Solo scratchpad 575 GT-43 blind 3320.",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-asset-sac-cap-sep",
+            "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md",
+            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+            "SEP-41 Draft v0.5.0 / updated 2026-06-08 observed 2026-08-04.",
+            "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
+            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+          ],
+          "rootCause": [
+            "freshness-drift",
+            "A sibling retained SEP-41 v0.4.1 after v0.5.0 was already current.",
+            "eval-authoring",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+          ]
+        },
+        "origin": "raven-next q-sep-41-token-interface"
+      }
+    },
+    {
+      "id": "q-sor-classic-dex-from-contract",
+      "question": "Can a Soroban contract place orders on the classic SDEX or read classic AMM/LP state, and can I combine a classic op and a contract invocation in one transaction (the one-host-function-op-per-tx limit)?",
+      "surface": [
+        "stellarDocs.search_protocol_concepts_docs",
+        "stellarDocs.search_rpc_horizon_data_docs",
+        "stellarDocs.search_soroban_contract_docs"
+      ],
+      "golden": {
+        "answer": "No, a Soroban contract cannot directly place classic SDEX orders or read/control classic liquidity-pool\nstate from inside contract execution. The official smart-contract FAQ says Soroban can interact with\naccounts/assets through the built-in Stellar Asset Contract, but otherwise cannot interact with SDEX,\nclaimable balances, or sponsorships (https://developers.stellar.org/docs/build/smart-contracts/overview).\nThe SDEX itself is the classic operation surface: Manage Buy Offer / Manage Sell Offer operations\nplace orders on the distributed exchange\n(https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools).\n\nYou also cannot combine a classic op and a contract invocation in the same transaction. Stellar's\ntransaction docs state that smart-contract transactions containing InvokeHostFunctionOp,\nExtendFootprintTTLOp, or RestoreFootprintOp can only have one operation per transaction\n(https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions).\nThe Soroban transaction docs also state there is only one InvokeHostFunctionOp allowed per transaction\nand that contracts should be used for multiple atomic contract-side actions\n(https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction).\n\nPractical answer: for on-chain contract composition, use SAC/SEP-41 token transfers and Soroban-native\nDEX/AMM contracts. If you must use classic SDEX or AMM operations, orchestrate that as a separate\nclassic transaction from an off-chain service or user wallet, and treat the boundary as non-atomic\nunless your application explicitly handles the two-step state machine.",
+        "keyFacts": [
+          "States that Soroban contracts cannot directly interact with the classic SDEX, claimable balances, sponsorships, or classic AMM/LP ledger operations except via the supported account/asset surface.",
+          "Explains SDEX order placement is done by classic operations such as Manage Buy Offer / Manage Sell Offer, not by a Soroban host function callable from contract code.",
+          "States that smart-contract transactions containing InvokeHostFunctionOp / ExtendFootprintTTLOp / RestoreFootprintOp can only have one operation per transaction, so a classic op cannot be bundled with a contract invocation in the same tx.",
+          "Gives the practical design alternative: use SAC/SEP-41 token transfers and Soroban-native DEX/AMM contracts, or orchestrate classic and Soroban actions in separate transactions off-chain."
+        ],
+        "avoid": [
+          "Do not claim a contract can call classic ManageOffer, PathPayment, or LiquidityPool operations directly.",
+          "Do not claim a transaction can contain both a classic operation and an InvokeHostFunctionOp.",
+          "Do not import EVM router/DEX assumptions."
+        ],
+        "notes": "Verified with Stellar Docs MCP and Scout research; Scout returned the same official smart-contract FAQ as a high-confidence dev-docs result.\nAlso good if the answer: Mentions that Soroban is additive to Stellar, not a replacement for the classic operation set. | Warns that reading classic AMM state from inside contract execution is not the same as off-chain indexing through Horizon/RPC/ingest.\nGolden cites: Must cite official Stellar smart-contract FAQ or transaction docs for the no-SDEX/no-claimable-balances and one-operation constraints."
+      },
+      "tags": {
+        "category": "soroban",
         "service": "stellarDocs",
         "freshness": "stable"
       },
@@ -2043,8 +2200,23 @@
         "status": "confirmed",
         "sources": [
           {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/overview",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
             "note": "class inferred at migration"
           }
         ],
@@ -2052,8 +2224,8 @@
           "date": "2026-07-11",
           "by": "P4 5B numeric corroboration backfill",
           "evidence": [
-            "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
-            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+            "https://developers.stellar.org/docs/build/smart-contracts/overview",
+            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
           ],
@@ -2061,23 +2233,23 @@
             "eval-authoring"
           ]
         },
-        "origin": "raven-next q-sep-38-quotes",
+        "origin": "raven-next q-sor-classic-dex-from-contract",
         "corroboration": [
           {
-            "claim": "Names SEP-38 as the Anchor RFQ / quote API for pricing between assets.",
+            "claim": "Gives the practical design alternative: use SAC/SEP-41 token transfers and Soroban-native DEX/AMM contracts, or orchestrate classic and Soroban actions in separate transactions off-chain.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "A",
-                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+                "ref": "https://developers.stellar.org/docs/build/smart-contracts/overview",
                 "observedAt": "2026-07-11",
-                "note": "Official Stellar proposal documentation identifies the SEP catalog."
+                "note": "Official smart-contract documentation distinguishes contract execution and token interactions."
               },
               {
                 "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
                 "observedAt": "2026-07-11",
-                "note": "Fetched SEP-38 source defines the Anchor RFQ API for asset prices and quotes."
+                "note": "Fetched SEP-41 source defines the contract token interface used by custom tokens and SAC-compatible flows."
               }
             ]
           }
@@ -2085,116 +2257,24 @@
       }
     },
     {
-      "id": "q-sor-build-target-wasm32v1",
-      "question": "Which Wasm target does the current Stellar CLI build to (wasm32v1- none vs wasm32-unknown-unknown), what's the difference between `cargo build` and `stellar contract build`, and how do I fix 'can't find crate for core' / 'target not supported' build errors?",
+      "id": "q-sor-sep41-transfer-vs-transferfrom",
+      "question": "Can I treat classic assets, the SAC, and custom SEP-41 tokens uniformly at the contract level — when do I use `transfer` vs `transfer_from`/`approve`, and what's the `expiration_ledger` on approve?",
       "surface": [
-        "stellarDocs.search_sdk_cli_tools_docs",
-        "stellarDocs.search_soroban_contract_docs"
-      ],
-      "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-13, the current documentation search returned build examples using `stellar contract build` and output under `target/wasm32v1-none/release/`.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
-        "keyFacts": [
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Names `wasm32v1-none` as the current build target for new Soroban contracts.",
-          "Explains that `stellar contract build` selects the target and release profile.",
-          "Explains why `wasm32-unknown-unknown` is unsuitable for current Soroban builds.",
-          "Fixes a missing `core` crate by installing the target for the active Rust toolchain."
-        ],
-        "avoid": [
-          "Do not use the misspelled target `wasm32v1- none` or old `wasm32-unknown-unknown` guidance as the final answer.",
-          "Do not tell users to hand-edit generated Wasm or bypass the CLI without explaining the target and release profile.",
-          "Do NOT add an ecosystem prior-art or competitor landscape detour to this already-scoped build/debug question; current official docs and CLI evidence are sufficient.",
-          "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
-        ],
-        "notes": "Verified with Stellar Docs MCP and local `stellar contract build --help` from CLI 25.2.0. The dossier mentions newer protocol/SDK releases, but the target guidance is stable in current docs.\nAlso good if the answer: Mentions output path `target/wasm32v1-none/release/<contract>.wasm`. | Notes target installation is per toolchain, so after Rust upgrades the target may need reinstalling.\nGolden cites: Must cite current Stellar setup/Hello World or Rust dialect docs for `wasm32v1-none`. | Freshness-sensitive answer should cite a dated/current official docs source or local CLI evidence."
-      },
-      "tags": {
-        "category": "soroban",
-        "service": "stellarDocs",
-        "freshness": "live"
-      },
-      "truth": {
-        "domain": "real-world",
-        "status": "confirmed",
-        "asOf": "2026-07-13",
-        "sources": [
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
-            "note": "Official current Hello World build guide accessed 2026-07-13."
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
-            "note": "Official Rust dialect/target guidance accessed 2026-07-13."
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup",
-            "note": "Official smart-contract toolchain setup guide accessed 2026-07-13."
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/OpenZeppelin/stellar-contracts",
-            "note": "Direct OpenZeppelin Stellar contracts source repository; class B source code, accessed 2026-07-13."
-          }
-        ],
-        "corroboration": [
-          {
-            "claim": "Current Stellar contract build guidance uses `stellar contract build` with the `wasm32v1-none` target and release output path.",
-            "verdict": "confirmed-as-of",
-            "evidence": [
-              {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
-                "observedAt": "2026-07-13"
-              },
-              {
-                "class": "C",
-                "ref": "solo://proj/49/scratchpad/truth-maintenance-20--575",
-                "observedAt": "2026-07-11",
-                "note": "Durable record of the localhost Docs search and local Stellar CLI 25.2.0 help verification."
-              }
-            ]
-          }
-        ],
-        "verified": {
-          "date": "2026-07-13",
-          "by": "Prior-art build-route paired-control reconciliation after independent Sol and Grok review",
-          "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575",
-            "2026-07-11 localhost:8787 search→execute probe observed: the current documentation search returned build examples using `stellar contract build` and output under `target/wasm32v1-none/release/`.",
-            "solo://proj/49/scratchpad/prior-art-build-rout--613 — durable independent review and no-detour reconciliation",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "solo://proj/49/scratchpad/prior-art-build-rout--613 — established this current official-docs build error as the known-step no-detour control."
-          ],
-          "rootCause": [
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "prior-art no-detour control"
-          ]
-        },
-        "origin": "raven-next q-sor-build-target-wasm32v1"
-      }
-    },
-    {
-      "id": "q-sor-scval-conversion",
-      "question": "How do I convert between native JS/Rust values and Soroban ScVal — i128/u64, BytesN<32>, contract-ID hex vs StrKey C-addresses, enum/union UDTs, stroops vs display amounts — in the current SDK?",
-      "surface": [
+        "stellarDocs.search_asset_token_docs",
         "stellarDocs.search_protocol_concepts_docs",
         "stellarDocs.search_sdk_cli_tools_docs",
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "Prefer generated clients or `contract.Spec` conversion; Rust uses `IntoVal`/`FromVal`. Preserve wide integers as `bigint` or decimal strings—an unsafe JS Number cannot be repaired after rounding. In current JS SDK 16, `new Contract(C...).contractId()` returns the C StrKey; use `StrKey.decodeContract`/`encodeContract` for the 32 raw bytes. A `BytesN<32>` is 32 raw bytes, not ASCII C-address/hex text. Generic `nativeToScVal(Buffer)` creates `scvBytes` but cannot enforce the contract's declared BytesN length; spec-driven conversion/generated bindings do. UDT enum/union objects must match the embedded spec's tag/arm shape, not EVM ABI tuples. Token amounts are integer smallest/base units and `decimals()` controls display; “stroop” is specifically the conventional XLM/classic 10^-7 unit.",
+        "answer": "Current SEP-41 direct `transfer(from: Address, to: MuxedAddress, amount: i128)` requires `from` authorization. `approve(from, spender, amount, live_until_ledger)`—called `expiration_ledger` in some current SDK/SAC docs—requires owner/from authorization and records an allowance through that absolute ledger sequence. `transfer_from(spender, from, to: Address, amount)` requires spender authorization, consumes the allowance, and needs no second owner signature in that call. The allowance is valid through the boundary and treated as zero when the boundary is below current ledger; a nonzero approval cannot use a past boundary. Amounts are integer base units. `live_until_ledger`/`expiration_ledger` are one mechanism, not storage TTL or seconds. SEP-41 remains Draft, so version-qualify signatures.",
         "keyFacts": [
-          "Uses spec-driven conversion and exact integer/StrKey/raw-byte boundaries.",
-          "Distinguishes generic scvBytes from BytesN validation, UDT shape, and base-unit display scaling."
+          "Distinguishes direct transfer MuxedAddress/from auth from transfer_from Address/spender allowance.",
+          "Explains one absolute-ledger allowance expiry under both parameter names."
         ],
         "avoid": [
-          "Do NOT pass unsafe JS numbers, ASCII/hex in place of raw bytes, guess union shapes, or call every token base unit a stroop."
+          "Do NOT type both destinations identically, require owner auth again during transfer_from, or treat expiry as duration/storage TTL."
         ],
-        "notes": "Phase 3 should verify exact current JS helper names against the installed/current @stellar/stellar-sdk version because this repo does not vendor node_modules.\nAlso good if the answer: Mentions `scValToNative`/humanizing helpers for decoding results and diagnostic/event ScVals.\nGolden cites: Official Stellar XDR/SCVal or transaction docs. | Official contract specs/client docs or JS SDK docs/source for helper behavior.\nGT-43 current SDK snapshot is 16.0.1; exact helper names are release-sensitive."
+        "notes": "Also good if the answer: Mentions using the SDK token client for the SEP-41 surface and SAC-specific client only for extra SAC/admin functions.\nGolden cites: SEP-41 token interface. | Official SAC docs/token guide.\nGT-43 signatures remain current; SEP-41 is Draft v0.5.0, updated 2026-06-08, as observed 2026-08-04."
       },
       "tags": {
         "category": "soroban",
@@ -2204,17 +2284,17 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-12-03",
+        "asOf": "2026-08-04",
+        "reverifyBy": "2027-02-25",
         "sources": [
           {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/types/fully-typed-contracts",
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
             "note": "class inferred at migration"
           },
           {
-            "class": "B",
-            "ref": "https://github.com/stellar/js-stellar-sdk",
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/token-interface",
             "note": "class inferred at migration"
           },
           {
@@ -2225,41 +2305,35 @@
         ],
         "corroboration": [
           {
-            "claim": "Current JS/Rust ScVal conversion behavior",
+            "claim": "Current SEP-41 v0.5.0 signatures/auth/expiry",
             "verdict": "confirmed",
             "evidence": [
               {
-                "class": "A",
-                "ref": "A/B: typed-contract docs and SDK source",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
                 "class": "B",
-                "ref": "A/B: typed-contract docs and SDK source",
-                "observedAt": "2026-07-11",
+                "ref": "B: SEP-41 and SDK27 source",
+                "observedAt": "2026-08-04",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
                 "class": "F",
-                "ref": "F: SDK16 round-trip probes",
+                "ref": "F: GT-43 primary/blind",
                 "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "note": "The sealed GT-43 lane supports the interface semantics observed then; the v0.5.0 metadata was separately rechecked on 2026-08-04."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The core conversion advice was correct but current SDK behavior, BytesN enforcement, union shapes, and generic-token unit terminology needed precision.",
+          "date": "2026-08-04",
+          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the SEP preamble; the direct-transfer and allowance semantics remain current.",
           "evidence": [
             "Solo scratchpad 575 GT-43 processes 3311/3320."
           ],
           "rootCause": [
-            "Eval-side current-SDK and unit terminology drift."
+            "Eval-side draft-interface signature drift."
           ]
         },
-        "origin": "raven-next q-sor-scval-conversion"
+        "origin": "raven-next q-sor-sep41-transfer-vs-transferfrom"
       }
     },
     {

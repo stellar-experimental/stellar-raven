@@ -7,16 +7,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Start with diagnostic events/meta. `Error(Contract, #N)` is contract-defined: inspect that contract's error enum/spec/source; there is no global #N table. `Error(Budget, ExceededLimit)` is resource exhaustion; simulate and inspect CPU/memory/read/write/resource fees. `Error(WasmVm, …)` is a Wasm execution/type/trap class. `Bad union switch` from `scValToNative` means the XDR union/expected return type is wrong, stale, or invalid—decode only a successful expected `ScVal`.\n\nKeep auth/context failures distinct. A nested non-root auth tree under `mock_all_auths` can produce `Error(Auth, InvalidAction)`; use `mock_all_auths_allowing_non_root_auth` only for that intended test shape. `Error(Context, InternalError)` with “no contract running” or “Current context has no contract ID” means code requiring contract context ran outside an invocation; call through the generated client or use `env.as_contract` in tests. Literal `Error(Auth, InternalError)` requires its diagnostics and must not be automatically assigned the non-root remedy. For events import `testutils::Events as _` and inspect `env.events().all().events()`; failed calls roll events back. For time import `testutils::Ledger as _` before `env.ledger().set_timestamp(...)`.",
+    "answer": "Start with diagnostic events/meta. `Error(Contract, #N)` is contract-defined: inspect that contract's error enum/spec/source; there is no global #N table. `Error(Budget, ExceededLimit)` is resource exhaustion; simulate and inspect CPU/memory/read/write/resource fees. `Error(WasmVm, …)` is a Wasm execution/type/trap class. `Bad union switch` from `scValToNative` means the XDR union/expected return type is wrong, stale, or invalid—decode only a successful expected `ScVal`.\n\nKeep auth/context failures distinct. A nested non-root auth tree under `mock_all_auths` can produce `Error(Auth, InvalidAction)`; use `mock_all_auths_allowing_non_root_auth` only for that intended test shape. `Error(Context, InternalError)` with “no contract running” or “Current context has no contract ID” means code requiring contract context ran outside an invocation; call through the generated client or use `env.as_contract` in tests. Literal `Error(Auth, InternalError)` requires its diagnostics and must not be automatically assigned the non-root remedy.\n\nGenerated client `try_*` methods preserve layers you must inspect. For a declared `Result<T, E>` function, the generated type is `Result<Result<T, T::Error>, Result<E, InvokeError>>`. Common branches are `Ok(Ok(value))` for success, `Err(Ok(contract_error))` for a decodable declared error, and `Err(Err(invoke_error))` for another invocation failure. A caller may map a caught failure to its own error, so a returned domain error does not prove the original host failure class. Preserve diagnostics and the original branch before remapping. For events import `testutils::Events as _` and inspect `env.events().all().events()`; failed calls roll events back. For time import `testutils::Ledger as _` before `env.ledger().set_timestamp(...)`.",
     "keyFacts": [
       "Separates contract-defined, budget, WasmVM, XDR-union, auth, and missing-context errors.",
-      "Gives exact non-root auth, contract-context, events, and ledger-testutils remedies without treating one as universal."
+      "Gives exact non-root auth, contract-context, events, and ledger-testutils remedies without treating one as universal.",
+      "Reads both generated try_* Result layers and preserves the original failure class before caller remapping."
     ],
     "avoid": [
       "Do NOT use a universal Contract #N table or guess an SCVal union.",
       "Do NOT claim mock_all_auths_allowing_non_root_auth explains every Auth/InternalError or that no contract ID always means an unregistered client."
     ],
-    "notes": "Verified core guidance with official docs and local skill snippets. Some example-specific fixes (`set_timestamp` import path, custom auth internals) are SDK-version-sensitive; Phase 3 should compile a tiny test if it wants exact imports.\nAlso good if the answer: Cites official debugging-errors docs, error-enum convention docs, and testing docs/examples. | Recommends re-running with CLI/RPC simulation and verbose diagnostics before changing contract logic.\nGolden cites: Must cite Stellar debugging-errors docs and at least one official testing or contract-error convention source.\nGT-41 independently confirmed exact empirical distinctions on SDK 27. The current rendered diagnostic is Error(Budget, ExceededLimit); do not hard-gate older LimitExceeded wording."
+    "notes": "Verified core guidance with official docs and SDK source. The generated `try_*` nested Result is the required failure-path interpretation surface. The broad claim that callers must never catch or remap authorization failures is false; grade preservation and inspection of the original branch instead. Some example-specific fixes (`set_timestamp` import path, custom auth internals) are SDK-version-sensitive.\nAlso good if the answer: Cites official debugging-errors docs, error-enum convention docs, and testing docs/examples. | Recommends re-running with CLI/RPC simulation and verbose diagnostics before changing contract logic.\nGolden cites: Must cite Stellar debugging-errors docs and at least one official testing or contract-error convention source.\nGT-41 independently confirmed exact empirical distinctions on SDK 27. The current rendered diagnostic is Error(Budget, ExceededLimit); do not hard-gate older LimitExceeded wording."
   },
   "tags": {
     "category": "soroban",
@@ -26,8 +27,8 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
-    "reverifyBy": "2027-02-18",
+    "asOf": "2026-08-12",
+    "reverifyBy": "2027-03-31",
     "sources": [
       {
         "class": "A",
@@ -48,6 +49,18 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/build/guides/testing/integration-tests",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk-macros/src/derive_client.rs"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs"
       }
     ],
     "corroboration": [
@@ -74,17 +87,45 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Generated client try_* methods expose nested Result layers that distinguish success, decodable declared errors, and other invocation failures.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
+            "observedAt": "2026-08-12",
+            "note": "The official errors example documents the generated nested Result and its common branches."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk-macros/src/derive_client.rs",
+            "observedAt": "2026-08-12",
+            "note": "The generated client delegates try_* methods to Env::try_invoke_contract."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs",
+            "observedAt": "2026-08-12",
+            "note": "SDK tests cover success, decodable contract error, and InvokeError branches."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — The inherited troubleshooting answer conflated distinct auth/context errors, gave an overbroad no-contract-ID cause, and did not state the current testutils APIs precisely.",
+      "date": "2026-08-12",
+      "by": "2026-08 public-source verification",
       "evidence": [
-        "Solo scratchpad 575 GT-41 primary 3302 and blind 3305; stellar/SDK 27 empirical probes on 2026-07-10."
+        "solo://proj/49/scratchpad/784#authorization-failures-and-generated-try-clients",
+        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
+        "https://developers.stellar.org/docs/build/guides/conventions/error-enum",
+        "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk-macros/src/derive_client.rs",
+        "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs",
+        "Sibling sweep: q-soroban-unit-testing owns happy-path setup; this case owns exact failure interpretation; q-soroban-publish-events owns event publication and RPC retention."
       ],
       "rootCause": [
-        "Eval-side error-taxonomy overgeneralization.",
-        "improvements/skills/sk-006-error-keyed-troubleshooting-gap.md"
+        "eval-authoring"
       ]
     },
     "origin": "raven-next q-sor-decode-hosterror-codes"

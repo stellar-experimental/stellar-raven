@@ -1,9 +1,9 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "2039cc824055efc812b04d08b00d83fa54a2b3bc0bc8ae4b18153d52a763ee34",
+  "corpusContentSha256": "ede4486840a6726fb11745257b57f243dff2a37472d5a92ef04c1e2e1c4ab599",
   "counts": {
-    "total": 490,
+    "total": 492,
     "byCategory": {
       "assets-anchors-seps": 47,
       "compliance-rwa-payments": 39,
@@ -13,7 +13,7 @@
       "protocol-core": 49,
       "retail-consumer": 33,
       "scf-grants-builders": 49,
-      "soroban": 73,
+      "soroban": 75,
       "tooling-infra": 76
     },
     "byService": {
@@ -21,12 +21,12 @@
       "none": 22,
       "scout": 135,
       "skills": 33,
-      "stellarDocs": 237
+      "stellarDocs": 239
     },
     "byFreshness": {
       "live": 153,
-      "scheduled": 137,
-      "stable": 200
+      "scheduled": 138,
+      "stable": 201
     },
     "traps": {
       "ambiguous": 2,
@@ -34509,16 +34509,17 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "Start with diagnostic events/meta. `Error(Contract, #N)` is contract-defined: inspect that contract's error enum/spec/source; there is no global #N table. `Error(Budget, ExceededLimit)` is resource exhaustion; simulate and inspect CPU/memory/read/write/resource fees. `Error(WasmVm, …)` is a Wasm execution/type/trap class. `Bad union switch` from `scValToNative` means the XDR union/expected return type is wrong, stale, or invalid—decode only a successful expected `ScVal`.\n\nKeep auth/context failures distinct. A nested non-root auth tree under `mock_all_auths` can produce `Error(Auth, InvalidAction)`; use `mock_all_auths_allowing_non_root_auth` only for that intended test shape. `Error(Context, InternalError)` with “no contract running” or “Current context has no contract ID” means code requiring contract context ran outside an invocation; call through the generated client or use `env.as_contract` in tests. Literal `Error(Auth, InternalError)` requires its diagnostics and must not be automatically assigned the non-root remedy. For events import `testutils::Events as _` and inspect `env.events().all().events()`; failed calls roll events back. For time import `testutils::Ledger as _` before `env.ledger().set_timestamp(...)`.",
+        "answer": "Start with diagnostic events/meta. `Error(Contract, #N)` is contract-defined: inspect that contract's error enum/spec/source; there is no global #N table. `Error(Budget, ExceededLimit)` is resource exhaustion; simulate and inspect CPU/memory/read/write/resource fees. `Error(WasmVm, …)` is a Wasm execution/type/trap class. `Bad union switch` from `scValToNative` means the XDR union/expected return type is wrong, stale, or invalid—decode only a successful expected `ScVal`.\n\nKeep auth/context failures distinct. A nested non-root auth tree under `mock_all_auths` can produce `Error(Auth, InvalidAction)`; use `mock_all_auths_allowing_non_root_auth` only for that intended test shape. `Error(Context, InternalError)` with “no contract running” or “Current context has no contract ID” means code requiring contract context ran outside an invocation; call through the generated client or use `env.as_contract` in tests. Literal `Error(Auth, InternalError)` requires its diagnostics and must not be automatically assigned the non-root remedy.\n\nGenerated client `try_*` methods preserve layers you must inspect. For a declared `Result<T, E>` function, the generated type is `Result<Result<T, T::Error>, Result<E, InvokeError>>`. Common branches are `Ok(Ok(value))` for success, `Err(Ok(contract_error))` for a decodable declared error, and `Err(Err(invoke_error))` for another invocation failure. A caller may map a caught failure to its own error, so a returned domain error does not prove the original host failure class. Preserve diagnostics and the original branch before remapping. For events import `testutils::Events as _` and inspect `env.events().all().events()`; failed calls roll events back. For time import `testutils::Ledger as _` before `env.ledger().set_timestamp(...)`.",
         "keyFacts": [
           "Separates contract-defined, budget, WasmVM, XDR-union, auth, and missing-context errors.",
-          "Gives exact non-root auth, contract-context, events, and ledger-testutils remedies without treating one as universal."
+          "Gives exact non-root auth, contract-context, events, and ledger-testutils remedies without treating one as universal.",
+          "Reads both generated try_* Result layers and preserves the original failure class before caller remapping."
         ],
         "avoid": [
           "Do NOT use a universal Contract #N table or guess an SCVal union.",
           "Do NOT claim mock_all_auths_allowing_non_root_auth explains every Auth/InternalError or that no contract ID always means an unregistered client."
         ],
-        "notes": "Verified core guidance with official docs and local skill snippets. Some example-specific fixes (`set_timestamp` import path, custom auth internals) are SDK-version-sensitive; Phase 3 should compile a tiny test if it wants exact imports.\nAlso good if the answer: Cites official debugging-errors docs, error-enum convention docs, and testing docs/examples. | Recommends re-running with CLI/RPC simulation and verbose diagnostics before changing contract logic.\nGolden cites: Must cite Stellar debugging-errors docs and at least one official testing or contract-error convention source.\nGT-41 independently confirmed exact empirical distinctions on SDK 27. The current rendered diagnostic is Error(Budget, ExceededLimit); do not hard-gate older LimitExceeded wording."
+        "notes": "Verified core guidance with official docs and SDK source. The generated `try_*` nested Result is the required failure-path interpretation surface. The broad claim that callers must never catch or remap authorization failures is false; grade preservation and inspection of the original branch instead. Some example-specific fixes (`set_timestamp` import path, custom auth internals) are SDK-version-sensitive.\nAlso good if the answer: Cites official debugging-errors docs, error-enum convention docs, and testing docs/examples. | Recommends re-running with CLI/RPC simulation and verbose diagnostics before changing contract logic.\nGolden cites: Must cite Stellar debugging-errors docs and at least one official testing or contract-error convention source.\nGT-41 independently confirmed exact empirical distinctions on SDK 27. The current rendered diagnostic is Error(Budget, ExceededLimit); do not hard-gate older LimitExceeded wording."
       },
       "tags": {
         "category": "soroban",
@@ -34528,8 +34529,8 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-10",
-        "reverifyBy": "2027-02-18",
+        "asOf": "2026-08-12",
+        "reverifyBy": "2027-03-31",
         "sources": [
           {
             "class": "A",
@@ -34550,6 +34551,18 @@
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/guides/testing/integration-tests",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk-macros/src/derive_client.rs"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs"
           }
         ],
         "corroboration": [
@@ -34576,17 +34589,45 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "Generated client try_* methods expose nested Result layers that distinguish success, decodable declared errors, and other invocation failures.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
+                "observedAt": "2026-08-12",
+                "note": "The official errors example documents the generated nested Result and its common branches."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk-macros/src/derive_client.rs",
+                "observedAt": "2026-08-12",
+                "note": "The generated client delegates try_* methods to Env::try_invoke_contract."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs",
+                "observedAt": "2026-08-12",
+                "note": "SDK tests cover success, decodable contract error, and InvokeError branches."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-07-10",
-          "by": "Golden-truth sweep import — The inherited troubleshooting answer conflated distinct auth/context errors, gave an overbroad no-contract-ID cause, and did not state the current testutils APIs precisely.",
+          "date": "2026-08-12",
+          "by": "2026-08 public-source verification",
           "evidence": [
-            "Solo scratchpad 575 GT-41 primary 3302 and blind 3305; stellar/SDK 27 empirical probes on 2026-07-10."
+            "solo://proj/49/scratchpad/784#authorization-failures-and-generated-try-clients",
+            "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
+            "https://developers.stellar.org/docs/build/guides/conventions/error-enum",
+            "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk-macros/src/derive_client.rs",
+            "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs",
+            "Sibling sweep: q-soroban-unit-testing owns happy-path setup; this case owns exact failure interpretation; q-soroban-publish-events owns event publication and RPC retention."
           ],
           "rootCause": [
-            "Eval-side error-taxonomy overgeneralization.",
-            "improvements/skills/sk-006-error-keyed-troubleshooting-gap.md"
+            "eval-authoring"
           ]
         },
         "origin": "raven-next q-sor-decode-hosterror-codes"
@@ -35167,6 +35208,102 @@
           ]
         },
         "origin": "raven-next q-sor-p23-auto-restore-extendto"
+      }
+    },
+    {
+      "id": "q-sor-persistent-unbounded-collection-cap",
+      "question": "I append items to a Vec stored under one Persistent key. Why can later Soroban writes fail, and how should I store the collection?",
+      "surface": [
+        "stellarDocs.search_soroban_contract_docs"
+      ],
+      "golden": {
+        "answer": "Persistent storage changes durability, not entry layout. One key still maps to one serialized contract-data ledger entry, so a growing `Vec` or `Map` under that key grows one entry. The write fails when the serialized entry exceeds the target network's configured contract-data entry limit. Do not freeze a byte value or error string because the limit is network-controlled. Keep a one-entry collection explicitly bounded, or split an unbounded collection across distinct composite keys or bounded chunks. Fine-grained keys also avoid rewriting and contending on the whole collection.",
+        "keyFacts": [
+          "A Vec or Map under one Persistent key remains one serialized contract-data ledger entry.",
+          "The collection can exceed the network-configured entry limit; bound it or split it across keys or chunks."
+        ],
+        "avoid": [
+          "Do NOT claim Persistent storage automatically shards a growing value across ledger entries.",
+          "Do NOT freeze a universal byte limit or exact failure string."
+        ],
+        "notes": "This case tests one Persistent value, not the separate Instance-storage DoS or nullifier-retention cases. Reward bounded one-entry layouts, composite per-item keys, or bounded chunks. The exact entry limit is network-controlled."
+      },
+      "tags": {
+        "category": "soroban",
+        "service": "stellarDocs",
+        "freshness": "stable"
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/storage.rs"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/f951722e83cf81a652b0aa88b143ccedb3a298b2/src/transactions/TransactionUtils.cpp"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "A Vec or Map stored under one Persistent key remains one complete contract-data ledger entry.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data",
+                "observedAt": "2026-08-12",
+                "note": "The official data model defines one user key and one associated value per contract-data entry. Either can contain vectors or maps."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/storage.rs",
+                "observedAt": "2026-08-12",
+                "note": "The Persistent API reads and writes one value through one supplied key."
+              }
+            ]
+          },
+          {
+            "claim": "A growing one-entry collection can exceed the network-controlled contract-data entry limit and should be bounded or split.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+                "observedAt": "2026-08-12",
+                "note": "The official guide rejects unbounded vectors or maps under one key and recommends bounded or split layouts."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-core/blob/f951722e83cf81a652b0aa88b143ccedb3a298b2/src/transactions/TransactionUtils.cpp",
+                "observedAt": "2026-08-12",
+                "note": "Core compares each contract-data entry size with the configured maximum and rejects an oversized entry."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-12",
+          "by": "2026-08 public-source verification",
+          "evidence": [
+            "solo://proj/49/scratchpad/784#persistent-collection-limits",
+            "Sibling sweep: q-soroban-resource-limits covers the generic limit; q-soroban-instance-storage-dos covers Instance storage; q-zk-nullifier-storage covers nullifier safety. No sibling owns one growing Persistent value."
+          ],
+          "rootCause": [
+            "eval-authoring"
+          ]
+        },
+        "origin": "authored 2026-08 (storage coverage closure)"
       }
     },
     {
@@ -35818,6 +35955,100 @@
           ]
         },
         "origin": "raven-next q-sor-stale-spec-after-upgrade"
+      }
+    },
+    {
+      "id": "q-sor-test-event-assertion-ordering",
+      "question": "Contract A emits an event, calls contract B which emits another event, then A emits again. How should my Soroban test assert the events?",
+      "surface": [
+        "stellarDocs.search_soroban_contract_docs"
+      ],
+      "golden": {
+        "answer": "Import `soroban_sdk::testutils::Events as _` and inspect `env.events().all()` immediately after the successful outer client call. The result contains successful events from that last top-level invocation, including nested calls, in emission order. For A → B → A, the combined list keeps that order. Use `filter_by_contract(&a)` when the assertion should contain only A's first and third events. Reading `all()` does not clear the list, but a later top-level client call replaces the observable result with that later invocation's events.",
+        "keyFacts": [
+          "The last successful top-level invocation exposes its ordered events, including nested contract calls.",
+          "Use filter_by_contract for one contract and assert before a later top-level invocation replaces the observed list."
+        ],
+        "avoid": [
+          "Do NOT claim env.events().all() accumulates events from every top-level client call in the test.",
+          "Do NOT omit nested-call events from the successful outer invocation or reorder them by contract."
+        ],
+        "notes": "This case tests event assertions after nested calls. Event publication syntax, RPC retention, diagnostics, and general HostError debugging belong to other cases."
+      },
+      "tags": {
+        "category": "soroban",
+        "service": "stellarDocs",
+        "freshness": "scheduled"
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-12",
+        "reverifyBy": "2026-12-31",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/_migrating/v25_event_testing.rs"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/tests/contract_event.rs"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "env.events().all() reports successful events from the last top-level invocation, and a later client call replaces the observed list.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events",
+                "observedAt": "2026-08-12",
+                "note": "The official test reads events after each client call and describes them as events from the last contract invocation."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/_migrating/v25_event_testing.rs",
+                "observedAt": "2026-08-12",
+                "note": "The SDK migration example defines the current per-invocation test-event surface."
+              }
+            ]
+          },
+          {
+            "claim": "Nested calls contribute to the outer invocation's ordered event list, and filter_by_contract preserves one contract's event order.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events",
+                "observedAt": "2026-08-12",
+                "note": "The guide recommends filter_by_contract when called contracts also emit events."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/tests/contract_event.rs",
+                "observedAt": "2026-08-12",
+                "note": "The SDK test verifies A, B, A emission order and A-only filtering."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-12",
+          "by": "2026-08 public-source verification",
+          "evidence": [
+            "solo://proj/49/scratchpad/784#event-assertion-ordering",
+            "Sibling sweep: q-soroban-publish-events owns publication and RPC retention; q-sor-decode-hosterror-codes owns failed-call rollback and diagnostics. Neither owns nested-call ordering."
+          ],
+          "rootCause": [
+            "eval-authoring"
+          ]
+        },
+        "origin": "authored 2026-08 (event-testing coverage closure)"
       }
     },
     {
@@ -38900,7 +39131,7 @@
           "Do NOT claim unit tests require Testnet/RPC deployment.",
           "Do NOT treat mock_all_auths success as proof that authorization was required correctly."
         ],
-        "notes": "Env::default() + register + mock_all_auths is the canonical in-process test surface; runs under cargo test, no network. Foundry/Hardhat is the EVM trap. 2026-06-29 differentiation: this file is the happy-path unit-testing how-to where mock_all_auths is the recommended convenience; the failure-path concern (proving an UNAUTHORIZED caller is rejected — where mock_all_auths is the wrong tool) is owned by q-sor-testing-negative-auth-events.\nAlso good if the answer: Tests run with normal `cargo test`; no live network is needed (the host is in-process). | You can assert emitted events, returned values, and authorizations via `env` test utilities.\nGolden cites: The developers.stellar.org testing documentation.\nGT-48 CORRECTION 2026-07-11: native in-process tests; blanket auth mocking is not an authorization assertion."
+        "notes": "Env::default() + register + mock_all_auths is the canonical in-process test surface; runs under cargo test, no network. Foundry/Hardhat is the EVM trap. 2026-08-12 differentiation: this file is the happy-path unit-testing how-to where mock_all_auths is the recommended convenience; q-sor-decode-hosterror-codes owns exact negative-auth failure classes, generated `try_*` results, and failed-call event rollback.\nAlso good if the answer: Tests run with normal `cargo test`; no live network is needed (the host is in-process). | You can assert emitted events, returned values, and authorizations via `env` test utilities.\nGolden cites: The developers.stellar.org testing documentation.\nGT-48 CORRECTION 2026-07-11: native in-process tests; blanket auth mocking is not an authorization assertion."
       },
       "tags": {
         "category": "soroban",
@@ -38910,7 +39141,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-12",
         "reverifyBy": "2027-03-04",
         "sources": [
           {
@@ -38922,6 +39153,14 @@
             "class": "A",
             "ref": "https://developers.stellar.org/docs/build/guides/auth/contract-authorization",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/testing/test-contract-auth"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization"
           },
           {
             "class": "B",
@@ -38972,14 +39211,15 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 Lane R absorb triage",
+          "date": "2026-08-12",
+          "by": "2026-08 stale-pointer repair with public-source verification",
           "evidence": [
-            "Solo scratchpad 575 GT-48 primary 3333 and pre-read-locked blind 3342; independent agreement on precision correction.",
+            "solo://proj/49/scratchpad/784#authorization-failures-and-generated-try-clients",
+            "https://developers.stellar.org/docs/build/guides/testing/test-contract-auth",
+            "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+            "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/auth/src/lib.rs",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-sor-testing-negative-auth-events",
-            "https://developers.stellar.org/docs/build/guides/testing/integration-tests",
-            "https://github.com/stellar/rs-soroban-sdk",
-            "Solo scratchpad 575 GT-43 processes 3311/3320."
+            "Sibling sweep: q-soroban-unit-testing keeps the happy-path test surface; q-sor-decode-hosterror-codes owns exact failure interpretation."
           ],
           "rootCause": [
             "eval-authoring"
