@@ -516,7 +516,14 @@ describe("search behavior (host-side ranked)", () => {
     try {
       await client.callTool({
         name: "search",
-        arguments: { query: "stellar soroban contract", limit: 5 }
+        arguments: {
+          query: "Tomer Weller",
+          kind: "operation",
+          service: "lumenloop",
+          limit: 5,
+          recoverFrom: ["scout.getBuilders"],
+          reason: "empty"
+        }
       });
       await client.callTool({
         name: "search",
@@ -536,10 +543,14 @@ describe("search behavior (host-side ranked)", () => {
 
       expect(valid).toMatchObject({
         source: "tool",
-        queryChars: 24,
+        queryChars: 12,
         requestedLimit: 5,
         effectiveLimit: 5,
-        truncated: true
+        truncated: true,
+        recovery: 2,
+        recoveryTop: ["lumenloop.search_content_semantic", "scout.searchResearch"],
+        widerCandidates: 2,
+        widerCandidateTop: ["lumenloop.find_av_passages", "lumenloop.search_content_semantic"]
       });
       expect(valid).not.toHaveProperty("query");
       expect(valid).not.toHaveProperty("queryPreview");
@@ -556,7 +567,7 @@ describe("search behavior (host-side ranked)", () => {
         truncated: false
       });
       expect(invalid).not.toHaveProperty("query");
-      expect(JSON.stringify(events)).not.toContain("stellar soroban contract");
+      expect(JSON.stringify(events)).not.toContain("Tomer Weller");
       expect(JSON.stringify(events)).not.toContain("docs search");
     } finally {
       logSpy.mockRestore();

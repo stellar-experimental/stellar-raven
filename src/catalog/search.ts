@@ -772,18 +772,14 @@ export function searchCatalog(catalog: Catalog, opts: SearchOptions): SearchHit[
   return searchCatalogPage(catalog, opts).hits;
 }
 
-/**
- * Exact-ID, query-independent recovery suggestions. They are deliberately
- * separate from ranked hits: normal scorer membership/order never changes.
- */
-export function recoveryCandidates(
+function walkRecoveryCandidates(
   catalog: Catalog,
   fromIds: readonly string[],
+  excluded: ReadonlySet<string>,
   reason?: RetrievalReason,
   limit = 3
 ): RecoveryCandidate[] {
   if (limit <= 0) return [];
-  const attempted = new Set(fromIds);
   const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
   const selected = new Set<string>();
   const out: RecoveryCandidate[] = [];
@@ -792,7 +788,7 @@ export function recoveryCandidates(
     if (!source?.retrievalProfile) continue;
     for (const edge of source.retrievalProfile.recoverWith) {
       if (reason && !edge.on.includes(reason)) continue;
-      if (attempted.has(edge.id) || selected.has(edge.id)) continue;
+      if (excluded.has(edge.id) || selected.has(edge.id)) continue;
       const target = byId.get(edge.id);
       if (!target || target.kind !== "operation") continue;
       const signature = renderSignature(target, { compactOversizedOutput: true });
@@ -818,6 +814,19 @@ export function recoveryCandidates(
 }
 
 /**
+ * Exact-ID, query-independent recovery suggestions. They are deliberately
+ * separate from ranked hits: normal scorer membership/order never changes.
+ */
+export function recoveryCandidates(
+  catalog: Catalog,
+  fromIds: readonly string[],
+  reason?: RetrievalReason,
+  limit = 3
+): RecoveryCandidate[] {
+  return walkRecoveryCandidates(catalog, fromIds, new Set(fromIds), reason, limit);
+}
+
+/**
  * Execute-time graph walk: derive candidates from successful source
  * operations while excluding every operation already attempted in the run.
  * Separate source/exclusion sets avoid traversing failed calls merely because
@@ -829,36 +838,5 @@ export function recoveryCandidatesFromSources(
   excludeIds: readonly string[],
   limit = 3
 ): RecoveryCandidate[] {
-  if (limit <= 0) return [];
-  const excluded = new Set(excludeIds);
-  const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
-  const selected = new Set<string>();
-  const out: RecoveryCandidate[] = [];
-  for (const from of fromIds) {
-    const source = byId.get(from);
-    if (!source?.retrievalProfile) continue;
-    for (const edge of source.retrievalProfile.recoverWith) {
-      if (excluded.has(edge.id) || selected.has(edge.id)) continue;
-      const target = byId.get(edge.id);
-      if (!target || target.kind !== "operation") continue;
-      const signature = renderSignature(target, { compactOversizedOutput: true });
-      const outputKeys = outputKeysOf(target);
-      const outputItemKeys = outputItemKeysOf(target);
-      out.push({
-        from,
-        id: target.id,
-        service: target.service,
-        relation: edge.relation,
-        reasons: [...edge.on],
-        lane: source.retrievalProfile.lane,
-        description: target.description,
-        ...(signature ? { signature } : {}),
-        ...(outputKeys.length > 0 ? { outputKeys } : {}),
-        ...(Object.keys(outputItemKeys).length > 0 ? { outputItemKeys } : {})
-      });
-      selected.add(edge.id);
-      if (out.length >= limit) return out;
-    }
-  }
-  return out;
+  return walkRecoveryCandidates(catalog, fromIds, new Set(excludeIds), undefined, limit);
 }

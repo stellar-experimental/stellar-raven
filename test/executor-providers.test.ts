@@ -157,24 +157,7 @@ describe("sandbox surface shape", () => {
     expect(codemode.prelude).toContain("codemode.artifact =");
   });
 
-  it("can expose exact-id describe without broader codemode discovery", async () => {
-    const demoProviders = buildSandbox(catalog, skillSource, env, {
-      codemodeDiscovery: false,
-      codemodeDescribe: true
-    });
-    const codemode = demoProviders.find((p) => p.name === "codemode")!;
-    expect(Object.keys(codemode.fns).sort()).toEqual(["artifact_info", "artifact_read", "describe", "skill_read", "skill_run"]);
-    expect(codemode.fns.search).toBeUndefined();
-    const described = (await codemode.fns.describe!("scout.searchProjects")) as {
-      ok: boolean;
-      id?: string;
-      usage?: string;
-    };
-    expect(described).toMatchObject({ ok: true, id: "scout.searchProjects" });
-    expect(described.usage).toContain("call it exactly as the signature");
-  });
-
-  it("keeps broad codemode discovery enabled by default when describeOnly is omitted", () => {
+  it("keeps broad codemode discovery enabled by default", () => {
     const defaultProviders = buildSandbox(catalog, skillSource, env);
     const codemode = defaultProviders.find((p) => p.name === "codemode")!;
     expect(codemode.fns.search).toBeTypeOf("function");
@@ -804,7 +787,14 @@ describe("codemode fns", () => {
   it("search logs the shared privacy-bounded page telemetry shape", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
-      const r = (await codemode.search!({ query: "stellar soroban contract", limit: 5 })) as {
+      const r = (await codemode.search!({
+        query: "Tomer Weller",
+        kind: "operation",
+        service: "lumenloop",
+        limit: 5,
+        recoverFrom: ["scout.getBuilders"],
+        reason: "empty"
+      })) as {
         hits: unknown[];
       };
       const event = logSpy.mock.calls
@@ -818,16 +808,20 @@ describe("codemode fns", () => {
         .find((candidate) => candidate?.evt === "search" && candidate.source === "codemode");
 
       expect(event).toMatchObject({
-        queryChars: 24,
+        queryChars: 12,
         requestedLimit: 5,
         effectiveLimit: 5,
         truncated: true,
-        hits: r.hits.length
+        hits: r.hits.length,
+        recovery: 2,
+        recoveryTop: ["lumenloop.search_content_semantic", "scout.searchResearch"],
+        widerCandidates: 2,
+        widerCandidateTop: ["lumenloop.find_av_passages", "lumenloop.search_content_semantic"]
       });
       expect(event).not.toHaveProperty("query");
       expect(event).not.toHaveProperty("queryPreview");
       expect(event).not.toHaveProperty("queryHash");
-      expect(JSON.stringify(event)).not.toContain("stellar soroban contract");
+      expect(JSON.stringify(event)).not.toContain("Tomer Weller");
       expect(Number(event?.gatedHits) + Number(event?.backfillHits)).toBe(r.hits.length);
     } finally {
       logSpy.mockRestore();

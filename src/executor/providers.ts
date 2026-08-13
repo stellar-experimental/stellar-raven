@@ -72,12 +72,11 @@ import {
   type RetrievalReason
 } from "../catalog/types.ts";
 import {
-  searchCatalogPage,
   catalogServices,
-  recoveryCandidates,
   renderSignature,
   sectionKeysOf
 } from "../catalog/search.ts";
+import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
 import { callService } from "../adapters/index.ts";
 import type { AdapterEnv, FetchLike } from "../adapters/types.ts";
@@ -497,11 +496,9 @@ export function buildCodemodeProvider(
   /**
    * Demo-only narrowing: production execute exposes codemode.search/catalog/
    * spec/describe for mid-script discovery; the public playground can disable
-   * broad discovery helpers while optionally keeping describe for exact visible
-   * hit ids.
+   * broad discovery helpers.
    */
   discovery?: boolean,
-  describeOnly?: boolean,
   /**
    * The skill.run wiring (design §6): the shared ops facade from buildOpsFns
    * — the SAME closures the service namespaces expose, so policy identity
@@ -539,7 +536,6 @@ export function buildCodemodeProvider(
     compactCatalogViewCache.set(catalog, compactCatalogView);
   }
   const enableDiscovery = discovery ?? true;
-  const enableDescribe = enableDiscovery || describeOnly === true;
   let artifactReads = 0;
   let artifactInfos = 0;
   let artifactReadBytes = 0;
@@ -687,8 +683,8 @@ export function buildCodemodeProvider(
             // "stellardocs" or kind "operations" returns ZERO hits and reads as
             // "the capability is missing". Reject unknown filter values as an
             // error-envelope that names the bad value AND the real ones. The
-            // service set comes from the catalog itself (catalogServices), never
-            // a hand-maintained list. Explicit null means "no filter" (idiomatic
+            // service set comes from the catalog itself, never a hand-maintained
+            // list. Explicit null means "no filter" (idiomatic
             // LLM code passes `maybeService ?? null`), same as `limit: null`.
             const kindFilter = opts.kind ?? undefined;
             const serviceFilter = opts.service ?? undefined;
@@ -702,14 +698,14 @@ export function buildCodemodeProvider(
                 }
               };
             }
-            const services = catalogServices(catalog);
-            if (serviceFilter !== undefined && !(services as readonly unknown[]).includes(serviceFilter)) {
+            const prepared = prepareCatalogSearch(catalog, serviceFilter as string | undefined);
+            if (!prepared.ok) {
               return {
                 ok: false,
                 error: {
                   service: "codemode",
                   kind: "error",
-                  message: `codemode.search: unknown service ${JSON.stringify(serviceFilter)} — valid services (exact-match): ${services.join(", ")}`
+                  message: `codemode.search: unknown service ${JSON.stringify(prepared.issue.service)} — valid services (exact-match): ${prepared.issue.validServices.join(", ")}`
                 }
               };
             }
@@ -729,18 +725,14 @@ export function buildCodemodeProvider(
                 }
               };
             }
-            const operationIds = new Set(
-              catalog.entries.filter((entry) => entry.kind === "operation").map((entry) => entry.id)
-            );
-            const unknownRecoveryIds =
-              (recoverFrom as string[] | undefined)?.filter((id) => !operationIds.has(id)) ?? [];
-            if (unknownRecoveryIds.length > 0) {
+            const recoveryStage = prepared.checkRecoveryIds(recoverFrom as string[] | undefined);
+            if (!recoveryStage.ok) {
               return {
                 ok: false,
                 error: {
                   service: "codemode",
                   kind: "error",
-                  message: `codemode.search: unknown recoverFrom operation id(s) ${unknownRecoveryIds.map((id) => JSON.stringify(id)).join(", ")} — ids are exact-match`
+                  message: `codemode.search: unknown recoverFrom operation id(s) ${recoveryStage.issue.ids.map((id) => JSON.stringify(id)).join(", ")} — ids are exact-match`
                 }
               };
             }
@@ -756,20 +748,13 @@ export function buildCodemodeProvider(
               };
             }
             const t0 = Date.now();
-            const page = searchCatalogPage(catalog, {
+            const { page, recovery } = recoveryStage.resolve({
               query: opts.query,
               kind: kindFilter as SearchKind | undefined,
-              service: serviceFilter as string | undefined,
-              limit: typeof opts.limit === "number" ? opts.limit : undefined
+              limit: typeof opts.limit === "number" ? opts.limit : undefined,
+              reason: reason as RetrievalReason | undefined
             });
             const { hits, total, truncated, widerCandidates } = page;
-            // Recovery models a caller-reported prior attempt, never the ranked
-            // hits the model merely saw in this search response. The host
-            // validates exact IDs and exposure, not an execution ledger. A
-            // reason without an explicit attempted operation is inert.
-            const recovery = Array.isArray(recoverFrom) && recoverFrom.length > 0
-              ? recoveryCandidates(catalog, recoverFrom as string[], reason as RetrievalReason | undefined)
-              : [];
             logEvent("search", {
               source: "codemode",
               ...searchEventFields({
@@ -804,10 +789,6 @@ export function buildCodemodeProvider(
           describe: async (id?: unknown) => describeCatalogEntry(catalog, id)
         }
       : {}),
-    ...(enableDescribe && !enableDiscovery
-      ? { describe: async (id?: unknown) => describeCatalogEntry(catalog, id) }
-      : {}),
-
     skill_read: async (name?: unknown, opts?: unknown) => {
       // Wrap the shared source for THIS call so retrieval provenance and count
       // are observable without threading a stats sink through readSkill.
@@ -1060,7 +1041,6 @@ export function buildSandbox(
     onOpCall?: (call: OpLedgerCall) => void;
     artifact?: ArtifactSandboxDeps;
     codemodeDiscovery?: boolean;
-    codemodeDescribe?: boolean;
   }
 ): SandboxProvider[] {
   // Runner-wiring assertion at provider build (design §5/§6): registry ↔
@@ -1082,7 +1062,6 @@ export function buildSandbox(
         onSkillRun: deps?.onSkillRun
       },
       deps?.codemodeDiscovery,
-      deps?.codemodeDescribe,
       { facade: ops, secrets: secretsFromEnv(env as Record<string, unknown>) },
       deps?.artifact
     )
