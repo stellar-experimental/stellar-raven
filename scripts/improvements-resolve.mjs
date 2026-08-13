@@ -1,16 +1,19 @@
 #!/usr/bin/env node
-import { readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import { unlinkSync } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import {
   GITHUB_REPO_RE,
+  INTAKE_PATH,
   RESOLVED_PATH,
   oneLineTitle,
   parseFinding,
   readIntake,
   readResolved,
   resolveIntake,
+  writeIndex,
 } from "./improvements-lib.mjs";
+import { writeFileAtomic } from "./lib/shared.mjs";
 
 const RAVEN_REPO = "stellar-experimental/stellar-raven";
 const githubRefRe = /https:\/\/github\.com\/[^/\s)]+\/[^/\s)]+\/(?:issues|pull)\/\d+/gi;
@@ -90,23 +93,48 @@ if (args.dryRun) {
   process.exit(0);
 }
 
+// Authoritative order: the receipt lands first, then the intake override, then the active file,
+// then the index. Each write replaces its destination atomically, so no single file is ever left
+// truncated. That guarantee is per file only: it does not make this four-file sequence consistent
+// across files. An interruption can leave the receipt written while the override, the active file,
+// or the index still describe the finding as open. Every such residue is visible and repairable by
+// hand, and each failure branch below prints the exact repair. The receipt is the record that must
+// survive; a deleted finding with no receipt would not be.
 ledger.entries.push(entry);
 ledger.entries.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
-writeFileSync(RESOLVED_PATH, `${JSON.stringify(ledger, null, 2)}\n`);
+writeFileAtomic(RESOLVED_PATH, `${JSON.stringify(ledger, null, 2)}\n`);
 
 if (intake.findings?.[id]) {
   delete intake.findings[id];
-  writeFileSync(path.resolve("improvements/intake.json"), `${JSON.stringify(intake, null, 2)}\n`);
+  try {
+    writeFileAtomic(INTAKE_PATH, `${JSON.stringify(intake, null, 2)}\n`);
+  } catch (error) {
+    console.error(`${id}: the resolved receipt is written, but improvements/intake.json still holds this finding's override, and the active finding ${finding.relPath} still exists.`);
+    console.error(`  ${error.message}`);
+    console.error("Do not re-run the resolver — it refuses a receipt that already exists.");
+    console.error(`Forward repair: remove the ${id} override from improvements/intake.json, delete ${finding.relPath}, then run npm run improvements:index and npm run improvements:lint.`);
+    process.exit(1);
+  }
 }
-unlinkSync(finding.file);
 
-const indexResult = spawnSync(process.execPath, [path.join(import.meta.dirname, "improvements-index.mjs")], {
-  encoding: "utf8",
-});
-if (indexResult.status !== 0) {
-  process.stderr.write(indexResult.stderr);
-  process.stderr.write(indexResult.stdout);
-  fail("finding was retired but improvements/INDEX.md regeneration failed", indexResult.status ?? 1);
+try {
+  unlinkSync(finding.file);
+} catch (error) {
+  console.error(`${id}: the resolved receipt is written, but ${finding.relPath} was not deleted.`);
+  console.error(`  ${error.message}`);
+  console.error("Do not re-run the resolver — it refuses a receipt that already exists.");
+  console.error(`Forward repair: delete ${finding.relPath}, then run npm run improvements:index and npm run improvements:lint.`);
+  process.exit(1);
+}
+
+try {
+  writeIndex();
+} catch (error) {
+  console.error(`${id}: the finding is retired, but improvements/INDEX.md was not regenerated.`);
+  console.error(`  ${error.message}`);
+  console.error("Do not re-run the resolver — it refuses a receipt that already exists.");
+  console.error("Forward repair: run npm run improvements:index, then npm run improvements:lint.");
+  process.exit(1);
 }
 
 console.log(`${id}: retired to improvements/resolved.json`);

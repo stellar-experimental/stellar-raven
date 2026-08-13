@@ -12,6 +12,7 @@ import {
   resolveIntake,
   section,
   writeFindingFrontmatter,
+  writeIndex,
 } from "./improvements-lib.mjs";
 
 const args = parseArgs(process.argv.slice(2));
@@ -197,28 +198,54 @@ function repoHasLabel(repo, label) {
   return result.status === 0 && Number(result.stdout.trim()) > 0;
 }
 
+// Everything below runs AFTER the public write. `gh issue create` exited 0, so an issue almost
+// certainly exists upstream even when the steps that record it locally fail. The warning differs by
+// step, because the risk does. While the finding still shows its pre-filing status, a re-run would
+// file a duplicate, so those messages refuse one outright. Once the frontmatter records the issue,
+// the reported-upstream dedupe guard refuses a re-run by itself, and only the index repair remains.
 const url = result.stdout.trim();
+const filedOn = new Date().toISOString().slice(0, 10);
+const evidenceLine = `upstream issue filed ${filedOn}: ${url}`;
+const REPAIR_BY_HAND = [
+  "Forward repair, by hand:",
+  `  1. Open ${url} and confirm the issue exists.`,
+  `  2. In ${finding.relPath}, set 'status: reported-upstream'.`,
+  "  3. Under 'evidence:', append the entry:",
+  `       - ${evidenceLine}`,
+  "  4. Run npm run improvements:index, then npm run improvements:lint.",
+].join("\n");
+
 const verify = spawnSync("gh", ["issue", "view", url, "--json", "url", "--jq", ".url"], {
   encoding: "utf8",
 });
 if (verify.status !== 0 || verify.stdout.trim() !== url) {
   process.stderr.write(verify.stderr ?? "");
-  console.error(`issue was created at ${url}, but GitHub read-back failed; local finding was not mutated`);
+  console.error(`${finding.frontmatter.id}: gh reported the issue at ${url}, but the read-back failed.`);
+  console.error("The issue may already exist upstream. Do not re-run this command — a second run files a duplicate.");
+  console.error("The local finding was not changed, so the repair only adds what the filing would have added.");
+  console.error(REPAIR_BY_HAND);
   process.exit(1);
 }
 console.log(url);
-writeFindingFrontmatter(finding, {
-  status: "reported-upstream",
-  evidenceAppend: `upstream issue filed ${new Date().toISOString().slice(0, 10)}: ${url}`,
-});
-const indexResult = spawnSync(process.execPath, [path.join(import.meta.dirname, "improvements-index.mjs")], {
-  encoding: "utf8",
-});
-if (indexResult.status !== 0) {
-  process.stderr.write(indexResult.stderr);
-  process.stderr.write(indexResult.stdout);
-  console.error("issue was filed and the finding was updated, but improvements/INDEX.md regeneration failed");
-  process.exit(indexResult.status ?? 1);
+try {
+  writeFindingFrontmatter(finding, { status: "reported-upstream", evidenceAppend: evidenceLine });
+} catch (error) {
+  console.error(`${finding.frontmatter.id}: the issue was filed at ${url}, but the local finding was not updated.`);
+  console.error(`  ${error.message}`);
+  console.error("The issue already exists upstream. Do not re-run this command — a second run files a duplicate.");
+  console.error("The write is atomic, so the finding still holds its previous content.");
+  console.error(REPAIR_BY_HAND);
+  process.exit(1);
+}
+try {
+  writeIndex();
+} catch (error) {
+  console.error(`${finding.frontmatter.id}: the issue was filed at ${url} and the finding records it, but improvements/INDEX.md was not regenerated.`);
+  console.error(`  ${error.message}`);
+  console.error("The issue exists upstream and the finding already records it, so a re-run is unnecessary.");
+  console.error("The finding is now reported-upstream, so the dedupe guard refuses another filing anyway.");
+  console.error("Forward repair: run npm run improvements:index, then npm run improvements:lint.");
+  process.exit(1);
 }
 
 function renderBody(finding) {

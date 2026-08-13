@@ -101,27 +101,39 @@ OTel spans join through Cloudflare request/Ray metadata instead of repeating hig
 fields. Network/geo/TLS fields are never promoted into an app user fingerprint
 (`src/observability-request.ts`, `.agents/skills/cloudflare-observability-review/`).
 
-The `search` tool handler is a pure function call: `searchCatalogPage(getCatalog(), { query,
-kind?, service?, limit? })`. `getCatalog()` (`src/catalog/load.ts`) imports the generated
-`catalog/manifest.json` as a bundled JSON module and validates it once per isolate via
+Both primary search adapters use `prepareCatalogSearch(catalog, service)` from
+`src/catalog/search-resolution.ts`. The MCP adapter supplies `getCatalog()` and the sandbox adapter
+supplies its injected catalog. The neutral interface has three stages. The service stage calls
+`catalogServices` once and returns either an `unknown-service` issue or the recovery-ID stage. The
+recovery-ID stage builds one exposed-operation ID set and returns either an
+`unknown-recovery-ids` issue with the rejected exact IDs or the final resolution stage. The final
+resolution stage calls `searchCatalogPage` once and calls `recoveryCandidates` only when the caller
+supplied recovery IDs. It returns neutral page and recovery facts. The interface goes no deeper
+because prose, schemas, envelopes, limits, and telemetry do not belong in this module.
+
+The MCP tool keeps its Zod schemas, exact response text and shape, and telemetry. The sandbox
+adapter keeps its raw-input checks, error envelopes, exact messages, limit normalization, and
+telemetry. Its external order remains query, kind, service, `recoverFrom` shape, unknown recovery
+IDs, reason, then page and recovery resolution. An unknown reason therefore returns before
+`searchCatalogPage` or `recoveryCandidates` runs. `getCatalog()` (`src/catalog/load.ts`) imports the
+generated `catalog/manifest.json` as a bundled JSON module and validates it once per isolate via
 `loadManifest` — a malformed manifest throws loudly at first use, never softens. The
-response is `{ hits, total, truncated, recovery, nextSteps }` (as both `text` and
+response is `{ hits, total, truncated, recovery, widerCandidates, nextSteps }` (as both `text` and
 `structuredContent`): `total` counts every distinct catalog entry the consulted scorer
 tiers matched (post-filter, pre-paging), `truncated` = `total > hits.length` (retry with a
 higher `limit`, the other candidate family, or varied vocabulary), and
 `nextSteps` is a server-authored hint that restates the compose-in-one-script workflow and
-the envelope rule on every call. The handler also validates the `service` filter against
-the catalog's real service set (`catalogServices`): an unknown value ("stellardocs",
-"stellar-docs") returns zero hits with a `nextSteps` naming the bad value and the valid
-ones instead of a silently-empty page — the frozen `searchCatalog` contract keeps filters
-silent, so validation lives at the tool boundary (and, for `codemode.search`, at the
-sandbox boundary in `src/executor/providers.ts`, where an unknown `kind`/`service` is an
-error envelope listing the valid values). A `search` telemetry event
-(`src/observability.ts` → Workers Logs) records only the query character count, requested/effective
-limits, consulted-pool omitted
-count, returned gated/backfill hit counts, hit/total/truncated counts, top-3 ids, and response size
-in chars (`responseChars` — the measurement that set
-`COMPACT_OUTPUT_THRESHOLD`, §2; it stays on to verify the compaction holds), and latency.
+the envelope rule on every call. `prepareCatalogSearch` validates the `service` filter against
+the catalog's real service set (`catalogServices`). An unknown value ("stellardocs",
+"stellar-docs") becomes a structured issue instead of a silently-empty page. The MCP adapter maps
+that issue to zero hits and a `nextSteps` value that names the valid services. The sandbox adapter
+maps the same issue to an error envelope that lists the valid services. The frozen
+`searchCatalog` contract keeps filters silent. Each adapter maps structured service and recovery-ID
+issues to its existing output. A `search` telemetry event (`src/observability.ts` → Workers Logs)
+records `source`, `queryChars`, `requestedLimit`, `effectiveLimit`, `omittedCount`, `gatedHits`,
+`backfillHits`, `hits`, `total`, `truncated`, `top`, `recovery`, `recoveryTop`, `widerCandidates`,
+`widerCandidateTop`, `responseChars`, and `ms`. `responseChars` is the measurement that set
+`COMPACT_OUTPUT_THRESHOLD`, §2. It stays on to verify that the compaction holds.
 
 ## 2. The scoring pipeline
 

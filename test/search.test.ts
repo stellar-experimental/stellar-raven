@@ -12,6 +12,7 @@ import {
   searchCatalog,
   searchCatalogPage,
   recoveryCandidates,
+  recoveryCandidatesFromSources,
   renderSignature,
   COMPACT_OUTPUT_THRESHOLD,
   DEFAULT_SEARCH_LIMIT,
@@ -133,6 +134,63 @@ describe("recoveryCandidates — advisory contingency graph", () => {
   it("returns no candidates for zero or negative bounds", () => {
     expect(recoveryCandidates(catalog, ["scout.getBuilders"], "empty", 0)).toEqual([]);
     expect(recoveryCandidates(catalog, ["scout.getBuilders"], "empty", -1)).toEqual([]);
+  });
+});
+
+describe("recoveryCandidatesFromSources — execute-time contingency graph", () => {
+  it("keeps its unfiltered source traversal distinct from reason-filtered recovery", () => {
+    expect(recoveryCandidates(catalog, ["scout.getBuilders"], "partial").map(({ id }) => id)).toEqual([
+      "lumenloop.find_av_passages"
+    ]);
+    expect(recoveryCandidatesFromSources(catalog, ["scout.getBuilders"], []).map(({ id }) => id)).toEqual([
+      "lumenloop.search_content_semantic",
+      "scout.searchResearch",
+      "lumenloop.find_av_passages"
+    ]);
+  });
+
+  it("preserves source and edge order while deduplicating and observing the early limit", () => {
+    const sources = ["scout.getPeople", "scout.getBuilders"];
+
+    expect(recoveryCandidatesFromSources(catalog, sources, [], 3).map(({ id, from }) => ({ id, from }))).toEqual([
+      { id: "scout.getBuilders", from: "scout.getPeople" },
+      { id: "scout.searchResearch", from: "scout.getPeople" },
+      { id: "lumenloop.search_content_semantic", from: "scout.getPeople" }
+    ]);
+    expect(recoveryCandidatesFromSources(catalog, sources, [], 4).map(({ id, from }) => ({ id, from }))).toEqual([
+      { id: "scout.getBuilders", from: "scout.getPeople" },
+      { id: "scout.searchResearch", from: "scout.getPeople" },
+      { id: "lumenloop.search_content_semantic", from: "scout.getPeople" },
+      { id: "lumenloop.find_av_passages", from: "scout.getBuilders" }
+    ]);
+  });
+
+  it("uses the complete exclusion set, including ids outside the source set", () => {
+    const recovery = recoveryCandidatesFromSources(
+      catalog,
+      ["scout.getPeople", "scout.getBuilders"],
+      ["scout.searchResearch"],
+      4
+    );
+
+    expect(recovery.map(({ id, from }) => ({ id, from }))).toEqual([
+      { id: "scout.getBuilders", from: "scout.getPeople" },
+      { id: "lumenloop.search_content_semantic", from: "scout.getPeople" },
+      { id: "lumenloop.find_av_passages", from: "scout.getBuilders" }
+    ]);
+    expect(recovery.map(({ id }) => id)).not.toContain("scout.searchResearch");
+  });
+
+  it("leaves ranked search output unchanged", () => {
+    const before = searchCatalogPage(catalog, { query: "builder directory", limit: 5 });
+
+    recoveryCandidatesFromSources(
+      catalog,
+      ["scout.getPeople", "scout.getBuilders"],
+      ["scout.searchResearch"]
+    );
+
+    expect(searchCatalogPage(catalog, { query: "builder directory", limit: 5 })).toEqual(before);
   });
 });
 

@@ -27,15 +27,13 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/server";
 import {
-  searchCatalogPage,
-  catalogServices,
-  recoveryCandidates,
   type RecoveryCandidate,
   type SearchPage,
   type WiderCandidate
 } from "../catalog/search.ts";
+import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { getCatalog } from "../catalog/load.ts";
-import { SEARCH_KINDS, RETRIEVAL_REASONS, type RetrievalReason } from "../catalog/types.ts";
+import { SEARCH_KINDS, RETRIEVAL_REASONS } from "../catalog/types.ts";
 import type { ExecuteCallContext, ExecuteRunner } from "../executor/run.ts";
 import type { BuildSourceBasisManifestInput, SourceBasisCall } from "../policy/source-basis.ts";
 import { logEvent } from "../observability.ts";
@@ -353,13 +351,6 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
       const t0 = Date.now();
       const catalog = getCatalog();
 
-      // Filter validation (todo 839): `kind` is already zod-enum-guarded at
-      // the tool boundary, but `service` is a free string — a near-miss like
-      // "stellardocs" or "stellar-docs" used to silently exact-match nothing
-      // and read as "the capability is missing". searchCatalog stays silent
-      // on filters by (frozen) contract, so the correction lives here: keep
-      // the zero-hit response SHAPE and put the diagnosis in nextSteps.
-      const services = catalogServices(catalog);
       const respond = (structured: {
         hits: unknown[];
         total: number;
@@ -397,46 +388,37 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         };
       };
 
-      if (args.service !== undefined && !services.includes(args.service)) {
+      const prepared = prepareCatalogSearch(catalog, args.service);
+      if (!prepared.ok) {
         return respond({
           hits: [],
           total: 0,
           truncated: false,
           recovery: [],
           widerCandidates: [],
-          nextSteps: `Unknown service "${args.service}" — service filter values are exact-match. Valid services: ${services.join(", ")}. Retry with one of those exact values, or drop the \`service\` filter.`
+          nextSteps: `Unknown service "${prepared.issue.service}" — service filter values are exact-match. Valid services: ${prepared.issue.validServices.join(", ")}. Retry with one of those exact values, or drop the \`service\` filter.`
         }, null);
       }
 
-      const operationIds = new Set(
-        catalog.entries.filter((entry) => entry.kind === "operation").map((entry) => entry.id)
-      );
-      const unknownRecoveryIds = (args.recoverFrom ?? []).filter((id) => !operationIds.has(id));
-      if (unknownRecoveryIds.length > 0) {
+      const recoveryStage = prepared.checkRecoveryIds(args.recoverFrom);
+      if (!recoveryStage.ok) {
         return respond({
           hits: [],
           total: 0,
           truncated: false,
           recovery: [],
           widerCandidates: [],
-          nextSteps: `Unknown recoverFrom operation id(s): ${unknownRecoveryIds.map((id) => JSON.stringify(id)).join(", ")}. Recovery ids are exact-match; discover valid operations with search first.`
+          nextSteps: `Unknown recoverFrom operation id(s): ${recoveryStage.issue.ids.map((id) => JSON.stringify(id)).join(", ")}. Recovery ids are exact-match; discover valid operations with search first.`
         }, null);
       }
 
-      const page = searchCatalogPage(catalog, {
+      const { page, recovery } = recoveryStage.resolve({
         query: args.query,
         kind: args.kind,
-        service: args.service,
-        limit: args.limit
+        limit: args.limit,
+        reason: args.reason
       });
       const { hits, total, truncated, widerCandidates } = page;
-      // Recovery reflects a caller-reported prior operation, never a hint
-      // inferred from uncalled ranked hits. The host validates exact IDs and
-      // exposure, not an execution ledger. A bare reason is therefore inert.
-      const recoverFrom = args.recoverFrom ?? [];
-      const recovery = recoverFrom.length > 0
-        ? recoveryCandidates(catalog, recoverFrom, args.reason as RetrievalReason | undefined)
-        : [];
       const baseNextSteps =
         hits.length > 0
           ? `These hits are composable: write ONE \`execute\` script that calls the several relevant operations (Promise.all across services for independent calls), then follows up with deeper calls parameterized by their results — e.g. \`await lumenloop.search_directory({ query: "..." })\` then \`lumenloop.get_project({ slug })\`. Every call resolves to { ok: true, data } or { ok: false, error: { kind, message, hint? } } — payload fields live under \`.data\` (\`r.data.projects\`, never \`r.projects\`); check \`r.ok\` first. Skill hits are operational playbooks — read the sections you need in-script via \`codemode.skill.read(id, { sections })\` (keys: the hit's \`availableSections\`), and pair them with stellarDocs searches for current reference truth. For a design-stage request to create a new artifact, make one prior-art pass before architecture: at most two \`scout.searchRepos\`/\`scout.searchProjects\` discovery calls, one focused detail call, and three returned candidates. Return exact URL, role/applicability, freshness/provenance, and limitations; license/audit/deployment/compatibility stay unknown unless source-backed. Skip it for a single-step how-to or debugging task. Hits whose \`signature\` shows a \`codemode.skill.run("<exact id>", input)\` line are runnable skills — call that line verbatim to run the whole pipeline in one step (payload under \`.data\`, constituent calls audited in \`data.calls\`). Hit order is the ranking to trust: gated hits rank first, and a backfill hit appears above gated hits only when its score decisively dominates them. Recovery candidates are bounded exact-ID contingencies, separate from ranking: use relevant ones in the same execute when an open-world answer remains empty, weak, adjacent, ambiguous, or partial, and validate identity/source/date before asserting. Signatures with a stubbed output type (\`{ /* N top-level fields: ... */ }\`) list the payload's top-level field names — for the full output shape call \`codemode.describe("<exact id>")\` inside \`execute\`. For directory/list rows, inspect keys or filter raw row JSON and nested/common field variants before projecting compact columns. Use \`codemode.search(...)\` mid-script for follow-up discovery; search again here with the other candidate family, varied vocabulary, or \`kind\`/\`service\` filters if none fit.${truncated ? " More entries matched than shown (truncated) — raise `limit`, try the other candidate family, or vary vocabulary if none of these fit." : ""}`

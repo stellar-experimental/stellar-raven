@@ -14,7 +14,13 @@
  */
 import { env } from "cloudflare:test";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createExecuteRunner, createSpecSearchRunner } from "../../src/executor/run";
+import {
+  assertExecutorEvidenceOperationIds,
+  createExecuteRunner,
+  createSpecSearchRunner
+} from "../../src/executor/run";
+import { getCatalog } from "../../src/catalog/load";
+import type { Catalog } from "../../src/catalog/types";
 import fxSemantic from "../fixtures/skill-runners/lumenloop.search_content_semantic.ts";
 import fxListDocs from "../fixtures/skill-runners/lumenloop.list_documents.ts";
 
@@ -62,6 +68,42 @@ const BIG_SECRET_RESULT_CODE = `async () => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+});
+
+describe("executor evidence operation catalog guard", () => {
+  it("accepts every curated ID in the current exposed catalog", () => {
+    expect(() => assertExecutorEvidenceOperationIds(getCatalog())).not.toThrow();
+  });
+
+  it("fails deterministically when a curated ID is missing", () => {
+    const catalog = getCatalog();
+    const withoutDirectory: Catalog = {
+      ...catalog,
+      entries: catalog.entries.filter((entry) => entry.id !== "lumenloop.search_directory")
+    };
+
+    expect(() => assertExecutorEvidenceOperationIds(withoutDirectory)).toThrow(
+      'Executor candidate evidence operation "lumenloop.search_directory" is missing from the exposed catalog'
+    );
+  });
+
+  it("fails deterministically when a curated ID resolves to the wrong kind", () => {
+    const catalog = getCatalog();
+    const skill = catalog.entries.find((entry) => entry.kind === "skill");
+    if (!skill) throw new Error("current catalog has no skill entry for the wrong-kind fixture");
+    const wrongKind: Catalog = {
+      ...catalog,
+      entries: catalog.entries.map((entry) =>
+        entry.id === "lumenloop.search_directory"
+          ? { ...skill, id: "lumenloop.search_directory" }
+          : entry
+      )
+    };
+
+    expect(() => assertExecutorEvidenceOperationIds(wrongKind)).toThrow(
+      'Executor candidate evidence operation "lumenloop.search_directory" must resolve to an exposed operation, found kind "skill"'
+    );
+  });
 });
 
 describe("execute runner (real Dynamic Worker isolate)", () => {

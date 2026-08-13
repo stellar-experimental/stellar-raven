@@ -6,7 +6,7 @@ import {
   ALLOWED_SERVICES,
   ALLOWED_STATUSES,
   GITHUB_REPO_RE,
-  IMPROVEMENTS_DIR,
+  INDEX_PATH,
   SERVICE_ORDER,
   collectIntakeRepos,
   listFindingFiles,
@@ -222,8 +222,7 @@ function validateProbe(label, probe) {
 }
 
 function validateIndexFreshness(findings) {
-  const indexPath = path.join(IMPROVEMENTS_DIR, "INDEX.md");
-  const actual = readFileSync(indexPath, "utf8");
+  const actual = readFileSync(INDEX_PATH, "utf8");
   const expected = renderIndex(findings);
   if (actual !== expected) {
     errors.push("improvements/INDEX.md is stale; run npm run improvements:index");

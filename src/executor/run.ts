@@ -28,7 +28,7 @@ import { DynamicWorkerExecutor } from "@cloudflare/codemode";
 import superSpecJson from "../../specs/super-spec.json";
 import { getCatalog } from "../catalog/load.ts";
 import { recoveryCandidatesFromSources } from "../catalog/search.ts";
-import type { BuildAuthorityRole } from "../catalog/types.ts";
+import type { BuildAuthorityRole, Catalog } from "../catalog/types.ts";
 import { buildSandbox, type ArtifactReadStats, type OpLedgerCall, type SandboxProvider } from "./providers.ts";
 import {
   createSpecSandboxCode,
@@ -118,8 +118,6 @@ export type ExecuteRunnerOptions = {
    * playground enable the full discovery surface; focused tests may disable it.
    */
   codemodeDiscovery?: boolean;
-  /** Allow codemode.describe(id) even when broader codemode discovery is off. */
-  codemodeDescribe?: boolean;
   /**
    * Host-side model boundary cap for final execute results. Defaults from
    * env/config; never controlled by model-authored sandbox code.
@@ -127,20 +125,36 @@ export type ExecuteRunnerOptions = {
   modelBoundaryMaxTokens?: number;
 };
 
-const CANDIDATE_EVIDENCE_OPS = new Set([
-  "lumenloop.search_directory",
-  "lumenloop.search_content_semantic",
-  "lumenloop.find_av_passages",
-  "lumenloop.find_similar_scf_submissions",
-  "scout.searchProjects",
-  "scout.searchResearch"
-]);
+const EVIDENCE_OPERATION_IDS = {
+  candidate: new Set([
+    "lumenloop.search_directory",
+    "lumenloop.search_content_semantic",
+    "lumenloop.find_av_passages",
+    "lumenloop.find_similar_scf_submissions",
+    "scout.searchProjects",
+    "scout.searchResearch"
+  ]),
+  "prior-art": new Set(["scout.searchProjects", "scout.searchRepos", "scout.explainRepo"])
+} as const;
 
-const PRIOR_ART_EVIDENCE_OPS = new Set([
-  "scout.searchProjects",
-  "scout.searchRepos",
-  "scout.explainRepo"
-]);
+export function assertExecutorEvidenceOperationIds(catalog: Catalog): void {
+  const entriesById = new Map(catalog.entries.map((entry) => [entry.id, entry]));
+  for (const [evidenceClass, ids] of Object.entries(EVIDENCE_OPERATION_IDS)) {
+    for (const id of ids) {
+      const entry = entriesById.get(id);
+      if (!entry) {
+        throw new Error(
+          `Executor ${evidenceClass} evidence operation "${id}" is missing from the exposed catalog`
+        );
+      }
+      if (entry.kind !== "operation") {
+        throw new Error(
+          `Executor ${evidenceClass} evidence operation "${id}" must resolve to an exposed operation, found kind "${entry.kind}"`
+        );
+      }
+    }
+  }
+}
 
 const BROAD_RETRIEVAL_LANES = new Set(["semantic", "research", "av", "corpus"]);
 
@@ -152,8 +166,8 @@ function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperat
     if (call.outcome === "ok") summary.ok += 1;
     else if (call.outcome === "error") summary.error += 1;
     else summary.softEmpty += 1;
-    if (call.outcome === "ok" && CANDIDATE_EVIDENCE_OPS.has(call.op)) candidateEvidence += 1;
-    if (call.outcome === "ok" && PRIOR_ART_EVIDENCE_OPS.has(call.op)) priorArtCandidates += 1;
+    if (call.outcome === "ok" && EVIDENCE_OPERATION_IDS.candidate.has(call.op)) candidateEvidence += 1;
+    if (call.outcome === "ok" && EVIDENCE_OPERATION_IDS["prior-art"].has(call.op)) priorArtCandidates += 1;
   }
   if (candidateEvidence > 0) summary.candidateEvidence = candidateEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
@@ -296,6 +310,8 @@ function withGlobalsHint(message: string, providers: SandboxProvider[]): string 
 }
 
 export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}): ExecuteRunner {
+  const catalog = getCatalog();
+  assertExecutorEvidenceOperationIds(catalog);
   const executor = new DynamicWorkerExecutor({
     loader: env.LOADER,
     globalOutbound: null, // default, pinned explicitly: sandbox has NO network
@@ -321,7 +337,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     let skillRuns = 0;
     const opLedger: OpLedgerCall[] = [];
     let artifactReadStats: ArtifactReadStats = { count: 0, bytes: 0 };
-    const providers = buildSandbox(getCatalog(), skillSource, env, {
+    const providers = buildSandbox(catalog, skillSource, env, {
       superSpec: superSpecJson,
       onSkillRead: (skillId, roles) => {
         skillRead = true;
@@ -343,8 +359,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
           artifactReadStats = stats;
         }
       },
-      codemodeDiscovery: options.codemodeDiscovery,
-      codemodeDescribe: options.codemodeDescribe
+      codemodeDiscovery: options.codemodeDiscovery
     });
     // Custom span because the Worker Loader isolate is NOT auto-instrumented
     // (research/observability-cloudflare.md §2) — without it the sandbox run
@@ -422,7 +437,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
               status: call.outcome,
               ms: call.ms
             })),
-            catalogGeneratedAt: getCatalog().generatedAt
+            catalogGeneratedAt: catalog.generatedAt
           });
           if (written.ok) {
             artifact = {

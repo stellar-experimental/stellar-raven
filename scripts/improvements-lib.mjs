@@ -1,8 +1,10 @@
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { writeFileAtomic } from "./lib/shared.mjs";
 
 export const ROOT = path.resolve(new URL("..", import.meta.url).pathname);
 export const IMPROVEMENTS_DIR = path.join(ROOT, "improvements");
+export const INDEX_PATH = path.join(IMPROVEMENTS_DIR, "INDEX.md");
 export const INTAKE_PATH = path.join(IMPROVEMENTS_DIR, "intake.json");
 export const RESOLVED_PATH = path.join(IMPROVEMENTS_DIR, "resolved.json");
 export const SERVICE_ORDER = ["skills", "stellar-light-scout", "stellar-docs", "lumenloop", "workers-ai-provider"];
@@ -233,7 +235,7 @@ export function writeFindingFrontmatter(finding, updates) {
     }
   }
   const next = `---\n${lines.join("\n")}\n---\n${finding.body}`;
-  writeFileSync(finding.file, next);
+  writeFileAtomic(finding.file, next);
 }
 
 export function renderIndex(findings = listFindingFiles().map(parseFinding)) {
@@ -268,6 +270,17 @@ export function renderIndex(findings = listFindingFiles().map(parseFinding)) {
   }
 
   return `${lines.join("\n").trimEnd()}\n`;
+}
+
+/**
+ * Write the generated index for `findings` and return how many it covered.
+ *
+ * The index entrypoint and the lifecycle commands share this function, so index rendering and the
+ * atomic replace stay in one place.
+ */
+export function writeIndex(findings = listFindingFiles().map(parseFinding), file = INDEX_PATH) {
+  writeFileAtomic(file, renderIndex(findings));
+  return findings.length;
 }
 
 export function readIntake(file = INTAKE_PATH) {
