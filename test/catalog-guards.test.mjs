@@ -74,7 +74,7 @@ describe("attachRunnableSkills — fail-loud drift guards (design §5)", () => {
   });
 });
 
-describe("assertNoNonExposedRefs — runnable schema JSON is guarded emitted text (design §5)", () => {
+describe("assertNoNonExposedRefs — all emitted schema JSON follows ADR-0003", () => {
   it("passes on the real attached entries (the build's own steady state)", () => {
     expect(() => assertNoNonExposedRefs(attachRunnableSkills(preAttachEntries(), RUNNERS))).not.toThrow();
   });
@@ -105,6 +105,43 @@ describe("assertNoNonExposedRefs — runnable schema JSON is guarded emitted tex
       };
     });
     expect(() => assertNoNonExposedRefs(planted)).toThrow(/ADR-0003 leak/);
+  });
+
+  it("a planted non-exposed op inside a non-runnable operation inputSchema trips the build", () => {
+    const planted = preAttachEntries().map((entry) =>
+      entry.id === "scout.searchProjects"
+        ? {
+            ...entry,
+            inputSchema: {
+              ...entry.inputSchema,
+              description: "submit corrections with scout.submitFeedback"
+            }
+          }
+        : entry
+    );
+    expect(() => assertNoNonExposedRefs(planted)).toThrow(/ADR-0003 leak/);
+  });
+
+  it("a planted excluded path inside a non-runnable operation outputSchema trips the build", () => {
+    const planted = preAttachEntries().map((entry) =>
+      entry.id === "scout.searchProjects"
+        ? {
+            ...entry,
+            outputSchema: {
+              ...entry.outputSchema,
+              description: "aggregated from POST /api/feedback"
+            }
+          }
+        : entry
+    );
+    expect(() => assertNoNonExposedRefs(planted)).toThrow(/ADR-0003 leak/);
+  });
+
+  it("scrubs excluded endpoint prose from the generated operation schemas", () => {
+    const projects = preAttachEntries().find((entry) => entry.id === "scout.searchProjects");
+    const schema = JSON.stringify(projects.outputSchema);
+    expect(schema).not.toContain("POST /api/feedback");
+    expect(schema).toContain("Aggregated nightly from upstream feedback vote kinds.");
   });
 });
 

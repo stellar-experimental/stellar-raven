@@ -899,6 +899,38 @@
             "nullable": true,
             "type": "string"
           },
+          "tomlConfidence": {
+            "description": "Deterministic trust score for toml-derived anchor facts (basis stellar-toml × freshness of tomlFetchedAt). Null when no toml was ever fetched.",
+            "nullable": true,
+            "properties": {
+              "ageDays": {
+                "nullable": true,
+                "type": "integer"
+              },
+              "label": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              },
+              "score": {
+                "type": "number"
+              }
+            },
+            "type": "object"
+          },
+          "tomlFetchedAt": {
+            "description": "ISO date of the last successful stellar.toml fetch+parse. Admin/partner edits may postdate this snapshot.",
+            "nullable": true,
+            "type": "string"
+          },
+          "tomlSourceUrl": {
+            "description": "The stellar.toml URL the anchor-capability fields (assets/seps/rampTypes/jurisdiction) were last system-enriched from — re-verify there. Null = never toml-enriched (curated/self-reported only).",
+            "nullable": true,
+            "type": "string"
+          },
           "trust": {
             "description": "System-computed composite trust (0-1 score + label), decomposed into freshness and verification sub-signals.",
             "properties": {
@@ -1125,7 +1157,7 @@
             "type": "object"
           },
           "audits": {
-            "description": "Security-audit rollup from the /api/audits registry (hand-verified projectSlug links): {count, auditors[] (normalized firm names), latestAt (YYYY-MM-DD of the newest report)}. null = no audit on record at our source — NOT a claim the project is unaudited (same absence semantics as /api/audits). Full report rows via /api/audits?project=<slug>; findings text via searchResearch with source=audit.",
+            "description": "Security-audit rollup from the /api/audits registry (hand-verified projectSlug links): {count, auditors[] (normalized firm names), latestAt (YYYY-MM-DD of the newest report)}. Drift context: driftDays = whole days since the latest report; codeChangedSinceAudit = whether any of the project's joined repos committed on a later day than that report (day-granular; null when either side lacks a date). 'Audited' with high drift is a materially weaker claim — read both. null rollup = no audit on record at our source — NOT a claim the project is unaudited (same absence semantics as /api/audits). Full report rows via /api/audits?project=<slug>; findings text via searchResearch with source=audit.",
             "properties": {
               "auditors": {
                 "items": {
@@ -1133,8 +1165,20 @@
                 },
                 "type": "array"
               },
+              "codeChangedSinceAudit": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
               "count": {
                 "type": "integer"
+              },
+              "driftDays": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
               },
               "latestAt": {
                 "type": [
@@ -1265,6 +1309,26 @@
             },
             "type": "object"
           },
+          "feedbackSignal": {
+            "description": "Aggregated consumer votes for this project (feedback→quality loop): votes = distinct voters (one per hashed IP, latest vote wins), worked = of those, how many voted 'worked'. score = worked/votes, present ONLY once votes pass the anti-gaming floor (≥5 distinct voters) — null score with visible counts means 'signal accruing, no ranking influence yet'. Null object = no votes recorded. Aggregated nightly from upstream feedback vote kinds.",
+            "nullable": true,
+            "properties": {
+              "asOf": {
+                "type": "string"
+              },
+              "score": {
+                "nullable": true,
+                "type": "number"
+              },
+              "votes": {
+                "type": "integer"
+              },
+              "worked": {
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
           "hackathon": {
             "nullable": true,
             "type": "string"
@@ -1383,6 +1447,41 @@
             "nullable": true,
             "type": "string"
           },
+          "products": {
+            "description": "Per-PRODUCT deployment records (#742): provider status and product-on-network status are DIFFERENT statements. Curated only; every record carries evidenceUrl + asOf so the claim is re-verifiable at its source. Empty = no product-level records yet (never 'no products'). kind: oracle-feed | rwa-asset | stablecoin | wallet-app | bridge | ramp | other; network: mainnet | testnet | futurenet; status: live | development | announced | retired.",
+            "items": {
+              "properties": {
+                "asOf": {
+                  "type": "string"
+                },
+                "contractId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "evidenceUrl": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "network": {
+                  "type": "string"
+                },
+                "note": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
           "prominence": {
             "description": "Editorial ranking boost (0-100); higher = more canonical for its category.",
             "type": "number"
@@ -1487,6 +1586,11 @@
             "nullable": true,
             "type": "string"
           },
+          "scfAsOf": {
+            "description": "ISO date the SCF award facts were last verified against the source. Pair with scfSourceUrl to re-verify a stored claim.",
+            "nullable": true,
+            "type": "string"
+          },
           "scfAwarded": {
             "type": "boolean"
           },
@@ -1496,6 +1600,37 @@
               "type": "integer"
             },
             "type": "array"
+          },
+          "scfBasis": {
+            "description": "Evidence class behind the SCF award facts: 'official-record' = parsed from the communityfund.stellar.org submission cards; 'human-verified' = curated correction where the official page is ambiguous. Null = provenance not yet stamped (legacy rows; populates as enrichment re-reaches them).",
+            "enum": [
+              "official-record",
+              "human-verified"
+            ],
+            "nullable": true,
+            "type": "string"
+          },
+          "scfConfidence": {
+            "description": "Deterministic trust score for the SCF award facts: basis-class weight × stepwise freshness decay. score 0–1, label high/medium/low, ageDays since last verification. Null = no recorded provenance (absence of evidence, never a low score). Same provenance ⇒ same score — cacheable.",
+            "nullable": true,
+            "properties": {
+              "ageDays": {
+                "nullable": true,
+                "type": "integer"
+              },
+              "label": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              },
+              "score": {
+                "type": "number"
+              }
+            },
+            "type": "object"
           },
           "scfRoundAwards": {
             "description": "The official submission record per awarded round — the reconciling basis for scfTotalAwardedUSD. Each entry: the round number, the published submission budget in USD (null = award confirmed, budget not published — never guessed), and the official award type (e.g. 'Legacy v5.0 Community Award'). The page-level total can legitimately exceed the sum of these budgets; treat rounds+budgets as the per-round truth and the total as SCF's own aggregate.",
@@ -1516,6 +1651,11 @@
               "type": "object"
             },
             "type": "array"
+          },
+          "scfSourceUrl": {
+            "description": "Official SCF project page the award facts were read from — the citation for scfAwardedRounds/scfRoundAwards/scfTotalAwardedUSD.",
+            "nullable": true,
+            "type": "string"
           },
           "scfTotalAwardedUSD": {
             "nullable": true,
@@ -1554,10 +1694,33 @@
               "site-liveness",
               "onchain-activity",
               "human-verified",
-              "source-inherited"
+              "source-inherited",
+              "unverified"
             ],
             "nullable": true,
             "type": "string"
+          },
+          "statusConfidence": {
+            "description": "Deterministic trust score for the lifecycle status fact: basis-class weight × stepwise freshness decay. score 0–1, label high/medium/low, ageDays since last verification. Null = no recorded provenance (absence of evidence, never a low score). Same provenance ⇒ same score — cacheable.",
+            "nullable": true,
+            "properties": {
+              "ageDays": {
+                "nullable": true,
+                "type": "integer"
+              },
+              "label": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              },
+              "score": {
+                "type": "number"
+              }
+            },
+            "type": "object"
           },
           "statusSourceUrl": {
             "description": "Primary evidence URL behind the current status (operator announcement, checked product surface, on-chain probe). Null on legacy rows.",
@@ -1796,10 +1959,78 @@
             "description": "True when surfaced as a curated canonical SDF answer for an infra/protocol query (e.g. error codes → stellar-core/Horizon/SDKs; Horizon → stellar/go). Floated to the top; meta.canonical lists them.",
             "type": "boolean"
           },
+          "ciPresent": {
+            "description": "CI config present in-tree (.github/workflows, CircleCI, GitLab CI) per the latest code scan. Presence only — NOT a claim CI passes. null = not yet scanned for this fact.",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "codeInUse": {
+            "description": "Mainnet usage rollup for contracts attributed to this repo (scanner-verified contract ids + stellar.expert wasm validation; refreshed weekly): contracts = attributed contract count; events/subinvocations = LIFETIME counts summed across them; eventsDelta/subinvocationsDelta = change since the prior weekly snapshot (null until one exists — NOT zero activity). null object = no verified mainnet contract joined to this repo — absence of a join, never a claim the code is unused. The dynamic half of code truth: codeDepth says the code is serious, codeInUse says it is LIVE.",
+            "properties": {
+              "asOf": {
+                "type": "string"
+              },
+              "contracts": {
+                "type": "integer"
+              },
+              "events": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "eventsDelta": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "subinvocations": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "subinvocationsDelta": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "type": [
+              "object",
+              "null"
+            ]
+          },
           "codeVerified": {
             "description": "Code-verified truth from analyzing the repo's ACTUAL source (not stars/topics) — the discriminator between 'popular' and 'real, current, deep Soroban code'. Null until the repo has been code-scanned. Use to qualify an answer: prefer a deployable contract on a supported soroban-sdk over tooling that merely uses Stellar.",
             "nullable": true,
             "properties": {
+              "codeConfidence": {
+                "description": "Deterministic trust score for the code facts (basis code-scan × freshness of scannedAt). Null when never scanned.",
+                "nullable": true,
+                "properties": {
+                  "ageDays": {
+                    "nullable": true,
+                    "type": "integer"
+                  },
+                  "label": {
+                    "enum": [
+                      "high",
+                      "medium",
+                      "low"
+                    ],
+                    "type": "string"
+                  },
+                  "score": {
+                    "type": "number"
+                  }
+                },
+                "type": "object"
+              },
               "codeDepth": {
                 "description": "0-1 substance of the actual contract code (auth/storage/arith/branch, not mere presence). ~0.6+ = a real, non-trivial contract; low = scaffold/template. Null for non-Rust proofs.",
                 "nullable": true,
@@ -1849,8 +2080,13 @@
                 "nullable": true,
                 "type": "string"
               },
+              "scannedRef": {
+                "description": "Commit SHA the facts were computed at — cite github.com/<fullName>/tree/<scannedRef>. Null on scans before 2026-08-12.",
+                "nullable": true,
+                "type": "string"
+              },
               "sdkCapabilities": {
-                "description": "Stellar SDK capability tags detected in the repo's JS/TS sources — what a dapp actually DOES with the SDK: tx-building, signing, soroban-rpc, contract-invoke, horizon, sep10-auth, sep24-ramp, wallet-kit, passkey, fee-bump. Closed tag set; [] = no JS sources analyzed yet or none detected (scan-dated, not a negative).",
+                "description": "Stellar SDK capability tags detected in the repo's JS/TS sources — what a dapp actually DOES with the SDK: tx-building, signing, x402/mpp agent payments, soroban-rpc, contract-invoke, horizon, sep10-auth, sep24-ramp, wallet-kit, passkey, fee-bump. Closed tag set; [] = no JS sources analyzed yet or none detected (scan-dated, not a negative).",
                 "items": {
                   "type": "string"
                 },
@@ -2022,6 +2258,13 @@
               "none"
             ],
             "type": "string"
+          },
+          "testsPresent": {
+            "description": "Test files/dirs present in-tree (tests/, __tests__, *.test.*, *_test.*) per the latest code scan. Presence only — NOT a coverage or quality claim. null = not yet scanned for this fact.",
+            "type": [
+              "boolean",
+              "null"
+            ]
           },
           "topics": {
             "items": {
@@ -2519,7 +2762,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-08-11T01:07:17Z"
+    "x-generatedAt": "2026-08-14T00:40:11Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4092,7 +4335,7 @@
     },
     "/scout/analyzeEcosystem": {
       "get": {
-        "description": "The cross-ecosystem macro rollup — totals no single-event tool answers. Slice via dimension=hackathons|categories|funding|tvl|gaps|developers: hackathon + SCF-funding totals (per-round + Built/Abandoned funnel), per-category distribution, DeFi TVL (DefiLlama, dated), gaps (per-vertical whitespace — under-built/unproven/absent, for 'what should I build?'), and developers (current Electric Capital monthly-active-dev count + month/year trend, tenure, geography, peer scale). gaps + developers are SUPPLY/commit-side and as-of dated — never demand or a headcount.",
+        "description": "The cross-ecosystem macro rollup — totals no single-event tool answers. Slice via dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), gaps (per-vertical whitespace — what should I build), developers (Electric Capital monthly-active devs + trend), and toolchain (Soroban-SDK version-status distribution + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated — never demand or a headcount.",
         "operationId": "scout.analyzeEcosystem",
         "parameters": [
           {
@@ -4108,7 +4351,8 @@
                 "funding",
                 "tvl",
                 "gaps",
-                "developers"
+                "developers",
+                "toolchain"
               ],
               "type": "string"
             }
@@ -4430,6 +4674,28 @@
                       "description": "Code-verified truth from analyzing the routed repo's ACTUAL source — qualify the answer with it: a deployable contract on a supported soroban-sdk is authoritative; tooling that merely uses Stellar is not. Null until code-scanned.",
                       "nullable": true,
                       "properties": {
+                        "codeConfidence": {
+                          "description": "Deterministic trust score for the code facts (basis code-scan × freshness of scannedAt). Null when never scanned.",
+                          "nullable": true,
+                          "properties": {
+                            "ageDays": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "label": {
+                              "enum": [
+                                "high",
+                                "medium",
+                                "low"
+                              ],
+                              "type": "string"
+                            },
+                            "score": {
+                              "type": "number"
+                            }
+                          },
+                          "type": "object"
+                        },
                         "codeDepth": {
                           "nullable": true,
                           "type": "number"
@@ -4456,6 +4722,11 @@
                         },
                         "scannedAt": {
                           "format": "date-time",
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "scannedRef": {
+                          "description": "Commit SHA of the default branch the code facts were computed at — cite github.com/<fullName>/tree/<scannedRef>. Null on scans before 2026-08-12.",
                           "nullable": true,
                           "type": "string"
                         },
@@ -4801,6 +5072,169 @@
         }
       }
     },
+    "/scout/getChanges": {
+      "get": {
+        "description": "Reconciliation feed for consumers holding cached or remembered claims (agent memory, institutional cache): every project/repo/partner row whose data changed after since, newest-first per surface, with facets naming which dated fact families moved (status, scf-awards, code-facts, toml; [\"row\"] = undated change, re-read the row). Use when: you stored our answers earlier and want to refresh only what moved. Not for: what the change WAS (re-read the row via its search endpoint) or contract/API changes (→ scout.getChangelog). Absence = unchanged since since, never an existence claim.",
+        "operationId": "scout.getChanges",
+        "parameters": [
+          {
+            "description": "ISO date (YYYY-MM-DD) or datetime; rows with changes strictly after this instant are returned. 400 on malformed, pre-2020, or future values.",
+            "in": "query",
+            "name": "since",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "CSV subset of projects,repos,partners (default all three).",
+            "in": "query",
+            "name": "surfaces",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Max rows PER SURFACE, newest-first (1–500, default 100). meta.truncated.<surface> signals more.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "maximum": 500,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "changes": {
+                      "items": {
+                        "properties": {
+                          "changedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "facets": {
+                            "description": "Dated fact families that moved past `since`: status, scf-awards, code-facts, toml. [\"row\"] = the row changed but no dated facet localizes it.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "fullName": {
+                            "description": "repos identity owner/name (absent on other rows)",
+                            "type": "string"
+                          },
+                          "slug": {
+                            "description": "projects/partners identity (absent on repos rows)",
+                            "type": "string"
+                          },
+                          "surface": {
+                            "enum": [
+                              "projects",
+                              "repos",
+                              "partners"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "surface",
+                          "changedAt",
+                          "facets"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "meta": {
+                      "properties": {
+                        "asOf": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "counts": {
+                          "additionalProperties": {
+                            "type": "integer"
+                          },
+                          "type": "object"
+                        },
+                        "limitPerSurface": {
+                          "type": "integer"
+                        },
+                        "since": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "sourceAdvisory": {
+                          "description": "Present ONLY when a source filter returned weak neighbors while stronger corpus-wide matches exist (a source-scoped vector search never goes empty — it returns the nearest in-source rows however weak). Carries inSourceTopScore, corpusWideTopScore, corpusWideTopSource and a note; treat it as the honest 'category is thin for this query' signal and consider dropping the filter.",
+                          "nullable": true,
+                          "properties": {
+                            "corpusWideTopScore": {
+                              "type": "number"
+                            },
+                            "corpusWideTopSource": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "inSourceTopScore": {
+                              "type": "number"
+                            },
+                            "note": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "surfaces": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "truncated": {
+                          "additionalProperties": {
+                            "type": "boolean"
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "changes",
+                    "meta"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Changed rows, newest-first per surface"
+          },
+          "400": {
+            "description": "Missing/invalid since, unknown param, or invalid surface — never silently ignored"
+          }
+        },
+        "summary": "Change feed: which rows moved since a given time",
+        "tags": [
+          "scout",
+          "Discovery"
+        ],
+        "x-execute": "await scout.getChanges(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/changes"
+        }
+      }
+    },
     "/scout/getClusters": {
       "get": {
         "description": "Groups the active Stellar project directory into topic clusters scored on crowdedness (1–10, log-scaled) — the market-map view of saturated vs underbuilt lanes, i.e. WHERE TO BUILD. Per cluster: size, SCF funding, hackathon winners, sample projects; dimension=category|types. Answers 'what's crowded / where is whitespace'. Not for looking up a named project → use searchProjects.",
@@ -4963,6 +5397,14 @@
             "description": "Filter by organizer slug",
             "in": "query",
             "name": "organizer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Free-text name lookup — matches event name/title and organizer (case-insensitive substring). Resolves a NAMED event without paging the catalog (e.g. q=blend, q=agents).",
+            "in": "query",
+            "name": "q",
             "schema": {
               "type": "string"
             }
@@ -5413,6 +5855,22 @@
                         },
                         {
                           "properties": {
+                            "docKind": {
+                              "description": "Doc class, stamped deterministically at ingest: spec = canonical (CAPs/SEPs/papers/audits — old AND authoritative), guide = staleness-sensitive instructional content, article = dated commentary, data = structured datasets. Null = ingested before 2026-08-13.",
+                              "enum": [
+                                "spec",
+                                "guide",
+                                "article",
+                                "data"
+                              ],
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "docVersionStatus": {
+                              "description": "SDK-version verdict for version-bearing content via the same dated table repos use: current | supported | deprecated (e.g. a guide showing wasm32-unknown-unknown is deprecated regardless of crawl recency). Null = the chunk names no version signal — honest absence, never unknown.",
+                              "nullable": true,
+                              "type": "string"
+                            },
                             "matchBasis": {
                               "description": "This is an org/people reference index, NOT a builder/contributor index — roster facts, not verified availability.",
                               "type": "string"
@@ -6242,6 +6700,29 @@
             }
           },
           {
+            "description": "Filter to repos whose SCANNED sdkCapabilities include this tag (closed set; unknown values 400). Scan-derived: an unscanned repo can never match — absence of a scan is NOT absence of the capability. Answers 'which repos actually implement X' structurally (e.g. capability=sep24-ramp, capability=x402, capability=wallet-provider).",
+            "in": "query",
+            "name": "capability",
+            "schema": {
+              "enum": [
+                "contract-invoke",
+                "fee-bump",
+                "horizon",
+                "mpp",
+                "passkey",
+                "sep10-auth",
+                "sep24-ramp",
+                "signing",
+                "soroban-rpc",
+                "tx-building",
+                "wallet-kit",
+                "wallet-provider",
+                "x402"
+              ],
+              "type": "string"
+            }
+          },
+          {
             "description": "Max builds (default 20, max 100).",
             "in": "query",
             "name": "limit",
@@ -6633,7 +7114,7 @@
     },
     "/skills/list_skills": {
       "get": {
-        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 19 skills across 4 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light), 210 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
+        "description": "The full skill index is embedded RIGHT HERE in this operation's x-skill-index: 19 skills across 4 pinned upstream sources (lumenloop, openzeppelin-stellar, stellar-dev, stellar-light), 173 addressable sections total. Each index entry: { id, source, description, sections } where sections lists '##' headings of SKILL.md plus 'file:<relpath>' keys for extra reference files. No separate call is needed — read x-skill-index from this spec.",
         "operationId": "skills.list_skills",
         "responses": {
           "200": {
@@ -6796,22 +7277,12 @@
             "id": "skills.stellar-dev.agentic-payments",
             "sections": [
               "Quick decision",
+              "Read the file that matches the task",
               "Related skills",
-              "When to use x402",
-              "How x402 works on Stellar",
-              "Seller: monetize an Express API",
-              "Buyer: agent client",
-              "Testnet runbook",
+              "Testnet setup (shared)",
               "Two USDC addresses (don't confuse them)",
-              "Mainnet checklist",
-              "Key concepts",
-              "Common pitfalls",
-              "When to use MPP",
-              "Charge mode: per-request payments",
-              "Session mode: high-frequency off-chain payments",
-              "Packages and subpath imports",
-              "Testnet runbook",
-              "Common pitfalls"
+              "file:mpp.md",
+              "file:x402.md"
             ],
             "source": "stellar-dev"
           },
@@ -6854,17 +7325,16 @@
               "When to use this skill",
               "Related skills",
               "Goals",
-              "Quick Navigation",
+              "Read the file that matches the task",
               "Recommended Dependencies",
               "SDK Initialization",
               "Wallet Integration",
               "Transaction Building",
               "Transaction Submission",
-              "React Components",
-              "Next.js App Router Setup",
-              "Data Fetching",
-              "Smart Accounts (Passkey Wallets)",
-              "Transaction UX Checklist"
+              "Transaction UX Checklist",
+              "file:data-fetching.md",
+              "file:react.md",
+              "file:smart-accounts.md"
             ],
             "source": "stellar-dev"
           },
@@ -6875,13 +7345,13 @@
               "When to use this skill",
               "Related skills",
               "Overview",
-              "Quick Navigation",
+              "Read the file that matches the task",
               "Stellar RPC",
-              "Horizon API (Legacy)",
               "Migration: Horizon to RPC",
               "Historical Data Access",
               "Network Configuration",
-              "Best Practices"
+              "Best Practices",
+              "file:horizon.md"
             ],
             "source": "stellar-dev"
           },
@@ -6918,39 +7388,13 @@
               "Quick mapping by use case",
               "Practical workflow for AI agents",
               "Related docs",
-              "DeFi Protocols",
-              "Wallets",
-              "Developer Tools",
-              "Oracles",
-              "Gaming & NFTs",
-              "Infrastructure",
-              "Example Repositories",
-              "Cross-Chain",
-              "Builder Teams & Companies",
-              "Project Directories",
-              "Real-World Assets",
-              "Enterprise Integrations",
-              "Official Documentation",
-              "SDKs",
-              "CLI Tools",
-              "Contract Libraries & Tools",
-              "Example Repositories",
-              "Ecosystem Projects",
-              "Security",
-              "Zero-Knowledge Proofs (Status-Sensitive)",
-              "Testing",
-              "Data & Analytics",
-              "Infrastructure",
-              "Protocol & Governance",
-              "Project Directories & Funding",
-              "Learning Resources",
-              "Stablecoins on Stellar",
-              "Community"
+              "file:ecosystem.md",
+              "file:resources.md"
             ],
             "source": "stellar-dev"
           },
           {
-            "description": "Zero-knowledge proofs and privacy patterns on Stellar. Covers Groth16 verification in smart contracts via BLS12-381 (CAP-0059, Protocol 22+) and BN254 (CAP-0074, Protocol 25+; MSM and Fr arithmetic via CAP-0080, Protocol 26+) host functions, Poseidon/Poseidon2 permutation primitives (CAP-0075, Protocol 25+), and concrete toolchain walkthroughs for Circom, Noir (UltraHonk verifiable on-chain via a community verifier, Protocol 26+), and RISC Zero (Groth16-wrapped receipts verify natively). Use when building privacy-preserving applications, ZK-verifier contracts, or wiring a proving toolchain to Stellar.",
+            "description": "Zero-knowledge proofs and privacy patterns on Stellar. Covers Groth16 verification in smart contracts via BLS12-381 host functions (CAP-59), the BN254 + Poseidon host functions (CAP-74/75), and concrete toolchain walkthroughs for Circom, Noir, and RISC Zero. Use when building privacy-preserving applications, ZK-verifier contracts, or wiring a proving toolchain to Stellar.",
             "id": "skills.stellar-dev.zk-proofs",
             "sections": [
               "When to use this skill",
@@ -8293,8 +8737,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 283,
-    "generatedAt": "2026-08-11T01:07:17Z"
+    "catalogEntries": 247,
+    "generatedAt": "2026-08-14T00:40:11Z"
   },
   "x-services": {
     "lumenloop": {
@@ -8306,7 +8750,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-08-11T01:06:14.101Z",
+      "fetchedAt": "2026-08-14T00:40:03.856Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -8333,7 +8777,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-08-11T01:07:17Z"
+      "syncedAt": "2026-08-14T00:40:11Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",

@@ -156,7 +156,7 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter((e) => e.service === "lumenloop" && e.kind === "skill-section")
     ).toHaveLength(0);
 
-    // Scout: 24 exposed of 28 upstream OpenAPI operations — the 3 write/
+    // Scout: 25 exposed of 29 upstream OpenAPI operations — the 3 write/
     // side-effecting endpoints (submitFeedback, submitPartnerListing,
     // partnerAssistant) are excluded at build time, plus getFeedbackSchema:
     // read-only, but a dead end whose only purpose is to shape the excluded
@@ -164,7 +164,7 @@ describe("build-catalog.mjs", () => {
     // scout.submitFeedback). matchPartners and partnerOnboard stay exposed —
     // their OpenAPI descriptions document pure AI ranking/extraction with no
     // persistence.
-    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(24);
+    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(25);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);
     expect(count((e) => e.id === "scout.submitPartnerListing")).toBe(0);
@@ -175,7 +175,8 @@ describe("build-catalog.mjs", () => {
       "scout.listAudits",
       "scout.searchHackathonBuilds",
       "scout.getPeople",
-      "scout.getStablecoins"
+      "scout.getStablecoins",
+      "scout.getChanges"
     ]) {
       expect(count((e) => e.id === id), id).toBe(1);
     }
@@ -202,8 +203,8 @@ describe("build-catalog.mjs", () => {
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
-    // Grand total: everything in the manifest is exposed (ADR-0003).
-    expect(catalog.entries).toHaveLength(283);
+    // Grand total: 55 operations + 19 whole skills + 173 skill sections.
+    expect(catalog.entries).toHaveLength(247);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {

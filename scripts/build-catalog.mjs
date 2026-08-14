@@ -305,7 +305,8 @@ import {
   SCOUT_DESCRIPTION_SCRUBS,
   scoutRefRewrites,
   rewriteScoutRefs,
-  scrubScoutDescription
+  scrubScoutDescription,
+  scrubNonExposedScoutSchemaRefs
 } from "./description-notes.mjs";
 import {
   EXCLUDED_LUMENLOOP_OPS,
@@ -530,8 +531,8 @@ function buildScout(inv) {
         description: [description || opId, note ? plainText(note) : undefined]
           .filter(Boolean)
           .join("\n\n"),
-        inputSchema: scoutInputSchema(op, pathItem, openapi),
-        outputSchema: scoutOutputSchema(op, openapi),
+        inputSchema: scrubNonExposedScoutSchemaRefs(scoutInputSchema(op, pathItem, openapi)),
+        outputSchema: scrubNonExposedScoutSchemaRefs(scoutOutputSchema(op, openapi)),
         transport: { type: "http", method: httpMethod, path, base },
         provenance: {
           source: `${base}/api/openapi.json`,
@@ -919,10 +920,10 @@ export function attachRetrievalProfiles(entries, profiles = RETRIEVAL_PROFILES) 
 // excluded scout endpoint by its raw REST spelling, or mention a retired
 // skill. This is the systemic backstop for the whole leak class — a scrub or
 // rewrite that goes stale fails the build here instead of shipping a pointer
-// to a capability consumers must never learn about. Runnable-skill entries
-// contribute their schema JSON too (design §5): schema `description` strings
-// are emitted text — a runner schema naming a non-exposed op would teach the
-// model exactly what ADR-0003 forbids. Exported for the guard tests.
+// to a capability consumers must never learn about. Every operation schema
+// and every runnable-skill schema contributes its JSON too: schema text ships
+// through signatures and describe/catalog views, so it must follow the same
+// exposure boundary as descriptions. Exported for the guard tests.
 //
 // The "any service.op token not in opIds" check needs the full assembled
 // manifest as an allowlist, so it stays here; the other three checks (raw
@@ -942,9 +943,9 @@ export function assertNoNonExposedRefs(entries) {
       entry.description ?? "",
       ...(entry.keywords ?? []),
       ...(entry.routingKeywords ?? []),
-      // Runnable schemas ship to the model (signatures, describe, super
-      // spec) — their whole JSON is guarded text like any description.
-      ...(entry.runnable === true
+      // Operation and runnable-skill schemas ship to the model through
+      // signatures and describe/catalog views. Guard their whole JSON.
+      ...(entry.kind === "operation" || entry.runnable === true
         ? [JSON.stringify(entry.inputSchema), JSON.stringify(entry.outputSchema)]
         : [])
     ].join("\n");

@@ -171,6 +171,46 @@ export function rewriteScoutRefs(text, pairs) {
   return out.replace(/(^|[\s(/])\?([a-z])/g, "$1$2");
 }
 
+/**
+ * Remove non-exposed Scout endpoint spellings from schema descriptions.
+ *
+ * Schemas are emitted through catalog signatures, codemode.describe(), and
+ * the super spec. Upstream component prose can therefore advertise an
+ * excluded endpoint even when its own operation never reaches the manifest.
+ * Derive the replacements from the exposure data so every excluded endpoint
+ * receives the same treatment. The catalog guard remains the fail-loud
+ * backstop for references in non-description schema fields.
+ */
+export function scrubNonExposedScoutSchemaRefs(value) {
+  if (Array.isArray(value)) return value.map(scrubNonExposedScoutSchemaRefs);
+  if (!value || typeof value !== "object") return value;
+
+  const out = {};
+  for (const [key, item] of Object.entries(value)) {
+    if (key !== "description" || typeof item !== "string") {
+      out[key] = scrubNonExposedScoutSchemaRefs(item);
+      continue;
+    }
+
+    let description = item;
+    const rewrites = [...EXCLUDED_SCOUT_OPS]
+      .flatMap((signature) => {
+        const path = signature.slice(signature.indexOf(" ") + 1);
+        const label = `upstream ${path.split("/").filter(Boolean).at(-1).replaceAll("-", " ")}`;
+        return [
+          [signature, label],
+          [path, label]
+        ];
+      })
+      .sort((a, b) => b[0].length - a[0].length);
+    for (const [needle, replacement] of rewrites) {
+      description = description.split(needle).join(replacement);
+    }
+    out[key] = description;
+  }
+  return out;
+}
+
 // ---------------------------------------------------------------------------
 // Excluded-endpoint clause scrubs (ADR-0003).
 //

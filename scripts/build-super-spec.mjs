@@ -42,7 +42,8 @@ import {
   SCOUT_DESCRIPTION_NOTES,
   scoutRefRewrites,
   rewriteScoutRefs,
-  scrubScoutDescription
+  scrubScoutDescription,
+  scrubNonExposedScoutSchemaRefs
 } from "./description-notes.mjs";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts } from "./lib/skill-mirror.mjs";
@@ -324,9 +325,15 @@ function buildScout(inv, exposed) {
         ...(summary ? { summary } : {}),
         ...(description ? { description } : {}),
         tags: ["scout", ...(upstream.tags ?? [])],
-        ...(parameters.length > 0 ? { parameters: namespaceRefs(parameters, "scout") } : {}),
-        ...(upstream.requestBody ? { requestBody: namespaceRefs(upstream.requestBody, "scout") } : {}),
-        ...(upstream.responses ? { responses: namespaceRefs(upstream.responses, "scout") } : {}),
+        ...(parameters.length > 0
+          ? { parameters: scrubNonExposedScoutSchemaRefs(namespaceRefs(parameters, "scout")) }
+          : {}),
+        ...(upstream.requestBody
+          ? { requestBody: scrubNonExposedScoutSchemaRefs(namespaceRefs(upstream.requestBody, "scout")) }
+          : {}),
+        ...(upstream.responses
+          ? { responses: scrubNonExposedScoutSchemaRefs(namespaceRefs(upstream.responses, "scout")) }
+          : {}),
         "x-service": "scout",
         "x-upstream": { method: method.toUpperCase(), path },
         "x-execute": `await scout.${opName}(args)`
@@ -352,7 +359,9 @@ function buildScout(inv, exposed) {
   for (const [group, defs] of Object.entries(openapi.components ?? {})) {
     components[group] = {};
     for (const [name, def] of Object.entries(defs)) {
-      components[group][`scout.${name}`] = namespaceRefs(def, "scout");
+      components[group][`scout.${name}`] = scrubNonExposedScoutSchemaRefs(
+        namespaceRefs(def, "scout")
+      );
     }
   }
 

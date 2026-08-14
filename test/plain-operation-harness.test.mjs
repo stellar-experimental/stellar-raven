@@ -11,15 +11,15 @@ import {
 } from "../eval/qa/plain-operation-harness.mjs";
 
 describe("plain operation eval harness", () => {
-  it("derives exactly the exposed 54-operation manifest surface", () => {
+  it("derives exactly the exposed 55-operation manifest surface", () => {
     const surface = loadPlainOperationSurface();
-    expect(surface.tools).toHaveLength(54);
+    expect(surface.tools).toHaveLength(55);
     expect(surface.metrics.serviceCounts).toEqual(EXPECTED_OPERATION_COUNTS);
-    expect(surface.metrics.toolCount).toBe(54);
+    expect(surface.metrics.toolCount).toBe(55);
     expect(surface.metrics.serializedToolsChars).toBeGreaterThan(surface.metrics.descriptionsChars);
     expect(surface.metrics.metricMeaning).toMatch(/not consumed model context/);
     expect(surface.metrics.surfaceSha256).toMatch(/^[a-f0-9]{64}$/);
-    expect(new Set(surface.tools.map((tool) => tool.name)).size).toBe(54);
+    expect(new Set(surface.tools.map((tool) => tool.name)).size).toBe(55);
     for (const tool of surface.tools) {
       const id = operationIdFromPlainTool(tool.name);
       expect(plainToolName(id)).toBe(tool.name);

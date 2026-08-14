@@ -48,7 +48,7 @@ describe("skill transports", () => {
       expect(pinnedShas.has(t.sha as string), `${e.id} sha is not in MANIFEST.json`).toBe(true);
       checked += 1;
     }
-    expect(checked).toBeGreaterThan(200);
+    expect(checked).toBe(192);
   });
 });
 
@@ -173,12 +173,13 @@ describe("readSkill", () => {
   });
 
   it("oversized whole-reads return the FULL body plus an advisory notice (content is never withheld)", async () => {
-    // skills.stellar-dev.standards is the known-largest body (~11k tokens,
-    // design study todo 812 comment 2184). Sandbox scripts legally grep and
+    // skills.stellar-light.stellar-scout remains larger than the advisory
+    // boundary after stellar-dev split its large bodies into companion files.
+    // Sandbox scripts legally grep and
     // aggregate full bodies in-sandbox — the ~6k-token cap applies only to
     // what a script RETURNS (run.ts truncateForModel), never to data flowing
     // INTO the sandbox — so the content must be present; the notice is advice.
-    const r = await readSkill(catalog, source, "skills.stellar-dev.standards");
+    const r = await readSkill(catalog, source, "skills.stellar-light.stellar-scout");
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.content).toBeTypeOf("string");

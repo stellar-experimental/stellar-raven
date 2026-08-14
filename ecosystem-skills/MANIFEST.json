@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-08-11T01:07:17Z",
+  "synced_at": "2026-08-14T00:40:11Z",
   "status": "complete",
   "missing_sources": [],
   "skill_count": 20,
@@ -189,9 +189,9 @@
       "repo": "stellar-dev-skill",
       "path": "skills",
       "ref": "main",
-      "commit": "9e3d3fe0de8587205b020e0148ea67525e38e494",
-      "commit_date": "2026-08-10T23:49:58Z",
-      "url": "https://github.com/stellar/stellar-dev-skill/tree/9e3d3fe0de8587205b020e0148ea67525e38e494/skills",
+      "commit": "812598a8538dc5479196145d2175b4a991bee1d9",
+      "commit_date": "2026-08-13T18:24:40Z",
+      "url": "https://github.com/stellar/stellar-dev-skill/tree/812598a8538dc5479196145d2175b4a991bee1d9/skills",
       "license_files": [
         "LICENSE"
       ],
@@ -201,8 +201,18 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 29736,
-              "sha": "72f908f0de274fd235517c820367b86e9252d776"
+              "size": 6268,
+              "sha": "d689a4f676bd3dd6fdde52f0466155c7300ec4bc"
+            },
+            {
+              "path": "mpp.md",
+              "size": 11936,
+              "sha": "9faec24dffd671d5647f2cb9b674d1ab116177c5"
+            },
+            {
+              "path": "x402.md",
+              "size": 13299,
+              "sha": "63805b91ed4c9c290f76511ed067bf7da95ab9aa"
             }
           ]
         },
@@ -211,8 +221,8 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 12847,
-              "sha": "993a41589562ab1979f5e5d3505849d40e6349c4"
+              "size": 15947,
+              "sha": "e32d83257adced9b4358d5261018ec7ca2c614f4"
             }
           ]
         },
@@ -221,18 +231,18 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 7646,
-              "sha": "219cdd9966911bf3fa103b741e8e58c4f600f9be"
+              "size": 7658,
+              "sha": "7bd57aea6541c6497bb34b149a7c1e6194f3f039"
             },
             {
               "path": "axelar.md",
-              "size": 11258,
-              "sha": "a9e64551a32344b8db460226b7db9e0156cbceb4"
+              "size": 11287,
+              "sha": "d166c48d41081eee0a0da6925cf7fc199e76bde6"
             },
             {
               "path": "cctp.md",
-              "size": 17077,
-              "sha": "9c19561c7fd7931ee46e8d35f774885900f201a5"
+              "size": 17086,
+              "sha": "f7a929887a569ae45384c23e849dea0aa8a14266"
             }
           ]
         },
@@ -241,8 +251,23 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 26418,
-              "sha": "59f35eca8e628fd9f443c161b0598cd0c3e73783"
+              "size": 17948,
+              "sha": "357654c023d5f6b702241fb811efaccaefd57478"
+            },
+            {
+              "path": "data-fetching.md",
+              "size": 2813,
+              "sha": "4966ca855a108e59e7612d4bb1a457a0ae848fe7"
+            },
+            {
+              "path": "react.md",
+              "size": 3629,
+              "sha": "a34c39c61804075de8166541675557bd962a058f"
+            },
+            {
+              "path": "smart-accounts.md",
+              "size": 3019,
+              "sha": "a38ad76f8031cd2198649b2aa7d83cc70d6f8304"
             }
           ]
         },
@@ -251,8 +276,13 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 15777,
-              "sha": "f73338c5784a35b72023304aedd684b379cfc0ce"
+              "size": 13094,
+              "sha": "c15c645579f1a25afb782a1eedaae04157a58723"
+            },
+            {
+              "path": "horizon.md",
+              "size": 3775,
+              "sha": "b991365d3acccd4e3a1f309249f2786cb6f8c3ae"
             }
           ]
         },
@@ -266,8 +296,8 @@
             },
             {
               "path": "development.md",
-              "size": 27463,
-              "sha": "4e18ae09598007e9c5863ac2e91a36e4b41c506d"
+              "size": 31325,
+              "sha": "fefcf8a1938d9d4e1590c323af2d9d9925f49c25"
             },
             {
               "path": "security.md",
@@ -286,8 +316,18 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 47604,
-              "sha": "b148f1f44db25ba0f059fc057acdbe0e47d67efb"
+              "size": 8037,
+              "sha": "9cae054fc84dae98b8ba5ac190807a4f4f9150c2"
+            },
+            {
+              "path": "ecosystem.md",
+              "size": 23253,
+              "sha": "cd406b589a5c8f0500fff2b0baa8d94795b3a987"
+            },
+            {
+              "path": "resources.md",
+              "size": 17260,
+              "sha": "0c333410ef8a96f6afaa0564b0535c9a8acd5989"
             }
           ]
         },
@@ -296,8 +336,8 @@
           "files": [
             {
               "path": "SKILL.md",
-              "size": 15789,
-              "sha": "c62a71d0ff2ad932b3d32d01e12cc31d276add3a"
+              "size": 15555,
+              "sha": "93f44acdc0729df76b98f9cd7a2611ceb676f8f9"
             }
           ]
         }
@@ -310,9 +350,9 @@
       "repo": "stellar-scout",
       "path": "",
       "ref": "main",
-      "commit": "f2659ff63cd891d48f6adeb024de7753bd9efb9f",
-      "commit_date": "2026-07-24T01:15:56Z",
-      "url": "https://github.com/Stellar-Light/stellar-scout/tree/f2659ff63cd891d48f6adeb024de7753bd9efb9f",
+      "commit": "0d169e4ab64ddcc87ef61cc8e1737151fd39a05e",
+      "commit_date": "2026-08-11T17:56:49Z",
+      "url": "https://github.com/Stellar-Light/stellar-scout/tree/0d169e4ab64ddcc87ef61cc8e1737151fd39a05e",
       "license_files": [
         "LICENSE"
       ],
@@ -332,13 +372,13 @@
             },
             {
               "path": "references/api-reference.md",
-              "size": 29184,
-              "sha": "b6e791417a5d15c1027b5c8505109df519e70987"
+              "size": 31315,
+              "sha": "35a0f20add5cb808f68c230b36aef5f8746293b4"
             },
             {
               "path": "references/examples.md",
-              "size": 14176,
-              "sha": "74551fcbc2b6656e26314ee86dd206243e5d65cd"
+              "size": 14224,
+              "sha": "352edcc9396816fb02d5f1e67a1aa5807e6560a4"
             }
           ]
         }
@@ -347,7 +387,7 @@
   ],
   "catalog": {
     "source": "https://stellarlight.xyz/api/skills",
-    "fetched_at": "2026-08-11T01:07:17Z",
+    "fetched_at": "2026-08-14T00:40:11Z",
     "counts": {
       "returned": 43,
       "total": 43,

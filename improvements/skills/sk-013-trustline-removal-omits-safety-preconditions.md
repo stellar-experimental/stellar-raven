@@ -1,7 +1,7 @@
 ---
 id: sk-013
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-04
 upstreamTitle: Add trustline-removal preconditions to the ChangeTrust example
 evidence:
@@ -13,6 +13,8 @@ evidence:
   - 2026-08-05 live primary-source recheck: stellar/stellar-dev-skill main (381ca32a) assets SKILL.md still presents limit 0 as removal without balance, liability, offer, or pool-reference preconditions
   - 2026-08-05 primary-source check: Stellar XDR and CAP-0038 define CHANGE_TRUST_INVALID_LIMIT for an uncleared balance/liability and CHANGE_TRUST_CANNOT_DELETE for a pool reference
   - upstream issue filed 2026-08-05: https://github.com/stellar/stellar-dev-skill/issues/81
+  - 2026-08-14 exact pinned trigger recheck: stellar-dev commit 812598a8538dc5479196145d2175b4a991bee1d9 adds a Remove Trustline section that requires asset code and issuer checks, zero balance, cleared offers and buying liabilities, exited liquidity-pool positions, and specific op_invalid_limit and op_cannot_delete handling
+  - upstream issue 81 closed as completed on 2026-08-13 after the fix merged in PR 90: https://github.com/stellar/stellar-dev-skill/issues/81#issuecomment-5281519812
 recurrences:
   - date: 2026-08-11
     evidence: current upstream assets SKILL.md still gives only `limit: "10000", // 0 to remove trustline` in its ChangeTrust example. The surrounding trustline section still omits balance, buying-liability, open-offer, and liquidity-pool-reference removal preconditions.

@@ -12,8 +12,8 @@ Total findings: 59
 | sk-005 | The Lumenloop skill corpus lacks machine-readable audience and transport metadata                                                          | reported-upstream | 2026-07-03 | 3           |
 | sk-006 | The smart-contracts skill lacks error-keyed troubleshooting for common CLI and build failures                                              | reported-upstream | 2026-07-03 | 4           |
 | sk-007 | The ecosystem-digest skill hard-codes a stale 2026-06-08 recency window                                                                    | reported-upstream | 2026-07-03 | 3           |
-| sk-009 | The pinned Stellar Scout skill API reference has fallen behind the live Scout OpenAPI contract from 1.7.11 through 1.8.40. This is new…    | reported-upstream | 2026-07-10 | 4           |
-| sk-013 | The assets skill teaches ChangeTrust(limit: 0) as trustline removal without the preconditions that make the operation safe and valid. A…   | reported-upstream | 2026-08-04 | 1           |
+| sk-009 | The pinned Stellar Scout skill API reference has fallen behind the live Scout OpenAPI contract from 1.7.11 through 1.8.40. This is new…    | fixed-upstream    | 2026-07-10 | 4           |
+| sk-013 | The assets skill teaches ChangeTrust(limit: 0) as trustline removal without the preconditions that make the operation safe and valid. A…   | fixed-upstream    | 2026-08-04 | 1           |
 | sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…   | reported-upstream | 2026-08-11 | 1           |
 | sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                         | reported-upstream | 2026-08-11 | 1           |
 

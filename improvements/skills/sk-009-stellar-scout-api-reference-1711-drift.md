@@ -1,7 +1,7 @@
 ---
 id: sk-009
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-10
 evidence:
   - live drift issue kalepail/stellar-raven#19: inventory/stellar-light.json refreshed to OpenAPI/status 1.7.11
@@ -12,6 +12,8 @@ evidence:
   - 2026-07-14 follow-up narrows the residual after source=cap landed: https://github.com/Stellar-Light/stellar-scout/issues/11#issuecomment-4971409842
   - 2026-07-15 pin 7a5a27 and live OpenAPI 1.7.26 verification: research adds source=sdf-org and observedAt; leaderboard adds exact type filtering plus filter and metric metadata, while the mirrored reference omits them
   - 2026-08-10 live OpenAPI 1.8.40 verification: Repo adds activityState/activitySignals, contractInterface, protocolCaps, stellarDeps, and targetProtocol; searchRepos adds activity; research adds source=repo-docs. The pinned f2659ff API reference contains none of those surface names.
+  - 2026-08-14 exact live trigger recheck: refreshed OpenAPI 1.8.57 still exposes semantic fallback, Project tvlUSD/tvlAsOf, research source=cap and source=repo-docs, leaderboard type/filter/metric/data-date metadata, Repo activityState/activitySignals, and the repos/search activity filter; pinned stellar-scout commit 0d169e4ab64ddcc87ef61cc8e1737151fd39a05e documents every item.
+  - upstream issue Stellar-Light/stellar-scout#11 closed 2026-08-11 after the source correction: https://github.com/Stellar-Light/stellar-scout/issues/11
 recurrences:
   - date: 2026-07-15
     evidence: the 1.7.26 mirror still omits live research source=sdf-org and observedAt plus leaderboard type, meta.filters.type, meta.metricDefinitions, and meta.dataAsOf

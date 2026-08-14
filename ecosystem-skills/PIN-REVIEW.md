@@ -106,3 +106,21 @@ does not outrank system or developer instructions. `cctp.md` also points at a th
 with an install-and-run command — the only supply-chain execution prompt in the selection. The K2
 addresses are upstream's word as of their stated date; treat the linked contract page as the source
 of truth before anything hard-codes them.
+
+### 2026-08-14 — stellar-dev and stellar-light re-pin (drift issue #20)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `812598a8538dc5479196145d2175b4a991bee1d9` | `sel:7aa692ae3f4e` | read in full |
+| `stellar-light` | `0d169e4ab64ddcc87ef61cc8e1737151fd39a05e` | `sel:3c790de8392e` | read in full |
+
+The `stellar-dev` selection changes 18 files. It splits four large skills into eight companion
+files. It adds trustline-removal checks, durable Horizon cursor guidance, and contract-build
+diagnostics. It also shortens the `zk-proofs` routing description.
+
+The `stellar-light` selection changes two reference files. It documents new read-only filters,
+code-evidence fields, confidence semantics, and current `smart-contracts` skill links.
+
+The full old-pin to new-pin body diff was reviewed. The changed text contains no credential,
+behavior-hijack instruction, retired skill, or non-exposed Raven operation reference. The new
+companion files preserve the existing topics and make section reads smaller.
