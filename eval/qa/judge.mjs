@@ -308,7 +308,7 @@ const PROMPT_SHA256_FIXTURES = new Map([
   ["q-comp-sep8-number-lookup-no-deepresearch", "bc5eb25233a3f6d895f381d8445b5aa07f2d986f75bd944feab9675546f9cea4"],
   ["q-edge-1xlm-activation-fee", "dbecace2f637b55c7b0b5fd76df2301d4eaf749e49cef1905822ecd74faff60e"],
   ["q-edge-ambig-best-wallet", "a6151455693dab9876802b9b7156fb8f99b85961c5dbe5cd1871feb36c266b6e"],
-  ["q-edge-factcheck-soroswap-first-amm", "eee5f07be372e546b27da64929c761033cfe55cd82f0270b3411e6a2e1b45d28"],
+  ["q-edge-factcheck-soroswap-first-amm", "45a494148f045f5cf210431e94369a8795fb25bec1f62187669e42d59c2e6223"],
   ["q-edge-inject-ignore-instructions", "6c0341bbbe0137962ca0f043d213f22179e64f668bd63d94fd460bef73775562"],
   ["q-edge-noinfo-sep-9999", "921fd8b07fba7f08e6cad8132a1e98961560404e84821720c9ca4bf732e9a5b8"],
   ["q-edge-oos-bitcoin-price-prediction", "0ff7ade15de5183702cd74a5fc1114df9c40863958dc43ccb87d71c31ec493b2"],

@@ -5,10 +5,10 @@ driving this MCP server end-to-end (**search → execute → answer**) produce a
 correct, current, non-fabricated answer** to a real Stellar-ecosystem question?
 
 The battery is **owned**: one hand-authored JSON file per case under `eval/qa/corpus/battery/`,
-490 cases as of 2026-07-13, edited directly and reviewed like code. Provenance is first-class (`truth` block per
-case), gospel changes are CI-linted at the moment of change, and the compiled artifacts are
-generated + byte-pinned. History — the vendored-corpus/override era, rubric evolution, and the
-run archaeology through 2026-07-10 — lives in
+492 cases as of 2026-08-12, edited directly and reviewed like code. Commit `6e1f979` added two
+Soroban cases. Provenance is first-class (`truth` block per case), gospel changes are CI-linted at
+the moment of change, and the compiled artifacts are generated + byte-pinned. History — the
+vendored-corpus/override era, rubric evolution, and the run archaeology through 2026-07-10 — lives in
 [`research/audits/2026-07-qa-history.md`](../../research/audits/2026-07-qa-history.md); the
 migration proof is [`reviewed/2026-07-super-corpus-migration.md`](./reviewed/2026-07-super-corpus-migration.md).
 
@@ -247,10 +247,12 @@ unsourced contradiction is not.
   passes (pairwise score disagreement 15.6%). Isolated single-run score movement at or below
   that scale is variance until confirmed by live transcript review or a repeated mechanism.
   Read `wrong` counts before `correct` counts; compare variants on the same sample.
-- **Denominator note**: the owned battery is **490 cases as of 2026-07-13**. The 2026-07-11
-  baseline remains a historical 484-case denominator; its aggregates are not retroactively
-  relabeled. The approximately 469-case pre-rebuild aggregates are also archival (see the history
-  doc). Per-id comparisons remain valid for continuing cases under the same rubric/pack tuple.
+- **Denominator note**: the owned battery is **492 cases as of 2026-08-12**. Commit `6e1f979`
+  added two Soroban cases to the 490-case corpus. The 2026-07-11 baseline remains a historical
+  484-case denominator, and the 490-case results remain 490-denominated. Neither denominator is
+  retroactively relabeled. The approximately 469-case pre-rebuild aggregates are also archival
+  (see the history doc). Per-id comparisons remain valid for continuing cases under the same
+  rubric/pack tuple.
 - **Deterministic sample history**: the sampler code and N=30 contract did not change. Six new
   cases added three members to the Scout stratum and three to LumenLoop. Because the algorithm
   uses even-spaced picks over each id-sorted service stratum, the 490-case compile retained 25
@@ -259,8 +261,14 @@ unsourced contradiction is not.
   `q-scf-rfps-hackathons-live`, and `q-ti-explain-repo-payload-status`; added
   `q-defi-defindex-honest`, `q-hist-meridian-2026-corrected-venue`, `q-scf-current-round`,
   `q-scf-sdf-bug-bounty`, and `q-ti-openzeppelin-relayer`. None of the six new cases itself
-  entered sample-30. Compare aggregate headline runs across the 484→490 boundary only on an
-  explicit common-id set, or disclose that sample membership changed.
+  entered sample-30. The 490→492 expansion retained 24 sample ids and replaced six. Removed:
+  `q-protocol-27-cap-0071`, `q-protocol-quorum-slice-vs-quorum`, `q-raph-offramp-xlm-usdc`,
+  `q-sep-38-quotes`, `q-sor-build-target-wasm32v1`, and `q-sor-scval-conversion`; added:
+  `q-protocol-accounts-signers-thresholds`, `q-protocol-scp-consensus-algorithm`,
+  `q-raph-phishing-pending-claim`, `q-sep-41-token-interface`,
+  `q-sor-classic-dex-from-contract`, and `q-sor-sep41-transfer-vs-transferfrom`. Compare
+  aggregate headline runs across either the 484→490 or 490→492 boundary only on an explicit
+  common-id set, or disclose that sample membership changed.
 
 ## 2026-07-27 stale-gap re-measurement (checkpoint, not a re-baseline)
 

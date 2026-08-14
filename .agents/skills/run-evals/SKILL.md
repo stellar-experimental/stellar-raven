@@ -301,15 +301,19 @@ Known judge failure modes (from `eval/qa/README.md`):
   (`JUDGE_RUBRIC` in `judge.mjs` is the current version; verdicts carry
   `{rubric, packVersion, promptSha256}` stamps). The comparability rules and the committed
   noise floor live in `eval/qa/README.md` ("Judging rubric and score comparability").
-- **Denominator note:** the owned battery is 490 cases as of 2026-07-13. The 2026-07-11 baseline
-  remains historically 484-denominated, and pre-rebuild aggregates remain archival
-  (`research/audits/2026-07-qa-history.md`); neither is directly comparable to a 490-case aggregate.
-  Per-id comparisons remain valid for continuing ids under the same rubric/pack tuple.
+- **Denominator note:** the owned battery is 492 cases as of 2026-08-12, after commit `6e1f979`
+  added two Soroban cases. The 2026-07-11 baseline remains historically 484-denominated, and
+  the 2026-07-13 corpus remains historically 490-denominated. Pre-rebuild aggregates remain
+  archival (`research/audits/2026-07-qa-history.md`); neither historical denominator is directly
+  comparable to a 492-case aggregate. Per-id comparisons remain valid for continuing ids under
+  the same rubric/pack tuple.
 - **Deterministic sample-membership note:** sample-30 is proportional by service and uses
   even-spaced picks over id-sorted strata. Adding cases can therefore change sampled ids without
   changing sampler code. The 484→490 expansion retained 25 ids and replaced five (full list in
-  `eval/qa/README.md`); none of the six new cases entered the sample. Before claiming movement
-  across a denominator change, use an explicit common-id list or disclose the membership churn.
+  `eval/qa/README.md`); none of the six new cases entered the sample. The 490→492 expansion
+  retained 24 ids, removed six, and added six (full list in `eval/qa/README.md` under
+  "Deterministic sample history"). Before claiming movement across either denominator change,
+  use an explicit common-id list or disclose the membership churn.
 - Freshness cases: sourced drift from the golden snapshot is fine; confident unsourced
   contradiction is not. Expect a small floor of judge-vs-live disagreements.
 - **Avoid-clause bypass of the rubric-v2 addendum**: a golden whose must-avoid item bans
