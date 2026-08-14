@@ -1,15 +1,15 @@
 {
-  "changelogEntryCount": 145,
+  "changelogEntryCount": 146,
   "changelogLatest": {
-    "date": "2026-08-13",
-    "detail": "The Raven-lens gap hunt found agents could only free-text toward capability questions ('sep-24 anchor implementation' surfaced protocol/docs repos, not implementers). searchRepos now takes capability=<tag> over the closed scan-derived sdkCapabilities set (contract-invoke, fee-bump, horizon, mpp, passkey, sep10-auth, sep24-ramp, signing, soroban-rpc, tx-building, wallet-kit, wallet-provider, x402); unknown tags 400 with the valid list. Scan-derived semantics: an unscanned repo can never match — absence of a scan is NOT absence of the capability (the nightly scan-coverage detector + waves close that gap).",
-    "summary": "searchRepos capability filter — 'which repos actually implement X' becomes structural (openapi@1.8.57).",
+    "date": "2026-08-14",
+    "detail": "Within a stellarness tier, a repo whose attributed contract has real lifetime events (codeInUse, stellar.expert-verified) outranks a keyword-luckier row without usage evidence — the round-5 probe case where unused oracle feeders outranked the one oracle live on mainnet. Exact identity (alias/anchor) still beats usage; usage never lifts a no-evidence repo above a code-verified one (the F4 contract holds); rows without usage are unaffected relative to each other. Coarse binary tier, fixture-gated in the ranking harness.",
+    "summary": "searchRepos ranking: verified mainnet usage now ranks above raw keyword coverage (code-truth 5).",
     "surfaces": [
       "api"
     ],
-    "type": "added"
+    "type": "changed"
   },
-  "fetchedAt": "2026-08-14T00:40:03.856Z",
+  "fetchedAt": "2026-08-14T07:22:40.390Z",
   "openapi": {
     "components": {
       "parameters": {
