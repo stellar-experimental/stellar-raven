@@ -108,6 +108,8 @@ pre-spend review has actually caught (dated evidence:
 - Budget caps are enforceable: define counted costs and reserves, and structure paid work
   around observable checkpoints or bounded call-count authorizations so the cap can stop
   the next spend.
+- A call-count authorization covers one method run. Any method re-run needs its own bounded
+  authorization before launch, even when the re-run repairs the measurement method.
 
 A missed plan review blocks launch; it never retroactively invalidates data already collected.
 

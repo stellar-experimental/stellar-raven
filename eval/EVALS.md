@@ -103,6 +103,14 @@ require either the same explicit ids or a disclosed sample-membership change.
    selection; the replay lane uses PII-safe queries mined from eval agents, never raw user traffic.
    Paired classification separates retrieval, agent-behavior, and downstream rows. None of these
    lanes measures final-answer correctness; use QA for that headline.
+9. **Agentic cross-service tolerance needs an explicit contract change.** The current agentic
+   workflow grades the exact expected service. Before the next comparable run, either consume the
+   committed per-case `expected_any` labels and stamp that grading contract, or keep exact-primary
+   grading. Never reinterpret stored results after the run.
+10. **As-of-date omissions need a cross-shard inventory.** The 2026-08-14 row review found several
+    otherwise-correct answers that omitted dates for volatile claims. Inventory the pattern across
+    service shards before changing prompts or rubrics. A single case remains diagnostic and does
+    not justify per-question tuning.
 
 ## Primary artifact: service-improvement recommendations
 
