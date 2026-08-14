@@ -7,7 +7,7 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-08-04, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nThe MoneyGram operator guide identifies itself as **Version 1.2 · Stellar + USDC · July 2026**. Its Production Mainnet limits are direction-specific: **cash-in 15–950 USDC per transaction** and **cash-out 15–2,500 USDC per transaction**. Recheck these values before treating them as current.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-08-14, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nOn **2026-08-14**, the MoneyGram operator guide returned HTTP 200 and identified itself as **Version 1.2 · Stellar + USDC · July 2026**. Its production table stated a **15 USDC minimum**, a **950 USDC cash-in maximum**, and a **2,500 USDC cash-out maximum**. MoneyGram's live SEP-24 `/info` endpoint simultaneously advertised a **1 USDC minimum** for both directions, with the same **950 USDC cash-in maximum** and **2,500 USDC cash-out maximum**. The two official layers disagree on the minimum, so do not present either minimum as the single settled value.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -21,7 +21,7 @@
       "Do NOT conflate MoneyGram Ramps with SDP.",
       "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "CORRECTION 2026-08-04: MoneyGram's current operator guide is Version 1.2, Stellar + USDC, July 2026, and gives 15–950 USDC cash-in / 15–2,500 USDC cash-out. Limits and country counts are freshness-sensitive. Trap: wrong SEP (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
+    "notes": "CORRECTION 2026-08-14: MoneyGram's live Version 1.2 operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum. Both official layers were observed on 2026-08-14. Both layers agree on the 950 USDC cash-in maximum and 2,500 USDC cash-out maximum. Sources disagree on the minimum; do not penalize either minimum when the answer dates and attributes it accurately. Penalize an unsupported winner or an undated minimum. Limits and country counts are freshness-sensitive. Trap: wrong SEP (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -31,12 +31,12 @@
   "truth": {
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-08-04",
+    "asOf": "2026-08-14",
     "sources": [
       {
         "class": "A",
         "ref": "https://xramps.moneygram.com/ops/dev/stellar",
-        "note": "Current MoneyGram Ramps operator guide, Version 1.2, July 2026."
+        "note": "Observed 2026-08-14: the live MoneyGram Ramps operator guide returned HTTP 200 and identified itself as Version 1.2, July 2026. Its production table states min 15 and max 950 USDC for cash-in, and min 15 and max 2,500 USDC for cash-out."
       },
       {
         "class": "D",
@@ -44,33 +44,50 @@
         "note": "class inferred at migration"
       },
       {
-        "class": "D",
+        "class": "A",
         "ref": "https://stellar.moneygram.com/.well-known/stellar.toml",
-        "note": "class inferred at migration"
+        "note": "MoneyGram's live anchor metadata identifies SEP-10, SEP-24, and Stellar USDC."
+      },
+      {
+        "class": "F",
+        "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+        "note": "Observed 2026-08-14: deposit.USDC min_amount 1, max_amount 950; withdraw.USDC min_amount 1, max_amount 2500."
       }
     ],
     "corroboration": [
       {
-        "claim": "As observed 2026-08-04, current production limits are 15–950 USDC cash-in and 15–2,500 USDC cash-out per transaction.",
-        "verdict": "confirmed",
+        "claim": "The live operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum for both directions.",
+        "verdict": "disputed",
         "evidence": [
           {
             "class": "A",
             "ref": "https://xramps.moneygram.com/ops/dev/stellar",
-            "observedAt": "2026-08-04",
-            "note": "MoneyGram operator guide, Version 1.2, Stellar + USDC, July 2026."
+            "observedAt": "2026-08-14",
+            "note": "The live Version 1.2 operator guide returned HTTP 200 and stated a 15 USDC production minimum for cash-in and cash-out."
           },
           {
-            "class": "D",
-            "ref": "D: independent dated operator-page verification",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "F",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "observedAt": "2026-08-14",
+            "note": "The live production endpoint advertised min_amount 1 for deposit.USDC and withdraw.USDC."
+          }
+        ]
+      },
+      {
+        "claim": "The cash-in maximum is 950 USDC and the cash-out maximum is 2,500 USDC.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "observedAt": "2026-08-14",
+            "note": "The live Version 1.2 operator guide stated the 950 USDC cash-in maximum and 2,500 USDC cash-out maximum."
           },
           {
-            "class": "D",
-            "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "F",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "observedAt": "2026-08-14",
+            "note": "The live production endpoint advertised max_amount 950 for deposit.USDC and 2500 for withdraw.USDC."
           }
         ]
       },
@@ -124,18 +141,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA MoneyGram truth matrix; blind-verified and accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-14",
+      "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
       "evidence": [
         "https://xramps.moneygram.com/ops/dev/stellar",
+        "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+        "https://stellar.moneygram.com/.well-known/stellar.toml",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0010.md",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+        "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
+        "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC."
       ],
       "rootCause": [
-        "eval-authoring",
-        "MoneyGram moved the operator guide and raised both production minimums from 5 to 15 USDC."
+        "freshness-drift",
+        "eval-authoring: a disputed minimum remained pinned after the live official layers diverged."
       ]
     },
     "origin": "raven-next q-pay-moneygram-ramps"

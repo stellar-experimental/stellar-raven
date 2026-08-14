@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "ede4486840a6726fb11745257b57f243dff2a37472d5a92ef04c1e2e1c4ab599",
+  "corpusContentSha256": "a83d97b4090b46a3e621b6e3b6bfd6725bf7f5c4ebace23286a7a74dc11ec504",
   "counts": {
     "total": 492,
     "byCategory": {
@@ -25,8 +25,8 @@
     },
     "byFreshness": {
       "live": 153,
-      "scheduled": 138,
-      "stable": 201
+      "scheduled": 139,
+      "stable": 200
     },
     "traps": {
       "ambiguous": 2,
@@ -5146,7 +5146,7 @@
           "Do NOT collapse this into a last-mile mobile-money payout how-to; this question owns corridor selection, cost structure, and build-vs-integrate.",
           "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
         ],
-        "notes": "2026-06-29: Differentiated to own corridor SELECTION + anchor-to-anchor cost structure + build-vs-integrate; dropped mobile-money lane (now owned by q-crp-regional-offramp-mobilemoney) and added a must_avoid against collapsing into a last-mile payout how-to. MoneyGram Ramps figures (174 off-ramp countries, USDC SEP-10/24, $5-$2,500 off-ramp) re-verified against developer.moneygram.com. Corridor/provider coverage stays monthly-freshness.\nAlso good if the answer: Names candidate discovery surfaces such as ecosystem directories, anchor docs, or specific anchor quote/info/interactive endpoints to compare corridors. | Avoids giving universal per-transaction costs without querying dated anchor quote sources.\nGolden cites: Dated anchor directory or anchor documentation for any named corridor; SEP docs for API flow claims.\nAvoid list re-armed 2026-07-03 (todo 826 residual), deep-verified same day per the golden-truth skill (todo 828): dated-citation guard is answer-visible (and satisfiable — matchPartners returns dated, freshness-stamped corridor matches); the conflation trap is triangulated across MoneyGram dev docs (174, exact), MoneyGram marketing (170+), SDF material (180+), and corporate boilerplate (200+ all-rails). Accept any Stellar-off-ramp figure in the 170-180 band with a MoneyGram/SDF source; punish 185+ and 200+ attributed to the Stellar cash-out network (unsourced anywhere). The conflation framing resists rot better than a bare number: the corporate footprint always exceeds off-ramp coverage. Secondary caution: the ON-ramp is only 30+ countries — don't let candidates conflate on-ramp and off-ramp coverage."
+        "notes": "2026-06-29: Differentiated to own corridor SELECTION + anchor-to-anchor cost structure + build-vs-integrate; dropped mobile-money lane (now owned by q-crp-regional-offramp-mobilemoney) and added a must_avoid against collapsing into a last-mile payout how-to. MoneyGram Ramps uses Stellar USDC with SEP-10/24. As of 2026-08-14, its 2,500 USDC cash-out maximum remains corroborated, while the minimum is disputed: the live operator guide states 15 USDC, and the live SEP-24 /info endpoint states 1 USDC. Both official layers were observed on 2026-08-14. This corridor case does not grade a transaction minimum. Corridor/provider coverage stays monthly-freshness.\nAlso good if the answer: Names candidate discovery surfaces such as ecosystem directories, anchor docs, or specific anchor quote/info/interactive endpoints to compare corridors. | Avoids giving universal per-transaction costs without querying dated anchor quote sources.\nGolden cites: Dated anchor directory or anchor documentation for any named corridor; SEP docs for API flow claims.\nAvoid list re-armed 2026-07-03 (todo 826 residual), deep-verified same day per the golden-truth skill (todo 828): dated-citation guard is answer-visible (and satisfiable — matchPartners returns dated, freshness-stamped corridor matches); the conflation trap is triangulated across MoneyGram dev docs (174, exact), MoneyGram marketing (170+), SDF material (180+), and corporate boilerplate (200+ all-rails). Accept any Stellar-off-ramp figure in the 170-180 band with a MoneyGram/SDF source; punish 185+ and 200+ attributed to the Stellar cash-out network (unsourced anywhere). The conflation framing resists rot better than a bare number: the corporate footprint always exceeds off-ramp coverage. Secondary caution: the ON-ramp is only 30+ countries — don't let candidates conflate on-ramp and off-ramp coverage."
       },
       "tags": {
         "category": "compliance-rwa-payments",
@@ -5174,9 +5174,19 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
-            "note": "class inferred at migration"
+            "note": "Official MoneyGram developer documentation."
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "note": "Observed 2026-08-14: the live Version 1.2 operator guide returned HTTP 200 and stated a 15 USDC minimum plus a 2,500 USDC cash-out maximum."
+          },
+          {
+            "class": "F",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "note": "Observed 2026-08-14: withdraw.USDC min_amount 1 and max_amount 2500."
           }
         ],
         "corroboration": [
@@ -5239,25 +5249,39 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "MoneyGram's live operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum; both layers support the 2,500 USDC cash-out maximum.",
+            "verdict": "disputed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+                "observedAt": "2026-08-14",
+                "note": "The live Version 1.2 operator guide returned HTTP 200 and stated a 15 USDC minimum and 2,500 USDC cash-out maximum."
+              },
+              {
+                "class": "F",
+                "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+                "observedAt": "2026-08-14",
+                "note": "The live endpoint advertised withdraw.USDC min_amount 1 and max_amount 2500."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-14",
+          "by": "MoneyGram sibling-consistency sweep for root-reconciled golden-truth todo 1548",
           "evidence": [
-            "Live production execute 2026-07-03: scout 19 Live Anchor-type projects with named coverage (Yellow Card 20 African countries, HoneyCoin 18+ markets, Coins.ph PHP, MYKOBO EURC, ClickPesa TZS, Trace Finance BRL, Bitso/Alfred Pay LATAM, Fonbnk); scout.matchPartners returns dated (generatedAt) per-partner freshness — dated corridor sources are reachable, so the guard is satisfiable",
-            "MoneyGram figures mutually inconsistent in-corpus: Scout '170+ cash-out countries' (Stellar off-ramp), Beans record '185+', LumenLoop moneygram record 'over 200 countries and territories' (corporate money-transfer footprint, undistinguished + undated); golden graderNotes verified 174 off-ramp countries 2026-06-29",
-            "Solo project 49: todo 826 comment 2224, scratchpad 521 follow-up section",
-            "2026-07-11 localhost:8787 search→execute probe observed: a live partner query requiring both on- and off-ramp capability returned six matches, including Etherfuse, CLPX, and FinClusive.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "https://xramps.moneygram.com/ops/dev/stellar",
+            "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+            "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+            "Sibling sweep: q-pay-moneygram-ramps now carries the dated minimum dispute; q-anchor-moneygram-ramps and q-hist-remittance-corridors state no transaction minimum."
           ],
           "rootCause": [
-            "solo://proj/49/todo/judge-rubric-corpus--826 — judge-blind avoid phrasing (eval-side authoring)",
-            "improvements/stellar-light-scout/sls-012 — original root cause was no structured corridor/coverage fields anywhere (free-text prose only); fixed upstream in 2026-07-08 drift with Project.coverage.{countries,currencies,seps,asOf}; remaining retrieval/ranking gap tracked separately as sls-018",
-            "improvements/lumenloop/ll-008 — the moneygram record presents the corporate 200+-country footprint undistinguished from the Stellar off-ramp; the in-corpus source of the conflation this trap catches",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "freshness-drift",
+            "eval-authoring: the sibling notes retained a stale 5 USDC minimum after the source layers diverged."
           ]
         },
         "origin": "raven-next q-crp-anchors-by-corridor"
@@ -8910,63 +8934,80 @@
       "tags": {
         "category": "defi-ecosystem",
         "service": "scout",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
+        "asOf": "2026-08-14",
+        "reverifyBy": "2026-10-29",
         "sources": [
           {
-            "class": "D",
+            "class": "B",
             "ref": "https://github.com/NoetherDEX/noether",
-            "note": "class inferred at migration"
+            "note": "Official Noether source repository."
           },
           {
-            "class": "D",
+            "class": "A",
+            "ref": "https://noether.exchange/",
+            "note": "Observed 2026-08-14: audit in progress and public testnet; Mainnet opens after the audit clears."
+          },
+          {
+            "class": "A",
             "ref": "https://docs.zenex.trade/faq",
-            "note": "class inferred at migration"
+            "note": "Observed 2026-08-14: the current deployment runs on Stellar testnet."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
+            "note": "Official SDF meeting record for the live Noether testnet demo."
           }
         ],
         "corroboration": [
           {
-            "claim": "Perps are an emerging testnet category; no mainnet deployment was confirmed in the audited sources asOf 2026-07-10",
-            "verdict": "confirmed",
+            "claim": "Noether and Zenex still identify their current deployments as testnet, and the audited source set did not confirm a mainnet perpetual DEX as of 2026-08-14.",
+            "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A/B: Noether repo/official developer meeting and Zenex FAQ",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://noether.exchange/",
+                "observedAt": "2026-08-14",
+                "note": "Noether identifies the current deployment as a public testnet and names audit clearance as the Mainnet trigger."
               },
               {
-                "class": "B",
-                "ref": "A/B: Noether repo/official developer meeting and Zenex FAQ",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "A",
+                "ref": "https://docs.zenex.trade/faq",
+                "observedAt": "2026-08-14",
+                "note": "Zenex says the current deployment runs on Stellar testnet with test tokens."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_meeting_notes: https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
+                "observedAt": "2026-08-14",
+                "note": "The indexed official meeting record describes a live testnet demo."
               },
               {
                 "class": "C",
-                "ref": "C/D: Scout/Lumenloop plus broad operator/repo conflict sweep",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "C/D: Scout/Lumenloop plus broad operator/repo conflict sweep",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "scout.searchProjects(q=perpetual futures), generatedAt 2026-08-14T05:52:24Z",
+                "observedAt": "2026-08-14",
+                "note": "Scout labels Noether Live with source-inherited status, confidence 0.45, and no statusSourceUrl; this does not override the operator's testnet statement."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — GT-16 lanes confirmed testnet entrants and found no verified production/mainnet perp DEX in the audited universe, but the inherited absolute negative lacks an as-of date and source boundary and freezes secondary Turbolong details.",
+          "date": "2026-08-14",
+          "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
           "evidence": [
-            "Solo scratchpad 575 GT-16 processes 3244/3245"
+            "https://noether.exchange/",
+            "https://docs.zenex.trade/faq",
+            "https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
+            "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+            "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+            "Sibling sweep: q-eco-defi-market-map remains claim-consistent; the register does not require matched scheduling metadata."
           ],
           "rootCause": [
-            "eval-side bounded negative was phrased as permanent global absence"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-defi-perps-whitespace"
@@ -21122,7 +21163,7 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-08-04, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nThe MoneyGram operator guide identifies itself as **Version 1.2 · Stellar + USDC · July 2026**. Its Production Mainnet limits are direction-specific: **cash-in 15–950 USDC per transaction** and **cash-out 15–2,500 USDC per transaction**. Recheck these values before treating them as current.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-08-14, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nOn **2026-08-14**, the MoneyGram operator guide returned HTTP 200 and identified itself as **Version 1.2 · Stellar + USDC · July 2026**. Its production table stated a **15 USDC minimum**, a **950 USDC cash-in maximum**, and a **2,500 USDC cash-out maximum**. MoneyGram's live SEP-24 `/info` endpoint simultaneously advertised a **1 USDC minimum** for both directions, with the same **950 USDC cash-in maximum** and **2,500 USDC cash-out maximum**. The two official layers disagree on the minimum, so do not present either minimum as the single settled value.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -21136,7 +21177,7 @@
           "Do NOT conflate MoneyGram Ramps with SDP.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "CORRECTION 2026-08-04: MoneyGram's current operator guide is Version 1.2, Stellar + USDC, July 2026, and gives 15–950 USDC cash-in / 15–2,500 USDC cash-out. Limits and country counts are freshness-sensitive. Trap: wrong SEP (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
+        "notes": "CORRECTION 2026-08-14: MoneyGram's live Version 1.2 operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum. Both official layers were observed on 2026-08-14. Both layers agree on the 950 USDC cash-in maximum and 2,500 USDC cash-out maximum. Sources disagree on the minimum; do not penalize either minimum when the answer dates and attributes it accurately. Penalize an unsupported winner or an undated minimum. Limits and country counts are freshness-sensitive. Trap: wrong SEP (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
       },
       "tags": {
         "category": "compliance-rwa-payments",
@@ -21146,12 +21187,12 @@
       "truth": {
         "domain": "real-world",
         "status": "disputed",
-        "asOf": "2026-08-04",
+        "asOf": "2026-08-14",
         "sources": [
           {
             "class": "A",
             "ref": "https://xramps.moneygram.com/ops/dev/stellar",
-            "note": "Current MoneyGram Ramps operator guide, Version 1.2, July 2026."
+            "note": "Observed 2026-08-14: the live MoneyGram Ramps operator guide returned HTTP 200 and identified itself as Version 1.2, July 2026. Its production table states min 15 and max 950 USDC for cash-in, and min 15 and max 2,500 USDC for cash-out."
           },
           {
             "class": "D",
@@ -21159,33 +21200,50 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://stellar.moneygram.com/.well-known/stellar.toml",
-            "note": "class inferred at migration"
+            "note": "MoneyGram's live anchor metadata identifies SEP-10, SEP-24, and Stellar USDC."
+          },
+          {
+            "class": "F",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "note": "Observed 2026-08-14: deposit.USDC min_amount 1, max_amount 950; withdraw.USDC min_amount 1, max_amount 2500."
           }
         ],
         "corroboration": [
           {
-            "claim": "As observed 2026-08-04, current production limits are 15–950 USDC cash-in and 15–2,500 USDC cash-out per transaction.",
-            "verdict": "confirmed",
+            "claim": "The live operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum for both directions.",
+            "verdict": "disputed",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://xramps.moneygram.com/ops/dev/stellar",
-                "observedAt": "2026-08-04",
-                "note": "MoneyGram operator guide, Version 1.2, Stellar + USDC, July 2026."
+                "observedAt": "2026-08-14",
+                "note": "The live Version 1.2 operator guide returned HTTP 200 and stated a 15 USDC production minimum for cash-in and cash-out."
               },
               {
-                "class": "D",
-                "ref": "D: independent dated operator-page verification",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "F",
+                "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+                "observedAt": "2026-08-14",
+                "note": "The live production endpoint advertised min_amount 1 for deposit.USDC and withdraw.USDC."
+              }
+            ]
+          },
+          {
+            "claim": "The cash-in maximum is 950 USDC and the cash-out maximum is 2,500 USDC.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+                "observedAt": "2026-08-14",
+                "note": "The live Version 1.2 operator guide stated the 950 USDC cash-in maximum and 2,500 USDC cash-out maximum."
               },
               {
-                "class": "D",
-                "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "F",
+                "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+                "observedAt": "2026-08-14",
+                "note": "The live production endpoint advertised max_amount 950 for deposit.USDC and 2500 for withdraw.USDC."
               }
             ]
           },
@@ -21239,18 +21297,22 @@
           }
         ],
         "verified": {
-          "date": "2026-08-04",
-          "by": "Full golden QA MoneyGram truth matrix; blind-verified and accepted in Todo 1347 c3625/c3627",
+          "date": "2026-08-14",
+          "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
           "evidence": [
             "https://xramps.moneygram.com/ops/dev/stellar",
+            "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "https://stellar.moneygram.com/.well-known/stellar.toml",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0010.md",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+            "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+            "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+            "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
+            "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC."
           ],
           "rootCause": [
-            "eval-authoring",
-            "MoneyGram moved the operator guide and raised both production minimums from 5 to 15 USDC."
+            "freshness-drift",
+            "eval-authoring: a disputed minimum remained pinned after the live official layers diverged."
           ]
         },
         "origin": "raven-next q-pay-moneygram-ramps"
@@ -23092,7 +23154,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The docs give the sponsored-reserve minimum balance formula as `(2 base reserves + numSubEntries + numSponsoring - numSponsored) * baseReserve + liabilities.selling`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+        "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The docs give the sponsored-reserve minimum balance formula as `(2 base reserves + numSubEntries + numSponsoring - numSponsored) * baseReserve + liabilities.selling`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance. Stellar Core calculates these boundaries separately: `getMinBalance` excludes liabilities, and `getAvailableBalance` subtracts selling liabilities after subtracting the minimum balance. Source: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
         "keyFacts": [
           "Explains sponsorship lets one account sponsor the minimum-balance reserve for another account or ledger entry.",
           "Names BeginSponsoringFutureReserves and EndSponsoringFutureReserves as the operation pair for future reserves.",
@@ -23101,7 +23163,8 @@
         ],
         "avoid": [
           "Do NOT say sponsorship mints XLM or lets accounts bypass all minimum balance/fee rules.",
-          "Do NOT claim a sponsored 0-XLM account can always transfer assets without fees or authorization."
+          "Do NOT claim a sponsored 0-XLM account can always transfer assets without fees or authorization.",
+          "Do NOT add liabilities inside Core's minimum-balance calculation; Core subtracts selling liabilities when it calculates available balance."
         ],
         "notes": "Verified against Stellar Docs. 0-XLM account behavior depends on whether another account pays fees and whether required trustlines/authorization already exist.\nAlso good if the answer: Mentions RevokeSponsorship and that revocation/transfer requires valid authorization and reserve sufficiency.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository."
       },
@@ -23128,13 +23191,47 @@
             "class": "A",
             "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
+            "note": "Observed 2026-08-14: getMinBalance excludes liabilities, while getAvailableBalance subtracts selling liabilities separately."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "The official sponsored-reserves guide publishes the attributed formula with liabilities.selling, while Stellar Core excludes liabilities from getMinBalance and subtracts selling liabilities separately in getAvailableBalance.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+                "observedAt": "2026-08-14",
+                "note": "The guide publishes the formula with + liabilities.selling."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
+                "observedAt": "2026-08-14",
+                "note": "getMinBalance returns the reserve-unit product without liabilities; getAvailableBalance subtracts selling liabilities after minimum balance."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "GT-30-upgrade-quantum-scp-sequence-reserve-finality-p19 accepted in Solo scratchpad 575 rev 291",
+          "date": "2026-08-14",
+          "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575"
+            "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+            "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
+            "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+            "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+            "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
+            "Sibling sweep: q-protocol-base-reserve-min-balance uses the Core formula without liabilities and subtracts selling liabilities only from available balance."
+          ],
+          "rootCause": [
+            "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
+            "eval-authoring: the attributed Docs formula lacked the Core distinction and conflicted with the sibling avoid rule."
           ]
         },
         "origin": "raven-next q-pc-sponsored-reserves"
@@ -29130,7 +29227,8 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-08-14",
+        "reverifyBy": "2026-11-12",
         "sources": [
           {
             "class": "A",
@@ -29165,37 +29263,37 @@
         ],
         "corroboration": [
           {
-            "claim": "Current official ecosystem/service-provider/careers pages expose concrete intake routes and the Matching Fund is a separate 1:1 co-investment path",
+            "claim": "The official ecosystem page still exposes the project-submission intake, and the Matching Fund still states a $200K minimum, 1:1 matching, and a $500K maximum.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: current Stellar ecosystem, provider, careers, and Matching Fund pages",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://stellar.org/ecosystem",
+                "observedAt": "2026-08-14",
+                "note": "The page still presents the Submit Your Project review intake."
               },
               {
-                "class": "D",
-                "ref": "D: current organizer/company pages for event and ecosystem roles",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "A",
+                "ref": "https://stellar.org/grants-and-funding/matching-fund",
+                "observedAt": "2026-08-14",
+                "note": "The page still states 1:1 matching, a $200K minimum check, a $500K maximum, a lead term sheet or SAFE, and pre-seed through Series B."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-14",
+          "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
           "evidence": [
-            "Solo scratchpad 575 GT-37 primary 3296 and blind 3298.",
-            "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "https://stellar.org/ecosystem",
+            "https://stellar.org/grants-and-funding/matching-fund",
+            "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+            "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+            "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
+            "Sibling sweep: q-scf-vs-sdf-enterprise-fund remains claim-consistent; the consistency register does not require matched scheduling metadata."
           ],
           "rootCause": [
-            "Normal operational-page drift plus an incomplete current Matching Fund summary.",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-scf-ecosystem-listing-partner-jobs"

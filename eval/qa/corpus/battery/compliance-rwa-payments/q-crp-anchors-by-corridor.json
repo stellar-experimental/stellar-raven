@@ -20,7 +20,7 @@
       "Do NOT collapse this into a last-mile mobile-money payout how-to; this question owns corridor selection, cost structure, and build-vs-integrate.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "2026-06-29: Differentiated to own corridor SELECTION + anchor-to-anchor cost structure + build-vs-integrate; dropped mobile-money lane (now owned by q-crp-regional-offramp-mobilemoney) and added a must_avoid against collapsing into a last-mile payout how-to. MoneyGram Ramps figures (174 off-ramp countries, USDC SEP-10/24, $5-$2,500 off-ramp) re-verified against developer.moneygram.com. Corridor/provider coverage stays monthly-freshness.\nAlso good if the answer: Names candidate discovery surfaces such as ecosystem directories, anchor docs, or specific anchor quote/info/interactive endpoints to compare corridors. | Avoids giving universal per-transaction costs without querying dated anchor quote sources.\nGolden cites: Dated anchor directory or anchor documentation for any named corridor; SEP docs for API flow claims.\nAvoid list re-armed 2026-07-03 (todo 826 residual), deep-verified same day per the golden-truth skill (todo 828): dated-citation guard is answer-visible (and satisfiable — matchPartners returns dated, freshness-stamped corridor matches); the conflation trap is triangulated across MoneyGram dev docs (174, exact), MoneyGram marketing (170+), SDF material (180+), and corporate boilerplate (200+ all-rails). Accept any Stellar-off-ramp figure in the 170-180 band with a MoneyGram/SDF source; punish 185+ and 200+ attributed to the Stellar cash-out network (unsourced anywhere). The conflation framing resists rot better than a bare number: the corporate footprint always exceeds off-ramp coverage. Secondary caution: the ON-ramp is only 30+ countries — don't let candidates conflate on-ramp and off-ramp coverage."
+    "notes": "2026-06-29: Differentiated to own corridor SELECTION + anchor-to-anchor cost structure + build-vs-integrate; dropped mobile-money lane (now owned by q-crp-regional-offramp-mobilemoney) and added a must_avoid against collapsing into a last-mile payout how-to. MoneyGram Ramps uses Stellar USDC with SEP-10/24. As of 2026-08-14, its 2,500 USDC cash-out maximum remains corroborated, while the minimum is disputed: the live operator guide states 15 USDC, and the live SEP-24 /info endpoint states 1 USDC. Both official layers were observed on 2026-08-14. This corridor case does not grade a transaction minimum. Corridor/provider coverage stays monthly-freshness.\nAlso good if the answer: Names candidate discovery surfaces such as ecosystem directories, anchor docs, or specific anchor quote/info/interactive endpoints to compare corridors. | Avoids giving universal per-transaction costs without querying dated anchor quote sources.\nGolden cites: Dated anchor directory or anchor documentation for any named corridor; SEP docs for API flow claims.\nAvoid list re-armed 2026-07-03 (todo 826 residual), deep-verified same day per the golden-truth skill (todo 828): dated-citation guard is answer-visible (and satisfiable — matchPartners returns dated, freshness-stamped corridor matches); the conflation trap is triangulated across MoneyGram dev docs (174, exact), MoneyGram marketing (170+), SDF material (180+), and corporate boilerplate (200+ all-rails). Accept any Stellar-off-ramp figure in the 170-180 band with a MoneyGram/SDF source; punish 185+ and 200+ attributed to the Stellar cash-out network (unsourced anywhere). The conflation framing resists rot better than a bare number: the corporate footprint always exceeds off-ramp coverage. Secondary caution: the ON-ramp is only 30+ countries — don't let candidates conflate on-ramp and off-ramp coverage."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -48,9 +48,19 @@
         "note": "class inferred at migration"
       },
       {
-        "class": "D",
+        "class": "A",
         "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
-        "note": "class inferred at migration"
+        "note": "Official MoneyGram developer documentation."
+      },
+      {
+        "class": "A",
+        "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+        "note": "Observed 2026-08-14: the live Version 1.2 operator guide returned HTTP 200 and stated a 15 USDC minimum plus a 2,500 USDC cash-out maximum."
+      },
+      {
+        "class": "F",
+        "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+        "note": "Observed 2026-08-14: withdraw.USDC min_amount 1 and max_amount 2500."
       }
     ],
     "corroboration": [
@@ -113,25 +123,39 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "MoneyGram's live operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum; both layers support the 2,500 USDC cash-out maximum.",
+        "verdict": "disputed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "observedAt": "2026-08-14",
+            "note": "The live Version 1.2 operator guide returned HTTP 200 and stated a 15 USDC minimum and 2,500 USDC cash-out maximum."
+          },
+          {
+            "class": "F",
+            "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+            "observedAt": "2026-08-14",
+            "note": "The live endpoint advertised withdraw.USDC min_amount 1 and max_amount 2500."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-14",
+      "by": "MoneyGram sibling-consistency sweep for root-reconciled golden-truth todo 1548",
       "evidence": [
-        "Live production execute 2026-07-03: scout 19 Live Anchor-type projects with named coverage (Yellow Card 20 African countries, HoneyCoin 18+ markets, Coins.ph PHP, MYKOBO EURC, ClickPesa TZS, Trace Finance BRL, Bitso/Alfred Pay LATAM, Fonbnk); scout.matchPartners returns dated (generatedAt) per-partner freshness — dated corridor sources are reachable, so the guard is satisfiable",
-        "MoneyGram figures mutually inconsistent in-corpus: Scout '170+ cash-out countries' (Stellar off-ramp), Beans record '185+', LumenLoop moneygram record 'over 200 countries and territories' (corporate money-transfer footprint, undistinguished + undated); golden graderNotes verified 174 off-ramp countries 2026-06-29",
-        "Solo project 49: todo 826 comment 2224, scratchpad 521 follow-up section",
-        "2026-07-11 localhost:8787 search→execute probe observed: a live partner query requiring both on- and off-ramp capability returned six matches, including Etherfuse, CLPX, and FinClusive.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "https://xramps.moneygram.com/ops/dev/stellar",
+        "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+        "Sibling sweep: q-pay-moneygram-ramps now carries the dated minimum dispute; q-anchor-moneygram-ramps and q-hist-remittance-corridors state no transaction minimum."
       ],
       "rootCause": [
-        "solo://proj/49/todo/judge-rubric-corpus--826 — judge-blind avoid phrasing (eval-side authoring)",
-        "improvements/stellar-light-scout/sls-012 — original root cause was no structured corridor/coverage fields anywhere (free-text prose only); fixed upstream in 2026-07-08 drift with Project.coverage.{countries,currencies,seps,asOf}; remaining retrieval/ranking gap tracked separately as sls-018",
-        "improvements/lumenloop/ll-008 — the moneygram record presents the corporate 200+-country footprint undistinguished from the Stellar off-ramp; the in-corpus source of the conflation this trap catches",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "freshness-drift",
+        "eval-authoring: the sibling notes retained a stale 5 USDC minimum after the source layers diverged."
       ]
     },
     "origin": "raven-next q-crp-anchors-by-corridor"

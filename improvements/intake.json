@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-08-06",
+  "updated": "2026-08-14",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -104,6 +104,10 @@
       "repo": "lumenloop/lumenloop-backend",
       "reason": "Lumenloop API/content-pipeline owner confirmed 2026-07-13."
     },
+    "ll-028": {
+      "repo": "lumenloop/lumenloop-backend",
+      "reason": "list_documents query-parameter validation is API behavior, not a committed directory record."
+    },
     "sd-001": {
       "intake": "unclear",
       "reason": "Algolia ranking/tokenization behavior; not clearly owned by stellar/stellar-docs issue intake."
@@ -168,6 +172,26 @@
       "repo": "stellar/stellar-docs",
       "reason": "Official Tools pages conflate the self-hosted OpenZeppelin Relayer with the managed Channels service."
     },
+    "sd-041": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The pooled-accounts guide's own lead paragraph contradicts its later memo guidance."
+    },
+    "sd-042": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The EVM migration guide's Horizon lifecycle wording contradicts four canonical Docs pages."
+    },
+    "sd-043": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The sponsored-reserves minimum-balance formula contradicts stellar-core getMinBalance and the Lumens page."
+    },
+    "sd-044": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Quickstart docs section already documents container run options and omits the shipped manual-close flag."
+    },
+    "sd-045": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The dapp frontend guide states the unqualified Freighter HTTPS requirement; coordinate final wording with the Freighter maintainers."
+    },
     "sk-004": {
       "repo": "lumenloop/lumenloop-skills"
     },
@@ -195,6 +219,14 @@
     "sk-015": {
       "repo": "OpenZeppelin/openzeppelin-skills",
       "reason": "The setup-stellar-contracts and upgrade-stellar-contracts descriptions are owned by the OpenZeppelin skills repository."
+    },
+    "sk-016": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The agentic-payments MPP guide is owned by the official Stellar dev skill repository."
+    },
+    "sk-017": {
+      "repo": "stellar/stellar-dev-skill",
+      "reason": "The dapp skill's smart-accounts.md is owned by the official Stellar dev skill repository."
     },
     "sls-023": {
       "repo": "Stellar-Light/stellarlight",

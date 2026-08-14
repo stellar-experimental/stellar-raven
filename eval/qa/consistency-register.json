@@ -30,12 +30,21 @@
           "q-crp-anchors-by-corridor",
           "q-hist-remittance-corridors"
         ],
-        "verdict": "tension",
-        "lastChecked": "2026-07-03",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-14",
+        "reSwept": {
+          "date": "2026-08-14",
+          "reason": "Re-read both members after both official MoneyGram layers were observed live on 2026-08-14. The corridor claims remain consistent, and neither case grades an unsupported minimum.",
+          "verdict": "consistent"
+        },
         "note": "grader-caution candidate",
         "memberContentSha256": {
-          "q-crp-anchors-by-corridor": "e7efa4310d84087692e4f8524b5cee2ac0e828d2d311c58daf461b9e34bb5465",
+          "q-crp-anchors-by-corridor": "28479e5d8761a65ea84f0bf37cb53bf425ad85127e0ace331b8459d33fee92aa",
           "q-hist-remittance-corridors": "dd838f5d6f8d8869d02c695f4c19468ec607f611e9d3c902197aa90f847e91bd"
+        },
+        "reopened": {
+          "date": "2026-08-14",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -260,12 +269,21 @@
           "q-eco-defi-market-map"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-03",
+        "lastChecked": "2026-08-14",
+        "reSwept": {
+          "date": "2026-08-14",
+          "reason": "Re-read all three members after the scheduled metadata refresh; their emerging-versus-mainnet status claims remain consistent.",
+          "verdict": "consistent"
+        },
         "note": "All three agree on both halves: perps are EMERGING (Noether testnet, Stellars Finance mainnet-targeted, Zenex pre-release — so NOT whitespace) AND no perp DEX is confirmed mainnet-live; all three exclude Turbolong as leveraged spot. The whitespace-vs-live split that silently drifted in the ancestor corpora is coherently pinned here, including the Scout-status-vs-self-description discrepancy (directory 'Live' vs own 'testnet') documented inside q-defi-perps-whitespace.",
         "memberContentSha256": {
           "q-defi-named-newer-protocols": "5bc0aada5d0252ea6ca6156cf767c7b3588367c1ca798a0b8390b9e2b497f03d",
-          "q-defi-perps-whitespace": "ca5f63b8ead47a03f567b998bb0de7dae625b6188ff392fe4067471363dcd5a1",
+          "q-defi-perps-whitespace": "492f89419612d8a3774a12283a4f6c38cfd014920e144bcc72be1d1212d7063b",
           "q-eco-defi-market-map": "0b8e5c99627f1c90a4299d14485d192750ec313a1d72e70e78f4e9361432da3a"
+        },
+        "reopened": {
+          "date": "2026-08-14",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -465,22 +483,22 @@
           "q-hist-remittance-corridors",
           "q-pay-moneygram-ramps"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-05",
-        "note": "174 (dev docs, exact) with 170+ marketing rounding, SEP-24 + USDC rails, $5-$2,500 off-ramp per tx, launched via Vibrant/LOBSTR 2022 — consistent across all four (the 180+ provenance question is filed under tensions).",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-14",
+        "note": "SEP-24 + Stellar USDC rails remain consistent across all four members. Both official layers were observed live on 2026-08-14: the Version 1.2 operator guide states a 15 USDC minimum, while the SEP-24 /info endpoint states a 1 USDC minimum. The minimum remains disputed, and both layers support a 2,500 USDC cash-out maximum. Country counts remain source- and direction-specific.",
         "memberContentSha256": {
           "q-anchor-moneygram-ramps": "7acb916052b426d65ed0e7f5624aea190bccfed52153bd6b35e256bb313d4371",
-          "q-crp-anchors-by-corridor": "e7efa4310d84087692e4f8524b5cee2ac0e828d2d311c58daf461b9e34bb5465",
+          "q-crp-anchors-by-corridor": "28479e5d8761a65ea84f0bf37cb53bf425ad85127e0ace331b8459d33fee92aa",
           "q-hist-remittance-corridors": "dd838f5d6f8d8869d02c695f4c19468ec607f611e9d3c902197aa90f847e91bd",
-          "q-pay-moneygram-ramps": "d35cd632670607d1160a84818139f50f16618894746f70ba70a3c5806f4b2a1a"
+          "q-pay-moneygram-ramps": "55a3147af27f41e77cc2a8712801f29b2019dee6216bc33ef70437eaf3c39213"
         },
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "date": "2026-08-14",
+          "reason": "Re-read all four members after both official MoneyGram layers were observed live on 2026-08-14. The guide states a 15 USDC minimum, while SEP-24 /info states 1 USDC. No member pins an unsupported minimum.",
           "verdict": "consistent"
         },
         "reopened": {
-          "date": "2026-08-11",
+          "date": "2026-08-14",
           "reason": "member-content-changed"
         }
       },
@@ -505,10 +523,10 @@
           "q-token-initial-supply-distribution"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-28",
+        "lastChecked": "2026-08-14",
         "reSwept": {
-          "date": "2026-07-28",
-          "reason": "2026-07-28 reopened-cluster sweep: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+          "date": "2026-08-14",
+          "reason": "Re-read the reserve-related members after the Core minimum-versus-available-balance distinction; network constants remain consistent.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -522,7 +540,7 @@
           "q-hot-fee-pool-burn-deflation": "b0228760656129f0856cdef7bbf2d476604be0f604ab7456a548ea47b9d42076",
           "q-pc-account-activation-not-found": "9b661b2d84134e41cba184045521cd92f432738fe6bd843e02fef254c727c46d",
           "q-pc-practical-fee-setting": "7f1fb22b99c229c9d3552a758f015ae50593744f4097e64468aa51c4949aef80",
-          "q-pc-sponsored-reserves": "045dc3b79bff803fb96078c8050bc8125b47a2d8585d4663e52f7abd28c7b4ec",
+          "q-pc-sponsored-reserves": "e9e7802bbee41dc8ed992e5cc460219c9a786ba644ad395fdf4f1439cbbd00c5",
           "q-protocol-base-reserve-min-balance": "72815e61a551a67e8b43a1ebbf18fb402fe0aed9e36044c5f34ca93ac6573b48",
           "q-protocol-ledger-close-time": "1538fc8f452dfd22d1107a087331c6138eb053d9d30505e756b2dd43bc637ca3",
           "q-sor-doc-timestamping-manage-data": "445b50f369919c0723cc05250925e6917c68dead18bf64875ee0c7e0d572f37b",
@@ -530,7 +548,7 @@
           "q-token-initial-supply-distribution": "22dd877260037d0517f016039abd58921c4c708f7a049f53071121da3856c3b2"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-14",
           "reason": "member-content-changed"
         }
       },
@@ -887,14 +905,23 @@
           "q-sep-8-regulated-assets",
           "q-sep-catalog-list"
         ],
-        "verdict": "tension",
-        "lastChecked": "2026-07-09",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-14",
+        "reSwept": {
+          "date": "2026-08-14",
+          "reason": "Re-read the changed corridor notes against the wallet and SEP members after both MoneyGram layers were observed live on 2026-08-14. Their claims remain consistent.",
+          "verdict": "consistent"
+        },
         "note": "retain grader caution and accept accurately dated/source-scoped answers",
         "memberContentSha256": {
-          "q-crp-anchors-by-corridor": "e7efa4310d84087692e4f8524b5cee2ac0e828d2d311c58daf461b9e34bb5465",
+          "q-crp-anchors-by-corridor": "28479e5d8761a65ea84f0bf37cb53bf425ad85127e0ace331b8459d33fee92aa",
           "q-eco-lobstr-wallet": "d9cb16d6099add68fc6dcdcd52e6666ab280c6a8aeb029975e4f3b42abb781e2",
           "q-sep-8-regulated-assets": "ba888ea81f0d00a190f38783fead2894fb8fe8d594c27cea4387438c434ee26c",
           "q-sep-catalog-list": "a0d9ad9232cff22cee1b08343c99a0d875b701efa502158af35751811c0cb421"
+        },
+        "reopened": {
+          "date": "2026-08-14",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1432,13 +1459,22 @@
           "q-pc-sponsored-reserves"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-10",
+        "lastChecked": "2026-08-14",
+        "reSwept": {
+          "date": "2026-08-14",
+          "reason": "Re-read all four lifecycle members after the sponsored-reserve clarification; zero-start sponsorship and reserve obligations remain consistent.",
+          "verdict": "consistent"
+        },
         "note": "A keypair is not an account and Payment does not create one. The dated 1 XLM empty-account minimum is the unsponsored path; CAP-0033 sponsored CreateAccount may use startingBalance=0. AccountMerge requires non-signer blockers and provided-sponsorship obligations to be resolved, but current Core removes remaining signers during deletion.",
         "memberContentSha256": {
           "q-edge-1xlm-activation-fee": "e11bf06d657c1649e7f65faab3714e42c003fd47a22fe591cc589ff1cf063635",
           "q-pc-account-activation-not-found": "9b661b2d84134e41cba184045521cd92f432738fe6bd843e02fef254c727c46d",
           "q-pc-account-merge-reclaim-reserve": "0d4d337ffa37bab11a6eb91e771ff751548aeee02602f85bd846af5d3458dd09",
-          "q-pc-sponsored-reserves": "045dc3b79bff803fb96078c8050bc8125b47a2d8585d4663e52f7abd28c7b4ec"
+          "q-pc-sponsored-reserves": "e9e7802bbee41dc8ed992e5cc460219c9a786ba644ad395fdf4f1439cbbd00c5"
+        },
+        "reopened": {
+          "date": "2026-08-14",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2714,21 +2750,21 @@
           "q-protocol-base-reserve-min-balance"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-28",
+        "lastChecked": "2026-08-14",
         "reSwept": {
-          "date": "2026-07-28",
-          "reason": "2026-07-28 reopened-cluster sweep: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+          "date": "2026-08-14",
+          "reason": "Re-read all four reserve members after the sponsored-reserve clarification; all now separate Core minimum balance from selling-liability spendability.",
           "verdict": "consistent"
         },
         "note": "target corrected; later GT-29/32 siblings retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-amm-fee-reserve": "b6a6f8cf8cb877dc04e54fc4bdffc85bece09121aca3bb910507f5bb9317d521",
           "q-pc-account-activation-not-found": "9b661b2d84134e41cba184045521cd92f432738fe6bd843e02fef254c727c46d",
-          "q-pc-sponsored-reserves": "045dc3b79bff803fb96078c8050bc8125b47a2d8585d4663e52f7abd28c7b4ec",
+          "q-pc-sponsored-reserves": "e9e7802bbee41dc8ed992e5cc460219c9a786ba644ad395fdf4f1439cbbd00c5",
           "q-protocol-base-reserve-min-balance": "72815e61a551a67e8b43a1ebbf18fb402fe0aed9e36044c5f34ca93ac6573b48"
         },
         "reopened": {
-          "date": "2026-07-28",
+          "date": "2026-08-14",
           "reason": "member-content-changed"
         }
       },
@@ -3736,6 +3772,17 @@
         ],
         "memberContentSha256": {
           "q-hist-meridian-2026-corrected-venue": "5064b9515d3faecb09f5be7a7c82399ab46b8c78f90ff70e8ced19e206661339"
+        }
+      },
+      {
+        "triggerDateEvent": "Noether audit clearance, Noether Mainnet opening, or any earlier verified Stellar mainnet perpetual DEX launch",
+        "requiredRecheck": "Re-fetch Noether and Zenex operator pages, the official Noether meeting record, and current Scout status evidence; then re-evaluate the named-entrant mainnet-live avoid rule.",
+        "disposition": "open — Noether and Zenex still identify testnet deployments as of 2026-08-14; q-defi-perps-whitespace reverifyBy 2026-10-29.",
+        "caseIds": [
+          "q-defi-perps-whitespace"
+        ],
+        "memberContentSha256": {
+          "q-defi-perps-whitespace": "492f89419612d8a3774a12283a4f6c38cfd014920e144bcc72be1d1212d7063b"
         }
       }
     ]

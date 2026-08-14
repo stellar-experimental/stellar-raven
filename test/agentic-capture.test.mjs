@@ -6,8 +6,8 @@
  * pinned on the four outcomes that matter — faithful transcript, mistranscribed
  * page, fabricated call, omitted call — plus the stripped-marker rejection.
  */
-import { spawn } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { spawn, spawnSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import http from "node:http";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -16,6 +16,7 @@ import { describe, expect, it } from "vitest";
 import { callKey, reconcile, wireSearchCall } from "../eval/agentic/reconcile-capture.mjs";
 
 const PROXY = join(dirname(fileURLToPath(import.meta.url)), "..", "eval", "agentic", "capture-proxy.mjs");
+const RECONCILER = join(dirname(fileURLToPath(import.meta.url)), "..", "eval", "agentic", "reconcile-capture.mjs");
 
 const PAGE = {
   hits: [
@@ -56,6 +57,42 @@ function transcribedCall(query) {
 
 function captureEntry(marker, query) {
   return { ts: "2026-07-29T00:00:00Z", marker, method: "POST", path: "/mcp", request: searchRequestBody(query), status: 200, response: SSE_RESPONSE };
+}
+
+function runNormalization({
+  captureEntries,
+  rows,
+  summary = { fixture: "unchanged" },
+  includeSummary = true,
+  outputIsReconciliation = false
+}) {
+  const root = mkdtempSync(join(tmpdir(), "agentic-normalize-"));
+  const capturePath = join(root, "capture.jsonl");
+  const resultsPath = join(root, "results.json");
+  const reconciliationPath = join(root, "reconciliation.json");
+  const outputPath = outputIsReconciliation ? reconciliationPath : join(root, "normalized.json");
+  writeFileSync(capturePath, `${captureEntries.map((entry) => JSON.stringify(entry)).join("\n")}\n`);
+  const results = includeSummary ? { summary, rows } : { rows };
+  writeFileSync(resultsPath, `${JSON.stringify(results, null, 2)}\n`);
+  const reconciliationText = `${JSON.stringify(reconcile(rows, captureEntries), null, 2)}\n`;
+  writeFileSync(reconciliationPath, reconciliationText);
+  const child = spawnSync(process.execPath, [
+    RECONCILER,
+    "--capture", capturePath,
+    "--results", resultsPath,
+    "--write-normalized", outputPath,
+    "--workflow", "wf_fixture",
+    "--raw-reconciliation", reconciliationPath
+  ], { encoding: "utf8" });
+  return {
+    root,
+    capturePath,
+    resultsPath,
+    reconciliationPath,
+    reconciliationText,
+    outputPath,
+    child
+  };
 }
 
 describe("capture-proxy", () => {
@@ -243,6 +280,170 @@ describe("reconcile-capture", () => {
       { ...a, hits: a.hits.map((h) => ({ ...h, id: "other" })) }
     ]) {
       expect(callKey(changed)).not.toBe(callKey(a));
+    }
+  });
+});
+
+describe("reconcile-capture --write-normalized", () => {
+  const resultRow = (searchCalls) => ({
+    caseId: "q-fixture",
+    question: "How does this work?",
+    expected: "stellarDocs",
+    effort: "low",
+    verdict: {
+      queriesUsed: ["soroban storage"],
+      searchCalls,
+      primaryToolId: "stellarDocs.search_docs",
+      primaryService: "stellarDocs",
+      alternateToolIds: [],
+      reasoning: "The official documentation is the best source."
+    },
+    searchCalls,
+    primaryInHits: true
+  });
+
+  it("writes a wire-authoritative copy and preserves the raw report plus protected fields", () => {
+    const rawCall = transcribedCall("soroban storage");
+    rawCall.hits = rawCall.hits.slice(0, 1);
+    const row = resultRow([rawCall]);
+    row.verdict.searchCalls = [{ ...rawCall, zeroGated: true }];
+    const summary = { low: { overall: { n: 1, primaryHit: 1, primaryPct: 100 } } };
+    const run = runNormalization({
+      captureEntries: [captureEntry("q-fixture:low", "soroban storage")],
+      rows: [row],
+      summary
+    });
+    try {
+      expect(run.child.status, run.child.stderr).toBe(0);
+      const normalized = JSON.parse(readFileSync(run.outputPath, "utf8"));
+      expect(normalized.summary).toEqual(summary);
+      expect(normalized.rows[0].verdict).toEqual(row.verdict);
+      expect(normalized.rows[0].rawAgentSearchCalls).toEqual(row.verdict.searchCalls);
+      expect(normalized.rows[0].searchCalls).toEqual([transcribedCall("soroban storage")]);
+      expect(normalized.rows[0].primaryInHits).toBe(true);
+      for (const key of Object.keys(row).filter((key) => !["searchCalls", "primaryInHits"].includes(key))) {
+        expect(normalized.rows[0][key]).toEqual(row[key]);
+      }
+      expect(normalized.normalization).toMatchObject({
+        mode: "wire-authoritative",
+        workflow: "wf_fixture",
+        rawReconciliation: { rows: 1, ok: 0, rejected: 1, anomalies: 0, unmatchedMarkers: [], tainted: true },
+        inputs: {
+          results: { path: run.resultsPath, sha256: expect.stringMatching(/^[0-9a-f]{64}$/) },
+          capture: { path: run.capturePath, sha256: expect.stringMatching(/^[0-9a-f]{64}$/) },
+          reconciliation: {
+            path: run.reconciliationPath,
+            sha256: expect.stringMatching(/^[0-9a-f]{64}$/)
+          }
+        }
+      });
+      expect(reconcile(normalized.rows, [captureEntry("q-fixture:low", "soroban storage")]).summary)
+        .toMatchObject({ rows: 1, ok: 1, rejected: 0, anomalies: 0, unmatchedMarkers: [], tainted: false });
+    } finally {
+      rmSync(run.root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not write output when the capture contains an anomaly", () => {
+    const run = runNormalization({
+      captureEntries: [captureEntry(null, "soroban storage")],
+      rows: [resultRow([transcribedCall("soroban storage")])]
+    });
+    try {
+      expect(run.child.status).toBe(1);
+      expect(run.child.stderr).toContain("capture anomalies are fatal");
+      expect(existsSync(run.outputPath)).toBe(false);
+    } finally {
+      rmSync(run.root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not write output when the capture contains an unmatched marker", () => {
+    const run = runNormalization({
+      captureEntries: [captureEntry("q-fixture:low", "soroban storage"), captureEntry("q-other:medium", "other")],
+      rows: [resultRow([transcribedCall("soroban storage")])]
+    });
+    try {
+      expect(run.child.status).toBe(1);
+      expect(run.child.stderr).toContain("unmatched capture markers are fatal");
+      expect(existsSync(run.outputPath)).toBe(false);
+    } finally {
+      rmSync(run.root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not normalize fabricated or omitted query identities", () => {
+    const run = runNormalization({
+      captureEntries: [captureEntry("q-fixture:low", "wire query")],
+      rows: [resultRow([transcribedCall("reported query")])]
+    });
+    try {
+      expect(run.child.status).toBe(1);
+      expect(run.child.stderr).toContain("query/limit mismatch is fatal");
+      expect(existsSync(run.outputPath)).toBe(false);
+    } finally {
+      rmSync(run.root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not normalize duplicate result markers", () => {
+    const row = resultRow([transcribedCall("soroban storage")]);
+    const run = runNormalization({
+      captureEntries: [captureEntry("q-fixture:low", "soroban storage")],
+      rows: [row, structuredClone(row)]
+    });
+    try {
+      expect(run.child.status).toBe(1);
+      expect(run.child.stderr).toContain("duplicate result marker is fatal");
+      expect(existsSync(run.outputPath)).toBe(false);
+    } finally {
+      rmSync(run.root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not overwrite the raw reconciliation input", () => {
+    const run = runNormalization({
+      captureEntries: [captureEntry("q-fixture:low", "soroban storage")],
+      rows: [resultRow([transcribedCall("soroban storage")])],
+      outputIsReconciliation: true
+    });
+    try {
+      expect(run.child.status).toBe(1);
+      expect(run.child.stderr).toContain("must not overwrite an input artifact");
+      expect(readFileSync(run.reconciliationPath, "utf8")).toBe(run.reconciliationText);
+    } finally {
+      rmSync(run.root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not normalize when verdict and top-level query identities differ", () => {
+    const row = resultRow([transcribedCall("soroban storage")]);
+    row.verdict.searchCalls = [transcribedCall("different query")];
+    const run = runNormalization({
+      captureEntries: [captureEntry("q-fixture:low", "soroban storage")],
+      rows: [row]
+    });
+    try {
+      expect(run.child.status).toBe(1);
+      expect(run.child.stderr).toContain("verdict/top-level query/limit mismatch is fatal");
+      expect(existsSync(run.outputPath)).toBe(false);
+    } finally {
+      rmSync(run.root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not normalize a result object without a summary", () => {
+    const run = runNormalization({
+      captureEntries: [captureEntry("q-fixture:low", "soroban storage")],
+      rows: [resultRow([transcribedCall("soroban storage")])],
+      includeSummary: false
+    });
+    try {
+      expect(run.child.status).toBe(1);
+      expect(run.child.stderr).toContain("result summary object is required");
+      expect(existsSync(run.outputPath)).toBe(false);
+    } finally {
+      rmSync(run.root, { recursive: true, force: true });
     }
   });
 });

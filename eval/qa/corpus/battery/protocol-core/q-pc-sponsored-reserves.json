@@ -7,7 +7,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The docs give the sponsored-reserve minimum balance formula as `(2 base reserves + numSubEntries + numSponsoring - numSponsored) * baseReserve + liabilities.selling`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+    "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The docs give the sponsored-reserve minimum balance formula as `(2 base reserves + numSubEntries + numSponsoring - numSponsored) * baseReserve + liabilities.selling`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance. Stellar Core calculates these boundaries separately: `getMinBalance` excludes liabilities, and `getAvailableBalance` subtracts selling liabilities after subtracting the minimum balance. Source: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
     "keyFacts": [
       "Explains sponsorship lets one account sponsor the minimum-balance reserve for another account or ledger entry.",
       "Names BeginSponsoringFutureReserves and EndSponsoringFutureReserves as the operation pair for future reserves.",
@@ -16,7 +16,8 @@
     ],
     "avoid": [
       "Do NOT say sponsorship mints XLM or lets accounts bypass all minimum balance/fee rules.",
-      "Do NOT claim a sponsored 0-XLM account can always transfer assets without fees or authorization."
+      "Do NOT claim a sponsored 0-XLM account can always transfer assets without fees or authorization.",
+      "Do NOT add liabilities inside Core's minimum-balance calculation; Core subtracts selling liabilities when it calculates available balance."
     ],
     "notes": "Verified against Stellar Docs. 0-XLM account behavior depends on whether another account pays fees and whether required trustlines/authorization already exist.\nAlso good if the answer: Mentions RevokeSponsorship and that revocation/transfer requires valid authorization and reserve sufficiency.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository."
   },
@@ -43,13 +44,47 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
+        "note": "Observed 2026-08-14: getMinBalance excludes liabilities, while getAvailableBalance subtracts selling liabilities separately."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The official sponsored-reserves guide publishes the attributed formula with liabilities.selling, while Stellar Core excludes liabilities from getMinBalance and subtracts selling liabilities separately in getAvailableBalance.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+            "observedAt": "2026-08-14",
+            "note": "The guide publishes the formula with + liabilities.selling."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
+            "observedAt": "2026-08-14",
+            "note": "getMinBalance returns the reserve-unit product without liabilities; getAvailableBalance subtracts selling liabilities after minimum balance."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-30-upgrade-quantum-scp-sequence-reserve-finality-p19 accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-14",
+      "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+        "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
+        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+        "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
+        "Sibling sweep: q-protocol-base-reserve-min-balance uses the Core formula without liabilities and subtracts selling liabilities only from available balance."
+      ],
+      "rootCause": [
+        "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
+        "eval-authoring: the attributed Docs formula lacked the Core distinction and conflicted with the sibling avoid rule."
       ]
     },
     "origin": "raven-next q-pc-sponsored-reserves"

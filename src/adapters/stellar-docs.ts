@@ -50,6 +50,8 @@ type AlgoliaResponse = {
   page: number;
   nbPages: number;
   hitsPerPage: number;
+  exhaustive?: { nbHits?: boolean };
+  exhaustiveNbHits?: boolean;
   processingTimeMS?: number;
   message?: string;
   status?: number;
@@ -146,6 +148,30 @@ function shapeHit(hit: AlgoliaHit): Record<string, unknown> {
   if (snippet) shaped.snippet = snippet;
   if (typeof hit.content === "string") shaped.content = hit.content;
   return shaped;
+}
+
+function pageTitleOf(hit: AlgoliaHit): { attribute: string; title: string } | null {
+  const hierarchy = hit.hierarchy;
+  if (!hierarchy) return null;
+  const levels = [1, 0, 2, 3, 4, 5, 6];
+  for (const level of levels) {
+    const title = hierarchy[`lvl${level}`];
+    if (typeof title === "string" && title.length > 0) {
+      return { attribute: `hierarchy.lvl${level}`, title };
+    }
+  }
+  return null;
+}
+
+function sortAndDedupeSections(records: AlgoliaHit[]): AlgoliaHit[] {
+  const byUrl = new Map<string, AlgoliaHit>();
+  for (const record of records) {
+    const key = typeof record.url === "string" ? record.url : String(record.anchor ?? "");
+    if (!byUrl.has(key)) byUrl.set(key, record);
+  }
+  return [...byUrl.values()].sort(
+    (a, b) => (a.weight?.position ?? 0) - (b.weight?.position ?? 0)
+  );
 }
 
 /** Merge one conditionalParams override block; `null` deletes the param. */
@@ -273,13 +299,91 @@ export async function callStellarDocs(
             ...(res.status !== undefined ? { status: res.status } : {})
           });
         }
-        const records = res.body.hits.filter((h) => h[field] === target);
-        if (records.length > 0) {
-          records.sort((a, b) => (a.weight?.position ?? 0) - (b.weight?.position ?? 0));
+        const seedRecords = res.body.hits.filter((h) => h[field] === target);
+        if (seedRecords.length > 0) {
+          const pageTitle = pageTitleOf(seedRecords[0]!);
+          if (!pageTitle) {
+            const records = sortAndDedupeSections(seedRecords);
+            return okResult({
+              page: target,
+              sections: records.map(shapeHit),
+              nbSections: records.length,
+              complete: false,
+              truncated: true,
+              truncationReason: "the index record has no hierarchy title for a complete page query",
+              ...(usedFallback ? { usedFallbackQuery: derivedQueries[qi] } : {})
+            });
+          }
+
+          const titleParams = {
+            ...params,
+            query: JSON.stringify(pageTitle.title),
+            restrictSearchableAttributes: [pageTitle.attribute],
+            removeWordsIfNoResults: "none",
+            typoTolerance: false,
+            queryType: "prefixNone",
+            page: 0
+          };
+          const firstPage = await algoliaQuery(
+            hosts,
+            transport.index,
+            headers,
+            titleParams,
+            fetchImpl
+          );
+          if (!firstPage.ok) {
+            return errResult({
+              service: SERVICE,
+              kind: "error",
+              message: firstPage.message,
+              ...(firstPage.status !== undefined ? { status: firstPage.status } : {})
+            });
+          }
+
+          const titleQueryRecords = [...firstPage.body.hits];
+          const hitsPerPage = Math.max(1, firstPage.body.hitsPerPage);
+          const maxPages = Math.ceil(1000 / hitsPerPage);
+          const pagesToFetch = Math.min(firstPage.body.nbPages, maxPages);
+          for (let page = 1; page < pagesToFetch; page++) {
+            const nextPage = await algoliaQuery(
+              hosts,
+              transport.index,
+              headers,
+              { ...titleParams, page },
+              fetchImpl
+            );
+            if (!nextPage.ok) {
+              return errResult({
+                service: SERVICE,
+                kind: "error",
+                message: nextPage.message,
+                ...(nextPage.status !== undefined ? { status: nextPage.status } : {})
+              });
+            }
+            titleQueryRecords.push(...nextPage.body.hits);
+          }
+
+          const exactRecords = titleQueryRecords.filter((hit) => hit[field] === target);
+          const records = sortAndDedupeSections(exactRecords.length > 0 ? exactRecords : seedRecords);
+          const truncated =
+            firstPage.body.exhaustiveNbHits === false ||
+            firstPage.body.exhaustive?.nbHits === false ||
+            firstPage.body.nbPages > maxPages ||
+            exactRecords.length === 0;
           return okResult({
             page: target,
             sections: records.map(shapeHit),
             nbSections: records.length,
+            complete: !truncated,
+            truncated,
+            ...(truncated
+              ? {
+                  truncationReason:
+                    exactRecords.length === 0
+                      ? "the exact page-title query returned no target records"
+                      : "the Algolia title query was not exhaustive within its pagination limit"
+                }
+              : {}),
             ...(usedFallback ? { usedFallbackQuery: derivedQueries[qi] } : {})
           });
         }

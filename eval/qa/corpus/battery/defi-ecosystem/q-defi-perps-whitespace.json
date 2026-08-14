@@ -22,63 +22,80 @@
   "tags": {
     "category": "defi-ecosystem",
     "service": "scout",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
+    "asOf": "2026-08-14",
+    "reverifyBy": "2026-10-29",
     "sources": [
       {
-        "class": "D",
+        "class": "B",
         "ref": "https://github.com/NoetherDEX/noether",
-        "note": "class inferred at migration"
+        "note": "Official Noether source repository."
       },
       {
-        "class": "D",
+        "class": "A",
+        "ref": "https://noether.exchange/",
+        "note": "Observed 2026-08-14: audit in progress and public testnet; Mainnet opens after the audit clears."
+      },
+      {
+        "class": "A",
         "ref": "https://docs.zenex.trade/faq",
-        "note": "class inferred at migration"
+        "note": "Observed 2026-08-14: the current deployment runs on Stellar testnet."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
+        "note": "Official SDF meeting record for the live Noether testnet demo."
       }
     ],
     "corroboration": [
       {
-        "claim": "Perps are an emerging testnet category; no mainnet deployment was confirmed in the audited sources asOf 2026-07-10",
-        "verdict": "confirmed",
+        "claim": "Noether and Zenex still identify their current deployments as testnet, and the audited source set did not confirm a mainnet perpetual DEX as of 2026-08-14.",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
-            "ref": "A/B: Noether repo/official developer meeting and Zenex FAQ",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://noether.exchange/",
+            "observedAt": "2026-08-14",
+            "note": "Noether identifies the current deployment as a public testnet and names audit clearance as the Mainnet trigger."
           },
           {
-            "class": "B",
-            "ref": "A/B: Noether repo/official developer meeting and Zenex FAQ",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "A",
+            "ref": "https://docs.zenex.trade/faq",
+            "observedAt": "2026-08-14",
+            "note": "Zenex says the current deployment runs on Stellar testnet with test tokens."
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_meeting_notes: https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
+            "observedAt": "2026-08-14",
+            "note": "The indexed official meeting record describes a live testnet demo."
           },
           {
             "class": "C",
-            "ref": "C/D: Scout/Lumenloop plus broad operator/repo conflict sweep",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
-          },
-          {
-            "class": "D",
-            "ref": "C/D: Scout/Lumenloop plus broad operator/repo conflict sweep",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "scout.searchProjects(q=perpetual futures), generatedAt 2026-08-14T05:52:24Z",
+            "observedAt": "2026-08-14",
+            "note": "Scout labels Noether Live with source-inherited status, confidence 0.45, and no statusSourceUrl; this does not override the operator's testnet statement."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — GT-16 lanes confirmed testnet entrants and found no verified production/mainnet perp DEX in the audited universe, but the inherited absolute negative lacks an as-of date and source boundary and freezes secondary Turbolong details.",
+      "date": "2026-08-14",
+      "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
       "evidence": [
-        "Solo scratchpad 575 GT-16 processes 3244/3245"
+        "https://noether.exchange/",
+        "https://docs.zenex.trade/faq",
+        "https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
+        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+        "Sibling sweep: q-eco-defi-market-map remains claim-consistent; the register does not require matched scheduling metadata."
       ],
       "rootCause": [
-        "eval-side bounded negative was phrased as permanent global absence"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-defi-perps-whitespace"

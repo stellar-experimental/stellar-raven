@@ -56,6 +56,17 @@ describe("guard — arg validation (exposure is build-time, ADR-0003)", () => {
     expect(guard(entry("lumenloop.search_directory"), { query: "soroswap" })).toBeNull();
     expect(guard(entry("scout.getStatus"), undefined)).toBeNull();
   });
+
+  it("rejects an unknown Lumenloop document sort before upstream traffic", () => {
+    const r = guard(entry("lumenloop.list_documents"), {
+      collection: "jobs",
+      sort: "definitely_not_a_real_sort_key"
+    });
+    if (!r || r.ok) throw new Error("expected validation refusal");
+    expect(r.error.message).toContain("no call was made");
+    expect(JSON.stringify(r.error.details)).toContain("sort");
+    expect(JSON.stringify(r.error.details)).toContain("must be one of");
+  });
 });
 
 describe("validateArgs — the manifest schema dialect", () => {
@@ -79,6 +90,23 @@ describe("validateArgs — the manifest schema dialect", () => {
       category: "blog"
     });
     expect(JSON.stringify(issues)).toContain("must be one of");
+  });
+
+  it("accepts every documented Lumenloop document sort field", () => {
+    const schema = entry("lumenloop.list_documents").inputSchema;
+    for (const sort of [
+      "processed_at",
+      "publishing_date",
+      "created_at",
+      "domain",
+      "source",
+      "start_at",
+      "updated_at",
+      "last_seen_at",
+      "published_at"
+    ]) {
+      expect(validateArgs(schema, { collection: "jobs", sort })).toEqual([]);
+    }
   });
 
   it("accepts current Scout project filters and rejects unknown enum values", () => {

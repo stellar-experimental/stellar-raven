@@ -412,4 +412,94 @@ describe("stellarDocs adapter", () => {
     expect(data.nbSections).toBe(2); // the other page's record was dropped
     expect(data.sections.map((s) => s.anchor)).toEqual(["a", "b"]); // weight.position order
   });
+
+  it("retrieves every page section when the derived slug query matches only the page heading", async () => {
+    const page = "https://developers.stellar.org/docs/tokens/control-asset-access";
+    const record = (anchor: string, position: number, url = page) => ({
+      url: `${url}#${anchor}`,
+      url_without_anchor: url,
+      anchor,
+      type: "content",
+      hierarchy: {
+        lvl0: "Assets",
+        lvl1: "Controlling Access to an Asset with Flags"
+      },
+      content: `section ${anchor}`,
+      weight: { position }
+    });
+    const responses = [
+      {
+        hits: [record("controlling-access-to-an-asset-with-flags", 0)],
+        nbHits: 1,
+        page: 0,
+        nbPages: 1,
+        hitsPerPage: 100
+      },
+      {
+        hits: [
+          record("authorization-revocable-0x2", 2),
+          record("authorization-required-0x1", 1),
+          record("controlling-access-to-an-asset-with-flags", 0),
+          record("noise", 0, "https://developers.stellar.org/docs/other")
+        ],
+        nbHits: 8,
+        page: 0,
+        nbPages: 2,
+        hitsPerPage: 100
+      },
+      {
+        hits: [
+          record("authorization-immutable-0x4", 3),
+          record("clawback-enabled-0x8", 4),
+          record("set-trustline-flag-operation", 5),
+          record("example-flow", 6)
+        ],
+        nbHits: 8,
+        page: 1,
+        nbPages: 2,
+        hitsPerPage: 100
+      }
+    ];
+    const calls: { url: string; init?: RequestInit }[] = [];
+    const fetchImpl: FetchLike = async (url, init) => {
+      calls.push({ url, init });
+      const response = responses[calls.length - 1];
+      if (!response) throw new Error("unexpected extra Algolia query");
+      return new Response(JSON.stringify(response), { status: 200 });
+    };
+
+    const r = await callStellarDocs(
+      entry("stellarDocs.get_doc_page_sections"),
+      { path: "/docs/tokens/control-asset-access" },
+      docsEnv,
+      fetchImpl
+    );
+
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const data = r.data as {
+      sections: { anchor: string }[];
+      nbSections: number;
+      complete: boolean;
+      truncated: boolean;
+    };
+    expect(data.nbSections).toBe(7);
+    expect(data.sections.map((section) => section.anchor)).toEqual([
+      "controlling-access-to-an-asset-with-flags",
+      "authorization-required-0x1",
+      "authorization-revocable-0x2",
+      "authorization-immutable-0x4",
+      "clawback-enabled-0x8",
+      "set-trustline-flag-operation",
+      "example-flow"
+    ]);
+    expect(data.complete).toBe(true);
+    expect(data.truncated).toBe(false);
+    const titleParams = JSON.parse(String(calls[1]?.init?.body));
+    expect(titleParams.query).toBe('"Controlling Access to an Asset with Flags"');
+    expect(titleParams.restrictSearchableAttributes).toEqual(["hierarchy.lvl1"]);
+    expect(titleParams.removeWordsIfNoResults).toBe("none");
+    expect(titleParams.typoTolerance).toBe(false);
+    expect(JSON.parse(String(calls[2]?.init?.body)).page).toBe(1);
+  });
 });

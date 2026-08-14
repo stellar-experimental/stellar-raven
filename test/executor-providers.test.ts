@@ -368,6 +368,23 @@ describe("dispatch behavior (error-as-data, exposure, parallelism)", () => {
     expect(fetched).toBe(0);
   });
 
+  it("refuses an unknown Lumenloop document sort before any network call", async () => {
+    let fetched = 0;
+    const fetchImpl: FetchLike = async () => {
+      fetched += 1;
+      return new Response("{}", { status: 200 });
+    };
+    const providers = buildSandbox(catalog, skillSource, env, { fetchImpl });
+    const r = (await fnsOf(providers, "lumenloop").list_documents!({
+      collection: "jobs",
+      sort: "definitely_not_a_real_sort_key"
+    })) as { ok: boolean; error: { kind: string; message: string } };
+    expect(r.ok).toBe(false);
+    expect(r.error.kind).toBe("error");
+    expect(r.error.message).toContain("no call was made");
+    expect(fetched).toBe(0);
+  });
+
   it("runs independent calls concurrently (Promise.all fan-out is safe)", async () => {
     let inFlight = 0;
     let maxInFlight = 0;

@@ -3837,6 +3837,17 @@
                   },
                   "sort": {
                     "description": "Sort field. Articles: processed_at, publishing_date, created_at, domain, source. Events: start_at, processed_at, created_at. Videos: processed_at, publishing_date, created_at, source. Jobs: updated_at, last_seen_at, published_at, created_at.",
+                    "enum": [
+                      "processed_at",
+                      "publishing_date",
+                      "created_at",
+                      "domain",
+                      "source",
+                      "start_at",
+                      "updated_at",
+                      "last_seen_at",
+                      "published_at"
+                    ],
                     "type": "string"
                   },
                   "source": {

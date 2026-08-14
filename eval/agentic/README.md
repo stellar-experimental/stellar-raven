@@ -164,6 +164,17 @@ lifting lumenloop any-hit to 87.5%/75% and medium primary to 37.5%; the boundary
    `unmatchedMarkers`). Treat every transcript-derived field in that run as rejected; the
    Grade columns still stand. Update the summary tables in this README — the README is
    the committed record, not the JSON.
+   When the raw report rejects only page content and every row still has the same query/limit
+   multiset as the wire, write a separate wire-authoritative copy with:
+   `node eval/agentic/reconcile-capture.mjs --capture <capture.jsonl> --results <results.json> --raw-reconciliation <reconcile.json> --write-normalized <normalized-results.json> --workflow <workflow-id>`.
+   This mode keeps the exact raw reconciliation summary in `normalization.rawReconciliation`,
+   verifies and hash-pins the supplied raw reconciliation,
+   copies the wire pages into top-level `searchCalls`, preserves the agent's original pages in
+   `rawAgentSearchCalls`, and derives `primaryInHits` from the wire. It requires a result summary,
+   unique result markers, and identical query/limit multisets across verdict, top-level, and wire
+   calls. It also refuses capture anomalies, unmatched markers, empty reports with captured
+   traffic, and any output path that overwrites an input. Re-run the ordinary reconciliation
+   command against the normalized copy before using its forensics.
 
 ## Results — 2026-07-06 (post-round-5 checkpoint; run `wf_b5be4d53-41f`, local-only)
 

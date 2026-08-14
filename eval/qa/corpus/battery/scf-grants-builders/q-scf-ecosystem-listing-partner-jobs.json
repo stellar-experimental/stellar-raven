@@ -31,7 +31,8 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-08-14",
+    "reverifyBy": "2026-11-12",
     "sources": [
       {
         "class": "A",
@@ -66,37 +67,37 @@
     ],
     "corroboration": [
       {
-        "claim": "Current official ecosystem/service-provider/careers pages expose concrete intake routes and the Matching Fund is a separate 1:1 co-investment path",
+        "claim": "The official ecosystem page still exposes the project-submission intake, and the Matching Fund still states a $200K minimum, 1:1 matching, and a $500K maximum.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
-            "ref": "A: current Stellar ecosystem, provider, careers, and Matching Fund pages",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://stellar.org/ecosystem",
+            "observedAt": "2026-08-14",
+            "note": "The page still presents the Submit Your Project review intake."
           },
           {
-            "class": "D",
-            "ref": "D: current organizer/company pages for event and ecosystem roles",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "A",
+            "ref": "https://stellar.org/grants-and-funding/matching-fund",
+            "observedAt": "2026-08-14",
+            "note": "The page still states 1:1 matching, a $200K minimum check, a $500K maximum, a lead term sheet or SAFE, and pre-seed through Series B."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-14",
+      "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
       "evidence": [
-        "Solo scratchpad 575 GT-37 primary 3296 and blind 3298.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "https://stellar.org/ecosystem",
+        "https://stellar.org/grants-and-funding/matching-fund",
+        "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
+        "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
+        "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
+        "Sibling sweep: q-scf-vs-sdf-enterprise-fund remains claim-consistent; the consistency register does not require matched scheduling metadata."
       ],
       "rootCause": [
-        "Normal operational-page drift plus an incomplete current Matching Fund summary.",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-scf-ecosystem-listing-partner-jobs"

@@ -31,7 +31,9 @@
  *     --capture eval/agentic/results/capture-<stamp>.jsonl \
  *     --results eval/agentic/results/agentic-<stamp>.json
  */
-import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 /**
@@ -120,8 +122,11 @@ export function callKey(call) {
   });
 }
 
-/** Reconcile workflow rows against captured wire exchanges. */
-export function reconcile(rows, captureEntries) {
+function callIdentityKey(call) {
+  return JSON.stringify({ query: call.query, limit: call.limit });
+}
+
+function captureIndex(captureEntries) {
   const wireByMarker = new Map();
   const anomalies = [];
   for (const entry of captureEntries) {
@@ -137,6 +142,12 @@ export function reconcile(rows, captureEntries) {
     if (!wireByMarker.has(classified.marker)) wireByMarker.set(classified.marker, []);
     wireByMarker.get(classified.marker).push(classified.call);
   }
+  return { wireByMarker, anomalies };
+}
+
+/** Reconcile workflow rows against captured wire exchanges. */
+export function reconcile(rows, captureEntries) {
+  const { wireByMarker, anomalies } = captureIndex(captureEntries);
 
   const totalWireSearches = [...wireByMarker.values()].reduce((sum, calls) => sum + calls.length, 0);
   const anySearchTraffic =
@@ -195,6 +206,117 @@ export function reconcile(rows, captureEntries) {
   };
 }
 
+function sameCallIdentities(reported, wire) {
+  const remaining = wire.map(callIdentityKey);
+  for (const call of reported) {
+    const index = remaining.indexOf(callIdentityKey(call));
+    if (index === -1) return false;
+    remaining.splice(index, 1);
+  }
+  return remaining.length === 0;
+}
+
+/** Build a result copy whose top-level searchCalls come from captured wire exchanges. */
+export function normalizeResults(results, captureEntries, provenance) {
+  if (!results || Array.isArray(results) || typeof results !== "object") {
+    throw new Error("normalized output requires a result object with rows[] and summary");
+  }
+  const rows = results.rows;
+  if (!Array.isArray(rows)) throw new Error("results file has no rows[]");
+  if (!results.summary || Array.isArray(results.summary) || typeof results.summary !== "object") {
+    throw new Error("result summary object is required");
+  }
+  if (results.normalization || rows.some((row) => row.rawAgentSearchCalls !== undefined)) {
+    throw new Error("results file is already normalized");
+  }
+
+  const resultMarkers = new Set();
+  for (const row of rows) {
+    const marker = `${row.caseId}:${row.effort}`;
+    if (resultMarkers.has(marker)) {
+      throw new Error(`duplicate result marker is fatal: ${marker}`);
+    }
+    resultMarkers.add(marker);
+  }
+
+  const rawReport = reconcile(rows, captureEntries);
+  if (JSON.stringify(rawReport) !== JSON.stringify(provenance.reconciliation.report)) {
+    throw new Error("supplied raw reconciliation does not match the current inputs");
+  }
+  if (rawReport.summary.anomalies > 0) {
+    throw new Error(`capture anomalies are fatal (${rawReport.summary.anomalies})`);
+  }
+  if (rawReport.summary.unmatchedMarkers.length > 0) {
+    throw new Error(
+      `unmatched capture markers are fatal: ${rawReport.summary.unmatchedMarkers.join(", ")}`
+    );
+  }
+
+  const { wireByMarker } = captureIndex(captureEntries);
+  const normalizedRows = rows.map((row) => {
+    const marker = `${row.caseId}:${row.effort}`;
+    const reported = row.searchCalls ?? [];
+    const wire = wireByMarker.get(marker) ?? [];
+    const rawRow = rawReport.rows.find(
+      (candidate) => candidate.caseId === row.caseId && candidate.effort === row.effort
+    );
+    if (rawRow?.emptyReportWithTraffic) {
+      throw new Error(`empty report with captured traffic is fatal for ${marker}`);
+    }
+    if (!Array.isArray(row.verdict?.searchCalls)) {
+      throw new Error(`raw agent searchCalls are missing for ${marker}`);
+    }
+    if (!sameCallIdentities(row.verdict.searchCalls, reported)) {
+      throw new Error(`verdict/top-level query/limit mismatch is fatal for ${marker}`);
+    }
+    if (!sameCallIdentities(reported, wire)) {
+      throw new Error(`query/limit mismatch is fatal for ${marker}`);
+    }
+    return {
+      ...row,
+      rawAgentSearchCalls: row.verdict.searchCalls,
+      searchCalls: wire,
+      primaryInHits: wire.some((call) =>
+        call.hits.some((hit) => hit.id === row.verdict?.primaryToolId)
+      )
+    };
+  });
+
+  const normalized = {
+    ...results,
+    rows: normalizedRows,
+    normalization: {
+      mode: "wire-authoritative",
+      workflow: provenance.workflow,
+      tool: "eval/agentic/reconcile-capture.mjs",
+      inputs: {
+        results: { path: provenance.results.path, sha256: provenance.results.sha256 },
+        capture: { path: provenance.capture.path, sha256: provenance.capture.sha256 },
+        reconciliation: {
+          path: provenance.reconciliation.path,
+          sha256: provenance.reconciliation.sha256
+        }
+      },
+      rawReconciliation: rawReport.summary,
+      normalizedFields: {
+        searchCalls: "captured wire exchanges",
+        rawAgentSearchCalls: "source result rows[].verdict.searchCalls",
+        primaryInHits: "derived from captured wire exchanges"
+      }
+    }
+  };
+
+  const normalizedReport = reconcile(normalizedRows, captureEntries);
+  if (normalizedReport.summary.tainted) {
+    throw new Error("normalized output failed exact reconciliation");
+  }
+  return { normalized, rawReport, normalizedReport };
+}
+
+function sha256(text) {
+  return createHash("sha256").update(text).digest("hex");
+}
+
 function main() {
   const args = process.argv.slice(2);
   const argVal = (flag) => {
@@ -203,17 +325,71 @@ function main() {
   };
   const capturePath = argVal("--capture");
   const resultsPath = argVal("--results");
+  const normalizedPath = argVal("--write-normalized");
+  const workflow = argVal("--workflow");
+  const reconciliationPath = argVal("--raw-reconciliation");
   if (!capturePath || !resultsPath) {
-    console.error("usage: reconcile-capture.mjs --capture <capture.jsonl> --results <results.json>");
+    console.error(
+      "usage: reconcile-capture.mjs --capture <capture.jsonl> --results <results.json> " +
+      "[--write-normalized <results.json> --workflow <workflow-id> " +
+      "--raw-reconciliation <reconcile.json>]"
+    );
     process.exit(1);
   }
-  const captureEntries = readFileSync(capturePath, "utf8")
+  if (normalizedPath && !workflow) {
+    console.error("--workflow is required with --write-normalized");
+    process.exit(1);
+  }
+  if (normalizedPath && !reconciliationPath) {
+    console.error("--raw-reconciliation is required with --write-normalized");
+    process.exit(1);
+  }
+  if (
+    normalizedPath &&
+    [capturePath, resultsPath, reconciliationPath].some(
+      (path) => resolve(path) === resolve(normalizedPath)
+    )
+  ) {
+    console.error("--write-normalized must not overwrite an input artifact");
+    process.exit(1);
+  }
+  const captureText = readFileSync(capturePath, "utf8");
+  const resultsText = readFileSync(resultsPath, "utf8");
+  const captureEntries = captureText
     .split("\n")
     .filter((line) => line.trim())
     .map((line) => JSON.parse(line));
-  const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+  const results = JSON.parse(resultsText);
   const rows = results.rows ?? results;
   if (!Array.isArray(rows)) throw new Error("results file has no rows[]");
+
+  if (normalizedPath) {
+    try {
+      const reconciliationText = readFileSync(reconciliationPath, "utf8");
+      const { normalized, rawReport, normalizedReport } = normalizeResults(results, captureEntries, {
+        workflow,
+        results: { path: resultsPath, sha256: sha256(resultsText) },
+        capture: { path: capturePath, sha256: sha256(captureText) },
+        reconciliation: {
+          path: reconciliationPath,
+          sha256: sha256(reconciliationText),
+          report: JSON.parse(reconciliationText)
+        }
+      });
+      writeFileSync(normalizedPath, `${JSON.stringify(normalized, null, 2)}\n`);
+      console.log(JSON.stringify({
+        output: normalizedPath,
+        rawReconciliation: rawReport.summary,
+        normalizedReconciliation: normalizedReport.summary
+      }, null, 2));
+      process.exitCode = 0;
+      return;
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : String(error));
+      process.exitCode = 1;
+      return;
+    }
+  }
 
   const report = reconcile(rows, captureEntries);
   console.log(JSON.stringify(report, null, 2));

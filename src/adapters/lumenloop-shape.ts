@@ -18,6 +18,18 @@
 
 export const LUMENLOOP_SEMANTIC_OPERATION = "lumenloop.search_content_semantic";
 
+export const LUMENLOOP_DOCUMENT_SORTS = [
+  "processed_at",
+  "publishing_date",
+  "created_at",
+  "domain",
+  "source",
+  "start_at",
+  "updated_at",
+  "last_seen_at",
+  "published_at"
+] as const;
+
 export const LUMENLOOP_SEMANTIC_OUTPUT_SCHEMA = {
   type: "object",
   additionalProperties: false,
@@ -82,6 +94,40 @@ export const LUMENLOOP_SEMANTIC_OUTPUT_SCHEMA = {
 } as const;
 
 type JsonRecord = Record<string, unknown>;
+
+/**
+ * Lumenloop currently accepts an unknown list_documents sort key. The live
+ * operation schema documents its supported fields in prose, so make that
+ * closed set executable in both generated model-facing contracts. This runs
+ * through the normal host-side schema guard before the adapter sends traffic.
+ */
+export function lumenloopInputSchema(operationId: string, upstream: unknown): unknown {
+  if (
+    operationId !== "lumenloop.list_documents" ||
+    upstream === null ||
+    typeof upstream !== "object" ||
+    Array.isArray(upstream)
+  ) {
+    return upstream;
+  }
+
+  const schema = upstream as JsonRecord;
+  const properties = schema.properties;
+  if (properties === null || typeof properties !== "object" || Array.isArray(properties)) {
+    return upstream;
+  }
+
+  const sort = (properties as JsonRecord).sort;
+  if (sort === null || typeof sort !== "object" || Array.isArray(sort)) return upstream;
+
+  return {
+    ...schema,
+    properties: {
+      ...properties,
+      sort: { ...(sort as JsonRecord), enum: [...LUMENLOOP_DOCUMENT_SORTS] }
+    }
+  };
+}
 
 function firstString(
   source: JsonRecord,

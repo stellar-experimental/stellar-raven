@@ -54,7 +54,7 @@ import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
 // the two model-facing surfaces cannot drift (native type stripping, as for
 // build-catalog.mjs's src/ imports).
 import { RUNNERS } from "../src/skills/runners/index.ts";
-import { lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
+import { lumenloopInputSchema, lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
 import { parseFrontmatter, plainText, slugify } from "./lib/skill-markdown.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -115,16 +115,17 @@ function buildLumenloopPaths(inv, exposed) {
       descriptionParts.push(note);
       consumedNotes.add(tool.name);
     }
+    const inputSchema = lumenloopInputSchema(id, tool.input_schema ?? null);
     const outputSchema = lumenloopOutputSchema(id, tool.output_schema ?? null);
     const op = {
       operationId: id,
       summary: firstSentence(tool.description),
       description: descriptionParts.join("\n\n"),
       tags: ["lumenloop", ...(tool.category ? [tool.category] : [])],
-      requestBody: tool.input_schema
+      requestBody: inputSchema
         ? {
             required: true,
-            content: { "application/json": { schema: tool.input_schema } }
+            content: { "application/json": { schema: inputSchema } }
           }
         : undefined,
       responses: {
