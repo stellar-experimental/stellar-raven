@@ -5,9 +5,12 @@
  * stay local and gitignored; this writes a local comparison sidecar whose
  * stamped aggregates are copied into the committed eval record after review.
  */
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { extractPlainOperationTool } from "../plan/grade-plan.mjs";
+import { extractPlainOperationTool, gradeRow, loadRunnerOps, summarizePlan } from "../plan/grade-plan.mjs";
+import { AGENT_RESULT_SCHEMA } from "./agent-result.mjs";
 
 const TRUNCATION_MARKERS = ["--- TRUNCATED ---", "--- SOURCE BASIS ---"];
 
@@ -66,6 +69,14 @@ function addNumericUsage(target, source) {
   return target;
 }
 
+function finiteOrNull(value) {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function sumCosts(values) {
+  return Number(values.reduce((total, value) => total + value, 0).toFixed(12));
+}
+
 export function analyzeArchitectureRow(row) {
   const transcript = row.transcript ?? [];
   let searchCalls = 0;
@@ -90,16 +101,25 @@ export function analyzeArchitectureRow(row) {
     }
   }
   const ravenToolCalls = transcript.filter(isRavenTool).length;
+  const agentError = Boolean(row.agent?.failure);
+  const judgeExpected = Boolean(row.answer) && !agentError;
+  const agentCostUsd = finiteOrNull(row.agent?.costUsd);
+  const judgeCostUsd = judgeExpected ? finiteOrNull(row.verdict?.costUsd) : null;
   return {
     id: row.id,
     truth: row.truth ?? null,
     verdict: scoreOf(row),
     turns: row.agent?.turns ?? null,
-    agentCostUsd: row.agent?.costUsd ?? 0,
-    judgeCostUsd: row.verdict?.costUsd ?? 0,
-    totalCostUsd: (row.agent?.costUsd ?? 0) + (row.verdict?.costUsd ?? 0),
+    agentCostUsd,
+    judgeCostUsd,
+    totalCostUsd:
+      agentCostUsd !== null && (!judgeExpected || judgeCostUsd !== null)
+        ? agentCostUsd + (judgeCostUsd ?? 0)
+        : null,
     promptChars: row.agent?.promptChars ?? null,
-    usage: row.agent?.usage ?? null,
+    // Post-parser rows carry the provider's final usage under agent.usage.final
+    // (agent.usage.perTurn holds the per-turn numeric series).
+    usage: row.agent?.usage?.final ?? null,
     transcriptToolCalls: transcript.length,
     ravenToolCalls,
     harnessToolCalls: transcript.length - ravenToolCalls,
@@ -109,8 +129,10 @@ export function analyzeArchitectureRow(row) {
     toolResultChars,
     truncatedToolResults,
     toolErrors,
-    agentError: Boolean(row.agent?.error),
-    judgeError: scoreOf(row) === "error",
+    agentError,
+    agentFailureClass: row.agent?.failure?.class ?? null,
+    judgeExpected,
+    judgeError: judgeExpected && scoreOf(row) === "error",
     visibleEnvelopes
   };
 }
@@ -118,23 +140,54 @@ export function analyzeArchitectureRow(row) {
 export function summarizeArchitecture(rows) {
   const analyzed = rows.map(analyzeArchitectureRow);
   const sum = (field) => analyzed.reduce((total, row) => total + (row[field] ?? 0), 0);
+  const reported = (field, candidates = analyzed) =>
+    candidates.map((row) => row[field]).filter((value) => value !== null);
+  const meanReported = (field) => {
+    const values = reported(field);
+    return values.length ? values.reduce((total, value) => total + value, 0) / values.length : null;
+  };
   const verdicts = { correct: 0, partial: 0, wrong: 0, error: 0 };
   const visibleEnvelopes = { ok: 0, error: 0, "soft-empty": 0 };
   const agentUsage = {};
+  const agentFailureClasses = {};
   for (const row of analyzed) {
     verdicts[row.verdict in verdicts ? row.verdict : "error"]++;
     for (const key of Object.keys(visibleEnvelopes)) visibleEnvelopes[key] += row.visibleEnvelopes[key];
     addNumericUsage(agentUsage, row.usage);
+    if (row.agentFailureClass) {
+      agentFailureClasses[row.agentFailureClass] = (agentFailureClasses[row.agentFailureClass] ?? 0) + 1;
+    }
   }
+  const judged = analyzed.filter((row) => row.judgeExpected);
+  const reportedAgentCosts = reported("agentCostUsd");
+  const reportedJudgeCosts = reported("judgeCostUsd", judged);
+  const missingAgentCosts = analyzed.length - reportedAgentCosts.length;
+  const missingJudgeCosts = judged.length - reportedJudgeCosts.length;
+  const agentCostUsd = sumCosts(reportedAgentCosts);
+  const judgeCostUsd = sumCosts(reportedJudgeCosts);
   return {
     cases: analyzed.length,
     verdicts,
-    meanTurns: analyzed.length ? sum("turns") / analyzed.length : null,
-    agentCostUsd: sum("agentCostUsd"),
-    judgeCostUsd: sum("judgeCostUsd"),
-    totalCostUsd: sum("totalCostUsd"),
+    meanTurns: meanReported("turns"),
+    agentCostUsd,
+    judgeCostUsd,
+    totalCostUsd: sumCosts([agentCostUsd, judgeCostUsd]),
+    costAccounting: {
+      agent: {
+        expected: analyzed.length,
+        reported: reportedAgentCosts.length,
+        missing: missingAgentCosts
+      },
+      judge: {
+        expected: judged.length,
+        reported: reportedJudgeCosts.length,
+        missing: missingJudgeCosts
+      },
+      totalCostIsLowerBound: missingAgentCosts + missingJudgeCosts > 0
+    },
     agentUsage,
-    meanPromptChars: analyzed.length ? sum("promptChars") / analyzed.length : null,
+    agentFailureClasses,
+    meanPromptChars: meanReported("promptChars"),
     transcriptToolCalls: sum("transcriptToolCalls"),
     ravenToolCalls: sum("ravenToolCalls"),
     harnessToolCalls: sum("harnessToolCalls"),
@@ -161,12 +214,107 @@ function planPathFor(resultsPath) {
   return resultsPath.replace(/\.json$/, ".plan.json");
 }
 
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+export async function verifyPlanSourceAssociation(label, plan, resultsPath, results, planPath = null) {
+  const fail = (message) => {
+    throw new Error(`incomparable A/B inputs: ${label} ${message}`);
+  };
+  if (typeof plan?.meta?.resultsPath !== "string") fail("plan has no meta.resultsPath");
+  if (path.resolve(plan.meta.resultsPath) !== path.resolve(resultsPath)) {
+    fail("plan meta.resultsPath does not identify the compared results");
+  }
+
+  const sourceText = readFileSync(resultsPath, "utf8");
+  let sourceFromDisk;
+  try {
+    sourceFromDisk = JSON.parse(sourceText);
+  } catch (error) {
+    fail(`results are not valid JSON: ${error.message}`);
+  }
+  if (JSON.stringify(sourceFromDisk) !== JSON.stringify(results)) {
+    fail("parsed results do not match meta.resultsPath");
+  }
+  let planSha256 = null;
+  if (planPath) {
+    const planText = readFileSync(planPath, "utf8");
+    let planFromDisk;
+    try {
+      planFromDisk = JSON.parse(planText);
+    } catch (error) {
+      fail(`plan is not valid JSON: ${error.message}`);
+    }
+    if (JSON.stringify(planFromDisk) !== JSON.stringify(plan)) {
+      fail("parsed plan does not match the saved sidecar");
+    }
+    planSha256 = sha256(planText);
+  }
+
+  const rulesPath = plan.meta.rulesPath;
+  const opClassesPath = plan.meta.opClassesPath;
+  if (typeof rulesPath !== "string" || typeof opClassesPath !== "string") {
+    fail("plan has no exact rulesPath or opClassesPath");
+  }
+  const rules = JSON.parse(readFileSync(rulesPath, "utf8"));
+  const opClasses = JSON.parse(readFileSync(opClassesPath, "utf8")).classes;
+  if (plan.meta.rulesVersion !== rules.version) fail("plan rulesVersion does not match rulesPath");
+
+  const { runnerOps } = await loadRunnerOps();
+  if (runnerOps) {
+    const expectedRunnerIds = Object.keys(runnerOps).sort();
+    if (JSON.stringify(plan.meta.runnerRegistry?.runnableIds) !== JSON.stringify(expectedRunnerIds)) {
+      fail("plan runner registry does not match the current exact registry");
+    }
+  } else if (!plan.meta.runnerRegistry?.absent) {
+    fail("plan runner registry claims runners when the current registry is absent");
+  }
+
+  const expectedRows = results.rows.map((row) => gradeRow(row, rules, opClasses, runnerOps));
+  if (JSON.stringify(plan.rows) !== JSON.stringify(expectedRows)) {
+    fail("plan rows do not match source results");
+  }
+  const expectedSummary = summarizePlan(expectedRows);
+  if (JSON.stringify(plan.summary) !== JSON.stringify(expectedSummary)) {
+    fail("plan summary does not match source results");
+  }
+  return {
+    sourceResultsSha256: sha256(sourceText),
+    ...(planSha256 ? { planSha256 } : {})
+  };
+}
+
 function assertComparable(search, perOperation) {
   const fail = (message) => {
     throw new Error(`incomparable A/B inputs: ${message}`);
   };
   if (search.meta?.surface !== "search-execute") fail(`first surface is ${search.meta?.surface}`);
   if (perOperation.meta?.surface !== "per-operation") fail(`second surface is ${perOperation.meta?.surface}`);
+  // This reader knows exactly ONE row shape: the post-parser one
+  // (agent.usage.final, agent.failure). Any other artifact — older, newer, or
+  // unstamped — would compare as empty usage and zero agent errors, a false
+  // clean bill rather than a refusal. Agreement between the arms is not enough;
+  // both must be the schema this reader actually understands.
+  for (const [label, meta] of [
+    ["first", search.meta],
+    ["second", perOperation.meta]
+  ]) {
+    if (meta?.resultsSchema !== AGENT_RESULT_SCHEMA) {
+      fail(
+        `${label} artifact has meta.resultsSchema ${JSON.stringify(meta?.resultsSchema ?? null)}, this reader requires ${JSON.stringify(AGENT_RESULT_SCHEMA)} — its usage/failure fields cannot be read otherwise; re-collect`
+      );
+    }
+    if (!/^[a-f0-9]{40}$/i.test(meta?.sourceIdentity?.serverRevision ?? "")) {
+      fail(`${label} artifact has no immutable serverRevision`);
+    }
+    if (!/^[a-f0-9]{64}$/.test(meta?.sourceIdentity?.qaImplementationSha256 ?? "")) {
+      fail(`${label} artifact has no exact qaImplementationSha256`);
+    }
+    if (meta?.sourceIdentityGuard?.matches !== true) {
+      fail(`${label} artifact has no passing sourceIdentityGuard`);
+    }
+  }
   for (const key of ["model", "judgeModel", "judgeRubric", "packVersion", "casesPath", "caseContract", "sampleN"]) {
     if (search.meta?.[key] !== perOperation.meta?.[key]) {
       fail(`${key} differs (${JSON.stringify(search.meta?.[key])} vs ${JSON.stringify(perOperation.meta?.[key])})`);
@@ -178,10 +326,31 @@ function assertComparable(search, perOperation) {
   if (JSON.stringify(search.meta?.inputSnapshot) !== JSON.stringify(perOperation.meta?.inputSnapshot)) {
     fail("input snapshots differ");
   }
+  for (const key of ["sourceIdentity", "promptAppend"]) {
+    if (JSON.stringify(search.meta?.[key]) !== JSON.stringify(perOperation.meta?.[key])) {
+      fail(`${key} differs`);
+    }
+  }
+}
+
+function assertPlanComplete(label, plan, expectedIds) {
+  if (!plan || !Array.isArray(plan.rows)) {
+    throw new Error(`incomparable A/B inputs: ${label} plan rows are missing`);
+  }
+  const planIds = plan.rows.map((row) => row.id);
+  if (JSON.stringify(planIds) !== JSON.stringify(expectedIds)) {
+    throw new Error(`incomparable A/B inputs: ${label} plan row ids/order differ`);
+  }
+  if (plan.summary?.cases !== expectedIds.length) {
+    throw new Error(`incomparable A/B inputs: ${label} plan summary cases differ`);
+  }
 }
 
 export function compareArchitectureResults({ search, perOperation, searchPlan, perOperationPlan }) {
   assertComparable(search, perOperation);
+  const expectedIds = search.rows.map((row) => row.id);
+  assertPlanComplete("search+execute", searchPlan, expectedIds);
+  assertPlanComplete("per-operation", perOperationPlan, expectedIds);
   const searchById = new Map(search.rows.map((row) => [row.id, row]));
   const searchPlanById = new Map(searchPlan.rows.map((row) => [row.id, row]));
   const perOperationPlanById = new Map(perOperationPlan.rows.map((row) => [row.id, row]));
@@ -214,6 +383,8 @@ export function compareArchitectureResults({ search, perOperation, searchPlan, p
       casesPath: search.meta.casesPath,
       caseContract: search.meta.caseContract,
       sampleN: search.meta.sampleN,
+      promptAppend: search.meta.promptAppend,
+      sourceIdentity: search.meta.sourceIdentity,
       caseCount: rows.length,
       metricLimitations: {
         advertisedWireSurface:
@@ -245,7 +416,7 @@ function tableRow(label, arm) {
     arm: label,
     verdicts: `${v.correct}C/${v.partial}P/${v.wrong}W/${v.error}E`,
     turns: m.meanTurns?.toFixed(2) ?? "n/a",
-    totalCostUsd: m.totalCostUsd.toFixed(3),
+    totalCostUsd: `${m.totalCostUsd.toFixed(3)}${m.costAccounting.totalCostIsLowerBound ? "+ lower-bound" : ""}`,
     toolCount: arm.toolSurface?.toolCount ?? "n/a",
     advertisedWireChars: arm.toolSurface?.advertisedWireChars ?? arm.toolSurface?.contextChars ?? "n/a",
     toolCalls: m.ravenToolCalls,
@@ -265,12 +436,29 @@ async function main() {
   for (const file of [searchPlanPath, perOperationPlanPath]) {
     if (!existsSync(file)) throw new Error(`missing plan sidecar: ${file}`);
   }
-  const comparison = compareArchitectureResults({
-    search: readJson(searchPath),
-    perOperation: readJson(perOperationPath),
-    searchPlan: readJson(searchPlanPath),
-    perOperationPlan: readJson(perOperationPlanPath)
-  });
+  const search = readJson(searchPath);
+  const perOperation = readJson(perOperationPath);
+  const searchPlan = readJson(searchPlanPath);
+  const perOperationPlan = readJson(perOperationPlanPath);
+  const searchPlanAssociation = await verifyPlanSourceAssociation(
+    "search+execute",
+    searchPlan,
+    searchPath,
+    search,
+    searchPlanPath
+  );
+  const perOperationPlanAssociation = await verifyPlanSourceAssociation(
+    "per-operation",
+    perOperationPlan,
+    perOperationPath,
+    perOperation,
+    perOperationPlanPath
+  );
+  const comparison = compareArchitectureResults({ search, perOperation, searchPlan, perOperationPlan });
+  comparison.meta.planSourceAssociations = {
+    searchExecute: searchPlanAssociation,
+    perOperation: perOperationPlanAssociation
+  };
   comparison.meta.searchResultsPath = searchPath;
   comparison.meta.perOperationResultsPath = perOperationPath;
   comparison.meta.searchPlanPath = searchPlanPath;

@@ -58,7 +58,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtempSync, readFileSync, writeFileSync, mkdirSync, renameSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, readdirSync, writeFileSync, mkdirSync, renameSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -66,6 +66,7 @@ import { QA_DIR, loadCases, stratifiedSample, summarize, formatSummaryTable } fr
 import { buildTranscriptEvidence, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "./judge.mjs";
 import { verifySourceCases } from "./re-judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
+import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
 import {
   PLAIN_SERVER_INSTRUCTIONS,
   loadPlainOperationSurface,
@@ -87,12 +88,76 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
-function hasSuccessfulAnswer(answer, error) {
-  return Boolean(answer) && !error;
+/**
+ * A row is judgeable only when the agent produced an answer AND the parser
+ * found no failure. `parseAgentResult` blanks the `result` text of any errored
+ * provider outcome, so a safeguard notice can never arrive here as an answer.
+ */
+function hasSuccessfulAnswer(answer, failure) {
+  return Boolean(answer) && !failure;
 }
 
-function agentErrorRationale(error) {
-  return error === "success" ? "agent returned a transport/API error despite CLI success subtype" : (error ?? "empty answer");
+/**
+ * One deterministic rationale per failure class — the stored verdict names
+ * WHERE the run died (provider safeguard vs transport vs agent turn cap), which
+ * the pre-parser `error: "success"` string could not distinguish.
+ */
+function agentErrorRationale(failure) {
+  return failure ? `${failure.class}: ${failure.reason}` : "empty answer";
+}
+
+/** Float-noise guard for money totals; mirrors eval/qa/re-judge.mjs. */
+function roundUsd(total) {
+  return Number(total.toFixed(12));
+}
+
+function sumReported(values) {
+  return roundUsd(values.reduce((sum, value) => sum + value, 0));
+}
+
+function reportedCosts(rows, pick) {
+  return rows.map(pick).filter((cost) => Number.isFinite(cost));
+}
+
+/**
+ * Spend provenance for one artifact. `judgeCase` can return a verdict with NO
+ * costUsd when the provider omits cost data (eval/qa/judge.mjs), and the old
+ * `costUsd ?? 0` totals made that indistinguishable from a genuinely free call —
+ * understating real spend with no trace. Totals now sum ONLY reported costs, and
+ * these counts say how many were reported out of how many were expected.
+ *
+ * Expected judge calls counts rows that actually reached a judge (answerable AND
+ * verdicted), so an unjudged row reads as unjudged rather than as a lost cost.
+ */
+function costAccounting(rows, judgeAttempts = null) {
+  const judged = rows.filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure) && row.verdict != null);
+  const expectedJudgeCalls = Array.isArray(judgeAttempts) ? judgeAttempts.length : judged.length;
+  const judgeCosts = Array.isArray(judgeAttempts)
+    ? reportedCosts(judgeAttempts, (attempt) => attempt.costUsd)
+    : reportedCosts(judged, (row) => row.verdict?.costUsd);
+  const agentCosts = reportedCosts(rows, (row) => row.agent?.costUsd);
+  return {
+    expectedJudgeCalls,
+    reportedJudgeCalls: judgeCosts.length,
+    missingJudgeCosts: expectedJudgeCalls - judgeCosts.length,
+    expectedAgentRuns: rows.length,
+    reportedAgentCosts: agentCosts.length,
+    missingAgentCosts: rows.length - agentCosts.length
+  };
+}
+
+/** Totals over REPORTED costs only, plus the counts that qualify them. */
+function costTotals(rows, judgeAttempts = null) {
+  const agentCosts = reportedCosts(rows, (row) => row.agent?.costUsd);
+  const judgeCosts = Array.isArray(judgeAttempts)
+    ? reportedCosts(judgeAttempts, (attempt) => attempt.costUsd)
+    : reportedCosts(rows, (row) => row.verdict?.costUsd);
+  return {
+    totalAgentCostUsd: sumReported(agentCosts),
+    totalJudgeCostUsd: sumReported(judgeCosts),
+    totalCostUsd: sumReported([...agentCosts, ...judgeCosts]),
+    costAccounting: costAccounting(rows, judgeAttempts)
+  };
 }
 
 function gitValue(args) {
@@ -100,16 +165,73 @@ function gitValue(args) {
   return result.status === 0 ? String(result.stdout).trim() : null;
 }
 
-function sourceIdentity(serverRevision) {
-  const status = gitValue(["status", "--porcelain=v1", "--untracked-files=all"]);
+export function assertPinnedServerRevision(serverRevision, repoRoot = path.resolve(QA_DIR, "..", "..")) {
+  const revision = typeof serverRevision === "string" ? serverRevision.trim() : "";
+  if (!revision) {
+    throw new Error("--server-revision is required before collection");
+  }
+  if (!/^[a-f0-9]{40}$/i.test(revision)) {
+    throw new Error("--server-revision must be an immutable 40-character Git commit SHA");
+  }
+  const resolved = spawnSync("git", ["rev-parse", "--verify", `${revision}^{commit}`], {
+    cwd: repoRoot,
+    encoding: "utf8"
+  });
+  if (resolved.status !== 0 || String(resolved.stdout).trim().toLowerCase() !== revision.toLowerCase()) {
+    throw new Error(`--server-revision ${revision} does not resolve to an exact local commit`);
+  }
+  return String(resolved.stdout).trim();
+}
+
+export function assertCollectionSourceIdentity(identity) {
+  if (!identity || identity.runnerDirty !== false) {
+    throw new Error("QA collection requires a clean runner working tree");
+  }
+  if (!/^[a-f0-9]{40}$/i.test(identity.runnerRevision ?? "")) {
+    throw new Error("QA collection requires an immutable runner revision");
+  }
+  if (!/^[a-f0-9]{40}$/i.test(identity.serverRevision ?? "")) {
+    throw new Error("QA collection requires an immutable server revision");
+  }
+  if (!/^[a-f0-9]{64}$/.test(identity.qaImplementationSha256 ?? "")) {
+    throw new Error("QA collection requires an exact QA implementation hash");
+  }
+  return identity;
+}
+
+export function sourceIdentityGuard(before, after) {
+  const changedKeys = [...new Set([...Object.keys(before ?? {}), ...Object.keys(after ?? {})])]
+    .sort()
+    .filter((key) => JSON.stringify(before?.[key]) !== JSON.stringify(after?.[key]));
+  return changedKeys.length ? { matches: false, changedKeys } : { matches: true };
+}
+
+export function sourceIdentity(serverRevision) {
+  const repoRoot = path.resolve(QA_DIR, "..", "..");
+  const statusResult = spawnSync(
+    "git",
+    ["status", "--porcelain=v1", "--untracked-files=all"],
+    { cwd: repoRoot, encoding: "utf8" }
+  );
+  const status = statusResult.status === 0 ? String(statusResult.stdout) : null;
+  const fileSha256 = (name) => sha256(readFileSync(path.join(QA_DIR, name), "utf8"));
+  const qaImplementationRecords = readdirSync(QA_DIR)
+    .filter((name) => name.endsWith(".mjs"))
+    .sort()
+    .map((name) => `${name}\0${fileSha256(name)}`)
+    .join("\n");
   return {
     runnerRevision: gitValue(["rev-parse", "HEAD"]),
     runnerDirty: status === null ? null : status.length > 0,
     runnerStatusSha256: status === null ? null : sha256(status),
     serverRevision: serverRevision ?? null,
-    manifestFileSha256: sha256(readFileSync(path.join(path.resolve(QA_DIR, "..", ".."), "catalog", "manifest.json"), "utf8")),
-    runnerFileSha256: sha256(readFileSync(path.join(QA_DIR, "run-qa.mjs"), "utf8")),
-    plainHarnessFileSha256: sha256(readFileSync(path.join(QA_DIR, "plain-operation-harness.mjs"), "utf8"))
+    qaImplementationSha256: sha256(qaImplementationRecords),
+    manifestFileSha256: sha256(readFileSync(path.join(repoRoot, "catalog", "manifest.json"), "utf8")),
+    runnerFileSha256: fileSha256("run-qa.mjs"),
+    agentResultFileSha256: fileSha256("agent-result.mjs"),
+    evidencePackFileSha256: fileSha256("evidence-pack.mjs"),
+    judgeFileSha256: fileSha256("judge.mjs"),
+    plainHarnessFileSha256: fileSha256("plain-operation-harness.mjs")
   };
 }
 
@@ -149,7 +271,12 @@ QUESTION:
 ${question}`;
 }
 
-/** Run one answering agent; returns { answer, transcript, costUsd, turns, error? } */
+/**
+ * Run one answering agent ONCE and hand the raw spawn to the pure parser
+ * (eval/qa/agent-result.mjs). There is deliberately no retry here: only a
+ * `transport` failure is even eligible, and a provider safeguard must never be
+ * re-issued in any form.
+ */
 function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, model }) {
   const prompt = agentPrompt(question, { surface, searchTool });
   const res = spawnSync(
@@ -176,69 +303,26 @@ function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, 
       maxBuffer: 64 * 1024 * 1024
     }
   );
-  if (res.error) {
-    return { answer: "", transcript: [], promptChars: prompt.length, error: `agent spawn failed: ${res.error.message}` };
-  }
-  const transcript = [];
-  let answer = "";
-  let costUsd;
-  let turns;
-  let usage;
-  let resultError;
-  for (const line of String(res.stdout).split("\n")) {
-    if (!line.trim().startsWith("{")) continue;
-    let msg;
-    try {
-      msg = JSON.parse(line);
-    } catch {
-      continue;
+  return parseAgentResult(
+    {
+      stdout: res.stdout ?? "",
+      stderr: res.stderr ?? "",
+      status: res.status,
+      signal: res.signal,
+      spawnError: res.error ? { message: res.error.message, code: res.error.code } : null
+    },
+    {
+      promptChars: prompt.length,
+      // execute inputs/results are kept whole — eval/plan/grade-plan.mjs parses
+      // the {code} for service-op extraction and eval/qa/analyze-composition.mjs
+      // reads the results for truncation footers and skill.run `calls` tallies.
+      // Bounded: the server already caps execute results at ~6k tokens via
+      // truncateForModel (src/policy/truncate.ts). The per-operation surface's
+      // manifest tools get the same whole treatment for the same reason.
+      keepWholeResult: (tool) =>
+        tool.endsWith("execute") || operationIdFromPlainTool(String(tool).replace(/^mcp__[^_]+__/, "")) !== null
     }
-    if (msg.type === "assistant" && Array.isArray(msg.message?.content)) {
-      for (const block of msg.message.content) {
-        if (block.type === "tool_use") {
-          const rawInput = JSON.stringify(block.input ?? {});
-          const isPlainOperation = operationIdFromPlainTool(String(block.name).replace(/^mcp__[^_]+__/, "")) !== null;
-          transcript.push({
-            toolUseId: block.id,
-            tool: block.name,
-            // execute inputs are kept whole — eval/plan/grade-plan.mjs parses
-            // the {code} for service-op extraction; other tools stay sliced.
-            input: block.name.endsWith("execute") || isPlainOperation ? rawInput : rawInput.slice(0, 600)
-          });
-        }
-      }
-    } else if (msg.type === "user" && Array.isArray(msg.message?.content)) {
-      for (const block of msg.message.content) {
-        if (block.type === "tool_result") {
-          const entry = transcript.find((t) => t.toolUseId === block.tool_use_id);
-          if (entry) {
-            const text = Array.isArray(block.content)
-              ? block.content.map((c) => c.text ?? "").join("")
-              : String(block.content ?? "");
-            entry.resultChars = text.length;
-            entry.isError = Boolean(block.is_error);
-            // execute RESULTS are kept whole (mirror of the execute-inputs-whole
-            // precedent above) — eval/qa/analyze-composition.mjs reads them for
-            // truncation footers and skill.run `calls` tallies. Bounded: the server
-            // already caps execute results at ~6k tokens via truncateForModel
-            // (src/policy/truncate.ts), so whole capture cannot balloon the file.
-            const bareToolName = String(entry.tool).replace(/^mcp__[^_]+__/, "");
-            if (entry.tool.endsWith("execute") || operationIdFromPlainTool(bareToolName)) entry.result = text;
-          }
-        }
-      }
-    } else if (msg.type === "result") {
-      answer = msg.result ?? "";
-      costUsd = msg.total_cost_usd;
-      turns = msg.num_turns;
-      usage = msg.usage;
-      if (msg.is_error) resultError = msg.subtype ?? "agent result is_error";
-    }
-  }
-  if (!answer && !resultError) {
-    resultError = `no result message (exit ${res.status}); stderr: ${String(res.stderr).slice(0, 400)}`;
-  }
-  return { answer, transcript, costUsd, turns, usage, promptChars: prompt.length, error: resultError };
+  );
 }
 
 function surfaceMetrics(tools, instructions) {
@@ -330,6 +414,11 @@ export async function judgeStoredResults(
       `--judge-stored: results were collected with evidence pack ${meta.packVersion}, current is ${PACK_VERSION} — re-collect, or re-judge.mjs --allow-non-identical for a side artifact`
     );
   }
+  if (meta.resultsSchema !== AGENT_RESULT_SCHEMA) {
+    throw new Error(
+      `--judge-stored: results were collected under agent-result schema ${meta.resultsSchema ?? "none"}, current is ${AGENT_RESULT_SCHEMA} — the stored failure/usage shape moved since collection; re-collect`
+    );
+  }
   if (meta.judgeModel != null && meta.judgeModel !== judgeModel) {
     throw new Error(
       `--judge-stored: file already carries verdicts from judge model ${meta.judgeModel}; refusing to mix in ${judgeModel}`
@@ -353,7 +442,7 @@ export async function judgeStoredResults(
   const unjudged = results.rows.filter(
     (row) =>
       typeof row.verdict?.score !== "string" ||
-      (row.verdict.score === "error" && hasSuccessfulAnswer(row.answer, row.agent?.error))
+      (row.verdict.score === "error" && hasSuccessfulAnswer(row.answer, row.agent?.failure))
   );
 
   // Every persisted state must be internally consistent, so finalize stamps
@@ -361,27 +450,46 @@ export async function judgeStoredResults(
   // judge still finalizes: a crash between the last row and the old
   // end-of-run write used to leave summary:null with stale costs and no way
   // back (re-running threw "nothing to judge").
+  const priorJudgeStored = meta.judgeStored ?? {};
+  const judgeAttempts = Array.isArray(priorJudgeStored.attempts)
+    ? priorJudgeStored.attempts
+    : results.rows
+      .filter(
+        (row) =>
+          hasSuccessfulAnswer(row.answer, row.agent?.failure) &&
+          typeof row.verdict?.score === "string"
+      )
+      .map((row) => ({
+        id: row.id,
+        startedAt: null,
+        completedAt: null,
+        outcome: row.verdict.score,
+        costUsd: Number.isFinite(row.verdict.costUsd) ? row.verdict.costUsd : null,
+        provenance: "recorded-before-judge-stored-v2"
+      }));
   const paidIds = [];
-  const finalize = () => {
+  const sourceResultsSha256 = priorJudgeStored.sourceResultsSha256 ?? sha256(sourceText);
+  const initiallyJudgedIds = judgeAttempts
+    .filter((attempt) => attempt.outcome !== null)
+    .map((attempt) => attempt.id);
+  const writeState = ({ withSummary }) => {
     meta.judgeModel = judgeModel;
     meta.judgeRubric = JUDGE_RUBRIC;
-    meta.totalJudgeCostUsd = results.rows.reduce((s, r) => s + (r.verdict?.costUsd ?? 0), 0);
-    meta.totalCostUsd = results.rows.reduce(
-      (s, r) => s + (r.agent?.costUsd ?? 0) + (r.verdict?.costUsd ?? 0),
-      0
-    );
-    const prior = meta.judgeStored ?? {};
+    Object.assign(meta, costTotals(results.rows, judgeAttempts));
     meta.judgeStored = {
       judgedAt: new Date().toISOString(),
       // Keep the ORIGINAL collection-time hash across resumes; re-hashing the
       // partially judged file would erase the link this block exists to record.
-      sourceResultsSha256: prior.sourceResultsSha256 ?? sha256(sourceText),
+      sourceResultsSha256,
       // Only ids that actually reached a paid judge, merged across resumes.
-      judgedIds: [...new Set([...(prior.judgedIds ?? []), ...paidIds])],
-      toolVersion: "run-qa/judge-stored-v1"
+      judgedIds: [
+        ...new Set([...(priorJudgeStored.judgedIds ?? []), ...initiallyJudgedIds, ...paidIds])
+      ],
+      attempts: judgeAttempts,
+      toolVersion: "run-qa/judge-stored-v2"
     };
     results.meta = meta;
-    results.summary = summarize(results.rows);
+    if (withSummary) results.summary = summarize(results.rows);
     // Temp-then-rename: a truncate-in-place rewrite of the sole copy holding
     // every paid verdict is the loss this feature exists to prevent.
     const tmpPath = `${resultsPath}.tmp`;
@@ -395,7 +503,7 @@ export async function judgeStoredResults(
     }
     // Unfinalized artifact from an interrupted run: complete it rather than
     // leaving a paid file stuck with a null summary.
-    finalize();
+    writeState({ withSummary: true });
     log(`judge-stored: ${resultsPath} · nothing left to judge · finalized stamps + summary`);
     return { judgedCount: 0, summary: results.summary, outPath: resultsPath };
   }
@@ -408,11 +516,12 @@ export async function judgeStoredResults(
   meta.judgeModel = judgeModel;
   meta.judgeRubric = JUDGE_RUBRIC;
   results.meta = meta;
+  writeState({ withSummary: false });
 
   for (const [i, row] of unjudged.entries()) {
     log(`[${i + 1}/${unjudged.length}] ${row.id} …`);
     const kase = identity.caseById.get(row.id);
-    if (hasSuccessfulAnswer(row.answer, row.agent?.error)) {
+    if (hasSuccessfulAnswer(row.answer, row.agent?.failure)) {
       if (!Array.isArray(row.transcript)) {
         throw new Error(`--judge-stored: row ${row.id} has no saved transcript array`);
       }
@@ -431,21 +540,34 @@ export async function judgeStoredResults(
           `--judge-stored: row ${row.id} evidence pack no longer reproduces its collection-time hash (recorded ${row.evidencePack?.sha256 ?? "absent"}, rebuilt ${packSha ?? "null"}) — the pack builder changed since collection; re-collect`
         );
       }
+      const attempt = {
+        id: row.id,
+        startedAt: new Date().toISOString(),
+        completedAt: null,
+        outcome: null,
+        costUsd: null
+      };
+      judgeAttempts.push(attempt);
+      // The attempt and judge tuple must reach durable storage before spend.
+      writeState({ withSummary: false });
       row.verdict = await judge(
         { ...kase, candidateAnswer: row.answer, transcript: row.transcript, transcriptEvidence },
         { model: judgeModel }
       );
+      attempt.completedAt = new Date().toISOString();
+      attempt.outcome = row.verdict.score ?? "error";
+      attempt.costUsd = Number.isFinite(row.verdict.costUsd) ? row.verdict.costUsd : null;
       paidIds.push(row.id);
       // Persist after every judged row: a crash on row N keeps rows 1..N-1's
       // paid verdicts on disk (the run resumes as judge-all-unjudged).
-      finalize();
+      writeState({ withSummary: true });
     } else {
       // Mirror the inline no-answer verdict exactly.
       row.verdict = {
         score: "error",
         missingFacts: [],
         wrongClaims: [],
-        rationale: agentErrorRationale(row.agent?.error),
+        rationale: agentErrorRationale(row.agent?.failure),
         rubric: JUDGE_RUBRIC,
         packVersion: PACK_VERSION,
         promptSha256: null
@@ -453,7 +575,7 @@ export async function judgeStoredResults(
     }
   }
 
-  finalize();
+  writeState({ withSummary: true });
   return { judgedCount: unjudged.length, summary: results.summary, outPath: resultsPath };
 }
 
@@ -486,7 +608,8 @@ async function main() {
   const model = argVal("--model") ?? AGENT_MODEL;
   const judgeModel = argVal("--judge-model") ?? JUDGE_MODEL;
   const noJudge = args.includes("--no-judge");
-  const serverRevision = argVal("--server-revision");
+  const serverRevision = assertPinnedServerRevision(argVal("--server-revision"));
+  const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
   const casesPath = argVal("--cases") ?? path.join(QA_DIR, "cases.json");
   const plainSurface = loadPlainOperationSurface();
 
@@ -530,7 +653,7 @@ async function main() {
       const t0 = Date.now();
       process.stdout.write(`[${i + 1}/${cases.length}] ${c.id} … `);
       const run = runAgent(c.question, { surface, searchTool, allowedTools, mcpConfigPath, model });
-      const successfulAnswer = hasSuccessfulAnswer(run.answer, run.error);
+      const successfulAnswer = hasSuccessfulAnswer(run.answer, run.failure);
       const transcriptEvidence = successfulAnswer
         ? buildTranscriptEvidence({ ...c, candidateAnswer: run.answer, transcript: run.transcript })
         : "";
@@ -545,7 +668,7 @@ async function main() {
               score: "error",
               missingFacts: [],
               wrongClaims: [],
-              rationale: agentErrorRationale(run.error),
+              rationale: agentErrorRationale(run.failure),
               rubric: JUDGE_RUBRIC,
               packVersion: PACK_VERSION,
               promptSha256: null
@@ -566,10 +689,16 @@ async function main() {
           model,
           turns: run.turns,
           costUsd: run.costUsd,
-          usage: run.usage ?? null,
+          usage: run.usage,
           promptChars: run.promptChars,
-          error: run.error ?? null
+          stderr: run.stderr,
+          // ONE failure field. A row is failed iff this is non-null.
+          failure: run.failure
         },
+        // Derived artifact-continuation outcomes (handles, info/read calls,
+        // read failures by host reason, bounded final projection). Model-facing
+        // MCP results are unaffected — this is eval-side evidence only.
+        artifacts: run.artifacts,
         verdict,
         evidencePack: {
           packVersion: PACK_VERSION,
@@ -592,6 +721,8 @@ async function main() {
   const resultsDir = path.join(QA_DIR, "results");
   mkdirSync(resultsDir, { recursive: true });
   const outPath = path.join(resultsDir, `${stamp}.json`);
+  const finalSourceIdentity = sourceIdentity(serverRevision);
+  const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
   writeFileSync(
     outPath,
     JSON.stringify(
@@ -605,6 +736,7 @@ async function main() {
           judgeModel: noJudge ? null : judgeModel,
           judgeRubric: noJudge ? null : JUDGE_RUBRIC,
           packVersion: PACK_VERSION,
+          resultsSchema: AGENT_RESULT_SCHEMA,
           casesPath,
           caseContract: battery.contract ?? null,
           sampleN: sampleN ?? null,
@@ -628,11 +760,10 @@ async function main() {
             operationIdsSha256: plainSurface.metrics.operationIdsSha256,
             operationEntriesSha256: plainSurface.metrics.operationEntriesSha256
           },
-          sourceIdentity: sourceIdentity(serverRevision),
+          sourceIdentity: collectionSourceIdentity,
+          sourceIdentityGuard: collectionSourceIdentityGuard,
           toolSurface: preflightResult.metrics,
-          totalAgentCostUsd: rows.reduce((s, r) => s + (r.agent.costUsd ?? 0), 0),
-          totalJudgeCostUsd: rows.reduce((s, r) => s + (r.verdict?.costUsd ?? 0), 0),
-          totalCostUsd: rows.reduce((s, r) => s + (r.agent.costUsd ?? 0) + (r.verdict?.costUsd ?? 0), 0)
+          ...costTotals(rows)
         },
         summary,
         rows
@@ -641,6 +772,11 @@ async function main() {
       2
     ) + "\n"
   );
+  if (!collectionSourceIdentityGuard.matches) {
+    throw new Error(
+      `QA source identity changed during collection (${collectionSourceIdentityGuard.changedKeys.join(", ")}); saved a non-comparable artifact at ${outPath}`
+    );
+  }
   console.log(`\nwrote ${outPath}`);
   if (summary) {
     console.log("\n" + formatSummaryTable(summary));

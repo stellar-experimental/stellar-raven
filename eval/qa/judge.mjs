@@ -14,19 +14,20 @@
  * means the judge itself failed (CLI error / unparseable output), never a
  * grade of the candidate.
  *
- * Self-test (no server needed; 4 hand-written candidates against 1 case):
+ * Self-test (no server needed; seven paid judge calls against hand-written cases):
  *   node eval/qa/judge.mjs --self-test
- * exits non-zero unless right→correct, partial→partial, wrong→wrong, the
- * rubric-v2.1 support-relative-avoid regression candidate→correct, the
- * rubric-v2.2 transcript-evidence regression candidate→correct, and untagged
- * cases do not receive transcript evidence.
+ * exits non-zero when a candidate result violates its expected grade.
  */
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { extractJsonObject } from "./lib.mjs";
-import { buildTranscriptEvidencePack, PACK_VERSION } from "./evidence-pack.mjs";
+import {
+  buildTranscriptEvidencePack,
+  findTranscriptEvidencePackOmissions,
+  PACK_VERSION
+} from "./evidence-pack.mjs";
 
 export const JUDGE_MODEL = "claude-sonnet-5";
 
@@ -45,8 +46,39 @@ export const JUDGE_MODEL = "claude-sonnet-5";
  */
 export const JUDGE_RUBRIC = "v2.4";
 
+export function summarizePaidJudgeCosts(verdicts) {
+  const costs = verdicts
+    .map((verdict) => verdict?.costUsd)
+    .filter((cost) => Number.isFinite(cost));
+  return {
+    callCount: verdicts.length,
+    reportedCostCount: costs.length,
+    missingCostCount: verdicts.length - costs.length,
+    totalCostUsd: Number(costs.reduce((sum, cost) => sum + cost, 0).toFixed(12))
+  };
+}
+
 export function buildTranscriptEvidence({ transcript = [], candidateAnswer = "", question = "", golden, tags }) {
   return buildTranscriptEvidencePack({ transcript, candidateAnswer, question, golden, tags });
+}
+
+export function attachTranscriptEvidenceDiagnostics({ verdict, input, transcriptEvidence }) {
+  const wrongClaims = Array.isArray(verdict.wrongClaims) ? verdict.wrongClaims : [];
+  if (
+    wrongClaims.length === 0 ||
+    input.tags?.freshness === "stable" ||
+    typeof transcriptEvidence !== "string" ||
+    !transcriptEvidence.trim()
+  ) return verdict;
+
+  return {
+    ...verdict,
+    evidenceSupportCheck: findTranscriptEvidencePackOmissions({
+      transcript: input.transcript,
+      transcriptEvidence,
+      claims: wrongClaims
+    })
+  };
 }
 
 export function buildJudgePrompt({ question, golden, tags, candidateAnswer, transcriptEvidence }) {
@@ -144,11 +176,18 @@ export async function judgeCase(input, { model = JUDGE_MODEL, timeoutMs = 180_00
       promptSha256
     };
   }
+  const normalizedVerdict = attachTranscriptEvidenceDiagnostics({
+    verdict: {
+      score: verdict.score,
+      missingFacts: Array.isArray(verdict.missingFacts) ? verdict.missingFacts : [],
+      wrongClaims: Array.isArray(verdict.wrongClaims) ? verdict.wrongClaims : [],
+      rationale: typeof verdict.rationale === "string" ? verdict.rationale : ""
+    },
+    input,
+    transcriptEvidence
+  });
   return {
-    score: verdict.score,
-    missingFacts: Array.isArray(verdict.missingFacts) ? verdict.missingFacts : [],
-    wrongClaims: Array.isArray(verdict.wrongClaims) ? verdict.wrongClaims : [],
-    rationale: typeof verdict.rationale === "string" ? verdict.rationale : "",
+    ...normalizedVerdict,
     costUsd: envelope?.total_cost_usd,
     rubric: JUDGE_RUBRIC,
     packVersion: PACK_VERSION,
@@ -334,6 +373,7 @@ function loadPromptFixtureCases() {
 async function selfTest() {
   console.log(`judge self-test — model ${JUDGE_MODEL}, rubric ${JUDGE_RUBRIC}, ${SELF_TEST_CANDIDATES.length} candidates, 1 case\n`);
   let failures = 0;
+  const paidVerdicts = [];
   const promptCases = loadPromptFixtureCases();
   let promptMatches = 0;
   for (const [id, expected] of PROMPT_SHA256_FIXTURES) {
@@ -496,6 +536,7 @@ async function selfTest() {
         }
       : baseCase;
     const verdict = await judgeCase({ ...kase, candidateAnswer: cand.answer, transcript: cand.transcript });
+    paidVerdicts.push(verdict);
     const ok = cand.expectNot ? verdict.score !== cand.expectNot : verdict.score === cand.expect;
     if (!ok) failures++;
     console.log(
@@ -503,6 +544,13 @@ async function selfTest() {
         `\n  rationale: ${verdict.rationale}\n  missing: ${JSON.stringify(verdict.missingFacts)}\n  wrong: ${JSON.stringify(verdict.wrongClaims)}\n`
     );
   }
+  const paidSummary = summarizePaidJudgeCosts(paidVerdicts);
+  console.log(
+    `paid judge calls: expected=${SELF_TEST_CANDIDATES.length} actual=${paidSummary.callCount}` +
+      ` reportedCosts=${paidSummary.reportedCostCount}` +
+      ` missingCosts=${paidSummary.missingCostCount}` +
+      ` totalCostUsd=${paidSummary.totalCostUsd}\n`
+  );
   console.log(failures === 0 ? "self-test GREEN" : `self-test RED (${failures} mismatches)`);
   process.exit(failures === 0 ? 0 : 1);
 }

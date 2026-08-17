@@ -181,7 +181,7 @@ fan-out and select model/effort explicitly per `AGENTS.md`. Each reviewer append
 evidence-backed verdict to scratchpad; coordinator reconciles and patches. Do not pass the
 coordinator's expected answer to reviewers.
 
-## Step 1 — preflight (always, free)
+## Step 1 — free preflight (always)
 
 ```sh
 npm run eval:selftest           # grader math sanity + live-contract pins — no server needed
@@ -192,7 +192,6 @@ npm run eval:qa:lint -- --stale # owned-corpus lint lanes + the stale-gospel gat
 # Without it the diff-based gospel gate ("changed without changing truth.verified")
 # SKIPS locally (a NOTE line only) while CI resolves the push base and enforces it — a clean
 # local lint is vacuous for that lane — a merged round has been bitten by this.
-npm run eval:qa:selftest        # only if judging — scored fixtures + promptSha256 pins
 ```
 
 Compiles are deterministic and never touch the hand-authored files: the owned QA battery
@@ -204,6 +203,18 @@ Both live contracts are membership- and digest-pinned by `eval:selftest`; change
 content only with a recorded provenance note, contract-version bump, and digest update.
 Generated files (`routing-cases.json`, `qa/cases.json`, `qa/sample.json`,
 `plan/op-classes.json`) are never hand-edited — CI byte-pins them.
+
+## Step 1b — paid judge behavior self-test (only when judging semantics move)
+
+`npm run eval:qa:selftest` needs no MCP server, so it is easy to mistake for a free preflight
+command. It is paid: it calls the configured judge once for each `SELF_TEST_CANDIDATES` entry,
+which is currently exactly seven judge calls. CI never runs it for that reason. Obtain paid
+authorization, record a seven-call cap, and record the judge model before you run it. It prints
+`expected`, `actual`, `reportedCosts`, `missingCosts`, and `totalCostUsd`; reconcile `actual`
+against your cap and treat a nonzero `missingCosts` as an incomplete spend figure.
+
+Run it when the judging rubric, prompt, evidence pack, or judge adapter changes. Otherwise skip
+it — Step 1 already covers the free lanes.
 
 ## Step 2 — live server (only for QA / agentic / live-data lanes)
 

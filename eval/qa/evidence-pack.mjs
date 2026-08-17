@@ -1,6 +1,10 @@
 const EVIDENCE_PACK_MAX_CHARS = 12000;
-export const PACK_VERSION = "p3";
+// p5 recognizes emitted SOURCE BASIS boundaries, retains exact facts from
+// clipped JSON, and diagnoses transcript-supported claims omitted by the pack.
+export const PACK_VERSION = "p5";
 const MAX_CANONICAL_URLS = 8;
+const MAX_CITED_SOURCE_TITLES = 24;
+const MAX_CITED_SOURCE_FIELDS = 24;
 const INITIAL_MAX_ITEMS = 18;
 const INITIAL_MAX_FACTS = 28;
 const INITIAL_MAX_CLAIM_SNIPPETS = 12;
@@ -8,6 +12,9 @@ const INITIAL_SUMMARY_CHARS = 520;
 const MIN_SUMMARY_CHARS = 180;
 const INITIAL_CLAIM_SNIPPET_CHARS = 520;
 const MIN_CLAIM_SNIPPET_CHARS = 260;
+const SOURCE_BASIS_MARKER = "\n--- SOURCE BASIS ---";
+const LEGACY_TRUNCATION_MARKER = "\n--- TRUNCATED ---";
+const CONSOLE_MARKER = "\n\n--- console (";
 
 function stripAnsi(value) {
   return String(value ?? "").replace(/\u001b\[[0-9;]*m/g, "");
@@ -19,6 +26,12 @@ function escapeRegExp(value) {
 
 function termMatchRegExp(term, flags = "gi") {
   const escaped = escapeRegExp(term);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(term)) {
+    return new RegExp(
+      `(?<![\\p{L}\\p{N},.])${escaped}(?=T\\d{2}:|[^\\p{L}\\p{N},.]|$)`,
+      flags.includes("u") ? flags : `${flags}u`
+    );
+  }
   if (isNumericLikeClaimTerm(term)) {
     return new RegExp(`(?<![\\p{L}\\p{N},.])${escaped}(?![\\p{L}\\p{N},.])`, flags.includes("u") ? flags : `${flags}u`);
   }
@@ -57,7 +70,15 @@ function truncateAroundTerm(value, term, maxChars) {
 function sanitizeUrl(raw) {
   if (!raw) return "";
   try {
-    const url = new URL(String(raw));
+    let value = String(raw);
+    value = value.replace(/[.,;:!?]+$/g, "");
+    while (value.endsWith(")") && (value.match(/\)/g)?.length ?? 0) > (value.match(/\(/g)?.length ?? 0)) {
+      value = value.slice(0, -1);
+    }
+    while (value.endsWith("]") && (value.match(/\]/g)?.length ?? 0) > (value.match(/\[/g)?.length ?? 0)) {
+      value = value.slice(0, -1);
+    }
+    const url = new URL(value);
     if (url.protocol !== "https:") return "";
     url.username = "";
     url.password = "";
@@ -91,6 +112,12 @@ export function extractEvidenceTerms({ candidateAnswer = "", golden }) {
   for (const match of text.matchAll(/\b(?:status|asOf|source|url|amount|round|date|version|limit|summary|title|rank|count|window)\b/gi)) {
     terms.push(match[0]);
   }
+  for (const term of exactSupportTerms(text)) {
+    terms.push(term);
+    if (/^\$?\s?\d[\d,]*(?:\.\d+)?(?:\s?(?:USD|USDC|XLM|EURC|%|[KMB]))?$/i.test(term)) {
+      terms.push(term.replace(/[$,\s]/g, ""));
+    }
+  }
 
   return unique(terms)
     .sort((a, b) => b.length - a.length || a.localeCompare(b))
@@ -118,11 +145,31 @@ function claimTermPriority(term) {
   return 2;
 }
 
+function exactClaimTermPriority(term) {
+  if (/^https:\/\//i.test(term)) return 7;
+  if (/\b\d{4}-\d{2}-\d{2}/.test(term)) return 13;
+  if (/\b(?:id\d{6,}|(?:[a-z][a-z0-9-]*\.){2,}[a-z0-9-]+)\b/i.test(term)) return 13;
+  if (/\b[a-z]+(?:[A-Z][A-Za-z0-9]+)+\b/.test(term)) return 12;
+  if (/^\$?\s?\d/i.test(term)) return 11;
+  if (/\b[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\b/.test(term)) return 10;
+  return 8;
+}
+
 export const GENERIC_CANDIDATE_CLAIM_STOP_RE =
   /^(?:The|This|That|Source|Sources|Article|Articles|Event|Events|Most|Recent|Overall|Net|Question|Answer|Candidate|Golden)$/i;
 
 function isNumericLikeClaimTerm(value) {
   return /^\$?\s?\d/i.test(value) || /\d/.test(value) && /(?:%|[KMB]\b|seconds?|minutes?|hours?|days?|weeks?|months?|years?)$/i.test(value);
+}
+
+function isIdentifierLikeClaimTerm(value) {
+  return (
+    /^\d{4}-\d{2}-\d{2}$/.test(value) ||
+    /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(value) ||
+    /^(?:[a-z][a-z0-9-]*\.){2,}[a-z0-9-]+$/i.test(value) ||
+    /^[a-z]+(?:[A-Z][A-Za-z0-9]+)+$/.test(value) ||
+    /^[a-z][a-z0-9]*(?:_[a-z0-9]+)+$/i.test(value)
+  );
 }
 
 function isProperNounPhrase(value) {
@@ -144,6 +191,14 @@ function extractCandidateClaimTerms({ candidateAnswer = "", question = "", golde
   const text = String(candidateAnswer ?? "");
   const contextText = literalCaseContext({ question, golden });
   const found = [];
+  for (const value of exactSupportTerms(text)) {
+    found.push({
+      value,
+      index: text.toLowerCase().indexOf(value.toLowerCase()),
+      priority: exactClaimTermPriority(value),
+      exact: true
+    });
+  }
   const addMatches = (regex) => {
     for (const match of text.matchAll(regex)) {
       const value = match[0];
@@ -166,18 +221,67 @@ function extractCandidateClaimTerms({ candidateAnswer = "", question = "", golde
         if (/^0\d/.test(value)) return false;
         if (/^\d[\d,]*(?:\.\d+)?\s?(?:[KMB])?$/i.test(value)) {
           const numeric = Number(value.replace(/,/g, "").replace(/[KMB]$/i, ""));
-          if (Number.isFinite(numeric) && numeric < 100 && !/[KMB]$/i.test(value)) return false;
+          if (Number.isFinite(numeric) && numeric < 100 && !/[KMB]$/i.test(value) && !term.exact) return false;
         }
         if (GENERIC_CANDIDATE_CLAIM_STOP_RE.test(value)) return false;
         return !appearsLiterallyInQuestionOrGoldenEntity(value, contextText);
       })
       .sort((a, b) => b.priority - a.priority || a.index - b.index || a.value.localeCompare(b.value))
       .map((term) => term.value)
-  ).slice(0, 80);
+  ).slice(0, 160);
+}
+
+function extractCaseEvidenceTerms({ candidateAnswer = "", question = "", golden } = {}) {
+  const caseText = literalCaseContext({ question, golden });
+  const candidateText = cleanText(candidateAnswer).toLowerCase();
+  const found = [];
+  const add = (value, index, basePriority) => {
+    const cleaned = cleanText(value);
+    if (cleaned.length < 3 || cleaned.length > 90) return;
+    if (candidateText.includes(cleaned.toLowerCase())) return;
+    if (GENERIC_CANDIDATE_CLAIM_STOP_RE.test(cleaned)) return;
+    const occurrences = caseText.match(termMatchRegExp(cleaned, "gi"))?.length ?? 1;
+    found.push({ value: cleaned, index, priority: basePriority + Math.min(4, occurrences) });
+  };
+  for (const value of exactSupportTerms(caseText)) {
+    add(value, caseText.toLowerCase().indexOf(value.toLowerCase()), 10);
+  }
+  for (const match of caseText.matchAll(/\b[A-Z][A-Za-z0-9]+(?:[- ][A-Z0-9][A-Za-z0-9]+){0,6}\b/g)) {
+    add(match[0], match.index ?? 0, 4);
+  }
+  return orderedUnique(
+    found
+      .sort((a, b) => b.priority - a.priority || a.index - b.index || a.value.localeCompare(b.value))
+      .map((term) => term.value)
+  ).slice(0, 40);
 }
 
 function shouldIncludeTranscriptEvidence(tags = {}) {
   return tags.freshness !== "stable";
+}
+
+function splitExecuteResult(result) {
+  const text = stripAnsi(result);
+  const sourceBasisAt = text.indexOf(SOURCE_BASIS_MARKER);
+  const legacyTruncationAt = text.indexOf(LEGACY_TRUNCATION_MARKER);
+  const consoleAt = text.indexOf(CONSOLE_MARKER);
+  const bodyEnd = [sourceBasisAt, legacyTruncationAt, consoleAt]
+    .filter((index) => index >= 0)
+    .reduce((earliest, index) => Math.min(earliest, index), text.length);
+  const sectionEnd = (start) => {
+    if (start < 0) return -1;
+    const nextSectionAt = text.indexOf("\n\n--- ", start + 2);
+    const candidates = [nextSectionAt, consoleAt].filter((index) => index > start);
+    return candidates.length ? Math.min(...candidates) : text.length;
+  };
+  return {
+    body: text.slice(0, bodyEnd),
+    sourceBasis:
+      sourceBasisAt >= 0 ? text.slice(sourceBasisAt + 1, sectionEnd(sourceBasisAt)) : "",
+    legacyTruncation:
+      legacyTruncationAt >= 0 ? text.slice(legacyTruncationAt + 1, sectionEnd(legacyTruncationAt)) : "",
+    truncated: sourceBasisAt >= 0 || legacyTruncationAt >= 0
+  };
 }
 
 function executeEntries(transcript) {
@@ -190,9 +294,7 @@ function executeEntries(transcript) {
 }
 
 function tryParseJsonPrefix(result) {
-  const stripped = stripAnsi(result);
-  const footerIndex = stripped.indexOf("\n--- TRUNCATED ---");
-  const jsonText = footerIndex >= 0 ? stripped.slice(0, footerIndex) : stripped;
+  const jsonText = splitExecuteResult(result).body;
   try {
     return JSON.parse(jsonText);
   } catch {
@@ -201,11 +303,21 @@ function tryParseJsonPrefix(result) {
 }
 
 function sourceTitle(value) {
-  return cleanText(value?.title ?? value?.name ?? value?.label ?? value?.slug ?? "");
+  return cleanText(value?.title ?? value?.name ?? value?.fullName ?? value?.label ?? value?.slug ?? "");
 }
 
 function sourceDate(value) {
-  return cleanText(value?.date ?? value?.publishing_date ?? value?.created_at ?? value?.updated_at ?? value?.asOf ?? "");
+  return cleanText(
+    value?.date ??
+      value?.publishing_date ??
+      value?.publishedAt ??
+      value?.created_at ??
+      value?.updated_at ??
+      value?.lastCommitAt ??
+      value?.checkedAt ??
+      value?.asOf ??
+      ""
+  );
 }
 
 function sourceSummary(value) {
@@ -224,6 +336,11 @@ function maybeSourceItem(value, path, entryIndex) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const title = sourceTitle(value);
   const url = sanitizeUrl(value.url ?? value.sourceUrl ?? value.source ?? value.href);
+  const alternateUrls = unique(
+    [value.sourceUrl, value.href, value.externalUrl, value.githubUrl, value.demoUrl, value.videoUrl]
+      .map(sanitizeUrl)
+      .filter((candidate) => candidate && candidate !== url)
+  );
   const summary = sourceSummary(value);
   const date = sourceDate(value);
   if (!title && !url && !summary) return null;
@@ -231,6 +348,7 @@ function maybeSourceItem(value, path, entryIndex) {
   return {
     title,
     url,
+    alternateUrls,
     date,
     summary,
     type: cleanText(value.type ?? value.kind ?? value.domain ?? value.channel ?? ""),
@@ -244,6 +362,7 @@ function scalarFactsForObject(value) {
   const skip = new Set([
     "title",
     "name",
+    "fullName",
     "label",
     "slug",
     "url",
@@ -314,10 +433,10 @@ function scanBalancedObjectAt(text, start) {
 }
 
 function scanSourceItemsFromText(result, entryIndex) {
-  const text = stripAnsi(result);
+  const text = splitExecuteResult(result).body;
   const out = [];
   const seenStarts = new Set();
-  for (const marker of ["\"title\"", "\"name\""]) {
+  for (const marker of ["\"title\"", "\"name\"", "\"fullName\""]) {
     let index = 0;
     while ((index = text.indexOf(marker, index)) >= 0) {
       const start = text.lastIndexOf("{", index);
@@ -354,8 +473,12 @@ function termHits(text, terms) {
   const haystack = text.toLowerCase();
   const hits = [];
   for (const term of terms) {
-    if (term.length < 3) continue;
-    if (haystack.includes(term.toLowerCase())) hits.push(term);
+    if (term.length < 3 && !isNumericLikeClaimTerm(term)) continue;
+    if (
+      isNumericLikeClaimTerm(term)
+        ? containsExactSupport(text, term)
+        : haystack.includes(term.toLowerCase())
+    ) hits.push(term);
   }
   return unique(hits);
 }
@@ -369,7 +492,9 @@ function snippetAround(text, index, length, radius) {
 }
 
 function sourceItemText(item) {
-  return cleanText(`${item.title} ${item.date} ${item.url} ${item.type} ${item.fields.join(" ")} ${item.summary}`);
+  return cleanText(
+    `${item.title} ${item.date} ${item.url} ${item.alternateUrls.join(" ")} ${item.type} ${item.fields.join(" ")} ${item.summary}`
+  );
 }
 
 function overlapsSourceItem(snippet, rankedItemsForDedupe) {
@@ -390,7 +515,7 @@ function collectClaimSnippets(entries, claimTerms, rankedItemsForDedupe) {
   for (const [termIndex, term] of claimTerms.entries()) {
     const re = termMatchRegExp(term, "gi");
     for (const [entryIndex, entry] of entries.entries()) {
-      const text = stripAnsi(entry.result);
+      const text = splitExecuteResult(entry.result).body;
       let match;
       let perTermEntryMatches = 0;
       while ((match = re.exec(text))) {
@@ -432,6 +557,27 @@ function collectClaimSnippets(entries, claimTerms, rankedItemsForDedupe) {
   );
 }
 
+function selectClaimSnippetsForCoverage(snippets, terms, limit) {
+  const remaining = snippets.map((snippet, index) => ({
+    ...snippet,
+    index,
+    hits: termHits(snippet.snippet, terms)
+  }));
+  const covered = new Set();
+  const selected = [];
+  while (selected.length < limit && remaining.length) {
+    remaining.sort((a, b) => {
+      const aGain = a.hits.filter((term) => !covered.has(term.toLowerCase())).length;
+      const bGain = b.hits.filter((term) => !covered.has(term.toLowerCase())).length;
+      return bGain - aGain || b.hits.length - a.hits.length || a.index - b.index;
+    });
+    const next = remaining.shift();
+    selected.push(next);
+    next.hits.forEach((term) => covered.add(term.toLowerCase()));
+  }
+  return selected;
+}
+
 function scoreItem(item, terms) {
   const titleHits = termHits(item.title, terms);
   const summaryHits = termHits(item.summary, terms);
@@ -448,6 +594,61 @@ function rankedItems(items, terms) {
       hits: termHits(`${item.title} ${item.summary} ${item.date} ${item.url}`, terms).slice(0, 8)
     }))
     .sort((a, b) => b.score - a.score || a.entryIndex - b.entryIndex || a.originalIndex - b.originalIndex);
+}
+
+function prioritizeItemsForCandidateExactTerms(items, candidateAnswer) {
+  const answer = String(candidateAnswer ?? "");
+  const exactTerms = exactSupportTerms(answer);
+  const supportCounts = new Map(
+    exactTerms.map((term) => [
+      term,
+      items.filter((item) => containsExactSupport(sourceItemText(item), term)).length
+    ])
+  );
+  const byCoverage = items
+    .map((item, index) => {
+      const supported = exactTerms.filter((term) => containsExactSupport(sourceItemText(item), term));
+      const answerIndex = supported.reduce((earliest, term) => {
+        const index = answer.toLowerCase().indexOf(term.toLowerCase());
+        return index < 0 ? earliest : Math.min(earliest, index);
+      }, Number.POSITIVE_INFINITY);
+      return {
+        item,
+        index,
+        coverage: supported.reduce(
+          (score, term) => score + exactClaimTermPriority(term) / Math.max(1, supportCounts.get(term)),
+          0
+        ),
+        answerIndex
+      };
+    })
+    .sort(
+      (a, b) =>
+        b.coverage - a.coverage ||
+        a.answerIndex - b.answerIndex ||
+        a.index - b.index
+    )
+    .map(({ item }) => item);
+  const byUrlOrder = [];
+  const seenUrlItems = new Set();
+  for (const url of exactTerms.filter((term) => /^https:\/\//i.test(term))) {
+    const item = items.find((candidate) => containsExactSupport(candidate.url, url));
+    if (!item || seenUrlItems.has(item)) continue;
+    seenUrlItems.add(item);
+    byUrlOrder.push(item);
+  }
+  const prioritized = [];
+  const seen = new Set();
+  const add = (item) => {
+    if (!item || seen.has(item)) return;
+    seen.add(item);
+    prioritized.push(item);
+  };
+  for (let index = 0; index < Math.max(byCoverage.length, byUrlOrder.length); index += 1) {
+    add(byCoverage[index]);
+    add(byUrlOrder[index]);
+  }
+  return prioritized;
 }
 
 function collectSourceItems(entries) {
@@ -473,20 +674,79 @@ function collectRelevantFactsFromParsed(value, terms, path = "", out = []) {
       continue;
     }
     if (raw === undefined) continue;
-    const rendered = cleanText(raw);
-    if (!rendered || rendered.length > 120) continue;
-    const score = termHits(`${key} ${rendered}`, terms).length + (scalarFieldPriority(key) > 1 ? 1 : 0);
-    if (score > 0) out.push({ path: nextPath, value: rendered, score });
+    for (const fact of factValuesFromText(nextPath, raw, terms)) {
+      if (!fact.value || fact.value.length > 120) continue;
+      const score = termHits(`${fact.path} ${fact.value}`, terms).length +
+        (scalarFieldPriority(fact.path) > 1 ? 1 : 0);
+      if (score > 0) out.push({ ...fact, score });
+    }
   }
   return out;
+}
+
+function factValuesFromText(key, raw, terms) {
+  const values = [];
+  const rendered = cleanText(raw);
+  if (/^https?:\/\//i.test(rendered)) {
+    const sanitized = sanitizeUrl(rendered);
+    if (sanitized) values.push({ path: key, value: sanitized });
+    for (const term of termHits(rendered, terms)) {
+      if (!sanitized.toLowerCase().includes(term.toLowerCase())) {
+        values.push({ path: `${key}.matchedIdentifier`, value: term });
+      }
+    }
+    return values;
+  }
+  values.push({ path: key, value: rendered });
+  return values;
+}
+
+function collectRelevantFactsFromText(result, terms) {
+  const body = splitExecuteResult(result).body;
+  const facts = [];
+  const scalarRe = /"((?:\\.|[^"\\]){1,90})"\s*:\s*("(?:\\.|[^"\\]){0,400}"|-?\d+(?:\.\d+)?|true|false|null)/g;
+  for (const match of body.matchAll(scalarRe)) {
+    let raw;
+    try {
+      raw = match[2].startsWith('"') ? JSON.parse(match[2]) : match[2];
+    } catch {
+      continue;
+    }
+    for (const fact of factValuesFromText(match[1], raw, terms)) {
+      if (!fact.value || fact.value.length > 200) continue;
+      const hits = termHits(`${fact.path} ${fact.value}`, terms).length;
+      const priority = scalarFieldPriority(fact.path);
+      if (hits > 0 || priority > 1) facts.push({ ...fact, score: hits * 3 + priority });
+    }
+  }
+
+  const scalarArrayRe = /"((?:\\.|[^"\\]){1,90})"\s*:\s*(\[(?:\s*(?:"(?:\\.|[^"\\]){0,120}"|-?\d+(?:\.\d+)?|true|false|null)\s*,?){1,24}\])/g;
+  for (const match of body.matchAll(scalarArrayRe)) {
+    let values;
+    try {
+      values = JSON.parse(match[2]);
+    } catch {
+      continue;
+    }
+    values.forEach((raw, index) => {
+      for (const fact of factValuesFromText(`${match[1]}[${index}]`, raw, terms)) {
+        const hits = termHits(`${fact.path} ${fact.value}`, terms).length;
+        const priority = scalarFieldPriority(fact.path);
+        if (hits > 0 || priority > 1) facts.push({ ...fact, score: hits * 3 + priority });
+      }
+    });
+  }
+  return facts;
 }
 
 function collectRelevantFacts(entries, terms) {
   const facts = [];
   entries.forEach((entry, entryIndex) => {
     const parsed = tryParseJsonPrefix(entry.result);
-    if (!parsed) return;
-    for (const fact of collectRelevantFactsFromParsed(parsed, terms)) facts.push({ ...fact, entryIndex });
+    if (parsed) {
+      for (const fact of collectRelevantFactsFromParsed(parsed, terms)) facts.push({ ...fact, entryIndex });
+    }
+    for (const fact of collectRelevantFactsFromText(entry.result, terms)) facts.push({ ...fact, entryIndex });
   });
   const seen = new Set();
   return facts
@@ -499,11 +759,175 @@ function collectRelevantFacts(entries, terms) {
     });
 }
 
+function collectVerbatimClaimFacts(entries, terms) {
+  const facts = [];
+  for (const term of terms) {
+    let entryIndex = -1;
+    let value = term;
+    for (const [candidateEntryIndex, entry] of entries.entries()) {
+      const body = splitExecuteResult(entry.result).body;
+      const match = termMatchRegExp(term, "i").exec(body);
+      if (!match) continue;
+      entryIndex = candidateEntryIndex;
+      value = `${match[0]}${body.slice(match.index + match[0].length).match(/^[.!?]/)?.[0] ?? ""}`;
+      break;
+    }
+    if (entryIndex < 0) continue;
+    facts.push({
+      path: `candidateClaim[${entryIndex + 1}]`,
+      value,
+      score: 100,
+      entryIndex
+    });
+  }
+  return facts;
+}
+
+function prioritizeFactsForExactTerms(facts, candidateAnswer) {
+  const answer = String(candidateAnswer ?? "");
+  const exactTerms = exactSupportTerms(answer)
+    .map((term) => ({
+      term,
+      priority: exactClaimTermPriority(term),
+      index: answer.toLowerCase().indexOf(term.toLowerCase())
+    }))
+    .sort((a, b) => b.priority - a.priority || a.index - b.index || a.term.localeCompare(b.term));
+  const selected = [];
+  const used = new Set();
+  for (const { term } of exactTerms) {
+    const index = facts.findIndex(
+      (fact, factIndex) =>
+        !used.has(factIndex) && containsExactSupport(`${fact.path}=${fact.value}`, term)
+    );
+    if (index < 0) continue;
+    used.add(index);
+    selected.push(facts[index]);
+  }
+  return [...selected, ...facts.filter((_, index) => !used.has(index))];
+}
+
+function protocolVersionClaimTerms(text) {
+  return orderedUnique(
+    [...String(text ?? "").matchAll(/\b[A-Z][A-Za-z0-9.-]*(?:-[A-Z][A-Za-z0-9.-]*)+\s+\d+(?:\.\d+)+\b/g)]
+      .map((match) => match[0])
+  );
+}
+
+function verbatimClaimTerms(text) {
+  const input = String(text ?? "");
+  const terms = [];
+  const add = (value) => {
+    const cleaned = cleanText(value);
+    if (cleaned.length >= 2 && cleaned.length <= 180) terms.push(cleaned);
+  };
+  for (const match of input.matchAll(/["“]([^"”\n]{3,600})["”]/g)) {
+    for (const sentence of match[1].split(/(?<=[.!?])\s+/)) {
+      if (cleanText(sentence).split(" ").length >= 3 && cleanText(sentence).length <= 90) {
+        add(sentence);
+      }
+    }
+  }
+  for (const term of protocolVersionClaimTerms(input)) add(term);
+  return orderedUnique(terms);
+}
+
+function exactSupportTerms(text) {
+  const input = String(text ?? "");
+  const terms = [];
+  const add = (value) => {
+    const cleaned = cleanText(value);
+    if (cleaned.length >= 2 && cleaned.length <= 180) terms.push(cleaned);
+  };
+  for (const match of input.matchAll(/`([^`\n]{2,180})`/g)) add(match[1]);
+  for (const term of protocolVersionClaimTerms(input)) add(term);
+  for (const match of input.matchAll(/https:\/\/[^\s"'<>\\]+/g)) add(sanitizeUrl(match[0]));
+  for (const match of input.matchAll(/\b\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z)?\b/g)) add(match[0]);
+  for (const match of input.matchAll(/\$\s?\d[\d,]*(?:\.\d+)?\s?(?:[KMB])?\b/gi)) add(match[0]);
+  for (const match of input.matchAll(/\b\d[\d,]*(?:\.\d+)?\s?(?:USD|USDC|XLM|EURC|%|[KMB])\b/gi)) add(match[0]);
+  for (const match of input.matchAll(/\b(?:id\d{6,}|(?:[a-z][a-z0-9-]*\.){2,}[a-z0-9-]+)\b/gi)) add(match[0]);
+  for (const match of input.matchAll(/\b[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\b/g)) add(match[0]);
+  for (const match of input.matchAll(/\b[a-z]+(?:[A-Z][A-Za-z0-9]+)+\b/g)) add(match[0]);
+  for (const match of input.matchAll(/\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/gi)) add(match[0]);
+  for (const match of input.matchAll(/(?<![\w/-])\d{2,}(?:,\d{3})*(?:\.\d+)?(?![\w/-])/g)) add(match[0]);
+  return orderedUnique(terms);
+}
+
+function jsonValueContainsExactNumber(value, term) {
+  if (typeof value === "number") return Number.isFinite(value) && String(value) === term;
+  if (typeof value === "string") return value === term;
+  if (Array.isArray(value)) return value.some((item) => jsonValueContainsExactNumber(item, term));
+  if (!value || typeof value !== "object") return false;
+  return Object.values(value).some((item) => jsonValueContainsExactNumber(item, term));
+}
+
+function containsExactBareNumber(text, term) {
+  const haystack = String(text ?? "");
+  const parsed = tryParseJsonPrefix(haystack);
+  if (parsed !== null) return jsonValueContainsExactNumber(parsed, term);
+
+  const withoutUrls = haystack.replace(/https?:\/\/[^\s"'<>\\]+/g, "");
+  const numericTokenRe = /(?<![\p{L}\p{N}._\/-])\$?\s?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:\s?(?:USD|USDC|XLM|EURC|%|[KMB]))?(?![\p{L}\p{N}._\/-])/giu;
+  const normalized = (value) => value.toLowerCase().replace(/[\s,$]/g, "");
+  for (const match of withoutUrls.matchAll(numericTokenRe)) {
+    if (normalized(match[0]) === term) return true;
+  }
+  return false;
+}
+
+function containsExactSupport(text, term) {
+  const haystack = String(text ?? "");
+  if (/^https:\/\//i.test(term)) {
+    for (const match of haystack.matchAll(/https?:\/\/[^\s"'<>\\]+/g)) {
+      if (sanitizeUrl(match[0]).toLowerCase() === term.toLowerCase()) return true;
+    }
+    return false;
+  }
+  if (/^\d+$/.test(term)) return containsExactBareNumber(haystack, term);
+  if (/^\$?\s?\d[\d,]*(?:\.\d+)?(?:\s?(?:USD|USDC|XLM|EURC|%|[KMB]))?$/i.test(term)) {
+    const normalized = (value) => value.toLowerCase().replace(/[\s,$]/g, "");
+    for (const match of haystack.matchAll(/\$?\s?\d[\d,]*(?:\.\d+)?(?:\s?(?:USD|USDC|XLM|EURC|%|[KMB]))?/gi)) {
+      if (normalized(match[0]) === normalized(term)) return true;
+    }
+    return false;
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(term)) return termMatchRegExp(term, "i").test(haystack);
+  if (isIdentifierLikeClaimTerm(term)) {
+    return new RegExp(
+      `(?<![\\p{L}\\p{N}_./-])${escapeRegExp(term)}(?![\\p{L}\\p{N}_./-])`,
+      "iu"
+    ).test(haystack);
+  }
+  return haystack.toLowerCase().includes(term.toLowerCase());
+}
+
+export function findTranscriptEvidencePackOmissions({
+  transcript = [],
+  transcriptEvidence = "",
+  claims = []
+} = {}) {
+  const exactTerms = exactSupportTerms(claims.join("\n"));
+  const fullTranscriptResults = executeEntries(transcript).map((entry) => stripAnsi(entry.result));
+  const supportedTerms = exactTerms.filter((term) =>
+    fullTranscriptResults.some((result) => containsExactSupport(result, term))
+  );
+  const omittedTerms = supportedTerms
+    .filter((term) => !containsExactSupport(transcriptEvidence, term))
+    .slice(0, 24);
+  return {
+    status: omittedTerms.length ? "pack-omission" : "no-pack-omission",
+    requiresReview: omittedTerms.length > 0,
+    checkedClaims: claims.length,
+    checkedTerms: exactTerms.length,
+    transcriptSupportedTerms: supportedTerms.length,
+    omittedTerms
+  };
+}
+
 function shapeLine(entries, sourceCount) {
   const totalChars = entries.reduce((sum, entry) => sum + (entry.resultChars ?? String(entry.result ?? "").length), 0);
-  const truncated = entries.filter((entry) => String(entry.result ?? "").includes("--- TRUNCATED ---")).length;
+  const truncated = entries.filter((entry) => splitExecuteResult(entry.result).truncated).length;
   const errored = entries.filter((entry) => entry.isError || /^Execution failed:/i.test(String(entry.result ?? ""))).length;
-  return `executeResults=${entries.length}; resultChars=${totalChars}; truncated=${truncated}; errors=${errored}; sourceItems=${sourceCount}`;
+  return `capturedResults=${entries.length}; resultChars=${totalChars}; truncated=${truncated}; errors=${errored}; sourceItems=${sourceCount}`;
 }
 
 function callsLine(entries) {
@@ -523,12 +947,57 @@ function canonicalUrlsLine(items, limit) {
   return `data-derived/untrusted; ${urls.join("; ")}${items.filter((item) => item.url).length > urls.length ? ` (+${items.filter((item) => item.url).length - urls.length} more)` : ""}`;
 }
 
+function citedSourceItems(items, candidateAnswer) {
+  const cited = [];
+  const seen = new Set();
+  for (const url of exactSupportTerms(candidateAnswer).filter((term) => /^https:\/\//i.test(term))) {
+    const item = items.find((candidate) =>
+      [candidate.url, ...candidate.alternateUrls].some((candidateUrl) => containsExactSupport(candidateUrl, url))
+    );
+    if (!item || seen.has(item)) continue;
+    seen.add(item);
+    cited.push(item);
+  }
+  return cited;
+}
+
+function citedSourcesLine(items, candidateAnswer) {
+  const sources = [];
+  const seen = new Set();
+  for (const item of citedSourceItems(items, candidateAnswer)) {
+    if (!item?.title) continue;
+    const key = item.title.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    sources.push(
+      `title=${JSON.stringify(truncate(item.title, 140))}${item.url ? ` url=${JSON.stringify(truncate(item.url, 180))}` : ""}`
+    );
+    if (sources.length >= MAX_CITED_SOURCE_TITLES) break;
+  }
+  return sources.length ? sources.join("; ") : "none";
+}
+
+function citedSourceFieldsLine(items, candidateAnswer) {
+  const fields = [];
+  for (const item of citedSourceItems(items, candidateAnswer)) {
+    for (const field of item.fields) {
+      const key = field.slice(0, field.indexOf("="));
+      if (scalarFieldPriority(key) <= 1) continue;
+      fields.push(field);
+      if (fields.length >= MAX_CITED_SOURCE_FIELDS) return fields.join("; ");
+    }
+  }
+  return fields.length ? fields.join("; ") : "none";
+}
+
 function truncationLine(entries) {
   const footers = [];
   for (const [index, entry] of entries.entries()) {
-    const result = stripAnsi(entry.result);
-    const footerIndex = result.indexOf("--- TRUNCATED ---");
-    if (footerIndex >= 0) footers.push(`execute#${index + 1}: ${truncate(result.slice(footerIndex), 360)}`);
+    const { sourceBasis, legacyTruncation } = splitExecuteResult(entry.result);
+    const summary = sourceBasis || legacyTruncation;
+    if (summary) {
+      footers.push(`execute#${index + 1}: ${truncate(sanitizeUrlsInText(summary), 720)}`);
+    }
   }
   return footers.join(" | ");
 }
@@ -538,6 +1007,7 @@ function serializePack({
   ranked,
   facts,
   claimSnippets,
+  candidateAnswer,
   itemLimit,
   factLimit,
   claimSnippetLimit,
@@ -553,6 +1023,8 @@ function serializePack({
     `shape: ${shapeLine(entries, ranked.length)}`,
     `calls: ${callsLine(entries)}`,
     `canonicalUrls: ${canonicalUrlsLine(ranked, urlLimit)}`,
+    `citedSources: ${citedSourcesLine(ranked, candidateAnswer)}`,
+    `citedSourceFields: ${citedSourceFieldsLine(ranked, candidateAnswer)}`,
     `fields: ${shownFacts.length ? shownFacts.map((fact) => `${truncate(fact.path, 90)}=${JSON.stringify(truncate(fact.value, 80))}`).join("; ") : "none"}`,
     "claimSnippets: candidate-claim anchored snippets from execute result text only; omitted snippets are not proof of absence"
   ];
@@ -605,11 +1077,30 @@ export function buildTranscriptEvidencePack({
   if (!entries.length) return "";
 
   const terms = extractEvidenceTerms({ candidateAnswer, golden });
+  const factTerms = orderedUnique([...exactSupportTerms(candidateAnswer), ...terms]);
   const items = collectSourceItems(entries);
-  const ranked = rankedItems(items, terms);
-  const facts = collectRelevantFacts(entries, terms);
+  const ranked = prioritizeItemsForCandidateExactTerms(rankedItems(items, terms), candidateAnswer);
+  const facts = prioritizeFactsForExactTerms(
+    [
+      ...collectVerbatimClaimFacts(entries, verbatimClaimTerms(candidateAnswer)),
+      ...collectRelevantFacts(entries, factTerms)
+    ],
+    candidateAnswer
+  );
   const claimTerms = extractCandidateClaimTerms({ candidateAnswer, question, golden });
-  const claimSnippets = collectClaimSnippets(entries, claimTerms, ranked);
+  const caseTerms = extractCaseEvidenceTerms({ candidateAnswer, question, golden });
+  const guaranteedItems = ranked.slice(0, 2);
+  const candidateSnippets = selectClaimSnippetsForCoverage(
+    collectClaimSnippets(entries, claimTerms, guaranteedItems),
+    claimTerms,
+    8
+  );
+  const caseSnippets = selectClaimSnippetsForCoverage(
+    collectClaimSnippets(entries, caseTerms, guaranteedItems),
+    caseTerms,
+    4
+  );
+  const claimSnippets = [...candidateSnippets, ...caseSnippets];
 
   let itemLimit = Math.min(ranked.length, INITIAL_MAX_ITEMS);
   let factLimit = Math.min(facts.length, INITIAL_MAX_FACTS);
@@ -623,6 +1114,7 @@ export function buildTranscriptEvidencePack({
       ranked,
       facts,
       claimSnippets,
+      candidateAnswer,
       itemLimit,
       factLimit,
       claimSnippetLimit,
@@ -631,12 +1123,12 @@ export function buildTranscriptEvidencePack({
       urlLimit
     });
     if (text.length <= maxChars) return text;
-    if (itemLimit > 2) {
-      itemLimit -= 1;
-      continue;
-    }
     if (summaryChars > MIN_SUMMARY_CHARS) {
       summaryChars = Math.max(MIN_SUMMARY_CHARS, summaryChars - 80);
+      continue;
+    }
+    if (itemLimit > 2) {
+      itemLimit -= 1;
       continue;
     }
     if (factLimit > 8) {

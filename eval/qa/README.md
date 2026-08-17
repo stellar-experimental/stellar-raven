@@ -24,6 +24,9 @@ eval/qa/
   cases.json  sample.json           # GENERATED battery + stratified sample-30 (CI byte-pinned)
   consistency-register.json         # cross-question contradiction register + numericInvariants
   compile-qa.mjs  judge.mjs  evidence-pack.mjs  run-qa.mjs  lint-corpus.mjs  register-helper.mjs  lib.mjs
+  agent-result.mjs                  # pure spawn → structured outcome parser (failure class, usage, artifacts)
+  re-judge.mjs                      # side-artifact re-judge of saved rows (never edits the source file)
+  verify-evidence-pack-fixtures.mjs # maintenance: checks committed pack fixtures against saved rows
   results/                          # local-only run evidence (gitignored)
   reviewed/                         # dated committed review records
 ```
@@ -41,53 +44,65 @@ whole-file contracts — `eval/self-test.mjs` asserts contract name, ordered mem
 
 ```jsonc
 {
-  "id": "q-sor-build-target-wasm32v1",   // == filename; q-* kebab; stable forever
+  "id": "q-sor-build-target-wasm32v1", // == filename; q-* kebab; stable forever
   "question": "…",
-  "surface": ["stellarDocs.search_sdk_cli_tools_docs"],  // advisory op/skill ids; NEVER judge/
-                                          // agent-visible; non-empty unless service == "none"
-  "golden": {                             // EXACTLY what the judge sees. Nothing else.
+  "surface": ["stellarDocs.search_sdk_cli_tools_docs"], // advisory op/skill ids; NEVER judge/
+  // agent-visible; non-empty unless service == "none"
+  "golden": {
+    // EXACTLY what the judge sees. Nothing else.
     "answer": "…",
-    "keyFacts": ["…"],                    // 1–5 atomic must-appear facts (pinned migration
-                                          // exceptions at 6–7 listed in compile-qa.mjs)
-    "avoid": ["…"],                       // concrete wrong-content traps (phrasing linted)
-    "notes": "…"                          // optional; rendered under the GRADER NOTES heading
+    "keyFacts": ["…"], // 1–5 atomic must-appear facts (pinned migration
+    // exceptions at 6–7 listed in compile-qa.mjs)
+    "avoid": ["…"], // concrete wrong-content traps (phrasing linted)
+    "notes": "…" // optional; rendered under the GRADER NOTES heading
   },
-  "tags": {                               // machine branching / stratification only
-    "category": "soroban",                // must equal the parent directory
-    "service": "stellarDocs",             // stellarDocs | scout | lumenloop | skills | none
-    "freshness": "scheduled",             // stable | scheduled | live
-    "trap": "paid-bait"                   // optional; value IS judge-visible (interpolated)
+  "tags": {
+    // machine branching / stratification only
+    "category": "soroban", // must equal the parent directory
+    "service": "stellarDocs", // stellarDocs | scout | lumenloop | skills | none
+    "freshness": "scheduled", // stable | scheduled | live
+    "trap": "paid-bait" // optional; value IS judge-visible (interpolated)
   },
-  "truth": {                              // judge-blind provenance, first-class
-    "domain": "real-world",               // real-world | corpus-grounded | mixed
-    "status": "confirmed",                // confirmed | disputed | unverifiable | mixed
-    "asOf": "2026-07-11",                 // required when freshness != stable OR status != confirmed
-    "reverifyBy": "2026-10-01",           // required when freshness == scheduled; CI stale gate
-    "sources": [{ "class": "A", "ref": "https://…" }],  // classes A–F per golden-truth
-    "corroboration": [                    // claim rows; required-when rules below; verdicts:
-      { "claim": "…", "verdict": "confirmed",  // confirmed | confirmed-as-of | disputed |
-                                               // unverifiable | corpus-only | contradicted
-        "evidence": [{ "class": "A", "ref": "…", "observedAt": "…" }] }
+  "truth": {
+    // judge-blind provenance, first-class
+    "domain": "real-world", // real-world | corpus-grounded | mixed
+    "status": "confirmed", // confirmed | disputed | unverifiable | mixed
+    "asOf": "2026-07-11", // required when freshness != stable OR status != confirmed
+    "reverifyBy": "2026-10-01", // required when freshness == scheduled; CI stale gate
+    "sources": [{ "class": "A", "ref": "https://…" }], // classes A–F per golden-truth
+    "corroboration": [
+      // claim rows; required-when rules below; verdicts:
+      {
+        "claim": "…",
+        "verdict": "confirmed", // confirmed | confirmed-as-of | disputed |
+        // unverifiable | corpus-only | contradicted
+        "evidence": [{ "class": "A", "ref": "…", "observedAt": "…" }]
+      }
     ],
-    "verified": {                         // LATEST verification event only — git holds the rest
-      "date": "2026-07-11", "by": "…", "evidence": ["solo://…"],
-      "rootCause": ["improvements/…"]     // required when the event CHANGED gospel;
-    },                                    // "freshness-drift" is an allowed explicit value
-    "origin": "raven-next q-sor-build-target-wasm32v1"  // lineage; or "authored YYYY-MM"
+    "verified": {
+      // LATEST verification event only — git holds the rest
+      "date": "2026-07-11",
+      "by": "…",
+      "evidence": ["solo://…"],
+      // rootCause is required when the event CHANGED gospel;
+      // "freshness-drift" is an allowed explicit value
+      "rootCause": ["improvements/…"]
+    },
+    "origin": "raven-next q-sor-build-target-wasm32v1" // lineage; or "authored YYYY-MM"
   }
 }
 ```
 
 Who consumes what (condensed):
 
-| Field | Consumers |
-|---|---|
-| `question`, `golden.*`, `tags.trap`, `tags.freshness` | **judge-facing** — the prompt renders exactly these (plus the evidence pack); any change is a gospel change under the CI lint |
-| `golden.keyFacts` / `golden.avoid` | judge `missingFacts` / `wrongClaims` drivers; numeric-invariant + avoid-phrasing lint |
-| `surface` | lint (ids must be manifest-exposed), coverage floors — never rendered to judge or agent |
-| `tags.service` | deterministic sampler strata, per-service reporting |
-| `tags.freshness` | judge leniency block and evidence-pack gate (both test `!== "stable"`); `scheduled` requires `truth.asOf` + `truth.reverifyBy`; `live` means behavioral golden |
-| `truth.*` | judge-blind: gospel-change lint, corroboration lint, stale gate, ledger cross-checks, triage signals copied into result rows (`truth.status`/`asOf`) |
+| Field                                                 | Consumers                                                                                                                                                      |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `question`, `golden.*`, `tags.trap`, `tags.freshness` | **judge-facing** — the prompt renders exactly these (plus the evidence pack); any change is a gospel change under the CI lint                                  |
+| `golden.keyFacts` / `golden.avoid`                    | judge `missingFacts` / `wrongClaims` drivers; numeric-invariant + avoid-phrasing lint                                                                          |
+| `surface`                                             | lint (ids must be manifest-exposed), coverage floors — never rendered to judge or agent                                                                        |
+| `tags.service`                                        | deterministic sampler strata, per-service reporting                                                                                                            |
+| `tags.freshness`                                      | judge leniency block and evidence-pack gate (both test `!== "stable"`); `scheduled` requires `truth.asOf` + `truth.reverifyBy`; `live` means behavioral golden |
+| `truth.*`                                             | judge-blind: gospel-change lint, corroboration lint, stale gate, ledger cross-checks, triage signals copied into result rows (`truth.status`/`asOf`)           |
 
 Corroboration **required-when** (lint-enforced): `truth.status ∈ {disputed, unverifiable}` ⇒
 rows required; a case named by a register `numericInvariants` entry ⇒ a row covering that
@@ -112,7 +127,7 @@ Every gospel change (question, `golden.*`, judge-facing tags) goes through the
 # Compile the battery → cases.json + sample.json (deterministic, byte-identical re-runs; no flags)
 npm run eval:qa:compile
 
-# Judge self-test (no server): scored fixtures + the 15 pinned promptSha256 fixtures
+# Paid judge behavior self-test: seven judge calls; reports call count and total cost; no MCP server
 npm run eval:qa:selftest
 
 # Corpus lint (deterministic, offline)
@@ -160,6 +175,77 @@ build exposing a code-shaped tool plus `--search-tool`. Results land in
 for triage, the verdict's `{rubric, packVersion, promptSha256}` stamps, and the evidence-pack
 hash/size.
 
+**Stored agent outcome (`qa-agent-result-v1`, Solo todo 1566).** `eval/qa/agent-result.mjs` is the
+pure parser between one `claude -p --output-format stream-json` spawn and one row;
+`run-qa.mjs` and the saved stream fixtures in `test/fixtures/qa-agent-streams/` are its only
+adapters, so a failure shape can be pinned without spending. Each row carries exactly ONE
+failure field, `agent.failure` — `null`, or `{class, reason, retryable, messageExcerpt, subtype,
+exitStatus, signal}` with `class` from `provider-safeguard | transport | timeout | spawn |
+protocol | agent | unclassified`. Only `transport` is ever retryable; a provider safeguard is
+terminal and is never re-issued or rewritten. The parser blanks the provider notice, so a
+safeguard can no longer reach a judge as a candidate answer (the 2026-08-14
+`q-n3-ssrf-metadata-endpoint` row recorded `agent.error="success"` — indistinguishable from a
+transport blip). Rows also carry `agent.usage.{final,perTurn,perTurnAvailable}` and a bounded
+redacted `agent.stderr.{chars,sha256,excerpt}`. `meta.resultsSchema` stamps the shape;
+`--judge-stored` refuses a file collected under any other schema.
+
+**Cost totals are reported-only.** `judgeCase` can return a verdict with no `costUsd` when the
+provider omits cost data, and the old `costUsd ?? 0` totals made that indistinguishable from a
+genuinely free call — silently understating spend. `meta.totalAgentCostUsd`,
+`meta.totalJudgeCostUsd`, and `meta.totalCostUsd` now sum **only reported** costs (rounded to 12
+decimals), and `meta.costAccounting` says how many were reported out of how many were expected:
+`{expectedJudgeCalls, reportedJudgeCalls, missingJudgeCosts, expectedAgentRuns,
+reportedAgentCosts, missingAgentCosts}`. A nonzero `missing*` means the totals are a **lower
+bound on real spend**, not a complete figure. `expectedJudgeCalls` counts rows that actually
+reached a judge, so an unjudged row reads as unjudged rather than as a lost cost.
+`re-judge.mjs` carries the same accounting for its own artifacts.
+
+The two usage fields are **not** the same kind of data:
+
+- `agent.usage.final` **preserves the provider's own final usage object verbatim**. Whatever the
+  provider emitted is kept as-is — nested blocks, tier and geo strings, iteration arrays and all.
+  Nothing inside it is normalized, renamed, or filtered, so do not assume any particular field is
+  present or numeric.
+- `agent.usage.perTurn` is **normalized by this repo**: one record per assistant message, holding
+  exactly `{turn, inputTokens, outputTokens, cacheCreationInputTokens, cacheReadInputTokens}`.
+  Only numeric counters are carried; an absent counter stays `null` and is never inferred from
+  characters. `turn` is the assistant-message ordinal, so a turn that emits no usage block does
+  not shift later turns' labels. `perTurnAvailable` is false when the provider emitted none.
+
+**Artifact-continuation telemetry (`row.artifacts`).** `handlesObserved`, `callSites`, and
+`readExecutes` are three different quantities; the first implementation conflated them, so each
+now has its own name:
+
+| Field | Meaning |
+| --- | --- |
+| `handlesObserved` | distinct artifact ids visible in execute results |
+| `callSites.{info,read}` | static textual occurrences of `codemode.artifact.info/read(` in execute source; not a runtime call count and not a bound |
+| `readExecutes.{total,bounded,truncated,guardFailed,hostDenied,otherFailed}` | read-containing executes by how the execute itself ended; the five buckets always sum to `total` |
+| `readOutcomes.{total,successful,denied,indeterminate}` | what the execute PROVED about the read; the three states always sum to `total` |
+| `hostDenialReasons` | closed host set from `src/executor/providers.ts`; sums to `readExecutes.hostDenied` |
+| `finalProjection` | state of the last read-containing execute: `none`, `bounded`, `truncated`, `guard-failed`, `host-denied`, or `other-failed` |
+| `readBytes` | always `null`; host byte evidence is separate and is not estimated |
+
+Bucket precedence is `guardFailed` → `hostDenied` → `otherFailed` → `truncated` →
+`bounded`. The `otherFailed` bucket includes the two historical post-read
+`Cannot read properties of undefined` rows: `q-pc-sponsored-reserves` and
+`q-protocol-operation-types-list`.
+
+**`readExecutes` and `readOutcomes` answer different questions, so never read one as the other.**
+A bucket says how the execute ended. An outcome says what the execute proved about the read.
+
+`readOutcomes.successful` counts one thing only: the execute completed (`bounded`) AND its own
+visible result body parses as an object with `ok: true`. Both halves are load-bearing. An errored
+execute can leave an `ok:true` envelope in its wreckage, which is not a projection any answer
+could use. Source text proves nothing either, because source is text and text does not run: a
+guard or a `.data` use can sit on the failure return, inside a string, or inside a comment.
+A truncated body hides its own envelope by construction, and `r.data ?? fallback` prints the same
+output whether the read returned data or was denied.
+
+This fails closed by design. A real, correctly guarded read whose execute projected a small answer
+instead of the envelope counts as `indeterminate`. The instrument therefore under-claims, and an
+instrument that under-claims is repairable where one that invents evidence is not.
+
 ## CI contract
 
 Every push/PR (`.github/workflows/ci.yml`):
@@ -172,8 +258,15 @@ Every push/PR (`.github/workflows/ci.yml`):
   `truth.verified` changed in the same diff with non-empty `evidence` + `rootCause` (score-only
   rationales rejected; `freshness-drift` allowed). Local/pre-push equivalent for Solo lanes:
   `npm run eval:qa:lint -- --since <ref>`.
-- **`eval:qa:selftest`**: judge fixtures incl. the 15 pinned promptSha256 hashes.
 - `eval:selftest` asserts the live v2 contracts (name, ordered membership, content digest).
+
+CI deliberately does **not** run `eval:qa:selftest`. That command spawns the live `claude` CLI
+once per `SELF_TEST_CANDIDATES` entry — seven paid judge calls at the current candidate count —
+so it is a manual paid gate owned by
+[`run-evals`](../../.agents/skills/run-evals/SKILL.md), not an offline CI step. It needs no MCP
+server, and it also checks 15 offline `promptSha256` fixtures, but it is not free: it prints
+`expected`, `actual`, `reportedCosts`, `missingCosts`, and `totalCostUsd`. Run it only when the
+judging rubric, prompt, evidence pack, or judge adapter changes.
 
 The daily refresh workflow (`refresh.yml`) also runs `lint-corpus --stale`, so a `reverifyBy`
 date passing fires within 24 h, not on the next unrelated PR. Remedies are auditable either
@@ -200,7 +293,7 @@ non-Thursday dates already put several Q4-2026 weeks at 5-7. When a volatile cas
 re-verified soon, a short interval beats cap purity - placing it in Q4 at week-total five is
 the correct trade against pushing it to 2027 to keep a number tidy.
 
-Known limitation of the currentness tier: it matches the *word* "version", not version literals,
+Known limitation of the currentness tier: it matches the _word_ "version", not version literals,
 and has no inflection tolerance ("releases" and "Dates" do not match). Five late-scheduled cases
 pinned a version or protocol literal; three are Protocol-N facts that are defensibly stable.
 `q-tool-passkeykit-smart-wallet` was pulled forward by the 2026-07-28 re-verification round
@@ -221,14 +314,15 @@ Style, length, and citation format are ignored. Beyond-golden specifics are "unv
 wrong. Avoid items bind only on answer-visible content; support-relative avoid phrasing is
 advisory (and linted). Cases with `tags.freshness != "stable"` get the freshness-leniency block
 and a deterministic bounded **source-basis evidence pack** built from the saved execute results
-(`evidence-pack.mjs`, pack `p3`); sourced drift from the golden snapshot is tolerated, confident
+(`evidence-pack.mjs`, pack `p5`); sourced drift from the golden snapshot is tolerated, confident
 unsourced contradiction is not.
 
 **Comparability rules:**
 
 - Re-judge identity is the **judge model + rubric + pack** tuple (currently `claude-sonnet-5` /
-  `v2.4` / `p3`; rubric and pack are exported as `JUDGE_RUBRIC` / `PACK_VERSION`, with a short
-  changelog in the `judge.mjs` header). Compare stored rows only when that tuple and
+  `v2.4` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
+  `evidence-pack.mjs`, each with a short changelog in its own file header). Compare stored rows
+  only when that tuple and
   prompt/pack-hash semantics match — otherwise re-judge the saved `rows[].answer` under the
   target tuple first (cheap; feed back through `judgeCase` with the row's transcript).
 - A `--no-judge` capture has no source judge tuple or verdict. Its first judging goes through
@@ -243,6 +337,11 @@ unsourced contradiction is not.
   meanings, avoid/freshness/trap handling. A pack bump is required for evidence-pack
   serialization/selection changes. Cosmetic refactors that keep `buildJudgePrompt` output
   byte-identical (provable via the promptSha256 fixtures) need no bump.
+- **Pack p5** (2026-08-17, current) recognizes emitted `SOURCE BASIS` boundaries, retains exact
+  facts from clipped JSON, and flags transcript-supported claims that a bounded pack omitted. The
+  diagnostic never changes the judge score or its claim lists. `p4` was an intermediate build of
+  the same 2026-08-17 work; it reached only the superseded paid probe recorded below and is never
+  the current pack.
 - **Noise floor**: per-row any-flip rate **23.3%** across three identical v2.4/p3 re-judge
   passes (pairwise score disagreement 15.6%). Isolated single-run score movement at or below
   that scale is variance until confirmed by live transcript review or a repeated mechanism.
@@ -270,6 +369,107 @@ unsourced contradiction is not.
   aggregate headline runs across either the 484→490 or 490→492 boundary only on an explicit
   common-id set, or disclose that sample membership changed.
 
+## 2026-08-17 p3→p4 evidence-pack integrity probe (historical, superseded by p5)
+
+This section records the earlier p4 probe exactly as it ran. Every figure in it is a p4 figure.
+The p5 matrix below supersedes it as the current record. Do not cite these rows as p5 evidence.
+
+This paid probe tested measurement quality on saved 2026-08-14 answers. It did not collect new
+answers or change the MCP product. The tuple was `claude-sonnet-5` / `v2.4` / `p3→p4`. The
+re-judges pinned corpus revision `70726884a723786c669283953f576277ce9d955b`. This revision matches
+the source artifact's runner and server revision.
+
+The paid self-test made seven judge calls and cost `$0.9728457`. Two four-row re-judge passes made
+eight more judge calls and cost `$0.9932361`. The complete sequence used 15 judge calls, cost
+`$1.9660818`, and made zero answering-agent calls.
+
+Both passes judged the same four rows: `q-tool-indexer-repos-discovery` (target),
+`q-comp-cross-moneygram-partnership-sep24`, `q-soroban-auth-delegation-p27`, and
+`q-soroban-oz-token` (controls). That is a reduced slice of the eight rows the execution plan
+registered for M1, so this probe carries three controls, not the six its Gate 3 acceptance rule
+asks for.
+
+| Results stamp                      | SHA-256                                                            | Row movements                                          |
+| ---------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------ |
+| `2026-08-17T18-57-50-rejudge.json` | `da8dee8927048a608203c37464e88ededcef81e7aa97a6cea0ecd7e5a48fc8d6` | MoneyGram C→C; Auth C→C; OpenZeppelin C→P; Indexer W→P |
+| `2026-08-17T19-00-00-rejudge.json` | `c0a87715e834651343e5e4e8f960b8ddce9026d147cddbd3017d03a787529886` | MoneyGram C→C; Auth C→P; OpenZeppelin C→P; Indexer W→P |
+
+Indexer improved because p4 restored four transcript-supported repository facts that p3 omitted.
+OpenZeppelin lost a correct control verdict twice because its saved answer omitted a required audit
+caveat. Auth also omitted the Mainnet-live date. These control losses came from answer gaps, not
+pack loss.
+
+Both paid passes finished at 19:00:00Z. `eval/qa/evidence-pack.mjs` then changed again, while the
+label still read `p4`, so for a short window one label covered two different pack builds. The
+Indexer pack measured 11,967 characters in these passes and measures 11,992 characters under the
+current build. That ambiguity is exactly why the pack moved to `p5`: a pack whose bytes change
+takes a new version. Treat the verdicts above as a record of the p4 run and nothing else.
+
+The predeclared stop rule ended the wider p4 matrix after the repeated OpenZeppelin control loss.
+Therefore, the live, digest, and tie-break lanes did not run under p4. The p5 matrix below ran
+those lanes under the approved fact-level amendment.
+
+## 2026-08-17 p3→p5 evidence-pack repair and paid M1 matrix
+
+This is the current record. The tuple is `claude-sonnet-5` / `v2.4` / `p3→p5`. Every re-judge
+pinned corpus revision `70726884a723786c669283953f576277ce9d955b`, which matches the source
+artifacts' runner and server revision. The matrix judged saved 2026-08-14 answers. It collected no
+new answer, made zero answering-agent calls, and changed no product or Playground file.
+
+The free deterministic side is reproducible:
+
+```sh
+# 10 committed fixtures against their saved rows, then the 117-row p3→p5 replay
+node eval/qa/verify-evidence-pack-fixtures.mjs --portfolio
+```
+
+`--portfolio` reads the gitignored `eval/qa/results/` artifacts, so it prints
+`SKIP (no ignored result artifacts found)` on a machine that does not hold the 2026-08-14 run.
+The recorded replay is `rows=117 eligible=70 allRowsWithSourceBasis=64
+packEligibleSourceBasisRows=38 p3Mean=9228.06 p5Mean=10580.16 supportedTerms=1156
+omissions=399->114 improved=55 tied=15 worsened=0`.
+
+The paid matrix ran three lanes over eight rows: `q-tool-indexer-repos-discovery` and
+`q-live-beans-cross-service-reconcile` (targets), plus `q-comp-cross-moneygram-partnership-sep24`,
+`q-soroban-auth-delegation-p27`, `q-soroban-oz-token`, `q-live-zk-repos-current`,
+`q-live-fluxity-status-provenance`, and `q-live-digest-blend-coverage` (controls).
+
+| Pass | Results stamp | SHA-256 |
+| --- | --- | --- |
+| initial | `2026-08-17T21-46-24-rejudge.json` | `629ed1905c94ee1c4c65244466964193f0c2640b177df9ffff03fbdba4c149c9` |
+| initial | `2026-08-17T21-48-02-rejudge.json` | `3b6b314ab41eea1a6324b3ae53e9a925ff82a5c1aeadb6b545c4f71b1fe7330e` |
+| initial | `2026-08-17T21-49-43-rejudge.json` | `d3209503931ca910621cf1cd1cfcdc1ec1ae5431ba3cd07f5e86bfba43e2d7f6` |
+| repeat | `2026-08-17T22-05-20-rejudge.json` | `1f371cb2b40aa126a7ec608a0246f9dd65265639fd6f3e4ded8354ff27704217` |
+| repeat | `2026-08-17T22-06-59-rejudge.json` | `f9dd24ec2e34fbb4d05bf630945e93fc3cc67032278e27e4ffaf06727f539fed` |
+| repeat | `2026-08-17T22-08-58-rejudge.json` | `b557433682984f51518694d19046eff61f9dfc69d174e0c8c98ee7bed4291f20` |
+| tie-break | `2026-08-17T22-26-02-rejudge.json` | `e2f6a80882febca394ac5cb3b0f920eee1f716d6d052d09b7435dc53b00764ca` |
+
+The initial pass used 8 judge calls and cost `$1.6608864`. The repeat pass used 8 calls and cost
+`$0.4486947`. The tie-break used 1 call and cost `$0.0478449`. The matrix reported 17 of 17 judge
+calls, zero missing costs, and `$2.157426`.
+
+| Row | p3 stored | p5 initial | p5 repeat | p5 tie-break | Final |
+| --- | --- | --- | --- | --- | --- |
+| Indexer target | wrong | partial | partial | — | partial |
+| Beans target | wrong | correct | correct | — | correct |
+| OpenZeppelin control | correct | correct | partial | partial | partial |
+| MoneyGram control | correct | correct | correct | — | correct |
+| Auth delegation control | correct | correct | correct | — | correct |
+| ZK repos control | correct | correct | correct | — | correct |
+| Fluxity control | correct | correct | correct | — | correct |
+| Blend digest control | correct | correct | correct | — | correct |
+
+Indexer moved because p5 cleared both p3 wrong claims. Its remaining provenance and
+external-label omissions are real answer gaps. The Galexie enumeration difference between the two
+p5 passes is monitor-only. Beans moved because p5 grounds the five specifics p3 called
+unsupported. OpenZeppelin reached a 2-of-3 majority of partial; its audit-scope caveat is an
+answer omission, and the initial-to-repeat movement is judge severity variance on byte-identical
+input, not p5 pack fact loss. No stop condition fired under the approved fact-level amendment.
+
+The matrix changed QA measurement only. It does not prove an MCP product gain. See
+[`research/mcp-quality-improvement-results-2026-08-17.md`](../../research/mcp-quality-improvement-results-2026-08-17.md)
+for the full evidence and next experiment.
+
 ## 2026-07-27 stale-gap re-measurement (checkpoint, not a re-baseline)
 
 Run after a 16-day measurement gap to answer "what is answer quality today?" — not an A/B of any
@@ -280,11 +480,11 @@ measurement tuple is unchanged. Sample file `25af52f9…c81c`, ids `8dddeddb…d
 digest `fef31c49…37ac`. Run in six ≤5-case `--ids` shards for budget checkpointing; the shard union
 was asserted byte-identical to the pinned sample order.
 
-| lane | raw | stamps |
-| --- | --- | --- |
-| headline sample-30 | **10C / 17P / 3W / 0E** | `2026-07-27T21-34-19`, `22-32-31`, `22-36-20`, `22-39-50`, `22-43-14`, `22-50-16` (all `-variantA.json`) |
-| canonical live-data v3 (15) | **11C / 4P / 0W / 0E** | `2026-07-27T23-05-03-variantA.json` |
-| plan regrade (offline) | 28/30 requiredCovered (93%), mean onPlanRatio 0.93–1.00 | `*.plan.json` alongside each shard |
+| lane                        | raw                                                     | stamps                                                                                                   |
+| --------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| headline sample-30          | **10C / 17P / 3W / 0E**                                 | `2026-07-27T21-34-19`, `22-32-31`, `22-36-20`, `22-39-50`, `22-43-14`, `22-50-16` (all `-variantA.json`) |
+| canonical live-data v3 (15) | **11C / 4P / 0W / 0E**                                  | `2026-07-27T23-05-03-variantA.json`                                                                      |
+| plan regrade (offline)      | 28/30 requiredCovered (93%), mean onPlanRatio 0.93–1.00 | `*.plan.json` alongside each shard                                                                       |
 
 Total agent cost $21.88. Routing gate PASS, unchanged from the committed baseline.
 
@@ -324,8 +524,8 @@ LAUNCH-OK); two-phase spend enforcement (`--no-judge` collection → 30/30-row +
 checkpoint → judge); runner revision `a77ccb0` (demo-only diff from the brief's `94c1ad8`
 pin — MCP surface identical); v2.4/p3, sonnet-5 both roles.
 
-| lane | verdicts | results stamp |
-|---|---|---|
+| lane               | verdicts                | results stamp                       |
+| ------------------ | ----------------------- | ----------------------------------- |
 | headline sample-30 | **10C / 16P / 4W / 0E** | `2026-07-28T22-52-45-variantA.json` |
 
 Paired n=30 vs the six 07-27 sample shards: 5 flips (16.7%), 2 up / 3 down — inside the
@@ -415,12 +615,12 @@ no agent error before building evidence or spending on a judge, with a focused r
 Every row then received independent answer-visible review against its transcript, owned golden,
 and current primary sources. The final repaired independent disposition is:
 
-| result | count | rate |
-| --- | ---: | ---: |
+| result  |   count |         rate |
+| ------- | ------: | -----------: |
 | correct | **154** | **31.4286%** |
 | partial | **218** | **44.4898%** |
-| wrong | **118** | **24.0816%** |
-| error | **0** | **0%** |
+| wrong   | **118** | **24.0816%** |
+| error   |   **0** |       **0%** |
 
 The explicit half-credit instrument is **(154 + 0.5×218) / 490 = 263 / 490 = 53.6735%**;
 strict correctness is **154 / 490 = 31.4286%**. This reviewed full-battery score is diagnostic,
@@ -491,6 +691,53 @@ Re-judges now persist as machine-readable artifacts: `eval/qa/re-judge.mjs <resu
 or `--flips-vs <baseline-results>` re-judges identical saved input behind casesSha256 identity
 and judge-model/rubric/pack tuple guards, writing `results/<stamp>-rejudge.json`.
 
+Pin the corpus revision when the battery has moved since collection — otherwise the identity
+guard compares saved rows against today's working tree and refuses.
+
+**Corpus pinning is not pack identity.** `--cases-ref` fixes only the case snapshot. The guard
+also compares the judge tuple (model / rubric / pack), and the evidence pack is currently `p5`
+while the 2026-08-14 artifacts were collected under `p3`. That mismatch refuses on its own, so
+this example is necessarily a **non-identical** re-judge — it produces a loudly labeled side
+artifact, and its verdicts are NOT identical-input evidence and can never be cited as judge
+variance:
+
+```sh
+# NON-IDENTICAL re-judge of two rows: corpus pinned to the collecting commit, but the pack
+# moved p3 → p5 since collection. Paid: one judge call per row.
+node eval/qa/re-judge.mjs eval/qa/results/2026-08-14T03-56-23-variantA.json \
+  --ids q-pc-sponsored-reserves,q-protocol-operation-types-list \
+  --cases-ref 7072688 \
+  --allow-non-identical \
+  --dry-run          # drop --dry-run to actually spend
+```
+
+Without `--allow-non-identical`, the dry run reports `"wouldRefuse": true` with the offending
+tuple (`packVersion: "p3"` vs `"p5"`), and a real run fails with
+`refusing non-identical re-judge: judge tuple differs (…)`. Drop `--allow-non-identical` only
+when the source artifact's tuple still matches the current one — then the re-judge is genuinely
+identical-input.
+
+Every flag `re-judge.mjs` accepts:
+
+- `--ids <id,id,…>` — re-judge exactly these saved rows. May be supplied once, with no repeats,
+  and cannot mix saved verdicts with `--no-judge` rows.
+- `--flips-vs <baseline-results>` — select the rows whose score differs from that baseline
+  instead of naming ids.
+- `--judge-model <name>` — override the judge model. Overriding it makes the run non-identical.
+- `--cases-ref <git-revision>` — resolve the case snapshot from that revision instead of the
+  working tree. This is how a saved artifact stays judgeable after the corpus moves.
+- `--allow-non-identical` — proceed when identity checks fail (drifted case snapshot, or a
+  judge-model/rubric/pack tuple that no longer matches). The result is a **loudly labeled**
+  side artifact and is **never** identical-input re-judge evidence, so it cannot be used as
+  variance evidence.
+- `--allow-empty` — only meaningful with `--flips-vs`: write the artifact even when no score
+  changed. Without it, an empty flip set is refused rather than persisted as a zero-row file.
+- `--dry-run` — resolve, guard, and report without spending.
+- `--help` / `-h` — print usage and exit.
+
+Re-judge always writes a NEW `-rejudge` artifact; it never edits the source results file. First
+judging of a `--no-judge` capture goes through `run-qa.mjs --judge-stored`, not through here.
+
 ### 2026-07-13 release-closeout targeted diagnostics
 
 Three paid targeted probes exercised the six new cases and their nearest controls. They were
@@ -499,11 +746,11 @@ Three paid targeted probes exercised the six new cases and their nearest control
 result metadata records `serverRevision: null`. The owned corpus denominator is 490, while each
 row below keeps its explicit targeted N:
 
-| Results stamp | Scope | Raw QA | Offline plan regrade |
-|---|---:|---:|---:|
-| `2026-07-13T18-59-22-variantA.json` | evidence-poor retrieval, N=7 | 2 correct / 4 partial / 1 wrong | 6/7 required covered (86%); mean on-plan 0.94; progression used 1/3 |
-| `2026-07-13T19-09-10-variantA.json` | bounded same-model recovery follow-up, N=3 | 0 / 2 / 1 | 2/3 required covered (67%); mean on-plan 1.00; progression used 0/2 |
-| `2026-07-13T20-07-14-variantA.json` | prior-art preflight plus no-detour control, N=3 | 0 / 3 / 0 | 3/3 required covered (100%); mean on-plan 1.00; progression used 2/2 |
+| Results stamp                       |                                           Scope |                          Raw QA |                                                 Offline plan regrade |
+| ----------------------------------- | ----------------------------------------------: | ------------------------------: | -------------------------------------------------------------------: |
+| `2026-07-13T18-59-22-variantA.json` |                    evidence-poor retrieval, N=7 | 2 correct / 4 partial / 1 wrong |  6/7 required covered (86%); mean on-plan 0.94; progression used 1/3 |
+| `2026-07-13T19-09-10-variantA.json` |      bounded same-model recovery follow-up, N=3 |                       0 / 2 / 1 |  2/3 required covered (67%); mean on-plan 1.00; progression used 0/2 |
+| `2026-07-13T20-07-14-variantA.json` | prior-art preflight plus no-detour control, N=3 |                       0 / 3 / 0 | 3/3 required covered (100%); mean on-plan 1.00; progression used 2/2 |
 
 Transcript review matters more than these tiny-N aggregates. The first probe passed the scoped
 closed-world and ambiguous-Strupey behaviors but exposed provenance/completeness failures. The

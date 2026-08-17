@@ -644,6 +644,173 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }
   });
 
+  /**
+   * The full artifact-continuation sequence at the REAL worker boundary (Solo
+   * todo 1566, execution plan Gate 1B part 3). The 2026-08-14 round could not
+   * tell "the tail was lost at the model boundary" from "the service never had
+   * the fact", because no test proved a lost tail was recoverable end to end.
+   *
+   * The sentinel exists ONLY near the tail of the original result, so it is
+   * absent from the truncated first result by construction — recovering it in
+   * the answer proves continuation, not luck. Nothing here raises the result
+   * cap and nothing reads the artifact automatically.
+   */
+  describe("artifact continuation recovers a lost tail through the existing envelope", () => {
+    const SENTINEL = "RAVEN-TAIL-SENTINEL-7f3a";
+    // `tailNote` is serialized LAST, so the model boundary cuts it first.
+    const TAIL_SENTINEL_CODE = `async () => ({
+      rows: Array.from({ length: 900 }, (_, i) => ({ i, pad: "y".repeat(24) })),
+      tailNote: "${SENTINEL}"
+    })`;
+
+    it("loses the tail at the boundary, then recovers it via info + read + a bounded projection", async () => {
+      const owner = uniqueOwner("continuation");
+      const first = await run(TAIL_SENTINEL_CODE, { artifactOwner: owner });
+      expect(first.ok).toBe(true);
+      if (!first.ok) throw new Error(first.error);
+
+      // 1–2: an oversized result, one owner-bound handle, and a genuinely lost tail.
+      expect(first.truncated).toBe(true);
+      expect(first.result).toContain("--- SOURCE BASIS ---");
+      expect(first.result).not.toContain(SENTINEL);
+      const id = artifactIdFrom(first.result);
+      expect(first.sourceBasis?.artifact?.state).toBe("available");
+
+      // 3–7: ONE follow-up execute calls info, then read, branches on r.ok,
+      // reads the full value from r.data, and returns a bounded projection.
+      const continuation = await run(`async () => {
+        const meta = await codemode.artifact.info("${id}");
+        if (!meta.ok) return { stage: "info", ok: false, error: meta.error };
+        const r = await codemode.artifact.read("${id}");
+        if (!r.ok) return { stage: "read", ok: false, error: r.error };
+        return {
+          stage: "projection",
+          ok: true,
+          tail: r.data.tailNote,
+          rowCount: r.data.rows.length,
+          bytes: meta.data.bytes,
+          originalChars: meta.data.originalChars
+        };
+      }`, { artifactOwner: owner });
+      expect(continuation.ok).toBe(true);
+      if (!continuation.ok) throw new Error(continuation.error);
+
+      const projection = JSON.parse(continuation.result) as {
+        stage: string;
+        ok: boolean;
+        tail: string;
+        rowCount: number;
+        bytes: number;
+        originalChars: number;
+      };
+      expect(projection.stage).toBe("projection");
+      // 1 (host-side proof): the original result really exceeded 24,000 chars.
+      expect(projection.originalChars).toBeGreaterThan(24_000);
+      expect(projection.bytes).toBeGreaterThan(24_000);
+      expect(projection.rowCount).toBe(900);
+      // 8–9: the sentinel survives and the projection itself does not truncate.
+      expect(projection.tail).toBe(SENTINEL);
+      expect(continuation.truncated).toBe(false);
+      expect(continuation.result).not.toContain("--- SOURCE BASIS ---");
+      expect(continuation.artifactReadCount).toBe(1);
+      expect(continuation.artifactReadBytes).toBeGreaterThan(24_000);
+      expect(continuation.evidenceSummary?.kind).toBe("artifact-data");
+
+      // 10: the answer built from that projection carries the fact, not the handle.
+      const finalAnswer = `The stored tail marker is ${projection.tail} across ${projection.rowCount} rows.`;
+      expect(finalAnswer).toContain(SENTINEL);
+      expect(finalAnswer).not.toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/);
+    });
+
+    it("keeps every recovery failure fail-closed: missing, expired, oversized, and wrong-level reads", async () => {
+      const owner = uniqueOwner("continuation-failures");
+
+      // Missing: a well-formed id that was never written stays not-found.
+      const missing = await run(`async () => {
+        const r = await codemode.artifact.read("${crypto.randomUUID()}");
+        return { ok: r.ok, kind: r.error.kind, message: r.error.message };
+      }`, { artifactOwner: owner });
+      expect(missing.ok).toBe(true);
+      if (missing.ok) {
+        expect(JSON.parse(missing.result)).toEqual({
+          ok: false,
+          kind: "error",
+          message: "artifact not found"
+        });
+      }
+
+      // Expired: an object whose stored expiresAt has passed reads as not-found,
+      // through info AND read (TTL is enforced on metadata, not on listing).
+      const expiredId = crypto.randomUUID();
+      const body = JSON.stringify({ encoding: "utf-8", mime: "application/json", body: '{"a":1}' });
+      await env.ARTIFACTS.put(`${await ownerPrefix(owner)}${expiredId}`, body, {
+        customMetadata: {
+          createdAt: "2020-01-01T00:00:00.000Z",
+          expiresAt: "2020-01-08T00:00:00.000Z",
+          bytes: "7",
+          sha256: "0".repeat(64),
+          mime: "application/json",
+          requestId: "smoke-expired",
+          rayId: "smoke-expired",
+          capTokens: "6000",
+          originalChars: "30000",
+          opLedger: "{}",
+          catalogGeneratedAt: "2020-01-01T00:00:00.000Z"
+        }
+      });
+      const expired = await run(`async () => {
+        const meta = await codemode.artifact.info("${expiredId}");
+        const r = await codemode.artifact.read("${expiredId}");
+        return { infoOk: meta.ok, infoMessage: meta.error.message, readOk: r.ok, readMessage: r.error.message };
+      }`, { artifactOwner: owner });
+      expect(expired.ok).toBe(true);
+      if (expired.ok) {
+        expect(JSON.parse(expired.result)).toEqual({
+          infoOk: false,
+          infoMessage: "artifact not found",
+          readOk: false,
+          readMessage: "artifact not found"
+        });
+      }
+
+      // Oversized: past ARTIFACT_MAX_BYTES nothing is stored, and the source
+      // basis says so instead of advertising an unreadable handle.
+      const oversized = await run(
+        'async () => ({ pad: "z".repeat(2_200_000) })',
+        { artifactOwner: uniqueOwner("continuation-oversized") }
+      );
+      expect(oversized.ok).toBe(true);
+      if (!oversized.ok) throw new Error(oversized.error);
+      expect(oversized.truncated).toBe(true);
+      expect(oversized.result).toContain("artifact: skipped (size-cap)");
+      expect(oversized.result).not.toContain("artifact: id=");
+
+      // Wrong-level read: the artifact envelope goes through the same
+      // fail-loud guard as every service call — no second successful shape.
+      const written = await run(TAIL_SENTINEL_CODE, { artifactOwner: owner });
+      expect(written.ok).toBe(true);
+      if (!written.ok) throw new Error(written.error);
+      const id = artifactIdFrom(written.result);
+      const wrongLevel = await run(`async () => {
+        const r = await codemode.artifact.read("${id}");
+        let pointer = "";
+        try {
+          r.tailNote; // wrong level — must throw a pointer at r.data.tailNote
+        } catch (e) {
+          pointer = String(e && e.message);
+        }
+        return { ok: r.ok, viaData: r.data.tailNote, pointer };
+      }`, { artifactOwner: owner });
+      expect(wrongLevel.ok).toBe(true);
+      if (wrongLevel.ok) {
+        const parsed = JSON.parse(wrongLevel.result) as { ok: boolean; viaData: string; pointer: string };
+        expect(parsed.ok).toBe(true);
+        expect(parsed.viaData).toBe(SENTINEL);
+        expect(parsed.pointer).toContain("r.data.tailNote");
+      }
+    });
+  });
+
   it("sandbox has NO network: fetch() rejects (globalOutbound: null)", async () => {
     const outcome = await run(`async () => {
       try {
