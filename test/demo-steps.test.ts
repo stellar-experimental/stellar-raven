@@ -82,8 +82,7 @@ describe("prepareDemoStep", () => {
   it("recovers from a successful but structurally empty service result", () => {
     const budget = createDemoToolBudget();
     budget.executeCalls = 1;
-    budget.latestOperationTotal = 1;
-    budget.latestOperationOk = 1;
+    budget.latestOperations = { total: 1, ok: 1, error: 0, softEmpty: 0 };
     budget.latestExecuteEvidence = "service-inconclusive";
     expect(prepareDemoStep({ steps: [], stepNumber: 2, budget })?.system).toContain(
       "contained no result rows"
