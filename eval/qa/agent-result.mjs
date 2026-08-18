@@ -94,6 +94,7 @@ const PROVIDER_SAFEGUARD_MARKERS = [
  */
 const TRANSPORT_PATTERNS = [
   /API Error: Connection closed/i,
+  /API Error:\s*529\s+Overloaded\b/i,
   /Connection error\b/i,
   /overloaded_error/i,
   /rate_limit_error/i,

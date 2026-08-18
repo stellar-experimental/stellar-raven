@@ -2469,72 +2469,6 @@
         },
         "type": "object"
       },
-      "scout.Rfp": {
-        "description": "An RFP row from /api/rfps. rowType discriminates real briefs from the synthetic live-round row (sls-045) — count/render briefs by filtering rowType === 'rfp'.",
-        "properties": {
-          "authorName": {
-            "description": "Sponsor/author of the brief; 'Stellar Community Fund' on synthetic rows.",
-            "type": "string"
-          },
-          "category": {
-            "description": "Category slug — the ?category= filter vocabulary (an unrecognized filter value returns 400 with validCategories). 'scf' is carried by the synthetic live-round row.",
-            "type": "string"
-          },
-          "categoryLabel": {
-            "description": "Display label for category (e.g. 'DeFi').",
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "id": {
-            "description": "Brief slug (also the stellarlight.xyz/ideas/{id} page). Synthetic rows use 'scf-round-{n}'.",
-            "type": "string"
-          },
-          "quarter": {
-            "description": "Quarter slug (e.g. 'q1-2026') — the ?quarter= filter vocabulary. Synthetic rows carry the active quarter.",
-            "type": "string"
-          },
-          "quarterLabel": {
-            "description": "Display label ('Q1 2026'); 'Live round' on synthetic rows.",
-            "type": "string"
-          },
-          "rowType": {
-            "description": "'rfp' = a curated sponsor brief. 'scf-round' = a SYNTHETIC row representing the live SCF round's open submission window (served as a row so row-reading agents don't miss the open round). Synthetic rows are NOT briefs — count/render briefs by filtering rowType === 'rfp'.",
-            "enum": [
-              "rfp",
-              "scf-round"
-            ],
-            "type": "string"
-          },
-          "status": {
-            "description": "'open' = fundable in the current SCF quarter; 'closed' = a prior round, surfaced for context.",
-            "enum": [
-              "open",
-              "closed"
-            ],
-            "type": "string"
-          },
-          "synthetic": {
-            "description": "True only on synthetic scf-round rows — mirror of rowType.",
-            "type": "boolean"
-          },
-          "technicalRequirements": {
-            "description": "The sponsor's technical requirements text. Null when the brief carries none — and always null on synthetic scf-round rows.",
-            "nullable": true,
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "url": {
-            "description": "Brief page (stellarlight.xyz/ideas/{id}); the SCF awards page on synthetic scf-round rows.",
-            "format": "uri",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
       "scout.Skill": {
         "description": "One installable Stellar AI skill/tool from /api/skills — SDF's skills.stellar.org set, curated entries, and approved community submissions mapped onto one unified shape. Optional fields are OMITTED when not applicable (absent = not applicable, never null and never false).",
         "properties": {
@@ -6092,11 +6026,11 @@
     },
     "/scout/getRfps": {
       "get": {
-        "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — open briefs are fundable in the current SCF round; closed ones are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
+        "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — closed ones are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.\n\nCatalog note: status open marks a solicited brief. It does not prove that an SCF proposal window is open. Use meta.scfRound currentPhase, roundsInProgress, source, asOf, and verifyAt for current round state.",
         "operationId": "scout.getRfps",
         "parameters": [
           {
-            "description": "Open RFPs are fundable for the current SCF quarter; closed are prior rounds",
+            "description": "The value open selects solicited briefs. It does not prove that an SCF proposal window is open.",
             "in": "query",
             "name": "status",
             "schema": {
@@ -6140,7 +6074,7 @@
                 "schema": {
                   "properties": {
                     "funding": {
-                      "description": "Funding-context sentence for the whole list: winners of OPEN RFPs are eligible for SCF grant funding in the current round; closed RFPs are past rounds, surfaced for context but no longer fundable.",
+                      "description": "Funding-context sentence returned by Scout. Treat it as brief context, not proof that an SCF proposal window is open.",
                       "type": "string"
                     },
                     "meta": {
@@ -6211,8 +6145,13 @@
                               "format": "date",
                               "type": "string"
                             },
+                            "currentPhase": {
+                              "description": "Scout phase label observed as of asOf. Verify at verifyAt because phase data can become stale.",
+                              "nullable": true,
+                              "type": "string"
+                            },
                             "currentRound": {
-                              "description": "Round currently open for submissions; null when no round is confirmed open as of asOf.",
+                              "description": "Round identified as current by Scout; null when unconfirmed. This field does not prove that submissions are open.",
                               "nullable": true,
                               "type": "integer"
                             },
@@ -6222,6 +6161,35 @@
                             },
                             "lastConfirmedRoundNote": {
                               "nullable": true,
+                              "type": "string"
+                            },
+                            "roundsInProgress": {
+                              "description": "Rounds that Scout reports in progress. A listed round or deadline does not prove that submissions remain open.",
+                              "items": {
+                                "additionalProperties": false,
+                                "properties": {
+                                  "phase": {
+                                    "type": "string"
+                                  },
+                                  "round": {
+                                    "type": "integer"
+                                  },
+                                  "submissionDeadline": {
+                                    "format": "date",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "round",
+                                  "phase",
+                                  "submissionDeadline"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "source": {
+                              "description": "Scout provenance label for the round-state observation.",
                               "type": "string"
                             },
                             "submissionWindow": {
@@ -6260,7 +6228,70 @@
                     },
                     "rfps": {
                       "items": {
-                        "$ref": "#/components/schemas/scout.Rfp"
+                        "description": "An RFP row from /api/rfps. rowType discriminates real briefs from the synthetic live-round row (sls-045) — count/render briefs by filtering rowType === 'rfp'.",
+                        "properties": {
+                          "authorName": {
+                            "description": "Sponsor/author of the brief; 'Stellar Community Fund' on synthetic rows.",
+                            "type": "string"
+                          },
+                          "category": {
+                            "description": "Category slug — the ?category= filter vocabulary (an unrecognized filter value returns 400 with validCategories). 'scf' is carried by the synthetic live-round row.",
+                            "type": "string"
+                          },
+                          "categoryLabel": {
+                            "description": "Display label for category (e.g. 'DeFi').",
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "description": "Brief slug (also the stellarlight.xyz/ideas/{id} page). Synthetic rows use 'scf-round-{n}'.",
+                            "type": "string"
+                          },
+                          "quarter": {
+                            "description": "Quarter slug (e.g. 'q1-2026') — the ?quarter= filter vocabulary. Synthetic rows carry the active quarter.",
+                            "type": "string"
+                          },
+                          "quarterLabel": {
+                            "description": "Display label ('Q1 2026'); 'Live round' on synthetic rows.",
+                            "type": "string"
+                          },
+                          "rowType": {
+                            "description": "'rfp' = a curated sponsor brief. 'scf-round' = a SYNTHETIC row representing the live SCF round's open submission window (served as a row so row-reading agents don't miss the open round). Synthetic rows are NOT briefs — count/render briefs by filtering rowType === 'rfp'.",
+                            "enum": [
+                              "rfp",
+                              "scf-round"
+                            ],
+                            "type": "string"
+                          },
+                          "status": {
+                            "description": "'open' = a solicited brief; 'closed' = prior context. Neither value proves the current SCF proposal-window state.",
+                            "enum": [
+                              "open",
+                              "closed"
+                            ],
+                            "type": "string"
+                          },
+                          "synthetic": {
+                            "description": "True only on synthetic scf-round rows — mirror of rowType.",
+                            "type": "boolean"
+                          },
+                          "technicalRequirements": {
+                            "description": "The sponsor's technical requirements text. Null when the brief carries none — and always null on synthetic scf-round rows.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "description": "Brief page (stellarlight.xyz/ideas/{id}); the SCF awards page on synthetic scf-round rows.",
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
                       },
                       "type": "array"
                     }
@@ -8372,7 +8403,83 @@
         },
         "responses": {
           "200": {
-            "description": "Array of sections of the one requested page, ordered by on-page position: { url, anchor, breadcrumb, type, content }."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "complete": {
+                      "type": "boolean"
+                    },
+                    "nbSections": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "page": {
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    "sections": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "anchor": {
+                            "type": "string"
+                          },
+                          "breadcrumb": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "url_without_anchor": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "url_without_anchor",
+                          "anchor",
+                          "type",
+                          "breadcrumb"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "truncated": {
+                      "type": "boolean"
+                    },
+                    "truncationReason": {
+                      "type": "string"
+                    },
+                    "usedFallbackQuery": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "sections",
+                    "nbSections",
+                    "complete",
+                    "truncated"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "An object with page, sections, nbSections, complete, truncated, optional truncationReason, and optional usedFallbackQuery. Each section has url, url_without_anchor, anchor, type, breadcrumb, and optional content or snippet."
           }
         },
         "summary": "Fetch all indexed sections (heading anchors + content) of a single Stellar developer docs page identified by its URL pat",

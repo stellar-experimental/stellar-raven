@@ -211,6 +211,9 @@ export function scrubNonExposedScoutSchemaRefs(value) {
 // stale scrub = the leak comes back).
 // ---------------------------------------------------------------------------
 export const SCOUT_DESCRIPTION_SCRUBS = {
+  getRfps: [
+    "open briefs are fundable in the current SCF round; "
+  ],
   getStatus: [
     // "Use to check how fresh/large the data is or to discover endpoints." —
     // the endpoint-enumeration RECOMMENDATION is ours, not upstream's payload,
@@ -263,6 +266,8 @@ export function scrubScoutDescription(opId, text) {
 }
 
 export const SCOUT_DESCRIPTION_NOTES = {
+  getRfps:
+    "Catalog note: status open marks a solicited brief. It does not prove that an SCF proposal window is open. Use meta.scfRound currentPhase, roundsInProgress, source, asOf, and verifyAt for current round state.",
   // Boundary twin of LUMENLOOP_DESCRIPTION_NOTES.search_directory.
   // — see the collision-check rationale there. Avoided on this side: news,
   // talks, content, coverage, written, builds (all appear in

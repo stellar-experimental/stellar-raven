@@ -5233,7 +5233,7 @@
       }
     },
     {
-      "description": "List Stellar RFPs (SCF-funded sponsor briefs). Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — open briefs are fundable in the current SCF round; closed ones are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
+      "description": "List Stellar RFPs (SCF-funded sponsor briefs). Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — closed ones are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.\n\nCatalog note: status open marks a solicited brief. It does not prove that an SCF proposal window is open. Use meta.scfRound currentPhase, roundsInProgress, source, asOf, and verifyAt for current round state.",
       "id": "scout.getRfps",
       "inputSchema": {
         "properties": {
@@ -5261,7 +5261,7 @@
             "type": "string"
           },
           "status": {
-            "description": "Open RFPs are fundable for the current SCF quarter; closed are prior rounds",
+            "description": "The value open selects solicited briefs. It does not prove that an SCF proposal window is open.",
             "enum": [
               "open",
               "closed"
@@ -5282,7 +5282,6 @@
         "confirmed",
         "closes",
         "opens",
-        "verify",
         "submit",
         "new",
         "author",
@@ -5296,7 +5295,7 @@
       "outputSchema": {
         "properties": {
           "funding": {
-            "description": "Funding-context sentence for the whole list: winners of OPEN RFPs are eligible for SCF grant funding in the current round; closed RFPs are past rounds, surfaced for context but no longer fundable.",
+            "description": "Funding-context sentence returned by Scout. Treat it as brief context, not proof that an SCF proposal window is open.",
             "type": "string"
           },
           "meta": {
@@ -5367,8 +5366,13 @@
                     "format": "date",
                     "type": "string"
                   },
+                  "currentPhase": {
+                    "description": "Scout phase label observed as of asOf. Verify at verifyAt because phase data can become stale.",
+                    "nullable": true,
+                    "type": "string"
+                  },
                   "currentRound": {
-                    "description": "Round currently open for submissions; null when no round is confirmed open as of asOf.",
+                    "description": "Round identified as current by Scout; null when unconfirmed. This field does not prove that submissions are open.",
                     "nullable": true,
                     "type": "integer"
                   },
@@ -5378,6 +5382,35 @@
                   },
                   "lastConfirmedRoundNote": {
                     "nullable": true,
+                    "type": "string"
+                  },
+                  "roundsInProgress": {
+                    "description": "Rounds that Scout reports in progress. A listed round or deadline does not prove that submissions remain open.",
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "phase": {
+                          "type": "string"
+                        },
+                        "round": {
+                          "type": "integer"
+                        },
+                        "submissionDeadline": {
+                          "format": "date",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "round",
+                        "phase",
+                        "submissionDeadline"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "source": {
+                    "description": "Scout provenance label for the round-state observation.",
                     "type": "string"
                   },
                   "submissionWindow": {
@@ -5454,7 +5487,7 @@
                   "type": "string"
                 },
                 "status": {
-                  "description": "'open' = fundable in the current SCF quarter; 'closed' = a prior round, surfaced for context.",
+                  "description": "'open' = a solicited brief; 'closed' = prior context. Neither value proves the current SCF proposal-window state.",
                   "enum": [
                     "open",
                     "closed"
@@ -5518,7 +5551,6 @@
         ]
       },
       "routingKeywords": [
-        "brief",
         "bounties",
         "grants",
         "funding",
@@ -14772,7 +14804,7 @@
       }
     },
     {
-      "description": "Fetch all indexed sections (heading anchors + content) of a single Stellar developer docs page identified by its URL path, e.g. /docs/build/smart-contracts/getting-started/storing-data or /docs/learn/fundamentals/stellar-consensus-protocol. Use after a search hit to read a whole page section by section instead of a single snippet — the docs equivalent of opening the page. Returns every section in on-page order with anchor, heading breadcrumb and full content text.\n\nReturns: Array of sections of the one requested page, ordered by on-page position: { url, anchor, breadcrumb, type, content }.",
+      "description": "Fetch all indexed sections (heading anchors + content) of a single Stellar developer docs page identified by its URL path, e.g. /docs/build/smart-contracts/getting-started/storing-data or /docs/learn/fundamentals/stellar-consensus-protocol. Use after a search hit to read a whole page section by section instead of a single snippet — the docs equivalent of opening the page. Returns every section in on-page order with anchor, heading breadcrumb and full content text.\n\nReturns: An object with page, sections, nbSections, complete, truncated, optional truncationReason, and optional usedFallbackQuery. Each section has url, url_without_anchor, anchor, type, breadcrumb, and optional content or snippet.",
       "id": "stellarDocs.get_doc_page_sections",
       "inputSchema": {
         "additionalProperties": false,
@@ -14794,7 +14826,78 @@
         "type": "object"
       },
       "kind": "operation",
-      "outputSchema": null,
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "complete": {
+            "type": "boolean"
+          },
+          "nbSections": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "page": {
+            "format": "uri",
+            "type": "string"
+          },
+          "sections": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "type": "string"
+                },
+                "breadcrumb": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "url_without_anchor": {
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "url_without_anchor",
+                "anchor",
+                "type",
+                "breadcrumb"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "truncationReason": {
+            "type": "string"
+          },
+          "usedFallbackQuery": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "page",
+          "sections",
+          "nbSections",
+          "complete",
+          "truncated"
+        ],
+        "type": "object"
+      },
       "provenance": {
         "fetchedAt": "2026-07-02T14:03:39Z",
         "note": "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor",

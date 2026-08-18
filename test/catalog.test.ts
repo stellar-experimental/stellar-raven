@@ -306,6 +306,7 @@ describe("build-catalog.mjs", () => {
     const entity = byId.get("lumenloop.find_content_by_entity")!;
     const related = byId.get("lumenloop.get_related_projects")!;
     const hackathon = byId.get("scout.searchHackathonBuilds")!;
+    const rfps = byId.get("scout.getRfps")!;
 
     expect(entity.description).toContain("Content grouped by type in articles, av, events, proposals, and scf_submissions");
     expect(entity.description).not.toContain("Array of content items");
@@ -317,6 +318,54 @@ describe("build-catalog.mjs", () => {
       "track",
       "winnersOnly"
     ]);
+    expect(rfps.description).toContain("does not prove that an SCF proposal window is open");
+    expect(rfps.description).not.toContain("open briefs are fundable in the current SCF round");
+    expect(
+      (rfps.inputSchema as { properties: { status: { description: string } } }).properties.status
+        .description
+    ).toBe(
+      "The value open selects solicited briefs. It does not prove that an SCF proposal window is open."
+    );
+    const rfpOutput = rfps.outputSchema as {
+      properties: {
+        funding: { description: string };
+        meta: { properties: { scfRound: { properties: Record<string, { description?: string }> } } };
+        rfps: { items: { properties: { status: { description: string } } } };
+      };
+    };
+    expect(rfpOutput.properties.funding.description).toContain("not proof");
+    expect(rfpOutput.properties.rfps.items.properties.status.description).toContain(
+      "Neither value proves"
+    );
+    const round = rfpOutput.properties.meta.properties.scfRound.properties;
+    expect(Object.keys(round)).toEqual(
+      expect.arrayContaining(["currentPhase", "roundsInProgress", "source"])
+    );
+    expect(round.currentRound?.description).toContain("does not prove");
+  });
+
+  it("emits the authored object contract for Docs page sections", () => {
+    const page = catalog.entries.find((entry) => entry.id === "stellarDocs.get_doc_page_sections")!;
+    expect(page.description).toContain(
+      "An object with page, sections, nbSections, complete, truncated"
+    );
+    const output = page.outputSchema as {
+      required: string[];
+      properties: {
+        sections: { items: { required: string[]; properties: Record<string, unknown> } };
+      };
+    };
+    expect(output.required).toEqual(["page", "sections", "nbSections", "complete", "truncated"]);
+    expect(output.properties.sections.items.required).toEqual([
+      "url",
+      "url_without_anchor",
+      "anchor",
+      "type",
+      "breadcrumb"
+    ]);
+    expect(output.properties.sections.items.properties).toHaveProperty("content");
+    expect(output.properties.sections.items.properties).toHaveProperty("snippet");
+    expect(output.properties.sections.items.required).not.toContain("content");
   });
 
   it("maps each design-stage build domain to exact Scout, skill, and Docs authority", () => {

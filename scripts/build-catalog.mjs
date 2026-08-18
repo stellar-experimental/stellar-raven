@@ -533,7 +533,8 @@ function buildScout(inv) {
       }
       const id = `scout.${opId}`;
       const contract = applyModelContractCorrection(id, {
-        inputSchema: scrubNonExposedScoutSchemaRefs(scoutInputSchema(op, pathItem, openapi))
+        inputSchema: scrubNonExposedScoutSchemaRefs(scoutInputSchema(op, pathItem, openapi)),
+        outputSchema: scrubNonExposedScoutSchemaRefs(scoutOutputSchema(op, openapi))
       });
       entries.push({
         id,
@@ -543,7 +544,7 @@ function buildScout(inv) {
           .filter(Boolean)
           .join("\n\n"),
         inputSchema: contract.inputSchema,
-        outputSchema: scrubNonExposedScoutSchemaRefs(scoutOutputSchema(op, openapi)),
+        outputSchema: contract.outputSchema,
         transport: { type: "http", method: httpMethod, path, base },
         provenance: {
           source: `${base}/api/openapi.json`,
@@ -592,7 +593,7 @@ function buildStellarDocs(spec) {
     kind: catalogHints.kind,
     description: op.returns ? `${op.description}\n\nReturns: ${op.returns}` : op.description,
     inputSchema: op.params, // spec params are already a JSON Schema object
-    outputSchema: null,
+    outputSchema: op.outputSchema ?? null,
     // Transport = shared backend block + this op's exact Algolia query mapping.
     // The adapter consumes `algolia` (paramMap/fixedParams/
     // conditionalParams/clientFilter/derivedQuery) as-is.

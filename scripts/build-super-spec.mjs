@@ -49,7 +49,10 @@ import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts } from "./lib/skill-mirror.mjs";
 import { RETIRED_ONBOARDING_SKILLS, scrubRetiredSkillRefs } from "./exposure.mjs";
 import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
-import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
+import {
+  applyModelContractCorrection,
+  usesCorrectedSuperSpecOutputSchema
+} from "./catalog-data/model-contract-corrections.mjs";
 // The runnable-skill allowlist-as-data (research/skill-run-design.md §5):
 // the SAME registry scripts/build-catalog.mjs attaches to the manifest, so
 // the two model-facing surfaces cannot drift (native type stripping, as for
@@ -291,7 +294,7 @@ function pruneUnreachableComponents(paths, components) {
   return { components: pruned, dropped };
 }
 
-function buildScout(inv, exposed) {
+function buildScout(inv, exposed, manifest) {
   const openapi = inv.openapi;
   const paths = {};
   const HTTP_METHODS = ["get", "post", "put", "patch", "delete"];
@@ -310,9 +313,10 @@ function buildScout(inv, exposed) {
       if (!exposed.has(id)) continue;
       // pathItem-level parameters are merged into the op so nothing is lost
       // when re-keying the path to the callable name.
-      const parameters = applyModelContractCorrection(id, {
+      const correctedContract = applyModelContractCorrection(id, {
         parameters: [...(pathItem.parameters ?? []), ...(upstream.parameters ?? [])]
-      }).parameters;
+      });
+      const parameters = correctedContract.parameters;
       // Same boundary guidance the catalog manifest carries (shared data map
       // in description-notes.mjs) so codemode.spec() readers see it too.
       const note = SCOUT_DESCRIPTION_NOTES[opName];
@@ -328,6 +332,17 @@ function buildScout(inv, exposed) {
       const description = [cleanDescription, note ? plainText(note) : undefined]
         .filter(Boolean)
         .join("\n\n");
+      let responses = upstream.responses
+        ? scrubNonExposedScoutSchemaRefs(namespaceRefs(upstream.responses, "scout"))
+        : undefined;
+      if (usesCorrectedSuperSpecOutputSchema(id)) {
+        const outputSchema = manifest.entries.find((entry) => entry.id === id)?.outputSchema;
+        const jsonResponse = responses?.["200"]?.content?.["application/json"];
+        if (!outputSchema || !jsonResponse) {
+          throw new Error(`${id} corrected super-spec output schema has no manifest schema or 200 JSON response`);
+        }
+        jsonResponse.schema = outputSchema;
+      }
       const op = {
         operationId: id,
         ...(summary ? { summary } : {}),
@@ -339,9 +354,7 @@ function buildScout(inv, exposed) {
         ...(upstream.requestBody
           ? { requestBody: scrubNonExposedScoutSchemaRefs(namespaceRefs(upstream.requestBody, "scout")) }
           : {}),
-        ...(upstream.responses
-          ? { responses: scrubNonExposedScoutSchemaRefs(namespaceRefs(upstream.responses, "scout")) }
-          : {}),
+        ...(responses ? { responses } : {}),
         "x-service": "scout",
         "x-upstream": { method: method.toUpperCase(), path },
         "x-execute": `await scout.${opName}(args)`
@@ -394,7 +407,14 @@ function buildStellarDocs(spec, exposed) {
           required: true,
           content: { "application/json": { schema: op.params } }
         },
-        responses: { 200: { description: op.returns ?? "Search result" } },
+        responses: {
+          200: {
+            description: op.returns ?? "Search result",
+            ...(op.outputSchema
+              ? { content: { "application/json": { schema: op.outputSchema } } }
+              : {})
+          }
+        },
         "x-service": "stellarDocs",
         // The exact Algolia query mapping the host adapter applies — kept as a
         // vendor extension so spec-grepping code can see what each intent op
@@ -671,7 +691,7 @@ async function main() {
   const catalogManifest = readJson("catalog/manifest.json");
   const exposed = exposedIds(catalogManifest);
 
-  const scout = buildScout(stellarLight, exposed);
+  const scout = buildScout(stellarLight, exposed, catalogManifest);
   const skillTexts = await loadSkillTexts(skillsManifest, {
     skip: (name) => RETIRED_ONBOARDING_SKILLS.has(name)
   });

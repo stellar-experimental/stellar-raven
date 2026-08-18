@@ -100,6 +100,23 @@ describe("parseAgentResult — failure classes are exclusive and fixture-backed"
     expect(timedOut.failure).toMatchObject({ class: "timeout", retryable: false, signal: "SIGTERM" });
   });
 
+  it("classifies the observed Claude CLI 529 overload as retryable transport", () => {
+    const outcome = parseAgentResult(
+      { stdout: stream("transport-529-overloaded"), stderr: "", status: 1, signal: null }
+    );
+
+    expect(outcome.failure).toMatchObject({
+      class: "transport",
+      retryable: true,
+      subtype: "success",
+      exitStatus: 1,
+      signal: null
+    });
+    expect(outcome.failure.messageExcerpt).toMatch(/^API Error: 529 Overloaded\./);
+    expect(outcome.answer).toBe("");
+    expect(outcome.transcript).toEqual([]);
+  });
+
   it("treats a nonzero exit status as a failure even when the result message looks clean", () => {
     // The provider can emit a complete-looking result and STILL exit nonzero.
     // Returning failure:null there let the answer through to a paid judge.

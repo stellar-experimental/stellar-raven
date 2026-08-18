@@ -230,7 +230,13 @@ function sortAndDedupeSections(records: AlgoliaHit[]): AlgoliaHit[] {
   const byUrl = new Map<string, AlgoliaHit>();
   for (const record of records) {
     const key = typeof record.url === "string" ? record.url : String(record.anchor ?? "");
-    if (!byUrl.has(key)) byUrl.set(key, record);
+    const existing = byUrl.get(key);
+    if (
+      !existing ||
+      (typeof existing.content !== "string" && typeof record.content === "string")
+    ) {
+      byUrl.set(key, record);
+    }
   }
   return [...byUrl.values()].sort(
     (a, b) => (a.weight?.position ?? 0) - (b.weight?.position ?? 0)

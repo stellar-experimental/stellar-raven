@@ -25,7 +25,13 @@ type Operation = {
   description?: string;
   tags?: string[];
   requestBody?: { content?: Record<string, { schema?: Record<string, unknown> }> };
-  responses?: Record<string, { description?: string }>;
+  responses?: Record<
+    string,
+    {
+      description?: string;
+      content?: Record<string, { schema?: Record<string, unknown> }>;
+    }
+  >;
   "x-service": string;
   "x-execute"?: string;
   "x-algolia"?: unknown;
@@ -312,6 +318,45 @@ describe("service specifics", () => {
     }
     const backend = (spec["x-services"].stellarDocs as { backend: { type: string } }).backend;
     expect(backend.type).toBe("algolia");
+  });
+
+  it("carries the authored Docs page-sections output schema", () => {
+    const op = spec.paths["/stellarDocs/get_doc_page_sections"]!.post!;
+    const schema = op.responses!["200"]!.content!["application/json"]!.schema as {
+      required: string[];
+      properties: {
+        sections: { items: { required: string[]; properties: Record<string, unknown> } };
+      };
+    };
+    expect(schema.required).toEqual(["page", "sections", "nbSections", "complete", "truncated"]);
+    expect(schema.properties.sections.items.required).not.toContain("content");
+    expect(schema.properties.sections.items.properties).toHaveProperty("content");
+    expect(schema.properties.sections.items.properties).toHaveProperty("snippet");
+  });
+
+  it("carries the exact scout.getRfps contract correction", () => {
+    const op = spec.paths["/scout/getRfps"]!.get!;
+    expect(op.description).toContain("does not prove that an SCF proposal window is open");
+    expect(op.description).not.toContain("open briefs are fundable in the current SCF round");
+    const status = (op as Operation & { parameters: Array<{ name: string; description: string }> })
+      .parameters.find((parameter) => parameter.name === "status")!;
+    expect(status.description).toContain("does not prove");
+    const schema = op.responses!["200"]!.content!["application/json"]!.schema as {
+      properties: {
+        meta: { properties: { scfRound: { properties: Record<string, unknown> } } };
+        rfps: { items: { properties: { status: { description: string } } } };
+      };
+    };
+    const round = schema.properties.meta.properties.scfRound.properties;
+    expect(round).toHaveProperty("currentPhase");
+    expect(round).toHaveProperty("roundsInProgress");
+    expect(round).toHaveProperty("source");
+    expect(schema.properties.rfps.items.properties.status.description).toContain(
+      "Neither value proves"
+    );
+    expect(schema).toEqual(
+      manifest.entries.find((entry) => entry.id === "scout.getRfps")!.outputSchema
+    );
   });
 
   it("scout $refs resolve within the merged doc (namespaced components)", () => {

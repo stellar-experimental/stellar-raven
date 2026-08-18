@@ -566,4 +566,89 @@ describe("stellarDocs adapter", () => {
     expect(titleParams.typoTolerance).toBe(false);
     expect(JSON.parse(String(calls[2]?.init?.body)).page).toBe(1);
   });
+
+  it("keeps one section per URL and prefers the content-bearing record", async () => {
+    const page = "https://developers.stellar.org/docs/learn/fundamentals/lumens";
+    const shared = {
+      url: `${page}#base-reserves`,
+      url_without_anchor: page,
+      anchor: "base-reserves",
+      hierarchy: { lvl0: "Learn", lvl1: "Lumens" },
+      weight: { position: 2 }
+    };
+    const body = JSON.stringify({
+      hits: [
+        { ...shared, type: "lvl2" },
+        { ...shared, type: "content", content: "The base reserve contributes to minimum balance." }
+      ],
+      nbHits: 2,
+      page: 0,
+      nbPages: 1,
+      hitsPerPage: 100
+    });
+    const { fetchImpl } = stubFetch(body, 200);
+
+    const r = await callStellarDocs(
+      entry("stellarDocs.get_doc_page_sections"),
+      { path: "/docs/learn/fundamentals/lumens", includeContent: true },
+      docsEnv,
+      fetchImpl
+    );
+
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const data = r.data as {
+      sections: { url: string; type: string; content?: string }[];
+      nbSections: number;
+    };
+    expect(data.nbSections).toBe(1);
+    expect(data.sections).toEqual([
+      {
+        url: `${page}#base-reserves`,
+        url_without_anchor: page,
+        anchor: "base-reserves",
+        type: "content",
+        breadcrumb: "Learn > Lumens",
+        content: "The base reserve contributes to minimum balance."
+      }
+    ]);
+  });
+
+  it("omits page-section content when includeContent is false", async () => {
+    const page = "https://developers.stellar.org/docs/learn/fundamentals/lumens";
+    const body = JSON.stringify({
+      hits: [
+        {
+          url: `${page}#base-reserves`,
+          url_without_anchor: page,
+          anchor: "base-reserves",
+          type: "lvl2",
+          hierarchy: { lvl0: "Learn", lvl1: "Lumens" },
+          weight: { position: 2 }
+        }
+      ],
+      nbHits: 1,
+      page: 0,
+      nbPages: 1,
+      hitsPerPage: 100
+    });
+    const { fetchImpl, calls } = stubFetch(body, 200);
+
+    const r = await callStellarDocs(
+      entry("stellarDocs.get_doc_page_sections"),
+      { path: "/docs/learn/fundamentals/lumens", includeContent: false },
+      docsEnv,
+      fetchImpl
+    );
+
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const data = r.data as { sections: { content?: string }[] };
+    expect(data.sections).toHaveLength(1);
+    expect(data.sections[0]).not.toHaveProperty("content");
+    for (const call of calls) {
+      const params = JSON.parse(String(call.init?.body));
+      expect(params.attributesToRetrieve).not.toContain("content");
+    }
+  });
 });

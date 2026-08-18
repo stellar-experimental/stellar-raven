@@ -280,7 +280,37 @@
           "includeContent": { "type": "boolean", "default": true, "description": "Include each section's full content text (default true — this op exists to read pages)." }
         }
       },
-      "returns": "Array of sections of the one requested page, ordered by on-page position: { url, anchor, breadcrumb, type, content }.",
+      "returns": "An object with page, sections, nbSections, complete, truncated, optional truncationReason, and optional usedFallbackQuery. Each section has url, url_without_anchor, anchor, type, breadcrumb, and optional content or snippet.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["page", "sections", "nbSections", "complete", "truncated"],
+        "properties": {
+          "page": { "type": "string", "format": "uri" },
+          "sections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "url_without_anchor", "anchor", "type", "breadcrumb"],
+              "properties": {
+                "url": { "type": "string", "format": "uri" },
+                "url_without_anchor": { "type": "string", "format": "uri" },
+                "anchor": { "type": "string" },
+                "type": { "type": "string" },
+                "breadcrumb": { "type": "string" },
+                "content": { "type": "string" },
+                "snippet": { "type": "string" }
+              }
+            }
+          },
+          "nbSections": { "type": "integer", "minimum": 0 },
+          "complete": { "type": "boolean" },
+          "truncated": { "type": "boolean" },
+          "truncationReason": { "type": "string" },
+          "usedFallbackQuery": { "type": "string" }
+        }
+      },
       "algolia": {
         "derivedQuery": "tokens of the path's last segment, hyphens split — e.g. 'storing data' from .../storing-data",
         "paramMap": {},
