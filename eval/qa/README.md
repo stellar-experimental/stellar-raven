@@ -373,6 +373,63 @@ unsourced contradiction is not.
   `q-gap-vet-pitch-vertical-null` and `q-ti-scout-refresh-cached-rows`. Use a common-id set for
   comparisons across this boundary, or disclose the sample change.
 
+## 2026-08-18 retrieval-audit branch checkpoint
+
+This checkpoint tested clean branch revision `a94f11eeccd64a934fb6aed4ee29182f93172b34`.
+The runner and the local server used that same revision. The source-identity guard passed for
+all three lanes. The answering and judge tuple was `claude-sonnet-5` / `v2.4` / `p5`.
+
+This run is a branch checkpoint, not a paired A/B. The 497-case compile changed the sample
+membership as described above. Therefore, this run proves no aggregate product gain.
+
+| Lane | Raw result | Reviewed result | Required plan coverage | Mean on-plan ratio |
+| --- | --- | --- | ---: | ---: |
+| headline sample-30 | 14C / 14P / 2W / 0E | 14C / 15P / 1W / 0E | 28/30 (93%) | 0.96 |
+| impacted 27-case set | 9C / 15P / 1W / 2E | unchanged | 20/27 (74%) | 0.96 |
+| canonical live-data v3 | 12C / 3P / 0W / 0E | unchanged | 14/15 (93%) | 0.93 |
+
+The impacted errors were `q-defi-streaming-payments-prior-art` and
+`q-gap-contracts-domain-empty`. Both stopped before the first model turn because Claude returned
+HTTP 529 overloads. Both rows reported zero tokens, tools, and cost. They were not rerun.
+
+The allowed identity rejudge changed both headline wrong labels to partial. Independent review
+accepted the ledger-cadence change. The answer described five seconds as approximate and denied
+an exact fixed interval. It still omitted the observed 5–7-second range and CAP-0070.
+
+Independent review rejected the DeFindex rejudge. Its rationale claimed that the answer separated
+strategy adapters from products. The answer instead called all eight contracts a product lineup.
+Live Scout, DeFiLlama, and operator evidence confirmed seven BlendStrategy adapters and
+source-relative TVL. The reviewed DeFindex result remains wrong.
+
+The impacted rejudge kept `q-scf-rfp-tooling` wrong. The official RFP page confirms that this
+track funds developer tooling. It also documents the interest-form-to-invitation path. The answer
+misframed the track and omitted the brief-versus-round distinction.
+
+| Results stamp | SHA-256 | Cost |
+| --- | --- | ---: |
+| `2026-08-18T17-28-23-variantA.json` | `b683a8fbe2e14187b2777fdef5867463299ff62b02b95b36d9677b00dc623d4b` | `$20.8868124` |
+| `2026-08-18T17-59-49-variantA.json` | `406b8e67a58066dc5bd274747a82346fc1e0fcf59e50db8dfe77dcdc2ade5976` | `$14.8116201` |
+| `2026-08-18T18-19-09-variantA.json` | `7396e308d3cf97c643e6992a290353f9df371bf11b3191eaabaabf1e878dcf19` | `$9.2531535` |
+| `2026-08-18T18-28-10-rejudge.json` | `591d58720014fd65251e03424fa4784bd704fb39f33b7fbe3fbf525335e38450` | `$0.0847194` |
+| `2026-08-18T18-29-08-rejudge.json` | `8d98ba231923f9e790005d7b0dd3c08466ee46fc3af1fc80dd5812a1f6a670c4` | `$0.0607869` |
+
+The three initial lanes used 72 answer attempts and 70 judge calls. The identity rejudges used
+three more judge calls. Every paid call reported a cost. This checkpoint cost `$45.0970923`.
+An earlier seven-call self-test cost `$0.9728457` separately. The combined audit spend was
+`$46.0699380`.
+
+This is the same self-test spend recorded in the 2026-08-17 p4 section below. The combined figure
+includes it once and excludes the other 2026-08-17 rejudge spend.
+
+The transcript review found repeated answer and retrieval patterns. Agents dropped live metadata,
+made global claims from bounded rows, stopped before exact detail sources, and removed dates or
+methods during projection. The canonical live lane returned usable evidence for all three partial
+rows. No reviewed row proved a new service gap or justified a query-specific rule.
+
+The result and plan files remain gitignored local evidence. The routing gate stayed at the prior
+free baseline. This checkpoint therefore records branch behavior and remaining diagnostic work.
+It does not establish a material retrieval gain.
+
 ## 2026-08-17 p3→p4 evidence-pack integrity probe (historical, superseded by p5)
 
 This section records the earlier p4 probe exactly as it ran. Every figure in it is a p4 figure.

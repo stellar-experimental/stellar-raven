@@ -36,7 +36,7 @@
  *   --ids a,b,c        run only these case ids (smoke tests)
  *   --port N           wrangler dev port (default 8788)
  *   --cases path       battery file (default eval/qa/cases.json). Named
- *                      hand-authored contracts include live-data-canonical-v2
+ *                      hand-authored contracts include live-data-canonical-v3
  *                      (corpus/live/live-cases.json) and live-digest-supplement-v2
  *                      (corpus/live/live-digest-supplement-cases.json); run separately.
  *   --model name       answering-agent model (default claude-sonnet-5)
