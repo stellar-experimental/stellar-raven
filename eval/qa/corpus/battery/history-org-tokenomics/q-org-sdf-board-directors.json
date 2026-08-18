@@ -1,0 +1,77 @@
+{
+  "id": "q-org-sdf-board-directors",
+  "question": "Who currently sits on the Stellar Development Foundation board of directors?",
+  "surface": [
+    "scout.getPeople"
+  ],
+  "golden": {
+    "answer": "Query `scout.getPeople` with `section: \"Board of directors\"`, page until the returned count reaches the filtered total, and verify the names against SDF's official team page. As of 2026-08-18, the official page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji. Report each returned role and affiliation with the row's `observedAt` and `sourceUrl`; treat both the roster and roles as dated facts. These are SDF governance records, not builder or availability records.",
+    "keyFacts": [
+      "As of 2026-08-18, the official SDF page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji under Board of directors.",
+      "Uses the board section, pagination counts, source URL, and observed date for a current answer.",
+      "Keeps the SDF people roster distinct from the builder directory."
+    ],
+    "avoid": [
+      "Do NOT present the dated roster or roles as timeless facts.",
+      "Do NOT treat an SDF board member as a GitHub builder or as available for contact."
+    ],
+    "notes": "The roster is volatile. Grade a current, source-qualified roster and accept later official changes when the answer cites its observation date."
+  },
+  "tags": {
+    "category": "history-org-tokenomics",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-08-18",
+    "reverifyBy": "2026-11-19",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://stellar.org/foundation/team",
+        "note": "The official SDF team page showed the Board of directors section and the five named cards on 2026-08-18."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
+        "note": "The read-only probe returned five board rows, their roles, affiliations, source URLs, and observed dates."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "As of 2026-08-18, SDF's board section listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/team",
+            "observedAt": "2026-08-18",
+            "note": "Direct HTML inspection showed the board heading and all five named cards."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
+            "observedAt": "2026-08-18",
+            "note": "The live service returned the same five names and identified its official source page."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-18",
+      "by": "Todo 1664 coverage-golden implementation",
+      "evidence": [
+        "https://stellar.org/foundation/team inspected directly on 2026-08-18.",
+        "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 returned the same five names on 2026-08-18.",
+        "Sibling sweep: q-org-mazieres-chief-scientist uses the same people source and keeps its dated title qualification.",
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+      ],
+      "rootCause": [
+        "solo://proj/80/todo/author-five-new-cove--1664"
+      ]
+    },
+    "origin": "authored 2026-08 (coverage)"
+  }
+}

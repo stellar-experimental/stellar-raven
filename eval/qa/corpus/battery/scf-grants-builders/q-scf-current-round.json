@@ -5,86 +5,84 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live RFP response identified SCF #45 in Submission and carried a 2026-08-16 submission deadline.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer checks the live official awards state and Scout round metadata, then dates every volatile claim. As of 2026-08-18, no SCF round is in Submission. SCF #45 is the current round in Initial Review, and its 2026-08-16 submission deadline has elapsed. SCF #44 remains in Notification & Award Distribution, while SCF #43 is the last concluded round.\n\nThe dated example is illustrative: a later grounded answer should report the state supported at its own observation time.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement."
+      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "States that no round is currently in Submission and identifies SCF #45 as being in Initial Review.",
+      "Treats 2026-08-16 as SCF #45's elapsed submission deadline rather than a current closing date."
     ],
     "avoid": [
-      "Do NOT present the expired July 26 deadline as current.",
-      "Do NOT assert any round/deadline as permanent or fabricate a date not grounded in a live source.",
+      "Do NOT claim that SCF #45 is still open for full-proposal submissions or that an open RFP brief proves an open round.",
+      "Do NOT assert any round or deadline as permanent, or fabricate a deadline time, timezone, notification date, or submission count.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Freshness item: identify the current round/status/deadline from a dated live source. The Build cap is owned by separate cases and is not a requirement for this question."
+    "notes": "Freshness item: identify the current round, phase, and deadline from dated official and live sources. As of 2026-08-18, no round is in Submission; #45 is in Initial Review, #44 is distributing, and #43 is the last concluded round. The two published Q3 RFP briefs do not reopen #45's full-proposal window. The Build cap is owned by separate cases."
   },
   "tags": {
     "category": "scf-grants-builders",
     "service": "scout",
-    "freshness": "live"
+    "freshness": "scheduled"
   },
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-18",
+    "reverifyBy": "2026-09-03",
     "sources": [
       {
         "class": "A",
         "ref": "https://communityfund.stellar.org/awards",
-        "note": "class inferred at migration"
+        "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
       },
       {
         "class": "A",
-        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
-        "note": "class inferred at migration"
+        "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+        "note": "Official SCF #45 detail page observed 2026-08-18; the page showed Initial Review."
       },
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/api/rfps?status=open",
-        "note": "class inferred at migration"
+        "note": "Live Scout result observed 2026-08-18; currentRound=45, currentPhase=Initial Review, and no submission window."
       }
     ],
     "corroboration": [
       {
-        "claim": "As of 2026-07-09, SCF #45 is in Submission and closes 2026-08-16; Build awards remain capped at up to $150K worth of XLM",
-        "verdict": "confirmed",
+        "claim": "As of 2026-08-18, no SCF round is in Submission; SCF #45 is in Initial Review after its 2026-08-16 deadline, #44 is distributing, and #43 is last concluded.",
+        "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
-            "ref": "A: https://communityfund.stellar.org/awards fetched 2026-07-09 — SCF #45 deadline August 16, 2026",
-            "observedAt": "2026-07-09",
-            "note": "verbatim legacy evidence descriptor imported at migration"
-          },
-          {
-            "class": "C",
-            "ref": "C: https://stellarlight.xyz/api/rfps?status=open fetched 2026-07-09T23:48Z — currentRound 45, submissionWindow.closes 2026-08-16, asOf 2026-07-09",
-            "observedAt": "2026-07-09",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-08-18T15:22:00Z",
+            "note": "Official index showed #45 Initial Review with an August 16, 2026 deadline, #44 in distribution, and #43 ended."
           },
           {
             "class": "A",
-            "ref": "A: SCF Build Award handbook fetched 2026-07-09 — up to $150,000 worth of XLM",
-            "observedAt": "2026-07-09",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+            "observedAt": "2026-08-18T15:23:00Z",
+            "note": "Official #45 detail page showed Initial Review and did not supply a notification date or submission count."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
+            "observedAt": "2026-08-18T15:24:51Z",
+            "note": "Scout reported currentRound=45, currentPhase=Initial Review, no submission window, and no round in Submission."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review; scope-only correction does not claim a later live-round observation",
+      "date": "2026-08-18",
+      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
       "evidence": [
-        "Solo scratchpad 569 Batch B, 2026-07-09.",
-        "Sibling expansion found and corrected the same July 26 date in q-edge-scf-v7-centralization-myths.",
-        "2026-07-11 localhost:8787 search→execute probe observed: the live RFP response identified SCF #45 in Submission and carried a 2026-08-16 submission deadline.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+        "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
+        "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch — live Scout agreement observed 2026-08-18T15:23Z–15:24Z.",
+        "Sibling sweep covered q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, the three live RFP cases, and q-edge-scf-v7-centralization-myths; the updated brief-versus-round distinction is consistent."
       ],
       "rootCause": [
-        "Ordinary freshness drift in a roughly six-week round schedule; the old case correctly warned that its date would expire.",
-        "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch B",
-        "eval-authoring",
-        "Removed an unrelated Build-cap key fact duplicated from another case.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-scf-current-round"

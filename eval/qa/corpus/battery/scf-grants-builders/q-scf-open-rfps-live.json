@@ -1,1 +1,101 @@
-{"id":"q-scf-open-rfps-live","question":"Which Stellar SCF RFPs or submission opportunities are open right now?","surface":["scout.getRfps"],"golden":{"answer":"Call the live open-RFP view, list only returned open rows, cite each application/brief URL, and include meta.scfRound.asOf, phase, deadline, and verifyAt when present. Distinguish curated briefs from a confirmed open SCF round.","keyFacts":["Uses the live open-RFP response and lists only returned open rows.","Includes source links and current round as-of/phase/deadline/verifyAt.","Distinguishes curated sponsor briefs from the official SCF submission round."],"avoid":["Pins Q2 2026 RFP names or an SCF round without checking the live status metadata."]},"tags":{"category":"scf-grants-builders","service":"scout","freshness":"live"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open"},{"class":"A","ref":"https://communityfund.stellar.org/awards"},{"class":"A","ref":"https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track"}],"corroboration":[{"claim":"Open opportunities must be returned live with source links and dated official-round metadata.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open","observedAt":"2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/awards","observedAt":"2026-07-11"},{"class":"A","ref":"https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track","observedAt":"2026-07-11"}]},{"claim":"The archived Q2 RFP list and round remain current without verification.","verdict":"contradicted","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open","observedAt":"2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/awards","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","https://communityfund.stellar.org/awards","https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track"],"rootCause":["freshness-drift"]},"origin":"boxy sl-funding-open-rfps-q2-2026"}}
+{
+  "id": "q-scf-open-rfps-live",
+  "question": "Which Stellar SCF RFPs or submission opportunities are open right now?",
+  "surface": [
+    "scout.getRfps"
+  ],
+  "golden": {
+    "answer": "Call the live open-RFP view, list only returned open rows, cite each brief URL, and include `meta.scfRound` as-of, phase, deadline, and `verifyAt` when present. Distinguish published open briefs from a confirmed open SCF submission round. Do not infer full-proposal availability from brief status alone.",
+    "keyFacts": [
+      "Uses the live open-RFP response and lists only returned open rows.",
+      "Includes source links and current round as-of/phase/deadline/verifyAt.",
+      "Distinguishes curated sponsor briefs from the official SCF submission round.",
+      "Does not infer application availability from an open brief when the round metadata shows no Submission-phase window."
+    ],
+    "avoid": [
+      "Pins Q2 2026 RFP names or an SCF round without checking the live status metadata.",
+      "Claims that an open brief proves SCF #45 still accepts a new full proposal."
+    ]
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-08-18",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "As of 2026-08-18, the live open-RFP response returned two open briefs, while official and live round metadata showed SCF #45 in Initial Review with no open submission window.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-08-18T15:24:51Z",
+            "note": "Returned two open briefs, syntheticRounds=0, currentRound=45, and currentPhase=Initial Review."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-08-18T15:22:00Z",
+            "note": "Official awards index showed SCF #45 in Initial Review after its August 16 deadline."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+            "observedAt": "2026-08-18T15:25:19Z",
+            "note": "Official RFP page continued to list the two Q3 briefs."
+          }
+        ]
+      },
+      {
+        "claim": "The archived Q2 RFP list and round remain current without verification.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-08-18T15:24:51Z"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-08-18T15:22:00Z"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-18",
+      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
+      "evidence": [
+        "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+        "https://communityfund.stellar.org/awards",
+        "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+        "https://stellarlight.xyz/api/rfps?status=open",
+        "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; brief-open and round-open meanings remain separate."
+      ],
+      "rootCause": [
+        "freshness-drift"
+      ]
+    },
+    "origin": "boxy sl-funding-open-rfps-q2-2026"
+  }
+}

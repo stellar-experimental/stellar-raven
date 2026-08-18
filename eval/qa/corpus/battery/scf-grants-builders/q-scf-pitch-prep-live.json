@@ -1,0 +1,101 @@
+{
+  "id": "q-scf-pitch-prep-live",
+  "question": "How should I prepare an evidence-grounded SCF pitch for my Stellar idea right now?",
+  "surface": [
+    "scout.scfPitch"
+  ],
+  "golden": {
+    "answer": "Call `scout.scfPitch` with the concrete idea and cite the response's `generatedAt`. Use `report.round` for current timing only after checking `round.source`. A `live` source permits reporting the returned open-round rows; an `unavailable` source means the round state is unknown and must be checked on the official SCF awards page. Use funded peers, the funding bar, competitor maturity, prior art, and each deterministic angle as dated corpus evidence for differentiation. State each block's basis, and do not treat the composite as a funding decision or a complete market study.",
+    "keyFacts": [
+      "Checks `round.source` before describing current SCF timing and routes an unavailable result to the official awards page.",
+      "Uses funded peers, funding-bar basis, competitor maturity, prior art, and deterministic angles as dated pitch evidence.",
+      "Reports `generatedAt`, corpus scope, and each block's evidence limits."
+    ],
+    "avoid": [
+      "Do NOT convert `round.source: \"unavailable\"` into a claim that no submission round is open.",
+      "Do NOT present deterministic angles as reviewer judgments or predict that SCF will fund the idea.",
+      "Do NOT pin a round number, peer count, or award total as a timeless pitch requirement."
+    ],
+    "notes": "Grade the service contract and evidence use. Current round phases, peer rows, and award totals can change."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-08-18",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/scf-pitch?q=streaming%20recurring%20payments%20contract%20on%20Soroban",
+        "note": "The read-only probe returned a live round block, funded peers, a funding bar, vetting evidence, and deterministic angles."
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.scfPitch",
+        "note": "The exposed contract defines the live or unavailable round-source boundary and the evidence-grounded composite."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards",
+        "note": "The official SCF awards page is the fallback authority for current round state."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The pitch composite provides dated round, funding, competitor, prior-art, and deterministic-angle evidence without making a funding decision.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/scf-pitch?q=streaming%20recurring%20payments%20contract%20on%20Soroban",
+            "observedAt": "2026-08-18",
+            "note": "The response carried all five evidence blocks and described the angles as deterministic derivations."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.scfPitch",
+            "observedAt": "2026-08-18",
+            "note": "The manifest defines the composite and says it performs no prose generation."
+          }
+        ]
+      },
+      {
+        "claim": "An unavailable round source means unknown round state, while the official SCF awards page remains the authority for current phase information.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.scfPitch",
+            "observedAt": "2026-08-18",
+            "note": "The contract permits `live` or `unavailable` and forbids a negative conclusion on fetch failure."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-08-18",
+            "note": "The page published current round phases and submission deadlines."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-18",
+      "by": "Todo 1664 coverage-golden implementation",
+      "evidence": [
+        "Read-only scfPitch probe for a streaming-payments idea on 2026-08-18.",
+        "https://communityfund.stellar.org/awards inspected directly on 2026-08-18.",
+        "catalog/manifest.json#scout.scfPitch defines the round-source and evidence boundaries.",
+        "Sibling sweep: current-round cases remain outside this case; this case pins no round number, phase, count, or amount.",
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+      ],
+      "rootCause": [
+        "solo://proj/80/todo/author-five-new-cove--1664"
+      ]
+    },
+    "origin": "authored 2026-08 (coverage)"
+  }
+}

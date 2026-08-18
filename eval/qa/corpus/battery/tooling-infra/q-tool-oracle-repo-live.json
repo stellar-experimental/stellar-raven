@@ -2,7 +2,8 @@
   "id": "q-tool-oracle-repo-live",
   "question": "Which current Stellar oracle repositories are the best code references, and what evidence supports that choice?",
   "surface": [
-    "scout.searchRepos"
+    "scout.searchRepos",
+    "scout.getRepoTrust"
   ],
   "golden": {
     "answer": "Filter live searchRepos results for relevant oracle repositories, explicitly compare repoScore, and paginate before a global superlative or say “among the returned page.” repoScore is the index's own answer-time ranking signal: it orders candidate rows for inspection and never establishes correctness, security, audit scope, maintenance, or production readiness, so a “best reference” claim is scoped to that ordering over the checked rows and rests on the cited repository evidence. Cite repository URLs and separate codeVerified/codeDepth, deployability, SDK status, and scan date; codeVerified is index scan evidence, not a security audit.",

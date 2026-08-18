@@ -1,0 +1,77 @@
+{
+  "id": "q-gap-contracts-domain-empty",
+  "question": "What does an empty Scout contract-domain result mean, and how should I report it?",
+  "surface": [
+    "scout.listContracts"
+  ],
+  "golden": {
+    "answer": "Preserve the requested domain, `generatedAt`, and returned counts. An empty `contracts` array with a successful response is an ok-with-empty registry result, not a soft-empty error envelope. `scout.listContracts` is evidence-gated: it includes contracts only after a scanner verifies a claimed mainnet id or on-chain enrichment attributes activity. Therefore, report that the current registry returned no verified rows for that filter. Do not claim that no such contract exists. Use broader project, repository, or research discovery for an open-world existence question, and keep any later contract claim tied to its own evidence.",
+    "keyFacts": [
+      "Distinguishes a successful empty contracts payload from a soft-empty error envelope.",
+      "Explains the evidence-gated membership rule and keeps absence registry-relative.",
+      "Reports the filter, timestamp, counts, and a broader recovery route for open-world existence."
+    ],
+    "avoid": [
+      "Do NOT claim that an empty filtered registry proves no contract in that domain exists.",
+      "Do NOT convert the successful empty payload into an error or a failed request.",
+      "Do NOT label an unlisted contract as unverified or inactive from registry omission alone."
+    ],
+    "notes": "The observed `defi-yield` result was empty on 2026-08-18. Grade the durable empty-success semantics, not continued emptiness."
+  },
+  "tags": {
+    "category": "defi-ecosystem",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-08-18",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.listContracts",
+        "note": "The contract defines evidence-gated membership and states that absence is not an existence claim."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5",
+        "note": "The read-only probe returned HTTP success, an empty contracts array, zero returned rows, and the evidence-gated note."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A successful empty domain response means the evidence-gated registry has no returned row for that filter at that time; it does not prove real-world absence.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.listContracts",
+            "observedAt": "2026-08-18",
+            "note": "The manifest defines verified membership and explicitly limits absence semantics."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5",
+            "observedAt": "2026-08-18",
+            "note": "The response succeeded with an empty array, zero counts, the applied filter, and the evidence-gated note."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-18",
+      "by": "Todo 1664 coverage-golden implementation",
+      "evidence": [
+        "Read-only listContracts domain probe returned a successful empty payload on 2026-08-18.",
+        "catalog/manifest.json#scout.listContracts defines the durable evidence-gated absence boundary.",
+        "Sibling sweep: q-ti-enumerate-all-contracts already rejects this registry as a complete deployment inventory.",
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+      ],
+      "rootCause": [
+        "solo://proj/80/todo/author-five-new-cove--1664"
+      ]
+    },
+    "origin": "authored 2026-08 (coverage)"
+  }
+}

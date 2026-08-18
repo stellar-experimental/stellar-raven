@@ -51,30 +51,6 @@
     ],
     "corroboration": [
       {
-        "claim": "SCF #45 is in Submission with an August 16, 2026 deadline; the Build cap remains up to $150K worth of XLM",
-        "verdict": "confirmed",
-        "evidence": [
-          {
-            "class": "A",
-            "ref": "A: https://communityfund.stellar.org/awards fetched 2026-07-09 — SCF #45 deadline August 16, 2026",
-            "observedAt": "2026-07-09",
-            "note": "verbatim legacy evidence descriptor imported at migration"
-          },
-          {
-            "class": "C",
-            "ref": "C: https://stellarlight.xyz/api/rfps?status=open fetched 2026-07-09T23:48Z — currentRound 45, submissionWindow.closes 2026-08-16, source=live",
-            "observedAt": "2026-07-09",
-            "note": "verbatim legacy evidence descriptor imported at migration"
-          },
-          {
-            "class": "A",
-            "ref": "A: SCF Build Award handbook fetched 2026-07-09 — award size up to $150,000 worth of XLM",
-            "observedAt": "2026-07-09",
-            "note": "verbatim legacy evidence descriptor imported at migration"
-          }
-        ]
-      },
-      {
         "claim": "The published Build schedule is 10/20/30/40; current guidelines impose a 90-day completion-form deadline and discretionary unpaid-tranche forfeiture, while grant control does not equal protocol deletion authority.",
         "verdict": "confirmed-as-of",
         "evidence": [
@@ -107,21 +83,16 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-18",
+      "by": "Todo 1659 SCF sibling cleanup after accepted primary and blind adversarial review",
       "evidence": [
-        "Solo scratchpad 569 Batch B, 2026-07-09.",
-        "Sibling sweep covered q-scf-current-round and found the same expired date in both cases.",
         "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; current 90-day/unpaid-tranche terms checked 2026-07-10.",
-        "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Preserved the 2026-07-10 payment-schedule and network-authority observation; this event does not claim a later re-observation of those facts.",
+        "solo://proj/80/scratchpad/retrieval-system-aud--816 — primary and blind adversarial reviews required removal of the unrelated stale SCF #45 Submission row.",
+        "Sibling sweep covered q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, and the three live RFP cases; current-round facts now stay in the dedicated cases."
       ],
       "rootCause": [
-        "Ordinary freshness drift in a duplicated current-round example; the durable grant-versus-mainnet-control claim was not contradicted.",
-        "solo://proj/49/todo/golden-corpus-health--901 — q-scf-current-round sibling expansion",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-edge-scf-v7-centralization-myths"

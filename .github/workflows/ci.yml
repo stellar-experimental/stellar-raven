@@ -97,7 +97,7 @@ jobs:
       # the live `claude` CLI to grade fixtures, so it is a run-evals manual gate,
       # not an offline CI step — see .agents/skills/run-evals/SKILL.md.)
       - run: npm run eval:selftest
-      - run: npm run eval:qa:lint -- --stale
+      - run: npm run eval:qa:lint -- --stale --enforce-floors
       - run: npm run eval:qa:register -- --check
       - name: lint frozen canonical live contract
         run: |

@@ -1,0 +1,100 @@
+{
+  "id": "q-ti-scout-refresh-cached-rows",
+  "question": "I cached Scout rows last week. How do I find what moved and refresh the affected facts?",
+  "surface": [
+    "scout.getChanges"
+  ],
+  "golden": {
+    "answer": "Call `scout.getChanges` with the cache timestamp in `since` and the needed `surfaces`. Read `meta.counts` per surface, because `limit` applies separately to each surface. Check every `meta.truncated` flag; raise the limit and query a surface separately when needed, and state when the feed still does not cover every changed row. For each returned row, use `facets` to select the fact family to refresh, then re-read that entity through its search endpoint. A `\"row\"` facet means the change is not localized, so re-read the full row. An empty surface with `truncated: false` means unchanged since the supplied timestamp; it does not mean the entity class does not exist.",
+    "keyFacts": [
+      "Uses `since`, optional surface selection, per-surface counts, and every per-surface truncation flag.",
+      "Uses facets to choose the refresh scope and re-reads the full entity for a `row` facet.",
+      "Treats an untruncated empty result as unchanged since the supplied timestamp, not as an existence claim."
+    ],
+    "avoid": [
+      "Do NOT read `meta.counts` as the number of rows returned in the limited payload.",
+      "Do NOT claim complete coverage while any requested surface is truncated.",
+      "Do NOT treat a change facet as the new value or treat an empty feed as proof that the entity class is empty."
+    ],
+    "notes": "The change feed identifies moved rows and fact families. It does not contain the replacement facts."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-08-18",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.getChanges",
+        "note": "The contract defines per-surface limits, truncation, facet meaning, and absence semantics."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/changes?since=2026-08-11&limit=3",
+        "note": "The read-only probe returned rows across all three surfaces with per-surface counts and truncation flags."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/changes?since=2026-08-17&surfaces=partners&limit=5",
+        "note": "The comparison probe returned an untruncated empty partners result."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The feed reports changed rows newest-first under a per-surface limit, and facets identify which source row must be re-read.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getChanges",
+            "observedAt": "2026-08-18",
+            "note": "The manifest defines limit-per-surface, truncation, facet names, and the full-row re-read rule."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/changes?since=2026-08-11&limit=3",
+            "observedAt": "2026-08-18",
+            "note": "The live response returned separate surface counts, three truncation flags, and localized facets."
+          }
+        ]
+      },
+      {
+        "claim": "An untruncated empty surface means no indexed row changed after the requested time, not that the entity class is empty.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getChanges",
+            "observedAt": "2026-08-18",
+            "note": "The contract states that absence means unchanged since `since`, never an existence claim."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/changes?since=2026-08-17&surfaces=partners&limit=5",
+            "observedAt": "2026-08-18",
+            "note": "The live comparison returned no partner changes and `truncated.partners: false`."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-18",
+      "by": "Todo 1664 coverage-golden implementation",
+      "evidence": [
+        "Read-only getChanges probes covered truncated multi-surface data and an untruncated empty surface on 2026-08-18.",
+        "catalog/manifest.json#scout.getChanges defines the pagination, facet, and re-read boundaries.",
+        "Sibling sweep: q-gap-scout-changelog-envelope keeps row changes distinct from API contract changes.",
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+      ],
+      "rootCause": [
+        "solo://proj/80/todo/author-five-new-cove--1664"
+      ]
+    },
+    "origin": "authored 2026-08 (coverage)"
+  }
+}

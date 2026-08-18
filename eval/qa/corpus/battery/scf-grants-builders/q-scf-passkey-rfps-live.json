@@ -1,1 +1,97 @@
-{"id":"q-scf-passkey-rfps-live","question":"Are any currently open Stellar RFPs relevant to smart accounts or passkeys, and how do the returned briefs differ?","surface":["scout.getRfps"],"golden":{"answer":"Fetch the full current open set with scout.getRfps({status:\"open\"}), then locally filter titles, descriptions, and technical requirements for related passkey and smart-account concepts. A q-filtered call may supplement but not replace the exhaustive open-set scan; cite deliverables and dated round metadata.","keyFacts":["Fetches the full open RFP set first, then locally filters related passkey/smart-account concepts.","Compares stated deliverables and cites each returned brief.","Includes round as-of/verifyAt and scopes an empty result to the source."],"avoid":["Claims a remembered passkey brief is still open without current status evidence.","A narrow zero/one-hit query is not an exhaustive opportunity scan."]},"tags":{"category":"scf-grants-builders","service":"scout","freshness":"live"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open"},{"class":"A","ref":"https://communityfund.stellar.org/awards"},{"class":"B","ref":"catalog/manifest.json#scout.getRfps"}],"corroboration":[{"claim":"Relevant briefs are selected from current open rows, compared by deliverables, cited, and dated.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open","observedAt":"2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/awards","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.getRfps","observedAt":"2026-07-11"}]},{"claim":"An archived passkey brief is necessarily still open.","verdict":"contradicted","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","https://communityfund.stellar.org/awards","catalog/manifest.json#scout.getRfps"],"rootCause":["freshness-drift"]},"origin":"boxy sl-funding-smart-account-passkey-rfps"}}
+{
+  "id": "q-scf-passkey-rfps-live",
+  "question": "Are any currently open Stellar RFPs relevant to smart accounts or passkeys, and how do the returned briefs differ?",
+  "surface": [
+    "scout.getRfps"
+  ],
+  "golden": {
+    "answer": "Fetch the full current open set with scout.getRfps({status:\"open\"}), then locally filter titles, descriptions, and technical requirements for related passkey and smart-account concepts. A q-filtered call may supplement but not replace the exhaustive open-set scan. Cite deliverables and dated round metadata. Do not infer that a matching open brief proves an SCF full-proposal window is open.",
+    "keyFacts": [
+      "Fetches the full open RFP set first, then locally filters related passkey/smart-account concepts.",
+      "Compares stated deliverables and cites each returned brief.",
+      "Includes round as-of/verifyAt and scopes an empty result to the source.",
+      "Separates brief status from the SCF round submission phase."
+    ],
+    "avoid": [
+      "Claims a remembered passkey brief is still open without current status evidence.",
+      "A narrow zero/one-hit query is not an exhaustive opportunity scan.",
+      "Claims that an open brief proves the current SCF round accepts a new full proposal."
+    ]
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-08-18",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.getRfps"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Relevant briefs must be selected from the complete current open set, compared by deliverables, cited, and dated without inferring that the SCF submission window is open.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-08-18T15:24:51Z",
+            "note": "Live response returned the complete served open set and round metadata showing #45 Initial Review with no submission window."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-08-18T15:22:00Z",
+            "note": "Official awards index independently showed #45 in Initial Review."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getRfps",
+            "observedAt": "2026-08-18",
+            "note": "Exposed operation supports the exhaustive status=open call and local filtering behavior."
+          }
+        ]
+      },
+      {
+        "claim": "An archived passkey brief is necessarily still open.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-08-18T15:24:51Z"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-18",
+      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
+      "evidence": [
+        "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+        "https://communityfund.stellar.org/awards",
+        "https://stellarlight.xyz/api/rfps?status=open",
+        "catalog/manifest.json#scout.getRfps",
+        "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; exhaustive-set behavior and round-state caution remain consistent."
+      ],
+      "rootCause": [
+        "freshness-drift"
+      ]
+    },
+    "origin": "boxy sl-funding-smart-account-passkey-rfps"
+  }
+}

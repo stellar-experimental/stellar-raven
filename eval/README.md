@@ -9,8 +9,12 @@ Solo scratchpad 514) surface an entry from the *correct service* near the top of
 
 - **top-1 / top-3 / top-5**: any hit whose `service` equals the case's `expected_service`
   at rank 1 / within the first 3 / within the first 5 (query = the raw question, `limit: 5`).
-- **card@5** (secondary, only for cases with `expected_cards`): any top-5 hit whose id
-  matches one of the expected capability-card labels under the tolerant normalizer below.
+- **card@5** (secondary, only for cases with operation-level `expected_cards`): any top-5
+  hit whose id matches one of the expected capability-card labels under the tolerant
+  normalizer below. Service-level cards of the form `<service>_mcp` (e.g.
+  `stellar_docs_mcp`) name a whole service, not an operation; they are retired from card@5
+  (see "Service-level cards retired from card@5" below) — a case carrying only those is not
+  card-graded, because service routing is already measured by top-1/3/5.
 
 Nothing here executes tools or grades prose answers — that is the separate `execute` Q→A
 battery in [`eval/qa/`](./qa/) (LLM-judged answers over the whole two-tool surface; see
@@ -56,7 +60,9 @@ unaffected — verified exactly 183/236/256 after the change):
 ### Card-name normalizer (documented tolerance)
 
 Corpus cards use raven-next naming (`lumenloop_search_directory`, `scout_projects`,
-`stellar_docs_mcp`); catalog ids are `service.op_name`. A card matches a hit when, after
+`stellar_docs_mcp`); catalog ids are `service.op_name`. Service-level cards — whose op
+token after prefix mapping is exactly `mcp` — are excluded before matching (they name no
+operation; see the retirement note below). A remaining card matches a hit when, after
 canonicalization (lowercase, `-`/`.`/space → `_`):
 
 1. the full tokens are equal, **or**
@@ -67,6 +73,12 @@ canonicalization (lowercase, `-`/`.`/space → `_`):
    (tolerates `projects` vs `list_projects`; blocks trivial substrings).
 
 Implementation + unit fixtures: `eval/lib/grade.mjs`, `eval/self-test.mjs`.
+
+### Service-level cards
+
+A `<service>_mcp` card names a service, not an operation. Card@5 excludes these cards because
+top-1/3/5 already measures service routing. A case with no operation-level card is not card-graded.
+Stellar Docs operation routing remains unmeasured until the corpus names specific Docs operations.
 
 ## How to run
 

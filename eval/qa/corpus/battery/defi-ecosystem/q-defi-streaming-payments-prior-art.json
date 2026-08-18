@@ -4,7 +4,9 @@
   "surface": [
     "scout.searchProjects",
     "scout.searchRepos",
-    "scout.searchResearch"
+    "scout.searchResearch",
+    "scout.searchHackathonBuilds",
+    "scout.vetIdea"
   ],
   "golden": {
     "answer": "Study prior art as a **dated maturity matrix**, not a bare repo list:\n\n- **SStream** — Rust create/claim/cancel stream code and SCF #16 $36K Awarded; linked UI was 404 and no public contract was verified.\n- **Tide Stream Payment / Zentra** — Rust contract/tests/frontend and SCF #23 $18.2K Awarded; frontend responded, but no mainnet contract was verified.\n- **Fluxity** — Soroban streaming contract/tests and an official SCF #21 $68K Awarded row; do not turn its internally inconsistent project aggregate into a second award; deployment remained inconclusive.\n- **Paystreme** — SCF #11 $50K Awarded proposal prior art; current public contract/source trail was not verified.\n- **ApiCharge** — substantial subscription/payment code, SCF #40 $79K Awarded, and a real pubnet contract; its custom time-subscription/x402-compatible scheme and runtime maturity must not be mislabeled canonical x402 exact.\n- **RouteDock/MPP session examples** — substantial testnet/reference channel and agent-vault work, not verified mainnet production.\n\nFor every result, show repo, official submission, UI status, contract/network, audit/source-verification status, and as-of date. Discovery does not prove production readiness.",

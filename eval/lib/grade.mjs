@@ -76,10 +76,15 @@ export function cardMatches(expectedCard, hit) {
   return shorter.length >= 4 && longer.includes(shorter);
 }
 
+/** Service-only cards are outside the operation-level card@5 metric. */
+export function isServiceLevelCard(card) {
+  return splitCard(card).op === "mcp";
+}
+
 /**
  * Grade one case given its search hits (already limited to 5).
  * Returns { top1, top3, top5, cardHit5 } — cardHit5 is null when the case has
- * no expected_cards (card metric not applicable).
+ * no operation-level expected_cards (card metric not applicable).
  *
  * Accept-either: when `expectedAny` is a non-empty array of services,
  * the result ADDITIONALLY carries { any1, any3, any5 } — a hit from ANY listed
@@ -99,7 +104,11 @@ export function gradeCase(hits, expectedService, expectedCards, expectedAny) {
   const top5 = hits.slice(0, 5).some(svc);
   let cardHit5 = null;
   if (Array.isArray(expectedCards) && expectedCards.length > 0) {
-    cardHit5 = hits.slice(0, 5).some((h) => expectedCards.some((c) => cardMatches(c, h)));
+    // Service-level cards name no operation. Top-k already measures their service.
+    const opCards = expectedCards.filter((c) => !isServiceLevelCard(c));
+    if (opCards.length > 0) {
+      cardHit5 = hits.slice(0, 5).some((h) => opCards.some((c) => cardMatches(c, h)));
+    }
   }
   const result = { top1, top3, top5, cardHit5 };
   if (Array.isArray(expectedAny) && expectedAny.length > 0) {

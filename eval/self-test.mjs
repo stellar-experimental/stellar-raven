@@ -10,7 +10,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { aggregate, cardMatches, cardMatchesExact, canonToken, gradeCase, tableRows } from "./lib/grade.mjs";
+import { aggregate, cardMatches, cardMatchesExact, canonToken, gradeCase, isServiceLevelCard, tableRows } from "./lib/grade.mjs";
 import {
   deriveExpectedAny,
   frontmatterRouting,
@@ -194,6 +194,45 @@ check("skills-lane case: strict grading with skills as expected_service + skills
   // right service, wrong skill -> service metrics hit, card metric misses
   const g2 = gradeCase(rank(E.skillContracts), "skills", ["skills_lumenloop_api_billing"]);
   assert.deepEqual(g2, { top1: true, top3: true, top5: true, cardHit5: false });
+});
+
+// --- service-level cards retired from card@5 (todo 1632) ---------------------------
+check("isServiceLevelCard: <service>_mcp cards are service-level, operation cards are not", () => {
+  assert.equal(isServiceLevelCard("stellar_docs_mcp"), true);
+  assert.equal(isServiceLevelCard("scout_mcp"), true); // same family, any known service prefix
+  assert.equal(isServiceLevelCard("scout_research"), false);
+  assert.equal(isServiceLevelCard("lumenloop_search_directory"), false);
+  // a skill whose terminal name merely contains "mcp" is an operation-level card
+  assert.equal(isServiceLevelCard("skills_lumenloop_mcp_connect"), false);
+});
+check("card@5: a case carrying only service-level cards is not card-graded", () => {
+  // stellarDocs hit at rank 1 satisfies top-1/3/5, but the service-level card is
+  // neither a hit nor a miss — card@5 does not apply (service routing is top-k's job)
+  const g = gradeCase(rank(E.docsSearch, E.scoutProjects), "stellarDocs", ["stellar_docs_mcp"]);
+  assert.deepEqual(g, { top1: true, top3: true, top5: true, cardHit5: null });
+  // total miss with only a service card: still not card-graded (never a structural false)
+  const g2 = gradeCase(rank(E.scoutProjects), "stellarDocs", ["stellar_docs_mcp"]);
+  assert.deepEqual(g2, { top1: false, top3: false, top5: false, cardHit5: null });
+});
+check("card@5: service-level cards are ignored when operation-level cards are present", () => {
+  // mixed list: matching runs against scout_projects only; docs_mcp contributes nothing
+  const g = gradeCase(rank(E.scoutProjects, E.docsSearch), "scout", ["stellar_docs_mcp", "scout_projects"]);
+  assert.deepEqual(g, { top1: true, top3: true, top5: true, cardHit5: true });
+  // the operation-level card still matches past rank 1
+  const g2 = gradeCase(rank(E.docsSearch, E.scoutProjects), "scout", ["stellar_docs_mcp", "scout_projects"]);
+  assert.deepEqual(g2, { top1: false, top3: true, top5: true, cardHit5: true });
+  // and still misses when no operation-level hit is present
+  const g3 = gradeCase(rank(E.docsSearch), "scout", ["stellar_docs_mcp", "scout_projects"]);
+  assert.deepEqual(g3, { top1: false, top3: false, top5: false, cardHit5: false });
+});
+check("aggregate: service-card-only cases leave the card@5 denominator", () => {
+  const results = [
+    { expected_service: "stellarDocs", top1: true, top3: true, top5: true, cardHit5: null }, // docs_mcp-only
+    { expected_service: "stellarDocs", top1: true, top3: true, top5: true, cardHit5: true }, // mixed, op card hit
+  ];
+  const { overall, perService } = aggregate(results);
+  assert.deepEqual(overall, { n: 2, top1: 2, top3: 2, top5: 2, cardN: 1, cardHit5: 1 });
+  assert.deepEqual(perService.stellarDocs, { n: 2, top1: 2, top3: 2, top5: 2, cardN: 1, cardHit5: 1 });
 });
 
 // --- aggregation over the 3 graded cases (the skip never reaches the grader:

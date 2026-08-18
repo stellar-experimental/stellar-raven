@@ -6,74 +6,95 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-08-05, the current Q3 roster contains exactly two open RFP briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response also includes a synthetic SCF #45 round row; that row represents the open submission round and is not a third RFP brief.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the live Scout response and official SCF pages. As of 2026-08-18, the Q3 roster contains two published open RFP briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response reports `syntheticRounds=0`. SCF #45 is in Initial Review, so the open briefs do not establish that #45 still accepts full proposals.\n\nThe dated example is illustrative: a later grounded answer should report the roster and round state supported at its own observation time.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Reports the currently-open RFP briefs.",
-      "Distinguishes them from the synthetic round row."
+      "States that the live response has no synthetic round row.",
+      "Distinguishes an open RFP brief from an open SCF full-proposal window."
     ],
     "avoid": [
-      "Do NOT reference retired scout_rfps, count scf-round-45 as a sixth RFP, or repeat #43 as current without the conflict.",
+      "Do NOT reference retired scout_rfps, claim a synthetic SCF #45 row is present, or count a round row as another brief.",
+      "Do NOT claim that SCF #45 still accepts full proposals solely because the Q3 briefs remain published as open.",
       "Do NOT present the roster as permanent, invent per-RFP bounties, or claim RFP projects use NQG voting.",
       "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "Dossier §4.2. Freshness item — confidence stays medium because the open set rotates. HISTORICAL, SUPERSEDED — do not grade against this roster: a 2026-06-29 observation recorded activeQuarter q2-2026 with 5 open / 9 closed (Trustline Onboarder, Passkey UI Kit, Account Demolisher, Contract Source Verification Service, OZ Accounts Policy Builder). As of 2026-08-05 the current Q3 official page and live feed agree on exactly two open briefs, LayerZero DVN and x402 Facilitator with Bazaar, beside the synthetic SCF #45 round row. An answer naming the current open set is CORRECT and must not be marked down for differing from the older list. The rubric gates on dated-observation behaviour, never on the exact roster. SCF #43 remains an explicitly historical concluded round and must not be substituted for current #45.\nAlso good if the answer: RFPs are reviewed via the SCF Build RFP Track (panel-only, no community vote). | RFP awards follow the standard SCF Build $150K XLM cap (per-RFP bounties are not separately published).\nGolden cites: The SCF RFP Track handbook page and/or the live RFPs feed."
+    "notes": "Freshness item: the open set rotates, so grade dated observation behavior rather than a permanent roster. As of 2026-08-18, the official RFP page and live feed support two published Q3 briefs. The newer awards state and Scout round metadata show #45 in Initial Review with no open submission window. Do not penalize an answer that calls the briefs active while saying the #45 full-proposal window has closed. RFP Track review is panel-led, and the separate Build-cap cases own the $150,000 limit."
   },
   "tags": {
     "category": "scf-grants-builders",
     "service": "scout",
-    "freshness": "live"
+    "freshness": "scheduled"
   },
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-05",
+    "asOf": "2026-08-18",
+    "reverifyBy": "2026-09-17",
     "sources": [
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/api/rfps?status=open",
-        "note": "Live open-RFP response observed 2026-08-05."
+        "note": "Live open-RFP response observed 2026-08-18; two briefs and syntheticRounds=0."
       },
       {
         "class": "A",
         "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-        "note": "class inferred at migration"
+        "note": "Official RFP page observed 2026-08-18; it names the two Q3 briefs."
       },
       {
         "class": "A",
         "ref": "https://communityfund.stellar.org/awards",
-        "note": "class inferred at migration"
+        "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
       }
     ],
     "corroboration": [
       {
-        "claim": "As of 2026-08-05, the current Q3 roster contains exactly two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—plus a synthetic SCF #45 round row that is not a brief.",
+        "claim": "As of 2026-08-18, the published Q3 roster contains two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=0.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "observedAt": "2026-08-05",
-            "note": "Returned two actual open RFP briefs plus the synthetic SCF #45 round row."
+            "observedAt": "2026-08-18T15:24:51Z",
+            "note": "Returned two open RFP rows and syntheticRounds=0."
           },
           {
             "class": "A",
             "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-            "observedAt": "2026-08-05",
-            "note": "Current official Q3 page names the same two briefs."
+            "observedAt": "2026-08-18T15:25:19Z",
+            "note": "Official Q3 page names the same two briefs."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-08-18, SCF #45 is in Initial Review with no confirmed open submission window; an open brief does not prove that a full proposal can still enter #45.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-08-18T15:22:00Z",
+            "note": "Official awards index showed #45 in Initial Review after its August 16 deadline."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
+            "observedAt": "2026-08-18T15:24:51Z",
+            "note": "Scout reported #45 Initial Review, no submission window, and no round in Submission."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
+      "date": "2026-08-18",
+      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
       "evidence": [
-        "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — official/current A+C sources agree on two Q3 briefs; the API also returns one synthetic round row, observed 2026-08-05.",
-        "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
-        "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
-        "Sibling sweep: q-scf-rfp-tooling was refreshed in the same change; q-scf-open-rfps-live and q-scf-passkey-rfps-live require a fresh exhaustive live query rather than pinning the retired Q2 roster; q-scf-hummingbot-kelp-closed-rfp remains explicitly historical and closed."
+        "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+        "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
+        "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
+        "Sibling sweep covered q-scf-rfp-tooling, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-hummingbot-kelp-closed-rfp, and q-edge-scf-v7-centralization-myths; no contradictory current-round or roster claim remains."
       ],
       "rootCause": [
         "freshness-drift"

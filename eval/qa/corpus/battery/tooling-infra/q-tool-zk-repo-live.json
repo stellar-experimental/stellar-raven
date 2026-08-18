@@ -2,7 +2,8 @@
   "id": "q-tool-zk-repo-live",
   "question": "What are the strongest current Stellar ZK reference repositories, and which returned entries have verified hackathon or deployable-code evidence?",
   "surface": [
-    "scout.searchRepos"
+    "scout.searchRepos",
+    "scout.searchHackathonBuilds"
   ],
   "golden": {
     "answer": "Filter live searchRepos rows for Stellar relevance, explicitly sort checked rows by repoScore, and paginate before a global superlative or scope the result to the checked page. repoScore is the index's own answer-time ranking signal: it orders candidate rows for inspection and never establishes correctness, security, audit scope, maintenance, or production readiness, so “strongest” means highest-ranked among the checked rows, not an assessment of correctness, security, or production readiness. Treat hackathonWinner as an index-relative marker unless exact event evidence corroborates it, and clarify that codeVerified is scan evidence rather than a security audit.",

@@ -2,7 +2,8 @@
   "id": "q-org-mazieres-chief-scientist",
   "question": "Who is David Mazières and what is his role at the Stellar Development Foundation?",
   "surface": [
-    "scout.searchResearch"
+    "scout.searchResearch",
+    "scout.getPeople"
   ],
   "golden": {
     "answer": "**David Mazières** is an SDF/Stellar **founder or co-founder**, the single author of the 2015 Stellar Consensus Protocol paper that introduced Federated Byzantine Agreement, and a Stanford computer-science professor. When observed on 2026-07-13, SDF's team-page data described him as **“Founder and Chief Scientist,”** but the rendered Leadership card showed only his name. Treat that title as a dated first-party page-data observation, not as a visibly displayed or timeless current role. He is not SDF's CEO. Early sources describe McCaleb, Joyce Kim, Mazières, network development, and foundation leadership with different scopes, so do not force an exclusive founder list.",

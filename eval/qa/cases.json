@@ -1,31 +1,31 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "a83d97b4090b46a3e621b6e3b6bfd6725bf7f5c4ebace23286a7a74dc11ec504",
+  "corpusContentSha256": "283db373835642d3bddfa32674b217f2a068f87ee982b6456e780455bc0c276f",
   "counts": {
-    "total": 492,
+    "total": 497,
     "byCategory": {
       "assets-anchors-seps": 47,
       "compliance-rwa-payments": 39,
-      "defi-ecosystem": 57,
+      "defi-ecosystem": 58,
       "edge-behavior": 48,
-      "history-org-tokenomics": 19,
+      "history-org-tokenomics": 20,
       "protocol-core": 49,
       "retail-consumer": 33,
-      "scf-grants-builders": 49,
+      "scf-grants-builders": 51,
       "soroban": 75,
-      "tooling-infra": 76
+      "tooling-infra": 77
     },
     "byService": {
       "lumenloop": 63,
       "none": 22,
-      "scout": 135,
+      "scout": 140,
       "skills": 33,
       "stellarDocs": 239
     },
     "byFreshness": {
       "live": 153,
-      "scheduled": 139,
+      "scheduled": 144,
       "stable": 200
     },
     "traps": {
@@ -2185,7 +2185,8 @@
       "surface": [
         "scout.getPartners",
         "scout.matchPartners",
-        "scout.searchProjects"
+        "scout.searchProjects",
+        "scout.getStablecoins"
       ],
       "golden": {
         "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live stablecoin-issuer search returned 38 matches, with Circle, Glo Dollar, and Coins.ph among the first results.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
@@ -2196,10 +2197,12 @@
         ],
         "avoid": [
           "Do NOT fabricate stablecoin issuers or invent token tickers not present in the corpus.",
-          "Do NOT attribute USDC/EURC to a non-Circle issuer.",
-          "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+          "Do NOT attribute Circle's USDC or EURC to a non-Circle issuer; a distinct same-ticker asset from another issuer may still be reported as its own asset under its own issuer account.",
+          "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical.",
+          "Do NOT present the ranked stablecoin snapshot as the complete roster of Stellar stablecoin issuers; an issuer missing from that snapshot, such as Circle for USDC, can still be live on Stellar.",
+          "Do NOT read a null supply, market cap, or holder value as zero, and do NOT rank issuers by raw supply across different pegs; marketCapUSD is the comparable metric."
         ],
-        "notes": "Discovery → scout_projects. Freshness-sensitive (issuer set evolves). Dossier §4.4. The dominant, verifiable anchor is Circle (USDC + EURC); the broader issuer set must be grounded in the live directory, not invented. Verified 2026-06-29: stellar.org/products-and-tools/circle-usdc-eurc resolves and confirms Circle issues both USDC and EURC on Stellar.\nAlso good if the answer: Surfaces additional anchor-operated / fiat-pegged issuers from the directory rather than only naming Circle. | Frames the answer as a discovery over the project directory, attributing issuers to specific entities.\nGolden cites: The Stellar Light / Scout project directory or a stellar.org stablecoin page."
+        "notes": "Discovery → scout_projects. Freshness-sensitive (issuer set evolves). Dossier §4.4. The dominant, verifiable anchor is Circle (USDC + EURC); the broader issuer set must be grounded in the live directory, not invented. Verified 2026-06-29: stellar.org/products-and-tools/circle-usdc-eurc resolves and confirms Circle issues both USDC and EURC on Stellar.\nAlso good if the answer: Surfaces additional anchor-operated / fiat-pegged issuers from the directory rather than only naming Circle. | Frames the answer as a discovery over the project directory, attributing issuers to specific entities.\nGolden cites: The Stellar Light / Scout project directory or a stellar.org stablecoin page.\nSTABLECOIN SNAPSHOT BOUND (verified 2026-08-18): scout.getStablecoins serves a bounded tracked set, never the complete roster of Stellar stablecoins or issuers. On 2026-08-18 that set carried no USDC row, while Circle's EURC row was present with null supply, marketCapUSD, and holders. An asset missing from the snapshot is untracked at that source; that is never real-world absence. USDC remains live on Stellar under Circle's official Mainnet issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN, and Circle's EURC under GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2. GRADER CAUTION: do not penalize an answer that reports the tracked ranking, and do not penalize an answer that names Circle and USDC as live on Stellar. Both are true at their own scope, and an answer that states which scope it is reporting is stronger than one that picks a side. Grade the reading behavior instead of set membership: cite meta.dataAsOf as the as-of date for any ranking or size claim, never meta.generatedAt, which only dates the response; treat marketCapUSD as the only cross-peg comparable size metric, because supply is raw units of each row's own peg; treat null on any metric as untracked, never zero. issuer is the join key, not ticker: one ticker can occupy several rows under different issuer accounts, so a same-ticker row from another issuer does not contradict Circle's asset. Never derive a filtered count from meta.counts.total; read meta.counts.returned for the returned page and re-check the live service contract before making a pre-limit count claim. Do not require or reward a pinned row count, ranking order, dataAsOf-to-generatedAt lag, or any row's position; all four move between reads. The top row by marketCapUSD may be a yield-bearing token rather than a conventional stablecoin, which the product-class separation above already governs. Circle's dominance among conventional dollar and euro stablecoins on Stellar is a real-world fact confirmed independently of this snapshot, and the snapshot does not show it, because USDC is untracked there and Circle's EURC row is unpriced."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -2207,31 +2210,152 @@
         "freshness": "live"
       },
       "truth": {
-        "domain": "real-world",
+        "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-18",
         "sources": [
           {
             "class": "A",
             "ref": "https://stellar.org/products-and-tools/circle-usdc-eurc",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+            "note": "Circle's own developer docs list Stellar Mainnet USDC as USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; observed 2026-08-18."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/stablecoins/eurc-contract-addresses",
+            "note": "Circle's own developer docs list Stellar Mainnet EURC as EURC-GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2; observed 2026-08-18."
+          },
+          {
+            "class": "C",
+            "ref": "scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z",
+            "note": "Read-only live enumeration of the whole tracked set on 2026-08-18: no USDC row; Circle EURC row present with null supply, marketCapUSD, and holders."
+          },
+          {
+            "class": "D",
+            "ref": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+            "note": "Independent on-chain explorer, page dated 2026-08-18: the Circle-issued USDC asset is live with same-day payments and trades."
+          },
+          {
+            "class": "D",
+            "ref": "https://primexbt.com/news/circles-usdc-supply-on-stellar-jumps-34-7-in-30-days-tracking-cctp-rollout/",
+            "note": "Independent reporting dated 2026-08-08 citing Circle's own data for Stellar-specific USDC supply."
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-18",
+          "by": "Solo todo 1665 stablecoin corpus correction lane (opus-high): independent A+C+D re-derivation, not a re-read of the design pass",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575",
-            "2026-07-11 localhost:8787 search→execute probe observed: a live stablecoin-issuer search returned 38 matches, with Circle, Glo Dollar, and Coins.ph among the first results.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "Class C 2026-08-18: read-only scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z. The tracked set carried no USDC row; the Circle EURC row (GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2) was present with null supply, marketCapUSD, and holders; meta.counts.total held the tracked-set size under a peg filter while meta.counts.returned dropped, so total is not a filtered count.",
+            "Class A 2026-08-18: https://developers.circle.com/stablecoins/usdc-contract-addresses lists Stellar Mainnet USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; https://developers.circle.com/stablecoins/eurc-contract-addresses and https://www.circle.com/eurc list Stellar Mainnet EURC-GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 and name Stellar among EURC's supported chains.",
+            "Class D 2026-08-18: https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN showed the Circle-issued USDC asset live with same-day payments and trades; independent 2026-08-08 reporting (https://primexbt.com/news/circles-usdc-supply-on-stellar-jumps-34-7-in-30-days-tracking-cctp-rollout/ and sibling outlets) cited Circle's own data for Stellar USDC supply.",
+            "Sibling sweep 2026-08-18 across the battery for USDC, EURC, and stablecoin: read q-token-circle-usdc-on-stellar, q-asset-usdc-eurc-issuer, q-asset-usdc-eurc-path-fx, q-eco-pyusd-stellar-freshness, q-eco-stellar-rwa-stablecoin-volume, q-asset-rwa-tokenized-freshness, q-raph-usdc-onto-stellar, q-defi-benji-franklin-templeton, and the other stablecoin case in this pair. No sibling contradicts the coverage-bound caution, and the Circle attribution stays aligned with consistency-register clusters 015 and 028. Both cases are cluster-015 members or Circle-adjacent, so the register needs re-stamping by the register lane; this lane did not edit it.",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 section 'Stablecoin corpus correction verdict'",
+            "solo://proj/80/todo/correct-stablecoin-g--1665",
+            "Adding scout.getStablecoins to the surface without a grader caution would have let the bounded snapshot be read as the complete Stellar stablecoin roster, so a truthful answer reporting the tracked ranking, or a truthful answer naming USDC, could have been punished by the existing key facts and avoid clauses.",
+            "Fable xhigh todo 1668 independently confirmed the claims, identified the retired EURC URL, and replaced the filtered-count wording with a durable reading rule."
           ],
           "rootCause": [
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "improvements/stellar-light-scout/sls-066-stablecoin-inventory-omits-usdc.md",
+            "solo://proj/80/todo/correct-stablecoin-g--1665"
           ]
         },
-        "origin": "raven-next q-asset-stablecoin-issuers-discovery"
+        "origin": "raven-next q-asset-stablecoin-issuers-discovery",
+        "corroboration": [
+          {
+            "claim": "USDC is live on Stellar under Circle's official Mainnet issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN, and Circle's EURC is live under GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+                "observedAt": "2026-08-18",
+                "note": "Circle's mainnet address table names the Stellar USDC issuer account."
+              },
+              {
+                "class": "A",
+                "ref": "https://www.circle.com/eurc",
+                "observedAt": "2026-08-18",
+                "note": "Circle's EURC page lists Stellar among the supported chains and links the same Stellar Mainnet EURC asset."
+              },
+              {
+                "class": "D",
+                "ref": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+                "observedAt": "2026-08-18",
+                "note": "Independent explorer shows the asset issued by that account transacting the same day."
+              }
+            ]
+          },
+          {
+            "claim": "The scout.getStablecoins snapshot is a bounded tracked set, so omission from it is untracked coverage and not real-world absence: on 2026-08-18 it served no USDC row at all, while Circle's EURC row was present with null supply, marketCapUSD, and holders.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z",
+                "observedAt": "2026-08-18",
+                "note": "Whole-set enumeration returned every tracked row; no row carried the USDC ticker, and the Circle EURC row carried nulls on every size metric."
+              },
+              {
+                "class": "D",
+                "ref": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+                "observedAt": "2026-08-18",
+                "note": "The same day, the omitted asset was demonstrably live on Stellar mainnet."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+                "observedAt": "2026-08-18",
+                "note": "Circle continues to publish Stellar as a supported USDC mainnet."
+              }
+            ]
+          },
+          {
+            "claim": "One ticker can occupy several snapshot rows under different issuer accounts, so issuer is the join key rather than ticker: on 2026-08-18 EURC appeared both for Circle (GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2) and for MyKobo (GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM).",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z",
+                "observedAt": "2026-08-18",
+                "note": "Two distinct rows shared the EURC ticker with different issuer accounts, issuerDomain values, and company names."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.circle.com/stablecoins/eurc-contract-addresses",
+                "observedAt": "2026-08-18",
+                "note": "Circle's own address table identifies which of the two accounts is Circle's EURC."
+              }
+            ]
+          },
+          {
+            "claim": "The USD size of USDC on Stellar as of 2026-08-18. Independent sources give materially different figures, so no golden pins one; the golden asserts presence and issuer only.",
+            "verdict": "disputed",
+            "evidence": [
+              {
+                "class": "D",
+                "ref": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+                "observedAt": "2026-08-18",
+                "note": "On-chain explorer reported total supply 338,953,374 USDC with 2,336,426 trustlines."
+              },
+              {
+                "class": "D",
+                "ref": "https://primexbt.com/news/circles-usdc-supply-on-stellar-jumps-34-7-in-30-days-tracking-cctp-rollout/",
+                "observedAt": "2026-08-08",
+                "note": "Reporting cited roughly 365.5 million USD market cap on Stellar and about 360.5 million USD per Circle data dated 2026-08-07."
+              },
+              {
+                "class": "A",
+                "ref": "https://www.circle.com/multi-chain-usdc/stellar",
+                "observedAt": "2026-08-18",
+                "note": "Circle's own Stellar landing page still served the far older phrase 'grown past $83 million', so Circle's marketing copy and Circle's data disagree."
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -3331,7 +3455,8 @@
       "surface": [
         "skills.stellar-dev.standards",
         "skills.stellar-dev.assets",
-        "stellarDocs.search_docs"
+        "stellarDocs.search_docs",
+        "skills.stellar-dev.cross-chain"
       ],
       "golden": {
         "answer": "Circle's release notes record **Stellar mainnet support on 2026-05-18**, and SDF and Circle publicly announced CCTP live on Stellar on **2026-05-19**. The earlier **2026-02-24** date previously called the launch was not recoverable from accessible primary material, so do not collapse it with either confirmed May milestone. Stellar is CCTP domain 27. CCTP burns native USDC on the source and mints native USDC on the destination. For Stellar G-, M-, or C-address recipients, use Circle's CctpForwarder path; a wrong mintRecipient or destinationCaller can strand funds. Stellar USDC uses 7 decimals while CCTP messages use 6, so the seventh outbound decimal remains on Stellar. On 2026-07-11, Circle's fee endpoint returned Fast/Standard 0/0 for domain 27→0 and 1 bp/0 for 0→27; re-query /v2/burn/USDC/fees. Circle transfer fees are separate from network resources, relayer, integrator, and any swap charges.",
@@ -7307,7 +7432,8 @@
       "id": "q-defi-bridge-evm-to-stellar-axelar",
       "question": "If I have USDC on Ethereum in MetaMask, what is the safest way to bridge to Stellar, and how does Axelar's security model compare with other Stellar bridges?",
       "surface": [
-        "scout.searchResearch"
+        "scout.searchResearch",
+        "skills.stellar-dev.cross-chain"
       ],
       "golden": {
         "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no provider-independent 'safest bridge.' For Ethereum **Circle USDC → canonical Stellar USDC**, first verify a current native-burn/mint or native-liquidity route rather than assuming an Axelar label gives the same asset. On **2026-07-10**, tested routes differed:\n- Allbridge Next used **Circle CCTP** and delivered canonical Stellar USDC.\n- Allbridge Core used its native-liquidity/message path and also selected canonical Stellar USDC.\n- Squid's canonical-USDC quote used an **Intents/RFQ** provider, not Axelar.\n- An explicit Axelar quote delivered **USDC.axl**, a different contract representation—not Circle-native Stellar USDC.\n\nCCTP burns/mints native USDC; Axelar uses a validator/gateway interchain trust model; Allbridge Core adds liquidity-pool and messaging dependencies. Re-quote at execution time, inspect the messenger and destination issuer/SAC, verify fees/limits and Circle forwarder fields, use a Stellar destination address, and send a small test. MetaMask can be the EVM source wallet, but this audit did not verify MetaMask Bridge itself as the Stellar route. None of these observations is a safety guarantee.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
@@ -8823,7 +8949,10 @@
       "question": "Which oracle and price-feed projects are represented in the current Stellar directory, and what evidence makes any one a strong reference?",
       "surface": [
         "scout.searchProjects",
-        "scout.searchRepos"
+        "scout.searchRepos",
+        "scout.listContracts",
+        "scout.getRepoTrust",
+        "scout.listAudits"
       ],
       "golden": {
         "answer": "Query current project and repository results for oracle/price-feed work, cite project and code URLs, and compare returned status, funding, activity, and code-verification evidence. Date the answer and avoid an eternal 'leader' claim.",
@@ -9998,7 +10127,9 @@
       "surface": [
         "scout.searchProjects",
         "scout.searchRepos",
-        "scout.searchResearch"
+        "scout.searchResearch",
+        "scout.searchHackathonBuilds",
+        "scout.vetIdea"
       ],
       "golden": {
         "answer": "Study prior art as a **dated maturity matrix**, not a bare repo list:\n\n- **SStream** — Rust create/claim/cancel stream code and SCF #16 $36K Awarded; linked UI was 404 and no public contract was verified.\n- **Tide Stream Payment / Zentra** — Rust contract/tests/frontend and SCF #23 $18.2K Awarded; frontend responded, but no mainnet contract was verified.\n- **Fluxity** — Soroban streaming contract/tests and an official SCF #21 $68K Awarded row; do not turn its internally inconsistent project aggregate into a second award; deployment remained inconclusive.\n- **Paystreme** — SCF #11 $50K Awarded proposal prior art; current public contract/source trail was not verified.\n- **ApiCharge** — substantial subscription/payment code, SCF #40 $79K Awarded, and a real pubnet contract; its custom time-subscription/x402-compatible scheme and runtime maturity must not be mislabeled canonical x402 exact.\n- **RouteDock/MPP session examples** — substantial testnet/reference channel and agent-vault work, not verified mainnet production.\n\nFor every result, show repo, official submission, UI status, contract/network, audit/source-verification status, and as-of date. Discovery does not prove production readiness.",
@@ -11317,7 +11448,8 @@
       "surface": [
         "lumenloop.get_project",
         "lumenloop.search_content_semantic",
-        "lumenloop.search_directory"
+        "lumenloop.search_directory",
+        "scout.getStablecoins"
       ],
       "golden": {
         "answer": "A grounded answer derives its named examples and status claims from the current LumenLoop corpus, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live stablecoin search returned 38 matches, including Circle, Glo Dollar, and Coins.ph, with issuer and token descriptions attached.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
@@ -11330,9 +11462,11 @@
           "Do NOT claim PayPal is PYUSD's legal issuer, or present one Paxos legal entity as timeless while dated primary sources differ.",
           "Do NOT invent a stablecoin/issuer or assert a complete absence/presence category without a defined dated universe.",
           "Do NOT conflate native issuance, supply, app availability, conventional stablecoins, yield-bearing certificates, and fund/RWA tokens.",
-          "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+          "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical.",
+          "Do NOT present the ranked stablecoin snapshot as the complete set of Stellar stablecoins; an asset missing from that snapshot, such as USDC, can still be live on Stellar.",
+          "Do NOT read a null supply, market cap, or holder value as zero, and do NOT compare raw supply across rows with different pegs; marketCapUSD is the comparable metric."
         ],
-        "notes": "VERIFIED issuers against dossier primary sources: Circle USDC + EURC; PayPal PYUSD (launched on Stellar Sep 18 2025); regional anchors like ClickPesa TZS; BENJI as quasi-stable RWA share. Algorithmic stablecoins are absent on Stellar. Freshness:quarterly — new issuers can appear, so flag the list is time-bounded. Stablecoin coverage → lumenloop_search_content_semantic.\nAlso good if the answer: Characterizes the stablecoin set as issuer-led dollars (USDC/EURC/PYUSD), with regional anchors (e.g. ClickPesa's TZS) and BENJI as a quasi-stable RWA.\nGolden cites: A dated source for each named stablecoin.\nGT-20 CORRECTION 2026-07-10 supersedes the inherited 'major set' and algorithmic-absence framing. Grade a dated non-exhaustive taxonomy, issuer roles, and product-class separation; the live Scout stablecoin directory is demonstrably incomplete and mixed-type."
+        "notes": "VERIFIED issuers against dossier primary sources: Circle USDC + EURC; PayPal PYUSD (launched on Stellar Sep 18 2025); regional anchors like ClickPesa TZS; BENJI as quasi-stable RWA share. New issuers can appear, so flag the list as time-bounded. Stablecoin coverage → lumenloop_search_content_semantic.\nAlso good if the answer: Characterizes the stablecoin set as issuer-led dollars (USDC/EURC/PYUSD), with regional anchors (e.g. ClickPesa's TZS) and BENJI as a quasi-stable RWA.\nGolden cites: A dated source for each named stablecoin.\nGT-20 CORRECTION 2026-07-10 supersedes the inherited 'major set' and algorithmic-absence framing. Grade a dated non-exhaustive taxonomy, issuer roles, and product-class separation; the live Scout stablecoin directory is demonstrably incomplete and mixed-type.\nSTABLECOIN SNAPSHOT BOUND (verified 2026-08-18): scout.getStablecoins serves a bounded tracked set, never the complete roster of Stellar stablecoins or issuers. On 2026-08-18 that set carried no USDC row, while Circle's EURC row was present with null supply, marketCapUSD, and holders. An asset missing from the snapshot is untracked at that source; that is never real-world absence. USDC remains live on Stellar under Circle's official Mainnet issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN, and Circle's EURC under GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2. GRADER CAUTION: do not penalize an answer that reports the tracked ranking, and do not penalize an answer that names Circle and USDC as live on Stellar. Both are true at their own scope, and an answer that states which scope it is reporting is stronger than one that picks a side. Grade the reading behavior instead of set membership: cite meta.dataAsOf as the as-of date for any ranking or size claim, never meta.generatedAt, which only dates the response; treat marketCapUSD as the only cross-peg comparable size metric, because supply is raw units of each row's own peg; treat null on any metric as untracked, never zero. issuer is the join key, not ticker: one ticker can occupy several rows under different issuer accounts, so a same-ticker row from another issuer does not contradict Circle's asset. Never derive a filtered count from meta.counts.total; read meta.counts.returned for the returned page and re-check the live service contract before making a pre-limit count claim. Do not require or reward a pinned row count, ranking order, dataAsOf-to-generatedAt lag, or any row's position; all four move between reads. The top row by marketCapUSD may be a yield-bearing token rather than a conventional stablecoin, which the product-class separation above already governs."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -11340,9 +11474,9 @@
         "freshness": "live"
       },
       "truth": {
-        "domain": "real-world",
+        "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-18",
         "sources": [
           {
             "class": "A",
@@ -11383,6 +11517,31 @@
             "class": "A",
             "ref": "https://stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+            "note": "Circle's own developer docs list Stellar Mainnet USDC as USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; observed 2026-08-18."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/stablecoins/eurc-contract-addresses",
+            "note": "Circle's own developer docs list Stellar Mainnet EURC as EURC-GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2; observed 2026-08-18."
+          },
+          {
+            "class": "C",
+            "ref": "scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z",
+            "note": "Read-only live enumeration of the whole tracked set on 2026-08-18: no USDC row; Circle EURC row present with null supply, marketCapUSD, and holders."
+          },
+          {
+            "class": "D",
+            "ref": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+            "note": "Independent on-chain explorer, page dated 2026-08-18: the Circle-issued USDC asset is live with same-day payments and trades."
+          },
+          {
+            "class": "D",
+            "ref": "https://primexbt.com/news/circles-usdc-supply-on-stellar-jumps-34-7-in-30-days-tracking-cctp-rollout/",
+            "note": "Independent reporting dated 2026-08-08 citing Circle's own data for Stellar-specific USDC supply."
           }
         ],
         "corroboration": [
@@ -11427,23 +11586,114 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "USDC is live on Stellar under Circle's official Mainnet issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN, and Circle's EURC is live under GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+                "observedAt": "2026-08-18",
+                "note": "Circle's mainnet address table names the Stellar USDC issuer account."
+              },
+              {
+                "class": "A",
+                "ref": "https://www.circle.com/eurc",
+                "observedAt": "2026-08-18",
+                "note": "Circle's EURC page lists Stellar among the supported chains and links the same Stellar Mainnet EURC asset."
+              },
+              {
+                "class": "D",
+                "ref": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+                "observedAt": "2026-08-18",
+                "note": "Independent explorer shows the asset issued by that account transacting the same day."
+              }
+            ]
+          },
+          {
+            "claim": "The scout.getStablecoins snapshot is a bounded tracked set, so omission from it is untracked coverage and not real-world absence: on 2026-08-18 it served no USDC row at all, while Circle's EURC row was present with null supply, marketCapUSD, and holders.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z",
+                "observedAt": "2026-08-18",
+                "note": "Whole-set enumeration returned every tracked row; no row carried the USDC ticker, and the Circle EURC row carried nulls on every size metric."
+              },
+              {
+                "class": "D",
+                "ref": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+                "observedAt": "2026-08-18",
+                "note": "The same day, the omitted asset was demonstrably live on Stellar mainnet."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+                "observedAt": "2026-08-18",
+                "note": "Circle continues to publish Stellar as a supported USDC mainnet."
+              }
+            ]
+          },
+          {
+            "claim": "One ticker can occupy several snapshot rows under different issuer accounts, so issuer is the join key rather than ticker: on 2026-08-18 EURC appeared both for Circle (GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2) and for MyKobo (GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM).",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z",
+                "observedAt": "2026-08-18",
+                "note": "Two distinct rows shared the EURC ticker with different issuer accounts, issuerDomain values, and company names."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.circle.com/stablecoins/eurc-contract-addresses",
+                "observedAt": "2026-08-18",
+                "note": "Circle's own address table identifies which of the two accounts is Circle's EURC."
+              }
+            ]
+          },
+          {
+            "claim": "The USD size of USDC on Stellar as of 2026-08-18. Independent sources give materially different figures, so no golden pins one; the golden asserts presence and issuer only.",
+            "verdict": "disputed",
+            "evidence": [
+              {
+                "class": "D",
+                "ref": "https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+                "observedAt": "2026-08-18",
+                "note": "On-chain explorer reported total supply 338,953,374 USDC with 2,336,426 trustlines."
+              },
+              {
+                "class": "D",
+                "ref": "https://primexbt.com/news/circles-usdc-supply-on-stellar-jumps-34-7-in-30-days-tracking-cctp-rollout/",
+                "observedAt": "2026-08-08",
+                "note": "Reporting cited roughly 365.5 million USD market cap on Stellar and about 360.5 million USD per Circle data dated 2026-08-07."
+              },
+              {
+                "class": "A",
+                "ref": "https://www.circle.com/multi-chain-usdc/stellar",
+                "observedAt": "2026-08-18",
+                "note": "Circle's own Stellar landing page still served the far older phrase 'grown past $83 million', so Circle's marketing copy and Circle's data disagree."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-18",
+          "by": "Solo todo 1665 stablecoin corpus correction lane (opus-high): independent A+C+D re-derivation, not a re-read of the design pass",
           "evidence": [
-            "Solo scratchpad 569 Batches D and G, 2026-07-09; sibling sweep covered q-eco-pyusd-stellar-freshness, q-eco-2025-defi-launches, and q-asset-usdc-eurc-issuer.",
-            "Solo scratchpad 575 GT-20 primary 3256 and blind 3257; issuer/operator/report checks asOf 2026-07-10.",
-            "2026-07-11 localhost:8787 search→execute probe observed: a live stablecoin search returned 38 matches, including Circle, Glo Dollar, and Coins.ph, with issuer and token descriptions attached.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "Class C 2026-08-18: read-only scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z. The tracked set carried no USDC row; the Circle EURC row (GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2) was present with null supply, marketCapUSD, and holders; meta.counts.total held the tracked-set size under a peg filter while meta.counts.returned dropped, so total is not a filtered count.",
+            "Class A 2026-08-18: https://developers.circle.com/stablecoins/usdc-contract-addresses lists Stellar Mainnet USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; https://developers.circle.com/stablecoins/eurc-contract-addresses and https://www.circle.com/eurc list Stellar Mainnet EURC-GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 and name Stellar among EURC's supported chains.",
+            "Class D 2026-08-18: https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN showed the Circle-issued USDC asset live with same-day payments and trades; independent 2026-08-08 reporting (https://primexbt.com/news/circles-usdc-supply-on-stellar-jumps-34-7-in-30-days-tracking-cctp-rollout/ and sibling outlets) cited Circle's own data for Stellar USDC supply.",
+            "Sibling sweep 2026-08-18 across the battery for USDC, EURC, and stablecoin: read q-token-circle-usdc-on-stellar, q-asset-usdc-eurc-issuer, q-asset-usdc-eurc-path-fx, q-eco-pyusd-stellar-freshness, q-eco-stellar-rwa-stablecoin-volume, q-asset-rwa-tokenized-freshness, q-raph-usdc-onto-stellar, q-defi-benji-franklin-templeton, and the other stablecoin case in this pair. No sibling contradicts the coverage-bound caution, and the Circle attribution stays aligned with consistency-register clusters 015 and 028. Both cases are cluster-015 members or Circle-adjacent, so the register needs re-stamping by the register lane; this lane did not edit it.",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 section 'Stablecoin corpus correction verdict'",
+            "solo://proj/80/todo/correct-stablecoin-g--1665",
+            "Adding scout.getStablecoins to the surface without a grader caution would have let the bounded snapshot be read as the complete Stellar stablecoin roster, so a truthful answer reporting the tracked ranking, or a truthful answer naming USDC, could have been punished by the existing key facts and avoid clauses.",
+            "Fable xhigh todo 1668 independently confirmed the claims, identified the retired EURC URL, and removed the superseded algorithmic-absence and timeless filtered-count wording."
           ],
           "rootCause": [
-            "A dated three-token roster and an unbounded negative were promoted into a current market taxonomy.",
-            "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch D",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "improvements/stellar-light-scout/sls-066-stablecoin-inventory-omits-usdc.md",
+            "solo://proj/80/todo/correct-stablecoin-g--1665"
           ]
         },
         "origin": "raven-next q-eco-stablecoins-on-stellar"
@@ -12911,80 +13161,86 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, the live RFP response identified SCF #45 in Submission, with submissions open until 2026-08-16, and SCF #43 as the last concluded round.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "As of 2026-08-18, no SCF round is open in the Submission phase. SCF #45 is the current round in Initial Review, and its 2026-08-16 submission deadline has elapsed. SCF #44 remains in Notification & Award Distribution, while SCF #43 is the last concluded round. A grounded answer checks and dates the live official awards state and Scout round metadata.\n\nThe dated example is illustrative: a later grounded answer should report the state supported at its own observation time.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Identifies the current SCF round and phase.",
-          "States the relevant current deadline or last-concluded-round distinction."
+          "States that no round is currently in Submission and that SCF #45's 2026-08-16 deadline has elapsed.",
+          "Distinguishes #45 as current, #44 as distributing, and #43 as last concluded."
         ],
         "avoid": [
-          "Do NOT substitute #44 or #43, invent a deadline time/timezone, give only a dashboard pointer, or freeze #45/August 16 as permanent.",
+          "Do NOT call SCF #45 open for full-proposal submissions, substitute #44 or #43 as current, or give only a dashboard pointer.",
+          "Do NOT invent a deadline time, timezone, notification date, or submission count.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "GT-23 2026-07-10: require an actual dated round/phase/deadline answer plus live-source pointer. Distinguish #45 Submission, #44 distribution, and #43 concluded; examples remain non-gating and no deadline time/timezone is inferred.\nGT-23 CORRECTION 2026-07-10: phase semantics and an answer-visible dated exemplar replace the abstract pointer-only template."
+        "notes": "GT-23 refreshed 2026-08-18: require an actual dated round, phase, and deadline answer plus official and live-source pointers. No round is in Submission; #45 is in Initial Review after its deadline, #44 is distributing, and #43 is concluded. The two published Q3 RFP briefs do not prove that #45 still accepts full proposals."
       },
       "tags": {
         "category": "edge-behavior",
         "service": "scout",
-        "freshness": "live"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-18",
+        "reverifyBy": "2026-09-10",
         "sources": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "class inferred at migration"
+            "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
           },
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
-            "note": "class inferred at migration"
+            "note": "Official SCF #45 detail page observed 2026-08-18; the page showed Initial Review."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "note": "Live Scout result observed 2026-08-18; currentRound=45, currentPhase=Initial Review, and no submission window."
           }
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-07-10 SCF #45 is in Submission with an August 16 deadline, while #44 is distributing awards and #43 is last concluded.",
+            "claim": "As of 2026-08-18, no SCF round is in Submission; SCF #45 is in Initial Review after its 2026-08-16 deadline, #44 is distributing, and #43 is last concluded.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: current official SCF awards/detail pages",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-08-18T15:22:00Z",
+                "note": "Official index showed #45 Initial Review with an August 16, 2026 deadline, #44 in distribution, and #43 ended."
               },
               {
                 "class": "C",
-                "ref": "C: live Scout RFP/round parser agreeing with the primary page",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Scout reported currentRound=45, currentPhase=Initial Review, no submission window, and no round in Submission."
               },
               {
-                "class": "D",
-                "ref": "D: stale cached snippets rejected as non-authoritative",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "A",
+                "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+                "observedAt": "2026-08-18T15:25:19Z",
+                "note": "The older RFP notice still called two Q3 briefs open for #45; it did not override the newer awards phase."
               }
             ],
             "note": "Legacy verdict: confirmed-time-slice."
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-18",
+          "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
           "evidence": [
-            "Solo scratchpad 575 GT-23 primary 3264 and blind 3267; official/Scout agreement asOf 2026-07-10.",
-            "2026-07-11 localhost:8787 search→execute probe observed: the live RFP response identified SCF #45 in Submission, with submissions open until 2026-08-16, and SCF #43 as the last concluded round.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+            "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
+            "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch — live Scout agreement observed 2026-08-18T15:23Z–15:24Z.",
+            "Sibling sweep covered q-scf-current-round, q-scf-open-rfps, q-scf-rfp-tooling, the three live RFP cases, and q-edge-scf-v7-centralization-myths; the updated brief-versus-round distinction is consistent."
           ],
           "rootCause": [
-            "A volatile direct sibling was corrected without propagating the new phase/deadline model to this generic freshness row.",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-edge-fresh-latest-scf-round"
@@ -14212,30 +14468,6 @@
         ],
         "corroboration": [
           {
-            "claim": "SCF #45 is in Submission with an August 16, 2026 deadline; the Build cap remains up to $150K worth of XLM",
-            "verdict": "confirmed",
-            "evidence": [
-              {
-                "class": "A",
-                "ref": "A: https://communityfund.stellar.org/awards fetched 2026-07-09 — SCF #45 deadline August 16, 2026",
-                "observedAt": "2026-07-09",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "C",
-                "ref": "C: https://stellarlight.xyz/api/rfps?status=open fetched 2026-07-09T23:48Z — currentRound 45, submissionWindow.closes 2026-08-16, source=live",
-                "observedAt": "2026-07-09",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "A",
-                "ref": "A: SCF Build Award handbook fetched 2026-07-09 — award size up to $150,000 worth of XLM",
-                "observedAt": "2026-07-09",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              }
-            ]
-          },
-          {
             "claim": "The published Build schedule is 10/20/30/40; current guidelines impose a 90-day completion-form deadline and discretionary unpaid-tranche forfeiture, while grant control does not equal protocol deletion authority.",
             "verdict": "confirmed-as-of",
             "evidence": [
@@ -14268,21 +14500,16 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-18",
+          "by": "Todo 1659 SCF sibling cleanup after accepted primary and blind adversarial review",
           "evidence": [
-            "Solo scratchpad 569 Batch B, 2026-07-09.",
-            "Sibling sweep covered q-scf-current-round and found the same expired date in both cases.",
             "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; current 90-day/unpaid-tranche terms checked 2026-07-10.",
-            "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "Preserved the 2026-07-10 payment-schedule and network-authority observation; this event does not claim a later re-observation of those facts.",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 — primary and blind adversarial reviews required removal of the unrelated stale SCF #45 Submission row.",
+            "Sibling sweep covered q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, and the three live RFP cases; current-round facts now stay in the dedicated cases."
           ],
           "rootCause": [
-            "Ordinary freshness drift in a duplicated current-round example; the durable grant-versus-mainnet-control claim was not contradicted.",
-            "solo://proj/49/todo/golden-corpus-health--901 — q-scf-current-round sibling expansion",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-edge-scf-v7-centralization-myths"
@@ -14856,6 +15083,83 @@
           ]
         },
         "origin": "authored 2026-07 (gap-ops)"
+      }
+    },
+    {
+      "id": "q-gap-contracts-domain-empty",
+      "question": "What does an empty Scout contract-domain result mean, and how should I report it?",
+      "surface": [
+        "scout.listContracts"
+      ],
+      "golden": {
+        "answer": "Preserve the requested domain, `generatedAt`, and returned counts. An empty `contracts` array with a successful response is an ok-with-empty registry result, not a soft-empty error envelope. `scout.listContracts` is evidence-gated: it includes contracts only after a scanner verifies a claimed mainnet id or on-chain enrichment attributes activity. Therefore, report that the current registry returned no verified rows for that filter. Do not claim that no such contract exists. Use broader project, repository, or research discovery for an open-world existence question, and keep any later contract claim tied to its own evidence.",
+        "keyFacts": [
+          "Distinguishes a successful empty contracts payload from a soft-empty error envelope.",
+          "Explains the evidence-gated membership rule and keeps absence registry-relative.",
+          "Reports the filter, timestamp, counts, and a broader recovery route for open-world existence."
+        ],
+        "avoid": [
+          "Do NOT claim that an empty filtered registry proves no contract in that domain exists.",
+          "Do NOT convert the successful empty payload into an error or a failed request.",
+          "Do NOT label an unlisted contract as unverified or inactive from registry omission alone."
+        ],
+        "notes": "The observed `defi-yield` result was empty on 2026-08-18. Grade the durable empty-success semantics, not continued emptiness."
+      },
+      "tags": {
+        "category": "defi-ecosystem",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-08-18",
+        "sources": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.listContracts",
+            "note": "The contract defines evidence-gated membership and states that absence is not an existence claim."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5",
+            "note": "The read-only probe returned HTTP success, an empty contracts array, zero returned rows, and the evidence-gated note."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "A successful empty domain response means the evidence-gated registry has no returned row for that filter at that time; it does not prove real-world absence.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.listContracts",
+                "observedAt": "2026-08-18",
+                "note": "The manifest defines verified membership and explicitly limits absence semantics."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/contracts?domain=defi-yield&limit=5",
+                "observedAt": "2026-08-18",
+                "note": "The response succeeded with an empty array, zero counts, the applied filter, and the evidence-gated note."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-18",
+          "by": "Todo 1664 coverage-golden implementation",
+          "evidence": [
+            "Read-only listContracts domain probe returned a successful empty payload on 2026-08-18.",
+            "catalog/manifest.json#scout.listContracts defines the durable evidence-gated absence boundary.",
+            "Sibling sweep: q-ti-enumerate-all-contracts already rejects this registry as a complete deployment inventory.",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+          ],
+          "rootCause": [
+            "solo://proj/80/todo/author-five-new-cove--1664"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)"
       }
     },
     {
@@ -15673,7 +15977,8 @@
       "question": "How do I see Scout contract changes without confusing them with current ecosystem data?",
       "surface": [
         "scout.getChangelog",
-        "scout.getStatus"
+        "scout.getStatus",
+        "scout.getChanges"
       ],
       "golden": {
         "answer": "Use `scout.getChangelog({limit})`; it returned a latest-first, contract-affecting feed with `entries`, filter metadata, and an inner payload `ok`. Use `getStatus` for current service health/freshness, not the changelog as a data source.",
@@ -16166,6 +16471,100 @@
           ]
         },
         "origin": "authored 2026-07 (gap-ops)"
+      }
+    },
+    {
+      "id": "q-gap-vet-pitch-vertical-null",
+      "question": "What does `vertical: null` mean when Scout's idea-vetting and SCF-pitch composites return it?",
+      "surface": [
+        "scout.vetIdea",
+        "scout.scfPitch"
+      ],
+      "golden": {
+        "answer": "In both composites, `vertical: null` means the idea did not map to Scout's closed measurable vertical axis. It does not mean the idea has no market, competitors, prior art, demand, or funding history. Read any returned competitor, maturity, and prior-art blocks on their stated basis. Treat `gap: null` and `funding: null` as unavailable vertical-derived analyses, not zero values. In `scout.scfPitch`, evaluate the separate round block through `round.source` even when the vertical is null. Cite `generatedAt` and keep every conclusion source-relative.",
+        "keyFacts": [
+          "Defines a null vertical as an unmapped measurable axis, not a market-absence verdict.",
+          "Treats null gap and funding blocks as unavailable vertical-derived analyses rather than zero values.",
+          "Still inspects returned competitors, maturity, prior art, and the separate pitch-round source."
+        ],
+        "avoid": [
+          "Do NOT claim that `vertical: null` proves the market, competition, demand, or prior art does not exist.",
+          "Do NOT convert null gap or funding blocks to numeric zero.",
+          "Do NOT ignore `round.source` because the pitch vertical is null."
+        ],
+        "notes": "This is a source-relative service-semantics case. The probe idea and returned rows are examples, not permanent targets."
+      },
+      "tags": {
+        "category": "scf-grants-builders",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-08-18",
+        "sources": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.vetIdea",
+            "note": "The contract states that a null vertical means unmapped, not marketless."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.scfPitch",
+            "note": "The pitch contract keeps round state separate from the vetting vertical."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/vet-idea?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+            "note": "The read-only probe returned a null vertical, gap, and funding while still returning competitor, maturity, and prior-art evidence."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/scf-pitch?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+            "note": "The read-only probe returned a null vertical and a separate round block."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "A null vertical is an unmapped measurable axis, while other evidence blocks can still contain results and the pitch round remains separate.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.vetIdea",
+                "observedAt": "2026-08-18",
+                "note": "The manifest defines null as unmapped rather than marketless."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/vet-idea?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+                "observedAt": "2026-08-18",
+                "note": "The live response had null vertical-derived blocks and populated competitor, maturity, and prior-art blocks."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/scf-pitch?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+                "observedAt": "2026-08-18",
+                "note": "The live response retained an independent round block with the null vertical."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-18",
+          "by": "Todo 1664 coverage-golden implementation",
+          "evidence": [
+            "Read-only vetIdea and scfPitch probes for the same unmapped idea on 2026-08-18.",
+            "catalog/manifest.json#scout.vetIdea and #scout.scfPitch define the null and round semantics.",
+            "Sibling sweep: idea-vetting cases use gap results as source-relative supply evidence and do not contradict the null boundary.",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+          ],
+          "rootCause": [
+            "solo://proj/80/todo/author-five-new-cove--1664"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)"
       }
     },
     {
@@ -19889,7 +20288,8 @@
       "id": "q-org-mazieres-chief-scientist",
       "question": "Who is David Mazières and what is his role at the Stellar Development Foundation?",
       "surface": [
-        "scout.searchResearch"
+        "scout.searchResearch",
+        "scout.getPeople"
       ],
       "golden": {
         "answer": "**David Mazières** is an SDF/Stellar **founder or co-founder**, the single author of the 2015 Stellar Consensus Protocol paper that introduced Federated Byzantine Agreement, and a Stanford computer-science professor. When observed on 2026-07-13, SDF's team-page data described him as **“Founder and Chief Scientist,”** but the rendered Leadership card showed only his name. Treat that title as a dated first-party page-data observation, not as a visibly displayed or timeless current role. He is not SDF's CEO. Early sources describe McCaleb, Joyce Kim, Mazières, network development, and foundation leadership with different scopes, so do not force an exclusive founder list.",
@@ -19976,6 +20376,83 @@
           ]
         },
         "origin": "raven-next q-org-mazieres-chief-scientist"
+      }
+    },
+    {
+      "id": "q-org-sdf-board-directors",
+      "question": "Who currently sits on the Stellar Development Foundation board of directors?",
+      "surface": [
+        "scout.getPeople"
+      ],
+      "golden": {
+        "answer": "Query `scout.getPeople` with `section: \"Board of directors\"`, page until the returned count reaches the filtered total, and verify the names against SDF's official team page. As of 2026-08-18, the official page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji. Report each returned role and affiliation with the row's `observedAt` and `sourceUrl`; treat both the roster and roles as dated facts. These are SDF governance records, not builder or availability records.",
+        "keyFacts": [
+          "As of 2026-08-18, the official SDF page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji under Board of directors.",
+          "Uses the board section, pagination counts, source URL, and observed date for a current answer.",
+          "Keeps the SDF people roster distinct from the builder directory."
+        ],
+        "avoid": [
+          "Do NOT present the dated roster or roles as timeless facts.",
+          "Do NOT treat an SDF board member as a GitHub builder or as available for contact."
+        ],
+        "notes": "The roster is volatile. Grade a current, source-qualified roster and accept later official changes when the answer cites its observation date."
+      },
+      "tags": {
+        "category": "history-org-tokenomics",
+        "service": "scout",
+        "freshness": "scheduled"
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-18",
+        "reverifyBy": "2026-11-19",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/team",
+            "note": "The official SDF team page showed the Board of directors section and the five named cards on 2026-08-18."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
+            "note": "The read-only probe returned five board rows, their roles, affiliations, source URLs, and observed dates."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "As of 2026-08-18, SDF's board section listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://stellar.org/foundation/team",
+                "observedAt": "2026-08-18",
+                "note": "Direct HTML inspection showed the board heading and all five named cards."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100",
+                "observedAt": "2026-08-18",
+                "note": "The live service returned the same five names and identified its official source page."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-18",
+          "by": "Todo 1664 coverage-golden implementation",
+          "evidence": [
+            "https://stellar.org/foundation/team inspected directly on 2026-08-18.",
+            "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 returned the same five names on 2026-08-18.",
+            "Sibling sweep: q-org-mazieres-chief-scientist uses the same people source and keeps its dated title qualification.",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+          ],
+          "rootCause": [
+            "solo://proj/80/todo/author-five-new-cove--1664"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)"
       }
     },
     {
@@ -28715,14 +29192,16 @@
         "scout.getRfps"
       ],
       "golden": {
-        "answer": "Query the live RFP set for contract source verification, report status and requirements only from the returned brief, cite its URL and official round verifyAt, and include asOf. If absent, say absent from the current served set rather than closed forever.",
+        "answer": "Query the live RFP set for contract source verification. Report status and requirements only from the returned brief, cite its URL and official round `verifyAt`, and include an as-of date. If absent, say it is absent from the current served set rather than closed forever. Do not treat `verifyAt` or another open brief as proof that the SCF full-proposal window is open.",
         "keyFacts": [
           "Uses the current RFP result for status and requirements.",
           "Cites the brief plus official-round verification URL.",
-          "Includes as-of and scopes absence to the served set."
+          "Includes as-of and scopes absence to the served set.",
+          "Separates brief status and verifyAt metadata from the SCF round submission phase."
         ],
         "avoid": [
-          "Calls the archived source-verification brief open without current status evidence."
+          "Calls the archived source-verification brief open without current status evidence.",
+          "Treats verifyAt or an open brief as evidence that the current SCF round accepts a new full proposal."
         ]
       },
       "tags": {
@@ -28733,7 +29212,7 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-18",
         "sources": [
           {
             "class": "C",
@@ -28750,23 +29229,26 @@
         ],
         "corroboration": [
           {
-            "claim": "Current status and requirements require the live brief, official verify URL, and as-of.",
-            "verdict": "confirmed",
+            "claim": "Current contract-verification RFP status and requirements require the live served set, official verification URL, and as-of date; verifyAt does not prove an open SCF submission window.",
+            "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Live response supplied the current served set and round metadata showing #45 Initial Review with no submission window."
               },
               {
                 "class": "A",
                 "ref": "https://communityfund.stellar.org/awards",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:22:00Z",
+                "note": "Official awards index independently showed #45 in Initial Review."
               },
               {
                 "class": "B",
                 "ref": "catalog/manifest.json#scout.getRfps",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18",
+                "note": "Exposed operation provides current served-set status and round verification metadata."
               }
             ]
           },
@@ -28777,19 +29259,20 @@
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:24:51Z"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)",
+          "date": "2026-08-18",
+          "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
           "evidence": [
-            "solo://proj/49/process/3414",
-            "solo://proj/49/process/3420",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
             "https://communityfund.stellar.org/awards",
-            "catalog/manifest.json#scout.getRfps"
+            "https://stellarlight.xyz/api/rfps?status=open",
+            "catalog/manifest.json#scout.getRfps",
+            "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; scoped absence and round-state caution remain consistent."
           ],
           "rootCause": [
             "freshness-drift"
@@ -29109,86 +29592,84 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live RFP response identified SCF #45 in Submission and carried a 2026-08-16 submission deadline.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer checks the live official awards state and Scout round metadata, then dates every volatile claim. As of 2026-08-18, no SCF round is in Submission. SCF #45 is the current round in Initial Review, and its 2026-08-16 submission deadline has elapsed. SCF #44 remains in Notification & Award Distribution, while SCF #43 is the last concluded round.\n\nThe dated example is illustrative: a later grounded answer should report the state supported at its own observation time.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement."
+          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+          "States that no round is currently in Submission and identifies SCF #45 as being in Initial Review.",
+          "Treats 2026-08-16 as SCF #45's elapsed submission deadline rather than a current closing date."
         ],
         "avoid": [
-          "Do NOT present the expired July 26 deadline as current.",
-          "Do NOT assert any round/deadline as permanent or fabricate a date not grounded in a live source.",
+          "Do NOT claim that SCF #45 is still open for full-proposal submissions or that an open RFP brief proves an open round.",
+          "Do NOT assert any round or deadline as permanent, or fabricate a deadline time, timezone, notification date, or submission count.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Freshness item: identify the current round/status/deadline from a dated live source. The Build cap is owned by separate cases and is not a requirement for this question."
+        "notes": "Freshness item: identify the current round, phase, and deadline from dated official and live sources. As of 2026-08-18, no round is in Submission; #45 is in Initial Review, #44 is distributing, and #43 is the last concluded round. The two published Q3 RFP briefs do not reopen #45's full-proposal window. The Build cap is owned by separate cases."
       },
       "tags": {
         "category": "scf-grants-builders",
         "service": "scout",
-        "freshness": "live"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-18",
+        "reverifyBy": "2026-09-03",
         "sources": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "class inferred at migration"
+            "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
           },
           {
             "class": "A",
-            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
-            "note": "class inferred at migration"
+            "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+            "note": "Official SCF #45 detail page observed 2026-08-18; the page showed Initial Review."
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "class inferred at migration"
+            "note": "Live Scout result observed 2026-08-18; currentRound=45, currentPhase=Initial Review, and no submission window."
           }
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-07-09, SCF #45 is in Submission and closes 2026-08-16; Build awards remain capped at up to $150K worth of XLM",
-            "verdict": "confirmed",
+            "claim": "As of 2026-08-18, no SCF round is in Submission; SCF #45 is in Initial Review after its 2026-08-16 deadline, #44 is distributing, and #43 is last concluded.",
+            "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: https://communityfund.stellar.org/awards fetched 2026-07-09 — SCF #45 deadline August 16, 2026",
-                "observedAt": "2026-07-09",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "C",
-                "ref": "C: https://stellarlight.xyz/api/rfps?status=open fetched 2026-07-09T23:48Z — currentRound 45, submissionWindow.closes 2026-08-16, asOf 2026-07-09",
-                "observedAt": "2026-07-09",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-08-18T15:22:00Z",
+                "note": "Official index showed #45 Initial Review with an August 16, 2026 deadline, #44 in distribution, and #43 ended."
               },
               {
                 "class": "A",
-                "ref": "A: SCF Build Award handbook fetched 2026-07-09 — up to $150,000 worth of XLM",
-                "observedAt": "2026-07-09",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+                "observedAt": "2026-08-18T15:23:00Z",
+                "note": "Official #45 detail page showed Initial Review and did not supply a notification date or submission count."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Scout reported currentRound=45, currentPhase=Initial Review, no submission window, and no round in Submission."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review; scope-only correction does not claim a later live-round observation",
+          "date": "2026-08-18",
+          "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
           "evidence": [
-            "Solo scratchpad 569 Batch B, 2026-07-09.",
-            "Sibling expansion found and corrected the same July 26 date in q-edge-scf-v7-centralization-myths.",
-            "2026-07-11 localhost:8787 search→execute probe observed: the live RFP response identified SCF #45 in Submission and carried a 2026-08-16 submission deadline.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+            "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
+            "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch — live Scout agreement observed 2026-08-18T15:23Z–15:24Z.",
+            "Sibling sweep covered q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, the three live RFP cases, and q-edge-scf-v7-centralization-myths; the updated brief-versus-round distinction is consistent."
           ],
           "rootCause": [
-            "Ordinary freshness drift in a roughly six-week round schedule; the old case correctly warned that its date would expire.",
-            "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch B",
-            "eval-authoring",
-            "Removed an unrelated Build-cap key fact duplicated from another case.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-scf-current-round"
@@ -30183,74 +30664,95 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-08-05, the current Q3 roster contains exactly two open RFP briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response also includes a synthetic SCF #45 round row; that row represents the open submission round and is not a third RFP brief.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer derives its named examples and status claims from the live Scout response and official SCF pages. As of 2026-08-18, the Q3 roster contains two published open RFP briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response reports `syntheticRounds=0`. SCF #45 is in Initial Review, so the open briefs do not establish that #45 still accepts full proposals.\n\nThe dated example is illustrative: a later grounded answer should report the roster and round state supported at its own observation time.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Reports the currently-open RFP briefs.",
-          "Distinguishes them from the synthetic round row."
+          "States that the live response has no synthetic round row.",
+          "Distinguishes an open RFP brief from an open SCF full-proposal window."
         ],
         "avoid": [
-          "Do NOT reference retired scout_rfps, count scf-round-45 as a sixth RFP, or repeat #43 as current without the conflict.",
+          "Do NOT reference retired scout_rfps, claim a synthetic SCF #45 row is present, or count a round row as another brief.",
+          "Do NOT claim that SCF #45 still accepts full proposals solely because the Q3 briefs remain published as open.",
           "Do NOT present the roster as permanent, invent per-RFP bounties, or claim RFP projects use NQG voting.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Dossier §4.2. Freshness item — confidence stays medium because the open set rotates. HISTORICAL, SUPERSEDED — do not grade against this roster: a 2026-06-29 observation recorded activeQuarter q2-2026 with 5 open / 9 closed (Trustline Onboarder, Passkey UI Kit, Account Demolisher, Contract Source Verification Service, OZ Accounts Policy Builder). As of 2026-08-05 the current Q3 official page and live feed agree on exactly two open briefs, LayerZero DVN and x402 Facilitator with Bazaar, beside the synthetic SCF #45 round row. An answer naming the current open set is CORRECT and must not be marked down for differing from the older list. The rubric gates on dated-observation behaviour, never on the exact roster. SCF #43 remains an explicitly historical concluded round and must not be substituted for current #45.\nAlso good if the answer: RFPs are reviewed via the SCF Build RFP Track (panel-only, no community vote). | RFP awards follow the standard SCF Build $150K XLM cap (per-RFP bounties are not separately published).\nGolden cites: The SCF RFP Track handbook page and/or the live RFPs feed."
+        "notes": "Freshness item: the open set rotates, so grade dated observation behavior rather than a permanent roster. As of 2026-08-18, the official RFP page and live feed support two published Q3 briefs. The newer awards state and Scout round metadata show #45 in Initial Review with no open submission window. Do not penalize an answer that calls the briefs active while saying the #45 full-proposal window has closed. RFP Track review is panel-led, and the separate Build-cap cases own the $150,000 limit."
       },
       "tags": {
         "category": "scf-grants-builders",
         "service": "scout",
-        "freshness": "live"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-05",
+        "asOf": "2026-08-18",
+        "reverifyBy": "2026-09-17",
         "sources": [
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "Live open-RFP response observed 2026-08-05."
+            "note": "Live open-RFP response observed 2026-08-18; two briefs and syntheticRounds=0."
           },
           {
             "class": "A",
             "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-            "note": "class inferred at migration"
+            "note": "Official RFP page observed 2026-08-18; it names the two Q3 briefs."
           },
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "note": "class inferred at migration"
+            "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
           }
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-08-05, the current Q3 roster contains exactly two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—plus a synthetic SCF #45 round row that is not a brief.",
+            "claim": "As of 2026-08-18, the published Q3 roster contains two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=0.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-08-05",
-                "note": "Returned two actual open RFP briefs plus the synthetic SCF #45 round row."
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Returned two open RFP rows and syntheticRounds=0."
               },
               {
                 "class": "A",
                 "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-                "observedAt": "2026-08-05",
-                "note": "Current official Q3 page names the same two briefs."
+                "observedAt": "2026-08-18T15:25:19Z",
+                "note": "Official Q3 page names the same two briefs."
+              }
+            ]
+          },
+          {
+            "claim": "As of 2026-08-18, SCF #45 is in Initial Review with no confirmed open submission window; an open brief does not prove that a full proposal can still enter #45.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-08-18T15:22:00Z",
+                "note": "Official awards index showed #45 in Initial Review after its August 16 deadline."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Scout reported #45 Initial Review, no submission window, and no round in Submission."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-05",
-          "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
+          "date": "2026-08-18",
+          "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
           "evidence": [
-            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — official/current A+C sources agree on two Q3 briefs; the API also returns one synthetic round row, observed 2026-08-05.",
-            "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
-            "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
-            "Sibling sweep: q-scf-rfp-tooling was refreshed in the same change; q-scf-open-rfps-live and q-scf-passkey-rfps-live require a fresh exhaustive live query rather than pinning the retired Q2 roster; q-scf-hummingbot-kelp-closed-rfp remains explicitly historical and closed."
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
+            "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
+            "Sibling sweep covered q-scf-rfp-tooling, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-hummingbot-kelp-closed-rfp, and q-edge-scf-v7-centralization-myths; no contradictory current-round or roster claim remains."
           ],
           "rootCause": [
             "freshness-drift"
@@ -30266,14 +30768,16 @@
         "scout.getRfps"
       ],
       "golden": {
-        "answer": "Call the live open-RFP view, list only returned open rows, cite each application/brief URL, and include meta.scfRound.asOf, phase, deadline, and verifyAt when present. Distinguish curated briefs from a confirmed open SCF round.",
+        "answer": "Call the live open-RFP view, list only returned open rows, cite each brief URL, and include `meta.scfRound` as-of, phase, deadline, and `verifyAt` when present. Distinguish published open briefs from a confirmed open SCF submission round. Do not infer full-proposal availability from brief status alone.",
         "keyFacts": [
           "Uses the live open-RFP response and lists only returned open rows.",
           "Includes source links and current round as-of/phase/deadline/verifyAt.",
-          "Distinguishes curated sponsor briefs from the official SCF submission round."
+          "Distinguishes curated sponsor briefs from the official SCF submission round.",
+          "Does not infer application availability from an open brief when the round metadata shows no Submission-phase window."
         ],
         "avoid": [
-          "Pins Q2 2026 RFP names or an SCF round without checking the live status metadata."
+          "Pins Q2 2026 RFP names or an SCF round without checking the live status metadata.",
+          "Claims that an open brief proves SCF #45 still accepts a new full proposal."
         ]
       },
       "tags": {
@@ -30284,7 +30788,7 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-18",
         "sources": [
           {
             "class": "C",
@@ -30301,23 +30805,26 @@
         ],
         "corroboration": [
           {
-            "claim": "Open opportunities must be returned live with source links and dated official-round metadata.",
-            "verdict": "confirmed",
+            "claim": "As of 2026-08-18, the live open-RFP response returned two open briefs, while official and live round metadata showed SCF #45 in Initial Review with no open submission window.",
+            "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Returned two open briefs, syntheticRounds=0, currentRound=45, and currentPhase=Initial Review."
               },
               {
                 "class": "A",
                 "ref": "https://communityfund.stellar.org/awards",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:22:00Z",
+                "note": "Official awards index showed SCF #45 in Initial Review after its August 16 deadline."
               },
               {
                 "class": "A",
                 "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:25:19Z",
+                "note": "Official RFP page continued to list the two Q3 briefs."
               }
             ]
           },
@@ -30328,24 +30835,25 @@
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:24:51Z"
               },
               {
                 "class": "A",
                 "ref": "https://communityfund.stellar.org/awards",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:22:00Z"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)",
+          "date": "2026-08-18",
+          "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
           "evidence": [
-            "solo://proj/49/process/3414",
-            "solo://proj/49/process/3420",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
             "https://communityfund.stellar.org/awards",
-            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track"
+            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
+            "https://stellarlight.xyz/api/rfps?status=open",
+            "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; brief-open and round-open meanings remain separate."
           ],
           "rootCause": [
             "freshness-drift"
@@ -30361,15 +30869,17 @@
         "scout.getRfps"
       ],
       "golden": {
-        "answer": "Fetch the full current open set with scout.getRfps({status:\"open\"}), then locally filter titles, descriptions, and technical requirements for related passkey and smart-account concepts. A q-filtered call may supplement but not replace the exhaustive open-set scan; cite deliverables and dated round metadata.",
+        "answer": "Fetch the full current open set with scout.getRfps({status:\"open\"}), then locally filter titles, descriptions, and technical requirements for related passkey and smart-account concepts. A q-filtered call may supplement but not replace the exhaustive open-set scan. Cite deliverables and dated round metadata. Do not infer that a matching open brief proves an SCF full-proposal window is open.",
         "keyFacts": [
           "Fetches the full open RFP set first, then locally filters related passkey/smart-account concepts.",
           "Compares stated deliverables and cites each returned brief.",
-          "Includes round as-of/verifyAt and scopes an empty result to the source."
+          "Includes round as-of/verifyAt and scopes an empty result to the source.",
+          "Separates brief status from the SCF round submission phase."
         ],
         "avoid": [
           "Claims a remembered passkey brief is still open without current status evidence.",
-          "A narrow zero/one-hit query is not an exhaustive opportunity scan."
+          "A narrow zero/one-hit query is not an exhaustive opportunity scan.",
+          "Claims that an open brief proves the current SCF round accepts a new full proposal."
         ]
       },
       "tags": {
@@ -30380,7 +30890,7 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-18",
         "sources": [
           {
             "class": "C",
@@ -30397,23 +30907,26 @@
         ],
         "corroboration": [
           {
-            "claim": "Relevant briefs are selected from current open rows, compared by deliverables, cited, and dated.",
-            "verdict": "confirmed",
+            "claim": "Relevant briefs must be selected from the complete current open set, compared by deliverables, cited, and dated without inferring that the SCF submission window is open.",
+            "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Live response returned the complete served open set and round metadata showing #45 Initial Review with no submission window."
               },
               {
                 "class": "A",
                 "ref": "https://communityfund.stellar.org/awards",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:22:00Z",
+                "note": "Official awards index independently showed #45 in Initial Review."
               },
               {
                 "class": "B",
                 "ref": "catalog/manifest.json#scout.getRfps",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18",
+                "note": "Exposed operation supports the exhaustive status=open call and local filtering behavior."
               }
             ]
           },
@@ -30424,25 +30937,127 @@
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-07-11"
+                "observedAt": "2026-08-18T15:24:51Z"
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)",
+          "date": "2026-08-18",
+          "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
           "evidence": [
-            "solo://proj/49/process/3414",
-            "solo://proj/49/process/3420",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
             "https://communityfund.stellar.org/awards",
-            "catalog/manifest.json#scout.getRfps"
+            "https://stellarlight.xyz/api/rfps?status=open",
+            "catalog/manifest.json#scout.getRfps",
+            "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; exhaustive-set behavior and round-state caution remain consistent."
           ],
           "rootCause": [
             "freshness-drift"
           ]
         },
         "origin": "boxy sl-funding-smart-account-passkey-rfps"
+      }
+    },
+    {
+      "id": "q-scf-pitch-prep-live",
+      "question": "How should I prepare an evidence-grounded SCF pitch for my Stellar idea right now?",
+      "surface": [
+        "scout.scfPitch"
+      ],
+      "golden": {
+        "answer": "Call `scout.scfPitch` with the concrete idea and cite the response's `generatedAt`. Use `report.round` for current timing only after checking `round.source`. A `live` source permits reporting the returned open-round rows; an `unavailable` source means the round state is unknown and must be checked on the official SCF awards page. Use funded peers, the funding bar, competitor maturity, prior art, and each deterministic angle as dated corpus evidence for differentiation. State each block's basis, and do not treat the composite as a funding decision or a complete market study.",
+        "keyFacts": [
+          "Checks `round.source` before describing current SCF timing and routes an unavailable result to the official awards page.",
+          "Uses funded peers, funding-bar basis, competitor maturity, prior art, and deterministic angles as dated pitch evidence.",
+          "Reports `generatedAt`, corpus scope, and each block's evidence limits."
+        ],
+        "avoid": [
+          "Do NOT convert `round.source: \"unavailable\"` into a claim that no submission round is open.",
+          "Do NOT present deterministic angles as reviewer judgments or predict that SCF will fund the idea.",
+          "Do NOT pin a round number, peer count, or award total as a timeless pitch requirement."
+        ],
+        "notes": "Grade the service contract and evidence use. Current round phases, peer rows, and award totals can change."
+      },
+      "tags": {
+        "category": "scf-grants-builders",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-08-18",
+        "sources": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/scf-pitch?q=streaming%20recurring%20payments%20contract%20on%20Soroban",
+            "note": "The read-only probe returned a live round block, funded peers, a funding bar, vetting evidence, and deterministic angles."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.scfPitch",
+            "note": "The exposed contract defines the live or unavailable round-source boundary and the evidence-grounded composite."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "note": "The official SCF awards page is the fallback authority for current round state."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "The pitch composite provides dated round, funding, competitor, prior-art, and deterministic-angle evidence without making a funding decision.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/scf-pitch?q=streaming%20recurring%20payments%20contract%20on%20Soroban",
+                "observedAt": "2026-08-18",
+                "note": "The response carried all five evidence blocks and described the angles as deterministic derivations."
+              },
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.scfPitch",
+                "observedAt": "2026-08-18",
+                "note": "The manifest defines the composite and says it performs no prose generation."
+              }
+            ]
+          },
+          {
+            "claim": "An unavailable round source means unknown round state, while the official SCF awards page remains the authority for current phase information.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.scfPitch",
+                "observedAt": "2026-08-18",
+                "note": "The contract permits `live` or `unavailable` and forbids a negative conclusion on fetch failure."
+              },
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-08-18",
+                "note": "The page published current round phases and submission deadlines."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-18",
+          "by": "Todo 1664 coverage-golden implementation",
+          "evidence": [
+            "Read-only scfPitch probe for a streaming-payments idea on 2026-08-18.",
+            "https://communityfund.stellar.org/awards inspected directly on 2026-08-18.",
+            "catalog/manifest.json#scout.scfPitch defines the round-source and evidence boundaries.",
+            "Sibling sweep: current-round cases remain outside this case; this case pins no round number, phase, count, or amount.",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+          ],
+          "rootCause": [
+            "solo://proj/80/todo/author-five-new-cove--1664"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)"
       }
     },
     {
@@ -30574,69 +31189,94 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "Yes. A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any availability-sensitive claim. As of 2026-08-05, the current Q3 roster contains exactly two open infrastructure/tooling briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response also includes a synthetic SCF #45 round row, which is not a third RFP brief. RFP applicants start with an interest form and submit a full proposal only if invited.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "Yes. As of 2026-08-18, the published Q3 roster contains two open infrastructure and tooling briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response reports `syntheticRounds=0`. RFP applicants start with the rolling interest form and submit a full proposal only if invited. SCF #45 is already in Initial Review, so an invitation or open brief does not establish that a new full proposal can still enter #45.\n\nThe dated example is illustrative: a later grounded answer should report the roster and round state supported at its own observation time.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Uses the current source, excludes the synthetic round row.",
-          "Explains interest-to-invitation."
+          "Uses current official and live sources and states that no synthetic round row is present.",
+          "Explains the rolling interest-form-to-invitation path.",
+          "Distinguishes an open brief from an open SCF full-proposal window."
         ],
         "avoid": [
-          "Do NOT reference retired scout_rfps or count scf-round-45 as a sixth brief.",
-          "Do NOT claim anyone openly submits a full RFP proposal, that RFP awards use community vote, or that each brief has a published bounty.",
+          "Do NOT reference retired scout_rfps, claim a synthetic SCF #45 row is present, or count a round row as another brief.",
+          "Do NOT claim an invited full proposal can still enter #45, that RFP awards use community vote, or that each brief has a published bounty.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Dossier §4.2/§6.4. Freshness item (3rd freshness case) — confidence stays medium because the set rotates. HISTORICAL, SUPERSEDED — the 2026-06-29 tooling/infra matches were Passkey UI Kit, Contract Source Verification Service, and OZ Accounts Policy Builder. As of 2026-08-05 the current Q3 official page and live feed instead agree on exactly two open briefs, LayerZero DVN and x402 Facilitator with Bazaar, beside the synthetic SCF #45 round row. Rubric gates on the freshness caveat, not the exact list. SCF #43 remains an explicitly historical concluded round and must not be substituted for current #45.\nAlso good if the answer: Flags that the matching RFP set is quarter-dependent and may change.\nGolden cites: The live SCF RFPs feed / RFP Track handbook page."
+        "notes": "Freshness item: the matching RFP set changes, so grade dated observation behavior rather than a permanent roster. As of 2026-08-18, the official RFP page and live feed support the two Q3 briefs. The newer awards state and Scout metadata show #45 in Initial Review with no open submission window. The rolling interest form remains the entry path, but it does not prove that #45 accepts a new full proposal."
       },
       "tags": {
         "category": "scf-grants-builders",
         "service": "scout",
-        "freshness": "live"
+        "freshness": "scheduled"
       },
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-05",
+        "asOf": "2026-08-18",
+        "reverifyBy": "2026-09-24",
         "sources": [
           {
             "class": "A",
             "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-            "note": "class inferred at migration"
+            "note": "Official RFP page observed 2026-08-18; it names the two Q3 briefs and the interest-form path."
           },
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "note": "Live open-RFP response observed 2026-08-05."
+            "note": "Live open-RFP response observed 2026-08-18; two briefs and syntheticRounds=0."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
           }
         ],
         "corroboration": [
           {
-            "claim": "As of 2026-08-05, the current Q3 roster contains exactly two open infrastructure/tooling briefs—LayerZero DVN and x402 Facilitator with Bazaar—plus a synthetic SCF #45 round row that is not a brief.",
+            "claim": "As of 2026-08-18, the published Q3 roster contains two open infrastructure/tooling briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=0.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
                 "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-                "observedAt": "2026-08-05",
-                "note": "Current official Q3 page names the two briefs and documents the interest-to-invitation flow."
+                "observedAt": "2026-08-18T15:25:19Z",
+                "note": "Official Q3 page names the two briefs and documents the interest-to-invitation flow."
               },
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/rfps?status=open",
-                "observedAt": "2026-08-05",
-                "note": "Returned the same two actual briefs plus the synthetic SCF #45 round row."
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Returned the same two briefs and syntheticRounds=0."
+              }
+            ]
+          },
+          {
+            "claim": "As of 2026-08-18, SCF #45 is in Initial Review with no confirmed open submission window; the rolling interest and invitation path does not prove a full proposal can still enter #45.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-08-18T15:22:00Z",
+                "note": "Official awards index showed #45 in Initial Review after its August 16 deadline."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
+                "observedAt": "2026-08-18T15:24:51Z",
+                "note": "Scout reported #45 Initial Review, no submission window, and no round in Submission."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-05",
-          "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
+          "date": "2026-08-18",
+          "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
           "evidence": [
-            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — official/current A+C sources agree on two Q3 briefs; the API also returns one synthetic round row, observed 2026-08-05.",
-            "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
-            "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
-            "Sibling sweep: q-scf-open-rfps was refreshed in the same change; q-scf-hummingbot-kelp-closed-rfp remains historically closed; q-scf-how-to-apply, q-scf-eligibility-criteria, and q-scf-submission-lifecycle-deadlines preserve the interest-to-invitation flow."
+            "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+            "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
+            "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
+            "Sibling sweep covered q-scf-open-rfps, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-how-to-apply, q-scf-eligibility-criteria, q-scf-submission-lifecycle-deadlines, and q-scf-hummingbot-kelp-closed-rfp; the entry path and current-round claims remain consistent."
           ],
           "rootCause": [
             "freshness-drift"
@@ -42457,6 +43097,106 @@
       }
     },
     {
+      "id": "q-ti-scout-refresh-cached-rows",
+      "question": "I cached Scout rows last week. How do I find what moved and refresh the affected facts?",
+      "surface": [
+        "scout.getChanges"
+      ],
+      "golden": {
+        "answer": "Call `scout.getChanges` with the cache timestamp in `since` and the needed `surfaces`. Read `meta.counts` per surface, because `limit` applies separately to each surface. Check every `meta.truncated` flag; raise the limit and query a surface separately when needed, and state when the feed still does not cover every changed row. For each returned row, use `facets` to select the fact family to refresh, then re-read that entity through its search endpoint. A `\"row\"` facet means the change is not localized, so re-read the full row. An empty surface with `truncated: false` means unchanged since the supplied timestamp; it does not mean the entity class does not exist.",
+        "keyFacts": [
+          "Uses `since`, optional surface selection, per-surface counts, and every per-surface truncation flag.",
+          "Uses facets to choose the refresh scope and re-reads the full entity for a `row` facet.",
+          "Treats an untruncated empty result as unchanged since the supplied timestamp, not as an existence claim."
+        ],
+        "avoid": [
+          "Do NOT read `meta.counts` as the number of rows returned in the limited payload.",
+          "Do NOT claim complete coverage while any requested surface is truncated.",
+          "Do NOT treat a change facet as the new value or treat an empty feed as proof that the entity class is empty."
+        ],
+        "notes": "The change feed identifies moved rows and fact families. It does not contain the replacement facts."
+      },
+      "tags": {
+        "category": "tooling-infra",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-08-18",
+        "sources": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getChanges",
+            "note": "The contract defines per-surface limits, truncation, facet meaning, and absence semantics."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/changes?since=2026-08-11&limit=3",
+            "note": "The read-only probe returned rows across all three surfaces with per-surface counts and truncation flags."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/changes?since=2026-08-17&surfaces=partners&limit=5",
+            "note": "The comparison probe returned an untruncated empty partners result."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "The feed reports changed rows newest-first under a per-surface limit, and facets identify which source row must be re-read.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.getChanges",
+                "observedAt": "2026-08-18",
+                "note": "The manifest defines limit-per-surface, truncation, facet names, and the full-row re-read rule."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/changes?since=2026-08-11&limit=3",
+                "observedAt": "2026-08-18",
+                "note": "The live response returned separate surface counts, three truncation flags, and localized facets."
+              }
+            ]
+          },
+          {
+            "claim": "An untruncated empty surface means no indexed row changed after the requested time, not that the entity class is empty.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.getChanges",
+                "observedAt": "2026-08-18",
+                "note": "The contract states that absence means unchanged since `since`, never an existence claim."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/changes?since=2026-08-17&surfaces=partners&limit=5",
+                "observedAt": "2026-08-18",
+                "note": "The live comparison returned no partner changes and `truncated.partners: false`."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-18",
+          "by": "Todo 1664 coverage-golden implementation",
+          "evidence": [
+            "Read-only getChanges probes covered truncated multi-surface data and an untruncated empty surface on 2026-08-18.",
+            "catalog/manifest.json#scout.getChanges defines the pagination, facet, and re-read boundaries.",
+            "Sibling sweep: q-gap-scout-changelog-envelope keeps row changes distinct from API contract changes.",
+            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+          ],
+          "rootCause": [
+            "solo://proj/80/todo/author-five-new-cove--1664"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)"
+      }
+    },
+    {
       "id": "q-ti-secret-key-vs-mnemonic-derivation",
       "question": "What's the difference between my S... secret key and my 12/24-word recovery phrase, how do I derive the keypair from the mnemonic (SEP-5/SEP-52 / BIP-39, why one seed yields many addresses), and where in the Lab/CLI do I do it (the `stellar keys generate --seed` errors)?",
       "surface": [
@@ -45387,7 +46127,8 @@
       "id": "q-tool-oracle-repo-live",
       "question": "Which current Stellar oracle repositories are the best code references, and what evidence supports that choice?",
       "surface": [
-        "scout.searchRepos"
+        "scout.searchRepos",
+        "scout.getRepoTrust"
       ],
       "golden": {
         "answer": "Filter live searchRepos results for relevant oracle repositories, explicitly compare repoScore, and paginate before a global superlative or say “among the returned page.” repoScore is the index's own answer-time ranking signal: it orders candidate rows for inspection and never establishes correctness, security, audit scope, maintenance, or production readiness, so a “best reference” claim is scoped to that ordering over the checked rows and rests on the cited repository evidence. Cite repository URLs and separate codeVerified/codeDepth, deployability, SDK status, and scan date; codeVerified is index scan evidence, not a security audit.",
@@ -46469,7 +47210,8 @@
       "id": "q-tool-soroban-auth-audit-live",
       "question": "What do the currently indexed primary audits say about Soroban authorization recursion or reentrancy risk?",
       "surface": [
-        "scout.searchResearch"
+        "scout.searchResearch",
+        "scout.listAudits"
       ],
       "golden": {
         "answer": "Search the live audit index and cite the Veridise audit section. Report the two-part disposition: authorization recursion/DoS was framed as an initially Critical candidate, then investigated and placed under Invalid Issues because error propagation makes work linear in trackers and the attack costly. Date the result and do not present it as an active confirmed vulnerability.",
@@ -46903,7 +47645,8 @@
       "id": "q-tool-zk-repo-live",
       "question": "What are the strongest current Stellar ZK reference repositories, and which returned entries have verified hackathon or deployable-code evidence?",
       "surface": [
-        "scout.searchRepos"
+        "scout.searchRepos",
+        "scout.searchHackathonBuilds"
       ],
       "golden": {
         "answer": "Filter live searchRepos rows for Stellar relevance, explicitly sort checked rows by repoScore, and paginate before a global superlative or scope the result to the checked page. repoScore is the index's own answer-time ranking signal: it orders candidate rows for inspection and never establishes correctness, security, audit scope, maintenance, or production readiness, so “strongest” means highest-ranked among the checked rows, not an assessment of correctness, security, or production readiness. Treat hackathonWinner as an index-relative marker unless exact event evidence corroborates it, and clarify that codeVerified is scan evidence rather than a security audit.",

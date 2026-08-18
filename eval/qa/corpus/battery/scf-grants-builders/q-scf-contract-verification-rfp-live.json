@@ -1,1 +1,96 @@
-{"id":"q-scf-contract-verification-rfp-live","question":"Is there a currently open Stellar RFP for Soroban contract source verification, and what does the live brief ask builders to create?","surface":["scout.getRfps"],"golden":{"answer":"Query the live RFP set for contract source verification, report status and requirements only from the returned brief, cite its URL and official round verifyAt, and include asOf. If absent, say absent from the current served set rather than closed forever.","keyFacts":["Uses the current RFP result for status and requirements.","Cites the brief plus official-round verification URL.","Includes as-of and scopes absence to the served set."],"avoid":["Calls the archived source-verification brief open without current status evidence."]},"tags":{"category":"scf-grants-builders","service":"scout","freshness":"live"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open"},{"class":"A","ref":"https://communityfund.stellar.org/awards"},{"class":"B","ref":"catalog/manifest.json#scout.getRfps"}],"corroboration":[{"claim":"Current status and requirements require the live brief, official verify URL, and as-of.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open","observedAt":"2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/awards","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.getRfps","observedAt":"2026-07-11"}]},{"claim":"Archived open status remains valid without a current check.","verdict":"contradicted","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","https://communityfund.stellar.org/awards","catalog/manifest.json#scout.getRfps"],"rootCause":["freshness-drift"]},"origin":"core-35 open-rfp-contract-source-verification"}}
+{
+  "id": "q-scf-contract-verification-rfp-live",
+  "question": "Is there a currently open Stellar RFP for Soroban contract source verification, and what does the live brief ask builders to create?",
+  "surface": [
+    "scout.getRfps"
+  ],
+  "golden": {
+    "answer": "Query the live RFP set for contract source verification. Report status and requirements only from the returned brief, cite its URL and official round `verifyAt`, and include an as-of date. If absent, say it is absent from the current served set rather than closed forever. Do not treat `verifyAt` or another open brief as proof that the SCF full-proposal window is open.",
+    "keyFacts": [
+      "Uses the current RFP result for status and requirements.",
+      "Cites the brief plus official-round verification URL.",
+      "Includes as-of and scopes absence to the served set.",
+      "Separates brief status and verifyAt metadata from the SCF round submission phase."
+    ],
+    "avoid": [
+      "Calls the archived source-verification brief open without current status evidence.",
+      "Treats verifyAt or an open brief as evidence that the current SCF round accepts a new full proposal."
+    ]
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-08-18",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.getRfps"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Current contract-verification RFP status and requirements require the live served set, official verification URL, and as-of date; verifyAt does not prove an open SCF submission window.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-08-18T15:24:51Z",
+            "note": "Live response supplied the current served set and round metadata showing #45 Initial Review with no submission window."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-08-18T15:22:00Z",
+            "note": "Official awards index independently showed #45 in Initial Review."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getRfps",
+            "observedAt": "2026-08-18",
+            "note": "Exposed operation provides current served-set status and round verification metadata."
+          }
+        ]
+      },
+      {
+        "claim": "Archived open status remains valid without a current check.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-08-18T15:24:51Z"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-18",
+      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
+      "evidence": [
+        "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
+        "https://communityfund.stellar.org/awards",
+        "https://stellarlight.xyz/api/rfps?status=open",
+        "catalog/manifest.json#scout.getRfps",
+        "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; scoped absence and round-state caution remain consistent."
+      ],
+      "rootCause": [
+        "freshness-drift"
+      ]
+    },
+    "origin": "core-35 open-rfp-contract-source-verification"
+  }
+}

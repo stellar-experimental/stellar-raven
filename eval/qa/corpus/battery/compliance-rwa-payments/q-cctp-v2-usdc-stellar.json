@@ -4,7 +4,8 @@
   "surface": [
     "skills.stellar-dev.standards",
     "skills.stellar-dev.assets",
-    "stellarDocs.search_docs"
+    "stellarDocs.search_docs",
+    "skills.stellar-dev.cross-chain"
   ],
   "golden": {
     "answer": "Circle's release notes record **Stellar mainnet support on 2026-05-18**, and SDF and Circle publicly announced CCTP live on Stellar on **2026-05-19**. The earlier **2026-02-24** date previously called the launch was not recoverable from accessible primary material, so do not collapse it with either confirmed May milestone. Stellar is CCTP domain 27. CCTP burns native USDC on the source and mints native USDC on the destination. For Stellar G-, M-, or C-address recipients, use Circle's CctpForwarder path; a wrong mintRecipient or destinationCaller can strand funds. Stellar USDC uses 7 decimals while CCTP messages use 6, so the seventh outbound decimal remains on Stellar. On 2026-07-11, Circle's fee endpoint returned Fast/Standard 0/0 for domain 27→0 and 1 bp/0 for 0→27; re-query /v2/burn/USDC/fees. Circle transfer fees are separate from network resources, relayer, integrator, and any swap charges.",

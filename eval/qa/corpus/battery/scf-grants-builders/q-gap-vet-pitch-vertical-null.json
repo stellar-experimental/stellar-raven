@@ -1,0 +1,94 @@
+{
+  "id": "q-gap-vet-pitch-vertical-null",
+  "question": "What does `vertical: null` mean when Scout's idea-vetting and SCF-pitch composites return it?",
+  "surface": [
+    "scout.vetIdea",
+    "scout.scfPitch"
+  ],
+  "golden": {
+    "answer": "In both composites, `vertical: null` means the idea did not map to Scout's closed measurable vertical axis. It does not mean the idea has no market, competitors, prior art, demand, or funding history. Read any returned competitor, maturity, and prior-art blocks on their stated basis. Treat `gap: null` and `funding: null` as unavailable vertical-derived analyses, not zero values. In `scout.scfPitch`, evaluate the separate round block through `round.source` even when the vertical is null. Cite `generatedAt` and keep every conclusion source-relative.",
+    "keyFacts": [
+      "Defines a null vertical as an unmapped measurable axis, not a market-absence verdict.",
+      "Treats null gap and funding blocks as unavailable vertical-derived analyses rather than zero values.",
+      "Still inspects returned competitors, maturity, prior art, and the separate pitch-round source."
+    ],
+    "avoid": [
+      "Do NOT claim that `vertical: null` proves the market, competition, demand, or prior art does not exist.",
+      "Do NOT convert null gap or funding blocks to numeric zero.",
+      "Do NOT ignore `round.source` because the pitch vertical is null."
+    ],
+    "notes": "This is a source-relative service-semantics case. The probe idea and returned rows are examples, not permanent targets."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-08-18",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.vetIdea",
+        "note": "The contract states that a null vertical means unmapped, not marketless."
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.scfPitch",
+        "note": "The pitch contract keeps round state separate from the vetting vertical."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/vet-idea?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+        "note": "The read-only probe returned a null vertical, gap, and funding while still returning competitor, maturity, and prior-art evidence."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/scf-pitch?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+        "note": "The read-only probe returned a null vertical and a separate round block."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A null vertical is an unmapped measurable axis, while other evidence blocks can still contain results and the pitch round remains separate.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.vetIdea",
+            "observedAt": "2026-08-18",
+            "note": "The manifest defines null as unmapped rather than marketless."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/vet-idea?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+            "observedAt": "2026-08-18",
+            "note": "The live response had null vertical-derived blocks and populated competitor, maturity, and prior-art blocks."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/scf-pitch?q=zero%20knowledge%20proof%20verifier%20tooling%20for%20Soroban",
+            "observedAt": "2026-08-18",
+            "note": "The live response retained an independent round block with the null vertical."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-18",
+      "by": "Todo 1664 coverage-golden implementation",
+      "evidence": [
+        "Read-only vetIdea and scfPitch probes for the same unmapped idea on 2026-08-18.",
+        "catalog/manifest.json#scout.vetIdea and #scout.scfPitch define the null and round semantics.",
+        "Sibling sweep: idea-vetting cases use gap results as source-relative supply evidence and do not contradict the null boundary.",
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+      ],
+      "rootCause": [
+        "solo://proj/80/todo/author-five-new-cove--1664"
+      ]
+    },
+    "origin": "authored 2026-08 (coverage)"
+  }
+}
