@@ -1,0 +1,4 @@
+interface:
+  display_name: "Retrieval System Audit"
+  short_description: "Measure and improve retrieval across live sources."
+  default_prompt: "Use $retrieval-system-audit to audit live sources, retrieval, goldens, and evaluations with measured gates."
