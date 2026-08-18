@@ -355,6 +355,38 @@ describe("stellarDocs adapter", () => {
     expect(calls.length).toBe(1); // no retry ladder on request errors
   });
 
+  it("returns non-JSON 4xx without retry and bounds the response fallback", async () => {
+    const body = `bad request: ${"x".repeat(2048)}:unbounded-tail`;
+    const { fetchImpl, calls } = stubFetch(body, 400, "text/plain");
+    const r = await callStellarDocs(
+      entry("stellarDocs.search_docs"),
+      { query: "soroban" },
+      docsEnv,
+      fetchImpl
+    );
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.error.status).toBe(400);
+    expect(r.error.message).toContain("bad request");
+    expect(r.error.message).not.toContain("unbounded-tail");
+    expect(calls).toHaveLength(1);
+  });
+
+  it("returns malformed 2xx JSON without retry", async () => {
+    const { fetchImpl, calls } = stubFetch("not JSON", 200, "text/plain");
+    const r = await callStellarDocs(
+      entry("stellarDocs.search_docs"),
+      { query: "soroban" },
+      docsEnv,
+      fetchImpl
+    );
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.error.status).toBe(200);
+    expect(r.error.message).toContain("returned malformed JSON");
+    expect(calls).toHaveLength(1);
+  });
+
   it("retries the host ladder on 5xx and succeeds on a later host", async () => {
     let call = 0;
     const urls: string[] = [];
@@ -375,6 +407,38 @@ describe("stellarDocs adapter", () => {
     expect(r.ok).toBe(true);
     expect(urls[0]).toContain("-dsn.algolia.net");
     expect(urls[1]).toContain("-1.algolianet.com");
+    expect(urls).toHaveLength(2);
+  });
+
+  it("retries every host on malformed 5xx JSON", async () => {
+    const { fetchImpl, calls } = stubFetch("not JSON", 502, "text/plain");
+    const r = await callStellarDocs(
+      entry("stellarDocs.search_docs"),
+      { query: "soroban" },
+      docsEnv,
+      fetchImpl
+    );
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.error.message).toContain("all algolia hosts failed");
+    expect(calls).toHaveLength(4);
+  });
+
+  it("retries network failures and succeeds on a later host", async () => {
+    let requestCount = 0;
+    const fetchImpl: FetchLike = async () => {
+      requestCount += 1;
+      if (requestCount === 1) throw new TypeError("network unavailable");
+      return new Response(fixture("stellar-docs-success.json"), { status: 200 });
+    };
+    const r = await callStellarDocs(
+      entry("stellarDocs.search_docs"),
+      { query: "soroban storage" },
+      docsEnv,
+      fetchImpl
+    );
+    expect(r.ok).toBe(true);
+    expect(requestCount).toBe(2);
   });
 
   it("derives the query and filters to the exact page for get_doc_page_sections", async () => {

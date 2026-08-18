@@ -7,7 +7,7 @@
  * execute payload text for service outcomes; the executor's op ledger is the
  * authoritative source for error/soft-empty aggregates when available.
  */
-import { DEMO_CAPS, type DemoToolBudget } from "./budget.ts";
+import { DEMO_CAPS, type DemoOperationSummary, type DemoToolBudget } from "./budget.ts";
 import { DEMO_SYSTEM_PROMPT } from "./prompt.ts";
 
 type ObservedToolResult = {
@@ -40,18 +40,8 @@ export type DemoStepSignals = {
   executeTruncations: number;
 };
 
-export function demoOperationSummary(budget: DemoToolBudget): {
-  total: number;
-  ok: number;
-  error: number;
-  softEmpty: number;
-} {
-  return {
-    total: budget.operationTotal,
-    ok: budget.operationOk,
-    error: budget.operationError,
-    softEmpty: budget.operationSoftEmpty
-  };
+export function demoOperationSummary(budget: DemoToolBudget): DemoOperationSummary {
+  return budget.operations;
 }
 
 const EXECUTION_FAILED_PREFIX = "Execution failed:";
@@ -134,14 +124,7 @@ export function prepareDemoStep({
   budget?: DemoToolBudget;
 }): { activeTools?: never[]; system?: string } | undefined {
   const signals = demoStepSignals(steps);
-  const operations = budget
-    ? {
-        total: budget.latestOperationTotal,
-        ok: budget.latestOperationOk,
-        error: budget.latestOperationError,
-        softEmpty: budget.latestOperationSoftEmpty
-      }
-    : null;
+  const operations = budget?.latestOperations ?? null;
   const operationRecovery =
     operations !== null &&
     operations.total > 0 &&

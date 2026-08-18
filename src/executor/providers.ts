@@ -90,7 +90,7 @@ import type { OpsFacade, SkillRunner } from "../skills/runners/types.ts";
 import { resolveSpecRefs } from "./spec-sandbox.ts";
 import { logArtifactRead, logEvent, logSkillRead } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
-import { info as artifactInfo, read as artifactRead, type ArtifactMetadata } from "../artifacts/store.ts";
+import { info as artifactInfo, read as artifactRead } from "../artifacts/store.ts";
 
 /** Structurally identical to @cloudflare/codemode's ResolvedProvider. */
 export type SandboxProvider = {
@@ -555,21 +555,6 @@ export function buildCodemodeProvider(
       message: "artifact not found"
     }
   });
-  const publicArtifactMeta = (meta: ArtifactMetadata) => ({
-    id: meta.id,
-    createdAt: meta.createdAt,
-    expiresAt: meta.expiresAt,
-    bytes: meta.bytes,
-    sha256: meta.sha256,
-    mime: meta.mime,
-    requestId: meta.requestId,
-    rayId: meta.rayId,
-    capTokens: meta.capTokens,
-    originalChars: meta.originalChars,
-    opLedger: meta.opLedger,
-    catalogGeneratedAt: meta.catalogGeneratedAt
-  });
-
   const fns: Record<string, (...args: unknown[]) => Promise<unknown>> = {
     ...(enableDiscovery
       ? {
@@ -759,16 +744,9 @@ export function buildCodemodeProvider(
               ...searchEventFields({
                 query: opts.query,
                 requestedLimit: typeof opts.limit === "number" ? opts.limit : null,
-                page
+                page,
+                summary: { hits, total, truncated, recovery, widerCandidates }
               }),
-              hits: hits.length,
-              total,
-              truncated,
-              top: hits.slice(0, 3).map((h) => h.id),
-              recovery: recovery.length,
-              recoveryTop: recovery.slice(0, 3).map((candidate) => candidate.id),
-              widerCandidates: widerCandidates.length,
-              widerCandidateTop: widerCandidates.slice(0, 3).map((candidate) => candidate.id),
               responseChars: JSON.stringify({ hits, recovery, widerCandidates }).length,
               ms: Date.now() - t0
             });
@@ -899,7 +877,7 @@ export function buildCodemodeProvider(
           readCount: infoOrdinal
         });
         if (!r.ok) return artifactNotFound();
-        return { ok: true, data: publicArtifactMeta(r.artifact) };
+        return { ok: true, data: r.artifact };
       } catch {
         await logArtifactRead({
           kind: "info",

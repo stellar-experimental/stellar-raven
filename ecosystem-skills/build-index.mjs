@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 //
-// build-index.mjs — regenerate INDEX.md from MANIFEST.json + groups.json.
+// build-index.mjs — regenerate INDEX.md from MANIFEST.json, catalog.json, and groups.json.
 //
 // For each pinned skill it reads SKILL.md from the pinned upstream commit
 // (scripts/lib/skill-mirror.mjs — fetched once into the gitignored working
@@ -9,7 +9,7 @@
 // index stays fresh without hand-maintained copy. Skills are grouped by theme (groups.json);
 // any skill present in the manifest but not filed in a group lands in an
 // "Uncategorized" section so newly synced skills are impossible to miss. The
-// stellarlight.xyz ecosystem DIRECTORY (manifest.catalog) is rendered as a
+// stellarlight.xyz ecosystem DIRECTORY (catalog.json) is rendered as a
 // separate "what exists in the ecosystem" map (incl. non-skill-md tools/SDKs).
 //
 // Run automatically by update.sh; safe to run standalone after a sync.
@@ -23,6 +23,7 @@ import { readSkillFile } from "../scripts/lib/skill-mirror.mjs";
 const DIR = dirname(fileURLToPath(import.meta.url));
 
 const manifest = JSON.parse(readFileSync(join(DIR, "MANIFEST.json"), "utf8"));
+const catalog = JSON.parse(readFileSync(join(DIR, "catalog.json"), "utf8"));
 const { groups } = JSON.parse(readFileSync(join(DIR, "groups.json"), "utf8"));
 
 // Build an index of every synced skill: id "source/skill" -> metadata.
@@ -173,8 +174,8 @@ if (uncategorized.length) {
 }
 
 // Ecosystem directory snapshot (the broader map, incl. non-skill-md entries).
-if (manifest.catalog && Array.isArray(manifest.catalog.entries)) {
-  const cat = manifest.catalog;
+if (Array.isArray(catalog.entries)) {
+  const cat = catalog;
   out.push("## Ecosystem directory (stellarlight.xyz catalog snapshot)");
   out.push("");
   out.push(

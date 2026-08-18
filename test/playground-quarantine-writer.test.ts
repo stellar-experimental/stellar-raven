@@ -50,7 +50,14 @@ describe("quarantine atomic writer and production notices", () => {
     const notice = formatQuarantineNotice({
       path: "/tmp/unsafe\npath\u001b.json", reason: { code: "generation-check-error" },
       treeAtStart: { generationSha256: "a".repeat(64) }, treeAtFinish: null,
-      spend: { actual: { answerCallsStarted: 1, answerCallsCompleted: 1, judgeCallsStarted: 0, judgeCallsCompleted: 0 } },
+      artifact: {
+        quarantinedMeta: { judge: { enabled: true } },
+        quarantinedRows: [{ id: "a" }],
+        spend: {
+          actual: { answerCallsStarted: 1, judgeCallsStarted: 0 },
+          selectedCaseIds: ["a"], caseIdsAttempted: ["a"], caseIdsJudged: []
+        }
+      },
       writeFailed: true, error: { name: "Error", message: "disk\nfull" }
     });
     expect(notice).toContain("QUARANTINE WRITE FAILED — NOT A RESULT");

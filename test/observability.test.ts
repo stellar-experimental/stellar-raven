@@ -67,6 +67,23 @@ describe("searchEventFields", () => {
         truncated: true,
         effectiveLimit: 5,
         widerCandidates: []
+      },
+      summary: {
+        hits: [{ id: "a" }, { id: "b" }, { id: "c" }, { id: "d" }],
+        total: 7,
+        truncated: true,
+        recovery: [
+          { id: "recovery-a" },
+          { id: "recovery-b" },
+          { id: "recovery-c" },
+          { id: "recovery-d" }
+        ],
+        widerCandidates: [
+          { id: "wider-a" },
+          { id: "wider-b" },
+          { id: "wider-c" },
+          { id: "wider-d" }
+        ]
       }
     });
 
@@ -76,7 +93,15 @@ describe("searchEventFields", () => {
       effectiveLimit: 5,
       omittedCount: 5,
       gatedHits: 1,
-      backfillHits: 1
+      backfillHits: 1,
+      hits: 4,
+      total: 7,
+      truncated: true,
+      top: ["a", "b", "c"],
+      recovery: 4,
+      recoveryTop: ["recovery-a", "recovery-b", "recovery-c"],
+      widerCandidates: 4,
+      widerCandidateTop: ["wider-a", "wider-b", "wider-c"]
     });
     expect(JSON.stringify(fields)).not.toContain(query);
     expect(fields).not.toHaveProperty("query");
@@ -86,17 +111,21 @@ describe("searchEventFields", () => {
 
   it("represents a validation/refusal path without pretending a clamp or page ran", () => {
     const query = "docs search";
-    expect(searchEventFields({
+    const fields = searchEventFields({
       query,
       requestedLimit: null,
-      page: null
-    })).toMatchObject({
+      page: null,
+      summary: null
+    });
+    expect(fields).toMatchObject({
       requestedLimit: null,
       effectiveLimit: null,
       omittedCount: 0,
       gatedHits: 0,
       backfillHits: 0
     });
+    expect(fields).not.toHaveProperty("hits");
+    expect(fields).not.toHaveProperty("top");
   });
 });
 

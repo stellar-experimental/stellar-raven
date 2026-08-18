@@ -12,7 +12,7 @@ afterEach(async () => {
   await Promise.all(dirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
 });
 
-function wrangler(existing = false) {
+function wrangler(existing = false, listing: unknown = existing ? [{ name: kvKey("admin") }] : []) {
   const calls: string[][] = [];
   let writtenDigest: string | undefined;
   return {
@@ -25,7 +25,7 @@ function wrangler(existing = false) {
       if (args[2] === "list") {
         return {
           status: 0,
-          stdout: JSON.stringify(existing ? [{ name: kvKey("admin") }] : []),
+          stdout: JSON.stringify(listing),
           stderr: ""
         };
       }
@@ -90,6 +90,21 @@ describe("mcp-key operator command", () => {
     expect(revoke.calls[1]).toEqual([
       "kv", "key", "delete", kvKey("admin"), "--binding", "OAUTH_KV", "--remote"
     ]);
+  });
+
+  it.each([
+    ["object", { name: kvKey("admin") }],
+    ["null", null],
+    ["string", "invalid"]
+  ])("rejects a malformed %s key listing before every mutation", async (_shape, listing) => {
+    for (const action of ["create", "rotate", "revoke"]) {
+      const fake = wrangler(false, listing);
+      await expect(run([action, "admin"], { runWrangler: fake.run }))
+        .rejects.toThrow(/invalid API key listing/);
+      expect(fake.calls).toHaveLength(1);
+      expect(fake.calls[0]?.slice(0, 3)).toEqual(["kv", "key", "list"]);
+      expect(fake.calls.some((call) => call[2] === "put" || call[2] === "delete")).toBe(false);
+    }
   });
 
   it("writes credentials with mode 0600 and does not return the token", async () => {

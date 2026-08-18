@@ -1,15 +1,64 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { fileURLToPath } from "node:url";
 import { classifyRegister } from "../eval/discovery/mine-agent-queries.mjs";
 import { aggregateAgentEvidence, classifyMiss } from "../eval/discovery/classify-misses.mjs";
 import { capSearchEvidence, gradeVisibleSearches } from "../eval/discovery/lib.mjs";
-import { MODEL, buildCatalogCards, cardSetHash, sha256 } from "../eval/vectorize/frontier-config.mjs";
+import {
+  ARTIFACT_PATH,
+  MODEL,
+  buildCatalogCards,
+  cardSetHash,
+  sha256
+} from "../eval/vectorize/frontier-config.mjs";
 import { loadFrontierArtifact } from "../eval/vectorize/retrieval.mjs";
 import { shouldFailFrontier } from "../eval/vectorize/run-frontier.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const MANIFEST_PATH = path.join(ROOT, "catalog/manifest.json");
+
+function catalogMatchedFixture() {
+  const artifact = JSON.parse(readFileSync(ARTIFACT_PATH, "utf8"));
+  const manifest = {
+    entries: artifact.cards.map(({ id, service, kind }) => ({
+      id,
+      service,
+      kind,
+      description: `Fixture description for ${id}`
+    }))
+  };
+  const cards = buildCatalogCards(manifest);
+  artifact.cardSetSha256 = cardSetHash(cards);
+  artifact.cards = cards.map(({ id, service, kind, text }) => ({
+    id,
+    service,
+    kind,
+    textSha256: sha256(text)
+  }));
+  return { artifact, manifest };
+}
+
+async function importRetrievalWithFixture(artifact, manifest) {
+  vi.resetModules();
+  vi.doMock("node:fs", async () => {
+    const actual = await vi.importActual("node:fs");
+    return {
+      ...actual,
+      readFileSync(file, ...args) {
+        if (file === ARTIFACT_PATH) return JSON.stringify(artifact);
+        if (file === MANIFEST_PATH) return JSON.stringify(manifest);
+        return actual.readFileSync(file, ...args);
+      }
+    };
+  });
+  return import("../eval/vectorize/retrieval.mjs");
+}
+
+afterEach(() => {
+  vi.doUnmock("node:fs");
+  vi.resetModules();
+});
 
 describe("discovery measurement extensions", () => {
   it("classifies one-shot misses from paired <=3-search evidence", () => {
@@ -100,5 +149,29 @@ describe("pinned Vectorize frontier artifact", () => {
     expect(loaded.vectors.every((vector) => vector.length === MODEL.dimensions)).toBe(true);
     expect(loaded.artifact.model.revision).toBe("c25a394dd583836952667c12f008335071b3f43d");
     expect(loaded.artifact.model.runtime).toBe("@huggingface/transformers@4.2.0");
+  });
+
+  it("rejects a corrupt card hash in false-then-true order", async () => {
+    const { artifact, manifest } = catalogMatchedFixture();
+    artifact.cards[0].textSha256 = "0".repeat(64);
+    const { loadFrontierArtifact: loadFixture } = await importRetrievalWithFixture(artifact, manifest);
+
+    expect(loadFixture({ requireCatalogMatch: false }).cards[0].textSha256).toBe("0".repeat(64));
+    expect(() => loadFixture({ requireCatalogMatch: true })).toThrow(
+      `vector artifact card drift at ${artifact.cards[0].id}`
+    );
+  });
+
+  it("keeps the decoded artifact cache separate in true-then-false order", async () => {
+    const { artifact, manifest } = catalogMatchedFixture();
+    const { loadFrontierArtifact: loadFixture } = await importRetrievalWithFixture(artifact, manifest);
+
+    const verified = loadFixture({ requireCatalogMatch: true });
+    const decoded = loadFixture({ requireCatalogMatch: false });
+
+    expect(verified.cards[0]).toHaveProperty("text");
+    expect(decoded.cards[0]).not.toHaveProperty("text");
+    expect(decoded.cards[0]).toHaveProperty("textSha256");
+    expect(decoded.vectors).toBe(verified.vectors);
   });
 });

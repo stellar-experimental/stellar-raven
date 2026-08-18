@@ -38,6 +38,7 @@ import {
   assertModelBackedRunInputs,
   buildQuarantineArtifact,
   buildPlaygroundArtifactMeta,
+  deriveQuarantineState,
   sanitizeGenerationCheckError,
   sha256 as contractSha256,
   treeGenerationSha256
@@ -452,15 +453,12 @@ function boundedCheckError(error) {
   return sanitizeGenerationCheckError(error);
 }
 
-function actualSpend({ selectedCaseIds, attempted, completed, judged, counters, reportedJudgeCalls, reportedJudgeCostUsd }) {
+function actualSpend({ selectedCaseIds, attempted, judged, counters, reportedJudgeCalls, reportedJudgeCostUsd }) {
   return {
     accountingPolicy: "started-calls-count-conservatively; quarantine releases no authorization or reserve",
-    planned: { answerCalls: selectedCaseIds.length, judgeCalls: counters.judgePlanned },
     actual: {
       answerCallsStarted: counters.answerStarted,
-      answerCallsCompleted: counters.answerCompleted,
       judgeCallsStarted: counters.judgeStarted,
-      judgeCallsCompleted: counters.judgeCompleted,
       reportedJudgeCalls,
       reportedJudgeCostUsd,
       answerProviderCostUsd: null,
@@ -469,10 +467,7 @@ function actualSpend({ selectedCaseIds, attempted, completed, judged, counters, 
     },
     selectedCaseIds,
     caseIdsAttempted: attempted,
-    caseIdsCompleted: completed,
     caseIdsJudged: judged,
-    caseIdsNotRun: selectedCaseIds.slice(attempted.length),
-    nextLedgerMinimumIncrements: { answerCalls: counters.answerStarted, judgeCalls: counters.judgeStarted },
     infraRetryAuthorized: false
   };
 }
@@ -501,9 +496,8 @@ export async function orchestratePlaygroundRun({
   const rows = [];
   const selectedCaseIds = cases.map((item) => item.id);
   const attempted = [];
-  const completed = [];
   const judged = [];
-  const counters = { answerStarted: 0, answerCompleted: 0, judgeStarted: 0, judgeCompleted: 0, judgePlanned: judgeEnabled ? cases.length : 0 };
+  const counters = { answerStarted: 0, judgeStarted: 0 };
   let reportedJudgeCalls = 0;
   let reportedJudgeCostUsd = 0;
 
@@ -520,7 +514,7 @@ export async function orchestratePlaygroundRun({
           : "A required local working-tree generation check failed after spend; no mismatch or server change is claimed.",
       checkError: checkError ?? null
     };
-    const spend = actualSpend({ selectedCaseIds, attempted, completed, judged, counters, reportedJudgeCalls, reportedJudgeCostUsd });
+    const spend = actualSpend({ selectedCaseIds, attempted, judged, counters, reportedJudgeCalls, reportedJudgeCostUsd });
     const artifact = buildQuarantine({ meta: startMeta, rows, treeAtStart, treeAtFinish, reason, spend });
     await writeQuarantineArtifact(artifact, { reason, spend, treeAtStart, treeAtFinish });
     return { kind: "quarantined", artifact, reason, spend };
@@ -548,8 +542,6 @@ export async function orchestratePlaygroundRun({
     counters.answerStarted += 1;
     attempted.push(item.id);
     const run = await runAnswer(item);
-    counters.answerCompleted += 1;
-    completed.push(item.id);
     const row = makeRow(item, run, null);
     rows.push(row);
 
@@ -558,7 +550,6 @@ export async function orchestratePlaygroundRun({
     if (judgeEnabled && run.answer) {
       counters.judgeStarted += 1;
       const verdict = await judgeAnswer(item, run);
-      counters.judgeCompleted += 1;
       judged.push(item.id);
       if (typeof verdict?.costUsd === "number" && Number.isFinite(verdict.costUsd) && verdict.costUsd >= 0) {
         reportedJudgeCalls += 1;
@@ -605,12 +596,14 @@ function formatNoticePath(value) {
   return JSON.stringify(sanitizeGenerationCheckError({ name: "Path", message: String(value ?? "") }).message);
 }
 
-export function formatQuarantineNotice({ writeFailed = false, path: quarantinePath, reason, treeAtStart, treeAtFinish, spend, error }) {
+export function formatQuarantineNotice({ writeFailed = false, path: quarantinePath, reason, treeAtStart, treeAtFinish, artifact, error }) {
+  const { spend } = artifact;
+  const derived = deriveQuarantineState(artifact);
   const accounting =
     `path=${formatNoticePath(quarantinePath)} reason=${reason.code} ` +
     `startGeneration=${treeAtStart.generationSha256} detectionGeneration=${treeAtFinish?.generationSha256 ?? "unavailable"} ` +
-    `answerStarted=${spend.actual.answerCallsStarted} answerCompleted=${spend.actual.answerCallsCompleted} ` +
-    `judgeStarted=${spend.actual.judgeCallsStarted} judgeCompleted=${spend.actual.judgeCallsCompleted}`;
+    `answerStarted=${spend.actual.answerCallsStarted} answerCompleted=${derived.actual.answerCallsCompleted} ` +
+    `judgeStarted=${spend.actual.judgeCallsStarted} judgeCompleted=${derived.actual.judgeCallsCompleted}`;
   if (!writeFailed) return `QUARANTINED — NOT A RESULT: ${accounting}`;
   return `QUARANTINE WRITE FAILED — NOT A RESULT: ${accounting} error=${sanitizeGenerationCheckError(error).message}`;
 }
@@ -821,10 +814,10 @@ async function main() {
       try {
         await writeAtomicQuarantine(quarantinePath, artifact);
       } catch (error) {
-        console.error(formatQuarantineNotice({ writeFailed: true, path: quarantinePath, ...details, error }));
+        console.error(formatQuarantineNotice({ writeFailed: true, path: quarantinePath, ...details, artifact, error }));
         throw new QuarantineNoticeEmittedError();
       }
-      console.error(formatQuarantineNotice({ path: quarantinePath, ...details }));
+      console.error(formatQuarantineNotice({ path: quarantinePath, ...details, artifact }));
     },
     onAnswerStart: ({ item, index }) => process.stdout.write(`[${index + 1}/${cases.length}] ${item.id} … `),
     onRow: ({ item, row, index }) => {

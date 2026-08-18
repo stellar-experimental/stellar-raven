@@ -4,6 +4,7 @@ import { buildDemoTools } from "../../src/demo/tools";
 import { createDemoToolBudget, type DemoToolBudget } from "../../src/demo/budget";
 import { prepareDemoStep } from "../../src/demo/steps";
 import type { DemoFrame } from "../../src/demo/frames";
+import type { ExecuteRunner } from "../../src/executor/run";
 
 type ToolWithExecute = {
   execute: (args: Record<string, unknown>) => Promise<unknown>;
@@ -13,12 +14,13 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function makeTools(budget?: DemoToolBudget) {
+function makeTools(budget?: DemoToolBudget, runExecute?: ExecuteRunner) {
   const frames: DemoFrame[] = [];
   const built = buildDemoTools({
     env: env as unknown as Env,
     emit: (frame) => frames.push(frame),
-    budget
+    budget,
+    runExecute
   });
   return {
     frames,
@@ -376,6 +378,57 @@ describe("demo tools at the worker boundary", () => {
     expect(second.budgetReport()).toMatchObject({ searchCalls: 3, searchRefusals: 1 });
   });
 
+  it("shares aggregate summaries and replaces the latest summary across fallback tools", async () => {
+    const budget = createDemoToolBudget();
+    const first = makeTools(budget, async () => ({
+      ok: true,
+      result: "first",
+      truncated: false,
+      logs: [],
+      operationSummary: { total: 2, ok: 1, error: 0, softEmpty: 1 },
+      evidenceSummary: {
+        kind: "service-data",
+        skillRead: false,
+        buildAuthoritySkillIds: [],
+        buildAuthorityRoles: [],
+        skillRuns: 0,
+        artifactReads: 0
+      }
+    }));
+    const second = makeTools(budget, async () => ({
+      ok: true,
+      result: "second",
+      truncated: false,
+      logs: [],
+      operationSummary: { total: 1, ok: 0, error: 1, softEmpty: 0 },
+      evidenceSummary: {
+        kind: "service-inconclusive",
+        skillRead: false,
+        buildAuthoritySkillIds: [],
+        buildAuthorityRoles: [],
+        skillRuns: 0,
+        artifactReads: 0
+      }
+    }));
+
+    await first.execute.execute({ code: "async () => 'first'" });
+    expect(first.budgetReport()).toMatchObject({
+      operations: { total: 2, ok: 1, error: 0, softEmpty: 1 },
+      latestOperations: { total: 2, ok: 1, error: 0, softEmpty: 1 }
+    });
+
+    await second.execute.execute({ code: "async () => 'second'" });
+    expect(second.budgetReport()).toMatchObject({
+      executeCalls: 2,
+      operations: { total: 3, ok: 1, error: 1, softEmpty: 1 },
+      latestOperations: { total: 1, ok: 0, error: 1, softEmpty: 0 }
+    });
+    expect(budget.operations).not.toBe(budget.latestOperations);
+    expect(prepareDemoStep({ steps: [], stepNumber: 2, budget })?.system).toContain(
+      "returned only errors"
+    );
+  });
+
   it("clips long signatures without amputating the final callable line", async () => {
     const { search } = makeTools();
     const result = (await search.execute({
@@ -461,6 +514,52 @@ describe("demo tools at the worker boundary", () => {
     const refused = (await execute.execute({ code: `async () => "fourth"` })) as { ok: false; error: string };
     expect(refused.error).toContain("execute call limit reached");
     expect(budgetReport()).toMatchObject({ executeCalls: 3, executeFailures: 0, executeRefusals: 1 });
+  });
+
+  it("returns zero summaries when the demo runner throws", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    try {
+      const { execute, budgetReport } = makeTools(undefined, async () => {
+        throw new Error("demo-runner-boom");
+      });
+      const result = (await execute.execute({ code: "async () => 1" })) as string;
+
+      expect(result).toContain("Execution failed: demo-runner-boom");
+      expect(result).toContain("evidence: none");
+      expect(result).toContain("service operations: total=0 ok=0 error=0 soft-empty=0");
+      expect(result).toContain("artifact reads: 0");
+      expect(budgetReport()).toMatchObject({
+        executeCalls: 1,
+        executeFailures: 1,
+        operations: { total: 0, ok: 0, error: 0, softEmpty: 0 },
+        latestOperations: { total: 0, ok: 0, error: 0, softEmpty: 0 },
+        latestExecuteEvidence: "none"
+      });
+
+      const event = logSpy.mock.calls
+        .map(([line]) => {
+          try {
+            return JSON.parse(String(line)) as Record<string, unknown>;
+          } catch {
+            return null;
+          }
+        })
+        .find((entry) => entry?.evt === "demo-execute");
+      expect(event).toMatchObject({
+        ok: false,
+        artifactReadCount: 0,
+        operationSummary: { total: 0, ok: 0, error: 0, softEmpty: 0 },
+        evidenceSummary: {
+          kind: "none",
+          skillRead: false,
+          skillRuns: 0,
+          artifactReads: 0
+        },
+        evidenceOutcome: "execute-error"
+      });
+    } finally {
+      logSpy.mockRestore();
+    }
   });
 
   it("refuses object-shaped Promise.all before spending an execute run", async () => {
@@ -555,7 +654,9 @@ describe("demo tools at the worker boundary", () => {
     const { execute, budgetReport } = makeTools();
     const result = (await execute.execute({
       code: `async () => {
-        const failed = await lumenloop.search_directory({ limit: 2 });
+        const failed = await Promise.all(
+          Array.from({ length: 10 }, () => lumenloop.search_directory({ limit: 2 }))
+        );
         return { failed, padding: "x".repeat(25000) };
       }`
     })) as string;
@@ -565,19 +666,13 @@ describe("demo tools at the worker boundary", () => {
     expect(result).toContain("--- demo advisory ---");
     expect(result).toContain("--- host evidence summary ---");
     expect(result).toContain("evidence: service-inconclusive");
-    expect(result).toContain("service operations: total=1 ok=0 error=1 soft-empty=0");
+    expect(result).toContain("service operations: total=10 ok=0 error=10 soft-empty=0");
     expect(result).toContain("Answer only from the visible returned fields");
     expect(budgetReport()).toMatchObject({
       executeCalls: 1,
       executeResultTruncated: 1,
-      operationTotal: 1,
-      operationOk: 0,
-      operationError: 1,
-      operationSoftEmpty: 0,
-      latestOperationTotal: 1,
-      latestOperationOk: 0,
-      latestOperationError: 1,
-      latestOperationSoftEmpty: 0,
+      operations: { total: 10, ok: 0, error: 10, softEmpty: 0 },
+      latestOperations: { total: 10, ok: 0, error: 10, softEmpty: 0 },
       latestExecuteEvidence: "service-inconclusive"
     });
 
@@ -594,7 +689,7 @@ describe("demo tools at the worker boundary", () => {
       evt: "demo-execute",
       ok: true,
       evidenceOutcome: "error",
-      operationSummary: { total: 1, ok: 0, error: 1, softEmpty: 0 },
+      operationSummary: { total: 10, ok: 0, error: 10, softEmpty: 0 },
       evidenceSummary: {
         kind: "service-inconclusive",
         skillRead: false,
@@ -602,11 +697,18 @@ describe("demo tools at the worker boundary", () => {
       },
       sourceBasis: {
         shape: "object",
-        calls: { total: 1, totals: { ok: 0, error: 1, "soft-empty": 0 } },
+        calls: {
+          total: 10,
+          omitted: 2,
+          totals: { ok: 0, error: 10, "soft-empty": 0 }
+        },
         canonicalUrlCount: 0,
         artifactState: "absent"
       }
     });
+    expect(
+      (event?.sourceBasis as { calls?: { first?: unknown[] } } | undefined)?.calls?.first
+    ).toHaveLength(8);
     expect(event).not.toHaveProperty("code");
     expect(event).not.toHaveProperty("resultPreview");
     expect(event).not.toHaveProperty("error");

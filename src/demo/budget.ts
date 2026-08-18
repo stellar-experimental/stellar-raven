@@ -47,6 +47,13 @@ export const DEMO_CAPS = {
   chatsPerHour: 30
 } as const;
 
+export type DemoOperationSummary = {
+  total: number;
+  ok: number;
+  error: number;
+  softEmpty: number;
+};
+
 export type DemoToolBudget = {
   searchCalls: number;
   /** Search calls whose consulted match pool exceeded the returned page. */
@@ -57,20 +64,14 @@ export type DemoToolBudget = {
   unknownServiceSearches: number;
   executeFailures: number;
   executeResultTruncated: number;
-  operationTotal: number;
-  operationOk: number;
-  operationError: number;
-  operationSoftEmpty: number;
+  operations: DemoOperationSummary;
   /** Execute calls that produced narrow-only or conditional-alternative advice. */
   recoveryHintedExecutes: number;
   /** One host-prompted hint cycle is allowed per Playground turn. */
   recoveryAdviceDelivered: boolean;
   /** Later hint-bearing executes suppressed after the turn latch is delivered. */
   recoveryAdviceSuppressed: number;
-  latestOperationTotal: number;
-  latestOperationOk: number;
-  latestOperationError: number;
-  latestOperationSoftEmpty: number;
+  latestOperations: DemoOperationSummary;
   latestExecuteEvidence:
     | "service-data"
     | "service-inconclusive"
@@ -80,6 +81,10 @@ export type DemoToolBudget = {
     | null;
   latestRecoveryHint: EvidenceRecoveryHint | null;
 };
+
+function zeroOperationSummary(): DemoOperationSummary {
+  return { total: 0, ok: 0, error: 0, softEmpty: 0 };
+}
 
 export function createDemoToolBudget(): DemoToolBudget {
   return {
@@ -91,17 +96,11 @@ export function createDemoToolBudget(): DemoToolBudget {
     unknownServiceSearches: 0,
     executeFailures: 0,
     executeResultTruncated: 0,
-    operationTotal: 0,
-    operationOk: 0,
-    operationError: 0,
-    operationSoftEmpty: 0,
+    operations: zeroOperationSummary(),
     recoveryHintedExecutes: 0,
     recoveryAdviceDelivered: false,
     recoveryAdviceSuppressed: 0,
-    latestOperationTotal: 0,
-    latestOperationOk: 0,
-    latestOperationError: 0,
-    latestOperationSoftEmpty: 0,
+    latestOperations: zeroOperationSummary(),
     latestExecuteEvidence: null,
     latestRecoveryHint: null
   };

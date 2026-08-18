@@ -33,8 +33,8 @@
 # THIRD-PARTY-NOTICES.md at the repo root for the source-by-source license map.
 #
 # It also snapshots the stellarlight.xyz/api/skills DIRECTORY (≈30 ecosystem
-# entries across sources/kinds) into catalog.json + MANIFEST.catalog — the
-# "what exists in the ecosystem" map, NOT downloaded as skills.
+# entries across sources/kinds) into catalog.json — the "what exists in the
+# ecosystem" map, NOT downloaded as skills.
 #
 # Each source pins its own commit/ref + synced_at in MANIFEST.json. INDEX.md is
 # regenerated via build-index.mjs.
@@ -191,15 +191,14 @@ pin_github stellar-light        Stellar-Light stellar-scout     ""     main stel
 
 fetch_catalog
 
-# Assemble MANIFEST.json (staged) from every per-source object + catalog summary.
+# Assemble MANIFEST.json (staged) from every per-source pin object.
 SOURCES="$(jq -s 'sort_by(.id)' "$SRC_DIR"/*.json)"
-CAT_SUMMARY="$(jq '{source, fetched_at, counts, entries:(.entries|map({name,source,kind}))}' "$CATALOG_TMP" 2>/dev/null || echo 'null')"
 TOTAL_SKILLS="$(echo "$SOURCES" | jq '[.[].skills|length]|add')"
 
 jq -n --arg now "$NOW" --arg status "$MIRROR_STATUS" --argjson missing "$MISSING_SOURCES" \
-      --argjson sources "$SOURCES" --argjson catalog "$CAT_SUMMARY" --argjson total "$TOTAL_SKILLS" '
+      --argjson sources "$SOURCES" --argjson total "$TOTAL_SKILLS" '
   { synced_at:$now, status:$status, missing_sources:$missing,
-    skill_count:$total, sources:$sources, catalog:$catalog }' > "$MANIFEST_TMP"
+    skill_count:$total, sources:$sources }' > "$MANIFEST_TMP"
 
 # ---------------------------------------------------------------------------
 # BODY DIFF — the review gate, not a convenience.

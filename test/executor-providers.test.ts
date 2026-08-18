@@ -10,11 +10,10 @@ import { fileURLToPath } from "node:url";
 import { loadManifest, type Catalog } from "../src/catalog/search.ts";
 import { buildSandbox } from "../src/executor/providers.ts";
 import type { FetchLike } from "../src/adapters/types.ts";
+import { MemoryR2Bucket } from "./helpers/memory-r2.ts";
 import { lazyPinnedSkillSource as skillSource } from "./helpers/skill-source.ts";
 import type { SkillSource } from "../src/skills/source.ts";
 import {
-  ARTIFACT_CUSTOM_METADATA_MAX_BYTES,
-  artifactCustomMetadataByteLength,
   put as putArtifact,
   type ArtifactPutInput
 } from "../src/artifacts/store.ts";
@@ -31,62 +30,6 @@ const env = {
   ALGOLIA_APPLICATION_ID_DOCS: "TESTAPPID",
   ALGOLIA_API_KEY_DOCS: "test-algolia-key-1234"
 };
-
-type Stored = {
-  body: string;
-  customMetadata: Record<string, string>;
-  httpMetadata?: Headers | R2HTTPMetadata;
-};
-
-class MemoryR2Object {
-  constructor(
-    readonly key: string,
-    private readonly body: string,
-    readonly customMetadata: Record<string, string>,
-    readonly httpMetadata?: Headers | R2HTTPMetadata
-  ) {}
-
-  async text(): Promise<string> {
-    return this.body;
-  }
-}
-
-class MemoryR2Bucket {
-  readonly objects = new Map<string, Stored>();
-
-  async put(key: string, body: string, options?: R2PutOptions): Promise<R2Object> {
-    const customMetadata = options?.customMetadata ? { ...options.customMetadata } : {};
-    if (artifactCustomMetadataByteLength(customMetadata) > ARTIFACT_CUSTOM_METADATA_MAX_BYTES) {
-      const error = new Error("MetadataTooLarge: custom metadata exceeds 8192 bytes");
-      error.name = "MetadataTooLarge";
-      throw error;
-    }
-    this.objects.set(key, { body, customMetadata, httpMetadata: options?.httpMetadata });
-    return new MemoryR2Object(key, body, customMetadata, options?.httpMetadata) as unknown as R2Object;
-  }
-
-  async get(key: string): Promise<R2ObjectBody | null> {
-    const stored = this.objects.get(key);
-    if (!stored) return null;
-    return new MemoryR2Object(
-      key,
-      stored.body,
-      stored.customMetadata,
-      stored.httpMetadata
-    ) as unknown as R2ObjectBody;
-  }
-
-  async head(key: string): Promise<R2Object | null> {
-    const stored = this.objects.get(key);
-    if (!stored) return null;
-    return new MemoryR2Object(
-      key,
-      stored.body,
-      stored.customMetadata,
-      stored.httpMetadata
-    ) as unknown as R2Object;
-  }
-}
 
 function artifactInput(overrides: Partial<ArtifactPutInput> = {}): ArtifactPutInput {
   return {
@@ -232,7 +175,7 @@ describe("codemode.artifact provider", () => {
     );
 
     for (let i = 0; i < 4; i++) {
-      await expect(codemode.artifact_read!(written.artifact.id)).resolves.toMatchObject({
+      await expect(codemode.artifact_read!(written.artifact.id)).resolves.toEqual({
         ok: true,
         data: { rows: [{ id: 1, value: "full" }] }
       });
@@ -259,7 +202,8 @@ describe("codemode.artifact provider", () => {
     );
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
-      await expect(codemode.artifact_info!(written.artifact.id)).resolves.toMatchObject({
+      const infoResult = await codemode.artifact_info!(written.artifact.id);
+      expect(infoResult).toMatchObject({
         ok: true,
         data: {
           id: written.artifact.id,
@@ -267,6 +211,7 @@ describe("codemode.artifact provider", () => {
           rayId: "ray-info"
         }
       });
+      expect(infoResult).not.toHaveProperty("data.key");
       await expect(codemode.artifact_info!(crypto.randomUUID())).resolves.toMatchObject({
         ok: false,
         error: { kind: "error", message: "artifact not found" }

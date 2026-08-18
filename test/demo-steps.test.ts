@@ -46,10 +46,8 @@ describe("prepareDemoStep", () => {
   it("uses the executor-owned operation summary for only-error and only-soft-empty recovery", () => {
     const errors = createDemoToolBudget();
     errors.executeCalls = 1;
-    errors.operationTotal = 2;
-    errors.operationError = 2;
-    errors.latestOperationTotal = 2;
-    errors.latestOperationError = 2;
+    errors.operations = { total: 2, ok: 0, error: 2, softEmpty: 0 };
+    errors.latestOperations = { total: 2, ok: 0, error: 2, softEmpty: 0 };
     errors.latestExecuteEvidence = "service-inconclusive";
     const errorRecovery = prepareDemoStep({ steps: [], stepNumber: 2, budget: errors });
     expect(errorRecovery?.system).toContain("returned only errors");
@@ -57,19 +55,15 @@ describe("prepareDemoStep", () => {
 
     const softEmpty = createDemoToolBudget();
     softEmpty.executeCalls = 1;
-    softEmpty.operationTotal = 1;
-    softEmpty.operationSoftEmpty = 1;
-    softEmpty.latestOperationTotal = 1;
-    softEmpty.latestOperationSoftEmpty = 1;
+    softEmpty.operations = { total: 1, ok: 0, error: 0, softEmpty: 1 };
+    softEmpty.latestOperations = { total: 1, ok: 0, error: 0, softEmpty: 1 };
     softEmpty.latestExecuteEvidence = "service-inconclusive";
     expect(prepareDemoStep({ steps: [], stepNumber: 2, budget: softEmpty })?.system).toContain(
       "soft-empty results, which are inconclusive"
     );
 
-    softEmpty.operationOk = 1;
-    softEmpty.operationTotal = 2;
-    softEmpty.latestOperationOk = 1;
-    softEmpty.latestOperationTotal = 2;
+    softEmpty.operations = { total: 2, ok: 1, error: 0, softEmpty: 1 };
+    softEmpty.latestOperations = { total: 2, ok: 1, error: 0, softEmpty: 1 };
     softEmpty.latestExecuteEvidence = "service-data";
     expect(prepareDemoStep({ steps: [], stepNumber: 2, budget: softEmpty })).toBeUndefined();
   });
@@ -77,11 +71,8 @@ describe("prepareDemoStep", () => {
   it("uses only the latest execute outcome for recovery", () => {
     const budget = createDemoToolBudget();
     budget.executeCalls = 2;
-    budget.operationTotal = 3;
-    budget.operationOk = 1;
-    budget.operationError = 2;
-    budget.latestOperationTotal = 2;
-    budget.latestOperationError = 2;
+    budget.operations = { total: 3, ok: 1, error: 2, softEmpty: 0 };
+    budget.latestOperations = { total: 2, ok: 0, error: 2, softEmpty: 0 };
     budget.latestExecuteEvidence = "service-inconclusive";
     expect(prepareDemoStep({ steps: [], stepNumber: 3, budget })?.system).toContain(
       "returned only errors"
@@ -91,8 +82,7 @@ describe("prepareDemoStep", () => {
   it("conditionally surfaces exact recovery candidates after narrow-only success", () => {
     const budget = createDemoToolBudget();
     budget.executeCalls = 1;
-    budget.latestOperationTotal = 2;
-    budget.latestOperationOk = 2;
+    budget.latestOperations = { total: 2, ok: 2, error: 0, softEmpty: 0 };
     budget.latestExecuteEvidence = "service-data";
     budget.latestRecoveryHint = {
       mode: "narrow-only",
@@ -119,8 +109,7 @@ describe("prepareDemoStep", () => {
   it("consumes broad conditional advice once without masking later structural recovery", () => {
     const budget = createDemoToolBudget();
     budget.executeCalls = 1;
-    budget.latestOperationTotal = 1;
-    budget.latestOperationOk = 1;
+    budget.latestOperations = { total: 1, ok: 1, error: 0, softEmpty: 0 };
     budget.latestExecuteEvidence = "service-data";
     budget.latestRecoveryHint = {
       mode: "conditional-alternatives",
@@ -140,9 +129,7 @@ describe("prepareDemoStep", () => {
     expect(budget.recoveryAdviceDelivered).toBe(true);
     expect(prepareDemoStep({ steps: [], stepNumber: 3, budget })).toBeUndefined();
 
-    budget.latestOperationTotal = 1;
-    budget.latestOperationOk = 0;
-    budget.latestOperationError = 1;
+    budget.latestOperations = { total: 1, ok: 0, error: 1, softEmpty: 0 };
     budget.latestExecuteEvidence = "service-inconclusive";
     expect(prepareDemoStep({ steps: [], stepNumber: 4, budget })?.system).toContain(
       "returned only errors"
@@ -193,9 +180,7 @@ describe("demo step signals and telemetry", () => {
 
   it("emits compact metadata without tool inputs, outputs, or text content", () => {
     const budget = createDemoToolBudget();
-    budget.operationTotal = 2;
-    budget.operationOk = 1;
-    budget.operationSoftEmpty = 1;
+    budget.operations = { total: 2, ok: 1, error: 0, softEmpty: 1 };
     const telemetry = demoStepTelemetry(
       {
         stepNumber: 1,

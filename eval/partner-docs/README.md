@@ -16,6 +16,9 @@ OpenZeppelin to MDX below the `OpenZeppelin/docs` Stellar/Relayer content roots.
 content type, UTF-8 decoding, and a 256 KiB per-document cap are enforced. It never connects to a
 partner MCP server and never calls an API described by the fetched documentation.
 
+The CLI validates the complete suite before the fetch loop starts. The fetch helper applies the
+same URL allowlist to each request and redirect target.
+
 Measured OpenZeppelin case URLs are commit-pinned; each result records `resolvedCommit` alongside
 the body SHA-256. Any Raven baseline error makes the retrieval gate `inconclusive` rather than
 silently shrinking the comparison denominator.
@@ -39,10 +42,10 @@ same literal fact-group matcher.
 | `openzeppelin-stellar-relayer` | 0/8 | 8/8 |
 | **Total** | **7/64 (10.9%)** | **63/64 (98.4%)** |
 
-Candidate fetches had zero errors, redirects outside the allowlist, prompt-signal matches, or
-content-type violations. Median document fetch was 46.0 ms and p95 was 172.4 ms in this single
-local run. The retrieval-admission threshold passed (+87.5 percentage points, eight wins, zero
-regressions).
+Suite validation admitted every candidate URL. Candidate fetches had zero errors, prompt-signal
+matches, or content-type violations. Median document fetch was 46.0 ms and p95 was 172.4 ms in
+this single local run. The retrieval-admission threshold passed (+87.5 percentage points, eight
+wins, zero regressions).
 
 ### What the current-Raven arm does and does not include
 
@@ -142,7 +145,8 @@ Only two documents are new since the eight-case cohort: `get-stellar-nfts.md` an
 | Four independent cases | 32/32 |
 | Pooled | 95/96 |
 
-Zero fetch errors, zero allowlist violations, zero prompt-signal matches.
+Suite validation admitted every candidate URL. Fetches had zero errors and zero prompt-signal
+matches.
 
 **The pooled row is not 96 independent measurements.** The suite scores 96 fact groups but only
 **85 distinct** ones: a conflict case deliberately re-checks strings its single-page siblings

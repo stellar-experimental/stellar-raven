@@ -16,16 +16,8 @@ const ARTIFACT_CUSTOM_METADATA_TARGET_BYTES = 7_600;
 const OP_LEDGER_METADATA_CALL_LIMIT = 12;
 const OP_LEDGER_OP_MAX_CHARS = 180;
 const ARTIFACT_NOT_FOUND = { ok: false as const, error: { kind: "not-found" as const } };
-const UTF8 = "utf-8";
 
 export type ArtifactMime = "application/json" | "text/plain; charset=utf-8" | "application/x.raven.undefined";
-
-export type ArtifactStoredBody = {
-  encoding: typeof UTF8;
-  mime: ArtifactMime;
-  /** Exact post-redaction serialized result string, encoded as UTF-8. */
-  body: string;
-};
 
 export type ArtifactOperationSummary = {
   op: string;
@@ -55,7 +47,6 @@ export type ArtifactPutInput = {
 
 export type ArtifactMetadata = {
   id: string;
-  key: string;
   createdAt: string;
   expiresAt: string;
   bytes: number;
@@ -129,7 +120,7 @@ export function artifactCustomMetadataByteLength(meta: Record<string, string>): 
   return bytes;
 }
 
-function metadataFromCustom(id: string, key: string, meta: Record<string, string> | undefined): ArtifactMetadata | null {
+function metadataFromCustom(id: string, meta: Record<string, string> | undefined): ArtifactMetadata | null {
   if (!meta) return null;
   const {
     createdAt,
@@ -168,7 +159,6 @@ function metadataFromCustom(id: string, key: string, meta: Record<string, string
   if (!Number.isFinite(parsedBytes) || parsedBytes < 0) return null;
   return {
     id,
-    key,
     createdAt,
     expiresAt,
     bytes: parsedBytes,
@@ -224,11 +214,10 @@ function opLedgerMetadata(input: ArtifactOperationSummary[] | string): string {
   });
 }
 
-function customMetadata(input: ArtifactPutInput, id: string, key: string, createdAt: Date, bytes: number, sha256: string): ArtifactMetadata {
+function customMetadata(input: ArtifactPutInput, id: string, createdAt: Date, bytes: number, sha256: string): ArtifactMetadata {
   const expiresAt = new Date(createdAt.getTime() + ARTIFACT_TTL_MS).toISOString();
   const meta: ArtifactMetadata = {
     id,
-    key,
     createdAt: createdAt.toISOString(),
     expiresAt,
     bytes,
@@ -306,13 +295,10 @@ function expired(meta: ArtifactMetadata, now: Date): boolean {
   return !Number.isFinite(expiresAt) || expiresAt <= now.getTime();
 }
 
-function reconstruct(stored: ArtifactStoredBody): unknown {
-  if (stored.encoding !== UTF8) {
-    throw new Error(`unsupported artifact encoding: ${stored.encoding}`);
-  }
-  if (stored.mime === "application/x.raven.undefined") return undefined;
-  if (stored.mime === "application/json") return JSON.parse(stored.body);
-  return stored.body;
+function reconstruct(mime: ArtifactMime, body: string): unknown {
+  if (mime === "application/x.raven.undefined") return undefined;
+  if (mime === "application/json") return JSON.parse(body);
+  return body;
 }
 
 export async function put(
@@ -331,10 +317,8 @@ export async function put(
 
   const sha256 = await sha256Hex(input.body);
   const now = input.now ?? new Date();
-  const meta = customMetadata(input, id, key, now, bytes, sha256);
-  const stored: ArtifactStoredBody = { encoding: UTF8, mime: input.mime, body: input.body };
-  await bucket.put(key, JSON.stringify(stored), {
-    httpMetadata: { contentType: "application/json; charset=utf-8" },
+  const meta = customMetadata(input, id, now, bytes, sha256);
+  await bucket.put(key, input.body, {
     customMetadata: toR2Metadata(meta)
   });
   return { ok: true, artifact: meta };
@@ -350,7 +334,7 @@ export async function info(
   if (!isArtifactId(id)) return ARTIFACT_NOT_FOUND;
   const key = await keyFor(subject, id);
   const object = await bucket.head(key);
-  const meta = metadataFromCustom(id, key, object?.customMetadata);
+  const meta = metadataFromCustom(id, object?.customMetadata);
   if (!meta || expired(meta, now)) return ARTIFACT_NOT_FOUND;
   return { ok: true, artifact: meta };
 }
@@ -365,12 +349,12 @@ export async function read(
   if (!isArtifactId(id)) return ARTIFACT_NOT_FOUND;
   const key = await keyFor(subject, id);
   const object = await bucket.get(key);
-  const meta = metadataFromCustom(id, key, object?.customMetadata);
+  const meta = metadataFromCustom(id, object?.customMetadata);
   if (!object || !meta || expired(meta, now)) return ARTIFACT_NOT_FOUND;
 
   try {
-    const stored = JSON.parse(await object.text()) as ArtifactStoredBody;
-    return { ok: true, artifact: meta, value: reconstruct(stored) };
+    const body = await object.text();
+    return { ok: true, artifact: meta, value: reconstruct(meta.mime, body) };
   } catch (e) {
     return {
       ok: false,

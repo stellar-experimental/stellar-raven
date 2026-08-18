@@ -467,6 +467,46 @@ export const OG_ALT =
   "Stellar Raven — Stellar docs and ecosystem context, one connection. A Bayer-dithered orange globe " +
   "beside the endpoint raven.stellar.org/mcp.";
 
+export function renderPublicHeadMetadata(args: {
+  title: string;
+  description: string;
+  path: string;
+  noindex: boolean;
+}): string {
+  const title = escapeHtml(args.title);
+  const description = escapeHtml(args.description);
+  const canonicalUrl = escapeHtml(`https://${HOST}${args.path}`);
+  const imageUrl = escapeHtml(OG_IMAGE);
+  const imageAlt = escapeHtml(OG_ALT);
+  const favicon = escapeHtml(FAVICON);
+
+  return `<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>${title}</title>
+<meta name="description" content="${description}"/>
+${args.noindex ? `<meta name="robots" content="noindex"/>\n` : ""}<meta name="theme-color" content="#0e150d"/>
+<meta name="color-scheme" content="dark"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="${title}"/>
+<meta property="og:description" content="${description}"/>
+<meta property="og:image" content="${imageUrl}"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:type" content="image/png"/>
+<meta property="og:image:alt" content="${imageAlt}"/>
+<meta property="og:url" content="${canonicalUrl}"/>
+<meta property="og:site_name" content="Stellar Raven"/>
+<meta property="og:locale" content="en_US"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="${title}"/>
+<meta name="twitter:description" content="${description}"/>
+<meta name="twitter:image" content="${imageUrl}"/>
+<meta name="twitter:image:alt" content="${imageAlt}"/>
+<link rel="icon" href="${favicon}"/>
+<link rel="apple-touch-icon" href="${favicon}"/>
+<link rel="canonical" href="${canonicalUrl}"/>`;
+}
+
 function head(
   title: string,
   description: string,
@@ -476,31 +516,7 @@ function head(
   path: string = "/"
 ): string {
   return `<!doctype html><html lang="en"><head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>${escapeHtml(title)}</title>
-<meta name="description" content="${escapeHtml(description)}"/>
-${noindex ? `<meta name="robots" content="noindex"/>\n` : ""}<meta name="theme-color" content="#0e150d"/>
-<meta name="color-scheme" content="dark"/>
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="${escapeHtml(title)}"/>
-<meta property="og:description" content="${escapeHtml(description)}"/>
-<meta property="og:image" content="${OG_IMAGE}"/>
-<meta property="og:image:width" content="1200"/>
-<meta property="og:image:height" content="630"/>
-<meta property="og:image:type" content="image/png"/>
-<meta property="og:image:alt" content="${escapeHtml(OG_ALT)}"/>
-<meta property="og:url" content="https://${HOST}${path}"/>
-<meta property="og:site_name" content="Stellar Raven"/>
-<meta property="og:locale" content="en_US"/>
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="${escapeHtml(title)}"/>
-<meta name="twitter:description" content="${escapeHtml(description)}"/>
-<meta name="twitter:image" content="${OG_IMAGE}"/>
-<meta name="twitter:image:alt" content="${escapeHtml(OG_ALT)}"/>
-<link rel="icon" href="${FAVICON}"/>
-<link rel="apple-touch-icon" href="${FAVICON}"/>
-<link rel="canonical" href="https://${HOST}${path}"/>
+${renderPublicHeadMetadata({ title, description, path, noindex })}
 <style>${FONT_FACE}${TOKENS}${css}</style>${headExtra}
 </head><body>`;
 }

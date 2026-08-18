@@ -19,6 +19,41 @@ import { Client } from "@modelcontextprotocol/client";
 import { InMemoryTransport } from "@modelcontextprotocol/server";
 import { registerTools, SEARCH_KINDS, type RegisterToolsOptions } from "../src/mcp/tools";
 import { allowDevUnauthenticated } from "../src/auth/gate";
+import type { McpAccessContext } from "../src/server";
+import type { ExecuteEvidenceSummary, ExecuteOperationSummary } from "../src/executor/run";
+import { landingPage, termsPage } from "../src/site";
+
+const oauthAccess: McpAccessContext = { mode: "oauth" };
+const apiKeyAccess: McpAccessContext = { mode: "api-key", apiKeyName: "admin" };
+const devBypassAccess: McpAccessContext = { mode: "dev-bypass" };
+
+function executeSummaries(
+  operationSummary: ExecuteOperationSummary = { total: 0, ok: 0, error: 0, softEmpty: 0 }
+): { operationSummary: ExecuteOperationSummary; evidenceSummary: ExecuteEvidenceSummary } {
+  return {
+    operationSummary,
+    evidenceSummary: {
+      kind:
+        operationSummary.ok > 0
+          ? "service-data"
+          : operationSummary.total > 0
+            ? "service-inconclusive"
+            : "none",
+      skillRead: false,
+      buildAuthoritySkillIds: [],
+      buildAuthorityRoles: [],
+      skillRuns: 0,
+      artifactReads: 0
+    }
+  };
+}
+
+// @ts-expect-error API-key access requires a key name.
+const apiKeyWithoutName: McpAccessContext = { mode: "api-key" };
+// @ts-expect-error OAuth access excludes API-key data.
+const oauthWithApiKeyName: McpAccessContext = { mode: "oauth", apiKeyName: "admin" };
+// @ts-expect-error Dev-bypass access excludes legacy bypass flags.
+const devBypassWithFlag: McpAccessContext = { mode: "dev-bypass", devBypassFired: true };
 
 vi.mock("cloudflare:workers", () => ({
   tracing: {
@@ -126,9 +161,9 @@ describe("tool registration", () => {
 });
 
 describe("artifact owner resolution", () => {
-  it("OAuth subject wins and is passed through unchanged", async () => {
+  it("OAuth mode passes its subject through unchanged", async () => {
     const { resolveArtifactOwner } = await import("../src/server");
-    expect(resolveArtifactOwner("peppered-subject", true)).toBe("peppered-subject");
+    expect(resolveArtifactOwner("peppered-subject", oauthAccess)).toBe("peppered-subject");
   });
 
   it("dev loopback bypass gets the fixed local owner only when the gate fired", async () => {
@@ -137,12 +172,13 @@ describe("artifact owner resolution", () => {
       { DEV_ALLOW_UNAUTHENTICATED: "true" } as Env,
       "localhost"
     );
-    expect(resolveArtifactOwner(undefined, gateFired)).toBe("dev-local");
+    expect(gateFired).toBe(true);
+    expect(resolveArtifactOwner(undefined, devBypassAccess)).toBe("dev-local");
   });
 
-  it("API-key bypass gets no owner", async () => {
+  it("API-key bypass gets no owner even when OAuth props contain a subject", async () => {
     const { resolveArtifactOwner } = await import("../src/server");
-    expect(resolveArtifactOwner(undefined, false)).toBeUndefined();
+    expect(resolveArtifactOwner("stale-oauth-subject", apiKeyAccess)).toBeUndefined();
   });
 
   it("prod-hostname requests get no dev owner even if the dev env var exists", async () => {
@@ -151,7 +187,26 @@ describe("artifact owner resolution", () => {
       { DEV_ALLOW_UNAUTHENTICATED: "true" } as Env,
       "stellar-raven.example"
     );
-    expect(resolveArtifactOwner(undefined, gateFired)).toBeUndefined();
+    expect(gateFired).toBe(false);
+    expect(resolveArtifactOwner(undefined, oauthAccess)).toBeUndefined();
+  });
+});
+
+describe("public page metadata", () => {
+  it("preserves landing JSON-LD and the canonical URL", () => {
+    const page = landingPage();
+
+    expect(page).toContain('<link rel="canonical" href="https://raven.stellar.org/"/>');
+    expect(page).toContain('<meta property="og:url" content="https://raven.stellar.org/"/>');
+    expect(page).toContain('<script type="application/ld+json">');
+  });
+
+  it("preserves the terms canonical URL without noindex", () => {
+    const page = termsPage();
+
+    expect(page).toContain('<link rel="canonical" href="https://raven.stellar.org/terms"/>');
+    expect(page).toContain('<meta property="og:url" content="https://raven.stellar.org/terms"/>');
+    expect(page).not.toContain('<meta name="robots" content="noindex"/>');
   });
 });
 
@@ -640,7 +695,8 @@ describe("execute behavior", () => {
           ok: true,
           result: JSON.stringify({ echoed: code.length }),
           truncated: false,
-          logs: ["hello from sandbox"]
+          logs: ["hello from sandbox"],
+          ...executeSummaries()
         };
       }
     });
@@ -671,7 +727,7 @@ describe("execute behavior", () => {
           result: '{"answer":"scoped"}',
           truncated: false,
           logs: [],
-          operationSummary: summary
+          ...executeSummaries(summary)
         })
       });
       const result = await execClient.callTool({
@@ -697,13 +753,7 @@ describe("execute behavior", () => {
         result: '{"rows":[{"title":"nearby"}]}',
         truncated: false,
         logs: [],
-        operationSummary: {
-          total: 2,
-          ok: 2,
-          error: 0,
-          softEmpty: 0,
-          candidateEvidence: 1
-        }
+        ...executeSummaries({ total: 2, ok: 2, error: 0, softEmpty: 0, candidateEvidence: 1 })
       })
     });
     const result = await execClient.callTool({
@@ -726,7 +776,7 @@ describe("execute behavior", () => {
         result: '{"matchedBuilders":[],"matchedContent":[]}',
         truncated: false,
         logs: [],
-        operationSummary: { total: 2, ok: 2, error: 0, softEmpty: 0 },
+        ...executeSummaries({ total: 2, ok: 2, error: 0, softEmpty: 0 }),
         recoveryHint: {
           mode: "narrow-only",
           sourceOperations: ["scout.getBuilders", "lumenloop.find_content_by_entity"],
@@ -756,7 +806,7 @@ describe("execute behavior", () => {
         result: '{"hits":[{"url":"https://developers.stellar.org/docs/example"}]}',
         truncated: false,
         logs: [],
-        operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
+        ...executeSummaries({ total: 1, ok: 1, error: 0, softEmpty: 0 }),
         recoveryHint: {
           mode: "conditional-alternatives",
           sourceOperations: ["stellarDocs.search_docs"],
@@ -907,7 +957,13 @@ describe("execute behavior", () => {
       executeContext: () => ({ artifactOwner: owner }),
       runExecute: async (_code, context) => {
         seenOwners.push(context?.artifactOwner);
-        return { ok: true, result: JSON.stringify({ owner: context?.artifactOwner ?? null }), truncated: false, logs: [] };
+        return {
+          ok: true,
+          result: JSON.stringify({ owner: context?.artifactOwner ?? null }),
+          truncated: false,
+          logs: [],
+          ...executeSummaries()
+        };
       }
     });
 
@@ -927,7 +983,8 @@ describe("execute behavior", () => {
         ok: true,
         result: '{"fine":true}',
         truncated: false,
-        logs: Array.from({ length: 100 }, () => "x".repeat(2_000))
+        logs: Array.from({ length: 100 }, () => "x".repeat(2_000)),
+        ...executeSummaries()
       })
     });
     const result = await execClient.callTool({
@@ -956,7 +1013,8 @@ describe("execute behavior", () => {
           resultMaxTokens: 1000,
           resultMaxChars: 4_000,
           resultApproxOriginalTokens: 25_000,
-          logs: Array.from({ length: 100 }, () => "x".repeat(2_000))
+          logs: Array.from({ length: 100 }, () => "x".repeat(2_000)),
+          ...executeSummaries()
         };
       }
     });
@@ -982,6 +1040,7 @@ describe("execute behavior", () => {
           result: "ok",
           truncated: true,
           logs: [],
+          ...executeSummaries({ total: 30, ok: 10, error: 10, softEmpty: 10 }),
           sourceBasis: {
             shape: { kind: "array", serializedChars: 100_000, approxTokens: 25_000, totalItems: 30 },
             calls: Array.from({ length: 30 }, (_, i) => {
@@ -1034,7 +1093,12 @@ describe("execute behavior", () => {
     // its own budget it would be the third smuggling channel after result
     // and logs.
     const execClient = await connectedClient({
-      runExecute: async () => ({ ok: false, error: "x".repeat(100_000), logs: [] })
+      runExecute: async () => ({
+        ok: false,
+        error: "x".repeat(100_000),
+        logs: [],
+        ...executeSummaries()
+      })
     });
     const result = await execClient.callTool({
       name: "execute",
@@ -1049,7 +1113,12 @@ describe("execute behavior", () => {
   it("uses the configured model-boundary cap for error text", async () => {
     const execClient = await connectedClient({
       modelBoundaryMaxTokens: 1000,
-      runExecute: async () => ({ ok: false, error: "x".repeat(100_000), logs: [] })
+      runExecute: async () => ({
+        ok: false,
+        error: "x".repeat(100_000),
+        logs: [],
+        ...executeSummaries()
+      })
     });
     const result = await execClient.callTool({
       name: "execute",
@@ -1064,7 +1133,12 @@ describe("execute behavior", () => {
 
   it("renders runner errors as isError data with logs", async () => {
     const execClient = await connectedClient({
-      runExecute: async () => ({ ok: false, error: "fetch is not allowed", logs: ["[error] boom"] })
+      runExecute: async () => ({
+        ok: false,
+        error: "fetch is not allowed",
+        logs: ["[error] boom"],
+        ...executeSummaries()
+      })
     });
     const result = await execClient.callTool({
       name: "execute",

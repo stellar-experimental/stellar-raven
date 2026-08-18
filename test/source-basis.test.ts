@@ -3,11 +3,31 @@ import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs"
 import {
   SOURCE_BASIS_MANIFEST_MAX_CHARS,
   buildSourceBasisManifest,
+  projectSourceBasisTelemetry,
   sanitizeCanonicalUrls,
   sourceBasisShapeFromValue,
   type BuildSourceBasisManifestInput,
-  type SourceBasisCall
+  type SourceBasisCall,
+  type SourceBasisShape,
+  type SourceBasisTelemetry
 } from "../src/policy/source-basis.ts";
+
+const validObjectShape: SourceBasisShape = { kind: "object", serializedChars: 20, totalKeys: 2 };
+const validArrayShape: SourceBasisShape = { kind: "array", serializedChars: 20, totalItems: 2 };
+const validStringShape: SourceBasisShape = { kind: "string", serializedChars: 20, stringChars: 20 };
+
+// @ts-expect-error Object shapes require totalKeys.
+const objectWithoutTotalKeys: SourceBasisShape = { kind: "object", serializedChars: 20 };
+// @ts-expect-error Array shapes require totalItems.
+const arrayWithoutTotalItems: SourceBasisShape = { kind: "array", serializedChars: 20 };
+// @ts-expect-error String shapes require stringChars.
+const stringWithoutStringChars: SourceBasisShape = { kind: "string", serializedChars: 20 };
+// @ts-expect-error Object shapes exclude counts from other variants.
+const objectWithTotalItems: SourceBasisShape = { kind: "object", serializedChars: 20, totalKeys: 2, totalItems: 2 };
+// @ts-expect-error Array shapes exclude counts from other variants.
+const arrayWithStringChars: SourceBasisShape = { kind: "array", serializedChars: 20, totalItems: 2, stringChars: 20 };
+// @ts-expect-error String shapes exclude counts from other variants.
+const stringWithTotalKeys: SourceBasisShape = { kind: "string", serializedChars: 20, stringChars: 20, totalKeys: 2 };
 
 function calls(count: number): SourceBasisCall[] {
   const outcomes = ["ok", "error", "soft-empty"] as const;
@@ -19,6 +39,17 @@ function calls(count: number): SourceBasisCall[] {
 }
 
 describe("source-basis manifest", () => {
+  it("reports the required count for each shape variant and primitive fallback", () => {
+    expect(validObjectShape).toEqual({ kind: "object", serializedChars: 20, totalKeys: 2 });
+    expect(validArrayShape).toEqual({ kind: "array", serializedChars: 20, totalItems: 2 });
+    expect(validStringShape).toEqual({ kind: "string", serializedChars: 20, stringChars: 20 });
+
+    expect(sourceBasisShapeFromValue({ left: 1, right: 2 })).toMatchObject({ kind: "object", totalKeys: 2 });
+    expect(sourceBasisShapeFromValue([1, 2, 3])).toMatchObject({ kind: "array", totalItems: 3 });
+    expect(sourceBasisShapeFromValue("stellar")).toMatchObject({ kind: "string", stringChars: 7 });
+    expect(sourceBasisShapeFromValue(123)).toMatchObject({ kind: "string" });
+  });
+
   it("is deterministic for identical input bytes", () => {
     const input: BuildSourceBasisManifestInput = {
       shape: sourceBasisShapeFromValue({
@@ -156,5 +187,60 @@ describe("source-basis manifest", () => {
 
     expect(text).toContain("return specific sections or aggregates, not whole skill bodies");
     expect(text.length).toBeLessThanOrEqual(SOURCE_BASIS_MANIFEST_MAX_CHARS);
+  });
+});
+
+describe("source-basis telemetry", () => {
+  it("projects bounded calls and excludes canonical URL values", () => {
+    const input: BuildSourceBasisManifestInput = {
+      shape: validObjectShape,
+      calls: calls(15),
+      canonicalUrls: ["https://sensitive.example/private-result"],
+      artifact: { state: "available", id: "artifact-1", sha256: "abc", bytes: 3, expiresAt: "later" },
+      skillSectionAdvice: true
+    };
+
+    const mcpTelemetry: SourceBasisTelemetry | null = projectSourceBasisTelemetry(input, 12);
+    const demoTelemetry = projectSourceBasisTelemetry(input, 8);
+
+    expect(mcpTelemetry).toMatchObject({
+      shape: "object",
+      calls: {
+        total: 15,
+        omitted: 3,
+        totals: { ok: 5, error: 5, "soft-empty": 5 }
+      },
+      canonicalUrlCount: 1,
+      artifactState: "available",
+      skillSectionAdvice: true
+    });
+    expect(mcpTelemetry?.calls.first).toHaveLength(12);
+    expect(demoTelemetry?.calls.first).toHaveLength(8);
+    expect(demoTelemetry?.calls.omitted).toBe(7);
+    expect(JSON.stringify(mcpTelemetry)).not.toContain("sensitive.example");
+  });
+
+  it("preserves null and absent-field defaults", () => {
+    expect(projectSourceBasisTelemetry(undefined, 12)).toBeNull();
+    expect(
+      projectSourceBasisTelemetry(
+        {
+          shape: validStringShape,
+          calls: []
+        },
+        8
+      )
+    ).toEqual({
+      shape: "string",
+      calls: {
+        first: [],
+        total: 0,
+        omitted: 0,
+        totals: { ok: 0, error: 0, "soft-empty": 0 }
+      },
+      canonicalUrlCount: 0,
+      artifactState: "absent",
+      skillSectionAdvice: false
+    });
   });
 });

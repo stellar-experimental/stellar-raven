@@ -245,6 +245,22 @@ describe("/health/skills", () => {
     expect((await skillHealthResponse(kv)).status).toBe(503);
   });
 
+  it.each([
+    { ok: true, error: "could not fetch" },
+    { ok: false, error: null }
+  ])("rejects a contradictory stored verdict: %o", async ({ ok, error }) => {
+    const kv = fakeKv();
+    kv.store.set(
+      CANARY_KV_KEY,
+      JSON.stringify({ ok, checkedAt: "2026-07-30T00:00:00.000Z", checked: 30, ms: 900, error })
+    );
+
+    const res = await skillHealthResponse(kv);
+    expect(res.status).toBe(503);
+    expect(res.headers.get("cache-control")).toBe("no-store");
+    expect(await res.json()).toEqual({ ok: false, reason: "no usable canary verdict recorded" });
+  });
+
   it("publishes a coarse error class, never the raw URL or digests", async () => {
     // The route is unauthenticated. A raw integrity error carries expected and
     // actual hashes; a transport error carries the exact upstream URL. Useful

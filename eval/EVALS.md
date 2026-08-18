@@ -14,9 +14,9 @@ the headline wins.
 
 | Instrument | Layer | Cost / when to run | Headline vs diagnostic |
 |---|---|---|---|
-| `eval/run-routing.mjs` — legacy 338 strict | `search` ranking, offline | free, seconds — **every scoring/catalog change** | **GATE**: committed absolute baseline with a ±1% band. The authoritative current numbers, timestamp, result artifact, and decision note live in `eval/gates.json`; `--gate` exits 1 on breach and CI runs it on every push/PR. Historical movements are recorded in `eval/README.md`. |
+| `eval/run-routing.mjs` — legacy 338 strict | `search` ranking, offline | free, seconds — **every scoring/catalog change** | **GATE**: committed absolute baseline with a ±1% band. The authoritative input fingerprints, accepted totals, timestamp, and decision note live in `eval/gates.json`; `--gate` exits 1 on breach and CI runs it on every push/PR. Historical movements are recorded in `eval/README.md`. |
 | — skills lane (23, hand-authored) | skills routing | free, same run | **GATE**: must not fall below the current top-1 floor in `eval/gates.json`; top-3/top-5/card@5 remain visible diagnostics. |
-| — extended lane (122, real-user phrasing) | `search` on jitsu-mined questions | free, same run | Diagnostic; **target metric for retrieval work**. Read the result artifact named in `eval/gates.json` (local run output; `eval/results/` is not committed) instead of copying a second “current” count here. |
+| — extended lane (122, real-user phrasing) | `search` on jitsu-mined questions | free, same run | Diagnostic; **target metric for retrieval work**. Read the latest local result for the current tree. Local results are not committed and do not define the gate baseline. |
 | — accept-either views (corpus `acceptable_cards` ∪ overlay) | label-tolerance context | free, same run | Diagnostic only; never the headline |
 | `eval/discovery/` | one-search, agent-allowed-≤3-search, and mined-query replay source-family / usable-route discovery | one-shot/replay free; agent arm paid; after discovery guidance or retrieval-shape work | Diagnostic: 43 adjudicated cases; `familyHit@3` + `usableOp@5`; paired miss classification; 91-query LumenLoop replay lane |
 | `eval/agentic/` | agent-driven `search`, live server | ~$, minutes — after major search-behavior changes | Diagnostic (label-ambiguity analysis) |
@@ -58,7 +58,8 @@ require either the same explicit ids or a disclosed sample-membership change.
    mechanical, not prose: baselines live in `eval/gates.json`, every `run-routing` run
    prints a gate verdict, `--gate` turns a breach into exit 1, and CI runs
    `eval:selftest` + `eval:routing -- --gate` on every push/PR — so re-baselining means
-   changing `gates.json` in the same commit as the change that moved the numbers.
+   changing `gates.json` in the same commit as the change that moved the numbers. The file
+   records SHA-256 fingerprints for every gated data input and exact accepted lane totals.
    Grading-rule changes
    re-baseline the gates explicitly (results files carry `gradingRule`). Current rule: v3,
    manifest-exposed entries only, no lumenloop/skills twin identity; cross-service tolerance
@@ -93,10 +94,11 @@ require either the same explicit ids or a disclosed sample-membership change.
    contract-version bump, provenance note, and digest update. Generated files
    (`routing-cases.json`, `qa/cases.json`, `qa/sample.json`) are never hand-edited — CI
    byte-pins them.
-7. **Results are local-only evidence** (`eval/**/results/`, gitignored); READMEs carry the
-   committed record with the exact results-file stamp they cite. The results dirs are unbounded
-   — prune them periodically (e.g. drop results older than 30 days), keeping any stamp still
-   referenced by `eval/gates.json` or a committed README record.
+7. **Results are local-only evidence** (`eval/**/results/`, gitignored). `eval/gates.json`
+   carries the routing gate's committed fingerprints and accepted totals. READMEs carry historical
+   records and can cite exact local result stamps. A routing gate can add `evidence.localTrace` as
+   optional context, but the trace is never required to resolve the baseline. The results dirs are
+   unbounded. Prune results older than 30 days after the active investigation ends.
 8. **Discovery is intentionally narrower than QA.** Its one-shot lane asks whether one verbatim
    `search` surfaces an expected family in the top 3 and a usable operation/skill in the top 5.
    The agent arm allows a real caller at most three searches and records visible hits plus final

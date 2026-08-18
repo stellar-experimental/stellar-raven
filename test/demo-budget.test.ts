@@ -64,20 +64,19 @@ describe("createDemoToolBudget", () => {
       unknownServiceSearches: 0,
       executeFailures: 0,
       executeResultTruncated: 0,
-      operationTotal: 0,
-      operationOk: 0,
-      operationError: 0,
-      operationSoftEmpty: 0,
+      operations: { total: 0, ok: 0, error: 0, softEmpty: 0 },
       recoveryHintedExecutes: 0,
       recoveryAdviceDelivered: false,
       recoveryAdviceSuppressed: 0,
-      latestOperationTotal: 0,
-      latestOperationOk: 0,
-      latestOperationError: 0,
-      latestOperationSoftEmpty: 0,
+      latestOperations: { total: 0, ok: 0, error: 0, softEmpty: 0 },
       latestExecuteEvidence: null,
       latestRecoveryHint: null
     });
+  });
+
+  it("creates distinct aggregate and latest summaries", () => {
+    const budget = createDemoToolBudget();
+    expect(budget.operations).not.toBe(budget.latestOperations);
   });
 });
 

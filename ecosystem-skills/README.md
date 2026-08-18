@@ -24,7 +24,7 @@ ecosystem-skills/
 ├── INDEX.md         # AUTO-GENERATED themed directory (name + description + source + size), linked upstream
 ├── groups.json      # theme → skill-id mapping that drives INDEX.md grouping
 ├── catalog.json     # full snapshot of the stellarlight.xyz/api/skills directory (42 entries)
-├── build-index.mjs  # regenerates INDEX.md from MANIFEST.json + groups.json
+├── build-index.mjs  # regenerates INDEX.md from MANIFEST.json + catalog.json + groups.json
 ├── update.sh        # re-pins every source (stores nothing), prints the body diff, rebuilds the index
 ├── .cache/          # gitignored working cache of fetched bodies, keyed by blob sha — safe to delete
 └── README.md
@@ -73,7 +73,8 @@ back in. The partner skills survive only as name-only stubs in `inventory/lumenl
   someone makes rather than an omission nobody sees.
 - **The ecosystem is bigger than what we mirror.** `catalog.json` captures the full stellarlight
   directory — including SDKs/MCP servers/CLIs that aren't `SKILL.md` skills — so the map of "what
-  exists" stays complete without dragging in non-skill artifacts.
+  exists" stays complete without dragging in non-skill artifacts. `build-index.mjs` reads this
+  directory directly instead of storing a second projection in `MANIFEST.json`.
 - **Swap atomically.** `update.sh` stages the whole pin set in a temp tree and only swaps
   `MANIFEST.json` / `catalog.json` into place on full success. A mid-run failure leaves the
   existing pins untouched — it never produces a half-written manifest.

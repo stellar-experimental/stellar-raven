@@ -16,6 +16,7 @@ const {
   assertQuarantineArtifact,
   buildQuarantineArtifact,
   buildPlaygroundArtifactMeta,
+  deriveQuarantineState,
   sanitizeGenerationCheckError,
   sha256Json,
   treeGenerationSha256
@@ -160,12 +161,9 @@ function fixtureQuarantine() {
     },
     spend: {
       accountingPolicy: "started-calls-count-conservatively; quarantine releases no authorization or reserve",
-      planned: { answerCalls: 2, judgeCalls: 2 },
       actual: {
         answerCallsStarted: 1,
-        answerCallsCompleted: 1,
         judgeCallsStarted: 0,
-        judgeCallsCompleted: 0,
         reportedJudgeCalls: 0,
         reportedJudgeCostUsd: 0,
         answerProviderCostUsd: null,
@@ -174,10 +172,7 @@ function fixtureQuarantine() {
       },
       selectedCaseIds: ["a", "b"],
       caseIdsAttempted: ["a"],
-      caseIdsCompleted: ["a"],
       caseIdsJudged: [],
-      caseIdsNotRun: ["b"],
-      nextLedgerMinimumIncrements: { answerCalls: 1, judgeCalls: 0 },
       infraRetryAuthorized: false
     }
   });
@@ -262,6 +257,15 @@ describe("playground semantic artifact contract", () => {
     expect(Object.hasOwn(artifact, "meta")).toBe(false);
     expect(Object.hasOwn(artifact, "rows")).toBe(false);
     expect(Object.hasOwn(artifact, "summary")).toBe(false);
+    expect(artifact.preserved).toEqual({ quarantinedRowsSha256: sha256Json(artifact.quarantinedRows) });
+    expect(deriveQuarantineState(artifact)).toEqual({
+      planned: { answerCalls: 2, judgeCalls: 2 },
+      actual: { answerCallsCompleted: 1, judgeCallsCompleted: 0 },
+      caseIdsCompleted: ["a"],
+      caseIdsNotRun: ["b"],
+      nextLedgerMinimumIncrements: { answerCalls: 1, judgeCalls: 0 },
+      preserved: { rowCount: 1, fullyJudgedRowCount: 0, unjudgedRowCount: 1 }
+    });
     expect(() => assertQuarantineArtifact(artifact)).not.toThrow();
     expect(() => assertNotPlaygroundQuarantine(artifact, "fixture")).toThrow(/non-promotable/);
     expect(() => assertNotPlaygroundQuarantine({ quarantinedMeta: { artifactContract: PLAYGROUND_QUARANTINE_CONTRACT } }, "renamed")).toThrow(/non-promotable/);
@@ -301,9 +305,12 @@ describe("playground semantic artifact contract", () => {
       ["reason flags", (a) => { a.reason.serverChangeEstablished = true; }, /reason flags/],
       ["missing tree field", (a) => { delete a.provenanceFailure.treeAtDetection.statusSha256; }, /statusSha256/],
       ["bad check name", (a) => { a.reason.code = "generation-check-error"; a.reason.phase = "before-judge"; a.reason.checkError = { name: "bad name!", message: "x\n" }; a.provenanceFailure.treeAtDetection = null; a.provenanceFailure.observedGenerationSha256 = null; }, /normalized checkError/],
-      ["preserved counters", (a) => { a.preserved.unjudgedRowCount = 0; }, /preserved judged counters/],
-      ["completed prefix", (a) => { a.spend.caseIdsCompleted = ["b"]; }, /caseIdsCompleted.*match quarantinedRows|ordered prefix/],
-      ["planned counts", (a) => { a.spend.planned.answerCalls = 0; }, /planned.answerCalls/],
+      ["stored preserved counters", (a) => { a.preserved.unjudgedRowCount = 0; }, /preserved must contain only/],
+      ["stored completed ids", (a) => { a.spend.caseIdsCompleted = ["a"]; }, /spend must contain only/],
+      ["stored not-run ids", (a) => { a.spend.caseIdsNotRun = ["b"]; }, /spend must contain only/],
+      ["stored planned counts", (a) => { a.spend.planned = { answerCalls: 2, judgeCalls: 2 }; }, /spend must contain only/],
+      ["stored ledger increments", (a) => { a.spend.nextLedgerMinimumIncrements = { answerCalls: 1, judgeCalls: 0 }; }, /spend must contain only/],
+      ["stored completed counters", (a) => { a.spend.actual.answerCallsCompleted = 1; }, /spend.actual must contain only/],
       ["policy", (a) => { a.spend.accountingPolicy = "anything"; }, /accountingPolicy/],
       ["phase", (a) => { a.reason.phase = "generation-check-error"; }, /mismatch reason.phase/]
     ];
@@ -316,14 +323,16 @@ describe("playground semantic artifact contract", () => {
     const paid = structuredClone(fixtureQuarantine());
     paid.quarantinedRows[0].verdict = { score: "error", costUsd: 0.25 };
     paid.preserved.quarantinedRowsSha256 = sha256Json(paid.quarantinedRows);
-    Object.assign(paid.spend.actual, { judgeCallsStarted: 1, judgeCallsCompleted: 1, reportedJudgeCalls: 0 });
+    Object.assign(paid.spend.actual, { judgeCallsStarted: 1, reportedJudgeCalls: 0 });
     paid.spend.caseIdsJudged = ["a"];
-    Object.assign(paid.preserved, { fullyJudgedRowCount: 1, unjudgedRowCount: 0 });
     expect(() => assertQuarantineArtifact(paid)).toThrow(/reported judge cost accounting/);
     paid.spend.actual.reportedJudgeCalls = 1;
     paid.spend.actual.reportedJudgeCostUsd = 0.25;
-    paid.spend.nextLedgerMinimumIncrements.judgeCalls = 1;
     expect(() => assertQuarantineArtifact(paid)).not.toThrow();
+    expect(deriveQuarantineState(paid)).toMatchObject({
+      actual: { answerCallsCompleted: 1, judgeCallsCompleted: 1 },
+      preserved: { rowCount: 1, fullyJudgedRowCount: 1, unjudgedRowCount: 0 }
+    });
   });
 
   it("composes the real orchestrator and builder for every quarantined checkpoint", async () => {
@@ -379,9 +388,9 @@ describe("playground semantic artifact contract", () => {
       writeQuarantineArtifact: async (artifact: any) => { saved = artifact; }
     });
     expect(result.reason).toMatchObject({ code: "local-provenance-generation-mismatch", phase: "before-answer" });
-    expect(saved.spend.actual).toMatchObject({ judgeCallsStarted: 0, judgeCallsCompleted: 0, reportedJudgeCalls: 0 });
+    expect(saved.spend.actual).toMatchObject({ judgeCallsStarted: 0, reportedJudgeCalls: 0 });
     expect(saved.spend.caseIdsJudged).toEqual([]);
-    expect(saved.preserved).toMatchObject({ fullyJudgedRowCount: 0, unjudgedRowCount: 1 });
+    expect(deriveQuarantineState(saved).preserved).toEqual({ rowCount: 1, fullyJudgedRowCount: 0, unjudgedRowCount: 1 });
     expect(() => assertQuarantineArtifact(saved)).not.toThrow();
   });
 });

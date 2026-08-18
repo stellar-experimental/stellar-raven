@@ -286,6 +286,8 @@ describe("readSkill over a failing source", () => {
     const r = await readSkill(catalog, createSkillSource({ fetchImpl: impl }), "skills.acme.x");
     expect(r.ok).toBe(false);
     if (r.ok) return;
+    expect(r).not.toHaveProperty("content");
+    expect(r).not.toHaveProperty("sections");
     expect(r.error.service).toBe("skills");
     expect(r.error.kind).toBe("error");
     expect(r.error.message).toContain("could not retrieve skills.acme.x");
@@ -297,6 +299,8 @@ describe("readSkill over a failing source", () => {
     const r = await readSkill(catalog, createSkillSource({ fetchImpl: impl }), "skills.acme.x");
     expect(r.ok).toBe(false);
     if (r.ok) return;
+    expect(r).not.toHaveProperty("content");
+    expect(r).not.toHaveProperty("sections");
     expect(r.error.message).toContain("integrity check failed");
   });
 });

@@ -290,7 +290,6 @@ export function summarize(rows) {
   const wins = available.filter((row) => row.candidate.score.recall > row.baseline.score.recall).length;
   const regressions = available.filter((row) => row.candidate.score.recall < row.baseline.score.recall).length;
   const fetchErrors = rows.reduce((sum, row) => sum + row.candidate.errors.length, 0);
-  const allowlistViolations = rows.reduce((sum, row) => sum + row.candidate.allowlistViolations, 0);
   const promptSignalCount = rows.reduce((sum, row) => sum + row.candidate.documents.reduce((n, doc) => n + doc.promptSignals.length, 0), 0);
   const baselineRecall = baselineFacts ? baselineMatched / baselineFacts : null;
   const candidateRecall = totalFacts ? candidateMatched / totalFacts : 0;
@@ -309,7 +308,6 @@ export function summarize(rows) {
       && wins >= 3
       && regressions === 0
       && fetchErrors === 0
-      && allowlistViolations === 0
       && independentCases >= PHASE1_MIN_INDEPENDENT_CASES
         ? "pass"
         : "fail";
@@ -327,7 +325,6 @@ export function summarize(rows) {
     wins,
     regressions,
     fetchErrors,
-    allowlistViolations,
     promptSignalCount,
     candidateLatencyMs: {
       median: percentile(rows.flatMap((row) => row.candidate.documents.map((doc) => doc.elapsedMs)), 50),
@@ -345,9 +342,7 @@ async function run(args) {
   for (const testCase of suite.cases) {
     const documents = [];
     const errors = [];
-    let allowlistViolations = 0;
     for (const url of testCase.candidateUrls) {
-      if (!allowedCandidateUrl(url, testCase.partner)) allowlistViolations++;
       try {
         documents.push(await fetchAllowlistedDocument(url, testCase.partner, args.timeoutMs));
       } catch (error) {
@@ -377,8 +372,7 @@ async function run(args) {
         urls: testCase.candidateUrls,
         score: matchFacts(documents.map((doc) => doc.text).join("\n"), testCase.facts),
         documents: documents.map(({ text: _text, ...metadata }) => metadata),
-        errors,
-        allowlistViolations
+        errors
       }
     });
   }
@@ -424,7 +418,7 @@ function selfTest() {
   const winningRow = (caseType) => ({
     caseType,
     baseline: { score: { matched: 0, total: 1, recall: 0, detail: [] }, error: null },
-    candidate: { score: { matched: 1, total: 1, recall: 1, detail: [] }, errors: [], allowlistViolations: 0, documents: [] }
+    candidate: { score: { matched: 1, total: 1, recall: 1, detail: [] }, errors: [], documents: [] }
   });
   const independent = Array.from({ length: PHASE1_MIN_INDEPENDENT_CASES }, () => winningRow("conflict"));
   assert.equal(summarize(independent).retrievalAdmissionGate, "pass");

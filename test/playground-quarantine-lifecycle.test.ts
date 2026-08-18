@@ -72,7 +72,8 @@ describe("playground quarantine lifecycle", () => {
     expect(result.kind).toBe("quarantined");
     expect(result.artifact.reason.phase).toBe("before-judge");
     expect(result.artifact.rows).toEqual([{ id: "a", answer: "answer:a", verdict: null }]);
-    expect(result.spend.actual).toMatchObject({ answerCallsStarted: 1, answerCallsCompleted: 1, judgeCallsStarted: 0 });
+    expect(result.spend.actual).toMatchObject({ answerCallsStarted: 1, judgeCallsStarted: 0 });
+    expect(result.spend.caseIdsAttempted).toEqual(["a"]);
     expect(calls).toEqual(["snapshot:1", "start:a", "answer:a", "snapshot:2", "write:quarantine"]);
   });
 
@@ -87,7 +88,8 @@ describe("playground quarantine lifecycle", () => {
     }, calls);
     expect(result.kind).toBe("quarantined");
     expect(result.artifact.reason).toMatchObject({ code: "generation-check-error", phase: "before-answer" });
-    expect(result.spend.actual).toMatchObject({ answerCallsStarted: 1, judgeCallsStarted: 1, judgeCallsCompleted: 1 });
+    expect(result.spend.actual).toMatchObject({ answerCallsStarted: 1, judgeCallsStarted: 1 });
+    expect(result.spend.caseIdsJudged).toEqual(["a"]);
     expect(calls).toEqual(["snapshot:1", "start:a", "answer:a", "snapshot:2", "judge:a", "snapshot:3", "write:quarantine"]);
   });
 
@@ -116,7 +118,7 @@ describe("playground quarantine lifecycle", () => {
       snapshots += 1;
       return snapshots === 2 ? changedTree : startTree;
     }, calls, { judgeEnabled: false });
-    expect(result.spend.actual).toMatchObject({ answerCallsStarted: 1, judgeCallsStarted: 0, judgeCallsCompleted: 0 });
+    expect(result.spend.actual).toMatchObject({ answerCallsStarted: 1, judgeCallsStarted: 0 });
     expect(result.artifact.rows[0].verdict).toBeNull();
   });
 
@@ -127,7 +129,7 @@ describe("playground quarantine lifecycle", () => {
       emptySnapshots += 1;
       return emptySnapshots === 3 ? changedTree : startTree;
     }, emptyCalls, { answer: () => ({ answer: "" }), verdict: () => ({ score: "error" }) });
-    expect(empty.spend.actual).toMatchObject({ judgeCallsStarted: 0, judgeCallsCompleted: 0, reportedJudgeCalls: 0 });
+    expect(empty.spend.actual).toMatchObject({ judgeCallsStarted: 0, reportedJudgeCalls: 0 });
     expect(empty.spend.caseIdsJudged).toEqual([]);
     expect(empty.artifact.rows[0].verdict).toEqual({ score: "error" });
 
@@ -137,7 +139,7 @@ describe("playground quarantine lifecycle", () => {
       costlessSnapshots += 1;
       return costlessSnapshots === 3 ? changedTree : startTree;
     }, costlessCalls, { verdict: () => ({ score: "error" }) });
-    expect(costless.spend.actual).toMatchObject({ judgeCallsCompleted: 1, reportedJudgeCalls: 0, reportedJudgeCostUsd: 0 });
+    expect(costless.spend.actual).toMatchObject({ judgeCallsStarted: 1, reportedJudgeCalls: 0, reportedJudgeCostUsd: 0 });
     expect(costless.spend.caseIdsJudged).toEqual(["a"]);
   });
 

@@ -304,6 +304,14 @@ function assertOrderedSubset(subset, values, field, fail) {
   }
 }
 
+function assertExactKeys(value, expected, field, fail) {
+  const actual = Object.keys(value).sort();
+  const sortedExpected = [...expected].sort();
+  if (JSON.stringify(actual) !== JSON.stringify(sortedExpected)) {
+    fail(`${field} must contain only ${sortedExpected.join(", ")}`);
+  }
+}
+
 /**
  * Reject artifacts whose content was intentionally quarantined after local
  * provenance attestation failed. This guard is deliberately structural and
@@ -351,16 +359,40 @@ export function buildQuarantineArtifact({ meta, rows, treeAtStart, treeAtFinish,
     },
     spend,
     preserved: {
-      rowCount: quarantinedRows.length,
-      // A completed paid judge, not a non-null verdict, defines "fully judged".
-      fullyJudgedRowCount: spend.caseIdsJudged.length,
-      unjudgedRowCount: quarantinedRows.length - spend.caseIdsJudged.length,
       quarantinedRowsSha256: sha256Json(quarantinedRows)
     },
     quarantinedRows
   };
   assertQuarantineArtifact(artifact);
   return artifact;
+}
+
+/** Derive quarantine summaries from the canonical stored state. */
+export function deriveQuarantineState(artifact) {
+  const spend = artifact.spend;
+  const completedCaseIds = artifact.quarantinedRows.map((row) => row?.id);
+  const fullyJudgedRowCount = spend.caseIdsJudged.length;
+  return {
+    planned: {
+      answerCalls: spend.selectedCaseIds.length,
+      judgeCalls: artifact.quarantinedMeta.judge.enabled ? spend.selectedCaseIds.length : 0
+    },
+    actual: {
+      answerCallsCompleted: completedCaseIds.length,
+      judgeCallsCompleted: fullyJudgedRowCount
+    },
+    caseIdsCompleted: completedCaseIds,
+    caseIdsNotRun: spend.selectedCaseIds.slice(spend.caseIdsAttempted.length),
+    nextLedgerMinimumIncrements: {
+      answerCalls: spend.actual.answerCallsStarted,
+      judgeCalls: spend.actual.judgeCallsStarted
+    },
+    preserved: {
+      rowCount: completedCaseIds.length,
+      fullyJudgedRowCount,
+      unjudgedRowCount: completedCaseIds.length - fullyJudgedRowCount
+    }
+  };
 }
 
 export function assertQuarantineArtifact(artifact) {
@@ -389,10 +421,11 @@ export function assertQuarantineArtifact(artifact) {
   restoredMeta.artifactContract = PLAYGROUND_ARTIFACT_CONTRACT;
   assertPlaygroundArtifactMeta(restoredMeta);
   if (!Array.isArray(artifact.quarantinedRows)) fail("quarantinedRows must be an array");
+  if (!artifact.preserved || typeof artifact.preserved !== "object") fail("preserved is required");
+  assertExactKeys(artifact.preserved, ["quarantinedRowsSha256"], "preserved", fail);
   if (artifact.preserved?.quarantinedRowsSha256 !== sha256Json(artifact.quarantinedRows)) {
     fail("preserved.quarantinedRowsSha256 does not match quarantinedRows");
   }
-  if (artifact.preserved.rowCount !== artifact.quarantinedRows.length) fail("preserved.rowCount does not match quarantinedRows");
 
   const reason = artifact.reason;
   if (!reason || typeof reason !== "object") fail("reason is required");
@@ -429,16 +462,37 @@ export function assertQuarantineArtifact(artifact) {
 
   const spend = artifact.spend;
   if (!spend || typeof spend !== "object") fail("spend is required");
+  assertExactKeys(
+    spend,
+    ["accountingPolicy", "actual", "selectedCaseIds", "caseIdsAttempted", "caseIdsJudged", "infraRetryAuthorized"],
+    "spend",
+    fail
+  );
   const actual = spend.actual;
   if (!actual || typeof actual !== "object") fail("spend.actual is required");
-  for (const key of ["answerCallsStarted", "answerCallsCompleted", "judgeCallsStarted", "judgeCallsCompleted", "reportedJudgeCalls"]) {
+  assertExactKeys(
+    actual,
+    [
+      "answerCallsStarted",
+      "judgeCallsStarted",
+      "reportedJudgeCalls",
+      "reportedJudgeCostUsd",
+      "answerProviderCostUsd",
+      "answerProviderCostSemantics",
+      "observedAttemptedModels"
+    ],
+    "spend.actual",
+    fail
+  );
+  for (const key of ["answerCallsStarted", "judgeCallsStarted", "reportedJudgeCalls"]) {
     assertNonNegativeInteger(actual[key], `spend.actual.${key}`, fail);
   }
+  const derived = deriveQuarantineState(artifact);
   if (actual.answerCallsStarted < 1) fail("quarantine is allowed only after an answer call started");
-  if (actual.answerCallsStarted < actual.answerCallsCompleted || actual.answerCallsCompleted < artifact.quarantinedRows.length) {
+  if (actual.answerCallsStarted < derived.actual.answerCallsCompleted) {
     fail("answer call accounting is not conservative");
   }
-  if (actual.judgeCallsStarted < actual.judgeCallsCompleted || actual.judgeCallsCompleted < actual.reportedJudgeCalls) {
+  if (actual.judgeCallsStarted < derived.actual.judgeCallsCompleted || derived.actual.judgeCallsCompleted < actual.reportedJudgeCalls) {
     fail("judge call accounting is not conservative");
   }
   if (actual.answerProviderCostUsd !== null || actual.answerProviderCostSemantics !== "not-emitted-by-playground-artifact") {
@@ -448,29 +502,17 @@ export function assertQuarantineArtifact(artifact) {
   if (typeof actual.reportedJudgeCostUsd !== "number" || !Number.isFinite(actual.reportedJudgeCostUsd) || actual.reportedJudgeCostUsd < 0) {
     fail("reportedJudgeCostUsd must be a non-negative numeric sum");
   }
-  for (const key of ["selectedCaseIds", "caseIdsAttempted", "caseIdsCompleted", "caseIdsJudged", "caseIdsNotRun"]) assertUniqueIds(spend[key], `spend.${key}`, fail);
+  for (const key of ["selectedCaseIds", "caseIdsAttempted", "caseIdsJudged"]) assertUniqueIds(spend[key], `spend.${key}`, fail);
+  assertUniqueIds(derived.caseIdsCompleted, "derived caseIdsCompleted", fail);
+  assertUniqueIds(derived.caseIdsNotRun, "derived caseIdsNotRun", fail);
   if (sha256Json(spend.selectedCaseIds) !== artifact.quarantinedMeta.inputSnapshot.caseIdsSha256) fail("spend.selectedCaseIds must match quarantinedMeta input snapshot");
   if (spend.accountingPolicy !== "started-calls-count-conservatively; quarantine releases no authorization or reserve") fail("spend.accountingPolicy is invalid");
-  if (spend.planned?.answerCalls !== spend.selectedCaseIds.length) fail("spend.planned.answerCalls must match selected cases");
-  if (spend.planned?.judgeCalls !== (artifact.quarantinedMeta.judge.enabled ? spend.selectedCaseIds.length : 0)) fail("spend.planned.judgeCalls is invalid");
-  if (JSON.stringify(spend.caseIdsCompleted) !== JSON.stringify(artifact.quarantinedRows.map((row) => row?.id))) {
-    fail("spend.caseIdsCompleted must match quarantinedRows in order");
-  }
-  if (spend.caseIdsAttempted.length !== actual.answerCallsStarted || spend.caseIdsCompleted.length !== actual.answerCallsCompleted) {
+  if (spend.caseIdsAttempted.length !== actual.answerCallsStarted) {
     fail("answer call ids must match accounting");
   }
   assertPrefix(spend.caseIdsAttempted, spend.selectedCaseIds, "spend.caseIdsAttempted", fail);
-  assertPrefix(spend.caseIdsCompleted, spend.caseIdsAttempted, "spend.caseIdsCompleted", fail);
-  if (spend.caseIdsJudged.length !== actual.judgeCallsCompleted) fail("judged ids must match accounting");
-  assertOrderedSubset(spend.caseIdsJudged, spend.caseIdsCompleted, "spend.caseIdsJudged", fail);
-  if (JSON.stringify(spend.caseIdsNotRun) !== JSON.stringify(spend.selectedCaseIds.slice(spend.caseIdsAttempted.length))) {
-    fail("attempted and not-run ids must partition selected cases in order");
-  }
-  const fullyJudged = spend.caseIdsJudged.length;
-  if (artifact.preserved.fullyJudgedRowCount !== fullyJudged || artifact.preserved.unjudgedRowCount !== artifact.quarantinedRows.length - fullyJudged) {
-    fail("preserved judged counters do not match paid judge ids");
-  }
-  if (artifact.preserved.fullyJudgedRowCount + artifact.preserved.unjudgedRowCount !== artifact.preserved.rowCount) fail("preserved judged counters do not sum to rowCount");
+  assertPrefix(derived.caseIdsCompleted, spend.caseIdsAttempted, "derived caseIdsCompleted", fail);
+  assertOrderedSubset(spend.caseIdsJudged, derived.caseIdsCompleted, "spend.caseIdsJudged", fail);
   const judgedIds = new Set(spend.caseIdsJudged);
   let reportedJudgeCalls = 0;
   let reportedJudgeCostUsd = 0;
@@ -484,12 +526,6 @@ export function assertQuarantineArtifact(artifact) {
   }
   if (actual.reportedJudgeCalls !== reportedJudgeCalls || actual.reportedJudgeCostUsd !== reportedJudgeCostUsd) fail("reported judge cost accounting does not match judged rows");
   if (spend.infraRetryAuthorized !== false) fail("quarantine cannot authorize an infra retry");
-  if (
-    spend.nextLedgerMinimumIncrements?.answerCalls !== actual.answerCallsStarted ||
-    spend.nextLedgerMinimumIncrements?.judgeCalls !== actual.judgeCallsStarted
-  ) {
-    fail("next ledger minimum increments must use started calls");
-  }
 }
 
 function assertRoundCapContext(round, evaluator, fail) {

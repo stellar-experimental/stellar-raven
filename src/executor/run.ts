@@ -78,9 +78,9 @@ export type ExecuteOutcome =
       truncated: boolean;
       logs: string[];
       /** Compact host-observed service-call outcomes; never includes payload data. */
-      operationSummary?: ExecuteOperationSummary;
+      operationSummary: ExecuteOperationSummary;
       /** Host-owned evidence classification; never inspects model-authored payload text. */
-      evidenceSummary?: ExecuteEvidenceSummary;
+      evidenceSummary: ExecuteEvidenceSummary;
       /** Conditional wider-pass advice derived only from successful operation ids. */
       recoveryHint?: EvidenceRecoveryHint;
       resultOriginalChars?: number;
@@ -89,7 +89,6 @@ export type ExecuteOutcome =
       resultMaxChars?: number;
       resultApproxOriginalTokens?: number;
       sourceBasis?: BuildSourceBasisManifestInput;
-      artifactReadCount?: number;
       artifactReadBytes?: number;
     }
   | {
@@ -97,10 +96,9 @@ export type ExecuteOutcome =
       error: string;
       logs: string[];
       /** Calls completed before the sandbox failed, summarized without payload data. */
-      operationSummary?: ExecuteOperationSummary;
+      operationSummary: ExecuteOperationSummary;
       /** Host-owned evidence classification; never inspects model-authored payload text. */
-      evidenceSummary?: ExecuteEvidenceSummary;
-      artifactReadCount?: number;
+      evidenceSummary: ExecuteEvidenceSummary;
       artifactReadBytes?: number;
     };
 
@@ -409,7 +407,6 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
         logs,
         operationSummary,
         evidenceSummary,
-        artifactReadCount: artifactReadStats.count,
         artifactReadBytes: artifactReadStats.bytes
       };
     }
@@ -504,7 +501,6 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       resultMaxChars: result.maxChars,
       resultApproxOriginalTokens: result.approxOriginalTokens,
       sourceBasis,
-      artifactReadCount: artifactReadStats.count,
       artifactReadBytes: artifactReadStats.bytes
     };
   };

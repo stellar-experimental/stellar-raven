@@ -45,6 +45,7 @@
  *      eval/.build/ using the repo's own `typescript` package, then import that.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, resolve, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { aggregate, cardMatchesExact, gradeCase, tableRows } from "./lib/grade.mjs";
@@ -67,6 +68,61 @@ const OVERLAY = join(EVAL_DIR, "build-question-overlay.json");
 const GATES = join(EVAL_DIR, "gates.json");
 const RESULTS_DIR = join(EVAL_DIR, "results");
 const ENFORCE_GATE = process.argv.includes("--gate");
+const GATE_EVIDENCE_INPUTS = [
+  "catalog/manifest.json",
+  "eval/routing-cases.json",
+  "eval/skills-cases.json",
+  "eval/holdout-cases.json",
+];
+
+function gateEvidenceFailures(gateConfig) {
+  const failures = [];
+  const evidence = gateConfig.evidence;
+  if (!evidence || typeof evidence !== "object" || Array.isArray(evidence)) {
+    return ["gates.json evidence is missing — re-baseline with committed input fingerprints and accepted totals"];
+  }
+
+  if (!Array.isArray(evidence.inputs)) {
+    failures.push("gates.json evidence.inputs must be an array");
+  } else {
+    const inputs = new Map();
+    for (const input of evidence.inputs) {
+      if (!input || typeof input.path !== "string" || typeof input.sha256 !== "string") {
+        failures.push("gates.json evidence.inputs entries must contain path and sha256 strings");
+        continue;
+      }
+      if (inputs.has(input.path)) failures.push(`gates.json evidence.inputs repeats ${input.path}`);
+      inputs.set(input.path, input.sha256);
+    }
+    for (const path of GATE_EVIDENCE_INPUTS) {
+      const expected = inputs.get(path);
+      if (!expected) {
+        failures.push(`gates.json evidence.inputs is missing ${path}`);
+        continue;
+      }
+      if (!/^[a-f0-9]{64}$/.test(expected)) {
+        failures.push(`gates.json evidence.inputs has an invalid SHA-256 for ${path}`);
+        continue;
+      }
+      const actual = createHash("sha256").update(readFileSync(join(REPO, path))).digest("hex");
+      if (actual !== expected) failures.push(`${path} SHA-256 does not match the committed gate evidence — re-baseline gates.json explicitly`);
+    }
+    for (const path of inputs.keys()) {
+      if (!GATE_EVIDENCE_INPUTS.includes(path)) failures.push(`gates.json evidence.inputs contains unexpected path ${path}`);
+    }
+  }
+
+  const totals = evidence.acceptedTotals;
+  for (const lane of ["legacy", "skills", "holdout"]) {
+    if (!totals?.[lane] || typeof totals[lane] !== "object" || Array.isArray(totals[lane])) {
+      failures.push(`gates.json evidence.acceptedTotals.${lane} is missing`);
+    }
+  }
+  if (evidence.localTrace !== undefined && (typeof evidence.localTrace !== "string" || evidence.localTrace.length === 0)) {
+    failures.push("gates.json evidence.localTrace must be a non-empty string when present");
+  }
+  return failures;
+}
 // --dump-ranked <file>: additionally write { caseId: [hitId, ...] } — the ordered
 // top-5 hit ids per graded case across ALL lanes (legacy + extended + skills).
 // This is the §10.1a rank/membership-identity artifact (research/skill-run-design.md):
@@ -287,7 +343,7 @@ async function main() {
   let gate = null;
   if (existsSync(GATES)) {
     const g = JSON.parse(readFileSync(GATES, "utf8"));
-    const failures = [];
+    const failures = gateEvidenceFailures(g);
     if (g.gradingRule !== "v3-manifest-exposed") {
       failures.push(`gates.json gradingRule "${g.gradingRule}" is not what this runner grades (v3-manifest-exposed) — re-baseline`);
     }
@@ -332,7 +388,7 @@ async function main() {
       failures,
       holdoutChecked: Boolean(g.holdout && holdoutLane),
       baselinedAt: g.baselinedAt,
-      baselineResults: g.baselineResults,
+      evidence: g.evidence,
     };
   } else if (ENFORCE_GATE) {
     throw new Error(`--gate passed but ${GATES} is missing`);
@@ -439,7 +495,7 @@ async function main() {
       // Name every lane the gate actually checked. A PASS that only mentions two of three lanes
       // reads as "the holdout was not evaluated" to anyone who did not open gates.json.
       console.log(
-        `\nGATE PASS — legacy 338 within band, skills lane at/above floor${gate.holdoutChecked ? ", holdout lane at/above floors and under its capture ceiling" : ""} (baseline ${gate.baselineResults})`,
+        `\nGATE PASS — legacy 338 within band, skills lane at/above floor${gate.holdoutChecked ? ", holdout lane at/above floors and under its capture ceiling" : ""} (baseline ${gate.baselinedAt}; committed evidence verified${gate.evidence.localTrace ? `; local trace ${gate.evidence.localTrace}` : ""})`,
       );
     } else {
       console.log(`\nGATE FAIL${ENFORCE_GATE ? "" : " (advisory — enforce with --gate)"}:`);

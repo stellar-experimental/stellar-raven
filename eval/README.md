@@ -71,7 +71,7 @@ Implementation + unit fixtures: `eval/lib/grade.mjs`, `eval/self-test.mjs`.
 ## How to run
 
 ```sh
-# 0. sanity-check the grader math (no src/ or catalog/ needed)
+# 0. sanity-check the grader math and committed evidence (no server needed)
 node eval/self-test.mjs
 
 # 1. compile corpus -> eval/routing-cases.json (labels preserved)
@@ -95,11 +95,15 @@ npm scripts: `npm run eval:selftest` / `eval:compile` / `eval:routing` (QA lane:
 `eval:qa:compile` / `eval:qa:selftest` / `eval:qa`; plan: `eval:plan`).
 
 **Gate enforcement:** baselines are committed in `eval/gates.json` (legacy 338 top-1/3/5
-±1%, skills-lane top-1 floor). Every run prints a `GATE PASS`/`GATE FAIL` verdict and
-records it in the results JSON; `npm run eval:routing -- --gate` turns a breach (or a
-changed denominator) into exit 1. CI runs `eval:selftest` + `eval:routing -- --gate` on
-every push/PR. Re-baselining = updating `gates.json` in the same commit that moves the
-numbers, decision recorded in Solo (EVALS.md rule 1).
+±1%, skills-lane top-1 floor). The gate record includes SHA-256 fingerprints for every gated
+data input and exact accepted lane totals. `eval:selftest` proves that a fresh clone resolves
+each input and matches each fingerprint. Every routing run verifies the same evidence, prints a
+`GATE PASS`/`GATE FAIL` verdict, and records it in the results JSON.
+`npm run eval:routing -- --gate` turns an evidence mismatch, a threshold breach, or a changed
+denominator into exit 1. CI runs `eval:selftest` + `eval:routing -- --gate` on every push/PR.
+Re-baselining updates the fingerprints, totals, thresholds, timestamp, and decision note together.
+A raw result name can appear as optional `evidence.localTrace` context. It never defines the
+committed baseline because `eval/results/` is local-only.
 
 ## Baseline
 

@@ -140,8 +140,11 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(outcome.result).toContain("lumenloop.search_directory=error/");
     expect(outcome.result).toContain("https://example.test/path");
     expect(outcome.sourceBasis?.artifact?.state).toBe("available");
+    expect(outcome.sourceBasis?.shape).toMatchObject({ kind: "object", totalKeys: 3 });
+    expect(outcome.sourceBasis?.shape).not.toHaveProperty("totalItems");
+    expect(outcome.sourceBasis?.shape).not.toHaveProperty("stringChars");
     expect(outcome.operationSummary).toEqual({ total: 1, ok: 0, error: 1, softEmpty: 0 });
-    expect(outcome.evidenceSummary?.kind).toBe("service-inconclusive");
+    expect(outcome.evidenceSummary.kind).toBe("service-inconclusive");
 
     const id = artifactIdFrom(outcome.result);
     const keys = await artifactKeysFor(owner);
@@ -152,6 +155,10 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     const storedText = (await stored?.text()) ?? "";
     expect(storedText).not.toContain("smoke-test-lumenloop-key");
     expect(storedText).toContain("[REDACTED]");
+    const storedPayload = JSON.parse(storedText) as { rows?: unknown[] };
+    expect(storedPayload.rows).toHaveLength(2500);
+    expect(storedPayload).not.toHaveProperty("encoding");
+    expect(storedPayload).not.toHaveProperty("mime");
   });
 
   it("collects canonical URLs through nested ordinary containers without treating prose as canonical", async () => {
@@ -286,9 +293,15 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     if (!rootString.ok) throw new Error(rootString.error);
     if (!depthSix.ok) throw new Error(depthSix.error);
     expect(rootArray.sourceBasis?.canonicalUrls).toEqual(["https://root-array.example.test/a"]);
+    expect(rootArray.sourceBasis?.shape).toMatchObject({ kind: "array", totalItems: 2 });
+    expect(rootArray.sourceBasis?.shape).not.toHaveProperty("totalKeys");
+    expect(rootArray.sourceBasis?.shape).not.toHaveProperty("stringChars");
     expect(rootString.sourceBasis?.canonicalUrls?.[0]).toBe(
       `https://root-string.example.test/${"x".repeat(5000)}`
     );
+    expect(rootString.sourceBasis?.shape).toMatchObject({ kind: "string", stringChars: 5033 });
+    expect(rootString.sourceBasis?.shape).not.toHaveProperty("totalKeys");
+    expect(rootString.sourceBasis?.shape).not.toHaveProperty("totalItems");
     expect(depthSix.sourceBasis?.canonicalUrls).toEqual([]);
   });
 
@@ -402,7 +415,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       softEmpty: 0,
       priorArtCandidates: 1
     });
-    expect(outcome.operationSummary?.candidateEvidence).toBeUndefined();
+    expect(outcome.operationSummary.candidateEvidence).toBeUndefined();
   });
 
   it("derives narrow and conditional recovery advice from the attempted-operation graph", async () => {
@@ -611,7 +624,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
         count: 2500,
         firstSecret: "[REDACTED]"
       });
-      expect(sameOwner.artifactReadCount).toBe(1);
+      expect(sameOwner.evidenceSummary.artifactReads).toBe(1);
       expect(sameOwner.artifactReadBytes).toBeGreaterThan(24_000);
     }
 
@@ -639,7 +652,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
         ok: false,
         message: "artifact read cap exceeded: max 4 reads per execute"
       });
-      expect(capped.artifactReadCount).toBe(5);
+      expect(capped.evidenceSummary.artifactReads).toBe(5);
       expect(capped.artifactReadBytes).toBeGreaterThan(24_000 * 4);
     }
   });
@@ -653,7 +666,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
    * the answer proves continuation, not luck. Nothing here raises the result
    * cap and nothing reads the artifact automatically.
    */
-  describe("artifact continuation recovers a lost tail through the existing envelope", () => {
+  describe("artifact continuation recovers a lost tail through the artifact store", () => {
     const SENTINEL = "RAVEN-TAIL-SENTINEL-7f3a";
     // `tailNote` is serialized LAST, so the model boundary cuts it first.
     const TAIL_SENTINEL_CODE = `async () => ({
@@ -710,7 +723,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(projection.tail).toBe(SENTINEL);
       expect(continuation.truncated).toBe(false);
       expect(continuation.result).not.toContain("--- SOURCE BASIS ---");
-      expect(continuation.artifactReadCount).toBe(1);
+      expect(continuation.evidenceSummary.artifactReads).toBe(1);
       expect(continuation.artifactReadBytes).toBeGreaterThan(24_000);
       expect(continuation.evidenceSummary?.kind).toBe("artifact-data");
 
@@ -740,7 +753,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       // Expired: an object whose stored expiresAt has passed reads as not-found,
       // through info AND read (TTL is enforced on metadata, not on listing).
       const expiredId = crypto.randomUUID();
-      const body = JSON.stringify({ encoding: "utf-8", mime: "application/json", body: '{"a":1}' });
+      const body = '{"a":1}';
       await env.ARTIFACTS.put(`${await ownerPrefix(owner)}${expiredId}`, body, {
         customMetadata: {
           createdAt: "2020-01-01T00:00:00.000Z",
@@ -783,7 +796,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(oversized.result).toContain("artifact: skipped (size-cap)");
       expect(oversized.result).not.toContain("artifact: id=");
 
-      // Wrong-level read: the artifact envelope goes through the same
+      // Wrong-level read: the artifact read result goes through the same
       // fail-loud guard as every service call — no second successful shape.
       const written = await run(TAIL_SENTINEL_CODE, { artifactOwner: owner });
       expect(written.ok).toBe(true);
@@ -914,7 +927,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(parsed.ok).toBe(true);
       expect(parsed.hasContent).toBe(true);
       expect(parsed.dataReadError).toContain("top level");
-      expect(outcome.evidenceSummary?.kind).toBe("skill-content");
+      expect(outcome.evidenceSummary.kind).toBe("skill-content");
     }
   });
 
@@ -959,7 +972,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(parsed.topHit).toBe("lumenloop.search_directory");
       expect(parsed.allCallable).toBe(true);
       expect(parsed.skillOk).toBe(true);
-      expect(outcome.evidenceSummary?.kind).toBe("skill-content");
+      expect(outcome.evidenceSummary.kind).toBe("skill-content");
     }
   });
 
@@ -978,7 +991,18 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
   it("surfaces sandbox throws as { ok: false } with the error text", async () => {
     const outcome = await run(`async () => { throw new Error("smoke-kaboom"); }`);
     expect(outcome.ok).toBe(false);
-    if (!outcome.ok) expect(outcome.error).toContain("smoke-kaboom");
+    if (!outcome.ok) {
+      expect(outcome.error).toContain("smoke-kaboom");
+      expect(outcome.operationSummary).toEqual({ total: 0, ok: 0, error: 0, softEmpty: 0 });
+      expect(outcome.evidenceSummary).toEqual({
+        kind: "none",
+        skillRead: false,
+        buildAuthoritySkillIds: [],
+        buildAuthorityRoles: [],
+        skillRuns: 0,
+        artifactReads: 0
+      });
+    }
   });
 });
 

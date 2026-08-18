@@ -19,6 +19,7 @@ import { fileURLToPath } from "node:url";
 import { demoPage, DEMO_PAGE_HEADERS } from "../src/demo/page";
 import { DEMO_CAPS } from "../src/demo/budget";
 import { loadManifest, searchCatalogPage } from "../src/catalog/search";
+import { renderPublicHeadMetadata } from "../src/site";
 // The reusable ADR-0003 leak guard (backed by scripts/exposure.mjs data) —
 // the design requires running it over the rendered demo HTML.
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
@@ -50,9 +51,17 @@ describe("demo page CSP", () => {
 
 describe("demo page states", () => {
   it("sets complete noindex social metadata for the demo URL", () => {
+    expect(lockedHtml).toContain(
+      renderPublicHeadMetadata({
+        title: "Playground · Stellar Raven",
+        description: "Try Stellar Raven's live agent playground for Stellar ecosystem questions.",
+        path: "/playground",
+        noindex: true
+      })
+    );
     expect(lockedHtml).toContain("<title>Playground · Stellar Raven</title>");
     expect(lockedHtml).toContain(
-      '<meta name="description" content="Try Stellar Raven\'s live agent playground for Stellar ecosystem questions."/>'
+      '<meta name="description" content="Try Stellar Raven&#039;s live agent playground for Stellar ecosystem questions."/>'
     );
     expect(lockedHtml).toContain('<meta name="robots" content="noindex"/>');
     expect(lockedHtml).toContain('<meta property="og:type" content="website"/>');

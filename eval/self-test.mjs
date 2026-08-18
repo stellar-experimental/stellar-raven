@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * self-test.mjs — standalone fixture test of the grader math in eval/lib/grade.mjs.
- * It has no dependency on src/ or catalog/:
+ * self-test.mjs — standalone checks for grader math and committed eval evidence.
+ * No server is required:
  *   node eval/self-test.mjs
  *
  * Fixture: a fake 3-entry catalog (as ranked hit lists) + 3 fake cases + 1 skip,
@@ -40,6 +40,53 @@ const check = (name, fn) => {
     console.error(`FAIL  ${name}: ${err.message}`);
   }
 };
+
+const GATE_EVIDENCE_INPUTS = [
+  "catalog/manifest.json",
+  "eval/routing-cases.json",
+  "eval/skills-cases.json",
+  "eval/holdout-cases.json",
+];
+
+check("routing gate evidence resolves from committed files", () => {
+  const repoRoot = new URL("../", import.meta.url);
+  const gates = JSON.parse(readFileSync(new URL("./gates.json", import.meta.url), "utf8"));
+  assert.ok(gates.evidence && typeof gates.evidence === "object" && !Array.isArray(gates.evidence));
+  assert.ok(Array.isArray(gates.evidence.inputs));
+  assert.deepEqual(gates.evidence.inputs.map((input) => input.path), GATE_EVIDENCE_INPUTS);
+  for (const input of gates.evidence.inputs) {
+    assert.match(input.sha256, /^[a-f0-9]{64}$/);
+    const actual = createHash("sha256").update(readFileSync(new URL(input.path, repoRoot))).digest("hex");
+    assert.equal(actual, input.sha256, `${input.path} must match its committed gate fingerprint`);
+  }
+  if (gates.evidence.localTrace !== undefined) {
+    assert.equal(typeof gates.evidence.localTrace, "string");
+    assert.ok(gates.evidence.localTrace.length > 0);
+  }
+});
+
+check("routing gate evidence commits accepted totals", () => {
+  const gates = JSON.parse(readFileSync(new URL("./gates.json", import.meta.url), "utf8"));
+  const totals = gates.evidence.acceptedTotals;
+  const assertCounts = (lane, required) => {
+    assert.ok(totals[lane] && typeof totals[lane] === "object" && !Array.isArray(totals[lane]));
+    for (const key of required) assert.ok(Number.isInteger(totals[lane][key]) && totals[lane][key] >= 0, `${lane}.${key} must be a non-negative integer`);
+  };
+  assertCounts("legacy", ["n", "top1", "top3", "top5", "cardN", "cardHit5"]);
+  assertCounts("skills", ["n", "top1", "top3", "top5", "cardN", "cardHit5"]);
+  assertCounts("holdout", ["n", "top1", "top3", "top5", "cardN", "cardHit5", "forbiddenCaptures", "passed"]);
+  assert.deepEqual(
+    { n: totals.legacy.n, top1: totals.legacy.top1, top3: totals.legacy.top3, top5: totals.legacy.top5 },
+    { n: gates.legacy.n, top1: gates.legacy.top1, top3: gates.legacy.top3, top5: gates.legacy.top5 },
+  );
+  assert.equal(totals.skills.n, gates.skills.n);
+  assert.ok(totals.skills.top1 >= gates.skills.minTop1);
+  assert.equal(totals.holdout.n, gates.holdout.n);
+  assert.ok(totals.holdout.top1 >= gates.holdout.minTop1);
+  assert.ok(totals.holdout.top3 >= gates.holdout.minTop3);
+  assert.ok(totals.holdout.top5 >= gates.holdout.minTop5);
+  assert.ok(totals.holdout.forbiddenCaptures <= gates.holdout.maxForbiddenCaptures);
+});
 
 // --- canonToken / cardMatches ------------------------------------------------------
 check("canonToken unifies separators + case", () => {

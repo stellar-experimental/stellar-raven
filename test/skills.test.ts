@@ -12,7 +12,7 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadManifest, searchCatalog, type Catalog } from "../src/catalog/search.ts";
-import { readSkill, sectionSlugsOf } from "../src/skills/store.ts";
+import { readSkill, sectionSlugsOf, type SkillReadResult } from "../src/skills/store.ts";
 import { SKILL_READ_DEADLINE_MS, type SkillSource } from "../src/skills/source.ts";
 import { lazyPinnedSkillSource as source, staticSkillSource } from "./helpers/skill-source.ts";
 
@@ -21,6 +21,31 @@ const catalog: Catalog = loadManifest(
   JSON.parse(readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8"))
 );
 
+const validWholeRead: SkillReadResult = {
+  ok: true,
+  id: "skills.test.whole",
+  url: "https://example.test/SKILL.md",
+  content: "# Whole",
+  availableSections: []
+};
+const validSectionRead: SkillReadResult = {
+  ok: true,
+  id: "skills.test.sections",
+  url: "https://example.test/SKILL.md",
+  sections: [{ section: "one", content: "## One" }],
+  availableSections: ["one"]
+};
+
+const bothPayloads = { ...validWholeRead, sections: [] };
+// @ts-expect-error Successful reads cannot contain both payload fields.
+const successWithBothPayloads: SkillReadResult = bothPayloads;
+// @ts-expect-error Successful reads must contain one payload field.
+const successWithoutPayload: SkillReadResult = {
+  ok: true,
+  id: "skills.test.empty",
+  url: "https://example.test/SKILL.md",
+  availableSections: []
+};
 
 describe("skill transports", () => {
   it("pin every readable entry to an immutable upstream url + blob sha in MANIFEST.json", async () => {
@@ -57,7 +82,8 @@ describe("readSkill", () => {
     const r = await readSkill(catalog, source, "skills.lumenloop.stellar-project-dossier");
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect(r.content).toBeTypeOf("string");
+    expect(r).not.toHaveProperty("sections");
+    if (r.content === undefined) throw new Error("expected whole-read content");
     expect(r.content).not.toMatch(/^---/);
     expect(r.availableSections.length).toBeGreaterThan(0);
   });
@@ -72,9 +98,10 @@ describe("readSkill", () => {
     const r = await readSkill(catalog, source, skillId, { sections: [slug] });
     expect(r.ok).toBe(true);
     if (!r.ok) return;
+    expect(r).not.toHaveProperty("content");
+    if (r.sections === undefined) throw new Error("expected section-read content");
     expect(r.sections).toHaveLength(1);
-    expect(r.sections![0]!.content.startsWith("## ")).toBe(true);
-    expect(r.content).toBeUndefined(); // partial read, not the whole skill
+    expect(r.sections[0]!.content.startsWith("## ")).toBe(true);
   });
 
   it("reads a section directly via its #-qualified id", async () => {
@@ -84,6 +111,7 @@ describe("readSkill", () => {
     const r = await readSkill(catalog, source, sectionEntry!.id);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
+    if (r.sections === undefined) throw new Error("expected section-read content");
     expect(r.sections).toHaveLength(1);
   });
 
@@ -94,7 +122,8 @@ describe("readSkill", () => {
     const r = await readSkill(catalog, source, skillId, { sections: [key] });
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect(r.sections![0]!.content.length).toBeGreaterThan(0);
+    if (r.sections === undefined) throw new Error("expected section-read content");
+    expect(r.sections[0]!.content.length).toBeGreaterThan(0);
   });
 
   it("has no lumenloop.skill.* alias — the twin namespace is dead (ADR-0003)", async () => {
@@ -182,8 +211,8 @@ describe("readSkill", () => {
     const r = await readSkill(catalog, source, "skills.stellar-light.stellar-scout");
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect(r.content).toBeTypeOf("string");
-    expect(r.content!.length).toBeGreaterThan(24_000); // full body, past the boundary
+    if (r.content === undefined) throw new Error("expected whole-read content");
+    expect(r.content.length).toBeGreaterThan(24_000); // full body, past the boundary
     expect(r.notice).toContain("tokens");
     expect(r.notice).toContain("availableSections");
     expect(r.availableSections.length).toBeGreaterThan(10);
@@ -199,8 +228,9 @@ describe("readSkill", () => {
     });
     expect(r.ok).toBe(true);
     if (!r.ok) return;
+    if (r.sections === undefined) throw new Error("expected section-read content");
     expect(r.sections).toHaveLength(1);
-    expect(r.sections![0]!.content.length).toBeGreaterThan(20_000); // full, untruncated
+    expect(r.sections[0]!.content.length).toBeGreaterThan(20_000); // full, untruncated
     expect(r.notice).toContain("tokens");
   });
 
@@ -211,10 +241,11 @@ describe("readSkill", () => {
     const r = await readSkill(catalog, source, "skills.stellar-dev.standards", { sections: [slug] });
     expect(r.ok).toBe(true);
     if (!r.ok) return;
+    if (r.sections === undefined) throw new Error("expected section-read content");
     expect(r.notice).toBeUndefined(); // below the advisory threshold: silence
     expect(r.sections).toHaveLength(1);
-    expect(r.sections![0]!.content.startsWith("## ")).toBe(true);
-    expect(r.sections![0]!.content.length).toBeGreaterThan(0);
+    expect(r.sections[0]!.content.startsWith("## ")).toBe(true);
+    expect(r.sections[0]!.content.length).toBeGreaterThan(0);
   });
 
   it("an oversized body with zero ## sections reads whole, with the same advisory notice", async () => {
@@ -241,8 +272,8 @@ describe("readSkill", () => {
     const r = await readSkill(synthetic, syntheticSource, id);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect(r.content).toBeDefined();
-    expect(r.content!.length).toBeGreaterThan(24_000);
+    if (r.content === undefined) throw new Error("expected whole-read content");
+    expect(r.content.length).toBeGreaterThan(24_000);
     expect(r.notice).toContain("tokens"); // advice applies uniformly, sectioned or not
     expect(r.availableSections).toEqual([]);
   });

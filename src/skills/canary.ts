@@ -167,13 +167,21 @@ export async function runAndStoreSkillCanary(
  * and an error string — no skill content, no catalog ids, no caller identity.
  */
 export async function skillHealthResponse(kv: KVNamespace): Promise<Response> {
-  let stored: CanaryVerdict | null = null;
+  let stored: unknown = null;
   try {
-    stored = await kv.get<CanaryVerdict>(CANARY_KV_KEY, "json");
+    stored = await kv.get<unknown>(CANARY_KV_KEY, "json");
   } catch {
     stored = null;
   }
-  if (!stored || typeof stored.ok !== "boolean" || typeof stored.checkedAt !== "string") {
+  const record =
+    typeof stored === "object" && stored !== null ? (stored as Record<string, unknown>) : null;
+  if (
+    !record ||
+    typeof record.ok !== "boolean" ||
+    typeof record.checkedAt !== "string" ||
+    (record.error != null && typeof record.error !== "string") ||
+    record.ok !== (record.error == null)
+  ) {
     // 503, not 200-with-a-flag: "never ran", "unreadable", and "ran and failed"
     // are all "do not trust skill retrieval", and a monitor reading only the
     // status code must not see any of them as healthy. The consumer
@@ -189,16 +197,16 @@ export async function skillHealthResponse(kv: KVNamespace): Promise<Response> {
   // failure, expected/actual digests; and a stable schema is what the classifier
   // parses, so a future field cannot change what this endpoint promises.
   const body = {
-    ok: stored.ok,
-    checkedAt: stored.checkedAt,
-    checked: typeof stored.checked === "number" ? stored.checked : null,
-    ms: typeof stored.ms === "number" ? stored.ms : null,
+    ok: record.ok,
+    checkedAt: record.checkedAt,
+    checked: typeof record.checked === "number" ? record.checked : null,
+    ms: typeof record.ms === "number" ? record.ms : null,
     // Enough to tell "upstream unreachable" from "bytes did not verify"
     // without republishing URLs or hashes.
-    error: stored.error === null || stored.error === undefined ? null : errorClass(stored.error)
+    error: record.error === null || record.error === undefined ? null : errorClass(record.error)
   };
   return Response.json(body, {
-    status: stored.ok ? 200 : 503,
+    status: record.ok ? 200 : 503,
     // Short edge cache: the verdict only changes hourly and the consumer
     // tolerates 3h, so this costs nothing in freshness while stopping an
     // unauthenticated route from being an unbounded KV-read meter.

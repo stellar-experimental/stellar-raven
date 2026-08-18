@@ -75,7 +75,8 @@ export async function run(argv, options = {}) {
     const listed = JSON.parse(checked(runWrangler([
       "kv", "key", "list", "--binding", "OAUTH_KV", "--remote", "--prefix", key
     ])));
-    const exists = Array.isArray(listed) && listed.some((entry) => entry?.name === key);
+    if (!Array.isArray(listed)) throw new Error("wrangler returned an invalid API key listing");
+    const exists = listed.some((entry) => entry?.name === key);
     if (action === "create" && exists) throw new Error(`API key "${name}" already exists`);
     if (action !== "create" && !exists) throw new Error(`API key "${name}" does not exist`);
 

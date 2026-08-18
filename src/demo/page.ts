@@ -19,7 +19,7 @@
  * Expand/collapse is native <details>/<summary> in both states, so the locked
  * page needs zero JavaScript and the live client gets toggling for free.
  */
-import { BASE, FAVICON, FONT_FACE, HOST, OG_ALT, OG_IMAGE, TOKENS, ravenSvg } from "../site.ts";
+import { BASE, FONT_FACE, TOKENS, ravenSvg, renderPublicHeadMetadata } from "../site.ts";
 import { DEMO_CAPS } from "./budget.ts";
 import { DEMO_GLOBE_PNG_BASE64 } from "./globe.ts";
 import { escapeHtml as esc, html, raw } from "../html.ts";
@@ -883,36 +883,15 @@ const EXPLAINER =
   "answer before connecting Raven to the agent you use.";
 const DEMO_TITLE = "Playground · Stellar Raven";
 const DEMO_DESCRIPTION = "Try Stellar Raven's live agent playground for Stellar ecosystem questions.";
-const DEMO_URL = `https://${HOST}/playground`;
 
 function demoHead(): string {
   return `<!doctype html><html lang="en"><head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>${DEMO_TITLE}</title>
-<meta name="description" content="${DEMO_DESCRIPTION}"/>
-<meta name="robots" content="noindex"/>
-<meta name="theme-color" content="#0e150d"/>
-<meta name="color-scheme" content="dark"/>
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="${DEMO_TITLE}"/>
-<meta property="og:description" content="${DEMO_DESCRIPTION}"/>
-<meta property="og:image" content="${OG_IMAGE}"/>
-<meta property="og:image:width" content="1200"/>
-<meta property="og:image:height" content="630"/>
-<meta property="og:image:type" content="image/png"/>
-<meta property="og:image:alt" content="${OG_ALT}"/>
-<meta property="og:url" content="${DEMO_URL}"/>
-<meta property="og:site_name" content="Stellar Raven"/>
-<meta property="og:locale" content="en_US"/>
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="${DEMO_TITLE}"/>
-<meta name="twitter:description" content="${DEMO_DESCRIPTION}"/>
-<meta name="twitter:image" content="${OG_IMAGE}"/>
-<meta name="twitter:image:alt" content="${OG_ALT}"/>
-<link rel="icon" href="${FAVICON}"/>
-<link rel="apple-touch-icon" href="${FAVICON}"/>
-<link rel="canonical" href="${DEMO_URL}"/>
+${renderPublicHeadMetadata({
+  title: DEMO_TITLE,
+  description: DEMO_DESCRIPTION,
+  path: "/playground",
+  noindex: true
+})}
 <style>${FONT_FACE}${TOKENS}${BASE}${DEMO_CSS}</style>
 </head><body>`;
 }

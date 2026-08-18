@@ -37,8 +37,7 @@ import { runAndStoreSkillCanary } from "./skills/canary";
 import {
   authSubjectFromProps,
   buildMcpRequestObservability,
-  normalizeRayId,
-  type McpAuthMode
+  normalizeRayId
 } from "./observability-request";
 
 const SERVER_INFO = { name: "stellar-raven-codemode", version: "0.1.0" };
@@ -52,6 +51,11 @@ const MCP_ALLOWED_ORIGIN_HOSTNAMES = [
   "127.0.0.1",
   "[::1]"
 ];
+
+export type McpAccessContext =
+  | { mode: "oauth" }
+  | { mode: "api-key"; apiKeyName: string }
+  | { mode: "dev-bypass" };
 
 // One runner per isolate (providers + catalog + spec are env-stable); each
 // `execute` call still gets its own fresh Dynamic Worker via LOADER.load().
@@ -70,10 +74,11 @@ async function getRunner(env: Env): Promise<ExecuteRunner> {
 
 export function resolveArtifactOwner(
   oauthSubject: string | undefined,
-  devBypassFired: boolean
+  accessContext: McpAccessContext
 ): string | undefined {
-  if (oauthSubject) return oauthSubject;
-  return devBypassFired ? DEV_LOCAL_ARTIFACT_OWNER : undefined;
+  if (accessContext.mode === "oauth") return oauthSubject;
+  if (accessContext.mode === "dev-bypass") return DEV_LOCAL_ARTIFACT_OWNER;
+  return undefined;
 }
 
 // Stateless: fresh McpServer per request (research/codemode.md §6). Used
@@ -84,18 +89,17 @@ export const mcpHandler = {
     request: Request,
     env: Env,
     ctx: ExecutionContext,
-    opts: { devBypassFired?: boolean; authMode?: McpAuthMode; apiKeyName?: string } = {}
+    accessContext: McpAccessContext = { mode: "oauth" }
   ): Promise<Response> {
     // instructions surfaces in the client's system prompt at initialize time
     // (per-session, unlike tool descriptions which models skim once) — the
     // workflow + result-envelope contract lives there too.
     const server = new McpServer(SERVER_INFO, { instructions: SERVER_INSTRUCTIONS });
     const requestId = crypto.randomUUID();
-    const authMode = opts.authMode ?? "oauth";
     const authProps = (ctx as ExecutionContext & { props?: unknown }).props;
     const requestTelemetry = await buildMcpRequestObservability({
-      accessMode: authMode,
-      apiKeyName: opts.apiKeyName,
+      accessMode: accessContext.mode,
+      ...(accessContext.mode === "api-key" ? { apiKeyName: accessContext.apiKeyName } : {}),
       props: authProps,
       rayId: request.headers.get("cf-ray"),
       serverSecret: env.MCP_SERVER_SECRET
@@ -105,7 +109,7 @@ export const mcpHandler = {
     registerTools(server, {
       runExecute: (code, callContext) => runner(code, callContext),
       executeContext: () => ({
-        artifactOwner: resolveArtifactOwner(oauthSubject, opts.devBypassFired === true),
+        artifactOwner: resolveArtifactOwner(oauthSubject, accessContext),
         requestId,
         rayId: requestTelemetry.rayId ?? undefined
       }),
@@ -202,10 +206,10 @@ export default {
     if (isMcpPath(url)) {
       const apiKeyName = await authenticateApiKey(request, env);
       if (apiKeyName) {
-        return mcpHandler.fetch(request, env, ctx, { authMode: "api-key", apiKeyName });
+        return mcpHandler.fetch(request, env, ctx, { mode: "api-key", apiKeyName });
       }
       if (allowDevUnauthenticated(env, url.hostname)) {
-        return mcpHandler.fetch(request, env, ctx, { devBypassFired: true, authMode: "dev-bypass" });
+        return mcpHandler.fetch(request, env, ctx, { mode: "dev-bypass" });
       }
     }
 

@@ -46,6 +46,7 @@ import {
   createExecuteRunner,
   type ExecuteEvidenceSummary,
   type ExecuteOperationSummary,
+  type ExecuteOutcome,
   type ExecuteRunner
 } from "../executor/run.ts";
 import { logEvent } from "../observability.ts";
@@ -55,7 +56,7 @@ import {
   truncateForModel,
   truncateLogsForModel
 } from "../policy/truncate.ts";
-import type { BuildSourceBasisManifestInput, SourceBasisCall } from "../policy/source-basis.ts";
+import { projectSourceBasisTelemetry } from "../policy/source-basis.ts";
 import {
   candidateEvidenceBlock,
   evidenceCheckpointBlock,
@@ -93,35 +94,11 @@ type SearchStructured = {
 
 const SOURCE_BASIS_CALL_LIMIT = 8;
 
-function sourceBasisCallTotals(calls: SourceBasisCall[]): Record<SourceBasisCall["outcome"], number> {
-  const totals = { ok: 0, error: 0, "soft-empty": 0 };
-  for (const call of calls) totals[call.outcome] += 1;
-  return totals;
-}
-
-function sourceBasisSignals(sourceBasis: BuildSourceBasisManifestInput | undefined): unknown {
-  if (!sourceBasis) return null;
-  const calls = sourceBasis.calls ?? [];
-  return {
-    shape: sourceBasis.shape.kind,
-    calls: {
-      first: calls.slice(0, SOURCE_BASIS_CALL_LIMIT),
-      total: calls.length,
-      omitted: Math.max(0, calls.length - SOURCE_BASIS_CALL_LIMIT),
-      totals: sourceBasisCallTotals(calls)
-    },
-    canonicalUrlCount: sourceBasis.canonicalUrls?.length ?? 0,
-    artifactState: sourceBasis.artifact?.state ?? "absent",
-    skillSectionAdvice: sourceBasis.skillSectionAdvice === true
-  };
-}
-
 function evidenceOutcome(
-  outcome: { ok: boolean; operationSummary?: ExecuteOperationSummary }
-): "execute-error" | "not-observed" | "no-operations" | "data" | "soft-empty" | "error" | "mixed" {
+  outcome: { ok: boolean; operationSummary: ExecuteOperationSummary }
+): "execute-error" | "no-operations" | "data" | "soft-empty" | "error" | "mixed" {
   if (!outcome.ok) return "execute-error";
   const summary = outcome.operationSummary;
-  if (!summary) return "not-observed";
   if (summary.total === 0) return "no-operations";
   const problemCount = summary.error + summary.softEmpty;
   if (summary.ok > 0 && problemCount > 0) return "mixed";
@@ -131,19 +108,15 @@ function evidenceOutcome(
 }
 
 function hostEvidenceSummary(
-  operations: ExecuteOperationSummary | undefined,
-  evidence: ExecuteEvidenceSummary | undefined,
+  operations: ExecuteOperationSummary,
+  evidence: ExecuteEvidenceSummary,
   truncated: boolean
 ): string {
-  const op = operations ?? { total: 0, ok: 0, error: 0, softEmpty: 0 };
-  const kind =
-    evidence?.kind ??
-    (op.ok > 0 ? "service-data" : op.total > 0 ? "service-inconclusive" : "none");
   return [
     "--- host evidence summary ---",
-    `evidence: ${kind}`,
-    `service operations: total=${op.total} ok=${op.ok} error=${op.error} soft-empty=${op.softEmpty}`,
-    `skill content read: ${evidence?.skillRead === true ? "yes" : "no"}; artifact reads: ${evidence?.artifactReads ?? 0}`,
+    `evidence: ${evidence.kind}`,
+    `service operations: total=${operations.total} ok=${operations.ok} error=${operations.error} soft-empty=${operations.softEmpty}`,
+    `skill content read: ${evidence.skillRead ? "yes" : "no"}; artifact reads: ${evidence.artifactReads}`,
     `model boundary: ${truncated ? "truncated; inspect the source-basis manifest above" : "complete"}`
   ].join("\n");
 }
@@ -258,7 +231,12 @@ function demoExecutePreflightError(code: string): string | null {
   }
 }
 
-export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; budget?: DemoToolBudget }): {
+export function buildDemoTools(opts: {
+  env: Env;
+  emit: (f: DemoFrame) => void;
+  budget?: DemoToolBudget;
+  runExecute?: ExecuteRunner;
+}): {
   tools: Record<string, unknown>;
   budgetReport: () => DemoToolBudget;
 } {
@@ -287,16 +265,9 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
           ...searchEventFields({
             query: args.query,
             requestedLimit: args.limit ?? null,
-            page
+            page,
+            summary: structured
           }),
-          hits: structured.hits.length,
-          total: structured.total,
-          truncated: structured.truncated,
-          top: structured.hits.slice(0, 3).map((h) => h.id),
-          recovery: structured.recovery.length,
-          recoveryTop: structured.recovery.slice(0, 3).map((candidate) => candidate.id),
-          widerCandidates: structured.widerCandidates.length,
-          widerCandidateTop: structured.widerCandidates.slice(0, 3).map((candidate) => candidate.id),
           responseChars: JSON.stringify(structured).length,
           ms: Date.now() - t0
         });
@@ -319,7 +290,8 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
           ...searchEventFields({
             query: args.query,
             requestedLimit: args.limit ?? null,
-            page: null
+            page: null,
+            summary: null
           }),
           searchCalls: budget.searchCalls,
           searchRefusals: budget.searchRefusals
@@ -432,33 +404,40 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
       budget.executeCalls += 1;
 
       const t0 = Date.now();
-      let outcome;
+      let outcome: ExecuteOutcome;
       try {
-        outcome = await getRunner(env)(args.code);
+        outcome = await (opts.runExecute ?? getRunner(env))(args.code);
       } catch (e) {
         // The runner is designed never to throw; belt-and-braces anyway.
         outcome = {
           ok: false as const,
           error: e instanceof Error ? e.message : String(e),
-          logs: []
+          logs: [],
+          operationSummary: { total: 0, ok: 0, error: 0, softEmpty: 0 },
+          evidenceSummary: {
+            kind: "none",
+            skillRead: false,
+            buildAuthoritySkillIds: [],
+            buildAuthorityRoles: [],
+            skillRuns: 0,
+            artifactReads: 0
+          }
         };
       }
       if (!outcome.ok) budget.executeFailures += 1;
       if (outcome.ok && outcome.truncated) budget.executeResultTruncated += 1;
-      if (outcome.operationSummary) {
-        budget.operationTotal += outcome.operationSummary.total;
-        budget.operationOk += outcome.operationSummary.ok;
-        budget.operationError += outcome.operationSummary.error;
-        budget.operationSoftEmpty += outcome.operationSummary.softEmpty;
-      }
-      const latest = outcome.operationSummary ?? { total: 0, ok: 0, error: 0, softEmpty: 0 };
-      budget.latestOperationTotal = latest.total;
-      budget.latestOperationOk = latest.ok;
-      budget.latestOperationError = latest.error;
-      budget.latestOperationSoftEmpty = latest.softEmpty;
-      budget.latestExecuteEvidence =
-        outcome.evidenceSummary?.kind ??
-        (latest.ok > 0 ? "service-data" : latest.total > 0 ? "service-inconclusive" : "none");
+      budget.operations.total += outcome.operationSummary.total;
+      budget.operations.ok += outcome.operationSummary.ok;
+      budget.operations.error += outcome.operationSummary.error;
+      budget.operations.softEmpty += outcome.operationSummary.softEmpty;
+      const latest = outcome.operationSummary;
+      budget.latestOperations = {
+        total: latest.total,
+        ok: latest.ok,
+        error: latest.error,
+        softEmpty: latest.softEmpty
+      };
+      budget.latestExecuteEvidence = outcome.evidenceSummary.kind;
       const recoveryHint = outcome.ok ? (outcome.recoveryHint ?? null) : null;
       let visibleRecoveryHint: EvidenceRecoveryHint | null = null;
       if (recoveryHint) {
@@ -502,16 +481,18 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
         logLines: outcome.logs.length,
         logsTruncated: shapedLogs.truncated,
         errorTruncated: shapedError ? shapedError.truncated : null,
-        artifactReadCount: outcome.artifactReadCount ?? 0,
+        artifactReadCount: outcome.evidenceSummary.artifactReads,
         artifactReadBytes: outcome.artifactReadBytes ?? 0,
-        operationSummary: outcome.operationSummary ?? null,
-        evidenceSummary: outcome.evidenceSummary ?? null,
+        operationSummary: outcome.operationSummary,
+        evidenceSummary: outcome.evidenceSummary,
         evidenceOutcome: evidenceOutcome(outcome),
         recoveryHint,
         recoveryAdviceVisible: visibleRecoveryHint !== null,
         recoveryAdviceDelivered: budget.recoveryAdviceDelivered,
         recoveryAdviceSuppressed: budget.recoveryAdviceSuppressed,
-        sourceBasis: outcome.ok ? sourceBasisSignals(outcome.sourceBasis) : null
+        sourceBasis: outcome.ok
+          ? projectSourceBasisTelemetry(outcome.sourceBasis, SOURCE_BASIS_CALL_LIMIT)
+          : null
       });
 
       const logsBlock =
@@ -531,11 +512,11 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
         ? evidenceCheckpointBlock(visibleRecoveryHint ?? undefined)
         : "";
       const hasPriorArtPreflight = Boolean(
-        outcome.operationSummary?.priorArtCandidates &&
-          outcome.evidenceSummary?.buildAuthoritySkillIds?.length
+        outcome.operationSummary.priorArtCandidates &&
+          outcome.evidenceSummary.buildAuthoritySkillIds?.length
       );
       const candidateBlock = outcome.ok
-        ? candidateEvidenceBlock(outcome.operationSummary?.candidateEvidence, hasPriorArtPreflight)
+        ? candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight)
         : "";
 
       const text = outcome.ok
@@ -548,6 +529,10 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
 
   return {
     tools: { search, execute },
-    budgetReport: () => ({ ...budget })
+    budgetReport: () => ({
+      ...budget,
+      operations: { ...budget.operations },
+      latestOperations: { ...budget.latestOperations }
+    })
   };
 }

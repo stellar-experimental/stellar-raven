@@ -5,6 +5,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { html, raw, escapeHtml, RawHtml } from "../src/html";
+import { renderPublicHeadMetadata } from "../src/site";
 
 describe("escapeHtml", () => {
   it("escapes the five significant characters", () => {
@@ -54,5 +55,27 @@ describe("html tagged template", () => {
     const r = html`<i>${"x"}</i>`;
     expect(r).toBeInstanceOf(RawHtml);
     expect("" + r).toBe("<i>x</i>");
+  });
+});
+
+describe("renderPublicHeadMetadata", () => {
+  it("escapes its inputs and returns no page shell, CSS, or extra markup", () => {
+    const out = renderPublicHeadMetadata({
+      title: `<script>"title"</script>`,
+      description: `description's & detail`,
+      path: `/path?next="quoted"&other=<tag>`,
+      noindex: true
+    });
+
+    expect(out).toContain("<title>&lt;script&gt;&quot;title&quot;&lt;/script&gt;</title>");
+    expect(out).toContain('content="description&#039;s &amp; detail"');
+    expect(out).toContain(
+      'href="https://raven.stellar.org/path?next=&quot;quoted&quot;&amp;other=&lt;tag&gt;"'
+    );
+    expect(out).toContain('<meta name="robots" content="noindex"/>');
+    expect(out).not.toContain("<script>");
+    expect(out).not.toContain("<style>");
+    expect(out).not.toContain("<!doctype html>");
+    expect(out).not.toContain("<head>");
   });
 });

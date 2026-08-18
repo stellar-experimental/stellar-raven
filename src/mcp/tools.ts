@@ -24,6 +24,7 @@ import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/server";
 import {
   type RecoveryCandidate,
+  type SearchHit,
   type SearchPage,
   type WiderCandidate
 } from "../catalog/search.ts";
@@ -31,7 +32,7 @@ import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { getCatalog } from "../catalog/load.ts";
 import { SEARCH_KINDS, RETRIEVAL_REASONS } from "../catalog/types.ts";
 import type { ExecuteCallContext, ExecuteRunner } from "../executor/run.ts";
-import type { BuildSourceBasisManifestInput, SourceBasisCall } from "../policy/source-basis.ts";
+import { projectSourceBasisTelemetry } from "../policy/source-basis.ts";
 import { logEvent } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import { truncateForModel, truncateLogsForModel } from "../policy/truncate.ts";
@@ -195,29 +196,6 @@ export const executeInputSchema = {
     )
 };
 
-function sourceBasisCallTotals(calls: SourceBasisCall[]): Record<SourceBasisCall["outcome"], number> {
-  const totals = { ok: 0, error: 0, "soft-empty": 0 };
-  for (const call of calls) totals[call.outcome] += 1;
-  return totals;
-}
-
-function sourceBasisForTelemetry(sourceBasis: BuildSourceBasisManifestInput | undefined): unknown {
-  if (!sourceBasis) return null;
-  const calls = sourceBasis.calls ?? [];
-  return {
-    shape: sourceBasis.shape.kind,
-    calls: {
-      first: calls.slice(0, SOURCE_BASIS_TELEMETRY_CALL_LIMIT),
-      total: calls.length,
-      omitted: Math.max(0, calls.length - SOURCE_BASIS_TELEMETRY_CALL_LIMIT),
-      totals: sourceBasisCallTotals(calls)
-    },
-    canonicalUrlCount: sourceBasis.canonicalUrls?.length ?? 0,
-    artifactState: sourceBasis.artifact?.state ?? "absent",
-    skillSectionAdvice: sourceBasis.skillSectionAdvice === true
-  };
-}
-
 // Runnable-skill sentences (research/skill-run-design.md §11 row 13) — one
 // each in SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION, SERVER_INSTRUCTIONS, and
 // the search nextSteps text below. Leave-with-the-feature rule: if the
@@ -346,7 +324,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
       const catalog = getCatalog();
 
       const respond = (structured: {
-        hits: unknown[];
+        hits: SearchHit[];
         total: number;
         truncated: boolean;
         recovery: RecoveryCandidate[];
@@ -359,18 +337,10 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
           ...searchEventFields({
             query: args.query,
             requestedLimit: args.limit ?? null,
-            page
+            page,
+            summary: structured
           }),
-          hits: structured.hits.length,
-          total: structured.total,
-          truncated: structured.truncated,
-          top: (structured.hits as { id: string }[]).slice(0, 3).map((h) => h.id),
-          recovery: structured.recovery.length,
-          recoveryTop: structured.recovery.slice(0, 3).map((candidate) => candidate.id),
-          widerCandidates: structured.widerCandidates.length,
-          widerCandidateTop: structured.widerCandidates.slice(0, 3).map((candidate) => candidate.id),
-          // Keep response size observable so compaction and future page-level
-          // limits remain evidence-based.
+          // Keep response size observable for compaction and future limits.
           responseChars: text.length,
           ms: Date.now() - t0
         });
@@ -457,7 +427,16 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         outcome = {
           ok: false as const,
           error: e instanceof Error ? e.message : String(e),
-          logs: []
+          logs: [],
+          operationSummary: { total: 0, ok: 0, error: 0, softEmpty: 0 },
+          evidenceSummary: {
+            kind: "none",
+            skillRead: false,
+            buildAuthoritySkillIds: [],
+            buildAuthorityRoles: [],
+            skillRuns: 0,
+            artifactReads: 0
+          }
         };
       }
       // Logs get their own token budget at the model boundary (equal to the
@@ -482,11 +461,13 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         logLines: outcome.logs.length,
         logsTruncated: shapedLogs.truncated,
         errorTruncated: shapedError ? shapedError.truncated : null,
-        artifactReadCount: outcome.artifactReadCount ?? 0,
+        artifactReadCount: outcome.evidenceSummary.artifactReads,
         artifactReadBytes: outcome.artifactReadBytes ?? 0,
-        operationSummary: outcome.operationSummary ?? null,
+        operationSummary: outcome.operationSummary,
         recoveryHint: outcome.ok ? (outcome.recoveryHint ?? null) : null,
-        sourceBasis: outcome.ok ? sourceBasisForTelemetry(outcome.sourceBasis) : null
+        sourceBasis: outcome.ok
+          ? projectSourceBasisTelemetry(outcome.sourceBasis, SOURCE_BASIS_TELEMETRY_CALL_LIMIT)
+          : null
       });
 
       const logsBlock =
@@ -505,7 +486,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
       }
 
       const operationSummary = outcome.operationSummary;
-      const noData = operationSummary && operationSummary.total > 0 && operationSummary.ok === 0;
+      const noData = operationSummary.total > 0 && operationSummary.ok === 0;
       const recoveryBlock = !noData
         ? ""
         : operationSummary.error > 0 && operationSummary.softEmpty === 0
@@ -519,17 +500,17 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
       // catalog-declared build-authority playbook; any-skill reads stay off this
       // composition cue so landscape/list requests never inherit a build cap.
       const hasPriorArtPreflight = Boolean(
-        outcome.operationSummary?.priorArtCandidates && outcome.evidenceSummary?.buildAuthoritySkillIds?.length
+        outcome.operationSummary.priorArtCandidates && outcome.evidenceSummary.buildAuthoritySkillIds?.length
       );
 
       const candidateBlock = candidateEvidenceBlock(
-        outcome.operationSummary?.candidateEvidence,
+        outcome.operationSummary.candidateEvidence,
         hasPriorArtPreflight
       );
 
       const priorArtEvidenceBlock =
         hasPriorArtPreflight
-          ? `\n\n--- PRIOR-ART CANDIDATES ---\nThis build-stage run paired an implementation playbook with ${outcome.operationSummary?.priorArtCandidates} Scout project/repository discovery or detail call(s). These rows are decision input, not reuse clearance: return no more than three directly relevant candidates with exact URL, role/applicability, freshness/provenance, and limitations. License, audit, deployment, compatibility, security, maintenance, and production readiness remain unknown unless the returned evidence directly establishes each claim; rank, stars, funding, directory status, and public source do not.`
+          ? `\n\n--- PRIOR-ART CANDIDATES ---\nThis build-stage run paired an implementation playbook with ${outcome.operationSummary.priorArtCandidates} Scout project/repository discovery or detail call(s). These rows are decision input, not reuse clearance: return no more than three directly relevant candidates with exact URL, role/applicability, freshness/provenance, and limitations. License, audit, deployment, compatibility, security, maintenance, and production readiness remain unknown unless the returned evidence directly establishes each claim; rank, stars, funding, directory status, and public source do not.`
           : "";
       const evidenceCheckpoint = evidenceCheckpointBlock(outcome.recoveryHint);
 

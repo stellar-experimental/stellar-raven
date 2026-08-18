@@ -1,4 +1,16 @@
-import { readFileSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  realpathSync,
+  rmSync,
+  writeFileSync
+} from "node:fs";
+import { spawnSync } from "node:child_process";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   PHASE1_MIN_INDEPENDENT_CASES,
@@ -16,7 +28,7 @@ const losingScore = { matched: 0, total: 1, recall: 0, detail: [] };
 const winningRow = (caseType) => ({
   caseType,
   baseline: { score: losingScore, error: null },
-  candidate: { score: passingScore, errors: [], allowlistViolations: 0, documents: [] }
+  candidate: { score: passingScore, errors: [], documents: [] }
 });
 
 describe("partner docs eval harness", () => {
@@ -67,17 +79,56 @@ describe("partner docs eval harness", () => {
     const rows = [
       {
         baseline: { score: passingScore, error: null },
-        candidate: { score: passingScore, errors: [], allowlistViolations: 0, documents: [] }
+        candidate: { score: passingScore, errors: [], documents: [] }
       },
       {
         baseline: { score: null, error: "timeout" },
-        candidate: { score: passingScore, errors: [], allowlistViolations: 0, documents: [] }
+        candidate: { score: passingScore, errors: [], documents: [] }
       }
     ];
     const summary = summarize(rows);
     expect(summary.baselineCases).toBe(1);
     expect(summary.baselineErrors).toBe(1);
     expect(summary.retrievalAdmissionGate).toBe("inconclusive");
+  });
+
+  it("rejects an invalid CLI suite before making a fetch call", () => {
+    const fixtureRoot = realpathSync(mkdtempSync(join(tmpdir(), "partner-docs-invalid-suite-")));
+    const markerPath = join(fixtureRoot, "fetch-called");
+    const scriptPath = join(fixtureRoot, "scripts/eval-partner-docs.mjs");
+    const casesPath = join(fixtureRoot, "eval/partner-docs/cases.json");
+    const preloadPath = join(fixtureRoot, "block-fetch.mjs");
+    try {
+      mkdirSync(join(fixtureRoot, "scripts"), { recursive: true });
+      mkdirSync(join(fixtureRoot, "eval/partner-docs"), { recursive: true });
+      copyFileSync(new URL("../scripts/eval-partner-docs.mjs", import.meta.url), scriptPath);
+      writeFileSync(casesPath, JSON.stringify({
+        contract: "partner-docs-retrieval-v1",
+        cases: [{
+          id: "invalid-url",
+          partner: "alchemy",
+          caseType: "page-derived",
+          question: "question",
+          baseline: [{ type: "operation", id: "stellarDocs.search_docs" }],
+          candidateUrls: ["https://evil.example/docs/page.md"],
+          facts: [["fact"]]
+        }]
+      }));
+      writeFileSync(preloadPath, [
+        'import { writeFileSync } from "node:fs";',
+        `globalThis.fetch = async () => { writeFileSync(${JSON.stringify(markerPath)}, "called"); throw new Error("unexpected fetch"); };`
+      ].join("\n"));
+
+      const result = spawnSync(process.execPath, ["--import", preloadPath, scriptPath, "--json"], {
+        cwd: fixtureRoot,
+        encoding: "utf8"
+      });
+      expect(result.status).toBe(1);
+      expect(result.stderr).toMatch(/candidate URL outside allowlist/);
+      expect(existsSync(markerPath)).toBe(false);
+    } finally {
+      rmSync(fixtureRoot, { recursive: true, force: true });
+    }
   });
 
   it("rejects duplicate case ids and unsupported baseline calls", () => {
@@ -135,7 +186,9 @@ describe("partner docs eval harness", () => {
 
   it("holds the phase-1 floor: independent cases are what admit the retrieval gate", () => {
     const independent = Array.from({ length: PHASE1_MIN_INDEPENDENT_CASES }, () => winningRow("conflict"));
-    expect(summarize(independent).retrievalAdmissionGate).toBe("pass");
+    const summary = summarize(independent);
+    expect(summary).not.toHaveProperty("allowlistViolations");
+    expect(summary.retrievalAdmissionGate).toBe("pass");
     expect(summarize(independent).independentCases).toBe(PHASE1_MIN_INDEPENDENT_CASES);
 
     // One short of the floor fails, and page-derived cases cannot backfill it — that substitution

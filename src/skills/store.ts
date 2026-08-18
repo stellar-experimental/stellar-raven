@@ -31,36 +31,40 @@ import { lastIdSegment } from "../catalog/id.ts";
 import { DEFAULT_MAX_TOKENS, CHARS_PER_TOKEN } from "../policy/truncate.ts";
 import { SKILL_READ_DEADLINE_MS, type SkillPin, type SkillSource } from "./source.ts";
 
+export type SkillSection = { section: string; content: string };
+
+type SkillReadSuccess = {
+  ok: true;
+  id: string;
+  /** Upstream provenance of the bytes served: the raw file URL at the
+   *  pinned commit (also what the integrity check was made against). */
+  url: string;
+  /**
+   * Advisory size warning, never a withholding: attached (uniformly on
+   * whole, section, and file: reads) when the returned content is large
+   * enough that RETURNING it whole from a sandbox script would be
+   * truncated at the model boundary. The content itself is still fully
+   * present for in-sandbox use.
+   */
+  notice?: string;
+  /**
+   * Section keys readable on this skill (## slugs + file:<path> keys) —
+   * same membership as search hits' availableSections (search.ts
+   * sectionKeysOf).
+   */
+  availableSections: string[];
+};
+
 export type SkillReadResult =
-  | {
-      ok: true;
-      id: string;
-      /** Upstream provenance of the bytes served: the raw file URL at the
-       *  pinned commit (also what the integrity check was made against). */
-      url: string;
-      /**
-       * Full SKILL.md body (frontmatter stripped). ALWAYS present on ok
-       * whole-reads regardless of size — content is never withheld, so
-       * sandbox scripts can grep/aggregate full bodies. Absent on section
-       * reads (only the requested parts come back, in `sections`).
-       */
-      content?: string;
-      sections?: { section: string; content: string }[];
-      /**
-       * Advisory size warning, never a withholding: attached (uniformly on
-       * whole, section, and file: reads) when the returned content is large
-       * enough that RETURNING it whole from a sandbox script would be
-       * truncated at the model boundary. The content itself is still fully
-       * present for in-sandbox use.
-       */
-      notice?: string;
-      /**
-       * Section keys readable on this skill (## slugs + file:<path> keys) —
-       * same membership as search hits' availableSections (search.ts
-       * sectionKeysOf).
-       */
-      availableSections: string[];
-    }
+  | (SkillReadSuccess & {
+      /** Full SKILL.md body (frontmatter stripped). */
+      content: string;
+      sections?: never;
+    })
+  | (SkillReadSuccess & {
+      sections: SkillSection[];
+      content?: never;
+    })
   | { ok: false; error: { service: "skills"; kind: "error"; message: string } };
 
 /**
@@ -385,7 +389,7 @@ export async function readSkill(
     }
   }
 
-  const found: { section: string; content: string }[] = [];
+  const found: SkillSection[] = [];
   for (const want of requested) {
     if (want.startsWith("file:")) {
       found.push({ section: want, content: stripFrontmatter(fileTexts.get(want)!).trim() });

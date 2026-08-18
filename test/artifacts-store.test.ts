@@ -10,62 +10,7 @@ import {
   type ArtifactPutInput
 } from "../src/artifacts/store.ts";
 import { redactSecrets } from "../src/policy/redact.ts";
-
-type Stored = {
-  body: string;
-  customMetadata: Record<string, string>;
-  httpMetadata?: Headers | R2HTTPMetadata;
-};
-
-class MemoryR2Object {
-  constructor(
-    readonly key: string,
-    private readonly body: string,
-    readonly customMetadata: Record<string, string>,
-    readonly httpMetadata?: Headers | R2HTTPMetadata
-  ) {}
-
-  async text(): Promise<string> {
-    return this.body;
-  }
-}
-
-class MemoryR2Bucket {
-  readonly objects = new Map<string, Stored>();
-
-  async put(key: string, body: string, options?: R2PutOptions): Promise<R2Object> {
-    const customMetadata = options?.customMetadata ? { ...options.customMetadata } : {};
-    if (artifactCustomMetadataByteLength(customMetadata) > ARTIFACT_CUSTOM_METADATA_MAX_BYTES) {
-      const error = new Error("MetadataTooLarge: custom metadata exceeds 8192 bytes");
-      error.name = "MetadataTooLarge";
-      throw error;
-    }
-    this.objects.set(key, { body, customMetadata, httpMetadata: options?.httpMetadata });
-    return new MemoryR2Object(key, body, customMetadata, options?.httpMetadata) as unknown as R2Object;
-  }
-
-  async get(key: string): Promise<R2ObjectBody | null> {
-    const stored = this.objects.get(key);
-    if (!stored) return null;
-    return new MemoryR2Object(
-      key,
-      stored.body,
-      stored.customMetadata,
-      stored.httpMetadata
-    ) as unknown as R2ObjectBody;
-  }
-
-  async head(key: string): Promise<R2Object | null> {
-    const stored = this.objects.get(key);
-    if (!stored) return null;
-    return new MemoryR2Object(
-      key,
-      stored.body,
-      stored.customMetadata,
-      stored.httpMetadata
-    ) as unknown as R2Object;
-  }
-}
+import { MemoryR2Bucket } from "./helpers/memory-r2.ts";
 
 function input(overrides: Partial<ArtifactPutInput> = {}): ArtifactPutInput {
   return {
@@ -93,16 +38,18 @@ function largeLedger(count: number) {
 
 describe("artifact store", () => {
   it("roundtrips JSON, strings, undefined, and fallback text without guessing", async () => {
-    const bucket = new MemoryR2Bucket() as unknown as R2Bucket;
+    const realBucket = new MemoryR2Bucket();
+    const bucket = realBucket as unknown as R2Bucket;
     const owner = "oauth-peppered-subject";
     const observedAt = new Date("2026-07-07T12:30:00.000Z");
 
     const jsonPut = await put(bucket, owner, input());
     if (!jsonPut.ok) throw new Error("unexpected skip");
-    await expect(read(bucket, owner, jsonPut.artifact.id, observedAt)).resolves.toMatchObject({
-      ok: true,
-      value: { rows: [{ id: 1, name: "Blend" }] }
-    });
+    expect([...realBucket.objects.values()].at(-1)?.body).toBe(input().body);
+    const jsonRead = await read(bucket, owner, jsonPut.artifact.id, observedAt);
+    expect(jsonRead).toMatchObject({ ok: true, value: { rows: [{ id: 1, name: "Blend" }] } });
+    if (!jsonRead.ok) throw new Error("expected JSON artifact read");
+    expect(jsonRead.artifact).not.toHaveProperty("key");
 
     const stringPut = await put(
       bucket,
@@ -110,6 +57,7 @@ describe("artifact store", () => {
       input({ body: "plain string result", mime: "text/plain; charset=utf-8" })
     );
     if (!stringPut.ok) throw new Error("unexpected skip");
+    expect([...realBucket.objects.values()].at(-1)?.body).toBe("plain string result");
     await expect(read(bucket, owner, stringPut.artifact.id, observedAt)).resolves.toMatchObject({
       ok: true,
       value: "plain string result"
@@ -121,6 +69,7 @@ describe("artifact store", () => {
       input({ body: "undefined", mime: "application/x.raven.undefined" })
     );
     if (!undefinedPut.ok) throw new Error("unexpected skip");
+    expect([...realBucket.objects.values()].at(-1)?.body).toBe("undefined");
     const undefinedRead = await read(bucket, owner, undefinedPut.artifact.id, observedAt);
     if (!undefinedRead.ok) throw new Error("expected undefined artifact read");
     expect(undefinedRead.value).toBeUndefined();
@@ -140,15 +89,35 @@ describe("artifact store", () => {
     });
   });
 
+  it("reconstructs from validated metadata when the stored body suggests another MIME", async () => {
+    const realBucket = new MemoryR2Bucket();
+    const bucket = realBucket as unknown as R2Bucket;
+    const body = JSON.stringify({ metadata: "must win" });
+    const written = await put(bucket, "owner", input({ body, mime: "application/json" }));
+    if (!written.ok) throw new Error("unexpected skip");
+
+    const stored = [...realBucket.objects.values()][0];
+    if (!stored) throw new Error("missing stored object");
+    stored.customMetadata.mime = "text/plain; charset=utf-8";
+
+    await expect(
+      read(bucket, "owner", written.artifact.id, new Date("2026-07-07T12:30:00.000Z"))
+    ).resolves.toMatchObject({ ok: true, value: body });
+  });
+
   it("binds keys to the owner hash and never stores the raw owner", async () => {
-    const bucket = new MemoryR2Bucket() as unknown as R2Bucket;
+    const realBucket = new MemoryR2Bucket();
+    const bucket = realBucket as unknown as R2Bucket;
     const owner = "peppered-oauth-subject-123";
     const written = await put(bucket, owner, input());
     if (!written.ok) throw new Error("unexpected skip");
 
-    expect(written.artifact.key).toMatch(/^art\/[0-9a-f]{16}\/[0-9a-f-]{36}$/);
-    expect(written.artifact.key).not.toContain(owner);
-    const stored = [...(bucket as unknown as MemoryR2Bucket).objects.values()][0];
+    const keys = [...realBucket.objects.keys()];
+    expect(keys).toHaveLength(1);
+    expect(keys[0]).toMatch(/^art\/[0-9a-f]{16}\/[0-9a-f-]{36}$/);
+    expect(keys[0]).not.toContain(owner);
+    expect(written.artifact).not.toHaveProperty("key");
+    const stored = realBucket.objects.get(keys[0]!);
     expect(JSON.stringify(stored?.customMetadata)).not.toContain(owner);
     expect(stored?.body).not.toContain(owner);
     await expect(read(bucket, "different-peppered-subject", written.artifact.id)).resolves.toEqual({
@@ -216,6 +185,7 @@ describe("artifact store", () => {
     );
     expect(metadata).toEqual({ ok: true, artifact: written.artifact });
     if (!metadata.ok) throw new Error("expected info");
+    expect(metadata.artifact).not.toHaveProperty("key");
     expect(metadata.artifact).toMatchObject({
       id: written.artifact.id,
       createdAt: "2026-07-07T12:00:00.000Z",
@@ -244,7 +214,7 @@ describe("artifact store", () => {
     const written = await put(bucket, "owner", input({ opLedger: ledger }));
     if (!written.ok) throw new Error("unexpected skip");
 
-    const stored = realBucket.objects.get(written.artifact.key);
+    const stored = [...realBucket.objects.values()][0];
     if (!stored) throw new Error("missing stored object");
     expect(artifactCustomMetadataByteLength(stored.customMetadata)).toBeLessThanOrEqual(
       ARTIFACT_CUSTOM_METADATA_MAX_BYTES
@@ -283,7 +253,7 @@ describe("artifact store", () => {
     const written = await put(bucket, "owner", input({ body: redacted, mime: "application/json" }));
     if (!written.ok) throw new Error("unexpected skip");
 
-    const stored = realBucket.objects.get(written.artifact.key);
+    const stored = [...realBucket.objects.values()][0];
     if (!stored) throw new Error("missing stored object");
     expect(stored.body).not.toContain(secret);
     expect(stored.body).not.toContain(escaped);

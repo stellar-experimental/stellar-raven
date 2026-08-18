@@ -4,9 +4,8 @@
  *
  * Reads:  eval/corpus/raven-golden-qa/big.json (override: argv[2]) — vendored snapshot,
  *         see eval/corpus/PROVENANCE.md (the raven sibling checkouts are retired)
- *         eval/corpus/raven-next/research/golden/ — the 538-case corpus, for the
- *         EXTENDED lane (the 144 net-new ids big.json predates; labels parsed from
- *         each question file's YAML frontmatter)
+ *         eval/corpus/raven-next/research/golden/compiled/golden.json — the 538-case
+ *         compiled corpus, for the EXTENDED lane (the 144 net-new ids big.json predates)
  * Writes: eval/routing-cases.json
  *
  * The whole point of this compile step (vs. raven-next's, which dropped them) is to
@@ -36,7 +35,8 @@
 import { readFileSync, mkdirSync } from "node:fs";
 import { dirname, join, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { deriveExpectedAny, frontmatterRouting } from "./lib/labels.mjs";
+import { assertCompiledGoldenCase } from "./corpus/raven-next/research/golden/_meta/compile.mjs";
+import { deriveExpectedAny } from "./lib/labels.mjs";
 import { writeFileAtomic } from "../scripts/lib/shared.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
@@ -63,7 +63,7 @@ const SKIP_REASONS = {
 
 /** Map one labeled entry into a routing case, or record a skip. Shared by both lanes. */
 function compileEntry({ id, question, labels }, cases, skipped) {
-  const label = labels.expected_service;
+  const label = labels.expectedService;
   const service = SERVICE_MAP[label];
   if (!service) {
     skipped.push({
@@ -74,10 +74,10 @@ function compileEntry({ id, question, labels }, cases, skipped) {
     return;
   }
   const c = { id, question, expected_service: service };
-  if (Array.isArray(labels.expected_cards) && labels.expected_cards.length > 0) {
-    c.expected_cards = labels.expected_cards;
+  if (labels.expectedCards.length > 0) {
+    c.expected_cards = labels.expectedCards;
   }
-  const expectedAny = deriveExpectedAny(service, labels.acceptable_cards);
+  const expectedAny = deriveExpectedAny(service, labels.acceptableCards);
   if (expectedAny) c.expected_any = expectedAny;
   cases.push(c);
 }
@@ -104,9 +104,9 @@ function main() {
         id: entry.id,
         question: entry.q,
         labels: {
-          expected_service: entry.expected_service,
-          expected_cards: entry.expected_cards,
-          acceptable_cards: entry.acceptable_cards,
+          expectedService: entry.expected_service,
+          expectedCards: entry.expected_cards ?? [],
+          acceptableCards: entry.acceptable_cards ?? [],
         },
       },
       cases,
@@ -114,7 +114,7 @@ function main() {
     );
   }
 
-  // --- extended lane: 538-corpus ids absent from big.json (frontmatter labels) -------
+  // --- extended lane: 538-corpus ids absent from big.json (compiled routing labels) --
   const legacyIds = new Set(corpus.map((e) => e.id));
   const goldenPath = join(EXTENDED_CORPUS_ROOT, "research/golden/compiled/golden.json");
   const golden = JSON.parse(readFileSync(goldenPath, "utf8"));
@@ -122,10 +122,10 @@ function main() {
   const extendedSkipped = [];
   let extendedTotal = 0;
   for (const src of [...golden].sort((a, b) => a.id.localeCompare(b.id))) {
+    assertCompiledGoldenCase(src);
     if (legacyIds.has(src.id)) continue;
     extendedTotal += 1;
-    const txt = readFileSync(join(EXTENDED_CORPUS_ROOT, src.sourceFile), "utf8");
-    compileEntry({ id: src.id, question: src.question, labels: frontmatterRouting(txt) }, extendedCases, extendedSkipped);
+    compileEntry({ id: src.id, question: src.question, labels: src.routing }, extendedCases, extendedSkipped);
   }
 
   const legacy = laneCounts(cases, skipped);

@@ -10,13 +10,9 @@ const MAX_ATOM_CHARS = 96;
 
 export type SourceBasisShapeKind = "object" | "array" | "string";
 
-export type SourceBasisShape = {
-  kind: SourceBasisShapeKind;
+type SourceBasisShapeBase = {
   serializedChars: number;
   approxTokens?: number;
-  totalKeys?: number;
-  totalItems?: number;
-  stringChars?: number;
   /**
    * Human-readable loss detail derived from truncateForModel's existing
    * loss-detail/key-segment machinery. Do not build a parallel key-span
@@ -24,6 +20,13 @@ export type SourceBasisShape = {
    */
   lossDetail?: string;
 };
+
+export type SourceBasisShape = SourceBasisShapeBase &
+  (
+    | { kind: "object"; totalKeys: number; totalItems?: never; stringChars?: never }
+    | { kind: "array"; totalItems: number; totalKeys?: never; stringChars?: never }
+    | { kind: "string"; stringChars: number; totalKeys?: never; totalItems?: never }
+  );
 
 export type SourceBasisCallOutcome = "ok" | "error" | "soft-empty";
 
@@ -55,6 +58,39 @@ export type BuildSourceBasisManifestInput = {
 export type BuildSourceBasisManifestOptions = {
   maxChars?: number;
 };
+
+export type SourceBasisTelemetry = {
+  shape: SourceBasisShapeKind;
+  calls: {
+    first: SourceBasisCall[];
+    total: number;
+    omitted: number;
+    totals: Record<SourceBasisCallOutcome, number>;
+  };
+  canonicalUrlCount: number;
+  artifactState: SourceBasisArtifact["state"];
+  skillSectionAdvice: boolean;
+};
+
+export function projectSourceBasisTelemetry(
+  input: BuildSourceBasisManifestInput | undefined,
+  callLimit: number
+): SourceBasisTelemetry | null {
+  if (!input) return null;
+  const calls = input.calls ?? [];
+  return {
+    shape: input.shape.kind,
+    calls: {
+      first: calls.slice(0, callLimit),
+      total: calls.length,
+      omitted: Math.max(0, calls.length - callLimit),
+      totals: sourceBasisCallTotals(calls)
+    },
+    canonicalUrlCount: input.canonicalUrls?.length ?? 0,
+    artifactState: input.artifact?.state ?? "absent",
+    skillSectionAdvice: input.skillSectionAdvice === true
+  };
+}
 
 export function sourceBasisShapeFromValue(value: unknown, maxTokens = DEFAULT_MAX_TOKENS): SourceBasisShape {
   const truncated = truncateForModel(value, maxTokens);
@@ -170,9 +206,9 @@ function shapeLine(shape: SourceBasisShape, detailLimit: number): string {
     `${safeInteger(shape.serializedChars)} chars`,
     `~${safeInteger(shape.approxTokens ?? Math.round(shape.serializedChars / CHARS_PER_TOKEN))} tokens`
   ];
-  if (shape.kind === "object" && shape.totalKeys !== undefined) parts.push(`${safeInteger(shape.totalKeys)} top-level keys`);
-  if (shape.kind === "array" && shape.totalItems !== undefined) parts.push(`${safeInteger(shape.totalItems)} items`);
-  if (shape.kind === "string" && shape.stringChars !== undefined) parts.push(`${safeInteger(shape.stringChars)} string chars`);
+  if (shape.kind === "object") parts.push(`${safeInteger(shape.totalKeys)} top-level keys`);
+  if (shape.kind === "array") parts.push(`${safeInteger(shape.totalItems)} items`);
+  if (shape.kind === "string") parts.push(`${safeInteger(shape.stringChars)} string chars`);
   const detail = truncateAtom(shape.lossDetail ?? "", detailLimit);
   return detail ? `${parts.join("; ")}; ${detail}` : parts.join("; ");
 }
@@ -217,7 +253,7 @@ function extractLossDetail(text: string, maxChars: number): string {
   return match?.[1]?.trim() ?? "";
 }
 
-function callTotals(calls: SourceBasisCall[]): string {
+function sourceBasisCallTotals(calls: SourceBasisCall[]): Record<SourceBasisCallOutcome, number> {
   let ok = 0;
   let error = 0;
   let softEmpty = 0;
@@ -226,7 +262,12 @@ function callTotals(calls: SourceBasisCall[]): string {
     else if (call.outcome === "error") error += 1;
     else softEmpty += 1;
   }
-  return `totals ok=${ok} error=${error} soft-empty=${softEmpty}`;
+  return { ok, error, "soft-empty": softEmpty };
+}
+
+function callTotals(calls: SourceBasisCall[]): string {
+  const totals = sourceBasisCallTotals(calls);
+  return `totals ok=${totals.ok} error=${totals.error} soft-empty=${totals["soft-empty"]}`;
 }
 
 function truncateAtom(value: string, maxChars: number): string {
