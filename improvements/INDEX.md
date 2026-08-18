@@ -44,10 +44,10 @@ Total findings: 73
 | sd-003 | The Algolia docs index excludes the auto-generated RPC-method and Horizon-endpoint API-reference pages, so authoritative per-method limits… | reported-upstream | 2026-07-03 | 5           |
 | sd-004 | The RPC method reference pages describe pagination limits as "hardcoded in Stellar-RPC for performance reasons" (getTransactions and…       | declined-upstream | 2026-07-03 | 2           |
 | sd-005 | The docs' agentic-payments coverage documents x402 and MPP mechanics in depth but contains zero positioning against the wider…              | reported-upstream | 2026-07-06 | 4           |
-| sd-008 | The Software Versions page still presents Protocol 27 as Testnet-only after Mainnet activation                                              | reported-upstream | 2026-07-09 | 3           |
+| sd-008 | The Software Versions page now lists Protocol 27 Mainnet, but one Protocol 27 release row remains stale                                     | reported-upstream | 2026-07-09 | 4           |
 | sd-009 | The docs omit SEP-6's canonical interactive-component deprecation status                                                                    | declined-upstream | 2026-07-09 | 3           |
 | sd-014 | Official documentation exposes bucketListHash, txSetHash, txSetResultHash, LedgerCloseMeta, SCP envelopes, and archive retrieval in…        | reported-upstream | 2026-07-10 | 1           |
-| sd-025 | The Horizon-to-RPC migration guide still describes CAP-67 unified asset events as future work, even though CAP-0067 is Final for Protocol…  | reported-upstream | 2026-07-11 | 3           |
+| sd-025 | The Horizon-to-RPC migration guide still describes CAP-67 unified asset events as future work, even though CAP-0067 is Final for Protocol…  | fixed-upstream    | 2026-07-11 | 3           |
 | sd-027 | Current Stellar developer documentation gives incompatible greenfield guidance for the passkey smart-wallet stack. The OpenZeppelin…        | reported-upstream | 2026-07-11 | 1           |
 | sd-029 | Current Stellar RPC administration content does not document the shipped BACKFILL flag at all, and the configuring.mdx sample config…       | reported-upstream | 2026-07-11 | 2           |
 | sd-032 | The current Flutter Wallet SDK tutorial pins this pair:                                                                                     | reported-upstream | 2026-07-11 | 1           |

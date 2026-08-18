@@ -1866,8 +1866,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -1988,8 +1988,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -2280,8 +2280,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -2371,6 +2371,17 @@
         "owner",
         "matched",
         "terms",
+        "builds",
+        "commits90d",
+        "contributed",
+        "commits12m",
+        "contributes",
+        "languages",
+        "top",
+        "repos",
+        "via",
+        "declared",
+        "contributor",
         "short",
         "title",
         "twitter",
@@ -2481,6 +2492,111 @@
                       },
                       "description": "Per query token, the literal term that hit — a token can match via a synonym (e.g. 'payments' via 'remittance').",
                       "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "onStellar": {
+                  "description": "What this person has actually shipped on Stellar, from the repos we index — QUERY-INDEPENDENT and present on every row (the profile page's 'On Stellar' card as data). Attribution rule: `builds` = projects reached through repos they OWN or an org that IS them; `contributesTo` = projects reached only through repos they committed to; `commits90d` counts OWN repos only; `contributedCommits12m` is their own share of others' repos — a repo's total is never credited to a contributor. `null` = the join could not run (never 'nothing'); an all-zero block = the join ran and found no indexed code for this login. `projects` above stays Passport-declared and `codeEvidence` stays query-scoped, unchanged.",
+                  "nullable": true,
+                  "properties": {
+                    "builds": {
+                      "items": {
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "commits90d": {
+                      "description": "Commits in the last 90 days across repos this person OWNS.",
+                      "type": "integer"
+                    },
+                    "contributedCommits12m": {
+                      "description": "This person's own commits into repos they don't own, last 12 months (contributor pass).",
+                      "type": "integer"
+                    },
+                    "contributesTo": {
+                      "items": {
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "languages": {
+                      "description": "Primary languages across their indexed repos, most common first.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "lastCommitAt": {
+                      "format": "date-time",
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "repoCount": {
+                      "type": "integer"
+                    },
+                    "stars": {
+                      "type": "integer"
+                    },
+                    "topRepos": {
+                      "description": "Up to 5 — owned repos first, then by this person's own commits, then the repo's 90d activity. Never ordered by the repo's total alone.",
+                      "items": {
+                        "properties": {
+                          "commits90d": {
+                            "description": "The REPO's 90-day commits (everyone's work) — context, not this person's count.",
+                            "type": "integer"
+                          },
+                          "fullName": {
+                            "type": "string"
+                          },
+                          "lastCommitAt": {
+                            "format": "date-time",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "myCommits12m": {
+                            "description": "This person's own commits into this repo, last 12 months; null for owned repos (their own repo — the whole history is theirs).",
+                            "nullable": true,
+                            "type": "integer"
+                          },
+                          "projectSlug": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "stars": {
+                            "type": "integer"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "via": {
+                            "enum": [
+                              "owner",
+                              "declared",
+                              "contributor"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
                     }
                   },
                   "type": "object"
@@ -2606,8 +2722,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -2798,8 +2914,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -2953,8 +3069,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -3194,8 +3310,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -3406,8 +3522,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -3692,8 +3808,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -4047,8 +4163,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -4160,8 +4276,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -4638,8 +4754,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -4883,8 +4999,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -5159,8 +5275,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -5520,8 +5636,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -5604,8 +5720,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -5837,8 +5953,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -6027,8 +6143,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -6312,8 +6428,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -6529,8 +6645,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -6839,8 +6955,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -6884,8 +7000,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -6893,70 +7009,6 @@
         "base": "https://stellarlight.xyz",
         "method": "POST",
         "path": "/api/partners/match",
-        "type": "http"
-      }
-    },
-    {
-      "description": "AI onboarding helpers: interview chat + profile extraction. Two modes for the get-listed flow. {mode:'chat', messages} → interview-style reply for a company describing itself. {mode:'extract', messages} → structures the transcript into partner-profile fields (tagline, services, sectors, regions, contact…; null where nothing was stated — nothing invented). 503 unavailable:true without AI configured. Use when: turning a get-listed conversation into structured profile fields. Not for: finding partners → scout.matchPartners.",
-      "id": "scout.partnerOnboard",
-      "inputSchema": {
-        "properties": {
-          "messages": {
-            "items": {
-              "properties": {
-                "content": {
-                  "type": "string"
-                },
-                "role": {
-                  "enum": [
-                    "user",
-                    "assistant"
-                  ],
-                  "type": "string"
-                }
-              },
-              "required": [
-                "role",
-                "content"
-              ],
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "mode": {
-            "enum": [
-              "chat",
-              "extract"
-            ],
-            "type": "string"
-          }
-        },
-        "required": [
-          "messages",
-          "mode"
-        ],
-        "type": "object"
-      },
-      "keywords": [
-        "content",
-        "role",
-        "user",
-        "assistant"
-      ],
-      "kind": "operation",
-      "outputSchema": {
-        "type": "object"
-      },
-      "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
-        "source": "https://stellarlight.xyz/api/openapi.json"
-      },
-      "service": "scout",
-      "transport": {
-        "base": "https://stellarlight.xyz",
-        "method": "POST",
-        "path": "/api/partners/onboard",
         "type": "http"
       }
     },
@@ -7044,8 +7096,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -7158,8 +7210,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -9039,8 +9091,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -9806,8 +9858,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -10201,8 +10253,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -10524,8 +10576,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-18T14:06:26.988Z",
-        "openapiVersion": "1.8.67",
+        "fetchedAt": "2026-08-18T21:03:39.603Z",
+        "openapiVersion": "1.8.70",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -17038,6 +17090,6 @@
       }
     }
   ],
-  "generatedAt": "2026-08-18T14:06:26.988Z",
+  "generatedAt": "2026-08-18T21:03:39.603Z",
   "version": 1
 }

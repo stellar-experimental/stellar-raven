@@ -59,15 +59,23 @@ export function lumenloopOpExcluded(tool) {
 //                                     the weekly partner digest (per upstream
 //                                     OpenAPI); scout.matchPartners is the
 //                                     side-effect-free ranking alternative
-// POST /api/partners/match and /api/partners/onboard stay exposed: their
-// OpenAPI descriptions declare pure AI ranking/extraction over published
-// partners ("nothing is invented", persistence happens only via the separate
-// submit-listing endpoint) — no write or logging is documented.
+//  POST /api/partners/onboard         upstream marks the AI interview/extraction
+//                                     helper x-side-effecting as of Scout 1.8.70;
+//                                     Raven has no approval or budget gate for it
+//  GET  /api/hackathon-brief          broad composite changed 27 gated cases
+//                                     and seven context-only extended cases;
+//                                     it lowered the frozen holdout
+//                                     from 11/24/27 to 10/22/25 with no gated
+//                                     gain in a controlled 2026-08-18 ablation
+//  POST /api/partners/match stays exposed: its OpenAPI description declares
+//                                     pure AI ranking over published partners
 export const EXCLUDED_SCOUT_OPS = new Set([
   "POST /api/feedback",
   "GET /api/feedback",
   "POST /api/partners/submit-listing",
-  "POST /api/partners/assistant"
+  "POST /api/partners/assistant",
+  "POST /api/partners/onboard",
+  "GET /api/hackathon-brief"
 ]);
 
 // Retired skills — exclusion as DATA (ADR-0003; decision 2026-07-03).

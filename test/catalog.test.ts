@@ -197,21 +197,23 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter((e) => e.service === "lumenloop" && e.kind === "skill-section")
     ).toHaveLength(0);
 
-    // Scout: 29 exposed of 33 upstream OpenAPI operations — the 3 write/
+    // Scout: 28 exposed of 34 upstream OpenAPI operations — the 4 write/
     // side-effecting endpoints (submitFeedback, submitPartnerListing,
-    // partnerAssistant) are excluded at build time, plus getFeedbackSchema:
+    // partnerAssistant, partnerOnboard) are excluded at build time, plus getFeedbackSchema:
     // read-only, but a dead end whose only purpose is to shape the excluded
     // feedback submission (its upstream description names the non-exposed
-    // scout.submitFeedback). matchPartners and partnerOnboard stay exposed —
-    // their OpenAPI descriptions document pure AI ranking/extraction with no
-    // persistence.
-    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(29);
+    // scout.submitFeedback). The read-only hackathonBrief composite is also
+    // excluded because a controlled ablation found broad routing regressions.
+    // matchPartners stays exposed because its OpenAPI description documents
+    // pure AI ranking with no persistence.
+    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(28);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);
     expect(count((e) => e.id === "scout.submitPartnerListing")).toBe(0);
     expect(count((e) => e.id === "scout.partnerAssistant")).toBe(0);
+    expect(count((e) => e.id === "scout.partnerOnboard")).toBe(0);
+    expect(count((e) => e.id === "scout.hackathonBrief")).toBe(0);
     expect(count((e) => e.id === "scout.matchPartners")).toBe(1);
-    expect(count((e) => e.id === "scout.partnerOnboard")).toBe(1);
     for (const id of [
       "scout.listAudits",
       "scout.searchHackathonBuilds",
@@ -248,8 +250,8 @@ describe("build-catalog.mjs", () => {
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
-    // Grand total: 59 operations + 19 whole skills + 173 skill sections.
-    expect(catalog.entries).toHaveLength(251);
+    // Grand total: 58 operations + 19 whole skills + 173 skill sections.
+    expect(catalog.entries).toHaveLength(250);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {

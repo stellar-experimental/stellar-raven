@@ -1,15 +1,16 @@
 {
-  "changelogEntryCount": 156,
+  "changelogEntryCount": 161,
   "changelogLatest": {
-    "date": "2026-08-16",
-    "detail": "Third spine composite. round never asserts a negative on fetch failure (source: 'unavailable' says verify yourself). fundedPeers reads the structured scf.awarded truth (the legacy scfAwarded checkbox is null on awarded projects — also fixed in vet-idea's funding count). angles are deterministic derivations that each name the fact they stand on — an open round's deadline, a coverage gap's count, funded peers to differentiate against, dead prior art to explain, the working-code bar when competitors run live on mainnet.",
-    "summary": "SCF-pitch composite: GET /api/scf-pitch?q=<idea> — live round state, the vertical's funded peers with recorded award totals, the vet-idea view, and deterministic evidence-named pitch angles in one call (openapi@1.8.67). find-partner intentionally NOT added: /api/partners/match already IS that composite (natural-language need in, toml-verified scored partners out) — its routing keywords gained the find-a-partner phrasing instead.",
+    "date": "2026-08-18",
+    "detail": "Fourth spine composite. Composed from the existing builders — scf-pitch (which already contains the vet-idea view), trust-report, contracts-registry, and the builds index — no new data. The builds search moved out of the /api/hackathons/builds route into src/lib/hackathon-builds.ts (searchHackathonBuilds) so the composite calls it in-process; the route delegates to the same function and cannot drift. Trimmed on purpose: consumers sit behind a ~6k-token result cap and a full trust report's contractInterface alone can exceed it. Idea text picks the contracts domain before the vertical does (an oracle for RWA prices is oracle, not RWA→null); a vertical with no code-domain axis says so instead of guessing.",
+    "summary": "Hackathon-brief composite: GET /api/hackathon-brief?q=<idea> — the one-call version of the skill's Hackathon Build Brief workflow. `vet` (same computation as vet-idea), `builds` (prototype-layer prior art from every DoraHacks submission), `startFrom` (top non-archived competitor repos with a trust SUMMARY each; full contractInterface at `fullReport`), `liveContracts` (verified mainnet contracts for the idea's closest code domain), `funding` (live round + funded peers), and `whatNotToClaim` — deterministic cautions derived from the brief's own facts (openapi@1.8.70). Rails and open RFPs deliberately not bundled.",
     "surfaces": [
-      "api"
+      "api",
+      "skill"
     ],
     "type": "added"
   },
-  "fetchedAt": "2026-08-18T14:06:26.988Z",
+  "fetchedAt": "2026-08-18T21:03:39.603Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -278,6 +279,111 @@
                   },
                   "description": "Per query token, the literal term that hit — a token can match via a synonym (e.g. 'payments' via 'remittance').",
                   "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "onStellar": {
+              "description": "What this person has actually shipped on Stellar, from the repos we index — QUERY-INDEPENDENT and present on every row (the profile page's 'On Stellar' card as data). Attribution rule: `builds` = projects reached through repos they OWN or an org that IS them; `contributesTo` = projects reached only through repos they committed to; `commits90d` counts OWN repos only; `contributedCommits12m` is their own share of others' repos — a repo's total is never credited to a contributor. `null` = the join could not run (never 'nothing'); an all-zero block = the join ran and found no indexed code for this login. `projects` above stays Passport-declared and `codeEvidence` stays query-scoped, unchanged.",
+              "nullable": true,
+              "properties": {
+                "builds": {
+                  "items": {
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "slug": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "commits90d": {
+                  "description": "Commits in the last 90 days across repos this person OWNS.",
+                  "type": "integer"
+                },
+                "contributedCommits12m": {
+                  "description": "This person's own commits into repos they don't own, last 12 months (contributor pass).",
+                  "type": "integer"
+                },
+                "contributesTo": {
+                  "items": {
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "slug": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "languages": {
+                  "description": "Primary languages across their indexed repos, most common first.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "lastCommitAt": {
+                  "format": "date-time",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "repoCount": {
+                  "type": "integer"
+                },
+                "stars": {
+                  "type": "integer"
+                },
+                "topRepos": {
+                  "description": "Up to 5 — owned repos first, then by this person's own commits, then the repo's 90d activity. Never ordered by the repo's total alone.",
+                  "items": {
+                    "properties": {
+                      "commits90d": {
+                        "description": "The REPO's 90-day commits (everyone's work) — context, not this person's count.",
+                        "type": "integer"
+                      },
+                      "fullName": {
+                        "type": "string"
+                      },
+                      "lastCommitAt": {
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "myCommits12m": {
+                        "description": "This person's own commits into this repo, last 12 months; null for owned repos (their own repo — the whole history is theirs).",
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "projectSlug": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "stars": {
+                        "type": "integer"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "via": {
+                        "enum": [
+                          "owner",
+                          "declared",
+                          "contributor"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 }
               },
               "type": "object"
@@ -2908,7 +3014,7 @@
       },
       "summary": "Agent-native data layer for the Stellar ecosystem — projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.8.67"
+      "version": "1.8.70"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -4133,6 +4239,187 @@
           "x-side-effecting": true
         }
       },
+      "/api/hackathon-brief": {
+        "get": {
+          "description": "One call for a hackathon team's first hour: vet (same as vet-idea — competitors, maturity, gap, judged prior art), builds (prototype-layer prior art from DoraHacks submissions), startFrom (top non-archived competitor repos with a trust SUMMARY; full contractInterface at fullReport), liveContracts (verified mainnet contracts for the idea's closest code domain; empty = no verified contract on record, never nothing on mainnet), funding (live SCF round + funded peers), whatNotToClaim (cautions derived from this brief's own facts). No verdicts; rails and RFPs not bundled. Unknown params 400.",
+          "operationId": "hackathonBrief",
+          "parameters": [
+            {
+              "description": "Short idea description, 3-200 chars (e.g. 'confidential token payroll').",
+              "in": "query",
+              "name": "q",
+              "required": true,
+              "schema": {
+                "maxLength": 200,
+                "minLength": 3,
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "report": {
+                        "properties": {
+                          "builds": {
+                            "description": "Prototype-layer prior art — DoraHacks submissions matching the idea, winners ranked first, ≤5.",
+                            "items": {
+                              "properties": {
+                                "endedAt": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "githubUrl": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "hackathon": {
+                                  "type": "string"
+                                },
+                                "isWinner": {
+                                  "type": "boolean"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "placement": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "url": {
+                                  "nullable": true,
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "funding": {
+                            "properties": {
+                              "fundedPeers": {
+                                "items": {
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "fundingBar": {
+                                "type": "object"
+                              },
+                              "round": {
+                                "description": "Live SCF round state — never asserts a negative on fetch failure (source: 'unavailable').",
+                                "type": "object"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "idea": {
+                            "type": "string"
+                          },
+                          "liveContracts": {
+                            "properties": {
+                              "basis": {
+                                "type": "string"
+                              },
+                              "contracts": {
+                                "items": {
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "domain": {
+                                "description": "Closest code domain to the idea (idea-text hint first, then the vertical); null when neither maps — see basis.",
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "note": {
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "startFrom": {
+                            "description": "Top non-archived competitor repos (≤2) with a trust SUMMARY each: repo, project, codeTruth (without the full contractInterface — interfaceSize is kept), usage, audits {count, latest}, auditDrift, succession, signals (closed vocabulary of facts, NOT a score), fullReport (link to /api/repos/trust). A competitor is a starting point to READ, not necessarily a template.",
+                            "items": {
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "vertical": {
+                            "description": "Detected buildable vertical (closed set from the gaps axis); null = unmapped, not marketless.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "vet": {
+                            "description": "Same computation as /api/vet-idea: competitors, maturity, priorArt, gap.",
+                            "type": "object"
+                          },
+                          "whatNotToClaim": {
+                            "description": "Deterministic cautions derived from THIS brief's own facts — each names the fact it stands on. Empty when the brief gives no reason for one.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "The hackathon brief."
+            },
+            "400": {
+              "description": "Bad or unknown query param."
+            },
+            "429": {
+              "description": "Rate limited (30/min/IP)."
+            },
+            "503": {
+              "description": "Index unavailable."
+            }
+          },
+          "summary": "Hackathon brief — vet + starter repos with trust + live contracts + funding + what not to claim, in one call",
+          "tags": [
+            "Composite"
+          ],
+          "x-routing": {
+            "keywords": [
+              "hackathon",
+              "hackathon brief",
+              "we're at a hackathon",
+              "48 hours",
+              "what should we build",
+              "what should we fork",
+              "starting point",
+              "starter repo",
+              "is this already built",
+              "hackmeridian",
+              "build brief",
+              "what not to claim"
+            ],
+            "notFor": [
+              "a single question that one lower-level call answers (vetIdea / getRepoTrust / listContracts / scfPitch)",
+              "rails — stablecoins and partners are separate calls; open RFPs → getRfps",
+              "non-Stellar ideas — vertical will not resolve; say so"
+            ],
+            "purpose": "ONE call for a hackathon team: is it built, what to fork (with trust), what is live to build against, is there money after, and what the demo must not claim.",
+            "useWhen": [
+              "'we're at HackMeridian and want to build X — where do we start' (one call instead of five)",
+              "'give us a brief for a confidential-token payroll idea'",
+              "'is this idea taken and what's safe to fork'"
+            ]
+          }
+        }
+      },
       "/api/hackathons": {
         "get": {
           "description": "Browse/LIST Stellar hackathon events — a merged, de-duplicated curated + live DoraHacks feed (dates, status, organizer, prize pools), sorted upcoming→active→completed then newest-first. The entry point for event slugs; zero-result forward-looking queries return `meta.fallbackChannels` (surface them, don't dead-end). Not for one event's winners/submissions/tracks → use getHackathon.",
@@ -5183,7 +5470,8 @@
           "summary": "AI onboarding helpers: interview chat + profile extraction",
           "tags": [
             "Partners"
-          ]
+          ],
+          "x-side-effecting": true
         }
       },
       "/api/partners/submit-listing": {
@@ -7472,8 +7760,8 @@
       }
     ]
   },
-  "openapiVersion": "1.8.67",
-  "operationCount": 33,
+  "openapiVersion": "1.8.70",
+  "operationCount": 34,
   "service": "stellar-light",
   "source": {
     "auth": "none (keyless, read-only)",
@@ -7484,7 +7772,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.8.67",
+    "apiVersion": "1.8.70",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",

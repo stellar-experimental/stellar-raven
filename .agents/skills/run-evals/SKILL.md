@@ -114,11 +114,14 @@ pre-spend review has actually caught (dated evidence:
 A missed plan review blocks launch; it never retroactively invalidates data already collected.
 
 **Cost estimates come from stored runs, never from the per-case figure in a README.** Read
-`meta.totalAgentCostUsd` out of `eval/qa/results/*.json` and quote the observed range and median
-for the same lane and denominator. The 2026-07-27 round's brief estimated a sample-30 at $6–21
+`meta.totalCostUsd` out of `eval/qa/results/*.json` for combined answering and judging cost. Use
+`meta.totalAgentCostUsd` and `meta.totalJudgeCostUsd` only for the component breakdown. Quote the
+observed range and median for the same lane, contract, denominator, model, rubric, and pack. The
+2026-07-27 round's brief estimated a sample-30 at $6–21
 from the documented per-case range; nine stored Sonnet-5/Sonnet-5 sample-30 runs actually cost
 $17.98–$23.08 (median $21.80), so the estimate excluded most real runs and its maximum sat below
-the observed maximum. Live-15 runs cost $8.57–$10.25.
+the observed maximum. Four stored `live-data-canonical-v3` Sonnet-5/Sonnet-5 `p3` runs cost
+$8.57–$9.54, with a $9.39 median. One stored `p5` run cost $9.25.
 
 **Check that a budget flag is actually wired before claiming it enforces anything.**
 `run-qa.mjs` accepts no cost cap and totals spend only after every case finishes; passing
@@ -314,19 +317,21 @@ Known judge failure modes (from `eval/qa/README.md`):
   (`JUDGE_RUBRIC` in `judge.mjs` is the current version; verdicts carry
   `{rubric, packVersion, promptSha256}` stamps). The comparability rules and the committed
   noise floor live in `eval/qa/README.md` ("Judging rubric and score comparability").
-- **Denominator note:** the owned battery is 492 cases as of 2026-08-12, after commit `6e1f979`
-  added two Soroban cases. The 2026-07-11 baseline remains historically 484-denominated, and
-  the 2026-07-13 corpus remains historically 490-denominated. Pre-rebuild aggregates remain
-  archival (`research/audits/2026-07-qa-history.md`); neither historical denominator is directly
-  comparable to a 492-case aggregate. Per-id comparisons remain valid for continuing ids under
-  the same rubric/pack tuple.
+- **Denominator note:** the owned battery is 497 cases as of 2026-08-18. The retrieval audit added
+  five service-semantics cases to the 492-case corpus. Commit `6e1f979` previously added two Soroban
+  cases to the 490-case corpus. The 2026-07-11 baseline remains historically 484-denominated, and
+  the 2026-07-13 corpus remains historically 490-denominated. Pre-rebuild aggregates remain archival
+  (`research/audits/2026-07-qa-history.md`). Historical aggregates are not directly comparable to a
+  497-case aggregate. Per-id comparisons remain valid for continuing ids under the same tuple.
 - **Deterministic sample-membership note:** sample-30 is proportional by service and uses
   even-spaced picks over id-sorted strata. Adding cases can therefore change sampled ids without
   changing sampler code. The 484→490 expansion retained 25 ids and replaced five (full list in
   `eval/qa/README.md`); none of the six new cases entered the sample. The 490→492 expansion
   retained 24 ids, removed six, and added six (full list in `eval/qa/README.md` under
-  "Deterministic sample history"). Before claiming movement across either denominator change,
-  use an explicit common-id list or disclose the membership churn.
+  "Deterministic sample history"). The 492→497 expansion retained 9 ids and replaced 21. Two new
+  cases entered sample-30: `q-gap-vet-pitch-vertical-null` and
+  `q-ti-scout-refresh-cached-rows`. Before claiming movement across any denominator change, use an
+  explicit common-id list or disclose the membership churn.
 - Freshness cases: sourced drift from the golden snapshot is fine; confident unsourced
   contradiction is not. Expect a small floor of judge-vs-live disagreements.
 - **Avoid-clause bypass of the rubric-v2 addendum**: a golden whose must-avoid item bans

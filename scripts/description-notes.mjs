@@ -232,14 +232,6 @@ export const SCOUT_DESCRIPTION_SCRUBS = {
     // page is backed by the excluded assistant endpoint; the directory-browse
     // alternative before the ";" stays.
     "; interactive human chat → the /partners/chat page (backed by /api/partners/assistant)"
-  ],
-  partnerOnboard: [
-    // "Use when: ... structured profile fields (then submit via
-    // POST /api/partners/submit-listing)." — the submission step is excluded.
-    " (then submit via POST /api/partners/submit-listing)",
-    // "Not for: finding partners → /api/partners/match or /assistant." — the
-    // assistant is excluded; the match alternative stays.
-    " or /assistant"
   ]
 };
 

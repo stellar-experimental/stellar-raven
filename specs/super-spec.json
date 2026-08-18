@@ -270,6 +270,111 @@
             },
             "type": "object"
           },
+          "onStellar": {
+            "description": "What this person has actually shipped on Stellar, from the repos we index — QUERY-INDEPENDENT and present on every row (the profile page's 'On Stellar' card as data). Attribution rule: `builds` = projects reached through repos they OWN or an org that IS them; `contributesTo` = projects reached only through repos they committed to; `commits90d` counts OWN repos only; `contributedCommits12m` is their own share of others' repos — a repo's total is never credited to a contributor. `null` = the join could not run (never 'nothing'); an all-zero block = the join ran and found no indexed code for this login. `projects` above stays Passport-declared and `codeEvidence` stays query-scoped, unchanged.",
+            "nullable": true,
+            "properties": {
+              "builds": {
+                "items": {
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "commits90d": {
+                "description": "Commits in the last 90 days across repos this person OWNS.",
+                "type": "integer"
+              },
+              "contributedCommits12m": {
+                "description": "This person's own commits into repos they don't own, last 12 months (contributor pass).",
+                "type": "integer"
+              },
+              "contributesTo": {
+                "items": {
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "languages": {
+                "description": "Primary languages across their indexed repos, most common first.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "lastCommitAt": {
+                "format": "date-time",
+                "nullable": true,
+                "type": "string"
+              },
+              "repoCount": {
+                "type": "integer"
+              },
+              "stars": {
+                "type": "integer"
+              },
+              "topRepos": {
+                "description": "Up to 5 — owned repos first, then by this person's own commits, then the repo's 90d activity. Never ordered by the repo's total alone.",
+                "items": {
+                  "properties": {
+                    "commits90d": {
+                      "description": "The REPO's 90-day commits (everyone's work) — context, not this person's count.",
+                      "type": "integer"
+                    },
+                    "fullName": {
+                      "type": "string"
+                    },
+                    "lastCommitAt": {
+                      "format": "date-time",
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "myCommits12m": {
+                      "description": "This person's own commits into this repo, last 12 months; null for owned repos (their own repo — the whole history is theirs).",
+                      "nullable": true,
+                      "type": "integer"
+                    },
+                    "projectSlug": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "stars": {
+                      "type": "integer"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "via": {
+                      "enum": [
+                        "owner",
+                        "declared",
+                        "contributor"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
           "projectCount": {
             "description": "Length of `projects` — the builder's own synced entries, not an ecosystem-wide attribution count.",
             "type": "integer"
@@ -2760,7 +2865,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-08-18T14:06:26.988Z"
+    "x-generatedAt": "2026-08-18T21:03:39.603Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -6924,93 +7029,6 @@
         }
       }
     },
-    "/scout/partnerOnboard": {
-      "post": {
-        "description": "Two modes for the get-listed flow. {mode:'chat', messages} → interview-style reply for a company describing itself. {mode:'extract', messages} → structures the transcript into partner-profile fields (tagline, services, sectors, regions, contact…; null where nothing was stated — nothing invented). 503 unavailable:true without AI configured. Use when: turning a get-listed conversation into structured profile fields. Not for: finding partners → scout.matchPartners.",
-        "operationId": "scout.partnerOnboard",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "messages": {
-                    "items": {
-                      "properties": {
-                        "content": {
-                          "type": "string"
-                        },
-                        "role": {
-                          "enum": [
-                            "user",
-                            "assistant"
-                          ],
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "role",
-                        "content"
-                      ],
-                      "type": "object"
-                    },
-                    "type": "array"
-                  },
-                  "mode": {
-                    "enum": [
-                      "chat",
-                      "extract"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "mode",
-                  "messages"
-                ],
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
-            "description": "`{reply}` (chat mode) or `{fields}` (extract mode)"
-          },
-          "429": {
-            "description": "Rate limited"
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
-            "description": "AI backend unavailable"
-          }
-        },
-        "summary": "AI onboarding helpers: interview chat + profile extraction",
-        "tags": [
-          "scout",
-          "Partners"
-        ],
-        "x-execute": "await scout.partnerOnboard(args)",
-        "x-service": "scout",
-        "x-upstream": {
-          "method": "POST",
-          "path": "/api/partners/onboard"
-        }
-      }
-    },
     "/scout/scfPitch": {
       "get": {
         "description": "The 'help me prep a Stellar Community Fund pitch' composite: LIVE round state (open submissions + deadline, never asserting a negative on fetch failure), the vertical's already-funded ACTIVE projects with recorded award totals (differentiation targets), the vet-idea view (competitors, supply-side gap, prior art), and deterministic pitch angles that each name the fact they stand on. No prose generation. Unknown params 400.",
@@ -9363,8 +9381,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 251,
-    "generatedAt": "2026-08-18T14:06:26.988Z"
+    "catalogEntries": 250,
+    "generatedAt": "2026-08-18T21:03:39.603Z"
   },
   "x-services": {
     "lumenloop": {
@@ -9376,7 +9394,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-08-18T14:06:26.988Z",
+      "fetchedAt": "2026-08-18T21:03:39.603Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },

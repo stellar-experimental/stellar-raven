@@ -38,7 +38,6 @@ const CATEGORY_FLOORS = {
   "retail-consumer": 33,
   "edge-behavior": 40
 };
-const PARTNER_ONBOARD_RE = /(?:^|\.)partnerOnboard$/;
 const DIGEST_SKILL = "skills.lumenloop.stellar-ecosystem-digest";
 const LEDGER_SOURCE_COUNTS = {
   "battery-2026-07": 493,
@@ -409,9 +408,7 @@ export function lintCoverage(cases, manifest, enforceFloors = false) {
   }
   for (const entry of (manifest.entries ?? []).filter((item) => item.kind === "operation")) {
     const count = counts.get(entry.id) ?? 0;
-    if (PARTNER_ONBOARD_RE.test(entry.id)) {
-      if (count > 1) findings.push(finding(level, "coverage", entry.id, `partner onboarding exclusion allows at most 1 mention; found ${count}`));
-    } else if (count < 2) findings.push(finding(level, "coverage", entry.id, `operation floor 2; found ${count}`));
+    if (count < 2) findings.push(finding(level, "coverage", entry.id, `operation floor 2; found ${count}`));
   }
   for (const entry of (manifest.entries ?? []).filter((item) => item.kind === "skill")) {
     const floor = entry.id === DIGEST_SKILL ? 2 : 1;

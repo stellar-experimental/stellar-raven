@@ -1,7 +1,7 @@
 ---
 id: sd-025
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-11
 upstreamTitle: Update the Horizon-to-RPC migration guide for shipped CAP-67 asset events
 evidence:
@@ -12,6 +12,8 @@ evidence:
   - live Mainnet getNetwork 2026-07-27 returned protocolVersion 27, so the capability the page defers has been live since Protocol 23
   - ref health 2026-07-27 - the only prior durable reference was a comment on stellar/stellar-docs#1585, but that issue closed completed 2026-07-13T22:11Z and the follow-up was posted 2026-07-14T16:14Z; a comment on an already-closed issue never created a live tracker, so this finding is treated as unfiled
   - upstream issue filed 2026-07-27: https://github.com/stellar/stellar-docs/issues/2699
+  - 2026-08-18 fresh source recheck: the guide states CAP-67 shipped in Protocol 23, names the unified classic asset events, and limits meta-XDR guidance to effect classes CAP-67 does not model
+  - 2026-08-18 upstream issue 2699 is closed as completed
 recurrences:
   - date: 2026-08-11
     evidence: live source and indexed-page recheck — migrate-from-horizon-to-rpc.mdx still says CAP-67 expansion is in the near future and retains the `when available` and `when expanded` qualifiers. Issue #2699 remains open with no comments or maintainer activity.
@@ -40,6 +42,13 @@ and is steered toward the `getTransactions` meta-XDR workaround that the page
 itself frames as an interim measure.
 
 ## Evidence
+
+### Resolution, 2026-08-18
+
+The current source no longer uses `near future`, `when available`, or `when expanded` for CAP-67.
+It states that CAP-67 shipped in Protocol 23. It lists the unified classic asset event types and
+limits meta-XDR guidance to effect classes that CAP-67 does not model. Issue 2699 closed as
+completed on 2026-08-18. A distinct resolver must still complete the deletion workflow.
 
 Live re-check on 2026-07-27:
 

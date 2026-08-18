@@ -22,8 +22,8 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprot
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
 export const MANIFEST_PATH = path.join(REPO_ROOT, "catalog", "manifest.json");
-export const EXPECTED_OPERATION_COUNTS = Object.freeze({ lumenloop: 18, scout: 29, stellarDocs: 12 });
-export const EXPECTED_OPERATION_COUNT = 59;
+export const EXPECTED_OPERATION_COUNTS = Object.freeze({ lumenloop: 18, scout: 28, stellarDocs: 12 });
+export const EXPECTED_OPERATION_COUNT = 58;
 
 export const PLAIN_SERVER_INSTRUCTIONS = `Plain per-operation Stellar gateway used only by the architecture eval.
 

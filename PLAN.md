@@ -31,7 +31,7 @@ date is repeated here to go stale):
      `/v1/changelog?since=`. Quirk: `/v1/tools` and `/v1/skills` hide partner items even with a
      partner key — inventory must union `/v1/me` + per-item detail fetches. Also serves 14 skills
      as zips via `/v1/skills`.
-   - **Stellar Light / Scout** — 27 paths / 28 ops (2026-07-30 Scout 1.8.30), fully keyless, self-describing via
+   - **Stellar Light / Scout** — 33 paths / 34 ops (2026-08-18 Scout 1.8.70), fully keyless, self-describing via
      `/api/openapi.json`, `/api/status` (live counts + endpoint enumeration), `/api/changelog`.
      scout-mcp is a pure 1:1 wrapper → we integrate over HTTP directly.
    - **Stellar Docs** — integrate via **direct Algolia REST** (decided 2026-07-01), not the MCP.
