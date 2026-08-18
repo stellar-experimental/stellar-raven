@@ -43,7 +43,7 @@
  *   --judge-model name judge model (default judge.mjs JUDGE_MODEL)
  *   --surface name     search-execute (default) | per-operation. The latter
  *                      starts the isolated stdio proxy harness for the
- *                      manifest's 50 operations and still uses the existing
+ *                      manifest's 59 operations and still uses the existing
  *                      local Wrangler server for adapter/executor traffic.
  *   --server-revision  git revision of the checkout running the already-bound
  *                      Wrangler process (recorded for reproducibility)

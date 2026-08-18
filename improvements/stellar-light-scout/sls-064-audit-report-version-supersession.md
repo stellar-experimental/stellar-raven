@@ -13,6 +13,9 @@ evidence:
   - 2026-08-14 scout.searchResearch for the exact string "V-SOR-APP-VUL-003" returned no chunk containing that identifier, while the same query shape for "V-SOR-VUL-002" returned the exact finding chunk
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, row q-soroban-auth-recursion-dos-audit
   - Solo scratchpad 809, todo 1539 shard and todo 1550 root correction round
+recurrences:
+  - date: 2026-08-18
+    evidence: live listAudits returned 58 rows at meta.generatedAt 2026-08-18T14:14:34.747Z. Reports 28 and 42 now share engagementId veridise-soroban-core-2023q4 and the same engagement dates, while report 28 carries reportVersion V2. The three other duplicate protocol and auditor pairs still have null engagementId, reportVersion, supersededByReportId, engagementStart, and engagementEnd. All rows now carry findingsExtraction, so the relation-metadata fix remains partial.
 ---
 
 ## Finding

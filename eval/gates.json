@@ -1,25 +1,25 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers in the same commit as the change that moves them, with the decision recorded in Solo (EVALS.md rule 1). Counts are absolute hits, not percentages.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-08-11T14:11:22Z",
-  "baselineResults": "routing-2026-08-11T14-11-22-115Z.json",
-  "note": "Re-baselined on the catalog movement accepted in d2d7c16, completing that commit's deferred live-drift Step-4 obligation (controlled ablation: Solo scratchpad 795, Lane C §3). This is an accepted decline, not a win: legacy strict 210/282/317 -> 207/281/314. The old manifest under the current scorer reproduces 210/282/317 exactly, proving the scorer did not move; isolated variants attribute the gate movement to the new searchable cross-chain skill (-1/-1/-2), Scout schema-derived keywords (-1/0/-1), and re-pinned existing skill descriptions (-1 top-1), with combination interactions, while the two removed Stellar Docs titles move zero gate counts. The current full manifest measures 207/281/314 of 338. Skills remain 17/23 top-1 and 23/23 top-3/top-5/card@5, so minTop1 stays 17; bandPct stays 1. No per-question tuning or scorer change. Prior baseline: routing-2026-07-26T23-51-48-789Z.json (Scout 1.8.28 + ecosystem-skills drift).",
+  "baselinedAt": "2026-08-18T14:10:11.709Z",
+  "baselineResults": "routing-2026-08-18T14-10-11-708Z.json",
+  "note": "Re-baselined for issue #26 after Scout 1.8.67 added four public read-only operations. This is an accepted routing tradeoff, not a win. A pristine-main control under the current scorer measured legacy 207/280/314, skills 17/23/23, and holdout 12/25/27. The regenerated manifest measures legacy 208/280/313, skills 16/23/23, and holdout 11/24/27. Forbidden holdout captures stay 11 and holdout passed cases stay 23. Controlled ablations show scout.scfPitch causes the skills top-1 and holdout top-1 declines, while scout.listContracts causes the holdout top-3 decline. Removing all four new operations passes the prior gate, so the scorer and existing catalog changes are not the cause. The new SCF composite directly matches current SCF funding and pitch questions. The contract inventory is relevant to contract and audit questions. No per-question tuning, corpus edit, or scorer change was made. Decision record: Solo scratchpad 814. Prior baseline: routing-2026-08-11T14-11-22-115Z.json.",
   "legacy": {
     "n": 338,
-    "top1": 207,
-    "top3": 281,
-    "top5": 314,
+    "top1": 208,
+    "top3": 280,
+    "top5": 313,
     "bandPct": 1
   },
   "skills": {
     "n": 23,
-    "minTop1": 17
+    "minTop1": 16
   },
-  "holdoutNote": "eval/holdout-cases.json is a FROZEN, blind-authored holdout: 49 cases written by three different model families that were forbidden from reading the scorer, any eval result, or any analysis of current ranking, and forbidden from probing where their queries rank. It exists because the development probe set for the todo-1436 coverage-gate defect is cross-chain-centric and therefore overfittable; the holdout deliberately EXCLUDES cross-chain so a fix that rescues one skill family by capturing another's territory shows up here instead of hiding. These floors are the first and only measurement, taken at commit time on an unmodified scorer — 12/25/27 of 49 with 11 forbidden captures, which is a poor score and is meant to be. It is a no-regression vector, never a target: do not iterate against it while tuning, and do not edit a case because it fails. Moving these numbers is a re-baseline like any other and needs the same explicit justification.",
+  "holdoutNote": "eval/holdout-cases.json is a FROZEN, blind-authored holdout: 49 cases written by three different model families that were forbidden from reading the scorer, any eval result, or any analysis of current ranking, and forbidden from probing where their queries rank. It exists because the development probe set for the todo-1436 coverage-gate defect is cross-chain-centric and therefore overfittable; the holdout deliberately EXCLUDES cross-chain so a fix that rescues one skill family by capturing another's territory shows up here instead of hiding. Its initial measurement was 12/25/27 of 49 with 11 forbidden captures, which is a poor score and is meant to be. The issue #26 re-baseline accepts 11/24/27 with the same 11 forbidden captures after controlled ablations isolated the movement to relevant new Scout operations. It is a no-regression vector, never a target: do not iterate against it while tuning, and do not edit a case because it fails. Moving these numbers is a re-baseline like any other and needs the same explicit justification.",
   "holdout": {
     "n": 49,
-    "minTop1": 12,
-    "minTop3": 25,
+    "minTop1": 11,
+    "minTop3": 24,
     "minTop5": 27,
     "maxForbiddenCaptures": 11
   }

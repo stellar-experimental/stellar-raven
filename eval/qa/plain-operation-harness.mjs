@@ -2,7 +2,7 @@
 /**
  * Isolated plain-tool arm for the per-operation architecture A/B (Solo todo 903).
  *
- * The server exposes the manifest's 55 service operations as ordinary MCP tools.
+ * The server exposes the manifest's 59 service operations as ordinary MCP tools.
  * Each call is translated into one call to the existing local Raven `execute`
  * tool, so adapter dispatch, manifest argument validation, normalization,
  * redaction, truncation, telemetry, and the networkless Worker boundary remain
@@ -22,8 +22,8 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprot
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
 export const MANIFEST_PATH = path.join(REPO_ROOT, "catalog", "manifest.json");
-export const EXPECTED_OPERATION_COUNTS = Object.freeze({ lumenloop: 18, scout: 25, stellarDocs: 12 });
-export const EXPECTED_OPERATION_COUNT = 55;
+export const EXPECTED_OPERATION_COUNTS = Object.freeze({ lumenloop: 18, scout: 29, stellarDocs: 12 });
+export const EXPECTED_OPERATION_COUNT = 59;
 
 export const PLAIN_SERVER_INSTRUCTIONS = `Plain per-operation Stellar gateway used only by the todo-903 architecture eval.
 

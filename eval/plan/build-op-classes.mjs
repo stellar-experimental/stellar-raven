@@ -57,6 +57,7 @@ const PREFIX_CLASSES = {
  *   partners[], rfps[], builders[], clusters[], leaderboard projects[];
  *   lumenloop get_related_projects returns a related-project collection)
  * - analytics rollups are ecosystem-wide entry points, i.e. broad
+ * - multi-source composites return collection blocks and are broad entry points
  * - vocab/enum/schema discovery and status/changelog are meta
  * - AI compute that is not a read progression step (partnerOnboard) is meta
  *
@@ -76,6 +77,8 @@ const OP_OVERRIDES = {
   "scout.getPeople": "broad",
   "scout.getStablecoins": "broad",
   "scout.analyzeEcosystem": "broad",
+  "scout.scfPitch": "broad",
+  "scout.vetIdea": "broad",
   "lumenloop.get_related_projects": "broad",
   // vocab/enum/schema discovery → meta
   "scout.getStatus": "meta",

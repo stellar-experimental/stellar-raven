@@ -1,10 +1,11 @@
 # Stellar Light / Stellar Scout — service spec
 
 > Verified live 2026-07-02 (UTC; re-fetched ~13:59Z after the 07-02 partner-pipeline release). OpenAPI `info.version: 1.2.1`, status `apiVersion: 1.2.1` (the `X-API-Version` response header stays `1`), scout-mcp npm `1.1.5`.
-> **Current committed inventory (2026-08-14): upstream OpenAPI/status `1.8.57`, 28 paths / 29 operations.** `inventory/stellar-light.json` carries the current spec verbatim; the detailed probe log below remains the 2026-07-02/03 measurement record, not a current collection-size snapshot.
+> **Current committed inventory (2026-08-18): upstream OpenAPI/status `1.8.67`, 32 paths / 33 operations.** `inventory/stellar-light.json` carries the current spec verbatim; the detailed probe log below remains the 2026-07-02/03 measurement record, not a current collection-size snapshot.
 > Earlier refresh notes: 2026-07-03 brought upstream 1.3.2 (`repoMeta`, `lastActivityAt`, inline repo `lastCommitAt`); later 1.6.1 fixes include live SCF round metadata and scoped `searchProjects` description copy; 1.7.0 typed the partner response, added `ramps` filtering, and surfaced richer code verification fields; 1.7.11 added project-search semantic fallback, nullable DefiLlama `tvlUSD`/`tvlAsOf` fields, and `source=cap` research filtering. Version 1.7.15 added builder match/code provenance, population-scope digests, typed synthetic RFP rows/count semantics, Stellar-evidence repo ranking, project `type`/`status` filters, anchor-profile state, and `dimension=tvl`. Version 1.7.26 added strict builder parameter rejection, exact leaderboard `type` filtering, `security-program` and `sdf-org` research sources, leadership-role extraction, and per-record `observedAt`. Version 1.8.28 adds enumerable audit reports, hackathon-build prior-art search, the SDF people index, and stablecoin market data. Version 1.8.30 makes `meta.total` nullable with a companion `meta.totalBasis` naming why a total is unknowable (e.g. `unbounded-similarity-ranking` on `searchResearch`), enumerates the aggregated repo set as `repos[]` beside `repoCount`, and renames the SDF skill slug `soroban` → `smart-contracts`. Attach live `generatedAt`/version fields from the current inventory when citing answers.
 > Version 1.8.57 adds the read-only `/api/changes` reconciliation feed, new hackathon query filters, `dimension=toolchain`, and richer project, repo, partner, and provenance fields.
-> Current OpenAPI lives in [`inventory/stellar-light.json`](../../inventory/stellar-light.json) (refreshed daily by the CI drift job; 28 paths / 29 operations). `info.version` is now intended to bump on observable contract changes, but drift checks still diff path/method, operation text, `x-routing`, and schemas rather than trusting the version string alone.
+> Version 1.8.67 adds read-only contract registry, repository trust, idea vetting, and SCF pitch operations. It also adds audit relation metadata and new hackathon code filters.
+> Current OpenAPI lives in [`inventory/stellar-light.json`](../../inventory/stellar-light.json) (refreshed daily by the CI drift job; 32 paths / 33 operations). `info.version` is now intended to bump on observable contract changes, but drift checks still diff path/method, operation text, `x-routing`, and schemas rather than trusting the version string alone.
 > Cross-checked against prior art: `stellar-raven-next/research/capability/stellar-light-scout.md` (measured 2026-06-21→07-01) — live behavior today matches that doc.
 
 ## Overview
@@ -28,7 +29,7 @@ Scout ships in three equivalent forms, all backed by the same API:
 
 | Surface | What it gives |
 | --- | --- |
-| `GET /api/openapi.json` | OpenAPI 3.1, full param schemas + enums (28 paths; every operation carries an `operationId` matching the `@stellar-light/api-client` method names, e.g. `getStatus`, `searchProjects`, `matchPartners`) |
+| `GET /api/openapi.json` | OpenAPI 3.1, full param schemas + enums (32 paths; every operation carries an `operationId` matching the `@stellar-light/api-client` method names, e.g. `getStatus`, `searchProjects`, `matchPartners`) |
 | `GET /api/status` | Live collection sizes, per-source freshness, endpoint enumeration, usage stats |
 | `GET /api/changelog?since=YYYY-MM-DD` | Contract-change feed (API + MCP + skill changes), latest-first |
 | `GET /api/skills` / `GET /api/skills/{name}` | Skills catalog + full SKILL.md markdown (`skill.content`) |

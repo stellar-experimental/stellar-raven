@@ -942,3 +942,29 @@ routing improvement, not a skill disappearance; weakening the accurate Scout
 route solely to preserve the old strict winner was rejected.
 The authoritative baseline and full rationale are in `eval/gates.json`, with
 result `routing-2026-07-26T23-51-48-789Z.json`.
+
+## Re-baseline (2026-08-18, issue #26): Scout 1.8.67 composite operations
+
+Scout 1.8.67 added four public, keyless, read-only operations:
+`listContracts`, `getRepoTrust`, `scfPitch`, and `vetIdea`. Raven exposes all
+four operations under ADR-0003. The generic Scout adapter handles them, and no
+runnable-skill runner uses them.
+
+A pristine-main control under the current scorer measured legacy
+207/280/314, skills 17/23/23, and holdout 12/25/27. The regenerated manifest
+measures legacy **208/280/313**, skills **16/23/23**, and holdout
+**11/24/27**. Forbidden holdout captures remain 11, and passed holdout cases
+remain 23.
+
+Controlled ablations isolate the declines. Removing only `scfPitch` restores
+the skills and holdout top-1 floors. Removing only `listContracts` restores
+the holdout top-3 floor. Removing all four new operations passes the prior
+gate. This proves that the scorer and the existing catalog changes did not
+cause the movement.
+
+The two operations are relevant results for the displaced questions.
+`scfPitch` directly handles current SCF funding and pitch questions.
+`listContracts` is relevant to contract inventory and audit questions. The
+new floors accept this tradeoff without a scorer change, corpus edit, or
+per-question tuning. The decision record is Solo scratchpad 814. The baseline
+result is `routing-2026-08-18T14-10-11-708Z.json`.

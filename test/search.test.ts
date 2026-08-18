@@ -656,7 +656,7 @@ describe("searchCatalogPage — tier marker + total/truncated (todos 838/840)", 
     );
     // total counts searchable candidates only — 210 sections left search at
     // the 2026-07-13 A/B, so the candidate pool shrank from 272.
-    expect(page.total).toBe(74);
+    expect(page.total).toBe(78);
     expect(page.truncated).toBe(true);
   });
 

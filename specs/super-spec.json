@@ -59,6 +59,31 @@
               "null"
             ]
           },
+          "engagementEnd": {
+            "description": "Engagement window end as stated IN the report (YYYY-MM-DD).",
+            "nullable": true,
+            "type": "string"
+          },
+          "engagementId": {
+            "description": "sls-064 relation metadata: shared by every report of ONE engagement, distinct across engagements — lets a consumer tell a revision from a separate yearly engagement. Null = unclassified (curation pending), never asserted independent.",
+            "nullable": true,
+            "type": "string"
+          },
+          "engagementStart": {
+            "description": "Engagement window start as stated IN the report (YYYY-MM-DD).",
+            "nullable": true,
+            "type": "string"
+          },
+          "findingsExtraction": {
+            "description": "Completeness of the deterministic findings extraction — read findingsTotal 7 vs null as different states of KNOWLEDGE, not conflicting counts. Null on rows ingested before this field existed.",
+            "enum": [
+              "extracted",
+              "not-extracted",
+              "partial"
+            ],
+            "nullable": true,
+            "type": "string"
+          },
           "findingsTotal": {
             "description": "Populated when the auditor's report format parses deterministically AND round-trips its own stated count (OtterSec, Veridise, Certora, Code4rena, Hacken). null = not extracted, NOT zero.",
             "type": [
@@ -118,12 +143,22 @@
               "null"
             ]
           },
+          "reportVersion": {
+            "description": "Version the report states about itself (e.g. 'V2'); null when the source states none.",
+            "nullable": true,
+            "type": "string"
+          },
           "severityCounts": {
             "description": "{critical, high, medium, low, informational} counts, only for formats carrying per-finding severity that agrees with its finding-ID prefix (Certora tables, Code4rena tier headings). null = not extracted, NOT zero.",
             "type": [
               "object",
               "null"
             ]
+          },
+          "supersededByReportId": {
+            "description": "reportId of the report that supersedes this one; null = no supersession stated by the documents (never guessed).",
+            "nullable": true,
+            "type": "integer"
           },
           "title": {
             "type": "string"
@@ -2036,6 +2071,13 @@
                 "nullable": true,
                 "type": "number"
               },
+              "codeDomains": {
+                "description": "Evidence-only domain labels derived at scan time from ecosystem dependencies + capability tags + contract-interface traits — what the CODE proves the repo does, never README self-description: defi-lending, defi-amm, defi-yield, oracle, payments-x402, wallet-infra, anchor-ramp, indexer. [] = nothing domain-specific proven (an honest null).",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "contractInterface": {
                 "description": "Soroban contract ABI: full pub fn signatures per #[contractimpl] block, formatted `Contract.fn(arg: Type, …) -> Ret` (host-injected env param stripped, matching the SDK contractspec). Symbols say WHAT a repo implements; this says HOW TO CALL IT. Empty for non-contract repos or repos scanned before 2026-08-08.",
                 "items": {
@@ -2245,6 +2287,14 @@
             "description": "Keyword-relevance score for the current query (higher = better match).",
             "type": "number"
           },
+          "source": {
+            "description": "Discovery provenance: project-link = from the curated directory's github links; ec-taxonomy = from Electric Capital's public crypto-ecosystems list.",
+            "enum": [
+              "project-link",
+              "ec-taxonomy"
+            ],
+            "type": "string"
+          },
           "stars": {
             "type": "integer"
           },
@@ -2259,12 +2309,26 @@
             ],
             "type": "string"
           },
+          "successorRepo": {
+            "description": "sls-064 analog: this repo is a SUPERSEDED generation and the named fullName is its successor (curated, verified against the repos' own statements — never inferred from names). Null = not superseded or not yet classified. Superseded generations rank below their successors at equal relevance.",
+            "nullable": true,
+            "type": "string"
+          },
           "testsPresent": {
             "description": "Test files/dirs present in-tree (tests/, __tests__, *.test.*, *_test.*) per the latest code scan. Presence only — NOT a coverage or quality claim. null = not yet scanned for this fact.",
             "type": [
               "boolean",
               "null"
             ]
+          },
+          "tier": {
+            "description": "Quality tier (tag-and-demote): quality = high-grade, community = alive but unproven, archive = GitHub-archived or dead-and-unstarred — demoted in ranking and excluded from inline code references, but never deleted (name lookups still find it). Lead with quality-tier repos.",
+            "enum": [
+              "quality",
+              "community",
+              "archive"
+            ],
+            "type": "string"
           },
           "topics": {
             "items": {
@@ -2762,7 +2826,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-08-14T07:22:40.390Z"
+    "x-generatedAt": "2026-08-18T14:06:26.988Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -5936,6 +6000,210 @@
         }
       }
     },
+    "/scout/getRepoTrust": {
+      "get": {
+        "description": "One evidence-grounded answer to 'should I depend on this repo?': scanned code truth (proof, depth, domains, the FULL extracted contract interface), live on-chain usage, audit reports with drift since the latest one, succession both directions, and activity — joined server-side. signals is a closed deterministic vocabulary of facts that hold; no synthetic scores. Verify generated calls against codeTruth.contractInterface before invoking a contract. 404 for unindexed repos — absence is not nonexistence. Unknown params 400.",
+        "operationId": "scout.getRepoTrust",
+        "parameters": [
+          {
+            "description": "owner/name, e.g. reflector-network/reflector-contract",
+            "in": "query",
+            "name": "repo",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "meta": {
+                      "type": "object"
+                    },
+                    "report": {
+                      "properties": {
+                        "auditDrift": {
+                          "description": "Present when commits landed AFTER the latest audit — audited code is not necessarily the code running today.",
+                          "nullable": true,
+                          "properties": {
+                            "daysOfDrift": {
+                              "type": "integer"
+                            },
+                            "lastCommitAt": {
+                              "type": "string"
+                            },
+                            "latestAuditAt": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "audits": {
+                          "nullable": true,
+                          "type": "object"
+                        },
+                        "codeTruth": {
+                          "properties": {
+                            "codeDepth": {
+                              "nullable": true,
+                              "type": "number"
+                            },
+                            "codeDomains": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "contractInterface": {
+                              "description": "Scanned public fn signatures (up to 60) — verify generated calls against these.",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "interfaceSize": {
+                              "type": "integer"
+                            },
+                            "mainnetContractId": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "scanState": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "scannedAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "sdkCapabilities": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "stellarProof": {
+                              "nullable": true,
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "project": {
+                          "nullable": true,
+                          "properties": {
+                            "name": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "slug": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "repo": {
+                          "properties": {
+                            "activityState": {
+                              "type": "string"
+                            },
+                            "fullName": {
+                              "type": "string"
+                            },
+                            "isArchived": {
+                              "type": "boolean"
+                            },
+                            "lastCommitAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "stars": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "tier": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "url": {
+                              "nullable": true,
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "signals": {
+                          "description": "Closed deterministic vocabulary; absence of a signal means the evidence doesn't hold, not that the opposite is proven.",
+                          "items": {
+                            "enum": [
+                              "scanned",
+                              "deep-code",
+                              "live-on-mainnet",
+                              "verified-contract-id",
+                              "audited",
+                              "multi-audited",
+                              "code-changed-since-audit",
+                              "actively-maintained",
+                              "archived",
+                              "superseded"
+                            ],
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "succession": {
+                          "properties": {
+                            "predecessors": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "successorRepo": {
+                              "nullable": true,
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "usage": {
+                          "nullable": true,
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The trust report."
+          },
+          "400": {
+            "description": "Missing/invalid repo param or unknown params."
+          },
+          "404": {
+            "description": "Repo not in the index (absence of evidence, not a verdict)."
+          }
+        },
+        "summary": "Trust report — the code-truth composite for one repo",
+        "tags": [
+          "scout",
+          "Code"
+        ],
+        "x-execute": "await scout.getRepoTrust(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/repos/trust"
+        }
+      }
+    },
     "/scout/getRfps": {
       "get": {
         "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — open briefs are fundable in the current SCF round; closed ones are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
@@ -6424,6 +6692,164 @@
         }
       }
     },
+    "/scout/listContracts": {
+      "get": {
+        "description": "Contracts as first-class entities: one row per mainnet contract with VERIFIED evidence — the scanner echo-checked a README-claimed contract id live on-chain, or weekly on-chain enrichment attributed real activity to the repo. Each row joins code truth (stellarProof, codeDepth, interface preview, codeDomains), live usage stats (codeInUse), per-project audit records, and succession. Absence here is NOT a claim a contract doesn't exist — coverage grows as scans reach repos. Most-evidenced first: live usage > verified id > depth. Unknown params 400.",
+        "operationId": "scout.listContracts",
+        "parameters": [
+          {
+            "description": "Substring over repo fullName, project slug/name, or contract id.",
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by code-evidenced domain (closed set; unknown values 400).",
+            "in": "query",
+            "name": "domain",
+            "schema": {
+              "enum": [
+                "anchor-ramp",
+                "defi-amm",
+                "defi-lending",
+                "defi-yield",
+                "indexer",
+                "oracle",
+                "payments-x402",
+                "wallet-infra"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "contracts": {
+                      "items": {
+                        "properties": {
+                          "audits": {
+                            "description": "Per-project audit rollup: count + latest auditor/date. Null = none on record at our source, NOT 'unaudited'.",
+                            "nullable": true,
+                            "type": "object"
+                          },
+                          "codeDepth": {
+                            "nullable": true,
+                            "type": "number"
+                          },
+                          "codeDomains": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "codeInUse": {
+                            "description": "Live on-chain usage attributed to this repo's contract(s) — the strongest evidence tier.",
+                            "nullable": true,
+                            "type": "object"
+                          },
+                          "contractId": {
+                            "description": "Verified mainnet contract id (C…); null when membership came via usage attribution without a specific id.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "interfacePreview": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "interfaceSize": {
+                            "type": "integer"
+                          },
+                          "project": {
+                            "nullable": true,
+                            "properties": {
+                              "name": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "repo": {
+                            "properties": {
+                              "fullName": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "scannedAt": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "stellarProof": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "successorRepo": {
+                            "nullable": true,
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "meta": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Verified contract rows, most-evidenced first."
+          }
+        },
+        "summary": "Evidence-gated registry of verified mainnet Soroban contracts",
+        "tags": [
+          "scout",
+          "Code"
+        ],
+        "x-execute": "await scout.listContracts(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/contracts"
+        }
+      }
+    },
     "/scout/listSkills": {
       "get": {
         "description": "Catalog of installable Stellar AI skills/tools — SDF's official skills.stellar.org set merged with curated and community entries. Each entry carries an install command, kind (skill-md | mcp-server | sdk | cli | agent-kit | tool), and repo/docs links; filter by source/kind. Answers 'what Stellar AI skills / MCP servers can I install'. Not for ONE named skill's full content → use getSkill.\n\nCatalog note: this is the live ecosystem DIRECTORY — skills plus MCP servers, SDKs, and CLIs — for discovering what exists and fetching install metadata; most entries are not mirrored skills.",
@@ -6668,6 +7094,108 @@
         }
       }
     },
+    "/scout/scfPitch": {
+      "get": {
+        "description": "The 'help me prep a Stellar Community Fund pitch' composite: LIVE round state (open submissions + deadline, never asserting a negative on fetch failure), the vertical's already-funded ACTIVE projects with recorded award totals (differentiation targets), the vet-idea view (competitors, supply-side gap, prior art), and deterministic pitch angles that each name the fact they stand on. No prose generation. Unknown params 400.",
+        "operationId": "scout.scfPitch",
+        "parameters": [
+          {
+            "description": "Short idea description, 3-200 chars.",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 200,
+              "minLength": 3,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "meta": {
+                      "type": "object"
+                    },
+                    "report": {
+                      "properties": {
+                        "angles": {
+                          "description": "Deterministic derivations from served facts — each names its evidence; not judgments.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "fundedPeers": {
+                          "items": {
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "fundingBar": {
+                          "type": "object"
+                        },
+                        "idea": {
+                          "type": "string"
+                        },
+                        "round": {
+                          "properties": {
+                            "note": {
+                              "type": "string"
+                            },
+                            "open": {
+                              "items": {
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "source": {
+                              "enum": [
+                                "live",
+                                "unavailable"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "vertical": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "vet": {
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The pitch-prep report."
+          },
+          "400": {
+            "description": "Missing/too-short q or unknown params."
+          }
+        },
+        "summary": "SCF pitch prep — live round, funded peers, gap, prior art, angles in one call",
+        "tags": [
+          "scout",
+          "Composite"
+        ],
+        "x-execute": "await scout.scfPitch(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/scf-pitch"
+        }
+      }
+    },
     "/scout/searchHackathonBuilds": {
       "get": {
         "description": "Topic search across every submission ('buidl') from all Stellar hackathons (DoraHacks) — the PROTOTYPE layer of prior art, most of which never becomes a directory project. Answers 'has anyone already built X at a hackathon?' with each build's name, description, event, placement/award, votes, and repo/demo links. winnersOnly=1 = prize winners; track filters by track. Absence is a real whitespace signal, not proof it was never tried. For SHIPPED products in the directory → use searchProjects.",
@@ -6730,6 +7258,32 @@
                 "wallet-provider",
                 "x402"
               ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter to repos whose SCANNED codeDomains include this label (closed set; unknown values 400). Evidence-only: derived from deps + capability tags + interface traits, never self-description. Answers 'show me the real DeFi / x402 / oracle code' (e.g. domain=defi-lending, domain=payments-x402).",
+            "in": "query",
+            "name": "domain",
+            "schema": {
+              "enum": [
+                "anchor-ramp",
+                "defi-amm",
+                "defi-lending",
+                "defi-yield",
+                "indexer",
+                "oracle",
+                "payments-x402",
+                "wallet-infra"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Dependency-graph reverse read: filter to repos whose SCANNED manifest dependencies (stellarDeps) include this ecosystem package — 'who builds on passkey-kit / @blend-capital/blend-sdk / soroban-sdk'. Exact case-insensitive package name (open set — unknown packages return 0 rows). Adoption evidence no README mention can fake; pair with q for keyword+dependency precision. Scan-derived: unscanned repos never match.",
+            "in": "query",
+            "name": "dependsOn",
+            "schema": {
               "type": "string"
             }
           },
@@ -7120,6 +7674,123 @@
         "x-upstream": {
           "method": "GET",
           "path": "/api/research"
+        }
+      }
+    },
+    "/scout/vetIdea": {
+      "get": {
+        "description": "The 'I want to build X on Stellar' composite: competitor repos (full search stack) + active directory projects in the detected vertical, their maturity from verified evidence (audit registry, live on-chain usage), hackathon prior art from our index (dead prior art is a signal), the vertical's supply-side gap verdict (same computation as analyze?dimension=gaps), and SCF funding presence. Every block carries its basis; no verdict synthesis. vertical=null means the idea doesn't map onto the measurable vertical axis, not that no market exists. Unknown params 400.",
+        "operationId": "scout.vetIdea",
+        "parameters": [
+          {
+            "description": "Short idea description, 3-200 chars (e.g. 'lending protocol for RWAs').",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 200,
+              "minLength": 3,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "meta": {
+                      "type": "object"
+                    },
+                    "report": {
+                      "properties": {
+                        "competitors": {
+                          "properties": {
+                            "projects": {
+                              "items": {
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "repos": {
+                              "items": {
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "funding": {
+                          "nullable": true,
+                          "type": "object"
+                        },
+                        "gap": {
+                          "description": "Supply-side coverage of the detected vertical (same computation as analyze?dimension=gaps).",
+                          "nullable": true,
+                          "type": "object"
+                        },
+                        "idea": {
+                          "type": "string"
+                        },
+                        "maturity": {
+                          "properties": {
+                            "auditedProjects": {
+                              "type": "integer"
+                            },
+                            "basis": {
+                              "type": "string"
+                            },
+                            "liveOnMainnetRepos": {
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "priorArt": {
+                          "properties": {
+                            "note": {
+                              "type": "string"
+                            },
+                            "repos": {
+                              "items": {
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "vertical": {
+                          "description": "Detected buildable vertical (closed set from the gaps axis); null = unmapped, not marketless.",
+                          "nullable": true,
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The vet-idea report."
+          },
+          "400": {
+            "description": "Missing/too-short q or unknown params."
+          }
+        },
+        "summary": "Vet a build idea — competitors, maturity, prior art, gap, funding in one call",
+        "tags": [
+          "scout",
+          "Composite"
+        ],
+        "x-execute": "await scout.vetIdea(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/vet-idea"
         }
       }
     },
@@ -8748,8 +9419,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 247,
-    "generatedAt": "2026-08-14T07:22:40.390Z"
+    "catalogEntries": 251,
+    "generatedAt": "2026-08-18T14:06:26.988Z"
   },
   "x-services": {
     "lumenloop": {
@@ -8761,7 +9432,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-08-14T07:22:40.390Z",
+      "fetchedAt": "2026-08-18T14:06:26.988Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },

@@ -265,6 +265,8 @@ describe("build-op-classes — generated classes stay in sync with the catalog",
     expect(classifyOp("scout.getPeople").cls).toBe("broad");
     expect(classifyOp("scout.listAudits").cls).toBe("broad");
     expect(classifyOp("scout.getStablecoins").cls).toBe("broad");
+    expect(classifyOp("scout.scfPitch").cls).toBe("broad");
+    expect(classifyOp("scout.vetIdea").cls).toBe("broad");
     expect(classifyOp("scout.getStatus").cls).toBe("meta"); // override
     expect(classifyOp("scout.someFutureThing").matched).toBe(false); // → warned
     // Build-time-excluded ops (ADR-0003) carry no override — they classify
