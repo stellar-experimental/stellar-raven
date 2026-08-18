@@ -32,6 +32,7 @@ import { RUNNERS } from "../src/skills/runners/index.ts";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts, skillFileUrl } from "./lib/skill-mirror.mjs";
 import { RETRIEVAL_PROFILES } from "./catalog-data/retrieval-profiles.mjs";
+import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
 import { lumenloopInputSchema, lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -391,21 +392,27 @@ function buildLumenloop(inv) {
       );
     }
     if (lumenloopOpExcluded(tool)) continue;
+    const id = `lumenloop.${tool.name}`;
+    const contract = applyModelContractCorrection(id, {
+      returns: tool.returns,
+      inputSchema: lumenloopInputSchema(id, tool.input_schema ?? null),
+      outputSchema: lumenloopOutputSchema(id, tool.output_schema ?? null)
+    });
     const descriptionParts = [tool.description];
     if (tool.when_to_use) descriptionParts.push(`When to use: ${tool.when_to_use}`);
-    if (tool.returns) descriptionParts.push(`Returns: ${tool.returns}`);
+    if (contract.returns) descriptionParts.push(`Returns: ${contract.returns}`);
     const note = LUMENLOOP_DESCRIPTION_NOTES[tool.name];
     if (note !== undefined) {
       descriptionParts.push(note);
       consumedNotes.add(tool.name);
     }
     entries.push({
-      id: `lumenloop.${tool.name}`,
+      id,
       service: "lumenloop",
       kind: "operation",
       description: descriptionParts.join("\n\n"),
-      inputSchema: lumenloopInputSchema(`lumenloop.${tool.name}`, tool.input_schema ?? null),
-      outputSchema: lumenloopOutputSchema(`lumenloop.${tool.name}`, tool.output_schema ?? null),
+      inputSchema: contract.inputSchema,
+      outputSchema: contract.outputSchema,
       transport: { type: "http", method: "POST", path: `/v1/tools/${tool.name}`, base: origin },
       provenance: {
         source: inv.source.tools,
@@ -524,14 +531,18 @@ function buildScout(inv) {
         ].filter((v) => typeof v === "string" && v.length > 0);
         if (parts.length > 0) routingExtras.set(`scout.${opId}`, [parts.join("\n")]);
       }
+      const id = `scout.${opId}`;
+      const contract = applyModelContractCorrection(id, {
+        inputSchema: scrubNonExposedScoutSchemaRefs(scoutInputSchema(op, pathItem, openapi))
+      });
       entries.push({
-        id: `scout.${opId}`,
+        id,
         service: "scout",
         kind: "operation",
         description: [description || opId, note ? plainText(note) : undefined]
           .filter(Boolean)
           .join("\n\n"),
-        inputSchema: scrubNonExposedScoutSchemaRefs(scoutInputSchema(op, pathItem, openapi)),
+        inputSchema: contract.inputSchema,
         outputSchema: scrubNonExposedScoutSchemaRefs(scoutOutputSchema(op, openapi)),
         transport: { type: "http", method: httpMethod, path, base },
         provenance: {

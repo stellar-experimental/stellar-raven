@@ -61,7 +61,7 @@ in-script discovery helpers (`codemode.search/describe/catalog/spec`) as `/mcp`;
 boundary is enforced by the outer step, tool-call, output, code-size, timeout, auth, and rate caps.
 A narrow AI SDK `prepareStep` policy reserves the final step for tool-free synthesis and asks for
 recovery only after structural navigation/failure/truncation signals or a host-observed execute
-ledger containing errors/soft-empty outcomes with no successful service operation. It also carries
+ledger containing no successful operation with structurally positive service data. It also carries
 forward a conditional evidence checkpoint when the latest successful execute used only narrow,
 operation-scoped lookups. The checkpoint names exact catalog recovery candidates but preserves the
 closed-world stopping rule; a later search cannot erase already-grounded execute evidence.
@@ -228,7 +228,8 @@ clips only candidate prose/signatures, preserving identity, relation, lane, reas
 metadata. Normal hit membership, score, and order are therefore unchanged.
 
 The host does not inspect arbitrary payload semantics, automatically execute a recovery, or claim
-that a candidate is relevant. Model-facing instructions and adapter hints instead enforce the
+that a candidate is relevant. It only distinguishes positive rows or detail fields from empty
+collections and metadata. Model-facing instructions and adapter hints then enforce the
 answer-level rule: a closed-world directory/index miss can be reported only at that source's scope,
 while an open-world identity/history/topic miss gets one broad pass; semantic candidates need exact
 identity (or canonical slug), source, and date before attribution. A successful profiled
@@ -236,8 +237,9 @@ narrow operation may produce a `narrow-only` checkpoint, while a successful prof
 operation may produce a graph-derived `conditional-alternatives` checkpoint naming
 only uncalled exposed operations. Its standalone copy says the host observed operation classes, not
 row relevance, and recommends one bounded alternative pass only if the question remains unresolved.
-Runs with no successful operation evidence use the independent no-host-evidence or all-error/soft-empty
-recovery paths instead. Playground exposes at most one hint-driven recovery cycle per turn; the latch
+Runs with no structurally positive successful operation use the independent empty-success,
+no-host-evidence, or all-error/soft-empty recovery paths instead. The service envelope remains
+unchanged. Playground exposes at most one hint-driven recovery cycle per turn; the latch
 is consumed when its first standalone checkpoint is emitted, and a later execute supersedes any pending
 next-step restatement so independent structural failure recovery remains truthful. Separately, the operation ledger counts calls to a small exact-ID set of
 semantic, research, A/V, and fallback-directory surfaces and appends a candidate-evidence reminder
@@ -323,7 +325,7 @@ Per call (`src/executor/run.ts`):
 3. **Sandbox globals** (`src/executor/providers.ts`, `buildSandbox`): one namespace global
    per service with one async fn per cataloged operation, named by the id's terminal
    segment (`lumenloop.search_directory(args)`, `scout.getStatus()`,
-   `stellarDocs.search_docs(args)`) — currently 18 + 24 + 12 fns — plus the `codemode`
+   `stellarDocs.search_docs(args)`) — currently 18 + 29 + 12 fns — plus the `codemode`
    discovery global (§5). Wrong names fail loudly through codemode's per-namespace Proxy
    ("Tool not found"); there is no fuzzy resolution. Providers are rebuilt per run so the
    skill-read advice flag is run-scoped; the expensive derivations (catalog view, resolved
@@ -428,8 +430,10 @@ two-way: `"error"` (call failed / bad args) or `"soft-empty"` (the service answe
 nothing — *not* evidence of absence) (`src/adapters/types.ts`). There is no `"denied"`:
 exposure is filtered at build time (ADR-0003), so nothing callable can be policy-refused.
 An `ok: true` envelope whose payload arrays are empty is data-shaped empty, not a `soft-empty`
-error; both are still inconclusive for a wider real-world claim unless the question is explicitly
-closed to that named corpus or directory.
+error. The host ledger classifies that success as inconclusive without changing the public envelope.
+Positive rows and meaningful detail fields remain service data. Both empty-success and soft-empty
+outcomes are inconclusive for a wider real-world claim unless the question names that corpus or
+directory as its closed scope.
 
 The observed LLM failure mode is reading payload fields one level too shallow
 (`r.projects` instead of `r.data.projects`), which yields `undefined` and — after a
@@ -754,7 +758,7 @@ before model/tool execution, so later model or tool failure still counts.
 | Search calls | 3 per turn. Search hits are navigation metadata, not answer evidence. | `src/demo/budget.ts`, `src/demo/tools.ts`, `src/demo/prompt.ts` |
 | Demo search page | Default 5 hits, caller `limit` clamped to 6. | `src/demo/budget.ts`, `src/demo/tools.ts` |
 | Demo search hit text | Description clipped to 220 chars; signature clipped to 400 chars while preserving the callable line. | `src/demo/tools.ts` |
-| Execute calls | 3 per turn. The host aggregates operation outcomes (`ok` / `error` / `soft-empty`) without payload data so the loop can recover from evidence-poor runs. | `src/demo/budget.ts`, `src/demo/tools.ts`, `src/executor/run.ts` |
+| Execute calls | 3 per turn. The host aggregates operation outcomes and a structural positive-data flag without retaining payload data, so the loop can recover from empty successes and failed calls. | `src/demo/budget.ts`, `src/demo/tools.ts`, `src/executor/run.ts` |
 | Recovery guidance | Structurally poor operation searches expose up to three `widerCandidates`; explicit caller-reported exact operation ids in `recoverFrom` expose separate bounded `recovery` candidates after ranking; execute exposes at most one hint-driven recovery cycle per turn. Independent structural failure recovery remains active. | `src/catalog/search.ts`, `src/demo/tools.ts`, `src/demo/steps.ts` |
 | Execute code length | 8,000 chars. | `src/demo/budget.ts`, `src/demo/tools.ts` |
 | Execute preflight | Known-bad `Promise.all({ ... })` fanout is refused before sandbox execution. | `src/demo/tools.ts` |

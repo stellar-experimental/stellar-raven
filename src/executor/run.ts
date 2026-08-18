@@ -53,6 +53,8 @@ import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
 export type ExecuteOperationSummary = {
   total: number;
   ok: number;
+  /** Successful calls with positive rows, or a scalar/detail payload. */
+  evidenceData?: number;
   error: number;
   softEmpty: number;
   /** Successful calls whose operation contract returns semantic/directory/research candidates. */
@@ -158,15 +160,19 @@ const BROAD_RETRIEVAL_LANES = new Set(["semantic", "research", "av", "corpus"]);
 
 function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperationSummary {
   const summary: ExecuteOperationSummary = { total: calls.length, ok: 0, error: 0, softEmpty: 0 };
+  let evidenceData = 0;
   let candidateEvidence = 0;
   let priorArtCandidates = 0;
   for (const call of calls) {
     if (call.outcome === "ok") summary.ok += 1;
     else if (call.outcome === "error") summary.error += 1;
     else summary.softEmpty += 1;
-    if (call.outcome === "ok" && EVIDENCE_OPERATION_IDS.candidate.has(call.op)) candidateEvidence += 1;
-    if (call.outcome === "ok" && EVIDENCE_OPERATION_IDS["prior-art"].has(call.op)) priorArtCandidates += 1;
+    const hasEvidenceData = call.outcome === "ok" && call.hasServiceData !== false;
+    if (hasEvidenceData) evidenceData += 1;
+    if (hasEvidenceData && EVIDENCE_OPERATION_IDS.candidate.has(call.op)) candidateEvidence += 1;
+    if (hasEvidenceData && EVIDENCE_OPERATION_IDS["prior-art"].has(call.op)) priorArtCandidates += 1;
   }
+  if (evidenceData > 0) summary.evidenceData = evidenceData;
   if (candidateEvidence > 0) summary.candidateEvidence = candidateEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
   return summary;
@@ -176,6 +182,8 @@ function evidenceRecoveryHint(
   calls: readonly OpLedgerCall[],
   summary: ExecuteOperationSummary
 ): EvidenceRecoveryHint | undefined {
+  // Empty successful collections are inconclusive evidence, but their exact
+  // operation ids still carry the catalog recovery profile.
   if (summary.ok === 0) return undefined;
   const calledIds = [...new Set(calls.map((call) => call.op))];
   const successfulIds = [...new Set(calls.filter((call) => call.outcome === "ok").map((call) => call.op))];
@@ -384,7 +392,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     const recoveryHint = evidenceRecoveryHint(opLedger, operationSummary);
     const evidenceSummary: ExecuteEvidenceSummary = {
       kind:
-        operationSummary.ok > 0
+        operationSummary.evidenceData !== undefined
           ? "service-data"
           : operationSummary.total > 0
             ? "service-inconclusive"

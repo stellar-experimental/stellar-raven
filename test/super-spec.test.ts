@@ -337,6 +337,21 @@ describe("service specifics", () => {
     expect(spec.paths["/lumenloop/request_research"]).toBeUndefined();
     expect(JSON.stringify(Object.keys(spec.paths))).not.toContain("webhook");
   });
+
+  it("matches the corrected Lumenloop prose and Scout inputs in the model spec", () => {
+    const entity = spec.paths["/lumenloop/find_content_by_entity"]!.post!;
+    const related = spec.paths["/lumenloop/get_related_projects"]!.post!;
+    const hackathon = spec.paths["/scout/searchHackathonBuilds"]!.get!;
+
+    expect(entity.responses?.["200"]?.description).toContain("Content grouped by type in articles");
+    expect(related.responses?.["200"]?.description).toContain("An object with content");
+    expect((hackathon as { parameters?: Array<{ name: string }> }).parameters?.map((p) => p.name).sort()).toEqual([
+      "limit",
+      "q",
+      "track",
+      "winnersOnly"
+    ]);
+  });
 });
 
 describe("size budget (design doc §4)", () => {

@@ -132,6 +132,47 @@ describe("build-catalog.mjs", () => {
     );
   });
 
+  it("attaches the live-derived Scout recovery profiles without profiling the change feed", () => {
+    const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
+    const broadMiss = ["empty", "weak", "adjacent", "ambiguous"];
+    const corroborate = ["weak", "adjacent", "ambiguous", "partial"];
+
+    expect(byId.get("scout.listContracts")?.retrievalProfile).toEqual({
+      lane: "directory",
+      emptyScope: "operation",
+      recoverWith: [
+        { id: "scout.searchRepos", relation: "source-code", on: ["empty", "partial"] },
+        { id: "lumenloop.search_content_semantic", relation: "broader-semantic", on: broadMiss },
+        { id: "scout.searchResearch", relation: "cited-research", on: corroborate }
+      ]
+    });
+    expect(byId.get("scout.getRepoTrust")?.retrievalProfile).toEqual({
+      lane: "detail",
+      emptyScope: "operation",
+      recoverWith: [
+        { id: "scout.searchRepos", relation: "source-code", on: ["empty", "partial"] },
+        { id: "lumenloop.search_content_semantic", relation: "broader-semantic", on: broadMiss },
+        { id: "scout.searchResearch", relation: "cited-research", on: corroborate }
+      ]
+    });
+    for (const id of ["scout.scfPitch", "scout.vetIdea"]) {
+      expect(byId.get(id)?.retrievalProfile, id).toEqual({
+        lane: "research",
+        emptyScope: "inconclusive",
+        recoverWith: [
+          {
+            id: "lumenloop.find_similar_scf_submissions",
+            relation: "broader-semantic",
+            on: broadMiss
+          },
+          { id: "scout.searchHackathonBuilds", relation: "source-code", on: ["weak", "partial"] },
+          { id: "scout.searchResearch", relation: "cited-research", on: corroborate }
+        ]
+      });
+    }
+    expect(byId.get("scout.getChanges")?.retrievalProfile).toBeUndefined();
+  });
+
   it("has the expected entry counts per service/kind", () => {
     const count = (pred: (e: Catalog["entries"][number]) => boolean) =>
       catalog.entries.filter(pred).length;
@@ -258,6 +299,24 @@ describe("build-catalog.mjs", () => {
       method: "GET",
       path: "/api/projects/search"
     });
+  });
+
+  it("applies the evidence-backed model contract corrections", () => {
+    const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
+    const entity = byId.get("lumenloop.find_content_by_entity")!;
+    const related = byId.get("lumenloop.get_related_projects")!;
+    const hackathon = byId.get("scout.searchHackathonBuilds")!;
+
+    expect(entity.description).toContain("Content grouped by type in articles, av, events, proposals, and scf_submissions");
+    expect(entity.description).not.toContain("Array of content items");
+    expect(related.description).toContain("An object with content");
+    expect(related.description).not.toContain("Array of mentioned projects");
+    expect(Object.keys((hackathon.inputSchema as { properties: Record<string, unknown> }).properties).sort()).toEqual([
+      "limit",
+      "q",
+      "track",
+      "winnersOnly"
+    ]);
   });
 
   it("maps each design-stage build domain to exact Scout, skill, and Docs authority", () => {

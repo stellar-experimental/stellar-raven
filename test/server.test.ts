@@ -746,6 +746,64 @@ describe("execute behavior", () => {
     }
   });
 
+  it("adds recovery for structurally empty successful service calls", async () => {
+    const execClient = await connectedClient({
+      runExecute: async () => ({
+        ok: true,
+        result: '{"projects":[],"meta":{"total":0}}',
+        truncated: false,
+        logs: [],
+        operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
+        evidenceSummary: {
+          kind: "service-inconclusive",
+          skillRead: false,
+          skillRuns: 0,
+          artifactReads: 0
+        },
+        recoveryHint: {
+          mode: "narrow-only",
+          sourceOperations: ["scout.getBuilders"],
+          candidates: [
+            {
+              id: "scout.searchResearch",
+              relation: "broader-research",
+              reasons: ["empty"]
+            }
+          ]
+        }
+      })
+    });
+    const result = await execClient.callTool({ name: "execute", arguments: { code: "async () => 1" } });
+    const text = (result.content as Array<{ text: string }>)[0]?.text ?? "";
+    expect(text).toContain("--- EVIDENCE RECOVERY ---");
+    expect(text).toContain("structurally empty collections");
+    expect(text).toContain("{ ok: true, data } envelopes remain unchanged");
+    expect(text).toContain("--- EVIDENCE CHECKPOINT ---");
+    expect(text).toContain("scout.searchResearch (broader-research");
+  });
+
+  it("does not promise exact guidance for an unprofiled empty success", async () => {
+    const execClient = await connectedClient({
+      runExecute: async () => ({
+        ok: true,
+        result: '{"changes":[]}',
+        truncated: false,
+        logs: [],
+        operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
+        evidenceSummary: {
+          kind: "service-inconclusive",
+          skillRead: false,
+          skillRuns: 0,
+          artifactReads: 0
+        }
+      })
+    });
+    const result = await execClient.callTool({ name: "execute", arguments: { code: "async () => 1" } });
+    const text = (result.content as Array<{ text: string }>)[0]?.text ?? "";
+    expect(text).toContain("Make one broad pass before making an open-world negative.");
+    expect(text).not.toContain("Use the exact recovery guidance below.");
+  });
+
   it("adds a provenance reminder for candidate-evidence operations without forcing recovery", async () => {
     const execClient = await connectedClient({
       runExecute: async () => ({

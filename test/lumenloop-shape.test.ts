@@ -1,8 +1,41 @@
 import { describe, expect, it } from "vitest";
 import {
   LUMENLOOP_SEMANTIC_OPERATION,
+  LUMENLOOP_SEMANTIC_OUTPUT_SCHEMA,
+  LUMENLOOP_UNVERIFIED_OUTPUT_SCHEMA_OPERATIONS,
+  lumenloopOutputSchema,
   normalizeLumenloopOutput
 } from "../src/adapters/lumenloop-shape.ts";
+
+describe("Lumenloop output-schema evidence", () => {
+  const legacyResultsSchema = {
+    type: "object",
+    properties: { results: { type: "array" }, text: {} }
+  };
+
+  it("suppresses only the six live-disproved output schemas", () => {
+    expect([...LUMENLOOP_UNVERIFIED_OUTPUT_SCHEMA_OPERATIONS].sort()).toEqual([
+      "lumenloop.find_av_passages",
+      "lumenloop.find_content_by_entity",
+      "lumenloop.find_similar_projects_semantic",
+      "lumenloop.find_similar_scf_submissions",
+      "lumenloop.get_related_projects",
+      "lumenloop.get_tags_vocabulary"
+    ]);
+    for (const operationId of LUMENLOOP_UNVERIFIED_OUTPUT_SCHEMA_OPERATIONS) {
+      expect(lumenloopOutputSchema(operationId, legacyResultsSchema), operationId).toBeNull();
+    }
+  });
+
+  it("keeps a verified upstream schema and the authored semantic schema", () => {
+    expect(lumenloopOutputSchema("lumenloop.get_regions", legacyResultsSchema)).toBe(
+      legacyResultsSchema
+    );
+    expect(lumenloopOutputSchema(LUMENLOOP_SEMANTIC_OPERATION, legacyResultsSchema)).toBe(
+      LUMENLOOP_SEMANTIC_OUTPUT_SCHEMA
+    );
+  });
+});
 
 describe("Lumenloop semantic output normalization", () => {
   it("leaves every non-semantic operation untouched", () => {

@@ -71,6 +71,16 @@ export const RETRIEVAL_PROFILES = {
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
     { id: "lumenloop.search_content_semantic", relation: "broader-semantic", on: CORROBORATE }
   ] },
+  "scout.listContracts": { lane: "directory", emptyScope: "operation", recoverWith: [
+    { id: "scout.searchRepos", relation: "source-code", on: ["empty", "partial"] },
+    { id: "lumenloop.search_content_semantic", relation: "broader-semantic", on: BROAD_MISS },
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
+  ] },
+  "scout.getRepoTrust": { lane: "detail", emptyScope: "operation", recoverWith: [
+    { id: "scout.searchRepos", relation: "source-code", on: ["empty", "partial"] },
+    { id: "lumenloop.search_content_semantic", relation: "broader-semantic", on: BROAD_MISS },
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
+  ] },
   "scout.searchProjects": { lane: "directory", emptyScope: "operation", recoverWith: [
     { id: "lumenloop.search_content_semantic", relation: "broader-semantic", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
@@ -107,6 +117,16 @@ export const RETRIEVAL_PROFILES = {
     { id: "stellarDocs.search_docs", relation: "cross-family", on: CORROBORATE },
     { id: "lumenloop.search_content_semantic", relation: "broader-semantic", on: CORROBORATE },
     { id: "lumenloop.find_av_passages", relation: "different-medium", on: ["weak", "partial"] }
+  ] },
+  "scout.scfPitch": { lane: "research", emptyScope: "inconclusive", recoverWith: [
+    { id: "lumenloop.find_similar_scf_submissions", relation: "broader-semantic", on: BROAD_MISS },
+    { id: "scout.searchHackathonBuilds", relation: "source-code", on: ["weak", "partial"] },
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
+  ] },
+  "scout.vetIdea": { lane: "research", emptyScope: "inconclusive", recoverWith: [
+    { id: "lumenloop.find_similar_scf_submissions", relation: "broader-semantic", on: BROAD_MISS },
+    { id: "scout.searchHackathonBuilds", relation: "source-code", on: ["weak", "partial"] },
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
   ] },
 
   "stellarDocs.search_docs": { lane: "corpus", emptyScope: "corpus", recoverWith: [

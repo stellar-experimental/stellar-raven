@@ -49,6 +49,7 @@ import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts } from "./lib/skill-mirror.mjs";
 import { RETIRED_ONBOARDING_SKILLS, scrubRetiredSkillRefs } from "./exposure.mjs";
 import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
+import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
 // The runnable-skill allowlist-as-data (research/skill-run-design.md §5):
 // the SAME registry scripts/build-catalog.mjs attaches to the manifest, so
 // the two model-facing surfaces cannot drift (native type stripping, as for
@@ -107,16 +108,20 @@ function buildLumenloopPaths(inv, exposed) {
   for (const tool of inv.tools) {
     const id = `lumenloop.${tool.name}`;
     if (!exposed.has(id)) continue;
+    const contract = applyModelContractCorrection(id, {
+      returns: tool.returns,
+      inputSchema: lumenloopInputSchema(id, tool.input_schema ?? null),
+      outputSchema: lumenloopOutputSchema(id, tool.output_schema ?? null)
+    });
     const descriptionParts = [tool.description];
     if (tool.when_to_use) descriptionParts.push(`When to use: ${tool.when_to_use}`);
-    if (tool.returns) descriptionParts.push(`Returns: ${tool.returns}`);
+    if (contract.returns) descriptionParts.push(`Returns: ${contract.returns}`);
     const note = LUMENLOOP_DESCRIPTION_NOTES[tool.name];
     if (note !== undefined) {
       descriptionParts.push(note);
       consumedNotes.add(tool.name);
     }
-    const inputSchema = lumenloopInputSchema(id, tool.input_schema ?? null);
-    const outputSchema = lumenloopOutputSchema(id, tool.output_schema ?? null);
+    const { inputSchema, outputSchema } = contract;
     const op = {
       operationId: id,
       summary: firstSentence(tool.description),
@@ -130,7 +135,7 @@ function buildLumenloopPaths(inv, exposed) {
         : undefined,
       responses: {
         200: {
-          description: tool.returns ? plainText(tool.returns) : "Tool result",
+          description: contract.returns ? plainText(contract.returns) : "Tool result",
           ...(outputSchema
             ? { content: { "application/json": { schema: outputSchema } } }
             : {})
@@ -305,7 +310,9 @@ function buildScout(inv, exposed) {
       if (!exposed.has(id)) continue;
       // pathItem-level parameters are merged into the op so nothing is lost
       // when re-keying the path to the callable name.
-      const parameters = [...(pathItem.parameters ?? []), ...(upstream.parameters ?? [])];
+      const parameters = applyModelContractCorrection(id, {
+        parameters: [...(pathItem.parameters ?? []), ...(upstream.parameters ?? [])]
+      }).parameters;
       // Same boundary guidance the catalog manifest carries (shared data map
       // in description-notes.mjs) so codemode.spec() readers see it too.
       const note = SCOUT_DESCRIPTION_NOTES[opName];

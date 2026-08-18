@@ -487,8 +487,12 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
 
       const operationSummary = outcome.operationSummary;
       const noData = operationSummary.total > 0 && operationSummary.ok === 0;
-      const recoveryBlock = !noData
-        ? ""
+      const allSuccessfulCallsEmpty =
+        operationSummary.ok > 0 && outcome.evidenceSummary.kind === "service-inconclusive";
+      const recoveryBlock = allSuccessfulCallsEmpty
+        ? `\n\n--- EVIDENCE RECOVERY ---\nAll ${operationSummary.ok} successful service call(s) returned structurally empty collections. Their { ok: true, data } envelopes remain unchanged, but they are inconclusive for an open-world negative. ${outcome.recoveryHint ? "Use the exact recovery guidance below." : "Make one broad pass before making an open-world negative."} For a closed-world question, report the empty result only at the named source's scope.`
+        : !noData
+          ? ""
         : operationSummary.error > 0 && operationSummary.softEmpty === 0
           ? `\n\n--- SERVICE ERRORS ---\nAll ${operationSummary.total} service calls failed. Errors do not establish absence or an open-world negative: inspect or retry the failures before broadening.`
           : operationSummary.error === 0

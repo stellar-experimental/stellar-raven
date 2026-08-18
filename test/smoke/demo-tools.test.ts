@@ -1,6 +1,6 @@
 import { env } from "cloudflare:test";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { buildDemoTools } from "../../src/demo/tools";
+import { buildDemoTools, evidenceOutcome } from "../../src/demo/tools";
 import { createDemoToolBudget, type DemoToolBudget } from "../../src/demo/budget";
 import { prepareDemoStep } from "../../src/demo/steps";
 import type { DemoFrame } from "../../src/demo/frames";
@@ -31,6 +31,21 @@ function makeTools(budget?: DemoToolBudget, runExecute?: ExecuteRunner) {
 }
 
 describe("demo tools at the worker boundary", () => {
+  it("reports empty successful collections separately from service data", () => {
+    expect(
+      evidenceOutcome({
+        ok: true,
+        operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
+        evidenceSummary: {
+          kind: "service-inconclusive",
+          skillRead: false,
+          skillRuns: 0,
+          artifactReads: 0
+        }
+      })
+    ).toBe("empty-success");
+  });
+
   it("projects exact-ID recovery with the full compacted shape and MCP-compatible telemetry", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {

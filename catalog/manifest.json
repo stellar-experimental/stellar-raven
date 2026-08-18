@@ -36,21 +36,7 @@
         "query"
       ],
       "kind": "operation",
-      "outputSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "additionalProperties": false,
-        "properties": {
-          "results": {
-            "description": "Array of AV items: AI summary, start_offset (opaque transcript chunk offset, not seconds), link.",
-            "items": {},
-            "type": "array"
-          },
-          "text": {
-            "description": "Present instead of the data fields when the tool reports a plain-text message."
-          }
-        },
-        "type": "object"
-      },
+      "outputSchema": null,
       "provenance": {
         "fetchedAt": "2026-07-06T21:16:56.676Z",
         "source": "https://api.lumenloop.com/v1/tools",
@@ -259,7 +245,7 @@
       }
     },
     {
-      "description": "Find articles, AV, events, governance proposals, and SCF submissions that mention a specific named entity. Uses LLM-extracted entities (project/person/organization/token) from content_entities. Case-insensitive match on entity_name or exact match on normalized_slug. Use this when you want exact entity grounding, not semantic similarity.\n\nWhen to use: Find content mentioning a NAMED entity (project, organization, token) by case-insensitive name match with LLM-confidence filtering — works even when the entity has no directory slug. If you have a slug, prefer find_content_about_project.\n\nReturns: Array of content items with the matched entity, confidence score, and content metadata.\n\nCatalog note: entity_type \"person\" can return ok data with all-empty groups even for heavily covered people (live-verified 2026-07-03). This is a data-shaped empty, not a transport or soft-empty failure. It supports only the scoped statement that this exact lookup linked no content. For open-world person coverage, use search_content_semantic, then require exact identity plus source and date before attribution.",
+      "description": "Find articles, AV, events, governance proposals, and SCF submissions that mention a specific named entity. Uses LLM-extracted entities (project/person/organization/token) from content_entities. Case-insensitive match on entity_name or exact match on normalized_slug. Use this when you want exact entity grounding, not semantic similarity.\n\nWhen to use: Find content mentioning a NAMED entity (project, organization, token) by case-insensitive name match with LLM-confidence filtering — works even when the entity has no directory slug. If you have a slug, prefer find_content_about_project.\n\nReturns: Content grouped by type in articles, av, events, proposals, and scf_submissions, with matched-entity confidence and content metadata.\n\nCatalog note: entity_type \"person\" can return ok data with all-empty groups even for heavily covered people (live-verified 2026-07-03). This is a data-shaped empty, not a transport or soft-empty failure. It supports only the scoped statement that this exact lookup linked no content. For open-world person coverage, use search_content_semantic, then require exact identity plus source and date before attribution.",
       "id": "lumenloop.find_content_by_entity",
       "inputSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
@@ -320,21 +306,7 @@
         "min"
       ],
       "kind": "operation",
-      "outputSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "additionalProperties": false,
-        "properties": {
-          "results": {
-            "description": "Array of content items with matched entity, confidence, metadata.",
-            "items": {},
-            "type": "array"
-          },
-          "text": {
-            "description": "Present instead of the data fields when the tool reports a plain-text message."
-          }
-        },
-        "type": "object"
-      },
+      "outputSchema": null,
       "provenance": {
         "fetchedAt": "2026-07-06T21:16:56.676Z",
         "source": "https://api.lumenloop.com/v1/tools",
@@ -409,21 +381,7 @@
         "type": "object"
       },
       "kind": "operation",
-      "outputSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "additionalProperties": false,
-        "properties": {
-          "results": {
-            "description": "Array of similar projects: slug, title, description, similarity score.",
-            "items": {},
-            "type": "array"
-          },
-          "text": {
-            "description": "Present instead of the data fields when the tool reports a plain-text message."
-          }
-        },
-        "type": "object"
-      },
+      "outputSchema": null,
       "provenance": {
         "fetchedAt": "2026-07-06T21:16:56.676Z",
         "source": "https://api.lumenloop.com/v1/tools",
@@ -472,21 +430,7 @@
         "type": "object"
       },
       "kind": "operation",
-      "outputSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "additionalProperties": false,
-        "properties": {
-          "results": {
-            "description": "Array of similar submissions with round/category/funding, linked_project_slug (primary credited project) and linked_project_slugs (full credited set).",
-            "items": {},
-            "type": "array"
-          },
-          "text": {
-            "description": "Present instead of the data fields when the tool reports a plain-text message."
-          }
-        },
-        "type": "object"
-      },
+      "outputSchema": null,
       "provenance": {
         "fetchedAt": "2026-07-06T21:16:56.676Z",
         "source": "https://api.lumenloop.com/v1/tools",
@@ -849,7 +793,7 @@
       }
     },
     {
-      "description": "Given a content item (article/av/event/research) return the directory projects it mentions, via the content_projects junction.\n\nWhen to use: You have a CONTENT item (article/av/event/research id) and want the ecosystem projects it mentions — the \"Mentioned projects\" on lumenloop.com. The reverse direction (project → content) is find_content_about_project.\n\nReturns: Array of mentioned projects with public info (slug, title, description, category).",
+      "description": "Given a content item (article/av/event/research) return the directory projects it mentions, via the content_projects junction.\n\nWhen to use: You have a CONTENT item (article/av/event/research id) and want the ecosystem projects it mentions — the \"Mentioned projects\" on lumenloop.com. The reverse direction (project → content) is find_content_about_project.\n\nReturns: An object with content, which contains mentioned projects with public info (slug, title, description, category).",
       "id": "lumenloop.get_related_projects",
       "inputSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
@@ -889,21 +833,7 @@
         "proposal"
       ],
       "kind": "operation",
-      "outputSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "additionalProperties": false,
-        "properties": {
-          "results": {
-            "description": "Array of mentioned projects: slug, title, description, category.",
-            "items": {},
-            "type": "array"
-          },
-          "text": {
-            "description": "Present instead of the data fields when the tool reports a plain-text message."
-          }
-        },
-        "type": "object"
-      },
+      "outputSchema": null,
       "provenance": {
         "fetchedAt": "2026-07-06T21:16:56.676Z",
         "source": "https://api.lumenloop.com/v1/tools",
@@ -977,21 +907,7 @@
         "type": "object"
       },
       "kind": "operation",
-      "outputSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "additionalProperties": false,
-        "properties": {
-          "results": {
-            "description": "Array of content tags (id, name).",
-            "items": {},
-            "type": "array"
-          },
-          "text": {
-            "description": "Present instead of the data fields when the tool reports a plain-text message."
-          }
-        },
-        "type": "object"
-      },
+      "outputSchema": null,
       "provenance": {
         "fetchedAt": "2026-07-06T21:16:56.676Z",
         "source": "https://api.lumenloop.com/v1/tools",
@@ -5247,6 +5163,40 @@
         "openapiVersion": "1.8.67",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
+      "retrievalProfile": {
+        "emptyScope": "operation",
+        "lane": "detail",
+        "recoverWith": [
+          {
+            "id": "scout.searchRepos",
+            "on": [
+              "empty",
+              "partial"
+            ],
+            "relation": "source-code"
+          },
+          {
+            "id": "lumenloop.search_content_semantic",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "broader-semantic"
+          },
+          {
+            "id": "scout.searchResearch",
+            "on": [
+              "weak",
+              "adjacent",
+              "ambiguous",
+              "partial"
+            ],
+            "relation": "cited-research"
+          }
+        ]
+      },
       "routingKeywords": [
         "maintained",
         "call",
@@ -6551,6 +6501,40 @@
         "openapiVersion": "1.8.67",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
+      "retrievalProfile": {
+        "emptyScope": "operation",
+        "lane": "directory",
+        "recoverWith": [
+          {
+            "id": "scout.searchRepos",
+            "on": [
+              "empty",
+              "partial"
+            ],
+            "relation": "source-code"
+          },
+          {
+            "id": "lumenloop.search_content_semantic",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "broader-semantic"
+          },
+          {
+            "id": "scout.searchResearch",
+            "on": [
+              "weak",
+              "adjacent",
+              "ambiguous",
+              "partial"
+            ],
+            "relation": "cited-research"
+          }
+        ]
+      },
       "routingKeywords": [
         "domain",
         "deployed",
@@ -7032,6 +7016,40 @@
         "openapiVersion": "1.8.67",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
+      "retrievalProfile": {
+        "emptyScope": "inconclusive",
+        "lane": "research",
+        "recoverWith": [
+          {
+            "id": "lumenloop.find_similar_scf_submissions",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "broader-semantic"
+          },
+          {
+            "id": "scout.searchHackathonBuilds",
+            "on": [
+              "weak",
+              "partial"
+            ],
+            "relation": "source-code"
+          },
+          {
+            "id": "scout.searchResearch",
+            "on": [
+              "weak",
+              "adjacent",
+              "ambiguous",
+              "partial"
+            ],
+            "relation": "cited-research"
+          }
+        ]
+      },
       "routingKeywords": [
         "grant",
         "application",
@@ -7066,43 +7084,6 @@
       "id": "scout.searchHackathonBuilds",
       "inputSchema": {
         "properties": {
-          "capability": {
-            "description": "Filter to repos whose SCANNED sdkCapabilities include this tag (closed set; unknown values 400). Scan-derived: an unscanned repo can never match — absence of a scan is NOT absence of the capability. Answers 'which repos actually implement X' structurally (e.g. capability=sep24-ramp, capability=x402, capability=wallet-provider).",
-            "enum": [
-              "contract-invoke",
-              "fee-bump",
-              "horizon",
-              "mpp",
-              "passkey",
-              "sep10-auth",
-              "sep24-ramp",
-              "signing",
-              "soroban-rpc",
-              "tx-building",
-              "wallet-kit",
-              "wallet-provider",
-              "x402"
-            ],
-            "type": "string"
-          },
-          "dependsOn": {
-            "description": "Dependency-graph reverse read: filter to repos whose SCANNED manifest dependencies (stellarDeps) include this ecosystem package — 'who builds on passkey-kit / @blend-capital/blend-sdk / soroban-sdk'. Exact case-insensitive package name (open set — unknown packages return 0 rows). Adoption evidence no README mention can fake; pair with q for keyword+dependency precision. Scan-derived: unscanned repos never match.",
-            "type": "string"
-          },
-          "domain": {
-            "description": "Filter to repos whose SCANNED codeDomains include this label (closed set; unknown values 400). Evidence-only: derived from deps + capability tags + interface traits, never self-description. Answers 'show me the real DeFi / x402 / oracle code' (e.g. domain=defi-lending, domain=payments-x402).",
-            "enum": [
-              "anchor-ramp",
-              "defi-amm",
-              "defi-lending",
-              "defi-yield",
-              "indexer",
-              "oracle",
-              "payments-x402",
-              "wallet-infra"
-            ],
-            "type": "string"
-          },
           "limit": {
             "default": 20,
             "description": "Max builds (default 20, max 100).",
@@ -7138,38 +7119,7 @@
         "true",
         "yes",
         "false",
-        "off",
-        "capability",
-        "contract",
-        "invoke",
-        "fee",
-        "bump",
-        "horizon",
-        "mpp",
-        "passkey",
-        "sep10",
-        "auth",
-        "sep24",
-        "ramp",
-        "signing",
-        "soroban",
-        "rpc",
-        "tx",
-        "building",
-        "wallet",
-        "kit",
-        "provider",
-        "x402",
-        "domain",
-        "anchor",
-        "defi",
-        "amm",
-        "lending",
-        "yield",
-        "indexer",
-        "oracle",
-        "infra",
-        "depends"
+        "off"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -10545,6 +10495,40 @@
         "fetchedAt": "2026-08-18T14:06:26.988Z",
         "openapiVersion": "1.8.67",
         "source": "https://stellarlight.xyz/api/openapi.json"
+      },
+      "retrievalProfile": {
+        "emptyScope": "inconclusive",
+        "lane": "research",
+        "recoverWith": [
+          {
+            "id": "lumenloop.find_similar_scf_submissions",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "broader-semantic"
+          },
+          {
+            "id": "scout.searchHackathonBuilds",
+            "on": [
+              "weak",
+              "partial"
+            ],
+            "relation": "source-code"
+          },
+          {
+            "id": "scout.searchResearch",
+            "on": [
+              "weak",
+              "adjacent",
+              "ambiguous",
+              "partial"
+            ],
+            "relation": "cited-research"
+          }
+        ]
       },
       "routingKeywords": [
         "tried",

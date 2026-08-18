@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadManifest, type Catalog } from "../src/catalog/search.ts";
-import { buildSandbox } from "../src/executor/providers.ts";
+import { buildSandbox, hasServiceData, type OpLedgerCall } from "../src/executor/providers.ts";
 import type { FetchLike } from "../src/adapters/types.ts";
 import { MemoryR2Bucket } from "./helpers/memory-r2.ts";
 import { lazyPinnedSkillSource as skillSource } from "./helpers/skill-source.ts";
@@ -50,6 +50,49 @@ function fnsOf(providers: Sandbox, name: string) {
   if (!p) throw new Error(`missing provider ${name}`);
   return p.fns;
 }
+
+describe("host structural service evidence", () => {
+  it.each([
+    ["positive rows", { projects: [{ slug: "soroswap" }], meta: { total: 1 } }, true],
+    ["detail data with an empty auxiliary collection", { name: "Reflector", tags: [] }, true],
+    ["empty array", [], false],
+    ["metadata with empty row containers", { projects: [], repos: [], meta: { total: 0 } }, false],
+    [
+      "metadata with populated arrays",
+      { projects: [], meta: { facets: ["defi"] }, pagination: { pages: [1, 2] } },
+      false
+    ],
+    ["mixed row containers", { projects: [], repos: [{ fullName: "example/repo" }] }, true]
+  ])("classifies %s without changing the service payload", (_label, payload, expected) => {
+    expect(hasServiceData(payload)).toBe(expected);
+  });
+
+  it("keeps error and soft-empty envelopes out of successful payload evidence", async () => {
+    const calls: OpLedgerCall[] = [];
+    const fetchImpl: FetchLike = async (_url, init) => {
+      const { query } = JSON.parse(String(init?.body)) as { query: string };
+      return query === "error"
+        ? new Response(JSON.stringify({ success: false, error: "upstream failure" }), {
+            status: 500,
+            headers: { "content-type": "application/json" }
+          })
+        : new Response(
+            JSON.stringify({ success: true, data: { text: "unknown project" }, meta: { format: "text" } }),
+            { status: 200, headers: { "content-type": "application/json" } }
+          );
+    };
+    const providers = buildSandbox(catalog, skillSource, env, {
+      fetchImpl,
+      onOpCall: (call) => calls.push(call)
+    });
+    await fnsOf(providers, "lumenloop").search_directory!({ query: "error" });
+    await fnsOf(providers, "lumenloop").search_directory!({ query: "soft-empty" });
+    expect(calls).toMatchObject([
+      { outcome: "error", hasServiceData: undefined },
+      { outcome: "soft-empty", hasServiceData: undefined }
+    ]);
+  });
+});
 
 describe("sandbox surface shape", () => {
   const providers = buildSandbox(catalog, skillSource, env);

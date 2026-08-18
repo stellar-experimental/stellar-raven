@@ -94,14 +94,28 @@ type SearchStructured = {
 
 const SOURCE_BASIS_CALL_LIMIT = 8;
 
-function evidenceOutcome(
-  outcome: { ok: boolean; operationSummary: ExecuteOperationSummary }
-): "execute-error" | "no-operations" | "data" | "soft-empty" | "error" | "mixed" {
+export function evidenceOutcome(
+  outcome: {
+    ok: boolean;
+    operationSummary: ExecuteOperationSummary;
+    evidenceSummary: ExecuteEvidenceSummary;
+  }
+):
+  | "execute-error"
+  | "no-operations"
+  | "data"
+  | "empty-success"
+  | "soft-empty"
+  | "error"
+  | "mixed" {
   if (!outcome.ok) return "execute-error";
   const summary = outcome.operationSummary;
   if (summary.total === 0) return "no-operations";
   const problemCount = summary.error + summary.softEmpty;
   if (summary.ok > 0 && problemCount > 0) return "mixed";
+  if (summary.ok > 0 && outcome.evidenceSummary?.kind === "service-inconclusive") {
+    return "empty-success";
+  }
   if (summary.ok > 0) return "data";
   if (summary.error > 0 && summary.softEmpty > 0) return "mixed";
   return summary.error > 0 ? "error" : "soft-empty";

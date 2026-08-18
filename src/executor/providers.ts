@@ -105,8 +105,43 @@ export const ARTIFACT_READ_CAP = 4;
 export type OpLedgerCall = {
   op: string;
   outcome: "ok" | "error" | "soft-empty";
+  /** Host-only structural evidence signal. It never changes the service envelope. */
+  hasServiceData?: boolean;
   ms: number;
 };
+
+/**
+ * An ok envelope is not by itself factual service evidence. Collections carry
+ * the rows that can support a later answer. Empty collections are
+ * inconclusive unless the same payload also has a meaningful scalar/detail
+ * field. Metadata branches do not count as detail evidence.
+ */
+export function hasServiceData(value: unknown): boolean {
+  if (value === null || value === undefined) return false;
+  if (typeof value !== "object") return true;
+
+  const seen = new Set<object>();
+  let hasData = false;
+  const metadataKeys = new Set(["meta", "metadata", "counts", "pagination", "pageInfo"]);
+  const visit = (current: unknown, metadataBranch = false): void => {
+    if (current === null || hasData) return;
+    if (typeof current !== "object") {
+      if (!metadataBranch) hasData = true;
+      return;
+    }
+    if (seen.has(current)) return;
+    seen.add(current);
+    if (Array.isArray(current)) {
+      if (!metadataBranch && current.length > 0) hasData = true;
+      return;
+    }
+    for (const [key, nested] of Object.entries(current)) {
+      visit(nested, metadataBranch || metadataKeys.has(key));
+    }
+  };
+  visit(value);
+  return hasData;
+}
 
 export type ArtifactReadStats = {
   count: number;
@@ -322,6 +357,7 @@ export function buildOpsFns(
       deps?.onOpCall?.({
         op: entry.id,
         outcome: result.ok ? "ok" : result.error.kind,
+        hasServiceData: result.ok ? hasServiceData(result.data) : undefined,
         ms
       });
       return redactSecrets(result, secrets);

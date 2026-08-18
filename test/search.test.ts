@@ -118,6 +118,29 @@ describe("recoveryCandidates — advisory contingency graph", () => {
     expect(recovery.map((candidate) => candidate.id)).not.toContain("scout.getBuilders");
   });
 
+  it("applies the Scout profile triggers and leaves getChanges unprofiled", () => {
+    const ids = (from: string, reason: "empty" | "weak" | "partial") =>
+      recoveryCandidates(catalog, [from], reason).map((candidate) => candidate.id);
+
+    expect(ids("scout.listContracts", "empty")).toEqual([
+      "scout.searchRepos",
+      "lumenloop.search_content_semantic"
+    ]);
+    expect(ids("scout.getRepoTrust", "partial")).toEqual([
+      "scout.searchRepos",
+      "scout.searchResearch"
+    ]);
+    expect(ids("scout.scfPitch", "empty")).toEqual([
+      "lumenloop.find_similar_scf_submissions"
+    ]);
+    expect(ids("scout.vetIdea", "weak")).toEqual([
+      "lumenloop.find_similar_scf_submissions",
+      "scout.searchHackathonBuilds",
+      "scout.searchResearch"
+    ]);
+    expect(ids("scout.getChanges", "empty")).toEqual([]);
+  });
+
   it("deduplicates targets, excludes attempted ids, and observes its bound", () => {
     const recovery = recoveryCandidates(
       catalog,
@@ -842,6 +865,25 @@ describe("searchCatalog — signatures", () => {
     expect(hit?.outputItemKeys).toEqual({
       items: ["collection", "date", "dateField", "snippet", "source", "sourceField", "title", "url"]
     });
+  });
+
+  it("does not teach false Lumenloop r.data.results paths", () => {
+    const ids = [
+      "lumenloop.find_av_passages",
+      "lumenloop.find_content_by_entity",
+      "lumenloop.find_similar_projects_semantic",
+      "lumenloop.find_similar_scf_submissions",
+      "lumenloop.get_related_projects",
+      "lumenloop.get_tags_vocabulary"
+    ];
+    for (const id of ids) {
+      const entry = catalog.entries.find((candidate) => candidate.id === id)!;
+      const signature = renderSignature(entry)!;
+      expect(entry.outputSchema, id).toBeNull();
+      expect(signature, id).toContain("data: unknown");
+      expect(signature, id).not.toMatch(/^type \w+Output/m);
+      expect(signature, id).not.toMatch(/^\s+results\?:/m);
+    }
   });
 });
 

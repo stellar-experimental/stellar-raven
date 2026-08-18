@@ -18,6 +18,27 @@
 
 export const LUMENLOOP_SEMANTIC_OPERATION = "lumenloop.search_content_semantic";
 
+/**
+ * The live 2026-08-18 probe disproved these inventory output schemas. The
+ * adapter returns their upstream `data` values unchanged, so publishing the
+ * schemas would teach a false `r.data.results` access path. Keep their output
+ * contracts unknown until a future probe supports exact replacement schemas.
+ * See improvements/lumenloop/ll-029-output-schema-top-level-shape-drift.md
+ * for the shared defect; ll-019 covers find_av_passages.
+ *
+ * Do not infer this list from the shared legacy schema shape. Other operations
+ * can legitimately return an object with `results`, and their contracts stay
+ * model-visible unless evidence disproves them too.
+ */
+export const LUMENLOOP_UNVERIFIED_OUTPUT_SCHEMA_OPERATIONS = new Set([
+  "lumenloop.find_av_passages",
+  "lumenloop.find_content_by_entity",
+  "lumenloop.find_similar_projects_semantic",
+  "lumenloop.find_similar_scf_submissions",
+  "lumenloop.get_related_projects",
+  "lumenloop.get_tags_vocabulary"
+]);
+
 export const LUMENLOOP_DOCUMENT_SORTS = [
   "processed_at",
   "publishing_date",
@@ -172,9 +193,8 @@ function canonicalSemanticFields(source: JsonRecord): JsonRecord {
 }
 
 export function lumenloopOutputSchema(operationId: string, upstream: unknown): unknown {
-  return operationId === LUMENLOOP_SEMANTIC_OPERATION
-    ? LUMENLOOP_SEMANTIC_OUTPUT_SCHEMA
-    : upstream;
+  if (operationId === LUMENLOOP_SEMANTIC_OPERATION) return LUMENLOOP_SEMANTIC_OUTPUT_SCHEMA;
+  return LUMENLOOP_UNVERIFIED_OUTPUT_SCHEMA_OPERATIONS.has(operationId) ? null : upstream;
 }
 
 export function normalizeLumenloopOutput(operationId: string, data: unknown): unknown {
