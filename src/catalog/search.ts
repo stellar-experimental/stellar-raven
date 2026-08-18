@@ -1,21 +1,17 @@
 /**
- * Host-side catalog search — the FROZEN contract (scratchpad 514):
+ * Host-side catalog search contract:
  *
  *   loadManifest(json: unknown): Catalog
  *   searchCatalog(catalog, { query, kind?, service?, limit? }): SearchHit[]
  *   type SearchHit = { id, service, kind, score, tier, description, signature?, outputKeys? }
  *
- * (`tier` — todo 838 — is an additive metadata field on the hit, not a
- * contract-shape change. `searchCatalogPage` — todo 840 — is a NEW export
- * beside the frozen surface; `searchCatalog` is its thin `.hits` wrapper.)
- *
  * Pure functions, no I/O — importable from the Worker, vitest, and the eval
  * CLI alike. Everything in the manifest is exposed by construction (ADR-0003:
  * exclusions are filtered at build time). Default limit 10.
  *
- * Filters stay SILENT here by design: an unknown `kind`/`service` simply
+ * Filters stay silent here by design: an unknown `kind`/`service` simply
  * matches nothing (the eval runner scores raw routing behavior through this
- * exact contract). Filter VALIDATION — "did you mean stellarDocs?" — is the
+ * exact contract). Filter validation — "did you mean stellarDocs?" — is the
  * callers' job (src/mcp/tools.ts, src/executor/providers.ts), fed by
  * `catalogServices` below.
  *
@@ -25,7 +21,7 @@
  */
 // NOTE: relative imports in src/catalog/** carry explicit .ts extensions so
 // the module graph loads under plain `node` (type stripping) — the eval CLI
-// and vitest both import this file directly (frozen contract, scratchpad 514).
+// and vitest both import this file directly.
 import { z } from "zod";
 import {
   RETRIEVAL_LANES,
@@ -56,7 +52,7 @@ export type SearchHit = {
   kind: string;
   score: number;
   /**
-   * Which scorer produced this hit (todo 838): "gated" = tier 1, the vendor
+   * Which scorer produced this hit: "gated" = tier 1, the vendor
    * scorer with its coverage gate; "backfill" = tier 2, the gate-free replica
    * used only to fill a page tier 1 left short. The drift guard in
    * test/scoring.test.ts proves both paths produce the same score wherever
@@ -70,7 +66,7 @@ export type SearchHit = {
    * the `codemode.skill.run("<id>", …)` callable line, the adoption surface
    * of that design). Input type and callable envelope line are always full;
    * an output type block over COMPACT_OUTPUT_THRESHOLD chars is stubbed down
-   * to its top-level field names (todo 841) — the full shape is
+   * to its top-level field names. The full shape is
    * `codemode.describe(id)`'s job.
    */
   signature?: string;
@@ -124,7 +120,7 @@ export type SearchOptions = {
 };
 
 /**
- * One result page plus honest pagination facts (todo 840, mirroring upstream
+ * One result page plus honest pagination facts, mirroring upstream
  * @cloudflare/codemode's { results, total, truncated } search shape):
  *  - `total`     — distinct catalog entries scoring non-null under the scorer
  *    tiers actually consulted (after kind/service filters, BEFORE paging and
@@ -319,7 +315,7 @@ function outputItemKeysOf(entry: CatalogEntry): Record<string, string[]> {
 }
 
 /**
- * SEARCH-HIT output-type compaction threshold (todo 841): in a search hit, an
+ * Search-hit output-type compaction threshold. In a search hit, an
  * operation whose rendered OUTPUT type block exceeds this many chars is
  * replaced by a stub declaration (see renderSignature). Why 2000: measured
  * over the whole manifest (2026-07-06), every operation's output block was
@@ -390,7 +386,7 @@ function compactOutputStub(entry: CatalogEntry, typeName: string): string {
  * level" — exactly the wrong access (`r.projects` instead of
  * `r.data.projects`) the envelope exists to prevent.
  *
- * `compactOversizedOutput` (todo 841) is the SEARCH-HIT rendering mode: the
+ * `compactOversizedOutput` is the search-hit rendering mode: the
  * input type block and the callable line are always full (they are what the
  * model needs to make the call), but an output type block over
  * COMPACT_OUTPUT_THRESHOLD chars is replaced by a stub that keeps the type
@@ -435,7 +431,7 @@ export function renderSignature(
  * (`skillId#<key>`): the same key set src/skills/store.ts advertises as
  * `availableSections` (`##` slugs, then `file:<relpath>` keys — catalog
  * entries are id-sorted, store.ts is document-ordered, so ORDER may differ).
- * Exported (todo 841) so `codemode.describe` (src/executor/providers.ts)
+ * Exported so `codemode.describe` (src/executor/providers.ts)
  * advertises the SAME key set search hits carry — one derivation, no drift.
  */
 export function sectionKeysOf(catalog: Catalog, skillId: string): string[] {
@@ -454,11 +450,9 @@ export function sectionKeysOf(catalog: Catalog, skillId: string): string[] {
  * One scoring pass over the catalog: filter (kind/service), score with
  * `scoreFn`, and sort score desc then id asc. Shared by both tiers of
  * searchCatalogPage() so tier 2 is the SAME pipeline under a different
- * scorer; the caller diversifies + pages the result (split out of the old
- * selectPage so the pre-paging candidate COUNT is observable for `total`,
- * todo 840 — diversifyByService(scoreCandidates(...), pageLimit) is the old
- * selectPage, term for term). The catalog needs no exposure filter:
- * everything in the manifest is exposed by construction (ADR-0003).
+ * scorer; the caller diversifies and pages the result. This split makes the
+ * pre-paging candidate count observable for `total`. The catalog needs no
+ * exposure filter because ADR-0003 makes every manifest entry exposed.
  */
 function scoreCandidates(
   catalog: Catalog,
@@ -537,12 +531,11 @@ function interleaveSelectedPage(
  * sorted by score desc, then id asc for determinism (within a tier — see
  * below).
  *
- * Internal scoring (round 2, todo 793 — contract unchanged): the vendored
- * lexical score is wrapped by src/catalog/scoring.ts (query stopword
+ * src/catalog/scoring.ts wraps the vendored lexical scorer with query stopword
  * filtering, kind weighting, per-service diversity in the returned set);
  * rationale documented there.
  *
- * Tiered gate-rescue backfill (round 4, M1): tier 1 is the pipeline above,
+ * Tiered gate-rescue backfill: tier 1 is the pipeline above,
  * unchanged — when it fills the page, the result is byte-identical to the
  * pre-tiering behavior. Only when tier 1 leaves the page short (fewer than
  * `limit` gate-passing candidates exist — measured: 58/122 extended-lane
@@ -556,7 +549,7 @@ function interleaveSelectedPage(
  * tier-2 page is drawn at `limit + 10` so diversity quotas are computed over
  * a wider slate before the tier-1 duplicates are removed.
  *
- * `total`/`truncated` (todo 840): total counts distinct candidates the
+ * `total` and `truncated`: total counts distinct candidates the
  * consulted scorer tiers accepted (post-filter, pre-diversity/paging) —
  * tier-1 candidates alone when tier 1 filled the page; plus the NOVEL tier-2
  * candidates (ungated minus gated ids) when the backfill ran. Counting only
@@ -764,9 +757,8 @@ function deriveWiderCandidates(
 }
 
 /**
- * The frozen-contract entry point (scratchpad 514; eval/run-routing.mjs and
- * the vitest suites import this): the same page as searchCatalogPage, hits
- * only. Thin wrapper by construction so the two can never disagree.
+ * The stable entry point used by eval/run-routing.mjs and the Vitest suites.
+ * It returns only the hits from searchCatalogPage, so both paths agree.
  */
 export function searchCatalog(catalog: Catalog, opts: SearchOptions): SearchHit[] {
   return searchCatalogPage(catalog, opts).hits;

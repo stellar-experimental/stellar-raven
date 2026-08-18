@@ -174,13 +174,11 @@ export const catalogEntrySchema = z.object({
    */
   buildAuthorityRoles: z.array(z.enum(BUILD_AUTHORITY_ROLES)).min(1).optional(),
   /**
-   * Search-visibility marker (skills program, Solo scratchpad 608): literal
+   * Search-visibility marker: literal
    * `false` ONLY — absence means searchable. An entry with `searchable:
    * false` stays fully exposed (exact-id describe/read/run, codemode.catalog,
-   * super spec) but never enters search scoring or results. SHIPPED on all
-   * 210 skill-section entries since the 2026-07-13 skills-form A/B (arm B
-   * won: sections crowded operations in search while whole-skill entries
-   * carried every measured discovery need — scratchpad 608 P4).
+   * super spec) but never enters search scoring or results. Every current
+   * skill-section entry uses this marker. The decision record is ADR-0005.
    */
   searchable: z.literal(false).optional(),
   /**

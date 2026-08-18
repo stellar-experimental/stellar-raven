@@ -6,7 +6,7 @@
  * policy/redact.ts are both plain Node), so it is unit-testable directly,
  * unlike run.ts (worker-only via @cloudflare/codemode).
  *
- * SECURITY ORDERING (F2): each line is REDACTED FIRST, then clipped. Clipping
+ * Security ordering: redact each line before clipping it. Clipping
  * before redaction would let a secret straddling the MAX_LOG_LINE_CHARS
  * boundary leak its prefix — the tail (with the redactable substring) gets cut
  * off, so scrubbing no longer matches. Redacting first collapses the whole

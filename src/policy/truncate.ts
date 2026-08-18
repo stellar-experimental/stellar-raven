@@ -5,12 +5,9 @@
  * Why not import codemode's `truncateResult`: it IS importable inside the
  * Worker, but the package's main entry imports `cloudflare:workers`, which
  * makes every module that touches it untestable under plain-Node vitest.
- * The semantics are small (same 4-chars-per-token estimate, same footer
- * idea), so we own a small pure module instead and keep the policy layer
- * fully unit-testable ("vendor small pure pieces" allowance, todo 798).
- * Beyond upstream: the footer names WHERE the clipped bulk was (top-level
- * keys with sizes / array items / string chars — todo 824, 2026-07-03 eval:
- * blind truncation made agents re-run whole batches).
+ * The semantics are small, so this pure module keeps the policy layer
+ * testable under Node. The footer also identifies the clipped bulk by key,
+ * array length, or string length.
  *
  * Applied ONLY at the model boundary (the `execute` tool's final result +
  * logs/errors) — results flowing back INTO sandbox code cost no context
@@ -247,11 +244,9 @@ function logsFooter(originalChars: number, maxTokens: number): string {
  * joined lines AFTER shapeLogs' structural caps (line count / line length).
  * Deliberately equal to the result budget rather than tighter: logs are the
  * model's only diagnostic channel when a script fails, and clipping them
- * hurts most exactly while we're tuning/evaling. This bound exists to close
- * the pathological case (payload smuggled past the result cap via
- * console.log — previously ~50k tokens worst case), not to economize normal
- * debugging. The execute telemetry records when it fires (`logsTruncated`);
- * tighten only if the data says real sessions hit it.
+ * hurts most during debugging. This bound prevents payloads from bypassing
+ * the result cap through console.log. Execute telemetry records when it fires
+ * (`logsTruncated`); tighten it only when production data supports the change.
  */
 export function truncateLogsForModel(text: string, maxTokens = DEFAULT_MAX_TOKENS): Truncated {
   maxTokens = modelBoundaryMaxTokensFromValue(maxTokens);

@@ -192,7 +192,7 @@ describe("build-catalog.mjs", () => {
     expect(docs.map((e) => e.id)).toContain("stellarDocs.search_docs");
     expect(docs.map((e) => e.id)).toContain("stellarDocs.search_docs_in_category");
     expect(docs.map((e) => e.id)).toContain("stellarDocs.search_meeting_notes");
-    // Every docs op carries the algolia execute-mapping block for Phase 3.
+    // Every docs operation carries its Algolia execution mapping.
     for (const op of docs) {
       expect(op.transport?.type, op.id).toBe("algolia");
       expect((op.transport as Record<string, unknown>).algolia, op.id).toBeDefined();
@@ -293,7 +293,7 @@ describe("build-catalog.mjs", () => {
   });
 });
 
-describe("x-routing ingestion — routingKeywords field (scoring lever 7, issue #21)", () => {
+describe("x-routing ingestion — routingKeywords field", () => {
   it("attaches routingKeywords to exactly the exposed scout ops that publish x-routing", () => {
     const withField = catalog.entries.filter((e) => (e.routingKeywords ?? []).length > 0);
     // 25 upstream ops carry x-routing; partnerAssistant is build-excluded.

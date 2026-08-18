@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reviewability Audit"
+  short_description: "Audit and repair codebase noise without losing intent"
+  default_prompt: "Use $audit-reviewability to audit and repair this change for reviewability debt."

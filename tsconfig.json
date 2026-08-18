@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     // src/catalog/** uses explicit .ts extensions so the frozen search
     // contract (src/catalog/search.ts) loads under plain Node type stripping
-    // for the eval CLI (scratchpad 514). Legal because noEmit is on.
+    // for the eval CLI. Legal because noEmit is on.
     "allowImportingTsExtensions": true,
     "noUncheckedIndexedAccess": true,
     "verbatimModuleSyntax": true,

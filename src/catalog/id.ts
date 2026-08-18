@@ -1,9 +1,8 @@
 /**
- * Catalog id helpers — shared so the "last id segment" rule has ONE
- * definition (F7 consolidation). The terminal segment is the high-weight
+ * Catalog id helpers. The terminal segment is the high-weight
  * name field for search scoring (catalog/search.ts), the sandbox function
- * name per operation (executor/providers.ts), and the skill terminal-name
- * used by the read alias (skills/store.ts).
+ * name per operation (executor/providers.ts), and the skill terminal name
+ * used by nearest-id suggestions (skills/store.ts).
  *
  * Plain module, no I/O — importable under plain `node` type-stripping
  * (the eval CLI + vitest both load src/catalog/** directly).

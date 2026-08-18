@@ -1,5 +1,5 @@
 /**
- * Contract tests for `run-qa.mjs --judge-stored` (Solo todo 1261): phase 2 of
+ * Contract tests for `run-qa.mjs --judge-stored`: phase 2 of
  * the two-phase collect → checkpoint → judge flow. Judges a --no-judge
  * collection IN PLACE with an injected judge stub — no claude CLI spawn, no
  * spend. Pins: write-back shape (verdicts, summary, judge-cost meta stamps,

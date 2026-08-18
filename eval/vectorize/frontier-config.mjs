@@ -44,9 +44,9 @@ export function buildCatalogCards(manifest = JSON.parse(readFileSync(path.join(R
   const workflowsByOperation = new Map();
   for (const workflow of WORKFLOW_ARCHETYPES) {
     for (const step of workflow.steps) {
-      const list = workflowsByOperation.get(step.id) ?? [];
+      const list = workflowsByOperation.get(step) ?? [];
       list.push(`${workflow.title}: ${workflow.questionShape}`);
-      workflowsByOperation.set(step.id, list);
+      workflowsByOperation.set(step, list);
     }
   }
   return manifest.entries

@@ -1,8 +1,7 @@
 /**
- * Demo-playground session cookie + parked-state validation
- * (research/demo-playground-design.md Decision 4; review finding 2).
+ * Playground session cookie and parked-state validation.
  *
- * The /demo chat endpoint is gated by a short-lived signed cookie minted by
+ * The /playground/chat endpoint uses a short-lived signed cookie minted by
  * the /callback demo branch after the WorkOS exchange — no OAuth token ever
  * reaches the browser. Cookie value is `<base64url payload>.<base64url mac>`
  * where payload is JSON `{ sub, iat, exp }` and the MAC is HMAC-SHA256 keyed
@@ -65,9 +64,8 @@ export async function verifyDemoCookie(secret: string, cookieHeader: string | nu
 }
 
 /**
- * Validate a parked-KV value as the demo branch of the login-state union
- * (review finding 2: the callback must never treat unknown JSON as an MCP
- * flow, and demo redirects are fixed same-origin paths only).
+ * Validate a parked-KV value as the demo branch of the login-state union.
+ * The callback rejects unknown JSON, and demo redirects use fixed same-origin paths.
  */
 export function parseDemoParkedState(raw: string): { type: "demo"; returnTo: string } | null {
   let parsed: unknown;

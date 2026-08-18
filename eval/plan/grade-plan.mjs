@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * grade-plan.mjs — multi-tool PLAN grader over golden Q→A results (Solo todo 799).
+ * grade-plan.mjs — multi-tool PLAN grader over golden Q→A results.
  *
  * The answer eval (eval/qa/) judges WHAT the agent said; this grades HOW it
  * got there, from the stored tool transcript:
@@ -222,7 +222,7 @@ export function detectProgression(orderedOps, opClasses) {
 const isSearchToolCall = (t) => /^mcp__.+__search/.test(t.tool ?? "");
 const isExecuteToolCall = (t) => (t.tool ?? "").endsWith("execute");
 
-/** Todo-903 isolated harness tool: mcp__<server>__<service>_<operation>. */
+/** Isolated harness tool: mcp__<server>__<service>_<operation>. */
 export function extractPlainOperationTool(toolName) {
   const match = /^mcp__.+__(lumenloop|scout|stellarDocs)_([A-Za-z0-9_]+)$/.exec(String(toolName ?? ""));
   return match ? { service: match[1], op: match[2] } : null;

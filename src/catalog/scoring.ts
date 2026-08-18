@@ -2,8 +2,8 @@
  * Routing-aware scoring layer on top of the vendored lexical scorer
  * (src/catalog/vendor/search-scoring.ts — untouched upstream math).
  *
- * This module is OURS (round 2, todo 793) and is deliberately structural —
- * every lever below is query-independent and applies uniformly to the whole
+ * This module adds structural adjustments to the vendored scorer.
+ * Every lever below is query-independent and applies uniformly to the whole
  * catalog. No per-question special cases, no query→service maps.
  *
  * Seven levers (numbered 1–7 below; lever 6 is query-side alias
@@ -38,7 +38,7 @@
  *     displaced, and a service's FIRST in-page hit always survives (quotas
  *     only trim a service's third-and-later appearances).
  *
- *  4. Low-weight keyword field (round 3, todo 810) — skill-section entries
+ *  4. Low-weight keyword field — skill-section entries
  *     carry build-time `keywords` distilled from the section BODY
  *     (src/catalog/extract-keywords.ts); descriptions are heading + first
  *     paragraph truncated to 200 chars, so mid-section content (error codes,
@@ -53,7 +53,7 @@
  *     gates + skills lane, eval/run-routing.mjs) is the guard against that
  *     trade going bad; changing the blend requires re-running it.
  *
- *  5. Ungated scoring path (round 4, M1 tiered gate-rescue backfill) — the
+ *  5. Ungated scoring path for tiered gate-rescue backfill — the
  *     vendor coverage gate (search-scoring.ts:130, <60% token coverage and
  *     no exact phrase → null) is structurally unreachable for long
  *     multi-clause questions: at 20+ query tokens NO single entry covers 60%
@@ -69,7 +69,7 @@
  *     test/scoring.test.ts proves the two scorers share a scale wherever the
  *     gate passes (see search.ts).
  *
- *  7. Routing-keyword field (Scout 1.7.16 x-routing absorb, issue #21) —
+ *  7. Routing-keyword field (Scout 1.7.16 x-routing) —
  *     operation entries may carry `routingKeywords`: vocabulary the upstream
  *     service curates specifically for routing and publishes separately from
  *     its prose description (Scout's `x-routing` extension: purpose, useWhen,
@@ -226,7 +226,7 @@ function weightedScore(
 }
 
 /**
- * Lever 6 (todo 844): domain alias canonicalization, query side. Real users
+ * Lever 6: domain alias canonicalization on the query side. Real users
  * abbreviate ("tx history", "acct balance"); the catalog spells vocabulary
  * out, and the vendor's prefix match cannot bridge "tx"→"transaction"
  * ("transaction" does not start with "tx"). The table maps abbreviation →
@@ -237,11 +237,8 @@ function weightedScore(
  * dapp/wasm/cli/sdk all ARE catalog vocabulary and are deliberately absent;
  * the catalog's own 21 tx/txs tokens all MEAN transaction, so no shadowing).
  *
- * Measurement history: byte-identical on the offline routing corpus (round
- * 5e — only 10/483 questions contain any alias token; eval/README.md), so it
- * ships on the REAL-USER lane (eval/local-lanes/jutsu-real-user, todo 844):
- * 213 alias-register questions mined from genuine pre-round-5 user traffic,
- * dual-pass consensus labels. Numbers recorded in eval/README.md round 844.
+ * The offline corpus stays byte-identical because few cases contain these
+ * aliases. The real-user lane validates the change. See eval/README.md.
  */
 export const QUERY_TOKEN_ALIASES: ReadonlyMap<string, string> = new Map([
   ["tx", "transaction"],
@@ -339,7 +336,7 @@ export function scoreEntryWeightedUngated(
  * A re-vendor that changes upstream math fails that suite loudly instead of
  * silently desyncing tier 2.
  *
- * RE-VENDOR CHECKLIST (todo 845; run when bumping @cloudflare/codemode):
+ * Re-vendor checklist for an @cloudflare/codemode upgrade:
  *  1. Field weights + tokenization/normalization (vendor FIELD_WEIGHTS,
  *     normalizeSearchText, tokenize) — mirror any change into this replica,
  *     then make the drift suite green again.

@@ -10,8 +10,8 @@
  * Writes: eval/routing-cases.json
  *
  * The whole point of this compile step (vs. raven-next's, which dropped them) is to
- * PRESERVE the routing labels: `expected_service` and `expected_cards` — and, since
- * todo 817, `acceptable_cards`, compiled into a service-level `expected_any`
+ * PRESERVE the routing labels: `expected_service`, `expected_cards`, and
+ * `acceptable_cards`. The last field becomes a service-level `expected_any`
  * accept-either set (corpus-authored tolerance; non-empty on 383/395 big.json cases,
  * cross-service on 361). Strict grading is untouched: `expected_any` only feeds the
  * additional any1/any3/any5 fields in lib/grade.mjs, so the legacy 338-case strict

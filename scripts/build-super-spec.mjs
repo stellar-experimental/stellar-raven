@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * build-super-spec.mjs — deterministic unified "super spec" builder
- * (todo 800; design rationale: research/super-spec-design.md).
+ * build-super-spec.mjs — deterministic unified "super spec" builder.
+ * Design rationale: research/super-spec-design.md.
  *
  * Emits specs/super-spec.json: ONE OpenAPI-3.1-STYLE document covering every
  * service this MCP fronts — lumenloop, scout, stellarDocs — plus a synthetic

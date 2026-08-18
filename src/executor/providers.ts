@@ -4,7 +4,7 @@
  * src/executor/run.ts feeds these providers to codemode's
  * DynamicWorkerExecutor, whose ResolvedProvider type they match structurally.
  *
- * Surface shape (decision, todo 798): one global per service exposing one
+ * Each service global exposes one
  * async fn PER OPERATION, named exactly by the catalog id's terminal segment —
  * `lumenloop.search_directory(args)`, `scout.getStatus()`,
  * `stellarDocs.search_docs(args)`. Chosen over a generic `call("id", args)`
@@ -33,7 +33,7 @@
  *   codemode.search(queryOrOpts)      — host-side searchCatalogPage (ranked;
  *     { ok, hits, total, truncated, recovery, widerCandidates } — truncated ⇒ retry with a higher limit
  *     or narrower filters). Unknown kind/service filter values are rejected
- *     as error envelopes naming the valid set (todo 839) — the frozen
+ *     as error envelopes naming the valid set. The
  *     searchCatalog contract keeps filters silent, so the validation lives
  *     here at the sandbox boundary.
  *   codemode.catalog({ kind?, service?, compact? }) — the catalog as plain
@@ -678,11 +678,10 @@ export function buildCodemodeProvider(
                 }
               };
             }
-            // Filter validation (todo 839): searchCatalog's filters are silent
-            // exact-matches by (frozen) contract, so a near-miss like service
-            // "stellardocs" or kind "operations" returns ZERO hits and reads as
+            // searchCatalog uses silent exact-match filters. A near-miss like
+            // service "stellardocs" or kind "operations" returns zero hits and reads as
             // "the capability is missing". Reject unknown filter values as an
-            // error-envelope that names the bad value AND the real ones. The
+            // error envelope that names the bad value and the real ones. The
             // service set comes from the catalog itself, never a hand-maintained
             // list. Explicit null means "no filter" (idiomatic
             // LLM code passes `maybeService ?? null`), same as `limit: null`.
@@ -776,7 +775,7 @@ export function buildCodemodeProvider(
             return { ok: true, hits, total, truncated, recovery, widerCandidates };
           },
 
-          // The canonical detail-on-demand step (todo 841, mirroring upstream
+          // The canonical detail-on-demand step mirrors upstream
           // codemode's search → describe → call): a describe result carries
           // everything DETAIL-shaped a search hit has and more — search hits
           // stub oversized output types (COMPACT_OUTPUT_THRESHOLD,

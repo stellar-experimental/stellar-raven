@@ -1,5 +1,5 @@
 /**
- * POST /playground/chat — the stateless SSE chat turn (design Decisions 1, 4, 5).
+ * POST /playground/chat — the stateless SSE chat turn.
  *
  * Gauntlet order: method → CSRF/origin (Origin must equal the request
  * origin; Sec-Fetch-Site, when present, must be "same-origin" — "same-site"
@@ -9,7 +9,7 @@
  * not burn a throttle slot) → best-effort KV throttle. Only then does a
  * model turn start: streamText over the AI binding — routed through the AI
  * Gateway whose spend-limit rule is the mandatory account-level cost
- * backstop (design Decisions 3/5) — with the two demo tools, the production
+ * backstop — with the two demo tools, the production
  * SERVER_INSTRUCTIONS + playground preamble as system prompt, and
  * fullStream translated to DemoFrame SSE events. The whole turn is bounded
  * by one abort signal: client disconnect (stream cancel) or the turn
@@ -79,27 +79,14 @@ declare global {
   }
 }
 
-// Model selection is measured, never assumed. The 2026-08-06 run moved primary
-// to GPT-5.6 Terra with Luna as fallback: at an identical 5/5 pass rate over 25
-// turns, Terra is ~19% faster p50 and 20% cheaper than the GPT-5.4 it replaced,
-// and Luna beats 5.4-mini at 3.75x lower input cost. Sol measured no better —
-// same pass rate, slowest first token, double the price — so the frontier tier
-// stays a gauntlet control rather than the demo default.
-//
-// Gemini is deliberately not a candidate: its tool follow-up needs Google's
-// provider-specific thought_signature preserved, and neither route here keeps
-// it (passthrough lacks Unified Billing coverage; the run path has no google
-// runWireFormat and falls back to the OpenAI wire). Measured tool starts with
-// zero tool results.
-//
-// Prior matrix: research/demo-model-gauntlet-2026-07-07.md. Current matrix and
-// the per-model routing notes: scripts/run-demo-model-gauntlet.mjs.
+// Model defaults come from measured gauntlet results. The current matrix and
+// provider routing constraints live in scripts/run-demo-model-gauntlet.mjs.
 /** Throttle-bucket subject for loopback dev requests (no cookie, no WorkOS). */
 const DEV_SUBJECT = "dev-loopback";
 const TOOL_BUDGET_MESSAGE =
   "The demo hit its tool/step budget before the model produced a final answer. The trace above shows the completed tool work, but the answer may be incomplete; ask a narrower follow-up.";
 /**
- * Whole-turn ceiling (design Decision 5: "abort/timeout on the whole turn").
+ * Whole-turn ceiling.
  * Worst legitimate turn: 3 model steps + 1 sandbox execute; generous so it
  * only trips hung provider streams, not slow-but-live turns.
  */
@@ -193,12 +180,8 @@ export async function handleDemoChat(
   const emit = (frame: DemoFrame): void => {
     if (!open) return;
     if (frame.type === "done" || frame.type === "error") {
-      // First terminal wins. ai@7 treats an `error` part as terminal for the
-      // step but STILL emits `finish` from its flush (ai/dist/index.js:9911 +
-      // :9931), so an errored turn yields an error frame followed by a done
-      // frame. The client's done handler would then overwrite the real provider
-      // message with its generic "(error) without a text answer" note
-      // (page.ts) — the informative frame arrives first, so keep that one.
+      // First terminal wins. The AI SDK can emit `finish` after an `error`,
+      // and the later generic frame must not replace the provider error.
       if (emittedTerminal) return;
       emittedTerminal = true;
     }
@@ -207,12 +190,7 @@ export async function handleDemoChat(
     } catch (error) {
       open = false; // client went away — keep the turn's tool caps honest, drop frames
       clientGone.abort();
-      // The one way a turn can end with NO terminal frame despite the catch-all
-      // below: the enqueue that carries it fails, and every later frame is
-      // dropped by the `!open` guard. That used to be entirely silent, which is
-      // why the 2026-08-06 fable/opus `http:200` turns had no worker-side trace.
-      // Ordinary client disconnects land here too, so this is expected volume,
-      // not an alarm — the signal is `frame` being a terminal.
+      // Record which frame failed. Client disconnects also reach this path.
       logEvent("demo-stream-drop", { frame: frame.type, error: errorText(error) });
     }
   };
@@ -223,29 +201,8 @@ export async function handleDemoChat(
   emit({ type: "ready" });
 
   ctx.waitUntil(runTurn(env, emit, history, subject, turnSignal).finally(() => {
-    // Every SSE turn ends on a terminal frame, whatever settles runTurn.
-    //
-    // Read this as a belt-and-braces invariant, NOT as a fix for a known path —
-    // no known path reaches it. Under ai@7 `fullStream` cannot merely end: flush
-    // is exhaustive, emitting a NoOutputGeneratedError part when nothing terminal
-    // arrived and finish-step/finish otherwise (ai/dist/index.js:9931), and every
-    // analyzed exit from runTurn already emits a terminal.
-    //
-    // The `http:200` turns that motivated this were NOT this bug, and this guard
-    // would not have saved them. Demonstrated 2026-08-06 by deliberately touching
-    // a watched source file mid-turn: a `wrangler dev` hot reload tears the
-    // isolate down, the in-flight SSE closes with no terminal frame, and nothing
-    // here runs at all — the captured worker log ends on
-    // `⎔ Reloading local server...`. Same signature every time, including
-    // tool-start with no matching tool-result. So: never edit `src/` during a
-    // gauntlet run, and do not read a bare `http:200` as a product defect before
-    // checking `workerLog` in the artifact.
-    //
-    // `reason` is deliberately not "stop": the gauntlet's `pass.terminal` keeps
-    // failing it, and the client warns on it explicitly. `finishReason: "none"`
-    // in demo-chat is the usual telemetry signal — but note the event is logged
-    // in runTurn's own finally, so a throw before that try (demoInputTelemetry)
-    // gives an incomplete turn with NO demo-chat event at all.
+    // Mark an unexpected non-terminal exit as incomplete. The client and
+    // gauntlet treat this reason as a failure instead of a normal stop.
     if (!emittedTerminal) emit({ type: "done", reason: "incomplete" });
     open = false;
     try {
@@ -295,17 +252,11 @@ async function runTurn(
   try {
     const workersai = createWorkersAI({
       binding: env.AI,
-      // Gateway routing is mandatory: a missing gateway id/config fails model
-      // calls. Spend/rate rules are account-side posture tracked in Solo todo
-      // 848, not something this binding can enforce by itself.
+      // Gateway routing is mandatory. Spend and rate limits are account-side
+      // configuration; verify them live as described in ARCHITECTURE.md §7.
       gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK),
-      // One plugin per WIRE FORMAT, not per vendor: the openai plugin already
-      // covers the whole OpenAI-compatible long tail (xai/, groq/, deepseek/…),
-      // which is why grok worked without its own entry. anthropic and google
-      // speak their own wire formats and need their own. A missing plugin fails
-      // in ~4ms with "No provider plugin for wire format …" — fast enough to
-      // look like a config error rather than a model outage, which is the one
-      // helpful thing about it.
+      // Register one plugin for each wire format. OpenAI-compatible vendors
+      // share one plugin, while Anthropic and Google use distinct plugins.
       providers: [
         openAiApiMode === "responses" ? openAiResponses : openaiChat,
         cloudflareAnthropic,
@@ -313,11 +264,9 @@ async function runTurn(
       ],
       resume: false
     });
-    // Second instance, deliberately WITHOUT `providers`: that selects the plain
-    // binding run path for slugs the delegate registry cannot resolve. It must
-    // stay separate — dropping `providers` globally would demote openai/* off
-    // Responses mode and strip the Claude family of the SDK layer that removes
-    // the `temperature` they reject, turning three green models red.
+    // The unified-run client omits `providers` for slugs that the plugin
+    // registry cannot resolve. Keep it separate so other models retain their
+    // provider SDK normalization.
     const unifiedRun = createWorkersAI({
       binding: env.AI,
       gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK)
@@ -581,12 +530,8 @@ function bodyText(body: BodyInit): string {
   if (typeof body === "string") return body;
   if (body instanceof Uint8Array) return new TextDecoder().decode(body);
   if (body instanceof ArrayBuffer) return new TextDecoder().decode(body);
-  // Throw rather than return "{}". The caller feeds this straight back into the
-  // Anthropic request, so a shape this does not recognize would silently replace
-  // the entire request with empty JSON — every Anthropic turn quietly wrong, no
-  // error anywhere. @ai-sdk/anthropic posts string bodies today, so this is one
-  // dependency bump away from firing. Fail loud: the demo already converts a
-  // thrown turn into an error frame and falls through to the next model.
+  // Refuse unknown body types. Replacing a request with empty JSON would hide
+  // an incompatible SDK change, while a throw activates the normal fallback.
   throw new TypeError(`Unsupported Anthropic request body type: ${Object.prototype.toString.call(body)}`);
 }
 
@@ -615,12 +560,8 @@ async function parseChatBody(request: Request): Promise<ChatMessage[] | null> {
     const { role, content } = entry as { role?: unknown; content?: unknown };
     if (role !== "user" && role !== "assistant") return null;
     if (typeof content !== "string") return null;
-    // The per-message cap is a USER-input cap (mirrors the textarea
-    // maxlength); replayed assistant answers can legitimately exceed it
-    // (maxOutputTokens 4096 ≈ >4000 visible chars), and truncating them
-    // feeds the model corrupted versions of its own prior replies
-    // (PR #5 review). Aggregate prefill stays bounded by MAX_BODY_CHARS
-    // here and clampHistory's total-char budget.
+    // Apply the per-message cap only to user input. Replayed assistant answers
+    // can exceed it, while aggregate history remains bounded separately.
     out.push({ role, content: role === "user" ? content.slice(0, DEMO_CAPS.maxUserMessageChars) : content });
   }
   return out;

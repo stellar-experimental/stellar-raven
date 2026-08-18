@@ -4,17 +4,15 @@
  * `wrangler dev` (real Dynamic Worker sandbox), drives tools/call over /mcp,
  * prints a trimmed transcript, kills the server.
  *
- * CHANGED for ADR-0001 (research/decisions/0001-search-tool-shape.md): the
- * code-shaped {code} `search` tool is no longer registered top-level — the
- * shipped `search` is the host-side ranked query. All the spec-grep cases
- * below now run through `execute`, whose sandbox keeps codemode.spec() (the
- * same resolved super spec) alongside the service globals.
+ * Under ADR-0001, `search` is the host-side ranked query. These spec cases run
+ * through `execute`, whose sandbox provides codemode.spec() and the service
+ * globals.
  *
  * Run manually: node test/live/run-live-spec-search.mjs
  * (Deliberately not part of `npm test` — needs the LOADER binding; case 5
  * additionally makes real Algolia traffic and needs .dev.vars keys.)
  *
- * Cases (per the lane brief, retargeted at execute):
+ * Cases:
  *  1. execute: list services + callable counts from codemode.spec(); the
  *     execute sandbox DOES have service globals (unlike the retired search
  *     sandbox).

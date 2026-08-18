@@ -1,10 +1,10 @@
 /**
- * Cost-control caps and clamp helpers for `/demo` (design Decision 5). The
+ * Cost-control caps and clamp helpers for `/playground`. The
  * real enforcement is in-request (caller wires DEMO_CAPS into `stepCountIs`,
  * the tool `execute:` closures, and the request-size checks); `demoThrottle`
  * is an HONEST best-effort cross-request bucket only — Workers KV has no
  * atomic consume, so concurrent requests can overrun it. That's acceptable
- * because the WorkOS gate already bounds the audience (review finding 3);
+ * because the WorkOS gate already bounds the audience;
  * do not upgrade this to a hard cap without a new design (DO or a
  * Cloudflare rate-limiting product).
  *
@@ -20,10 +20,8 @@ export const DEMO_CAPS = {
   maxSteps: 7,
   /**
    * streamText maxOutputTokens per request. Sized for a reasoning-capable
-   * model: GPT-5.4 is the primary demo model, and Kimi K2.7 Code remains a
-   * control whose hidden thinking can consume the same output budget before
-   * visible text. Worst case ~4096 x $4/M = ~1.6 cents per turn — the KV
-   * throttle and gateway rate limit are the aggregate guards.
+   * model. Hidden reasoning can consume the output budget before visible
+   * text. The KV throttle and gateway rate limit are the aggregate guards.
    */
   maxOutputTokens: 4096,
   /** clampHistory: max replayed messages, oldest dropped first. */
@@ -45,7 +43,7 @@ export const DEMO_CAPS = {
    * model's view of its own prior answers; clampHistory bounds the total.
    */
   maxUserMessageChars: 4000,
-  /** demoThrottle: chats allowed per subject per rolling hour bucket. */
+  /** demoThrottle: chats allowed per subject per fixed UTC-hour bucket. */
   chatsPerHour: 30
 } as const;
 
@@ -148,7 +146,7 @@ function totalChars(messages: { role: string; content: string }[]): number {
  * own hour plus slack for clock skew). Racy by design (read-then-write, no
  * CAS) — concurrent requests in the same hour can both read the same count
  * and both be allowed, overrunning `chatsPerHour` by a small margin. That
- * is an accepted tradeoff (design Decision 5), not a bug to fix here.
+ * is an accepted tradeoff, not a bug to fix here.
  */
 export async function demoThrottle(
   kv: KVNamespace,

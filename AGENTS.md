@@ -113,6 +113,8 @@ Use the matching skill when the task triggers it:
 - `improvements-pipeline` — maintain finding lifecycle, intake, probes, index, and upstream follow-up.
 - `golden-truth` — change golden answers with provenance and explicit uncertainty.
 - `cloudflare-observability-review` — investigate production logs, traces, telemetry, and Ray IDs.
+- `audit-reviewability` — audit or repair reviewability debt in code, comments, documentation,
+  tests, agent instructions, and generated changes.
 
 Add durable repo-wide rules here only after recurring friction. Put specialized instructions in the
 closest relevant skill or directory-level `AGENTS.md`.

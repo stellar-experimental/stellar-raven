@@ -1,5 +1,5 @@
 /**
- * Offline smoke of src/server.ts — the ASSEMBLED router (Solo todo 833).
+ * Offline smoke of src/server.ts — the assembled router.
  * Its building blocks (gate.ts bypass logic, provider options, site pages)
  * are unit-tested in plain Node; what plain Node cannot exercise is this
  * file's dispatch wiring: bypass-before-provider ordering, the hostname

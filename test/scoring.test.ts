@@ -1,7 +1,7 @@
 /**
  * Scoring-layer contracts (src/catalog/scoring.ts).
  *
- * 1. Replica drift guard (todo 845): scoring.ts's `scoreEntryUngated` is a
+ * 1. Replica drift guard: scoring.ts's `scoreEntryUngated` is a
  *    line-for-line copy of the vendored scorer with EXACTLY ONE difference —
  *    the coverage gate is absent. That gives a total-equality invariant this
  *    suite pins:
@@ -68,7 +68,7 @@ const QUERY_BATTERY = [
   "x"
 ];
 
-describe("ungated replica ⇔ vendored scorer drift guard (todo 845)", () => {
+describe("ungated replica ⇔ vendored scorer drift guard", () => {
   it("scores identically to the vendor on every gate-passing (entry, query) pair", () => {
     let gatePassing = 0;
     let gateRescued = 0; // vendor null, replica non-null — the replica's raison d'être

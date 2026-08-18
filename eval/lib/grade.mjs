@@ -81,14 +81,14 @@ export function cardMatches(expectedCard, hit) {
  * Returns { top1, top3, top5, cardHit5 } — cardHit5 is null when the case has
  * no expected_cards (card metric not applicable).
  *
- * Accept-either (todo 809): when `expectedAny` is a non-empty array of services,
+ * Accept-either: when `expectedAny` is a non-empty array of services,
  * the result ADDITIONALLY carries { any1, any3, any5 } — a hit from ANY listed
  * service counts. The strict top1/top3/top5 fields are always computed against
  * `expectedService` alone and are unaffected, so legacy strict aggregates stay
  * byte-identical whether or not an overlay is applied.
  *
  * Grading rule v3 (ADR-0003): the manifest contains no `lumenloop.skill.*`
- * twins any more, so the v2 twin-identity layer (todo 816) is gone — a hit's
+ * twins, so a hit's
  * service label is exactly its own. Cross-service tolerance is expressed only
  * via expected_any.
  */

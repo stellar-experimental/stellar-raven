@@ -70,7 +70,7 @@ describe("build-micro-map.mjs", () => {
           {
             ...WORKFLOW_ARCHETYPES[0],
             id: "bad-step",
-            steps: [{ id: "lumenloop.not_exposed", why: "must fail" }]
+            steps: ["lumenloop.not_exposed"]
           }
         ],
         manifest.entries

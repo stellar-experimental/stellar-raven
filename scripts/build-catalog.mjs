@@ -40,7 +40,7 @@ const OUT_PATH = join(ROOT, "catalog", "manifest.json");
 const readJson = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
 
 // ---------------------------------------------------------------------------
-// Operation keywords (todo 824 items 4+5, M3/M4): descriptions are prose, so
+// Operation keywords: descriptions are prose, so
 // schema-level vocabulary — property names and enum values — plus the docs
 // page-title snapshot are lexically invisible to the search scorer. Distill
 // them into the same low-weight `keywords` field skill sections carry
@@ -161,7 +161,7 @@ function attachRoutingKeywords(entries, bodiesById) {
 }
 
 /**
- * Per-op page-title bodies for stellarDocs (todo 824 item 5): titles from
+ * Per-operation page-title bodies for stellarDocs: titles from
  * inventory/stellar-docs-titles.json scoped by each op's clientFilter URL
  * prefixes. Whole-corpus ops (no prefix filter) get none — vocabulary shared
  * by the whole surface distinguishes nothing.
@@ -570,7 +570,7 @@ function buildScout(inv) {
 
 // ---------------------------------------------------------------------------
 // Stellar Docs (Algolia) — 12 authored operations from specs/stellar-docs.json
-// (Lane D, todo 796; mapping recipe: research/services/stellar-docs-spec-design.md §7)
+// Mapping recipe: research/services/stellar-docs-spec-design.md §7.
 // ---------------------------------------------------------------------------
 
 function buildStellarDocs(spec) {
@@ -583,7 +583,7 @@ function buildStellarDocs(spec) {
     inputSchema: op.params, // spec params are already a JSON Schema object
     outputSchema: null,
     // Transport = shared backend block + this op's exact Algolia query mapping.
-    // Phase 3's adapter consumes `algolia` (paramMap/fixedParams/
+    // The adapter consumes `algolia` (paramMap/fixedParams/
     // conditionalParams/clientFilter/derivedQuery) as-is.
     transport: {
       type: "algolia",
@@ -601,7 +601,7 @@ function buildStellarDocs(spec) {
       source: catalogHints.provenanceSource,
       fetchedAt: spec.authoredAt,
       spec: "specs/stellar-docs.json",
-      note: "authored spec-as-data operation (Lane D todo 796), live-verified against the Algolia index — not a fetched descriptor"
+      note: "authored spec-as-data operation, live-verified against the Algolia index — not a fetched descriptor"
     }
   }));
 }
@@ -747,12 +747,8 @@ function buildSkills(manifest, texts, arm) {
           kind: "skill-section",
           description: heading,
           ...(keywords.length > 0 ? { keywords } : {}),
-          // Sections are exposed (exact-id skill.read, availableSections)
-          // but OUT of search since the 2026-07-13 skills-form A/B: 204
-          // section cards measurably crowded the 50 operations while adding
-          // nothing the whole-skill entry does not deliver (scratchpad 608
-          // P4: QA 41C/7W vs 39C/9W, stable wins 3-1, OpenZeppelin case
-          // correct 6/6 via whole-skill discovery alone).
+          // Sections remain exposed for exact-id reads and navigation, but
+          // ADR-0005 keeps them out of search.
           searchable: false,
           transport: { ...transportFor(skillFile), section: heading }
         });
@@ -791,17 +787,12 @@ function buildSkills(manifest, texts, arm) {
 }
 
 // ---------------------------------------------------------------------------
-// Skills-form experiment arms (skills program, Solo scratchpad 608 — R2
-// design). One categorical treatment over the ASSEMBLED entries: which
+// Skills-form experiment arms from ADR-0005. One categorical treatment over
+// the assembled entries controls which
 // representation of the pinned skill store enters search. Everything else —
 // exposure, exact-id reads/runs, schemas, pins, scoring constants — is a
-// control. Arm B WON the 2026-07-13 A/B (P4 in the scratchpad) and is now
-// the DEFAULT build: buildSkills stamps sections searchable:false at
-// creation, so B is a no-op here. Arm A (sections back in search) is kept
-// buildable for future rounds; C (all skills out of search) is banked with
-// its +30/−1 offline evidence for a possible follow-up from the B baseline.
-// Arm D (parent keyword distillation) was eliminated offline in the same
-// round (scratchpad 608 P3) and is no longer buildable.
+// control. Arm B is the default build. Arm A restores section search for
+// replication, and arm C removes all skills from search.
 // ---------------------------------------------------------------------------
 
 const SKILLS_FORM_ARMS = ["A", "B", "C"];
@@ -975,8 +966,8 @@ async function main() {
   assertScoutExclusionsResolve(stellarLight.openapi);
   assertSideEffectingOpsExcluded(stellarLight.openapi);
 
-  // Experiment-arm selection (--skills-form A|B|C, default B = shipped
-  // since the 2026-07-13 A/B; any non-B arm REQUIRES --out so a variant can
+  // Experiment-arm selection. Arm B is the shipped default. Any non-B arm
+  // requires --out so a variant can
   // never overwrite the shipped manifest).
   const armIdx = process.argv.indexOf("--skills-form");
   const arm = armIdx >= 0 ? process.argv[armIdx + 1] : "B";
@@ -1043,11 +1034,9 @@ async function main() {
     skillsManifest.synced_at
   ].reduce((max, ts) => (Date.parse(ts) > Date.parse(max) ? ts : max));
 
-  // The stellarDocs corpus taxonomy is deliberately NOT copied here: it lives
-  // in specs/stellar-docs.json and reaches the model via the super spec
-  // (build-super-spec.mjs reads it from the spec directly). A manifest-level
-  // `docs.taxonomy` copy existed until 2026-07-03 but had no consumer —
-  // neither the scorer, the adapters, nor codemode.catalog() read it.
+  // The stellarDocs corpus taxonomy stays in specs/stellar-docs.json. It
+  // reaches the model through the super spec. The scorer, adapters, and
+  // codemode.catalog() do not need a manifest copy.
   const catalog = sortKeysDeep({ version: 1, generatedAt, entries });
   mkdirSync(dirname(outPath), { recursive: true });
   const manifestBytes = `${JSON.stringify(catalog, null, 2)}\n`;

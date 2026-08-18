@@ -1,5 +1,5 @@
 /**
- * Shared cached-catalog helper (F7 consolidation) — the generated manifest is
+ * Shared cached-catalog helper. The generated manifest is
  * bundled as a JSON module (wrangler/esbuild + Vite both import JSON natively);
  * `loadManifest` validates it once, lazily, then caches for the isolate's
  * lifetime. `loadManifest` throws on a malformed manifest, which is a build

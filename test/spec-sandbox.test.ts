@@ -1,5 +1,5 @@
 /**
- * Spec-sandbox tests (todo 801) — the code-shaped spec-search machinery that
+ * Spec-sandbox tests for the code-shaped spec-search machinery that
  * mirrors @cloudflare/codemode@0.4.2's openApiMcpServer internals. Since
  * ADR-0001 (research/decisions/0001-search-tool-shape.md) this is no longer
  * a top-level tool: resolveSpecRefs feeds `execute`'s codemode.spec(), and

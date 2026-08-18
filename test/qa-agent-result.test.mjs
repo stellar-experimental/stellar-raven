@@ -1,7 +1,6 @@
 /**
- * Focused tests for eval/qa/agent-result.mjs (Solo todo 1566, execution-plan
- * Gate 1B part 1) — the pure parser that turns one `claude -p
- * --output-format stream-json` spawn into ONE structured outcome.
+ * Focused tests for eval/qa/agent-result.mjs. The pure parser turns one
+ * `claude -p --output-format stream-json` spawn into one structured outcome.
  *
  * The parser is the seam: run-qa.mjs's runAgent and these fixtures are its
  * only two adapters, so classification rules are pinned here against
@@ -328,7 +327,7 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
       // read OUTCOME is still indeterminate: this script guarded on `r.ok` and
       // projected `r.data.tailNote`, but it returned a small answer instead of
       // the envelope, so no `ok:true` was ever visible. Source text is not
-      // evidence (todo 1584 comment 4215), so a correctly written continuation
+      // evidence, so a correctly written continuation
       // reads as unproven here. That is the fail-closed direction and it is the
       // superseded expectation from the earlier `successful: 1` contract.
       readOutcomes: { total: 1, successful: 0, denied: 0, indeterminate: 1 },
@@ -634,7 +633,7 @@ describe("parseAgentResult — artifact continuation outcomes", () => {
   });
 
   /**
-   * Reproductions A, B and C (Spec review, todo 1584 comment 4215). Each one
+   * Reproductions A, B and C. Each one
    * writes a real fail-fast guard and then puts `.data` somewhere that proves
    * nothing: on the FAILURE return, inside a string, inside a comment. Source
    * text cannot carry read evidence at all, which is why the static-source

@@ -1,7 +1,7 @@
 /**
  * Analyzer smoke (design §12 unit rows — "analyze-composition.mjs against a
  * fixture transcript") — the §10.4 adoption/composition instrument the ship
- * decision for todo 806 reads. Two synthetic rows shaped exactly like
+ * decision reads. Two synthetic rows shaped exactly like
  * run-qa.mjs transcripts: one skill.run case (whole execute result carrying
  * a host `calls` ledger + a truncation footer) and one plain-ops case.
  * Pins: the adoption flag (and its \b guard), registry-based op expansion,

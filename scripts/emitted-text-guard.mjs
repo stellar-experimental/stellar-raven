@@ -20,14 +20,7 @@
  */
 import { EXCLUDED_LUMENLOOP_OPS, EXCLUDED_SCOUT_OPS, RETIRED_SKILL_REF_RE } from "./exposure.mjs";
 
-// THE pattern the runtime scrub uses (src/skills/scrub.ts), not a second list.
-//
-// This guard used to build its own regex from RETIRED_ONBOARDING_SKILLS alone,
-// so it knew exactly one retired id while the runtime scrub stripped three
-// families — the six lumenloop-api-* partner skills and the internal-guidance
-// stellar-developer-activity id would have sailed through emitted text. Same
-// half-applied-exclusion-data shape as the super-spec coverage hole. Sharing
-// the pattern makes drift structurally impossible rather than merely tested.
+// Share the runtime scrub pattern instead of maintaining another retired-id list.
 const RETIRED_SKILL_RE = RETIRED_SKILL_REF_RE;
 const RAW_SCOUT_PATHS = [...EXCLUDED_SCOUT_OPS].map((k) => k.split(" ")[1]);
 const EXCLUDED_LUMENLOOP_RE = new RegExp(`\\b(?:${[...EXCLUDED_LUMENLOOP_OPS].join("|")})\\b`);

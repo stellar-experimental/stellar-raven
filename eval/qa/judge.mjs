@@ -2,7 +2,7 @@
 /**
  * judge.mjs — LLM judge for the golden Q→A accuracy eval.
  *
- * Contract (scratchpad 516): judge(question, goldenAnswer, candidateAnswer)
+ * Contract: judge(question, goldenAnswer, candidateAnswer)
  * → verdict. Concretely:
  *
  *   judgeCase({ question, golden: { answer, keyFacts, avoid, notes }, tags, candidateAnswer })
@@ -36,7 +36,7 @@ export const JUDGE_MODEL = "claude-sonnet-5";
  * changes grading semantics; comparability rules in eval/qa/README.md
  * ("Judging rubric") — re-judge saved answers before any cross-run comparison.
  *   v2   — 2026-07-03 addendum: beyond-golden specifics are unverified, not wrong.
- *   v2.1 — 2026-07-03 avoid-clause scoping (todo 826): avoid items bind on
+ *   v2.1 — 2026-07-03 avoid-clause scoping: avoid items bind on
  *          concrete content only; support-relative avoid items are advisory.
  *   v2.2 — 2026-07-07 live/freshness cases may include compact execute-result
  *          excerpts so transcript-visible field support is not misgraded.
@@ -239,7 +239,7 @@ const SELF_TEST_CANDIDATES = [
       "Write your contract in Solidity, then run `soroban contract deploy --network testnet` — the old soroban CLI is still the current tool. No build step is needed because the CLI compiles Solidity for you, and you don't need any keys on testnet."
   },
   {
-    // Rubric v2.1 regression guard (todo 826): a support-relative avoid item must
+    // Rubric v2.1 regression guard: a support-relative avoid item must
     // not route a beyond-golden specific into wrongClaims.
     label: "support-relative-avoid",
     expect: "correct",
@@ -250,7 +250,7 @@ const SELF_TEST_CANDIDATES = [
       "First compile your contract to a Wasm file: run `stellar contract build` in the project. Make sure you have an identity with testnet funds (`stellar keys generate alice --network testnet --fund`). Then run `stellar contract deploy --wasm target/wasm32v1-none/release/your_contract.wasm --source alice --network testnet`. The command prints the deployed contract ID (starts with C...), which you pass to `stellar contract invoke --id <CONTRACT_ID> ...` to call it. You can also pass `--alias my_contract` at deploy time to store a local name for the contract ID, and reuse that alias in later invoke commands."
   },
   {
-    // Rubric v2.2/v2.3 regression guard (todos 865/871): if a live-data sourcing
+    // Rubric v2.2/v2.3 regression guard: if a live-data sourcing
     // condition is satisfied by compact transcript evidence, do not turn it
     // into a wrong claim just because the judge's priors remember an older API.
     label: "transcript-conditioned-support",

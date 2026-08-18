@@ -1,16 +1,10 @@
 /**
  * agent-result.mjs — the pure parser between one answering-agent spawn and
- * one structured QA outcome (Solo todo 1566; execution plan
- * `research/mcp-quality-improvement-execution-plan-2026-08-17.md`, Gate 1B).
+ * one structured QA outcome.
  *
- * WHY IT EXISTS: run-qa.mjs used to fold stream decoding, answer extraction,
- * transcript assembly and failure naming into `runAgent`, so the only way to
- * exercise a failure shape was to spend on a live provider. The 2026-08-14
- * round's single `error` row (`q-n3-ssrf-metadata-endpoint`) was a PROVIDER
- * safeguard that fired before any MCP call, and the runner recorded it as
- * `error: "success"` — indistinguishable from a transport failure. This module
- * is the seam: production (run-qa.mjs) and saved stream fixtures
- * (test/fixtures/qa-agent-streams/) are its two adapters.
+ * This module separates stream decoding, answer extraction, transcript
+ * assembly, and failure naming from the live provider. Production code and
+ * saved fixtures in test/fixtures/qa-agent-streams/ use the same parser.
  *
  * PURITY: no fs, no spawn, no clock, no network. Same input → same output,
  * hashes included.
@@ -415,7 +409,7 @@ function artifactOutcomes(transcript) {
       // Nothing about the SOURCE counts, because source is text and text does
       // not run: a guard and a `.data` use can sit on the failure return, inside
       // a string, or inside a comment and still read as a successful projection
-      // (todo 1584 comment 4215, reproductions A/B/C). A truncated body hides
+      // (see the source-evidence regression tests). A truncated body hides
       // its own envelope by construction, and `r.data ?? fallback` produces the
       // same output whether the read returned data or was denied.
       //

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * reconcile-capture.mjs — verify agent-transcribed `searchCalls` against the
- * capture-proxy wire log (Solo todo 1257, audit finding R24-SOL-01).
+ * capture-proxy wire log.
  *
  * For every workflow row (caseId × effort) it compares the row's reported
  * searchCalls with the exchanges the proxy captured under that row's

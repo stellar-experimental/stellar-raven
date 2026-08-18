@@ -2,7 +2,7 @@
 /**
  * run-routing.mjs — grade searchCatalog() routing accuracy against the compiled cases.
  *
- * Consumes (frozen search contract, scratchpad 514):
+ * Consumes these frozen search inputs:
  *   - src/catalog/search.ts  → loadManifest(json), searchCatalog(catalog, opts), SearchHit
  *   - catalog/manifest.json
  *   - eval/routing-cases.json (produced by eval/compile-routing.mjs)
@@ -11,7 +11,7 @@
  * whether any hit's service matches expected_service at top-1 / top-3 / top-5, plus
  * card-level hit@5 when expected_cards is present (tolerant normalizer in lib/grade.mjs).
  *
- * Skills lane + overlay (todo 809), applied HERE at load time so that re-running
+ * The skills lane and overlay are applied here at load time. Re-running
  * compile-routing.mjs (which regenerates routing-cases.json) never wipes them:
  *   - eval/skills-cases.json          hand-authored supplement; expected_service=skills.
  *     Graded as its own lane ("skills lane"), NEVER mixed into the legacy aggregate.
@@ -20,7 +20,7 @@
  *     strict (expected_service only — the legacy numbers, unchanged) and
  *     accept-either (any service in expected_any counts).
  *
- * Todo 817 additions (all strict-grading-neutral):
+ * Accept-either inputs do not affect strict grading:
  *   - compiled cases may carry corpus-derived expected_any (from acceptable_cards);
  *     per case it is unioned with the overlay's, and a legacy accept-either overall
  *     is reported alongside the unchanged strict aggregate.
@@ -82,7 +82,7 @@ const DUMP_RANKED_PATH = (() => {
 })();
 
 async function loadSearchModule() {
-  if (!existsSync(SEARCH_TS)) throw new Error(`missing ${SEARCH_TS} — Lane C not landed yet?`);
+  if (!existsSync(SEARCH_TS)) throw new Error(`missing ${SEARCH_TS} — run from a complete checkout`);
   try {
     return await import(pathToFileURL(SEARCH_TS).href);
   } catch (directErr) {
@@ -143,7 +143,7 @@ async function main() {
   if (typeof loadManifest !== "function" || typeof searchCatalog !== "function") {
     throw new Error("search.ts does not export loadManifest + searchCatalog (contract violation)");
   }
-  if (!existsSync(MANIFEST)) throw new Error(`missing ${MANIFEST} — Lane C not landed yet?`);
+  if (!existsSync(MANIFEST)) throw new Error(`missing ${MANIFEST} — run: node scripts/build-catalog.mjs`);
   if (!existsSync(CASES)) throw new Error(`missing ${CASES} — run: node eval/compile-routing.mjs`);
 
   const manifestJson = JSON.parse(readFileSync(MANIFEST, "utf8"));
@@ -163,8 +163,8 @@ async function main() {
   }
 
   const runCase = (c) => {
-    // Union of corpus-derived tolerance (compiled expected_any, from acceptable_cards —
-    // todo 817) and the hand-reviewed overlay (adds "skills" on build questions). Strict
+    // Union corpus-derived tolerance (compiled expected_any, from acceptable_cards)
+    // with the hand-reviewed overlay (adds "skills" on build questions). Strict
     // top1/3/5 grading ignores expected_any entirely, so legacy numbers are unaffected.
     const overlayAny = expectedAnyById.get(c.id);
     const expectedAny = unionExpectedAny(c.expected_service, c.expected_any, overlayAny);

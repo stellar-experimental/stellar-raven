@@ -94,8 +94,8 @@ const COOKIE_ATTRS = "HttpOnly; Secure; Path=/; SameSite=Lax";
 
 /**
  * Shape parked in KV under `login:${state}` — a validated discriminated
- * union (demo-playground review finding 2: the callback must never treat
- * unknown JSON as an MCP flow). Both branches carry the browser-binding
+ * union. The callback must never treat unknown JSON as an MCP flow. Both
+ * branches carry the browser-binding
  * cookie secret; the demo branch redirects only to fixed same-origin paths
  * (enforced by parseDemoParkedState in src/demo/auth.ts).
  */
@@ -432,8 +432,7 @@ type ResolvedAuthRequest =
  * vulnerability — and only after validating the redirect URI does it attach
  * `redirectUri`/`state`/`issuer` to subsequent errors. A populated
  * `redirectUri` is the documented signal that redirecting is safe
- * ("Present only after client and redirect validation"). Catching everything
- * and rendering one bare 400, as this wrapper used to, threw that away.
+ * ("Present only after client and redirect validation").
  *
  * Our own rule is stricter than upstream on purpose: 0.10.1 requires PKCE of
  * PUBLIC clients, and rejects a method without a challenge, but still lets a
@@ -494,14 +493,8 @@ function authorizationErrorResponse(error: unknown): Response {
 }
 
 /**
- * Every unredirectable /authorize failure renders the same seven words, so the
- * log line is the ONLY thing that separates them. Without this they were all
- * `reason: "Invalid authorization request"`, and diagnosing the 2026-08-09
- * ChatGPT outage meant joining app events to `cf-worker-event` by Ray ID just
- * to recover the query string. Both values are developer-authored constants —
- * an `AuthorizationError.code` is a fixed OAuth code, and `name` is a class
- * name (`CimdFetchError` when a client-metadata document fails to resolve) —
- * so this keeps the no-attacker-text rule that excludes `error.description`.
+ * Unredirectable failures share one client response. Log a developer-authored
+ * code or class name to distinguish them without recording attacker text.
  */
 function unredirectableReason(error: unknown): string {
   if (error instanceof AuthorizationError) return `unredirectable:${error.code}`;
@@ -526,30 +519,13 @@ function clearCookie(name: string): string {
 }
 
 /**
- * Every rejection in this module goes through here, so this is the one place
- * that has to log. Platform events only ever showed `POST /authorize -> 400`,
- * which is the same line for a CSRF mismatch, a missing terms acknowledgement,
- * and an unparseable request — a user report of any of them was unanswerable
- * from logs. `body` is a constant developer-authored string, never user or
- * provider content, so it is safe as the reason. Mirrors `demo-chat-rejected`
- * in src/demo/chat.ts.
- */
-/**
  * Recoverable consent failure: log the real reason, then send the browser back
- * to its own form action so the GET handler above mints a FRESH token and
+ * to its own form action so the GET handler above mints a fresh token and
  * cookie and re-renders the consent page.
- *
- * A bare 400 here was the actual defect behind "CSRF token mismatch" reports.
- * Every failed consent POST used to clear the CSRF cookie, so whatever went
- * wrong first — a stale tab, a second tab overwriting the cookie, a keyboard
- * submit past the CSS checkbox gate — the RETRY reported a CSRF mismatch, and
- * kept reporting it. One transient error turned into a sticky dead end that no
- * cookie lifetime could fix, because the cookie was cleared, not expired.
  *
  * 303 (not 302) so the redirect is unambiguously a GET. `url.search` is safe to
  * echo: parseAuthRequest already validated it on this request, and nothing has
- * been granted or parked yet. Clearing the cookie is redundant — the GET's
- * Set-Cookie supersedes it.
+ * been granted or parked yet. The GET replaces the prior CSRF cookie.
  *
  * Known ceiling: a browser that refuses the cookie loops consent→consent rather
  * than dead-ending. It could never have completed the flow either way, and a
@@ -563,6 +539,10 @@ function retryConsent(reason: string, url: URL): Response {
   });
 }
 
+/**
+ * Log each rejection at the response boundary. `body` and `reason` contain
+ * developer-authored constants, never request or provider text.
+ */
 function text(
   body: string,
   status: number,

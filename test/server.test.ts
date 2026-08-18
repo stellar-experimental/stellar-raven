@@ -5,8 +5,8 @@
  * @modelcontextprotocol/server and /client v2 packages) and asserts the two
  * tools exist with the expected schemas and stub behavior.
  *
- * CHANGED for ADR-0001 (research/decisions/0001-search-tool-shape.md,
- * Solo todo 803): the shipped `search` is the host-side ranked query
+ * Under ADR-0001 (research/decisions/0001-search-tool-shape.md), the shipped
+ * `search` is the host-side ranked query
  * ({query, kind?, service?, limit?}); the code-shaped {code} search is no
  * longer a top-level tool — that discovery path lives inside `execute`'s
  * sandbox (codemode.spec()/search/catalog, covered by spec-sandbox.test.ts
@@ -440,7 +440,7 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.nextSteps).toContain("exact-match");
   });
 
-  it("skill hits cross the tool boundary with availableSections (todo 812)", async () => {
+  it("skill hits cross the tool boundary with availableSections", async () => {
     const result = await client.callTool({
       name: "search",
       arguments: { query: "skills.lumenloop.stellar-project-dossier", kind: "skill" }
@@ -491,7 +491,7 @@ describe("search behavior (host-side ranked)", () => {
     expect(result.isError).toBe(true);
   });
 
-  it("carries tier on every hit plus total/truncated pagination facts (todos 838/840)", async () => {
+  it("carries tier on every hit plus total/truncated pagination facts", async () => {
     const result = await client.callTool({
       name: "search",
       arguments: { query: "stellar soroban contract", limit: 5 }
@@ -574,7 +574,7 @@ describe("search behavior (host-side ranked)", () => {
     }
   });
 
-  it("a VALID service filter flows through validation to service-scoped hits (todo 839)", async () => {
+  it("a VALID service filter flows through validation to service-scoped hits", async () => {
     const result = await client.callTool({
       name: "search",
       arguments: { query: "docs search", service: "stellarDocs", limit: 20 }
@@ -594,7 +594,7 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.nextSteps).not.toContain("More entries matched than shown");
   });
 
-  it("an unknown service filter returns zero hits with the valid names, not a silent empty page (todo 839)", async () => {
+  it("an unknown service filter returns zero hits with the valid names, not a silent empty page", async () => {
     const result = await client.callTool({
       name: "search",
       arguments: { query: "docs search", service: "stellardocs" }

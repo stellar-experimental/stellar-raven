@@ -42,10 +42,8 @@ import { assertNotPlaygroundQuarantine } from "../playground/artifact-contract.m
 export const ADOPTION_RE = /\bcodemode\.skill(?:\.run|_run)\s*\(/;
 
 /**
- * Loss-boundary markers. Starting with the todo-903 round on 2026-07-10,
- * SOURCE BASIS counts as truncation alongside the older TRUNCATED footer.
- * Historical composition stamps produced before this boundary are therefore
- * not like-for-like on truncation counts.
+ * SOURCE BASIS and TRUNCATED both mark a loss boundary. Historical composition
+ * stamps from before 2026-07-10 are not comparable on truncation counts.
  */
 const TRUNCATION_MARKER = "--- TRUNCATED ---";
 const SOURCE_BASIS_MARKER = "--- SOURCE BASIS ---";

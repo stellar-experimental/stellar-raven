@@ -81,15 +81,12 @@ export async function logArtifactRead(fields: {
 }
 
 /**
- * One `codemode.skill.read` call. Exists because the 2026-07-30 de-vendoring
- * turned skill reads into network reads and nothing measured the result: the
- * only prior signal was a boolean `sandbox.skillRead` span attribute, which
- * says a run read SOME skill and nothing else.
+ * One `codemode.skill.read` call. Skill reads can use memoized, cached, or
+ * upstream content, so each read records its shape and retrieval source.
  *
  * Two questions this is the instrument for, both recorded in
- * ideas/skill-discovery-without-bundling.md: whether agents use SECTION reads at
- * all (if they only ever read whole skills, 210 section entries are dead
- * weight), and what the live-fetch latency profile actually is. `from` makes the
+ * ideas/skill-discovery-without-bundling.md: whether agents use section reads at
+ * all and what the live-fetch latency profile is. `from` makes the
  * latency interpretable — a memo hit and an upstream fetch differ by orders of
  * magnitude and a mean over both is meaningless.
  *

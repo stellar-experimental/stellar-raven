@@ -1,12 +1,11 @@
 /**
- * runSkill dispatcher tests (design §12, unit row 2) — resolution ladder,
+ * runSkill dispatcher tests — resolution ladder,
  * host-owned call ledger, deadline race, warn belts, and assertRunnersWired
  * in every drift direction.
  *
- * The catalog here is hand-built (the `runnable` manifest flag lands in the
- * schema/builder rollout step; this phase pins the runtime semantics against
- * synthetic runnable entries whose schemas come FROM the real runners, so
- * the wiring assertions exercise the real registry).
+ * The catalog here is hand-built. It pins the runtime semantics against
+ * synthetic runnable entries whose schemas come from the real runners. The
+ * wiring assertions therefore exercise the real registry.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Catalog, CatalogEntry } from "../src/catalog/types.ts";

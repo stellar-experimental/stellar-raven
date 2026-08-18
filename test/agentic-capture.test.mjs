@@ -1,7 +1,7 @@
 /**
- * Tests for the agentic-eval harness-owned capture pair (Solo todo 1257,
- * audit finding R24-SOL-01): capture-proxy.mjs is exercised as a real child
- * process against an in-process stub upstream (passthrough + JSONL capture +
+ * Tests for the agentic-eval harness-owned capture pair. capture-proxy.mjs
+ * runs as a real child process against an in-process stub upstream
+ * (passthrough + JSONL capture +
  * marker recording), and reconcile-capture.mjs's wire-vs-transcript logic is
  * pinned on the four outcomes that matter — faithful transcript, mistranscribed
  * page, fabricated call, omitted call — plus the stripped-marker rejection.
@@ -185,9 +185,8 @@ describe("reconcile-capture", () => {
     expect(report.summary.tainted).toBe(true);
   });
 
-  // The five bypasses a five-model adversarial review reproduced against the
-  // first cut: each returned status ok / tainted false, i.e. a clean
-  // reconciliation certificate over unattributable wire traffic.
+  // Each bypass must taint the report. Unattributable wire traffic cannot
+  // produce a clean reconciliation certificate.
   it("fails closed on marker-strip combined with an empty transcript", () => {
     const report = reconcile([row([])], [captureEntry(null, "soroban storage")]);
     expect(report.rows[0]).toMatchObject({ status: "rejected", emptyReportWithTraffic: true });

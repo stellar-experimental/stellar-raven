@@ -54,7 +54,7 @@ Instruments: the skills lane in `eval/skills-cases.json` (23 cases), the QA batt
 and the agentic lane. Precedent for the shape of this experiment: the 2026-07-13 skills-form A/B
 (`eval/README.md`), which moved sections out of search on measured evidence.
 
-## Still open — question 2: do 204 section entries earn their place?
+## Still open — question 2: do section entries earn their place?
 
 Sections are `searchable: false` — they cost nothing in ranking. What they cost is catalog size and
 a fail-closed invariant to maintain (a `##` heading with no catalog entry is refused on both read
@@ -83,7 +83,7 @@ measurement rather than a story told afterwards — the same discipline the `bas
 `skill_read` events from ORGANIC traffic, or after 2026-09-30, whichever comes first.
 
 - **`shape` distribution decides question 2.** >= 90% `whole` (sections + files + mixed under 10%)
-  means the 204 section entries are dead weight: delete them, the section builder, and the
+  means the section entries are dead weight: delete them, the section builder, and the
   read-time sectioning invariant. Routing cannot regress — sections are already `searchable: false`.
   >= 25% section/file reads means they are earning their place: close question 2 and stop
   revisiting it. Between 10% and 25% is inconclusive; keep them and re-read with more data.

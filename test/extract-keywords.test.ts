@@ -1,5 +1,5 @@
 /**
- * extractKeywords tests (todo 810) — the build-time section-body distiller
+ * extractKeywords tests for the build-time section-body distiller
  * behind the manifest's optional `keywords` field. Deterministic, stopword-
  * filtered, deduped against already-scored text, capped. (How the scorer
  * BLENDS the distilled fields is pinned in test/scoring.test.ts.)

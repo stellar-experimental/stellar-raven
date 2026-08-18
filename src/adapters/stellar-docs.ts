@@ -4,7 +4,7 @@
  * escalating timeout, retry on network/5xx ONLY — never 4xx, never 429).
  *
  * Each stellarDocs catalog entry carries its execute mapping in
- * `transport.algolia` (authored in specs/stellar-docs.json, Lane D):
+ * `transport.algolia` (authored in specs/stellar-docs.json):
  *  - paramMap           — model arg → Algolia param (exact names).
  *  - fixedParams        — op-pinned params (facetFilters, overfetch, …).
  *  - conditionalParams  — "arg=value" → param overrides (null deletes);

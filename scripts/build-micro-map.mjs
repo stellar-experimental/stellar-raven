@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * build-micro-map.mjs — deterministic Phase 1 discovery orientation emitter.
+ * build-micro-map.mjs — deterministic discovery orientation emitter.
  *
  * Reads the checked-in catalog manifest plus authored workflow archetypes and
  * emits src/mcp/micro-map.ts. This is model-facing text, so it is generated
@@ -83,8 +83,8 @@ export function validateWorkflowArchetypes(archetypes, entries, familyPurposes =
       throw new Error(`workflow archetype "${archetype.id}" has no steps`);
     }
     for (const step of archetype.steps) {
-      if (!entryIds.has(step.id)) {
-        throw new Error(`workflow archetype "${archetype.id}" references non-manifest id "${step.id}"`);
+      if (!entryIds.has(step)) {
+        throw new Error(`workflow archetype "${archetype.id}" references non-manifest id "${step}"`);
       }
     }
   }
@@ -117,7 +117,7 @@ export function buildMicroMap(manifest) {
   });
   const authorityLines = AUTHORITY_RULES.map((rule) => `- ${rule}`);
   const workflowLines = WORKFLOW_ARCHETYPES.map((archetype) => {
-    const steps = archetype.steps.map((step) => step.id).join(" -> ");
+    const steps = archetype.steps.join(" -> ");
     return `- ${archetype.title} — ${archetype.questionShape} -> ${archetype.families.join("/")} -> ${steps}.`;
   });
 

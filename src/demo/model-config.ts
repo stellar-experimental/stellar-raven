@@ -22,9 +22,8 @@ export const DEMO_REASONING_EFFORT_OVERRIDE_VAR = "DEMO_REASONING_EFFORT_OVERRID
 export const DEMO_OPENAI_API_MODE_VAR = "DEMO_OPENAI_API_MODE";
 export const DEMO_MODEL = DEMO_PRIMARY_MODEL;
 export const DEMO_OPENAI_API_MODE: DemoOpenAiApiMode = "responses";
-// The 2026-07-08 Responses-mode smoke picked `none` for demo speed and fallback
-// reliability. Non-OpenAI Workers AI catalog models receive the mapped setting
-// below.
+// `none` keeps the demo fast and makes fallback more reliable. Non-OpenAI
+// Workers AI catalog models receive the mapped setting below.
 export const DEMO_REASONING_EFFORT: DemoReasoningEffort = "none";
 export const DEMO_TEMPERATURE = 0.1;
 export const DEMO_GATEWAY_ID_FALLBACK = "stellar-raven-demo";
@@ -188,11 +187,8 @@ export function demoGatewayOptions(id: string) {
  * before any network call. They are still reachable keyless through the plain
  * binding run path, which resolves slugs against Cloudflare's catalog instead.
  *
- * Kept as a narrow allowlist rather than a fallback-on-error, because that
- * route has NO provider-SDK layer: nothing strips parameters a model rejects,
- * which is exactly what protects the Claude 5 family (they reject `temperature`
- * outright and `@ai-sdk/anthropic` drops it for us). Routing a model here that
- * did not need it would turn a working model red.
+ * Keep this allowlist narrow. The plain binding path has no provider SDK to
+ * remove unsupported parameters.
  */
 export const DEMO_UNIFIED_RUN_PREFIXES = ["moonshotai/"] as const;
 
@@ -217,15 +213,8 @@ export function demoModelSettings(
   const extraHeaders = {
     "x-session-affinity": sessionAffinity,
     "cf-aig-collect-log-payload": "false",
-    // The gateway carries `cache_ttl: 300`, and it silently replays completions.
-    // Measured 2026-08-06: a repeated `skill-routing` turn returned 4567
-    // identical answer chars over 3 agentic steps in 1041ms, and a repeated
-    // one-step turn in 129ms — neither is a possible live inference. Two reasons
-    // this is wrong here, either sufficient: a playground advertising live
-    // ecosystem data must not replay another visitor's answer for five minutes,
-    // and every measured A/B in this repo silently mixes cache hits into its
-    // latency and pass numbers. Spam is the rate limit's job (50/60s), not the
-    // cache's.
+    // Disable response replay because the playground serves live data and the
+    // evals must measure inference latency. The rate limiter handles abuse.
     "cf-aig-skip-cache": "true"
   } as const;
   if (model.startsWith("@")) {

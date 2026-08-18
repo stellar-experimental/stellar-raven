@@ -1,5 +1,5 @@
 /**
- * Build-time keyword extraction for skill-section catalog entries (todo 810).
+ * Build-time keyword extraction for skill-section catalog entries.
  *
  * Section entries' descriptions are heading + first paragraph truncated to
  * 200 chars, so mid-section content (error codes, CLI flags, function names)

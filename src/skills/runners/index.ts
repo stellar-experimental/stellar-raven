@@ -18,10 +18,8 @@
  * ./types.ts (design §12 lint), so `node` type stripping loads this registry
  * exactly the way build-catalog.mjs already loads extract-keywords.ts.
  *
- * Retiring a runner = delete its module + registry entry and rebuild
- * (design §11 row-13 rule: affordance text leaves with the feature); the
- * skill entry itself stays in the catalog as a plain readable skill
- * (stellar-project-dossier retired this way — todo 849).
+ * Retire a runner by deleting its module and registry entry, then rebuild.
+ * The skill entry remains in the catalog as a readable skill.
  */
 import type { SkillRunner } from "./types.ts";
 import { stellarEcosystemDigest } from "./stellar-ecosystem-digest.ts";

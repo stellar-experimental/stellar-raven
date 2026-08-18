@@ -278,7 +278,7 @@ export function buildDemoTools(opts: { env: Env; emit: (f: DemoFrame) => void; b
       const t0 = Date.now();
       const catalog = getCatalog();
 
-      // Mirror of the MCP handler (src/mcp/tools.ts, todo 839): a near-miss
+      // Mirror the MCP handler: a near-miss
       // `service` keeps the zero-hit response SHAPE with the diagnosis in
       // nextSteps. Same event fields under a demo-distinguishable evt name.
       const services = catalogServices(catalog);

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * self-test.mjs — standalone fixture test of the grader math in eval/lib/grade.mjs.
- * No dependency on src/ or catalog/ — runnable before Lane C lands:
+ * It has no dependency on src/ or catalog/:
  *   node eval/self-test.mjs
  *
  * Fixture: a fake 3-entry catalog (as ranked hit lists) + 3 fake cases + 1 skip,
@@ -97,7 +97,7 @@ check("empty hits -> all false", () => {
   assert.deepEqual(g, { top1: false, top3: false, top5: false, cardHit5: null });
 });
 
-// --- expected_any (accept-either, todo 809) ----------------------------------------
+// --- expected_any (accept-either) --------------------------------------------------
 check("expected_any: skills hit at rank 1 fails strict but passes accept-either", () => {
   const g = gradeCase(
     rank(E.skillContracts, E.docsSearch, E.scoutProjects),
@@ -195,7 +195,7 @@ check("gradeCase v3: cross-service tolerance is expected_any only", () => {
   assert.equal(g.top1, false); // strict vs stellarDocs unaffected
 });
 
-// --- labels.mjs: corpus-label helpers (todo 817) ------------------------------------
+// --- labels.mjs: corpus-label helpers ----------------------------------------------
 check("deriveExpectedAny: cross-service acceptable_cards produce a sorted accept set", () => {
   assert.deepEqual(
     deriveExpectedAny("stellarDocs", ["scout_research", "lumenloop_search_directory", "scout_repos"]),
@@ -270,7 +270,7 @@ check("frontmatterRouting: extracts service, fire flag, and both card lists", ()
   });
 });
 
-// --- content-pinned hand-authored QA lane contracts (todo 913) --------------------
+// --- content-pinned hand-authored QA lane contracts -------------------------------
 const caseContentDigest = (cases) => createHash("sha256").update(JSON.stringify(cases)).digest("hex");
 
 check("live-data-canonical-v3 pins carried-v2 identity, ordered membership, and full case content", () => {

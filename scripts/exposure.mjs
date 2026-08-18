@@ -80,7 +80,7 @@ export const EXCLUDED_SCOUT_OPS = new Set([
 //
 // Only lumenloop-mcp-connect (from the PUBLIC lumenloop source) still exists
 // in the mirror. The six lumenloop-api-* partner skills were retired here
-// 2026-07-03 (Solo todo 825) and then REMOVED from the mirror entirely
+// and were removed from the mirror entirely
 // 2026-07-06 (go-public cleanup): their description harvest was complete and
 // partner-tier content must not live in this public repo. Their names live on
 // only in the scrub regex in src/skills/scrub.ts, which removes the public

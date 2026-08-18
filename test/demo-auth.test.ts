@@ -1,7 +1,7 @@
 /**
  * Unit tests for the demo-playground session cookie (src/demo/auth.ts):
  * mint→verify roundtrip, tamper/expiry rejection, and the parked-state
- * demo-branch validator (review finding 2 — fixed same-origin paths only).
+ * demo-branch validator (fixed same-origin paths only).
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {

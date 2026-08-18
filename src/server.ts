@@ -5,7 +5,7 @@
  * /mcp via `createMcpHandler` from agents/mcp (research/codemode.md §6).
  * No Durable Objects; no session state.
  *
- * Auth (PLAN §7 phase 8, research/auth-workos.md): /mcp is wrapped by
+ * Auth (research/auth-workos.md): /mcp is wrapped by
  * @cloudflare/workers-oauth-provider — this server is its own OAuth 2.1
  * authorization server (opaque tokens in OAUTH_KV; /token, /register, and
  * the .well-known discovery docs come from the lib), with WorkOS AuthKit as
@@ -141,9 +141,8 @@ function isMcpPath(url: URL): boolean {
   return url.pathname === "/mcp" || url.pathname.startsWith("/mcp/");
 }
 
-// Exact paths only (review finding 6: no startsWith that would catch
-// /playgrounds) — anything else under /playground* falls through to the
-// provider's defaultHandler 404.
+// Exact paths prevent `/playgrounds` and similar names from entering the
+// playground handler. Other paths fall through to the provider's 404.
 function isPlaygroundPath(url: URL): boolean {
   return (
     url.pathname === "/playground" ||

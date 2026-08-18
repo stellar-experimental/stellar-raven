@@ -26,7 +26,7 @@ const sha = (character: string) => character.repeat(64);
 function reviewedRound(overrides: Record<string, unknown> = {}) {
   return {
     contract: PLAYGROUND_ROUND_CAP_CONTRACT,
-    experimentId: "todo-1001-contract-test",
+    experimentId: "reviewed-round-contract-test",
     kind: "reviewed-round",
     runAllocation: "planned",
     plannedAnswerCalls: 6,

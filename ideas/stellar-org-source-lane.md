@@ -76,15 +76,11 @@ If the trigger fires:
 - Authored dormant contract: [`specs/stellar-org.json`](../specs/stellar-org.json)
 - Current upstream coverage finding:
   [`improvements/stellar-light-scout/sls-055-canonical-sdf-organizational-pages-research-coverage.md`](../improvements/stellar-light-scout/sls-055-canonical-sdf-organizational-pages-research-coverage.md)
-- Baseline/candidate routing results:
-  [`routing-2026-07-13T08-54-21-839Z.json`](../eval/results/routing-2026-07-13T08-54-21-839Z.json) and
-  [`routing-2026-07-13T15-28-14-998Z.json`](../eval/results/routing-2026-07-13T15-28-14-998Z.json)
-- Targeted QA evidence:
-  [`baseline`](../eval/qa/results/2026-07-13T15-40-28-variantA.json),
-  [`candidate v1`](../eval/qa/results/2026-07-13T15-54-24-variantA.json),
-  [`candidate v2`](../eval/qa/results/2026-07-13T16-14-05-variantA.json), and
-  [`capture-slice baseline`](../eval/qa/results/2026-07-13T17-14-46-variantA.json) versus
-  [`capture-slice candidate`](../eval/qa/results/2026-07-13T17-24-39-variantA.json)
+- Local result artifacts, which are intentionally not committed:
+  `routing-2026-07-13T08-54-21-839Z.json`, `routing-2026-07-13T15-28-14-998Z.json`,
+  `2026-07-13T15-40-28-variantA.json`, `2026-07-13T15-54-24-variantA.json`,
+  `2026-07-13T16-14-05-variantA.json`, `2026-07-13T17-14-46-variantA.json`, and
+  `2026-07-13T17-24-39-variantA.json`.
 - Solo decision record: `solo://proj/49/todo/pull-in-stellar-org--899`
 - Solo evidence ledger: `solo://proj/49/scratchpad/stellarorg-algolia-l--609`
 - Initial authored-contract commit: `3ef9131`

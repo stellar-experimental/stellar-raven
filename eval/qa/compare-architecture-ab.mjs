@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Compare the search+execute and manifest-derived per-operation QA arms using
- * the metrics pre-registered for Solo todo 903. Full result/transcript files
+ * the pre-registered metrics. Full result/transcript files
  * stay local and gitignored; this writes a local comparison sidecar whose
  * stamped aggregates are copied into the committed eval record after review.
  */

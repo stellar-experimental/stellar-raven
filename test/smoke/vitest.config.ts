@@ -1,5 +1,5 @@
 /**
- * Smoke-lane vitest config (Solo todo 833) — runs test/smoke/ INSIDE workerd
+ * Smoke-lane vitest config. It runs test/smoke/ inside workerd
  * via @cloudflare/vitest-pool-workers, with the real wrangler.jsonc bindings
  * (including the LOADER worker_loaders binding the executor needs).
  *

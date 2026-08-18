@@ -1,5 +1,5 @@
 /**
- * searchCatalog tests — the FROZEN contract (scratchpad 514): ranked hits,
+ * searchCatalog tests — the frozen contract: ranked hits,
  * excluded-op absence, kind/service filters, default limit 10, TS signatures on
  * operation hits. Runs against the real generated manifest.
  */
@@ -344,7 +344,7 @@ describe("searchCatalogPage — structural wider candidates", () => {
   });
 });
 
-describe("loadManifest — structural invariants (F6)", () => {
+describe("loadManifest — structural invariants", () => {
   function rawManifest(): { entries: Record<string, unknown>[] } {
     return JSON.parse(readFileSync(join(ROOT, "catalog", "manifest.json"), "utf8"));
   }
@@ -458,7 +458,7 @@ describe("searchCatalog — routing quality", () => {
   });
 });
 
-describe("searchCatalog — tiered gate-rescue backfill (round 4, M1)", () => {
+describe("searchCatalog — tiered gate-rescue backfill", () => {
   /**
    * Gated (tier-1) score of a returned hit, recomputed through the same
    * public scorer searchCatalog uses for tier 1. null ⇒ the hit could only
@@ -534,7 +534,7 @@ describe("searchCatalog — tiered gate-rescue backfill (round 4, M1)", () => {
     const tiers = hits.map((h) => gatedScore(h.id, query) !== null);
     expect(tiers[0], "top hit must be the dominant backfill").toBe(false);
     expect(tiers).toContain(false); // page actually mixes tiers
-    // The tier marker (todo 838) must agree with the recomputed ground truth.
+    // The tier marker must agree with the recomputed ground truth.
     for (let i = 0; i < hits.length; i++) {
       expect(hits[i]!.tier).toBe(tiers[i] ? "gated" : "backfill");
     }
@@ -577,7 +577,7 @@ describe("searchCatalogPage — non-finite limit cannot disable the clamp", () =
   });
 });
 
-describe("searchCatalogPage — tier marker + total/truncated (todos 838/840)", () => {
+describe("searchCatalogPage — tier marker + total/truncated", () => {
   /** Hand-built operation entry (passes loadManifest's structural invariants). */
   function op(name: string, description: string) {
     return {
@@ -661,7 +661,7 @@ describe("searchCatalogPage — tier marker + total/truncated (todos 838/840)", 
   });
 
   it("excludes searchable:false entries from results and totals, keeping them exposed", () => {
-    // Skills-form arm seam (scratchpad 608): hidden entries stay in the
+    // Skills-form arm seam: hidden entries stay in the
     // catalog (exact-id describe/read) but never score, rank, or count.
     const hidden = loadManifest({
       version: 1,
@@ -739,7 +739,7 @@ describe("searchCatalogPage — tier marker + total/truncated (todos 838/840)", 
   });
 });
 
-describe("searchCatalog — availableSections on skill hits (todo 812)", () => {
+describe("searchCatalog — availableSections on skill hits", () => {
   it("skill hits carry availableSections matching the skills store's key set, slugs before file: keys", async () => {
     const hit = searchCatalog(catalog, {
       query: "skills.lumenloop-api.lumenloop-api-billing"
@@ -783,7 +783,7 @@ describe("searchCatalog — availableSections on skill hits (todo 812)", () => {
   });
 });
 
-describe("searchCatalog — section entries are addresses, not content (todo 810)", () => {
+describe("searchCatalog — section entries are addresses, not content", () => {
   it("carries no body-derived keywords for out-of-search sections, and still answers from elsewhere", () => {
     // Sections are searchable:false since the 2026-07-13 A/B, so body-derived
     // keywords would be upstream-derived text in a committed artifact that
@@ -845,7 +845,7 @@ describe("searchCatalog — signatures", () => {
   });
 });
 
-describe("search-hit signature compaction (todo 841)", () => {
+describe("search-hit signature compaction", () => {
   /** Full-render output type block length for one operation entry. */
   function outputBlockLength(entry: CatalogEntry): number {
     if (!entry.outputSchema) return 0;
@@ -991,7 +991,7 @@ describe("runnable skills — loadManifest refinements (design §5)", () => {
     expect(entry.outputSchema).not.toBeNull();
   });
 
-  it("keeps the retired dossier runner's skill entry a plain readable skill (todo 849)", () => {
+  it("keeps the retired dossier runner's skill entry a plain readable skill", () => {
     const parsed = loadManifest(rawManifest());
     const entry = parsed.entries.find((e) => e.id === "skills.lumenloop.stellar-project-dossier")!;
     expect(entry).toBeDefined();
@@ -1155,7 +1155,7 @@ describe("runnable byte-stability — the §10.1 invariant, pinned offline (desi
   });
 });
 
-describe("alias canonicalization — lever 6 (todo 844)", () => {
+describe("alias canonicalization", () => {
   it("canonicalizeQuery: null when no alias token (byte-identical no-op path)", () => {
     expect(canonicalizeQuery("wallet balance lookup")).toBeNull();
     expect(canonicalizeQuery("soroban contract storage")).toBeNull();

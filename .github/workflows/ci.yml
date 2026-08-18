@@ -57,7 +57,7 @@ jobs:
       - run: npm run build
       # Pin .gitleaks.toml semantics in CI too: without the binary the
       # test/scan-secrets-gitleaks.test.mjs suite self-skips and the config is
-      # only exercised on dev machines (Solo todo 1257, reviewer note 3a).
+      # only exercised on developer machines.
       # Version pinned to the release the suite was written against.
       - name: install gitleaks
         run: |
@@ -84,7 +84,7 @@ jobs:
           path: ecosystem-skills/.cache
           key: skill-bodies-${{ hashFiles('ecosystem-skills/MANIFEST.json') }}
       - run: npm test
-      # workerd smoke lane (test/smoke/, Solo todo 833): the assembled router
+      # workerd smoke lane (test/smoke/): the assembled router
       # + real Dynamic Worker executor boundary via vitest-pool-workers.
       # Offline enforced (miniflare outboundService wall) — auth/keys are
       # test-only fakes from its config, so no repo secrets are needed.

@@ -2,15 +2,11 @@
  * MCP tool registration for the unified `search` + `execute` server.
  *
  *  - `search`  → host-side ranked search over the generated catalog
- *                (catalog/manifest.json). This is the SHIPPED shape per
- *                ADR-0001 (research/decisions/0001-search-tool-shape.md):
- *                the code-shaped spec search that briefly held this slot
- *                (todo 801, A/B candidate B) lost the golden Q→A A/B on
- *                reliability and retired INTO `execute`'s sandbox, where
- *                `codemode.spec()` / `codemode.search` / `codemode.catalog()`
- *                keep arbitrary discovery-in-code available at zero extra
- *                turn cost. Operation hits carry rendered TypeScript
- *                signatures.
+ *                (catalog/manifest.json), as defined by ADR-0001. The
+ *                `execute` sandbox also provides `codemode.spec()`,
+ *                `codemode.search()`, and `codemode.catalog()`. These helpers
+ *                keep discovery in one model turn. Operation hits carry
+ *                rendered TypeScript signatures.
  *  - `execute` → runs LLM JavaScript in a Dynamic Worker sandbox via
  *                the injected `runExecute` (src/executor/run.ts, wired
  *                by src/server.ts). The runner is INJECTED because run.ts
@@ -304,9 +300,7 @@ Every service call resolves (never throws) to either { ok: true, data } or { ok:
  * that inject them surface this in the system prompt, where it outlives
  * per-tool descriptions over a long session. HARD BUDGET: Claude Code — the
  * largest agentic-client population — truncates injected instructions at
- * exactly 2,048 characters (measured in production 2026-07-13, todo 971:
- * the old 2,160-char BASE cut off mid-sentence and the micro-map below it
- * never arrived at all). BASE must therefore be a complete, self-sufficient
+ * exactly 2,048 characters. BASE must therefore be a complete, self-sufficient
  * workflow/envelope contract within that budget; test/mcp-instructions
  * enforces the cap and the load-bearing phrases. The micro-map rides after
  * BASE for clients that inject instructions in full.
@@ -375,10 +369,8 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
           recoveryTop: structured.recovery.slice(0, 3).map((candidate) => candidate.id),
           widerCandidates: structured.widerCandidates.length,
           widerCandidateTop: structured.widerCandidates.slice(0, 3).map((candidate) => candidate.id),
-          // Context-cost observability: this measured the pre-cap response
-          // sizes that set COMPACT_OUTPUT_THRESHOLD (todo 841 — oversized
-          // output types in hits are now stubbed); it stays on to verify the
-          // compaction holds and to ground any future page-level cap in data.
+          // Keep response size observable so compaction and future page-level
+          // limits remain evidence-based.
           responseChars: text.length,
           ms: Date.now() - t0
         });

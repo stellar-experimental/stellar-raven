@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /**
- * capture-proxy.mjs — harness-owned HTTP capture for the agentic routing eval
- * (Solo todo 1257, audit finding R24-SOL-01).
+ * capture-proxy.mjs — harness-owned HTTP capture for the agentic routing eval.
  *
  * The evaluated agents transcribe their own curl output into `searchCalls`;
  * the workflow harness never sees the wire, so an omitted/fabricated/

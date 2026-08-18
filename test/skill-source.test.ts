@@ -129,8 +129,7 @@ describe("createSkillSource", () => {
 });
 
 /** Minimal in-memory Cache stand-in. The colo cache is undefined under Node,
- *  so without this seam the entire cache branch was dead code in tests — which
- *  is exactly how three defects reached review unnoticed (todo 1277). */
+ *  so this seam exercises the cache branch. */
 function fakeCache(opts: { putThrows?: boolean; matchThrows?: boolean } = {}) {
   const store = new Map<string, ArrayBuffer>();
   let puts = 0;

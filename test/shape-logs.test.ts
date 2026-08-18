@@ -1,5 +1,5 @@
 /**
- * shapeLogs tests (F2) — the redact-FIRST-then-clip ordering that keeps a
+ * shapeLogs tests for the redact-first, clip-second ordering that keeps a
  * secret straddling the clip boundary from leaking its prefix, plus the line
  * cap, dropped-lines footer, and lossy-only telemetry.
  */

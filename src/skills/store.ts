@@ -5,9 +5,8 @@
  * `codemode.skill.read(name, { sections? })` resolves through the CATALOG,
  * not the filesystem: `name` must be an exact catalog id (a `skills.*` skill
  * id — the form `search` returns — or a skill-section id from a hit's
- * `availableSections`; sections left search at the 2026-07-13 skills-form
- * A/B but stay exact-id readable), and content comes from the entry's
- * `transport: { url, sha }` — the upstream file at the commit pinned in
+ * `availableSections`; sections stay exact-id readable), and content comes
+ * from the entry's `transport: { url, sha }` — the upstream file at the commit pinned in
  * ecosystem-skills/MANIFEST.json, fetched and hash-verified by
  * src/skills/source.ts (bodies are neither vendored in this repo nor shipped
  * in the Worker bundle). Exposure is decided at build time (ADR-0003):
@@ -124,13 +123,13 @@ function editDistance(a: string, b: string): number {
 }
 
 /**
- * Nearest readable skill id for a failed lookup — a SUGGESTION appended to
+ * Nearest readable skill id for a failed lookup — a suggestion appended to
  * the exact-match error, never a resolution (no fuzzy top-hit acceptance).
  * Terminal-segment equality wins (catches "skills.smart-contracts" for
  * "skills.stellar-dev.smart-contracts"); otherwise smallest edit distance within a
  * typo-sized bound.
  *
- * Exported for src/skills/run.ts (design §6/§11 row 9): skill.run's
+ * Exported for src/skills/run.ts: skill.run's
  * unknown-id error reuses the same suggestion logic over the runnable subset
  * (run.ts passes a catalog narrowed to runnable entries). Behavior unchanged.
  */
@@ -272,9 +271,8 @@ export async function readSkill(
     return err("skill name must be a non-empty string (an exact catalog id)");
   }
 
-  // Options are exact-match like ids: unknown keys are refused, never
-  // silently ignored (a `section` singular typo used to no-op into a whole
-  // read and cost the caller a turn discovering why).
+  // Options are exact-match like ids. Refuse unknown keys instead of turning
+  // a misspelled `section` option into an unintended whole read.
   if (opts !== undefined && opts !== null) {
     if (typeof opts !== "object" || Array.isArray(opts)) {
       return err(
@@ -294,9 +292,9 @@ export async function readSkill(
   // A section id (`skills.x.y#slug`) reads exactly that section.
   const hashIndex = name.indexOf("#");
   const requestedFromId = hashIndex >= 0 ? [name.slice(hashIndex + 1)] : null;
-  const skillIdOrAlias = hashIndex >= 0 ? name.slice(0, hashIndex) : name;
+  const skillId = hashIndex >= 0 ? name.slice(0, hashIndex) : name;
 
-  const resolved = resolveSkillEntry(catalog, skillIdOrAlias);
+  const resolved = resolveSkillEntry(catalog, skillId);
   if ("ok" in resolved) return resolved; // an error result
   const entry = resolved;
 
@@ -340,12 +338,8 @@ export async function readSkill(
   }
 
   if (!requested || requested.length === 0) {
-    // Fail-closed on the WHOLE-read path too. Section reads already refuse an
-    // un-cataloged `##` slug; before 2026-07-30 a whole read served the entire
-    // body regardless, so a section the catalog never indexed (build/read
-    // drift, or a body that moved without a catalog rebuild) still reached the
-    // model. Default-deny both shapes: if the parsed slugs and the cataloged
-    // slugs disagree, serve nothing and name the drift.
+    // Fail closed on whole reads and section reads. If the parsed slugs and
+    // cataloged slugs disagree, serve nothing and name the drift.
     const uncataloged = [...bySlug.keys()].filter(
       (slug) => !sectionEntryById.has(`${entry.id}#${slug}`)
     );

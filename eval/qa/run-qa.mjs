@@ -2,7 +2,7 @@
 /**
  * run-qa.mjs — agentic golden Q→A runner (the A/B referee's driver).
  *
- * Contract (scratchpad 516): run(question, {searchVariant}) → {answer, transcript};
+ * Contract: run(question, {searchVariant}) → {answer, transcript};
  * then judge(question, goldenAnswer, answer) → verdict. This script does both
  * per case and writes eval/qa/results/<stamp>.json + a console summary.
  *

@@ -1,7 +1,7 @@
 /**
- * ADR-0003 emitted-text discipline for the demo SYSTEM PROMPT (design review
- * finding 7): the combined SERVER_INSTRUCTIONS + playground preamble is
- * emitted text and must never reference a non-exposed op or retired skill.
+ * ADR-0003 emitted-text discipline for the demo system prompt. The combined
+ * SERVER_INSTRUCTIONS and playground preamble must not reference a
+ * non-exposed operation or retired skill.
  * src/demo/prompt.ts is a pure module precisely so this test can import it
  * without the worker-only chat/tools graph.
  */

@@ -1,18 +1,19 @@
 /**
- * runSkill — the host dispatch behind `codemode.skill.run` (design §6, §11
- * row 5). Pure module (no cloudflare:workers): the providers wire it up in a
- * later rollout step; unit tests exercise it directly.
+ * runSkill — the host dispatch behind `codemode.skill.run`.
+ * This pure module has no cloudflare:workers import. Providers wire it into
+ * the sandbox, and unit tests exercise it directly.
  *
  * Resolution ladder — every rung an envelope, nothing throws toward the
  * caller: (1) name must be a non-empty string; (2) exact catalog id lookup,
- * miss names the full runnable set + the store's nearest-id SUGGESTION
+ * miss names the full runnable set and the store's nearest-id suggestion
  * (never a resolution); (3) an existing-but-not-runnable entry points at
  * skill.read; (4) input validates via the same guard/validateArgs path
  * operations use — model code never owns the contract; (5) registry lookup
  * (belt: unreachable once assertRunnersWired runs at provider build);
  * (6) execute with a recording sub-facade under a host deadline.
  *
- * The audit trail is HOST-owned (design §6): each declared op's facade fn is
+ * The host owns the audit trail (research/skill-run-design.md §6). Each
+ * declared operation's facade function is
  * wrapped to append { op, ok, errorKind?, ms } to a ledger this module owns.
  * `calls` on the output, the error path's `error.details`, and the
  * `skill_run` event counts all come from that ledger — a buggy runner can

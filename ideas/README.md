@@ -26,7 +26,7 @@ Research notes and possible future work that are not committed product plans.
 - [Skill Discovery: What Is Still Open After De-vendoring](./skill-discovery-without-bundling.md) —
   the content-ownership question is CLOSED (bodies are served from pinned upstream, never stored).
   Two measurable questions survive: whether the `skills.*` read surface earns its place at all
-  versus navigation-only, and whether 204 exact-read section entries do.
+  versus navigation-only, and whether exact-read section entries do.
 - [Raven as a Codegen Correctness Substrate](./codegen-correctness-substrate.md) — an external partner
   ran long-horizon Soroban codegen with Raven merely installed alongside. Guidance for many reported
   defect classes is present in what we serve, yet the defects occurred; the cause is unattributed and

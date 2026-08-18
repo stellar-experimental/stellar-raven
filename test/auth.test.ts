@@ -861,7 +861,7 @@ describe("WorkOSAuthHandler", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Parked-login union + /callback demo branch (demo-playground review finding 2)
+// Parked-login union and /callback demo branch
 
 describe("login-state union on /callback", () => {
   function callbackRequest(state: string, binding: string): Request {

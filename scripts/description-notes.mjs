@@ -11,25 +11,12 @@
  * tokenize to a bare "s" with the same effect).
  */
 
-// Lumenloop notes — the residue of the 2026-07-03 skills harvest (Solo todo
-// 825): everything the retired lumenloop-api onboarding skills and the
-// playbook gotchas teach was checked against the inventory descriptions, and
-// almost all of it is already carried there (search_directory semantic
-// fallback, compact=true, summaries vs verbatim text, videos/av alias,
-// per-collection sort fields) or normalized by the adapter (get_document
-// not-found prose → soft-empty). What remains is the one trap the
-// descriptions miss, live-verified 2026-07-03: find_content_by_entity with
-// entity_type "person" answers success:true + all-empty groups even for the
-// most heavily covered people (control: organization returns full groups) —
-// an envelope-ok empty that reads as evidence of absence but is lane behavior.
-// Lumenloop/scout boundary contrast (Solo todo 835, agentic-lane evidence
-// 2026-07-03): after the stellar-light description enrichment, agent callers
-// took "what is X / who builds X" project-lookup questions to
-// scout.searchProjects even when the asker wanted the narrative/editorial
-// answer lumenloop carries. The pair of notes below (here and on
-// scout.searchProjects) states the contrast each side is blind to: lumenloop
-// = editorial context + directory descriptions, scout = structured fields.
-// Wording is collision-checked against the routing corpus (2026-07-04):
+// These notes cover verified gaps in the upstream descriptions. A person
+// entity lookup can return empty groups despite broad corpus coverage, so it
+// cannot prove open-world absence. Project lookup also has a source boundary:
+// Lumenloop supplies narrative context, while Scout supplies structured fields.
+// The paired notes state that distinction on both operations.
+// Wording is collision-checked against the routing corpus:
 // every non-trivial token is either already present in the entry or has zero
 // cross-labeled query hits ("narrative", "editorial", "context", "lane");
 // "who builds X" is a deliberate claim — that phrasing appears only in
@@ -276,7 +263,7 @@ export function scrubScoutDescription(opId, text) {
 }
 
 export const SCOUT_DESCRIPTION_NOTES = {
-  // Boundary twin of LUMENLOOP_DESCRIPTION_NOTES.search_directory (todo 835)
+  // Boundary twin of LUMENLOOP_DESCRIPTION_NOTES.search_directory.
   // — see the collision-check rationale there. Avoided on this side: news,
   // talks, content, coverage, written, builds (all appear in
   // lumenloop-labeled queries and would lexically pull them toward scout);

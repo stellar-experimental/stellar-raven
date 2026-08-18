@@ -360,7 +360,7 @@ async function refreshStellarDocs() {
     settings,
   });
 
-  // Page-title snapshot (todo 824 items 4/5): every type:lvl1 record is one
+  // Page-title snapshot: every type:lvl1 record is one
   // docs page title — the specific concept vocabulary ("Muxed Accounts",
   // "Sponsored Reserves") that neither the op descriptions nor the coarse
   // taxonomy topic slugs carry. build-catalog.mjs scopes these per docs

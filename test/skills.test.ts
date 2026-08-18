@@ -248,9 +248,8 @@ describe("readSkill", () => {
   });
 
   it("fails as an envelope, not a hung run, when upstream never answers", async () => {
-    // A slow upstream must not outlive the executor's 60s wall clock: a
-    // multi-file read used to be able to, which killed `execute` instead of
-    // returning this envelope (adversarial review, todo 1275).
+    // A slow upstream must not outlive the executor's 60-second wall clock.
+    // The read must return this envelope before the executor ends it.
     vi.useFakeTimers();
     try {
       const never: SkillSource = () => new Promise(() => {});
@@ -267,9 +266,8 @@ describe("readSkill", () => {
   });
 
   it("refuses a WHOLE read when the body carries a section the catalog never indexed", async () => {
-    // Fail-closed on both read shapes. Before 2026-07-30 only section reads
-    // enforced this, so an un-indexed `## Hidden` section still reached the
-    // model through a whole read (found in adversarial review, todo 1275).
+    // Fail closed on both read shapes. An unindexed `## Hidden` section must
+    // not reach the model through a whole read.
     const id = "skills.test.drifted";
     const url = "https://raw.githubusercontent.com/acme/skills/" + "0".repeat(40) + "/drifted/SKILL.md";
     const synthetic: Catalog = {

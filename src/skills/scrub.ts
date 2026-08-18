@@ -1,9 +1,8 @@
 /**
  * Non-exposed skill-reference scrub — ONE implementation, two consumers.
  *
- * Skill bodies are no longer vendored into this repo (they are fetched from
- * upstream at the pinned commit — see src/skills/source.ts), so the scrub that
- * used to run once at bundle time now has to run on every served body. The
+ * Skill bodies come from the pinned upstream commit (see src/skills/source.ts),
+ * so every served body passes through this scrub. The
  * builders (scripts/exposure.mjs re-exports this module) and the Worker read
  * path must agree byte-for-byte: what search advertises and what
  * `codemode.skill.read` returns are derived from the same scrubbed text.

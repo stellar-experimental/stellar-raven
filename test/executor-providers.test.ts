@@ -716,7 +716,7 @@ describe("codemode fns", () => {
     expect(r2.hits.some((h) => h.id === "scout.submitPartnerListing")).toBe(false);
   });
 
-  it("search returns honest total/truncated and tier-marked hits (todos 838/840)", async () => {
+  it("search returns honest total/truncated and tier-marked hits", async () => {
     const r = (await codemode.search!({ query: "stellar soroban contract", limit: 5 })) as {
       ok: boolean;
       hits: { tier: string }[];
@@ -845,7 +845,7 @@ describe("codemode fns", () => {
     }
   });
 
-  it("search honors a VALID kind filter — every hit carries it (todo 839)", async () => {
+  it("search honors a VALID kind filter — every hit carries it", async () => {
     const r = (await codemode.search!({ query: "stellar project dossier", kind: "skill" })) as {
       ok: boolean;
       hits: { kind: string }[];
@@ -855,7 +855,7 @@ describe("codemode fns", () => {
     expect(r.hits.every((h) => h.kind === "skill")).toBe(true);
   });
 
-  it("search treats explicit null kind/service as 'no filter', like limit (todo 839)", async () => {
+  it("search treats explicit null kind/service as 'no filter', like limit", async () => {
     const r = (await codemode.search!({ query: "docs search", kind: null, service: null, limit: null })) as {
       ok: boolean;
       hits: { id: string }[];
@@ -864,7 +864,7 @@ describe("codemode fns", () => {
     expect(r.hits.length).toBeGreaterThan(0);
   });
 
-  it("search rejects near-miss service filters with the valid set (todo 839)", async () => {
+  it("search rejects near-miss service filters with the valid set", async () => {
     for (const service of ["stellardocs", "stellar-docs", "scoutt"]) {
       const r = (await codemode.search!({ query: "docs search", service })) as {
         ok: boolean;
@@ -881,7 +881,7 @@ describe("codemode fns", () => {
     }
   });
 
-  it("search rejects an unknown kind with the valid set (todo 839)", async () => {
+  it("search rejects an unknown kind with the valid set", async () => {
     const r = (await codemode.search!({ query: "docs search", kind: "operations" })) as {
       ok: boolean;
       error: { kind: string; message: string };
@@ -995,7 +995,7 @@ describe("codemode fns", () => {
     expect(miss.error.message).toContain("exact-match");
   });
 
-  it("describe on an operation: FULL signature + raw schemas + usage (todo 841)", async () => {
+  it("describe on an operation: FULL signature + raw schemas + usage", async () => {
     // scout.searchProjects is the motivating monster: its search hit stubs
     // the ~12.7KB output type; describe must carry the whole thing.
     const entry = catalog.entries.find((e) => e.id === "scout.searchProjects")!;
@@ -1024,7 +1024,7 @@ describe("codemode fns", () => {
     expect(r.usage).toContain("r.data");
   });
 
-  it("describe is a strict superset of the search hit: the hit stubs, describe carries the full type (todo 841)", async () => {
+  it("describe is a strict superset of the search hit: the hit stubs, describe carries the full type", async () => {
     const s = (await codemode.search!({ query: "scout.searchProjects" })) as {
       hits: { id: string; signature?: string }[];
     };
@@ -1036,8 +1036,8 @@ describe("codemode fns", () => {
     expect(d.signature).toContain("codeReferences?:");
   });
 
-  it("describe on a prose skill: availableSections (same derivation as search hits) + skill.read usage (todo 841)", async () => {
-    // A NON-runnable skill — the dossier's runner was retired (todo 849), so
+  it("describe on a prose skill: availableSections (same derivation as search hits) + skill.read usage", async () => {
+    // A non-runnable skill. The dossier runner was retired, so
     // its entry is back to read-only and pins the reversion here.
     const skillId = "skills.lumenloop.stellar-project-dossier";
     expect(catalog.entries.find((e) => e.id === skillId)?.runnable).toBeUndefined();
@@ -1066,7 +1066,7 @@ describe("codemode fns", () => {
   it("describe on a RUNNABLE skill: full skill.run signature + both schemas + dual usage naming both calls (design §5)", async () => {
     const skillId = "skills.lumenloop.stellar-ecosystem-digest";
     const entry = catalog.entries.find((e) => e.id === skillId)!;
-    expect(entry.runnable).toBe(true); // manifest precondition (Phase B build)
+    expect(entry.runnable).toBe(true); // manifest precondition
     const r = (await codemode.describe!(skillId)) as {
       ok: boolean;
       kind: string;
@@ -1115,7 +1115,7 @@ describe("codemode fns", () => {
     );
   });
 
-  it("describe on a skill section: parent skill id + section key + exact skill.read call (todo 841)", async () => {
+  it("describe on a skill section: parent skill id + section key + exact skill.read call", async () => {
     const section = catalog.entries.find((e) => e.kind === "skill-section")!;
     const hash = section.id.indexOf("#");
     const parentId = section.id.slice(0, hash);

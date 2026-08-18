@@ -1,11 +1,10 @@
 /**
- * Modern-wire smoke (Solo todos 904/1234): a real 2026-07-28-era MCP client
- * (@modelcontextprotocol/client 2.0) connects to the ASSEMBLED worker over
+ * Modern-wire smoke: a real MCP 2026 client
+ * (@modelcontextprotocol/client 2.0) connects to the assembled worker over
  * streamable HTTP through the named-API-key bypass. Under the pre-2.0 stack
  * the client's `server/discover` negotiation probe was answered 400 and the
- * client silently fell back to the 2025 lifecycle (observed in production,
- * todo 904); this test pins the probe answering 2xx so a regression to
- * legacy-only serving fails here instead of shipping green.
+ * client silently fell back to the 2025 lifecycle. This test pins the probe
+ * response to 2xx. A regression to legacy-only serving must fail this test.
  */
 import { env, SELF } from "cloudflare:test";
 import { beforeAll, describe, expect, it } from "vitest";

@@ -63,9 +63,12 @@ scope live in [SECURITY.md](./SECURITY.md).
 ```
 # use Node 24, matching CI
 npm ci
-npm run typecheck  # tsc
-npm test           # vitest (offline; auth suite in test/auth.test.ts)
-npm run typegen    # regenerate env.d.ts after wrangler.jsonc/.dev.vars changes
+# create .dev.vars with the variable names from .github/workflows/ci.yml
+npm run typegen     # regenerate env.d.ts after wrangler.jsonc/.dev.vars changes
+npm run typecheck   # tsc
+npm test            # vitest (offline; auth suite in test/auth.test.ts)
+npm run test:smoke  # assembled Worker and Dynamic Worker boundary
+npm run build       # dry-run the Worker bundle
 ```
 
 For local MCP testing, populate `.dev.vars`, run `npm run dev`, and point a client at

@@ -1,5 +1,5 @@
 /**
- * Server-instructions budget guard (todo 971) — Claude Code truncates
+ * Server-instructions budget guard. Claude Code truncates
  * injected MCP server instructions at exactly 2,048 characters (measured in
  * production 2026-07-13: the pre-fix 2,160-char BASE cut off mid-sentence
  * inside the envelope contract and the micro-map below it never arrived).
@@ -24,7 +24,7 @@ const CLAUDE_CODE_INSTRUCTIONS_CAP = 2048;
 // Headroom so ordinary wording edits don't silently creep back over the cap.
 const BUDGET = 2000;
 
-describe("server instructions — Claude Code 2KB budget (todo 971)", () => {
+describe("server instructions — Claude Code 2KB budget", () => {
   it(`keeps BASE within ${BUDGET} chars (hard client cap ${CLAUDE_CODE_INSTRUCTIONS_CAP})`, () => {
     expect(BASE_SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(BUDGET);
   });

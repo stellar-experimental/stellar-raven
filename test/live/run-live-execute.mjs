@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Live integration for the `execute` tool (todo 798) — boots `wrangler dev`
+ * Live integration for the `execute` tool. It boots `wrangler dev`
  * (real Dynamic Worker sandbox + real service traffic, free ops only), calls
  * tools/call over /mcp, prints a trimmed transcript, kills the server.
  *

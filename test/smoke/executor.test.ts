@@ -1,6 +1,6 @@
 /**
- * Offline smoke of src/executor/run.ts at the REAL worker boundary (Solo
- * todo 833) — the pieces plain-Node tests cannot touch: `cloudflare:workers`
+ * Offline smoke of src/executor/run.ts at the real worker boundary. It covers
+ * the pieces that plain-Node tests cannot touch: `cloudflare:workers`
  * tracing, `@cloudflare/codemode`'s DynamicWorkerExecutor, and a genuine
  * Dynamic Worker isolate via the LOADER binding.
  *
@@ -645,10 +645,8 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
   });
 
   /**
-   * The full artifact-continuation sequence at the REAL worker boundary (Solo
-   * todo 1566, execution plan Gate 1B part 3). The 2026-08-14 round could not
-   * tell "the tail was lost at the model boundary" from "the service never had
-   * the fact", because no test proved a lost tail was recoverable end to end.
+   * The full artifact-continuation sequence at the real worker boundary. This
+   * test proves that a lost tail remains recoverable from the artifact.
    *
    * The sentinel exists ONLY near the tail of the original result, so it is
    * absent from the truncated first result by construction — recovering it in
@@ -986,13 +984,12 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
 
 describe("codemode.skill.run at the real worker boundary (design §12 smoke)", () => {
   /**
-   * Route the host-side lumenloop adapter to the LIVE-CAPTURED runner
+   * Route the host-side lumenloop adapter to the captured runner
    * fixtures (test/fixtures/skill-runners/, production 2026-07-06) by tool
    * name — the run crosses the true chain: sandbox prelude → provider RPC →
    * runSkill → recording sub-facade → adapter fetch. This lane is offline by
-   * design (miniflare outboundService), so the standing guard against LIVE
-   * upstream payload drift is the wrangler-dev/live lane (rollout step 6,
-   * §11 row 18 refresh discipline); this smoke pins the full dispatch path
+   * design (miniflare outboundService), so the wrangler-dev/live lane guards
+   * against upstream payload drift. This smoke pins the full dispatch path
    * and envelope semantics at the workerd boundary.
    */
   const stubLumenloop = (routes: Record<string, unknown>) => {
