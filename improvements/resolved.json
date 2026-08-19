@@ -616,6 +616,66 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d2d7c161a4362445c6db59bf5989de98f130fe55/improvements/skills/sk-012-mpp-session-mode-terminology.md"
     },
     {
+      "id": "sk-013",
+      "title": "The assets skill teaches ChangeTrust(limit: 0) as trustline removal without the preconditions that make the operation safe and valid. A…",
+      "service": "skills",
+      "discovered": "2026-08-04",
+      "resolved": "2026-08-19",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/81"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/81",
+        "https://github.com/stellar/stellar-dev-skill/pull/90",
+        "https://github.com/stellar/stellar-dev-skill/pull/91"
+      ],
+      "liveRecheck": "2026-08-19: the pinned assets skill states every trustline-removal precondition, and the original trigger no longer reproduces.",
+      "reviewEvidence": "Independent Fable review: Solo process 4850, todo 1799, scratchpad 837 revision 19.",
+      "sourceCommit": "70726884a723786c669283953f576277ce9d955b",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/70726884a723786c669283953f576277ce9d955b/improvements/skills/sk-013-trustline-removal-omits-safety-preconditions.md"
+    },
+    {
+      "id": "sk-016",
+      "title": "The agentic-payments skill teaches MPP Charge mode and MPP Session mode. It does not teach the MPP discovery layer",
+      "service": "skills",
+      "discovered": "2026-08-14",
+      "resolved": "2026-08-19",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/107",
+        "https://github.com/stellar/stellar-dev-skill/pull/109"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/107",
+        "https://github.com/stellar/stellar-dev-skill/pull/109"
+      ],
+      "liveRecheck": "2026-08-19: the pinned MPP skill covers every requested discovery requirement, and the original trigger no longer reproduces.",
+      "reviewEvidence": "Independent Fable review: Solo process 4850, todo 1799, scratchpad 837 revision 19.",
+      "sourceCommit": "6aa70b7f50559cf3b083215aec9fec3017f5728c",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6aa70b7f50559cf3b083215aec9fec3017f5728c/improvements/skills/sk-016-agentic-payments-mpp-discovery-gap.md"
+    },
+    {
+      "id": "sk-017",
+      "title": "skills/dapp/smart-accounts.md gives two stale repository links and one unsupported status label",
+      "service": "skills",
+      "discovered": "2026-08-14",
+      "resolved": "2026-08-19",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/108",
+        "https://github.com/stellar/stellar-dev-skill/pull/110"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/108",
+        "https://github.com/stellar/stellar-dev-skill/pull/110"
+      ],
+      "liveRecheck": "2026-08-19: the pinned files use canonical links, remove the unsupported label, and state the authorization-model boundary.",
+      "reviewEvidence": "Independent Fable review: Solo process 4850, todo 1799, scratchpad 837 revision 19.",
+      "sourceCommit": "6aa70b7f50559cf3b083215aec9fec3017f5728c",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6aa70b7f50559cf3b083215aec9fec3017f5728c/improvements/skills/sk-017-dapp-smart-accounts-archived-links-legacy-label.md"
+    },
+    {
       "id": "sk-018",
       "title": "The live Scout API adds four read-only operations that the Scout skill reference does not document:",
       "service": "skills",
@@ -1528,6 +1588,32 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/51847b418c377a15ff5fdf48527bc685e123bcfc/improvements/stellar-light-scout/sls-054-changelog-rename-identity-shape-mismatch.md"
     },
     {
+      "id": "sls-055",
+      "title": "Scout research does not reliably expose quotable canonical SDF organizational pages. Its broad cited-research lane routes…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-07-13",
+      "resolved": "2026-08-19",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/533",
+        "https://github.com/Stellar-Light/stellarlight/issues/742",
+        "https://github.com/Stellar-Light/stellarlight/pull/535",
+        "https://github.com/Stellar-Light/stellarlight/pull/544",
+        "https://github.com/Stellar-Light/stellarlight/pull/885"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/533",
+        "https://github.com/Stellar-Light/stellarlight/issues/742",
+        "https://github.com/Stellar-Light/stellarlight/pull/535",
+        "https://github.com/Stellar-Light/stellarlight/pull/544",
+        "https://github.com/Stellar-Light/stellarlight/pull/885"
+      ],
+      "liveRecheck": "2026-08-19: production Scout 1.8.73 top-ranks all five canonical SDF page families with current provenance.",
+      "reviewEvidence": "Independent Fable review: Solo process 4850, todo 1799, scratchpad 837 revision 19.",
+      "sourceCommit": "6aa70b7f50559cf3b083215aec9fec3017f5728c",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6aa70b7f50559cf3b083215aec9fec3017f5728c/improvements/stellar-light-scout/sls-055-canonical-sdf-organizational-pages-research-coverage.md"
+    },
+    {
       "id": "sls-056",
       "title": "Scout project search applies canonical deduplication to the returned projects array after computing meta.counts. The payload can therefore…",
       "service": "stellar-light-scout",
@@ -1653,6 +1739,26 @@
       "reviewEvidence": "Independent Fable reviewer, Solo process 4500 / todo 1451, repeated the three-surface trigger, upstream state, and repository reference scan",
       "sourceCommit": "dbb3eee51e96515d6dd4d118e87adbf7246a712b",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/dbb3eee51e96515d6dd4d118e87adbf7246a712b/improvements/stellar-light-scout/sls-062-status-sdf-skill-count-mismatch.md"
+    },
+    {
+      "id": "sls-063",
+      "title": "The Scout project search returns 26 awarded projects with known award rounds and an empty scfRoundAwards array. Seventeen rows have an…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-11",
+      "resolved": "2026-08-19",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/806",
+        "https://github.com/Stellar-Light/stellarlight/pull/811"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/806",
+        "https://github.com/Stellar-Light/stellarlight/pull/811"
+      ],
+      "liveRecheck": "2026-08-19: production Scout 1.8.73 returns exact round and budget records for all 17 verified rows.",
+      "reviewEvidence": "Independent Fable review: Solo process 4850, todo 1799, scratchpad 837 revision 19.",
+      "sourceCommit": "6aa70b7f50559cf3b083215aec9fec3017f5728c",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/6aa70b7f50559cf3b083215aec9fec3017f5728c/improvements/stellar-light-scout/sls-063-scf-round-awards-exact-submission-residuals.md"
     },
     {
       "id": "sls-064",

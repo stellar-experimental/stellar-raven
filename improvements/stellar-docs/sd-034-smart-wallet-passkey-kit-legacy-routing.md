@@ -15,7 +15,7 @@ evidence:
   - issue-tracker follow-up context: https://github.com/stellar/stellar-docs/pull/2367#issuecomment-5091971087
 recurrences:
   - date: 2026-08-14
-    evidence: "Live recheck of https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets. The page still omits Smart Account Kit and still links 'Code: github.com/kalepail/passkey-kit', which is archived and titled '[MOVED -> github.com/stellar/passkey-kit]'. The mirrored defect on the served skill surface is recorded as sk-017; the two records describe opposite framings of the same kit pair and must be corrected consistently."
+    evidence: "Live recheck of https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets. The page still omits Smart Account Kit and still links 'Code: github.com/kalepail/passkey-kit', which is archived and titled '[MOVED -> github.com/stellar/passkey-kit]'. The served skill defect was repaired and retired as sk-017 in improvements/resolved.json. The Docs defect remains independent."
   - date: 2026-08-11
     evidence: live smart-wallet and Guestbook source recheck still links archived kalepail/passkey-kit and omits Smart Account Kit, while Guestbook still requires LaunchTube. Issue #2700 remains open; its only recorded comment is Raven's 2026-08-05 premise correction, so no maintainer response exists.
   - date: 2026-08-04

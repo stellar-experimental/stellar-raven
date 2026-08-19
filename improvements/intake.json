@@ -212,10 +212,6 @@
       "repo": "Stellar-Light/stellar-scout",
       "reason": "The finding concerns the upstream Scout skill API reference, not the live service implementation."
     },
-    "sk-013": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The upstream assets skill's trustline-removal example omits balance, liability, offer, and liquidity-pool deletion preconditions."
-    },
     "sk-014": {
       "repo": "OpenZeppelin/openzeppelin-skills",
       "reason": "The develop-secure-contracts description is owned by the OpenZeppelin skills repository."
@@ -223,14 +219,6 @@
     "sk-015": {
       "repo": "OpenZeppelin/openzeppelin-skills",
       "reason": "The setup-stellar-contracts and upgrade-stellar-contracts descriptions are owned by the OpenZeppelin skills repository."
-    },
-    "sk-016": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The agentic-payments MPP guide is owned by the official Stellar dev skill repository."
-    },
-    "sk-017": {
-      "repo": "stellar/stellar-dev-skill",
-      "reason": "The dapp skill's smart-accounts.md is owned by the official Stellar dev skill repository."
     },
     "sls-023": {
       "repo": "Stellar-Light/stellarlight",
@@ -251,10 +239,6 @@
     "sls-039": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Project TVL rows expose a point but no history/method URL or metric decomposition for current-versus-trend/peak/record questions."
-    },
-    "sls-055": {
-      "repo": "Stellar-Light/stellarlight",
-      "reason": "Scout research omits canonical non-blog SDF organizational pages, leaving current legal-structure, fund-scope, mandate, leadership, and report claims without quotable coverage."
     }
   }
 }

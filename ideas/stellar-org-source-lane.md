@@ -39,10 +39,8 @@ source family for canonical non-blog SDF pages over adding a second Raven-owned 
 - The experimental branch was later deleted after review found no unique validated implementation
   work worth preserving. The authored dormant contract and evidence remain.
 
-The alternative source-coverage path is tracked in
-[`sls-055`](../improvements/stellar-light-scout/sls-055-canonical-sdf-organizational-pages-research-coverage.md).
-Scout now covers several canonical SDF pages, but the finding remains open because coverage is not
-yet complete and consistently quotable.
+The alternative source-coverage path is recorded in the resolved ledger as `sls-055`.
+Scout now provides consistently quotable coverage for the tested canonical SDF page families.
 
 ## Trigger to revisit
 
@@ -74,8 +72,7 @@ If the trigger fires:
 ## Durable references
 
 - Authored dormant contract: [`specs/stellar-org.json`](../specs/stellar-org.json)
-- Current upstream coverage finding:
-  [`improvements/stellar-light-scout/sls-055-canonical-sdf-organizational-pages-research-coverage.md`](../improvements/stellar-light-scout/sls-055-canonical-sdf-organizational-pages-research-coverage.md)
+- Resolved upstream coverage receipt: [`improvements/resolved.json`](../improvements/resolved.json)
 - Local result artifacts, which are intentionally not committed:
   `routing-2026-07-13T08-54-21-839Z.json`, `routing-2026-07-13T15-28-14-998Z.json`,
   `2026-07-13T15-40-28-variantA.json`, `2026-07-13T15-54-24-variantA.json`,
