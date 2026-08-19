@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "dbb027cf75bd15325d138db1a7540b0a763ac4fb01d52dd3c45ae27aab7005f1",
+  "corpusContentSha256": "a27aee771f3efdc48ea6a7ac9d24d26b60cbad64bc5b5d98d601ca57ad5492c1",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -29,7 +29,6 @@
       "stable": 13
     },
     "traps": {
-      "fabrication-bait": 1,
       "scam-check": 2
     }
   },
@@ -1032,92 +1031,58 @@
       }
     },
     {
-      "id": "q-edge-noinfo-exact-tvl-figure",
-      "question": "What is the exact total value locked in Stellar DeFi right now, to the dollar, as of this moment?",
+      "id": "q-edge-partner-detail-soft-empty",
+      "question": "What should happen when Scout getPartner receives an unknown or unpublished partner slug?",
       "surface": [
-        "scout.searchResearch"
+        "scout.getPartner"
       ],
       "golden": {
-        "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no protocol-defined, universally exact Stellar DeFi TVL **as of this moment**. A provider snapshot may be quoted, but it must carry the provider and endpoint/dashboard, retrieval time, provider data-as-of time if supplied, tracked-protocol inclusion rule, and pricing methodology. On 2026-07-10, DefiLlama's API, page, and completed daily series exposed different values in the same broad observation window; the API's many decimal places represented its current calculation, not objective to-the-dollar truth. Re-query before answering, label the result as provider-scoped, and do not silently sum overlapping protocol, RWA, and asset rows. An approximate range is optional, not mandatory, when a properly scoped live snapshot is available.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "Treat the response as a soft-empty/not-found outcome, not as a successful empty profile and not as a transport outage. Preserve the returned 404-style status and hint, tell the user that the slug is not a published partner, and return to partner discovery for valid slugs.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Requires provider, endpoint, retrieval/as-of time, inclusion basis, and pricing methodology."
+          "Distinguishes the soft-empty not-found envelope from both data and service failure.",
+          "Uses partner discovery as the recovery path for a valid published slug."
         ],
         "avoid": [
-          "Do NOT present any provider value as an exact objective chain fact.",
-          "Do NOT claim Raven cannot access a live scalar, assert that TVL necessarily moves block-by-block, or silently combine incompatible scopes.",
-          "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+          "Do NOT fabricate a partner profile for an unknown slug.",
+          "Do NOT describe the expected not-found response as a Scout outage."
         ],
-        "notes": "GT-25 CORRECTION 2026-07-10: precise live provider scalars are accessible, but they are provider-defined snapshots rather than universal truth. Grade provider/endpoint/as-of/method scope and no false exactness; do not require an approximate range or claim block-by-block movement.\nGT-25 independently confirmed by processes 3268/3273; reuse sls-031/sls-038 rather than duplicate findings."
+        "notes": "NEG / soft-empty behavioral contract."
       },
       "tags": {
         "category": "edge-behavior",
         "service": "scout",
-        "freshness": "live",
-        "trap": "fabrication-bait"
+        "freshness": "live"
       },
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-10",
+        "asOf": "2026-07-11",
         "sources": [
           {
-            "class": "D",
-            "ref": "https://defillama.com/data-definitions",
-            "note": "class inferred at migration"
+            "class": "B",
+            "ref": "catalog/manifest.json",
+            "note": "Fetch-verified local path exists and defines the exercised contract/workflow."
           },
           {
-            "class": "D",
-            "ref": "https://defillama.com/chain/Stellar",
-            "note": "class inferred at migration"
-          }
-        ],
-        "corroboration": [
-          {
-            "claim": "A highly precise TVL value is observable but only as a provider-defined, asynchronously updated snapshot, not a protocol-defined universal fact.",
-            "verdict": "confirmed",
-            "evidence": [
-              {
-                "class": "C",
-                "ref": "C: two independent DefiLlama API/page observations",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "A",
-                "ref": "A/D: DefiLlama definitions and cross-surface daily/page/API comparison",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "A/D: DefiLlama definitions and cross-surface daily/page/API comparison",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              }
-            ]
+            "class": "C",
+            "ref": "http://localhost:8787/mcp",
+            "note": "Live localhost search→execute probe."
           }
         ],
         "verified": {
           "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "by": "P4 coverage-closure lane (Solo process 3427)",
           "evidence": [
-            "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; both independently observed DefiLlama /v2/chains value 229093918.7739924 at separate times.",
-            "Existing improvements/stellar-light-scout/sls-031 and sls-038 cover provenance and ecosystem-rollup contract gaps.",
-            "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; getPartner on an unpublished slug returned envelope ok=false, kind soft-empty, status 404, with a directory hint.",
+            "catalog/manifest.json exists and supports the behavioral golden.",
+            "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ],
           "rootCause": [
-            "improvements/stellar-light-scout/sls-031-tvl-methodology-provenance.md",
-            "improvements/stellar-light-scout/sls-038-analyze-tvl-contract-mismatch.md",
-            "Eval-side aggregation/cadence explanation was overclaimed.",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "eval-authoring"
           ]
         },
-        "origin": "raven-next q-edge-noinfo-exact-tvl-figure"
+        "origin": "authored 2026-07 (coverage)"
       }
     },
     {
@@ -2110,28 +2075,25 @@
       }
     },
     {
-      "id": "q-scf-total-distributed",
-      "question": "How much has the Stellar Community Fund distributed in total, and to roughly how many projects?",
+      "id": "q-scf-v7-changes",
+      "question": "What changed when the SCF moved to v7.0, and when did that happen?",
       "surface": [
-        "scout.getClusters",
-        "scout.searchProjects",
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no single safe public scalar for SCF 'distributed.' Report a dated basis matrix and say whether each value is reconstructed, awarded, or paid. As of **2026-07-10/11**, Scout funding-v2 reconstructed **$39,851,645.13 across 391 distinct awarded project records**; this is not an official payment ledger. The official embedded round ledger instead summed **868 awarded submission memberships, about $63.62M awarded and $53.91M paid**. A separate public project-record pass summed roughly **$50.85M awarded and $41.72M paid**, while public banners still showed incompatible 42M/656 and 504 figures with unclear cutoffs. These populations are not interchangeable: projects differ from submission memberships, awarded differs from paid/distributed, and USD-valued budgets differ from XLM quantities. Use current source, timestamp, currency, denominator, and amount semantics; round machine totals rather than pinning floating-point tails. SCF totals are also distinct from SDF treasury, XLM supply, and Enterprise Fund investment.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSCF v7 launched in **January 2026** around SCF #41. It introduced three Build tracks—Open, Integration, and RFP—plus a unified interest/referral entry, Instawards as the successor/evolution of Kickstart, and stronger mainnet/UX-readiness expectations. For payments, the launch blog's 'four-tranche' shorthand should be reconciled with current detailed mechanics: **four payments**, consisting of 10% acceptance plus **three deliverable tranches** at 20%, 30%, and 40%. v7 also described multiple post-launch growth pathways; it did **not** create one unified 'Growth track.' Current Instaward, Growth Hack, Liquidity, Marketing, and other program rules must be checked separately rather than inferred from the launch blog.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "States whether its count means distinct funded projects or awarded submissions.",
-          "States whether its amount is denominated in USD or XLM."
+          "States four payments/three deliverable tranches.",
+          "Rejects a unified Growth track."
         ],
         "avoid": [
-          "Do NOT state a precise total as permanently fixed (it accrues every ~6-week round, and the live analytics figure itself drifts between indexings).",
-          "Do NOT conflate the distinct-funded-projects count with the awarded-submissions counters, or USD-denominated totals with XLM-denominated figures (the SCF site's '42M Awarded in XLM', older ~200M-XLM press figures) — always name the count basis and denomination.",
-          "Do NOT confuse SCF cumulative distribution with SDF treasury size, XLM total supply, or the SDF Enterprise Fund.",
-          "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+          "Do NOT call acceptance a fourth deliverable milestone.",
+          "Do NOT merge distinct post-launch/supporting programs into one Growth track or freeze launch shorthand as current terms.",
+          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Dossier §11. scout_analyze funding dimension is the exact card ('how much has SCF distributed'). Re-verified live 2026-06-29: scout_analyze ?dimension=funding returned scfTotalDistributedUSD ~$19.97M, scfAwardedProjects 223, meanAwardUSD ~$89.5K (DOWN from the 2026-06-22 $21.36M/239 — the live metric recomputes and drifts in both directions). communityfund.stellar.org/awards counter showed 504 'Previously Awarded Submissions'. RECONCILED: two count bases (distinct funded projects ~223 vs awarded submissions ~504, since a project can win multiple rounds) and two denominations (USD analytics vs XLM-denominated press figures like ~200M XLM). Freshness-sensitive.\nAlso good if the answer: Flags that cumulative totals grow each round and should be confirmed against the live source, and notes the USD vs XLM denomination (budgets are set in USD, paid in XLM).\nGolden cites: Stellar Light analytics (scout_analyze funding) and/or the SCF history-of-SCF page.\nCorrected 2026-07-03 (todo 829 skeptic sweep): the prior golden pinned an unstable snapshot. Grading remains behavioral: accept dated, source-named figures and require count basis/denomination; punish fixed-truth and scope confusion. POST-FIX REOPEN 2026-07-09 (todo 901): sls-013 is fixed upstream. Live funding-v2 returned $40,160,145.13 across 398 distinct projects with computedAt, methodologyVersion, an explicit reconstruction/count basis, and populated byRound rows. This improves provenance but does not turn the reconstructed total into permanent or official truth."
+        "notes": "Dossier §8/§9. Version-transition fact set; trap is attributing v6 features to v7.\nAlso good if the answer: Supporting programs were consolidated into a unified Growth track; a Referral Program was added. | UX audits / user testing were added to the Build evaluation.\nGolden cites: The 'Introducing SCF v7' blog post / SCF handbook history page.\nGT-36/39/40 independently reconciled 2026-07-10. Accept 'four tranches' only when the candidate accurately distinguishes the acceptance payment from three deliverables."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -2144,60 +2106,65 @@
         "asOf": "2026-07-10",
         "sources": [
           {
-            "class": "C",
-            "ref": "https://stellarlight.xyz",
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
             "note": "class inferred at migration"
           },
           {
             "class": "A",
-            "ref": "https://communityfund.stellar.org/awards",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/budget-and-deliverable-guidelines",
             "note": "class inferred at migration"
           }
         ],
         "corroboration": [
           {
-            "claim": "The scout funding metric is violently volatile and cannot be pinned",
+            "claim": "v7 launch history and current payment terminology",
             "verdict": "confirmed",
             "evidence": [
               {
-                "class": "C",
-                "ref": "C: live production execute 2026-07-03T18:34Z — scout.analyzeEcosystem funding: scfTotalDistributedUSD 40,736,895.13 / scfAwardedProjects 400 / meanAwardUSD 101,842; observed trajectory $21.36M (06-22) → $19.97M (06-29) → $40.74M (07-03)",
-                "observedAt": "2026-07-03",
+                "class": "A",
+                "ref": "A: January 2026 v7 announcement",
+                "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
                 "class": "A",
-                "ref": "A: communityfund.stellar.org 2026-07-03 — homepage '42M Awarded in XLM' / '656 Awarded Submissions'; awards page '504 Previously Awarded Submissions'",
-                "observedAt": "2026-07-03",
+                "ref": "A/B: current detailed rules",
+                "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
-                "class": "D",
-                "ref": "D: SDF SCF demo (Jan 2025): 'distributed over 32 million worth of XLM to over 540 projects' — already above the golden's pin at authoring",
+                "class": "B",
+                "ref": "A/B: current detailed rules",
+                "observedAt": "2026-07-11",
+                "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "F",
+                "ref": "F: GT-36/39/40 reconciliation",
                 "observedAt": "2026-07-11",
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
-            ]
+            ],
+            "note": "Legacy verdict: confirmed-with-terminology-tension."
           }
         ],
         "verified": {
           "date": "2026-07-11",
           "by": "P4 conversions rework after independent Fable copy/quality review",
           "evidence": [
-            "Skeptic sweep 2026-07-03 (scratchpad 521): live execute probe + communityfund.stellar.org fetches + SDF demo transcript, all asOf 2026-07-03",
+            "Solo scratchpad 575 GT-36/39/40, 2026-07-10.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ],
           "rootCause": [
-            "improvements/stellar-light-scout/sls-013 — fixed upstream: funding-v2 now exposes computedAt, methodologyVersion, countBasis, populated byRound data, and an explicit funnel scope; the golden remains behavior-gated because totals are volatile reconstructed snapshots",
-            "eval-side authoring: pinned a volatile corpus-only metric mid-recomputation and never ran the corpus-vs-world check against SDF's own cumulative statements",
-            "solo://proj/49/todo/corpus-health-instru--829",
+            "Eval-side historical shorthand promoted into current mechanics.",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
         },
-        "origin": "raven-next q-scf-total-distributed"
+        "origin": "raven-next q-scf-v7-changes"
       }
     },
     {

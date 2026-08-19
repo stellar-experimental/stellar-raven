@@ -1,7 +1,7 @@
 ---
 id: sk-016
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-14
 upstreamTitle: The agentic-payments MPP guide omits the MPP discovery layer
 evidence:
@@ -12,6 +12,8 @@ evidence:
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, row q-mpp-discovery-and-modes
   - Solo scratchpad 809, todo 1544 review
   - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-dev-skill/issues/107
+  - upstream fix merged 2026-08-19 in stellar/stellar-dev-skill PR 109 at commit 1f4b94e01ca24a2c00cb3b2cb3fcf6d07ad76462: https://github.com/stellar/stellar-dev-skill/pull/109
+  - 2026-08-19 exact new-pin body recheck at commit 1f4b94e01ca24a2c00cb3b2cb3fcf6d07ad76462: agentic-payments/SKILL.md routes API sellers to Discovery, while mpp.md now covers OpenAPI 3.1 /openapi.json, x-payment-info offers, mppx/express discovery(), the runtime 402 Challenge authority rule, MPPScan, the mpp.dev directory and read-only MCP surface, and registry non-verification
 ---
 
 ## Finding

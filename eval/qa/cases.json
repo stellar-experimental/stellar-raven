@@ -1,9 +1,9 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "dbb027cf75bd15325d138db1a7540b0a763ac4fb01d52dd3c45ae27aab7005f1",
+  "corpusContentSha256": "a27aee771f3efdc48ea6a7ac9d24d26b60cbad64bc5b5d98d601ca57ad5492c1",
   "counts": {
-    "total": 497,
+    "total": 499,
     "byCategory": {
       "assets-anchors-seps": 47,
       "compliance-rwa-payments": 39,
@@ -12,19 +12,19 @@
       "history-org-tokenomics": 20,
       "protocol-core": 49,
       "retail-consumer": 33,
-      "scf-grants-builders": 51,
+      "scf-grants-builders": 53,
       "soroban": 75,
       "tooling-infra": 77
     },
     "byService": {
       "lumenloop": 63,
       "none": 22,
-      "scout": 140,
+      "scout": 142,
       "skills": 33,
       "stellarDocs": 239
     },
     "byFreshness": {
-      "live": 153,
+      "live": 155,
       "scheduled": 144,
       "stable": 200
     },
@@ -15356,6 +15356,83 @@
           ]
         },
         "origin": "authored 2026-07 (gap-ops)"
+      }
+    },
+    {
+      "id": "q-gap-hackathon-brief-evidence-boundaries",
+      "question": "Scout's hackathon brief returns an empty `liveContracts.contracts` array and a `whatNotToClaim` list. What can I conclude?",
+      "surface": [
+        "scout.hackathonBrief"
+      ],
+      "golden": {
+        "answer": "Cite the brief's `generatedAt`, mapped contract domain, basis, and note. An empty `liveContracts.contracts` array means the evidence-gated registry returned no verified contract on record for that mapped domain. It does not prove that no relevant contract exists on mainnet. If the domain is null, report that the brief did not map the idea to a contract domain; do not turn the missing mapping into an absence claim. Each `whatNotToClaim` item is a deterministic caution derived from facts inside this brief. Cite its factual basis, and do not present it as an external reviewer verdict or a complete risk assessment. Use separate discovery for open-world existence questions and for rails or RFP evidence.",
+        "keyFacts": [
+          "Keeps an empty contract array relative to the evidence-gated registry and mapped domain.",
+          "Treats a null domain as an unmapped domain rather than proof of real-world absence.",
+          "Treats each caution as a fact-derived boundary from this brief, not an external verdict."
+        ],
+        "avoid": [
+          "Do NOT claim that an empty contract array proves no relevant contract exists on mainnet.",
+          "Do NOT claim that a null domain proves the idea has no contract surface or market.",
+          "Do NOT present `whatNotToClaim` as free-form advice, an external judgment, or a complete risk review."
+        ],
+        "notes": "Grade the durable absence, mapping, and caution semantics. The observed empty result is evidence, not a permanent expected value."
+      },
+      "tags": {
+        "category": "scf-grants-builders",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-08-19",
+        "sources": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.hackathonBrief",
+            "note": "The contract defines evidence-gated contract absence, null-domain semantics, and fact-derived cautions."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+            "note": "The read-only probe returned an empty contract array, a null mapped domain, an absence-is-not-nonexistence note, and fact-derived cautions."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "An empty live-contract result is registry-relative, a null domain is an unmapped domain, and the caution list derives only from facts in the same brief.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.hackathonBrief",
+                "observedAt": "2026-08-19",
+                "note": "The manifest states all three evidence boundaries."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+                "observedAt": "2026-08-19",
+                "note": "The live response demonstrated the empty-registry and null-domain boundaries without establishing permanent absence."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-19",
+          "by": "Todo 1797 coverage-golden implementation",
+          "evidence": [
+            "Read-only hackathonBrief probe returned an empty registry result and null mapped domain on 2026-08-19.",
+            "catalog/manifest.json#scout.hackathonBrief defines the durable absence, mapping, and caution semantics.",
+            "Sibling sweep: q-gap-contracts-domain-empty owns the standalone registry boundary; this case tests that boundary inside the hackathon composite. The vet, pitch, prior-art, and event cases retain their distinct intents.",
+            "solo://proj/49/scratchpad/repository-issue-and--837#golden-verdict"
+          ],
+          "rootCause": [
+            "solo://proj/49/todo/add-broad-scout-hack--1797"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)"
       }
     },
     {
@@ -32274,6 +32351,83 @@
           ]
         },
         "origin": "raven-next q-scf-vs-sdf-enterprise-fund"
+      }
+    },
+    {
+      "id": "q-scout-hackathon-brief-first-hour",
+      "question": "We plan to build confidential token payroll at a Stellar hackathon. How should we create an evidence-grounded first-hour brief before coding?",
+      "surface": [
+        "scout.hackathonBrief"
+      ],
+      "golden": {
+        "answer": "Call `scout.hackathonBrief` with the concrete idea and cite the response's `generatedAt`. Use `report.vet` for idea evidence, `builds` for prototype prior art, and `startFrom` for candidate repositories to inspect. Read `liveContracts` as an evidence-gated registry, and read `funding` through its stated source and basis. Treat `whatNotToClaim` as deterministic cautions derived from this brief's facts. Preserve null and empty-result boundaries for every block. The brief does not bundle rails or RFPs, so use separate operations if the team needs that evidence. Treat the composite as a dated starting brief, not a verdict, endorsement, or complete market study.",
+        "keyFacts": [
+          "Calls the hackathon brief with a concrete idea and cites its generation time.",
+          "Uses each report block for its stated evidence purpose and checks its basis or source.",
+          "Keeps rails and RFP evidence outside the composite and avoids verdict or endorsement claims."
+        ],
+        "avoid": [
+          "Do NOT present a returned project or repository as an endorsed template or guaranteed best choice.",
+          "Do NOT invent rails or RFP evidence from this composite.",
+          "Do NOT pin returned names, counts, rankings, funding rounds, or values as durable facts."
+        ],
+        "notes": "Grade the structural first-hour workflow and evidence boundaries. Returned entities and funding context can change."
+      },
+      "tags": {
+        "category": "scf-grants-builders",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-08-19",
+        "sources": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.hackathonBrief",
+            "note": "The exposed contract defines the report blocks, their evidence roles, and the rails and RFP boundary."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+            "note": "The read-only probe returned the documented report blocks with generation metadata and block-specific evidence."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "The hackathon brief is a dated composite for idea evidence, prototype prior art, starter-repository inspection, contract-registry evidence, funding context, and fact-derived cautions; it does not bundle rails or RFPs.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.hackathonBrief",
+                "observedAt": "2026-08-19",
+                "note": "The manifest defines every block and states the unbundled evidence boundary."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+                "observedAt": "2026-08-19",
+                "note": "The live response contained the documented blocks and their evidence metadata."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-19",
+          "by": "Todo 1797 coverage-golden implementation",
+          "evidence": [
+            "Read-only hackathonBrief probe for a concrete build idea on 2026-08-19.",
+            "catalog/manifest.json#scout.hackathonBrief defines the composite and its evidence boundaries.",
+            "Sibling sweep: q-defi-streaming-payments-prior-art remains prior-art-only; q-scf-pitch-prep-live remains pitch-only; q-gap-vet-pitch-vertical-null remains vet-and-pitch-only; event-catalog hackathon cases remain event queries.",
+            "solo://proj/49/scratchpad/repository-issue-and--837#golden-verdict"
+          ],
+          "rootCause": [
+            "solo://proj/49/todo/add-broad-scout-hack--1797"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)"
       }
     },
     {

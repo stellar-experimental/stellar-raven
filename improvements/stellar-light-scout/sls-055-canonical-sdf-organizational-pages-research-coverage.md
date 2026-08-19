@@ -1,7 +1,7 @@
 ---
 id: sls-055
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-13
 evidence:
   - 2026-07-13 production source-ceiling audit over four owned SDF-organizational QA cases, using Scout research/projects/builders, Lumenloop semantic/entity/A-V, and Stellar Docs search; solo://proj/49/scratchpad/sdf-organizational-s--630
@@ -13,6 +13,10 @@ evidence:
   - upstream issue filed 2026-07-13 America/New_York (2026-07-14 UTC): https://github.com/Stellar-Light/stellarlight/issues/533
   - 2026-07-15 live recheck on spec 1.7.26 returned the canonical Team page top-ranked for source=sdf-org with David Mazières as Founder and Chief Scientist, Justin Rice as VP of Ecosystem, and observedAt 2026-07-15T08:01:44.242Z; Mandate, Terms, Enterprise Fund, and Quarterly Reports remained covered
   - closed-unfixed verification posted and read back 2026-07-15: https://github.com/Stellar-Light/stellarlight/issues/533#issuecomment-4982290851
+  - class-level source-family fix merged in Stellar-Light/stellarlight PR 535: https://github.com/Stellar-Light/stellarlight/pull/535
+  - leadership-role and observedAt follow-up merged in Stellar-Light/stellarlight PR 544: https://github.com/Stellar-Light/stellarlight/pull/544
+  - final research-grants and Enterprise Fund recurrence fix merged in Stellar-Light/stellarlight PR 885: https://github.com/Stellar-Light/stellarlight/pull/885
+  - 2026-08-19 production API 1.8.73 live recheck with source=sdf-org returned the canonical Mandate self-funded/pays-taxes text, Terms Delaware-nonprofit text, Team roles for David Mazières and Justin Rice, Enterprise Fund portfolio-totaling-over-$100m text, and Academic Research Grants eligibility, quarterly deadlines, two-submissions/year rule, and $150,000 cap; returned rows carried observedAt 2026-08-19T06:50:40.412Z
 recurrences:
   - date: 2026-07-14
     evidence: eval/qa/results/2026-07-14T03-29-01-variantA.json scored q-org-mazieres-chief-scientist wrong after five on-plan calls; the answer promoted a 2014-2015 Chief Scientist title as timeless current and omitted canonical founder/professor context

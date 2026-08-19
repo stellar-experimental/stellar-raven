@@ -1,0 +1,77 @@
+{
+  "id": "q-scout-hackathon-brief-first-hour",
+  "question": "We plan to build confidential token payroll at a Stellar hackathon. How should we create an evidence-grounded first-hour brief before coding?",
+  "surface": [
+    "scout.hackathonBrief"
+  ],
+  "golden": {
+    "answer": "Call `scout.hackathonBrief` with the concrete idea and cite the response's `generatedAt`. Use `report.vet` for idea evidence, `builds` for prototype prior art, and `startFrom` for candidate repositories to inspect. Read `liveContracts` as an evidence-gated registry, and read `funding` through its stated source and basis. Treat `whatNotToClaim` as deterministic cautions derived from this brief's facts. Preserve null and empty-result boundaries for every block. The brief does not bundle rails or RFPs, so use separate operations if the team needs that evidence. Treat the composite as a dated starting brief, not a verdict, endorsement, or complete market study.",
+    "keyFacts": [
+      "Calls the hackathon brief with a concrete idea and cites its generation time.",
+      "Uses each report block for its stated evidence purpose and checks its basis or source.",
+      "Keeps rails and RFP evidence outside the composite and avoids verdict or endorsement claims."
+    ],
+    "avoid": [
+      "Do NOT present a returned project or repository as an endorsed template or guaranteed best choice.",
+      "Do NOT invent rails or RFP evidence from this composite.",
+      "Do NOT pin returned names, counts, rankings, funding rounds, or values as durable facts."
+    ],
+    "notes": "Grade the structural first-hour workflow and evidence boundaries. Returned entities and funding context can change."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-08-19",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.hackathonBrief",
+        "note": "The exposed contract defines the report blocks, their evidence roles, and the rails and RFP boundary."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+        "note": "The read-only probe returned the documented report blocks with generation metadata and block-specific evidence."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The hackathon brief is a dated composite for idea evidence, prototype prior art, starter-repository inspection, contract-registry evidence, funding context, and fact-derived cautions; it does not bundle rails or RFPs.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.hackathonBrief",
+            "observedAt": "2026-08-19",
+            "note": "The manifest defines every block and states the unbundled evidence boundary."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+            "observedAt": "2026-08-19",
+            "note": "The live response contained the documented blocks and their evidence metadata."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-19",
+      "by": "Todo 1797 coverage-golden implementation",
+      "evidence": [
+        "Read-only hackathonBrief probe for a concrete build idea on 2026-08-19.",
+        "catalog/manifest.json#scout.hackathonBrief defines the composite and its evidence boundaries.",
+        "Sibling sweep: q-defi-streaming-payments-prior-art remains prior-art-only; q-scf-pitch-prep-live remains pitch-only; q-gap-vet-pitch-vertical-null remains vet-and-pitch-only; event-catalog hackathon cases remain event queries.",
+        "solo://proj/49/scratchpad/repository-issue-and--837#golden-verdict"
+      ],
+      "rootCause": [
+        "solo://proj/49/todo/add-broad-scout-hack--1797"
+      ]
+    },
+    "origin": "authored 2026-08 (coverage)"
+  }
+}

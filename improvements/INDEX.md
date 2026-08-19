@@ -16,8 +16,8 @@ Total findings: 74
 | sk-013 | The assets skill teaches ChangeTrust(limit: 0) as trustline removal without the preconditions that make the operation safe and valid. A…    | fixed-upstream    | 2026-08-04 | 1           |
 | sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…    | reported-upstream | 2026-08-11 | 1           |
 | sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                          | reported-upstream | 2026-08-11 | 1           |
-| sk-016 | The agentic-payments skill teaches MPP Charge mode and MPP Session mode. It does not teach the MPP discovery layer                          | reported-upstream | 2026-08-14 | 0           |
-| sk-017 | skills/dapp/smart-accounts.md gives two stale repository links and one unsupported status label                                             | reported-upstream | 2026-08-14 | 0           |
+| sk-016 | The agentic-payments skill teaches MPP Charge mode and MPP Session mode. It does not teach the MPP discovery layer                          | fixed-upstream    | 2026-08-14 | 0           |
+| sk-017 | skills/dapp/smart-accounts.md gives two stale repository links and one unsupported status label                                             | fixed-upstream    | 2026-08-14 | 0           |
 | sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | reported-upstream | 2026-08-19 | 0           |
 
 ## stellar-light-scout
@@ -25,12 +25,12 @@ Total findings: 74
 | id      | title                                                                                                                                       | status            | discovered | recurrences |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | sls-023 | Scout's broad RWA discovery does not separate entity/project status from the deployment status of a particular product on Stellar. A live…  | reported-upstream | 2026-07-10 | 3           |
-| sls-024 | Scout lifecycle labels lack populated provenance and deployment qualifiers. The schema exposes statusAsOf, statusBasis, statusSourceUrl,…   | reported-upstream | 2026-07-10 | 3           |
+| sls-024 | Scout lifecycle labels lack populated provenance and deployment qualifiers. The schema exposes statusAsOf, statusBasis, statusSourceUrl,…   | reported-upstream | 2026-07-10 | 4           |
 | sls-029 | Oracle discovery collapses provider identity, product family, network, and evidence tier into a project-level status. This makes…           | reported-upstream | 2026-07-10 | 3           |
 | sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 5           |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
-| sls-055 | Scout research does not reliably expose quotable canonical SDF organizational pages. Its broad cited-research lane routes…                  | reported-upstream | 2026-07-13 | 7           |
-| sls-063 | The Scout project search returns 26 awarded projects with known award rounds and an empty scfRoundAwards array. Seventeen rows have an…     | reported-upstream | 2026-08-11 | 0           |
+| sls-055 | Scout research does not reliably expose quotable canonical SDF organizational pages. Its broad cited-research lane routes…                  | fixed-upstream    | 2026-07-13 | 7           |
+| sls-063 | The Scout project search returns 26 awarded projects with known award rounds and an empty scfRoundAwards array. Seventeen rows have an…     | fixed-upstream    | 2026-08-11 | 0           |
 | sls-068 | Scout returns three Fluxity repositories with a Wagent project link. The affected rows are luanlabs/fluxity.finance,…                       | reported-upstream | 2026-08-19 | 0           |
 | sls-069 | Scout OpenAPI includes remediation history inside seven response-schema descriptions. Five descriptions name sls-066 or sls-067. Two more…  | reported-upstream | 2026-08-19 | 0           |
 | sls-070 | Scout now assigns an engagementId to every repeated protocol and auditor group. This resolves the broad relation-metadata defect in sls-064 | reported-upstream | 2026-08-19 | 0           |

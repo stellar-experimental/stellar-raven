@@ -144,3 +144,20 @@ Raven applies one manifest-derived exposure filter to every selected file at bui
 The filter removes a complete Markdown section, table row, or list item that names an excluded
 Scout path. It fails closed for an unsafe prose shape. This selection passed the guard across all
 four files. Raven serves no feedback workflow from the pinned body.
+
+### 2026-08-19 — stellar-dev re-pin (skills findings sk-016 and sk-017)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `1f4b94e01ca24a2c00cb3b2cb3fcf6d07ad76462` | `sel:d9d847463c64` | complete old-to-new body diff read |
+
+The other three sources did not change their served selections.
+
+Five files changed. `agentic-payments/SKILL.md` and `agentic-payments/mpp.md` add MPP discovery,
+the runtime 402 Challenge authority rule, and optional registries. `dapp/smart-accounts.md`,
+`standards/ecosystem.md`, and `standards/resources.md` replace archived repository links and
+describe both smart-account kits as supported siblings with different authorization models.
+
+The changes stay within each skill's topic and match upstream PRs 109 and 110. They add no
+credential, behavior-hijack instruction, retired skill, or non-exposed Raven operation reference.
+The external OpenAPI, registry, SDK, and repository links are relevant reference material.

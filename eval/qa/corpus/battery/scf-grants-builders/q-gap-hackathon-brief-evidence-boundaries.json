@@ -1,0 +1,77 @@
+{
+  "id": "q-gap-hackathon-brief-evidence-boundaries",
+  "question": "Scout's hackathon brief returns an empty `liveContracts.contracts` array and a `whatNotToClaim` list. What can I conclude?",
+  "surface": [
+    "scout.hackathonBrief"
+  ],
+  "golden": {
+    "answer": "Cite the brief's `generatedAt`, mapped contract domain, basis, and note. An empty `liveContracts.contracts` array means the evidence-gated registry returned no verified contract on record for that mapped domain. It does not prove that no relevant contract exists on mainnet. If the domain is null, report that the brief did not map the idea to a contract domain; do not turn the missing mapping into an absence claim. Each `whatNotToClaim` item is a deterministic caution derived from facts inside this brief. Cite its factual basis, and do not present it as an external reviewer verdict or a complete risk assessment. Use separate discovery for open-world existence questions and for rails or RFP evidence.",
+    "keyFacts": [
+      "Keeps an empty contract array relative to the evidence-gated registry and mapped domain.",
+      "Treats a null domain as an unmapped domain rather than proof of real-world absence.",
+      "Treats each caution as a fact-derived boundary from this brief, not an external verdict."
+    ],
+    "avoid": [
+      "Do NOT claim that an empty contract array proves no relevant contract exists on mainnet.",
+      "Do NOT claim that a null domain proves the idea has no contract surface or market.",
+      "Do NOT present `whatNotToClaim` as free-form advice, an external judgment, or a complete risk review."
+    ],
+    "notes": "Grade the durable absence, mapping, and caution semantics. The observed empty result is evidence, not a permanent expected value."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-08-19",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.hackathonBrief",
+        "note": "The contract defines evidence-gated contract absence, null-domain semantics, and fact-derived cautions."
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+        "note": "The read-only probe returned an empty contract array, a null mapped domain, an absence-is-not-nonexistence note, and fact-derived cautions."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "An empty live-contract result is registry-relative, a null domain is an unmapped domain, and the caution list derives only from facts in the same brief.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.hackathonBrief",
+            "observedAt": "2026-08-19",
+            "note": "The manifest states all three evidence boundaries."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll",
+            "observedAt": "2026-08-19",
+            "note": "The live response demonstrated the empty-registry and null-domain boundaries without establishing permanent absence."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-19",
+      "by": "Todo 1797 coverage-golden implementation",
+      "evidence": [
+        "Read-only hackathonBrief probe returned an empty registry result and null mapped domain on 2026-08-19.",
+        "catalog/manifest.json#scout.hackathonBrief defines the durable absence, mapping, and caution semantics.",
+        "Sibling sweep: q-gap-contracts-domain-empty owns the standalone registry boundary; this case tests that boundary inside the hackathon composite. The vet, pitch, prior-art, and event cases retain their distinct intents.",
+        "solo://proj/49/scratchpad/repository-issue-and--837#golden-verdict"
+      ],
+      "rootCause": [
+        "solo://proj/49/todo/add-broad-scout-hack--1797"
+      ]
+    },
+    "origin": "authored 2026-08 (coverage)"
+  }
+}

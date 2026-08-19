@@ -21,6 +21,8 @@ recurrences:
     evidence: OpenAPI 1.8.40 adds Repo activityState/activitySignals, but this is only a partial response: it does not supply the requested project statusBasis/statusSourceUrl or deployment scope, and explicitly defines dormant/unknown as non-defunct observations rather than lifecycle death verdicts
   - date: 2026-08-11
     evidence: Production API 1.8.41 returns Fluxity as Live with statusBasis source-inherited, but statusSourceUrl remains null and supportedNetworks remains empty; issue #494 is open and issue stellar-scout#9 is open without comments
+  - date: 2026-08-19
+    evidence: Production API 1.8.73 returns OrbitCDP as Inactive with statusAsOf 2026-03-10T15:16:46.523Z and statusBasis unverified, but statusSourceUrl remains null, supportedNetworks and products remain empty, and deployments and oracleDeployments remain null; this is a partial improvement, not resolution
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sk-017
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-14
 upstreamTitle: The dapp skill links two archived repositories and applies a legacy label the upstream README does not support
 evidence:
@@ -15,6 +15,8 @@ evidence:
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, row q-tool-passkeykit-smart-wallet
   - Solo scratchpad 809, todo 1543 review and todo 1550 root correction round
   - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-dev-skill/issues/108
+  - upstream fix merged 2026-08-19 in stellar/stellar-dev-skill PR 110 at commit df27f39edd673cdb02f338e352aea12aaabd8622: https://github.com/stellar/stellar-dev-skill/pull/110
+  - 2026-08-19 exact new-pin body recheck at commit 1f4b94e01ca24a2c00cb3b2cb3fcf6d07ad76462: dapp/smart-accounts.md and both standards companion files link stellar/smart-account-kit and stellar/passkey-kit, remove the Legacy and Recommended labels, and state the sibling authorization-model boundary
 ---
 
 ## Finding
