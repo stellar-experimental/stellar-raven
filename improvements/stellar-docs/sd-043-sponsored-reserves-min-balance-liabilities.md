@@ -1,7 +1,7 @@
 ---
 id: sd-043
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-08-14
 upstreamTitle: The sponsored-reserves minimum-balance formula wrongly adds liabilities.selling
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "consumer-side patch: eval/qa/corpus/battery/protocol-core/q-pc-sponsored-reserves.json truth.verified dated 2026-08-14, by \"Root-reconciled golden-truth matrices in Solo todos 1546 and 1547\"; its rootCause names this finding, and its evidence cites the same sponsored-reserves anchor and the same stellar-core TransactionUtils.cpp source used here"
   - "sibling case eval/qa/corpus/battery/protocol-core/q-protocol-base-reserve-min-balance.json uses the Core formula without liabilities and subtracts selling liabilities only from available balance, so the two owned cases now encode one definition"
   - Solo scratchpad 809, todo 1542 review and todo 1550 reciprocal-citation round
+  - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2771
 ---
 
 ## Finding

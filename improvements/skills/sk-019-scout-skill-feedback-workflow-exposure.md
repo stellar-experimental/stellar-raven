@@ -1,7 +1,7 @@
 ---
 id: sk-019
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-08-19
 upstreamTitle: Separate read-only Scout guidance from feedback submission instructions
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - the prior Raven pin at 0d169e4ab64ddcc87ef61cc8e1737151fd39a05e also advertises both feedback operations
   - Raven excludes the feedback write because it is side-effecting and excludes its schema-only read because the write is unavailable
   - Raven removes complete Markdown blocks for all excluded Scout paths through one manifest-derived build-time and runtime filter
+  - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellar-scout/issues/13
 ---
 
 ## Finding

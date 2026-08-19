@@ -1,7 +1,7 @@
 ---
 id: sd-044
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-08-14
 upstreamTitle: Quickstart documentation omits the shipped --enable-core-manual-close flag
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - 2026-08-14 read of the stellar/quickstart README found no manual-close documentation either
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, row q-quickstart-manual-ledger-close
   - Solo scratchpad 809, todo 1542 review
+  - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2772
 ---
 
 ## Finding

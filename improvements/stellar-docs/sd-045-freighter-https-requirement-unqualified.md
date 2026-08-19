@@ -1,7 +1,7 @@
 ---
 id: sd-045
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-08-14
 upstreamTitle: The frontend guide states an unqualified Freighter HTTPS requirement that localhost does not need
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - 2026-08-14 live stellarDocs.search_docs for "Freighter not detected localhost https" returned eight hits and none about wallet detection
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, row q-ti-freighter-localhost-not-detected
   - Solo scratchpad 809, todo 1543 review and todo 1550 root correction round
+  - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2773
 ---
 
 ## Finding

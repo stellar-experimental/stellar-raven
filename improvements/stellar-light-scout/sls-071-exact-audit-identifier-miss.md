@@ -1,13 +1,14 @@
 ---
 id: sls-071
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-19
 upstreamTitle: Return an explicit miss for absent exact audit finding identifiers
 evidence:
   - 2026-08-19 scout.searchResearch for V-SOR-VUL-002 returned the matching audit finding chunk
   - 2026-08-19 the same call shape for absent identifier V-SOR-APP-VUL-003 returned section-classification boilerplate
   - this is the exact-identifier residual successor to resolved finding sls-064
+  - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellarlight/issues/975
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sd-042
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-08-14
 upstreamTitle: The EVM migration guide calls Horizon deprecated while canonical pages say deprecation is future
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - the four pages are /docs/tools/lab/api-explorer/horizon-endpoint, /docs/tools/lab/api-explorer, /docs/learn/fundamentals/stellar-stack#horizon, and /docs/data/apis#horizon
   - resolved ledger entry sd-017 in improvements/resolved.json recorded this defect class as cleared on 2026-07-27; this is a new occurrence on a page that recheck did not cover
   - Solo scratchpad 809, todo 1541 finding F4
+  - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2770
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: ll-029
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-08-18
 upstreamTitle: Five Lumenloop tools publish a results object schema that conflicts with their live payload shape
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-08-18 independent live calls reproduced two grouped objects and three top-level arrays
   - inventory/lumenloop.json fetched 2026-07-06 declares the same results and text object for all five operations
   - Solo scratchpad 816 Lumenloop schema correction review
+  - reported upstream 2026-08-19 through existing issue 35: https://github.com/lumenloop/lumenloop-backend/issues/35#issuecomment-5347713582
 ---
 
 ## Finding

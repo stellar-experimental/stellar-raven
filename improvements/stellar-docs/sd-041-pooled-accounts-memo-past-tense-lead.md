@@ -1,13 +1,14 @@
 ---
 id: sd-041
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-08-14
 upstreamTitle: The pooled-accounts guide opens by placing memos in the past, then tells readers to keep supporting memos
 evidence:
   - 2026-08-14 live read of https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos returned the past-tense lead and the current-practice recommendation on the same page
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, Stellar Docs rows 10 and 14 both reproduced the misleading lead
   - Solo scratchpad 809, todo 1541 finding F2
+  - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2769
 ---
 
 ## Finding

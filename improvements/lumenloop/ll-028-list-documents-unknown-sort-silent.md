@@ -1,7 +1,7 @@
 ---
 id: ll-028
 service: lumenloop
-status: verified
+status: reported-upstream
 discovered: 2026-08-14
 upstreamTitle: Reject or echo the sort field in list_documents instead of ignoring unknown values
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - 2026-08-14 live list_documents on collection articles with sort "last_seen_at" returned the identical first page, although last_seen_at is documented for jobs only
   - 2026-08-14 live list_documents on collection articles with sort "publishing_date" returned a different row order, which shows the unknown values fell back to a default order
   - eval round 2026-08-14, live-run stamp 2026-08-14T04-13-13, Solo scratchpad 809 todo 1538 shard
+  - upstream issue filed 2026-08-19: https://github.com/lumenloop/lumenloop-backend/issues/43
 ---
 
 ## Finding

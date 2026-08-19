@@ -16,9 +16,9 @@ Total findings: 74
 | sk-013 | The assets skill teaches ChangeTrust(limit: 0) as trustline removal without the preconditions that make the operation safe and valid. A…    | fixed-upstream    | 2026-08-04 | 1           |
 | sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…    | reported-upstream | 2026-08-11 | 1           |
 | sk-015 | Both skills start with an OpenZeppelin scope. Their trigger lists then claim generic Soroban tasks                                          | reported-upstream | 2026-08-11 | 1           |
-| sk-016 | The agentic-payments skill teaches MPP Charge mode and MPP Session mode. It does not teach the MPP discovery layer                          | verified          | 2026-08-14 | 0           |
-| sk-017 | skills/dapp/smart-accounts.md gives two stale repository links and one unsupported status label                                             | verified          | 2026-08-14 | 0           |
-| sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | verified          | 2026-08-19 | 0           |
+| sk-016 | The agentic-payments skill teaches MPP Charge mode and MPP Session mode. It does not teach the MPP discovery layer                          | reported-upstream | 2026-08-14 | 0           |
+| sk-017 | skills/dapp/smart-accounts.md gives two stale repository links and one unsupported status label                                             | reported-upstream | 2026-08-14 | 0           |
+| sk-019 | The current Scout skill mixes read-only discovery workflows with feedback submission. SKILL.md lists POST /api/feedback. The API reference… | reported-upstream | 2026-08-19 | 0           |
 
 ## stellar-light-scout
 
@@ -31,11 +31,11 @@ Total findings: 74
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
 | sls-055 | Scout research does not reliably expose quotable canonical SDF organizational pages. Its broad cited-research lane routes…                  | reported-upstream | 2026-07-13 | 7           |
 | sls-063 | The Scout project search returns 26 awarded projects with known award rounds and an empty scfRoundAwards array. Seventeen rows have an…     | reported-upstream | 2026-08-11 | 0           |
-| sls-068 | Scout returns three Fluxity repositories with a Wagent project link. The affected rows are luanlabs/fluxity.finance,…                       | verified          | 2026-08-19 | 0           |
-| sls-069 | Scout OpenAPI includes remediation history inside seven response-schema descriptions. Five descriptions name sls-066 or sls-067. Two more…  | verified          | 2026-08-19 | 0           |
-| sls-070 | Scout now assigns an engagementId to every repeated protocol and auditor group. This resolves the broad relation-metadata defect in sls-064 | verified          | 2026-08-19 | 0           |
-| sls-071 | An exact identifier that exists can reach its audit finding. An absent exact identifier still returns section-classification boilerplate    | verified          | 2026-08-19 | 0           |
-| sls-072 | Scout 1.8.73 resolves the fundability and stale-phase defects from sls-067. The response and the official awards page agree on the current… | verified          | 2026-08-19 | 0           |
+| sls-068 | Scout returns three Fluxity repositories with a Wagent project link. The affected rows are luanlabs/fluxity.finance,…                       | reported-upstream | 2026-08-19 | 0           |
+| sls-069 | Scout OpenAPI includes remediation history inside seven response-schema descriptions. Five descriptions name sls-066 or sls-067. Two more…  | reported-upstream | 2026-08-19 | 0           |
+| sls-070 | Scout now assigns an engagementId to every repeated protocol and auditor group. This resolves the broad relation-metadata defect in sls-064 | reported-upstream | 2026-08-19 | 0           |
+| sls-071 | An exact identifier that exists can reach its audit finding. An absent exact identifier still returns section-classification boilerplate    | reported-upstream | 2026-08-19 | 0           |
+| sls-072 | Scout 1.8.73 resolves the fundability and stale-phase defects from sls-067. The response and the official awards page agree on the current… | reported-upstream | 2026-08-19 | 0           |
 
 ## stellar-docs
 
@@ -57,12 +57,12 @@ Total findings: 74
 | sd-036 | The current Final CAP-0075 source retains one reproducible interface contradiction. The former Protocol-24 availability contradiction no…   | reported-upstream | 2026-07-11 | 1           |
 | sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 2           |
 | sd-039 | The current Tools documentation presents "OpenZeppelin Relayer" and the managed Stellar Channels service as the same product. Both…         | reported-upstream | 2026-07-27 | 3           |
-| sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::fromxdr(&env, &bytes).unwrap()                               | verified          | 2026-08-11 | 0           |
-| sd-041 | The pooled-accounts guide opens with a past-tense statement about memos. The same page later tells the reader to keep supporting memos      | verified          | 2026-08-14 | 0           |
-| sd-042 | Stellar Docs publish two incompatible lifecycle labels for Horizon                                                                          | verified          | 2026-08-14 | 0           |
-| sd-043 | The sponsored-reserves guide states this minimum-balance formula under "Effect on minimum balance":                                         | verified          | 2026-08-14 | 0           |
-| sd-044 | The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…    | verified          | 2026-08-14 | 0           |
-| sd-045 | The dapp frontend guide states one unqualified requirement: "Freighter wallet requires a secure connection (HTTPS) to interact with your…   | verified          | 2026-08-14 | 0           |
+| sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::fromxdr(&env, &bytes).unwrap()                               | reported-upstream | 2026-08-11 | 0           |
+| sd-041 | The pooled-accounts guide opens with a past-tense statement about memos. The same page later tells the reader to keep supporting memos      | reported-upstream | 2026-08-14 | 0           |
+| sd-042 | Stellar Docs publish two incompatible lifecycle labels for Horizon                                                                          | reported-upstream | 2026-08-14 | 0           |
+| sd-043 | The sponsored-reserves guide states this minimum-balance formula under "Effect on minimum balance":                                         | reported-upstream | 2026-08-14 | 0           |
+| sd-044 | The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…    | reported-upstream | 2026-08-14 | 0           |
+| sd-045 | The dapp frontend guide states one unqualified requirement: "Freighter wallet requires a secure connection (HTTPS) to interact with your…   | reported-upstream | 2026-08-14 | 0           |
 
 ## lumenloop
 
@@ -94,8 +94,8 @@ Total findings: 74
 | ll-025 | Lumenloop roadmap summaries do not reliably distinguish planned capabilities from shipped ones. The June 9 post describes ML-DSA host…      | reported-upstream | 2026-07-11 | 1           |
 | ll-026 | Lumenloop event summaries risk collapsing a product announcement, effective date, and first-trade date into one event timestamp. For the…   | reported-upstream | 2026-07-11 | 1           |
 | ll-027 | Lumenloop's RedStone summary gives an unqualified nine-asset count that cannot be reconciled with Scout's ten-feed wording. Without labels… | reported-upstream | 2026-07-11 | 1           |
-| ll-028 | listdocuments accepts an unknown sort value. The call returns ok with a full result page. It returns no error and no warning                | verified          | 2026-08-14 | 0           |
-| ll-029 | Five public Lumenloop tools declare an output object with optional results and text fields. The live payload for each tool uses a…          | verified          | 2026-08-18 | 0           |
+| ll-028 | listdocuments accepts an unknown sort value. The call returns ok with a full result page. It returns no error and no warning                | reported-upstream | 2026-08-14 | 0           |
+| ll-029 | Five public Lumenloop tools declare an output object with optional results and text fields. The live payload for each tool uses a…          | reported-upstream | 2026-08-18 | 0           |
 
 ## workers-ai-provider
 

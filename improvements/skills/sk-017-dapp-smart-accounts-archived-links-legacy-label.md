@@ -1,7 +1,7 @@
 ---
 id: sk-017
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-08-14
 upstreamTitle: The dapp skill links two archived repositories and applies a legacy label the upstream README does not support
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - 2026-08-14 npm registry passkey-kit@0.16.2 carries no deprecated field; GitHub repository metadata reports archived false and disabled false
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, row q-tool-passkeykit-smart-wallet
   - Solo scratchpad 809, todo 1543 review and todo 1550 root correction round
+  - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-dev-skill/issues/108
 ---
 
 ## Finding

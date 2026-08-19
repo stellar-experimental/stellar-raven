@@ -773,7 +773,8 @@ receives causal credit without a common-ID, same-tuple comparison and mechanism 
 The review deduplicated accepted upstream work. Live Scout on 2026-08-19 returned four
 Fluxity-named repositories. Three map to `project.slug: "wagent"` despite their Fluxity names and
 descriptions. This is a verified repository-to-project linkage defect in `sls-068`. It is distinct
-from resolved `sls-058`, which covered SCF funding fields. No external issue was filed.
+from resolved `sls-058`, which covered SCF funding fields. The upstream report is
+[Stellar-Light/stellarlight#972](https://github.com/Stellar-Light/stellarlight/issues/972).
 
 Solo todos 1737 through 1748 track the accepted own-repository, golden-truth, and free-probe work.
 Verified finding `sk-017` already owns the Passkey Kit legacy-label issue, so this round does not

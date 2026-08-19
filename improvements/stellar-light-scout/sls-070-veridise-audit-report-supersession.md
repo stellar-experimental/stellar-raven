@@ -1,7 +1,7 @@
 ---
 id: sls-070
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-19
 upstreamTitle: Clarify supersession between the two Veridise Soroban Core audit reports
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - report 28 carries reportVersion V2, while both rows carry supersededByReportId null
   - both reports cover the same 2023-10-30 through 2023-12-22 engagement and the same critical authorization finding
   - this is the residual successor to resolved finding sls-064
+  - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellarlight/issues/974
 ---
 
 ## Finding

@@ -1,13 +1,14 @@
 ---
 id: sls-072
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-19
 upstreamTitle: Add the live RFP round source field to the OpenAPI response schema
 evidence:
   - 2026-08-19 live Scout 1.8.73 returned meta.scfRound.source with value live
   - the same OpenAPI response schema declared currentPhase and roundsInProgress but omitted source
   - this is the response-contract residual successor to resolved finding sls-067
+  - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellarlight/issues/976
 ---
 
 ## Finding

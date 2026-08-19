@@ -1,7 +1,7 @@
 ---
 id: sls-069
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-19
 upstreamTitle: Keep remediation history out of model-facing Scout schema descriptions
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - the stablecoin descriptions record the previous USDC omission, the former counts.total meaning, and the sls-066 remediation identifier
   - the RFP descriptions record when fields were served and specced, including the sls-067 remediation identifier
   - Solo standards review against f313bf27b53b1f28a2ab2771452188ef6000c755 identified the text as upstream reviewability debt and advised against a local scrub
+  - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellarlight/issues/973
 ---
 
 ## Finding

@@ -1,13 +1,14 @@
 ---
 id: sd-040
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-08-11
 upstreamTitle: Handle malformed XDR in the smart-contract address conversion example
 evidence:
   - 2026-08-11 live stellarDocs.get_doc_page_sections for /docs/build/guides/conversions/address-conversions returned Address::from_xdr(&env, &bytes).unwrap() in the smart-contract example
   - 2026-08-11 six live Soroban documentation searches found the conversion page but no malformed-XDR handling guidance
   - 2026-08-11 live smart-contract skill read found generic panic and try_* guidance but no from_xdr or malformed-input rule
+  - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2768
 ---
 
 ## Finding

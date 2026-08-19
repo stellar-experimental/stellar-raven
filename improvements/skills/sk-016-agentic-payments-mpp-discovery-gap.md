@@ -1,7 +1,7 @@
 ---
 id: sk-016
 service: skills
-status: verified
+status: reported-upstream
 discovered: 2026-08-14
 upstreamTitle: The agentic-payments MPP guide omits the MPP discovery layer
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - 2026-08-14 the same page states that adding discovery() to an mppx server serves /openapi.json automatically, and mpp.md already teaches mppx server setup
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, row q-mpp-discovery-and-modes
   - Solo scratchpad 809, todo 1544 review
+  - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-dev-skill/issues/107
 ---
 
 ## Finding
