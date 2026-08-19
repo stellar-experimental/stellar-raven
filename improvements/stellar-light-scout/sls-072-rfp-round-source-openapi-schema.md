@@ -35,4 +35,3 @@ the other returned round fields. Its property list did not contain `source`.
 Add `source` to the `meta.scfRound` response schema. Define its accepted values
 and provenance meaning. Generate the handler and OpenAPI schema from one
 contract.
-

@@ -33,4 +33,3 @@ critical authorization finding match. Only report 28 declares a version.
 
 Set `supersededByReportId` when one report replaces another. Otherwise, state
 that both reports remain independent work products.
-
