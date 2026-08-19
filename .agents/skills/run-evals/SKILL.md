@@ -317,12 +317,13 @@ Known judge failure modes (from `eval/qa/README.md`):
   (`JUDGE_RUBRIC` in `judge.mjs` is the current version; verdicts carry
   `{rubric, packVersion, promptSha256}` stamps). The comparability rules and the committed
   noise floor live in `eval/qa/README.md` ("Judging rubric and score comparability").
-- **Denominator note:** the owned battery is 497 cases as of 2026-08-18. The retrieval audit added
-  five service-semantics cases to the 492-case corpus. Commit `6e1f979` previously added two Soroban
+- **Denominator note:** the owned battery is 499 cases as of 2026-08-19. The retrieval audit added
+  five service-semantics cases to the 492-case corpus. The current maintenance change added two
+  broad `scout.hackathonBrief` cases to the 497-case corpus. Commit `6e1f979` previously added two Soroban
   cases to the 490-case corpus. The 2026-07-11 baseline remains historically 484-denominated, and
   the 2026-07-13 corpus remains historically 490-denominated. Pre-rebuild aggregates remain archival
   (`research/audits/2026-07-qa-history.md`). Historical aggregates are not directly comparable to a
-  497-case aggregate. Per-id comparisons remain valid for continuing ids under the same tuple.
+  current 499-case aggregate. Per-id comparisons remain valid for continuing ids under the same tuple.
 - **Deterministic sample-membership note:** sample-30 is proportional by service and uses
   even-spaced picks over id-sorted strata. Adding cases can therefore change sampled ids without
   changing sampler code. The 484→490 expansion retained 25 ids and replaced five (full list in
@@ -330,7 +331,9 @@ Known judge failure modes (from `eval/qa/README.md`):
   retained 24 ids, removed six, and added six (full list in `eval/qa/README.md` under
   "Deterministic sample history"). The 492→497 expansion retained 9 ids and replaced 21. Two new
   cases entered sample-30: `q-gap-vet-pitch-vertical-null` and
-  `q-ti-scout-refresh-cached-rows`. Before claiming movement across any denominator change, use an
+  `q-ti-scout-refresh-cached-rows`. The 497→499 expansion retained 28 ids and replaced two. It
+  removed `q-edge-noinfo-exact-tvl-figure` and `q-scf-total-distributed`; it added
+  `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Before claiming movement across any denominator change, use an
   explicit common-id list or disclose the membership churn.
 - Freshness cases: sourced drift from the golden snapshot is fine; confident unsourced
   contradiction is not. Expect a small floor of judge-vs-live disagreements.

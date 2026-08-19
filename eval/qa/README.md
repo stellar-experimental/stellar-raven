@@ -5,8 +5,9 @@ driving this MCP server end-to-end (**search → execute → answer**) produce a
 correct, current, non-fabricated answer** to a real Stellar-ecosystem question?
 
 The battery is **owned**: one hand-authored JSON file per case under `eval/qa/corpus/battery/`,
-497 cases as of 2026-08-18, edited directly and reviewed like code. This audit added five
-service-semantics cases to the prior 492-case corpus. Provenance is first-class (`truth` block per case), gospel changes are CI-linted at
+499 cases as of 2026-08-19, edited directly and reviewed like code. The 2026-08-18 retrieval
+audit added five service-semantics cases to the prior 492-case corpus. The 2026-08-19
+maintenance change added two broad `scout.hackathonBrief` cases. Provenance is first-class (`truth` block per case), gospel changes are CI-linted at
 the moment of change, and the compiled artifacts are generated + byte-pinned. History — the
 vendored-corpus/override era, rubric evolution, and the run archaeology through 2026-07-10 — lives in
 [`research/audits/2026-07-qa-history.md`](../../research/audits/2026-07-qa-history.md); the
@@ -346,8 +347,9 @@ unsourced contradiction is not.
   passes (pairwise score disagreement 15.6%). Isolated single-run score movement at or below
   that scale is variance until confirmed by live transcript review or a repeated mechanism.
   Read `wrong` counts before `correct` counts; compare variants on the same sample.
-- **Denominator note**: the owned battery is **497 cases as of 2026-08-18**. The retrieval audit
-  added five service-semantics cases to the 492-case corpus. Commit `6e1f979` previously added two
+- **Denominator note**: the owned battery is **499 cases as of 2026-08-19**. The retrieval audit
+  added five service-semantics cases to the 492-case corpus. The current maintenance change added
+  two broad `scout.hackathonBrief` cases to the 497-case corpus. Commit `6e1f979` previously added two
   Soroban cases to the 490-case corpus. The 2026-07-11 baseline remains a historical
   484-case denominator, and the 490-case results remain 490-denominated. Neither denominator is
   retroactively relabeled. The approximately 469-case pre-rebuild aggregates are also archival
@@ -372,6 +374,10 @@ unsourced contradiction is not.
   The 492→497 compile retained 9 sample ids and replaced 21. Two new cases entered sample-30:
   `q-gap-vet-pitch-vertical-null` and `q-ti-scout-refresh-cached-rows`. Use a common-id set for
   comparisons across this boundary, or disclose the sample change.
+  The 497→499 compile retained 28 sample ids and replaced two. It removed
+  `q-edge-noinfo-exact-tvl-figure` and `q-scf-total-distributed`; it added
+  `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Use a common-id set for comparisons
+  across this boundary, or disclose the sample change.
 
 ## 2026-08-18 retrieval-audit branch checkpoint
 
