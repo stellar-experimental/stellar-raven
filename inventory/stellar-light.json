@@ -1,16 +1,15 @@
 {
-  "changelogEntryCount": 161,
+  "changelogEntryCount": 164,
   "changelogLatest": {
-    "date": "2026-08-18",
-    "detail": "Fourth spine composite. Composed from the existing builders — scf-pitch (which already contains the vet-idea view), trust-report, contracts-registry, and the builds index — no new data. The builds search moved out of the /api/hackathons/builds route into src/lib/hackathon-builds.ts (searchHackathonBuilds) so the composite calls it in-process; the route delegates to the same function and cannot drift. Trimmed on purpose: consumers sit behind a ~6k-token result cap and a full trust report's contractInterface alone can exceed it. Idea text picks the contracts domain before the vertical does (an oracle for RWA prices is oracle, not RWA→null); a vertical with no code-domain axis says so instead of guessing.",
-    "summary": "Hackathon-brief composite: GET /api/hackathon-brief?q=<idea> — the one-call version of the skill's Hackathon Build Brief workflow. `vet` (same computation as vet-idea), `builds` (prototype-layer prior art from every DoraHacks submission), `startFrom` (top non-archived competitor repos with a trust SUMMARY each; full contractInterface at `fullReport`), `liveContracts` (verified mainnet contracts for the idea's closest code domain), `funding` (live round + funded peers), and `whatNotToClaim` — deterministic cautions derived from the brief's own facts (openapi@1.8.70). Rails and open RFPs deliberately not bundled.",
+    "date": "2026-08-19",
+    "detail": "We now measure the registry ourselves every 6h (Horizon for existence, Stellar Expert for supply/holders/volume, live peg FX for USD conversion) into two collections: current state, plus one dated snapshot per asset per UTC day that the 7-day change is computed from. The motivation is sls-066: the previous upstream silently dropped Circle USDC for hours while the asset was live on-chain, and a missing row reads to an agent as 'this asset does not exist on Stellar'. The writer therefore emits an `unmeasured` row rather than no row, and a null metric never overwrites a good previous value in current state (the snapshot still records the null — current state answers 'what is it', the series answers 'what did we see when'). A datastore outage now returns 503 with an explicit advisory rather than an empty 200, because an empty 200 is exactly the shape that reads as 'Stellar has no stablecoins'. Coverage basis changes from `single-upstream-snapshot` to `curated-registry`: 23 hand-verified (code, issuer) pairs — absence still means 'not tracked here', never 'not issued on Stellar'.",
+    "summary": "/api/stablecoins now serves OUR OWN measurements instead of proxying a third-party-hosted snapshot service (openapi@1.8.73). Every row gains `basis` (live | curated-static | unmeasured) so an as-of estimate can never be read as a live measurement, plus `assetId` (`CODE-<issuer[0:8]>`, the safe join key when a ticker is ambiguous), `assetType`, `note`, and the FULL issuer account instead of a truncated display form. `meta.counts.byBasis` breaks the returned rows down by provenance. BREAKING: `supplyChange7d` is a number (percent) — it was a display string ('-5.80%'); it is null across the board until the series is seven days deep. `meta.upstream` is gone.",
     "surfaces": [
-      "api",
-      "skill"
+      "api"
     ],
-    "type": "added"
+    "type": "changed"
   },
-  "fetchedAt": "2026-08-18T21:03:39.603Z",
+  "fetchedAt": "2026-08-19T19:24:10.260Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -2687,7 +2686,7 @@
               "type": "string"
             },
             "status": {
-              "description": "'open' = fundable in the current SCF quarter; 'closed' = a prior round, surfaced for context.",
+              "description": "'open' = the brief is still soliciting; not a claim that SCF submissions are open today (see meta.scfRound). 'closed' = a prior round, surfaced for context.",
               "enum": [
                 "open",
                 "closed"
@@ -2822,8 +2821,28 @@
           "type": "object"
         },
         "Stablecoin": {
-          "description": "One Stellar stablecoin from /api/stablecoins, proxied from the stablecoin snapshot service. marketCapUSD is the ONLY cross-row-comparable size metric; `supply` is raw units in the asset's own `peg`. null on any metric = not tracked, never 'zero'.",
+          "description": "One Stellar stablecoin from /api/stablecoins, measured every 6h from Horizon, Stellar Expert and live peg FX. marketCapUSD is the ONLY cross-row-comparable size metric; `supply` is raw units in the asset's own `peg`. null on any metric = not measured, never 'zero'. Identity is (code, issuer) — two live assets can share a ticker (Circle's EURC and MyKobo's EURC are different assets), so never merge or match on `ticker` alone; join on `assetId` or `issuer`.",
           "properties": {
+            "assetId": {
+              "description": "`CODE-<first 8 of issuer>` — the stable natural key, and the safe join key when a ticker is ambiguous.",
+              "nullable": true,
+              "type": "string"
+            },
+            "assetType": {
+              "description": "Qualifier where the asset is not a pure peg — e.g. 'Yield Stablecoin' for Ondo's USDY. Null = a plain peg.",
+              "nullable": true,
+              "type": "string"
+            },
+            "basis": {
+              "description": "How THIS row's numbers were obtained. live = measured this cycle. curated-static = hand-checked figures for an asset no public API reports reliably (an as-of estimate, NOT a live measurement — say so when citing). unmeasured = the fetch failed this cycle and the row is retained deliberately so its absence is never read as a delisting (sls-066); its metrics are the last known values, dated by updatedAt.",
+              "enum": [
+                "live",
+                "curated-static",
+                "unmeasured"
+              ],
+              "nullable": true,
+              "type": "string"
+            },
             "company": {
               "nullable": true,
               "type": "string"
@@ -2838,7 +2857,7 @@
               "type": "number"
             },
             "issuer": {
-              "description": "Stellar issuer account (G…) — the universal join key.",
+              "description": "Full mainnet issuer account (G…) — the universal join key. With `ticker` this IS the asset's identity.",
               "nullable": true,
               "type": "string"
             },
@@ -2855,6 +2874,11 @@
               "nullable": true,
               "type": "string"
             },
+            "note": {
+              "description": "Plain-words reason a row is curated-static or unmeasured. Null for live rows.",
+              "nullable": true,
+              "type": "string"
+            },
             "peg": {
               "description": "Fiat the asset tracks (USD, JPY, ARS, …). `supply` is in THIS unit — so raw supply is NOT comparable across rows with different pegs; use marketCapUSD.",
               "nullable": true,
@@ -2866,26 +2890,27 @@
               "type": "number"
             },
             "supply": {
-              "description": "Circulating supply in whole asset units of its own peg — NOT USD, NOT comparable across pegs. Null = not reported.",
+              "description": "Circulating supply in whole asset units of its own peg — NOT USD, NOT comparable across pegs. Null = not measured.",
               "nullable": true,
               "type": "number"
             },
             "supplyChange7d": {
-              "description": "7-day supply change (display string, e.g. '-5.80%').",
+              "description": "Percent change in supply vs our snapshot ~7 days back (e.g. -5.8 means down 5.8%). Null until two snapshots exist — never 0 for 'no data'. BREAKING 2026-08-19: was a display string ('-5.80%') while this endpoint proxied the retired snapshot service; it is a number now.",
               "nullable": true,
-              "type": "string"
+              "type": "number"
             },
             "ticker": {
-              "description": "Asset code (USDC, USDY, GYEN, …).",
+              "description": "Asset code (USDC, USDY, GYEN, …). NOT unique on its own — see assetId.",
               "type": "string"
             },
             "updatedAt": {
-              "description": "When this snapshot row was refreshed (dated-metrics rule).",
+              "description": "When these figures were measured (dated-metrics rule). Always cite it.",
               "format": "date-time",
               "nullable": true,
               "type": "string"
             },
             "verified": {
+              "description": "True by construction — every issuer in the registry is hand-verified against the issuer's own domain. It does NOT discriminate between rows and is not a quality signal; retained for response-shape compatibility.",
               "type": "boolean"
             },
             "volume24hUSD": {
@@ -3014,7 +3039,7 @@
       },
       "summary": "Agent-native data layer for the Stellar ecosystem — projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.8.70"
+      "version": "1.8.73"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -4558,55 +4583,6 @@
               "in": "query",
               "name": "track",
               "required": false,
-              "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "description": "Filter to repos whose SCANNED sdkCapabilities include this tag (closed set; unknown values 400). Scan-derived: an unscanned repo can never match — absence of a scan is NOT absence of the capability. Answers 'which repos actually implement X' structurally (e.g. capability=sep24-ramp, capability=x402, capability=wallet-provider).",
-              "in": "query",
-              "name": "capability",
-              "schema": {
-                "enum": [
-                  "contract-invoke",
-                  "fee-bump",
-                  "horizon",
-                  "mpp",
-                  "passkey",
-                  "sep10-auth",
-                  "sep24-ramp",
-                  "signing",
-                  "soroban-rpc",
-                  "tx-building",
-                  "wallet-kit",
-                  "wallet-provider",
-                  "x402"
-                ],
-                "type": "string"
-              }
-            },
-            {
-              "description": "Filter to repos whose SCANNED codeDomains include this label (closed set; unknown values 400). Evidence-only: derived from deps + capability tags + interface traits, never self-description. Answers 'show me the real DeFi / x402 / oracle code' (e.g. domain=defi-lending, domain=payments-x402).",
-              "in": "query",
-              "name": "domain",
-              "schema": {
-                "enum": [
-                  "anchor-ramp",
-                  "defi-amm",
-                  "defi-lending",
-                  "defi-yield",
-                  "indexer",
-                  "oracle",
-                  "payments-x402",
-                  "wallet-infra"
-                ],
-                "type": "string"
-              }
-            },
-            {
-              "description": "Dependency-graph reverse read: filter to repos whose SCANNED manifest dependencies (stellarDeps) include this ecosystem package — 'who builds on passkey-kit / @blend-capital/blend-sdk / soroban-sdk'. Exact case-insensitive package name (open set — unknown packages return 0 rows). Adoption evidence no README mention can fake; pair with q for keyword+dependency precision. Scan-derived: unscanned repos never match.",
-              "in": "query",
-              "name": "dependsOn",
               "schema": {
                 "type": "string"
               }
@@ -6837,11 +6813,11 @@
       },
       "/api/rfps": {
         "get": {
-          "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — open briefs are fundable in the current SCF round; closed ones are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (`meta.scfRound`). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
+          "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — `open` means the sponsor brief is still soliciting; it does NOT prove the SCF proposal window accepts submissions today (check meta.scfRound.submissionWindow + currentPhase for that). Closed briefs are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (`meta.scfRound`). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
           "operationId": "getRfps",
           "parameters": [
             {
-              "description": "Open RFPs are fundable for the current SCF quarter; closed are prior rounds",
+              "description": "`open` = the brief is still soliciting build proposals. It is NOT a fundability claim: whether SCF accepts a submission today depends on meta.scfRound.submissionWindow and currentPhase. `closed` = a prior round, surfaced for context.",
               "in": "query",
               "name": "status",
               "schema": {
@@ -6885,7 +6861,7 @@
                   "schema": {
                     "properties": {
                       "funding": {
-                        "description": "Funding-context sentence for the whole list: winners of OPEN RFPs are eligible for SCF grant funding in the current round; closed RFPs are past rounds, surfaced for context but no longer fundable.",
+                        "description": "Funding-context sentence for the whole list. Names the SCF connection without asserting an open submission window — that fact lives in meta.scfRound (submissionWindow, currentPhase, roundsInProgress) and is dated by asOf.",
                         "type": "string"
                       },
                       "meta": {
@@ -6956,8 +6932,13 @@
                                 "format": "date",
                                 "type": "string"
                               },
+                              "currentPhase": {
+                                "description": "Where currentRound is in the SCF process as of asOf (e.g. 'Panel Review', 'Submissions Open'). Served since the round feed was added; specced 2026-08-18 (sls-067). A non-submission phase means an open brief is NOT submittable today.",
+                                "nullable": true,
+                                "type": "string"
+                              },
                               "currentRound": {
-                                "description": "Round currently open for submissions; null when no round is confirmed open as of asOf.",
+                                "description": "Scout's current SCF round IDENTITY as of asOf — NOT a claim that submissions are open. A round in Panel Review has a currentRound and a closed window. Read submissionWindow + currentPhase for whether you can submit.",
                                 "nullable": true,
                                 "type": "integer"
                               },
@@ -6968,6 +6949,28 @@
                               "lastConfirmedRoundNote": {
                                 "nullable": true,
                                 "type": "string"
+                              },
+                              "roundsInProgress": {
+                                "description": "Every SCF round currently in flight, each with its own phase and deadline — a round can be in Panel Review while the next opens. Served since the round feed was added; specced 2026-08-18 (sls-067).",
+                                "items": {
+                                  "properties": {
+                                    "phase": {
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "round": {
+                                      "type": "integer"
+                                    },
+                                    "submissionDeadline": {
+                                      "description": "ISO date the round stops accepting submissions; a date in the past means closed, not open.",
+                                      "nullable": true,
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "nullable": true,
+                                "type": "array"
                               },
                               "submissionWindow": {
                                 "properties": {
@@ -7372,7 +7375,7 @@
       },
       "/api/stablecoins": {
         "get": {
-          "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs — GYEN supply is yen, ARST is pesos), holders, price, issuer. Proxied live from the stablecoin snapshot service; null = not tracked, never zero.",
+          "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs — GYEN supply is yen, ARST is pesos), holders, price, full issuer account, and `basis` (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
           "operationId": "getStablecoins",
           "parameters": [
             {
@@ -7422,18 +7425,67 @@
                           },
                           {
                             "properties": {
+                              "counts": {
+                                "description": "sls-066: `total` is the count AFTER the peg filter and BEFORE the limit slice — the same meaning as counts.total on every other endpoint (it was the whole-set count until 2026-08-18). `tracked` is the whole registry regardless of filter. `byBasis` breaks the SERVED rows down by provenance, so a caller aggregating across rows can see whether any figure is a hand-checked estimate rather than a live measurement.",
+                                "properties": {
+                                  "byBasis": {
+                                    "description": "Counts of the RETURNED rows by how they were obtained.",
+                                    "properties": {
+                                      "curated-static": {
+                                        "minimum": 0,
+                                        "type": "integer"
+                                      },
+                                      "live": {
+                                        "minimum": 0,
+                                        "type": "integer"
+                                      },
+                                      "unmeasured": {
+                                        "minimum": 0,
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "type": "object"
+                                  },
+                                  "returned": {
+                                    "description": "Rows in this response.",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "total": {
+                                    "description": "Rows matching the filters, before the limit slice.",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "tracked": {
+                                    "description": "Assets in the registry, before any filter.",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "coverage": {
+                                "description": "What this inventory IS and IS NOT (sls-066). It is a hand-curated registry of verified (code, issuer) pairs, not a census of every Stellar stablecoin — Circle USDC was absent from the previous upstream for hours on 2026-08-18 while live on-chain. Absence here means 'not tracked in this registry', never proof an asset is not issued on Stellar.",
+                                "properties": {
+                                  "basis": {
+                                    "enum": [
+                                      "curated-registry"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
                               "dataAsOf": {
-                                "description": "When the upstream market-cap snapshot was taken — cite this as the as-of date for every ranking answer.",
+                                "description": "The freshest measurement among the served rows — cite this as the as-of date for every ranking answer.",
                                 "format": "date-time",
                                 "type": "string"
                               },
                               "methodology": {
-                                "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars.",
-                                "type": "string"
-                              },
-                              "upstream": {
-                                "description": "The upstream data service this snapshot proxies (stablecoin.stellarlight.xyz).",
-                                "format": "uri",
+                                "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price at the asset's peg), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars. Also states what `basis` means per row and that peg deviation is not measured.",
                                 "type": "string"
                               }
                             },
@@ -7760,7 +7812,7 @@
       }
     ]
   },
-  "openapiVersion": "1.8.70",
+  "openapiVersion": "1.8.73",
   "operationCount": 34,
   "service": "stellar-light",
   "source": {
@@ -7772,7 +7824,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.8.70",
+    "apiVersion": "1.8.73",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",

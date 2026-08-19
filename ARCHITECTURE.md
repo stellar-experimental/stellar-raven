@@ -558,7 +558,7 @@ The `codemode` provider (`buildCodemodeProvider`, `src/executor/providers.ts`) i
 
 ## 6. Skill splitting — pins → sections → reads
 
-**The pin set.** `ecosystem-skills/MANIFEST.json` pins 19 public skills from 4 upstreams: per
+**The pin set.** `ecosystem-skills/MANIFEST.json` pins 20 public skills from 4 upstreams: per
 source a full commit SHA, per file a path, size, and git blob hash. Bodies are **not vendored**
 in this repo and **not bundled into the Worker**: the pin is the artifact. The settled rule
 (owner, 2026-07-30) is **serve, do not store** — Raven forwards this content and must never become
@@ -585,8 +585,9 @@ mis-built catalog cannot point host-side fetches anywhere else.
 `src/skills/source.ts` resolves a pin: in-isolate memo keyed by **(url, sha256)** → colo Cache API
 → upstream fetch. Cached bytes are re-verified on every hit (the cache is a transport, not a trust
 boundary) and cache reads *and writes* are best-effort, so a cache outage can never fail a read it
-could not have served. `scrubRetiredSkillRefs` (`src/skills/scrub.ts`, shared with the builders)
-runs on every served body. Companion files for a multi-section read are fetched **concurrently**,
+could not have served. `scrubNonExposedRefs` (`src/skills/scrub.ts`, shared with the builders)
+runs on every served body. It removes retired skill references and complete Markdown blocks for
+excluded Scout paths. Companion files for a multi-section read are fetched **concurrently**,
 and the whole read is bounded by `SKILL_READ_DEADLINE_MS` (20s) — deliberately under the
 executor's 60s wall clock, so a slow upstream fails as a `skills` error envelope instead of
 killing the run. Transport, integrity, provenance, deadline, and scrub failures are all ordinary
@@ -831,11 +832,12 @@ newest *input* snapshot (never wall clock) — consecutive runs are byte-identic
 `test/catalog.test.ts` additionally asserts the *checked-in* manifest matches a fresh
 rebuild (staleness check), and `test/micro-map.test.mjs` does the same for the generated
 orientation layer. The refresh script is idempotent and asserts no key material
-(including the Algolia app id) appears in any output. Exposure filtering is build-time data
-in `scripts/exposure.mjs` (ADR-0003: excluded Lumenloop ops + the account-op regex + the
-metered flag, excluded Scout ops, retired onboarding skills, and the never-emitted
-Lumenloop-served skill metadata), consumed by `scripts/build-catalog.mjs` and the other
-emitters. The super spec emits exactly the manifest's
+(including the Algolia app id) appears in any output. Shared exposure modules own build-time
+filter data. `src/policy/scout-exposure.ts` owns excluded Scout operations.
+`scripts/exposure.mjs` re-exports them and owns excluded Lumenloop operations, the account-op
+regex, the metered flag, retired onboarding skills, and the never-emitted Lumenloop skill
+metadata. `scripts/build-catalog.mjs` and the other emitters consume these modules. The super
+spec emits exactly the manifest's
 operations (a completeness assert catches a cataloged op the spec builders miss). Loud-
 failure guards keep refreshes from silently changing exposure: `assertRetirementNamesResolve`
 (a re-pin renaming/removing a retired skill would otherwise un-retire it),

@@ -26,3 +26,4 @@ export const SKILL_EXPOSURE_CLASSIFICATION_BY_ID: Map<
   }
 >;
 export function scrubRetiredSkillRefs(text: string, context: string): string;
+export function scrubNonExposedRefs(text: string, context: string): string;

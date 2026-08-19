@@ -79,6 +79,9 @@ Implementation + unit fixtures: `eval/lib/grade.mjs`, `eval/self-test.mjs`.
 A `<service>_mcp` card names a service, not an operation. Card@5 excludes these cards because
 top-1/3/5 already measures service routing. A case with no operation-level card is not card-graded.
 Stellar Docs operation routing remains unmeasured until the corpus names specific Docs operations.
+This release defers those labels because the current reviewers already saw rankings and results.
+A later blind author must select operation labels from source questions and the Docs API contract.
+That author must not read the scorer, manifest ranking, or prior result traces before freezing labels.
 
 ## How to run
 
@@ -984,3 +987,35 @@ The two operations are relevant results for the displaced questions.
 new floors accept this tradeoff without a scorer change, corpus edit, or
 per-question tuning. The decision record is Solo scratchpad 814. The baseline
 result is `routing-2026-08-18T14-10-11-708Z.json`.
+
+## Re-baseline (2026-08-19): golden QA overfitting review
+
+Four independent reviewers found no runtime golden-answer map or query-specific
+regex. They found benchmark-aware comments and model-facing wording. The repair
+keeps case evidence in eval records and uses general product language in the
+catalog.
+
+The same-scorer control measures legacy **208/281/313**, with card@5 at
+**94/182**. The reviewed change measures **208/280/312**, with card@5 at
+**94/182**. The skills lane stays at **16/23/23**. The frozen holdout measures
+**10/22/25**, with 11 forbidden captures. The extended lane measures
+**89/109/117**.
+
+Commit `2396700` had already removed service-only cards from card@5. It changes
+the evidence denominator from 338 to 182 independently of this wording change.
+
+The re-baseline accepts the measured movements. The change removes case-shaped
+wording instead of adding a question rule. It does not change the routing
+corpus. The decision record is Solo scratchpad 832.
+
+Scout 1.8.73 then removed three rejected hackathon-build parameters. It corrected
+the RFP semantics and most round-schema fields. It also expanded the stablecoin
+schema. The new Scout skill prefers the read-only Hackathon Build Brief.
+Raven adopts the pin. A manifest-derived filter removes structural blocks for
+excluded Scout paths from every selected file.
+
+The prior exposure rule hid that endpoint only because it moved eval totals.
+Raven now exposes `scout.hackathonBrief`. The scorer consumes its upstream
+`x-routing` fields through the existing weighting system. This release accepts
+the raw routing result without a new query rule or composite-specific weight.
+The evidence trace is `routing-2026-08-19T20-26-07-408Z.json`.

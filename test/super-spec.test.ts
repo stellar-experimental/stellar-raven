@@ -106,7 +106,7 @@ describe("shape and counts", () => {
     // Exactly the manifest operations: excluded ops (paid research, account
     // surface, scout writes) never reach the spec.
     expect(counts.lumenloop).toBe(18);
-    expect(counts.scout).toBe(28);
+    expect(counts.scout).toBe(29);
     expect(counts.stellarDocs).toBe(12);
     expect(counts.skills).toBe(4); // list, read, ranked search, run_skill (design §5)
   });
@@ -154,7 +154,7 @@ describe("consistency with the catalog (single source of truth)", () => {
   it("every cataloged operation id appears as an operationId (spec = manifest)", () => {
     const byOperationId = new Map(allOps().map(([, , op]) => [op.operationId, op]));
     const catalogOps = manifest.entries.filter((e) => e.kind === "operation");
-    expect(catalogOps.length).toBe(18 + 28 + 12);
+    expect(catalogOps.length).toBe(18 + 29 + 12);
     for (const entry of catalogOps) {
       expect(
         byOperationId.get(entry.id),
@@ -334,29 +334,31 @@ describe("service specifics", () => {
     expect(schema.properties.sections.items.properties).toHaveProperty("snippet");
   });
 
-  it("carries the exact scout.getRfps contract correction", () => {
+  it("carries the current scout.getRfps contract", () => {
     const op = spec.paths["/scout/getRfps"]!.get!;
-    expect(op.description).toContain("does not prove that an SCF proposal window is open");
+    expect(op.description).toContain("the sponsor brief is still soliciting");
+    expect(op.description).toContain("meta.scfRound.submissionWindow");
     expect(op.description).not.toContain("open briefs are fundable in the current SCF round");
     const status = (op as Operation & { parameters: Array<{ name: string; description: string }> })
       .parameters.find((parameter) => parameter.name === "status")!;
-    expect(status.description).toContain("does not prove");
+    expect(status.description).toContain("brief is still soliciting");
+    expect(status.description).toContain("submissionWindow");
+    expect(status.description).toContain("currentPhase");
     const schema = op.responses!["200"]!.content!["application/json"]!.schema as {
       properties: {
         meta: { properties: { scfRound: { properties: Record<string, unknown> } } };
-        rfps: { items: { properties: { status: { description: string } } } };
+        rfps: { items: { $ref: string } };
       };
     };
     const round = schema.properties.meta.properties.scfRound.properties;
     expect(round).toHaveProperty("currentPhase");
     expect(round).toHaveProperty("roundsInProgress");
-    expect(round).toHaveProperty("source");
-    expect(schema.properties.rfps.items.properties.status.description).toContain(
-      "Neither value proves"
-    );
-    expect(schema).toEqual(
-      manifest.entries.find((entry) => entry.id === "scout.getRfps")!.outputSchema
-    );
+    expect(round).toHaveProperty("verifyAt");
+    expect(schema.properties.rfps.items.$ref).toBe("#/components/schemas/scout.Rfp");
+    const rfp = spec.components.schemas!["scout.Rfp"] as {
+      properties: { status: { description: string } };
+    };
+    expect(rfp.properties.status.description).toContain("brief is still soliciting");
   });
 
   it("scout $refs resolve within the merged doc (namespaced components)", () => {

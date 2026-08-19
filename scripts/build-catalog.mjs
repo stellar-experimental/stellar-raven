@@ -314,7 +314,7 @@ import {
   EXCLUDED_SCOUT_OPS,
   RETIRED_ONBOARDING_SKILLS,
   lumenloopOpExcluded,
-  scrubRetiredSkillRefs
+  scrubNonExposedRefs
 } from "./exposure.mjs";
 import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
 import { parseFrontmatter, plainText, slugify } from "./lib/skill-markdown.mjs";
@@ -709,10 +709,10 @@ function buildSkills(manifest, texts, arm) {
         sha: file.sha,
         sha256: loadedOf(source.id, skill.name, file.path).sha256
       });
-      // Scrub retired-skill cross-references BEFORE deriving descriptions and
-      // headings — the same scrub src/skills/source.ts applies to every served
-      // body, so what search surfaces and what skill.read returns agree.
-      const raw = scrubRetiredSkillRefs(
+      // Scrub non-exposed references BEFORE deriving descriptions and
+      // headings. src/skills/source.ts applies the same scrub to every served
+      // body, so search and skill.read agree.
+      const raw = scrubNonExposedRefs(
         textOf(source.id, skill.name, "SKILL.md"),
         `${source.id}/${skill.name}/SKILL.md`
       );
@@ -769,7 +769,7 @@ function buildSkills(manifest, texts, arm) {
       // 3) each additional .md file treated like a section
       for (const file of skill.files ?? []) {
         if (file.path === "SKILL.md" || !file.path.endsWith(".md")) continue;
-        const fileRaw = scrubRetiredSkillRefs(
+        const fileRaw = scrubNonExposedRefs(
           textOf(source.id, skill.name, file.path),
           `${source.id}/${skill.name}/${file.path}`
         );

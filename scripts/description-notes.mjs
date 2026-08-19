@@ -5,28 +5,17 @@
  *
  * Shared by build-catalog.mjs (manifest descriptions) and
  * build-super-spec.mjs (in-sandbox spec descriptions) so the two model-facing
- * surfaces cannot drift. Wording constraint for every note: keep tokens out
- * of the lexical scorer's blast radius — no `r.` (a bare "r" token
- * prefix-covers rule/role/rewrite/… queries) and no apostrophes (possessives
- * tokenize to a bare "s" with the same effect).
+ * surfaces cannot drift. These descriptions feed lexical scoring, so keep
+ * notes source-scoped and measure wording changes with the routing gate.
  */
 
-// These notes cover verified gaps in the upstream descriptions. A person
-// entity lookup can return empty groups despite broad corpus coverage, so it
-// cannot prove open-world absence. Project lookup also has a source boundary:
-// Lumenloop supplies narrative context, while Scout supplies structured fields.
-// The paired notes state that distinction on both operations.
-// Wording is collision-checked against the routing corpus:
-// every non-trivial token is either already present in the entry or has zero
-// cross-labeled query hits ("narrative", "editorial", "context", "lane");
-// "who builds X" is a deliberate claim — that phrasing appears only in
-// lumenloop-labeled questions. Avoided on this side: hackathon, partner,
-// funding, award, live, history (all appear in scout/mixed-labeled queries).
+// These notes cover verified gaps in the upstream descriptions. They state
+// source boundaries and evidence semantics that apply beyond one query.
 export const LUMENLOOP_DESCRIPTION_NOTES = {
   find_content_by_entity:
     'Catalog note: entity_type "person" can return ok data with all-empty groups even for heavily covered people (live-verified 2026-07-03). This is a data-shaped empty, not a transport or soft-empty failure. It supports only the scoped statement that this exact lookup linked no content. For open-world person coverage, use search_content_semantic, then require exact identity plus source and date before attribution.',
   search_directory:
-    "Catalog note: prefer this lane plus find_content_about_project when a what is X or who builds X question wants narrative editorial context about a named ecosystem project; the scout project search returns structured fields only. A match_mode semantic row is a candidate, not exact identity proof.",
+    "Catalog note: use this lane plus find_content_about_project for narrative editorial context about a named ecosystem project; the scout project search returns structured fields only. A match_mode semantic row is a candidate, not exact identity proof.",
   search_content_semantic:
     "Catalog note: this is the wide-net recovery lane for open-world identity, history, event, and obscure-topic questions after directory, entity, or docs lookups are empty or off-target. Raven normalizes every returned collection into one items array, globally sorted by the upstream similarity score; each row carries collection, while counts and meta preserve shape context. Filter items before projecting compact fields. Semantic rows are candidates, not attribution: require exact identity plus source and date, and discard merely adjacent results."
 };
@@ -83,17 +72,11 @@ function snakeCase(opId) {
  *    an all-lowercase opId would yield a plain-word needle, far too
  *    match-happy for prose.
  *
- * DELIBERATELY NOT the scout.-prefixed form for the snake rewrites: that
- * variant was built and measured 2026-07-04 and REVERTED on a per-case gate
- * regression — every description gaining its first literal "scout" word gains
- * +5 for any query containing the token "out" ("runs out", "find out", …) via
- * scoreField's raw-substring fallback ("out" is a substring of "scout",
- * description weight 5), which flipped legacy case
- * q-soroban-ttl-expiry-behavior top-1 (scout.analyzeEcosystem 158→163 past
- * stellarDocs.search_soroban_contract_docs at 162). Bare camelCase is
- * score-neutral by construction: the scorer normalizes "get_leaderboard" and
- * "getLeaderboard" to the identical "get leaderboard". The path rewrites DO
- * carry the scout. prefix — measured zero per-case deltas there.
+ * Use bare camelCase for snake rewrites. A service namespace prefix can add
+ * unrelated raw-substring matches under the vendor scorer. The surrounding
+ * Scout operation already supplies the service context, so the prefix adds no
+ * callable information. Path rewrites keep the prefix because they replace an
+ * uncallable REST reference with a complete sandbox call target.
  */
 export function scoutRefRewrites(openapi) {
   const pairs = [];
@@ -211,9 +194,6 @@ export function scrubNonExposedScoutSchemaRefs(value) {
 // stale scrub = the leak comes back).
 // ---------------------------------------------------------------------------
 export const SCOUT_DESCRIPTION_SCRUBS = {
-  getRfps: [
-    "open briefs are fundable in the current SCF round; "
-  ],
   getStatus: [
     // "Use to check how fresh/large the data is or to discover endpoints." —
     // the endpoint-enumeration RECOMMENDATION is ours, not upstream's payload,
@@ -258,14 +238,8 @@ export function scrubScoutDescription(opId, text) {
 }
 
 export const SCOUT_DESCRIPTION_NOTES = {
-  getRfps:
-    "Catalog note: status open marks a solicited brief. It does not prove that an SCF proposal window is open. Use meta.scfRound currentPhase, roundsInProgress, source, asOf, and verifyAt for current round state.",
-  // Boundary twin of LUMENLOOP_DESCRIPTION_NOTES.search_directory.
-  // — see the collision-check rationale there. Avoided on this side: news,
-  // talks, content, coverage, written, builds (all appear in
-  // lumenloop-labeled queries and would lexically pull them toward scout);
-  // "articles", "AV", "interviews", "summaries", "editorial", "pieces" have
-  // zero query hits in the routing corpus (2026-07-04).
+  // Boundary twin of LUMENLOOP_DESCRIPTION_NOTES.search_directory. Keep the
+  // source distinction aligned across both operation descriptions.
   searchProjects:
     "Catalog note: results are structured directory facts, not editorial pieces — for articles, AV, interviews, or research summaries about a project, use the lumenloop semantic and directory ops.",
   searchRepos:

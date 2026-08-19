@@ -197,22 +197,20 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter((e) => e.service === "lumenloop" && e.kind === "skill-section")
     ).toHaveLength(0);
 
-    // Scout: 28 exposed of 34 upstream OpenAPI operations — the 4 write/
+    // Scout: 29 exposed of 34 upstream OpenAPI operations — the 4 write/
     // side-effecting endpoints (submitFeedback, submitPartnerListing,
     // partnerAssistant, partnerOnboard) are excluded at build time, plus getFeedbackSchema:
     // read-only, but a dead end whose only purpose is to shape the excluded
     // feedback submission (its upstream description names the non-exposed
-    // scout.submitFeedback). The read-only hackathonBrief composite is also
-    // excluded because a controlled ablation found broad routing regressions.
-    // matchPartners stays exposed because its OpenAPI description documents
-    // pure AI ranking with no persistence.
-    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(28);
+    // scout.submitFeedback). The read-only hackathonBrief and matchPartners
+    // operations stay exposed. Their OpenAPI contracts describe no persistence.
+    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(29);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);
     expect(count((e) => e.id === "scout.submitPartnerListing")).toBe(0);
     expect(count((e) => e.id === "scout.partnerAssistant")).toBe(0);
     expect(count((e) => e.id === "scout.partnerOnboard")).toBe(0);
-    expect(count((e) => e.id === "scout.hackathonBrief")).toBe(0);
+    expect(count((e) => e.id === "scout.hackathonBrief")).toBe(1);
     expect(count((e) => e.id === "scout.matchPartners")).toBe(1);
     for (const id of [
       "scout.listAudits",
@@ -250,8 +248,8 @@ describe("build-catalog.mjs", () => {
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
-    // Grand total: 58 operations + 19 whole skills + 173 skill sections.
-    expect(catalog.entries).toHaveLength(250);
+    // Grand total: 59 operations + 19 whole skills + 173 skill sections.
+    expect(catalog.entries).toHaveLength(251);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {
@@ -303,7 +301,7 @@ describe("build-catalog.mjs", () => {
     });
   });
 
-  it("applies the evidence-backed model contract corrections", () => {
+  it("preserves the evidence-backed model contracts", () => {
     const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
     const entity = byId.get("lumenloop.find_content_by_entity")!;
     const related = byId.get("lumenloop.get_related_projects")!;
@@ -320,14 +318,15 @@ describe("build-catalog.mjs", () => {
       "track",
       "winnersOnly"
     ]);
-    expect(rfps.description).toContain("does not prove that an SCF proposal window is open");
+    expect(rfps.description).toContain("the sponsor brief is still soliciting");
+    expect(rfps.description).toContain("meta.scfRound.submissionWindow");
     expect(rfps.description).not.toContain("open briefs are fundable in the current SCF round");
-    expect(
-      (rfps.inputSchema as { properties: { status: { description: string } } }).properties.status
-        .description
-    ).toBe(
-      "The value open selects solicited briefs. It does not prove that an SCF proposal window is open."
-    );
+    const statusDescription = (
+      rfps.inputSchema as { properties: { status: { description: string } } }
+    ).properties.status.description;
+    expect(statusDescription).toContain("brief is still soliciting");
+    expect(statusDescription).toContain("submissionWindow");
+    expect(statusDescription).toContain("currentPhase");
     const rfpOutput = rfps.outputSchema as {
       properties: {
         funding: { description: string };
@@ -335,15 +334,17 @@ describe("build-catalog.mjs", () => {
         rfps: { items: { properties: { status: { description: string } } } };
       };
     };
-    expect(rfpOutput.properties.funding.description).toContain("not proof");
+    expect(rfpOutput.properties.funding.description).toContain(
+      "without asserting an open submission window"
+    );
     expect(rfpOutput.properties.rfps.items.properties.status.description).toContain(
-      "Neither value proves"
+      "brief is still soliciting"
     );
     const round = rfpOutput.properties.meta.properties.scfRound.properties;
     expect(Object.keys(round)).toEqual(
-      expect.arrayContaining(["currentPhase", "roundsInProgress", "source"])
+      expect.arrayContaining(["currentPhase", "roundsInProgress", "verifyAt"])
     );
-    expect(round.currentRound?.description).toContain("does not prove");
+    expect(round.currentRound?.description).toContain("NOT a claim that submissions are open");
   });
 
   it("emits the authored object contract for Docs page sections", () => {
@@ -406,8 +407,8 @@ describe("build-catalog.mjs", () => {
 describe("x-routing ingestion — routingKeywords field", () => {
   it("attaches routingKeywords to exactly the exposed scout ops that publish x-routing", () => {
     const withField = catalog.entries.filter((e) => (e.routingKeywords ?? []).length > 0);
-    // 25 upstream ops carry x-routing; partnerAssistant is build-excluded.
-    expect(withField).toHaveLength(24);
+    // 26 upstream ops carry x-routing; partnerAssistant is build-excluded.
+    expect(withField).toHaveLength(25);
     for (const entry of withField) {
       expect(entry.service, entry.id).toBe("scout");
       expect(entry.kind, entry.id).toBe("operation");

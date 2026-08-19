@@ -3,7 +3,6 @@
  * SERVER_INSTRUCTIONS orientation layer.
  */
 import { describe, expect, it } from "vitest";
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,6 +10,7 @@ import {
   assertGeneratedTextNoNonExposedRefs,
   buildMicroMap,
   estimateTokens,
+  renderTs,
   validateWorkflowArchetypes
 } from "../scripts/build-micro-map.mjs";
 import { SERVICE_FAMILY_PURPOSES, WORKFLOW_ARCHETYPES } from "../scripts/catalog-data/workflow-archetypes.mjs";
@@ -28,18 +28,10 @@ const MICRO_MAP_PATH = join(ROOT, "src", "mcp", "micro-map.ts");
 const committed = readFileSync(MICRO_MAP_PATH, "utf8");
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
 
-function runBuilder() {
-  execFileSync(process.execPath, [join(ROOT, "scripts", "build-micro-map.mjs")], {
-    cwd: ROOT,
-    stdio: "pipe"
-  });
-  return readFileSync(MICRO_MAP_PATH, "utf8");
-}
-
 describe("build-micro-map.mjs", () => {
-  it("the checked-in generated file is current — a rebuild is byte-identical", () => {
+  it("the checked-in generated file matches the in-memory render", () => {
     expect(committed, "src/mcp/micro-map.ts is stale — run node scripts/build-micro-map.mjs").toBe(
-      runBuilder()
+      renderTs(buildMicroMap(manifest))
     );
   });
 

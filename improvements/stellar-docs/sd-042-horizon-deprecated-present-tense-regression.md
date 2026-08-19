@@ -3,7 +3,7 @@ id: sd-042
 service: stellar-docs
 status: verified
 discovered: 2026-08-14
-upstreamTitle: The EVM migration guide calls Horizon "the deprecated Horizon API" while four canonical pages say it is not deprecated yet
+upstreamTitle: The EVM migration guide calls Horizon deprecated while canonical pages say deprecation is future
 evidence:
   - 2026-08-14 live read of https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment returned "the deprecated Horizon API" in the Soroban Client section
   - 2026-08-14 live stellarDocs.search_docs for "Horizon nearing end-of-life deprecated" returned four canonical pages carrying "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs"

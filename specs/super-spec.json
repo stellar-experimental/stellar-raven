@@ -2574,6 +2574,72 @@
         },
         "type": "object"
       },
+      "scout.Rfp": {
+        "description": "An RFP row from /api/rfps. rowType discriminates real briefs from the synthetic live-round row (sls-045) — count/render briefs by filtering rowType === 'rfp'.",
+        "properties": {
+          "authorName": {
+            "description": "Sponsor/author of the brief; 'Stellar Community Fund' on synthetic rows.",
+            "type": "string"
+          },
+          "category": {
+            "description": "Category slug — the ?category= filter vocabulary (an unrecognized filter value returns 400 with validCategories). 'scf' is carried by the synthetic live-round row.",
+            "type": "string"
+          },
+          "categoryLabel": {
+            "description": "Display label for category (e.g. 'DeFi').",
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "description": "Brief slug (also the stellarlight.xyz/ideas/{id} page). Synthetic rows use 'scf-round-{n}'.",
+            "type": "string"
+          },
+          "quarter": {
+            "description": "Quarter slug (e.g. 'q1-2026') — the ?quarter= filter vocabulary. Synthetic rows carry the active quarter.",
+            "type": "string"
+          },
+          "quarterLabel": {
+            "description": "Display label ('Q1 2026'); 'Live round' on synthetic rows.",
+            "type": "string"
+          },
+          "rowType": {
+            "description": "'rfp' = a curated sponsor brief. 'scf-round' = a SYNTHETIC row representing the live SCF round's open submission window (served as a row so row-reading agents don't miss the open round). Synthetic rows are NOT briefs — count/render briefs by filtering rowType === 'rfp'.",
+            "enum": [
+              "rfp",
+              "scf-round"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "description": "'open' = the brief is still soliciting; not a claim that SCF submissions are open today (see meta.scfRound). 'closed' = a prior round, surfaced for context.",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "type": "string"
+          },
+          "synthetic": {
+            "description": "True only on synthetic scf-round rows — mirror of rowType.",
+            "type": "boolean"
+          },
+          "technicalRequirements": {
+            "description": "The sponsor's technical requirements text. Null when the brief carries none — and always null on synthetic scf-round rows.",
+            "nullable": true,
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "description": "Brief page (stellarlight.xyz/ideas/{id}); the SCF awards page on synthetic scf-round rows.",
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "scout.Skill": {
         "description": "One installable Stellar AI skill/tool from /api/skills — SDF's skills.stellar.org set, curated entries, and approved community submissions mapped onto one unified shape. Optional fields are OMITTED when not applicable (absent = not applicable, never null and never false).",
         "properties": {
@@ -2682,8 +2748,28 @@
         "type": "object"
       },
       "scout.Stablecoin": {
-        "description": "One Stellar stablecoin from /api/stablecoins, proxied from the stablecoin snapshot service. marketCapUSD is the ONLY cross-row-comparable size metric; `supply` is raw units in the asset's own `peg`. null on any metric = not tracked, never 'zero'.",
+        "description": "One Stellar stablecoin from /api/stablecoins, measured every 6h from Horizon, Stellar Expert and live peg FX. marketCapUSD is the ONLY cross-row-comparable size metric; `supply` is raw units in the asset's own `peg`. null on any metric = not measured, never 'zero'. Identity is (code, issuer) — two live assets can share a ticker (Circle's EURC and MyKobo's EURC are different assets), so never merge or match on `ticker` alone; join on `assetId` or `issuer`.",
         "properties": {
+          "assetId": {
+            "description": "`CODE-<first 8 of issuer>` — the stable natural key, and the safe join key when a ticker is ambiguous.",
+            "nullable": true,
+            "type": "string"
+          },
+          "assetType": {
+            "description": "Qualifier where the asset is not a pure peg — e.g. 'Yield Stablecoin' for Ondo's USDY. Null = a plain peg.",
+            "nullable": true,
+            "type": "string"
+          },
+          "basis": {
+            "description": "How THIS row's numbers were obtained. live = measured this cycle. curated-static = hand-checked figures for an asset no public API reports reliably (an as-of estimate, NOT a live measurement — say so when citing). unmeasured = the fetch failed this cycle and the row is retained deliberately so its absence is never read as a delisting (sls-066); its metrics are the last known values, dated by updatedAt.",
+            "enum": [
+              "live",
+              "curated-static",
+              "unmeasured"
+            ],
+            "nullable": true,
+            "type": "string"
+          },
           "company": {
             "nullable": true,
             "type": "string"
@@ -2698,7 +2784,7 @@
             "type": "number"
           },
           "issuer": {
-            "description": "Stellar issuer account (G…) — the universal join key.",
+            "description": "Full mainnet issuer account (G…) — the universal join key. With `ticker` this IS the asset's identity.",
             "nullable": true,
             "type": "string"
           },
@@ -2715,6 +2801,11 @@
             "nullable": true,
             "type": "string"
           },
+          "note": {
+            "description": "Plain-words reason a row is curated-static or unmeasured. Null for live rows.",
+            "nullable": true,
+            "type": "string"
+          },
           "peg": {
             "description": "Fiat the asset tracks (USD, JPY, ARS, …). `supply` is in THIS unit — so raw supply is NOT comparable across rows with different pegs; use marketCapUSD.",
             "nullable": true,
@@ -2726,26 +2817,27 @@
             "type": "number"
           },
           "supply": {
-            "description": "Circulating supply in whole asset units of its own peg — NOT USD, NOT comparable across pegs. Null = not reported.",
+            "description": "Circulating supply in whole asset units of its own peg — NOT USD, NOT comparable across pegs. Null = not measured.",
             "nullable": true,
             "type": "number"
           },
           "supplyChange7d": {
-            "description": "7-day supply change (display string, e.g. '-5.80%').",
+            "description": "Percent change in supply vs our snapshot ~7 days back (e.g. -5.8 means down 5.8%). Null until two snapshots exist — never 0 for 'no data'. BREAKING 2026-08-19: was a display string ('-5.80%') while this endpoint proxied the retired snapshot service; it is a number now.",
             "nullable": true,
-            "type": "string"
+            "type": "number"
           },
           "ticker": {
-            "description": "Asset code (USDC, USDY, GYEN, …).",
+            "description": "Asset code (USDC, USDY, GYEN, …). NOT unique on its own — see assetId.",
             "type": "string"
           },
           "updatedAt": {
-            "description": "When this snapshot row was refreshed (dated-metrics rule).",
+            "description": "When these figures were measured (dated-metrics rule). Always cite it.",
             "format": "date-time",
             "nullable": true,
             "type": "string"
           },
           "verified": {
+            "description": "True by construction — every issuer in the registry is hand-verified against the issuer's own domain. It does NOT discriminate between rows and is not a quality signal; retained for response-shape compatibility.",
             "type": "boolean"
           },
           "volume24hUSD": {
@@ -2865,7 +2957,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-08-18T21:03:39.603Z"
+    "x-generatedAt": "2026-08-19T20:24:04Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4179,7 +4271,7 @@
     },
     "/lumenloop/search_directory": {
       "post": {
-        "description": "Search the Stellar ecosystem directory for projects by name, description, or category (substring match). If a multi-word or conceptual query matches no substring, it automatically falls back to semantic project discovery (response carries match_mode: \"semantic\") so you still get the closest projects.\n\nWhen to use: Start here to find a Stellar ecosystem project by name, keyword, or category when you do not know its slug. Substring match, but a multi-word/conceptual query that hits no substring auto-falls back to semantic project discovery, so you can also use it for \"what RWA/wallet/oracle projects exist\" style asks. For \"projects like X\" use find_similar_projects_semantic; for content ABOUT a project use find_content_about_project.\n\nReturns: { count, projects: [...] } — each project: slug, title, description, category, tags. When the substring match is empty and the semantic fallback fires, the response also carries match_mode: \"semantic\" + a note, and rows include a similarity score. Take the slug into get_project for full details.\n\nCatalog note: prefer this lane plus find_content_about_project when a what is X or who builds X question wants narrative editorial context about a named ecosystem project; the scout project search returns structured fields only. A match_mode semantic row is a candidate, not exact identity proof.",
+        "description": "Search the Stellar ecosystem directory for projects by name, description, or category (substring match). If a multi-word or conceptual query matches no substring, it automatically falls back to semantic project discovery (response carries match_mode: \"semantic\") so you still get the closest projects.\n\nWhen to use: Start here to find a Stellar ecosystem project by name, keyword, or category when you do not know its slug. Substring match, but a multi-word/conceptual query that hits no substring auto-falls back to semantic project discovery, so you can also use it for \"what RWA/wallet/oracle projects exist\" style asks. For \"projects like X\" use find_similar_projects_semantic; for content ABOUT a project use find_content_about_project.\n\nReturns: { count, projects: [...] } — each project: slug, title, description, category, tags. When the substring match is empty and the semantic fallback fires, the response also carries match_mode: \"semantic\" + a note, and rows include a similarity score. Take the slug into get_project for full details.\n\nCatalog note: use this lane plus find_content_about_project for narrative editorial context about a named ecosystem project; the scout project search returns structured fields only. A match_mode semantic row is a candidate, not exact identity proof.",
         "operationId": "lumenloop.search_directory",
         "requestBody": {
           "content": {
@@ -6131,11 +6223,11 @@
     },
     "/scout/getRfps": {
       "get": {
-        "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — closed ones are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.\n\nCatalog note: status open marks a solicited brief. It does not prove that an SCF proposal window is open. Use meta.scfRound currentPhase, roundsInProgress, source, asOf, and verifyAt for current round state.",
+        "description": "Curated Stellar RFPs / sponsor briefs (mirrors /ideas) — open means the sponsor brief is still soliciting; it does NOT prove the SCF proposal window accepts submissions today (check meta.scfRound.submissionWindow + currentPhase for that). Closed briefs are past rounds kept for context. Response carries open/closed counts, the activeQuarter, and the live SCF round + submission window (meta.scfRound). Answers 'what does the ecosystem want built'. Not for how-to-apply / SCF Handbook knowledge → use searchResearch.",
         "operationId": "scout.getRfps",
         "parameters": [
           {
-            "description": "The value open selects solicited briefs. It does not prove that an SCF proposal window is open.",
+            "description": "`open` = the brief is still soliciting build proposals. It is NOT a fundability claim: whether SCF accepts a submission today depends on meta.scfRound.submissionWindow and currentPhase. `closed` = a prior round, surfaced for context.",
             "in": "query",
             "name": "status",
             "schema": {
@@ -6179,7 +6271,7 @@
                 "schema": {
                   "properties": {
                     "funding": {
-                      "description": "Funding-context sentence returned by Scout. Treat it as brief context, not proof that an SCF proposal window is open.",
+                      "description": "Funding-context sentence for the whole list. Names the SCF connection without asserting an open submission window — that fact lives in meta.scfRound (submissionWindow, currentPhase, roundsInProgress) and is dated by asOf.",
                       "type": "string"
                     },
                     "meta": {
@@ -6251,12 +6343,12 @@
                               "type": "string"
                             },
                             "currentPhase": {
-                              "description": "Scout phase label observed as of asOf. Verify at verifyAt because phase data can become stale.",
+                              "description": "Where currentRound is in the SCF process as of asOf (e.g. 'Panel Review', 'Submissions Open'). Served since the round feed was added; specced 2026-08-18 (sls-067). A non-submission phase means an open brief is NOT submittable today.",
                               "nullable": true,
                               "type": "string"
                             },
                             "currentRound": {
-                              "description": "Round identified as current by Scout; null when unconfirmed. This field does not prove that submissions are open.",
+                              "description": "Scout's current SCF round IDENTITY as of asOf — NOT a claim that submissions are open. A round in Panel Review has a currentRound and a closed window. Read submissionWindow + currentPhase for whether you can submit.",
                               "nullable": true,
                               "type": "integer"
                             },
@@ -6269,33 +6361,26 @@
                               "type": "string"
                             },
                             "roundsInProgress": {
-                              "description": "Rounds that Scout reports in progress. A listed round or deadline does not prove that submissions remain open.",
+                              "description": "Every SCF round currently in flight, each with its own phase and deadline — a round can be in Panel Review while the next opens. Served since the round feed was added; specced 2026-08-18 (sls-067).",
                               "items": {
-                                "additionalProperties": false,
                                 "properties": {
                                   "phase": {
+                                    "nullable": true,
                                     "type": "string"
                                   },
                                   "round": {
                                     "type": "integer"
                                   },
                                   "submissionDeadline": {
-                                    "format": "date",
+                                    "description": "ISO date the round stops accepting submissions; a date in the past means closed, not open.",
+                                    "nullable": true,
                                     "type": "string"
                                   }
                                 },
-                                "required": [
-                                  "round",
-                                  "phase",
-                                  "submissionDeadline"
-                                ],
                                 "type": "object"
                               },
+                              "nullable": true,
                               "type": "array"
-                            },
-                            "source": {
-                              "description": "Scout provenance label for the round-state observation.",
-                              "type": "string"
                             },
                             "submissionWindow": {
                               "properties": {
@@ -6333,70 +6418,7 @@
                     },
                     "rfps": {
                       "items": {
-                        "description": "An RFP row from /api/rfps. rowType discriminates real briefs from the synthetic live-round row (sls-045) — count/render briefs by filtering rowType === 'rfp'.",
-                        "properties": {
-                          "authorName": {
-                            "description": "Sponsor/author of the brief; 'Stellar Community Fund' on synthetic rows.",
-                            "type": "string"
-                          },
-                          "category": {
-                            "description": "Category slug — the ?category= filter vocabulary (an unrecognized filter value returns 400 with validCategories). 'scf' is carried by the synthetic live-round row.",
-                            "type": "string"
-                          },
-                          "categoryLabel": {
-                            "description": "Display label for category (e.g. 'DeFi').",
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "id": {
-                            "description": "Brief slug (also the stellarlight.xyz/ideas/{id} page). Synthetic rows use 'scf-round-{n}'.",
-                            "type": "string"
-                          },
-                          "quarter": {
-                            "description": "Quarter slug (e.g. 'q1-2026') — the ?quarter= filter vocabulary. Synthetic rows carry the active quarter.",
-                            "type": "string"
-                          },
-                          "quarterLabel": {
-                            "description": "Display label ('Q1 2026'); 'Live round' on synthetic rows.",
-                            "type": "string"
-                          },
-                          "rowType": {
-                            "description": "'rfp' = a curated sponsor brief. 'scf-round' = a SYNTHETIC row representing the live SCF round's open submission window (served as a row so row-reading agents don't miss the open round). Synthetic rows are NOT briefs — count/render briefs by filtering rowType === 'rfp'.",
-                            "enum": [
-                              "rfp",
-                              "scf-round"
-                            ],
-                            "type": "string"
-                          },
-                          "status": {
-                            "description": "'open' = a solicited brief; 'closed' = prior context. Neither value proves the current SCF proposal-window state.",
-                            "enum": [
-                              "open",
-                              "closed"
-                            ],
-                            "type": "string"
-                          },
-                          "synthetic": {
-                            "description": "True only on synthetic scf-round rows — mirror of rowType.",
-                            "type": "boolean"
-                          },
-                          "technicalRequirements": {
-                            "description": "The sponsor's technical requirements text. Null when the brief carries none — and always null on synthetic scf-round rows.",
-                            "nullable": true,
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "url": {
-                            "description": "Brief page (stellarlight.xyz/ideas/{id}); the SCF awards page on synthetic scf-round rows.",
-                            "format": "uri",
-                            "type": "string"
-                          }
-                        },
-                        "type": "object"
+                        "$ref": "#/components/schemas/scout.Rfp"
                       },
                       "type": "array"
                     }
@@ -6473,7 +6495,7 @@
     },
     "/scout/getStablecoins": {
       "get": {
-        "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs — GYEN supply is yen, ARST is pesos), holders, price, issuer. Proxied live from the stablecoin snapshot service; null = not tracked, never zero.",
+        "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs — GYEN supply is yen, ARST is pesos), holders, price, full issuer account, and basis (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
         "operationId": "scout.getStablecoins",
         "parameters": [
           {
@@ -6523,18 +6545,67 @@
                         },
                         {
                           "properties": {
+                            "counts": {
+                              "description": "sls-066: `total` is the count AFTER the peg filter and BEFORE the limit slice — the same meaning as counts.total on every other endpoint (it was the whole-set count until 2026-08-18). `tracked` is the whole registry regardless of filter. `byBasis` breaks the SERVED rows down by provenance, so a caller aggregating across rows can see whether any figure is a hand-checked estimate rather than a live measurement.",
+                              "properties": {
+                                "byBasis": {
+                                  "description": "Counts of the RETURNED rows by how they were obtained.",
+                                  "properties": {
+                                    "curated-static": {
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    },
+                                    "live": {
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    },
+                                    "unmeasured": {
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "returned": {
+                                  "description": "Rows in this response.",
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                "total": {
+                                  "description": "Rows matching the filters, before the limit slice.",
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                "tracked": {
+                                  "description": "Assets in the registry, before any filter.",
+                                  "minimum": 0,
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "coverage": {
+                              "description": "What this inventory IS and IS NOT (sls-066). It is a hand-curated registry of verified (code, issuer) pairs, not a census of every Stellar stablecoin — Circle USDC was absent from the previous upstream for hours on 2026-08-18 while live on-chain. Absence here means 'not tracked in this registry', never proof an asset is not issued on Stellar.",
+                              "properties": {
+                                "basis": {
+                                  "enum": [
+                                    "curated-registry"
+                                  ],
+                                  "type": "string"
+                                },
+                                "note": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
                             "dataAsOf": {
-                              "description": "When the upstream market-cap snapshot was taken — cite this as the as-of date for every ranking answer.",
+                              "description": "The freshest measurement among the served rows — cite this as the as-of date for every ranking answer.",
                               "format": "date-time",
                               "type": "string"
                             },
                             "methodology": {
-                              "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars.",
-                              "type": "string"
-                            },
-                            "upstream": {
-                              "description": "The upstream data service this snapshot proxies (stablecoin.stellarlight.xyz).",
-                              "format": "uri",
+                              "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price at the asset's peg), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars. Also states what `basis` means per row and that peg deviation is not measured.",
                               "type": "string"
                             }
                           },
@@ -6605,6 +6676,167 @@
         "x-upstream": {
           "method": "GET",
           "path": "/api/status"
+        }
+      }
+    },
+    "/scout/hackathonBrief": {
+      "get": {
+        "description": "One call for a hackathon team's first hour: vet (same as vet-idea — competitors, maturity, gap, judged prior art), builds (prototype-layer prior art from DoraHacks submissions), startFrom (top non-archived competitor repos with a trust SUMMARY; full contractInterface at fullReport), liveContracts (verified mainnet contracts for the idea's closest code domain; empty = no verified contract on record, never nothing on mainnet), funding (live SCF round + funded peers), whatNotToClaim (cautions derived from this brief's own facts). No verdicts; rails and RFPs not bundled. Unknown params 400.",
+        "operationId": "scout.hackathonBrief",
+        "parameters": [
+          {
+            "description": "Short idea description, 3-200 chars (e.g. 'confidential token payroll').",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 200,
+              "minLength": 3,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "meta": {
+                      "type": "object"
+                    },
+                    "report": {
+                      "properties": {
+                        "builds": {
+                          "description": "Prototype-layer prior art — DoraHacks submissions matching the idea, winners ranked first, ≤5.",
+                          "items": {
+                            "properties": {
+                              "endedAt": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "githubUrl": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "hackathon": {
+                                "type": "string"
+                              },
+                              "isWinner": {
+                                "type": "boolean"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "placement": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "url": {
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "funding": {
+                          "properties": {
+                            "fundedPeers": {
+                              "items": {
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "fundingBar": {
+                              "type": "object"
+                            },
+                            "round": {
+                              "description": "Live SCF round state — never asserts a negative on fetch failure (source: 'unavailable').",
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "idea": {
+                          "type": "string"
+                        },
+                        "liveContracts": {
+                          "properties": {
+                            "basis": {
+                              "type": "string"
+                            },
+                            "contracts": {
+                              "items": {
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "domain": {
+                              "description": "Closest code domain to the idea (idea-text hint first, then the vertical); null when neither maps — see basis.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "note": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "startFrom": {
+                          "description": "Top non-archived competitor repos (≤2) with a trust SUMMARY each: repo, project, codeTruth (without the full contractInterface — interfaceSize is kept), usage, audits {count, latest}, auditDrift, succession, signals (closed vocabulary of facts, NOT a score), fullReport (link to /api/repos/trust). A competitor is a starting point to READ, not necessarily a template.",
+                          "items": {
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "vertical": {
+                          "description": "Detected buildable vertical (closed set from the gaps axis); null = unmapped, not marketless.",
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "vet": {
+                          "description": "Same computation as /api/vet-idea: competitors, maturity, priorArt, gap.",
+                          "type": "object"
+                        },
+                        "whatNotToClaim": {
+                          "description": "Deterministic cautions derived from THIS brief's own facts — each names the fact it stands on. Empty when the brief gives no reason for one.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The hackathon brief."
+          },
+          "400": {
+            "description": "Bad or unknown query param."
+          },
+          "429": {
+            "description": "Rate limited (30/min/IP)."
+          },
+          "503": {
+            "description": "Index unavailable."
+          }
+        },
+        "summary": "Hackathon brief — vet + starter repos with trust + live contracts + funding + what not to claim, in one call",
+        "tags": [
+          "scout",
+          "Composite"
+        ],
+        "x-execute": "await scout.hackathonBrief(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/hackathon-brief"
         }
       }
     },
@@ -8537,7 +8769,7 @@
     },
     "/stellarDocs/search_anchor_sep_docs": {
       "post": {
-        "description": "Search Stellar docs about anchors and implementing SEP standards: what an anchor is (on/off-ramp connecting Stellar to banking rails and fiat), the Anchor Platform admin guide and SEP guides — hosted deposits and withdrawals (SEP-24 interactive flow), programmatic deposits and withdrawals (SEP-6), cross-border payments (SEP-31), web authentication (SEP-10), KYC customer info (SEP-12), quotes (SEP-38), the stellar.toml info file (SEP-1) — plus event handling/callbacks, and the Stellar Disbursement Platform (SDP) for bulk payouts and disbursements (admin guide, user interface). Covers /docs/platforms/anchor-platform, /docs/platforms/stellar-disbursement-platform and the anchors fundamentals page (52 pages).",
+        "description": "Search Stellar docs about anchors and implementing SEP standards: what an anchor is (on/off-ramp connecting Stellar to banking rails and fiat), the Anchor Platform admin guide and SEP guides — hosted deposits and withdrawals (SEP-24 interactive flow), programmatic deposits and withdrawals (SEP-6), cross-border payments (SEP-31), web authentication (SEP-10), KYC customer info (SEP-12), quotes (SEP-38), the stellar.toml info file (SEP-1) — plus event handling/callbacks, and the Stellar Disbursement Platform (SDP) for bulk payouts and disbursements (admin guide, user interface). Covers /docs/platforms/anchor-platform, /docs/platforms/stellar-disbursement-platform and the anchors fundamentals page.",
         "operationId": "stellarDocs.search_anchor_sep_docs",
         "requestBody": {
           "content": {
@@ -8828,7 +9060,7 @@
     },
     "/stellarDocs/search_docs_in_category": {
       "post": {
-        "description": "Keyword search restricted to ONE top-level category of the Stellar developer docs. Categories (measured page counts): build (189 — smart contracts, guides, apps/dapps, security, agentic payments), data (131 — Stellar RPC, Horizon, Hubble analytics, indexers/Galexie, oracles), tools (88 — Stellar CLI, Lab, Quickstart, SDKs, developer tools), learn (58 — protocol fundamentals: ledgers, accounts, transactions, operations, fees, consensus, lumens XLM, anchors, SEPs, migrate from EVM), platforms (51 — Anchor Platform, Stellar Disbursement Platform), validators (16 — running a stellar-core validator node), tokens (9 — issuing assets, asset anatomy, access control, Stellar Asset Contract, token interface), networks (2 — resource limits and fees), meetings (85 — protocol & developers meeting notes). Use when a question clearly belongs to one area and general search returns cross-area noise.",
+        "description": "Keyword search restricted to ONE top-level category of the Stellar developer docs. Categories: build (smart contracts, guides, apps/dapps, security, agentic payments), data (Stellar RPC, Horizon, Hubble analytics, indexers/Galexie, oracles), tools (Stellar CLI, Lab, Quickstart, SDKs, developer tools), learn (protocol fundamentals: ledgers, accounts, transactions, operations, fees, consensus, lumens XLM, anchors, SEPs, migrate from EVM), platforms (Anchor Platform, Stellar Disbursement Platform), validators (running a stellar-core validator node), tokens (issuing assets, asset anatomy, access control, Stellar Asset Contract, token interface), networks (resource limits and fees), and meetings (protocol and developer meeting notes). Use when a question clearly belongs to one area and general search returns cross-area noise.",
         "operationId": "stellarDocs.search_docs_in_category",
         "requestBody": {
           "content": {
@@ -8982,7 +9214,7 @@
     },
     "/stellarDocs/search_protocol_concepts_docs": {
       "post": {
-        "description": "Search Stellar docs explaining core protocol concepts and network fundamentals: ledgers, accounts (balances, base reserve, sequence numbers, signers, thresholds, multisig), transactions and operations (every classic operation type, path payments, claimable balances, sponsored reserves), fees, resource limits and metering, lumens (XLM), the Stellar Consensus Protocol (SCP), Stellar data structures and the XDR data format, liquidity on Stellar (SDEX order books vs AMM liquidity pools), what anchors are, the Stellar Ecosystem Proposals (SEPs) overview, the Stellar stack (stellar-core, Horizon, Stellar RPC and how protocol versions relate), networks (mainnet/pubnet, testnet, futurenet) and network resource limits, migrating from EVM chains like Ethereum, plus interactive learning and the glossary. Covers /docs/learn and /docs/networks (60 pages).",
+        "description": "Search Stellar docs explaining core protocol concepts and network fundamentals: ledgers, accounts (balances, base reserve, sequence numbers, signers, thresholds, multisig), transactions and operations (every classic operation type, path payments, claimable balances, sponsored reserves), fees, resource limits and metering, lumens (XLM), the Stellar Consensus Protocol (SCP), Stellar data structures and the XDR data format, liquidity on Stellar (SDEX order books vs AMM liquidity pools), what anchors are, the Stellar Ecosystem Proposals (SEPs) overview, the Stellar stack (stellar-core, Horizon, Stellar RPC and how protocol versions relate), networks (mainnet/pubnet, testnet, futurenet) and network resource limits, migrating from EVM chains like Ethereum, plus interactive learning and the glossary. Covers /docs/learn and /docs/networks.",
         "operationId": "stellarDocs.search_protocol_concepts_docs",
         "requestBody": {
           "content": {
@@ -9048,7 +9280,7 @@
     },
     "/stellarDocs/search_rpc_horizon_data_docs": {
       "post": {
-        "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc (~135 pages). Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.",
+        "description": "Search Stellar docs about querying chain data: Stellar RPC (JSON-RPC API structure, pagination, data formats, running your own RPC node admin guide, RPC providers, guides for getLedgerEntries and simulateTransaction from JavaScript or Python), the Horizon REST API (structure: pagination cursors, streaming, rate limiting, response format, XDR; errors: HTTP status codes, transaction and operation result codes; admin guide: ingestion, scaling, running Horizon), migrating from Horizon to RPC, Hubble — the BigQuery analytics data warehouse for full historical data (analyst guide, history vs state tables), building your own indexer with Galexie and the ingest SDK, and oracles. Covers /docs/data and /docs/build/guides/rpc. Note: auto-generated per-RPC-method and per-Horizon-endpoint reference pages are NOT in the search index — only structure/errors/admin pages and method guides are.",
         "operationId": "stellarDocs.search_rpc_horizon_data_docs",
         "requestBody": {
           "content": {
@@ -9114,7 +9346,7 @@
     },
     "/stellarDocs/search_sdk_cli_tools_docs": {
       "post": {
-        "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools (88 pages).",
+        "description": "Search Stellar docs about official developer tools and SDKs: the client SDKs list (JavaScript/TypeScript stellar-sdk npm package, Python, and the other language SDKs — which SDK to install for building Stellar and Soroban apps), the Stellar CLI (stellar contract deploy / invoke cookbook, key management, network configuration — the command sequence from new contract project to deployed contract), Stellar Lab (build, sign, simulate and submit transactions in the browser; API explorer for RPC methods and Horizon endpoints; view and decode XDR), the Quickstart docker image (run a full local Stellar network for development and CI), scaffold-stellar, OpenZeppelin contracts and relayer, ramps and infrastructure tools. Covers /docs/tools.",
         "operationId": "stellarDocs.search_sdk_cli_tools_docs",
         "requestBody": {
           "content": {
@@ -9179,7 +9411,7 @@
     },
     "/stellarDocs/search_soroban_contract_docs": {
       "post": {
-        "description": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data, deploy to testnet), 25 example contracts, contract storage (persistent vs temporary vs instance, TTL, state archival, restoring archived entries), authorization and custom accounts (__check_auth, contract accounts), cross-contract calls, events (emit and read back), errors and debugging, testing guides (unit tests, mutation, fuzzing, ledger snapshots), conventions (no Rust std, no floating point, wasm build), transaction simulation (simulateTransaction), fees and metering, deploying and invoking with the Stellar CLI, and contract-development fundamentals (environment, host functions, versioning across protocol releases). Covers /docs/build/smart-contracts, /docs/build/guides and /docs/learn/fundamentals/contract-development (~170 pages).",
+        "description": "Search Stellar docs about Soroban smart contract development in Rust: getting started (setup, hello world, storing data, deploy to testnet), the example-contract library, contract storage (persistent vs temporary vs instance, TTL, state archival, restoring archived entries), authorization and custom accounts (__check_auth, contract accounts), cross-contract calls, events (emit and read back), errors and debugging, testing guides (unit tests, mutation, fuzzing, ledger snapshots), conventions (no Rust std, no floating point, wasm build), transaction simulation (simulateTransaction), fees and metering, deploying and invoking with the Stellar CLI, and contract-development fundamentals (environment, host functions, versioning across protocol releases). Covers /docs/build/smart-contracts, /docs/build/guides and /docs/learn/fundamentals/contract-development.",
         "operationId": "stellarDocs.search_soroban_contract_docs",
         "requestBody": {
           "content": {
@@ -9247,7 +9479,7 @@
     },
     "/stellarDocs/search_wallet_dapp_docs": {
       "post": {
-        "description": "Search Stellar docs about building applications, wallets and dapps: the Build a Wallet with the Wallet SDK tutorial series (including anchor SEP-24 deposit/withdrawal integration), Build a Payment App with the JS SDK tutorial, the passkey-powered guestbook dapp (smart wallets, WebAuthn passkeys, secp256r1 signature verification), dapp frontend guide and dapp development guides (initialization, state archival handling in dapps, working with deployed contracts), Freighter browser-extension wallet integration guides, the Swift payment app, payment tracking with the ingest SDK, ZK (zero-knowledge) apps, privacy considerations and application design considerations. Covers /docs/build/apps, /docs/build/guides/dapps and /docs/build/guides/freighter (~57 pages).",
+        "description": "Search Stellar docs about building applications, wallets and dapps: the Build a Wallet with the Wallet SDK tutorial series (including anchor SEP-24 deposit/withdrawal integration), Build a Payment App with the JS SDK tutorial, the passkey-powered guestbook dapp (smart wallets, WebAuthn passkeys, secp256r1 signature verification), dapp frontend guide and dapp development guides (initialization, state archival handling in dapps, working with deployed contracts), Freighter browser-extension wallet integration guides, the Swift payment app, payment tracking with the ingest SDK, ZK (zero-knowledge) apps, privacy considerations and application design considerations. Covers /docs/build/apps, /docs/build/guides/dapps and /docs/build/guides/freighter.",
         "operationId": "stellarDocs.search_wallet_dapp_docs",
         "requestBody": {
           "content": {
@@ -9381,8 +9613,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 250,
-    "generatedAt": "2026-08-18T21:03:39.603Z"
+    "catalogEntries": 251,
+    "generatedAt": "2026-08-19T20:24:04Z"
   },
   "x-services": {
     "lumenloop": {
@@ -9394,7 +9626,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-08-18T21:03:39.603Z",
+      "fetchedAt": "2026-08-19T19:24:10.260Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -9421,7 +9653,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-08-14T00:40:11Z"
+      "syncedAt": "2026-08-19T20:24:04Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",

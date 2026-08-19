@@ -19,10 +19,10 @@
       "Do NOT invent a stablecoin/issuer or assert a complete absence/presence category without a defined dated universe.",
       "Do NOT conflate native issuance, supply, app availability, conventional stablecoins, yield-bearing certificates, and fund/RWA tokens.",
       "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical.",
-      "Do NOT present the ranked stablecoin snapshot as the complete set of Stellar stablecoins; an asset missing from that snapshot, such as USDC, can still be live on Stellar.",
+      "Do NOT present the ranked stablecoin registry as the complete set of Stellar stablecoins; a missing asset is untracked, not absent from Stellar.",
       "Do NOT read a null supply, market cap, or holder value as zero, and do NOT compare raw supply across rows with different pegs; marketCapUSD is the comparable metric."
     ],
-    "notes": "VERIFIED issuers against dossier primary sources: Circle USDC + EURC; PayPal PYUSD (launched on Stellar Sep 18 2025); regional anchors like ClickPesa TZS; BENJI as quasi-stable RWA share. New issuers can appear, so flag the list as time-bounded. Stablecoin coverage → lumenloop_search_content_semantic.\nAlso good if the answer: Characterizes the stablecoin set as issuer-led dollars (USDC/EURC/PYUSD), with regional anchors (e.g. ClickPesa's TZS) and BENJI as a quasi-stable RWA.\nGolden cites: A dated source for each named stablecoin.\nGT-20 CORRECTION 2026-07-10 supersedes the inherited 'major set' and algorithmic-absence framing. Grade a dated non-exhaustive taxonomy, issuer roles, and product-class separation; the live Scout stablecoin directory is demonstrably incomplete and mixed-type.\nSTABLECOIN SNAPSHOT BOUND (verified 2026-08-18): scout.getStablecoins serves a bounded tracked set, never the complete roster of Stellar stablecoins or issuers. On 2026-08-18 that set carried no USDC row, while Circle's EURC row was present with null supply, marketCapUSD, and holders. An asset missing from the snapshot is untracked at that source; that is never real-world absence. USDC remains live on Stellar under Circle's official Mainnet issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN, and Circle's EURC under GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2. GRADER CAUTION: do not penalize an answer that reports the tracked ranking, and do not penalize an answer that names Circle and USDC as live on Stellar. Both are true at their own scope, and an answer that states which scope it is reporting is stronger than one that picks a side. Grade the reading behavior instead of set membership: cite meta.dataAsOf as the as-of date for any ranking or size claim, never meta.generatedAt, which only dates the response; treat marketCapUSD as the only cross-peg comparable size metric, because supply is raw units of each row's own peg; treat null on any metric as untracked, never zero. issuer is the join key, not ticker: one ticker can occupy several rows under different issuer accounts, so a same-ticker row from another issuer does not contradict Circle's asset. Never derive a filtered count from meta.counts.total; read meta.counts.returned for the returned page and re-check the live service contract before making a pre-limit count claim. Do not require or reward a pinned row count, ranking order, dataAsOf-to-generatedAt lag, or any row's position; all four move between reads. The top row by marketCapUSD may be a yield-bearing token rather than a conventional stablecoin, which the product-class separation above already governs."
+    "notes": "VERIFIED issuers against dossier primary sources: Circle USDC + EURC; PayPal PYUSD (launched on Stellar Sep 18 2025); regional anchors like ClickPesa TZS; BENJI as quasi-stable RWA share. New issuers can appear, so flag the list as time-bounded. Stablecoin coverage → lumenloop_search_content_semantic.\nAlso good if the answer: Characterizes the stablecoin set as issuer-led dollars (USDC/EURC/PYUSD), with regional anchors (e.g. ClickPesa's TZS) and BENJI as a quasi-stable RWA.\nGolden cites: A dated source for each named stablecoin.\nGT-20 CORRECTION 2026-07-10 supersedes the inherited 'major set' and algorithmic-absence framing. Grade a dated non-exhaustive taxonomy, issuer roles, and product-class separation.\nSTABLECOIN REGISTRY BOUND (verified 2026-08-19): scout.getStablecoins serves a curated registry, not a census. A live read included Circle USDC and Circle EURC with measured values. Its coverage block states that absence means untracked, never absent from Stellar. GRADER CAUTION: grade the reading behavior instead of set membership. Cite meta.dataAsOf for ranking or size claims; meta.generatedAt only dates the response. marketCapUSD is the cross-peg size metric because supply uses each row's peg. Null means unmeasured, not zero. Use assetId or issuer as the identity because one ticker can have several issuers. counts.total is the filtered count before slicing, counts.tracked is the whole registry, and counts.returned is the served page. Do not require a pinned row count, order, timestamp lag, or position. The top marketCapUSD row can be a yield-bearing token, so preserve product-class distinctions. Circle's USDC issuer remains independently confirmed by Circle and Horizon."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -32,7 +32,7 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-18",
+    "asOf": "2026-08-19",
     "sources": [
       {
         "class": "A",
@@ -235,21 +235,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Solo todo 1665 stablecoin corpus correction lane (opus-high): independent A+C+D re-derivation, not a re-read of the design pass",
+      "date": "2026-08-19",
+      "by": "Solo truth-maintenance root, scratchpad 835: fresh A+C+F recheck",
       "evidence": [
-        "Class C 2026-08-18: read-only scout.getStablecoins({ limit: 100 }) and ({ peg: \"USD\" }) through the deployed MCP; meta.source https://stellarlight.xyz/api/stablecoins, upstream https://stablecoin.stellarlight.xyz, meta.dataAsOf 2026-08-18T15:17:47.179Z. The tracked set carried no USDC row; the Circle EURC row (GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2) was present with null supply, marketCapUSD, and holders; meta.counts.total held the tracked-set size under a peg filter while meta.counts.returned dropped, so total is not a filtered count.",
-        "Class A 2026-08-18: https://developers.circle.com/stablecoins/usdc-contract-addresses lists Stellar Mainnet USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; https://developers.circle.com/stablecoins/eurc-contract-addresses and https://www.circle.com/eurc list Stellar Mainnet EURC-GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 and name Stellar among EURC's supported chains.",
-        "Class D 2026-08-18: https://stellar.expert/explorer/public/asset/USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN showed the Circle-issued USDC asset live with same-day payments and trades; independent 2026-08-08 reporting (https://primexbt.com/news/circles-usdc-supply-on-stellar-jumps-34-7-in-30-days-tracking-cctp-rollout/ and sibling outlets) cited Circle's own data for Stellar USDC supply.",
-        "Sibling sweep 2026-08-18 across the battery for USDC, EURC, and stablecoin: read q-token-circle-usdc-on-stellar, q-asset-usdc-eurc-issuer, q-asset-usdc-eurc-path-fx, q-eco-pyusd-stellar-freshness, q-eco-stellar-rwa-stablecoin-volume, q-asset-rwa-tokenized-freshness, q-raph-usdc-onto-stellar, q-defi-benji-franklin-templeton, and the other stablecoin case in this pair. No sibling contradicts the coverage-bound caution, and the Circle attribution stays aligned with consistency-register clusters 015 and 028. Both cases are cluster-015 members or Circle-adjacent, so the register needs re-stamping by the register lane; this lane did not edit it.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816 section 'Stablecoin corpus correction verdict'",
-        "solo://proj/80/todo/correct-stablecoin-g--1665",
-        "Adding scout.getStablecoins to the surface without a grader caution would have let the bounded snapshot be read as the complete Stellar stablecoin roster, so a truthful answer reporting the tracked ranking, or a truthful answer naming USDC, could have been punished by the existing key facts and avoid clauses.",
-        "Fable xhigh todo 1668 independently confirmed the claims, identified the retired EURC URL, and removed the superseded algorithmic-absence and timeless filtered-count wording."
+        "Class C 2026-08-19: https://stellarlight.xyz/api/stablecoins?limit=100 returned meta.dataAsOf 2026-08-19T18:57:38.745Z, coverage.basis curated-registry, and separate live rows for Circle USDC, Circle EURC, and MyKobo EURC. The filtered USD read returned counts.total 6 and counts.returned 6 while counts.tracked stayed 20.",
+        "Class A 2026-08-19: https://developers.circle.com/stablecoins/usdc-contract-addresses lists Stellar Mainnet USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
+        "Class F 2026-08-19: https://horizon.stellar.org/assets?asset_code=USDC&asset_issuer=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=1 returned the exact asset with a positive authorized balance.",
+        "Sibling sweep 2026-08-19: q-asset-stablecoin-issuers-discovery and q-eco-stablecoins-on-stellar now use the same curated-registry semantics. The existing Circle issuer, product-class, and dated-roster rules remain consistent with sibling cases and clusters 015 and 028.",
+        "solo://proj/49/scratchpad/truth-maintenance-an--835"
       ],
       "rootCause": [
-        "improvements/stellar-light-scout/sls-066-stablecoin-inventory-omits-usdc.md",
-        "solo://proj/80/todo/correct-stablecoin-g--1665"
+        "improvements/resolved.json entry sls-066",
+        "solo://proj/49/scratchpad/truth-maintenance-an--835"
       ]
     },
     "origin": "raven-next q-eco-stablecoins-on-stellar"

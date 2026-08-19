@@ -2,7 +2,7 @@
 
 # Stellar/Soroban ecosystem skills — index
 
-Directory of **20 agent skills** across **4 sources** · pinned 2026-08-14T00:40:11Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
+Directory of **20 agent skills** across **4 sources** · pinned 2026-08-19T20:24:04Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
 
 ## Sources (pinned)
 
@@ -11,7 +11,7 @@ Directory of **20 agent skills** across **4 sources** · pinned 2026-08-14T00:40
 | `lumenloop` | [`lumenloop/lumenloop-skills`](https://github.com/lumenloop/lumenloop-skills) `skills/` | [`d92c56bda17a`](https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills) | 8 |
 | `openzeppelin-stellar` | [`OpenZeppelin/openzeppelin-skills`](https://github.com/OpenZeppelin/openzeppelin-skills) `skills/` | [`6f215af60eb6`](https://github.com/OpenZeppelin/openzeppelin-skills/tree/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills) | 3 |
 | `stellar-dev` | [`stellar/stellar-dev-skill`](https://github.com/stellar/stellar-dev-skill) `skills/` | [`812598a8538d`](https://github.com/stellar/stellar-dev-skill/tree/812598a8538dc5479196145d2175b4a991bee1d9/skills) | 8 |
-| `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | [`0d169e4ab64d`](https://github.com/Stellar-Light/stellar-scout/tree/0d169e4ab64ddcc87ef61cc8e1737151fd39a05e) | 1 |
+| `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | [`2eebd982dc31`](https://github.com/Stellar-Light/stellar-scout/tree/2eebd982dc31c20198f59b40e29c83dcf71f688b) | 1 |
 
 _Every source is public GitHub, pinned to a full commit SHA (independently verifiable); each source's upstream LICENSE/NOTICE file NAMES are recorded in `MANIFEST.json` as provenance — those files are not fetched, copied, or served (see `THIRD-PARTY-NOTICES.md` at the repo root)._
 
@@ -29,7 +29,7 @@ _Stellar-ecosystem analyst skills — survey/map a sector, profile a project, di
 | [`stellar-content-auditor`](https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor) | `lumenloop` | 8 KB | Audit and enrich a draft (blog post, talking points, tweet, announcement) against the LumenLoop Stellar ecosystem data — resolve the projects you mention to their canonical names and X/@ handles, pull supporting facts and citations from indexed content, and flag wrong handles or unsupported claims. Use when the user shares draft copy about Stellar and wants project handles/names/facts checked, or asks to fact-check, enrich, or add citations and links to a post. |
 | [`stellar-builder-quickstart`](https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-builder-quickstart) | `lumenloop` | 12 KB | Go from a Stellar product idea to a build path: pick the right Stellar primitives, check ecosystem prior art via LumenLoop, and route to the relevant build skill (Soroban, SDK/dapp, assets, oracles). Use when the user wants to start building something on Stellar and needs orientation on approach and existing work. |
 | [`lumenloop-mcp-connect`](https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills/lumenloop-mcp-connect) | `lumenloop` | 16 KB | Connect your AI assistant (Claude, ChatGPT, Gemini, Cursor, or any MCP client) to LumenLoop's free read-only Stellar ecosystem MCP at https://mcp.lumenloop.com and learn its 18 query tools. Use when the user wants to set up or troubleshoot the lumenloop connector, asks what Stellar ecosystem data is available, or needs to know which lumenloop skill fits a task. |
-| [`stellar-scout`](https://github.com/Stellar-Light/stellar-scout/tree/0d169e4ab64ddcc87ef61cc8e1737151fd39a05e) | `stellar-light` | 80 KB | Scouts the Stellar ecosystem before you build. Validates ideas against existing projects, matches open SCF-funded RFPs, drafts SCF pitches, finds audit firms, compares RFPs, recommends Soroban SDK skills, and cites primary sources (audits, SEPs, papers). Use whenever someone asks what to build on Stellar, vets an idea, preps an SCF grant application or hackathon entry, needs an auditor, or needs prior-art / security findings on a Soroban protocol. |
+| [`stellar-scout`](https://github.com/Stellar-Light/stellar-scout/tree/2eebd982dc31c20198f59b40e29c83dcf71f688b) | `stellar-light` | 94 KB | Scouts the Stellar ecosystem before you build. Validates ideas against existing projects, matches open SCF-funded RFPs, drafts SCF pitches, finds audit firms, compares RFPs, recommends Soroban SDK skills, and cites primary sources (audits, SEPs, papers). Use whenever someone asks what to build on Stellar, vets an idea, preps an SCF grant application or hackathon entry, needs an auditor, or needs prior-art / security findings on a Soroban protocol. |
 
 ## Soroban & smart contracts
 
@@ -58,7 +58,7 @@ _SDF's developer skills for building on Stellar off-chain: dapps/wallets, chain 
 
 ## Ecosystem directory (stellarlight.xyz catalog snapshot)
 
-_The broader map of what exists across the Stellar agent-skill ecosystem — 43 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-08-14T00:40:11Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
+_The broader map of what exists across the Stellar agent-skill ecosystem — 43 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-08-19T20:24:04Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
 
 | Entry | Source | Kind |
 | --- | --- | --- |

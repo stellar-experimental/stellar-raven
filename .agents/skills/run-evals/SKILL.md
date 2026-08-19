@@ -393,6 +393,12 @@ must be a general mechanism with a measured win on the A/B harness (`npm run eva
 before it lands, and content-shaped gaps still go upstream — the `improvements-pipeline` skill's
 "Direct Algolia remediation" section is the gate.
 
+**Keep case evidence in the round record.** Production descriptions, keywords, examples,
+archetypes, scorer constants, and tool instructions express a general user intent. Give each
+proposed edit a source owner. A failed case supplies the test, not its wording. Case ids, question
+phrases, and golden answer fragments stay in the round record. When the first failed boundary is an
+upstream content or contract gap, create or update the improvement before proposing local wording.
+
 **"Do not act yet" bucket.** A finding backed by a single case goes into a named
 monitor-only list in the round record, not into a fix. The bar for acting: the same
 failure across 2+ unrelated cases, a contract mismatch, a reproducible infra bug, or
@@ -467,6 +473,8 @@ Quality bar (match the existing findings, e.g. `sls-005`):
 - The Recommendation is written for the **service owner**: concrete, self-describing-data
   biased, with the consumer-side workaround this repo shipped noted (commit ref) so they
   see the cost of not fixing it.
+- At closeout, list every verified finding that the round did not file. Record its intake status
+  and the next filing action or explicit deferral reason.
 - Skills findings target the **source repos**. Bodies are not vendored here (pinned + fetched), so there is nothing local to patch and re-pinning is not a fix.
 - Update existing findings rather than filing near-duplicates; refresh statuses when the
   daily drift refresh lands (a fix upstream → live re-check → `fixed-upstream`, residuals

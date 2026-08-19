@@ -860,7 +860,7 @@ function sampleTrace(): string {
     `<span class="st ok">ok</span></summary><div class="tcard-body">` +
     `<div class="qline">query <b>${esc(SAMPLE_QUERY)}</b><span class="qf">limit=4</span></div>` +
     `<ol class="hits">${hits}</ol>` +
-    `<div class="hmeta">4 of 17 matches &middot; truncated &mdash; more matched than shown</div>` +
+    `<div class="hmeta">4 of 18 matches &middot; truncated &mdash; more matched than shown</div>` +
     `</div></details>` +
     `<details class="tcard" open><summary><span class="tw">execute</span>` +
     `<span class="tlabel">sandboxed JavaScript</span>` +

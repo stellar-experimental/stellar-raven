@@ -17,7 +17,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadSkillTexts, skillFileUrl } from "../../scripts/lib/skill-mirror.mjs";
 import { RETIRED_ONBOARDING_SKILLS } from "../../scripts/exposure.mjs";
-import { scrubRetiredSkillRefs } from "../../src/skills/scrub.ts";
+import { scrubNonExposedRefs } from "../../src/skills/scrub.ts";
 import type { SkillSource } from "../../src/skills/source.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -45,7 +45,7 @@ export function pinnedSkillSource(): Promise<SkillSource> {
           const loaded = texts.get(`${source.id}/${skill.name}/${file.path}`);
           if (loaded === undefined) continue;
           const url = skillFileUrl(source, skill.name, file.path);
-          byUrl.set(url, scrubRetiredSkillRefs(loaded.text, url));
+          byUrl.set(url, scrubNonExposedRefs(loaded.text, url));
         }
       }
     }

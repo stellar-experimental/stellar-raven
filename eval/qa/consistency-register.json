@@ -437,7 +437,7 @@
         }
       },
       {
-      "id": "cluster-015",
+        "id": "cluster-015",
         "label": "2025-2026 RWA/stablecoin launch dates and issuers",
         "members": [
           "q-asset-rwa-tokenized-freshness",
@@ -452,11 +452,11 @@
           "q-token-circle-usdc-on-stellar",
           "q-tool-cctp-stellar-integration"
         ],
-      "verdict": "consistent",
-        "lastChecked": "2026-08-18",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-19",
         "reSwept": {
-          "date": "2026-08-18",
-        "reason": "Re-read the stablecoin members after the Fable xhigh review, EURC source repair, and durable filtered-count wording. Circle issuer facts, dated launches, and the distinction between tracked-set omission and real-world absence remain consistent.",
+          "date": "2026-08-19",
+          "reason": "Re-read all members after Scout added Circle USDC and explicit curated-registry semantics. Circle issuer facts, dated launches, product classes, and source-relative absence rules remain consistent.",
           "verdict": "consistent"
         },
         "note": "CRDT=WisdomTree Sep 12 2025, USDY=Ondo Sep 17 2025, and PYUSD=PayPal-branded/Paxos-issued Sep 18 2025; Templar is another verified Nov 5 2025 launch. The set is illustrative, not exhaustive, and the old Meridian 'inflection point' narrative is not a truth gate. Announced, approved, technically integrated, listed, and publicly live remain distinct states. Circle recorded CCTP Stellar mainnet support on 2026-05-18 and SDF/Circle publicly announced live on 2026-05-19; the prior 2026-02-24 launch attribution is unverified. EURC=Circle 2023-09-26; BENJI=Franklin Templeton since 2021; Figure YLDS live 2026-05-05; DTCC DTC service planned H1 2027 NOT live. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration now carry the two-milestone CCTP wording instead of the collapsed 2026-05-19 slogan. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
@@ -468,11 +468,15 @@
           "q-defi-ondo-usdy": "084bf1b02daebdc1f0ddfcc018a104f9d28917e9aa902890a6fc937136074308",
           "q-defi-wisdomtree-crdt": "b3c9cfb60942105cefe352f526d44e480a0b2bbfd9641f26f2ab2159e9555622",
           "q-eco-pyusd-stellar-freshness": "44d6406ac29fe55d8a05f988e810eae6ee301418f4148aa8fb8c0cf0c02e4ec1",
-          "q-eco-stablecoins-on-stellar": "d6060ed9034af2a8b325ef070fe966b0c154c410eae1e0f78cd8114169fecf2c",
+          "q-eco-stablecoins-on-stellar": "32543ee1b9a701ad5ad0c70e2a1b15c7161819c44bb8289c57013058f708d493",
           "q-rwa-projects-tokenizing-stellar": "485df7eb0211a7bf2f6a3493d7a5907fa99bb4bbcd803cf232a90c0329364043",
           "q-token-circle-usdc-on-stellar": "9dde11c6f861287c9565810f1b8d5c3cd48e50a415d6c8e73a17311be0b71520",
           "q-tool-cctp-stellar-integration": "2c87fc83efbe501d669814b9c7a8aa163a46932dcbb9adf5459312651ee70737"
-      }
+        },
+        "reopened": {
+          "date": "2026-08-19",
+          "reason": "member-content-changed"
+        }
       },
       {
         "id": "cluster-016",
@@ -837,26 +841,30 @@
         }
       },
       {
-      "id": "cluster-028",
+        "id": "cluster-028",
         "label": "q-defi-named-newer-protocols + q-eco-pyusd-stellar-freshness + q-eco-stablecoins-on-stellar",
         "members": [
           "q-defi-named-newer-protocols",
           "q-eco-pyusd-stellar-freshness",
           "q-eco-stablecoins-on-stellar"
         ],
-      "verdict": "consistent",
-        "lastChecked": "2026-08-18",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-19",
         "reSwept": {
-          "date": "2026-08-18",
-        "reason": "Re-read the PYUSD and stablecoin members after the Fable xhigh review and stablecoin provenance repairs. PayPal branding, Paxos issuance, and source-relative stablecoin coverage remain compatible.",
+          "date": "2026-08-19",
+          "reason": "Re-read all members after the Scout registry correction. PayPal branding, Paxos issuance, Circle rows, and source-relative coverage remain compatible.",
           "verdict": "consistent"
         },
         "note": "resolved as PayPal-branded/Paxos-issued with explicit dated LLC-versus-N.A. disagreement",
         "memberContentSha256": {
           "q-defi-named-newer-protocols": "5bc0aada5d0252ea6ca6156cf767c7b3588367c1ca798a0b8390b9e2b497f03d",
           "q-eco-pyusd-stellar-freshness": "44d6406ac29fe55d8a05f988e810eae6ee301418f4148aa8fb8c0cf0c02e4ec1",
-          "q-eco-stablecoins-on-stellar": "d6060ed9034af2a8b325ef070fe966b0c154c410eae1e0f78cd8114169fecf2c"
-      }
+          "q-eco-stablecoins-on-stellar": "32543ee1b9a701ad5ad0c70e2a1b15c7161819c44bb8289c57013058f708d493"
+        },
+        "reopened": {
+          "date": "2026-08-19",
+          "reason": "member-content-changed"
+        }
       },
       {
         "id": "cluster-029",

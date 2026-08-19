@@ -83,7 +83,7 @@ describe("demo page states", () => {
     expect(lockedHtml).toContain("soroban smart contract deploy");
     expect(lockedHtml).toContain("&quot;sections&quot;: [");
     expect(lockedHtml).not.toContain("&quot;playbook&quot;: [");
-    expect(lockedHtml).toContain("4 of 17 matches");
+    expect(lockedHtml).toContain("4 of 18 matches");
     // The static example never shows a section HIT — sections left search at
     // the 2026-07-13 skills-form A/B (the sample code still READS a section).
     expect(lockedHtml).not.toContain("skill-section");

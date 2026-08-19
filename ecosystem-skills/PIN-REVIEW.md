@@ -124,3 +124,23 @@ code-evidence fields, confidence semantics, and current `smart-contracts` skill 
 The full old-pin to new-pin body diff was reviewed. The changed text contains no credential,
 behavior-hijack instruction, retired skill, or non-exposed Raven operation reference. The new
 companion files preserve the existing topics and make section reads smaller.
+
+### 2026-08-19 — stellar-light re-pin
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-light` | `2eebd982dc31c20198f59b40e29c83dcf71f688b` | `sel:cdb4d944079c` | read in full |
+
+The other three sources did not move. Their selections remain unchanged from the preceding entry.
+
+The new selection documents useful read-only composite operations. Raven now exposes the
+Hackathon Build Brief.
+
+The raw skill also advertises `POST /api/feedback` and `GET /api/feedback`. The prior selection
+already advertised both operations. Raven excludes the write because it is side-effecting. Raven
+also excludes its schema-only read because the write is unavailable.
+
+Raven applies one manifest-derived exposure filter to every selected file at build and read time.
+The filter removes a complete Markdown section, table row, or list item that names an excluded
+Scout path. It fails closed for an unsafe prose shape. This selection passed the guard across all
+four files. Raven serves no feedback workflow from the pinned body.

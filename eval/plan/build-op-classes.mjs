@@ -76,6 +76,7 @@ const OP_OVERRIDES = {
   "scout.getPeople": "broad",
   "scout.getStablecoins": "broad",
   "scout.analyzeEcosystem": "broad",
+  "scout.hackathonBrief": "broad",
   "scout.scfPitch": "broad",
   "scout.vetIdea": "broad",
   "lumenloop.get_related_projects": "broad",

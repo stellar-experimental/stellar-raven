@@ -31,7 +31,7 @@ date is repeated here to go stale):
      `/v1/changelog?since=`. Quirk: `/v1/tools` and `/v1/skills` hide partner items even with a
      partner key — inventory must union `/v1/me` + per-item detail fetches. Also serves 14 skills
      as zips via `/v1/skills`.
-   - **Stellar Light / Scout** — 33 paths / 34 ops (2026-08-18 Scout 1.8.70), fully keyless, self-describing via
+   - **Stellar Light / Scout** — 33 paths / 34 ops (2026-08-19 Scout 1.8.73), fully keyless, self-describing via
      `/api/openapi.json`, `/api/status` (live counts + endpoint enumeration), `/api/changelog`.
      scout-mcp is a pure 1:1 wrapper → we integrate over HTTP directly.
    - **Stellar Docs** — integrate via **direct Algolia REST** (decided 2026-07-01), not the MCP.
@@ -157,8 +157,8 @@ and skill re-pinning are the other network steps.
 
 ## 3. Skills directory — selective + partial exposure
 
-Source: `ecosystem-skills/MANIFEST.json`, a pin set for 19 public skills across 4 upstreams:
-lumenloop ×8, openzeppelin ×3, stellar-dev ×7, stellar-light ×1. **Bodies are referenced, not
+Source: `ecosystem-skills/MANIFEST.json`, a pin set for 20 public skills across 4 upstreams:
+lumenloop ×8, openzeppelin ×3, stellar-dev ×8, stellar-light ×1. **Bodies are referenced, not
 vendored** — the repo commits a commit SHA per source and a git blob hash per file; the builders
 and the Worker fetch each file from upstream at that commit and verify it against that hash
 (`scripts/lib/skill-mirror.mjs`, `src/skills/source.ts`). Pins are re-cut by
@@ -198,13 +198,14 @@ inventory stubs so credentialed content cannot re-enter the public repo.
 - **Exposure is filtered at build time (ADR-0003,
   `research/decisions/0003-build-time-exposure-filtering.md`):** the manifest contains only what
   the sandbox may call or read — excluded surfaces (`lumenloop.request_research` (metered paid),
-  `scout.submitFeedback`/`submitPartnerListing` (writes), `scout.partnerAssistant`
-  (side-effecting — logs surfaced partners as leads), lumenloop account/billing mutations, the 7
+  `scout.submitFeedback`/`submitPartnerListing` (writes), `scout.getFeedbackSchema` (dead-end read),
+  `scout.partnerAssistant` (logs surfaced partners as leads), `scout.partnerOnboard`
+  (upstream-marked side-effecting), lumenloop account/billing mutations, the 7
   retired onboarding skills, the 14 `lumenloop.skill.*` twins) are never emitted, by `search`,
   `codemode.catalog()`, `codemode.spec()`, or anything else. Consumers never see what they
-  cannot use. Exclusions are exact-match data in `scripts/exposure.mjs`, consumed by
-  `scripts/build-catalog.mjs` and the other emitters with fail-loud drift guards; reasons live
-  there and in the ADR, not in runtime entries.
+  cannot use. Shared exposure modules own the exact-match data. Scout operations live in
+  `src/policy/scout-exposure.ts`; `scripts/exposure.mjs` re-exports them and owns the other
+  exclusions. Builders and emitters consume these modules with fail-loud drift guards.
 - **Paid-call gate:** `lumenloop.request_research` is not emitted at all today; enabling it is a
   deliberate feature — remove the build exclusion AND ship the budget-gate + dedup runtime in
   the same change (prefer `answer` mode (~$0.02), dedup via `list_my_research` first, per-day
@@ -359,5 +360,5 @@ Phases 2–3 are independently parallelizable after 1; 4–6 after 3.
 | Docs search path | **Decided: direct Algolia REST** — dedicated key in hand (`.env` → Worker secrets `ALGOLIA_APPLICATION_ID_DOCS`/`ALGOLIA_API_KEY_DOCS`; the stellar.org site lane uses the `_SITE` pair); MCP as documented fallback | MCP-only (slower, protocol overhead) |
 | `request_research` (paid) | off at launch | on with budget gate from day one |
 | Server auth | **Decided: WorkOS OAuth** (`workers-oauth-provider` + AuthKit; named-key/dev bypasses — §4, README.md) | plain bearer secret (retired placeholder) |
-| Skills scope | **18 of 19 mirrored public skills exposed**; retired onboarding surfaces never emitted, and one composite skill is runnable via `codemode.skill.run` | re-expose an onboarding skill only after a transport-agnostic rewrite and a fresh ADR |
+| Skills scope | **19 of 20 mirrored public skills exposed**; retired onboarding surfaces never emitted, and one composite skill is runnable via `codemode.skill.run` | re-expose an onboarding skill only after a transport-agnostic rewrite and a fresh ADR |
 | Statefulness | stateless `createMcpHandler` | `McpAgent` + CodemodeRuntime DO (approvals/audit) |

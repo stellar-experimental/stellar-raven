@@ -62,21 +62,9 @@ export function lumenloopOpExcluded(tool) {
 //  POST /api/partners/onboard         upstream marks the AI interview/extraction
 //                                     helper x-side-effecting as of Scout 1.8.70;
 //                                     Raven has no approval or budget gate for it
-//  GET  /api/hackathon-brief          broad composite changed 27 gated cases
-//                                     and seven context-only extended cases;
-//                                     it lowered the frozen holdout
-//                                     from 11/24/27 to 10/22/25 with no gated
-//                                     gain in a controlled 2026-08-18 ablation
 //  POST /api/partners/match stays exposed: its OpenAPI description declares
 //                                     pure AI ranking over published partners
-export const EXCLUDED_SCOUT_OPS = new Set([
-  "POST /api/feedback",
-  "GET /api/feedback",
-  "POST /api/partners/submit-listing",
-  "POST /api/partners/assistant",
-  "POST /api/partners/onboard",
-  "GET /api/hackathon-brief"
-]);
+export { EXCLUDED_SCOUT_OPS } from "../src/policy/scout-exposure.ts";
 
 // Retired skills — exclusion as DATA (ADR-0003; decision 2026-07-03).
 // The Lumenloop onboarding skills teach RAW HTTP/REST or MCP-connector access
@@ -142,9 +130,12 @@ export const SKILL_EXPOSURE_CLASSIFICATION_BY_ID = new Map(
   SKILL_EXPOSURE_CLASSIFICATIONS.map((entry) => [entry.id, entry])
 );
 
-// The retired-skill scrub lives in src/skills/scrub.ts because it now runs at
-// READ time too: skill bodies are fetched from upstream at the pinned commit
-// rather than vendored, so every served body is scrubbed on the way out. One
-// implementation, re-exported here so the builders keep importing exposure
-// data from one place.
-export { scrubRetiredSkillRefs, RETIRED_SKILL_REF_RE } from "../src/skills/scrub.ts";
+// Skill-body exposure scrubs live in src/skills/scrub.ts because they also run
+// at READ time. One implementation removes retired skill references and
+// complete Markdown blocks for excluded Scout paths. The builders import that
+// implementation here.
+export {
+  scrubNonExposedRefs,
+  scrubRetiredSkillRefs,
+  RETIRED_SKILL_REF_RE
+} from "../src/skills/scrub.ts";

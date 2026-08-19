@@ -47,12 +47,9 @@ import {
 } from "./description-notes.mjs";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts } from "./lib/skill-mirror.mjs";
-import { RETIRED_ONBOARDING_SKILLS, scrubRetiredSkillRefs } from "./exposure.mjs";
+import { RETIRED_ONBOARDING_SKILLS, scrubNonExposedRefs } from "./exposure.mjs";
 import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
-import {
-  applyModelContractCorrection,
-  usesCorrectedSuperSpecOutputSchema
-} from "./catalog-data/model-contract-corrections.mjs";
+import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
 // The runnable-skill allowlist-as-data (research/skill-run-design.md §5):
 // the SAME registry scripts/build-catalog.mjs attaches to the manifest, so
 // the two model-facing surfaces cannot drift (native type stripping, as for
@@ -335,14 +332,6 @@ function buildScout(inv, exposed, manifest) {
       let responses = upstream.responses
         ? scrubNonExposedScoutSchemaRefs(namespaceRefs(upstream.responses, "scout"))
         : undefined;
-      if (usesCorrectedSuperSpecOutputSchema(id)) {
-        const outputSchema = manifest.entries.find((entry) => entry.id === id)?.outputSchema;
-        const jsonResponse = responses?.["200"]?.content?.["application/json"];
-        if (!outputSchema || !jsonResponse) {
-          throw new Error(`${id} corrected super-spec output schema has no manifest schema or 200 JSON response`);
-        }
-        jsonResponse.schema = outputSchema;
-      }
       const op = {
         operationId: id,
         ...(summary ? { summary } : {}),
@@ -451,7 +440,7 @@ function buildSkillIndex(manifest, exposed, texts) {
       const loaded = texts.get(key);
       if (loaded === undefined) throw new Error(`skill file ${key} was not loaded`);
       const raw = loaded.text;
-      const { attrs, body } = parseFrontmatter(scrubRetiredSkillRefs(raw, key));
+      const { attrs, body } = parseFrontmatter(scrubNonExposedRefs(raw, key));
       const sections = [];
       const usedSlugs = new Set();
       for (const line of body.split("\n")) {

@@ -616,6 +616,20 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/d2d7c161a4362445c6db59bf5989de98f130fe55/improvements/skills/sk-012-mpp-session-mode-terminology.md"
     },
     {
+      "id": "sk-018",
+      "title": "The live Scout API adds four read-only operations that the Scout skill reference does not document:",
+      "service": "skills",
+      "discovered": "2026-08-18",
+      "resolved": "2026-08-19",
+      "repo": "Stellar-Light/stellar-scout",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-08-19: upstream stellar-scout commit 2eebd982dc31 documents all four endpoints; Raven pins selection sel:cdb4d944079c and removes structural blocks for excluded Scout paths.",
+      "reviewEvidence": "Grok 4.6 process 4832, Solo todo 1769 comment 4641; root read the full changed skill selection and reproduced the pre-existing feedback exposure debt.",
+      "sourceCommit": "9e277702fd5f70a18cdc7c4d5f9bda0127461644",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/9e277702fd5f70a18cdc7c4d5f9bda0127461644/improvements/skills/sk-018-stellar-scout-api-reference-composite-endpoint-drift.md"
+    },
+    {
       "id": "sls-001",
       "title": "The hackathon detail endpoint returned winner lists WITHOUT placement fields, but in an order agents universally read as ranking. An eval…",
       "service": "stellar-light-scout",
@@ -1639,6 +1653,62 @@
       "reviewEvidence": "Independent Fable reviewer, Solo process 4500 / todo 1451, repeated the three-surface trigger, upstream state, and repository reference scan",
       "sourceCommit": "dbb3eee51e96515d6dd4d118e87adbf7246a712b",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/dbb3eee51e96515d6dd4d118e87adbf7246a712b/improvements/stellar-light-scout/sls-062-status-sdf-skill-count-mismatch.md"
+    },
+    {
+      "id": "sls-064",
+      "title": "Audit rows carry no relation metadata, so multiple reports for one protocol and auditor cannot be told apart",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-14",
+      "resolved": "2026-08-19",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-08-19: every repeated protocol and auditor group now carries an engagementId. Report version, engagement dates, and findings extraction metadata are populated where known. Residual Veridise supersession and exact identifier miss behavior moved to sls-070 and sls-071.",
+      "reviewEvidence": "Grok 4.6 process 4832, Solo todo 1769 comment 4641; root reproduced the live list and exact identifier calls. The final independent spec review required separate successor findings.",
+      "sourceCommit": "9e277702fd5f70a18cdc7c4d5f9bda0127461644",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/9e277702fd5f70a18cdc7c4d5f9bda0127461644/improvements/stellar-light-scout/sls-064-audit-report-version-supersession.md"
+    },
+    {
+      "id": "sls-065",
+      "title": "The OpenAPI contract for GET /api/hackathons/builds advertises three code-derived filters: capability, domain, and dependsOn. The catalog…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-18",
+      "resolved": "2026-08-19",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-08-19: Scout OpenAPI 1.8.73 removed capability, domain, and dependsOn from GET /api/hackathons/builds; live calls reject those unadvertised parameters.",
+      "reviewEvidence": "Grok 4.6 process 4832, Solo todo 1769 comment 4641; root reproduced OpenAPI 1.8.73 and the live endpoint behavior.",
+      "sourceCommit": "c05f4b1c47b81d3739c38ab4895b268907f57053",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/c05f4b1c47b81d3739c38ab4895b268907f57053/improvements/stellar-light-scout/sls-065-hackathon-builds-phantom-code-filters.md"
+    },
+    {
+      "id": "sls-066",
+      "title": "GET /api/stablecoins serves a bounded tracked inventory. Its 2026-08-18 snapshot omitted Circle USDC, although Circle still listed USDC on…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-18",
+      "resolved": "2026-08-19",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-08-19: live Scout stablecoins includes Circle USDC and populated Circle EURC metrics with curated-registry coverage; Circle and Horizon confirm the USDC issuer.",
+      "reviewEvidence": "Grok 4.6 process 4832, Solo todo 1769 comment 4641; root reproduced the live registry and independently checked Circle and Horizon.",
+      "sourceCommit": "c05f4b1c47b81d3739c38ab4895b268907f57053",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/c05f4b1c47b81d3739c38ab4895b268907f57053/improvements/stellar-light-scout/sls-066-stablecoin-inventory-omits-usdc.md"
+    },
+    {
+      "id": "sls-067",
+      "title": "RFP contract overstates current fundability and omits live round-state fields",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-18",
+      "resolved": "2026-08-19",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-08-19: Scout 1.8.73 separates open briefs from submission eligibility. The response and official awards page agree on Panel Review. Current phase and rounds-in-progress fields are declared. The remaining source-field schema gap moved to sls-072.",
+      "reviewEvidence": "Grok 4.6 process 4832, Solo todo 1769 comment 4641; root reproduced the response, OpenAPI schema, and official round state. The final independent spec review required a successor finding.",
+      "sourceCommit": "53f2d23ccae57bb26b03d93ce3b809c75ecad95b",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/53f2d23ccae57bb26b03d93ce3b809c75ecad95b/improvements/stellar-light-scout/sls-067-rfp-fundability-and-round-state-contract.md"
     }
   ]
 }

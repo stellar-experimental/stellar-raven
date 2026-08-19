@@ -716,6 +716,69 @@ below-correct gain candidates. A fixed 16-case treatment/control diagnostic rece
 `search` output is catalog-navigation metadata, not evidence for live return values. No post-repair
 score or measured gain is claimed without a paid remeasurement.
 
+## 2026-08-19 full-battery QA round (497 cases; reviewed record)
+
+This round measured the service at revision
+`90d0ba75eb529c6a1cf6fe276f16cf4f1da4f9f0`. It used variant A, `search` and
+`execute`, `claude-sonnet-5` for answering and judging, and rubric/pack `v2.4/p5`.
+The fresh collection has 101 local-only artifacts. Their three shard manifests contain 497
+unique current IDs exactly once. The ordered-union SHA-256 is
+`76b9c75d61bc7171dc284e0ccdbfd5d254aacfd2f19706381d1d20e0f8e16174`.
+
+The saved artifacts report **188C / 222P / 87W / 0E**. Reviewers then checked all
+non-correct rows, selected correct canaries, exact golden joins, and source evidence. The reviewed
+aggregate is distinct from the saved artifacts. Final arbitration changed seven classifications:
+two wrong-to-partial, one wrong-to-correct,
+three correct-to-partial, and one partial-to-correct. The reviewed aggregate is
+**187C / 226P / 84W / 0E**. The review did not rewrite any artifact.
+
+| record | correct | partial | wrong | error | strict | half-credit |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| saved artifacts | 188 | 222 | 87 | 0 | 37.8270% | 60.1610% |
+| reviewed aggregate | **187** | **226** | **84** | **0** | **37.6258%** | **60.3622%** |
+
+The reviewed half-credit instrument is **(187 + 0.5×226) / 497 = 300 / 497 =
+60.3622%**. Fresh full-battery collection cost **$303.86782035**. This cost excludes
+the separate live-15, digest-2, sample-replicate, and saved-answer regrade lanes. Those lanes
+have separate contracts and denominators. They do not contribute to this headline aggregate.
+
+The direct 30-case checkpoint used the exact baseline sample and three current observations per
+ID: one full-battery row and two sample replicates. The baseline was **14C / 14P / 2W**. Raw
+per-ID majority scoring produced **15C / 13P / 2W**. It had three movements:
+`q-aas-list-token-on-exchanges-aggregators` moved correct-to-partial, while
+`q-eco-stellar-rwa-stablecoin-volume` and `q-edge-1xlm-activation-fee` moved
+partial-to-correct. Review rejected both upgrades as judge inconsistencies. The reviewed majority
+was **13C / 15P / 2W**, with only the first downgrade retained. This checkpoint shows no material
+quality gain.
+
+The week-scale comparison used the 100 continuing IDs in the current-goldens p3-to-p5 regrade.
+Raw regraded scores were **40C / 46P / 14W / 0E**. Raw fresh scores on those IDs were
+**38C / 48P / 14W / 0E**, with 15 upgrades, 18 downgrades, and 67 unchanged rows. Reviewed
+regraded scores were **40C / 47P / 12W / 1E**. Reviewed fresh scores were
+**38C / 49P / 13W / 0E**, with 14 upgrades, 17 downgrades, and 69 unchanged rows. The corpus
+and evidence pack differ, so this is not a paired A/B. The nearly balanced movements do not show
+a material causal improvement.
+
+The canary review inspected 53 of 188 saved-correct rows. It changed three to partial. The
+remaining 135 saved-correct rows were not inspected in detail. The reviewed correct count can
+therefore contain a small, unquantified overstatement. The canary selection was adversarial, so its
+flip rate is not a representative estimate. Shard 2 batch 24 was also a category outlier: five
+Soroban cases scored **1C / 0P / 4W**.
+
+The 2026-08-04 reviewed round remains historical context only. It used 490 cases, an older
+candidate, and rubric/pack `v2.4/p3`; it recorded 154C / 218P / 118W, 31.4286% strict, and
+53.6735% half-credit. It is not a paired A/B comparison with this round. No aggregate movement
+receives causal credit without a common-ID, same-tuple comparison and mechanism evidence.
+
+The review deduplicated accepted upstream work. Live Scout on 2026-08-19 returned four
+Fluxity-named repositories. Three map to `project.slug: "wagent"` despite their Fluxity names and
+descriptions. This is a verified repository-to-project linkage defect in `sls-068`. It is distinct
+from resolved `sls-058`, which covered SCF funding fields. No external issue was filed.
+
+Solo todos 1737 through 1748 track the accepted own-repository, golden-truth, and free-probe work.
+Verified finding `sk-017` already owns the Passkey Kit legacy-label issue, so this round does not
+duplicate it. Ledgers 828 through 831 retain the accepted monitor-only items.
+
 ## Current baseline of record
 
 The 2026-07-11 post-rebuild baseline is recorded in

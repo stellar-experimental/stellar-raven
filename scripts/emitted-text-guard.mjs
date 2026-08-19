@@ -59,7 +59,7 @@ export function assertNoNonExposedRefsInText(text, label) {
   if (RETIRED_SKILL_RE.test(text)) {
     throw new Error(
       `ADR-0003 leak: ${label} emits a retired-skill reference — ` +
-        `scrubRetiredSkillRefs missed it; see scripts/exposure.mjs.`
+        `scrubNonExposedRefs missed it; see scripts/exposure.mjs.`
     );
   }
   const bareMatch = text.match(EXCLUDED_LUMENLOOP_RE);

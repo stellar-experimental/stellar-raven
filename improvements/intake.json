@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-08-14",
+  "updated": "2026-08-19",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -171,6 +171,10 @@
     "sd-039": {
       "repo": "stellar/stellar-docs",
       "reason": "Official Tools pages conflate the self-hosted OpenZeppelin Relayer with the managed Channels service."
+    },
+    "sd-040": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The smart-contract Address conversion guide owns the malformed-XDR handling example."
     },
     "sd-041": {
       "repo": "stellar/stellar-docs",
