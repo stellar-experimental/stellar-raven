@@ -234,6 +234,8 @@ Most questions have a primary family and a corroborating one — pick both up fr
 
 export const EXECUTE_DESCRIPTION = `Execute JavaScript in a sandboxed Worker isolate with access to the service SDKs discovered via the \`search\` tool.
 
+Calls return one text result; failures set \`isError\`. The sandbox result, console output, and thrown errors each have a separate model-boundary cap of roughly 6k tokens by default. Service-call payloads live under \`.data\`. The sandbox has no direct network access, and \`fetch()\` fails.
+
 Write an async arrow function in JavaScript that returns the result. One script should compose MANY operations: broad discovery calls first (in parallel where independent), then targeted deeper calls parameterized by their results, then return one merged, compact value.
 
 Worked example (multi-service fan-out, then a follow-up detail call):
@@ -315,9 +317,16 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
   server.registerTool(
     SEARCH_TOOL_NAME,
     {
+      title: "Discover Stellar tools and skills",
       description: SEARCH_DESCRIPTION,
       inputSchema: z.object(rankedSearchInputSchema),
-      outputSchema: z.object(rankedSearchOutputSchema)
+      outputSchema: z.object(rankedSearchOutputSchema),
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: false
+      }
     },
     async (args) => {
       const t0 = Date.now();
@@ -398,8 +407,16 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
   server.registerTool(
     EXECUTE_TOOL_NAME,
     {
+      title: "Run Stellar research code",
       description: EXECUTE_DESCRIPTION,
-      inputSchema: z.object(executeInputSchema)
+      inputSchema: z.object(executeInputSchema),
+      annotations: {
+        // A truncated result can persist a private artifact for a later execute call.
+        readOnlyHint: false,
+        destructiveHint: false,
+        idempotentHint: false,
+        openWorldHint: true
+      }
     },
     async (args) => {
       const runExecute = options.runExecute;

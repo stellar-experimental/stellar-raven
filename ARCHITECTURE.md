@@ -80,11 +80,13 @@ non-browser MCP clients — still pass Origin validation. Tool
 registration and all model-facing prose live in `src/mcp/tools.ts`; the initialize-time
 `SERVER_INSTRUCTIONS` (workflow + envelope contract + generated source-family micro-map)
 ride along because clients surface them in the system prompt, where they outlive per-tool
-descriptions. Claude Code truncates injected server instructions at 2,048 characters
-(measured in production, todo 971), so `BASE_SERVER_INSTRUCTIONS` — everything before the
+descriptions. Claude Code truncates tool descriptions and injected server instructions at 2KB.
+The server-instructions boundary measures 2,048 characters in production (todo 971), so
+`BASE_SERVER_INSTRUCTIONS` — everything before the
 micro-map — must stay a complete, self-sufficient contract within a 2,000-character budget
 (guarded by `test/mcp-instructions.test.ts`); the micro-map after it is bonus for
-full-injection clients only. The micro-map is generated from
+full-injection clients only. The dated [execute output contract review](research/execute-output-contract-2026-08-20.md)
+records the client evidence. The micro-map is generated from
 `scripts/catalog-data/workflow-archetypes.mjs` by `scripts/build-micro-map.mjs`; it orients
 agents to the Lumenloop, Scout, Stellar Docs, and skills families without adding
 per-operation cards or changing the catalog shape.
@@ -349,6 +351,13 @@ Per call (`src/executor/run.ts`):
 6. **Output hygiene, three budgeted channels** — everything model-facing is capped at
    ~6k tokens by default (4 chars/token, `src/policy/truncate.ts`), with a bounded
    host-side override via `EXECUTE_MODEL_BOUNDARY_MAX_TOKENS` (1,000-32,000 tokens).
+   The `execute` MCP result keeps these channels in text `content` and intentionally omits
+   `outputSchema` and `structuredContent`. Anthropic's connector documents text results. Claude
+   Code 2.1.238, including its Agent SDK runtime, replaces text blocks when structured content
+   exists. The ChatGPT Apps SDK exposes both fields, so a full structured copy would duplicate
+   every capped result. The dated [execute output contract review](research/execute-output-contract-2026-08-20.md)
+   records the version-specific evidence. The bounded host-side `search` response keeps its
+   matching text and structured forms.
    Each channel is model-authored and would otherwise smuggle payloads past the others:
    - *result*: redacted again, then `truncateForModel` computes the fixed cut. If the
      result fits, the returned bytes are byte-identical to the pre-lane behavior. If it
