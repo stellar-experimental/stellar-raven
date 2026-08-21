@@ -4,7 +4,6 @@ export const EXPECTED_TOOL_METADATA = {
     annotations: {
       readOnlyHint: true,
       destructiveHint: false,
-      idempotentHint: true,
       openWorldHint: false
     }
   },
@@ -13,7 +12,6 @@ export const EXPECTED_TOOL_METADATA = {
     annotations: {
       readOnlyHint: false,
       destructiveHint: false,
-      idempotentHint: false,
       openWorldHint: true
     }
   }

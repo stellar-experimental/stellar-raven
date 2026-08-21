@@ -324,7 +324,6 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
-        idempotentHint: true,
         openWorldHint: false
       }
     },
@@ -414,7 +413,6 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         // A truncated result can persist a private artifact for a later execute call.
         readOnlyHint: false,
         destructiveHint: false,
-        idempotentHint: false,
         openWorldHint: true
       }
     },

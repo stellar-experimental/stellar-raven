@@ -170,6 +170,8 @@ describe("tool registration", () => {
 
     expect(search).toMatchObject(EXPECTED_TOOL_METADATA.search);
     expect(execute).toMatchObject(EXPECTED_TOOL_METADATA.execute);
+    expect(search?.annotations).not.toHaveProperty("idempotentHint");
+    expect(execute?.annotations).not.toHaveProperty("idempotentHint");
     expect(execute).not.toHaveProperty("outputSchema");
 
     const descriptionPrefix =
