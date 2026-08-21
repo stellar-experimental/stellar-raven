@@ -10,6 +10,7 @@ import { env, SELF } from "cloudflare:test";
 import { beforeAll, describe, expect, it } from "vitest";
 import { Client } from "@modelcontextprotocol/client";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
+import { EXPECTED_TOOL_METADATA } from "../helpers/mcp-tool-metadata";
 
 const PUBLIC = "https://raven.stellar.org";
 const TOKEN = "m".repeat(43);
@@ -57,6 +58,12 @@ describe("modern (2026-07-28) client end-to-end", () => {
 
       const tools = await client.listTools();
       expect(tools.tools.map((t) => t.name).sort()).toEqual(["execute", "search"]);
+      expect(tools.tools.find((tool) => tool.name === "search")).toMatchObject(
+        EXPECTED_TOOL_METADATA.search
+      );
+      const execute = tools.tools.find((tool) => tool.name === "execute");
+      expect(execute).toMatchObject(EXPECTED_TOOL_METADATA.execute);
+      expect(execute).not.toHaveProperty("outputSchema");
 
       const result = await client.callTool({
         name: "search",
@@ -65,6 +72,15 @@ describe("modern (2026-07-28) client end-to-end", () => {
       const structured = result.structuredContent as { hits: { id: string }[]; nextSteps: string };
       expect(structured.hits.length).toBeGreaterThan(0);
       expect(structured.nextSteps.length).toBeGreaterThan(0);
+
+      const executeResult = await client.callTool({
+        name: "execute",
+        arguments: { code: "async (codemode) => 1 + 1" }
+      });
+      expect(executeResult.isError).toBeFalsy();
+      expect(executeResult.content).toHaveLength(1);
+      expect(executeResult.content[0]).toMatchObject({ type: "text", text: "2" });
+      expect(executeResult).not.toHaveProperty("structuredContent");
     } finally {
       await client.close();
     }

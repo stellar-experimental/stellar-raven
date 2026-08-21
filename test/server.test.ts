@@ -22,6 +22,10 @@ import { allowDevUnauthenticated } from "../src/auth/gate";
 import type { McpAccessContext } from "../src/server";
 import type { ExecuteEvidenceSummary, ExecuteOperationSummary } from "../src/executor/run";
 import { landingPage, termsPage } from "../src/site";
+import {
+  CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS,
+  EXPECTED_TOOL_METADATA
+} from "./helpers/mcp-tool-metadata";
 
 const oauthAccess: McpAccessContext = { mode: "oauth" };
 const apiKeyAccess: McpAccessContext = { mode: "api-key", apiKeyName: "admin" };
@@ -157,6 +161,26 @@ describe("tool registration", () => {
     expect(schema.properties?.code?.type).toBe("string");
     // execute mirrors upstream REQUEST_TYPES: spec + calls in one sandbox.
     expect(execute!.description).toContain("codemode.spec()");
+  });
+
+  it("exposes titles, annotations, and a text-only execute declaration", async () => {
+    const { tools } = await client.listTools();
+    const search = tools.find((tool) => tool.name === "search");
+    const execute = tools.find((tool) => tool.name === "execute");
+
+    expect(search).toMatchObject(EXPECTED_TOOL_METADATA.search);
+    expect(execute).toMatchObject(EXPECTED_TOOL_METADATA.execute);
+    expect(search?.annotations).not.toHaveProperty("idempotentHint");
+    expect(execute?.annotations).not.toHaveProperty("idempotentHint");
+    expect(execute).not.toHaveProperty("outputSchema");
+
+    const descriptionPrefix =
+      execute?.description?.slice(0, CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS) ?? "";
+    expect(descriptionPrefix).toContain("one text result");
+    expect(descriptionPrefix).toContain("roughly 6k tokens");
+    expect(descriptionPrefix).toContain("payloads live under `.data`");
+    expect(descriptionPrefix).toContain("no direct network access");
+    expect(descriptionPrefix).toContain("`fetch()` fails");
   });
 });
 
@@ -679,8 +703,10 @@ describe("execute behavior", () => {
     });
     expect(result.isError).toBe(true);
     const content = result.content as Array<{ type: string; text?: string }>;
+    expect(content).toHaveLength(1);
     expect(content[0]?.type).toBe("text");
     expect(content[0]?.text).toMatch(/sandbox runner is not wired/i);
+    expect(result).not.toHaveProperty("structuredContent");
   });
 
   it("delegates to the injected runner and renders result + logs", async () => {
@@ -707,7 +733,11 @@ describe("execute behavior", () => {
     expect(result.isError).toBeFalsy();
     expect(seenCode).toBe("async () => 1");
     expect(seenOwner).toBe("owner-a");
-    const text = (result.content as Array<{ text: string }>)[0]?.text ?? "";
+    const content = result.content as Array<{ type: string; text: string }>;
+    expect(content).toHaveLength(1);
+    expect(content[0]?.type).toBe("text");
+    expect(result).not.toHaveProperty("structuredContent");
+    const text = content[0]?.text ?? "";
     expect(text).toContain('{"echoed":13}');
     expect(text).toContain("--- console (1 lines) ---");
     expect(text).toContain("hello from sandbox");

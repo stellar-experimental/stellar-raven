@@ -17,6 +17,7 @@ import { env, SELF } from "cloudflare:test";
 import { canaryPins } from "../../src/skills/canary.ts";
 import { getCatalog } from "../../src/catalog/load.ts";
 import { beforeAll, describe, expect, it } from "vitest";
+import { EXPECTED_TOOL_METADATA } from "../helpers/mcp-tool-metadata";
 
 const PUBLIC = "https://raven.stellar.org";
 const LOCAL = "http://localhost";
@@ -84,6 +85,8 @@ async function lastEventJson(res: Response): Promise<{
     serverInfo?: { name?: string };
     instructions?: string;
     tools?: { name: string }[];
+    content?: Array<{ type?: string; text?: string }>;
+    isError?: boolean;
     structuredContent?: { hits?: unknown[] };
   };
 }> {
@@ -184,10 +187,14 @@ describe("/mcp auth dispatch", () => {
 
     const listed = await postRpc(`${PUBLIC}/mcp`, rpcBody("tools/list", {}, 1), headers);
     expect(listed.status).toBe(200);
-    expect((await lastEventJson(listed)).result?.tools?.map((tool) => tool.name).sort()).toEqual([
-      "execute",
-      "search"
-    ]);
+    const listedTools = (await lastEventJson(listed)).result?.tools ?? [];
+    expect(listedTools.map((tool) => tool.name).sort()).toEqual(["execute", "search"]);
+    expect(listedTools.find((tool) => tool.name === "search")).toMatchObject(
+      EXPECTED_TOOL_METADATA.search
+    );
+    const execute = listedTools.find((tool) => tool.name === "execute");
+    expect(execute).toMatchObject(EXPECTED_TOOL_METADATA.execute);
+    expect(execute).not.toHaveProperty("outputSchema");
 
     const called = await postRpc(
       `${PUBLIC}/mcp`,
@@ -200,6 +207,22 @@ describe("/mcp auth dispatch", () => {
     );
     expect(called.status).toBe(200);
     expect((await lastEventJson(called)).result?.structuredContent?.hits?.length).toBeGreaterThan(0);
+
+    const executed = await postRpc(
+      `${PUBLIC}/mcp`,
+      rpcBody(
+        "tools/call",
+        { name: "execute", arguments: { code: "async (codemode) => 1 + 1" } },
+        3
+      ),
+      headers
+    );
+    expect(executed.status).toBe(200);
+    const executeResult = (await lastEventJson(executed)).result;
+    expect(executeResult?.isError).toBeFalsy();
+    expect(executeResult?.content).toHaveLength(1);
+    expect(executeResult?.content?.[0]).toMatchObject({ type: "text", text: "2" });
+    expect(executeResult).not.toHaveProperty("structuredContent");
   });
 
   it("allows configured public Origins, rejects foreign Origins, and permits no Origin", async () => {
