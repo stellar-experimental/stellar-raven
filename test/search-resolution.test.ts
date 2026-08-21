@@ -177,7 +177,7 @@ describe("MCP and sandbox search-resolution parity", () => {
   it("keeps adapter-specific unknown-service responses exact", async () => {
     const args = { query: "docs search", service: "stellardocs" };
     const mcp = await mcpCall(args);
-    expect(mcp.isError).toBeFalsy();
+    expect(mcp.isError).toBe(true);
     const structured = mcp.structuredContent as SearchFacts & { nextSteps: string };
     expect(structured).toEqual({
       hits: [],
@@ -217,7 +217,7 @@ describe("MCP and sandbox search-resolution parity", () => {
   it("keeps adapter-specific unknown recoverFrom responses exact", async () => {
     const args = { query: "builder directory", recoverFrom: ["scout.getBuilder"] };
     const mcp = await mcpCall(args);
-    expect(mcp.isError).toBeFalsy();
+    expect(mcp.isError).toBe(true);
     const structured = mcp.structuredContent as SearchFacts & { nextSteps: string };
     expect(structured).toEqual({
       hits: [],

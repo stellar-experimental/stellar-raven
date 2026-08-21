@@ -505,7 +505,7 @@ describe("search behavior (host-side ranked)", () => {
       name: "search",
       arguments: { query: "builder directory", recoverFrom: ["scout.getBuilder"] }
     });
-    expect(result.isError).toBeFalsy();
+    expect(result.isError).toBe(true);
     const structured = result.structuredContent as {
       hits: unknown[];
       recovery: unknown[];
@@ -545,6 +545,29 @@ describe("search behavior (host-side ranked)", () => {
     const result = await client.callTool({
       name: "search",
       arguments: { query: "zzzzqqqq zzqqzzqq" }
+    });
+    expect(result.isError).toBeFalsy();
+    const structured = result.structuredContent as {
+      hits: unknown[];
+      widerCandidates: unknown[];
+      nextSteps: string;
+    };
+    expect(structured.hits).toEqual([]);
+    expect(structured.widerCandidates.length).toBeGreaterThan(0);
+    expect(structured.nextSteps).toMatch(/no hits/i);
+    expect(structured.nextSteps).toContain(
+      "No gated operation matched either; run one bounded broad pass over the advisory widerCandidates before retrying, and still do not conclude absence."
+    );
+    expect(structured.nextSteps).not.toContain("prefer the leading hit");
+  });
+
+  it("keeps a valid service-scoped zero-hit search successful", async () => {
+    // Truly zero-overlap tokens: since the M1 tiered backfill, any single
+    // matched token (even a prefix overlap like "nonexistent" ~ "no") fills
+    // an otherwise-empty page instead of returning [].
+    const result = await client.callTool({
+      name: "search",
+      arguments: { query: "zzzzqqqq zzqqzzqq", service: "stellarDocs" }
     });
     expect(result.isError).toBeFalsy();
     const structured = result.structuredContent as {
@@ -678,7 +701,7 @@ describe("search behavior (host-side ranked)", () => {
       name: "search",
       arguments: { query: "docs search", service: "stellardocs" }
     });
-    expect(result.isError).toBeFalsy();
+    expect(result.isError).toBe(true);
     const structured = result.structuredContent as {
       hits: unknown[];
       total: number;
