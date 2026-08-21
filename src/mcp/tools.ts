@@ -338,7 +338,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         recovery: RecoveryCandidate[];
         widerCandidates: WiderCandidate[];
         nextSteps: string;
-      }, page: SearchPage | null) => {
+      }, page: SearchPage | null, isError?: true) => {
         const text = JSON.stringify(structured);
         logEvent("search", {
           source: "tool",
@@ -354,7 +354,8 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         });
         return {
           content: [{ type: "text" as const, text }],
-          structuredContent: structured
+          structuredContent: structured,
+          ...(isError === undefined ? {} : { isError })
         };
       };
 
@@ -367,7 +368,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
           recovery: [],
           widerCandidates: [],
           nextSteps: `Unknown service "${prepared.issue.service}" — service filter values are exact-match. Valid services: ${prepared.issue.validServices.join(", ")}. Retry with one of those exact values, or drop the \`service\` filter.`
-        }, null);
+        }, null, true);
       }
 
       const recoveryStage = prepared.checkRecoveryIds(args.recoverFrom);
@@ -379,7 +380,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
           recovery: [],
           widerCandidates: [],
           nextSteps: `Unknown recoverFrom operation id(s): ${recoveryStage.issue.ids.map((id) => JSON.stringify(id)).join(", ")}. Recovery ids are exact-match; discover valid operations with search first.`
-        }, null);
+        }, null, true);
       }
 
       const { page, recovery } = recoveryStage.resolve({
