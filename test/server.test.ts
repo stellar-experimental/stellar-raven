@@ -377,6 +377,55 @@ describe("docs page truthfulness", () => {
     expect(page).not.toMatch(/codemode helpers[^.]*host-side adapters/s);
   });
 
+  it("scopes the .data envelope rule to service calls", () => {
+    const page = docsPage();
+
+    // `codemode.search`, `codemode.describe`, and `codemode.skill.read` resolve
+    // at the TOP level, not under `.data` (src/executor/providers.ts even plants
+    // a throwing `.data` trap on a successful skill.read). An unscoped "every
+    // call" claim sends readers to a field those results do not have.
+    expect(page).not.toMatch(/Every call resolves to/);
+    expect(page.match(/Every service call resolves to/g)?.length).toBe(2);
+
+    // Every helper is bound to the field it actually returns, as ONE pairing.
+    // Independent substring checks would pass while the mappings were swapped —
+    // that is exactly how the earlier "r.hits or r.content for all three"
+    // wording stayed false for describe and for sectional reads.
+    const mappings: ReadonlyArray<readonly [string, RegExp]> = [
+      // providers.ts search branch: top-level hits/total/truncated
+      ["codemode.search → r.hits", /<code>codemode\.search<\/code>\s+gives\s+<code>r\.hits<\/code>/],
+      // providers.ts describeCatalogEntry: top-level signature/inputSchema/usage
+      [
+        "codemode.describe → r.signature + r.inputSchema",
+        /<code>codemode\.describe<\/code>\s+gives\s+entry\s+fields\s+such\s+as\s+<code>r\.signature<\/code>\s+and\s+<code>r\.inputSchema<\/code>/
+      ],
+      // skills/store.ts whole read: top-level content
+      [
+        "whole codemode.skill.read → r.content",
+        /<code>codemode\.skill\.read\(id\)<\/code>\s+gives\s+<code>r\.content<\/code>/
+      ],
+      // skills/store.ts sectional read: top-level sections
+      [
+        "sectional codemode.skill.read → r.sections",
+        /<code>codemode\.skill\.read\(id, \{ sections \}\)<\/code>\s+gives\s+<code>r\.sections<\/code>/
+      ],
+      // skill.run and both artifact reads keep the service-call envelope
+      [
+        "skill.run + artifact.info + artifact.read → r.data envelope",
+        /<code>codemode\.skill\.run<\/code>,\s+<code>codemode\.artifact\.info<\/code>,\s+and\s+<code>codemode\.artifact\.read<\/code>\s+use\s+that\s+same\s+envelope/
+      ]
+    ];
+    for (const [label, pattern] of mappings) {
+      expect(page, label).toMatch(pattern);
+    }
+
+    // The retired collective claim must not come back.
+    expect(page).not.toMatch(/resolve at the top level instead — read/);
+
+    // The service-call half of the rule survives unchanged.
+    expect(page).toMatch(/<code>r\.data\.projects<\/code>/);
+  });
+
   it("renders footer legal text at WCAG AA contrast", () => {
     const page = docsPage();
     const match = page.match(/\.foot \.l\{[^}]*color:(#[0-9a-fA-F]{6})/);

@@ -205,12 +205,15 @@ export const executeInputSchema = {
 // playground drives the exact production tool contract.
 // One official upstream documentation URL per source family (Connectors
 // Directory criterion: a freeform tool must link or name its target APIs).
-// Additive only — interpolated into both tool descriptions, nothing else.
+// Additive only — appended to the END of both tool descriptions, nothing else.
+// Placement is load-bearing: Claude Code clips a tool description at 2,048
+// characters, so an early block spends the model's whole prefix budget. These
+// URLs address a human reviewer reading `tools/list` in full and carry no
+// runtime instruction, so they ride last, after the behavior contract.
+// test/mcp-instructions pins both halves.
 export const UPSTREAM_DOC_LINKS = `Upstream documentation: Lumenloop — API guide https://api.lumenloop.com/v1/docs; Stellar Light/Scout (scout) — OpenAPI https://stellarlight.xyz/api/openapi.json; Stellar Docs — https://developers.stellar.org/docs.`;
 
 export const SEARCH_DESCRIPTION = `Ranked lexical search over every exposed service operation (lumenloop.*, scout.*, stellarDocs.*) and whole skill. Skill sections are exact-read affordances exposed on whole-skill hits through availableSections; they are not independent ranked hits.
-
-${UPSTREAM_DOC_LINKS}
 
 Returns ranked hits with rendered TypeScript signatures so you can call them from the \`execute\` tool without guessing. Structurally poor operation pages also return bounded \`widerCandidates\` that explicitly recommend broad semantic/research/A/V/corpus operations without changing ranking. Pass caller-reported exact attempted ids in \`recoverFrom\` (and optionally \`reason\`) to receive bounded recovery candidates separately from both ranking and wider-page advice.
 
@@ -237,11 +240,11 @@ Most questions have a primary family and a corroborating one — pick both up fr
 - Skill hits are operational playbooks and carry \`availableSections\` — read those sections via \`codemode.skill.read(id, { sections })\` inside \`execute\`.
 - A few skills are also RUNNABLE — their hits additionally carry a \`signature\` whose callable line is \`codemode.skill.run("<exact id>", input)\`: one call inside \`execute\` that runs the skill's whole data-gathering pipeline and resolves to the standard { ok: true, data } | { ok: false, error } envelope.
 - Operation signatures are compact: the input type and callable line are always complete, but a very large OUTPUT type is stubbed down to its top-level field names. When you need the full output shape (or the raw JSON schemas), call \`codemode.describe("<exact id>")\` inside \`execute\`.
-- Deeper or arbitrary discovery lives inside \`execute\`: \`codemode.search(...)\` (this same ranked search, mid-script), \`codemode.describe(id)\` (one entry's full detail), \`codemode.catalog({ kind?, service?, compact? })\` (exact-filtered catalog data; default/full includes schemas, \`compact: true\` omits them), and \`codemode.spec()\` (the unified OpenAPI super spec) — use them for follow-ups without another tool round-trip.`;
+- Deeper or arbitrary discovery lives inside \`execute\`: \`codemode.search(...)\` (this same ranked search, mid-script), \`codemode.describe(id)\` (one entry's full detail), \`codemode.catalog({ kind?, service?, compact? })\` (exact-filtered catalog data; default/full includes schemas, \`compact: true\` omits them), and \`codemode.spec()\` (the unified OpenAPI super spec) — use them for follow-ups without another tool round-trip.
+
+${UPSTREAM_DOC_LINKS}`;
 
 export const EXECUTE_DESCRIPTION = `Execute JavaScript in a sandboxed Worker isolate with access to the service SDKs discovered via the \`search\` tool.
-
-${UPSTREAM_DOC_LINKS}
 
 Calls return one text result; failures set \`isError\`. The sandbox result, console output, and thrown errors each have a separate model-boundary cap of roughly 6k tokens by default. Service-call payloads live under \`.data\`. The sandbox has no direct network access, and \`fetch()\` fails.
 
@@ -282,7 +285,9 @@ Every service call resolves (never throws) to either { ok: true, data } or { ok:
 - Directory/list-style results are summaries: most services pair them with a per-item detail operation (\`lumenloop.get_project\`, \`scout.getHackathon\`, \`lumenloop.get_document\`, …). When the question needs specifics beyond a list row, follow up with the detail call parameterized by the row — answering detail questions from a broad payload alone is a known failure mode.
 - Evidence sufficiency is answer-level, not envelope-level. For a closed-world question (is X in this directory/index?), an exact empty may be reported only at that source's scope. For an open-world identity, history, or topic question, an ok call whose rows are empty, off-target, adjacent, or only semantic candidates grounds no negative conclusion — several such calls ground nothing together. Make one wider pass in the SAME script: use \`lumenloop.search_content_semantic\` for ecosystem content/events, \`scout.searchResearch\` for cited history, \`lumenloop.find_av_passages\` for spoken material, or \`stellarDocs.search_docs\` for official technical wording. After a successful profiled broad call, the host may append a standalone conditional checkpoint naming uncalled alternatives from the manifest recovery graph; it observes operation classes, not row relevance, so stop when exact evidence or the named closed-world answer already resolves the question and otherwise make at most one bounded alternative pass. Treat semantic rows as candidates: require exact identity or canonical slug plus source and date before attribution; otherwise return a scoped unverified result or ask for context.
 - Avoid lossy list filtering: inspect row keys, call \`codemode.describe\` when output fields are unclear, and filter against raw row JSON or nested/common field variants before projecting compact columns. Projecting first can erase evidence and create false no-match answers.
-- The final return value is truncated at the configured model-boundary cap (default ~6k tokens) — select fields, slice arrays, aggregate in-script, and read skills by section rather than returning raw payloads or whole skill bodies. console.log output comes back as logs.`;
+- The final return value is truncated at the configured model-boundary cap (default ~6k tokens) — select fields, slice arrays, aggregate in-script, and read skills by section rather than returning raw payloads or whole skill bodies. console.log output comes back as logs.
+
+${UPSTREAM_DOC_LINKS}`;
 
 /**
  * MCP initialize-time instructions (SDK ServerOptions.instructions) — clients

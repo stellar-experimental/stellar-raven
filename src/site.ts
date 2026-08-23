@@ -33,6 +33,7 @@ import {
 } from "./fonts";
 import { escapeHtml } from "./html";
 import { CONSENT_GLOBE_PNG_BASE64 } from "./consent-globe";
+import { getCatalog } from "./catalog/load";
 
 const MCP_ENDPOINT = "https://raven.stellar.org/mcp";
 export const HOST = "raven.stellar.org";
@@ -1163,14 +1164,16 @@ export const TERMS_HEADERS: Record<string, string> = {
 // lifetimes against src/auth/gate.ts.
 // ---------------------------------------------------------------------------
 
-/** Current manifest counts (catalog/manifest.json) — kept as constants so the
- * page and its tests fail loudly together when the catalog changes shape.
- * test/server.test.ts compares them to catalog/manifest.json by kind. */
-export const DOC_CATALOG_COUNTS = {
-  operations: 59,
-  skills: 19,
-  sections: 173
-};
+/** Current counts derive from the validated manifest. */
+export const DOC_CATALOG_COUNTS = getCatalog().entries.reduce(
+  (counts, entry) => {
+    if (entry.kind === "operation") counts.operations += 1;
+    else if (entry.kind === "skill") counts.skills += 1;
+    else if (entry.kind === "skill-section") counts.sections += 1;
+    return counts;
+  },
+  { operations: 0, skills: 0, sections: 0 }
+);
 
 /**
  * The static search -> execute example shown on /docs. Single source of truth
@@ -1247,7 +1250,7 @@ function docTrace(): string {
   <span class="k">return</span> { note: <span class="s">"no matches"</span> };
 <span class="k">const</span> top = found.<span class="s">data</span>.projects[<span class="k">0</span>];       <span class="c">// payloads live under .data</span>
 <span class="k">return await</span> <span class="p">${secondService}.</span><span class="p">${secondOp}</span>({ q: <span class="s">\`\${top.name} liquidity\`</span> });  <span class="c">// composition</span></pre>
-  <div class="trace-note">Every call resolves to <b>{ ok: true, data }</b> or
+  <div class="trace-note">Every service call resolves to <b>{ ok: true, data }</b> or
     <b>{ ok: false, error }</b>. It never throws across the tool boundary.</div>
 </div>`;
 }
@@ -1305,9 +1308,15 @@ until official docs confirm them.</p>
 
 <h2>Troubleshooting</h2>
 <ul>
-  <li><b>Read the envelope first.</b> Every call resolves to <code>{ ok: true, data }</code> or
-    <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
-    <code>r.data.projects</code>, never <code>r.projects</code>.</li>
+  <li><b>Read the envelope first.</b> Every service call resolves to <code>{ ok: true, data }</code>
+    or <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
+    <code>r.data.projects</code>, never <code>r.projects</code>. <code>codemode.skill.run</code>,
+    <code>codemode.artifact.info</code>, and <code>codemode.artifact.read</code> use that same
+    envelope. The discovery helpers answer at the top level instead: <code>codemode.search</code>
+    gives <code>r.hits</code>, <code>codemode.describe</code> gives entry fields such as
+    <code>r.signature</code> and <code>r.inputSchema</code>, <code>codemode.skill.read(id)</code>
+    gives <code>r.content</code>, and <code>codemode.skill.read(id, { sections })</code> gives
+    <code>r.sections</code>.</li>
   <li><b>An empty answer may not be an answer.</b> An <code>error.kind</code> of
     <code>"error"</code> means the call failed. A kind of <code>"soft-empty"</code> means the
     service answered with nothing — that is inconclusive, not proof something does not exist.

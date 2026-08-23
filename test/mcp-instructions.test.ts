@@ -14,6 +14,7 @@ import {
   SEARCH_KINDS,
   SEARCH_DESCRIPTION,
   SERVER_INSTRUCTIONS,
+  UPSTREAM_DOC_LINKS,
   rankedSearchOutputSchema,
   rankedSearchInputSchema,
   recoveryCandidateSchema,
@@ -118,5 +119,54 @@ describe("server instructions — Claude Code 2KB budget", () => {
     }
     expect(rankedSearchInputSchema.recoverFrom.description).toContain("not an execution ledger");
     expect(recovery).toContain("does not verify an execution ledger");
+  });
+});
+
+/**
+ * Tool-description prefix budget. Claude Code clips a tool description at the
+ * same 2,048 characters it clips injected server instructions, so the prefix —
+ * not the whole string — is what the model reads while it decides how to call
+ * the tool. The upstream documentation URLs are a directory-listing
+ * requirement addressed to a human reviewer reading `tools/list` in full; they
+ * carry no runtime instruction. Placing that 215-character block early spends
+ * the clipped budget on text the model cannot act on, and it silently pushed
+ * the tail of search's breadth rule and the whole of execute's `## Rules`
+ * opener past the cut. These tests pin both halves: the URLs ship in the full
+ * description, and the behavior contract keeps the prefix.
+ */
+describe("tool descriptions — Claude Code 2KB clipped prefix", () => {
+  const clipped = (description: string) => description.slice(0, CLAUDE_CODE_INSTRUCTIONS_CAP);
+
+  it("search's clipped prefix still carries the plan-then-compose workflow", () => {
+    const survived = clipped(SEARCH_DESCRIPTION);
+    for (const phrase of [
+      "## Workflow",
+      "Plan which source families could ground the answer before searching",
+      "`search` once per candidate family",
+      "Write ONE `execute` script that composes SEVERAL relevant operations",
+      "Match breadth to the claim",
+      // The breadth rule is only actionable with its open-world half attached.
+      "needs a broad content/research family in the same script."
+    ]) {
+      expect(survived, phrase).toContain(phrase);
+    }
+  });
+
+  it("execute's clipped prefix still carries the envelope contract and the globals rule", () => {
+    const survived = clipped(EXECUTE_DESCRIPTION);
+    for (const phrase of [
+      "Service-call payloads live under `.data`",
+      "## Rules",
+      "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `codemode`, and standard JavaScript."
+    ]) {
+      expect(survived, phrase).toContain(phrase);
+    }
+  });
+
+  it("ships the upstream doc URLs in full without spending the clipped budget", () => {
+    for (const contract of [SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION]) {
+      expect(contract).toContain(UPSTREAM_DOC_LINKS);
+      expect(clipped(contract)).not.toContain("Upstream documentation:");
+    }
   });
 });
