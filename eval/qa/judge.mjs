@@ -184,6 +184,11 @@ function streamBuffer(value) {
 }
 
 const REDACTED = "[redacted]";
+const MAX_JSON_DEPTH = 64;
+const MAX_JSON_ARRAY_LENGTH = 1_000;
+const SECRET_PREFIX_RE =
+  /^(?:sk|pk|rk|xox[abeoprs]|gh[opusr]|github_pat|glpat|shpat|shpss|npm|dop_v1|sq0atp|sq0csp)[-_]/i;
+const AUTH_SCHEME_RE = /^(?:Bearer|Basic|Token)$/i;
 // Common credential-name terms shared by the structured key predicate and the
 // plaintext name source so both surfaces stay consistent: prompt/token/auth,
 // API and cloud keys (api_key, PRIVATE_KEY, AWS_ACCESS_KEY_ID), secrets,
@@ -192,70 +197,340 @@ const SENSITIVE_TERM_SOURCE =
   "(?:prompt|token|authorization|api[-_]?key|private[-_]?key|access[-_]?key|secret|password|credential|database[-_]?url)";
 const SENSITIVE_KEY_RE = new RegExp(SENSITIVE_TERM_SOURCE, "i");
 const SENSITIVE_EXACT_KEY_RE = /^(?:env|environment)$/i;
+// Usage counters carry the word "token" but hold no secret. Only these exact
+// keys, and only when their value is a finite number, survive the sensitive-key
+// rule. A string under one of these keys is still redacted, and plaintext has
+// no value type, so the allowlist applies to structured values only.
+const USAGE_COUNT_KEYS = new Set([
+  "cache_creation_input_tokens",
+  "cache_read_input_tokens",
+  "input_tokens",
+  "output_tokens",
+  "total_tokens"
+]);
 
-// One predicate for both surfaces: structured JSON keys and captured
-// plaintext assignment keys.
+function isUsageCount(key, value) {
+  return USAGE_COUNT_KEYS.has(key) && typeof value === "number" && Number.isFinite(value);
+}
+
 function isSensitiveKey(key) {
   return SENSITIVE_EXACT_KEY_RE.test(key) || SENSITIVE_KEY_RE.test(key);
 }
 
+function isAuthScheme(name) {
+  return AUTH_SCHEME_RE.test(name);
+}
+
+function isIdentStart(ch) {
+  return (ch >= "A" && ch <= "Z") || (ch >= "a" && ch <= "z") || ch === "_";
+}
+
+function isIdentCont(ch) {
+  return isIdentStart(ch) || (ch >= "0" && ch <= "9") || ch === "." || ch === "-";
+}
+
+function isSchemeChar(ch) {
+  return isIdentStart(ch) || (ch >= "0" && ch <= "9") || ch === "+" || ch === "." || ch === "-";
+}
+
+function skipHorizontalSpace(text, index) {
+  while (index < text.length && (text[index] === " " || text[index] === "\t")) index += 1;
+  return index;
+}
+
+function scanIdentEnd(text, start) {
+  let index = start;
+  if (!isIdentStart(text[index])) return start;
+  index += 1;
+  while (index < text.length && isIdentCont(text[index])) index += 1;
+  return index;
+}
+
+// A leading run of CLI flag hyphens is not identifier content. Only the first
+// hyphen of a run at a word boundary starts a flag, so embedded hyphens inside
+// `api-key` or `2026-07-11` stay identifier content.
+function scanFlagNameStart(text, index) {
+  if (text[index] !== "-") return -1;
+  if (index > 0 && isIdentCont(text[index - 1])) return -1;
+  let cursor = index;
+  while (text[cursor] === "-") cursor += 1;
+  return cursor > index && isIdentCont(text[cursor]) ? cursor : -1;
+}
+
+// A long option may start with a digit, as in `--2fa-token`. Only the first
+// character differs from an ordinary identifier; the scheme and identifier
+// rules elsewhere stay unchanged.
+function scanFlagNameEnd(text, start) {
+  if (!isIdentCont(text[start])) return start;
+  let index = start + 1;
+  while (index < text.length && isIdentCont(text[index])) index += 1;
+  return index;
+}
+
+function isTokenDelimiter(ch) {
+  return (
+    ch === undefined ||
+    ch === " " ||
+    ch === "\t" ||
+    ch === "\n" ||
+    ch === "\r" ||
+    ch === '"' ||
+    ch === "'" ||
+    ch === "," ||
+    ch === "}" ||
+    ch === "]" ||
+    ch === ")" ||
+    ch === ";" ||
+    ch === "\\"
+  );
+}
+
+// A known secret prefix owns its whole token, not just the identifier-shaped
+// head, so a tail such as `+LEAKTAIL` cannot survive.
+function scanTokenEnd(text, start) {
+  let index = start;
+  while (index < text.length && !isTokenDelimiter(text[index])) index += 1;
+  return index;
+}
+
+function scanQuotedIdent(text, start) {
+  const quote = text[start];
+  if ((quote !== '"' && quote !== "'") || start + 1 >= text.length || !isIdentStart(text[start + 1])) {
+    return null;
+  }
+  const end = scanIdentEnd(text, start + 1);
+  if (text[end] !== quote) return null;
+  return { name: text.slice(start + 1, end), end: end + 1 };
+}
+
+function quotedRedacted(quote) {
+  return quote ? `${quote}${REDACTED}${quote}` : REDACTED;
+}
+
+function consumeQuotedValue(text, start, quote) {
+  let index = start + 1;
+  while (index < text.length) {
+    const ch = text[index];
+    if (ch === "\n") return { end: index, quote };
+    if (ch === "\\") {
+      index += 2;
+      continue;
+    }
+    if (ch === quote) return { end: index + 1, quote };
+    index += 1;
+  }
+  return { end: index, quote };
+}
+
+function consumeAssignmentValue(text, start) {
+  if (start >= text.length || text[start] === "\n") return { end: start, quote: null };
+  if (text[start] === '"' || text[start] === "'") return consumeQuotedValue(text, start, text[start]);
+  let index = start;
+  while (index < text.length && text[index] !== "\n") index += 1;
+  return { end: index, quote: null };
+}
+
+function consumeStandaloneValue(text, start) {
+  if (start >= text.length || text[start] === "\n") return null;
+  if (text[start] === '"' || text[start] === "'") return consumeQuotedValue(text, start, text[start]);
+  let index = start;
+  while (index < text.length && text[index] !== " " && text[index] !== "\t" && text[index] !== "\n") {
+    index += 1;
+  }
+  return index > start ? { end: index, quote: null } : null;
+}
+
+function consumeSchemeToken(text, start) {
+  if (start >= text.length || text[start] === "\n") return null;
+  let index = start;
+  while (index < text.length && text[index] !== " " && text[index] !== "\t" && text[index] !== "\n") {
+    index += 1;
+  }
+  return index > start ? { end: index } : null;
+}
+
+// One scheme-shaped run is parsed once. Every candidate start inside a run
+// reaches the same run end, so a failed "://" or userinfo-free authority is
+// reported back as `schemeRunEnd` and the caller skips the overlapping
+// suffixes instead of rescanning them.
+function consumeUserinfoUrl(text, start) {
+  let index = start + 1;
+  while (index < text.length && isSchemeChar(text[index])) index += 1;
+  if (!text.startsWith("://", index)) return { schemeRunEnd: index };
+  const schemeEnd = index + 3;
+  let at = -1;
+  for (let cursor = schemeEnd; cursor < text.length; cursor += 1) {
+    const ch = text[cursor];
+    if (ch === "/" || ch === "?" || ch === "#" || ch === " " || ch === "\t" || ch === "\n" || ch === '"' || ch === "'") {
+      break;
+    }
+    if (ch === "@") {
+      at = cursor;
+    } else if (ch === "%" && text[cursor + 1] === "4" && text[cursor + 2] === "0") {
+      at = cursor + 2;
+      cursor += 2;
+    }
+  }
+  if (at === -1) return { schemeRunEnd: index };
+  return { end: at + 1, replacement: `${text.slice(start, schemeEnd)}${REDACTED}@` };
+}
+
+// Linear credential scan over plaintext. Assignment names are complete
+// identifiers, not a wrapping wildcard around the sensitive term, so long
+// near-matches stay O(n). Bare values run through the record boundary.
+// Unterminated quotes, standalone sensitive keys, flag-prefixed names,
+// Bearer/Basic/Token, known secret prefixes, and URL userinfo are redacted on
+// the same pass. This runs on raw text and on JSON string leaves before
+// serialization — never on serialized JSON.
+function redactPlaintextAssignments(text) {
+  let out = "";
+  let index = 0;
+  let schemeSkipUntil = 0;
+  while (index < text.length) {
+    const quoted = scanQuotedIdent(text, index);
+    const flagNameStart = quoted ? -1 : scanFlagNameStart(text, index);
+    const nameStart = flagNameStart >= 0 ? flagNameStart : index;
+    const identStart =
+      quoted ||
+      flagNameStart >= 0 ||
+      (isIdentStart(text[index]) && (index === 0 || !isIdentCont(text[index - 1])));
+    if (!identStart) {
+      out += text[index];
+      index += 1;
+      continue;
+    }
+
+    if (!quoted && flagNameStart < 0 && index >= schemeSkipUntil) {
+      const url = consumeUserinfoUrl(text, index);
+      if (url.replacement !== undefined) {
+        out += url.replacement;
+        index = url.end;
+        continue;
+      }
+      schemeSkipUntil = url.schemeRunEnd;
+    }
+
+    const scanNameEnd = flagNameStart >= 0 ? scanFlagNameEnd : scanIdentEnd;
+    const name = quoted ? quoted.name : text.slice(nameStart, scanNameEnd(text, nameStart));
+    const nameEnd = quoted ? quoted.end : scanNameEnd(text, nameStart);
+    if (SECRET_PREFIX_RE.test(name)) {
+      out += text.slice(index, nameStart) + quotedRedacted(quoted ? text[index] : null);
+      index = quoted ? nameEnd : scanTokenEnd(text, nameStart);
+      continue;
+    }
+
+    const afterName = skipHorizontalSpace(text, nameEnd);
+    const separator = text[afterName];
+    const isAssignment = separator === "=" || separator === ":";
+
+    if (isSensitiveKey(name) && isAssignment) {
+      const valueStart = skipHorizontalSpace(text, afterName + 1);
+      const value = consumeAssignmentValue(text, valueStart);
+      out += text.slice(index, valueStart) + quotedRedacted(value.quote);
+      index = value.end;
+      continue;
+    }
+
+    if (isAuthScheme(name) && afterName > nameEnd && !isAssignment) {
+      const token = consumeSchemeToken(text, afterName);
+      if (token) {
+        out += `${text.slice(index, afterName)}${REDACTED}`;
+        index = token.end;
+        continue;
+      }
+    }
+
+    if (isSensitiveKey(name) && afterName > nameEnd && !isAssignment) {
+      const standalone = consumeStandaloneValue(text, afterName);
+      if (standalone) {
+        out += text.slice(index, afterName) + quotedRedacted(standalone.quote);
+        index = standalone.end;
+        continue;
+      }
+    }
+
+    out += text.slice(index, nameEnd);
+    index = nameEnd;
+  }
+  return out;
+}
+
+function isJsonSafePrimitive(value) {
+  if (value === null) return true;
+  if (typeof value === "boolean") return true;
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+// Fail closed on hostile shapes. Only JSON-safe primitives are copied, so a
+// function value — `toJSON` included — never reaches the output object and
+// JSON.stringify can never call it. Objects already seen on this walk collapse
+// to "[redacted]", which bounds cycles and shared references. Arrays past
+// MAX_JSON_ARRAY_LENGTH collapse whole, so a sparse 200,000-slot array cannot
+// expand into an output hole per slot.
+function redactStructuredEntry(dst, key, entry, depth, stack, visited) {
+  if (typeof entry === "string") {
+    dst[key] = redactPlaintextAssignments(entry);
+    return;
+  }
+  if (isJsonSafePrimitive(entry)) {
+    dst[key] = entry;
+    return;
+  }
+  if (!entry || typeof entry !== "object" || visited.has(entry) || depth + 1 >= MAX_JSON_DEPTH) {
+    dst[key] = REDACTED;
+    return;
+  }
+  const isArray = Array.isArray(entry);
+  if (isArray && entry.length > MAX_JSON_ARRAY_LENGTH) {
+    dst[key] = REDACTED;
+    return;
+  }
+  visited.add(entry);
+  const child = isArray ? [] : Object.create(null);
+  dst[key] = child;
+  stack.push({ src: entry, dst: child, depth: depth + 1 });
+}
+
+// Property descriptors are read instead of property values, so an accessor is
+// redacted without ever being invoked.
 function redactSensitiveValues(value) {
   if (typeof value === "string") return redactPlaintextAssignments(value);
-  if (Array.isArray(value)) return value.map(redactSensitiveValues);
-  if (!value || typeof value !== "object") return value;
-  return Object.fromEntries(
-    Object.entries(value).map(([key, entry]) => [
-      key,
-      isSensitiveKey(key) ? REDACTED : redactSensitiveValues(entry)
-    ])
-  );
-}
+  if (isJsonSafePrimitive(value)) return value;
+  if (!value || typeof value !== "object") return REDACTED;
+  if (Array.isArray(value) && value.length > MAX_JSON_ARRAY_LENGTH) return REDACTED;
 
-// Sensitive name: a complete identifier carrying a sensitive term anywhere —
-// prefix (ANTHROPIC_API_KEY), suffix (SECRET_TOKEN, MY_PASSWORD), or interior
-// segment (AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN_FILE,
-// GOOGLE_APPLICATION_CREDENTIALS, PROMPT_CACHE_KEY).
-const SENSITIVE_NAME_SOURCE =
-  `[A-Za-z0-9_.-]*${SENSITIVE_TERM_SOURCE}[A-Za-z0-9_.-]*`;
-// Matches bare `NAME=value` / `NAME: value`, quoted JSON keys (`"apiKey": "…"`),
-// and escaped values (`\"sk-…\"`). Quoted values stay quoted after redaction
-// so repeated sanitization and structured excerpts remain stable. Bare values
-// differ per surface:
-//   - plaintext records redact through the record boundary (end of line or
-//     end of the scanned string), so commas and closing braces cannot
-//     truncate the secret;
-//   - re-serialized JSON stops at the closing quote so sibling fields
-//     survive; escaped quotes are consumed as escape pairs.
-const REDACTED_ASSIGNMENT_PREFIX_SOURCE =
-  `(["']?)\\b(${SENSITIVE_NAME_SOURCE})(\\1)?([ \\t]*[:=][ \\t]*)`;
-const REDACTED_PLAINTEXT_RE = new RegExp(
-  `${REDACTED_ASSIGNMENT_PREFIX_SOURCE}` +
-    `(?:"((?:[^"\\\\\\n]|\\\\.)*)"|'((?:[^'\\\\\\n]|\\\\.)*)'|(?![\"'])[^\n]*)`,
-  "gi"
-);
-const REDACTED_SERIALIZED_RE = new RegExp(
-  `${REDACTED_ASSIGNMENT_PREFIX_SOURCE}` +
-    `(?:"((?:[^"\\\\\\n]|\\\\.)*)"|'((?:[^'\\\\\\n]|\\\\.)*)'|(?![\"'])(?:[^\\n\"'},\\\\]|\\\\.)*)`,
-  "gi"
-);
-
-function redactAssignments(regex, text) {
-  return text.replace(
-    regex,
-    (match, keyOpen, name, keyClose, separator, doubleQuoted, singleQuoted) =>
-      !isSensitiveKey(name)
-        ? match
-        : `${keyOpen}${name}${keyClose ?? ""}${separator}` +
-          (doubleQuoted !== undefined
-            ? `"${REDACTED}"`
-            : singleQuoted !== undefined
-              ? `'${REDACTED}'`
-              : REDACTED)
-  );
-}
-
-function redactPlaintextAssignments(text) {
-  return redactAssignments(REDACTED_PLAINTEXT_RE, text);
+  const visited = new WeakSet([value]);
+  const outRoot = Array.isArray(value) ? [] : Object.create(null);
+  const stack = [{ src: value, dst: outRoot, depth: 0 }];
+  while (stack.length > 0) {
+    const { src, dst, depth } = stack.pop();
+    if (Array.isArray(src)) {
+      for (let index = 0; index < src.length; index += 1) {
+        const descriptor = Object.getOwnPropertyDescriptor(src, index);
+        if (!descriptor) continue;
+        if (descriptor.get || descriptor.set) {
+          dst[index] = REDACTED;
+          continue;
+        }
+        redactStructuredEntry(dst, index, descriptor.value, depth, stack, visited);
+      }
+      continue;
+    }
+    for (const key of Object.getOwnPropertyNames(src)) {
+      const descriptor = Object.getOwnPropertyDescriptor(src, key);
+      if (!descriptor || !descriptor.enumerable) continue;
+      if (descriptor.get || descriptor.set) {
+        dst[key] = REDACTED;
+        continue;
+      }
+      if (isSensitiveKey(key) && !isUsageCount(key, descriptor.value)) {
+        dst[key] = REDACTED;
+        continue;
+      }
+      redactStructuredEntry(dst, key, descriptor.value, depth, stack, visited);
+    }
+  }
+  return outRoot;
 }
 
 function tryParseJson(text) {
@@ -267,12 +542,13 @@ function tryParseJson(text) {
 }
 
 // Structural redaction keeps valid JSON valid: sensitive keys collapse to
-// "[redacted]" recursively and string leaves run through the plaintext pass
-// (record-boundary bare values) before serialization, then the conservative
-// serialized pass normalizes assignments that arrived with escaped quotes
-// (e.g. ANTHROPIC_API_KEY=\"sk-…\") without disturbing sibling fields.
+// "[redacted]" with an explicit stack (no recursive walk) and every string leaf
+// is redacted before serialization. Nesting past MAX_JSON_DEPTH collapses to
+// "[redacted]". The sanitized tree is serialized exactly once and is never
+// rescanned as plaintext — a second pass would consume the serialized closing
+// quote of a redacted leaf and destroy the remaining fields.
 function sanitizeStructuredJson(value) {
-  return redactAssignments(REDACTED_SERIALIZED_RE, JSON.stringify(redactSensitiveValues(value)));
+  return JSON.stringify(redactSensitiveValues(value));
 }
 
 // Non-JSON text: one bounded linear pass tracks brace depth with a single
@@ -324,8 +600,12 @@ function sanitizeNonJsonText(text) {
 
 // Exported for focused sanitizer regression tests.
 export function sanitizeCliEvidenceText(text) {
-  const parsed = tryParseJson(text);
-  return parsed === undefined ? sanitizeNonJsonText(text) : sanitizeStructuredJson(parsed);
+  try {
+    const parsed = tryParseJson(text);
+    return parsed === undefined ? sanitizeNonJsonText(text) : sanitizeStructuredJson(parsed);
+  } catch {
+    return REDACTED;
+  }
 }
 
 function sanitizeBoundedText(value, limit = CLI_EVIDENCE_EXCERPT_BYTES) {
@@ -337,6 +617,19 @@ function buildCliEvidence(value) {
   const excerptSource = Buffer.from(sanitizeCliEvidenceText(buffer.toString("utf8")));
   return {
     ...boundedUtf8Excerpt(excerptSource),
+    totalBytes: buffer.length,
+    sha256: sha256(buffer)
+  };
+}
+
+// The parsed envelope is sanitized into a depth-bounded tree first, and only
+// that tree is serialized. JSON.stringify is recursive, so serializing the raw
+// envelope would throw RangeError on deeply nested input before any redaction
+// happened. Raw stdout keeps its own byte count and hash in `stdout`.
+function buildStructuredEvidence(value) {
+  const buffer = Buffer.from(sanitizeStructuredJson(value));
+  return {
+    ...boundedUtf8Excerpt(buffer),
     totalBytes: buffer.length,
     sha256: sha256(buffer)
   };
@@ -356,6 +649,9 @@ function validCost(value) {
 
 function cliFailureKind(res) {
   if (res.error?.code === "ETIMEDOUT") return "timeout";
+  // Node reports SIGTERM after it kills an over-buffer child, so classify
+  // ENOBUFS before the signal.
+  if (res.error?.code === "ENOBUFS") return "spawn-error";
   if (res.signal) return "signal";
   if (res.error) return "spawn-error";
   return "nonzero-exit";
@@ -373,8 +669,7 @@ function buildCliFailure(res, envelope) {
   const detail = res.error?.message ?? (res.signal ? `signal ${res.signal}` : `exit ${res.status}`);
   const context = stderr.excerpt || stdout.excerpt;
   const message = sanitizeBoundedText(`judge CLI failed: ${detail}${context ? `: ${context}` : ""}`);
-  const parsedEnvelope =
-    envelope == null ? undefined : buildCliEvidence(JSON.stringify(envelope));
+  const parsedEnvelope = envelope == null ? undefined : buildStructuredEvidence(envelope);
   return {
     kind: cliFailureKind(res),
     exitStatus: typeof res.status === "number" ? res.status : null,
@@ -390,7 +685,10 @@ function buildCliFailure(res, envelope) {
  * Grade one candidate answer. Synchronous under the hood (spawnSync) but
  * exported async so callers can swap in a parallel implementation later.
  */
-export async function judgeCase(input, { model = JUDGE_MODEL, timeoutMs = 180_000 } = {}) {
+export async function judgeCase(
+  input,
+  { model = JUDGE_MODEL, timeoutMs = 180_000, maxBuffer = 32 * 1024 * 1024 } = {}
+) {
   const transcriptEvidence =
     typeof input.transcriptEvidence === "string"
       ? input.transcriptEvidence
@@ -400,7 +698,7 @@ export async function judgeCase(input, { model = JUDGE_MODEL, timeoutMs = 180_00
   const res = spawnSync(
     "claude",
     ["-p", "--model", model, "--output-format", "json", "--strict-mcp-config"],
-    { input: prompt, timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 }
+    { input: prompt, timeout: timeoutMs, maxBuffer }
   );
   if (res.error || res.status !== 0) {
     const stdoutEnvelope = parseJsonStream(res.stdout);

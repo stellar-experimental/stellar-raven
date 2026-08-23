@@ -1,9 +1,12 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { describe, expect, it } from "vitest";
-import { posix, win32 } from "node:path";
+import { join } from "node:path";
 
 import {
   FACT_STAGE_BENCHMARK,
   FACT_STAGE_LABELS,
+  resolveFactStageEvidence,
 } from "../eval/qa/fact-stage-benchmark.mjs";
 
 const REQUIRED_FIELDS = [
@@ -33,10 +36,6 @@ const COLLISION_CASE_IDS = [
   "q-defi-blend-alternatives",
   "q-scf-build-award-cap",
 ];
-
-const ROUND_RELATIVE_ARTIFACT_REF =
-  /^qa-round-2026-08-19-accepted\/.+\.json#rows\[id=[^\]]+\]$/;
-const SHA_256_REF = /^sha256:[0-9a-f]{64}$/;
 
 describe("saved-miss fact-stage benchmark", () => {
   it("pins the exact fact-stage label vocabulary", () => {
@@ -71,22 +70,13 @@ describe("saved-miss fact-stage benchmark", () => {
       expect(new Set(row.evidenceRefs).size, row.caseId).toBe(
         row.evidenceRefs.length,
       );
+      const kinds = row.evidenceRefs.map((ref) => resolveFactStageEvidence(ref, row.caseId));
       expect(
-        row.evidenceRefs.filter((ref) => ROUND_RELATIVE_ARTIFACT_REF.test(ref)),
+        kinds.some((resolved) => resolved.kind === "repository"),
         row.caseId,
-      ).toHaveLength(1);
+      ).toBe(true);
       expect(
-        row.evidenceRefs.filter((ref) => SHA_256_REF.test(ref)),
-        row.caseId,
-      ).toHaveLength(1);
-      expect(
-        row.evidenceRefs.some(
-          (ref) => posix.isAbsolute(ref) || win32.isAbsolute(ref),
-        ),
-        row.caseId,
-      ).toBe(false);
-      expect(
-        row.evidenceRefs.some((ref) => ref.startsWith("solo://")),
+        kinds.some((resolved) => resolved.kind === "solo"),
         row.caseId,
       ).toBe(true);
       expect(rowsByCaseId.has(row.caseId), row.caseId).toBe(false);
@@ -100,6 +90,33 @@ describe("saved-miss fact-stage benchmark", () => {
         "q-live-ll-active-jobs-recency",
       ].sort(),
     );
+  });
+
+  // Reviewer-rejected evidence, kept as an explicit guard so a stale reference
+  // cannot return silently. The stage claim and the referenced grade must agree.
+  const CONTRADICTED_EVIDENCE = [
+    {
+      caseId: "q-live-builders-artifact-continuation",
+      stage: "visible-omitted",
+      path: "eval/qa/reviewed/2026-07-12-live-v3-baseline.md",
+      reason:
+        "line 91 grades the case C / C and reports preserved grouping evidence, which contradicts a visible-omitted stage",
+    },
+  ];
+
+  it("keeps reviewer-rejected evidence out of the benchmark", () => {
+    const byCaseId = new Map(FACT_STAGE_BENCHMARK.map((row) => [row.caseId, row]));
+
+    for (const { caseId, stage, path, reason } of CONTRADICTED_EVIDENCE) {
+      const row = byCaseId.get(caseId);
+      expect(row, caseId).toBeDefined();
+      expect(row.firstMissingStage, caseId).toBe(stage);
+      expect(
+        row.evidenceRefs.filter((ref) => ref.startsWith(path)),
+        `${caseId}: ${reason}`,
+      ).toEqual([]);
+      expect(row.evidenceRefs.length, caseId).toBeGreaterThan(1);
+    }
   });
 
   it("assigns one owner stage to each named collision", () => {
@@ -137,5 +154,165 @@ describe("saved-miss fact-stage benchmark", () => {
     expect(FACT_STAGE_BENCHMARK.map((row) => row.firstMissingStage)).not.toContain(
       "artifact-only",
     );
+  });
+});
+
+describe("fact-stage evidence gate", () => {
+  function withFixture(files, run) {
+    const root = mkdtempSync(join(tmpdir(), "qa-fact-stage-"));
+    try {
+      for (const [name, body] of Object.entries(files)) {
+        writeFileSync(join(root, name), body);
+      }
+      return run(root);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  }
+
+  it("rejects unrelated JSON that merely parses", () => {
+    withFixture({ "notes.json": JSON.stringify({ unrelated: true }) }, (root) => {
+      expect(() =>
+        resolveFactStageEvidence("notes.json#golden.keyFacts", "q-x", { repoRoot: root }),
+      ).toThrow(/q-x/);
+    });
+  });
+
+  it("rejects a JSON record whose id belongs to another case", () => {
+    withFixture(
+      { "notes.json": JSON.stringify({ id: "q-other", golden: { keyFacts: ["a"] } }) },
+      (root) => {
+        expect(() =>
+          resolveFactStageEvidence("notes.json#golden.keyFacts", "q-x", { repoRoot: root }),
+        ).toThrow(/q-x/);
+      },
+    );
+  });
+
+  it("rejects a bare caseId container fragment", () => {
+    withFixture(
+      {
+        "case.json": JSON.stringify({
+          id: "q-x",
+          question: "an unrelated question",
+          golden: { keyFacts: ["an unrelated fact"] },
+        }),
+      },
+      (root) => {
+        expect(() =>
+          resolveFactStageEvidence("case.json#caseId=q-x", "q-x", { repoRoot: root }),
+        ).toThrow(/claim path/);
+      },
+    );
+  });
+
+  it("rejects a non-claim path on an exact case record", () => {
+    withFixture(
+      {
+        "case.json": JSON.stringify({
+          id: "q-x",
+          question: "an unrelated question",
+          golden: { keyFacts: ["an unrelated fact"] },
+        }),
+      },
+      (root) => {
+        expect(() =>
+          resolveFactStageEvidence("case.json#question", "q-x", { repoRoot: root }),
+        ).toThrow(/claim path/);
+        expect(
+          resolveFactStageEvidence("case.json#golden.keyFacts", "q-x", { repoRoot: root }),
+        ).toEqual({ kind: "repository" });
+      },
+    );
+  });
+
+  it("rejects a row that only mentions the case outside the Case column", () => {
+    withFixture(
+      {
+        "notes.md":
+          "## Evidence\n\n| Case | Note |\n|---|---|\n| `q-other` | unrelated mention of `q-x` |\n",
+      },
+      (root) => {
+        expect(() =>
+          resolveFactStageEvidence("notes.md#evidence", "q-x", { repoRoot: root }),
+        ).toThrow(/q-x/);
+      },
+    );
+  });
+
+  it("rejects a Markdown section that only holds a longer case id", () => {
+    withFixture(
+      {
+        "notes.md":
+          "# Title\n\n## Evidence\n\n| Case | Note |\n|---|---|\n| `q-x-unrelated` | row |\n",
+        "exact.md": "# Title\n\n## Evidence\n\n| Case | Note |\n|---|---|\n| `q-x` | row |\n",
+        "prose.md": "# Title\n\n## Evidence\n\nq-x appears in prose only.\n",
+        "nocolumn.md": "# Title\n\n## Evidence\n\n| Lane | Note |\n|---|---|\n| `q-x` | row |\n",
+      },
+      (root) => {
+        expect(() =>
+          resolveFactStageEvidence("notes.md#evidence", "q-x", { repoRoot: root }),
+        ).toThrow(/q-x/);
+        expect(() =>
+          resolveFactStageEvidence("prose.md#evidence", "q-x", { repoRoot: root }),
+        ).toThrow(/row/);
+        expect(() =>
+          resolveFactStageEvidence("nocolumn.md#evidence", "q-x", { repoRoot: root }),
+        ).toThrow(/Case column/);
+        expect(
+          resolveFactStageEvidence("exact.md#evidence", "q-x", { repoRoot: root }),
+        ).toEqual({ kind: "repository" });
+      },
+    );
+  });
+
+  it("rejects a register cluster that does not list the case", () => {
+    withFixture(
+      {
+        "register.json": JSON.stringify({
+          clusters: { entries: [{ id: "cluster-1", label: "unrelated", members: ["q-other"] }] },
+        }),
+      },
+      (root) => {
+        expect(() =>
+          resolveFactStageEvidence("register.json#clusters.entries[id=cluster-1]", "q-x", {
+            repoRoot: root,
+          }),
+        ).toThrow(/cluster-1/);
+      },
+    );
+  });
+
+  it("rejects Markdown that only mentions the case id", () => {
+    withFixture({ "notes.md": "# Title\n\nq-x happened.\n" }, (root) => {
+      expect(() =>
+        resolveFactStageEvidence("notes.md#missing-heading", "q-x", { repoRoot: root }),
+      ).toThrow(/missing-heading/);
+    });
+  });
+
+  it("rejects an exact heading whose section omits the case id", () => {
+    withFixture(
+      {
+        "notes.md":
+          "# Title\n\n## Other\n\ntext\n\n## Mentions\n\n| Case | Note |\n|---|---|\n| `q-x` | row |\n",
+      },
+      (root) => {
+        expect(() =>
+          resolveFactStageEvidence("notes.md#other", "q-x", { repoRoot: root }),
+        ).toThrow(/q-x/);
+        expect(
+          resolveFactStageEvidence("notes.md#mentions", "q-x", { repoRoot: root }),
+        ).toEqual({ kind: "repository" });
+      },
+    );
+  });
+
+  it("rejects a repository reference without a fragment", () => {
+    withFixture({ "notes.json": JSON.stringify({ id: "q-x" }) }, (root) => {
+      expect(() => resolveFactStageEvidence("notes.json", "q-x", { repoRoot: root })).toThrow(
+        /fragment/,
+      );
+    });
   });
 });

@@ -1,7 +1,7 @@
 import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   buildJudgePrompt,
   judgeCase,
@@ -60,8 +60,15 @@ async function judgeFailureWithFakeClaude({ stdout, stderr, exitCode = 1 }) {
   writeFileSync(
     executable,
     `#!/usr/bin/env node\n` +
-      `process.stdout.write(${JSON.stringify(stdout)});\n` +
-      `process.stderr.write(${JSON.stringify(stderr)});\n` +
+      // writeSync so a large payload cannot be truncated by process.exit.
+      `const fs = require("node:fs");\n` +
+      `const flush = (fd, text) => {\n` +
+      `  const buffer = Buffer.from(text);\n` +
+      `  let offset = 0;\n` +
+      `  while (offset < buffer.length) offset += fs.writeSync(fd, buffer, offset, buffer.length - offset);\n` +
+      `};\n` +
+      `flush(1, ${JSON.stringify(stdout)});\n` +
+      `flush(2, ${JSON.stringify(stderr)});\n` +
       `process.exit(${exitCode});\n`
   );
   chmodSync(executable, 0o755);
@@ -157,6 +164,38 @@ async function judgeSignalWithFakeClaude() {
       tags: { freshness: "stable" },
       candidateAnswer: "The vertical is unmapped."
     });
+  } finally {
+    process.env.PATH = originalPath;
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
+
+async function judgeOverflowWithFakeClaude({ stdout, maxBuffer = 16 }) {
+  const directory = mkdtempSync(join(tmpdir(), "qa-overflow-claude-"));
+  const executable = join(directory, "claude");
+  writeFileSync(
+    executable,
+    `#!/usr/bin/env node\n` +
+      `process.stdout.write(${JSON.stringify(stdout)});\n`
+  );
+  chmodSync(executable, 0o755);
+  const originalPath = process.env.PATH;
+  process.env.PATH = `${directory}:${originalPath}`;
+  try {
+    return await judgeCase(
+      {
+        question: "What does a null Scout vertical mean?",
+        golden: {
+          answer: "It means unmapped, not marketless.",
+          keyFacts: ["The vertical is unmapped."],
+          avoid: ["Do NOT call the market absent."],
+          notes: ""
+        },
+        tags: { freshness: "stable" },
+        candidateAnswer: "The vertical is unmapped."
+      },
+      { maxBuffer }
+    );
   } finally {
     process.env.PATH = originalPath;
     rmSync(directory, { recursive: true, force: true });
@@ -345,6 +384,23 @@ describe("QA verdict consistency", () => {
       }
     });
     expect(verdict.cliFailure.message).toContain("ETIMEDOUT");
+  });
+
+  it("classifies ENOBUFS as spawn-error even when Node also reports SIGTERM", async () => {
+    const stdout = `PASSWORD=ENOBUFS_SECRET_SENTINEL\n${"x".repeat(200)}`;
+
+    const verdict = await judgeOverflowWithFakeClaude({ stdout, maxBuffer: 16 });
+
+    expect(verdict).toMatchObject({
+      score: "error",
+      cliFailure: {
+        kind: "spawn-error",
+        signal: "SIGTERM"
+      }
+    });
+    expect(verdict.cliFailure.message).toContain("ENOBUFS");
+    expect(verdict.cliFailure.kind).not.toBe("signal");
+    expect(JSON.stringify(verdict)).not.toContain("ENOBUFS_SECRET_SENTINEL");
   });
 
   it("bounds large stdout, stderr, message, and parsed envelope evidence", async () => {
@@ -789,6 +845,451 @@ describe("QA verdict consistency", () => {
     expect(excerpt).not.toContain("UNMATCHED_BRACE_SENTINEL");
   });
 
+  it("redacts unterminated assignments, standalone keys, bearer tokens, and credential URLs", async () => {
+    const stdout =
+      'PASSWORD="UNTERMINATED_QUOTE_SENTINEL\n' +
+      '{"apiKey":"UNTERMINATED_JSON_SENTINEL\n' +
+      "ANTHROPIC_API_KEY STANDALONE_KEY_SENTINEL\n" +
+      '"api_key" STANDALONE_QUOTED_KEY_SENTINEL\n' +
+      "Bearer BEARER_TOKEN_SENTINEL\n" +
+      "Token TOKEN_SCHEME_SENTINEL\n" +
+      "WWW-Authenticate: Bearer WWW_BEARER_SENTINEL\n" +
+      "https://user:CREDENTIAL_URL_SENTINEL@example.com/path\n" +
+      "postgres://u:POSTGRES_URL_SENTINEL@db.example/host\n" +
+      "https://example.com:443/kept\n";
+    const stderr = "mongodb://root:MONGO_URL_SENTINEL@localhost:27017/app\n";
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr });
+
+    expect(verdict.cliFailure.stdout.excerpt).toBe(
+      'PASSWORD="[redacted]"\n' +
+        '{"apiKey":"[redacted]"\n' +
+        "ANTHROPIC_API_KEY [redacted]\n" +
+        '"api_key" [redacted]\n' +
+        "Bearer [redacted]\n" +
+        "Token [redacted]\n" +
+        "WWW-Authenticate: Bearer [redacted]\n" +
+        "https://[redacted]@example.com/path\n" +
+        "postgres://[redacted]@db.example/host\n" +
+        "https://example.com:443/kept\n"
+    );
+    expect(verdict.cliFailure.stderr.excerpt).toBe(
+      "mongodb://[redacted]@localhost:27017/app\n"
+    );
+    const serialized = JSON.stringify(verdict);
+    for (const sentinel of [
+      "UNTERMINATED_QUOTE_SENTINEL",
+      "UNTERMINATED_JSON_SENTINEL",
+      "STANDALONE_KEY_SENTINEL",
+      "STANDALONE_QUOTED_KEY_SENTINEL",
+      "BEARER_TOKEN_SENTINEL",
+      "TOKEN_SCHEME_SENTINEL",
+      "WWW_BEARER_SENTINEL",
+      "CREDENTIAL_URL_SENTINEL",
+      "POSTGRES_URL_SENTINEL",
+      "MONGO_URL_SENTINEL"
+    ]) {
+      expect(serialized).not.toContain(sentinel);
+    }
+    expect(serialized).toContain("https://example.com:443/kept");
+  });
+
+  it("redacts short standalone values, bare userinfo, encoded userinfo, and prefixed tokens", () => {
+    expect(sanitizeCliEvidenceText("PASSWORD abc123")).toBe("PASSWORD [redacted]");
+    expect(sanitizeCliEvidenceText("https://URL_TOKEN@example.com/path")).toBe(
+      "https://[redacted]@example.com/path"
+    );
+    expect(sanitizeCliEvidenceText("https://user%3AURL_PERCENT@example.com/path")).toBe(
+      "https://[redacted]@example.com/path"
+    );
+    expect(sanitizeCliEvidenceText("sk-1234567890abcdef")).toBe("[redacted]");
+    expect(sanitizeCliEvidenceText("ghp_1234567890abcdef")).toBe("[redacted]");
+    expect(sanitizeCliEvidenceText("https://example.com:443/kept")).toBe(
+      "https://example.com:443/kept"
+    );
+    expect(sanitizeCliEvidenceText("keynote=still-here")).toBe("keynote=still-here");
+  });
+
+  it("redacts every short, userinfo, and prefixed credential form in real CLI failure evidence", async () => {
+    const stdout =
+      "PASSWORD SHORT_PW\n" +
+      "https://URL_TOKEN_SENTINEL@example.com/path\n" +
+      "https://user%3AURL_PERCENT_SENTINEL@example.com/path\n" +
+      "sk-PREFIXED_TOKEN_SENTINEL\n" +
+      "ghp_UNDERSCORE_TOKEN_SENTINEL\n" +
+      "done cleanly\n";
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(verdict.cliFailure.stdout.excerpt).toBe(
+      "PASSWORD [redacted]\n" +
+        "https://[redacted]@example.com/path\n" +
+        "https://[redacted]@example.com/path\n" +
+        "[redacted]\n" +
+        "[redacted]\n" +
+        "done cleanly\n"
+    );
+    const serialized = JSON.stringify(verdict);
+    for (const sentinel of [
+      "SHORT_PW",
+      "URL_TOKEN_SENTINEL",
+      "URL_PERCENT_SENTINEL",
+      "PREFIXED_TOKEN_SENTINEL",
+      "UNDERSCORE_TOKEN_SENTINEL"
+    ]) {
+      expect(serialized).not.toContain(sentinel);
+    }
+    expect(serialized).toContain("done cleanly");
+  });
+
+  it("scans failed and userinfo-free URL candidates in bounded linear time", () => {
+    const buildFailedCandidate = (size) => `${"a+".repeat(Math.ceil(size / 2)).slice(0, size)}:x`;
+    const buildSchemeRun = (size) => `${"a+".repeat(Math.ceil(size / 2)).slice(0, size)}://example.com`;
+
+    const timeOnce = (input) => {
+      const startedAt = performance.now();
+      sanitizeCliEvidenceText(input);
+      return performance.now() - startedAt;
+    };
+
+    for (const build of [buildFailedCandidate, buildSchemeRun]) {
+      const smallMs = Math.max(timeOnce(build(10_000)), 1);
+      const largeMs = timeOnce(build(40_000));
+
+      expect(largeMs).toBeLessThan(250);
+      expect(largeMs / smallMs).toBeLessThan(8);
+    }
+
+    expect(sanitizeCliEvidenceText(`${buildFailedCandidate(64)}\nPASSWORD=SCAN_SENTINEL\n`)).toContain(
+      "PASSWORD=[redacted]"
+    );
+    expect(sanitizeCliEvidenceText("token+password=PLUS_SENTINEL")).not.toContain("PLUS_SENTINEL");
+  });
+
+  it("never invokes accessors or toJSON when sanitizing structured evidence", () => {
+    const hostile = { kept: 1, total_cost_usd: 0.25 };
+    let accessorCalls = 0;
+    Object.defineProperty(hostile, "toJSON", {
+      enumerable: true,
+      configurable: true,
+      get() {
+        accessorCalls += 1;
+        return () => "TOJSON_SECRET_SENTINEL";
+      }
+    });
+    Object.defineProperty(hostile, "lazy", {
+      enumerable: true,
+      configurable: true,
+      get() {
+        accessorCalls += 1;
+        return "GETTER_SECRET_SENTINEL";
+      }
+    });
+
+    const parseSpy = vi.spyOn(JSON, "parse").mockImplementationOnce(() => hostile);
+    let sanitized;
+    try {
+      sanitized = sanitizeCliEvidenceText("{}");
+    } finally {
+      parseSpy.mockRestore();
+    }
+
+    expect(accessorCalls).toBe(0);
+    expect(sanitized).not.toContain("TOJSON_SECRET_SENTINEL");
+    expect(sanitized).not.toContain("GETTER_SECRET_SENTINEL");
+    const parsed = JSON.parse(sanitized);
+    expect(parsed).toEqual({
+      kept: 1,
+      total_cost_usd: 0.25,
+      toJSON: "[redacted]",
+      lazy: "[redacted]"
+    });
+  });
+
+  it("bounds sparse arrays and repeated object references", () => {
+    const sparse = new Array(200_000);
+    sparse[0] = "kept";
+    const cyclic = { kept: 1 };
+    cyclic.a = cyclic;
+    cyclic.b = cyclic;
+
+    const sparseSpy = vi.spyOn(JSON, "parse").mockImplementationOnce(() => ({ rows: sparse }));
+    let sparseOut;
+    try {
+      sparseOut = sanitizeCliEvidenceText("{}");
+    } finally {
+      sparseSpy.mockRestore();
+    }
+
+    expect(sparseOut.length).toBeLessThan(5_000);
+    expect(() => JSON.parse(sparseOut)).not.toThrow();
+
+    const cyclicSpy = vi.spyOn(JSON, "parse").mockImplementationOnce(() => cyclic);
+    const startedAt = performance.now();
+    let cyclicOut;
+    try {
+      cyclicOut = sanitizeCliEvidenceText("{}");
+    } finally {
+      cyclicSpy.mockRestore();
+    }
+    const elapsedMs = performance.now() - startedAt;
+
+    expect(elapsedMs).toBeLessThan(250);
+    expect(cyclicOut.length).toBeLessThan(5_000);
+    expect(JSON.parse(cyclicOut)).toEqual({ kept: 1, a: "[redacted]", b: "[redacted]" });
+  });
+
+  it("redacts flag-prefixed credential names and complete prefixed tokens", () => {
+    expect(sanitizeCliEvidenceText("--password abc123")).toBe("--password [redacted]");
+    expect(sanitizeCliEvidenceText("--api-key abc123")).toBe("--api-key [redacted]");
+    expect(sanitizeCliEvidenceText("-PASSWORD abc123")).toBe("-PASSWORD [redacted]");
+    expect(sanitizeCliEvidenceText("sk-abc123+LEAKTAIL")).toBe("[redacted]");
+    expect(sanitizeCliEvidenceText("--password=abc123")).toBe("--password=[redacted]");
+    expect(sanitizeCliEvidenceText("keynote=still-here")).toBe("keynote=still-here");
+    expect(sanitizeCliEvidenceText("2026-07-11 kept")).toBe("2026-07-11 kept");
+    expect(sanitizeCliEvidenceText("--verbose kept")).toBe("--verbose kept");
+    expect(sanitizeCliEvidenceText('{"k":"sk-abc+tail","kept":1}')).toBe(
+      '{"k":"[redacted]","kept":1}'
+    );
+  });
+
+  it("redacts flag-prefixed and prefixed-token credentials in real CLI failure evidence", async () => {
+    const stdout =
+      "--password FLAG_PW_SENTINEL\n" +
+      "--api-key FLAG_APIKEY_SENTINEL\n" +
+      "-PASSWORD SHORTFLAG_PW_SENTINEL\n" +
+      "sk-abc123+TAIL_SENTINEL\n" +
+      "--verbose kept\n";
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(verdict.cliFailure.stdout.excerpt).toBe(
+      "--password [redacted]\n" +
+        "--api-key [redacted]\n" +
+        "-PASSWORD [redacted]\n" +
+        "[redacted]\n" +
+        "--verbose kept\n"
+    );
+    const serialized = JSON.stringify(verdict);
+    for (const sentinel of [
+      "FLAG_PW_SENTINEL",
+      "FLAG_APIKEY_SENTINEL",
+      "SHORTFLAG_PW_SENTINEL",
+      "TAIL_SENTINEL"
+    ]) {
+      expect(serialized).not.toContain(sentinel);
+    }
+    expect(serialized).toContain("--verbose kept");
+  });
+
+  it("keeps a 20,000-level parsed envelope bounded without throwing", async () => {
+    const depth = 20_000;
+    const stdout =
+      '{"total_cost_usd":0.25,"kept":1,"deep":' +
+      '{"n":'.repeat(depth) +
+      "1" +
+      "}".repeat(depth) +
+      "}";
+
+    let verdict;
+    await expect(
+      (async () => {
+        verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+      })()
+    ).resolves.toBeUndefined();
+
+    expect(verdict.score).toBe("error");
+    expect(verdict.costUsd).toBe(0.25);
+    expect(verdict.cliFailure.stdout.totalBytes).toBe(Buffer.byteLength(stdout));
+    expect(verdict.cliFailure.stdout.sha256).toMatch(/^[0-9a-f]{64}$/);
+    for (const evidence of [
+      verdict.cliFailure.stdout,
+      verdict.cliFailure.stderr,
+      verdict.cliFailure.parsedEnvelope
+    ]) {
+      expect(Buffer.byteLength(evidence.excerpt)).toBeLessThanOrEqual(8_192);
+    }
+    expect(() => JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt)).not.toThrow();
+  });
+
+  it("keeps structured JSON valid when a string leaf holds a credential name", () => {
+    for (const secretLine of ["PASSWORD alpha", "Bearer alpha"]) {
+      const stdout = JSON.stringify({ message: secretLine, kept: 1, total_cost_usd: 0.25 });
+
+      const sanitized = sanitizeCliEvidenceText(stdout);
+
+      expect(() => JSON.parse(sanitized)).not.toThrow();
+      expect(JSON.parse(sanitized)).toEqual({
+        message: `${secretLine.split(" ")[0]} [redacted]`,
+        kept: 1,
+        total_cost_usd: 0.25
+      });
+      expect(sanitized).not.toContain("alpha");
+    }
+
+    const topLevel = sanitizeCliEvidenceText(JSON.stringify("PASSWORD alpha"));
+    expect(JSON.parse(topLevel)).toBe("PASSWORD [redacted]");
+  });
+
+  it("preserves cost and safe siblings when a failure envelope leaf holds a credential name", async () => {
+    const stdout = JSON.stringify({
+      message: "PASSWORD LEAF_SENTINEL",
+      note: "Bearer LEAF_BEARER_SENTINEL",
+      kept: 1,
+      total_cost_usd: 0.25
+    });
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(verdict.costUsd).toBe(0.25);
+    expect(JSON.parse(verdict.cliFailure.stdout.excerpt)).toEqual({
+      message: "PASSWORD [redacted]",
+      note: "Bearer [redacted]",
+      kept: 1,
+      total_cost_usd: 0.25
+    });
+    expect(JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt)).toEqual({
+      message: "PASSWORD [redacted]",
+      note: "Bearer [redacted]",
+      kept: 1,
+      total_cost_usd: 0.25
+    });
+    expect(JSON.stringify(verdict)).not.toContain("LEAF_SENTINEL");
+    expect(JSON.stringify(verdict)).not.toContain("LEAF_BEARER_SENTINEL");
+  });
+
+  it("redacts a credential flag whose name starts with a digit", () => {
+    expect(sanitizeCliEvidenceText("--2fa-token DIGIT_FLAG_SENTINEL")).toBe(
+      "--2fa-token [redacted]"
+    );
+    expect(sanitizeCliEvidenceText("--2fa-token=DIGIT_FLAG_SENTINEL")).toBe(
+      "--2fa-token=[redacted]"
+    );
+    expect(sanitizeCliEvidenceText("--2fa-code kept")).toBe("--2fa-code kept");
+    expect(sanitizeCliEvidenceText("balance -5 kept")).toBe("balance -5 kept");
+    expect(sanitizeCliEvidenceText('{"a":-5,"kept":1}')).toBe('{"a":-5,"kept":1}');
+  });
+
+  it("redacts a digit-starting credential flag in real CLI failure evidence", async () => {
+    const stdout = "--2fa-token DIGIT_FLAG_SENTINEL\n--2fa-code kept\n";
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(verdict.cliFailure.stdout.excerpt).toBe("--2fa-token [redacted]\n--2fa-code kept\n");
+    expect(JSON.stringify(verdict)).not.toContain("DIGIT_FLAG_SENTINEL");
+    expect(JSON.stringify(verdict)).toContain("--2fa-code kept");
+  });
+
+  it("preserves finite usage counts without preserving any credential value", () => {
+    expect(
+      JSON.parse(
+        sanitizeCliEvidenceText(
+          '{"input_tokens":123,"output_tokens":456,"kept":"safe","total_cost_usd":0.25}'
+        )
+      )
+    ).toEqual({ input_tokens: 123, output_tokens: 456, kept: "safe", total_cost_usd: 0.25 });
+
+    expect(
+      JSON.parse(
+        sanitizeCliEvidenceText(
+          '{"usage":{"cache_read_input_tokens":7,"cache_creation_input_tokens":8}}'
+        )
+      )
+    ).toEqual({ usage: { cache_read_input_tokens: 7, cache_creation_input_tokens: 8 } });
+
+    // A string under an allowlisted key is never a usage count.
+    expect(
+      JSON.parse(sanitizeCliEvidenceText('{"input_tokens":"USAGE_STRING_SENTINEL"}'))
+    ).toEqual({ input_tokens: "[redacted]" });
+
+    // Credential names stay redacted whatever their value type.
+    expect(
+      JSON.parse(
+        sanitizeCliEvidenceText('{"api_token":123,"auth_token":"x","token":456,"password":1}')
+      )
+    ).toEqual({
+      api_token: "[redacted]",
+      auth_token: "[redacted]",
+      token: "[redacted]",
+      password: "[redacted]"
+    });
+
+    // Plaintext carries no value type, so the allowlist never applies there.
+    expect(sanitizeCliEvidenceText("input_tokens=PLAINTEXT_USAGE_SENTINEL")).toBe(
+      "input_tokens=[redacted]"
+    );
+    expect(sanitizeCliEvidenceText("api_token=PLAINTEXT_TOKEN_SENTINEL")).toBe(
+      "api_token=[redacted]"
+    );
+  });
+
+  it("keeps usage counts and cost in real CLI failure evidence", async () => {
+    const stdout = JSON.stringify({
+      usage: { input_tokens: 123, output_tokens: 456 },
+      api_token: "USAGE_EVIDENCE_SENTINEL",
+      kept: 1,
+      total_cost_usd: 0.25
+    });
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(verdict.costUsd).toBe(0.25);
+    expect(JSON.parse(verdict.cliFailure.stdout.excerpt)).toEqual({
+      usage: { input_tokens: 123, output_tokens: 456 },
+      api_token: "[redacted]",
+      kept: 1,
+      total_cost_usd: 0.25
+    });
+    expect(JSON.stringify(verdict)).not.toContain("USAGE_EVIDENCE_SENTINEL");
+  });
+
+  it("sanitizes a 160,000-byte ReDoS-shaped input in bounded linear time", () => {
+    const stdout = `${"prompt".repeat(Math.ceil(160_000 / 6)).slice(0, 160_000)}\nPASSWORD=QUAD_SENTINEL\n`;
+
+    const startedAt = performance.now();
+    const excerpt = sanitizeCliEvidenceText(stdout);
+    const elapsedMs = performance.now() - startedAt;
+
+    expect(elapsedMs).toBeLessThan(250);
+    expect(excerpt).toContain("PASSWORD=[redacted]");
+    expect(excerpt).not.toContain("QUAD_SENTINEL");
+  });
+
+  it("sanitizes deeply nested JSON without throwing or leaking secrets", () => {
+    const stdout =
+      `${'{"nested":'.repeat(5_000)}{"password":"DEEP_PASSWORD_SENTINEL","kept":1}${"}".repeat(5_000)}`;
+
+    const startedAt = performance.now();
+    let excerpt;
+    expect(() => {
+      excerpt = sanitizeCliEvidenceText(stdout);
+    }).not.toThrow();
+    const elapsedMs = performance.now() - startedAt;
+
+    expect(elapsedMs).toBeLessThan(250);
+    expect(excerpt).toContain("[redacted]");
+    expect(excerpt).not.toContain("DEEP_PASSWORD_SENTINEL");
+    expect(() => JSON.parse(excerpt)).not.toThrow();
+  });
+
+  it("redacts credential URLs inside valid structured JSON without breaking siblings", async () => {
+    const stdout = JSON.stringify({
+      url: "https://user:STRUCTURED_URL_SENTINEL@example.com/path",
+      kept: 1,
+      total_cost_usd: 0.2
+    });
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(JSON.parse(verdict.cliFailure.stdout.excerpt)).toEqual({
+      url: "https://[redacted]@example.com/path",
+      kept: 1,
+      total_cost_usd: 0.2
+    });
+    expect(verdict.costUsd).toBe(0.2);
+    expect(JSON.stringify(verdict)).not.toContain("STRUCTURED_URL_SENTINEL");
+  });
+
   it("redacts quoted sensitive keys inside prefixed JSON evidence", async () => {
     const stdout = 'stderr: {"OPENAI_API_KEY":"PREFIXED_OPENAI_SENTINEL","attempts":1}\ndone\n';
 
@@ -824,10 +1325,14 @@ describe("QA verdict consistency", () => {
     const verdict = await judgeFailureWithFakeClaude({ stdout, stderr });
 
     expect(verdict.cliFailure.parsedEnvelope.excerpt).toBe(
-      '{"detail":"ANTHROPIC_API_KEY=[redacted]","kept":1}'
+      '{"detail":"ANTHROPIC_API_KEY=\\"[redacted]\\"","kept":1}'
     );
+    expect(JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt)).toEqual({
+      detail: 'ANTHROPIC_API_KEY="[redacted]"',
+      kept: 1
+    });
     expect(verdict.cliFailure.stderr.excerpt).toBe(
-      'wrapped: {"msg":"SECRET_TOKEN=[redacted]"}\n'
+      'wrapped: {"msg":"SECRET_TOKEN=\\"[redacted]\\""}\n'
     );
     const serialized = JSON.stringify(verdict);
     expect(serialized).not.toContain("STRUCTURED_ESCAPED_SENTINEL");
