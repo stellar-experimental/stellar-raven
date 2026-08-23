@@ -564,6 +564,58 @@ describe("WorkOSAuthHandler", () => {
     expect(await consent.text()).toContain(`href="/terms"`);
   });
 
+  it("GET /docs serves the documentation page without authentication", async () => {
+    const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
+    const response = await WorkOSAuthHandler.fetch(new Request("https://mcp.test/docs"), env);
+    expect(response.status).toBe(200);
+    const page = await response.text();
+    expect(page).toContain("Stellar Raven documentation");
+    expect(page).toContain("59 operations");
+    expect(page).toContain("19 skills");
+    expect(page).toContain("173 sections");
+    expect(page).toContain("https://raven.stellar.org/mcp");
+    expect(page).toContain("1 hour");
+    expect(page).toContain("90 days");
+    expect(page).toContain("search");
+    expect(page).toContain("execute");
+    expect(page).toContain("no network");
+    for (const family of ["Lumenloop", "Scout", "Stellar Docs", "Skills"]) {
+      expect(page).toContain(family);
+    }
+    expect(page).toContain("{ ok: true, data }");
+    expect(page).toContain("{ ok: false, error }");
+    expect(page).toContain("soft-empty");
+    expect(page).toContain("/health/skills");
+    expect(page).toContain("codemode.artifact.read");
+    expect(response.headers.get("content-security-policy")).not.toContain("script-src");
+    expect(page).not.toContain("<script");
+  });
+
+  it("HEAD /docs returns the public status and headers with no body", async () => {
+    const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/docs", { method: "HEAD" }),
+      env
+    );
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toBe("text/html; charset=utf-8");
+    expect(response.headers.get("cache-control")).toBe("public, max-age=300");
+    expect(response.headers.get("x-content-type-options")).toBe("nosniff");
+    expect(response.headers.get("referrer-policy")).toBe("no-referrer");
+    expect(response.headers.get("content-security-policy")).not.toContain("script-src");
+    const getResponse = await WorkOSAuthHandler.fetch(new Request("https://mcp.test/docs"), env);
+    expect(getResponse.status).toBe(response.status);
+    for (const header of [
+      "content-type",
+      "cache-control",
+      "x-content-type-options",
+      "referrer-policy",
+      "content-security-policy"
+    ]) {
+      expect(response.headers.get(header)).toBe(getResponse.headers.get(header));
+    }
+  });
+
   it("GET /authorize renders a consent page naming the client and scopes, with a CSRF cookie", async () => {
     const env = testEnv({ OAUTH_PROVIDER: stubHelpers() });
     const response = await WorkOSAuthHandler.fetch(

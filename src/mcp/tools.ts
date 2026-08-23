@@ -203,7 +203,14 @@ export const executeInputSchema = {
 // (ADR-0003 spirit — consumers are never told about, and never sold, what
 // the gateway cannot do). Exported (with EXECUTE_DESCRIPTION) so the /demo
 // playground drives the exact production tool contract.
+// One official upstream documentation URL per source family (Connectors
+// Directory criterion: a freeform tool must link or name its target APIs).
+// Additive only — interpolated into both tool descriptions, nothing else.
+export const UPSTREAM_DOC_LINKS = `Upstream documentation: Lumenloop — API guide https://api.lumenloop.com/v1/docs; Stellar Light/Scout (scout) — OpenAPI https://stellarlight.xyz/api/openapi.json; Stellar Docs — https://developers.stellar.org/docs.`;
+
 export const SEARCH_DESCRIPTION = `Ranked lexical search over every exposed service operation (lumenloop.*, scout.*, stellarDocs.*) and whole skill. Skill sections are exact-read affordances exposed on whole-skill hits through availableSections; they are not independent ranked hits.
+
+${UPSTREAM_DOC_LINKS}
 
 Returns ranked hits with rendered TypeScript signatures so you can call them from the \`execute\` tool without guessing. Structurally poor operation pages also return bounded \`widerCandidates\` that explicitly recommend broad semantic/research/A/V/corpus operations without changing ranking. Pass caller-reported exact attempted ids in \`recoverFrom\` (and optionally \`reason\`) to receive bounded recovery candidates separately from both ranking and wider-page advice.
 
@@ -233,6 +240,8 @@ Most questions have a primary family and a corroborating one — pick both up fr
 - Deeper or arbitrary discovery lives inside \`execute\`: \`codemode.search(...)\` (this same ranked search, mid-script), \`codemode.describe(id)\` (one entry's full detail), \`codemode.catalog({ kind?, service?, compact? })\` (exact-filtered catalog data; default/full includes schemas, \`compact: true\` omits them), and \`codemode.spec()\` (the unified OpenAPI super spec) — use them for follow-ups without another tool round-trip.`;
 
 export const EXECUTE_DESCRIPTION = `Execute JavaScript in a sandboxed Worker isolate with access to the service SDKs discovered via the \`search\` tool.
+
+${UPSTREAM_DOC_LINKS}
 
 Calls return one text result; failures set \`isError\`. The sandbox result, console output, and thrown errors each have a separate model-boundary cap of roughly 6k tokens by default. Service-call payloads live under \`.data\`. The sandbox has no direct network access, and \`fetch()\` fails.
 

@@ -35,11 +35,13 @@ import { AuthorizationError } from "@cloudflare/workers-oauth-provider";
 import type { AuthRequest, OAuthHelpers } from "@cloudflare/workers-oauth-provider";
 import {
   CONSENT_HEADERS,
+  DOCS_HEADERS,
   LANDING_HEADERS,
   ROBOTS_HEADERS,
   SITEMAP_HEADERS,
   TERMS_HEADERS,
   consentPage,
+  docsPage,
   landingPage,
   robotsTxt,
   sitemapXml,
@@ -124,6 +126,10 @@ export const WorkOSAuthHandler = {
 
     if (isRead && url.pathname === "/terms") {
       return new Response(termsPage(), { headers: TERMS_HEADERS });
+    }
+
+    if (isRead && url.pathname === "/docs") {
+      return new Response(docsPage(), { headers: DOCS_HEADERS });
     }
 
     if (isRead && url.pathname === "/og.png") {

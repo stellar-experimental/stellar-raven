@@ -62,6 +62,19 @@ describe("server instructions — Claude Code 2KB budget", () => {
     expect(SERVER_INSTRUCTIONS.length).toBeGreaterThan(CLAUDE_CODE_INSTRUCTIONS_CAP);
   });
 
+  it("binds each freeform tool to one official upstream doc URL per service", () => {
+    const bindings = [
+      "Lumenloop — API guide https://api.lumenloop.com/v1/docs",
+      "Stellar Light/Scout (scout) — OpenAPI https://stellarlight.xyz/api/openapi.json",
+      "Stellar Docs — https://developers.stellar.org/docs"
+    ];
+    for (const contract of [SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION]) {
+      for (const binding of bindings) {
+        expect(contract).toContain(binding);
+      }
+    }
+  });
+
   it("makes prior-art discovery a bounded design-stage preflight, not a universal build gate", () => {
     for (const contract of [SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION]) {
       expect(contract).toMatch(/at most two .*discovery calls/i);

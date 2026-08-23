@@ -144,6 +144,22 @@ describe("defaultHandler routes", () => {
     expect(res.headers.get("content-type")).toContain("text/html");
   });
 
+  it("GET and HEAD /docs serve the public documentation surface", async () => {
+    const get = await SELF.fetch(`${PUBLIC}/docs`);
+    expect(get.status).toBe(200);
+    expect(get.headers.get("content-type")).toBe("text/html; charset=utf-8");
+    expect(await get.text()).toContain("Stellar Raven documentation");
+
+    const head = await SELF.fetch(`${PUBLIC}/docs`, { method: "HEAD" });
+    expect(head.status).toBe(200);
+    expect((await head.arrayBuffer()).byteLength).toBe(0);
+    expect(head.headers.get("content-type")).toBe("text/html; charset=utf-8");
+    expect(head.headers.get("cache-control")).toBe("public, max-age=300");
+    expect(head.headers.get("referrer-policy")).toBe("no-referrer");
+    expect(head.headers.get("x-content-type-options")).toBe("nosniff");
+    expect(head.headers.get("content-security-policy")).not.toContain("script-src");
+  });
+
   it("unknown paths fall through to 404", async () => {
     const res = await SELF.fetch(`${PUBLIC}/definitely-not-a-route`);
     expect(res.status).toBe(404);

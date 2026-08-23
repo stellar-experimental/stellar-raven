@@ -14,6 +14,9 @@
  */
 import { describe, expect, it, beforeAll, vi } from "vitest";
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/server";
 import { Client } from "@modelcontextprotocol/client";
 import { InMemoryTransport } from "@modelcontextprotocol/server";
@@ -21,7 +24,14 @@ import { registerTools, SEARCH_KINDS, type RegisterToolsOptions } from "../src/m
 import { allowDevUnauthenticated } from "../src/auth/gate";
 import type { McpAccessContext } from "../src/server";
 import type { ExecuteEvidenceSummary, ExecuteOperationSummary } from "../src/executor/run";
-import { landingPage, termsPage } from "../src/site";
+import {
+  DOC_CATALOG_COUNTS,
+  DOC_TRACE_EXAMPLE,
+  docsPage,
+  landingPage,
+  sitemapXml,
+  termsPage
+} from "../src/site";
 import {
   CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS,
   EXPECTED_TOOL_METADATA
@@ -232,7 +242,170 @@ describe("public page metadata", () => {
     expect(page).toContain('<meta property="og:url" content="https://raven.stellar.org/terms"/>');
     expect(page).not.toContain('<meta name="robots" content="noindex"/>');
   });
+
+  it("preserves the docs canonical URL without noindex", () => {
+    const page = docsPage();
+
+    expect(page).toContain('<link rel="canonical" href="https://raven.stellar.org/docs"/>');
+    expect(page).toContain('<meta property="og:url" content="https://raven.stellar.org/docs"/>');
+    expect(page).not.toContain('<meta name="robots" content="noindex"/>');
+  });
+
+  it("lists /docs in the sitemap next to /terms", () => {
+    const sitemap = sitemapXml();
+
+    expect(sitemap).toContain("<loc>https://raven.stellar.org/docs</loc>");
+    expect(sitemap).toContain("<loc>https://raven.stellar.org/terms</loc>");
+  });
 });
+
+describe("docs page truthfulness", () => {
+  it("describes the search contract: operations and whole skills, not sections", () => {
+    const page = docsPage();
+
+    expect(page).not.toContain("every operation, playbook, and section");
+    expect(page).toContain("exposed operations and whole skills");
+    expect(page).toContain("availableSections");
+    expect(page).toMatch(/skill sections are not searchable/);
+    expect(page).toContain("codemode.artifact.read");
+  });
+
+  it("keeps the search-to-execute trace example in sync with the current scorer", async () => {
+    const { getCatalog } = await import("../src/catalog/load");
+    const { searchCatalogPage } = await import("../src/catalog/search");
+    const page = searchCatalogPage(getCatalog(), {
+      query: DOC_TRACE_EXAMPLE.query,
+      limit: DOC_TRACE_EXAMPLE.limit
+    });
+
+    expect(page.hits.map((hit) => hit.id)).toEqual(DOC_TRACE_EXAMPLE.hitIds);
+    for (const opId of DOC_TRACE_EXAMPLE.executeOperationIds) {
+      expect(DOC_TRACE_EXAMPLE.hitIds).toContain(opId);
+      expect(docsPage()).toContain(opId);
+    }
+  });
+
+  it("renders an execute block that composes the shortlisted operations", () => {
+    const html = docsPage();
+    const pres = [...html.matchAll(/<pre class="code" tabindex="0">([\s\S]*?)<\/pre>/g)].map(
+      (match) => match[1]!
+    );
+    expect(pres.length).toBe(2);
+    const script = pres[1]!.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
+    const called = [...script.matchAll(/([A-Za-z][\w]*)\.(\w+)\(/g)].map(
+      ([, service, op]) => `${service}.${op}`
+    );
+    expect(called.length).toBeGreaterThan(0);
+    for (const id of called) {
+      expect(DOC_TRACE_EXAMPLE.executeOperationIds).toContain(id);
+      expect(DOC_TRACE_EXAMPLE.hitIds).toContain(id);
+    }
+    for (const id of DOC_TRACE_EXAMPLE.executeOperationIds) {
+      expect(called).toContain(id);
+    }
+
+    const secondId = DOC_TRACE_EXAMPLE.executeOperationIds[1]!;
+    const secondCallArgs = script.match(
+      new RegExp(`${secondId.replace(".", "\\.")}\\(([^]*)`)
+    )?.[1];
+    expect(secondCallArgs).toBeTruthy();
+    expect(secondCallArgs!).toMatch(/\$\{top\.name\}/);
+
+    const emptyGuardIndex = script.indexOf("projects.length === 0");
+    const topReadIndex = script.indexOf("top.name");
+    expect(emptyGuardIndex).toBeGreaterThan(-1);
+    expect(topReadIndex).toBeGreaterThan(emptyGuardIndex);
+  });
+
+  it("renders the search block limit from DOC_TRACE_EXAMPLE.limit", () => {
+    const html = docsPage();
+    const pres = [...html.matchAll(/<pre class="code" tabindex="0">([\s\S]*?)<\/pre>/g)].map(
+      (match) => match[1]!
+    );
+    expect(pres.length).toBe(2);
+    const searchBlock = pres[0]!.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
+    expect(searchBlock).toContain(`limit: ${DOC_TRACE_EXAMPLE.limit}`);
+  });
+
+  it("matches DOC_CATALOG_COUNTS to catalog/manifest.json by kind", () => {
+    const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+    const manifest = JSON.parse(
+      readFileSync(join(root, "catalog", "manifest.json"), "utf8")
+    ) as { entries: { kind: string }[] };
+    const counts = { operations: 0, skills: 0, sections: 0 };
+    for (const entry of manifest.entries) {
+      if (entry.kind === "operation") counts.operations++;
+      else if (entry.kind === "skill") counts.skills++;
+      else if (entry.kind === "skill-section") counts.sections++;
+    }
+    expect(DOC_CATALOG_COUNTS).toEqual(counts);
+  });
+
+  it("binds the landing-page counts to the verified catalog constants", () => {
+    const page = landingPage();
+    const total =
+      DOC_CATALOG_COUNTS.operations + DOC_CATALOG_COUNTS.skills + DOC_CATALOG_COUNTS.sections;
+
+    expect(page).toContain(`<b>${DOC_CATALOG_COUNTS.operations}</b> live operations`);
+    expect(page).toContain(`<b>${total}</b> catalog entries`);
+    expect(page).toContain(`<b>${DOC_CATALOG_COUNTS.skills}</b> playbooks`);
+    expect(page).not.toContain("<b>54</b> live operations");
+    expect(page).not.toContain("<b>283</b> catalog entries");
+  });
+
+  it("qualifies artifact reads and scopes credential claims", () => {
+    const page = docsPage();
+
+    expect(page).not.toContain("the response names the stored artifact");
+    expect(page).toMatch(/When a\s+truncated response reports an available artifact/);
+    expect(page).toMatch(/inspect\s+the operation's signature before using/);
+    expect(page).not.toMatch(/rerun\s+narrower instead: request fewer rows with <code>limit<\/code>/);
+    expect(page).toMatch(/project\s+the\s+result\s+in\s+JavaScript/);
+    expect(page).toMatch(/smaller\s+calls/);
+    expect(page).toMatch(/signed-in MCP clients/);
+    expect(page).toMatch(/2 MiB/);
+    expect(page).not.toContain("All credentials stay on Raven's server side");
+    expect(page).toContain("upstream service credentials");
+  });
+
+  it("splits service adapters from codemode host providers", () => {
+    const page = docsPage();
+    expect(page).toMatch(
+      /Service\s+operations\s+run\s+through\s+host-side\s+adapters\s+that\s+hold\s+the\s+upstream\s+credentials/
+    );
+    expect(page).toMatch(/separate host providers/);
+    expect(page).not.toMatch(/codemode helpers[^.]*host-side adapters/s);
+  });
+
+  it("renders footer legal text at WCAG AA contrast", () => {
+    const page = docsPage();
+    const match = page.match(/\.foot \.l\{[^}]*color:(#[0-9a-fA-F]{6})/);
+    expect(match).not.toBeNull();
+    const ratio = contrastRatio(match![1]!, "#0e150d");
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("makes horizontally scrollable trace blocks keyboard focusable", () => {
+    const page = docsPage();
+    expect(page.match(/<pre class="code" tabindex="0">/g)?.length).toBe(2);
+    expect(page).not.toMatch(/<pre class="code">/);
+  });
+});
+
+function contrastRatio(foreground: string, background: string): number {
+  function luminance(hex: string): number {
+    const channels = [1, 3, 5].map((offset) => {
+      const value = Number.parseInt(hex.slice(offset, offset + 2), 16) / 255;
+      return value <= 0.03928
+        ? value / 12.92
+        : Math.pow((value + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * channels[0]! + 0.7152 * channels[1]! + 0.0722 * channels[2]!;
+  }
+  const lighter = Math.max(luminance(foreground), luminance(background));
+  const darker = Math.min(luminance(foreground), luminance(background));
+  return (lighter + 0.05) / (darker + 0.05);
+}
 
 function workerContext(props?: Record<string, unknown>): ExecutionContext {
   return {
