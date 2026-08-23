@@ -138,7 +138,12 @@ describe("re-judge saved-answer selection", () => {
         judge: async () => {
           calls++;
           if (calls === 2) throw new Error("second judge failed");
-          return { score: "partial", costUsd: 0.25 };
+          return {
+            score: "error",
+            judgeScore: "wrong",
+            consistencyViolations: ["omission-only-wrong"],
+            costUsd: 0.25
+          };
         },
         checkpoint: (rows) => checkpoints.push(structuredClone(rows)),
         log: () => {}
@@ -147,7 +152,16 @@ describe("re-judge saved-answer selection", () => {
 
     expect(checkpoints).toHaveLength(1);
     expect(checkpoints[0]).toMatchObject([
-      { id: "one", original: { score: "correct" }, new: { score: "partial", costUsd: 0.25 } }
+      {
+        id: "one",
+        original: { score: "correct" },
+        new: {
+          score: "error",
+          judgeScore: "wrong",
+          consistencyViolations: ["omission-only-wrong"],
+          costUsd: 0.25
+        }
+      }
     ]);
   });
 

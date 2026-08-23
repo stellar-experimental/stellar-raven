@@ -318,10 +318,32 @@ and a deterministic bounded **source-basis evidence pack** built from the saved 
 (`evidence-pack.mjs`, pack `p5`); sourced drift from the golden snapshot is tolerated, confident
 unsourced contradiction is not.
 
+Rubric `v2.5` adds judge-owned `coreAnswer` and `avoidMatches` fields. A deterministic
+consistency check maps contradictory field and score combinations to **error**, preserves the
+raw model score as `judgeScore`, and records stable `consistencyViolations`. The check never
+parses candidate prose or decides whether an avoid item matches.
+
+Rubric `v2.6` removes the conflicting wrong-score clause for missing key facts. The existing
+omission-only partial rule now controls when the core answer is correct.
+
+Rubric `v2.7` (2026-08-21) makes the claim fields strict: `missingFacts`, `wrongClaims`, and
+`avoidMatches` must be arrays of the right element type. A non-array or non-string-element value
+maps the verdict to **error** with stable `invalid-missing-facts` / `invalid-wrong-claims`
+violations instead of silent normalization; returned fields stay arrays. The omission-only-wrong
+check fires only when both `wrongClaims` and `avoidMatches` are valid, so an invalid field reports
+its own violation rather than a competing score rule.
+
+`avoidMatches` has its own element rules under `v2.7`: entries must be **unique one-based
+integers within the golden `avoid` range** (`1 <= index <= avoid.length`). A duplicate,
+zero, non-integer, or out-of-range entry emits a stable `invalid-avoid-match` violation and maps
+the verdict to **error**. The consistency check always sees the raw model array, but the emitted
+verdict collapses an invalid `avoidMatches` to `[]`; a valid fired index is retained even when a
+different violation maps the verdict to error.
+
 **Comparability rules:**
 
 - Re-judge identity is the **judge model + rubric + pack** tuple (currently `claude-sonnet-5` /
-  `v2.4` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
+  `v2.7` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
   `evidence-pack.mjs`, each with a short changelog in its own file header). Compare stored rows
   only when that tuple and
   prompt/pack-hash semantics match — otherwise re-judge the saved `rows[].answer` under the

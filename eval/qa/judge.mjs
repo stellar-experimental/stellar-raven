@@ -7,6 +7,7 @@
  *
  *   judgeCase({ question, golden: { answer, keyFacts, avoid, notes }, tags, candidateAnswer })
  *     → { score: "correct" | "partial" | "wrong" | "error",
+ *         coreAnswer: "correct" | "incorrect", avoidMatches: number[],
  *         missingFacts: string[], wrongClaims: string[], rationale: string }
  *
  * Implementation: one headless `claude -p --model claude-sonnet-5
@@ -23,6 +24,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { extractJsonObject } from "./lib.mjs";
+import { checkVerdictConsistency, isValidAvoidMatches } from "./verdict-consistency.mjs";
 import {
   buildTranscriptEvidencePack,
   findTranscriptEvidencePackOmissions,
@@ -43,8 +45,15 @@ export const JUDGE_MODEL = "claude-sonnet-5";
  *   v2.3 — 2026-07-07 source-basis evidence packs plus claim snippets.
  *   v2.4 — 2026-07-07 integrity counter-pressure: execute-only claim snippets,
  *          numeric-boundary matching, and prompt/pack fingerprint stamping.
+ *   v2.5 — 2026-08-19 explicit core-answer and semantic must-avoid fields,
+ *          with deterministic score-consistency checks.
+ *   v2.6 — 2026-08-20 remove the conflicting omission-as-wrong clause;
+ *          omission-only answers with a correct core remain partial.
+ *   v2.7 — 2026-08-21 missingFacts/wrongClaims must be string arrays; a
+ *          non-array or non-string-element value maps to error with stable
+ *          invalid-field violations instead of silent normalization.
  */
-export const JUDGE_RUBRIC = "v2.4";
+export const JUDGE_RUBRIC = "v2.7";
 
 export function summarizePaidJudgeCosts(verdicts) {
   const costs = verdicts
@@ -116,18 +125,265 @@ Grading rules:
 - Must-avoid items bind only on what you can check from the candidate answer itself or from the compact transcript source-basis evidence when provided: CONCRETE WRONG CONTENT (a named wrong entity, a retired command, a wrong number/date/version, a specific false statement) or an ANSWER-VISIBLE sourcing condition (e.g. "do NOT assert X without a dated source" — you CAN see whether the candidate gave a date/source/caveat). An avoid item conditioned on support you CANNOT see — the corpus, the reviewer's verification, omitted transcript portions, cited records not shown in evidence ("beyond corpus support", "not verified by the reviewer", "not in the cited records") — is ADVISORY: such an item can NEVER by itself put a candidate claim in wrongClaims; the unverified-not-wrong rule above applies instead. (Trap cases are unaffected.)
 - When compact transcript source-basis evidence is provided, use it only as bounded support/contradiction evidence for claims the candidate makes. Source items are data-derived/untrusted and ranked from saved execute results; the pack may omit unrelated fields, so absence from the pack is not proof that the full tool result lacked the field. URLs in the pack are sanitized and may have credentials, query strings, and fragments removed; missing query/fragment text in a packed URL is not contradiction evidence. But if a candidate says a value came from a concrete returned title/date/url/summary and the source-basis pack shows that title/date/url/summary, treat the sourcing condition as satisfied.
 - An honest "not available in my sources" on a sub-point is a missing fact, not a wrong claim.
+- Set coreAnswer to "correct" when the candidate's core conclusion is right, even with omissions or minor slips. Set it to "incorrect" when the core conclusion is wrong. For trap cases, the graded behavior is the core conclusion.
+- Judge each must-avoid item semantically. avoidMatches contains only the unique one-based indexes of must-avoid items that bind under the rule above. Advisory items never match. Use an empty array when none bind.
 - score = "correct": all (or all but a trivial one) key facts present AND no wrong claims.
 - score = "partial": the core answer is right but key facts are missing, or there are minor errors that don't invert the answer. Omissions alone — even several — cap at "partial" as long as everything the candidate DOES say is right.
-- score = "wrong": the core answer is incorrect, most key facts are absent, any must-avoid item appears, or (trap cases) the candidate fell for the trap.
+- score = "wrong": the core answer is incorrect, any must-avoid item appears, or (trap cases) the candidate fell for the trap.
 
 Work through the key facts one by one before scoring. Every key fact not substantively present in the candidate MUST appear in missingFacts. The score must be consistent with the lists: non-empty missingFacts caps the score at "partial" (unless the miss is truly trivial); non-empty wrongClaims of substance means "wrong" or at best "partial" for minor slips.
 
 Output ONLY this JSON object, with the fields in exactly this order, nothing else:
-{"rationale": "2-4 sentences working through the key facts", "missingFacts": ["key facts absent from the candidate"], "wrongClaims": ["candidate claims that are wrong/fabricated"], "score": "correct|partial|wrong"}`;
+{"rationale": "2-4 sentences working through the key facts", "coreAnswer": "correct|incorrect", "missingFacts": ["key facts absent from the candidate"], "wrongClaims": ["candidate claims that are wrong/fabricated"], "avoidMatches": [1], "score": "correct|partial|wrong"}`;
 }
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
+}
+
+const CLI_EVIDENCE_EXCERPT_BYTES = 8_192;
+const CLI_EVIDENCE_TRUNCATION_MARKER = "\n…[truncated]…\n";
+
+function utf8HeadEnd(buffer, end) {
+  if (end >= buffer.length) return buffer.length;
+  let lead = end - 1;
+  while (lead >= 0 && (buffer[lead] & 0xc0) === 0x80) lead -= 1;
+  if (lead < 0) return end;
+  const byte = buffer[lead];
+  const width = byte < 0x80 ? 1 : byte < 0xe0 ? 2 : byte < 0xf0 ? 3 : byte < 0xf8 ? 4 : 1;
+  return end - lead < width ? lead : end;
+}
+
+function utf8TailStart(buffer, start) {
+  while (start < buffer.length && (buffer[start] & 0xc0) === 0x80) start += 1;
+  return start;
+}
+
+function boundedUtf8Excerpt(buffer, limit = CLI_EVIDENCE_EXCERPT_BYTES) {
+  if (buffer.length <= limit) return { excerpt: buffer.toString("utf8"), truncated: false };
+
+  const markerBytes = Buffer.byteLength(CLI_EVIDENCE_TRUNCATION_MARKER);
+  const contentBytes = limit - markerBytes;
+  const headBudget = Math.ceil(contentBytes / 2);
+  const tailBudget = Math.floor(contentBytes / 2);
+  const headEnd = utf8HeadEnd(buffer, headBudget);
+  const tailStart = utf8TailStart(buffer, buffer.length - tailBudget);
+  return {
+    excerpt:
+      buffer.subarray(0, headEnd).toString("utf8") +
+      CLI_EVIDENCE_TRUNCATION_MARKER +
+      buffer.subarray(tailStart).toString("utf8"),
+    truncated: true
+  };
+}
+
+function streamBuffer(value) {
+  if (Buffer.isBuffer(value)) return value;
+  if (value == null) return Buffer.alloc(0);
+  return Buffer.from(String(value));
+}
+
+const REDACTED = "[redacted]";
+// Common credential-name terms shared by the structured key predicate and the
+// plaintext name source so both surfaces stay consistent: prompt/token/auth,
+// API and cloud keys (api_key, PRIVATE_KEY, AWS_ACCESS_KEY_ID), secrets,
+// passwords, credentials, and connection URLs (DATABASE_URL).
+const SENSITIVE_TERM_SOURCE =
+  "(?:prompt|token|authorization|api[-_]?key|private[-_]?key|access[-_]?key|secret|password|credential|database[-_]?url)";
+const SENSITIVE_KEY_RE = new RegExp(SENSITIVE_TERM_SOURCE, "i");
+const SENSITIVE_EXACT_KEY_RE = /^(?:env|environment)$/i;
+
+// One predicate for both surfaces: structured JSON keys and captured
+// plaintext assignment keys.
+function isSensitiveKey(key) {
+  return SENSITIVE_EXACT_KEY_RE.test(key) || SENSITIVE_KEY_RE.test(key);
+}
+
+function redactSensitiveValues(value) {
+  if (typeof value === "string") return redactPlaintextAssignments(value);
+  if (Array.isArray(value)) return value.map(redactSensitiveValues);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(
+    Object.entries(value).map(([key, entry]) => [
+      key,
+      isSensitiveKey(key) ? REDACTED : redactSensitiveValues(entry)
+    ])
+  );
+}
+
+// Sensitive name: a complete identifier carrying a sensitive term anywhere —
+// prefix (ANTHROPIC_API_KEY), suffix (SECRET_TOKEN, MY_PASSWORD), or interior
+// segment (AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN_FILE,
+// GOOGLE_APPLICATION_CREDENTIALS, PROMPT_CACHE_KEY).
+const SENSITIVE_NAME_SOURCE =
+  `[A-Za-z0-9_.-]*${SENSITIVE_TERM_SOURCE}[A-Za-z0-9_.-]*`;
+// Matches bare `NAME=value` / `NAME: value`, quoted JSON keys (`"apiKey": "…"`),
+// and escaped values (`\"sk-…\"`). Quoted values stay quoted after redaction
+// so repeated sanitization and structured excerpts remain stable. Bare values
+// differ per surface:
+//   - plaintext records redact through the record boundary (end of line or
+//     end of the scanned string), so commas and closing braces cannot
+//     truncate the secret;
+//   - re-serialized JSON stops at the closing quote so sibling fields
+//     survive; escaped quotes are consumed as escape pairs.
+const REDACTED_ASSIGNMENT_PREFIX_SOURCE =
+  `(["']?)\\b(${SENSITIVE_NAME_SOURCE})(\\1)?([ \\t]*[:=][ \\t]*)`;
+const REDACTED_PLAINTEXT_RE = new RegExp(
+  `${REDACTED_ASSIGNMENT_PREFIX_SOURCE}` +
+    `(?:"((?:[^"\\\\\\n]|\\\\.)*)"|'((?:[^'\\\\\\n]|\\\\.)*)'|(?![\"'])[^\n]*)`,
+  "gi"
+);
+const REDACTED_SERIALIZED_RE = new RegExp(
+  `${REDACTED_ASSIGNMENT_PREFIX_SOURCE}` +
+    `(?:"((?:[^"\\\\\\n]|\\\\.)*)"|'((?:[^'\\\\\\n]|\\\\.)*)'|(?![\"'])(?:[^\\n\"'},\\\\]|\\\\.)*)`,
+  "gi"
+);
+
+function redactAssignments(regex, text) {
+  return text.replace(
+    regex,
+    (match, keyOpen, name, keyClose, separator, doubleQuoted, singleQuoted) =>
+      !isSensitiveKey(name)
+        ? match
+        : `${keyOpen}${name}${keyClose ?? ""}${separator}` +
+          (doubleQuoted !== undefined
+            ? `"${REDACTED}"`
+            : singleQuoted !== undefined
+              ? `'${REDACTED}'`
+              : REDACTED)
+  );
+}
+
+function redactPlaintextAssignments(text) {
+  return redactAssignments(REDACTED_PLAINTEXT_RE, text);
+}
+
+function tryParseJson(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return undefined;
+  }
+}
+
+// Structural redaction keeps valid JSON valid: sensitive keys collapse to
+// "[redacted]" recursively and string leaves run through the plaintext pass
+// (record-boundary bare values) before serialization, then the conservative
+// serialized pass normalizes assignments that arrived with escaped quotes
+// (e.g. ANTHROPIC_API_KEY=\"sk-…\") without disturbing sibling fields.
+function sanitizeStructuredJson(value) {
+  return redactAssignments(REDACTED_SERIALIZED_RE, JSON.stringify(redactSensitiveValues(value)));
+}
+
+// Non-JSON text: one bounded linear pass tracks brace depth with a single
+// integer plus the current outer span start — constant auxiliary memory even
+// for a 32 MiB unmatched-brace stream (unmatched openers never trigger a
+// suffix rescan). Braces inside strings are skipped. Each outermost span
+// that parses is redacted structurally — covering JSONL and prefixed
+// multiline objects while preserving the surrounding prefix and suffix
+// text; everything else, including unmatched-brace regions and spans whose
+// JSON fails to parse, goes through the plaintext pass.
+function sanitizeNonJsonText(text) {
+  let sanitized = "";
+  let cursor = 0;
+  let depth = 0;
+  let spanStart = -1;
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === "\\") escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+    if (ch === "{") {
+      if (depth === 0) spanStart = i;
+      depth += 1;
+    } else if (ch === "}" && depth > 0) {
+      depth -= 1;
+      if (depth === 0) {
+        const spanJson = tryParseJson(text.slice(spanStart, i + 1));
+        if (spanJson !== undefined) {
+          sanitized +=
+            redactPlaintextAssignments(text.slice(cursor, spanStart)) +
+            sanitizeStructuredJson(spanJson);
+          cursor = i + 1;
+        }
+        spanStart = -1;
+      }
+    }
+  }
+  return sanitized + redactPlaintextAssignments(text.slice(cursor));
+}
+
+// Exported for focused sanitizer regression tests.
+export function sanitizeCliEvidenceText(text) {
+  const parsed = tryParseJson(text);
+  return parsed === undefined ? sanitizeNonJsonText(text) : sanitizeStructuredJson(parsed);
+}
+
+function sanitizeBoundedText(value, limit = CLI_EVIDENCE_EXCERPT_BYTES) {
+  return boundedUtf8Excerpt(Buffer.from(sanitizeCliEvidenceText(String(value))), limit).excerpt;
+}
+
+function buildCliEvidence(value) {
+  const buffer = streamBuffer(value);
+  const excerptSource = Buffer.from(sanitizeCliEvidenceText(buffer.toString("utf8")));
+  return {
+    ...boundedUtf8Excerpt(excerptSource),
+    totalBytes: buffer.length,
+    sha256: sha256(buffer)
+  };
+}
+
+function parseJsonStream(value) {
+  try {
+    return JSON.parse(streamBuffer(value).toString("utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function validCost(value) {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+function cliFailureKind(res) {
+  if (res.error?.code === "ETIMEDOUT") return "timeout";
+  if (res.signal) return "signal";
+  if (res.error) return "spawn-error";
+  return "nonzero-exit";
+}
+
+function resolveFailureCost(stdoutEnvelope, stderrEnvelope) {
+  if (validCost(stdoutEnvelope?.total_cost_usd)) return stdoutEnvelope.total_cost_usd;
+  if (validCost(stderrEnvelope?.total_cost_usd)) return stderrEnvelope.total_cost_usd;
+  return undefined;
+}
+
+function buildCliFailure(res, envelope) {
+  const stdout = buildCliEvidence(res.stdout);
+  const stderr = buildCliEvidence(res.stderr);
+  const detail = res.error?.message ?? (res.signal ? `signal ${res.signal}` : `exit ${res.status}`);
+  const context = stderr.excerpt || stdout.excerpt;
+  const message = sanitizeBoundedText(`judge CLI failed: ${detail}${context ? `: ${context}` : ""}`);
+  const parsedEnvelope =
+    envelope == null ? undefined : buildCliEvidence(JSON.stringify(envelope));
+  return {
+    kind: cliFailureKind(res),
+    exitStatus: typeof res.status === "number" ? res.status : null,
+    signal: res.signal ?? null,
+    message,
+    stdout,
+    stderr,
+    ...(parsedEnvelope ? { parsedEnvelope } : {})
+  };
 }
 
 /**
@@ -144,14 +400,20 @@ export async function judgeCase(input, { model = JUDGE_MODEL, timeoutMs = 180_00
   const res = spawnSync(
     "claude",
     ["-p", "--model", model, "--output-format", "json", "--strict-mcp-config"],
-    { input: prompt, encoding: "utf8", timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 }
+    { input: prompt, timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 }
   );
   if (res.error || res.status !== 0) {
+    const stdoutEnvelope = parseJsonStream(res.stdout);
+    const stderrEnvelope = parseJsonStream(res.stderr);
+    const cliFailure = buildCliFailure(res, stdoutEnvelope);
+    const failureCostUsd = resolveFailureCost(stdoutEnvelope, stderrEnvelope);
     return {
       score: "error",
       missingFacts: [],
       wrongClaims: [],
-      rationale: `judge CLI failed: ${res.error?.message ?? `exit ${res.status}`}: ${String(res.stderr).slice(0, 500)}`,
+      rationale: cliFailure.message,
+      ...(failureCostUsd === undefined ? {} : { costUsd: failureCostUsd }),
+      cliFailure,
       rubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
       promptSha256
@@ -159,36 +421,58 @@ export async function judgeCase(input, { model = JUDGE_MODEL, timeoutMs = 180_00
   }
   let envelope;
   try {
-    envelope = JSON.parse(res.stdout);
+    envelope = JSON.parse(streamBuffer(res.stdout).toString("utf8"));
   } catch {
     envelope = null;
   }
-  const resultText = envelope?.result ?? res.stdout;
+  const resultText = envelope?.result ?? streamBuffer(res.stdout).toString("utf8");
   const verdict = extractJsonObject(resultText);
   if (!verdict || !["correct", "partial", "wrong"].includes(verdict.score)) {
     return {
       score: "error",
       missingFacts: [],
       wrongClaims: [],
-      rationale: `judge returned unparseable verdict: ${String(resultText).slice(0, 500)}`,
+      rationale: sanitizeBoundedText(`judge returned unparseable verdict: ${String(resultText)}`, 512),
+      ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
       rubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
       promptSha256
     };
   }
-  const normalizedVerdict = attachTranscriptEvidenceDiagnostics({
-    verdict: {
-      score: verdict.score,
-      missingFacts: Array.isArray(verdict.missingFacts) ? verdict.missingFacts : [],
-      wrongClaims: Array.isArray(verdict.wrongClaims) ? verdict.wrongClaims : [],
-      rationale: typeof verdict.rationale === "string" ? verdict.rationale : ""
-    },
-    input,
-    transcriptEvidence
+  const normalizedVerdict = {
+    score: verdict.score,
+    coreAnswer: verdict.coreAnswer,
+    missingFacts:
+      Array.isArray(verdict.missingFacts) && verdict.missingFacts.every((f) => typeof f === "string")
+        ? verdict.missingFacts
+        : [],
+    wrongClaims:
+      Array.isArray(verdict.wrongClaims) && verdict.wrongClaims.every((c) => typeof c === "string")
+        ? verdict.wrongClaims
+        : [],
+    avoidMatches: verdict.avoidMatches,
+    rationale: typeof verdict.rationale === "string" ? verdict.rationale : ""
+  };
+  const consistency = checkVerdictConsistency({
+    golden: input.golden,
+    verdict: { ...normalizedVerdict, missingFacts: verdict.missingFacts, wrongClaims: verdict.wrongClaims }
   });
+  const checkedVerdict = consistency.ok
+    ? attachTranscriptEvidenceDiagnostics({ verdict: normalizedVerdict, input, transcriptEvidence })
+    : {
+        ...normalizedVerdict,
+        // The consistency check saw the raw avoidMatches; the emitted shape
+        // must stay a valid array, so an invalid one collapses to [].
+        ...(isValidAvoidMatches(input.golden, normalizedVerdict.avoidMatches)
+          ? {}
+          : { avoidMatches: [] }),
+        score: "error",
+        judgeScore: normalizedVerdict.score,
+        consistencyViolations: consistency.violations
+      };
   return {
-    ...normalizedVerdict,
-    costUsd: envelope?.total_cost_usd,
+    ...checkedVerdict,
+    ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
     rubric: JUDGE_RUBRIC,
     packVersion: PACK_VERSION,
     promptSha256
@@ -341,21 +625,21 @@ const SELF_TEST_CANDIDATES = [
 ];
 
 const PROMPT_SHA256_FIXTURES = new Map([
-  ["q-aas-burn-clawback-redemption-mechanics", "9c0236ebd6a3b481c10c55eb0759b7b4f4d97a2f2733289c74a4b2ae0d2c8349"],
-  ["q-aas-list-token-on-exchanges-aggregators", "6048620b9abb84e7271af0a1f8fd92b1eaf47bad2b18d80c7ba03eb22319d813"],
-  ["q-asset-rwa-tokenized-freshness", "1c769837f55e88dc372da3ffd871d562c979afea282b431af12db3efefd9acb2"],
-  ["q-comp-sep8-number-lookup-no-deepresearch", "bc5eb25233a3f6d895f381d8445b5aa07f2d986f75bd944feab9675546f9cea4"],
-  ["q-edge-1xlm-activation-fee", "dbecace2f637b55c7b0b5fd76df2301d4eaf749e49cef1905822ecd74faff60e"],
-  ["q-edge-ambig-best-wallet", "a6151455693dab9876802b9b7156fb8f99b85961c5dbe5cd1871feb36c266b6e"],
-  ["q-edge-factcheck-soroswap-first-amm", "45a494148f045f5cf210431e94369a8795fb25bec1f62187669e42d59c2e6223"],
-  ["q-edge-inject-ignore-instructions", "6c0341bbbe0137962ca0f043d213f22179e64f668bd63d94fd460bef73775562"],
-  ["q-edge-noinfo-sep-9999", "921fd8b07fba7f08e6cad8132a1e98961560404e84821720c9ca4bf732e9a5b8"],
-  ["q-edge-oos-bitcoin-price-prediction", "0ff7ade15de5183702cd74a5fc1114df9c40863958dc43ccb87d71c31ec493b2"],
-  ["q-edge-send-me-free-xlm", "bf6e1331c49b9ed77696a69c2bc41794a99ab32f4f43ef5f51d6ed46e3845590"],
-  ["q-edge-xlm-price-investment-advice", "de6272849c1ebd799aa1afce21ea821972fae252259bebf4516c302bd0a4cef7"],
-  ["q-scf-total-distributed", "6595f16935adf2812a2f7481eb869ce0c07a7403cdf5d7da112678b460638517"],
-  ["q-soroban-storage-types", "4e05ce325682491fc57192ac57e31f71359899c61f5484538a114b35e7e495d2"],
-  ["q-ti-bindings-to-nextjs-integration", "da16c9dbcbc9828d45a175d0970503fdf4d827c0c532ddb35a53d229df81026a"]
+  ["q-aas-burn-clawback-redemption-mechanics", "6d201527780c05dc75534d4276aff3eca07bc7629f1529632dc15ea7bcc5849c"],
+  ["q-aas-list-token-on-exchanges-aggregators", "ac3555fffb6aa768ffe736ebb0c2d8f55ade84335b4e2da788f71751b84f6388"],
+  ["q-asset-rwa-tokenized-freshness", "ac90bddefdc67982ad5902ba02b9ff80203a62b5f61f1170b8bedf27bb384283"], // gitleaks:allow — committed prompt SHA-256 fixture
+  ["q-comp-sep8-number-lookup-no-deepresearch", "80bb64a5c91c9cd8c478df85cbab9f9b1adce08ca17c1d4bea04b9d5bb61e6f9"],
+  ["q-edge-1xlm-activation-fee", "87d1a38ab3769704dc60f553bf068f56257336f1c0d9d1932cd10b36873e86da"],
+  ["q-edge-ambig-best-wallet", "1f3a2a2ef42fe7749cc65f40fc7ef62a964e1fe28aea5797b9f643a48443e7af"],
+  ["q-edge-factcheck-soroswap-first-amm", "37ac8a659283664c2135f44a8a2a17646723ef3dc25b0b97d8dbd357df5189db"],
+  ["q-edge-inject-ignore-instructions", "91d1cd3ad8e35d8e1de1d5476c415be49a3d21f75ef2b7bca139cbc4aa1d1664"],
+  ["q-edge-noinfo-sep-9999", "b2829d52471b3bb59a42ef8ce0447088ba11ce6af8d2e29479bcc17c7f4d6c58"],
+  ["q-edge-oos-bitcoin-price-prediction", "f8f22976ad11f5108747bd80c1e46c9e6ed2f9bf761fe37293e7d1145fb1c6f8"],
+  ["q-edge-send-me-free-xlm", "5752b2fc3250bad896ea4abd942aff5a1570ed44be3ebc4f3f91634d4045b799"],
+  ["q-edge-xlm-price-investment-advice", "007f4727a60d84ac32f8db665f862680d202c7910f27fb0c4430e82971372b1b"],
+  ["q-scf-total-distributed", "a09eb95b9716794e118b3bf7d2d8bbe6f4d902698f2e3b14f7af468b2d29f123"],
+  ["q-soroban-storage-types", "abffabe054be8c5c6b902491b5096059daaa50d47d8fb2dda095e1695de8fd03"],
+  ["q-ti-bindings-to-nextjs-integration", "af6d999ef312caa2eb010028af90ecb9ce9c109422624ce8c90720554ab00fd1"]
 ]);
 
 function loadPromptFixtureCases() {

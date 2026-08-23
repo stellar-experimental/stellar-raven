@@ -148,8 +148,10 @@ function writeFixture(root, { rows: rowOverrides } = {}) {
 
 const stubVerdict = {
   score: "correct",
+  coreAnswer: "correct",
   missingFacts: [],
   wrongClaims: [],
+  avoidMatches: [],
   rationale: "stub",
   costUsd: 0.25,
   rubric: JUDGE_RUBRIC,
@@ -208,7 +210,11 @@ describe("run-qa --judge-stored", () => {
       expect(out.judgedCount).toBe(2);
 
       const written = JSON.parse(readFileSync(resultsPath, "utf8"));
-      expect(written.rows[0].verdict.score).toBe("correct");
+      expect(written.rows[0].verdict).toMatchObject({
+        score: "correct",
+        coreAnswer: "correct",
+        avoidMatches: []
+      });
       expect(written.rows[1].verdict).toMatchObject({
         score: "error",
         rationale: "timeout: agent process exceeded its wall-clock budget",
@@ -231,6 +237,42 @@ describe("run-qa --judge-stored", () => {
       await expect(
         judgeStoredResults(resultsPath, { judgeModel: "stub-judge", judge: stubJudge(), log: () => {} })
       ).rejects.toThrow(/nothing to judge/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("persists consistency errors without counting the raw judge score as wrong", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: async () => ({
+          score: "error",
+          judgeScore: "wrong",
+          coreAnswer: "correct",
+          missingFacts: ["One detail is missing."],
+          wrongClaims: [],
+          avoidMatches: [],
+          rationale: "The core answer is correct.",
+          consistencyViolations: ["omission-only-wrong"],
+          costUsd: 0.25,
+          rubric: JUDGE_RUBRIC,
+          packVersion: PACK_VERSION,
+          promptSha256: "1".repeat(64)
+        }),
+        log: () => {}
+      });
+
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.rows[0].verdict).toMatchObject({
+        score: "error",
+        judgeScore: "wrong",
+        consistencyViolations: ["omission-only-wrong"],
+        costUsd: 0.25
+      });
+      expect(written.summary.overall).toMatchObject({ wrong: 0, error: 2, total: 2 });
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
