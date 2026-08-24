@@ -126,13 +126,17 @@ describe("server instructions — Claude Code 2KB budget", () => {
  * Tool-description prefix budget. Claude Code clips a tool description at the
  * same 2,048 characters it clips injected server instructions, so the prefix —
  * not the whole string — is what the model reads while it decides how to call
- * the tool. The upstream documentation URLs are a directory-listing
- * requirement addressed to a human reviewer reading `tools/list` in full; they
- * carry no runtime instruction. Placing that 215-character block early spends
- * the clipped budget on text the model cannot act on, and it silently pushed
- * the tail of search's breadth rule and the whole of execute's `## Rules`
- * opener past the cut. These tests pin both halves: the URLs ship in the full
- * description, and the behavior contract keeps the prefix.
+ * the tool. Whatever sits early spends that budget.
+ *
+ * The upstream documentation URLs — one official link per source family — are
+ * trailing reference metadata and provide no runtime guidance. They therefore
+ * belong after the behavior contract rather than inside the clipped prefix.
+ *
+ * These tests hold both invariants. Each clipped prefix must still carry the
+ * rules the model acts on — search's plan-then-compose workflow, including the
+ * open-world half of its breadth rule, and execute's envelope contract and
+ * `## Rules` opener. The URLs must ship in the full description and must not
+ * appear in the prefix.
  */
 describe("tool descriptions — Claude Code 2KB clipped prefix", () => {
   const clipped = (description: string) => description.slice(0, CLAUDE_CODE_INSTRUCTIONS_CAP);

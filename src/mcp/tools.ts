@@ -203,14 +203,16 @@ export const executeInputSchema = {
 // (ADR-0003 spirit — consumers are never told about, and never sold, what
 // the gateway cannot do). Exported (with EXECUTE_DESCRIPTION) so the /demo
 // playground drives the exact production tool contract.
-// One official upstream documentation URL per source family (Connectors
-// Directory criterion: a freeform tool must link or name its target APIs).
-// Additive only — appended to the END of both tool descriptions, nothing else.
-// Placement is load-bearing: Claude Code clips a tool description at 2,048
-// characters, so an early block spends the model's whole prefix budget. These
-// URLs address a human reviewer reading `tools/list` in full and carry no
-// runtime instruction, so they ride last, after the behavior contract.
-// test/mcp-instructions pins both halves.
+// One official upstream documentation URL per source family, appended to the
+// END of both tool descriptions.
+//
+// The trailing placement is load-bearing. Claude Code clips a tool description
+// at 2,048 characters, so whatever sits early spends the model's whole prefix
+// budget. These URLs are trailing reference metadata and provide no runtime
+// guidance, so they ride last, behind the behavior contract the model acts on.
+//
+// test/mcp-instructions.test.ts pins both invariants: the URLs ship in the full
+// description, and they stay out of the clipped prefix.
 export const UPSTREAM_DOC_LINKS = `Upstream documentation: Lumenloop — API guide https://api.lumenloop.com/v1/docs; Stellar Light/Scout (scout) — OpenAPI https://stellarlight.xyz/api/openapi.json; Stellar Docs — https://developers.stellar.org/docs.`;
 
 export const SEARCH_DESCRIPTION = `Ranked lexical search over every exposed service operation (lumenloop.*, scout.*, stellarDocs.*) and whole skill. Skill sections are exact-read affordances exposed on whole-skill hits through availableSections; they are not independent ranked hits.

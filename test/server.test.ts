@@ -387,10 +387,11 @@ describe("docs page truthfulness", () => {
     expect(page).not.toMatch(/Every call resolves to/);
     expect(page.match(/Every service call resolves to/g)?.length).toBe(2);
 
-    // Every helper is bound to the field it actually returns, as ONE pairing.
-    // Independent substring checks would pass while the mappings were swapped —
-    // that is exactly how the earlier "r.hits or r.content for all three"
-    // wording stayed false for describe and for sectional reads.
+    // Each helper name and the result field it returns are asserted as ONE
+    // pattern, never as two independent substring checks. Independent checks
+    // pass whenever both strings appear anywhere on the page, so they keep
+    // passing when a name is documented against the wrong field — which is the
+    // only failure these assertions exist to catch.
     const mappings: ReadonlyArray<readonly [string, RegExp]> = [
       // providers.ts search branch: top-level hits/total/truncated
       ["codemode.search → r.hits", /<code>codemode\.search<\/code>\s+gives\s+<code>r\.hits<\/code>/],
@@ -419,10 +420,12 @@ describe("docs page truthfulness", () => {
       expect(page, label).toMatch(pattern);
     }
 
-    // The retired collective claim must not come back.
+    // No collective "resolve at the top level" sentence: it cannot be true of
+    // all of these helpers, because skill.run and both artifact reads use the
+    // service-call envelope.
     expect(page).not.toMatch(/resolve at the top level instead — read/);
 
-    // The service-call half of the rule survives unchanged.
+    // Service calls keep the `.data` envelope.
     expect(page).toMatch(/<code>r\.data\.projects<\/code>/);
   });
 
