@@ -192,7 +192,7 @@ Two files changed.
 
 `stellar-dev/standards/resources.md` replaces the community Discord invite. The old
 `discord.gg/stellar` vanity code is held by an unrelated guild and lands in a channel named
-`security-trap`. The new `discord.gg/stellardev` resolves to the "Stellar Developers" guild, which
+`🚨・security-trap`. The new `discord.gg/stellardev` resolves to the "Stellar Developers" guild, which
 `developers.stellar.org` also links. This is the fix for finding `sk-020`; it is why this re-pin
 happened. Upstream merged it as PR 114. The pinned commit is the PR head and is an ancestor of
 `main`; the merge commit carries the same selected tree.
