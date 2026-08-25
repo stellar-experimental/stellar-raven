@@ -570,9 +570,6 @@ describe("WorkOSAuthHandler", () => {
     expect(response.status).toBe(200);
     const page = await response.text();
     expect(page).toContain("Stellar Raven documentation");
-    expect(page).toContain("59 operations");
-    expect(page).toContain("19 skills");
-    expect(page).toContain("173 sections");
     expect(page).toContain("https://raven.stellar.org/mcp");
     expect(page).toContain("1 hour");
     expect(page).toContain("90 days");

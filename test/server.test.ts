@@ -305,11 +305,15 @@ describe("docs page truthfulness", () => {
     }
 
     const secondId = DOC_TRACE_EXAMPLE.executeOperationIds[1]!;
-    const secondCallArgs = script.match(
-      new RegExp(`${secondId.replace(".", "\\.")}\\(([^]*)`)
-    )?.[1];
-    expect(secondCallArgs).toBeTruthy();
-    expect(secondCallArgs!).toMatch(/\$\{top\.name\}/);
+    const secondCallStart = script.indexOf(`${secondId}(`);
+    expect(secondCallStart).toBeGreaterThan(-1);
+    const secondCallEnd = script.indexOf(");", secondCallStart);
+    expect(secondCallEnd).toBeGreaterThan(secondCallStart);
+    const secondCallArgs = script.slice(
+      secondCallStart + secondId.length + 1,
+      secondCallEnd
+    );
+    expect(secondCallArgs).toMatch(/\$\{top\.name\}/);
 
     const emptyGuardIndex = script.indexOf("projects.length === 0");
     const topReadIndex = script.indexOf("top.name");
