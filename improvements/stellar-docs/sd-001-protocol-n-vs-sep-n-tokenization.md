@@ -3,7 +3,7 @@ id: sd-001
 service: stellar-docs
 status: verified
 discovered: 2026-07-03
-upstreamTitle: /docs/networks/software-versions is missing from the DocSearch index, so no protocol-version query reaches it
+upstreamTitle: /docs/networks/software-versions exceeds the crawler's 750-record page cap, so the whole page is dropped from the index
 evidence:
   - eval/qa/results/2026-07-03T03-49-35-variantA.json
   - eval/qa/results/2026-07-03T04-13-42-variantA.json
@@ -16,7 +16,11 @@ recurrences:
   - date: 2026-08-25
     evidence: live sweep across Protocol 20-26. Only `Protocol 24` shows any SEP collision; only `Protocol 23` returns pages naming that version, and only because the URL anchors contain `protocol-23`. Five of seven return unrelated pages, with no SEP involved.
   - date: 2026-08-25
-    evidence: root cause found. `/docs/networks/software-versions` covers every protocol from 20 to 28 with activation dates and CAP lists, and is absent from the DocSearch index. Confirmed against the docs site's own production index `crawler_Stellar Docs - Docusaurus`, not only the agent replica. The page is in the sitemap, is not noindexed, and robots.txt allows it; sibling pages under `/docs/networks/` are indexed.
+    evidence: exact root cause. Crawler `POST /test` on the page returns `extracted_too_many_records` — "Extractors returned 1319 records, the maximum is 750" — so the page yields zero records. The `td:first-child` / `td:last-child` selectors make one record per table row, and the page holds nine protocol sections each with a software-version table.
+  - date: 2026-08-25
+    evidence: candidate fix validated read-only via the crawler test endpoint with a config override. Page goes 0 records to 242; `/docs/networks/audits` stays 3 and `/docs/tools/cli/install-cli` stays 10.
+  - date: 2026-08-25
+    evidence: earlier note. `/docs/networks/software-versions` covers every protocol from 20 to 28 with activation dates and CAP lists, and is absent from the DocSearch index. Confirmed against the docs site's own production index `crawler_Stellar Docs - Docusaurus`, not only the agent replica. The page is in the sitemap, is not noindexed, and robots.txt allows it; sibling pages under `/docs/networks/` are indexed.
   - date: 2026-08-11
     evidence: live Stellar Docs recheck — bare `Protocol 24` returned eight SEP-24 docs hits, while `Protocol 24 Whisk state archival` with meetings included returned the 2025-10-16 Whisk/state-archival meeting at rank #1.
   - date: 2026-07-09
@@ -102,28 +106,78 @@ pages in the same directory are indexed: `/docs/networks`, `/docs/networks/audit
 network, see Software Versions" — a page that links to the target is indexed while the target is
 not.
 
+## Root cause
+
+The Algolia Crawler test endpoint answers this exactly. `POST
+/api/1/crawlers/{id}/test` with that URL returns:
+
+```json
+{"code": "extracted_too_many_records",
+ "message": "Extractors returned 1319 records, the maximum is 750"}
+```
+
+A page over the cap yields **zero** records. It is not partially indexed; it is dropped whole,
+and the crawl reports no failure that a reader would ever see.
+
+The count comes from the record extractor's table handling:
+
+```js
+lvl5:    "article h5, article td:first-child",
+content: "article p, article li, article td:last-child, article pre code",
+```
+
+Every table row becomes a heading plus content pair. That is sensible for a short parameter
+table. This page carries nine protocol sections, each with a full software-version table, so the
+same rule produces 1319 records.
+
+Nothing else is wrong. `pathsToMatch` is `https://developers.stellar.org/**` and matches the URL.
+No `exclusionPatterns` entry covers it. The page is in `sitemap.xml`, carries no `noindex`, and
+`robots.txt` allows it. The crawler config exposes no per-page record limit, so 750 is a platform
+cap and cannot be raised from configuration.
+
 ## Recommendation
 
-Get `/docs/networks/software-versions` into the DocSearch crawl. The content is already written,
-already canonical, and already answers these queries; only the record is missing. Check the
-crawler configuration for a path exclusion, a record-extraction rule that yields nothing on a
-table-heavy page, or a per-page record cap.
+Make an over-cap page degrade instead of disappear. When the extractor exceeds the cap, re-extract
+at heading granularity — dropping only the table-row selectors — and keep the page reachable:
 
-This is worth fixing for the docs site on its own terms, independent of any agent: a reader who
-types "software versions" into the search box on developers.stellar.org does not find the software
-versions page.
+```js
+const build = (withTables) => helpers.docsearch({ /* td selectors only when withTables */ });
+const records = build(true);
+if (records.length <= 750) return records;
+const coarse = build(false);
+return coarse.length > 750 ? coarse.slice(0, 750) : coarse;
+```
 
-Two smaller retrieval rules remain useful once the page is indexed:
+Measured read-only through the crawler test endpoint with a config override, changing nothing in
+production:
 
-- Disambiguate `Protocol N` from `SEP-N`. This is the original 2026-07-03 recommendation. It is
-  still correct and still insufficient on its own.
-- Stop a bare version number from matching a date fragment in a `/meetings/YYYY/MM/DD` path.
-  `Protocol 23 release` currently returns `/meetings/2026/07/23`, where the `23` matched the date.
-  `Protocol 24 release` returns a Protocol 27 discussion.
+| page | current | with the change |
+|---|---|---|
+| `/docs/networks/software-versions` | dropped, 0 records | indexed, 242 records |
+| `/docs/networks/audits` | 3 records | 3 records |
+| `/docs/tools/cli/install-cli` | 10 records | 10 records |
 
-### Note on remediation path
+The fallback only runs above the cap, so every page that indexes today is byte-identical
+afterwards. The change is general: it repairs any page that exceeds the cap, now or later, rather
+than naming this one.
 
-The operator Algolia credentials are the wrong tool here. The defect is in the upstream crawl, and
-the same gap breaks the docs site's own search. Writing the missing record into the agent replica
-would hide an upstream defect behind a local patch, leave every non-Raven reader broken, and fail
-the "general mechanism rather than per-query hacks" bar in `AGENTS.md`.
+Two smaller retrieval rules stay useful once the page is indexed:
+
+- Disambiguate `Protocol N` from `SEP-N`. This is the original 2026-07-03 recommendation. Still
+  correct, still insufficient alone.
+- Stop a bare version number matching a date fragment in a `/meetings/YYYY/MM/DD` path.
+  `Protocol 23 release` returns `/meetings/2026/07/23`, where the `23` matched the date.
+
+### Remediation path
+
+This is a crawler-extractor defect, not a content defect, so it sits on the highest rung of the
+write ladder in `research/services/stellar-docs-algolia.md`: it changes what the docs team's own
+crawler produces and what every DocSearch user sees. The `sd-006` crawler-config fix is the
+precedent for a general change at that rung.
+
+The read-only measurement above is the evidence the ladder asks for. The repository's A/B harness
+cannot pre-measure it, because the harness queries the live index and this change only takes
+effect on the next crawl.
+
+Whoever applies it should confirm with the docs owners first: the same gap breaks their own search
+box, so the fix is theirs to want.
