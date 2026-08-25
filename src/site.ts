@@ -994,9 +994,9 @@ const TERMS_BODY = `
 <h1>Stellar Raven Terms of Service</h1>
 <p class="eff">Effective ${TERMS_EFFECTIVE_DATE}</p>
 <p class="lead">These Terms of Service ("Terms") govern your access to and use of raven.stellar.org,
-raven.stellar.buzz, and agents.stellar.buzz, together with any successor or alias hostname for the
-same service, including the Model Context Protocol endpoint and the public playground (collectively,
-the "Service"), operated by the Stellar Development Foundation ("SDF," "we," or "us").</p>
+raven.stellar.buzz and agents.stellar.buzz, including the Model Context Protocol endpoint and the
+public playground (collectively, the "Service"), operated by the Stellar Development Foundation
+("SDF," "we," or "us").</p>
 <p>By accessing or using the Service, you agree to be bound by the
 <a href="https://stellar.org/terms-of-service" target="_blank" rel="noopener">Stellar.org Terms of Service</a>
 (the "Stellar ToS") and the
@@ -1079,10 +1079,8 @@ Stellar ToS apply to your use of AI-generated output obtained through or informe
     Service other than as a read-only information-retrieval tool;</li>
   <li>use the Service to overload, disrupt, or interfere with the Service or any third-party service
     reached through it; or</li>
-  <li>probe, scan, or test the vulnerability of the Service, breach or circumvent its authentication,
-    rate limiting, or access controls, or otherwise attack the Service or the infrastructure it runs
-    on. This restriction applies to SDF's deployment of the Service, not to the source code, which
-    you may use, modify, and redistribute under its open-source license as described in Section 4.</li>
+  <li>reverse engineer, or attempt to extract the underlying models, prompts, or algorithms of, the
+    Service.</li>
 </ol>
 
 <h2>9. Data and privacy</h2>
