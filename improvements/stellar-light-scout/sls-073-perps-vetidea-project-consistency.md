@@ -3,7 +3,7 @@ id: sls-073
 service: stellar-light-scout
 status: verified
 discovered: 2026-08-21
-upstreamTitle: vet-idea returns an empty report.competitors.projects array while the directory returns matching projects for the same query
+upstreamTitle: vet-idea returns an empty report.competitors.projects array for an idea the directory does match
 evidence:
   - 2026-08-21T01:01:25.310Z live https://stellarlight.xyz/api/vet-idea
   - the same call returned vertical=null, gap=null, report.competitors.projects=[], and 6 competitor repos
