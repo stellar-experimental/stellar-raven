@@ -4,8 +4,10 @@
  * Privacy disclosures quote these durations. The Terms state the outer bound
  * of what the Service MAY do; a disclosure of current practice has to match
  * what the runtime actually enforces, and a number copied by hand drifts the
- * first time a TTL moves. This module is the single value each disclosure and
- * each runtime constant reads.
+ * first time a TTL moves. This module is the single value every disclosure
+ * quotes. Four runtime constants read it; the other three are checked against
+ * it by a test. The split is spelled out below, because which durations are
+ * enforced by construction and which are only guarded is the whole point.
  *
  * Leaf module: it imports nothing, so any layer can read it without a cycle.
  *

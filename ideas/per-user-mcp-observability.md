@@ -228,8 +228,8 @@ fetch spans, with timing attribution and no user content on spans.
 5. Update `.agents/skills/cloudflare-observability-review/SKILL.md` with the verified field names
    and query examples. Document that secret rotation can temporarily split one human/client across
    old- and new-grant hashes, and that a wrong admin token is intentionally indistinguishable from
-   other rejected bearer tokens. Record the probe window and Ray IDs in the relevant round ledger or
-   scratchpad, without sensitive fields.
+   other rejected bearer tokens. Record the probe window and Ray IDs in the relevant round ledger,
+   without sensitive fields.
 
 Exit: code, live evidence, and the operator runbook agree.
 
