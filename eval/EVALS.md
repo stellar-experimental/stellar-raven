@@ -32,8 +32,8 @@ the routing eval's committed label source (`eval/corpus/PROVENANCE.md`) — the 
 repos are retired; growth happens in this repo's own formats.
 
 **Owned-battery and sample history.** The authoritative current denominator is **499 cases as of
-2026-08-19**, which added two broad `scout.hackathonBrief` cases to the 497-case corpus. The retrieval
-audit previously added five service-semantics cases to the 492-case corpus. Commit
+2026-08-19**. The 497→499 compile added two `scout.hackathonBrief` cases to the 497-case corpus. The
+retrieval audit previously added five service-semantics cases to the 492-case corpus. Commit
 `6e1f979` before that added two Soroban cases to the 490-case corpus. The 490-case corpus was created
 after six release-closeout cases were added to the 484-case 2026-07-11 baseline. Historical
 484-case, 490-case, and 492-case results retain their original denominators. Per-id comparisons
