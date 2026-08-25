@@ -89,9 +89,25 @@ handlers use — not an HTTP round-trip to `/mcp` with a token:
 - UI copy states plainly: the playground exercises the same server-side Raven
   tool implementations as `/mcp`; it does not exercise MCP OAuth transport.
 
-## Decision 3 — Model: via AI binding + AI Gateway; GPT-5.4 primary
+## Decision 3 — Model: via AI binding + AI Gateway; GPT-5.6 Terra primary
 
-> **Revision 2026-07-07 (live `/demo/chat` gauntlet):** use
+> **Revision 2026-08-06 (supersedes the 2026-07-07 revision below):** the primary is
+> `openai/gpt-5.6-terra` and the fallback is `openai/gpt-5.6-luna`. All five compared models
+> passed 5/5 with 5/5 clean terminals and zero tool failures, so latency decided it. Terra beat
+> GPT-5.4 at both p50 and p95; Luna beat GPT-5.4 Mini at both; Sol was the slowest on both
+> (14043 ms p50, 19753 ms p95) and bought nothing measurable. The measured matrix is
+> `research/gauntlets/2026-08-06-primary-selection-summary.md`; the code source of truth is still
+> `src/demo/model-config.ts`.
+>
+> Two cautions on this revision. The linked summary records **latency only and has no cost
+> column** — the cost advantage is asserted in the `cf2e3fd` commit message and is not backed by
+> data in this repository, so do not quote it as measured. And Luna is **not** the fallback for
+> the reason GPT-5.4 Mini was: Mini was demoted for tool-budget failures, whereas Luna had zero
+> tool failures and was in fact the fastest model in the matrix. Luna is the fallback simply
+> because Terra is the primary. Only the compacted-search-payload guidance carries over from the
+> 2026-07-07 revision.
+
+> **Revision 2026-07-07 (live `/demo/chat` gauntlet, superseded):** use
 > `openai/gpt-5.4` as the primary model and `openai/gpt-5.4-mini` as the
 > fallback, with `xai/grok-4.3` and `@cf/moonshotai/kimi-k2.7-code` kept as
 > future-gauntlet controls. The measured matrix is in

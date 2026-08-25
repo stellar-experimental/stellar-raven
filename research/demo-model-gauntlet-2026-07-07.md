@@ -1,5 +1,12 @@
 # Demo Model Gauntlet - 2026-07-07
 
+> **SUPERSEDED 2026-08-06.** The decision below is no longer the shipped configuration. The
+> `/demo/chat` primary is now `openai/gpt-5.6-terra` with `openai/gpt-5.6-luna` as the fallback,
+> selected on a measured comparison at an identical 5/5 pass rate. See
+> `research/gauntlets/2026-08-06-primary-selection-summary.md` for the current verdict and
+> `src/demo/model-config.ts` for the shipped values. This file is retained as the dated record of
+> the original selection and its method.
+
 ## Decision
 
 Use `openai/gpt-5.4` as the `/demo/chat` primary model and `openai/gpt-5.4-mini` as the fallback.
