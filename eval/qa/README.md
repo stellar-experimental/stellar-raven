@@ -901,9 +901,10 @@ candidate, and rubric/pack `v2.4/p3`; it recorded 154C / 218P / 118W, 31.4286% s
 receives causal credit without a common-ID, same-tuple comparison and mechanism evidence.
 
 The review deduplicated accepted upstream work. Live Scout on 2026-08-19 returned four
-Fluxity-named repositories. Three map to `project.slug: "wagent"` despite their Fluxity names and
-descriptions. This is a verified repository-to-project linkage defect in `sls-068`. It is distinct
-from resolved `sls-058`, which covered SCF funding fields. The upstream report is
+Fluxity-named repositories. Three mapped to `project.slug: "wagent"` despite their Fluxity names and
+descriptions. This was the repository-to-project linkage defect in `sls-068`. It was distinct from
+resolved `sls-058`, which covered SCF funding fields. A 2026-08-25 live recheck returned all four
+repositories with `project.slug: "fluxity"`. The upstream report is
 [Stellar-Light/stellarlight#972](https://github.com/Stellar-Light/stellarlight/issues/972).
 
 Solo todos 1737 through 1748 track the accepted own-repository, golden-truth, and free-probe work.

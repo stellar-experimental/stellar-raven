@@ -11,7 +11,11 @@ export const EXCLUDED_SCOUT_OPS = new Set([
   "GET /api/feedback",
   "POST /api/partners/submit-listing",
   "POST /api/partners/assistant",
-  "POST /api/partners/onboard"
+  "POST /api/partners/onboard",
+  // The 1.8.87 response leaves subject/current/evidence as opaque objects and
+  // omits the live meta envelope. Expose it after the upstream contract names
+  // the identity and provenance fields a model must project.
+  "GET /api/projects/resolve"
 ]);
 
 export const EXCLUDED_SCOUT_PATHS = new Set(

@@ -1,7 +1,7 @@
 ---
 id: sls-068
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-19
 upstreamTitle: Correct the Fluxity repository-to-project links
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-08-19 full QA review, Solo todo 1704 and scratchpad 822 revision 92, accepted the live replay after supplementary ledger 831 revision 2 identified the saved transcript mismatch
   - dedupe: distinct from resolved sls-058, which concerned Fluxity SCF funding fields and award linkage, not repository-to-project attribution
   - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellarlight/issues/972
+  - 2026-08-25 live GET https://stellarlight.xyz/api/repos/search?q=fluxity&limit=20 returned all four exact Fluxity-named repositories with project.slug fluxity; fluxity-v1-core remained the correct control
 ---
 
 ## Finding

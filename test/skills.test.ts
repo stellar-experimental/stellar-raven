@@ -32,7 +32,7 @@ const validSectionRead: SkillReadResult = {
   ok: true,
   id: "skills.test.sections",
   url: "https://example.test/SKILL.md",
-  sections: [{ section: "one", content: "## One" }],
+  sections: [{ section: "one", content: "## One", url: "https://example.test/SKILL.md" }],
   availableSections: ["one"]
 };
 
@@ -102,6 +102,7 @@ describe("readSkill", () => {
     if (r.sections === undefined) throw new Error("expected section-read content");
     expect(r.sections).toHaveLength(1);
     expect(r.sections[0]!.content.startsWith("## ")).toBe(true);
+    expect(r.sections[0]!.url).toBe(r.url);
   });
 
   it("reads a section directly via its #-qualified id", async () => {
@@ -123,7 +124,50 @@ describe("readSkill", () => {
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     if (r.sections === undefined) throw new Error("expected section-read content");
+    const skillEntry = catalog.entries.find((e) => e.id === skillId)!;
+    const skillUrl = skillEntry.transport?.type === "file" ? skillEntry.transport.url : undefined;
+    const fileUrl = fileEntry!.transport?.type === "file" ? fileEntry!.transport.url : undefined;
+    expect(r.url).toBe(skillUrl);
+    expect(r.sections[0]!.url).toBe(fileUrl);
+    expect(r.sections[0]!.url).not.toBe(r.url);
     expect(r.sections[0]!.content.length).toBeGreaterThan(0);
+  });
+
+  it("keeps distinct provenance for multiple file: sections", async () => {
+    const fileEntries = catalog.entries.filter(
+      (e) => e.kind === "skill-section" && e.id.includes("#file:")
+    );
+    const pair = fileEntries.find((entry) => {
+      const skillId = entry.id.split("#")[0]!;
+      return fileEntries.filter((candidate) => candidate.id.startsWith(`${skillId}#file:`)).length >= 2;
+    });
+    expect(pair).toBeDefined();
+    const skillId = pair!.id.split("#")[0]!;
+    const siblings = fileEntries.filter((entry) => entry.id.startsWith(`${skillId}#file:`)).slice(0, 2);
+    const keys = siblings.map((entry) => entry.id.split("#")[1]!);
+    const r = await readSkill(catalog, source, skillId, { sections: keys });
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    if (r.sections === undefined) throw new Error("expected section-read content");
+    expect(r.sections.map((section) => section.url)).toEqual(
+      siblings.map((entry) => entry.transport?.type === "file" ? entry.transport.url : undefined)
+    );
+    expect(new Set(r.sections.map((section) => section.url)).size).toBe(2);
+  });
+
+  it("reports companion provenance for a #file:-qualified id", async () => {
+    const fileEntry = catalog.entries.find((e) => e.id.includes("#file:"));
+    expect(fileEntry).toBeDefined();
+    const skillId = fileEntry!.id.split("#")[0]!;
+    const skillEntry = catalog.entries.find((e) => e.id === skillId)!;
+    const r = await readSkill(catalog, source, fileEntry!.id);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    if (r.sections === undefined) throw new Error("expected section-read content");
+    expect(r.url).toBe(skillEntry.transport?.type === "file" ? skillEntry.transport.url : undefined);
+    expect(r.sections[0]!.url).toBe(
+      fileEntry!.transport?.type === "file" ? fileEntry!.transport.url : undefined
+    );
   });
 
   it("has no lumenloop.skill.* alias — the twin namespace is dead (ADR-0003)", async () => {

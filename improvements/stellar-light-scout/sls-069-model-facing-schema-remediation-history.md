@@ -1,7 +1,7 @@
 ---
 id: sls-069
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-19
 upstreamTitle: Keep remediation history out of model-facing Scout schema descriptions
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - the RFP descriptions record when fields were served and specced, including the sls-067 remediation identifier
   - Solo standards review against f313bf27b53b1f28a2ab2771452188ef6000c755 identified the text as upstream reviewability debt and advised against a local scrub
   - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellarlight/issues/973
+  - 2026-08-25 live Scout OpenAPI 1.8.87 contained zero descriptions matching `sls-\d` and zero descriptions matching `specced 20|until 2026-|BREAKING 20|retained for response-shape`
 ---
 
 ## Finding

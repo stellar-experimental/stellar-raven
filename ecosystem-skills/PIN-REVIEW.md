@@ -161,3 +161,20 @@ describe both smart-account kits as supported siblings with different authorizat
 The changes stay within each skill's topic and match upstream PRs 109 and 110. They add no
 credential, behavior-hijack instruction, retired skill, or non-exposed Raven operation reference.
 The external OpenAPI, registry, SDK, and repository links are relevant reference material.
+
+### 2026-08-25 — stellar-light re-pin (drift issue #35)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-light` | `540c4c3f19e9bb88b9f6cbd611601b73542713e3` | `sel:1fc95be3ced4` | complete old-to-new body diff read |
+
+The other three sources did not change their served selections.
+
+One API reference file changed. It documents the exact project `type` filter and the new
+read-only `GET /api/projects/resolve` operation. The resolver defines conservative miss,
+supersession, and unsourced-status semantics.
+
+The changes stay within the Scout skill's topic. They add no credential or behavior-hijack
+instruction. The API reference omits the live `matchedOn: "repo"` value for the new resolver.
+Raven filters the resolver text and keeps that operation unexposed because OpenAPI leaves its
+nested identity and evidence objects untyped. Finding `sls-075` tracks both contract gaps.

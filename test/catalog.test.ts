@@ -197,19 +197,21 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter((e) => e.service === "lumenloop" && e.kind === "skill-section")
     ).toHaveLength(0);
 
-    // Scout: 29 exposed of 34 upstream OpenAPI operations — the 4 write/
+    // Scout: 29 exposed of 35 upstream OpenAPI operations — the 4 write/
     // side-effecting endpoints (submitFeedback, submitPartnerListing,
     // partnerAssistant, partnerOnboard) are excluded at build time, plus getFeedbackSchema:
     // read-only, but a dead end whose only purpose is to shape the excluded
     // feedback submission (its upstream description names the non-exposed
     // scout.submitFeedback). The read-only hackathonBrief and matchPartners
     // operations stay exposed. Their OpenAPI contracts describe no persistence.
+    // resolveProject stays hidden until its nested response objects are typed.
     expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(29);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);
     expect(count((e) => e.id === "scout.submitPartnerListing")).toBe(0);
     expect(count((e) => e.id === "scout.partnerAssistant")).toBe(0);
     expect(count((e) => e.id === "scout.partnerOnboard")).toBe(0);
+    expect(count((e) => e.id === "scout.resolveProject")).toBe(0);
     expect(count((e) => e.id === "scout.hackathonBrief")).toBe(1);
     expect(count((e) => e.id === "scout.matchPartners")).toBe(1);
     for (const id of [
@@ -407,7 +409,7 @@ describe("build-catalog.mjs", () => {
 describe("x-routing ingestion — routingKeywords field", () => {
   it("attaches routingKeywords to exactly the exposed scout ops that publish x-routing", () => {
     const withField = catalog.entries.filter((e) => (e.routingKeywords ?? []).length > 0);
-    // 26 upstream ops carry x-routing; partnerAssistant is build-excluded.
+    // 27 upstream ops carry x-routing; partnerAssistant and resolveProject are build-excluded.
     expect(withField).toHaveLength(25);
     for (const entry of withField) {
       expect(entry.service, entry.id).toBe("scout");

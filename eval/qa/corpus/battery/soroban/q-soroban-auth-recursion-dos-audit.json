@@ -5,15 +5,16 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "The historical Veridise V2 report labeled the investigated Critical item **V-SOR-VUL-002**, “Denial of Service During Authorization.” In V2.1 Appendix A.2.2 the same authorization-recursion item is renumbered **V-SOR-APP-VUL-003**; V-SOR-VUL-002 in the V2.1 taxonomy is a different low-severity metering item. Always state the report version. The investigated path involved `require_auth_enforcing()`, but V2.1 moved it to invalid issues: failed `require_auth` propagates `Err`, making work linear in trackers, while constructing enough trackers is itself costly. It is not a CVE, confirmed practical exploit, or evidence of Ethereum-style reentrancy.",
+    "answer": "The historical Veridise V2 report labeled the investigated item **V-SOR-VUL-002**, “Denial of Service During Authorization,” with severity Critical. Its valid-vulnerability summary nevertheless counted zero Critical issues. V2 already judged the item invalid inline: failed `require_auth` propagates `Err`, making work linear in trackers, while constructing enough trackers is itself costly. V2.1 relocated the same write-up to Appendix A.2.2 as **V-SOR-APP-VUL-003**. In V2.1, **V-SOR-VUL-002** instead names a different Low-severity metering item. Always state the report version and distinguish the historical Critical label from the zero valid-Critical count. This item is not a CVE, a confirmed practical exploit, or evidence of Ethereum-style reentrancy.",
     "keyFacts": [
-      "Preserves Critical/Investigated historical metadata and the later invalid/practical-cost conclusion.",
+      "Preserves the historical Critical/Investigated label while stating that both valid-vulnerability summaries count zero Critical issues.",
+      "States that V2 already judged the item invalid and V2.1 relocated it to the appendix.",
       "Version-qualifies V2 versus V2.1 identifiers."
     ],
     "avoid": [
       "Do NOT cite an unversioned finding ID, convert hypothetical impact into a live exploit, or call it reentrancy."
     ],
-    "notes": "Added from theboycoder/StellarLight data-layer intake. Verified 2026-06-25 via Scout research audit corpus: Veridise Stellar Soroban Core report V-SOR-VUL-002 / Denial of Service During Authorization, severity Critical, file rs-soroban-env/src/auth.rs, location require_auth_enforcing(), status Investigated; V2.1 report explains why invalid: Err propagation makes iterations linear in trackers and many trackers are costly.\nAlso good if the answer: Connects the finding to Soroban's contract-auth model rather than generic EVM reentrancy.\nGolden cites: The Veridise Stellar Soroban Core audit record from Soroban Security Portal / Scout research.\nGT-44 independently reconciled the V2/V2.1 renumbering."
+    "notes": "Added from theboycoder/StellarLight data-layer intake. Primary-source recheck on 2026-08-25 confirmed the versioned identifier history and the counted-versus-labeled distinction. V2 already contains the invalid-disposition analysis. V2.1 relocates that analysis to Appendix A.2.2. Both reports label the investigated item Critical, while their valid-vulnerability summaries count zero Critical issues. Scout currently exact-misses the real V-SOR-APP-VUL-003 identifier; treat that result as retrieval defect sls-074, not real-world absence.\nAlso good if the answer connects the finding to Soroban's contract-auth model instead of generic EVM reentrancy.\nGT-44 independently reconciled the V2/V2.1 renumbering."
   },
   "tags": {
     "category": "soroban",
@@ -25,19 +26,19 @@
     "status": "confirmed",
     "sources": [
       {
-        "class": "B",
+        "class": "A",
         "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
-        "note": "class inferred at migration"
+        "note": "Auditor-owned V2.1 primary report."
       },
       {
-        "class": "B",
-        "ref": "https://sorobansecurity.com/report/28",
-        "note": "class inferred at migration"
+        "class": "D",
+        "ref": "https://stellarsecurityportal.com/api/v1/reports/28",
+        "note": "Portal-owned public V2 report record and markdown."
       },
       {
-        "class": "B",
-        "ref": "https://sorobansecurity.com/report/42",
-        "note": "class inferred at migration"
+        "class": "D",
+        "ref": "https://stellarsecurityportal.com/api/v1/reports/42",
+        "note": "Portal-owned public V2.1 report record and markdown."
       }
     ],
     "corroboration": [
@@ -47,24 +48,24 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "A/B: Veridise V2.1 PDF and Security Portal reports 28/42",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+            "observedAt": "2026-08-25",
+            "note": "V2.1 Appendix A.2.2 preserves the Critical and Investigated labels and the invalid-disposition reasoning."
           },
           {
-            "class": "B",
-            "ref": "A/B: Veridise V2.1 PDF and Security Portal reports 28/42",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "D",
+            "ref": "https://stellarsecurityportal.com/api/v1/reports/28",
+            "observedAt": "2026-08-25",
+            "note": "The V2 record contains V-SOR-VUL-002 and the same invalid-disposition reasoning."
           },
           {
-            "class": "C",
-            "ref": "C: Scout preserves historical report",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "D",
+            "ref": "https://stellarsecurityportal.com/api/v1/reports/42",
+            "observedAt": "2026-08-25",
+            "note": "The V2.1 portal record corroborates the appendix identifier and zero valid-Critical count."
           }
         ],
-        "note": "Legacy verdict: confirmed-with-versioned-id."
+        "note": "Confirmed with versioned identifiers and the distinction between a Critical label and zero valid Critical issues."
       },
       {
         "claim": "Version-qualifies V2 versus V2.1 identifiers.",
@@ -73,36 +74,37 @@
           {
             "class": "A",
             "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-25",
             "note": "Fetched auditor-owned report records the V2/V2.1 finding identifiers and disposition."
           },
           {
             "class": "D",
-            "ref": "https://sorobansecurity.com/report/28",
-            "observedAt": "2026-07-11",
+            "ref": "https://stellarsecurityportal.com/api/v1/reports/28",
+            "observedAt": "2026-08-25",
             "note": "Fetched independent security-portal record corroborates the version-qualified report history."
           },
           {
             "class": "D",
-            "ref": "https://sorobansecurity.com/report/42",
-            "observedAt": "2026-07-11",
+            "ref": "https://stellarsecurityportal.com/api/v1/reports/42",
+            "observedAt": "2026-08-25",
             "note": "Fetched sibling security-portal record corroborates the changed identifier/disposition."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-25",
+      "by": "Independent Herdr Opus high and Grok 4.6 high primary-source rechecks",
       "evidence": [
         "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
-        "https://sorobansecurity.com/report/28",
-        "https://sorobansecurity.com/report/42",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "https://stellarsecurityportal.com/api/v1/reports/28",
+        "https://stellarsecurityportal.com/api/v1/reports/42",
+        "Two independent reviewers confirmed the version history, labels, disposition, and valid-vulnerability counts.",
+        "Sibling sweep: q-tool-soroban-auth-audit-live was updated and confirmed consistent on 2026-08-25."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        "improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md"
       ]
     },
     "origin": "raven-next q-soroban-auth-recursion-dos-audit"
