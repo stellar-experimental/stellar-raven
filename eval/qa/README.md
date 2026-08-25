@@ -84,7 +84,7 @@ whole-file contracts — `eval/self-test.mjs` asserts contract name, ordered mem
       // LATEST verification event only — git holds the rest
       "date": "2026-07-11",
       "by": "…",
-      "evidence": ["solo://…"],
+      "evidence": ["<url, results stamp, or .agents/rounds/… path>"],
       // rootCause is required when the event CHANGED gospel;
       // "freshness-drift" is an allowed explicit value
       "rootCause": ["improvements/…"]
@@ -163,7 +163,7 @@ sweep should cluster more of the remainder, weighted toward the strata where bre
 freshness-sensitive cases (141 of the 238 unclustered are `live`/`scheduled`) and numeric,
 version, or date claims, which drift between sweeps while `stable` conceptual cases mostly do not.
 
-Server for live lanes: reuse the Solo `dev` process when it exists; otherwise
+Server for live lanes: reuse a pane already running `npm run dev` when one exists; otherwise
 `npx wrangler dev --port 8788 --host localhost` — `--host localhost` is REQUIRED (custom-domain
 routes otherwise rewrite request.url and every request 401s).
 
@@ -257,7 +257,7 @@ Every push/PR (`.github/workflows/ci.yml`):
   fails. In CI the **gospel-change guard** is automatically diff-aware against the merge base:
   a change to `question`, `golden.*`, `tags.freshness`, or `tags.trap` fails unless
   `truth.verified` changed in the same diff with non-empty `evidence` + `rootCause` (score-only
-  rationales rejected; `freshness-drift` allowed). Local/pre-push equivalent for Solo lanes:
+  rationales rejected; `freshness-drift` allowed). Local/pre-push equivalent for every lane:
   `npm run eval:qa:lint -- --since <ref>`.
 - `eval:selftest` asserts the live v2 contracts (name, ordered membership, content digest).
 

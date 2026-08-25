@@ -59,7 +59,7 @@ replaced two; the same README rule applies across that boundary.
 ## Rules that keep this from getting messy
 
 1. **One headline, two gates, everything else is diagnostic.** New reporting views don't
-   get promoted into gates without a decision recorded in Solo. The two gates are
+   get promoted into gates without a decision recorded in the round ledger. The two gates are
    mechanical, not prose: baselines live in `eval/gates.json`, every `run-routing` run
    prints a gate verdict, `--gate` turns a breach into exit 1, and CI runs
    `eval:selftest` + `eval:routing -- --gate` on every push/PR — so re-baselining means
@@ -133,7 +133,7 @@ matching collection: `lumenloop/`, `stellar-light-scout/`, `stellar-docs/`, `ski
 - **Evidence rule:** findings move `proposed → verified → reported-upstream → fixed-upstream`;
   `verified` requires live re-execution evidence, not a stale transcript.
 - **Scope rule:** `improvements/` is for the upstream services only. Fixes to this repo's
-  own scoring/catalog/executor go to Solo todos, as ever.
+  own scoring/catalog/executor go to `.agents/TODO.md`, as ever.
 
 ## What we deliberately do NOT measure
 

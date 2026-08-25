@@ -11,7 +11,8 @@ events, and OTel spans.
 
 When the investigation is part of an eval round, agent-run forensic review, or other
 multi-agent maintenance pass, record the query inputs, Ray IDs, and verdict in the relevant
-Solo scratchpad/todo so the evidence survives outside the current context window.
+round ledger (`.agents/rounds/`) or `.agents/TODO.md` so the evidence survives outside the
+current context window.
 
 ## Principle
 

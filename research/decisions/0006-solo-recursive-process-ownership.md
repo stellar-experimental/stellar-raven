@@ -1,6 +1,7 @@
 # ADR-0006: Solo process lifecycle follows recursive ownership
 
-- Status: accepted (2026-07-14)
+- Status: superseded by `AGENTS.md` “Coordination” (2026-08-25); the ownership rule carried over
+  to Herdr panes, the Solo mechanics did not
 - Driver: recovery review after unrelated Solo processes were closed during release cleanup
 - Evidence: `solo://proj/49/scratchpad/solo-process-owners--626`
 

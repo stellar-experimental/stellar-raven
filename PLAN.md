@@ -314,8 +314,8 @@ the versioning page designates 2026-07-28 as current, and `agents` pins the stab
 >   measurement extensions remain under `eval/`, while no production binding/index/scorer was
 >   left behind (`eval/vectorize/README.md`).
 >
-> Follow-ups and former deferrals (tracked as Solo backlog todos; project binding in
-> [`AGENTS.md` “Coordination”](./AGENTS.md#coordination)):
+> Follow-ups and former deferrals (open items now live in [`.agents/TODO.md`](./.agents/TODO.md);
+> the todo numbers below are historical references to the retired Solo tracker):
 > - `codemode.skill.run` (executable skills) — **BUILT 2026-07-06, ship-approved** (todo 806;
 >   the 2026-07-03 do-not-build decision's reopen triggers fired). Two v1 runners (project
 >   dossier, ecosystem digest) passed the design's §10 A/B gate — retrieval-neutral by

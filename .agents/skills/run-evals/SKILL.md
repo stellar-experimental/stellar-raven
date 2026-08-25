@@ -23,7 +23,7 @@ any round — they are the current truth; this skill is the orchestration around
    that surfaces an upstream gap and doesn't file it in `improvements/` has dropped its most
    valuable output.
 2. **One headline, two gates, everything else diagnostic.** Never merge lanes, never tune
-   per-question, never promote a view to a gate without a Solo-recorded decision.
+   per-question, never promote a view to a gate without a decision recorded in the round ledger.
 
 ## Agent roles and model boundaries
 
@@ -47,7 +47,7 @@ changes what the numbers mean, so they move only by explicit eval decision, neve
 model-picking guidance.
 [`AGENTS.md` “Model routing for repo-work fan-out”](../../../AGENTS.md#model-routing-for-repo-work-fan-out)
 applies to everything *around* the measurement: helper/reviewer/triage sub-agents the
-orchestrator fans out through Solo while running a round.
+orchestrator fans out into Herdr panes while running a round.
 
 ## Clean Codex workflow
 
@@ -84,14 +84,14 @@ Decide what changed (or what question you're asking) — that picks the instrume
 | Stale-gospel gate fired (PR CI or the daily refresh runs `eval:qa:lint -- --stale`) | triage each past-due `truth.reverifyBy` case via `golden-truth`: re-verify (update `truth.verified` + `asOf` + a new staggered `reverifyBy`) or record an explicit dated extension with rootCause — never silently bump the date; `truth-maintenance` owns the queue |
 | Corpus-health cadence (periodic, no code change needed) | cross-question contradiction scan (corpus-internal, no live calls: flag golden pairs whose answers can't both be true — the ancestor corpora's dominant silent-drift failure; results + verified-consistent clusters + method all live in `eval/qa/consistency-register.json`, member hashes stamped by `npm run eval:qa:register`) + a sampled refute-then-repair sweep (skeptic agent attacks a small sample of goldens' claims/citations with real tools, weighted toward freshness-sensitive + numeric/version claims and `truth.status != "confirmed"` cases — the strata where breaks concentrate; fixes go through the `golden-truth` skill) + re-verify any `dateContingentTraps` in the register whose trigger has passed. |
 
-Tracking (Solo MCP — this repo's project binding is in
-[`AGENTS.md` “Coordination”](../../../AGENTS.md#coordination)): create or claim a todo for the
-round; open a scratchpad as the round's working record (numbers, per-case notes, triage table, findings drafted). Repo
-fixes discovered during the round become **their own Solo todos** — never `improvements/` files.
+Tracking (see [`AGENTS.md` “Coordination”](../../../AGENTS.md#coordination)): open
+`.agents/rounds/<YYYY-MM-DD>-<lane>.md` as the round's working record (numbers, per-case notes,
+triage table, findings drafted). Repo fixes discovered during the round become **their own
+`.agents/TODO.md` entries** — never `improvements/` files.
 
 **Pre-spend plan review — a launch gate for any round with paid instruments** (QA, agentic,
 live-data — anything the table above prices). Before the first paid token: draft the round
-brief in the round scratchpad (instruments, sample, reading rules, budget); have it
+brief in the round ledger (instruments, sample, reading rules, budget); have it
 adversarially reviewed by an arm from the
 [`AGENTS.md` routing table](../../../AGENTS.md#model-routing-for-repo-work-fan-out) that is
 not the brief's author; reconcile every finding; on a major revision, run a bounded delta
@@ -171,7 +171,7 @@ valid source-addition arm.
 
 For a multi-lane or CI-like round, use `truth-maintenance` as the coordinator rather than
 holding every transcript, drift note, golden check, and improvement follow-up in one context
-window. The coordinator should own the Solo ledger and spawn isolated reviewers for:
+window. The coordinator should own the round ledger and spawn isolated reviewers for:
 
 - wrong/partial QA rows or shards of rows,
 - plan/routing regression diffs,
@@ -179,9 +179,9 @@ window. The coordinator should own the Solo ledger and spawn isolated reviewers 
 - improvements filing/follow-up,
 - adversarial closeout review.
 
-Route generic Solo mechanics through global `fan-solo`; use `solo-orchestrate-agents` for reviewer
-fan-out and select model/effort explicitly per `AGENTS.md`. Each reviewer appends a narrow
-evidence-backed verdict to scratchpad; coordinator reconciles and patches. Do not pass the
+Route pane and agent mechanics through the global `herdr` skill; split one pane per reviewer and
+select model/effort explicitly per `AGENTS.md`. Each reviewer appends a narrow evidence-backed
+verdict to the ledger; coordinator reconciles and patches. Do not pass the
 coordinator's expected answer to reviewers.
 
 ## Step 1 — free preflight (always)
@@ -221,14 +221,13 @@ it — Step 1 already covers the free lanes.
 
 ## Step 2 — live server (only for QA / agentic / live-data lanes)
 
-Use Solo first. Check the project processes for the `dev` command (`npm run dev`) and reuse it
-when it is already running. Discover its port with Solo (`services_list` or
-`wait_for_bound_port`) and pass that port to the eval runner. Do not start a duplicate Wrangler
-process just because the example below uses `8788`.
+Reuse a running server first. Look for a pane already running `npm run dev` (`herdr pane list`)
+and read its bound port from that pane's output (`herdr pane read <id>`). Pass that port to the
+eval runner. Do not start a duplicate Wrangler process just because the example below uses `8788`.
 
-If no Solo dev process exists and a live lane needs one, start/restart the trusted Solo `dev`
-command when available. Only fall back to a foreground shell command for a short local run when
-Solo has no matching command, and stop it before finalizing:
+If no dev pane exists and a live lane needs one, split your own pane and run it there
+(`herdr pane run <id> "npm run dev"`). Close only a pane you split yourself, and stop it before
+finalizing:
 
 ```sh
 npx wrangler dev --port 8788 --host localhost
@@ -248,7 +247,7 @@ Readiness check before launching any lane (a plain GET on `/mcp` is not meaningf
 with a real MCP initialize):
 
 ```sh
-PORT=<solo-discovered-port>
+PORT=<port read from the dev pane>
 curl -s -o /dev/null -w '%{http_code}' -X POST "http://localhost:${PORT}/mcp" \
   -H 'content-type: application/json' -H 'accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"probe","version":"0"}}}'
@@ -293,7 +292,7 @@ skills-lane top-1 floor; current grading rule v3, manifest-exposed entries only)
 - If the change is a regression → fix or revert; don't rationalize.
 - If the numbers moved legitimately (drift, deliberate policy change) → re-baseline:
   update `gates.json` **in the same commit** as the change that moved the numbers, decision
-  recorded in Solo, and check per-case hit→miss regressions (zero-regression is the standard
+  recorded in the ledger, and check per-case hit→miss regressions (zero-regression is the standard
   the last re-baselines held themselves to), plus the `$comment`/`note` provenance fields.
 
 **QA verdicts are NOT ground truth — review them agentically before believing them.**
@@ -345,11 +344,11 @@ Known judge failure modes (from `eval/qa/README.md`):
 
 Fan out sub-agents for this review when the run is big: one per `wrong`/`partial` case, each
 re-executing the disputed claims live (production or dev `execute`) and returning a verdict
-+ evidence. Collect into the round scratchpad.
++ evidence. Collect into the round ledger.
 
 Shard by evidence type when that is cheaper than case-by-case review. Example: one reviewer
 checks all rows involving docs-index freshness, another checks Scout/Lumenloop corpus claims,
-and another checks plan transcripts. Keep the write sets disjoint: reviewers append to Solo;
+and another checks plan transcripts. Keep the write sets disjoint: reviewers append to the ledger;
 the coordinator edits repo files.
 
 Results rows do NOT carry the `golden` field (`{id, question, tags, answer, transcript,
@@ -368,9 +367,9 @@ For each miss/wrong/partial (and each surprising pass), classify and route:
 | Root cause | How to recognize | Where it goes |
 |---|---|---|
 | Judge artifact | live re-execution contradicts the verdict | round record; re-judge; rubric note if a new failure mode |
-| Agent failure | tool use / synthesis genuinely wrong in transcript | round record; only actionable if a pattern → Solo todo (prompt/tool-shape) |
-| Own-repo gap: scoring/catalog/executor/adapters/normalizers | search buried the right entry; envelope/normalizer misread a payload | **own-repo Solo todo** — never improvements/ |
-| Eval-side gap: stale golden, mislabeled case, missing lane coverage | golden disagrees with live truth from the service's own mouth | Solo todo (goldens live in this repo); the fix lands directly in the owned case file (`eval/qa/corpus/battery/<category>/<id>.json`) **via the `golden-truth` skill** (`.agents/skills/golden-truth/SKILL.md` — gospel changes need multi-source triangulation, never a single source class) with `truth.verified` updated in the same diff (the CI gospel-change lint enforces it); freshness-drifting truth moves to the live-data lane as behavioral golden |
+| Agent failure | tool use / synthesis genuinely wrong in transcript | round record; only actionable if a pattern → `.agents/TODO.md` (prompt/tool-shape) |
+| Own-repo gap: scoring/catalog/executor/adapters/normalizers | search buried the right entry; envelope/normalizer misread a payload | **own-repo `.agents/TODO.md` entry** — never improvements/ |
+| Eval-side gap: stale golden, mislabeled case, missing lane coverage | golden disagrees with live truth from the service's own mouth | `.agents/TODO.md` (goldens live in this repo); the fix lands directly in the owned case file (`eval/qa/corpus/battery/<category>/<id>.json`) **via the `golden-truth` skill** (`.agents/skills/golden-truth/SKILL.md` — gospel changes need multi-source triangulation, never a single source class) with `truth.verified` updated in the same diff (the CI gospel-change lint enforces it); freshness-drifting truth moves to the live-data lane as behavioral golden |
 | **Upstream data/content gap**: missing fields, unordered arrays, empty lanes, extraction quality, stale skill content | correct agent + correct plumbing still can't answer from what the service returns | **`improvements/` finding** |
 | **Upstream semantics/spec gap**: response contracts, error shapes, vocabulary, index tokenization/ranking | the service works but its self-description or behavior misleads any consumer, not just us | **`improvements/` finding** |
 | Corpus-coverage diagnostic: canonical truth exists elsewhere and no tested surface undertakes to host it | the answer is verifiable from its canonical owner, while the miss only proves that one corpus/index does not carry it | keep truth and provenance in the golden; record a local coverage/monitoring result, not a manufactured Docs/site issue |
@@ -432,7 +431,7 @@ round record. A prose edit with no measured behavior shift gets reverted, not ac
 **Gospel-change doctrine — a golden fix always wears its provenance.** Editing a case
 corrects the eval's *copy* of the truth; the defect that made it necessary lives somewhere
 else and MUST be captured where it can actually get fixed: upstream service gap →
-`improvements/` finding, eval-side authoring/rubric flaw → Solo todo, plain freshness drift →
+`improvements/` finding, eval-side authoring/rubric flaw → `.agents/TODO.md`, plain freshness drift →
 named as such (`freshness-drift` in `truth.verified.rootCause`). A gospel edit without its
 root-cause capture is a patch hiding a defect. This is CI-enforced by the gospel-change lint
 (`eval:qa:lint`, diff-aware in CI; run `-- --since <ref>` locally): any judge-facing change
@@ -461,7 +460,7 @@ discovered: YYYY-MM-DD
 evidence:
   - eval results-file stamp(s)
   - live verification note
-  - Solo todo/comment ref
+  - round ledger path
 ---
 ## Finding        (what's wrong, factually)
 ## Evidence       (stamps, paths, re-execution notes — reproducible by a stranger)
@@ -498,17 +497,17 @@ tuned, numbers as-is" is the house style; caveats belong in the record, not omit
 Close-out checklist:
 - [ ] Gate verdict recorded (and `gates.json` re-baselined in-commit if legitimate)
 - [ ] Lane README(s) updated with stamped results + reading notes
-- [ ] Every failure triaged (step 5 table complete in the round scratchpad)
+- [ ] Every failure triaged (step 5 table complete in the round ledger)
 - [ ] New/updated `improvements/` findings committed — a round with zero findings needs an
       explicit "nothing new surfaced, here's what was re-checked" note to be credible
-- [ ] Own-repo fixes filed as Solo todos (not improvements/, not silently patched)
+- [ ] Own-repo fixes filed in `.agents/TODO.md` (not improvements/, not silently patched)
 - [ ] Corpus lint green: `npm run eval:qa:lint -- --since <ref> --stale` passes over any case
       edits — every gospel change carries an updated `truth.verified` with live evidence +
       `rootCause` (the lint enforces the fields; the reviewer verifies the substance) and its
       root cause is actually filed; `npm run eval:qa:register` re-stamped/reopened clusters
 - [ ] Independent/adversarial review finished and every finding was reconciled or explicitly
       recorded as a non-blocking residual risk
-- [ ] Solo round todo closed with a comment linking scratchpad + results stamps
+- [ ] Round ledger closed with its Outcome section linking results stamps
 
 ## Hard rules (violating any of these invalidates the round)
 

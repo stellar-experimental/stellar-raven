@@ -28,7 +28,7 @@ that added a callable operation ships an unvetted surface; re-baselining a gate 
 didn't touch routing hides a real regression behind a moved goalpost. The whole skill exists to
 make that one call correctly and prove it.
 
-Bindings that change (which CI repo, which Solo project, which secret store) live in
+Bindings that change (which CI repo, which secret store) live in
 [`AGENTS.md`](../../../AGENTS.md), especially
 [`Coordination`](../../../AGENTS.md#coordination) and [`Hard rules`](../../../AGENTS.md#hard-rules),
 not here. This runbook is the procedure.
@@ -108,9 +108,9 @@ facts. Do this after regeneration and again after any corrective edits:
   `improvements/` findings, use `improvements-pipeline` to inspect the upstream issue/PR
   state and re-run the original trigger before changing statuses.
 
-For non-trivial drift, split this audit across Solo reviewers instead of one agent doing
+For non-trivial drift, split this audit across reviewers in their own panes instead of one agent doing
 all checks serially. Use separate reviewer briefs for the categories above, have each
-reviewer append a verdict with file:line evidence to a Solo scratchpad, then reconcile
+reviewer append a verdict with file:line evidence to the round ledger, then reconcile
 every finding before committing. Reviewer briefs should be narrow enough to verify, for
 example:
 
@@ -270,7 +270,7 @@ A newly-exposed operation is a **new callable surface**. Do not ship it unexamin
   `research_result`/`list_my_research`) stays excluded as a unit; see
   [`AGENTS.md` “Hard rules”](../../../AGENTS.md#hard-rules) before touching any of the three.
 
-Record the exposure call and its rationale (Solo scratchpad / commit body). This is the class the
+Record the exposure call and its rationale (round ledger / commit body). This is the class the
 issue means by "new/removed operations … may need policy (deny/metered) decisions."
 
 ## Step 4 — routing-relevant text changed → baseline decision
@@ -295,7 +295,7 @@ npm run eval:compile && npm run eval:routing
   didn't is a real regression, not a baseline to bump.
 
 If you do re-baseline, it is a deliberate, separately-justified part of the change, not a
-side effect — capture why (Solo/commit body), same as an exposure decision.
+side effect — capture why (round ledger / commit body), same as an exposure decision.
 
 ## Step 4b — runner-affecting drift → live runner re-verification
 
@@ -306,7 +306,7 @@ matches itself, so upstream shape drift on a declared op must be re-verified aga
 service, not against the runner's own contract:
 
 - **Re-run the affected runners' live smoke**: against a live-serving instance (for example, the
-  existing Solo `dev` process and bound URL required by
+  existing `npm run dev` pane and its bound URL required by
   [`AGENTS.md` “Commands and verification”](../../../AGENTS.md#commands-and-verification) and
   [`Coordination`](../../../AGENTS.md#coordination)), `execute` a `codemode.skill.run(...)` call
   for each affected runnable id with a representative input, and confirm the envelope: `ok`
@@ -350,15 +350,15 @@ clean bump — spawn an **independent reviewer** to verify or refute the "safe t
 before committing. This mirrors the repo's independent-review rule in
 [`AGENTS.md` “Coordination”](../../../AGENTS.md#coordination).
 
-- Route generic Solo mechanics through global `fan-solo`; use `solo-orchestrate-agents` for the
+- Route pane and agent mechanics through the global `herdr` skill; split one pane per lane for the
   reviewer lane and select model/effort explicitly per `AGENTS.md`. Spawn a *different* agent with
   an explicit adversarial brief: do NOT
   trust the maintainer's summary; re-derive the drift class from the actual `git diff`, re-run the
   guards and gate, check ADR-0003 exposure and secrets, and return a verdict with file:line
-  evidence. Prefer different vendor from author. Put brief in Solo scratchpad and have reviewer
+  evidence. Prefer different vendor from author. Put brief in the round ledger and have reviewer
   append findings.
 - Reviewer ≠ author is the invariant. Let it run to completion; reconcile every finding before
-  committing. Watch for the reviewer with an idle-wake timer rather than polling.
+  committing. Wait for the reviewer with `herdr agent wait <name>` rather than polling.
 
 ## Step 7 — close out
 
@@ -368,7 +368,7 @@ before committing. This mirrors the repo's independent-review rule in
   the body what was verified (op count, description-identity, gate result, guards, secrets) and
   that an independent review agreed. Push.
 - If the change involved a policy or baseline decision, record it where the project tracks work
-  (Solo), so the *why* survives — the artifacts only carry the *what*.
+  (round ledger), so the *why* survives — the artifacts only carry the *what*.
 
 ## Step 8 — deploy to production (the drift isn't resolved until prod serves it)
 
@@ -418,7 +418,7 @@ deploy Version ID, and evidence from the guards/review/live check (`gh issue clo
 - Skill pin drift is runtime drift the moment the catalog transports advance — a re-pin is a
   content change to the model surface, not a metadata bump.
 - Every drift resolution includes an impact audit for golden/eval files, improvements,
-  inventory/catalog/spec, runtime source, and relevant docs/examples; use Solo category
+  inventory/catalog/spec, runtime source, and relevant docs/examples; use ledger category
   reviewers for non-trivial drift and record their evidence.
 - Never print or commit a secret; `secrets:scan --tree` before every drift commit.
 - Independent, adversarial review before committing anything past a pure-provenance bump;

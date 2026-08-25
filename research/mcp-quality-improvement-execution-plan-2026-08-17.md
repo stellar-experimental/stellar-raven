@@ -2,6 +2,14 @@
 
 Status: ready for implementation planning, not authorized for paid execution or deployment.
 
+> [!IMPORTANT]
+> **Tooling note, 2026-08-25.** This plan was written against Solo, which this repository no longer
+> uses. Ignore every Solo mechanic in it: `fan-solo`, `solo-orchestrate-agents`, `Owner: Solo todo`,
+> and "the existing Solo `dev` process". Use `AGENTS.md` “Coordination” and the global `herdr`
+> skill for orchestration, `.agents/TODO.md` for ownership, and a pane already running `npm run dev`
+> for the local server. The plan's technical content is unchanged and still current; only its
+> tooling references are dead.
+
 Date: 2026-08-17.
 
 Parent evidence: `solo://proj/49/scratchpad/mcp-eval-learning-an--811`, revision 11.
