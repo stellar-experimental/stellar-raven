@@ -11,7 +11,7 @@ are very welcome.
 
 - Preferred: GitHub **private vulnerability reporting** on this repository
   (Security tab → "Report a vulnerability").
-- Alternatively: email **tyler@stellar.org** with a description, reproduction steps, and the
+- Alternatively: email **frontier@stellar.org** with a description, reproduction steps, and the
   impact you believe it has.
 
 You can expect an acknowledgement within a few business days. Please give us a reasonable
