@@ -16,6 +16,10 @@ sandboxed-code executor). Security reports are very welcome.
 You can expect an acknowledgement within a few business days. Please give us a reasonable
 window to remediate before any public disclosure.
 
+**For anything that is not a vulnerability** — connection problems, catalog questions, general
+support — use the [Stellar Developers Discord](https://discord.gg/stellardev). Do not post a
+vulnerability there.
+
 ## Scope
 
 - This repository's source and generated artifacts.

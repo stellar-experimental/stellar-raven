@@ -580,6 +580,15 @@ describe("docs page truthfulness", () => {
     expect(page).toMatch(/<code>r\.data\.projects<\/code>/);
   });
 
+  it("names the Discord support channel and keeps vulnerability reports private", () => {
+    const page = docsPage();
+    // Directory review requires a named user support channel distinct from the
+    // private security-report path (SECURITY.md).
+    expect(page).toContain("https://discord.gg/stellardev");
+    expect(page).toMatch(/Do not post a\s+vulnerability in Discord/);
+    expect(page).toContain("mailto:frontier@stellar.org");
+  });
+
   it("renders footer legal text at WCAG AA contrast", () => {
     const page = docsPage();
     const match = page.match(/\.foot \.l\{[^}]*color:(#[0-9a-fA-F]{6})/);

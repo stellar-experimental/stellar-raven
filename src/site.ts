@@ -807,6 +807,7 @@ function siteFooter(): string {
   <div class="foot-links">
     <a href="/docs">Docs</a>
     <a href="https://github.com/stellar-experimental/stellar-raven" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://discord.gg/stellardev" target="_blank" rel="noopener">Discord</a>
     <a href="https://stellar.org" target="_blank" rel="noopener">Stellar</a>
     <a href="/terms">Raven Terms</a>
     <a href="https://stellar.org/terms-of-service" target="_blank" rel="noopener">Stellar Terms</a>
@@ -1378,6 +1379,15 @@ until official docs confirm them.</p>
     all, ask the operator for a named API key and send
     <code>Authorization: Bearer name:token</code> instead.</li>
 </ul>
+
+<h2>Get help</h2>
+<p>Ask in the <a href="https://discord.gg/stellardev" target="_blank" rel="noopener">Stellar
+Developers Discord</a>. That is the support channel for connection problems, catalog questions,
+and anything on this page that did not resolve your failure.</p>
+<p>Report a security vulnerability privately instead: use GitHub private vulnerability reporting on
+<a href="https://github.com/stellar-experimental/stellar-raven" target="_blank" rel="noopener">stellar-experimental/stellar-raven</a>,
+or email <a href="mailto:frontier@stellar.org">frontier@stellar.org</a>. Do not post a
+vulnerability in Discord.</p>
 `;
 }
 
