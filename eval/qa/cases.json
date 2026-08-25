@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "a27aee771f3efdc48ea6a7ac9d24d26b60cbad64bc5b5d98d601ca57ad5492c1",
+  "corpusContentSha256": "e17110900daf2c4ba91ba691ab6fd5f26c9a1356c834935c282bce76e657ebd5",
   "counts": {
     "total": 499,
     "byCategory": {
@@ -18535,7 +18535,7 @@
       "golden": {
         "answer": "As of **2026-07-11**, the official Providers table marks seven hosted rows for **RPC Archive**: **Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network/Quasar, Exaion, and GetBlock**. Recheck the live table because the roster and access plans are volatile.\n\nArchive means data-lake-backed **deep/full ledger history through `getLedgers`**. Ordinary RPC instances can still expose `getLedgers` within local retention; the differentiator is historical reach, not method existence. Archive does not extend `getEvents`, `getTransaction(s)`, or `getLedgerEntries`. Choose by network, documented historical coverage, authentication/plan, SLA/rate limits, and current operational health rather than an unsupported universal ranking.",
         "keyFacts": [
-          "Names the dated seven-row archive-marked subset.",
+          "Names a dated archive-marked roster: either the seven-row subset as of 2026-07-11 (Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock), or an attributed, dated current roster that may include the eighth row (Validation Cloud) after the 2026-08-18 official table change.",
           "Defines archive as extended historical reach for getLedgers only; ordinary getLedgers may be retention-bounded.",
           "Keeps provider plans, SLAs, and live health freshness-sensitive."
         ],
@@ -18544,7 +18544,7 @@
           "Do NOT generalize archive to events, transactions, or state lookups.",
           "Do NOT invent pricing, SLA, or provider preference without current provider-owned evidence."
         ],
-        "notes": "Re-verified 2026-06-29 against the Providers page: 15 providers total; RPC Archive tier exposed by Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock; page confirms 'Currently only the getLedgers RPC method supports this feature.' Freshness-sensitive (subset changes) — gate on 'only a subset supports archive; Providers table is source of truth', reward flagging staleness.\nAlso good if the answer: Choice also depends on network coverage (Testnet/Mainnet/Futurenet) and dedicated-node availability; the official Providers table is the source of truth. | Validation Cloud / QuickNode are low-friction consumer options; Blockdaemon/QuickNode/NowNodes offer dedicated production nodes.\nGolden cites: developers.stellar.org RPC Providers page (archive tier column) and getLedgers method docs.\nGT-50 BLIND-ONLY WORDING CORRECTION 2026-07-11: archive differentiates getLedgers historical reach, not availability of the method. Date the seven-row subset and never infer other-method history."
+        "notes": "Re-verified 2026-06-29 against the Providers page: 15 providers total; RPC Archive tier exposed by Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock; page confirms 'Currently only the getLedgers RPC method supports this feature.' Freshness-sensitive (subset changes) — gate on 'only a subset supports archive; Providers table is source of truth', reward flagging staleness.\nAlso good if the answer: Choice also depends on network coverage (Testnet/Mainnet/Futurenet) and dedicated-node availability; the official Providers table is the source of truth. | Validation Cloud / QuickNode are low-friction consumer options; Blockdaemon/QuickNode/NowNodes offer dedicated production nodes.\nGolden cites: developers.stellar.org RPC Providers page (archive tier column) and getLedgers method docs.\nGT-50 BLIND-ONLY WORDING CORRECTION 2026-07-11: archive differentiates getLedgers historical reach, not availability of the method. Date the seven-row subset and never infer other-method history.\nGrader caution 2026-08-20: the official table marked Validation Cloud as an eighth RPC Archive row on 2026-08-18, but Validation Cloud's own Stellar documentation still described archive access as Horizon-only and RPC as retention-bounded. Do not penalize a dated seven-row answer for the 2026-07-11 question basis. Do not penalize a dated eight-row answer that attributes the newer official table. Penalize an undated roster or a claim that the disputed Validation Cloud capability is independently confirmed."
       },
       "tags": {
         "category": "tooling-infra",
@@ -18553,8 +18553,8 @@
       },
       "truth": {
         "domain": "real-world",
-        "status": "confirmed",
-        "asOf": "2026-07-11",
+        "status": "mixed",
+        "asOf": "2026-08-24",
         "reverifyBy": "2026-11-05",
         "sources": [
           {
@@ -18566,6 +18566,16 @@
             "class": "A",
             "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.validationcloud.io/v1/stellar/overview",
+            "note": "Provider-owned capability documentation used to record the disputed 2026-08-18 table change."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00",
+            "note": "Official source change that marks Validation Cloud for RPC Archive."
           }
         ],
         "corroboration": [
@@ -18616,20 +18626,53 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "Validation Cloud is an eighth RPC Archive provider after the official table change on 2026-08-18.",
+            "verdict": "disputed",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00",
+                "observedAt": "2026-08-20",
+                "note": "The official source change marks Validation Cloud for dedicated nodes and RPC Archive."
+              },
+              {
+                "class": "A",
+                "ref": "https://docs.validationcloud.io/v1/stellar/overview",
+                "observedAt": "2026-08-20",
+                "note": "Provider-owned documentation described archive access as Horizon-only and Stellar RPC as retention-bounded."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
+                "observedAt": "2026-08-24",
+                "note": "Re-observed: the rendered official table still marks eight RPC Archive rows, Validation Cloud plus the seven-row 2026-07-11 subset, and still limits the feature to getLedgers."
+              },
+              {
+                "class": "A",
+                "ref": "https://docs.validationcloud.io/v1/stellar/overview",
+                "observedAt": "2026-08-24",
+                "note": "Re-observed: provider-owned documentation still states that the archive endpoint serves Horizon only, that Stellar RPC is not available on it, and that Stellar RPC serves the most recent 7 days. The dispute is unresolved on this date."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-11",
-          "by": "sk-003 provenance preservation — Solo todo 1452; independent fixed-review todo 1449 comment 3813.",
+          "date": "2026-08-24",
+          "by": "Golden-truth review 2026-08-24 (branch codex/qa-golden-truth-corrections asOf repair) — original verification Solo todo 1741 comments 5000 and 5003; independent GPT review Solo todo 1936.",
           "evidence": [
-            "A: https://developers.stellar.org/docs/data/apis/rpc/providers and https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers rechecked 2026-08-11; the Providers page limits RPC Archive to getLedgers, and the method page limits pagination to the provider's retained history.",
-            "B: https://raw.githubusercontent.com/stellar/stellar-dev-skill/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/data/SKILL.md rechecked 2026-08-11; deep getLedgers history depends on the provider's data lake, while a plain RPC is bounded by getHealth().oldestLedger and returns -32600 below that floor.",
-            "C: independent fixed-review todo 1449 comment 3813 re-read the production skills.stellar-dev.data surface through https://agents.stellar.buzz/mcp on 2026-08-11 and confirmed the same retained-range boundary with no unconditional genesis claim.",
-            "Sibling sweep 2026-08-11 re-read every member of consistency clusters cluster-018 and cluster-046; getLedgers-only archive reach, bounded event and transaction history, indexer/Hubble roles, and Quasar entity separation remain consistent."
+            "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and stellar-docs commits 7fa36531734baa72d0477a5f9a4b3da3d356a0e0 and 15f14808ffd5f640f5461af827c1f4d39db3c418 preserve the dated seven-row roster through 2026-07-29.",
+            "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00 show the eighth official table row from 2026-08-18.",
+            "A: https://docs.validationcloud.io/v1/stellar/overview rechecked 2026-08-20; provider-owned documentation conflicts with the new RPC Archive marking.",
+            "A: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers confirms that ordinary getLedgers remains bounded by provider retention.",
+            "A: both disputed sources re-observed 2026-08-24 — https://developers.stellar.org/docs/data/apis/rpc/providers still marks eight RPC Archive rows (Validation Cloud plus the seven-row 2026-07-11 subset) and https://docs.validationcloud.io/v1/stellar/overview still limits archive access to Horizon; the dispute is unresolved, so truth.asOf moves to 2026-08-24 to cover the 2026-08-18 official table change while the golden keeps its 2026-07-11 question basis.",
+            "Key-fact review 2026-08-21 (GPT todo 1936): the alternative-aware keyFact admits either the dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change, so neither side of the Validation Cloud dispute is pinned and the grader caution matches the disputed corroboration row.",
+            "Sibling review 2026-08-21 (todo 1936): every member of consistency clusters cluster-018 and cluster-046 stays consistent with the alternative-aware roster keyFact (a dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change) and with mixed-truth status for the disputed Validation Cloud row; no sibling pins the archive-provider count or conflicts with the getLedgers-only boundary."
           ],
           "rootCause": [
-            "Eval-side method/tier conflation: a standard retention-bounded method was described as absent outside the archive subset.",
-            "improvements/resolved.json entry sk-003 — fixed upstream and refreshed locally at stellar-dev-skill commit 9e3d3fe0de8587205b020e0148ea67525e38e494; the current pinned and served data skill bounds deep getLedgers history by provider data-lake reach or getHealth().oldestLedger and documents -32600 outside retention."
+            "freshness-drift",
+            "The official provider table and provider-owned documentation disagree about Validation Cloud RPC Archive support."
           ]
         },
         "origin": "raven-next q-infra-rpc-provider-archive-tier"
@@ -23446,19 +23489,19 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nNo, a normal Stellar account should not be described as \"quantum-resistant today\" without caveat. SDF's Quantum Preparedness Plan says sufficiently powerful quantum computers would break elliptic-curve cryptography, including Stellar's Ed25519, and identifies two threat classes: validator/SCP signature integrity and account takeover. Source: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan\n\nThe QPP is a staged migration plan. Stage 1 targets post-quantum signature verification in Soroban contract accounts in 2026; Stage 2 targets first-class quantum-safe signers for classic accounts in 2027; Stage 3 would deprecate Ed25519 only when quantum threat progress and ecosystem readiness justify activation. The important Stellar-specific advantage is that account identity and signing keys are separable: an account can add/weight/remove signers without changing its G-address. Sources: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan and https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#signer\n\nFor dormant accounts, the QPP does not publish a final mechanical \"qualifies if X\" rule. It says a forced cutoff would disrupt a large population of dormant accounts whose holders are unreachable and would require a design choice between freezing accounts with a recovery mechanism or permanently locking them. A good answer should therefore say: check current primary QPP/CAP materials for any finalized on-chain criteria; do not invent dates, balance thresholds, or \"has never sent a transaction\" rules unless a later CAP or implementation defines them.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nNo, a normal Stellar account should not be described as \"quantum-resistant today\" without caveat. SDF's Quantum Preparedness Plan says sufficiently powerful quantum computers would break elliptic-curve cryptography, including Stellar's Ed25519, and identifies two threat classes: validator/SCP signature integrity and account takeover. Source: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan\n\nThe QPP is a staged migration plan. Stage 1 targets post-quantum signature verification in Soroban contract accounts in 2026; Stage 2 targets first-class quantum-safe signers for classic accounts in 2027; Stage 3 would deprecate Ed25519 only when quantum threat progress and ecosystem readiness justify activation. The important Stellar-specific advantage is that account identity and signing keys are separable: an account can add/weight/remove signers without changing its G-address. Sources: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan and https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#signer\n\nFor dormant accounts, no primary Stellar source published a final mechanical \"qualifies if X\" rule as of 2026-08-24 — the QPP does not, and no CAP defines one. The QPP says a forced cutoff would disrupt a large population of dormant accounts whose holders are unreachable and would require a design choice between freezing accounts with a recovery mechanism or permanently locking them. A good answer should therefore say: check current primary QPP/CAP materials for any finalized on-chain criteria; do not invent dates, balance thresholds, or \"has never sent a transaction\" rules unless a later CAP or implementation defines them.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Explains the Quantum Preparedness Plan and dormant-account definition only as documented in primary Stellar/CAP sources.",
-          "Tells users to determine qualification from on-chain account/signing/activity criteria specified by the plan, not guesswork."
+          "States, as a dated and source-relative observation, that no primary Stellar source (the QPP or any CAP) specifies a final mechanical dormant-account eligibility rule, and does not invent thresholds."
         ],
         "avoid": [
           "Do NOT claim Stellar is fully quantum-resistant today without caveat.",
           "Do NOT invent dormant-account thresholds or deadlines.",
           "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
         ],
-        "notes": "QPP is a dated SDF plan, not yet a final CAP with dormant-account thresholds. The blog describes dormant accounts qualitatively as holders unreachable for migration; it does not publish a deterministic eligibility test.\nAlso good if the answer: Notes the distinction between future migration planning and current user action requirements.\nGolden cites: Primary Stellar/CAP source required for the Quantum Preparedness Plan and dormant-account criteria."
+        "notes": "QPP is a dated SDF plan, not yet a final CAP with dormant-account thresholds. The blog describes dormant accounts qualitatively as holders unreachable for migration; it does not publish a deterministic eligibility test.\nAlso good if the answer: Notes the distinction between future migration planning and current user action requirements.\nGolden cites: Primary Stellar/CAP source required for the Quantum Preparedness Plan and dormant-account criteria.\nGrader caution 2026-08-24: the 'no mechanical eligibility rule' fact is a NEGATIVE claim, verified by absence from primary records plus a dated web sweep, not by a source that states it. Accept it only when the answer keeps it source-relative and dated ('per the QPP and the CAP record as of <date>'). Do not penalize an answer that says a later CAP or implementation could define criteria, and do not penalize an answer that reports the QPP's qualitative description (dormant holders are unreachable; a forced cutoff would require freeze-with-recovery or permanent lock). Penalize an absolute, undated 'there is no rule' framing and any invented threshold, deadline, or balance test."
       },
       "tags": {
         "category": "protocol-core",
@@ -23468,7 +23511,7 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-08-24",
         "sources": [
           {
             "class": "A",
@@ -23484,20 +23527,84 @@
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "D",
+            "ref": "https://decrypt.co/370570/quantum-clock-ticking-bitcoin-crypto-how-stellar-preparing",
+            "note": "Dated independent coverage (published 2026-06-09) used in the negative-claim web sweep."
+          },
+          {
+            "class": "E",
+            "ref": "https://github.com/stellar/stellar-docs (code search: 'dormant')",
+            "note": "Developer-documentation absence check for a dormant-account definition."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "The QPP does not specify a final mechanical dormant-account eligibility rule.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+                "observedAt": "2026-08-21",
+                "note": "The QPP describes unreachable dormant holders and leaves freeze-and-recovery versus permanent lock as a design choice; it gives no balance, inactivity, or transaction-history eligibility test."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+                "observedAt": "2026-08-21",
+                "note": "Draft CAP-0087 defines ML-DSA verification host functions and does not define dormant accounts or mechanical eligibility criteria."
+              },
+              {
+                "class": "A",
+                "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+                "observedAt": "2026-08-24",
+                "note": "Re-read for the negative claim: the page still says only that 'Stellar has a large population of dormant accounts whose holders are unreachable', with no balance threshold, inactivity period, or transaction-history test. Stage 1 (2026) targets ML-DSA-44/65 host functions, Stage 2 (2027) a CAP for quantum-safe classic signers, Stage 3 activation is threat-dependent."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/tree/master/core",
+                "observedAt": "2026-08-24",
+                "note": "Absence check across the whole CAP record, not one CAP: the numbered core CAPs end at cap-0087 (Draft, created 2026-06-05, zero occurrences of 'dormant' or 'inactiv'). The only 'dormant' uses in the repository are cap-0065 and cap-0046-05 about dormant ledger entries and contract data, which are unrelated to account eligibility. The Stage 2 quantum-safe-signer CAP is not yet filed."
+              },
+              {
+                "class": "D",
+                "ref": "https://decrypt.co/370570/quantum-clock-ticking-bitcoin-crypto-how-stellar-preparing",
+                "observedAt": "2026-08-24",
+                "note": "Explicit web sweep, dated independent coverage published 2026-06-09: 'Any hard cutoff would effectively freeze those accounts, and the Foundation says that decision will require open community discussion rather than a top-down resolution.' It reports dormant accounts as an unresolved challenge with no finalized eligibility rule or deadline."
+              },
+              {
+                "class": "D",
+                "ref": "Web sweep 2026-08-24 — queries 'Stellar Quantum Preparedness Plan dormant account definition criteria threshold' and 'Stellar CAP quantum-safe signers classic accounts dormant accounts proposal August 2026'",
+                "observedAt": "2026-08-24",
+                "note": "No-contradiction sweep for the negative claim. Every result traced back to the June 2026 QPP announcement (stellar.org, Decrypt 2026-06-09, CryptoTimes 2026-06-10 and 2026-06-12, and other secondary coverage); none published a mechanical eligibility rule, and the coverage repeats that the dormant-account decision is deferred to community discussion. Uncertainty stays explicit: this is absence of evidence across primary records plus a dated sweep, so it is confirmed-as-of 2026-08-24 and never absolute."
+              },
+              {
+                "class": "E",
+                "ref": "https://github.com/stellar/stellar-docs (code search: 'dormant')",
+                "observedAt": "2026-08-24",
+                "note": "Developer-documentation absence check: the single hit is a fuzzing example contract that becomes 'dormant' after its balance drains. The docs define no dormant-account status or eligibility test."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-24",
+          "by": "Golden-truth review 2026-08-24 (branch codex/qa-golden-truth-corrections negative-claim sweep); prior event Solo todo 1925 independent challenge and coordinator acceptance",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575",
-            "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+            "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+            "solo://proj/49/todo/independently-challe--1925#comment-5058",
+            "solo://proj/49/todo/independently-challe--1925#comment-5064",
+            "Sibling sweep: q-hist-quantum-preparedness-plan agrees that the QPP is a roadmap, not shipped quantum resistance; no sibling defines mechanical dormant-account eligibility.",
+            "Negative-claim bar 2026-08-24 — absence from primary records plus an explicit dated web sweep: A https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan re-read; B the full https://github.com/stellar/stellar-protocol/tree/master/core CAP record through cap-0087 (Draft, created 2026-06-05) and discussion https://github.com/orgs/stellar/discussions/1915 (created 2026-04-23, ML-DSA host functions only); E the stellar-docs code search for 'dormant'; D the search sweep including https://decrypt.co/370570/quantum-clock-ticking-bitcoin-crypto-how-stellar-preparing (published 2026-06-09). No source published a mechanical eligibility rule.",
+            "Uncertainty is explicit rather than resolved: the claim stays confirmed-as-of 2026-08-24, the keyFact and answer are phrased source-relative and dated, and the grader caution accepts an answer that says a later CAP could define criteria. The Stage 2 quantum-safe-signer CAP (targeted 2027) is the expected trigger to re-verify.",
+            "Sibling re-check 2026-08-24: q-hist-quantum-preparedness-plan still carries no dormant-account eligibility claim, so the dated phrasing does not contradict it."
           ],
           "rootCause": [
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/todo/independently-challe--1925#comment-5058",
+            "Eval-authoring: the negative claim was pinned in absolute wording and carried only primary-absence evidence, without the explicit dated web sweep the negative-claim bar requires."
           ]
         },
         "origin": "raven-next q-pc-quantum-preparedness-dormant"
@@ -25311,7 +25418,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "As observed **2026-08-04**, Pubnet is configured for **1,000 classic operations per ledger**, not necessarily 1,000 transactions because classic transactions may contain multiple operations. Smart-contract capacity is configured separately at **2,000 smart-contract transactions per ledger**. Current official Docs and the v27 network-config schema agree on those values. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
+        "answer": "As observed **2026-08-21**, current official Docs and live Mainnet configuration report **1,000 classic operations per ledger** and **2,000 smart-contract transactions per ledger**. The v27 XDR schema defines the separate `ledgerMaxTxCount` contract-transaction setting; it does not encode either current numeric value. The classic limit counts operations, not necessarily transactions, because a classic transaction may contain multiple operations. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
         "keyFacts": [
           "Distinguishes classic maxTxSetSize operations from separately configured Soroban transaction/resource limits.",
           "Reports the dated current 2,000 smart-contract transaction setting without inventing a stale Docs conflict."
@@ -25329,58 +25436,123 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-04",
-        "reverifyBy": "2027-02-04",
+        "asOf": "2026-08-25",
+        "reverifyBy": "2027-02-21",
         "sources": [
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
-            "note": "class inferred at migration"
+            "note": "Current Docs state the dated Mainnet values and distinguish classic operations from smart-contract transactions."
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
-            "note": "class inferred at migration"
+            "note": "The v27 XDR defines ConfigSettingContractExecutionLanesV0.ledgerMaxTxCount without encoding the current value."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers/64050648",
+            "note": "The closed Mainnet protocol-27 ledger reports max_tx_set_size 1000."
+          },
+          {
+            "class": "F",
+            "ref": "stellar network settings --network mainnet (stellar 27.1.0)",
+            "note": "The live Mainnet configuration reports contract_execution_lanes.ledger_max_tx_count 2000."
+          },
+          {
+            "class": "C",
+            "ref": "https://mainnet.sorobanrpc.com getLedgerEntries (LedgerKey ConfigSetting/contract_execution_lanes, base64 AAAACAAAAAs=)",
+            "note": "Live Mainnet RPC read of the on-ledger ConfigSettingEntry that holds the current ledgerMaxTxCount value."
           }
         ],
         "corroboration": [
           {
-            "claim": "As observed 2026-08-04, official Docs and the v27 network-config schema agree on 1,000 classic operations and 2,000 smart-contract transactions per ledger; resource budgets can further constrain effective throughput.",
+            "claim": "As observed 2026-08-21, official Docs and live Mainnet configuration report 1,000 classic operations and 2,000 smart-contract transactions per ledger.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers/64050648",
+                "observedAt": "2026-08-21",
+                "note": "The closed Mainnet protocol-27 ledger reports max_tx_set_size 1000."
+              },
+              {
+                "class": "F",
+                "ref": "stellar network settings --network mainnet (stellar 27.1.0)",
+                "observedAt": "2026-08-21",
+                "note": "The live Mainnet configuration reports contract_execution_lanes.ledger_max_tx_count 2000."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+                "observedAt": "2026-08-21",
+                "note": "Official Docs state 1,000 non-smart-contract operations and 2,000 smart-contract transactions per ledger."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers/64119318",
+                "observedAt": "2026-08-25",
+                "note": "Re-observed: the latest closed Mainnet ledger (protocol 27, closed_at 2026-08-25T14:54:56Z) still reports max_tx_set_size 1000."
+              },
+              {
+                "class": "C",
+                "ref": "https://mainnet.sorobanrpc.com getLedgerEntries (LedgerKey ConfigSetting/contract_execution_lanes, base64 AAAACAAAAAs=)",
+                "observedAt": "2026-08-25",
+                "note": "Re-observed at latestLedger 64119318: the on-ledger contract_execution_lanes entry still reports ledger_max_tx_count 2000. Both dated values are unchanged since 2026-08-21."
+              }
+            ],
+            "note": "Resource budgets can further constrain effective throughput."
+          },
+          {
+            "claim": "The v27 XDR schema defines a separate ledgerMaxTxCount setting for Soroban transactions and does not encode its current value.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
-                "observedAt": "2026-08-04",
-                "note": "The v27 schema separates the classic operation count from the smart-contract transaction limit."
+                "observedAt": "2026-08-21",
+                "note": "ConfigSettingContractExecutionLanesV0 declares ledgerMaxTxCount as the maximum Soroban transactions per ledger. The schema contains no numeric value for that field."
               },
               {
                 "class": "C",
-                "ref": "Current network configuration corroboration recorded in Solo scratchpad 761",
-                "observedAt": "2026-08-04",
-                "note": "The current configured values match the official Docs values."
+                "ref": "https://mainnet.sorobanrpc.com getLedgerEntries (LedgerKey ConfigSetting/contract_execution_lanes, base64 AAAACAAAAAs=)",
+                "observedAt": "2026-08-25",
+                "note": "Independent class-C corroboration that the value lives on the ledger rather than in the schema: the ConfigSetting ledger key resolves to {\"contract_execution_lanes\":{\"ledger_max_tx_count\":2000}} with lastModifiedLedgerSeq 60993066. A schema-encoded constant would have no ledger entry and no last-modified ledger."
               },
               {
                 "class": "A",
                 "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
-                "observedAt": "2026-08-04",
-                "note": "Official Docs state 1,000 non-smart-contract operations and 2,000 smart-contract transactions per ledger."
+                "observedAt": "2026-08-25",
+                "note": "Independent class-A corroboration of the attribution: the official Docs state that \"Resource limits are determined by a validator vote and can be adjusted based on network usage and ecosystem needs with a validator consensus.\" The numeric ceiling therefore comes from validator-voted network configuration, not from the XDR type definition."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
+                "observedAt": "2026-08-25",
+                "note": "Re-read for the negative half of the claim: ConfigSettingContractExecutionLanesV0 declares exactly one member, \"uint32 ledgerMaxTxCount;\", under the comment \"maximum number of Soroban transactions per ledger\". The file assigns no numeric literal to that field."
               }
             ],
-            "note": "The former Docs-versus-live conflict is historical and no longer part of the current verdict."
+            "note": "The live configuration, not the XDR schema, supplies the current value. Corroborated across three independent classes (B schema text, A official Docs attribution, C live on-ledger ConfigSettingEntry)."
           }
         ],
         "verified": {
-          "date": "2026-08-04",
-          "by": "Full golden QA current Docs/network-config recheck; accepted in Todo 1347 c3625/c3627",
+          "date": "2026-08-25",
+          "by": "Golden-truth review 2026-08-25 (branch codex/qa-golden-truth-corrections, PR 47 independent-review reconciliation); prior event Todo 1928 strict Golden Truth TDD after independent Todo 1925 challenge and coordinator acceptance",
           "evidence": [
-            "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-04",
-            "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x observed 2026-08-04",
-            "Solo scratchpad 575 GT-32 blind 3284, resolving primary reliance on stale prose."
+            "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-21 and re-observed 2026-08-25: 1,000 non-smart-contract operations and 2,000 smart contract transactions per ledger, with \"Resource limits are determined by a validator vote\".",
+            "https://horizon.stellar.org/ledgers/64119318 observed 2026-08-25: max_tx_set_size 1000 at protocol 27, closed_at 2026-08-25T14:54:56Z (prior observation https://horizon.stellar.org/ledgers/64050648 on 2026-08-21).",
+            "https://mainnet.sorobanrpc.com getLedgerEntries (LedgerKey ConfigSetting/contract_execution_lanes, base64 AAAACAAAAAs=) observed 2026-08-25 at latestLedger 64119318: {\"config_setting\":{\"contract_execution_lanes\":{\"ledger_max_tx_count\":2000}}}, lastModifiedLedgerSeq 60993066.",
+            "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x observed 2026-08-21 and re-read 2026-08-25: the struct declares only \"uint32 ledgerMaxTxCount;\" and encodes no numeric value.",
+            "stellar network settings --network mainnet observed 2026-08-21 with stellar 27.1.0: contract_execution_lanes.ledger_max_tx_count 2000.",
+            "Independent-class repair 2026-08-25: the XDR-attribution corroboration row previously carried a single class-B evidence row. It now carries B (schema text), A (Docs validator-vote attribution), and C (live on-ledger ConfigSettingEntry), so the gospel claim meets the independent-source-class bar.",
+            "truth.asOf moves to 2026-08-25 because that is the latest verification event. The golden answer keeps its \"As observed 2026-08-21\" basis on purpose: both dated values were re-confirmed unchanged on 2026-08-25, so the encoded observation stays true and no judge-facing text needed to change.",
+            "solo://proj/49/todo/independently-challe--1925 comments 5058 and 5064",
+            "Sibling sweep 2026-08-25: cluster-065 re-read. q-protocol-ledger-close-time makes no capacity or source-attribution claim, and q-protocol-ledger-header-fields still confirms maxTxSetSize is a ledger-header field. No sibling attributes a numeric ledger limit to the XDR schema."
           ],
           "rootCause": [
-            "freshness-drift",
-            "The former Docs-versus-live conflict resolved when official Docs adopted the 2,000 smart-contract transaction value."
+            "solo://proj/49/todo/correct-max-transact--1928",
+            "Eval-authoring: the 2026-08-21 correction recorded the XDR-attribution claim from one source class (B) only, below the independent-class bar the golden-truth skill requires for a gospel change.",
+            "The 2026-08-04 correction attributed live numeric values to the v27 XDR schema instead of the live configuration."
           ]
         },
         "origin": "raven-next q-protocol-max-tx-set-size"
