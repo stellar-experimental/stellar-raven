@@ -42,6 +42,10 @@ Each source's own `LICENSE`/`NOTICE` file names are recorded in `MANIFEST.json`
 (`license_files`) at the same pinned commit, as provenance that every upstream is licensed —
 those files are not fetched, copied, or served.
 
+The license texts behind that table, and the open questions the decision in point 3 leaves for
+counsel, are recorded in [`research/skill-source-license-audit-2026-08-22.md`](./research/skill-source-license-audit-2026-08-22.md).
+That audit is dated evidence, not legal advice, and it does not attest compliance.
+
 Two derived facts about a skill ARE committed, because routing needs them: the one-line
 `description` from a skill's YAML frontmatter (what `search` scores) and its `##` section headings
 (how `skill.read` addresses parts of a body). Section prose, body excerpts, and body-derived

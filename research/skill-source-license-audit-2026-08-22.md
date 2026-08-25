@@ -173,7 +173,9 @@ License-copy requirement must be delivered through an API are all open questions
 `SKILL.md`'s pinned URL, not the requested companion file's own address — both result shapes
 use `ref.url`
 ([store.ts:363](../src/skills/store.ts), [store.ts:432](../src/skills/store.ts)). Exact
-companion provenance is therefore missing from responses today.
+companion provenance is therefore missing from responses today. This is a repository code
+defect, not a counsel question, so it is tracked separately as
+[issue #50](https://github.com/stellar-experimental/stellar-raven/issues/50).
 
 Note: the upstream is the Stellar Development Foundation, the same organization behind the
 production route `raven.stellar.org` ([PLAN.md](../PLAN.md) §7); whether that relationship
@@ -226,8 +228,8 @@ response header satisfies any license text.** Whether it does is a counsel deter
 each text states its duties (MIT: copyright + permission notice in qualifying copies;
 Apache-2.0 §4(a): recipients receive a copy of the License; AGPL §4/§5: intact notices and
 license carriage), and none names an API-footer mechanism. Any design must also fix companion
-provenance (§2.3): responses must identify the exact companion file served, not only the main
-SKILL.md URL.
+provenance (§2.3, [issue #50](https://github.com/stellar-experimental/stellar-raven/issues/50)):
+responses must identify the exact companion file served, not only the main SKILL.md URL.
 
 ## 4. Summary verdicts and unresolved counsel questions
 
