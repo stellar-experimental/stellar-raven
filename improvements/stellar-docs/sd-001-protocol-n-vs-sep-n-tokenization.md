@@ -31,6 +31,9 @@ recurrences:
 
 ## Finding
 
+The Stellar Docs crawler dropped `/docs/networks/software-versions` because its 1,319 extracted
+records exceeded the 750-record page cap.
+
 > **Fixed 2026-08-25.** Everything from here to "Resolution" describes the defect as it stood
 > before the fix, in the tense it was written. Read "Resolution — 2026-08-25" at the end for the
 > applied change, the live verification, and what is left over.
