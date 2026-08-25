@@ -943,11 +943,13 @@ describe("search-hit signature compaction", () => {
     // 1.8.32 (the contract-honesty release: 69 already-served meta fields finally declared)
     // carried exactly ONE more op over the line — scout.getPeople, 1099 -> 3196 — so its
     // output type is now stubbed in search hits and reaching the full shape costs a
-    // codemode.describe("scout.getPeople") round-trip. Every other member was already over.
+    // codemode.describe("scout.getPeople") round-trip. Scout 1.8.87 expands getChanges over
+    // the same threshold. Every other member was already over.
     expect(compacted.sort()).toEqual([
       "scout.analyzeEcosystem",
       "scout.explainRepo",
       "scout.getBuilders",
+      "scout.getChanges",
       "scout.getClusters",
       "scout.getHackathon",
       "scout.getHackathons",

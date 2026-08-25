@@ -1,12 +1,12 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in Solo (EVALS.md rule 1). Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-08-19T21:22:55.182Z",
+  "baselinedAt": "2026-08-25T19:39:34.342Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "7e45f50d181536d67b3ff38869746dd9b028aba9d78b90478094420577a7f846"
+        "sha256": "bcb43483b6891d91d380cd3779c9a3c9e5f0df154e2fa544f8d67dea9d0a6cee"
       },
       {
         "path": "eval/routing-cases.json",
@@ -24,8 +24,8 @@
     "acceptedTotals": {
       "legacy": {
         "n": 338,
-        "top1": 208,
-        "top3": 280,
+        "top1": 209,
+        "top3": 279,
         "top5": 312,
         "cardN": 182,
         "cardHit5": 94
@@ -49,13 +49,13 @@
         "passed": 21
       }
     },
-    "localTrace": "routing-2026-08-19T21-22-55-182Z.json"
+    "localTrace": "routing-2026-08-25T19-39-34-342Z.json"
   },
-  "note": "The 2026-08-19 stellar-dev re-pin advances fixes for sk-016 and sk-017. The complete five-file body diff changes served prompt input but leaves catalog routing descriptions unchanged. The manifest fingerprint advances because pinned transport and provenance data changed. Every accepted total remains exact: legacy 208/280/312 with card@5 94/182, skills 16/23/23, and holdout 10/22/25 with 11 forbidden captures. No floor, scorer lever, routing corpus, or per-question rule changed. Decision record: Solo scratchpad 837. Historical movements remain in eval/README.md.",
+  "note": "The 2026-08-25 live Scout 1.8.87 refresh adds routing vocabulary, ten Stellar Docs titles, and the corresponding stellar-light skill pin. Raven withholds the new read-only resolveProject operation because its nested identity and evidence objects are opaque in OpenAPI; sls-075 tracks that upstream contract gap. Legacy moves from 208/280/312 to 209/279/312 within the existing 1% band, with card@5 unchanged at 94/182. Skills remain 16/23/23. Holdout remains 10/22/25 with 11 forbidden captures. No scorer lever, routing corpus, per-question rule, floor, or band changed. Decision record: GitHub issue #35 and independent Herdr review. Historical movements remain in eval/README.md.",
   "legacy": {
     "n": 338,
-    "top1": 208,
-    "top3": 280,
+    "top1": 209,
+    "top3": 279,
     "top5": 312,
     "bandPct": 1
   },

@@ -711,7 +711,8 @@ drift:
 - **Section reads** accept slugs, exact heading text, or `file:` keys; an unknown section
   fails the whole read and lists what exists (never a silent partial answer); and a `##`
   section present in the body but **absent from the catalog** (sectioning drift) is
-  refused — default-deny, not default-allow.
+  refused — default-deny, not default-allow. Each returned section carries the exact pinned
+  `url` for its content. The top-level `url` remains the main `SKILL.md` address.
 - `availableSections` (returned on every ok read, and on search hits) advertises only
   cataloged keys.
 - Reads large enough that returning them whole would hit the model boundary carry an

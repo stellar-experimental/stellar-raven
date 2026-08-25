@@ -31,13 +31,18 @@ import { lastIdSegment } from "../catalog/id.ts";
 import { DEFAULT_MAX_TOKENS, CHARS_PER_TOKEN } from "../policy/truncate.ts";
 import { SKILL_READ_DEADLINE_MS, type SkillPin, type SkillSource } from "./source.ts";
 
-export type SkillSection = { section: string; content: string };
+export type SkillSection = {
+  section: string;
+  content: string;
+  /** Exact pinned upstream URL for this section's content. */
+  url: string;
+};
 
 type SkillReadSuccess = {
   ok: true;
   id: string;
-  /** Upstream provenance of the bytes served: the raw file URL at the
-   *  pinned commit (also what the integrity check was made against). */
+  /** Pinned upstream URL for the skill's main SKILL.md file. Section reads
+   *  also report exact per-section provenance in each SkillSection.url. */
   url: string;
   /**
    * Advisory size warning, never a withholding: attached (uniformly on
@@ -398,7 +403,11 @@ export async function readSkill(
   const found: SkillSection[] = [];
   for (const want of requested) {
     if (want.startsWith("file:")) {
-      found.push({ section: want, content: fileTexts.get(want)!.trim() });
+      found.push({
+        section: want,
+        content: fileTexts.get(want)!.trim(),
+        url: filePins.get(want)!.url
+      });
       continue;
     }
     // ##-heading section: accept the slug (catalog id form) or exact heading text.
@@ -425,7 +434,7 @@ export async function readSkill(
         `section "${want}" of ${entry.id} has no catalog entry — not exposed (section indexing drift; rebuild the catalog)`
       );
     }
-    found.push({ section: want, content: hit.content });
+    found.push({ section: want, content: hit.content, url: ref.url });
   }
 
   // Same advisory treatment as whole reads: large assembled section/file:

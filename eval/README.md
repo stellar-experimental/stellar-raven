@@ -1019,3 +1019,24 @@ Raven now exposes `scout.hackathonBrief`. The scorer consumes its upstream
 `x-routing` fields through the existing weighting system. This release accepts
 the raw routing result without a new query rule or composite-specific weight.
 The evidence trace is `routing-2026-08-19T20-26-07-408Z.json`.
+
+## Re-baseline (2026-08-25, issue #35): Scout 1.8.87 and resolver exclusion
+
+Scout 1.8.87 has 34 paths and 35 operations. It adds the read-only
+`GET /api/projects/resolve` operation. Raven withholds that operation because
+OpenAPI leaves its `subject`, `current`, and `evidence` objects opaque and omits
+the live `meta` envelope. Finding `sls-075` tracks the upstream contract gap.
+
+The refresh changes routing text for `scout.getPartners` and
+`scout.searchProjects`. The Stellar Docs title vocabulary grows from 636 to
+646 titles. The stellar-light skill pin advances to `540c4c3f19e9`; Raven
+filters the non-exposed resolver reference from served prompt input.
+
+The strict legacy totals move from **208/280/312** to **209/279/312**, within
+the existing 1% band. Card@5 remains **94/182**. Skills remain **16/23/23**.
+The frozen holdout remains **10/22/25**, with 11 forbidden captures. No scorer
+lever, routing corpus, per-question rule, floor, or band changes. The runner
+operation set does not intersect the upstream operation changes.
+
+Independent Herdr review checked exposure, generated artifacts, routing,
+runner impact, documentation, and the complete skill-body diff.

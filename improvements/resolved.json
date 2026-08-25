@@ -1815,6 +1815,97 @@
       "reviewEvidence": "Grok 4.6 process 4832, Solo todo 1769 comment 4641; root reproduced the response, OpenAPI schema, and official round state. The final independent spec review required a successor finding.",
       "sourceCommit": "53f2d23ccae57bb26b03d93ce3b809c75ecad95b",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/53f2d23ccae57bb26b03d93ce3b809c75ecad95b/improvements/stellar-light-scout/sls-067-rfp-fundability-and-round-state-contract.md"
+    },
+    {
+      "id": "sls-068",
+      "title": "Scout returns three Fluxity repositories with a Wagent project link. The affected rows are luanlabs/fluxity.finance,…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-19",
+      "resolved": "2026-08-25",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/972"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/981",
+        "https://github.com/Stellar-Light/stellarlight/pull/982"
+      ],
+      "liveRecheck": "2026-08-25 live repository checks returned fluxity for all four Fluxity repositories.",
+      "reviewEvidence": "An independent Herdr Opus high review repeated the four repository checks.",
+      "sourceCommit": "74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729/improvements/stellar-light-scout/sls-068-fluxity-repositories-linked-to-wagent.md"
+    },
+    {
+      "id": "sls-069",
+      "title": "Scout OpenAPI includes remediation history inside seven response-schema descriptions. Five descriptions name sls-066 or sls-067. Two more…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-19",
+      "resolved": "2026-08-25",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/973"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/980"
+      ],
+      "liveRecheck": "2026-08-25 live sweeps found zero descriptions containing Raven finding IDs or remediation-history phrases.",
+      "reviewEvidence": "An independent Herdr Opus high review repeated the description sweeps.",
+      "sourceCommit": "74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729/improvements/stellar-light-scout/sls-069-model-facing-schema-remediation-history.md"
+    },
+    {
+      "id": "sls-070",
+      "title": "Scout now assigns an engagementId to every repeated protocol and auditor group. This resolves the broad relation-metadata defect in sls-064",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-19",
+      "resolved": "2026-08-25",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/974"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/983"
+      ],
+      "liveRecheck": "2026-08-25 live report data linked report 28 to report 42 as the V2.1 successor.",
+      "reviewEvidence": "Two independent Herdr reviewers checked the live relation and the auditor-owned reports.",
+      "sourceCommit": "74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729/improvements/stellar-light-scout/sls-070-veridise-audit-report-supersession.md"
+    },
+    {
+      "id": "sls-071",
+      "title": "An absent exact identifier previously fell through to section-classification or other semantic neighbours without an explicit exact-miss…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-19",
+      "resolved": "2026-08-25",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/975"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/979"
+      ],
+      "liveRecheck": "2026-08-25 live checks returned exactMiss for absent V-SOR-APP-VUL-999 and no exactMiss for present V-SOR-VUL-002.",
+      "reviewEvidence": "Independent Herdr reviewers repeated both controls and separated the appendix index defect into sls-074.",
+      "sourceCommit": "74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729/improvements/stellar-light-scout/sls-071-exact-audit-identifier-miss.md"
+    },
+    {
+      "id": "sls-072",
+      "title": "Scout 1.8.73 resolves the fundability and stale-phase defects from sls-067. The response and the official awards page agree on the current…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-19",
+      "resolved": "2026-08-25",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/976"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/979"
+      ],
+      "liveRecheck": "2026-08-25 live OpenAPI and response checks agreed on the scfRound.source value.",
+      "reviewEvidence": "An independent Herdr Opus high review compared the schema with the live value.",
+      "sourceCommit": "74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729/improvements/stellar-light-scout/sls-072-rfp-round-source-openapi-schema.md"
     }
   ]
 }
