@@ -7,13 +7,14 @@
  *
  *   judgeCase({ question, golden: { answer, keyFacts, avoid, notes }, tags, candidateAnswer })
  *     → { score: "correct" | "partial" | "wrong" | "error",
- *         coreAnswer: "correct" | "incorrect", avoidMatches: number[],
+ *         coreAnswer: "correct" | "incorrect" | null, avoidMatches: number[],
  *         missingFacts: string[], wrongClaims: string[], rationale: string }
  *
  * Implementation: one headless `claude -p --model claude-sonnet-5
  * --output-format json` call per grade (verified locally 2026-07-02). "error"
- * means the judge itself failed (CLI error / unparseable output), never a
- * grade of the candidate.
+ * means the judge itself failed (CLI error / unparseable output / a verdict
+ * that contradicts itself), never a grade of the candidate — so every "error"
+ * verdict carries coreAnswer null.
  *
  * Self-test (no server needed; seven paid judge calls against hand-written cases):
  *   node eval/qa/judge.mjs --self-test
@@ -185,7 +186,75 @@ function streamBuffer(value) {
   return Buffer.from(String(value));
 }
 
+// Length of the well-formed UTF-8 sequence starting at `index`, or 0 when the
+// byte does not start one. Overlong forms, surrogate halves, and out-of-range
+// leads are rejected the same way a UTF-8 decoder rejects them, so only text
+// that really is UTF-8 is treated as UTF-8.
+function utf8SequenceLength(buffer, index) {
+  const lead = buffer[index];
+  if (lead < 0x80) return 1;
+  if (lead < 0xc2 || lead > 0xf4) return 0;
+  const length = lead <= 0xdf ? 2 : lead <= 0xef ? 3 : 4;
+  if (index + length > buffer.length) return 0;
+  for (let offset = 1; offset < length; offset += 1) {
+    const byte = buffer[index + offset];
+    if (byte < 0x80 || byte > 0xbf) return 0;
+  }
+  const second = buffer[index + 1];
+  if (length === 3 && lead === 0xe0 && second < 0xa0) return 0;
+  if (length === 3 && lead === 0xed && second > 0x9f) return 0;
+  if (length === 4 && lead === 0xf0 && second < 0x90) return 0;
+  if (length === 4 && lead === 0xf4 && second > 0x8f) return 0;
+  return length;
+}
+
+// Decode captured CLI bytes without losing raw C1 controls.
+//
+// `Buffer.toString("utf8")` is lossy for them: a lone 0x9b is not valid UTF-8,
+// so it decodes to U+FFFD and the 8-bit CSI introducer is gone before the
+// sanitizer ever runs — a credential split by a raw C1 byte would survive into
+// the excerpt. Sanitizing has to see the byte, so decoding happens here first:
+// every well-formed UTF-8 sequence is decoded verbatim (including sequences
+// whose continuation bytes fall inside 0x80-0x9f, such as `→` = E2 86 92), an
+// invalid byte in 0x80-0x9f becomes its C1 code point, and any other invalid
+// byte becomes U+FFFD as before. This only affects the sanitized excerpt; the
+// recorded byte count and SHA-256 are always taken from the raw buffer.
+export function decodeCliEvidenceText(value) {
+  const buffer = streamBuffer(value);
+  let out = "";
+  let runStart = 0;
+  let index = 0;
+  const flushRun = (end) => {
+    if (end > runStart) out += buffer.toString("utf8", runStart, end);
+  };
+  while (index < buffer.length) {
+    const length = utf8SequenceLength(buffer, index);
+    if (length > 0) {
+      index += length;
+      continue;
+    }
+    flushRun(index);
+    const byte = buffer[index];
+    out += byte >= 0x80 && byte <= 0x9f ? String.fromCharCode(byte) : "�";
+    index += 1;
+    runStart = index;
+  }
+  flushRun(index);
+  return out;
+}
+
 const REDACTED = "[redacted]";
+
+// Redaction events performed by the sanitizer. Counted at the source so the
+// choice between variants never depends on marker text in the input.
+function newRedactionTally() {
+  return { count: 0 };
+}
+
+function redactedLeaf(tally) {
+  tally.count += 1;
+  return REDACTED;
+}
 const MAX_JSON_DEPTH = 64;
 const MAX_JSON_ARRAY_LENGTH = 1_000;
 const SECRET_PREFIX_RE =
@@ -219,33 +288,189 @@ function isSensitiveKey(key) {
   return SENSITIVE_EXACT_KEY_RE.test(key) || SENSITIVE_KEY_RE.test(key);
 }
 
+function hasControlCharacter(key) {
+  for (let index = 0; index < key.length; index += 1) {
+    const code = key.charCodeAt(index);
+    if (code < 0x20 || (code >= 0x7f && code <= 0x9f)) return true;
+  }
+  return false;
+}
+
+// A property name is classified on its control-stripped form: an embedded NUL
+// or escape in `API<NUL>_KEY` hides the credential term from the key predicate
+// while a reader still sees API_KEY. Normalization is used for classification
+// only, and never becomes the emitted name.
+//
+// What the emitted object keeps depends on the name. An ordinary name survives
+// unchanged, obfuscating bytes included, because an obfuscated key is itself
+// evidence; classifying it sensitive collapses only its VALUE. A name that
+// CARRIES a credential is a different case: emitKeyName rewrites it, so the
+// emitted name is the scanned form, not the original.
+//
+// `truncated` is carried out with the name. An unterminated control sequence in
+// a name swallows whatever follows it, so `API<ESC>]0;x_KEY` normalizes to a
+// harmless-looking `API` while the sensitive suffix is simply gone. The name
+// cannot be classified at all in that case, so the caller fails closed the same
+// way the text sanitizer does.
+//
+// The fast path is exact: stripCredentialObfuscation changes nothing, and can
+// report no truncation, for a name that holds no C0 or C1 control character.
+function normalizeKeyForClassification(key) {
+  if (!hasControlCharacter(key)) return { name: key, truncated: false };
+  const normalized = stripCredentialObfuscation(key);
+  return { name: normalized.text, truncated: normalized.truncated };
+}
+
+// A property NAME can carry the credential itself: `{"PASSWORD=SECRET": ...}`
+// leaks in key position, and so do a bare secret-prefixed token, a
+// `Bearer <token>` header line, and URL userinfo. The name therefore runs
+// through the same credential scanner as a string leaf. An ordinary name scans
+// clean and is emitted unchanged — `API_KEY` on its own is a name, not an
+// assignment, so it keeps its spelling while the key predicate collapses its
+// VALUE.
+//
+// Two different secret names can scan to the same marker, and the second write
+// would silently drop the first field. A collision therefore takes the next
+// free positional suffix. The suffix counts emitted names and says nothing
+// about the key it replaced — never a digest of it, which would hand back the
+// secret to anyone able to test a guess.
+function emitKeyName(key, keyNames, tally) {
+  const scanned = sanitizeStructuredStringLeaf(key);
+  tally.count += scanned.redactions;
+  const base = scanned.sanitized;
+  // Resume from this base's next free suffix instead of restarting the search
+  // at 2. Restarting costs a scan per collision — about N^2/2 lookups for N
+  // names that scan to the same marker, which is tens of seconds at 20k keys.
+  // The counter only ever moves forward, so the total stays linear in the
+  // number of keys. The inner loop steps over the rare case where a generated
+  // name is already taken by an unrelated base, and each step advances this
+  // base's counter permanently.
+  let suffix = keyNames.nextSuffix.get(base) ?? 1;
+  let name = suffix === 1 ? base : `${base}-${suffix}`;
+  while (keyNames.used.has(name)) {
+    suffix += 1;
+    name = `${base}-${suffix}`;
+  }
+  keyNames.nextSuffix.set(base, suffix + 1);
+  keyNames.used.add(name);
+  return name;
+}
+
+// HTTP auth schemes are case-insensitive (RFC 9110), so `bearer <token>` and
+// `bAsIc <base64>` carry exactly the same credential as the capitalized
+// spelling and must redact the same way. The single exception is a bare
+// all-lowercase `token`, which is ordinary prose in CLI diagnostics
+// ("token expired before retry") far more often than a scheme; `Token`,
+// `TOKEN`, and any mixed spelling are still treated as the scheme.
+const PROSE_SCHEME_WORD = "token";
+
 function isAuthScheme(name) {
-  return /^[A-Z]/.test(name) && AUTH_SCHEME_RE.test(name);
+  return AUTH_SCHEME_RE.test(name) && name !== PROSE_SCHEME_WORD;
+}
+
+const ESCAPE = 0x1b;
+const BELL = 0x07;
+const C1_CSI = 0x9b;
+const C1_STRING_TERMINATOR = 0x9c;
+// ESC-introduced control strings: DCS, SOS, OSC, PM, APC. Each runs to a string
+// terminator rather than to a final byte in a fixed range. BEL terminates OSC
+// only (the xterm convention); inside DCS, SOS, PM, and APC it is ordinary
+// payload, so those four require ESC-ST or C1-ST.
+const OSC_INTRODUCER = "]";
+const STRING_INTRODUCERS = new Set(["P", "X", "]", "^", "_"]);
+// The same five introducers in their single-byte C1 spelling.
+const C1_OSC_INTRODUCER = 0x9d;
+const C1_STRING_INTRODUCERS = new Set([0x90, 0x98, 0x9d, 0x9e, 0x9f]);
+const KEPT_CONTROLS = new Set(["\n", "\r", "\t"]);
+
+// Each skip* helper returns the cursor plus whether the form ran off the end of
+// the text without its terminator. An unterminated form hides an unbounded tail
+// from a terminal but not from the file, so the caller redacts that tail rather
+// than dropping it (dropping would lower the redaction count and hand the
+// choice back to the un-stripped original, which still carries the secret).
+function skipControlSequence(text, index) {
+  while (index < text.length) {
+    const code = text.charCodeAt(index);
+    index += 1;
+    if (code >= 0x40 && code <= 0x7e) return { index, truncated: false };
+  }
+  return { index, truncated: true };
+}
+
+// A control string runs to 7-bit ST (ESC \) or C1 ST (U+009C), and — for OSC
+// only — to BEL. Honouring BEL for the others would end the string early and
+// spill the rest of its payload back into the text, which breaks a split
+// credential name apart again and defeats the sensitive-key match.
+function skipControlString(text, index, acceptsBell) {
+  while (index < text.length) {
+    const code = text.charCodeAt(index);
+    if (code === C1_STRING_TERMINATOR || (acceptsBell && code === BELL)) {
+      return { index: index + 1, truncated: false };
+    }
+    if (code === ESCAPE && text[index + 1] === "\\") return { index: index + 2, truncated: false };
+    index += 1;
+  }
+  return { index, truncated: true };
+}
+
+// Any other escape sequence: zero or more intermediates (0x20-0x2f) then one
+// final byte (0x30-0x7e), covering forms such as `ESC ( B` and `ESC 7`. A byte
+// outside both ranges — a newline after a stray ESC — ends the sequence in
+// place and is left for the main loop.
+function skipEscapeSequence(text, index) {
+  while (index < text.length) {
+    const code = text.charCodeAt(index);
+    if (code >= 0x20 && code <= 0x2f) {
+      index += 1;
+      continue;
+    }
+    return { index: code >= 0x30 && code <= 0x7e ? index + 1 : index, truncated: false };
+  }
+  return { index, truncated: true };
 }
 
 // Remove terminal control codes before credential matching. This joins names
-// split by ANSI or NUL bytes without changing line and column boundaries.
+// split by NUL bytes or by any ANSI form: CSI and the control strings (OSC,
+// DCS, SOS, PM, APC) in both their ESC-introduced and C1 single-byte
+// spellings, plus any other escape sequence. Remaining C0 and C1 controls are
+// dropped; newline, carriage return, and tab survive, so line boundaries do not
+// move. Returns the stripped text plus `truncated`, set when some form never
+// terminated.
 function stripCredentialObfuscation(text) {
   let out = "";
-  for (let index = 0; index < text.length; index += 1) {
+  let index = 0;
+  let truncated = false;
+  const advance = (result) => {
+    index = result.index;
+    truncated = truncated || result.truncated;
+  };
+  while (index < text.length) {
     const code = text.charCodeAt(index);
-    if (code === 0x1b && text[index + 1] === "[") {
-      index += 2;
-      while (index < text.length) {
-        const ansiCode = text.charCodeAt(index);
-        if (ansiCode >= 0x40 && ansiCode <= 0x7e) break;
-        index += 1;
-      }
+    if (code === ESCAPE) {
+      const next = text[index + 1];
+      if (next === "[") advance(skipControlSequence(text, index + 2));
+      else if (next !== undefined && STRING_INTRODUCERS.has(next)) advance(skipControlString(text, index + 2, next === OSC_INTRODUCER));
+      else advance(skipEscapeSequence(text, index + 1));
       continue;
     }
-    if (code < 0x20 && text[index] !== "\n" && text[index] !== "\r" && text[index] !== "\t") {
+    if (code === C1_CSI) {
+      advance(skipControlSequence(text, index + 1));
+      continue;
+    }
+    if (C1_STRING_INTRODUCERS.has(code)) {
+      advance(skipControlString(text, index + 1, code === C1_OSC_INTRODUCER));
+      continue;
+    }
+    if (code < 0x20 || (code >= 0x7f && code <= 0x9f)) {
+      if (KEPT_CONTROLS.has(text[index])) out += text[index];
+      index += 1;
       continue;
     }
     out += text[index];
+    index += 1;
   }
-  return out;
+  return { text: out, truncated };
 }
-
 function isIdentStart(ch) {
   return (ch >= "A" && ch <= "Z") || (ch >= "a" && ch <= "z") || ch === "_";
 }
@@ -407,7 +632,7 @@ function consumeUserinfoUrl(text, start) {
 // Bearer/Basic/Token, known secret prefixes, and URL userinfo are redacted on
 // the same pass. This runs on raw text and on JSON string leaves before
 // serialization — never on serialized JSON.
-function redactPlaintextAssignments(text) {
+function redactPlaintextAssignments(text, tally = newRedactionTally()) {
   let out = "";
   let index = 0;
   let schemeSkipUntil = 0;
@@ -429,6 +654,7 @@ function redactPlaintextAssignments(text) {
       const url = consumeUserinfoUrl(text, index);
       if (url.replacement !== undefined) {
         out += url.replacement;
+        tally.count += 1;
         index = url.end;
         continue;
       }
@@ -440,6 +666,7 @@ function redactPlaintextAssignments(text) {
     const nameEnd = quoted ? quoted.end : scanNameEnd(text, nameStart);
     if (SECRET_PREFIX_RE.test(name)) {
       out += text.slice(index, nameStart) + quotedRedacted(quoted ? text[index] : null);
+      tally.count += 1;
       index = quoted ? nameEnd : scanTokenEnd(text, nameStart);
       continue;
     }
@@ -452,6 +679,7 @@ function redactPlaintextAssignments(text) {
       const valueStart = skipHorizontalSpace(text, afterName + 1);
       const value = consumeAssignmentValue(text, valueStart);
       out += text.slice(index, valueStart) + quotedRedacted(value.quote);
+      tally.count += 1;
       index = value.end;
       continue;
     }
@@ -460,6 +688,7 @@ function redactPlaintextAssignments(text) {
       const token = consumeSchemeToken(text, afterName);
       if (token) {
         out += `${text.slice(index, afterName)}${REDACTED}`;
+        tally.count += 1;
         index = token.end;
         continue;
       }
@@ -471,6 +700,7 @@ function redactPlaintextAssignments(text) {
       const standalone = consumeStandaloneValue(text, afterName);
       if (standalone) {
         out += text.slice(index, afterName) + quotedRedacted(standalone.quote);
+        tally.count += 1;
         index = standalone.end;
         continue;
       }
@@ -494,9 +724,11 @@ function isJsonSafePrimitive(value) {
 // to "[redacted]", which bounds cycles and shared references. Arrays past
 // MAX_JSON_ARRAY_LENGTH collapse whole, so a sparse 200,000-slot array cannot
 // expand into an output hole per slot.
-function redactStructuredEntry(dst, key, entry, depth, stack, visited) {
+function redactStructuredEntry(dst, key, entry, depth, stack, visited, tally) {
   if (typeof entry === "string") {
-    dst[key] = redactPlaintextAssignments(entry);
+    const leaf = sanitizeStructuredStringLeaf(entry);
+    dst[key] = leaf.sanitized;
+    tally.count += leaf.redactions;
     return;
   }
   if (isJsonSafePrimitive(entry)) {
@@ -505,11 +737,13 @@ function redactStructuredEntry(dst, key, entry, depth, stack, visited) {
   }
   if (!entry || typeof entry !== "object" || visited.has(entry) || depth + 1 >= MAX_JSON_DEPTH) {
     dst[key] = REDACTED;
+    tally.count += 1;
     return;
   }
   const isArray = Array.isArray(entry);
   if (isArray && entry.length > MAX_JSON_ARRAY_LENGTH) {
     dst[key] = REDACTED;
+    tally.count += 1;
     return;
   }
   visited.add(entry);
@@ -520,11 +754,15 @@ function redactStructuredEntry(dst, key, entry, depth, stack, visited) {
 
 // Property descriptors are read instead of property values, so an accessor is
 // redacted without ever being invoked.
-function redactSensitiveValues(value) {
-  if (typeof value === "string") return redactPlaintextAssignments(value);
+function redactSensitiveValues(value, tally = newRedactionTally()) {
+  if (typeof value === "string") {
+    const leaf = sanitizeStructuredStringLeaf(value);
+    tally.count += leaf.redactions;
+    return leaf.sanitized;
+  }
   if (isJsonSafePrimitive(value)) return value;
-  if (!value || typeof value !== "object") return REDACTED;
-  if (Array.isArray(value) && value.length > MAX_JSON_ARRAY_LENGTH) return REDACTED;
+  if (!value || typeof value !== "object") return redactedLeaf(tally);
+  if (Array.isArray(value) && value.length > MAX_JSON_ARRAY_LENGTH) return redactedLeaf(tally);
 
   const visited = new WeakSet([value]);
   const outRoot = Array.isArray(value) ? [] : Object.create(null);
@@ -536,25 +774,37 @@ function redactSensitiveValues(value) {
         const descriptor = Object.getOwnPropertyDescriptor(src, index);
         if (!descriptor) continue;
         if (descriptor.get || descriptor.set) {
-          dst[index] = REDACTED;
+          dst[index] = redactedLeaf(tally);
           continue;
         }
-        redactStructuredEntry(dst, index, descriptor.value, depth, stack, visited);
+        redactStructuredEntry(dst, index, descriptor.value, depth, stack, visited, tally);
       }
       continue;
     }
+    const keyNames = { used: new Set(), nextSuffix: new Map() };
     for (const key of Object.getOwnPropertyNames(src)) {
       const descriptor = Object.getOwnPropertyDescriptor(src, key);
       if (!descriptor || !descriptor.enumerable) continue;
+      // Classification reads the ORIGINAL key; only the emitted name is scanned.
+      const emittedName = emitKeyName(key, keyNames, tally);
       if (descriptor.get || descriptor.set) {
-        dst[key] = REDACTED;
+        dst[emittedName] = redactedLeaf(tally);
         continue;
       }
-      if (isSensitiveKey(key) && !isUsageCount(key, descriptor.value)) {
-        dst[key] = REDACTED;
+      // The usage-count allowlist is classified on the same normalized name, so
+      // an obfuscated `input_tokens` behaves exactly like the plain spelling.
+      // A truncated name short-circuits both checks: a name that hid part of
+      // itself cannot be cleared as benign, and cannot be trusted as a usage
+      // counter either.
+      const classifiedKey = normalizeKeyForClassification(key);
+      if (
+        classifiedKey.truncated ||
+        (isSensitiveKey(classifiedKey.name) && !isUsageCount(classifiedKey.name, descriptor.value))
+      ) {
+        dst[emittedName] = redactedLeaf(tally);
         continue;
       }
-      redactStructuredEntry(dst, key, descriptor.value, depth, stack, visited);
+      redactStructuredEntry(dst, emittedName, descriptor.value, depth, stack, visited, tally);
     }
   }
   return outRoot;
@@ -574,8 +824,8 @@ function tryParseJson(text) {
 // "[redacted]". The sanitized tree is serialized exactly once and is never
 // rescanned as plaintext — a second pass would consume the serialized closing
 // quote of a redacted leaf and destroy the remaining fields.
-function sanitizeStructuredJson(value) {
-  return JSON.stringify(redactSensitiveValues(value));
+function sanitizeStructuredJson(value, tally = newRedactionTally()) {
+  return JSON.stringify(redactSensitiveValues(value, tally));
 }
 
 // Non-JSON text: one bounded linear pass tracks brace depth with a single
@@ -586,7 +836,7 @@ function sanitizeStructuredJson(value) {
 // multiline objects while preserving the surrounding prefix and suffix
 // text; everything else, including unmatched-brace regions and spans whose
 // JSON fails to parse, goes through the plaintext pass.
-function sanitizeNonJsonText(text) {
+function sanitizeNonJsonText(text, tally = newRedactionTally()) {
   let sanitized = "";
   let cursor = 0;
   let depth = 0;
@@ -614,44 +864,69 @@ function sanitizeNonJsonText(text) {
         const spanJson = tryParseJson(text.slice(spanStart, i + 1));
         if (spanJson !== undefined) {
           sanitized +=
-            redactPlaintextAssignments(text.slice(cursor, spanStart)) +
-            sanitizeStructuredJson(spanJson);
+            redactPlaintextAssignments(text.slice(cursor, spanStart), tally) +
+            sanitizeStructuredJson(spanJson, tally);
           cursor = i + 1;
         }
         spanStart = -1;
       }
     }
   }
-  return sanitized + redactPlaintextAssignments(text.slice(cursor));
+  return sanitized + redactPlaintextAssignments(text.slice(cursor), tally);
+}
+
+// Sanitize `text` twice — as captured, and with terminal escapes stripped — and
+// keep whichever performed MORE redactions, so an escape-split credential is
+// caught without rewriting text that gained nothing. `redact` sanitizes one
+// variant and reports how many redactions it made; the choice never counts
+// "[redacted]" occurrences, because evidence may contain that literal text.
+// An unterminated escape form wins outright: its hidden tail becomes the marker,
+// since leaving it to the un-stripped variant would emit the secret the escape
+// was hiding.
+function chooseSanitizedVariant(text, redact) {
+  const original = redact(text);
+  const normalized = stripCredentialObfuscation(text);
+  if (!normalized.truncated && normalized.text === text) return original;
+  const stripped = redact(normalized.text);
+  if (normalized.truncated) {
+    return { sanitized: stripped.sanitized + REDACTED, redactions: stripped.redactions + 1 };
+  }
+  return stripped.redactions > original.redactions ? stripped : original;
+}
+
+// One string leaf of a parsed structure. It runs the SAME control-aware choice
+// as CLI text, so an escape- or NUL-split credential name is joined before
+// matching. It deliberately does NOT go through sanitizeCliEvidenceText: that
+// path parses its input as JSON, and a leaf whose text merely looks like JSON
+// would be parsed and re-serialized, rewriting a string nothing was wrong with.
+// Only the plaintext credential scan runs here.
+function sanitizeStructuredStringLeaf(value) {
+  return chooseSanitizedVariant(value, (variant) => {
+    const tally = newRedactionTally();
+    return { sanitized: redactPlaintextAssignments(variant, tally), redactions: tally.count };
+  });
 }
 
 // Exported for focused sanitizer regression tests.
 export function sanitizeCliEvidenceText(text) {
   try {
-    const originalParsed = tryParseJson(text);
-    const originalSanitized =
-      originalParsed === undefined ? sanitizeNonJsonText(text) : sanitizeStructuredJson(originalParsed);
-    const normalized = stripCredentialObfuscation(text);
-    if (normalized === text) return originalSanitized;
-    const parsed = tryParseJson(normalized);
-    const normalizedSanitized =
-      parsed === undefined ? sanitizeNonJsonText(normalized) : sanitizeStructuredJson(parsed);
-    const redactionCount = (value) => value.split(REDACTED).length - 1;
-    return redactionCount(normalizedSanitized) > redactionCount(originalSanitized)
-      ? normalizedSanitized
-      : originalSanitized;
+    return chooseSanitizedVariant(text, (variant) => {
+      const tally = newRedactionTally();
+      const parsed = tryParseJson(variant);
+      const sanitized = parsed === undefined ? sanitizeNonJsonText(variant, tally) : sanitizeStructuredJson(parsed, tally);
+      return { sanitized, redactions: tally.count };
+    }).sanitized;
   } catch {
     return REDACTED;
   }
 }
-
 function sanitizeBoundedText(value, limit = CLI_EVIDENCE_EXCERPT_BYTES) {
   return boundedUtf8Excerpt(Buffer.from(sanitizeCliEvidenceText(String(value))), limit).excerpt;
 }
 
 function buildCliEvidence(value) {
   const buffer = streamBuffer(value);
-  const excerptSource = Buffer.from(sanitizeCliEvidenceText(buffer.toString("utf8")));
+  const excerptSource = Buffer.from(sanitizeCliEvidenceText(decodeCliEvidenceText(buffer)));
   return {
     ...boundedUtf8Excerpt(excerptSource),
     totalBytes: buffer.length,
@@ -674,7 +949,7 @@ function buildStructuredEvidence(value) {
 
 function parseJsonStream(value) {
   try {
-    return JSON.parse(streamBuffer(value).toString("utf8"));
+    return JSON.parse(decodeCliEvidenceText(value));
   } catch {
     return null;
   }
@@ -757,13 +1032,18 @@ export async function judgeCase(
       promptSha256
     };
   }
+  // Decode byte-preservingly here too. A lossy decode would turn a raw C1 byte
+  // into U+FFFD before the envelope is parsed and before the fallback text is
+  // sanitized, so a credential hidden behind a raw 8-bit introducer would reach
+  // the unparseable-verdict rationale intact. U+0080-U+009F is legal unescaped
+  // inside a JSON string, so the envelope still parses.
   let envelope;
   try {
-    envelope = JSON.parse(streamBuffer(res.stdout).toString("utf8"));
+    envelope = JSON.parse(decodeCliEvidenceText(res.stdout));
   } catch {
     envelope = null;
   }
-  const resultText = envelope?.result ?? streamBuffer(res.stdout).toString("utf8");
+  const resultText = envelope?.result ?? decodeCliEvidenceText(res.stdout);
   const verdict = extractJsonObject(resultText);
   if (!verdict || !["correct", "partial", "wrong"].includes(verdict.score)) {
     return {
@@ -807,6 +1087,11 @@ export async function judgeCase(
         ...(isValidAvoidMatches(input.golden, normalizedVerdict.avoidMatches)
           ? {}
           : { avoidMatches: [] }),
+        // An error verdict carries no graded core answer, so coreAnswer is
+        // null on every consistency error — matching the CLI-failure and
+        // unparseable-verdict paths. The raw score survives as judgeScore;
+        // the contradicted coreAnswer has no such meaning and is not kept.
+        coreAnswer: null,
         score: "error",
         judgeScore: normalizedVerdict.score,
         consistencyViolations: consistency.violations

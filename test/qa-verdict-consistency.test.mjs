@@ -1,9 +1,11 @@
+import { createHash } from "node:crypto";
 import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import {
   buildJudgePrompt,
+  decodeCliEvidenceText,
   judgeCase,
   JUDGE_RUBRIC,
   sanitizeCliEvidenceText
@@ -319,6 +321,9 @@ describe("QA verdict consistency", () => {
   });
 
   it("bounds emitted invalid UTF-8 evidence by decoded bytes", async () => {
+    // 0x80 is a raw C1 control, so it decodes to U+0080 — two UTF-8 bytes per
+    // input byte, not the three a U+FFFD replacement would cost. The excerpt
+    // cap is 8192 bytes, so truncation starts above 4096 input bytes.
     const cases = [
       {
         stdout: Buffer.alloc(2_000, 0x80),
@@ -327,9 +332,9 @@ describe("QA verdict consistency", () => {
         truncated: false
       },
       {
-        stdout: Buffer.alloc(4_000, 0x80),
-        totalBytes: 4_000,
-        sha256: "f98a0f8991f98b0d9a5d362c01e5292f9170b577ea5aeb6691a59651f36c06eb",
+        stdout: Buffer.alloc(5_000, 0x80),
+        totalBytes: 5_000,
+        sha256: "df8619edef92056dcd7c1231e0b6117c01eb4be8baaa650e652f6eb911649b71",
         truncated: true
       }
     ];
@@ -923,8 +928,647 @@ describe("QA verdict consistency", () => {
     expect(sanitizeCliEvidenceText("PASSWORD\u0000=NUL_SECRET")).toBe("PASSWORD=[redacted]");
   });
 
+  // Terminal escape forms, spelled through fromCharCode so the fixtures stay
+  // greppable: 7-bit introducers, their 8-bit C1 equivalents, and the two
+  // string terminators.
+  const ESC = String.fromCharCode(0x1b);
+  const BEL = String.fromCharCode(0x07);
+  const ST = ESC + "\\";
+  const C1_CSI = String.fromCharCode(0x9b);
+  const C1_OSC = String.fromCharCode(0x9d);
+  const C1_APC = String.fromCharCode(0x9f);
+  const C1_ST = String.fromCharCode(0x9c);
+  const NUL = String.fromCharCode(0);
+  const C1_DCS = String.fromCharCode(0x90);
+  const C1_SOS = String.fromCharCode(0x98);
+  const C1_PM = String.fromCharCode(0x9e);
+  const REDACTED_MARKER = "[redacted]";
+
+  it("removes OSC, C1, and other escape forms before credential redaction", () => {
+    // Every form splits the same `API_KEY` name, so a missed form leaves the
+    // value in the excerpt. 7-bit and 8-bit spellings are separate cases.
+    for (const [label, text] of [
+      ["osc-bel", `API${ESC}]0;window title${BEL}_KEY=OSC_BEL_SENTINEL`],
+      ["osc-st", `API${ESC}]8;;https://example.com${ST}_KEY=OSC_ST_SENTINEL`],
+      ["osc-c1-introducer", `API${C1_OSC}0;window title${BEL}_KEY=OSC_C1_SENTINEL`],
+      ["osc-c1-terminator", `API${ESC}]0;window title${C1_ST}_KEY=OSC_C1ST_SENTINEL`],
+      ["csi-c1", `API${C1_CSI}31m_KEY=CSI_C1_SENTINEL`],
+      ["dcs", `API${ESC}Pq#0;2;0;0;0${ST}_KEY=DCS_SENTINEL`],
+      ["sos", `API${ESC}Xstatus${ST}_KEY=SOS_SENTINEL`],
+      ["pm", `API${ESC}^privacy${ST}_KEY=PM_SENTINEL`],
+      ["apc", `API${ESC}_payload${ST}_KEY=APC_SENTINEL`],
+      ["apc-c1", `API${C1_APC}payload${C1_ST}_KEY=APC_C1_SENTINEL`],
+      ["charset-designator", `API${ESC}(B_KEY=CHARSET_SENTINEL`],
+      ["single-char-escape", `API${ESC}7_KEY=CURSOR_SAVE_SENTINEL`]
+    ]) {
+      expect(sanitizeCliEvidenceText(text), label).toBe("API_KEY=[redacted]");
+    }
+
+    expect(sanitizeCliEvidenceText(`Bearer${C1_CSI}0m C1_BEARER_SENTINEL`)).toBe("Bearer [redacted]");
+    expect(sanitizeCliEvidenceText(`PASSWORD${ESC}]0;t${BEL}=OSC_PASSWORD_SENTINEL`)).toBe(
+      "PASSWORD=[redacted]"
+    );
+  });
+
+  it("redacts an OSC-split credential in real CLI failure evidence", async () => {
+    const stdout = `boot ok\nAPI${ESC}]0;title${BEL}_KEY=OSC_EVIDENCE_SENTINEL\ndone cleanly\n`;
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(verdict.cliFailure.stdout.excerpt).toBe("boot ok\nAPI_KEY=[redacted]\ndone cleanly\n");
+    expect(JSON.stringify(verdict)).not.toContain("OSC_EVIDENCE_SENTINEL");
+  });
+
+  it("counts sanitizer redactions instead of trusting a [redacted] marker collision", () => {
+    // Stripping a control byte can synthesize the marker out of ordinary text.
+    // That is not a redaction and must not decide which variant is emitted.
+    for (const collision of [
+      `[re${ESC}dacted] token expired before retry`,
+      `[re${NUL}dacted] retry scheduled`,
+      `[redac${C1_CSI}0mted] refresh queued`
+    ]) {
+      expect(sanitizeCliEvidenceText(collision)).toBe(collision);
+    }
+
+    // Marker text already in the evidence never suppresses a real redaction.
+    const withMarkers = `[redacted] [redacted]\nAPI${ESC}]0;t${BEL}_KEY=MARKER_COLLISION_SENTINEL`;
+    const sanitized = sanitizeCliEvidenceText(withMarkers);
+    expect(sanitized).not.toContain("MARKER_COLLISION_SENTINEL");
+    expect(sanitized).toContain("API_KEY=[redacted]");
+  });
+
+  it("fails closed on a truncated OSC or CSI instead of swallowing the rest", () => {
+    // An unterminated control string hides everything after it from a
+    // terminal but not from the file, so the tail is redacted, not dropped.
+    const truncatedOsc = `API${ESC}]0;title_KEY=TRUNCATED_OSC_SENTINEL`;
+    expect(sanitizeCliEvidenceText(truncatedOsc)).toBe("API[redacted]");
+
+    for (const [label, text] of [
+      ["truncated-csi", `ok ${ESC}[31`],
+      ["truncated-c1-csi", `ok ${C1_CSI}31;1`],
+      ["truncated-c1-osc", `ok ${C1_OSC}0;title`],
+      ["truncated-apc", `ok ${ESC}_payload`],
+      ["dangling-escape", `ok ${ESC}`],
+      ["dangling-intermediate", `ok ${ESC}(`]
+    ]) {
+      expect(sanitizeCliEvidenceText(text), label).toBe("ok [redacted]");
+    }
+
+    // A terminated form still strips cleanly and keeps its tail.
+    expect(sanitizeCliEvidenceText(`API${ESC}]0;t${BEL}_KEY=TERMINATED_SENTINEL`)).toBe(
+      "API_KEY=[redacted]"
+    );
+  });
+
+  it("redacts a truncated-OSC credential in real CLI failure evidence", async () => {
+    const stdout = `boot ok\nAPI${ESC}]0;title_KEY=TRUNCATED_EVIDENCE_SENTINEL\n`;
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(JSON.stringify(verdict)).not.toContain("TRUNCATED_EVIDENCE_SENTINEL");
+  });
+
+  it("decodes a raw C1 byte without corrupting valid UTF-8", () => {
+    // Node's UTF-8 decoder maps a lone 0x9b to U+FFFD, erasing the 8-bit CSI
+    // introducer before the sanitizer can see it.
+    expect(Buffer.from([0x41, 0x9b, 0x42]).toString("utf8")).toBe("A�B");
+    expect(decodeCliEvidenceText(Buffer.from([0x41, 0x9b, 0x42]))).toBe(`A${C1_CSI}B`);
+
+    for (const byte of [0x80, 0x90, 0x9b, 0x9c, 0x9d, 0x9f]) {
+      expect(decodeCliEvidenceText(Buffer.from([byte])), `0x${byte.toString(16)}`).toBe(
+        String.fromCharCode(byte)
+      );
+    }
+
+    // Valid UTF-8 survives byte for byte, including sequences whose
+    // continuation bytes fall inside the 0x80-0x9f range (→ is E2 86 92).
+    for (const text of ["plain ascii", "café", "arrow →", "emoji 🚀", "mixed café → 🚀 end"]) {
+      const buffer = Buffer.from(text, "utf8");
+      expect(decodeCliEvidenceText(buffer), text).toBe(text);
+      expect(Buffer.from(decodeCliEvidenceText(buffer), "utf8").equals(buffer), text).toBe(true);
+    }
+
+    // An invalid byte outside the C1 range still decodes as U+FFFD.
+    expect(decodeCliEvidenceText(Buffer.from([0xff]))).toBe("�");
+  });
+
+  it("redacts a credential hidden by a lone raw 0x9b byte in CLI evidence", async () => {
+    const stdout = Buffer.concat([
+      Buffer.from("boot ok\nAPI", "utf8"),
+      Buffer.from([0x9b]),
+      // Name and value are separate source literals. Joined in one literal they
+      // form a credential shape that the staged secret scanner flags on sight.
+      Buffer.from("_KEY=", "utf8"),
+      Buffer.from("RAW_C1_SENTINEL\ndone cleanly\n", "utf8")
+    ]);
+
+    const verdict = await judgeFailureWithRawBytes({ stdout });
+
+    expect(JSON.stringify(verdict)).not.toContain("RAW_C1_SENTINEL");
+    // 0x5f terminates the CSI as its final byte, so the name joins as APIKEY.
+    expect(verdict.cliFailure.stdout.excerpt).toBe("boot ok\nAPIKEY=[redacted]\ndone cleanly\n");
+    // Byte count and digest describe the bytes as captured, never the excerpt.
+    expect(verdict.cliFailure.stdout.totalBytes).toBe(stdout.length);
+    expect(verdict.cliFailure.stdout.sha256).toBe(createHash("sha256").update(stdout).digest("hex"));
+  });
+
+  it("redacts a credential hidden by a raw 8-bit CSI sequence", async () => {
+    const stdout = Buffer.concat([
+      Buffer.from("API", "utf8"),
+      Buffer.from([0x9b, 0x33, 0x31, 0x6d]),
+      Buffer.from("_KEY=RAW_CSI_SENTINEL\n", "utf8")
+    ]);
+
+    const verdict = await judgeFailureWithRawBytes({ stdout });
+
+    expect(JSON.stringify(verdict)).not.toContain("RAW_CSI_SENTINEL");
+    expect(verdict.cliFailure.stdout.excerpt).toBe("API_KEY=[redacted]\n");
+    expect(verdict.cliFailure.stdout.totalBytes).toBe(stdout.length);
+    expect(verdict.cliFailure.stdout.sha256).toBe(createHash("sha256").update(stdout).digest("hex"));
+  });
+
+  it("requires ST for DCS, SOS, PM, and APC while OSC keeps BEL", () => {
+    // BEL terminates OSC only. Inside DCS/SOS/PM/APC it is payload, so ending
+    // the string there spills the rest of the payload into the text, breaks the
+    // name join, and defeats the sensitive-key match.
+    for (const [label, introducer, terminator] of [
+      ["dcs-esc", `${ESC}P`, ST],
+      ["sos-esc", `${ESC}X`, ST],
+      ["pm-esc", `${ESC}^`, ST],
+      ["apc-esc", `${ESC}_`, ST],
+      ["dcs-esc-c1-st", `${ESC}P`, C1_ST],
+      ["dcs-c1", C1_DCS, C1_ST],
+      ["sos-c1", C1_SOS, C1_ST],
+      ["pm-c1", C1_PM, C1_ST],
+      ["apc-c1", C1_APC, C1_ST],
+      ["dcs-c1-esc-st", C1_DCS, ST]
+    ]) {
+      const text = `API${introducer}q${BEL}junk${terminator}_KEY=DCS_BEL_SECRET`;
+      expect(sanitizeCliEvidenceText(text), label).toBe("API_KEY=[redacted]");
+    }
+
+    // OSC still ends at BEL in both spellings.
+    expect(sanitizeCliEvidenceText(`API${ESC}]0;title${BEL}_KEY=OSC_BEL_SENTINEL`)).toBe(
+      "API_KEY=[redacted]"
+    );
+    expect(sanitizeCliEvidenceText(`API${C1_OSC}0;title${BEL}_KEY=OSC_C1_BEL_SENTINEL`)).toBe(
+      "API_KEY=[redacted]"
+    );
+
+    // A BEL with no ST leaves the control string unterminated: fail closed.
+    expect(sanitizeCliEvidenceText(`API${ESC}Pq${BEL}junk_KEY=DCS_BEL_SECRET`)).toBe("API[redacted]");
+  });
+
+  it("redacts a DCS-with-BEL credential in real CLI failure evidence", async () => {
+    const stdout = `boot ok\nAPI${ESC}Pq${BEL}junk${ST}_KEY=DCS_BEL_SECRET\ndone cleanly\n`;
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    expect(JSON.stringify(verdict)).not.toContain("DCS_BEL_SECRET");
+    expect(verdict.cliFailure.stdout.excerpt).toBe("boot ok\nAPI_KEY=[redacted]\ndone cleanly\n");
+  });
+
+  it("decodes raw C1 bytes before parsing a successful judge envelope", async () => {
+    // Exit 0, parseable envelope, result text that is not a verdict — so the
+    // result text reaches the rationale and must be sanitized there.
+    const stdout = Buffer.concat([
+      Buffer.from('{"result":"API', "utf8"),
+      Buffer.from([0x9b]),
+      Buffer.from('31m_KEY=RESULT_C1_SENTINEL","total_cost_usd":0.25}', "utf8")
+    ]);
+
+    const verdict = await judgeFailureWithRawBytes({ stdout, exitCode: 0 });
+
+    expect(JSON.stringify(verdict)).not.toContain("RESULT_C1_SENTINEL");
+    expect(verdict.score).toBe("error");
+    expect(verdict.rationale).toContain("unparseable verdict");
+    expect(verdict.rationale).toContain("API_KEY=[redacted]");
+    // Envelope metadata still parses out of the byte-preserving decode.
+    expect(verdict.costUsd).toBe(0.25);
+  });
+
+  it("decodes raw C1 bytes in unparseable successful judge output", async () => {
+    const stdout = Buffer.concat([
+      Buffer.from("judge said: API", "utf8"),
+      Buffer.from([0x9b]),
+      Buffer.from("31m_KEY=OUTPUT_C1_SENTINEL", "utf8")
+    ]);
+
+    const verdict = await judgeFailureWithRawBytes({ stdout, exitCode: 0 });
+
+    expect(JSON.stringify(verdict)).not.toContain("OUTPUT_C1_SENTINEL");
+    expect(verdict.score).toBe("error");
+    expect(verdict.coreAnswer).toBeNull();
+    expect(verdict.rationale).toContain("API_KEY=[redacted]");
+  });
+
+  it("redacts a raw C1 CSI credential inside a parseable envelope leaf", async () => {
+    // Nonzero exit with parseable stdout: the envelope is serialized into
+    // cliFailure.parsedEnvelope, whose string leaves never saw the
+    // control-aware stripper.
+    const stdout = Buffer.concat([
+      Buffer.from('{"detail":"API', "utf8"),
+      Buffer.from([0x9b]),
+      Buffer.from('31m_KEY=ENVELOPE_C1_SENTINEL","kept":"safe-sibling","total_cost_usd":0.5}', "utf8")
+    ]);
+
+    const verdict = await judgeFailureWithRawBytes({ stdout, exitCode: 1 });
+
+    expect(JSON.stringify(verdict)).not.toContain("ENVELOPE_C1_SENTINEL");
+    const envelope = JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt);
+    expect(envelope.detail).toBe("API_KEY=[redacted]");
+    // Safe siblings and reported cost survive untouched.
+    expect(envelope.kept).toBe("safe-sibling");
+    expect(envelope.total_cost_usd).toBe(0.5);
+    expect(verdict.costUsd).toBe(0.5);
+    // Raw stream metadata still describes the bytes as captured.
+    expect(verdict.cliFailure.stdout.totalBytes).toBe(stdout.length);
+    expect(verdict.cliFailure.stdout.sha256).toBe(createHash("sha256").update(stdout).digest("hex"));
+    expect(Buffer.byteLength(verdict.cliFailure.parsedEnvelope.excerpt)).toBeLessThanOrEqual(8_192);
+  });
+
+  it("redacts escaped ANSI and NUL split names in structured string leaves", async () => {
+    const stdout = JSON.stringify({
+      ansi: `API${ESC}[31m_KEY=ESCAPED_ANSI_SENTINEL`,
+      c1: `API${C1_CSI}31m_KEY=ESCAPED_C1_SENTINEL`,
+      osc: `API${ESC}]0;t${BEL}_KEY=ESCAPED_OSC_SENTINEL`,
+      nul: `API${NUL}_KEY=NUL_LEAF_SENTINEL`,
+      nested: { deep: `PASSWORD${NUL}=NESTED_NUL_SENTINEL` },
+      list: [`Bearer${ESC}[0m LIST_BEARER_SENTINEL`],
+      kept: "safe-sibling"
+    });
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    const serialized = JSON.stringify(verdict);
+    for (const sentinel of [
+      "ESCAPED_ANSI_SENTINEL",
+      "ESCAPED_C1_SENTINEL",
+      "ESCAPED_OSC_SENTINEL",
+      "NUL_LEAF_SENTINEL",
+      "NESTED_NUL_SENTINEL",
+      "LIST_BEARER_SENTINEL"
+    ]) {
+      expect(serialized, sentinel).not.toContain(sentinel);
+    }
+
+    const envelope = JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt);
+    expect(envelope.ansi).toBe("API_KEY=[redacted]");
+    expect(envelope.c1).toBe("API_KEY=[redacted]");
+    expect(envelope.osc).toBe("API_KEY=[redacted]");
+    expect(envelope.nul).toBe("API_KEY=[redacted]");
+    expect(envelope.nested.deep).toBe("PASSWORD=[redacted]");
+    expect(envelope.list[0]).toBe("Bearer [redacted]");
+    expect(envelope.kept).toBe("safe-sibling");
+  });
+
+  it("leaves non-credential string leaves byte-identical and unparsed", async () => {
+    // A leaf that gains no redaction keeps its escape bytes, and a leaf whose
+    // text merely looks like JSON is never parsed and re-serialized.
+    const colored = `${ESC}[32mall good${ESC}[0m`;
+    const jsonish = '{"a": 1,  "b": 2}';
+    const stdout = JSON.stringify({ colored, jsonish, token: "diagnostic token expired" });
+
+    const verdict = await judgeFailureWithFakeClaude({ stdout, stderr: "" });
+
+    const envelope = JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt);
+    expect(envelope.colored).toBe(colored);
+    expect(envelope.jsonish).toBe(jsonish);
+    // The `token` KEY is sensitive, so its value collapses — a key rule, not a
+    // leaf rule, and unchanged by this repair.
+    expect(envelope.token).toBe("[redacted]");
+  });
+
+  it("classifies structured property names after control normalization", () => {
+    // Confirmed reproducer: the NUL breaks the api_key match, so the value was
+    // emitted in full. The property NAME is preserved either way — only the
+    // classification is normalized, and only the value collapses.
+    expect(
+      sanitizeCliEvidenceText(JSON.stringify({ [`API${NUL}_KEY`]: "NUL_KEY_SECRET_SENTINEL" }))
+    ).toBe(JSON.stringify({ [`API${NUL}_KEY`]: "[redacted]" }));
+
+    for (const [label, key] of [
+      ["nul", `API${NUL}_KEY`],
+      ["escaped-ansi", `API${ESC}[31m_KEY`],
+      ["escaped-c1", `API${C1_CSI}31m_KEY`],
+      ["escaped-osc", `API${ESC}]0;t${BEL}_KEY`],
+      ["password-nul", `PASS${NUL}WORD`],
+      ["env-nul", `en${NUL}v`]
+    ]) {
+      const sanitized = JSON.parse(
+        sanitizeCliEvidenceText(JSON.stringify({ [key]: "KEY_NAME_SENTINEL", kept: "safe-sibling" }))
+      );
+      expect(sanitized[key], label).toBe("[redacted]");
+      expect(sanitized.kept, label).toBe("safe-sibling");
+    }
+  });
+
+  it("keeps a safe property name and value when normalization finds nothing", () => {
+    // `note` is not a credential term, so a NUL inside it changes nothing: the
+    // original name and the original value both survive.
+    const payload = {
+      [`no${NUL}te`]: "keep me verbatim",
+      [`key${ESC}[0mnote`]: "also verbatim",
+      kept: "safe-sibling"
+    };
+
+    expect(sanitizeCliEvidenceText(JSON.stringify(payload))).toBe(JSON.stringify(payload));
+  });
+
+  it("normalizes nested and array-nested property names without changing array shape", () => {
+    const payload = {
+      outer: { [`API${ESC}[31m_KEY`]: "NESTED_ANSI_KEY_SENTINEL" },
+      list: ["plain element", { [`PASS${NUL}WORD`]: "ARRAY_OBJ_KEY_SENTINEL" }, 7],
+      kept: "safe-sibling"
+    };
+
+    const raw = sanitizeCliEvidenceText(JSON.stringify(payload));
+    const sanitized = JSON.parse(raw);
+
+    for (const sentinel of ["NESTED_ANSI_KEY_SENTINEL", "ARRAY_OBJ_KEY_SENTINEL"]) {
+      expect(raw, sentinel).not.toContain(sentinel);
+    }
+    expect(sanitized.outer[`API${ESC}[31m_KEY`]).toBe("[redacted]");
+    expect(Array.isArray(sanitized.list)).toBe(true);
+    expect(sanitized.list).toHaveLength(3);
+    expect(sanitized.list[0]).toBe("plain element");
+    expect(sanitized.list[1][`PASS${NUL}WORD`]).toBe("[redacted]");
+    expect(sanitized.list[2]).toBe(7);
+    expect(sanitized.kept).toBe("safe-sibling");
+  });
+
+  it("classifies a raw C1 split property name in a parseable envelope", async () => {
+    const stdout = Buffer.concat([
+      Buffer.from('{"API', "utf8"),
+      Buffer.from([0x9b]),
+      // Split after the JSON name separator, for the same reason.
+      Buffer.from('31m_KEY":"', "utf8"),
+      Buffer.from('RAW_C1_KEY_SENTINEL","kept":"safe-sibling","total_cost_usd":0.5}', "utf8")
+    ]);
+
+    const verdict = await judgeFailureWithRawBytes({ stdout, exitCode: 1 });
+
+    expect(JSON.stringify(verdict)).not.toContain("RAW_C1_KEY_SENTINEL");
+    const envelope = JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt);
+    expect(envelope[`API${C1_CSI}31m_KEY`]).toBe("[redacted]");
+    expect(envelope.kept).toBe("safe-sibling");
+    expect(envelope.total_cost_usd).toBe(0.5);
+    expect(verdict.costUsd).toBe(0.5);
+    // Raw stream metadata still describes the bytes as captured.
+    expect(verdict.cliFailure.stdout.totalBytes).toBe(stdout.length);
+    expect(verdict.cliFailure.stdout.sha256).toBe(createHash("sha256").update(stdout).digest("hex"));
+    expect(Buffer.byteLength(verdict.cliFailure.parsedEnvelope.excerpt)).toBeLessThanOrEqual(8_192);
+  });
+
+  it("redacts a property whose name holds a truncated control sequence", () => {
+    // Confirmed reproducer: the unterminated OSC swallows `0;x_KEY`, so the
+    // normalized name is just `API` and the key predicate finds nothing.
+    // The value fails closed (round 7) and the NAME is scanned too (round 8),
+    // so the swallowed suffix cannot survive in key position either.
+    expect(
+      sanitizeCliEvidenceText(JSON.stringify({ [`API${ESC}]0;x_KEY`]: "TRUNCATED_KEY_SECRET" }))
+    ).toBe(JSON.stringify({ "API[redacted]": "[redacted]" }));
+
+    // Every unterminated form fails closed, whatever the normalized name reads
+    // as. The property NAME is still preserved. JSON.stringify escapes ESC, so
+    // these carry no raw control byte in the serialized text and the structured
+    // path decides the result.
+    for (const [label, key] of [
+      ["osc-esc", `API${ESC}]0;x_KEY`],
+      ["csi-esc", `API${ESC}[0;1`],
+      ["apc-esc", `API${ESC}_payload`],
+      ["dangling-esc", `API${ESC}`]
+    ]) {
+      const sanitized = JSON.parse(
+        sanitizeCliEvidenceText(
+          JSON.stringify({ [key]: "TRUNCATED_KEY_SECRET", kept: "safe-sibling" })
+        )
+      );
+      // Every truncated form scans to the same emitted name.
+      expect(sanitized["API[redacted]"], label).toBe("[redacted]");
+      expect(sanitized.kept, label).toBe("safe-sibling");
+    }
+
+    // A C1 introducer is NOT escaped by JSON.stringify, so it reaches the text
+    // as a raw control byte and the text-level rule fails closed first: the
+    // excerpt is cut at the introducer and is no longer parseable JSON. The
+    // secret is gone either way, which is the point of failing closed.
+    const c1Text = JSON.stringify({ [`API${C1_OSC}0;x_KEY`]: "TRUNCATED_KEY_SECRET" });
+    expect(sanitizeCliEvidenceText(c1Text)).toBe(`{"API${REDACTED_MARKER}`);
+  });
+
+  it("redacts a truncated C1 property name inside a parseable envelope", async () => {
+    // The structured path on its own, with no text-level rule in the way.
+    const stdout = Buffer.concat([
+      Buffer.from('{"API', "utf8"),
+      Buffer.from([0x9d]),
+      Buffer.from('0;x_KEY":"C1_TRUNCATED_KEY_SECRET","kept":"safe-sibling"}', "utf8")
+    ]);
+
+    const verdict = await judgeFailureWithRawBytes({ stdout, exitCode: 1 });
+
+    expect(JSON.stringify(verdict)).not.toContain("C1_TRUNCATED_KEY_SECRET");
+    const envelope = JSON.parse(verdict.cliFailure.parsedEnvelope.excerpt);
+    expect(envelope["API[redacted]"]).toBe("[redacted]");
+    expect(envelope.kept).toBe("safe-sibling");
+    // Raw stream metadata still describes the bytes as captured.
+    expect(verdict.cliFailure.stdout.totalBytes).toBe(stdout.length);
+    expect(verdict.cliFailure.stdout.sha256).toBe(createHash("sha256").update(stdout).digest("hex"));
+  });
+
+  it("keeps nested safe siblings beside a truncated-name property", () => {
+    const payload = {
+      outer: {
+        [`API${ESC}]0;x_KEY`]: "NESTED_TRUNCATED_KEY_SECRET",
+        innerKept: "safe-sibling",
+        count: 7
+      },
+      list: ["plain element", 7],
+      kept: "safe-sibling"
+    };
+
+    const raw = sanitizeCliEvidenceText(JSON.stringify(payload));
+    const sanitized = JSON.parse(raw);
+
+    expect(raw).not.toContain("NESTED_TRUNCATED_KEY_SECRET");
+    expect(sanitized.outer["API[redacted]"]).toBe("[redacted]");
+    expect(sanitized.outer.innerKept).toBe("safe-sibling");
+    expect(sanitized.outer.count).toBe(7);
+    expect(Array.isArray(sanitized.list)).toBe(true);
+    expect(sanitized.list).toEqual(["plain element", 7]);
+    expect(sanitized.kept).toBe("safe-sibling");
+  });
+
+  it("leaves a terminated safe property name and its value unchanged", () => {
+    // A control sequence that terminates normally still classifies on the
+    // normalized name, so a benign name keeps both its name and its value.
+    const payload = {
+      [`no${ESC}[0mte`]: "keep me verbatim",
+      [`key${ESC}]0;t${BEL}note`]: "also verbatim",
+      input_tokens: 123,
+      kept: "safe-sibling"
+    };
+
+    expect(sanitizeCliEvidenceText(JSON.stringify(payload))).toBe(JSON.stringify(payload));
+  });
+
+  it("redacts a credential carried by the property name itself", () => {
+    // Confirmed reproducer: the key predicate saw `password` and collapsed the
+    // VALUE, but the key was emitted verbatim and kept the secret.
+    expect(sanitizeCliEvidenceText(JSON.stringify({ "PASSWORD=SECRET": "safe" }))).toBe(
+      JSON.stringify({ "PASSWORD=[redacted]": "[redacted]" })
+    );
+
+    for (const [label, key, expected, sentinel] of [
+      ["assignment", "PASSWORD=KEY_ASSIGN_SENTINEL", "PASSWORD=[redacted]", "KEY_ASSIGN_SENTINEL"],
+      ["assignment-colon", "api_key: KEY_COLON_SENTINEL", "api_key: [redacted]", "KEY_COLON_SENTINEL"],
+      ["prefix-sk", "sk-KEY_PREFIX_SENTINEL", "[redacted]", "KEY_PREFIX_SENTINEL"],
+      ["prefix-ghp", "ghp_KEY_GH_SENTINEL", "[redacted]", "KEY_GH_SENTINEL"],
+      ["auth-bearer", "Bearer KEY_BEARER_SENTINEL", "Bearer [redacted]", "KEY_BEARER_SENTINEL"],
+      ["auth-basic", "Basic KEY_BASIC_SENTINEL", "Basic [redacted]", "KEY_BASIC_SENTINEL"],
+      ["url-userinfo", "https://KEY_URL_SENTINEL@example.com/p", "https://[redacted]@example.com/p", "KEY_URL_SENTINEL"]
+    ]) {
+      const raw = sanitizeCliEvidenceText(JSON.stringify({ [key]: "safe", kept: "safe-sibling" }));
+      const sanitized = JSON.parse(raw);
+      expect(Object.keys(sanitized), label).toContain(expected);
+      expect(raw, label).not.toContain(sentinel);
+      expect(sanitized.kept, label).toBe("safe-sibling");
+    }
+  });
+
+  it("keeps a plain API_KEY name and redacts only its value", () => {
+    expect(sanitizeCliEvidenceText(JSON.stringify({ API_KEY: "PLAIN_KEY_VALUE_SENTINEL" }))).toBe(
+      JSON.stringify({ API_KEY: "[redacted]" })
+    );
+  });
+
+  it("leaves ordinary property names untouched", () => {
+    const payload = {
+      note: "keep me verbatim",
+      keynote: "still-here",
+      "https://example.com:443/kept": "safe",
+      input_tokens: 123,
+      kept: "safe-sibling"
+    };
+
+    expect(sanitizeCliEvidenceText(JSON.stringify(payload))).toBe(JSON.stringify(payload));
+  });
+
+  it("gives colliding secret property names unique placeholders and keeps every value", () => {
+    // Two different secrets sanitize to the same marker. Without a unique
+    // placeholder the second write would silently drop the first field.
+    const raw = sanitizeCliEvidenceText(
+      JSON.stringify({
+        "sk-COLLIDE_ONE_SENTINEL": "first",
+        "sk-COLLIDE_TWO_SENTINEL": "second",
+        "ghp_COLLIDE_THREE_SENTINEL": "third",
+        kept: "safe-sibling"
+      })
+    );
+    const sanitized = JSON.parse(raw);
+
+    for (const sentinel of ["COLLIDE_ONE_SENTINEL", "COLLIDE_TWO_SENTINEL", "COLLIDE_THREE_SENTINEL"]) {
+      expect(raw, sentinel).not.toContain(sentinel);
+    }
+    // Positional suffixes only — never a digest of the key.
+    expect(Object.keys(sanitized)).toEqual(["[redacted]", "[redacted]-2", "[redacted]-3", "kept"]);
+    expect(Object.values(sanitized)).toEqual(["first", "second", "third", "safe-sibling"]);
+    expect(raw).not.toMatch(/[0-9a-f]{16}/);
+  });
+
+  it("sanitizes secret property names at every nesting depth", () => {
+    const raw = sanitizeCliEvidenceText(
+      JSON.stringify({
+        outer: {
+          "PASSWORD=NESTED_KEY_SENTINEL": "safe",
+          inner: { "Bearer NESTED_BEARER_SENTINEL": "safe", innerKept: "safe-sibling" }
+        },
+        list: [{ "sk-NESTED_LIST_SENTINEL": "safe" }, "plain element", 7],
+        kept: "safe-sibling"
+      })
+    );
+    const sanitized = JSON.parse(raw);
+
+    for (const sentinel of ["NESTED_KEY_SENTINEL", "NESTED_BEARER_SENTINEL", "NESTED_LIST_SENTINEL"]) {
+      expect(raw, sentinel).not.toContain(sentinel);
+    }
+    expect(Object.keys(sanitized.outer)).toContain("PASSWORD=[redacted]");
+    expect(Object.keys(sanitized.outer.inner)).toContain("Bearer [redacted]");
+    expect(sanitized.outer.inner.innerKept).toBe("safe-sibling");
+    expect(Array.isArray(sanitized.list)).toBe(true);
+    expect(Object.keys(sanitized.list[0])).toEqual(["[redacted]"]);
+    expect(sanitized.list[1]).toBe("plain element");
+    expect(sanitized.list[2]).toBe(7);
+    expect(sanitized.kept).toBe("safe-sibling");
+  });
+
+  it("redacts mixed-case auth schemes in plaintext and in property names", () => {
+    // HTTP auth schemes are case-insensitive, so the spelling does not change
+    // what the value is.
+    for (const [label, scheme] of [
+      ["lower-bearer", "bearer"],
+      ["upper-bearer", "BEARER"],
+      ["mixed-bearer", "BeArEr"],
+      ["lower-basic", "basic"],
+      ["mixed-basic", "bAsIc"],
+      ["upper-token", "TOKEN"],
+      ["mixed-token", "ToKeN"]
+    ]) {
+      expect(sanitizeCliEvidenceText(`${scheme} SCHEME_CASE_SENTINEL`), label).toBe(
+        `${scheme} [redacted]`
+      );
+
+      const raw = sanitizeCliEvidenceText(JSON.stringify({ [`${scheme} KEY_SCHEME_SENTINEL`]: "safe" }));
+      expect(raw, label).not.toContain("KEY_SCHEME_SENTINEL");
+      expect(Object.keys(JSON.parse(raw)), label).toContain(`${scheme} [redacted]`);
+    }
+  });
+
+  it("still keeps a bare lowercase token diagnostic", () => {
+    // `token` on its own is ordinary prose in CLI output far more often than a
+    // scheme. Any other spelling is treated as the scheme.
+    expect(sanitizeCliEvidenceText("token expired before retry")).toBe("token expired before retry");
+    expect(sanitizeCliEvidenceText("Token EXPLICIT_SCHEME_SENTINEL")).toBe("Token [redacted]");
+  });
+
+  it(
+    "assigns colliding secret property names in linear total time",
+    { timeout: 5_000 },
+    () => {
+      // Correctness is asserted deterministically; the guard against the
+      // quadratic suffix search is the test timeout, not a measured duration.
+      // Restarting the search at 2 for every key costs ~N^2/2 lookups, which at
+      // this size runs for tens of seconds.
+      const count = 20_000;
+      const payload = JSON.stringify(
+        Object.fromEntries(Array.from({ length: count }, (_, index) => [`sk-COLLIDE${index}`, index]))
+      );
+
+      const raw = sanitizeCliEvidenceText(payload);
+      const sanitized = JSON.parse(raw);
+      const names = Object.keys(sanitized);
+
+      expect(raw).not.toContain("COLLIDE");
+      expect(names).toHaveLength(count);
+      expect(new Set(names).size).toBe(count);
+      expect(names[0]).toBe("[redacted]");
+      expect(names[1]).toBe("[redacted]-2");
+      expect(names[count - 1]).toBe(`[redacted]-${count}`);
+      expect(Object.values(sanitized)).toEqual(Array.from({ length: count }, (_, index) => index));
+    }
+  );
+
   it("keeps ordinary lowercase token diagnostics", () => {
     expect(sanitizeCliEvidenceText("token expired before retry")).toBe("token expired before retry");
+    // Stripping never rewrites evidence on its own: a diagnostic that gains no
+    // redaction keeps its original escape bytes.
+    for (const diagnostic of [
+      `${ESC}[32mtoken${ESC}[0m expired before retry`,
+      `${ESC}]0;run${BEL}token expired before retry`,
+      `${C1_CSI}1mtoken${C1_CSI}0m refresh scheduled`
+    ]) {
+      expect(sanitizeCliEvidenceText(diagnostic)).toBe(diagnostic);
+    }
   });
 
   it("redacts every short, userinfo, and prefixed credential form in real CLI failure evidence", async () => {
@@ -1857,11 +2501,54 @@ describe("QA verdict consistency", () => {
     expect(verdict).toMatchObject({
       score: "error",
       judgeScore: "wrong",
-      coreAnswer: "correct",
+      coreAnswer: null,
       avoidMatches: [],
       consistencyViolations: ["omission-only-wrong"],
       costUsd: 0.125
     });
+  });
+
+  it("nulls coreAnswer for every consistency error, whatever the judge returned", async () => {
+    // An error verdict carries no graded core answer. The raw score survives as
+    // judgeScore; coreAnswer has no equivalent escape and must not be emitted.
+    const conflicts = [
+      { label: "core-incorrect-not-wrong", coreAnswer: "incorrect", wrongClaims: [], score: "partial" },
+      { label: "correct-with-wrong-claims", coreAnswer: "correct", wrongClaims: ["Wrong claim."], score: "correct" },
+      { label: "invalid-core-answer", coreAnswer: "unsure", wrongClaims: [], score: "partial" },
+      { label: "invalid-core-answer", coreAnswer: null, wrongClaims: [], score: "partial" },
+      { label: "invalid-core-answer", coreAnswer: { verdict: "correct" }, wrongClaims: [], score: "correct" }
+    ];
+
+    for (const { label, coreAnswer, wrongClaims, score } of conflicts) {
+      const verdict = await judgeWithFakeClaude({
+        rationale: "The judge returned a contradictory verdict.",
+        coreAnswer,
+        missingFacts: ["The candidate omits one detail."],
+        wrongClaims,
+        avoidMatches: [],
+        score
+      });
+
+      expect(verdict.score, label).toBe("error");
+      expect(verdict.consistencyViolations, label).toContain(label);
+      expect(verdict.coreAnswer, label).toBeNull();
+      expect(verdict.judgeScore, label).toBe(score);
+    }
+  });
+
+  it("keeps a graded coreAnswer on a consistent verdict", async () => {
+    const verdict = await judgeWithFakeClaude({
+      rationale: "The core answer is right and nothing contradicts it.",
+      coreAnswer: "correct",
+      missingFacts: [],
+      wrongClaims: [],
+      avoidMatches: [],
+      score: "correct"
+    });
+
+    expect(verdict.score).toBe("correct");
+    expect(verdict.coreAnswer).toBe("correct");
+    expect(verdict).not.toHaveProperty("consistencyViolations");
   });
 
   it("passes raw invalid avoid matches to the check but emits []", async () => {
