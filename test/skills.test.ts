@@ -78,13 +78,13 @@ describe("skill transports", () => {
 });
 
 describe("readSkill", () => {
-  it("reads a whole skill by exact catalog id (frontmatter stripped)", async () => {
+  it("reads a whole skill by exact catalog id, forwarding upstream frontmatter", async () => {
     const r = await readSkill(catalog, source, "skills.lumenloop.stellar-project-dossier");
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r).not.toHaveProperty("sections");
     if (r.content === undefined) throw new Error("expected whole-read content");
-    expect(r.content).not.toMatch(/^---/);
+    expect(r.content).toMatch(/^---/);
     expect(r.availableSections.length).toBeGreaterThan(0);
   });
 
