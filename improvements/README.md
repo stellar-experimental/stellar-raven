@@ -154,8 +154,8 @@ is now directly remediable with the operator Algolia credentials in `.env`
   also a content/crawler issue the docs owner should know about. The resolved `sd-006` receipt is the
   precedent for retaining a separate monitor-only rule-health canary after the active finding retires.
 
-**Analytics as evidence.** The Search Analytics / usage keys give us real user query streams and
-no-result queries — a new, low-risk evidence source. Use them to quantify a finding's prevalence
+**Analytics as evidence.** The Search Analytics / usage keys give us aggregated top-query and
+no-result-query reports — a new, low-risk evidence source. Use them to quantify a finding's prevalence
 (stronger than the eval corpus's approximation) and to surface content/vocabulary gaps we would
 otherwise never see. Cite the analytics query and window in `evidence`.
 

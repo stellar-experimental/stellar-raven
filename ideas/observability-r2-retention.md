@@ -8,10 +8,9 @@ Verified: 2026-07-07 against the current repo and current Cloudflare docs.
 ## Current state
 
 The production worker already emits useful structured observability. `src/observability.ts` is a
-thin helper: `logEvent(evt, fields)` writes one flat JSON object to `console.log`, and `preview()`
-caps text fields at 300 chars by default, with execute code previews capped at 4,000 chars. The
-file's discipline is explicit: flat, small fields; no secrets; model-authored queries/code may be
-logged because they are the debugging/eval evidence; adapter results are expected to be redacted
+thin helper: `logEvent(evt, fields)` writes one flat JSON object to `console.log`. The file's
+discipline is explicit: flat, small fields, and never a secret value, a query, execute code, a
+result, an answer, or a provider error message; adapter results are expected to be redacted
 before logging. It also documents the split between logs for facts and trace spans for timing
 attribution (`src/observability.ts:1-36`).
 
