@@ -33,10 +33,10 @@ passed to the CLI unchanged, so the model and effort flags below are the CLI's o
 
 | `--kind` | CLI | Default model | Explicit model syntax |
 |---|---|---|---|
-| `codex` | `codex` | `gpt-5.6-sol` (host config: high; catalog default: low) | `-m <model>` |
-| `claude` | `claude` | account/runtime default | `--model <alias-or-id>` |
-| `grok` | `grok` | `grok-4.6` | `-m <model>` |
-| `opencode` | `opencode` | runtime/provider dependent | `-m <provider/model>` |
+| `codex` | `codex` | `gpt-5.6-sol` (host config: high; catalog default: low) | `-m`/`--model <model>` |
+| `claude` | `claude` | account/runtime default | `--model <alias-or-id>` (no short flag) |
+| `grok` | `grok` | `grok-4.6` | `-m`/`--model <model>` |
+| `opencode` | `opencode` | runtime/provider dependent | `-m`/`--model <provider/model>` |
 
 Run `herdr agent` for the installed kind list; it is the authority, not this table.
 
