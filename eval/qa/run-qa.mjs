@@ -63,7 +63,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { QA_DIR, loadCases, stratifiedSample, summarize, formatSummaryTable } from "./lib.mjs";
-import { buildTranscriptEvidence, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "./judge.mjs";
+import { buildTranscriptEvidence, isRetryableJudgeError, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "./judge.mjs";
 import { verifySourceCases } from "./re-judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
@@ -436,14 +436,14 @@ export async function judgeStoredResults(
     );
   }
 
-  // CLI and parse errors on answered rows remain retryable. Deterministic
-  // consistency errors have a judgeScore and stay terminal after one call.
+  // Judge-side CLI and parse errors on answered rows remain retryable — a
+  // failed call can still grade on the next attempt. Deterministic consistency
+  // errors are terminal (isRetryableJudgeError), and empty-answer error
+  // verdicts are collection facts that stay.
   const unjudged = results.rows.filter(
     (row) =>
       typeof row.verdict?.score !== "string" ||
-      (row.verdict.score === "error" &&
-        typeof row.verdict.judgeScore !== "string" &&
-        hasSuccessfulAnswer(row.answer, row.agent?.failure))
+      (isRetryableJudgeError(row.verdict) && hasSuccessfulAnswer(row.answer, row.agent?.failure))
   );
 
   // Every persisted state must be internally consistent, so finalize stamps
@@ -668,7 +668,7 @@ async function main() {
               { ...c, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
               { model: judgeModel }
             )
-            : {
+          : {
               score: "error",
               coreAnswer: null,
               missingFacts: [],

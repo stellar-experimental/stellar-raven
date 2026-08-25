@@ -29,6 +29,8 @@ type RejudgeRows = (options: {
   log?: (message: string) => void;
 }) => Promise<unknown[]>;
 type EffectiveVerdictScore = (verdict: { score?: string; judgeScore?: string } | null) => string | undefined;
+type StoredVerdict = { score?: string; judgeScore?: string } | null | undefined;
+type VerdictAgreement = (original: StoredVerdict, next: StoredVerdict) => boolean | null;
 
 async function loadVerifySourceCases(): Promise<VerifySourceCases> {
   const modulePath = "../eval/qa/re-judge.mjs";
@@ -48,6 +50,11 @@ async function loadRejudgeRows(): Promise<RejudgeRows> {
 async function loadEffectiveVerdictScore(): Promise<EffectiveVerdictScore> {
   const modulePath = "../eval/qa/re-judge.mjs";
   return (await import(modulePath) as { effectiveVerdictScore: EffectiveVerdictScore }).effectiveVerdictScore;
+}
+
+async function loadVerdictAgreement(): Promise<VerdictAgreement> {
+  const modulePath = "../eval/qa/re-judge.mjs";
+  return (await import(modulePath) as { verdictAgreement: VerdictAgreement }).verdictAgreement;
 }
 
 function sha256(value: string): string {
@@ -255,6 +262,36 @@ describe("re-judge saved-answer selection", () => {
     }) as Array<{ agreement: boolean }>;
 
     expect(rows[0]?.agreement).toBe(true);
+  });
+
+  // agreement measures grade variance, so it needs a grade on both sides. An
+  // effective error measured nothing, and reporting it as a disagreement would
+  // inflate every rate computed from the artifact.
+  it("reports no agreement value when either side has no grade", async () => {
+    const verdictAgreement = await loadVerdictAgreement();
+
+    expect(verdictAgreement({ score: "wrong" }, { score: "wrong" })).toBe(true);
+    expect(verdictAgreement({ score: "wrong" }, { score: "error", judgeScore: "wrong" })).toBe(true);
+    expect(verdictAgreement({ score: "wrong" }, { score: "partial" })).toBe(false);
+    expect(verdictAgreement({ score: "wrong" }, { score: "error" })).toBeNull();
+    expect(verdictAgreement({ score: "error" }, { score: "correct" })).toBeNull();
+    expect(verdictAgreement(undefined, { score: "correct" })).toBeNull();
+  });
+
+  it("records no agreement when the re-judge itself fails", async () => {
+    const rejudgeRows = await loadRejudgeRows();
+    const rows = await rejudgeRows({
+      selectedRows: [
+        { id: "one", answer: "Saved answer.", transcript: [], verdict: { score: "wrong" } }
+      ],
+      caseById: new Map([["one", { id: "one", question: "Question?" }]]),
+      judgeModel: "stub-judge",
+      judge: async () => ({ score: "error", costUsd: 0 }),
+      checkpoint: () => {},
+      log: () => {}
+    }) as Array<{ agreement: boolean | null }>;
+
+    expect(rows[0]?.agreement).toBeNull();
   });
 
   it("checkpoints each paid verdict before the next judge call", async () => {

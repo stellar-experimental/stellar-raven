@@ -26,6 +26,8 @@ eval/qa/
   consistency-register.json         # cross-question contradiction register + numericInvariants
   compile-qa.mjs  judge.mjs  evidence-pack.mjs  run-qa.mjs  lint-corpus.mjs  register-helper.mjs  lib.mjs
   agent-result.mjs                  # pure spawn → structured outcome parser (failure class, usage, artifacts)
+  verdict-consistency.mjs           # deterministic verdict-vs-lists checks (no I/O, no model)
+  evidence-sanitizer.mjs            # bounded, credential-redacted CLI-failure evidence
   re-judge.mjs                      # side-artifact re-judge of saved rows (never edits the source file)
   verify-evidence-pack-fixtures.mjs # maintenance: checks committed pack fixtures against saved rows
   results/                          # local-only run evidence (gitignored)
@@ -192,7 +194,7 @@ redacted `agent.stderr.{chars,sha256,excerpt}`. `meta.resultsSchema` stamps the 
 
 **Redaction reads through terminal escapes.** CLI evidence is captured raw, so a credential name
 can arrive split by escape bytes that a terminal never shows — `API<OSC>…<BEL>_KEY=…` looks like
-`API_KEY=…` on screen but not to a plain string scan. `judge.mjs` therefore strips every ANSI form
+`API_KEY=…` on screen but not to a plain string scan. `evidence-sanitizer.mjs` therefore strips every ANSI form
 before credential matching: CSI and the control strings (OSC, DCS, SOS, PM, APC) in both their
 `ESC`-introduced and single-byte C1 spellings, any other escape sequence, and the remaining C0/C1
 controls. Newline, carriage return, and tab survive, so line boundaries do not move. The stripped
@@ -422,6 +424,12 @@ a grade, so it carries no graded core answer — the same shape the CLI-failure 
 unparseable-verdict paths already emit. The raw model score is still recoverable as `judgeScore`;
 the contradicted `coreAnswer` has no equivalent meaning and is not kept. This changes the emitted
 shape only. The judge prompt is byte-identical and no score changes, so it needs no rubric bump.
+
+**A consistency error is terminal; a judge-side CLI or parse error is not.** `--judge-stored`
+re-attempts an `error` verdict on an answered row only when the call itself failed
+(`isRetryableJudgeError` in `judge.mjs`). A consistency error carries `judgeScore`, so the same
+prompt contradicts itself again on every attempt: the row keeps its verdict, the file still
+finalizes, and no resume spends a second paid call on it.
 
 **Comparability rules:**
 
@@ -963,6 +971,13 @@ tuple (`packVersion: "p3"` vs `"p5"`), and a real run fails with
 `refusing non-identical re-judge: judge tuple differs (…)`. Drop `--allow-non-identical` only
 when the source artifact's tuple still matches the current one — then the re-judge is genuinely
 identical-input.
+
+**Effective score and agreement.** `re-judge.mjs` compares the **effective** score — `judgeScore`
+when a verdict is a consistency error, the recorded score otherwise — so a stored `wrong` and a
+recomputed `{score: "error", judgeScore: "wrong"}` count as the same grade in `--flips-vs`
+selection and in the per-row log. Each artifact row also carries `agreement`, which is `null`
+whenever either side has no grade at all: an unjudged source row, or an effective `error` from a
+CLI crash or an unparseable reply. A missing measurement is not a disagreement.
 
 Every flag `re-judge.mjs` accepts:
 

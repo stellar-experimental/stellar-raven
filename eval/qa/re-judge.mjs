@@ -77,6 +77,22 @@ export function effectiveVerdictScore(verdict) {
     : verdict?.score;
 }
 
+/**
+ * Whether two verdicts agree on the grade — `null` when the question does not
+ * apply. `agreement` measures grade variance between two judge calls, so it
+ * needs a grade on both sides. An effective "error" is not a grade: the CLI
+ * crashed, or the reply was unparseable, and nothing about the candidate was
+ * measured. Reporting that as `false` would count a missing measurement as a
+ * disagreement and inflate every disagreement rate computed from the artifact.
+ */
+export function verdictAgreement(original, next) {
+  const before = effectiveVerdictScore(original);
+  const after = effectiveVerdictScore(next);
+  if (typeof before !== "string" || typeof after !== "string") return null;
+  if (before === "error" || after === "error") return null;
+  return before === after;
+}
+
 function parseArgs(argv) {
   const positional = [];
   let ids;
@@ -417,10 +433,7 @@ export async function rejudgeRows({
       id: row.id,
       original: row.verdict,
       new: verdict,
-      agreement:
-        typeof row.verdict?.score === "string"
-          ? effectiveVerdictScore(row.verdict) === effectiveVerdictScore(verdict)
-          : null,
+      agreement: verdictAgreement(row.verdict, verdict),
       evidencePack: {
         packVersion: PACK_VERSION,
         chars: transcriptEvidence.length,
