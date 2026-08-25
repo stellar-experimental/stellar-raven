@@ -43,6 +43,7 @@ import {
   workosAuthenticateBody
 } from "../src/auth/workos";
 import { DEMO_COOKIE_NAME, verifyDemoCookie } from "../src/demo/auth";
+import { getDocCatalogCounts } from "../src/site";
 
 // ---------------------------------------------------------------------------
 // Stubs
@@ -570,6 +571,13 @@ describe("WorkOSAuthHandler", () => {
     expect(response.status).toBe(200);
     const page = await response.text();
     expect(page).toContain("Stellar Raven documentation");
+    // Counts come from the same accessor the page renders from, so a catalog
+    // rebuild moves the assertion with the copy instead of failing on a stale
+    // literal.
+    const counts = getDocCatalogCounts();
+    expect(page).toContain(`${counts.operations} operations`);
+    expect(page).toContain(`${counts.skills} skills`);
+    expect(page).toContain(`${counts.sections} sections`);
     expect(page).toContain("https://raven.stellar.org/mcp");
     expect(page).toContain("1 hour");
     expect(page).toContain("90 days");

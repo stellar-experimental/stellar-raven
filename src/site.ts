@@ -672,6 +672,7 @@ const JSONLD =
   `</script>`;
 
 export function landingPage(): string {
+  const counts = getDocCatalogCounts();
   return (
     head(
       "Stellar Raven — the Stellar MCP server for AI agents",
@@ -708,9 +709,9 @@ export function landingPage(): string {
 </div></section></main>` +
     `<div class="below">
   <div class="stats" aria-label="What one connection covers">
-    <span class="st"><b>${DOC_CATALOG_COUNTS.operations}</b> live operations</span>
-    <span class="st"><b>${DOC_CATALOG_COUNTS.operations + DOC_CATALOG_COUNTS.skills + DOC_CATALOG_COUNTS.sections}</b> catalog entries</span>
-    <span class="st"><b>${DOC_CATALOG_COUNTS.skills}</b> playbooks</span>
+    <span class="st"><b>${counts.operations}</b> live operations</span>
+    <span class="st"><b>${counts.operations + counts.skills + counts.sections}</b> catalog entries</span>
+    <span class="st"><b>${counts.skills}</b> playbooks</span>
     <span class="st"><b>1</b> sign-in</span>
     <span class="st"><b>0</b> API keys</span>
   </div>
@@ -742,7 +743,7 @@ export function landingPage(): string {
       <div class="cell">
         <div class="tag">Proven playbooks</div>
         <h3>Tested procedures, read mid-task</h3>
-        <p>${DOC_CATALOG_COUNTS.skills} step-by-step guides your agent pulls in section by section, exactly when it needs them.</p>
+        <p>${counts.skills} step-by-step guides your agent pulls in section by section, exactly when it needs them.</p>
         <div class="chips"><span class="chip">smart contracts</span><span class="chip">payments</span><span class="chip">dApps</span><span class="chip">data &amp; indexing</span></div>
       </div>
     </div>
@@ -783,7 +784,7 @@ export function landingPage(): string {
       </div>
     </div>
     <p class="hood">Under the hood: two MCP tools. <code>search</code> ranks
-      ${DOC_CATALOG_COUNTS.operations} operations and ${DOC_CATALOG_COUNTS.skills} whole skills;
+      ${counts.operations} operations and ${counts.skills} whole skills;
       skill sections remain exact-read affordances on their parent skill. <code>execute</code> runs
       your agent's JavaScript in a no-network sandbox where every call is validated against the catalog.</p>
   </section>
@@ -1164,16 +1165,50 @@ export const TERMS_HEADERS: Record<string, string> = {
 // lifetimes against src/auth/gate.ts.
 // ---------------------------------------------------------------------------
 
-/** Current counts derive from the validated manifest. */
-export const DOC_CATALOG_COUNTS = getCatalog().entries.reduce(
-  (counts, entry) => {
-    if (entry.kind === "operation") counts.operations += 1;
-    else if (entry.kind === "skill") counts.skills += 1;
-    else if (entry.kind === "skill-section") counts.sections += 1;
-    return counts;
-  },
-  { operations: 0, skills: 0, sections: 0 }
-);
+/** Catalog entry counts by kind, as the landing and docs copy renders them. */
+export type DocCatalogCounts = { operations: number; skills: number; sections: number };
+
+let docCatalogCounts: DocCatalogCounts | undefined;
+
+/**
+ * Current counts derive from the validated manifest, computed on first use and
+ * cached for the isolate's lifetime.
+ *
+ * Lazy on purpose: every auth-handler route imports this module, but only the
+ * landing and docs pages render a count. Deriving at module scope charged each
+ * isolate init a full getCatalog() validation of the ~700 KB manifest, so
+ * /authorize, /callback, and /health paid for prose they never emit.
+ */
+export function getDocCatalogCounts(): DocCatalogCounts {
+  docCatalogCounts ??= getCatalog().entries.reduce(
+    (counts, entry) => {
+      if (entry.kind === "operation") counts.operations += 1;
+      else if (entry.kind === "skill") counts.skills += 1;
+      else if (entry.kind === "skill-section") counts.sections += 1;
+      return counts;
+    },
+    { operations: 0, skills: 0, sections: 0 }
+  );
+  return docCatalogCounts;
+}
+
+/**
+ * Every codemode helper the production sandbox exposes, in the nested form the
+ * sandbox sees. src/executor/providers.ts is the source: the four discovery
+ * dispatch fns plus the skill/artifact prelude namespaces. test/server.test.ts
+ * checks this list against that provider's own fn table and against the
+ * rendered page, so a new helper cannot ship with /docs naming the old set.
+ */
+export const DOC_CODEMODE_HELPERS = [
+  "codemode.spec",
+  "codemode.search",
+  "codemode.catalog",
+  "codemode.describe",
+  "codemode.skill.read",
+  "codemode.skill.run",
+  "codemode.artifact.info",
+  "codemode.artifact.read"
+] as const;
 
 /**
  * The static search -> execute example shown on /docs. Single source of truth
@@ -1255,7 +1290,18 @@ function docTrace(): string {
 </div>`;
 }
 
-const DOCS_BODY = `
+/**
+ * A function, not a module-scope constant: the copy interpolates
+ * getDocCatalogCounts(), and a constant would force that catalog read back into
+ * module init for every route that merely imports this file.
+ */
+function docsBody(): string {
+  const counts = getDocCatalogCounts();
+  const helperList = DOC_CODEMODE_HELPERS.map(
+    (helper, index) =>
+      `${index === DOC_CODEMODE_HELPERS.length - 1 ? "and " : ""}<code>${helper}</code>`
+  ).join(", ");
+  return `
 <h1>Stellar Raven documentation</h1>
 <p class="eff">How Raven works, how to connect, and how to fix problems</p>
 
@@ -1263,9 +1309,9 @@ const DOCS_BODY = `
 <p class="lead">Stellar Raven is a remote Model Context Protocol (MCP) server that gives AI agents
 Stellar documentation and ecosystem context through one connection.</p>
 <p>Raven exposes exactly two tools over a single catalog of
-<b>${DOC_CATALOG_COUNTS.operations} operations</b>,
-<b>${DOC_CATALOG_COUNTS.skills} skills</b>, and
-<b>${DOC_CATALOG_COUNTS.sections} sections</b>. One browser sign-in covers everything;
+<b>${counts.operations} operations</b>,
+<b>${counts.skills} skills</b>, and
+<b>${counts.sections} sections</b>. One browser sign-in covers everything;
 you never handle API keys for the underlying services.</p>
 
 <h2>Connect your agent</h2>
@@ -1285,9 +1331,8 @@ carry a ready-to-call TypeScript signature, and runnable-skill hits can carry on
 list their <code>availableSections</code> instead — individual skill sections are not searchable,
 so your agent reads them by exact section id. <b>execute</b> takes that shortlist and runs one
 JavaScript script inside a sandboxed isolate with <b>no network access</b>. Service operations run
-through host-side adapters that hold the upstream credentials and enforce policy. The allowed
-codemode helpers (<code>codemode.search</code>, <code>codemode.describe</code>,
-<code>codemode.skill.read</code>, <code>codemode.artifact.read</code>) are separate host providers
+through host-side adapters that hold the upstream credentials and enforce policy.
+The eight allowed codemode helpers (${helperList}) are functions on one host provider,
 inside the same sandbox boundary. This is the working loop:</p>
 ${docTrace()}
 
@@ -1339,6 +1384,7 @@ until official docs confirm them.</p>
     <code>Authorization: Bearer name:token</code> instead.</li>
 </ul>
 `;
+}
 
 export function docsPage(): string {
   return (
@@ -1354,7 +1400,7 @@ export function docsPage(): string {
     `<header class="top"><div class="wrap top-in">${brand()}` +
     `<nav class="top-nav"><a class="btn btn-ghost" href="/">Home</a>` +
     `<a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
-    `<main class="docs">${DOCS_BODY}</main>` +
+    `<main class="docs">${docsBody()}</main>` +
     siteFooter() +
     `</body></html>`
   );

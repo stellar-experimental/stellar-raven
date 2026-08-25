@@ -25,13 +25,15 @@ import { allowDevUnauthenticated } from "../src/auth/gate";
 import type { McpAccessContext } from "../src/server";
 import type { ExecuteEvidenceSummary, ExecuteOperationSummary } from "../src/executor/run";
 import {
-  DOC_CATALOG_COUNTS,
+  DOC_CODEMODE_HELPERS,
   DOC_TRACE_EXAMPLE,
   docsPage,
+  getDocCatalogCounts,
   landingPage,
   sitemapXml,
   termsPage
 } from "../src/site";
+import { assertNoNonExposedRefs } from "../scripts/build-catalog.mjs";
 import {
   CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS,
   EXPECTED_TOOL_METADATA
@@ -259,6 +261,35 @@ describe("public page metadata", () => {
   });
 });
 
+/**
+ * Runs the rendered /docs text through the SAME ADR-0003 guard the catalog
+ * build runs, by handing it to assertNoNonExposedRefs as one more entry.
+ *
+ * assertNoNonExposedRefsInText alone is not enough: it is allowlist-free by
+ * design, so it catches excluded lumenloop names, raw scout paths, and retired
+ * skill ids, but knows nothing about which service.op tokens the manifest
+ * actually exposes — a leaked "scout.submitFeedback" walks straight past it.
+ * assertNoNonExposedRefs owns that manifest comparison, so the page borrows the
+ * manifest's operation ids as its allowlist and this test defines no second
+ * exposure list of its own.
+ */
+function assertDocsExposureClean(pageText: string): void {
+  const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+  const manifest = JSON.parse(
+    readFileSync(join(root, "catalog", "manifest.json"), "utf8")
+  ) as { entries: { id: string; kind: string }[] };
+  // Ids only: the manifest's own text is already guarded at build time and in
+  // catalog.test.ts, so re-scanning it here would only slow the page check.
+  const exposedOpIds = manifest.entries
+    .filter((entry) => entry.kind === "operation")
+    .map((entry) => ({ id: entry.id, kind: "operation" }));
+
+  assertNoNonExposedRefs([
+    ...exposedOpIds,
+    { id: "GET /docs page", kind: "page", description: pageText }
+  ]);
+}
+
 describe("docs page truthfulness", () => {
   it("describes the search contract: operations and whole skills, not sections", () => {
     const page = docsPage();
@@ -331,7 +362,7 @@ describe("docs page truthfulness", () => {
     expect(searchBlock).toContain(`limit: ${DOC_TRACE_EXAMPLE.limit}`);
   });
 
-  it("matches DOC_CATALOG_COUNTS to catalog/manifest.json by kind", () => {
+  it("matches getDocCatalogCounts() to catalog/manifest.json by kind", () => {
     const root = join(dirname(fileURLToPath(import.meta.url)), "..");
     const manifest = JSON.parse(
       readFileSync(join(root, "catalog", "manifest.json"), "utf8")
@@ -342,20 +373,75 @@ describe("docs page truthfulness", () => {
       else if (entry.kind === "skill") counts.skills++;
       else if (entry.kind === "skill-section") counts.sections++;
     }
-    expect(DOC_CATALOG_COUNTS).toEqual(counts);
+    expect(getDocCatalogCounts()).toEqual(counts);
   });
 
   it("binds the landing-page counts to the verified catalog constants", () => {
     const page = landingPage();
-    const total =
-      DOC_CATALOG_COUNTS.operations + DOC_CATALOG_COUNTS.skills + DOC_CATALOG_COUNTS.sections;
+    const counts = getDocCatalogCounts();
+    const total = counts.operations + counts.skills + counts.sections;
 
-    expect(page).toContain(`<b>${DOC_CATALOG_COUNTS.operations}</b> live operations`);
+    expect(page).toContain(`<b>${counts.operations}</b> live operations`);
     expect(page).toContain(`<b>${total}</b> catalog entries`);
-    expect(page).toContain(`<b>${DOC_CATALOG_COUNTS.skills}</b> playbooks`);
+    expect(page).toContain(`<b>${counts.skills}</b> playbooks`);
     expect(page).not.toContain("<b>54</b> live operations");
     expect(page).not.toContain("<b>283</b> catalog entries");
   });
+
+  it("binds the docs-page counts to the verified catalog constants", () => {
+    const page = docsPage();
+    const counts = getDocCatalogCounts();
+
+    expect(page).toContain(`<b>${counts.operations} operations</b>`);
+    expect(page).toContain(`<b>${counts.skills} skills</b>`);
+    expect(page).toContain(`<b>${counts.sections} sections</b>`);
+  });
+
+  it("names every codemode helper the sandbox exposes", async () => {
+    const { getCatalog } = await import("../src/catalog/load");
+    const { buildCodemodeProvider } = await import("../src/executor/providers");
+    const skillSource = (() => {
+      throw new Error("skill source is not called when enumerating helper names");
+    }) as unknown as Parameters<typeof buildCodemodeProvider>[1];
+
+    // The flat dispatch names are the sandbox's real helper surface; the
+    // prelude re-exposes skill_read/skill_run/artifact_info/artifact_read as
+    // the nested codemode.skill.* / codemode.artifact.* namespaces.
+    const exposed = Object.keys(buildCodemodeProvider(getCatalog(), skillSource).fns)
+      .map((flat) => `codemode.${flat.replace("_", ".")}`)
+      .sort();
+
+    expect([...DOC_CODEMODE_HELPERS].sort()).toEqual(exposed);
+    expect(DOC_CODEMODE_HELPERS).toHaveLength(8);
+
+    const page = docsPage();
+    expect(page).toContain("eight allowed codemode helpers");
+    for (const helper of DOC_CODEMODE_HELPERS) {
+      expect(page).toContain(`<code>${helper}</code>`);
+    }
+
+    // All eight hang off ONE provider. The page copy that states this is
+    // asserted by "splits service adapters from the one codemode host provider".
+    expect(buildCodemodeProvider(getCatalog(), skillSource).name).toBe("codemode");
+  });
+
+  it("emits no non-exposed operation or retired-skill reference", () => {
+    expect(() => assertDocsExposureClean(docsPage())).not.toThrow();
+  });
+
+  // Real Stellar Light operationIds held off the exposed manifest by
+  // scripts/exposure.mjs. None carries an excluded lumenloop name, a raw scout
+  // path, or a retired-skill id, so the allowlist-free text guard cannot see
+  // them — only the manifest comparison can. These pin that half.
+  it.each(["scout.submitFeedback", "scout.partnerAssistant", "scout.partnerOnboard"])(
+    "rejects a /docs reference to non-exposed %s",
+    (opId) => {
+      const leaked = docsPage().replace("</main>", `<p><code>${opId}</code></p></main>`);
+      expect(leaked).toContain(opId);
+
+      expect(() => assertDocsExposureClean(leaked)).toThrow(/ADR-0003 leak/);
+    }
+  );
 
   it("qualifies artifact reads and scopes credential claims", () => {
     const page = docsPage();
@@ -372,12 +458,14 @@ describe("docs page truthfulness", () => {
     expect(page).toContain("upstream service credentials");
   });
 
-  it("splits service adapters from codemode host providers", () => {
+  it("splits service adapters from the one codemode host provider", () => {
     const page = docsPage();
     expect(page).toMatch(
       /Service\s+operations\s+run\s+through\s+host-side\s+adapters\s+that\s+hold\s+the\s+upstream\s+credentials/
     );
-    expect(page).toMatch(/separate host providers/);
+    // buildCodemodeProvider returns a single provider named "codemode"; the
+    // eight helpers are its fns.
+    expect(page).toMatch(/functions on one host provider/);
     expect(page).not.toMatch(/codemode helpers[^.]*host-side adapters/s);
   });
 
