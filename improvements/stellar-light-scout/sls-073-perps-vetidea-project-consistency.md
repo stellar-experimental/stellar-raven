@@ -1,7 +1,7 @@
 ---
 id: sls-073
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-21
 upstreamTitle: vet-idea returns an empty report.competitors.projects array for an idea the directory does match
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - 2026-08-21T01:01:52.089Z live GET https://stellarlight.xyz/api/analyze?dimension=gaps listed 21 byType verticals
   - Solo project 49 todo 1740 comments 5016 and 5018 record the replay and its coordinator verification
   - 2026-08-25 live re-check reproduced the empty report.competitors.projects array; the gaps axis now lists 23 byType verticals and still holds no perpetuals entry
+  - upstream issue filed 2026-08-25: https://github.com/Stellar-Light/stellarlight/issues/1025
 ---
 
 ## Finding
