@@ -34,7 +34,7 @@ frontmatter, section reads return the requested part rather than the whole file,
 | Source | Upstream | License |
 | --- | --- | --- |
 | `lumenloop` | [lumenloop/lumenloop-skills](https://github.com/lumenloop/lumenloop-skills) | MIT (© 2026 LumenLoop) |
-| `openzeppelin-stellar` | [OpenZeppelin/openzeppelin-skills](https://github.com/OpenZeppelin/openzeppelin-skills) | AGPL-3.0 (© 2026 Zeppelin Group Ltd) |
+| `openzeppelin-stellar` | [OpenZeppelin/openzeppelin-skills](https://github.com/OpenZeppelin/openzeppelin-skills) | AGPL-3.0-only (© 2026 Zeppelin Group Ltd) |
 | `stellar-dev` | [stellar/stellar-dev-skill](https://github.com/stellar/stellar-dev-skill) | Apache-2.0 (SDF) |
 | `stellar-light` | [Stellar-Light/stellar-scout](https://github.com/Stellar-Light/stellar-scout) | MIT |
 
