@@ -217,7 +217,7 @@ already support independent head sampling, and traces are the higher event multi
   report shape.
 - Eval result files remain local-only evidence by default; READMEs remain the committed durable
   record.
-- Secrets remain host-side; no secret values go into logs, R2 object names, Solo comments, or repo
+- Secrets remain host-side; no secret values go into logs, R2 object names, round ledgers, or repo
   files.
 - `wrangler tail` remains a convenience stream only, not evidence of absence.
 

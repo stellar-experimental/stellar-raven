@@ -2,11 +2,12 @@
 
 Runtime facts re-verified 2026-08-25 against the installed CLIs and their on-disk model catalogs
 on this host. The external-benchmark snapshot below is still the 2026-07-09 pass and was **not**
-re-checked; it is labelled in place. Solo-spawn mechanics carry over from the 2026-07-15 pass.
+re-checked; it is labelled in place. Launch mechanics were re-derived for Herdr on 2026-08-25;
+the Solo spawn syntax they replace is gone.
 
 This is the availability, mechanics, and external-evidence record for repo-work fan-out.
-`AGENTS.md` owns the repo's active model/effort policy; the global `fan-solo` family owns Solo
-workflow selection. Historical house ratings are not an operational routing surface.
+`AGENTS.md` owns the repo's active model/effort policy; the global `herdr` skill owns pane and
+agent mechanics. Historical house ratings are not an operational routing surface.
 
 ### How to re-verify the runtime facts
 
@@ -24,14 +25,20 @@ opencode --version
 can print `Settings fetch failed` warnings first; those are harmless and it still exits zero. The
 `jq` read of the cache is offline and covers everything else.
 
-## Callable Solo runtimes
+## Callable runtimes
 
-| Solo tool | Saved command | Default model | Explicit model syntax |
+Herdr starts each of these in a pane it does not create: split a pane first, then
+`herdr agent start <name> --kind <kind> --pane <id> -- <native args>`. Everything after `--` is
+passed to the CLI unchanged, so the model and effort flags below are the CLI's own.
+
+| `--kind` | CLI | Default model | Explicit model syntax |
 |---|---|---|---|
-| Codex | `codex --yolo` | `gpt-5.6-sol` (host config: high; catalog default: low) | `-m <model>` |
-| Claude | `claude --dangerously-skip-permissions` | account/runtime default | `--model <alias-or-id>` |
-| Grok | `grok --yolo` | `grok-4.6` | `-m <model>` |
-| OpenCode | `opencode --auto` | runtime/provider dependent | `-m <provider/model>` |
+| `codex` | `codex` | `gpt-5.6-sol` (host config: high; catalog default: low) | `-m <model>` |
+| `claude` | `claude` | account/runtime default | `--model <alias-or-id>` |
+| `grok` | `grok` | `grok-4.6` | `-m <model>` |
+| `opencode` | `opencode` | runtime/provider dependent | `-m <provider/model>` |
+
+Run `herdr agent` for the installed kind list; it is the authority, not this table.
 
 Installed versions on 2026-08-25: Codex `0.149.1`, Claude Code `2.1.245`, Grok `1.0.5`,
 OpenCode `1.18.22`.
@@ -60,11 +67,11 @@ prior-generation `gpt-5.5`, `gpt-5.4`, `gpt-5.4-mini`, and `gpt-5.3-codex-spark`
 for reference and are not fan-out lanes, plus one `visibility: hide` entry, `codex-auto-review`,
 which Codex uses internally for approval review and which is never a fan-out target.
 
-Solo examples (the saved Codex tool already supplies `--yolo`):
+Herdr examples:
 
-```text
-spawn_agent(agent_tool_id=<Codex>, extra_args=["-m", "gpt-5.6-terra", "-c", "model_reasoning_effort=\"high\""])
-spawn_agent(agent_tool_id=<Codex>, extra_args=["-m", "gpt-5.6-luna", "-c", "model_reasoning_effort=\"medium\""])
+```sh
+herdr agent start reviewer --kind codex --pane <id> -- -m gpt-5.6-terra -c model_reasoning_effort="high"
+herdr agent start reviewer --kind codex --pane <id> -- -m gpt-5.6-luna -c model_reasoning_effort="medium"
 ```
 
 One-shot equivalents:
@@ -88,18 +95,21 @@ Installed Grok CLI `1.0.5` reports exactly two models:
 Two changes since the 2026-07-15 pass. Grok 4.6 adds an `xhigh` effort that 4.5 does not have, and
 `grok-composer-2.5-fast` is gone from the catalog.
 
-Solo's Grok tool is a first-class vendor-diverse review arm:
+Grok is the first-class vendor-diverse review arm. This exact line ran on 2026-08-25 and returned
+a completed adversarial review:
 
-```text
-spawn_agent(agent_tool_id=<Grok>, extra_args=["-m", "grok-4.6", "--reasoning-effort", "high"])
+```sh
+herdr agent start <name> --kind grok --pane <id> -- --model grok-4.6 --reasoning-effort high --always-approve
 ```
 
-Do not repeat `--yolo`; the saved tool command already includes it.
+Grok needs a real terminal. Redirecting its output to a file fails with `Device not configured`,
+and wrapping it in `script` over a socket stdin fails with `tcgetattr`. A Herdr pane supplies the
+TTY; a piped `codex exec` or a redirected `grok` does not. That is the reason to launch reviewers
+through panes rather than shell redirection.
 
-Current interactive Solo spawn can still stop at Grok's directory-trust screen before prompt
-delivery. Verify status/output after spawn. For bounded read-only review, current headless
-`--single` plus `--permission-mode bypassPermissions` avoided interactive prompt; do not send
-blind trust input or assume saved `--yolo` alone makes generic tool non-interactive.
+A pane agent renders on the terminal's alternate screen, so rows that scroll away never reach
+Herdr's scrollback and no `--lines` value recovers them. For any review whose findings matter,
+instruct the agent to write its findings to a Markdown file and reply with only the path.
 
 ## Public evidence snapshot — 2026-07-09
 
@@ -162,7 +172,7 @@ Relevant external evidence:
   2026-07-15 pass recorded 372k; that figure was wrong or has since changed, and it is retired.
 - The installed catalog exposes low/medium/high/xhigh/max/ultra for Sol and Terra, and
   low/medium/high/xhigh/max for Luna. Its catalog defaults are low for Sol and medium for
-  Terra/Luna. This host's `~/.codex/config.toml` selects Sol at high effort, and the Solo Codex
+  Terra/Luna. This host's `~/.codex/config.toml` selects Sol at high effort, and the Codex
   command inherits that host configuration; the repository itself does not set that default.
 - Grok 4.6 exposes low/medium/high/xhigh and defaults to high. Grok 4.5 exposes low/medium/high
   and defaults to high. The installed Grok CLI reports 500k context for both.
@@ -188,20 +198,25 @@ Sol/Terra `ultra` as a separate multi-agent arm.
 
 Claude Code `2.1.245` accepts `fable`, `opus`, and `sonnet` aliases. Fable 5 must be invoked as
 `--model fable` (or the full `claude-fable-5` id); `--model fable-5` is not a valid CLI alias.
-Solo's saved Claude command already includes `--dangerously-skip-permissions`.
+This exact line ran on 2026-08-25 and returned a completed adversarial review:
+
+```sh
+herdr agent start <name> --kind claude --pane <id> -- --model fable --permission-mode bypassPermissions
+```
 
 ## Evidence boundaries
 
 - GPT-5.6 Sol/Terra/Luna, Claude Fable/Opus, and Grok 4.6 are **catalog-listed** and selectable
   from their CLIs, and are covered by the active routing policy in `AGENTS.md`. Catalog presence
-  is not proof of a working call. Two of them carry dated call evidence from this pass: on
-  2026-08-25 `gpt-5.6-sol` at high effort and `grok-4.6` at high effort each completed an
-  independent review of this repository. The others are listed-and-selectable only. Luna stays
+  is not proof of a working call. Three of them carry dated call evidence from this pass: on
+  2026-08-25 `gpt-5.6-sol` at high effort, `grok-4.6` at high effort, and Claude `fable` each
+  completed an independent review of this repository, every one launched through a Herdr pane.
+  The others are listed-and-selectable only. Luna stays
   evidence-only, not an active house lane. External benchmarks support interim roles; local
   gauntlets or Tyler's direct judgment would be required before reintroducing house
   cost/intelligence/taste scores.
 - The public demo's Workers AI/provider models are a separate surface and measurement contract.
   Its current verdict is `research/gauntlets/2026-08-06-primary-selection-summary.md`; the
-  2026-07-07 gauntlet is superseded. Do not infer Solo-agent quality from either.
+  2026-07-07 gauntlet is superseded. Do not infer fan-out agent quality from either.
 - QA answering and judge defaults are another separate measurement contract (`run-evals` skill).
   A new fan-out model never changes those defaults implicitly.

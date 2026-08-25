@@ -1,5 +1,12 @@
 # Solo agent orchestration research — 2026-07-15
 
+> [!IMPORTANT]
+> **Superseded 2026-08-25. Solo is no longer used by this repository.** Agent, pane, and worktree
+> orchestration runs on Herdr; durable working state lives in `.agents/TODO.md` and
+> `.agents/rounds/`. The recursive-ownership conclusion below survived the move and now governs
+> panes — see `AGENTS.md` “Coordination” and the global `herdr` skill. Everything else here is a
+> dated record of Solo-era reasoning. Do not treat any `solo://` reference as a live path.
+
 ## Scope and method
 
 This review asked how Solo should coordinate project processes and cross-lab coding agents, and

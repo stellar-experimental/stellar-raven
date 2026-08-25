@@ -1,6 +1,6 @@
 ---
 name: truth-maintenance
-description: Coordinate a full truth-maintenance pass for stellar-raven-codemode across live drift, evals, golden questions/answers, and improvements/issues/PR follow-up. Use when asked to ensure repo truth is current, review the current state of upstream findings or PRs the repo opened, run a multi-lane maintenance round, or orchestrate CI-like review work with Solo agents instead of one monolithic context window.
+description: Coordinate a full truth-maintenance pass for stellar-raven-codemode across live drift, evals, golden questions/answers, and improvements/issues/PR follow-up. Use when asked to ensure repo truth is current, review the current state of upstream findings or PRs the repo opened, run a multi-lane maintenance round, or orchestrate CI-like review work across several agents instead of one monolithic context window.
 ---
 
 # Truth maintenance
@@ -13,16 +13,16 @@ This is the coordinator skill. It does not replace the lane runbooks:
 - `improvements-pipeline` owns `improvements/`, intake, probes, upstream issue/PR tracking, and index/lint.
 
 Use this skill when the work crosses lanes or when the user asks for "truth is up to date"
-rather than a single drift issue. The product is a Solo-recorded maintenance round with
+rather than a single drift issue. The product is a maintenance round recorded in a ledger, with
 lane verdicts, evidence, follow-ups, and cleaned-up spawned work.
 
-## Solo orchestration contract
+## Orchestration contract
 
-Start with global `fan-solo`, then use `solo-orchestrate-agents` for the multi-agent lead loop and
-the focused Solo skills it selects for spawning, state, monitoring, and cleanup. Select model and
-effort explicitly per `AGENTS.md`. This skill adds only truth-maintenance lane structure.
+Use the global `herdr` skill for spawning, monitoring, and cleanup: one pane per lane, split from
+your own pane. Select model and effort explicitly per `AGENTS.md`. This skill adds only
+truth-maintenance lane structure.
 
-Create or claim one Solo todo for the maintenance round and one scratchpad as the ledger.
+Open one ledger for the round at `.agents/rounds/<YYYY-MM-DD>-truth-maintenance.md`.
 Use fixed headings so spawned agents can append without clobbering each other:
 
 ```
@@ -68,7 +68,7 @@ refresh workflow, so a date passing fires within 24 hours. This skill owns that 
 
 1. Define the question: scheduled truth refresh, stale-queue triage, drift issue, post-eval
    closeout, upstream PR/issue follow-up, golden-health sweep, or release/CI readiness.
-2. Open the Solo ledger and write the lane plan: lanes in scope, spawned agents, exact
+2. Open the ledger and write the lane plan: lanes in scope, spawned agents, exact
    commands/probes, expected artifacts, and stopping criteria.
 3. Run the lane runbooks in parallel where independent:
    - Drift lane: use `live-drift-resolution` for service inventory/catalog/spec/op-class
@@ -82,14 +82,14 @@ refresh workflow, so a date passing fires within 24 hours. This skill owns that 
    - Drift changed facts consumed by goldens or eval cases.
    - Eval failures imply new or updated improvements.
    - Upstream issue/PR resolution requires live re-probe of the original trigger.
-   - Golden gospel changes require root-cause capture in improvements or Solo todos (the
+   - Golden gospel changes require root-cause capture in improvements or `.agents/TODO.md` (the
      gospel-change lint enforces `truth.verified` evidence + rootCause in the same diff).
 5. Run the final gates from the affected lane runbooks, then record exact commands, result
-   stamps, issue/PR URLs, commit refs, and remaining risks in the Solo ledger.
+   stamps, issue/PR URLs, commit refs, and remaining risks in the ledger.
 
 ## Lane briefs
 
-Use briefs like these; keep each agent's task bounded and append-only to the Solo ledger.
+Use briefs like these; keep each agent's task bounded and append-only to the ledger.
 
 **Drift reviewer**
 
@@ -101,7 +101,7 @@ guards, and append file:line/diff evidence plus a close/block verdict.
 
 Review stored or newly produced eval results. Join rows with goldens, re-check wrong/partial
 claims live, classify failures with the `run-evals` root-cause table, and identify new or
-updated improvements and own-repo Solo todos.
+updated improvements and own-repo `.agents/TODO.md` entries.
 
 **Golden reviewer**
 
@@ -121,22 +121,22 @@ findings remain active while the trigger reproduces; they are not resolution sho
 
 ## Deterministic state table
 
-Use this table shape in the Solo ledger for improvements/issues/PRs:
+Use this table shape in the ledger for improvements/issues/PRs:
 
 | finding | trigger | upstream ref | ref state | PR checks/reviews/blocker | live re-check | repo action | next wake-up |
 |---|---|---|---|---|---|---|---|
-| `sls-005` | eval stamp / probe / drift fact | issue/PR URL | open/closed/merged/stale/unknown | pass/fail/requested-changes/none | fixed/still-repro/inconclusive | no-op/status edit/successor/own todo | date/timer/todo |
+| `sls-005` | eval stamp / probe / drift fact | issue/PR URL | open/closed/merged/stale/unknown | pass/fail/requested-changes/none | fixed/still-repro/inconclusive | no-op/status edit/successor/own todo | dated `.agents/TODO.md` entry |
 
 Only mark `fixed-upstream` when the live re-check of the original trigger passes. A closed
 GitHub issue or merged PR is evidence to inspect, not proof of resolution. If a PR is open
-and waiting on review/CI/author changes, track the blocker and set a Solo timer/todo for the
-next follow-up instead of relying on memory.
+and waiting on review/CI/author changes, track the blocker and add a dated `.agents/TODO.md` entry
+for the next follow-up instead of relying on memory.
 
 ## Closeout checklist
 
-- Solo ledger has lane verdicts, exact commands/probes, spawned process IDs, and final status.
+- The ledger has lane verdicts, exact commands/probes, spawned pane IDs, and final status.
 - Every spawned agent is idle/finished; useful output is incorporated; no orphan follow-up
-  timer remains unless intentionally scheduled.
+  `.agents/TODO.md` entry remains unless it names a concrete next check.
 - Drift-generated artifacts are regenerated, not hand-edited.
 - Golden changes went through `golden-truth` and include root-cause capture; the stale queue
   has no past-due `reverifyBy` dates left (`npm run eval:qa:lint -- --stale` is green) and

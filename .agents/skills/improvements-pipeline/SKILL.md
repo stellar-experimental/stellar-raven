@@ -28,7 +28,7 @@ The terminal resolved transition is deletion from the active collection plus an 
 reused; choose the next numeric id from the maximum across both. Git history, the resolved receipt,
 and the upstream resolution comment preserve evidence without retaining stale finding files.
 
-Findings are for upstream service/data/content/spec gaps only. Own-repo fixes go to Solo todos.
+Findings are for upstream service/data/content/spec gaps only. Own-repo fixes go to `.agents/TODO.md`.
 
 GitHub state is not truth by itself. An upstream issue being closed or a PR being merged is
 evidence to inspect; a finding moves to `fixed-upstream` only after re-running the original
@@ -181,7 +181,7 @@ or when a user asks whether previous improvements were resolved.
      if a regression/recurrence is suspected.
    - also enumerate inbound `upstream-improvement-ready.yml` issues in `stellar-experimental/stellar-raven`;
      they are notification signals to verify, not proof of a fix.
-2. Build a deterministic state table in a Solo scratchpad:
+2. Build a deterministic state table in the round ledger:
 
 ```
 | finding | trigger evidence | upstream ref | ref state | PR checks/reviews | live re-check | action |
@@ -235,8 +235,8 @@ or when a user asks whether previous improvements were resolved.
      evidence, record why closure did not resolve it, and open a successor or follow-up ref
      only when the owner path is clear.
    - `superseded`: link the successor finding or upstream ref; do not stretch the old finding.
-   - `inconclusive`: do not change status; record the missing evidence and create a Solo todo or
-     timer for the next concrete check.
+   - `inconclusive`: do not change status; record the missing evidence and add a dated
+     `.agents/TODO.md` entry naming the next concrete check.
    - inbound handoff issue/PR: acknowledge with the live-recheck result, update the finding only
      when the evidence bar is met, and close the Raven notification after recording the resulting
      finding/status/ref. An evidence-only PR may append refs or reproduction evidence, but must not
@@ -282,12 +282,15 @@ npm run improvements:lint -- --live
 npm run improvements:probes
 ```
 
-Use Solo timers for a concrete future verification event instead of memory. Do not schedule a timer
-whose only outcome would be another reminder on an untouched issue. A timer body should include the
-finding ids, upstream refs, scratchpad id, and the exact re-check or maintainer signal to inspect.
-When an authorized filing or verification lane is blocked by an upstream capacity or rate limit,
-use a repeating 10-minute retry timer until the service recovers; cancel it immediately after a
-successful probe. A longer watchdog deadline is not the retry cadence.
+Record a concrete future verification event as a dated `.agents/TODO.md` entry instead of relying
+on memory. Do not record one whose only outcome would be another reminder on an untouched issue.
+The entry should name the finding ids, the upstream refs, the round ledger it came from, and the
+exact re-check or maintainer signal to inspect.
+
+Nothing fires these entries. There is no scheduler: the queue is read at the start of the next
+round, so write each entry so a stranger can act on it cold. When an authorized filing or
+verification lane is blocked by an upstream capacity or rate limit, retry inside the current
+session rather than deferring — a blocked lane that is written down and left is a lane that stops.
 
 ## Probes and recurrences
 
@@ -330,5 +333,5 @@ refresh statuses for upstream fixes with live evidence, and run live intake lint
 findings, probes, or intake always end with index regeneration if needed and lint.
 
 For broad cadence work, use the `truth-maintenance` skill as the coordinator: it creates the
-Solo scratchpad/todo, fans out issue/PR, drift, eval, and golden reviewers, and reconciles the
+round ledger, fans out issue/PR, drift, eval, and golden reviewers, and reconciles the
 lane verdicts before closeout.

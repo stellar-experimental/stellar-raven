@@ -4,7 +4,7 @@
 
 `npm run eval:playground` is the complementary semantic lane. It sends existing QA cases to the real `POST /playground/chat` SSE route, captures the final assistant text, search/execute outcomes, terminal reason, latency, HTTP/SSE errors, and grades the final answer with the existing `eval/qa` golden, evidence-pack, and judge contract. It introduces no new quality rubric and does not change corpus or golden content.
 
-Use the existing Solo `dev` process and its discovered loopback URL; do not start Wrangler for this command.
+Use a pane already running `npm run dev` and its bound loopback URL; do not start Wrangler for this command.
 
 ```sh
 # Free validation: default seeded, stratified five-case selection; no HTTP/model/judge calls.
@@ -39,7 +39,7 @@ npm run eval:playground -- --confirm-paid \
 harness requires it, checks it against the complete local working-tree generation before the
 first model call, checks that the tree stayed unchanged before writing, and records the limit
 honestly: this does not prove that an already-running Worker loaded those bytes. The reviewed
-operator must ensure the reused Solo `dev` process represents that generation. A generation is
+operator must ensure the reused `dev` pane represents that generation. A generation is
 machine-local, not a portable build or deployment identity; the value only attests to the named
 operator's local tree at the harness checkpoints.
 
@@ -50,7 +50,7 @@ the selected answer/judge calls would exceed an absolute cap:
 ```json
 {
   "contract": "playground-semantic-round-cap/v1",
-  "experimentId": "solo-todo-1001-round-a",
+  "experimentId": "2026-07-15-playground-round-a",
   "kind": "reviewed-round",
   "runAllocation": "planned",
   "plannedAnswerCalls": 10,

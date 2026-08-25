@@ -4,7 +4,7 @@ This todo-910 lane measures whether a fixed, code-allowlisted set of public part
 pages contains facts that Raven's current sources do not retrieve on the same question. It is a
 diagnostic source-admission instrument, not the headline QA eval and not a production routing map.
 
-Run against the existing Solo-managed local Raven process:
+Run against an existing local Raven `dev` pane:
 
 ```sh
 npm run eval:partner-docs -- --raven-url http://localhost:8787/mcp

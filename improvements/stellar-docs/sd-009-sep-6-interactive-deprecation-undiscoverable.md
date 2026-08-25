@@ -65,6 +65,7 @@ provenance-bearing status note to the upstream `stellar-dev-skill` standards
 reference that already routes agents to SEP-6/SEP-24. If neither surface should
 carry it, treat the QA row as a corpus/source-coverage diagnostic rather than
 ordinary agent-quality evidence until a general official-source mechanism can
-reach `stellar-protocol`. Track that placement decision in Solo todo 989 and
-scratchpad 625; if Docs declines/closes, create a successor skills/source
-finding rather than stretching this Docs finding.
+reach `stellar-protocol`. That placement decision was recorded in Solo todo 989
+and scratchpad 625 (historical; Solo is retired). If Docs declines or closes,
+create a successor skills/source finding rather than stretching this Docs
+finding.

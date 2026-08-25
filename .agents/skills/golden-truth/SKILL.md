@@ -118,9 +118,9 @@ mandatory (a stranger must be able to re-walk the trail); "unverifiable" is an h
 useful verdict — never stretch weak evidence; when two agents disagree, run a targeted
 follow-up probe — never coin-flip, never average.
 
-Route generic Solo mechanics through global `fan-solo`; use `solo-orchestrate-agents` for the
+Route pane and agent mechanics through the global `herdr` skill; split one pane per lane for the
 verification lanes and select model/effort explicitly per `AGENTS.md`. Lane-specific rule: create
-or reuse round scratchpad, assign one independent agent per claim cluster, and have workers append
+or reuse the round ledger, assign one independent agent per claim cluster, and have workers append
 matrices directly. Author edits owned case files only after reconciling matrices.
 For broad corpus-health or drift-refresh work, let `truth-maintenance` coordinate this lane
 alongside eval and improvements review.
@@ -151,9 +151,9 @@ lower the claim's standing. Honesty > false precision.
 
 **Updating `truth.verified` (required on every gospel change).** The case file carries the
 LATEST verification event only — git history holds the rest. Set `date`, `by` (who/what
-verified — a lane, sweep, or scratchpad ref), `evidence` (live provenance a stranger can
-re-walk: URLs, `solo://` refs), and — whenever the event changed gospel — `rootCause`:
-`improvements/` paths for upstream defects, `solo://` refs for eval-side authoring flaws, or
+verified — a lane, sweep, or round-ledger ref), `evidence` (live provenance a stranger can
+re-walk: URLs, ledger paths), and — whenever the event changed gospel — `rootCause`:
+`improvements/` paths for upstream defects, `.agents/TODO.md` entries for eval-side authoring flaws, or
 the explicit value `freshness-drift`. The lint rejects rootCause lists that are only
 score/result rationales — "the judge failed this case" is never a reason to change truth.
 Refresh `truth.asOf` for volatile facts and set a new staggered, quarter-granular
@@ -165,7 +165,7 @@ sibling kept the old fact — producing goldens that cannot both be true. Before
 gospel change: enumerate other cases touching the same entity/topic (grep the battery files
 for the entity names and key numbers), confirm the changed fact doesn't contradict them, and
 record the sweep (cases checked, verdict) in `truth.verified.evidence` or the round
-scratchpad. Then run `npm run eval:qa:register` — it re-stamps consistency-register member
+ledger. Then run `npm run eval:qa:register` — it re-stamps consistency-register member
 hashes and auto-reopens any cluster whose member content changed.
 
 **Provenance correction.** If the debunked fact also lives in the archival snapshots
@@ -178,7 +178,7 @@ correction is recorded so it can't silently resurrect.
 - `npm run eval:qa:compile` — validation passes; exactly the intended cases changed
   (parsed-JSON diff, not line diff); regenerated `cases.json`/`sample.json` are committed with
   the case edits (CI byte-pins both).
-- `npm run eval:qa:lint -- --since <ref>` — the documented pre-push check for Solo lanes:
+- `npm run eval:qa:lint -- --since <ref>` — the documented pre-push check for every lane:
   runs every deterministic lane **plus** the gospel-change guard against the ref you branched
   from, exactly as CI will against the merge base. Add `--stale` when touching `reverifyBy`
   dates. No new judge-blind avoid items.
@@ -189,7 +189,7 @@ correction is recorded so it can't silently resurrect.
   (`judgeCase` on `rows[].answer`) and record the flip direction in the round record —
   a fix that only ever flips verdicts toward "correct" is a smell (see the score-laundering
   note below).
-- Solo: record the corroboration matrices in the round/working scratchpad; close the todo
+- Ledger: record the corroboration matrices in the round ledger; close the `.agents/TODO.md` item
   with commit refs.
 
 **Score laundering is the failure mode all of this guards against** — "correcting" a golden

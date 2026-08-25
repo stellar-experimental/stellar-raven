@@ -149,7 +149,7 @@ nothing silently changes exposure":
 Eval coupling: `eval/skills-cases.json` grades skills routing. Cases whose target skill leaves
 catalog exposure move to its inert `retiredCases` array (rationale + date), and the skills-lane
 floor in `eval/gates.json` is re-baselined **in the same commit** with the decision recorded in
-Solo (EVALS.md rule 1).
+the round ledger (EVALS.md rule 1).
 
 **Automated drift detection (CI):** the daily `refresh.yml` workflow runs
 `node scripts/check-skills-drift.mjs`, which compares every pin in `MANIFEST.json` against upstream
