@@ -1098,10 +1098,11 @@ Stellar ToS apply to your use of AI-generated output obtained through or informe
 <p>Your use of the Service is subject to the Privacy Policy. The following describes how the Service
 handles data, and supplements that policy:</p>
 <p><b>Authentication.</b> Sign-in is handled by WorkOS, a third-party authentication provider that
-receives and processes your email address on SDF's behalf. The Service receives only an account
-identifier from WorkOS, which it one-way hashes before storage; it does not store your email address
-or retain WorkOS sign-in tokens. The Service does not collect names, addresses, payment information,
-wallet keys, or special-category data.</p>
+receives and processes your email address. WorkOS may send the Service an authentication response
+containing your email address, but the Service does not read or store that value. The Service uses
+only an account identifier from WorkOS, which it one-way hashes before storage, and does not retain
+WorkOS sign-in tokens. The Service does not collect names, addresses, payment information, wallet
+keys, or special-category data.</p>
 <p><b>Operational and quality logs.</b> To operate the Service and improve response quality, the Service
 stores observability data, which may include the queries submitted and the responses returned, for 30
 days, after which it is deleted. This data is stored in SDF's Cloudflare environment.</p>
