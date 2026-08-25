@@ -113,7 +113,7 @@ body.no-gl .stage{background:
   box-shadow:0 0 0 0 rgba(255,85,0,.7);animation:pulse 2.4s ease-out infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,85,0,.55)}70%{box-shadow:0 0 0 10px rgba(255,85,0,0)}100%{box-shadow:0 0 0 0 rgba(255,85,0,0)}}
 
-/* ---- top bar: just the logo, prominent ---- */
+/* ---- shared top bar ---- */
 .top{position:relative;z-index:5}
 .top-in{display:flex;align-items:center;height:92px}
 .brand{display:flex;align-items:center;gap:14px}
@@ -319,6 +319,11 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:26px
   .bento,.vs{grid-template-columns:1fr}
   .foot-links{flex-wrap:wrap;gap:12px 20px}
   .cta-row{padding:44px 22px 58px}
+}
+@media (max-width:480px){
+  .brand .wm{display:none}
+  .top-nav{gap:7px}
+  .top-nav .btn-ghost{padding:9px 11px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 `;
@@ -620,8 +625,22 @@ function panels(): string {
   }).join("");
 }
 
-function brand(): string {
-  return `<a class="brand" href="/">${ravenSvg("rv")}<span class="wm"><b>Stellar Raven</b><i>codemode</i></span></a>`;
+export function renderSiteHeader(args: {
+  label: string;
+  links: readonly { href: string; label: string }[];
+  containerClass?: string;
+}): string {
+  const links = args.links
+    .map(
+      (link) =>
+        `<a class="btn btn-ghost" href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`
+    )
+    .join("");
+  return (
+    `<header class="top"><div class="${escapeHtml(args.containerClass ?? "wrap")} top-in">` +
+    `<a class="brand" href="/" aria-label="Stellar Raven home">${ravenSvg("rv")}<span class="wm"><b>Stellar Raven</b>` +
+    `<i>${escapeHtml(args.label)}</i></span></a><nav class="top-nav">${links}</nav></div></header>`
+  );
 }
 
 // JSON-LD structured data — landing page only (the consent page stays
@@ -681,9 +700,13 @@ export function landingPage(): string {
       JSONLD
     ) +
     `<div class="stage"><canvas id="gl"></canvas></div><div class="scrim"></div>` +
-    `<header class="top"><div class="wrap top-in">${brand()}` +
-    `<nav class="top-nav"><a class="btn btn-ghost" href="/docs">Docs</a>` +
-    `<a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
+    renderSiteHeader({
+      label: "codemode",
+      links: [
+        { href: "/docs", label: "Docs" },
+        { href: "/playground", label: "Playground" }
+      ]
+    }) +
     `<main class="wrap"><section class="hero" id="connect"><div class="hero-in">
   <p class="eyebrow">Remote MCP server <span class="live"><span class="dot"></span>live</span></p>
   <h1 class="title">Stellar <span class="r">Raven</span></h1>
@@ -1130,9 +1153,13 @@ export function termsPage(): string {
       "/terms"
     ) +
     `<div class="stage"></div><div class="scrim"></div>` +
-    `<header class="top"><div class="wrap top-in">${brand()}` +
-    `<nav class="top-nav"><a class="btn btn-ghost" href="/">Home</a>` +
-    `<a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
+    renderSiteHeader({
+      label: "codemode",
+      links: [
+        { href: "/", label: "Home" },
+        { href: "/playground", label: "Playground" }
+      ]
+    }) +
     `<main class="legal">${TERMS_BODY}</main>` +
     siteFooter() +
     `</body></html>`
@@ -1403,9 +1430,13 @@ export function docsPage(): string {
       "/docs"
     ) +
     `<div class="stage"></div><div class="scrim"></div>` +
-    `<header class="top"><div class="wrap top-in">${brand()}` +
-    `<nav class="top-nav"><a class="btn btn-ghost" href="/">Home</a>` +
-    `<a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
+    renderSiteHeader({
+      label: "codemode",
+      links: [
+        { href: "/", label: "Home" },
+        { href: "/playground", label: "Playground" }
+      ]
+    }) +
     `<main class="docs">${docsBody()}</main>` +
     siteFooter() +
     `</body></html>`

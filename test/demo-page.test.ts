@@ -50,6 +50,17 @@ describe("demo page CSP", () => {
 });
 
 describe("demo page states", () => {
+  it("uses the shared header navigation styles within the playground content width", () => {
+    for (const page of [lockedHtml, chatHtml]) {
+      expect(page).toContain('<header class="top"><div class="pwrap top-in">');
+      expect(page).toContain(
+        '<nav class="top-nav"><a class="btn btn-ghost" href="/">Home</a>' +
+          '<a class="btn btn-ghost" href="/docs">Docs</a></nav>'
+      );
+      expect(page).not.toContain('<span class="end"><a class="btn btn-ghost" href="/">');
+    }
+  });
+
   it("sets complete noindex social metadata for the demo URL", () => {
     expect(lockedHtml).toContain(
       renderPublicHeadMetadata({

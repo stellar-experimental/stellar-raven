@@ -19,7 +19,13 @@
  * Expand/collapse is native <details>/<summary> in both states, so the locked
  * page needs zero JavaScript and the live client gets toggling for free.
  */
-import { BASE, FONT_FACE, TOKENS, ravenSvg, renderPublicHeadMetadata } from "../site.ts";
+import {
+  BASE,
+  FONT_FACE,
+  TOKENS,
+  renderPublicHeadMetadata,
+  renderSiteHeader
+} from "../site.ts";
 import { DEMO_CAPS } from "./budget.ts";
 import { DEMO_GLOBE_PNG_BASE64 } from "./globe.ts";
 import { escapeHtml as esc, html, raw } from "../html.ts";
@@ -54,7 +60,6 @@ body{display:flex;flex-direction:column}
 
 .pwrap{width:100%;max-width:940px;margin:0 auto;padding:0 22px;position:relative;z-index:2}
 main.play{display:flex;flex-direction:column;padding-bottom:18px}
-.top-in .end{margin-left:auto}
 
 /* honest-context line under the header */
 .fineprint{font-family:var(--mono);font-size:11.5px;color:var(--ash);line-height:1.65;
@@ -899,10 +904,14 @@ ${renderPublicHeadMetadata({
 function topBar(): string {
   return (
     `<div class="stage"></div><div class="scrim"></div>` +
-    `<header class="top"><div class="pwrap top-in">` +
-    `<a class="brand" href="/">${ravenSvg("rv")}<span class="wm"><b>Stellar Raven</b><i>playground</i></span></a>` +
-    `<span class="end"><a class="btn btn-ghost" href="/">raven home</a></span>` +
-    `</div></header>`
+    renderSiteHeader({
+      label: "playground",
+      containerClass: "pwrap",
+      links: [
+        { href: "/", label: "Home" },
+        { href: "/docs", label: "Docs" }
+      ]
+    })
   );
 }
 

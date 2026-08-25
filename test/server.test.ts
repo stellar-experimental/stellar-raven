@@ -229,6 +229,19 @@ describe("artifact owner resolution", () => {
 });
 
 describe("public page metadata", () => {
+  it("renders the shared navigation links on each public page", () => {
+    expect(landingPage()).toContain(
+      '<nav class="top-nav"><a class="btn btn-ghost" href="/docs">Docs</a>' +
+        '<a class="btn btn-ghost" href="/playground">Playground</a></nav>'
+    );
+    for (const page of [termsPage(), docsPage()]) {
+      expect(page).toContain(
+        '<nav class="top-nav"><a class="btn btn-ghost" href="/">Home</a>' +
+          '<a class="btn btn-ghost" href="/playground">Playground</a></nav>'
+      );
+    }
+  });
+
   it("preserves landing JSON-LD and the canonical URL", () => {
     const page = landingPage();
 

@@ -51,7 +51,7 @@
     },
     "localTrace": "routing-2026-08-25T21-09-17-030Z.json"
   },
-  "note": "The 2026-08-25 live Scout 1.8.87 refresh adds routing vocabulary, ten Stellar Docs titles, and the corresponding stellar-light skill pin. Raven withholds the new read-only resolveProject operation because its nested identity and evidence objects are opaque in OpenAPI; sls-075 tracks that upstream contract gap. Legacy moves from 208/280/312 to 209/279/312 within the existing 1% band, with card@5 unchanged at 94/182. Skills remain 16/23/23. Holdout remains 10/22/25 with 11 forbidden captures. No scorer lever, routing corpus, per-question rule, floor, or band changed. Decision record: GitHub issue #35 and independent Herdr review. Historical movements remain in eval/README.md.",
+  "note": "The 2026-08-25 live Scout 1.8.87 refresh adds routing vocabulary, ten Stellar Docs titles, and the corresponding stellar-light skill pin. Raven withholds the new read-only resolveProject operation because its nested identity and evidence objects are opaque in OpenAPI; sls-075 tracks that upstream contract gap. The later routing-neutral stellar-dev and stellar-light pin refresh changes only catalog provenance and transport metadata. Legacy moves from 208/280/312 to 209/279/312 within the existing 1% band, with card@5 unchanged at 94/182. Skills remain 16/23/23. Holdout remains 10/22/25 with 11 forbidden captures. No scorer lever, routing corpus, per-question rule, floor, or band changed. Decision record: GitHub issue #35 and independent Herdr review. Historical movements remain in eval/README.md.",
   "legacy": {
     "n": 338,
     "top1": 209,

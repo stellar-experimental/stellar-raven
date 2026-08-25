@@ -8,7 +8,7 @@ evidence:
   - 2026-08-25 live OpenAPI 1.8.87 declares resolveProject subject, current, and evidence only as type object with no properties
   - the same response schema omits the live meta envelope and its source, generatedAt, searched, and methodology fields
   - 2026-08-25 live GET https://stellarlight.xyz/api/projects/resolve?q=StellarX returned subject.slug/name/status, current.slug/name/status/url, evidence.statusAsOf/statusBasis/statusSourceUrl/unsourced, and meta provenance fields
-  - the pinned Stellar Scout API reference lists slug, canonical-slug, alias, and name for matchedOn but omits the live repo value allowed by OpenAPI
+  - pin 2e4e412f0ae71a81424b02354d4bcff3835c80ff adds repo to the Stellar Scout API reference matchedOn values and closes that reference gap
   - Raven keeps GET /api/projects/resolve unexposed until the model-facing contract names the fields a caller must project
   - upstream issue filed 2026-08-25: https://github.com/Stellar-Light/stellarlight/issues/1030
 ---
@@ -24,9 +24,9 @@ does not declare. A model can call the operation, but it cannot derive a safe
 projection for the resolved identity, status evidence, or response provenance
 from the published contract.
 
-The pinned Scout API reference has one related vocabulary gap. It omits
-`repo` from the allowed `matchedOn` values even though live OpenAPI includes
-that enum member.
+The previous Scout API reference had one related vocabulary gap. Pin
+`2e4e412f0ae71a81424b02354d4bcff3835c80ff` adds `repo` to the allowed
+`matchedOn` values and closes that part of the finding.
 
 ## Evidence
 
@@ -34,6 +34,10 @@ On 2026-08-25, the live schema declared `subject`, `current`, and `evidence` as
 nullable objects without `properties`. It declared the top-level `found`,
 `matchedOn`, `note`, `query`, and `superseded` fields. It did not declare
 `meta`.
+
+The current pinned API reference includes `repo` in its `matchedOn` values.
+The remaining finding concerns the opaque OpenAPI response objects and the
+missing `meta` schema.
 
 A live `q=StellarX` response returned the following nested fields:
 
