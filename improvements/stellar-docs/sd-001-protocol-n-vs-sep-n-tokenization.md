@@ -260,7 +260,10 @@ Refused for three reasons:
 
 1. **The original trigger still fails.** `q-protocol-24-whisk-incident` needs the eviction-defect
    cause, the counts 478 / 84 / 77 / 394, `CAP-0076`, and the fee-pool remediation. No docs lane
-   returns them. Tracked as its own defect in `sd-046`; this finding does not cover it.
+   returns them. Follow-up investigation showed the facts ARE reachable, through
+   `scout.searchResearch` with `source: "cap"` and a broad call. Our own `search` does not surface
+   that lane for the question. That is a ranking defect in this repository, not an upstream gap,
+   so it is tracked in `.agents/TODO.md` and not as a finding.
 2. **The index is in a mixed state.** Only the target URL was recrawled. Every other page still
    carries records from the previous extractor until the next full crawl, so the no-regression
    evidence is a sample, not a proof.
@@ -270,4 +273,4 @@ Refused for three reasons:
 
 The distinct-reviewer step ran on 2026-08-25 and returned DO-NOT-RETIRE. Before retiring this
 record: let a full crawl complete, repeat the regression and collateral checks against the
-settled index, and confirm `sd-046` carries the incident-retrieval gap on its own evidence.
+settled index.

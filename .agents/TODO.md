@@ -61,6 +61,32 @@ the guard exists for. Affects `/demo/chat` only.
 
 Done when: a test stubs the model rather than the module, so the real tool loop runs.
 
+## Routing
+
+### `search` does not surface the research lane for protocol-history questions
+
+Eval case `q-protocol-24-whisk-incident` asks why Protocol 24 followed Protocol 23 so quickly. The
+answer needs the eviction-defect cause, the counts 478 / 84 / 77 / 394, `CAP-0076`, Hot Archive,
+and a 31,879,035-stroop fee-pool remediation.
+
+`scout.searchResearch` holds all of them. `source: "cap"` returns 478, 84, 77, 394, Hot Archive,
+and TTL; a broad call returns 478, 84, 77, 31879035, `CAP-0076`, and Hot Archive. The union is the
+complete fact set, so this question is fully answerable today.
+
+`search` does not point there. Measured 2026-08-25 with the case's own wording: ten hits, none of
+them `scout.searchResearch`. The top hits were `stellarDocs.*` operations, and no Stellar Docs
+lane carries a single required fact.
+
+This is not a description gap. `scout.searchResearch` already advertises "incident reports" and
+offers `source` values `cap` and `incident`. The lane says what it is; ranking does not find it.
+
+Done when: a protocol-history or incident question surfaces `scout.searchResearch` in `search`,
+measured on the routing eval rather than on this one case. Treat a fix that only helps this case
+as unshipped.
+
+Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
+our ranking.
+
 ## Verification owed
 
 ### Re-check the Algolia extractor change after a full crawl
