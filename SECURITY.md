@@ -1,9 +1,8 @@
 # Security policy
 
 This repository backs a live, internet-facing service: the Stellar Raven MCP gateway at
-`raven.stellar.org`, with `raven.stellar.buzz` / `agents.stellar.buzz` as aliases (a Cloudflare
-Worker acting as an OAuth authorization server and a sandboxed-code executor). Security reports
-are very welcome.
+`raven.stellar.org` (a Cloudflare Worker acting as an OAuth authorization server and a
+sandboxed-code executor). Security reports are very welcome.
 
 ## Reporting a vulnerability
 
@@ -20,8 +19,8 @@ window to remediate before any public disclosure.
 ## Scope
 
 - This repository's source and generated artifacts.
-- The deployed gateway at `raven.stellar.org` and its `raven.stellar.buzz` /
-  `agents.stellar.buzz` aliases (auth flows, the
+- The deployed gateway at `raven.stellar.org`, including any retired hostname still routed to it
+  (auth flows, the
   `search`/`execute` MCP surface, the `/playground` browser surface and its login/chat routes,
   sandbox isolation/egress).
 

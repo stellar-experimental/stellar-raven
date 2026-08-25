@@ -22,8 +22,7 @@ worker/service name deliberately keeps the `codemode` suffix even though the rep
 ```
 Server URL:   https://raven.stellar.org         (canonical since 2026-08-04; service live since 2026-07-02)
 MCP endpoint: POST https://raven.stellar.org/mcp    (streamable HTTP)
-Aliases:      https://raven.stellar.buzz and https://agents.stellar.buzz still serve the same
-              worker (`/mcp` included) — kept for existing clients.
+Docs:         GET  https://raven.stellar.org/docs   # how search and execute work, and troubleshooting
 Health:       GET  /health          # service heartbeat
               GET  /health/skills   # last skill-retrieval canary verdict (503 = failing/never ran)
 ```

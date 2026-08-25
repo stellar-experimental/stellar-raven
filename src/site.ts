@@ -1,9 +1,11 @@
 /**
  * Public presentation surface for stellar-raven-codemode.
  *
- * Two server-rendered pages, one visual system:
+ * Server-rendered pages, one visual system:
  *   - landingPage()  → GET /            (public marketing page)
  *   - consentPage()  → GET /authorize   (OAuth consent, rendered by workos.ts)
+ *   - termsPage()    → GET /terms       (Raven terms, script-free prose)
+ *   - docsPage()     → GET /docs        (public how-it-works, script-free prose)
  *
  * Design — "dithered signal": a dark-green field (#151f14) with a single hot
  * orange (#ff5500), a Bayer-dithered orange globe rising out of the bottom-left
@@ -31,6 +33,7 @@ import {
 } from "./fonts";
 import { escapeHtml } from "./html";
 import { CONSENT_GLOBE_PNG_BASE64 } from "./consent-globe";
+import { getCatalog } from "./catalog/load";
 
 const MCP_ENDPOINT = "https://raven.stellar.org/mcp";
 export const HOST = "raven.stellar.org";
@@ -287,7 +290,9 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:26px
   background:rgba(14,21,13,.72);
   backdrop-filter:blur(10px) saturate(.9);-webkit-backdrop-filter:blur(10px) saturate(.9)}
 .foot{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;justify-content:space-between}
-.foot .l{font-family:var(--mono);font-size:12px;color:var(--ash);text-shadow:0 1px 3px rgba(14,21,13,.9)}
+/* #7b8971 is --ash lifted to 5.0:1 against the footer field (#0e150d composite)
+   — WCAG AA needs 4.5:1 and plain --ash measured 4.41:1 (axe). Same hue family. */
+.foot .l{font-family:var(--mono);font-size:12px;color:#7b8971;text-shadow:0 1px 3px rgba(14,21,13,.9)}
 .foot .l b{color:var(--dim);font-weight:400}
 .foot-links{display:flex;gap:24px}
 .foot-links a{font-family:var(--mono);font-size:12px;color:var(--dim);text-shadow:0 1px 3px rgba(14,21,13,.9)}
@@ -312,6 +317,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:26px
   .stats{padding:110px 22px 0}
   .stats .st{padding:0 14px}
   .bento,.vs{grid-template-columns:1fr}
+  .foot-links{flex-wrap:wrap;gap:12px 20px}
   .cta-row{padding:44px 22px 58px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
@@ -666,6 +672,7 @@ const JSONLD =
   `</script>`;
 
 export function landingPage(): string {
+  const counts = getDocCatalogCounts();
   return (
     head(
       "Stellar Raven — the Stellar MCP server for AI agents",
@@ -675,7 +682,8 @@ export function landingPage(): string {
     ) +
     `<div class="stage"><canvas id="gl"></canvas></div><div class="scrim"></div>` +
     `<header class="top"><div class="wrap top-in">${brand()}` +
-    `<nav class="top-nav"><a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
+    `<nav class="top-nav"><a class="btn btn-ghost" href="/docs">Docs</a>` +
+    `<a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
     `<main class="wrap"><section class="hero" id="connect"><div class="hero-in">
   <p class="eyebrow">Remote MCP server <span class="live"><span class="dot"></span>live</span></p>
   <h1 class="title">Stellar <span class="r">Raven</span></h1>
@@ -702,9 +710,9 @@ export function landingPage(): string {
 </div></section></main>` +
     `<div class="below">
   <div class="stats" aria-label="What one connection covers">
-    <span class="st"><b>54</b> live operations</span>
-    <span class="st"><b>283</b> catalog entries</span>
-    <span class="st"><b>19</b> playbooks</span>
+    <span class="st"><b>${counts.operations}</b> live operations</span>
+    <span class="st"><b>${counts.operations + counts.skills + counts.sections}</b> catalog entries</span>
+    <span class="st"><b>${counts.skills}</b> playbooks</span>
     <span class="st"><b>1</b> sign-in</span>
     <span class="st"><b>0</b> API keys</span>
   </div>
@@ -736,7 +744,7 @@ export function landingPage(): string {
       <div class="cell">
         <div class="tag">Proven playbooks</div>
         <h3>Tested procedures, read mid-task</h3>
-        <p>Eighteen step-by-step guides your agent pulls in section by section, exactly when it needs them.</p>
+        <p>${counts.skills} step-by-step guides your agent pulls in section by section, exactly when it needs them.</p>
         <div class="chips"><span class="chip">smart contracts</span><span class="chip">payments</span><span class="chip">dApps</span><span class="chip">data &amp; indexing</span></div>
       </div>
     </div>
@@ -776,9 +784,10 @@ export function landingPage(): string {
         </ul>
       </div>
     </div>
-    <p class="hood">Under the hood: two MCP tools. <code>search</code> ranks 283 catalog entries — operations, docs, and
-      skill sections; <code>execute</code> runs your agent's JavaScript in a no-network sandbox where
-      every call is validated against the catalog.</p>
+    <p class="hood">Under the hood: two MCP tools. <code>search</code> ranks
+      ${counts.operations} operations and ${counts.skills} whole skills;
+      skill sections remain exact-read affordances on their parent skill. <code>execute</code> runs
+      your agent's JavaScript in a no-network sandbox where every call is validated against the catalog.</p>
   </section>
 
   <div class="cta-row">
@@ -796,6 +805,7 @@ function siteFooter(): string {
   return `<footer><div class="wrap foot">
   <div class="l">${escapeHtml(HOST)} <b>·</b> Stellar context, one connection</div>
   <div class="foot-links">
+    <a href="/docs">Docs</a>
     <a href="https://github.com/stellar-experimental/stellar-raven" target="_blank" rel="noopener">GitHub</a>
     <a href="https://stellar.org" target="_blank" rel="noopener">Stellar</a>
     <a href="/terms">Raven Terms</a>
@@ -1138,6 +1148,270 @@ export const TERMS_HEADERS: Record<string, string> = {
 };
 
 // ---------------------------------------------------------------------------
+// Documentation (GET /docs) — the public how-it-works page: what Raven is,
+// how to connect, the two-tool workflow, the source families, and
+// troubleshooting. Script-free static prose in the same visual system as
+// /terms. Catalog counts are checked against catalog/manifest.json; token
+// lifetimes against src/auth/gate.ts.
+// ---------------------------------------------------------------------------
+
+/** Catalog entry counts by kind, as the landing and docs copy renders them. */
+export type DocCatalogCounts = { operations: number; skills: number; sections: number };
+
+let docCatalogCounts: DocCatalogCounts | undefined;
+
+/**
+ * Current counts derive from the validated manifest, computed on first use and
+ * cached for the isolate's lifetime.
+ *
+ * Lazy on purpose: every auth-handler route imports this module, but only the
+ * landing and docs pages render a count. Deriving at module scope charged each
+ * isolate init a full getCatalog() validation of the ~700 KB manifest, so
+ * /authorize, /callback, and /health paid for prose they never emit.
+ */
+export function getDocCatalogCounts(): DocCatalogCounts {
+  docCatalogCounts ??= getCatalog().entries.reduce(
+    (counts, entry) => {
+      if (entry.kind === "operation") counts.operations += 1;
+      else if (entry.kind === "skill") counts.skills += 1;
+      else if (entry.kind === "skill-section") counts.sections += 1;
+      return counts;
+    },
+    { operations: 0, skills: 0, sections: 0 }
+  );
+  return docCatalogCounts;
+}
+
+/**
+ * Every codemode helper the production sandbox exposes, in the nested form the
+ * sandbox sees. src/executor/providers.ts is the source: the four discovery
+ * dispatch fns plus the skill/artifact prelude namespaces. test/server.test.ts
+ * checks this list against that provider's own fn table and against the
+ * rendered page, so a new helper cannot ship with /docs naming the old set.
+ */
+export const DOC_CODEMODE_HELPERS = [
+  "codemode.spec",
+  "codemode.search",
+  "codemode.catalog",
+  "codemode.describe",
+  "codemode.skill.read",
+  "codemode.skill.run",
+  "codemode.artifact.info",
+  "codemode.artifact.read"
+] as const;
+
+/**
+ * The static search -> execute example shown on /docs. Single source of truth
+ * for both the rendered trace and its test: test/server.test.ts re-runs
+ * searchCatalogPage with this query/limit and asserts the displayed top-three
+ * still matches, and that the execute example only calls operations from that
+ * displayed shortlist. Update this constant together with docTrace().
+ */
+export const DOC_TRACE_EXAMPLE = {
+  query: "soroswap liquidity",
+  limit: 3,
+  hitIds: [
+    "scout.searchProjects",
+    "scout.searchResearch",
+    "stellarDocs.search_protocol_concepts_docs"
+  ],
+  executeOperationIds: ["scout.searchProjects", "scout.searchResearch"]
+};
+
+const DOCS_CSS = `
+.stage{background:var(--green)}
+.stage::after{content:"";position:absolute;inset:0;
+  background-image:url("data:image/png;base64,${CONSENT_GLOBE_PNG_BASE64}");
+  background-position:calc(50vw - 159.86vmin) bottom;background-size:240vmin auto;background-repeat:no-repeat;
+  image-rendering:pixelated;opacity:.5}
+.scrim{background:linear-gradient(180deg,rgba(14,21,13,.86) 0%,rgba(14,21,13,.92) 40%,rgba(14,21,13,.96) 100%)}
+.top-in,.foot{max-width:780px;margin:0 auto}
+.docs{max-width:780px;margin:0 auto;padding:8px 32px 80px;position:relative;z-index:2}
+.docs h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5vw,48px);line-height:1.05;
+  letter-spacing:-.02em;color:var(--fog);margin:0}
+.docs .eff{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange);margin:16px 0 0}
+.docs h2{font-family:var(--mono);font-size:12.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--orange);margin:44px 0 0;padding-top:22px;border-top:1px solid var(--line)}
+.docs p{font-size:15.5px;color:var(--dim);line-height:1.7;margin:16px 0 0}
+.docs p b,.docs li b{color:var(--fog);font-weight:600}
+.docs a{color:var(--fog);text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+.docs a:hover{color:var(--orange)}
+.docs .lead{font-size:17px;color:var(--fog);opacity:.94}
+.docs ul{margin:16px 0 0;padding-left:22px;color:var(--dim);font-size:15.5px;line-height:1.7}
+.docs li{margin-top:10px}
+.docs li::marker{color:var(--ash)}
+.docs code{font-family:var(--mono);font-size:.85em;font-weight:500;color:var(--orange);
+  background:var(--orange-soft);border:1px solid rgba(255,85,0,.24);padding:1px 6px;border-radius:6px;
+  white-space:nowrap}
+/* the signature element: the real search -> execute flow, rendered as one
+   annotated terminal trace using the shared term/code material */
+.trace{margin:26px 0 0;border:1px solid var(--line);border-radius:12px;background:rgba(6,10,6,.82);
+  overflow:hidden}
+.trace-step{padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.trace-step b{color:var(--orange);font-weight:500}
+.trace pre.code{border-bottom:0}
+.trace-note{padding:12px 18px;font-family:var(--sans);font-size:13px;color:var(--dim);line-height:1.6}
+.trace-note b{color:var(--fog);font-weight:600}
+@media (max-width:820px){.docs{padding:8px 22px 64px}}
+/* The longest inline code span is 37 characters — wider than a 320px
+   viewport's text column. body sets overflow-x:hidden, so a nowrap span
+   that wide is clipped rather than scrolled. Below 400px the spans wrap
+   instead; wider viewports keep them on one line. */
+@media (max-width:400px){.docs code{white-space:pre-wrap;overflow-wrap:anywhere}}
+`;
+
+function docTrace(): string {
+  const { query, limit, hitIds, executeOperationIds } = DOC_TRACE_EXAMPLE;
+  // Render the called operations straight from DOC_TRACE_EXAMPLE so the shown
+  // script can never drift from the shortlist its regression test binds to.
+  const [firstService, firstOp] = executeOperationIds[0]!.split(".");
+  const [secondService, secondOp] = executeOperationIds[1]!.split(".");
+  return `<div class="trace">
+  <div class="trace-step"><b>1 · search</b> ranks the catalog</div>
+  <pre class="code" tabindex="0"><span class="p">search</span>({ query: <span class="s">"${query}"</span>, limit: <span class="k">${limit}</span> })
+<span class="c">→ ranked hits with TypeScript signatures:</span>
+<span class="c">  ${hitIds.join(" · ")}</span></pre>
+  <div class="trace-step"><b>2 · execute</b> composes them in one script</div>
+  <pre class="code" tabindex="0"><span class="k">const</span> found = <span class="k">await</span> <span class="p">${firstService}.</span><span class="p">${firstOp}</span>({ q: <span class="s">"soroswap"</span> });
+<span class="k">if</span> (!found.ok) <span class="k">return</span> found.error;   <span class="c">// check r.ok first</span>
+<span class="k">if</span> (found.<span class="s">data</span>.projects.length === <span class="k">0</span>)    <span class="c">// ok:true can still be empty</span>
+  <span class="k">return</span> { note: <span class="s">"no matches"</span> };
+<span class="k">const</span> top = found.<span class="s">data</span>.projects[<span class="k">0</span>];       <span class="c">// payloads live under .data</span>
+<span class="k">return await</span> <span class="p">${secondService}.</span><span class="p">${secondOp}</span>({ q: <span class="s">\`\${top.name} liquidity\`</span> });  <span class="c">// composition</span></pre>
+  <div class="trace-note">Every service call resolves to <b>{ ok: true, data }</b> or
+    <b>{ ok: false, error }</b>. It never throws across the tool boundary.</div>
+</div>`;
+}
+
+/**
+ * A function, not a module-scope constant: the copy interpolates
+ * getDocCatalogCounts(), and a constant would force that catalog read back into
+ * module init for every route that merely imports this file.
+ */
+function docsBody(): string {
+  const counts = getDocCatalogCounts();
+  const helperList = DOC_CODEMODE_HELPERS.map(
+    (helper, index) =>
+      `${index === DOC_CODEMODE_HELPERS.length - 1 ? "and " : ""}<code>${helper}</code>`
+  ).join(", ");
+  return `
+<h1>Stellar Raven documentation</h1>
+<p class="eff">How Raven works, how to connect, and how to fix problems</p>
+
+<h2>What Raven is</h2>
+<p class="lead">Stellar Raven is a remote Model Context Protocol (MCP) server that gives AI agents
+Stellar documentation and ecosystem context through one connection.</p>
+<p>Raven exposes exactly two tools over a single catalog of
+<b>${counts.operations} operations</b>,
+<b>${counts.skills} skills</b>, and
+<b>${counts.sections} sections</b>. One browser sign-in covers everything;
+you never handle API keys for the underlying services.</p>
+
+<h2>Connect your agent</h2>
+<p>Add <code>https://raven.stellar.org/mcp</code> to any MCP client that supports streamable HTTP
+and OAuth — Claude Desktop, Claude Code, Cursor, Codex, VS Code, and others.</p>
+<ul>
+  <li>The client starts an <b>OAuth sign-in in your browser</b>. Sign in once and approve the connection.</li>
+  <li>Access tokens last <b>1 hour</b>; compatible clients refresh them automatically within a fixed
+    <b>90-day</b> authorization window before you sign in again.</li>
+  <li>No per-service keys are ever issued to your agent. All upstream service credentials stay
+    on Raven's server.</li>
+</ul>
+
+<h2>The two tools</h2>
+<p><b>search</b> ranks exposed operations and whole skills against your question. Operation hits
+carry a ready-to-call TypeScript signature, and runnable-skill hits can carry one too. Skill hits
+list their <code>availableSections</code> instead — individual skill sections are not searchable,
+so your agent reads them by exact section id. <b>execute</b> takes that shortlist and runs one
+JavaScript script inside a sandboxed isolate with <b>no network access</b>. Service operations run
+through host-side adapters that hold the upstream credentials and enforce policy.
+The eight allowed codemode helpers (${helperList}) are functions on one host provider,
+inside the same sandbox boundary. This is the working loop:</p>
+${docTrace()}
+
+<h2>The four source families</h2>
+<p>Each family answers different questions, and Raven's guidance tells your agent which to trust:</p>
+<ul>
+  <li><b>Lumenloop</b> (lumenloop.*) — community and editorial ecosystem intelligence: project
+    directory details, published research, content, audio/video passages, and SCF funding context.</li>
+  <li><b>Scout</b> (scout.*) — the live ecosystem graph: projects, repos, builders, partners,
+    hackathons, audits, and stablecoins.</li>
+  <li><b>Stellar Docs</b> (stellarDocs.*) — official Stellar documentation. The authority for
+    protocol behavior, standards status, and API shapes.</li>
+  <li><b>Skills</b> (skills.*) — pinned operational playbooks read section by section: tested
+    build, integration, security, and data procedures.</li>
+</ul>
+<p>Ecosystem facts start with Lumenloop or Scout. Protocol and standards claims stay unverified
+until official docs confirm them.</p>
+
+<h2>Troubleshooting</h2>
+<ul>
+  <li><b>Read the envelope first.</b> Every service call resolves to <code>{ ok: true, data }</code>
+    or <code>{ ok: false, error }</code>. Payload fields live under <code>.data</code> — read
+    <code>r.data.projects</code>, never <code>r.projects</code>. <code>codemode.skill.run</code>,
+    <code>codemode.artifact.info</code>, and <code>codemode.artifact.read</code> use that same
+    envelope. The discovery helpers answer at the top level instead: <code>codemode.search</code>
+    gives <code>r.hits</code>, <code>codemode.describe</code> gives entry fields such as
+    <code>r.signature</code> and <code>r.inputSchema</code>, <code>codemode.skill.read(id)</code>
+    gives <code>r.content</code>, and <code>codemode.skill.read(id, { sections })</code> gives
+    <code>r.sections</code>.</li>
+  <li><b>An empty answer may not be an answer.</b> An <code>error.kind</code> of
+    <code>"error"</code> means the call failed. A kind of <code>"soft-empty"</code> means the
+    service answered with nothing — that is inconclusive, not proof something does not exist.
+    Widen the search across families before concluding a negative.</li>
+  <li><b>Big results get truncated.</b> Output is capped near the model's context budget. When a
+    truncated response reports an available artifact, read the full payload back inside execute
+    with <code>codemode.artifact.read(id)</code>, then return only the fields you need. Artifacts
+    expire after seven days, are stored only for signed-in MCP clients — API-key and Playground
+    calls get none — and payloads above 2 MiB skip storage. When no artifact is reported, inspect
+    the operation's signature before using arguments like <code>limit</code> or
+    <code>fields</code> — only some operations accept them. The general fallback is to project the
+    result in JavaScript — return just the fields you need — or split the script into smaller
+    calls.</li>
+  <li><b>Service health.</b> Check <code>/health</code> for the service heartbeat and
+    <code>/health/skills</code> for playbook availability. Both are public and need no sign-in.</li>
+  <li><b>Sign-in fails or loops.</b> The sign-in happens in your browser through WorkOS AuthKit;
+    approve the Terms acknowledgement checkbox on the consent screen. After 90 days your client
+    must send you through sign-in again — this is expected. If a client cannot complete OAuth at
+    all, ask the operator for a named API key and send
+    <code>Authorization: Bearer name:token</code> instead.</li>
+</ul>
+`;
+}
+
+export function docsPage(): string {
+  return (
+    head(
+      "Documentation · Stellar Raven",
+      "How to connect your AI agent to Stellar Raven, what search and execute do, and how to troubleshoot common failures.",
+      BASE + DOCS_CSS,
+      "",
+      false,
+      "/docs"
+    ) +
+    `<div class="stage"></div><div class="scrim"></div>` +
+    `<header class="top"><div class="wrap top-in">${brand()}` +
+    `<nav class="top-nav"><a class="btn btn-ghost" href="/">Home</a>` +
+    `<a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
+    `<main class="docs">${docsBody()}</main>` +
+    siteFooter() +
+    `</body></html>`
+  );
+}
+
+export const DOCS_HEADERS: Record<string, string> = {
+  "content-type": "text/html; charset=utf-8",
+  "cache-control": "public, max-age=300",
+  "content-security-policy":
+    "default-src 'none'; style-src 'unsafe-inline'; font-src data:; img-src data:; " +
+    "frame-ancestors 'none'; base-uri 'none'; form-action 'none'",
+  "x-content-type-options": "nosniff",
+  "referrer-policy": "no-referrer"
+};
+
+// ---------------------------------------------------------------------------
 // Response headers — landing allows inline script (shader + tabs); consent is
 // script-free. Both self-contained: font-src data:, img-src data:, no network.
 // Consent intentionally omits form-action, matching the prior Raven handlers:
@@ -1197,6 +1471,7 @@ export function sitemapXml(): string {
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     `  <url><loc>https://${HOST}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n` +
+    `  <url><loc>https://${HOST}/docs</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>\n` +
     `  <url><loc>https://${HOST}/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>\n` +
     `</urlset>\n`
   );

@@ -23,8 +23,8 @@ For `/mcp` paths the auth gate runs in this order:
 2. **Local-dev bypass** — `allowDevUnauthenticated`: requires `DEV_ALLOW_UNAUTHENTICATED`
    to be the exact string `"true"` **and** the request hostname to be loopback
    (`localhost` / `127.0.0.1` / `::1`). The hostname gate is a hard second factor: a var
-   mistakenly deployed to production is inert, because the public hosts (`raven.stellar.org`,
-   its `raven.stellar.buzz` / `agents.stellar.buzz` aliases) are not local hosts. The var itself
+   mistakenly deployed to production is inert, because no production host — `raven.stellar.org`
+   or any retired hostname still routed to it — is a local host. The var itself
    is only ever set in
    `.dev.vars`.
 3. **OAuth** — everything else goes through `@cloudflare/workers-oauth-provider`
@@ -37,8 +37,8 @@ For `/mcp` paths the auth gate runs in this order:
 **Non-`/mcp` requests are the public site.** Everything the OAuth provider doesn't claim falls
 through to its `defaultHandler` (`src/auth/workos.ts`), which — besides `/authorize` /
 `/callback` / the consent page — serves the public site from `src/site.ts`: the landing page,
-`robots.txt`, `sitemap.xml`, JSON-LD, and `/og.png`. The OG image and the site/OG fonts are
-**generated code** (`src/og.ts`, `src/fonts.ts`, rebuilt via `npm run site:og` /
+`/docs`, `/terms`, `robots.txt`, `sitemap.xml`, JSON-LD, and `/og.png`. The OG image and the
+site/OG fonts are **generated code** (`src/og.ts`, `src/fonts.ts`, rebuilt via `npm run site:og` /
 `npm run site:fonts`), embedded in the Worker bundle. Repository presentation images live under
 `assets/repo/`; there is no Wrangler static-assets directory.
 
@@ -74,7 +74,7 @@ the 2026-07-28 revision (`server/discover` negotiation, pinned end-to-end by
 `test/smoke/mcp-modern-client.test.ts`) and the 2025 `initialize` lifecycle via its built-in
 stateless legacy fallback. Custom domains skip the SDK's Host allowlist (Cloudflare routing
 is the Host authority). Browser Origins are explicitly allowlisted for the production hostnames
-(`raven.stellar.org` plus its two stellar.buzz aliases) and the localhost class; foreign
+(`raven.stellar.org` plus the retired hostnames still routed to it) and the localhost class; foreign
 Origins are rejected. Requests without an Origin header — ordinary
 non-browser MCP clients — still pass Origin validation. Tool
 registration and all model-facing prose live in `src/mcp/tools.ts`; the initialize-time
@@ -161,7 +161,7 @@ untouched.
    their exact vendor score (filtering stopwords for all scoring was tried and regressed).
 2. *Kind weighting* — `skill-section` entries are scaled ×0.75 so near-duplicate
    fragments don't blanket-outrank the operations on shared topical vocabulary. (Since the
-   2026-07-13 skills-form A/B all 204 section entries also carry `searchable: false` and
+   2026-07-13 skills-form A/B all 173 section entries also carry `searchable: false` and
    never enter search at all — the weight only matters for experiment arms that re-enable
    them; see `eval/README.md` "Skills-form A/B".)
 3. *Service diversity* — the returned set is selected with a per-service quota

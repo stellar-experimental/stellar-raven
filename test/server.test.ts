@@ -14,6 +14,9 @@
  */
 import { describe, expect, it, beforeAll, vi } from "vitest";
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/server";
 import { Client } from "@modelcontextprotocol/client";
 import { InMemoryTransport } from "@modelcontextprotocol/server";
@@ -21,7 +24,16 @@ import { registerTools, SEARCH_KINDS, type RegisterToolsOptions } from "../src/m
 import { allowDevUnauthenticated } from "../src/auth/gate";
 import type { McpAccessContext } from "../src/server";
 import type { ExecuteEvidenceSummary, ExecuteOperationSummary } from "../src/executor/run";
-import { landingPage, termsPage } from "../src/site";
+import {
+  DOC_CODEMODE_HELPERS,
+  DOC_TRACE_EXAMPLE,
+  docsPage,
+  getDocCatalogCounts,
+  landingPage,
+  sitemapXml,
+  termsPage
+} from "../src/site";
+import { assertNoNonExposedRefs } from "../scripts/build-catalog.mjs";
 import {
   CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS,
   EXPECTED_TOOL_METADATA
@@ -232,7 +244,371 @@ describe("public page metadata", () => {
     expect(page).toContain('<meta property="og:url" content="https://raven.stellar.org/terms"/>');
     expect(page).not.toContain('<meta name="robots" content="noindex"/>');
   });
+
+  it("preserves the docs canonical URL without noindex", () => {
+    const page = docsPage();
+
+    expect(page).toContain('<link rel="canonical" href="https://raven.stellar.org/docs"/>');
+    expect(page).toContain('<meta property="og:url" content="https://raven.stellar.org/docs"/>');
+    expect(page).not.toContain('<meta name="robots" content="noindex"/>');
+  });
+
+  it("lists /docs in the sitemap next to /terms", () => {
+    const sitemap = sitemapXml();
+
+    expect(sitemap).toContain("<loc>https://raven.stellar.org/docs</loc>");
+    expect(sitemap).toContain("<loc>https://raven.stellar.org/terms</loc>");
+  });
 });
+
+/**
+ * Runs the rendered /docs text through the SAME ADR-0003 guard the catalog
+ * build runs, by handing it to assertNoNonExposedRefs as one more entry.
+ *
+ * assertNoNonExposedRefsInText alone is not enough: it is allowlist-free by
+ * design, so it catches excluded lumenloop names, raw scout paths, and retired
+ * skill ids, but knows nothing about which service.op tokens the manifest
+ * actually exposes — a leaked "scout.submitFeedback" walks straight past it.
+ * assertNoNonExposedRefs owns that manifest comparison, so the page borrows the
+ * manifest's operation ids as its allowlist and this test defines no second
+ * exposure list of its own.
+ */
+function assertDocsExposureClean(pageText: string): void {
+  const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+  const manifest = JSON.parse(
+    readFileSync(join(root, "catalog", "manifest.json"), "utf8")
+  ) as { entries: { id: string; kind: string }[] };
+  // Ids only: the manifest's own text is already guarded at build time and in
+  // catalog.test.ts, so re-scanning it here would only slow the page check.
+  const exposedOpIds = manifest.entries
+    .filter((entry) => entry.kind === "operation")
+    .map((entry) => ({ id: entry.id, kind: "operation" }));
+
+  assertNoNonExposedRefs([
+    ...exposedOpIds,
+    { id: "GET /docs page", kind: "page", description: pageText }
+  ]);
+}
+
+describe("docs page truthfulness", () => {
+  it("describes the search contract: operations and whole skills, not sections", () => {
+    const page = docsPage();
+
+    expect(page).toContain("exposed operations and whole skills");
+    expect(page).toContain("availableSections");
+    expect(page).toMatch(/skill sections are not searchable/);
+    expect(page).toContain("codemode.artifact.read");
+  });
+
+  it("keeps the search-to-execute trace example in sync with the current scorer", async () => {
+    const { getCatalog } = await import("../src/catalog/load");
+    const { searchCatalogPage } = await import("../src/catalog/search");
+    const page = searchCatalogPage(getCatalog(), {
+      query: DOC_TRACE_EXAMPLE.query,
+      limit: DOC_TRACE_EXAMPLE.limit
+    });
+
+    expect(page.hits.map((hit) => hit.id)).toEqual(DOC_TRACE_EXAMPLE.hitIds);
+    for (const opId of DOC_TRACE_EXAMPLE.executeOperationIds) {
+      expect(DOC_TRACE_EXAMPLE.hitIds).toContain(opId);
+      expect(docsPage()).toContain(opId);
+    }
+  });
+
+  it("renders an execute block that composes the shortlisted operations", () => {
+    const html = docsPage();
+    const pres = [...html.matchAll(/<pre class="code" tabindex="0">([\s\S]*?)<\/pre>/g)].map(
+      (match) => match[1]!
+    );
+    expect(pres.length).toBe(2);
+    const script = pres[1]!.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
+    const called = [...script.matchAll(/([A-Za-z][\w]*)\.(\w+)\(/g)].map(
+      ([, service, op]) => `${service}.${op}`
+    );
+    expect(called.length).toBeGreaterThan(0);
+    for (const id of called) {
+      expect(DOC_TRACE_EXAMPLE.executeOperationIds).toContain(id);
+      expect(DOC_TRACE_EXAMPLE.hitIds).toContain(id);
+    }
+    for (const id of DOC_TRACE_EXAMPLE.executeOperationIds) {
+      expect(called).toContain(id);
+    }
+
+    const secondId = DOC_TRACE_EXAMPLE.executeOperationIds[1]!;
+    const secondCallStart = script.indexOf(`${secondId}(`);
+    expect(secondCallStart).toBeGreaterThan(-1);
+    const secondCallEnd = script.indexOf(");", secondCallStart);
+    expect(secondCallEnd).toBeGreaterThan(secondCallStart);
+    const secondCallArgs = script.slice(
+      secondCallStart + secondId.length + 1,
+      secondCallEnd
+    );
+    expect(secondCallArgs).toMatch(/\$\{top\.name\}/);
+
+    const emptyGuardIndex = script.indexOf("projects.length === 0");
+    const topReadIndex = script.indexOf("top.name");
+    expect(emptyGuardIndex).toBeGreaterThan(-1);
+    expect(topReadIndex).toBeGreaterThan(emptyGuardIndex);
+  });
+
+  /**
+   * The trace's operation ids are bound to the scorer by the tests above. Its
+   * ARGUMENT and FIELD names are bound here, against the same manifest schemas
+   * the sandbox validates calls with. Without this, an upstream rename of `q`,
+   * of `projects`, or of a row's `name` would leave the page showing a script
+   * that no longer runs, and every other docs test would still pass.
+   */
+  it("binds the trace's argument and field names to the manifest schemas", () => {
+    const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+    const manifest = JSON.parse(
+      readFileSync(join(root, "catalog", "manifest.json"), "utf8")
+    ) as {
+      entries: {
+        id: string;
+        kind: string;
+        inputSchema?: { properties?: Record<string, unknown> };
+        outputSchema?: {
+          properties?: Record<
+            string,
+            { type?: string; items?: { properties?: Record<string, unknown> } }
+          >;
+        };
+      }[];
+    };
+    const entryFor = (id: string) => {
+      const entry = manifest.entries.find((candidate) => candidate.id === id);
+      expect(entry, `manifest has no entry for ${id}`).toBeDefined();
+      return entry!;
+    };
+
+    const html = docsPage();
+    const pres = [...html.matchAll(/<pre class="code" tabindex="0">([\s\S]*?)<\/pre>/g)].map(
+      (match) => match[1]!
+    );
+    const script = pres[1]!.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
+
+    // Every argument key the script passes must exist on that operation's input schema.
+    for (const id of DOC_TRACE_EXAMPLE.executeOperationIds) {
+      const literal = script.match(new RegExp(`${id.replace(".", "\\.")}\\(\\{([^}]*)\\}`));
+      expect(literal, `no argument object rendered for ${id}`).not.toBeNull();
+      const keys = [...literal![1]!.matchAll(/(\w+)\s*:/g)].map(([, key]) => key!);
+      expect(keys.length, `${id} is called with no arguments`).toBeGreaterThan(0);
+      const inputProperties = Object.keys(entryFor(id).inputSchema?.properties ?? {});
+      for (const key of keys) {
+        expect(inputProperties, `${id} has no input field "${key}"`).toContain(key);
+      }
+    }
+
+    // The payload field the script reads under .data, and the row field it
+    // reads off the first element, must both exist on the output schema.
+    const rowRead = script.match(/const (\w+) = \w+\.data\.(\w+)\[0\]/);
+    expect(rowRead, "the trace no longer reads a row out of the payload").not.toBeNull();
+    const [, rowVar, payloadField] = rowRead!;
+    const firstOp = entryFor(DOC_TRACE_EXAMPLE.executeOperationIds[0]!);
+    const payload = firstOp.outputSchema?.properties?.[payloadField!];
+    expect(payload, `output schema has no field "${payloadField}"`).toBeDefined();
+    expect(payload!.type).toBe("array");
+
+    const rowFields = [...script.matchAll(new RegExp(`${rowVar}\\.(\\w+)`, "g"))].map(
+      ([, field]) => field!
+    );
+    expect(rowFields.length).toBeGreaterThan(0);
+    const itemProperties = Object.keys(payload!.items?.properties ?? {});
+    for (const field of rowFields) {
+      expect(itemProperties, `a ${payloadField} row has no field "${field}"`).toContain(field);
+    }
+  });
+
+  it("renders the search block limit from DOC_TRACE_EXAMPLE.limit", () => {
+    const html = docsPage();
+    const pres = [...html.matchAll(/<pre class="code" tabindex="0">([\s\S]*?)<\/pre>/g)].map(
+      (match) => match[1]!
+    );
+    expect(pres.length).toBe(2);
+    const searchBlock = pres[0]!.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
+    expect(searchBlock).toContain(`limit: ${DOC_TRACE_EXAMPLE.limit}`);
+  });
+
+  it("matches getDocCatalogCounts() to catalog/manifest.json by kind", () => {
+    const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+    const manifest = JSON.parse(
+      readFileSync(join(root, "catalog", "manifest.json"), "utf8")
+    ) as { entries: { kind: string }[] };
+    const counts = { operations: 0, skills: 0, sections: 0 };
+    for (const entry of manifest.entries) {
+      if (entry.kind === "operation") counts.operations++;
+      else if (entry.kind === "skill") counts.skills++;
+      else if (entry.kind === "skill-section") counts.sections++;
+    }
+    expect(getDocCatalogCounts()).toEqual(counts);
+  });
+
+  it("binds the landing-page counts to the verified catalog constants", () => {
+    const page = landingPage();
+    const counts = getDocCatalogCounts();
+    const total = counts.operations + counts.skills + counts.sections;
+
+    expect(page).toContain(`<b>${counts.operations}</b> live operations`);
+    expect(page).toContain(`<b>${total}</b> catalog entries`);
+    expect(page).toContain(`<b>${counts.skills}</b> playbooks`);
+    expect(page).not.toContain("<b>54</b> live operations");
+    expect(page).not.toContain("<b>283</b> catalog entries");
+  });
+
+  it("binds the docs-page counts to the verified catalog constants", () => {
+    const page = docsPage();
+    const counts = getDocCatalogCounts();
+
+    expect(page).toContain(`<b>${counts.operations} operations</b>`);
+    expect(page).toContain(`<b>${counts.skills} skills</b>`);
+    expect(page).toContain(`<b>${counts.sections} sections</b>`);
+  });
+
+  it("names every codemode helper the sandbox exposes", async () => {
+    const { getCatalog } = await import("../src/catalog/load");
+    const { buildCodemodeProvider } = await import("../src/executor/providers");
+    const skillSource = (() => {
+      throw new Error("skill source is not called when enumerating helper names");
+    }) as unknown as Parameters<typeof buildCodemodeProvider>[1];
+
+    // The flat dispatch names are the sandbox's real helper surface; the
+    // prelude re-exposes skill_read/skill_run/artifact_info/artifact_read as
+    // the nested codemode.skill.* / codemode.artifact.* namespaces.
+    const exposed = Object.keys(buildCodemodeProvider(getCatalog(), skillSource).fns)
+      .map((flat) => `codemode.${flat.replace("_", ".")}`)
+      .sort();
+
+    expect([...DOC_CODEMODE_HELPERS].sort()).toEqual(exposed);
+    expect(DOC_CODEMODE_HELPERS).toHaveLength(8);
+
+    const page = docsPage();
+    expect(page).toContain("eight allowed codemode helpers");
+    for (const helper of DOC_CODEMODE_HELPERS) {
+      expect(page).toContain(`<code>${helper}</code>`);
+    }
+
+    // All eight hang off ONE provider. The page copy that states this is
+    // asserted by "splits service adapters from the one codemode host provider".
+    expect(buildCodemodeProvider(getCatalog(), skillSource).name).toBe("codemode");
+  });
+
+  it("emits no non-exposed operation or retired-skill reference", () => {
+    expect(() => assertDocsExposureClean(docsPage())).not.toThrow();
+  });
+
+  // Real Stellar Light operationIds held off the exposed manifest by
+  // scripts/exposure.mjs. None carries an excluded lumenloop name, a raw scout
+  // path, or a retired-skill id, so the allowlist-free text guard cannot see
+  // them — only the manifest comparison can. These pin that half.
+  it.each(["scout.submitFeedback", "scout.partnerAssistant", "scout.partnerOnboard"])(
+    "rejects a /docs reference to non-exposed %s",
+    (opId) => {
+      const leaked = docsPage().replace("</main>", `<p><code>${opId}</code></p></main>`);
+      expect(leaked).toContain(opId);
+
+      expect(() => assertDocsExposureClean(leaked)).toThrow(/ADR-0003 leak/);
+    }
+  );
+
+  it("qualifies artifact reads and scopes credential claims", () => {
+    const page = docsPage();
+
+    expect(page).toMatch(/When a\s+truncated response reports an available artifact/);
+    expect(page).toMatch(/inspect\s+the operation's signature before using/);
+    expect(page).toMatch(/project\s+the\s+result\s+in\s+JavaScript/);
+    expect(page).toMatch(/smaller\s+calls/);
+    expect(page).toMatch(/signed-in MCP clients/);
+    expect(page).toMatch(/2 MiB/);
+    expect(page).toContain("upstream service credentials");
+  });
+
+  it("splits service adapters from the one codemode host provider", () => {
+    const page = docsPage();
+    expect(page).toMatch(
+      /Service\s+operations\s+run\s+through\s+host-side\s+adapters\s+that\s+hold\s+the\s+upstream\s+credentials/
+    );
+    // buildCodemodeProvider returns a single provider named "codemode"; the
+    // eight helpers are its fns.
+    expect(page).toMatch(/functions on one host provider/);
+    expect(page).not.toMatch(/codemode helpers[^.]*host-side adapters/s);
+  });
+
+  it("scopes the .data envelope rule to service calls", () => {
+    const page = docsPage();
+
+    // `codemode.search`, `codemode.describe`, and `codemode.skill.read` resolve
+    // at the TOP level, not under `.data` (src/executor/providers.ts even plants
+    // a throwing `.data` trap on a successful skill.read). An unscoped "every
+    // call" claim sends readers to a field those results do not have.
+    expect(page).not.toMatch(/Every call resolves to/);
+    expect(page.match(/Every service call resolves to/g)?.length).toBe(2);
+
+    // Each helper name and the result field it returns are asserted as ONE
+    // pattern, never as two independent substring checks. Independent checks
+    // pass whenever both strings appear anywhere on the page, so they keep
+    // passing when a name is documented against the wrong field — which is the
+    // only failure these assertions exist to catch.
+    const mappings: ReadonlyArray<readonly [string, RegExp]> = [
+      // providers.ts search branch: top-level hits/total/truncated
+      ["codemode.search → r.hits", /<code>codemode\.search<\/code>\s+gives\s+<code>r\.hits<\/code>/],
+      // providers.ts describeCatalogEntry: top-level signature/inputSchema/usage
+      [
+        "codemode.describe → r.signature + r.inputSchema",
+        /<code>codemode\.describe<\/code>\s+gives\s+entry\s+fields\s+such\s+as\s+<code>r\.signature<\/code>\s+and\s+<code>r\.inputSchema<\/code>/
+      ],
+      // skills/store.ts whole read: top-level content
+      [
+        "whole codemode.skill.read → r.content",
+        /<code>codemode\.skill\.read\(id\)<\/code>\s+gives\s+<code>r\.content<\/code>/
+      ],
+      // skills/store.ts sectional read: top-level sections
+      [
+        "sectional codemode.skill.read → r.sections",
+        /<code>codemode\.skill\.read\(id, \{ sections \}\)<\/code>\s+gives\s+<code>r\.sections<\/code>/
+      ],
+      // skill.run and both artifact reads keep the service-call envelope
+      [
+        "skill.run + artifact.info + artifact.read → r.data envelope",
+        /<code>codemode\.skill\.run<\/code>,\s+<code>codemode\.artifact\.info<\/code>,\s+and\s+<code>codemode\.artifact\.read<\/code>\s+use\s+that\s+same\s+envelope/
+      ]
+    ];
+    for (const [label, pattern] of mappings) {
+      expect(page, label).toMatch(pattern);
+    }
+
+    // Service calls keep the `.data` envelope.
+    expect(page).toMatch(/<code>r\.data\.projects<\/code>/);
+  });
+
+  it("renders footer legal text at WCAG AA contrast", () => {
+    const page = docsPage();
+    const match = page.match(/\.foot \.l\{[^}]*color:(#[0-9a-fA-F]{6})/);
+    expect(match).not.toBeNull();
+    const ratio = contrastRatio(match![1]!, "#0e150d");
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("makes horizontally scrollable trace blocks keyboard focusable", () => {
+    const page = docsPage();
+    expect(page.match(/<pre class="code" tabindex="0">/g)?.length).toBe(2);
+    expect(page).not.toMatch(/<pre class="code">/);
+  });
+});
+
+function contrastRatio(foreground: string, background: string): number {
+  function luminance(hex: string): number {
+    const channels = [1, 3, 5].map((offset) => {
+      const value = Number.parseInt(hex.slice(offset, offset + 2), 16) / 255;
+      return value <= 0.03928
+        ? value / 12.92
+        : Math.pow((value + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * channels[0]! + 0.7152 * channels[1]! + 0.0722 * channels[2]!;
+  }
+  const lighter = Math.max(luminance(foreground), luminance(background));
+  const darker = Math.min(luminance(foreground), luminance(background));
+  return (lighter + 0.05) / (darker + 0.05);
+}
 
 function workerContext(props?: Record<string, unknown>): ExecutionContext {
   return {
