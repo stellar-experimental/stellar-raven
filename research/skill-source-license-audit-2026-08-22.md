@@ -7,7 +7,7 @@ Raven to retrieve, render, and expose the committed skill content?
 Author: ox-alpha research worker (`ox-alpha-skill-license-audit`, Solo process 5023).
 Repaired after independent adversarial review (todo 1874 comment 5213, same day).
 
-Method: primary sources only — `ecosystem-skills/MANIFEST.json` at repo HEAD `5f31ad2`,
+Method: primary sources only — `ecosystem-skills/MANIFEST.json` at audited commit `5f31ad2`,
 license files fetched from `raw.githubusercontent.com` at each exact pinned commit,
 recursive git-tree listings and commit metadata from the GitHub API at those commits, skill
 frontmatter read at those commits, and `catalog/manifest.json` plus `src/skills/store.ts`
@@ -26,9 +26,9 @@ upstream repositories**, one commit SHA per repository and one git blob hash per
 are referenced, never vendored ([PLAN.md](../PLAN.md) §3;
 [THIRD-PARTY-NOTICES.md](../THIRD-PARTY-NOTICES.md)).
 
-Reconciled against the generated [`catalog/manifest.json`](../catalog/manifest.json) at HEAD.
-Operations and skills are separate surfaces; every skill entry uses the catalog service
-`skills`, so no operation count belongs to any skill source.
+Reconciled against the generated [`catalog/manifest.json`](../catalog/manifest.json) at the
+audited commit. Operations and skills are separate surfaces; every skill entry uses the catalog
+service `skills`, so no operation count belongs to any skill source.
 
 **Exposed operations by service:**
 
@@ -277,7 +277,7 @@ and is listed for counsel among the application questions in §4.
 
 Todo 1874 corrected the Connectors Directory doc to **59 operations (18 lumenloop / 29 scout /
 12 stellarDocs), 19 skills, 173 sections**, noting the doc omitted skills entirely. Verified
-today against `catalog/manifest.json` at HEAD `5f31ad2`: **exact match — 59 / 19 / 173, no
+today against `catalog/manifest.json` at audited commit `5f31ad2`: **exact match — 59 / 19 / 173, no
 drift since the scratchpad measurement.** One refinement to the todo's framing: the todo said
 "19 skills"; the pin set is 20, with `lumenloop-mcp-connect` pinned but build-excluded, so 19
 is the correct exposed count and the todo numbers stand as written.
