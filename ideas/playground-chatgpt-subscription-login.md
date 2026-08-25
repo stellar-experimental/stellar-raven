@@ -35,8 +35,8 @@ names integration inside an application as a supported use case, though its Type
 server-side Node rather than a Workers runtime
 ([Codex SDK](https://learn.chatgpt.com/docs/codex-sdk)). OpenAI product leadership has also publicly
 described using Codex subscriptions in OpenCode, Pi, Claude Code, and other clients as intentional;
-the statement and source links are preserved in Simon Willison's contemporary write-up
-([A pelican for GPT-5.5 via the semi-official Codex backdoor API](https://simonwillison.net/2026/Apr/23/gpt-5-5/)).
+the statement and source links are preserved in
+[Simon Willison's contemporary write-up](https://simonwillison.net/2026/Apr/23/gpt-5-5/).
 
 The unresolved distinction is **hosted multi-tenant credential custody**. Most named integrations
 are local clients. Raven would retain encrypted refresh tokens on its infrastructure for a public
