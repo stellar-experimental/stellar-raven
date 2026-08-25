@@ -550,9 +550,15 @@ describe("WorkOSAuthHandler", () => {
     const page = await terms.text();
     expect(page).toContain("Stellar Raven Terms of Service");
     expect(page).toContain(`<link rel="canonical" href="https://raven.stellar.org/terms"/>`);
-    expect(page).toContain("Raven's structured content logging and AI Gateway request logging are disabled");
-    expect(page).toContain("currently no longer than seven days");
-    expect(page).not.toContain("may include the queries submitted and the responses returned");
+    // Section 9 tracks the counsel-approved Terms document, not current runtime
+    // behaviour. The Terms state the OUTER BOUND of what the Service may do;
+    // today's stricter practice (content-free logs, 7-day platform retention)
+    // is described on the privacy page instead. Keeping the bound wider than
+    // the practice is deliberate: the 30-day content store is planned, and the
+    // Terms must already permit it. Do not narrow these back to the runtime.
+    expect(page).toContain("may include the queries submitted and the responses returned");
+    expect(page).toContain("for 30\ndays, after which it is deleted");
+    expect(page).toContain("You may opt out of query and response logging");
     // Script-free legal surface: CSP must not allow inline script.
     expect(terms.headers.get("content-security-policy")).not.toContain("script-src");
     expect(page).not.toContain("<script");

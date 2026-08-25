@@ -289,9 +289,9 @@ the versioning page designates 2026-07-28 as current, and `agents` pins the stab
 
 > Status (end of Round 4): **all 8 phases are shipped and live** in production, including
 > the evidence-poor recovery and build-stage prior-art additions deployed on 2026-07-13.
-> The canonical production route is **https://raven.stellar.org** (canonical since 2026-08-04), with
-> **https://raven.stellar.buzz** and **https://agents.stellar.buzz** served as aliases — all three
-> in `wrangler.jsonc` routes (Solo todos 788–825; evidence: `eval/README.md`,
+> The production route is **https://raven.stellar.org** (canonical since 2026-08-04); the two
+> stellar.buzz hostnames stay routed in `wrangler.jsonc` for existing clients and remain inside the
+> Terms' definition of the Service (Solo todos 788–825; evidence: `eval/README.md`,
 > `eval/agentic/README.md`, `eval/plan/README.md`, `research/decisions/0001-search-tool-shape.md`,
 > `research/decisions/0002-skills-retirement-twin-dedup.md`,
 > `research/decisions/0003-build-time-exposure-filtering.md`, `research/auth-workos.md`,
