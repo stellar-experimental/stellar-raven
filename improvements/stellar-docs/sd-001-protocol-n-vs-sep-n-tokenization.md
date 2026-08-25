@@ -31,6 +31,11 @@ recurrences:
 
 ## Finding
 
+> **Fixed 2026-08-25.** Everything from here to "Resolution" describes the defect as it stood
+> before the fix, in the tense it was written. Read "Resolution — 2026-08-25" at the end for the
+> applied change, the live verification, and what is left over.
+
+
 Protocol-version queries against the main docs index surface SEP-24 pages:
 "Protocol 24" tokenizes into SEP-24 matches. The actual Protocol 24 / Whisk
 state-archival content lives in the meetings category and IS indexed — it is

@@ -110,7 +110,7 @@
     },
     "sd-001": {
       "repo": "stellar/stellar-docs",
-      "reason": "Reclassified 2026-08-25. The canonical page /docs/networks/software-versions exists and is comprehensive, but is absent from the docs site's own production DocSearch index, so the site's search box cannot find it either. A crawl gap on a developers.stellar.org page is owned by the content repo under contentRule, not by search-owner triage."
+      "reason": "Reclassified 2026-08-25 from ranking to a crawler defect, then fixed directly rather than filed. /docs/networks/software-versions exceeded the crawler's 750-record page cap and was dropped whole; the extractor now degrades to heading granularity above the cap. Kept as the routing record in case a successor finding needs the same owner."
     },
     "sd-003": {
       "repo": "stellar/stellar-docs",
