@@ -71,6 +71,19 @@ separate delegated topology. Callable-runtime evidence and launch mechanics live
 `research/solo-agent-orchestration-2026-07-15.md`. Eval answering and judge models remain separate
 measurement contracts controlled by `run-evals`.
 
+Choose the independent reviewer under "Coordination" by lane, not by a fixed model:
+
+- **Eligibility.** The reviewer differs from the author *and* from the orchestrator. An
+  orchestrator that is also a candidate reviewer drops out of the pool for that gate.
+- **Effort.** Run the gate at high. Escalate to xhigh only for a subtle change, or after a
+  high pass missed a real finding. Never make xhigh the standing default.
+- **Selection and fallback.** Match the lane to the change: Fable for product, API, and taste;
+  Sol for dense implementation or analysis; Grok for vendor-diverse assumption attack. When that
+  lane is the author, the orchestrator, or unavailable, take the next best match, then Opus high
+  as the last resort. Record the lane and effort used, and why the matched lane was skipped.
+
+`research/agent-model-roster.md` holds the callable-runtime evidence for these lanes.
+
 ## Hard rules
 
 - **Forward-only:** prefer the best current design; do not add compatibility shims, dual formats,
