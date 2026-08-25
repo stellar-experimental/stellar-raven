@@ -3,7 +3,7 @@ id: sd-001
 service: stellar-docs
 status: verified
 discovered: 2026-07-03
-upstreamTitle: A bare "Protocol N" query reaches no protocol-release content, and no canonical page holds it
+upstreamTitle: /docs/networks/software-versions is missing from the DocSearch index, so no protocol-version query reaches it
 evidence:
   - eval/qa/results/2026-07-03T03-49-35-variantA.json
   - eval/qa/results/2026-07-03T04-13-42-variantA.json
@@ -14,7 +14,9 @@ evidence:
   - live re-verified 2026-07-09 (Solo scratchpad 565): bare "Protocol 24" still returns SEP-24/anchor pages as all top hits; "Protocol 24 Whisk state archival" with meetings filtering returns the Whisk/state-archival meeting content at rank #1
 recurrences:
   - date: 2026-08-25
-    evidence: live sweep across Protocol 20-26. Only `Protocol 24` shows any SEP collision; only `Protocol 23` returns pages naming that version, and only because the URL anchors contain `protocol-23`. Five of seven return unrelated pages. No canonical protocol-version page exists in the docs, and the meetings lane does not resolve a bare version number either.
+    evidence: live sweep across Protocol 20-26. Only `Protocol 24` shows any SEP collision; only `Protocol 23` returns pages naming that version, and only because the URL anchors contain `protocol-23`. Five of seven return unrelated pages, with no SEP involved.
+  - date: 2026-08-25
+    evidence: root cause found. `/docs/networks/software-versions` covers every protocol from 20 to 28 with activation dates and CAP lists, and is absent from the DocSearch index. Confirmed against the docs site's own production index `crawler_Stellar Docs - Docusaurus`, not only the agent replica. The page is in the sitemap, is not noindexed, and robots.txt allows it; sibling pages under `/docs/networks/` are indexed.
   - date: 2026-08-11
     evidence: live Stellar Docs recheck — bare `Protocol 24` returned eight SEP-24 docs hits, while `Protocol 24 Whisk state archival` with meetings included returned the 2025-10-16 Whisk/state-archival meeting at rank #1.
   - date: 2026-07-09
@@ -43,10 +45,10 @@ could count as a recovery. The harness now requires the actual 2025-10-16
 meeting URL and the Whisk/state/archival terms, preserving this as a real
 recurrence instead of a URL-class false positive.
 
-### 2026-08-25 widening — the SEP collision is not the defect
+### 2026-08-25 — the SEP collision is not the defect
 
-The original diagnosis holds for Protocol 24 and for no other version. A sweep of
-`search_docs` across seven protocol versions, five hits each, found this:
+The original diagnosis holds for Protocol 24 and for no other version. A sweep of `search_docs`
+across seven protocol versions, five hits each:
 
 | query | hits colliding with SEP-N | hits naming that protocol version |
 |---|---|---|
@@ -59,61 +61,69 @@ The original diagnosis holds for Protocol 24 and for no other version. A sweep o
 | Protocol 26 | 0 | 0 |
 
 `Protocol 24` is the only query with a SEP collision, because SEP-24 is a heavily documented
-anchor standard. `Protocol 23` is the only query that reaches pages naming its version, and only
-because two URL anchors literally contain `protocol-23`
-(`/docs/data/indexers/build-your-own/processors/token-transfer-processor#protocol-23-ordering`).
-Five of the seven return unrelated pages: `Protocol 22` returns a zk privacy page, a guestbook
-tutorial, and a Horizon migration guide, with no SEP-22 involved at all.
+anchor standard. `Protocol 23` is the only query reaching pages that name its version, and only
+because two URL anchors contain `protocol-23`. `Protocol 22` returns a zk privacy page, a
+guestbook tutorial, and a Horizon migration guide, with no SEP-22 involved at all.
 
-So a "Protocol N" vs "SEP-N" synonym rule would repair one query out of seven. The other six do
-not fail because of tokenization. They fail because there is nothing to retrieve.
+A "Protocol N" versus "SEP-N" synonym rule would repair one query in seven.
 
-### There is no canonical protocol-version page
+### 2026-08-25 — root cause: the canonical page is not indexed
 
-Searching for the page that should answer these queries does not find one. A query for
-"protocol version history releases list network upgrades" returns validator operations material
-— `/docs/validators/admin-guide/network-upgrades`, `/docs/validators/admin-guide/installation`,
-`/docs/learn/fundamentals/stellar-data-structures/ledgers#upgrades`. Those describe **how an
-operator runs an upgrade**. None states what any protocol version contains. A query for
-"CAP protocol upgrade activation ledger version" returns the same operations class.
+`https://developers.stellar.org/docs/networks/software-versions` is the page every one of these
+queries should return. It exists and it is comprehensive. It carries a section for every protocol
+from 20 through 28, each with an activation date (`Protocol 24 (Mainnet, October 22, 2025)`), a
+software-version table, and release notes naming the CAPs that version carries. It also contains
+the strings `Whisk` and `state archival`, which is the subject of the QA case that opened this
+finding.
 
-### The meetings lane does not rescue a bare version number
+The page is absent from the search index. Seven probes returned it zero times, including strings
+that appear only on that page:
 
-The 2026-07-03 record noted that the correct content is hit #1 for a meetings-scoped query, and
-that is still true — but only for a query carrying distinctive terms. `Protocol 24 Whisk state
-archival` still returns `/meetings/2025/10/16#protocol-discussion` at rank #1.
+- `software versions` — its own title.
+- `Poseidon Rust SDK` — returns `/docs/build/apps/zk` and `/docs/networks/audits/soroban-poseidon`,
+  never `software-versions`.
+- `Smart Contract Host Environment version`, `Stellar Galexie version Quickstart docker pull`,
+  `Protocol 27 mainnet release notes CAP`, `network passphrase futurenet testnet mainnet software
+  version`, `Stellar Core software version protocol release notes`.
 
-A bare version number does not work in that lane either, and it fails in a new way:
+This is absence, not low ranking. A direct query against the raw index for those unique strings
+returns 45 records and none is that page.
 
-- `Protocol 23 release` returns `/meetings/2026/07/23#the-privacy-stack`. The `23` matched the
-  **date** in the URL path, not the protocol version.
-- `Protocol 22 release` returns the same 2026-07-23 privacy-stack page.
-- `Protocol 24 release` returns a discussion of **Protocol 27**.
+The absence is upstream, not a replica artifact. The same probe against the docs site's own
+production index, `crawler_Stellar Docs - Docusaurus`, returns 855 records and no
+`software-versions` row. **The docs site's own search box cannot find its own software-versions
+page.**
 
-Version numbers collide with dates in meeting URLs. That is a second retrieval failure, distinct
-from the SEP collision, and it affects the lane the original record proposed boosting.
+Nothing on the page asks to be excluded. It is listed in `sitemap.xml`, carries no `noindex`
+meta, is allowed by `robots.txt`, and serves the standard `docsearch:` Docusaurus tags. Sibling
+pages in the same directory are indexed: `/docs/networks`, `/docs/networks/audits`,
+`/docs/networks/audits/soroban-poseidon`, `/docs/networks/resource-limits-fees`. One of them,
+`/docs/networks/audits`, is indexed with the text "for the latest compatible versions for each
+network, see Software Versions" — a page that links to the target is indexed while the target is
+not.
 
 ## Recommendation
 
-Publish a canonical protocol-version reference in the docs: one page per protocol version, or one
-page listing every version, stating what each contains, which CAPs it carries, and when it
-activated. Today that information exists only in dated meeting notes and in the
-`stellar-protocol` repository, neither of which a reader reaches by asking for a protocol version
-by name.
+Get `/docs/networks/software-versions` into the DocSearch crawl. The content is already written,
+already canonical, and already answers these queries; only the record is missing. Check the
+crawler configuration for a path exclusion, a record-extraction rule that yields nothing on a
+table-heavy page, or a per-page record cap.
 
-Then make `Protocol N` resolve to it. Two retrieval rules are needed, not one:
+This is worth fixing for the docs site on its own terms, independent of any agent: a reader who
+types "software versions" into the search box on developers.stellar.org does not find the software
+versions page.
 
-- Disambiguate `Protocol N` from `SEP-N`. This is the original recommendation and it remains
-  correct — it is simply not sufficient on its own.
+Two smaller retrieval rules remain useful once the page is indexed:
+
+- Disambiguate `Protocol N` from `SEP-N`. This is the original 2026-07-03 recommendation. It is
+  still correct and still insufficient on its own.
 - Stop a bare version number from matching a date fragment in a `/meetings/YYYY/MM/DD` path.
+  `Protocol 23 release` currently returns `/meetings/2026/07/23`, where the `23` matched the date.
+  `Protocol 24 release` returns a Protocol 27 discussion.
 
 ### Note on remediation path
 
-This is a **content** gap, not a ranking gap, so the operator Algolia credentials cannot fix it.
-Ranking rules re-order what an index holds; they cannot return a page that was never written. The
-original recommendation looked like an index-side fix because Protocol 24 — the one version with
-a competing document — looked like a ranking loss. Across the other six versions there is no
-competing document and no correct document either.
-
-The date-collision half is index-side and could be tested read-only. It is worth nothing on its
-own: fixing it changes which wrong page is returned.
+The operator Algolia credentials are the wrong tool here. The defect is in the upstream crawl, and
+the same gap breaks the docs site's own search. Writing the missing record into the agent replica
+would hide an upstream defect behind a local patch, leave every non-Raven reader broken, and fail
+the "general mechanism rather than per-query hacks" bar in `AGENTS.md`.

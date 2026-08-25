@@ -110,7 +110,7 @@
     },
     "sd-001": {
       "repo": "stellar/stellar-docs",
-      "reason": "Reclassified 2026-08-25 from ranking to content. The 2026-08-25 sweep across Protocol 20-26 shows the SEP-N collision affects only Protocol 24; the other six fail because no canonical protocol-version page exists to retrieve. Missing developers.stellar.org content is owned by the content repo under contentRule."
+      "reason": "Reclassified 2026-08-25. The canonical page /docs/networks/software-versions exists and is comprehensive, but is absent from the docs site's own production DocSearch index, so the site's search box cannot find it either. A crawl gap on a developers.stellar.org page is owned by the content repo under contentRule, not by search-owner triage."
     },
     "sd-003": {
       "repo": "stellar/stellar-docs",
