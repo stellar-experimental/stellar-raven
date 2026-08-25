@@ -31,7 +31,7 @@ Total findings: 70
 | sls-070 | Scout now assigns an engagementId to every repeated protocol and auditor group. This resolves the broad relation-metadata defect in sls-064 | reported-upstream | 2026-08-19 | 0           |
 | sls-071 | An exact identifier that exists can reach its audit finding. An absent exact identifier still returns section-classification boilerplate    | reported-upstream | 2026-08-19 | 0           |
 | sls-072 | Scout 1.8.73 resolves the fundability and stale-phase defects from sls-067. The response and the official awards page agree on the current… | reported-upstream | 2026-08-19 | 0           |
-| sls-073 | The Stellar Light vet-idea endpoint returns an empty report.competitors.projects array for records the directory does hold                  | verified          | 2026-08-21 | 0           |
+| sls-073 | The Stellar Light vet-idea endpoint returns an empty report.competitors.projects array for records that the directory does hold             | verified          | 2026-08-21 | 0           |
 
 ## stellar-docs
 

@@ -11,14 +11,14 @@ evidence:
   - those rows included noether, zenex, turbolong, and stellars-finance
   - 2026-08-21T01:01:41.945Z live https://stellarlight.xyz/directory returned matchMode=strict
   - exact project-name searches for Noether, Stellars Finance, and Zenex returned those records
-  - 2026-08-21T01:01:52.089Z live analyze?dimension=gaps listed 21 byType verticals
+  - 2026-08-21T01:01:52.089Z live GET https://stellarlight.xyz/api/analyze?dimension=gaps listed 21 byType verticals
   - Solo project 49 todo 1740 comments 5016 and 5018 record the replay and its coordinator verification
 ---
 
 ## Finding
 
 The Stellar Light `vet-idea` endpoint returns an empty
-`report.competitors.projects` array for records the directory does hold.
+`report.competitors.projects` array for records that the directory does hold.
 
 On 2026-08-21 `vet-idea` answered the idea "perpetuals / derivatives trading
 protocol on Stellar". The answer set `report.vertical` = `null` and
@@ -81,12 +81,13 @@ made three separate calls, one per exact project name:
   (formerly Hermes) is a decentralized perpetual (leveraged) trading exchange on
   Stellar/Soroban".
 
-`analyze?dimension=gaps` at 2026-08-21T01:01:52.089Z returned 21 `byType`
-verticals. The first 11 are Faucet, Explorer, RPC, Social Impact, Indexer,
-Gaming, Bridge, Infrastructure, NFT, Lending, and Education. The last 10 are
-Anchor, Stablecoin, DEX, AI, Analytics, Wallet, Security, RWA, SDK, and
-Payments. No entry matches perpetuals, derivatives, futures, margin, or
-leverage. This is the axis the `vertical` and `gap` field descriptions name.
+`GET https://stellarlight.xyz/api/analyze?dimension=gaps` ran at
+2026-08-21T01:01:52.089Z. It returned 21 `byType` verticals. The first 11 are
+Faucet, Explorer, RPC, Social Impact, Indexer, Gaming, Bridge, Infrastructure,
+NFT, Lending, and Education. The last 10 are Anchor, Stablecoin, DEX, AI,
+Analytics, Wallet, Security, RWA, SDK, and Payments. No entry matches
+perpetuals, derivatives, futures, margin, or leverage. This is the axis the
+`vertical` and `gap` field descriptions name.
 
 The three project records above are the exact directory rows for those names.
 They are not semantic candidates. We include their `types` values because the
