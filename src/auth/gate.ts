@@ -19,22 +19,24 @@
  */
 import type { OAuthProviderOptions } from "@cloudflare/workers-oauth-provider";
 import { WorkOSAuthHandler } from "./workos";
+// Token lifetimes derive from the retention leaf that privacy disclosures
+// quote, so a published duration can never drift from the enforced one.
+import { RETENTION } from "./retention";
 
 // Re-export from the leaf module (src/auth/timing.ts) — existing importers
 // (tests) keep this path; demo code imports the leaf directly to avoid a
 // module cycle through workos.ts.
 export { timingSafeEqualBytes } from "./timing";
 
-const DAY_SECONDS = 24 * 60 * 60;
 /** Short-lived bearer token; compatible MCP clients refresh it automatically. */
-export const ACCESS_TOKEN_TTL_SECONDS = 60 * 60;
+export const ACCESS_TOKEN_TTL_SECONDS = RETENTION.accessTokenSeconds;
 /**
  * Fixed authorization-grant lifetime. Refresh-token rotation does not extend
  * this window, so clients reauthorize through WorkOS after 90 days.
  */
-export const REFRESH_TOKEN_TTL_SECONDS = 90 * DAY_SECONDS;
+export const REFRESH_TOKEN_TTL_SECONDS = RETENTION.refreshGrantSeconds;
 /** DCR metadata lifetime, independent of user grants and token lifetimes. */
-export const CLIENT_REGISTRATION_TTL_SECONDS = 365 * DAY_SECONDS;
+export const CLIENT_REGISTRATION_TTL_SECONDS = RETENTION.clientRegistrationSeconds;
 
 /** The single scope this server understands. */
 export const MCP_SCOPE = "mcp";

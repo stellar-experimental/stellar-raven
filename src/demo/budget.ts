@@ -14,6 +14,9 @@
  */
 
 import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
+// Throttle lifetime derives from the retention leaf that privacy disclosures
+// quote — one source, no independent two-hour literal.
+import { RETENTION } from "../auth/retention.ts";
 
 export const DEMO_CAPS = {
   /** stepCountIs(7) — bounded recovery room, with the final step reserved for synthesis. */
@@ -106,7 +109,7 @@ export function createDemoToolBudget(): DemoToolBudget {
   };
 }
 
-const THROTTLE_TTL_SECONDS = 2 * 60 * 60;
+export const THROTTLE_TTL_SECONDS = RETENTION.demoThrottleSeconds;
 const HOUR_MS = 60 * 60 * 1000;
 
 type ThrottleCounter = { count: number };
