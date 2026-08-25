@@ -27,7 +27,7 @@
   "truth": {
     "domain": "real-world",
     "status": "mixed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-24",
     "reverifyBy": "2026-11-05",
     "sources": [
       {
@@ -115,18 +115,31 @@
             "ref": "https://docs.validationcloud.io/v1/stellar/overview",
             "observedAt": "2026-08-20",
             "note": "Provider-owned documentation described archive access as Horizon-only and Stellar RPC as retention-bounded."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
+            "observedAt": "2026-08-24",
+            "note": "Re-observed: the rendered official table still marks eight RPC Archive rows, Validation Cloud plus the seven-row 2026-07-11 subset, and still limits the feature to getLedgers."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.validationcloud.io/v1/stellar/overview",
+            "observedAt": "2026-08-24",
+            "note": "Re-observed: provider-owned documentation still states that the archive endpoint serves Horizon only, that Stellar RPC is not available on it, and that Stellar RPC serves the most recent 7 days. The dispute is unresolved on this date."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-21",
-      "by": "Golden-truth review — original verification Solo todo 1741 comments 5000 and 5003; independent GPT review Solo todo 1936.",
+      "date": "2026-08-24",
+      "by": "Golden-truth review 2026-08-24 (branch codex/qa-golden-truth-corrections asOf repair) — original verification Solo todo 1741 comments 5000 and 5003; independent GPT review Solo todo 1936.",
       "evidence": [
         "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and stellar-docs commits 7fa36531734baa72d0477a5f9a4b3da3d356a0e0 and 15f14808ffd5f640f5461af827c1f4d39db3c418 preserve the dated seven-row roster through 2026-07-29.",
         "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00 show the eighth official table row from 2026-08-18.",
         "A: https://docs.validationcloud.io/v1/stellar/overview rechecked 2026-08-20; provider-owned documentation conflicts with the new RPC Archive marking.",
         "A: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers confirms that ordinary getLedgers remains bounded by provider retention.",
+        "A: both disputed sources re-observed 2026-08-24 — https://developers.stellar.org/docs/data/apis/rpc/providers still marks eight RPC Archive rows (Validation Cloud plus the seven-row 2026-07-11 subset) and https://docs.validationcloud.io/v1/stellar/overview still limits archive access to Horizon; the dispute is unresolved, so truth.asOf moves to 2026-08-24 to cover the 2026-08-18 official table change while the golden keeps its 2026-07-11 question basis.",
         "Key-fact review 2026-08-21 (GPT todo 1936): the alternative-aware keyFact admits either the dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change, so neither side of the Validation Cloud dispute is pinned and the grader caution matches the disputed corroboration row.",
         "Sibling review 2026-08-21 (todo 1936): every member of consistency clusters cluster-018 and cluster-046 stays consistent with the alternative-aware roster keyFact (a dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change) and with mixed-truth status for the disputed Validation Cloud row; no sibling pins the archive-provider count or conflicts with the getLedgers-only boundary."
       ],
