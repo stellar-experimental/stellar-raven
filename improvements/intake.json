@@ -109,8 +109,8 @@
       "reason": "list_documents query-parameter validation is API behavior, not a committed directory record."
     },
     "sd-001": {
-      "intake": "unclear",
-      "reason": "Algolia ranking/tokenization behavior; not clearly owned by stellar/stellar-docs issue intake."
+      "repo": "stellar/stellar-docs",
+      "reason": "Reclassified 2026-08-25 from ranking to content. The 2026-08-25 sweep across Protocol 20-26 shows the SEP-N collision affects only Protocol 24; the other six fail because no canonical protocol-version page exists to retrieve. Missing developers.stellar.org content is owned by the content repo under contentRule."
     },
     "sd-003": {
       "repo": "stellar/stellar-docs",
