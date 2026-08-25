@@ -245,8 +245,29 @@ the second, so it needs a re-check under `golden-truth`.
   are not searchable. `Poseidon Rust SDK` does not reach this page. That is the accepted
   trade-off: heading coverage beats no coverage.
 
+### Independent recheck — 2026-08-25, verdict DO-NOT-RETIRE
+
+A distinct reviewer (Sol, high effort; the author and orchestrator were both Opus) re-ran the
+`improvements/README.md` retirement checks and confirmed the crawler fix while refusing
+retirement.
+
+Confirmed independently: 242 records with contiguous object ids 0-241 in both indexes; one crawler
+action with all 13 config keys intact; the recorded rollback source reproduces the original
+1319-over-750 failure and both control counts; eight unrelated queries unaffected; every listed
+residual reproduces.
+
+Refused for three reasons:
+
+1. **The original trigger still fails.** `q-protocol-24-whisk-incident` needs the eviction-defect
+   cause, the counts 478 / 84 / 77 / 394, `CAP-0076`, and the fee-pool remediation. No docs lane
+   returns them. Tracked as its own defect in `sd-046`; this finding does not cover it.
+2. **The index is in a mixed state.** Only the target URL was recrawled. Every other page still
+   carries records from the previous extractor until the next full crawl, so the no-regression
+   evidence is a sample, not a proof.
+3. Repo cleanup had not run.
+
 ### Retirement
 
-`improvements/README.md` requires a distinct reviewer to independently re-run the original trigger
-before this file is retired. That step has not happened; do not delete this record on the strength
-of the author-side verification above.
+The distinct-reviewer step ran on 2026-08-25 and returned DO-NOT-RETIRE. Before retiring this
+record: let a full crawl complete, repeat the regression and collateral checks against the
+settled index, and confirm `sd-046` carries the incident-retrieval gap on its own evidence.

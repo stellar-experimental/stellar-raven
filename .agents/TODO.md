@@ -61,6 +61,24 @@ the guard exists for. Affects `/demo/chat` only.
 
 Done when: a test stubs the model rather than the module, so the real tool loop runs.
 
+## Verification owed
+
+### Re-check the Algolia extractor change after a full crawl
+
+The 2026-08-25 crawler fix (`sd-001`) was applied, then only the affected URL was recrawled. Every
+other page still carries records from the previous extractor until the daily 00:00 crawl settles.
+The no-regression evidence so far is a sample of about twenty queries and twelve page-level
+extractor comparisons, not a corpus-wide proof.
+
+Done when: a full crawl has completed, the regression and collateral checks are repeated against
+the settled index, and the result is recorded on `sd-001`. Rollback source is in
+`research/services/stellar-docs-algolia.md`.
+
+### sd-001 cannot retire yet
+
+The independent recheck returned DO-NOT-RETIRE on 2026-08-25. See that finding for the three
+reasons and the conditions for retirement.
+
 ## Staleness
 
 ### `DEMO_GROK_CONTROL_MODEL` is a retired model

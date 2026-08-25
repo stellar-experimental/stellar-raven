@@ -239,6 +239,10 @@
     "sls-039": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Project TVL rows expose a point but no history/method URL or metric decomposition for current-versus-trend/peak/record questions."
+    },
+    "sd-046": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Content gap on developers.stellar.org: the Protocol 24 state-archival incident is documented only in the CAP corpus and has no retrievable record in any docs lane. Owned by the content repo under contentRule."
     }
   }
 }
