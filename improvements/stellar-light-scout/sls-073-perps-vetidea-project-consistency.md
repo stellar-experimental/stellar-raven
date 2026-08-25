@@ -13,6 +13,7 @@ evidence:
   - exact project-name searches for Noether, Stellars Finance, and Zenex returned those records
   - 2026-08-21T01:01:52.089Z live GET https://stellarlight.xyz/api/analyze?dimension=gaps listed 21 byType verticals
   - Solo project 49 todo 1740 comments 5016 and 5018 record the replay and its coordinator verification
+  - 2026-08-25 live re-check reproduced the empty report.competitors.projects array; the gaps axis now lists 23 byType verticals and still holds no perpetuals entry
 ---
 
 ## Finding
@@ -92,6 +93,22 @@ perpetuals, derivatives, futures, margin, or leverage. This is the axis the
 The three project records above are the exact directory rows for those names.
 They are not semantic candidates. We include their `types` values because the
 response documents `vertical` and `gap` against that same taxonomy.
+
+A 2026-08-25 re-check qualifies the 25-row count. That count tracks the
+requested `limit`, because the search backfills the keyword matches with
+semantic rows. The same call returned 20, 25, and 30 rows for `limit` 20, 25,
+and 30, with `semantic` counts of 14, 19, and 24. At `limit` 25 the response
+held 6 keyword rows and 19 semantic rows. `noether`, `zenex`, `turbolong`, and
+`stellars-finance` were all keyword rows. Read the 25 as the rows one call
+returned, not as a directory population total. This finding rests on those four
+keyword rows and on their exact-name records, not on the count.
+
+The same re-check reproduced the defect. `vet-idea` again returned
+`report.vertical` = `null`, `report.gap` = `null`, and
+`report.competitors.projects` = `[]`, with 6 rows in
+`report.competitors.repos`. The gaps axis has since grown to 23 `byType`
+verticals. `Card Issuing` and `Exchange` are the two added names. No entry
+matches perpetuals, derivatives, futures, margin, or leverage.
 
 ## Recommendation
 
