@@ -1708,19 +1708,19 @@
           "q-protocol-max-tx-set-size"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-21",
+        "lastChecked": "2026-08-25",
         "note": "Observed Pubnet cadence is about 5–7 seconds from a multi-ledger sample. Current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
           "q-protocol-ledger-close-time": "1538fc8f452dfd22d1107a087331c6138eb053d9d30505e756b2dd43bc637ca3",
-          "q-protocol-max-tx-set-size": "0a974b6a36aaf13bb22f3d30b95280dd26061e22d43f8453da8b8d36d3c24229"
+          "q-protocol-max-tx-set-size": "3c36e8e6286d24493cba66a4e6a989acb0de5c240edfc02beda8a7f5a9e3d807"
         },
         "reSwept": {
-          "date": "2026-08-21",
-          "reason": "Todo 1928 re-read both members after the max-transaction attribution correction. The cadence claim remains separate, and the current network-limit claims remain consistent.",
+          "date": "2026-08-25",
+          "reason": "2026-08-25 re-sweep after the q-protocol-max-tx-set-size provenance repair. The only change is truth metadata: the XDR-attribution corroboration row gained independent class-A and class-C evidence, and truth.asOf moved to 2026-08-25. No member claim changed. Re-read both members: q-protocol-ledger-close-time still makes a cadence-only claim with no capacity or source attribution, and q-protocol-max-tx-set-size still dates 1,000 classic operations and 2,000 smart-contract transactions to Docs plus live configuration. Both values were re-observed unchanged on 2026-08-25 (Horizon ledger 64119318 max_tx_set_size 1000; Mainnet RPC contract_execution_lanes ledger_max_tx_count 2000). Checked q-protocol-ledger-header-fields outside the cluster as well: it treats maxTxSetSize as a LedgerHeader field and attributes no numeric value to the XDR schema. No contradiction.",
           "verdict": "consistent"
         },
         "reopened": {
-          "date": "2026-08-21",
+          "date": "2026-08-25",
           "reason": "member-content-changed"
         }
       },
