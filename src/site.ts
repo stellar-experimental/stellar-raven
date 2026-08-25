@@ -1381,9 +1381,9 @@ until official docs confirm them.</p>
 </ul>
 
 <h2>Get help</h2>
-<p>Ask in the <a href="https://discord.gg/stellardev" target="_blank" rel="noopener">Stellar
-Developers Discord</a>. That is the support channel for connection problems, catalog questions,
-and anything on this page that did not resolve your failure.</p>
+<p>Ask in <b>#raven</b> in the <a href="https://discord.gg/stellardev" target="_blank" rel="noopener">Stellar
+Developers Discord</a>. That channel is the support channel for Raven. Use it for connection
+problems, catalog questions, and failures this page does not resolve.</p>
 <p>Report a security vulnerability privately instead: use GitHub private vulnerability reporting on
 <a href="https://github.com/stellar-experimental/stellar-raven" target="_blank" rel="noopener">stellar-experimental/stellar-raven</a>,
 or email <a href="mailto:frontier@stellar.org">frontier@stellar.org</a>. Do not post a

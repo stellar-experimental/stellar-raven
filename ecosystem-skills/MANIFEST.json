@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-08-25T19:05:45Z",
+  "synced_at": "2026-08-25T21:02:07Z",
   "status": "complete",
   "missing_sources": [],
   "skill_count": 20,
@@ -189,9 +189,9 @@
       "repo": "stellar-dev-skill",
       "path": "skills",
       "ref": "main",
-      "commit": "1f4b94e01ca24a2c00cb3b2cb3fcf6d07ad76462",
-      "commit_date": "2026-08-19T20:57:20Z",
-      "url": "https://github.com/stellar/stellar-dev-skill/tree/1f4b94e01ca24a2c00cb3b2cb3fcf6d07ad76462/skills",
+      "commit": "b78983c92330d81943fa99cdaee4e4a52e85eba3",
+      "commit_date": "2026-08-25T20:39:05Z",
+      "url": "https://github.com/stellar/stellar-dev-skill/tree/b78983c92330d81943fa99cdaee4e4a52e85eba3/skills",
       "license_files": [
         "LICENSE"
       ],
@@ -326,8 +326,8 @@
             },
             {
               "path": "resources.md",
-              "size": 17322,
-              "sha": "8a0d8c1720a228d8943256b4e578aa2a22f9a099"
+              "size": 17325,
+              "sha": "afca20186c1f62f6597d9534d10cdd5583b76038"
             }
           ]
         },
@@ -350,9 +350,9 @@
       "repo": "stellar-scout",
       "path": "",
       "ref": "main",
-      "commit": "540c4c3f19e9bb88b9f6cbd611601b73542713e3",
-      "commit_date": "2026-08-21T22:34:48Z",
-      "url": "https://github.com/Stellar-Light/stellar-scout/tree/540c4c3f19e9bb88b9f6cbd611601b73542713e3",
+      "commit": "2e4e412f0ae71a81424b02354d4bcff3835c80ff",
+      "commit_date": "2026-08-25T20:51:59Z",
+      "url": "https://github.com/Stellar-Light/stellar-scout/tree/2e4e412f0ae71a81424b02354d4bcff3835c80ff",
       "license_files": [
         "LICENSE"
       ],
@@ -372,8 +372,8 @@
             },
             {
               "path": "references/api-reference.md",
-              "size": 41234,
-              "sha": "b18f0b4cc0dd833662d448067649ca8c267f3b6b"
+              "size": 41386,
+              "sha": "10bafb3bda82170d5eb5dcbf40b5eab8d674fbad"
             },
             {
               "path": "references/examples.md",
