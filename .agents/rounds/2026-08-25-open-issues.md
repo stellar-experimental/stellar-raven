@@ -47,12 +47,23 @@ Do not change issues #39 or #40. Issue #1 was already closed as not planned.
   All four outputs matched byte-for-byte. The reviewer returned `PASS` with no
   findings.
 - `2026-08-25T19:44Z` — `git commit 63e337c` recorded the reviewed changes.
-  `git rebase origin/main` completed without conflicts and produced `409ae43`.
+  `git rebase origin/main` completed without conflicts. The reviewed branch commit is
+  `74e1e38ac28d34f8ab49c7b5ca530e4c8b8c1729`.
 - `2026-08-25T19:46Z` — `npm run eval:qa:register` returned `up to date; 0
   reopened`. `npm run eval:qa:lint -- --since origin/main` returned zero
   errors.
+- `2026-08-25T20:04Z` — Raven filed `sls-074` as
+  [Stellar-Light/stellarlight#1031](https://github.com/Stellar-Light/stellarlight/issues/1031).
+  Raven filed `sls-075` as
+  [Stellar-Light/stellarlight#1030](https://github.com/Stellar-Light/stellarlight/issues/1030).
+- `2026-08-25T20:08Z` — Raven retired `sls-068` through `sls-072` after live
+  checks, independent review, and upstream resolution comments. Durable receipts
+  are in `improvements/resolved.json`.
+- `2026-08-25T20:09Z` — Raven kept `sls-024` active. Live checks found 583
+  reachable rows against 1,025 status projects, plus remaining provenance and
+  deployment gaps. Raven posted the result to both recorded upstream issues.
 
 ## Outcome
 
-Implementation and independent review are complete. Upstream filing,
-finding retirement, production deployment, and Raven issue closure remain.
+Implementation, independent review, upstream filing, and finding retirement are
+complete. Production deployment and Raven issue closure remain.

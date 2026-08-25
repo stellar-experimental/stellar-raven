@@ -1,7 +1,7 @@
 ---
 id: sls-075
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-25
 upstreamTitle: Type the project resolver identity, evidence, and meta response fields
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - 2026-08-25 live GET https://stellarlight.xyz/api/projects/resolve?q=StellarX returned subject.slug/name/status, current.slug/name/status/url, evidence.statusAsOf/statusBasis/statusSourceUrl/unsourced, and meta provenance fields
   - the pinned Stellar Scout API reference lists slug, canonical-slug, alias, and name for matchedOn but omits the live repo value allowed by OpenAPI
   - Raven keeps GET /api/projects/resolve unexposed until the model-facing contract names the fields a caller must project
+  - upstream issue filed 2026-08-25: https://github.com/Stellar-Light/stellarlight/issues/1030
 ---
 
 ## Finding

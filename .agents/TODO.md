@@ -24,14 +24,12 @@ Done when: lint enforces the cap, and requires an `upstreamTitle` on any finding
 
 ## Improvements backlog
 
-### Nine findings are stale against their upstream issue
+### Five findings are stale against their upstream issue
 
 Each is `reported-upstream` while its GitHub issue is closed. Our rule is that closure is not proof,
 so each needs a live re-check before it can move to `fixed-upstream`.
 
-`sd-036`, `sls-023`, `sls-024`, `sls-029`, `sls-033`, `sls-069`, `sls-070`, `sls-071`, `sls-072`.
-
-`sls-069`–`072` are ours, filed and closed upstream on 2026-08-20.
+`sd-036`, `sls-023`, `sls-024`, `sls-029`, `sls-033`.
 
 Done when: each carries a dated live re-check and the correct status. Use `improvements-pipeline`.
 
@@ -90,6 +88,16 @@ Filed here and not in `improvements/`: the data is reachable, so there is no ups
 our ranking.
 
 ## Verification owed
+
+### Re-check the Scout appendix index and project resolver contracts
+
+Raven filed `sls-074` as [Stellar-Light/stellarlight#1031](https://github.com/Stellar-Light/stellarlight/issues/1031).
+Raven filed `sls-075` as [Stellar-Light/stellarlight#1030](https://github.com/Stellar-Light/stellarlight/issues/1030).
+The source round is `.agents/rounds/2026-08-25-open-issues.md`.
+
+Done when: `V-SOR-APP-VUL-003` resolves to the V2.1 appendix item, while an absent control still
+returns `meta.exactMiss`. The resolver OpenAPI must type `subject`, `current`, `evidence`, and
+`meta`. Its `matchedOn` vocabulary must agree with the pinned Scout API reference.
 
 ### Re-check the Algolia extractor change after a full crawl
 
