@@ -12,7 +12,7 @@ Do not change issues #39 or #40. Issue #1 was already closed as not planned.
 | #50 implementation, then #35 review | Codex (`gpt-5.6-sol`, high) | `wA:p2` | `src/skills/store.ts`, tests, architecture; later read-only review | complete |
 | upstream and golden verification, then #50 review | Claude Opus (high) | `wA:p3` | read-only | complete |
 | issue scope and independent truth review | Grok 4.6 (high) | `wA:p4` | read-only; reports under `/tmp` | complete |
-| integration, finding lifecycle, deployment | Codex orchestrator | `wA:p1` | repository and GitHub | in progress |
+| integration, finding lifecycle, deployment | Codex orchestrator | `wA:p1` | repository and GitHub | complete |
 
 ## Ledger
 
@@ -52,18 +52,27 @@ Do not change issues #39 or #40. Issue #1 was already closed as not planned.
 - `2026-08-25T19:46Z` — `npm run eval:qa:register` returned `up to date; 0
   reopened`. `npm run eval:qa:lint -- --since origin/main` returned zero
   errors.
-- `2026-08-25T20:04Z` — Raven filed `sls-074` as
+- `2026-08-25T19:49Z` — Raven filed `sls-074` as
   [Stellar-Light/stellarlight#1031](https://github.com/Stellar-Light/stellarlight/issues/1031).
   Raven filed `sls-075` as
   [Stellar-Light/stellarlight#1030](https://github.com/Stellar-Light/stellarlight/issues/1030).
-- `2026-08-25T20:08Z` — Raven retired `sls-068` through `sls-072` after live
+- `2026-08-25T19:52Z` — Raven retired `sls-068` through `sls-072` after live
   checks, independent review, and upstream resolution comments. Durable receipts
   are in `improvements/resolved.json`.
-- `2026-08-25T20:09Z` — Raven kept `sls-024` active. Live checks found 583
+- `2026-08-25T19:53Z` — Raven kept `sls-024` active. Live checks found 583
   reachable rows against 1,025 status projects, plus remaining provenance and
   deployment gaps. Raven posted the result to both recorded upstream issues.
+- `2026-08-25T19:56Z` — [PR #63](https://github.com/stellar-experimental/stellar-raven/pull/63)
+  passed CI and merged as `4b1ddbaf83577ca2cc1e6362252bc8ea8bb32686`.
+- `2026-08-25T19:58Z` — `npm run deploy` deployed production Version
+  `2ac46467-6e45-485f-aba7-07414c0fba1f`. The root, docs, terms, health,
+  skill-health, and OAuth metadata routes returned 200. Unauthenticated MCP
+  returned the expected 401 OAuth challenge.
+- `2026-08-25T20:00Z` — Raven closed #25, #30, #31, #32, #33, #34, #35,
+  #37, and #50 with issue-specific evidence. Raven left #39 and #40 unchanged.
+  They are the only open Raven issues.
 
 ## Outcome
 
-Implementation, independent review, upstream filing, and finding retirement are
-complete. Production deployment and Raven issue closure remain.
+The requested issue pass is complete. The reviewed change is merged and deployed.
+Only the user-excluded issues #39 and #40 remain open.
