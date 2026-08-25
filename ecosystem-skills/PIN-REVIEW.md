@@ -178,3 +178,30 @@ The changes stay within the Scout skill's topic. They add no credential or behav
 instruction. The API reference omits the live `matchedOn: "repo"` value for the new resolver.
 Raven filters the resolver text and keeps that operation unexposed because OpenAPI leaves its
 nested identity and evidence objects untyped. Finding `sls-075` tracks both contract gaps.
+
+### 2026-08-25 — stellar-dev and stellar-light re-pin (skills finding sk-020)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-dev` | `b78983c92330d81943fa99cdaee4e4a52e85eba3` | `sel:6e2d2c8fc280` | complete old-to-new body diff read |
+| `stellar-light` | `2e4e412f0ae71a81424b02354d4bcff3835c80ff` | `sel:4fe145b613cd` | complete old-to-new body diff read |
+
+The other two sources did not change their served selections.
+
+Two files changed.
+
+`stellar-dev/standards/resources.md` replaces the community Discord invite. The old
+`discord.gg/stellar` vanity code is held by an unrelated guild and lands in a channel named
+`🚨・security-trap`. The new `discord.gg/stellardev` resolves to the "Stellar Developers" guild, which
+`developers.stellar.org` also links. This is the fix for finding `sk-020`; it is why this re-pin
+happened. Upstream merged it as PR 114. The pinned commit is the PR head and is an ancestor of
+`main`; the merge commit carries the same selected tree.
+
+`stellar-light/stellar-scout/references/api-reference.md` adds the `matchedOn: "repo"` value to the
+resolver contract and adds a `q` free-text filter to the skills-catalog description. The
+`matchedOn` addition closes half of the contract gap that finding `sls-075` recorded on 2026-08-25.
+`GET /api/projects/resolve` stays unexposed, so Raven still filters that resolver text.
+
+Both changes stay within their skill's topic. They add no credential, behavior-hijack instruction,
+retired skill, or non-exposed Raven operation reference. The catalog diff for this re-pin is
+provenance only: commits, blob hashes, content digests, and timestamps.

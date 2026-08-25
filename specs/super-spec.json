@@ -3024,7 +3024,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-08-25T19:05:45Z"
+    "x-generatedAt": "2026-08-25T21:02:07Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -9710,7 +9710,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 251,
-    "generatedAt": "2026-08-25T19:05:45Z"
+    "generatedAt": "2026-08-25T21:02:07Z"
   },
   "x-services": {
     "lumenloop": {
@@ -9749,7 +9749,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-08-25T19:05:45Z"
+      "syncedAt": "2026-08-25T21:02:07Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-07-02T14:03:39Z",

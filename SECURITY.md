@@ -17,8 +17,8 @@ You can expect an acknowledgement within a few business days. Please give us a r
 window to remediate before any public disclosure.
 
 **For anything that is not a vulnerability** — connection problems, catalog questions, general
-support — use the [Stellar Developers Discord](https://discord.gg/stellardev). Do not post a
-vulnerability there.
+support — use the **#raven** channel in the
+[Stellar Developers Discord](https://discord.gg/stellardev). Do not post a vulnerability there.
 
 ## Scope
 

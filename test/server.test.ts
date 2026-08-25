@@ -585,6 +585,7 @@ describe("docs page truthfulness", () => {
     // Directory review requires a named user support channel distinct from the
     // private security-report path (SECURITY.md).
     expect(page).toContain("https://discord.gg/stellardev");
+    expect(page).toMatch(/Ask in <b>#raven<\/b>/);
     expect(page).toMatch(/Do not post a\s+vulnerability in Discord/);
     expect(page).toContain("mailto:frontier@stellar.org");
   });
