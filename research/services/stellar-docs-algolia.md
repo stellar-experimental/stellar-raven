@@ -96,6 +96,78 @@ adding a mechanism, was reversible (full config retained), and every step was ve
 A/B harness (`scripts/eval-algolia-raven.mjs`) was cleaned of its now-dead `markdown-default`
 strategy in the same pass.
 
+### 2026-08-25 — crawler extractor: degrade an over-cap page instead of dropping it (`sd-001`)
+
+Second exercise of the crawler lever, after the `crawler_markdown-index` removal. This one *added*
+a mechanism, so it carried a higher bar than that precedent.
+
+**Defect.** `POST /api/1/crawlers/{id}/test` on
+`https://developers.stellar.org/docs/networks/software-versions` returned
+`extracted_too_many_records` — "Extractors returned 1319 records, the maximum is 750". A page over
+that cap yields **zero** records and is dropped whole, silently. The count came from
+`lvl5: "article td:first-child"` and `content: "article td:last-child"`, which make one record per
+table row; the page carries nine protocol sections each with a software-version table. The config
+exposes no per-page record limit, so 750 is a platform cap and cannot be raised.
+
+**Change.** The extractor now builds with the table selectors, and if that exceeds 750, rebuilds at
+heading granularity (no `td` selectors) and truncates only if still over. Pages under the cap are
+untouched, so the change is zero-regression by construction and general — it repairs any over-cap
+page, present or future, rather than naming one.
+
+**Evidence before the write** (crawler `test` endpoint with a `config` override — production
+untouched): software-versions 0 → 242 records; `/docs/networks/audits` 3 → 3;
+`/docs/tools/cli/install-cli` 10 → 10.
+
+**Applied.** `PATCH /config` actions-only body, `taskId db13b3bf-65de-4656-bcd2-b6b30446bd5d`;
+`POST /urls/crawl` for the page, `taskId a7f8bafe-9876-4016-b6e6-54aacf6774d2`. Re-read confirmed
+every other config key byte-identical, one action, `indexName` and `pathsToMatch` preserved.
+
+**Live result.** `Protocol 22`, `Protocol 23`, `Protocol 24`, `Protocol 24 release`, and
+`software versions` all return the correct anchor at rank 1, in the primary index and in
+`docs_replica_agent`. Canaries held: `stellar cli install command` and `brew install stellar-cli`
+still rank `/docs/tools/cli/install-cli` #1, so `raven-promote-stellar-cli-install` is intact.
+
+**Known displacement.** `Protocol 24 Whisk state archival` no longer returns `/meetings/2025/10/16`
+in the top 20 of the general lane; `search_meeting_notes` still returns it at rank 1. The QA case
+`q-protocol-24-whisk-incident` needs a `golden-truth` re-check.
+
+**Rollback.** Restore the previous extractor by `PATCH /config` with an actions-only body carrying
+`indexName: "Stellar Docs - Docusaurus"`, `pathsToMatch: ["https://developers.stellar.org/**"]`,
+and this exact prior source:
+
+```js
+({ $, helpers }) => {
+        $(".admonition").remove();
+        $(".tabs-container").remove();
+
+        const lvl0 =
+          $(
+            ".menu__link.menu__link--sublist.menu__link--active, .navbar__item.navbar__link--active",
+          )
+            .last()
+            .text() || "Documentation";
+        return helpers.docsearch({
+          recordProps: {
+            lvl0: {
+              selectors: "",
+              defaultValue: lvl0,
+            },
+            lvl1: ["header h1", "article h1"],
+            lvl2: "article h2",
+            lvl3: "article h3",
+            lvl4: "article h4",
+            lvl5: "article h5, article td:first-child",
+            lvl6: "article h6",
+            content: "article p, article li, article td:last-child, article pre code",
+          },
+          aggregateContent: true,
+          recordVersion: "v3",
+        });
+      }
+```
+
+Never paste a full config read into a commit or a terminal transcript: it embeds the write key.
+
 ## Operator write/crawler/analytics surface (new 2026-07-09 — handle with caution)
 
 We can now *modify* the Stellar Docs Algolia app, not just read it. This is a **shared production

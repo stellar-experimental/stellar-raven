@@ -1,7 +1,7 @@
 ---
 id: sd-001
 service: stellar-docs
-status: verified
+status: fixed-upstream
 discovered: 2026-07-03
 upstreamTitle: /docs/networks/software-versions exceeds the crawler's 750-record page cap, so the whole page is dropped from the index
 evidence:
@@ -17,6 +17,8 @@ recurrences:
     evidence: live sweep across Protocol 20-26. Only `Protocol 24` shows any SEP collision; only `Protocol 23` returns pages naming that version, and only because the URL anchors contain `protocol-23`. Five of seven return unrelated pages, with no SEP involved.
   - date: 2026-08-25
     evidence: exact root cause. Crawler `POST /test` on the page returns `extracted_too_many_records` — "Extractors returned 1319 records, the maximum is 750" — so the page yields zero records. The `td:first-child` / `td:last-child` selectors make one record per table row, and the page holds nine protocol sections each with a software-version table.
+  - date: 2026-08-25
+    evidence: FIXED. Crawler config patched (taskId db13b3bf) and the URL recrawled (taskId a7f8bafe). `Protocol 22`, `Protocol 23`, `Protocol 24`, and `Protocol 24 release` now return the correct software-versions anchor at rank 1 in the production index and in the agent replica.
   - date: 2026-08-25
     evidence: candidate fix validated read-only via the crawler test endpoint with a config override. Page goes 0 records to 242; `/docs/networks/audits` stays 3 and `/docs/tools/cli/install-cli` stays 10.
   - date: 2026-08-25
@@ -181,3 +183,65 @@ effect on the next crawl.
 
 Whoever applies it should confirm with the docs owners first: the same gap breaks their own search
 box, so the fix is theirs to want.
+
+
+## Resolution — 2026-08-25
+
+Applied to the production crawler with operator credentials, the same lever and pattern as
+`sd-006`. `PATCH /api/1/crawlers/{id}/config` with an `actions`-only body (`taskId`
+`db13b3bf-65de-4656-bcd2-b6b30446bd5d`), then `POST /urls/crawl` for the affected page (`taskId`
+`a7f8bafe-9876-4016-b6e6-54aacf6774d2`).
+
+A re-read confirmed every other config key byte-identical, one action, `indexName` and
+`pathsToMatch` preserved.
+
+### Live result
+
+The page now holds 20+ records including per-protocol anchors. The original defect is gone in the
+production index and in `docs_replica_agent`:
+
+| query | before | after |
+|---|---|---|
+| `Protocol 22` | zk privacy page, guestbook tutorial, Horizon migration | rank 1 — `#protocol-22-mainnet-december-5-2024` |
+| `Protocol 23` | token-transfer-processor fragments | rank 1 — `#whisk-protocol-23-mainnet` |
+| `Protocol 24` | six of eight hits were SEP-24 anchor pages | rank 1 — `#protocol-24-mainnet-october-22-2025` |
+| `Protocol 24 release` | tier-1-orgs, network-status | rank 1 — `#release-notes-7` |
+| `software versions` | absent | rank 1 |
+
+### No regression on the controls
+
+`stellar cli install command` and `brew install stellar-cli` both still return
+`/docs/tools/cli/install-cli` at rank 1, so the load-bearing
+`raven-promote-stellar-cli-install` rule is intact. `publish event contract events` and
+`fee bump transaction inner outer envelope` also hold rank 1.
+
+### One displacement, recorded honestly
+
+For `Protocol 24 Whisk state archival` — the phrasing of the QA case that opened this finding —
+`/meetings/2025/10/16` has dropped out of the top 20 of the general docs lane. The
+software-versions release-notes anchors now occupy those positions.
+
+The content is displaced, not lost: `search_meeting_notes` still returns
+`/meetings/2025/10/16#protocol-discussion` at rank 1, which is the recovery path this finding
+documented from the start.
+
+Whether that is an improvement or a regression depends on what the question wants. The release
+notes are the better answer for "what is in Protocol 24"; the meeting is the better answer for
+"what happened in the state-archival incident". The QA case `q-protocol-24-whisk-incident` asks
+the second, so it needs a re-check under `golden-truth`.
+
+### Residual, unfixed
+
+- Natural-language phrasing still misses: `what is in Protocol 23` does not return the page.
+- `Protocol 27` returns the page at rank 4, behind a meetings discussion.
+- The date collision is unchanged: a bare version number can still match a `/meetings/YYYY/MM/DD`
+  path fragment.
+- The coarse fallback indexes at heading granularity, so table-cell strings on an over-cap page
+  are not searchable. `Poseidon Rust SDK` does not reach this page. That is the accepted
+  trade-off: heading coverage beats no coverage.
+
+### Retirement
+
+`improvements/README.md` requires a distinct reviewer to independently re-run the original trigger
+before this file is retired. That step has not happened; do not delete this record on the strength
+of the author-side verification above.
