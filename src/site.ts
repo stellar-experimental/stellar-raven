@@ -994,9 +994,8 @@ const TERMS_BODY = `
 <h1>Stellar Raven Terms of Service</h1>
 <p class="eff">Effective ${TERMS_EFFECTIVE_DATE}</p>
 <p class="lead">These Terms of Service ("Terms") govern your access to and use of raven.stellar.org,
-raven.stellar.buzz, and agents.stellar.buzz, together with any successor or alias hostname for the
-same service, including the Model Context Protocol endpoint and the public playground (collectively,
-the "Service"), operated by the Stellar Development Foundation ("SDF," "we," or "us").</p>
+including the Model Context Protocol endpoint and the public playground (collectively, the
+"Service"), operated by the Stellar Development Foundation ("SDF," "we," or "us").</p>
 <p>By accessing or using the Service, you agree to be bound by the
 <a href="https://stellar.org/terms-of-service" target="_blank" rel="noopener">Stellar.org Terms of Service</a>
 (the "Stellar ToS") and the
