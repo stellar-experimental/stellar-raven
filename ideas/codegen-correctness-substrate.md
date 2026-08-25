@@ -3,25 +3,23 @@
 Status: research note only. No committed work. Opened 2026-08-07 from the first external report of
 this usage mode.
 
-Recorded from Ascend (Dennis O'Connell, CEO) in Slack `#ext-ascend-sdf`, 2026-08-05 → 2026-08-07.
-Triage and full message provenance in Solo scratchpad 784.
+Recorded from an external partner report, 2026-08-05 → 2026-08-07. Identity, triage, and full
+message provenance are held in Solo scratchpad 784 and deliberately not repeated here.
 
 ## The report
 
-Ascend is porting an ERC-3643-style regulated credit facility from EVM to Soroban. Dennis installed
-Raven on 2026-08-05 ("installing Raven and various helpers", after "very impressed with the building
-with AI page"). By 2026-08-07 he had an MVP and posted a 32-entry taxonomy of defects his own audit
-passes had found in the generated Rust, plus the axes checklist from his `CLAUDE.md`. His ask:
+An external team porting a regulated-token contract from EVM to Soroban installed Raven on
+2026-08-05. By 2026-08-07 it had an MVP and reported a 32-entry taxonomy of defects its own audit
+passes had found in the generated Rust, plus the axes checklist from its agent configuration. The
+ask was whether correctness can be increased, on the argument that otherwise the drift surfaces in
+live testing rather than at integration.
 
-> "as people are building using raven, it would be good to see if **the correctness can be
-> increased**, otherwise that **drift** would come up in **LIVE TESTING not integration**"
-
-His method: Claude Fable 5 Fast Max, each module test-first, then ~10 audit passes per module until
+The reported method: Claude Fable 5 Fast Max, each module test-first, then ~10 audit passes per module until
 a pass found no net-new errors. The taxonomy grew one entry per pass.
 
 ## The finding that makes this worth a note
 
-**Guidance for many of his defect classes is present in what Raven serves. The defects happened
+**Guidance for many of the reported defect classes is present in what Raven serves. The defects happened
 anyway. What failed in between is not yet established.**
 
 That second sentence is the whole finding, and it is deliberately weaker than the one this note
@@ -35,7 +33,7 @@ Verdicts below were independently re-derived by an adversarial reviewer instruct
 The consolidated evidence is in Solo scratchpad 784. Three of the original eight did not survive.
 The table carries the corrected verdicts.
 
-| His defect class | What Raven serves | Verdict |
+| Reported defect class | What Raven serves | Verdict |
 |---|---|---|
 | #20 event assertion read after an intervening call | `testing.md` § Events states verbatim: `env.events().all()` "returns the events of the **most recent invocation** … it resets on every call — **assert right after the call under test**". The same file documents identical reset semantics for `env.auths()` | **CONFIRMED** |
 | #10 host-blocked re-entry | `SKILL.md` § platform-constraints: "cross-contract reentrancy is blocked by the host". `security.md`: "the host blocks reentrant calls, direct or indirect, on normal cross-contract paths" | **CONFIRMED** |
@@ -54,7 +52,7 @@ filing.
 
 Incidental find worth keeping: `development.md` documents `extend_ttl(threshold, extend_to)` as a
 **"no-op unless current TTL < threshold"**. That is a served operation whose normal behaviour is
-silent success — squarely in Dennis's headline family (direction 4 below).
+silent success — squarely in the reporter's headline family (direction 4 below).
 
 `security.md` carries 11 numbered vulnerability classes and two checklists; `development.md` is
 27 KB across 21 sections. The material is not thin.
@@ -84,7 +82,7 @@ exonerating coverage in the headline.
 ### What this does not establish
 
 "The guidance did not reach the model at write time" is a **causal** claim. Distinguishing it from
-the competing explanations needs at least one of: Raven call traces from his sessions, evidence
+the competing explanations needs at least one of: Raven call traces from those sessions, evidence
 about what was in context when a bad write happened, or an A/B with Raven forced versus absent. We
 have none of the three.
 
@@ -95,13 +93,13 @@ Competing explanations, none currently excluded:
   an activation one.
 - **Model ceiling.** Fable 5 Fast Max is a speed-tuned variant; under-reading and under-tooling are
   plausible without any Raven involvement.
-- **His own harness dominating.** His `CLAUDE.md` axes may be doing most of the work either way.
-- **Raven simply being marginal here.** His ten-passes-per-module audit loop is itself a correctness
-  substrate, and a strong one. It is entirely possible he built the mitigation himself and Raven's
+- **The reporter's own harness dominating.** That `CLAUDE.md` axes may be doing most of the work either way.
+- **Raven simply being marginal here.** A ten-passes-per-module audit loop is itself a correctness
+  substrate, and a strong one. It is entirely possible the team built the mitigation itself and Raven's
   contribution — positive or negative — is below the noise floor of this report.
 
 Note also that a taxonomy grown one entry per audit pass is a **selection machine for defect
-classes**. It says what kinds of bugs his process finds. It is not a Raven failure rate and must not
+classes**. It says what kinds of bugs the reporter's process finds. It is not a Raven failure rate and must not
 be read as one.
 
 ## Why the mode matters
@@ -111,10 +109,10 @@ an `execute`, and gets a grounded answer. Every instrument we run measures that 
 measures answer quality, routing measures operation choice, `eval/plan` measures op-class coverage,
 `eval/agentic` measures tool-calling behaviour.
 
-What Dennis reports looks different. Over two days of multi-module Rust codegen, the agent is mostly
+What the reporter reports looks different. Over two days of multi-module Rust codegen, the agent is mostly
 **writing**, not asking. Raven is installed and available, but the moment a defect enters the code
 may be a moment the model did not think it had a question. Ten audit passes then find the defect —
-which is what he means by drift surfacing late.
+which is what the reporter means by drift surfacing late.
 
 **Hold that as a hypothesis about one partner, not as a discovered product object.** The safe claim
 is: *one partner used Raven as an ambient install during long write sessions.* The unsafe claim — and
@@ -129,10 +127,10 @@ of this note.
 
 ## Where the ownership line actually falls
 
-The triage in scratchpad 784 split his 32 classes into "his project spec", "his harness", and
-"ours-adjacent", and assigned the whole parity band #1–#7 to *his spec*. **That was too generous to
-us.** Project-specific names and ratified units (#1, #5, and the specific shapes in #7) genuinely are
-his. But event topic placement versus EVM `indexed`, event field semantics, error-surface
+The triage in scratchpad 784 split the 32 classes into "the project spec", "the harness", and
+"ours-adjacent", and assigned the whole parity band #1–#7 to *the project spec*. **That was too generous to
+us.** Project-specific names and ratified units (#1, #5, and the specific shapes in #7) genuinely
+belong to the project. But event topic placement versus EVM `indexed`, event field semantics, error-surface
 conventions, and cross-contract client shape are **platform education Raven actively markets to EVM
 porters** — `q-sor-evm-to-soroban-porting` exists precisely to teach that band. The split was also
 internally inconsistent: it assigned #6 to ours-adjacent while assigning the rest of #1–#7 away.
@@ -146,7 +144,7 @@ Unranked, none committed. Each needs its own evidence before it becomes work.
 
 1. **Measure the mode before changing anything.** The honest first step. A codegen lane that writes a
    small Soroban module twice — once with Raven available, once without — and grades both against a
-   fixed defect rubric. Dennis's 32-entry taxonomy is a ready-made external rubric we did not author,
+   fixed defect rubric. the reporter's 32-entry taxonomy is a ready-made external rubric we did not author,
    which makes it unusually good evidence. Without this, any "correctness" change is unmeasured.
 2. **Pull versus push.** A coding agent reads a skill once, at the start, then writes for hours. Ask
    whether there is a preflight affordance worth exposing for a build session — something an agent
@@ -159,17 +157,17 @@ Unranked, none committed. Each needs its own evidence before it becomes work.
    (`indexed`, `msg.sender`, `nonReentrant`, `address(0)`). `q-sor-evm-to-soroban-porting` is
    currently the only golden case entering from that vocabulary, and it carries a very wide surface
    alone.
-4. **The silent-success family.** Dennis's own headline: 7 of his 32 (#2, #17, #23, #24, #26, #27,
+4. **The silent-success family.** the reporter's own headline: 7 of the 32 (#2, #17, #23, #24, #26, #27,
    #28) collapse to one shape — *an operation that reports success while changing nothing, or
-   changing the wrong thing*. He calls it the most productive class to hunt. Raven already models
+   changing the wrong thing*. The reporter calls it the most productive class to hunt. Raven already models
    this distinction internally as soft-empty versus error. Worth asking whether that discipline is
    expressed in anything we serve to a code-writing agent, or whether it only exists host-side.
 5. **Question whether prose is the right substrate at all.** Directions 2–4 all assume the fix is
    better or better-timed *text*. The silent-success family may be structural to AI codegen and
    immune to documentation: an operation that reports success while changing nothing is caught by
    compile gates, property tests, mutation testing, or differential execution against the EVM
-   reference — not by a paragraph the model did not read. Dennis's own ten-pass audit loop is
-   evidence for this reading, and it is a mitigation he built without us. If this direction is
+   reference — not by a paragraph the model did not read. the reporter's own ten-pass audit loop is
+   evidence for this reading, and it is a mitigation built without us. If this direction is
    right, most of the others are misdirected, and Raven's honest contribution is discovery, not
    correctness. Do not skip past this one because it is the least flattering.
 
@@ -209,7 +207,7 @@ battery**. Its notes delegate: "the failure-path concern (proving an UNAUTHORIZE
 case exists only in the retired, read-only, routing-eval-only prior art at
 `eval/corpus/raven-next/research/golden/soroban/`. The owned battery never received it, so the
 delegated concern is owned by nothing. Its prior-art `must_haves` cover ground both the event-assert
-and auth-error gaps circle. **This is a repo defect independent of Ascend and should be reconciled on
+and auth-error gaps circle. **This is a repo defect independent of the partner team and should be reconciled on
 its own.**
 
 ## Unanalyzed product risk
@@ -228,14 +226,12 @@ Solo scratchpad 784.
   composition gateway; correctness of generated Rust is not a surface it owns.
 - No change to the manifest exposure rule to accommodate a codegen workflow.
 - Do not file upstream `improvements/` findings from this report as it stands. The defects are in
-  Ascend's generated code, not demonstrated in an upstream surface. A finding needs live
+  the partner's generated code, not demonstrated in an upstream surface. A finding needs live
   re-execution evidence against a named service, which we do not yet have for any of these.
 
 ## What is blocking
 
-- The **per-round bug report** Dennis offered ("im generating a report on the bug species found each
-  round that you can pass to them") has not been delivered.
-- His **`CLAUDE.md`** is in `github.com/AscendFi`, which is private — org exists (id 291585060), zero
-  public repos, not listable with repo credentials. Fabricius Zatti (`fazzatti`) holds an invite.
-- **Attribution is absent.** Nowhere does he separate defects the model produced with Raven consulted
+- The **per-round bug report** the reporter offered has not been delivered.
+- The **agent configuration** referenced above sits in a private repository we cannot read.
+- **Attribution is absent.** Nowhere does the report separate defects the model produced with Raven consulted
   from defects it produced unaided. Without that split, "increase correctness" cannot be scoped.
