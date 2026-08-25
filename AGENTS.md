@@ -62,14 +62,11 @@ in a networkless Dynamic Worker; host adapters own all service traffic, policy, 
 ## Model routing for repo-work fan-out
 
 Use `fan-solo` to select the focused workflow and `solo-orchestrate-agents` for multi-agent
-fan-out. State model and effort explicitly: Sol high for hard implementation/analysis, Terra high
-for routine implementation or bounded verification, Fable xhigh/high for product/API/taste or
-adversarial review, Opus high as the stable Claude fallback, and Grok high for vendor-diverse
-assumption attack. Reserve max for frontier work or a failed high-effort pass; treat ultra as a
-separate delegated topology. Callable-runtime evidence and launch mechanics live in
-`research/agent-model-roster.md`; dated policy evidence is in
-`research/solo-agent-orchestration-2026-07-15.md`. Eval answering and judge models remain separate
-measurement contracts controlled by `run-evals`.
+fan-out. Use OpenCode `opencode/x-preview-f-free` with the `max` variant for all planning,
+implementation, research, writing, verification, and synthesis work. Use `gpt-5.6-sol` with high
+reasoning only for independent review and assessment. Do not route repository work to other
+models. Eval answering and judge models remain separate measurement contracts controlled by
+`run-evals`.
 
 ## Hard rules
 
