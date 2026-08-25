@@ -28,9 +28,10 @@ describe("skill bodies are not vendored", () => {
   });
 
   it("attaches no license text or notice to what skill.read returns", () => {
-    // Owner decision 2026-07-30: responses carry the forwarded markdown and
-    // nothing else; a caller wanting terms follows the result's `url` upstream.
-    // Guarded because "helpfully" appending a notice is the obvious wrong turn.
+    // Responses carry upstream's own bytes and nothing WE authored. Upstream
+    // frontmatter (which is where a source declares its licence) is forwarded
+    // untouched; this guard is that Raven never composes a notice of its own,
+    // because "helpfully" appending one is the obvious wrong turn.
     // License markers only — `notice` is a legitimate field name here (the
     // size advisory), so matching the bare word would be a false positive.
     const licenseish = /\bLICENSE\b|\bcopyright\b|©|\bAGPL\b|\bSPDX\b|Apache-2\.0|MIT License/i;

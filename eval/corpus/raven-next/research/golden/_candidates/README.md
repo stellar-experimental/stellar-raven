@@ -20,7 +20,7 @@ canonical catalog below.
   — ~90 de-duplicated net-new question themes, grouped by golden category, each with a canonical
   phrasing, a **consistency signal** (how many of the 8 independent chunks surfaced it), the closest
   existing golden near-miss, and the coverage gap.
-- **Raw worker output (traceability):** [`_raw-jitsu-findings/`](./_raw-jitsu-findings/) — the 8
+- **Raw worker output (traceability):** not retained in this repo — the 8
   per-chunk `findings-N.md` files with verbatim user-question examples, plus the `_mining-brief.md`
   the workers were given.
 

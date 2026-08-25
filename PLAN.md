@@ -37,8 +37,8 @@ date is repeated here to go stale):
    - **Stellar Docs** — integrate via **direct Algolia REST** (decided 2026-07-01), not the MCP.
      App `VNSJF5AWIZ`, index `crawler_Stellar Docs - Docusaurus` (crawler active; one replica
      `docs_replica_agent` used by the MCP). A **dedicated search key is in hand**
-     (`.env`: `ALGOLIA_APPLICATION_ID_DOCS` / `ALGOLIA_API_KEY_DOCS` — verified live: ACL
-     search/listIndexes/settings-read, no index restriction, no per-IP rate cap, never expires).
+     (`.env`: `ALGOLIA_APPLICATION_ID_DOCS` / `ALGOLIA_API_KEY_DOCS`; scope and rotation posture
+     tracked in the ops queue).
      Spec: `research/services/stellar-docs-algolia.md`. The Docs MCP endpoint stays documented in
      `research/services/stellar-docs-mcp.md` as fallback only; it's the same index behind
      JSON-RPC/SSE with analytics params bolted on.

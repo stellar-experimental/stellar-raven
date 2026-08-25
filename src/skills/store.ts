@@ -57,7 +57,7 @@ type SkillReadSuccess = {
 
 export type SkillReadResult =
   | (SkillReadSuccess & {
-      /** Full SKILL.md body (frontmatter stripped). */
+      /** Full SKILL.md body, as fetched, including upstream frontmatter. */
       content: string;
       sections?: never;
     })
@@ -312,7 +312,13 @@ export async function readSkill(
   const loaded = await load(source, ref, entry.id);
   if ("ok" in loaded) return loaded; // an error result
 
-  const body = stripFrontmatter(loaded.text);
+  // Upstream frontmatter is forwarded, not stripped. It is where a source
+  // states its own licence and author — OpenZeppelin's three skills declare
+  // `license: AGPL-3.0-only` there, and stripping it removed the only licence
+  // statement from everything this server served. Forwarding upstream's own
+  // bytes costs ~140 tokens on a whole read and authors nothing of our own.
+  // Frontmatter carries no `##` heading, so sectionize is unaffected.
+  const body = loaded.text;
   const bySlug = sectionize(body);
   const sectionEntries = sectionEntriesOf(catalog, entry.id);
   const sectionEntryById = new Map(sectionEntries.map((e) => [e.id, e]));
@@ -392,7 +398,7 @@ export async function readSkill(
   const found: SkillSection[] = [];
   for (const want of requested) {
     if (want.startsWith("file:")) {
-      found.push({ section: want, content: stripFrontmatter(fileTexts.get(want)!).trim() });
+      found.push({ section: want, content: fileTexts.get(want)!.trim() });
       continue;
     }
     // ##-heading section: accept the slug (catalog id form) or exact heading text.

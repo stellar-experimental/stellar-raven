@@ -90,10 +90,10 @@ exists.
 Current structured events include:
 
 - `mcp_request`: access mode, privacy-safe user/client hashes, request/Ray ids, method, and status;
-- top-level `search`: a bounded query preview, exact-query hash and length, filters, hit counts, top
+- top-level `search`: exact-query hash and length, filters, hit counts, top
   ids, response size, truncation, and duration;
-- `execute`: up to 4,000 characters of model-authored JavaScript, bounded result/error previews,
-  sizes, truncation state, and duration;
+- `execute`: code length, result/error sizes, truncation state, and duration — never the code
+  itself;
 - `op`: operation id, outcome, and duration;
 - runnable-skill and artifact read/write events with bounded operational fields.
 

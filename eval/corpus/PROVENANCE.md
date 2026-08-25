@@ -72,8 +72,8 @@ user-pasted **Stellar secret keys** (29 checksum-valid), 133 email addresses, ph
 per-message user/thread ids. Nothing in the eval pipeline read it at runtime (it was archival
 "future mining source" only): `compile-routing.mjs` uses `big.json` + the curated 538-corpus, and
 the jutsu pool had already been mined upstream into the corpus (the +144 net-new goldens on
-2026-06-29 and the `_candidates/` theme docs). If mining is ever repeated, re-export from the
-source ("Stella" dashboard) system into a local, git-ignored path — never commit the raw pool.
+2026-06-29 and the `_candidates/` theme docs). This pool must not be re-imported: any future
+work of this kind needs a fresh privacy review first, and a raw pool is never committed here.
 
 Also **excluded** upstream (never vendored): `messages_by_thread_raw.json` (166 MB),
 `threads_raw.json`, `questions.{json,csv,md}` (format duplicates), `errors.json` (empty).

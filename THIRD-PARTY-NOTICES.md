@@ -22,9 +22,11 @@ digests, and return it. A colo edge cache, an in-isolate memo, and a gitignored 
 copies in flight so the same bytes are not refetched per request. They are caches on a forwarding
 path; upstream remains the source.
 
-**3. Responses carry the content and nothing else.** `skill.read` returns the markdown as fetched.
-No license text, notice, header, or wrapper is attached, by decision. Callers who need a skill's
-license terms should go to the upstream repository, which the response's `url` field names exactly.
+**3. Responses carry the content and nothing else.** `skill.read` returns the markdown body, with
+the transformations described below. Every response's `url` field names the exact upstream file at
+its pinned commit, so a caller can always reach the source and its licence. Whether that pointer is
+the right notice mechanism for each upstream licence is an open question under review; it is not a
+settled compliance position.
 
 For completeness, what the service does to the text it forwards: whole reads strip the YAML
 frontmatter, section reads return the requested part rather than the whole file, and
@@ -34,7 +36,7 @@ frontmatter, section reads return the requested part rather than the whole file,
 | Source | Upstream | License |
 | --- | --- | --- |
 | `lumenloop` | [lumenloop/lumenloop-skills](https://github.com/lumenloop/lumenloop-skills) | MIT (© 2026 LumenLoop) |
-| `openzeppelin-stellar` | [OpenZeppelin/openzeppelin-skills](https://github.com/OpenZeppelin/openzeppelin-skills) | AGPL-3.0 (© 2026 Zeppelin Group Ltd) |
+| `openzeppelin-stellar` | [OpenZeppelin/openzeppelin-skills](https://github.com/OpenZeppelin/openzeppelin-skills) | AGPL-3.0-only (© 2026 Zeppelin Group Ltd) |
 | `stellar-dev` | [stellar/stellar-dev-skill](https://github.com/stellar/stellar-dev-skill) | Apache-2.0 (SDF) |
 | `stellar-light` | [Stellar-Light/stellar-scout](https://github.com/Stellar-Light/stellar-scout) | MIT |
 

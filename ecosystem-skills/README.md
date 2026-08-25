@@ -46,7 +46,7 @@ else exists, including non-`skill-md` SDKs/MCP servers/CLIs that this server doe
 
 Every source is **public**, and each source's upstream `LICENSE`/`NOTICE` file names are recorded
 in `MANIFEST.json` (`license_files`) at the same pinned commit — see `THIRD-PARTY-NOTICES.md` at
-the repo root for the license map. Nothing is redistributed from here.
+the repo root for the license map.
 
 The LumenLoop API exposes 14 skills total (`GET /v1/skills`): the 8 public ones (identical to the
 GitHub repo) and 6 partner-set ones. Only the public set is mirrored. The partner set (the
