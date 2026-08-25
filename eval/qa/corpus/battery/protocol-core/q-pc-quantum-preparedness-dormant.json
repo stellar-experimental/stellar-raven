@@ -10,7 +10,7 @@
       "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Explains the Quantum Preparedness Plan and dormant-account definition only as documented in primary Stellar/CAP sources.",
-      "States that the QPP does not specify a final mechanical dormant-account eligibility rule and does not invent thresholds."
+      "Tells users to determine qualification from on-chain account/signing/activity criteria specified by the plan, not guesswork."
     ],
     "avoid": [
       "Do NOT claim Stellar is fully quantum-resistant today without caveat.",
@@ -45,38 +45,18 @@
         "note": "class inferred at migration"
       }
     ],
-    "corroboration": [
-      {
-        "claim": "The QPP does not specify a final mechanical dormant-account eligibility rule.",
-        "verdict": "confirmed-as-of",
-        "evidence": [
-          {
-            "class": "A",
-            "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
-            "observedAt": "2026-08-21",
-            "note": "The QPP describes unreachable dormant holders and leaves freeze-and-recovery versus permanent lock as a design choice; it gives no balance, inactivity, or transaction-history eligibility test."
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
-            "observedAt": "2026-08-21",
-            "note": "Draft CAP-0087 defines ML-DSA verification host functions and does not define dormant accounts or mechanical eligibility criteria."
-          }
-        ]
-      }
-    ],
     "verified": {
-      "date": "2026-08-21",
-      "by": "Solo todo 1925 independent challenge and coordinator acceptance",
+      "date": "2026-07-11",
+      "by": "P4 conversions rework after independent Fable copy/quality review",
       "evidence": [
-        "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
-        "solo://proj/49/todo/independently-challe--1925#comment-5058",
-        "solo://proj/49/todo/independently-challe--1925#comment-5064",
-        "Sibling sweep: q-hist-quantum-preparedness-plan agrees that the QPP is a roadmap, not shipped quantum resistance; no sibling defines mechanical dormant-account eligibility."
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
+        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ],
       "rootCause": [
-        "solo://proj/49/todo/independently-challe--1925#comment-5058"
+        "eval-authoring",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
       ]
     },
     "origin": "raven-next q-pc-quantum-preparedness-dormant"

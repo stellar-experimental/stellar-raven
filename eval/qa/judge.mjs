@@ -52,8 +52,10 @@ export const JUDGE_MODEL = "claude-sonnet-5";
  *   v2.7 — 2026-08-21 missingFacts/wrongClaims must be string arrays; a
  *          non-array or non-string-element value maps to error with stable
  *          invalid-field violations instead of silent normalization.
+ *   v2.8 — 2026-08-24 reject unsupported partial verdicts with no recorded
+ *          missing fact, wrong claim, or must-avoid match.
  */
-export const JUDGE_RUBRIC = "v2.7";
+export const JUDGE_RUBRIC = "v2.8";
 
 export function summarizePaidJudgeCosts(verdicts) {
   const costs = verdicts
@@ -218,7 +220,30 @@ function isSensitiveKey(key) {
 }
 
 function isAuthScheme(name) {
-  return AUTH_SCHEME_RE.test(name);
+  return /^[A-Z]/.test(name) && AUTH_SCHEME_RE.test(name);
+}
+
+// Remove terminal control codes before credential matching. This joins names
+// split by ANSI or NUL bytes without changing line and column boundaries.
+function stripCredentialObfuscation(text) {
+  let out = "";
+  for (let index = 0; index < text.length; index += 1) {
+    const code = text.charCodeAt(index);
+    if (code === 0x1b && text[index + 1] === "[") {
+      index += 2;
+      while (index < text.length) {
+        const ansiCode = text.charCodeAt(index);
+        if (ansiCode >= 0x40 && ansiCode <= 0x7e) break;
+        index += 1;
+      }
+      continue;
+    }
+    if (code < 0x20 && text[index] !== "\n" && text[index] !== "\r" && text[index] !== "\t") {
+      continue;
+    }
+    out += text[index];
+  }
+  return out;
 }
 
 function isIdentStart(ch) {
@@ -440,7 +465,9 @@ function redactPlaintextAssignments(text) {
       }
     }
 
-    if (isSensitiveKey(name) && afterName > nameEnd && !isAssignment) {
+    const credentialShapedStandalone =
+      flagNameStart >= 0 || Boolean(quoted) || name === name.toUpperCase() || name.includes("_");
+    if (isSensitiveKey(name) && credentialShapedStandalone && afterName > nameEnd && !isAssignment) {
       const standalone = consumeStandaloneValue(text, afterName);
       if (standalone) {
         out += text.slice(index, afterName) + quotedRedacted(standalone.quote);
@@ -601,8 +628,18 @@ function sanitizeNonJsonText(text) {
 // Exported for focused sanitizer regression tests.
 export function sanitizeCliEvidenceText(text) {
   try {
-    const parsed = tryParseJson(text);
-    return parsed === undefined ? sanitizeNonJsonText(text) : sanitizeStructuredJson(parsed);
+    const originalParsed = tryParseJson(text);
+    const originalSanitized =
+      originalParsed === undefined ? sanitizeNonJsonText(text) : sanitizeStructuredJson(originalParsed);
+    const normalized = stripCredentialObfuscation(text);
+    if (normalized === text) return originalSanitized;
+    const parsed = tryParseJson(normalized);
+    const normalizedSanitized =
+      parsed === undefined ? sanitizeNonJsonText(normalized) : sanitizeStructuredJson(parsed);
+    const redactionCount = (value) => value.split(REDACTED).length - 1;
+    return redactionCount(normalizedSanitized) > redactionCount(originalSanitized)
+      ? normalizedSanitized
+      : originalSanitized;
   } catch {
     return REDACTED;
   }
@@ -707,8 +744,11 @@ export async function judgeCase(
     const failureCostUsd = resolveFailureCost(stdoutEnvelope, stderrEnvelope);
     return {
       score: "error",
+      coreAnswer: null,
       missingFacts: [],
       wrongClaims: [],
+      avoidMatches: [],
+      consistencyViolations: [],
       rationale: cliFailure.message,
       ...(failureCostUsd === undefined ? {} : { costUsd: failureCostUsd }),
       cliFailure,
@@ -728,8 +768,11 @@ export async function judgeCase(
   if (!verdict || !["correct", "partial", "wrong"].includes(verdict.score)) {
     return {
       score: "error",
+      coreAnswer: null,
       missingFacts: [],
       wrongClaims: [],
+      avoidMatches: [],
+      consistencyViolations: [],
       rationale: sanitizeBoundedText(`judge returned unparseable verdict: ${String(resultText)}`, 512),
       ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
       rubric: JUDGE_RUBRIC,

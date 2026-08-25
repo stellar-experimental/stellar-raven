@@ -63,5 +63,19 @@ export function checkVerdictConsistency({ golden, verdict }) {
     violations.push("fired-avoid-not-wrong");
   }
 
+  if (
+    validCoreAnswer &&
+    validMissingFacts &&
+    validWrongClaims &&
+    validAvoidMatches &&
+    verdict.coreAnswer === "correct" &&
+    verdict.missingFacts.length === 0 &&
+    verdict.wrongClaims.length === 0 &&
+    verdict.avoidMatches.length === 0 &&
+    verdict.score === "partial"
+  ) {
+    violations.push("partial-without-issue");
+  }
+
   return { ok: violations.length === 0, violations };
 }

@@ -8,7 +8,7 @@
   "golden": {
     "answer": "As of **2026-07-11**, the official Providers table marks seven hosted rows for **RPC Archive**: **Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network/Quasar, Exaion, and GetBlock**. Recheck the live table because the roster and access plans are volatile.\n\nArchive means data-lake-backed **deep/full ledger history through `getLedgers`**. Ordinary RPC instances can still expose `getLedgers` within local retention; the differentiator is historical reach, not method existence. Archive does not extend `getEvents`, `getTransaction(s)`, or `getLedgerEntries`. Choose by network, documented historical coverage, authentication/plan, SLA/rate limits, and current operational health rather than an unsupported universal ranking.",
     "keyFacts": [
-      "Names a dated archive-marked roster: either the seven-row subset as of 2026-07-11 (Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock), or an attributed, dated current roster that may include the eighth row (Validation Cloud) after the 2026-08-18 official table change.",
+      "Names the dated seven-row archive-marked subset.",
       "Defines archive as extended historical reach for getLedgers only; ordinary getLedgers may be retention-bounded.",
       "Keeps provider plans, SLAs, and live health freshness-sensitive."
     ],
@@ -17,7 +17,7 @@
       "Do NOT generalize archive to events, transactions, or state lookups.",
       "Do NOT invent pricing, SLA, or provider preference without current provider-owned evidence."
     ],
-    "notes": "Re-verified 2026-06-29 against the Providers page: 15 providers total; RPC Archive tier exposed by Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock; page confirms 'Currently only the getLedgers RPC method supports this feature.' Freshness-sensitive (subset changes) — gate on 'only a subset supports archive; Providers table is source of truth', reward flagging staleness.\nAlso good if the answer: Choice also depends on network coverage (Testnet/Mainnet/Futurenet) and dedicated-node availability; the official Providers table is the source of truth. | Validation Cloud / QuickNode are low-friction consumer options; Blockdaemon/QuickNode/NowNodes offer dedicated production nodes.\nGolden cites: developers.stellar.org RPC Providers page (archive tier column) and getLedgers method docs.\nGT-50 BLIND-ONLY WORDING CORRECTION 2026-07-11: archive differentiates getLedgers historical reach, not availability of the method. Date the seven-row subset and never infer other-method history.\nGrader caution 2026-08-20: the official table marked Validation Cloud as an eighth RPC Archive row on 2026-08-18, but Validation Cloud's own Stellar documentation still described archive access as Horizon-only and RPC as retention-bounded. Do not penalize a dated seven-row answer for the 2026-07-11 question basis. Do not penalize a dated eight-row answer that attributes the newer official table. Penalize an undated roster or a claim that the disputed Validation Cloud capability is independently confirmed."
+    "notes": "Re-verified 2026-06-29 against the Providers page: 15 providers total; RPC Archive tier exposed by Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock; page confirms 'Currently only the getLedgers RPC method supports this feature.' Freshness-sensitive (subset changes) — gate on 'only a subset supports archive; Providers table is source of truth', reward flagging staleness.\nAlso good if the answer: Choice also depends on network coverage (Testnet/Mainnet/Futurenet) and dedicated-node availability; the official Providers table is the source of truth. | Validation Cloud / QuickNode are low-friction consumer options; Blockdaemon/QuickNode/NowNodes offer dedicated production nodes.\nGolden cites: developers.stellar.org RPC Providers page (archive tier column) and getLedgers method docs.\nGT-50 BLIND-ONLY WORDING CORRECTION 2026-07-11: archive differentiates getLedgers historical reach, not availability of the method. Date the seven-row subset and never infer other-method history."
   },
   "tags": {
     "category": "tooling-infra",
@@ -26,7 +26,7 @@
   },
   "truth": {
     "domain": "real-world",
-    "status": "mixed",
+    "status": "confirmed",
     "asOf": "2026-07-11",
     "reverifyBy": "2026-11-05",
     "sources": [
@@ -39,16 +39,6 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers",
         "note": "class inferred at migration"
-      },
-      {
-        "class": "A",
-        "ref": "https://docs.validationcloud.io/v1/stellar/overview",
-        "note": "Provider-owned capability documentation used to record the disputed 2026-08-18 table change."
-      },
-      {
-        "class": "B",
-        "ref": "https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00",
-        "note": "Official source change that marks Validation Cloud for RPC Archive."
       }
     ],
     "corroboration": [
@@ -99,40 +89,20 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
-      },
-      {
-        "claim": "Validation Cloud is an eighth RPC Archive provider after the official table change on 2026-08-18.",
-        "verdict": "disputed",
-        "evidence": [
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00",
-            "observedAt": "2026-08-20",
-            "note": "The official source change marks Validation Cloud for dedicated nodes and RPC Archive."
-          },
-          {
-            "class": "A",
-            "ref": "https://docs.validationcloud.io/v1/stellar/overview",
-            "observedAt": "2026-08-20",
-            "note": "Provider-owned documentation described archive access as Horizon-only and Stellar RPC as retention-bounded."
-          }
-        ]
       }
     ],
     "verified": {
-      "date": "2026-08-21",
-      "by": "Golden-truth review — original verification Solo todo 1741 comments 5000 and 5003; independent GPT review Solo todo 1936.",
+      "date": "2026-08-11",
+      "by": "sk-003 provenance preservation — Solo todo 1452; independent fixed-review todo 1449 comment 3813.",
       "evidence": [
-        "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and stellar-docs commits 7fa36531734baa72d0477a5f9a4b3da3d356a0e0 and 15f14808ffd5f640f5461af827c1f4d39db3c418 preserve the dated seven-row roster through 2026-07-29.",
-        "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00 show the eighth official table row from 2026-08-18.",
-        "A: https://docs.validationcloud.io/v1/stellar/overview rechecked 2026-08-20; provider-owned documentation conflicts with the new RPC Archive marking.",
-        "A: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers confirms that ordinary getLedgers remains bounded by provider retention.",
-        "Key-fact review 2026-08-21 (GPT todo 1936): the alternative-aware keyFact admits either the dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change, so neither side of the Validation Cloud dispute is pinned and the grader caution matches the disputed corroboration row.",
-        "Sibling review 2026-08-21 (todo 1936): every member of consistency clusters cluster-018 and cluster-046 stays consistent with the alternative-aware roster keyFact (a dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change) and with mixed-truth status for the disputed Validation Cloud row; no sibling pins the archive-provider count or conflicts with the getLedgers-only boundary."
+        "A: https://developers.stellar.org/docs/data/apis/rpc/providers and https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers rechecked 2026-08-11; the Providers page limits RPC Archive to getLedgers, and the method page limits pagination to the provider's retained history.",
+        "B: https://raw.githubusercontent.com/stellar/stellar-dev-skill/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/data/SKILL.md rechecked 2026-08-11; deep getLedgers history depends on the provider's data lake, while a plain RPC is bounded by getHealth().oldestLedger and returns -32600 below that floor.",
+        "C: independent fixed-review todo 1449 comment 3813 re-read the production skills.stellar-dev.data surface through https://agents.stellar.buzz/mcp on 2026-08-11 and confirmed the same retained-range boundary with no unconditional genesis claim.",
+        "Sibling sweep 2026-08-11 re-read every member of consistency clusters cluster-018 and cluster-046; getLedgers-only archive reach, bounded event and transaction history, indexer/Hubble roles, and Quasar entity separation remain consistent."
       ],
       "rootCause": [
-        "freshness-drift",
-        "The official provider table and provider-owned documentation disagree about Validation Cloud RPC Archive support."
+        "Eval-side method/tier conflation: a standard retention-bounded method was described as absent outside the archive subset.",
+        "improvements/resolved.json entry sk-003 — fixed upstream and refreshed locally at stellar-dev-skill commit 9e3d3fe0de8587205b020e0148ea67525e38e494; the current pinned and served data skill bounds deep getLedgers history by provider data-lake reach or getHealth().oldestLedger and documents -32600 outside retention."
       ]
     },
     "origin": "raven-next q-infra-rpc-provider-archive-tier"

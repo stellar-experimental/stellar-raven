@@ -28,6 +28,7 @@ type RejudgeRows = (options: {
   checkpoint: (rows: unknown[]) => void;
   log?: (message: string) => void;
 }) => Promise<unknown[]>;
+type EffectiveVerdictScore = (verdict: { score?: string; judgeScore?: string } | null) => string | undefined;
 
 async function loadVerifySourceCases(): Promise<VerifySourceCases> {
   const modulePath = "../eval/qa/re-judge.mjs";
@@ -42,6 +43,11 @@ async function loadJudgeCostAccounting(): Promise<JudgeCostAccounting> {
 async function loadRejudgeRows(): Promise<RejudgeRows> {
   const modulePath = "../eval/qa/re-judge.mjs";
   return (await import(modulePath) as { rejudgeRows: RejudgeRows }).rejudgeRows;
+}
+
+async function loadEffectiveVerdictScore(): Promise<EffectiveVerdictScore> {
+  const modulePath = "../eval/qa/re-judge.mjs";
+  return (await import(modulePath) as { effectiveVerdictScore: EffectiveVerdictScore }).effectiveVerdictScore;
 }
 
 function sha256(value: string): string {
@@ -119,6 +125,64 @@ afterEach(() => {
 });
 
 describe("re-judge saved-answer selection", () => {
+  it("uses the raw judge score for validation-error comparisons", async () => {
+    const effectiveVerdictScore = await loadEffectiveVerdictScore();
+
+    expect(effectiveVerdictScore({ score: "error", judgeScore: "partial" })).toBe("partial");
+    expect(effectiveVerdictScore({ score: "wrong" })).toBe("wrong");
+    expect(effectiveVerdictScore(null)).toBeUndefined();
+  });
+
+  it("does not select a validation error as a grade change", () => {
+    const { resultsPath } = writeResults([{ score: "error" }]);
+    const source = JSON.parse(readFileSync(resultsPath, "utf8"));
+    source.rows[0].verdict = { score: "error", judgeScore: "partial" };
+    writeFileSync(resultsPath, `${JSON.stringify(source)}\n`);
+    const baselinePath = join(resultsPath, "..", "baseline.json");
+    const baseline = structuredClone(source);
+    baseline.rows[0].verdict = { score: "partial" };
+    writeFileSync(baselinePath, `${JSON.stringify(baseline)}\n`);
+
+    const result = spawnSync(
+      process.execPath,
+      [
+        REJUDGE_PATH,
+        resultsPath,
+        "--flips-vs",
+        baselinePath,
+        "--allow-non-identical",
+        "--allow-empty",
+        "--dry-run"
+      ],
+      { cwd: ROOT, encoding: "utf8" }
+    );
+
+    expect(result.status, result.stderr).toBe(0);
+    expect(JSON.parse(result.stdout).selectedIds).toEqual([]);
+  });
+
+  it("records agreement when both verdicts have the same raw judge score", async () => {
+    const rejudgeRows = await loadRejudgeRows();
+    const selectedRows = [
+      {
+        id: "one",
+        answer: "Saved answer.",
+        transcript: [],
+        verdict: { score: "error", judgeScore: "partial" }
+      }
+    ];
+    const rows = await rejudgeRows({
+      selectedRows,
+      caseById: new Map([["one", { id: "one", question: "Question?" }]]),
+      judgeModel: "stub-judge",
+      judge: async () => ({ score: "partial", costUsd: 0.1 }),
+      checkpoint: () => {},
+      log: () => {}
+    }) as Array<{ agreement: boolean }>;
+
+    expect(rows[0]?.agreement).toBe(true);
+  });
+
   it("checkpoints each paid verdict before the next judge call", async () => {
     const rejudgeRows = await loadRejudgeRows();
     const checkpoints: unknown[][] = [];

@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "6ff1a1c86dcc52e14e9dd62a00318d2158870625c6aa4058a57c9f7c5503d1b9",
+  "corpusContentSha256": "a27aee771f3efdc48ea6a7ac9d24d26b60cbad64bc5b5d98d601ca57ad5492c1",
   "counts": {
     "total": 499,
     "byCategory": {
@@ -18535,7 +18535,7 @@
       "golden": {
         "answer": "As of **2026-07-11**, the official Providers table marks seven hosted rows for **RPC Archive**: **Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network/Quasar, Exaion, and GetBlock**. Recheck the live table because the roster and access plans are volatile.\n\nArchive means data-lake-backed **deep/full ledger history through `getLedgers`**. Ordinary RPC instances can still expose `getLedgers` within local retention; the differentiator is historical reach, not method existence. Archive does not extend `getEvents`, `getTransaction(s)`, or `getLedgerEntries`. Choose by network, documented historical coverage, authentication/plan, SLA/rate limits, and current operational health rather than an unsupported universal ranking.",
         "keyFacts": [
-          "Names a dated archive-marked roster: either the seven-row subset as of 2026-07-11 (Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock), or an attributed, dated current roster that may include the eighth row (Validation Cloud) after the 2026-08-18 official table change.",
+          "Names the dated seven-row archive-marked subset.",
           "Defines archive as extended historical reach for getLedgers only; ordinary getLedgers may be retention-bounded.",
           "Keeps provider plans, SLAs, and live health freshness-sensitive."
         ],
@@ -18544,7 +18544,7 @@
           "Do NOT generalize archive to events, transactions, or state lookups.",
           "Do NOT invent pricing, SLA, or provider preference without current provider-owned evidence."
         ],
-        "notes": "Re-verified 2026-06-29 against the Providers page: 15 providers total; RPC Archive tier exposed by Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock; page confirms 'Currently only the getLedgers RPC method supports this feature.' Freshness-sensitive (subset changes) — gate on 'only a subset supports archive; Providers table is source of truth', reward flagging staleness.\nAlso good if the answer: Choice also depends on network coverage (Testnet/Mainnet/Futurenet) and dedicated-node availability; the official Providers table is the source of truth. | Validation Cloud / QuickNode are low-friction consumer options; Blockdaemon/QuickNode/NowNodes offer dedicated production nodes.\nGolden cites: developers.stellar.org RPC Providers page (archive tier column) and getLedgers method docs.\nGT-50 BLIND-ONLY WORDING CORRECTION 2026-07-11: archive differentiates getLedgers historical reach, not availability of the method. Date the seven-row subset and never infer other-method history.\nGrader caution 2026-08-20: the official table marked Validation Cloud as an eighth RPC Archive row on 2026-08-18, but Validation Cloud's own Stellar documentation still described archive access as Horizon-only and RPC as retention-bounded. Do not penalize a dated seven-row answer for the 2026-07-11 question basis. Do not penalize a dated eight-row answer that attributes the newer official table. Penalize an undated roster or a claim that the disputed Validation Cloud capability is independently confirmed."
+        "notes": "Re-verified 2026-06-29 against the Providers page: 15 providers total; RPC Archive tier exposed by Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock; page confirms 'Currently only the getLedgers RPC method supports this feature.' Freshness-sensitive (subset changes) — gate on 'only a subset supports archive; Providers table is source of truth', reward flagging staleness.\nAlso good if the answer: Choice also depends on network coverage (Testnet/Mainnet/Futurenet) and dedicated-node availability; the official Providers table is the source of truth. | Validation Cloud / QuickNode are low-friction consumer options; Blockdaemon/QuickNode/NowNodes offer dedicated production nodes.\nGolden cites: developers.stellar.org RPC Providers page (archive tier column) and getLedgers method docs.\nGT-50 BLIND-ONLY WORDING CORRECTION 2026-07-11: archive differentiates getLedgers historical reach, not availability of the method. Date the seven-row subset and never infer other-method history."
       },
       "tags": {
         "category": "tooling-infra",
@@ -18553,7 +18553,7 @@
       },
       "truth": {
         "domain": "real-world",
-        "status": "mixed",
+        "status": "confirmed",
         "asOf": "2026-07-11",
         "reverifyBy": "2026-11-05",
         "sources": [
@@ -18566,16 +18566,6 @@
             "class": "A",
             "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers",
             "note": "class inferred at migration"
-          },
-          {
-            "class": "A",
-            "ref": "https://docs.validationcloud.io/v1/stellar/overview",
-            "note": "Provider-owned capability documentation used to record the disputed 2026-08-18 table change."
-          },
-          {
-            "class": "B",
-            "ref": "https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00",
-            "note": "Official source change that marks Validation Cloud for RPC Archive."
           }
         ],
         "corroboration": [
@@ -18626,40 +18616,20 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
-          },
-          {
-            "claim": "Validation Cloud is an eighth RPC Archive provider after the official table change on 2026-08-18.",
-            "verdict": "disputed",
-            "evidence": [
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00",
-                "observedAt": "2026-08-20",
-                "note": "The official source change marks Validation Cloud for dedicated nodes and RPC Archive."
-              },
-              {
-                "class": "A",
-                "ref": "https://docs.validationcloud.io/v1/stellar/overview",
-                "observedAt": "2026-08-20",
-                "note": "Provider-owned documentation described archive access as Horizon-only and Stellar RPC as retention-bounded."
-              }
-            ]
           }
         ],
         "verified": {
-          "date": "2026-08-21",
-          "by": "Golden-truth review — original verification Solo todo 1741 comments 5000 and 5003; independent GPT review Solo todo 1936.",
+          "date": "2026-08-11",
+          "by": "sk-003 provenance preservation — Solo todo 1452; independent fixed-review todo 1449 comment 3813.",
           "evidence": [
-            "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and stellar-docs commits 7fa36531734baa72d0477a5f9a4b3da3d356a0e0 and 15f14808ffd5f640f5461af827c1f4d39db3c418 preserve the dated seven-row roster through 2026-07-29.",
-            "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00 show the eighth official table row from 2026-08-18.",
-            "A: https://docs.validationcloud.io/v1/stellar/overview rechecked 2026-08-20; provider-owned documentation conflicts with the new RPC Archive marking.",
-            "A: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers confirms that ordinary getLedgers remains bounded by provider retention.",
-            "Key-fact review 2026-08-21 (GPT todo 1936): the alternative-aware keyFact admits either the dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change, so neither side of the Validation Cloud dispute is pinned and the grader caution matches the disputed corroboration row.",
-            "Sibling review 2026-08-21 (todo 1936): every member of consistency clusters cluster-018 and cluster-046 stays consistent with the alternative-aware roster keyFact (a dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change) and with mixed-truth status for the disputed Validation Cloud row; no sibling pins the archive-provider count or conflicts with the getLedgers-only boundary."
+            "A: https://developers.stellar.org/docs/data/apis/rpc/providers and https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers rechecked 2026-08-11; the Providers page limits RPC Archive to getLedgers, and the method page limits pagination to the provider's retained history.",
+            "B: https://raw.githubusercontent.com/stellar/stellar-dev-skill/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/data/SKILL.md rechecked 2026-08-11; deep getLedgers history depends on the provider's data lake, while a plain RPC is bounded by getHealth().oldestLedger and returns -32600 below that floor.",
+            "C: independent fixed-review todo 1449 comment 3813 re-read the production skills.stellar-dev.data surface through https://agents.stellar.buzz/mcp on 2026-08-11 and confirmed the same retained-range boundary with no unconditional genesis claim.",
+            "Sibling sweep 2026-08-11 re-read every member of consistency clusters cluster-018 and cluster-046; getLedgers-only archive reach, bounded event and transaction history, indexer/Hubble roles, and Quasar entity separation remain consistent."
           ],
           "rootCause": [
-            "freshness-drift",
-            "The official provider table and provider-owned documentation disagree about Validation Cloud RPC Archive support."
+            "Eval-side method/tier conflation: a standard retention-bounded method was described as absent outside the archive subset.",
+            "improvements/resolved.json entry sk-003 — fixed upstream and refreshed locally at stellar-dev-skill commit 9e3d3fe0de8587205b020e0148ea67525e38e494; the current pinned and served data skill bounds deep getLedgers history by provider data-lake reach or getHealth().oldestLedger and documents -32600 outside retention."
           ]
         },
         "origin": "raven-next q-infra-rpc-provider-archive-tier"
@@ -23481,7 +23451,7 @@
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Explains the Quantum Preparedness Plan and dormant-account definition only as documented in primary Stellar/CAP sources.",
-          "States that the QPP does not specify a final mechanical dormant-account eligibility rule and does not invent thresholds."
+          "Tells users to determine qualification from on-chain account/signing/activity criteria specified by the plan, not guesswork."
         ],
         "avoid": [
           "Do NOT claim Stellar is fully quantum-resistant today without caveat.",
@@ -23516,38 +23486,18 @@
             "note": "class inferred at migration"
           }
         ],
-        "corroboration": [
-          {
-            "claim": "The QPP does not specify a final mechanical dormant-account eligibility rule.",
-            "verdict": "confirmed-as-of",
-            "evidence": [
-              {
-                "class": "A",
-                "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
-                "observedAt": "2026-08-21",
-                "note": "The QPP describes unreachable dormant holders and leaves freeze-and-recovery versus permanent lock as a design choice; it gives no balance, inactivity, or transaction-history eligibility test."
-              },
-              {
-                "class": "B",
-                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
-                "observedAt": "2026-08-21",
-                "note": "Draft CAP-0087 defines ML-DSA verification host functions and does not define dormant accounts or mechanical eligibility criteria."
-              }
-            ]
-          }
-        ],
         "verified": {
-          "date": "2026-08-21",
-          "by": "Solo todo 1925 independent challenge and coordinator acceptance",
+          "date": "2026-07-11",
+          "by": "P4 conversions rework after independent Fable copy/quality review",
           "evidence": [
-            "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
-            "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
-            "solo://proj/49/todo/independently-challe--1925#comment-5058",
-            "solo://proj/49/todo/independently-challe--1925#comment-5064",
-            "Sibling sweep: q-hist-quantum-preparedness-plan agrees that the QPP is a roadmap, not shipped quantum resistance; no sibling defines mechanical dormant-account eligibility."
+            "solo://proj/49/scratchpad/truth-maintenance-20--575",
+            "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
+            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ],
           "rootCause": [
-            "solo://proj/49/todo/independently-challe--1925#comment-5058"
+            "eval-authoring",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
           ]
         },
         "origin": "raven-next q-pc-quantum-preparedness-dormant"
@@ -25361,7 +25311,7 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "As observed **2026-08-21**, current official Docs and live Mainnet configuration report **1,000 classic operations per ledger** and **2,000 smart-contract transactions per ledger**. The v27 XDR schema defines the separate `ledgerMaxTxCount` contract-transaction setting; it does not encode either current numeric value. The classic limit counts operations, not necessarily transactions, because a classic transaction may contain multiple operations. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
+        "answer": "As observed **2026-08-04**, Pubnet is configured for **1,000 classic operations per ledger**, not necessarily 1,000 transactions because classic transactions may contain multiple operations. Smart-contract capacity is configured separately at **2,000 smart-contract transactions per ledger**. Current official Docs and the v27 network-config schema agree on those values. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
         "keyFacts": [
           "Distinguishes classic maxTxSetSize operations from separately configured Soroban transaction/resource limits.",
           "Reports the dated current 2,000 smart-contract transaction setting without inventing a stale Docs conflict."
@@ -25379,84 +25329,58 @@
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-08-21",
-        "reverifyBy": "2027-02-21",
+        "asOf": "2026-08-04",
+        "reverifyBy": "2027-02-04",
         "sources": [
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
-            "note": "Current Docs state the dated Mainnet values and distinguish classic operations from smart-contract transactions."
+            "note": "class inferred at migration"
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
-            "note": "The v27 XDR defines ConfigSettingContractExecutionLanesV0.ledgerMaxTxCount without encoding the current value."
-          },
-          {
-            "class": "C",
-            "ref": "https://horizon.stellar.org/ledgers/64050648",
-            "note": "The closed Mainnet protocol-27 ledger reports max_tx_set_size 1000."
-          },
-          {
-            "class": "F",
-            "ref": "stellar network settings --network mainnet (stellar 27.1.0)",
-            "note": "The live Mainnet configuration reports contract_execution_lanes.ledger_max_tx_count 2000."
+            "note": "class inferred at migration"
           }
         ],
         "corroboration": [
           {
-            "claim": "As observed 2026-08-21, official Docs and live Mainnet configuration report 1,000 classic operations and 2,000 smart-contract transactions per ledger.",
-            "verdict": "confirmed",
-            "evidence": [
-              {
-                "class": "C",
-                "ref": "https://horizon.stellar.org/ledgers/64050648",
-                "observedAt": "2026-08-21",
-                "note": "The closed Mainnet protocol-27 ledger reports max_tx_set_size 1000."
-              },
-              {
-                "class": "F",
-                "ref": "stellar network settings --network mainnet (stellar 27.1.0)",
-                "observedAt": "2026-08-21",
-                "note": "The live Mainnet configuration reports contract_execution_lanes.ledger_max_tx_count 2000."
-              },
-              {
-                "class": "A",
-                "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
-                "observedAt": "2026-08-21",
-                "note": "Official Docs state 1,000 non-smart-contract operations and 2,000 smart-contract transactions per ledger."
-              }
-            ],
-            "note": "Resource budgets can further constrain effective throughput."
-          },
-          {
-            "claim": "The v27 XDR schema defines a separate ledgerMaxTxCount setting for Soroban transactions and does not encode its current value.",
+            "claim": "As observed 2026-08-04, official Docs and the v27 network-config schema agree on 1,000 classic operations and 2,000 smart-contract transactions per ledger; resource budgets can further constrain effective throughput.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "B",
                 "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
-                "observedAt": "2026-08-21",
-                "note": "ConfigSettingContractExecutionLanesV0 declares ledgerMaxTxCount as the maximum Soroban transactions per ledger. The schema contains no numeric value for that field."
+                "observedAt": "2026-08-04",
+                "note": "The v27 schema separates the classic operation count from the smart-contract transaction limit."
+              },
+              {
+                "class": "C",
+                "ref": "Current network configuration corroboration recorded in Solo scratchpad 761",
+                "observedAt": "2026-08-04",
+                "note": "The current configured values match the official Docs values."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+                "observedAt": "2026-08-04",
+                "note": "Official Docs state 1,000 non-smart-contract operations and 2,000 smart-contract transactions per ledger."
               }
             ],
-            "note": "The live configuration, not the XDR schema, supplies the current value."
+            "note": "The former Docs-versus-live conflict is historical and no longer part of the current verdict."
           }
         ],
         "verified": {
-          "date": "2026-08-21",
-          "by": "Todo 1928 strict Golden Truth TDD after independent Todo 1925 challenge and coordinator acceptance",
+          "date": "2026-08-04",
+          "by": "Full golden QA current Docs/network-config recheck; accepted in Todo 1347 c3625/c3627",
           "evidence": [
-            "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-21",
-            "https://horizon.stellar.org/ledgers/64050648 observed 2026-08-21: max_tx_set_size 1000 at protocol 27",
-            "stellar network settings --network mainnet observed 2026-08-21 with stellar 27.1.0: contract_execution_lanes.ledger_max_tx_count 2000",
-            "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x observed 2026-08-21",
-            "solo://proj/49/todo/independently-challe--1925 comments 5058 and 5064",
-            "Sibling sweep 2026-08-21: q-protocol-ledger-header-fields confirms maxTxSetSize is a header field; q-protocol-ledger-close-time has no conflicting capacity or source-attribution claim."
+            "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-04",
+            "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x observed 2026-08-04",
+            "Solo scratchpad 575 GT-32 blind 3284, resolving primary reliance on stale prose."
           ],
           "rootCause": [
-            "solo://proj/49/todo/correct-max-transact--1928",
-            "The 2026-08-04 correction attributed live numeric values to the v27 XDR schema instead of the live configuration."
+            "freshness-drift",
+            "The former Docs-versus-live conflict resolved when official Docs adopted the 2,000 smart-contract transaction value."
           ]
         },
         "origin": "raven-next q-protocol-max-tx-set-size"

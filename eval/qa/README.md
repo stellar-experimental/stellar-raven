@@ -340,13 +340,16 @@ the verdict to **error**. The consistency check always sees the raw model array,
 verdict collapses an invalid `avoidMatches` to `[]`; a valid fired index is retained even when a
 different violation maps the verdict to error.
 
+Rubric `v2.8` (2026-08-24) rejects a `partial` verdict when the core answer is correct and all
+three issue arrays are empty. Such a verdict has no recorded reason for the lower score.
+
 **Comparability rules:**
 
 - Re-judge identity is the **judge model + rubric + pack** tuple (currently `claude-sonnet-5` /
-  `v2.7` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
+  `v2.8` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
   `evidence-pack.mjs`, each with a short changelog in its own file header). Compare stored rows
-  only when that tuple and
-  prompt/pack-hash semantics match — otherwise re-judge the saved `rows[].answer` under the
+  only when that tuple, the exact selected-case snapshot, and prompt/pack-hash semantics match.
+  Otherwise, re-judge the saved `rows[].answer` under the
   target tuple first (cheap; feed back through `judgeCase` with the row's transcript).
 - A `--no-judge` capture has no source judge tuple or verdict. Its first judging goes through
   `run-qa.mjs --judge-stored <results>` (2026-07-29, Solo todo 1261): judges every unjudged row

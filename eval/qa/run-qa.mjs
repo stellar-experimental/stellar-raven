@@ -436,13 +436,14 @@ export async function judgeStoredResults(
     );
   }
 
-  // "error" verdicts on rows WITH an answer are judge-side failures (CLI
-  // crash / unparseable output) — re-attemptable, or they'd poison the file
-  // forever. Empty-answer error verdicts are collection facts and stay.
+  // CLI and parse errors on answered rows remain retryable. Deterministic
+  // consistency errors have a judgeScore and stay terminal after one call.
   const unjudged = results.rows.filter(
     (row) =>
       typeof row.verdict?.score !== "string" ||
-      (row.verdict.score === "error" && hasSuccessfulAnswer(row.answer, row.agent?.failure))
+      (row.verdict.score === "error" &&
+        typeof row.verdict.judgeScore !== "string" &&
+        hasSuccessfulAnswer(row.answer, row.agent?.failure))
   );
 
   // Every persisted state must be internally consistent, so finalize stamps
@@ -565,8 +566,11 @@ export async function judgeStoredResults(
       // Mirror the inline no-answer verdict exactly.
       row.verdict = {
         score: "error",
+        coreAnswer: null,
         missingFacts: [],
         wrongClaims: [],
+        avoidMatches: [],
+        consistencyViolations: [],
         rationale: agentErrorRationale(row.agent?.failure),
         rubric: JUDGE_RUBRIC,
         packVersion: PACK_VERSION,
@@ -664,10 +668,13 @@ async function main() {
               { ...c, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
               { model: judgeModel }
             )
-          : {
+            : {
               score: "error",
+              coreAnswer: null,
               missingFacts: [],
               wrongClaims: [],
+              avoidMatches: [],
+              consistencyViolations: [],
               rationale: agentErrorRationale(run.failure),
               rubric: JUDGE_RUBRIC,
               packVersion: PACK_VERSION,

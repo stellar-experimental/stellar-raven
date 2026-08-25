@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "As observed **2026-08-21**, current official Docs and live Mainnet configuration report **1,000 classic operations per ledger** and **2,000 smart-contract transactions per ledger**. The v27 XDR schema defines the separate `ledgerMaxTxCount` contract-transaction setting; it does not encode either current numeric value. The classic limit counts operations, not necessarily transactions, because a classic transaction may contain multiple operations. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
+    "answer": "As observed **2026-08-04**, Pubnet is configured for **1,000 classic operations per ledger**, not necessarily 1,000 transactions because classic transactions may contain multiple operations. Smart-contract capacity is configured separately at **2,000 smart-contract transactions per ledger**. Current official Docs and the v27 network-config schema agree on those values. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
     "keyFacts": [
       "Distinguishes classic maxTxSetSize operations from separately configured Soroban transaction/resource limits.",
       "Reports the dated current 2,000 smart-contract transaction setting without inventing a stale Docs conflict."
@@ -24,84 +24,58 @@
   "truth": {
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-21",
-    "reverifyBy": "2027-02-21",
+    "asOf": "2026-08-04",
+    "reverifyBy": "2027-02-04",
     "sources": [
       {
         "class": "A",
         "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
-        "note": "Current Docs state the dated Mainnet values and distinguish classic operations from smart-contract transactions."
+        "note": "class inferred at migration"
       },
       {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
-        "note": "The v27 XDR defines ConfigSettingContractExecutionLanesV0.ledgerMaxTxCount without encoding the current value."
-      },
-      {
-        "class": "C",
-        "ref": "https://horizon.stellar.org/ledgers/64050648",
-        "note": "The closed Mainnet protocol-27 ledger reports max_tx_set_size 1000."
-      },
-      {
-        "class": "F",
-        "ref": "stellar network settings --network mainnet (stellar 27.1.0)",
-        "note": "The live Mainnet configuration reports contract_execution_lanes.ledger_max_tx_count 2000."
+        "note": "class inferred at migration"
       }
     ],
     "corroboration": [
       {
-        "claim": "As observed 2026-08-21, official Docs and live Mainnet configuration report 1,000 classic operations and 2,000 smart-contract transactions per ledger.",
-        "verdict": "confirmed",
-        "evidence": [
-          {
-            "class": "C",
-            "ref": "https://horizon.stellar.org/ledgers/64050648",
-            "observedAt": "2026-08-21",
-            "note": "The closed Mainnet protocol-27 ledger reports max_tx_set_size 1000."
-          },
-          {
-            "class": "F",
-            "ref": "stellar network settings --network mainnet (stellar 27.1.0)",
-            "observedAt": "2026-08-21",
-            "note": "The live Mainnet configuration reports contract_execution_lanes.ledger_max_tx_count 2000."
-          },
-          {
-            "class": "A",
-            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
-            "observedAt": "2026-08-21",
-            "note": "Official Docs state 1,000 non-smart-contract operations and 2,000 smart-contract transactions per ledger."
-          }
-        ],
-        "note": "Resource budgets can further constrain effective throughput."
-      },
-      {
-        "claim": "The v27 XDR schema defines a separate ledgerMaxTxCount setting for Soroban transactions and does not encode its current value.",
+        "claim": "As observed 2026-08-04, official Docs and the v27 network-config schema agree on 1,000 classic operations and 2,000 smart-contract transactions per ledger; resource budgets can further constrain effective throughput.",
         "verdict": "confirmed",
         "evidence": [
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x",
-            "observedAt": "2026-08-21",
-            "note": "ConfigSettingContractExecutionLanesV0 declares ledgerMaxTxCount as the maximum Soroban transactions per ledger. The schema contains no numeric value for that field."
+            "observedAt": "2026-08-04",
+            "note": "The v27 schema separates the classic operation count from the smart-contract transaction limit."
+          },
+          {
+            "class": "C",
+            "ref": "Current network configuration corroboration recorded in Solo scratchpad 761",
+            "observedAt": "2026-08-04",
+            "note": "The current configured values match the official Docs values."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+            "observedAt": "2026-08-04",
+            "note": "Official Docs state 1,000 non-smart-contract operations and 2,000 smart-contract transactions per ledger."
           }
         ],
-        "note": "The live configuration, not the XDR schema, supplies the current value."
+        "note": "The former Docs-versus-live conflict is historical and no longer part of the current verdict."
       }
     ],
     "verified": {
-      "date": "2026-08-21",
-      "by": "Todo 1928 strict Golden Truth TDD after independent Todo 1925 challenge and coordinator acceptance",
+      "date": "2026-08-04",
+      "by": "Full golden QA current Docs/network-config recheck; accepted in Todo 1347 c3625/c3627",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-21",
-        "https://horizon.stellar.org/ledgers/64050648 observed 2026-08-21: max_tx_set_size 1000 at protocol 27",
-        "stellar network settings --network mainnet observed 2026-08-21 with stellar 27.1.0: contract_execution_lanes.ledger_max_tx_count 2000",
-        "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x observed 2026-08-21",
-        "solo://proj/49/todo/independently-challe--1925 comments 5058 and 5064",
-        "Sibling sweep 2026-08-21: q-protocol-ledger-header-fields confirms maxTxSetSize is a header field; q-protocol-ledger-close-time has no conflicting capacity or source-attribution claim."
+        "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-04",
+        "https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-contract-config-setting.x observed 2026-08-04",
+        "Solo scratchpad 575 GT-32 blind 3284, resolving primary reliance on stale prose."
       ],
       "rootCause": [
-        "solo://proj/49/todo/correct-max-transact--1928",
-        "The 2026-08-04 correction attributed live numeric values to the v27 XDR schema instead of the live configuration."
+        "freshness-drift",
+        "The former Docs-versus-live conflict resolved when official Docs adopted the 2,000 smart-contract transaction value."
       ]
     },
     "origin": "raven-next q-protocol-max-tx-set-size"

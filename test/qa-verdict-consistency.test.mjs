@@ -231,7 +231,7 @@ async function judgeTimeoutWithFakeClaude() {
 }
 
 describe("QA verdict consistency", () => {
-  it("states the v2.7 omission severity without a competing wrong clause", () => {
+  it("states the v2.8 omission severity without a competing wrong clause", () => {
     const prompt = buildJudgePrompt({
       question: "What does a null Scout vertical mean?",
       golden: NULL_VERTICAL_GOLDEN,
@@ -240,7 +240,7 @@ describe("QA verdict consistency", () => {
       transcriptEvidence: ""
     });
 
-    expect(JUDGE_RUBRIC).toBe("v2.7");
+    expect(JUDGE_RUBRIC).toBe("v2.8");
     expect(prompt).toContain(
       '- score = "wrong": the core answer is incorrect, any must-avoid item appears, or (trap cases) the candidate fell for the trap.'
     );
@@ -260,8 +260,13 @@ describe("QA verdict consistency", () => {
 
     expect(verdict).toMatchObject({
       score: "error",
+      coreAnswer: null,
+      missingFacts: [],
+      wrongClaims: [],
+      avoidMatches: [],
+      consistencyViolations: [],
       costUsd: 0.375,
-      rubric: "v2.7",
+      rubric: "v2.8",
       packVersion: "p5",
       cliFailure: {
         kind: "nonzero-exit",
@@ -910,6 +915,18 @@ describe("QA verdict consistency", () => {
     expect(sanitizeCliEvidenceText("keynote=still-here")).toBe("keynote=still-here");
   });
 
+  it("removes control-byte obfuscation before credential redaction", () => {
+    expect(sanitizeCliEvidenceText("\u001b[31mAPI_KEY\u001b[0m=ANSI_SECRET")).toBe(
+      "API_KEY=[redacted]"
+    );
+    expect(sanitizeCliEvidenceText("Bearer\u0000 BEARER_SECRET")).toBe("Bearer [redacted]");
+    expect(sanitizeCliEvidenceText("PASSWORD\u0000=NUL_SECRET")).toBe("PASSWORD=[redacted]");
+  });
+
+  it("keeps ordinary lowercase token diagnostics", () => {
+    expect(sanitizeCliEvidenceText("token expired before retry")).toBe("token expired before retry");
+  });
+
   it("redacts every short, userinfo, and prefixed credential form in real CLI failure evidence", async () => {
     const stdout =
       "PASSWORD SHORT_PW\n" +
@@ -1373,7 +1390,7 @@ describe("QA verdict consistency", () => {
       avoidMatches: [],
       rationale: "The candidate gives the required answer.",
       costUsd: 0.25,
-      rubric: "v2.7",
+      rubric: "v2.8",
       packVersion: "p5",
       promptSha256: verdict.promptSha256
     });
@@ -1496,6 +1513,21 @@ describe("QA verdict consistency", () => {
     });
 
     expect(result).toEqual({ ok: false, violations: ["core-incorrect-not-wrong"] });
+  });
+
+  it("rejects a partial score without a recorded issue", () => {
+    expect(
+      checkVerdictConsistency({
+        golden: { avoid: [] },
+        verdict: {
+          coreAnswer: "correct",
+          avoidMatches: [],
+          missingFacts: [],
+          wrongClaims: [],
+          score: "partial"
+        }
+      })
+    ).toEqual({ ok: false, violations: ["partial-without-issue"] });
   });
 
   it("rejects a missing or invalid core-answer classification", () => {
@@ -1760,7 +1792,7 @@ describe("QA verdict consistency", () => {
     });
   });
 
-  it("requests semantic core and avoid fields under rubric v2.7", async () => {
+  it("requests semantic core and avoid fields under rubric v2.8", async () => {
     const verdict = await judgeWithFakeClaude(
       {
         rationale: "The candidate has the correct core answer and fires no avoid.",
@@ -1785,7 +1817,7 @@ describe("QA verdict consistency", () => {
     expect(verdict).toMatchObject({
       score: "correct",
       costUsd: 0.25,
-      rubric: "v2.7",
+      rubric: "v2.8",
       packVersion: "p5"
     });
   });

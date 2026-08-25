@@ -67,6 +67,12 @@ function requireVerdictScore(row, label) {
   }
 }
 
+export function effectiveVerdictScore(verdict) {
+  return verdict?.score === "error" && typeof verdict.judgeScore === "string"
+    ? verdict.judgeScore
+    : verdict?.score;
+}
+
 function parseArgs(argv) {
   const positional = [];
   let ids;
@@ -279,7 +285,7 @@ function selectRows(results, { ids, flipsVs, allowEmpty }) {
     requireVerdictScore(row, "source results");
     const baselineRow = baselineById.get(row.id);
     requireVerdictScore(baselineRow, "baseline results");
-    return row.verdict.score !== baselineRow.verdict.score;
+    return effectiveVerdictScore(row.verdict) !== effectiveVerdictScore(baselineRow.verdict);
   });
   if (!selected.length) {
     const message = "--flips-vs found no score changes; refusing to create an empty re-judge artifact (pass --allow-empty to override)";
@@ -318,7 +324,10 @@ export async function rejudgeRows({
       id: row.id,
       original: row.verdict,
       new: verdict,
-      agreement: typeof row.verdict?.score === "string" ? row.verdict.score === verdict.score : null,
+      agreement:
+        typeof row.verdict?.score === "string"
+          ? effectiveVerdictScore(row.verdict) === effectiveVerdictScore(verdict)
+          : null,
       evidencePack: {
         packVersion: PACK_VERSION,
         chars: transcriptEvidence.length,
@@ -326,7 +335,7 @@ export async function rejudgeRows({
       }
     });
     await checkpoint(rows);
-    log(`${row.verdict?.score ?? "unjudged"} → ${verdict.score}`);
+    log(`${effectiveVerdictScore(row.verdict) ?? "unjudged"} → ${effectiveVerdictScore(verdict)}`);
   }
   return rows;
 }

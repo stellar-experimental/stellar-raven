@@ -273,6 +273,16 @@ describe("run-qa --judge-stored", () => {
         costUsd: 0.25
       });
       expect(written.summary.overall).toMatchObject({ wrong: 0, error: 2, total: 2 });
+
+      const repeatCalls = [];
+      await expect(
+        judgeStoredResults(resultsPath, {
+          judgeModel: "stub-judge",
+          judge: stubJudge(repeatCalls),
+          log: () => {}
+        })
+      ).rejects.toThrow(/nothing to judge/);
+      expect(repeatCalls).toEqual([]);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
