@@ -1,22 +1,19 @@
 # Saved-miss fact-stage classification
 
-This record classifies eight reviewed QA misses by their first missing stage.
+This record classifies reviewed QA misses by their first missing stage.
 It does not report a new evaluation run.
-The case files contain each selected fact and its source evidence.
-The older reviewed records contain the observed answer behavior where available.
+Each row resolves to two independent records.
+The case file holds the exact claims that define the fact.
+A dated review record holds the grade and the saved disposition for that case.
 
 ## Classification
 
-| Case | First missing stage | Review basis |
-|---|---|---|
-| `q-live-ll-active-jobs-recency` | `contradicted` | The saved answer collapsed distinct listing identities. |
-| `q-live-builders-artifact-continuation` | `visible-omitted` | The saved answer omitted part of the returned evidence-class separation. |
-| `q-ti-java-sdk-wallet-feebump` | `called-fact-absent` | The called source did not expose the current Java factory details. |
-| `q-tool-cctp-stellar-integration` | `absent-upstream` | No tested upstream surface resolved the documented support conflict. |
-| `q-hist-quantum-preparedness-plan` | `contradicted` | The saved answer denied the dated plan that the source returned. |
-| `q-infra-rpc-provider-archive-tier` | `called-fact-absent` | The called source omitted the dated archive-provider roster. |
-| `q-defi-blend-alternatives` | `absent-upstream` | No tested upstream surface resolved the lifecycle conflict. |
-| `q-scf-build-award-cap` | `judge-or-golden` | The saved artifact was correct, so the fault was not retrieval. |
+| Case | Fact | First missing stage | Grade | Graded review record |
+|---|---|---|---|---|
+| `q-live-ll-active-jobs-recency` | `distinct-active-job-listing-identities` | `contradicted` | `W / W` | `2026-07-12-live-v3-baseline.md#new-case-behavioral-review` records that the saved answer collapsed 30 distinct returned ids and URLs into 16 title groups. |
+| `q-hist-quantum-preparedness-plan` | `dated-quantum-plan-publication` | `contradicted` | `wrong` | `2026-07-super-corpus-baseline.md#wrong-and-partial-triage` records that the called source returned the dated plan and the saved answer denied that it existed. |
+
+## Scope
 
 The benchmark keeps these labels as a diagnostic instrument.
 The labels do not change product behavior or score a current run.
