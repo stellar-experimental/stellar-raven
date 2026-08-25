@@ -374,6 +374,14 @@ export function resolveFactStageEvidence(ref, caseId, { repoRoot = DEFAULT_REPO_
   const { path: relativePath, fragment } = splitRef(ref);
   if (!fragment) throw new Error(`${ref} needs an exact record or heading fragment`);
 
+  // A reference must name its record the way a reviewer reads it: one path
+  // from the repository root. A parent-directory segment gives one record
+  // several spellings, and containment stops being visible in the reference
+  // itself, so it is rejected even when the result stays inside the root.
+  if (relativePath.split(/[\\/]/).includes("..")) {
+    throw new Error(`${ref} carries a parent-directory segment; name it from the repository root`);
+  }
+
   const absoluteRoot = resolve(repoRoot);
   const realRoot = realpathSync(absoluteRoot);
   const absolutePath = resolve(absoluteRoot, relativePath);

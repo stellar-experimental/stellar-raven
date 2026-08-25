@@ -526,10 +526,24 @@ describe("fact-stage evidence gate", () => {
     });
   });
 
-  it("rejects repository path escapes", () => {
+  // A parent-directory segment is rejected on sight, whether it leaves the
+  // root or returns to it. The reference must read as one path from the root.
+  it("rejects parent-directory segments that leave or re-enter the root", () => {
+    withFixture({ "case.json": EXACT_CASE }, (root) => {
+      for (const path of ["../outside.json", "eval/../case.json", "..\\outside.json"]) {
+        expect(() =>
+          resolveFactStageEvidence(`${path}#golden.answer@${claimDigest("x")}`, "q-x", {
+            repoRoot: root,
+          }),
+        ).toThrow(/parent-directory segment/);
+      }
+    });
+  });
+
+  it("rejects a reference that names the repository root instead of a record", () => {
     withFixture({ "case.json": EXACT_CASE }, (root) => {
       expect(() =>
-        resolveFactStageEvidence(`../outside.json#golden.answer@${claimDigest("x")}`, "q-x", {
+        resolveFactStageEvidence(`#golden.keyFacts[index=0]@${claimDigest(EXACT_FACT)}`, "q-x", {
           repoRoot: root,
         }),
       ).toThrow(/escapes the repository root/);
