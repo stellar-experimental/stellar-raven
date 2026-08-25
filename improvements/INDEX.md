@@ -37,7 +37,7 @@ Total findings: 70
 
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
-| sd-001 | > Fixed 2026-08-25. Everything from here to "Resolution" describes the defect as it stood > before the fix, in the tense it was written.…   | fixed-upstream    | 2026-07-03 | 7           |
+| sd-001 | The Stellar Docs crawler dropped /docs/networks/software-versions because its 1,319 extracted records exceeded the 750-record page cap      | fixed-upstream    | 2026-07-03 | 7           |
 | sd-003 | The Algolia docs index excludes the auto-generated RPC-method and Horizon-endpoint API-reference pages, so authoritative per-method limits… | reported-upstream | 2026-07-03 | 5           |
 | sd-004 | The RPC method reference pages describe pagination limits as "hardcoded in Stellar-RPC for performance reasons" (getTransactions and…       | declined-upstream | 2026-07-03 | 2           |
 | sd-005 | The docs' agentic-payments coverage documents x402 and MPP mechanics in depth but contains zero positioning against the wider…              | reported-upstream | 2026-07-06 | 4           |

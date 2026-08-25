@@ -144,7 +144,7 @@ Unranked, none committed. Each needs its own evidence before it becomes work.
 
 1. **Measure the mode before changing anything.** The honest first step. A codegen lane that writes a
    small Soroban module twice — once with Raven available, once without — and grades both against a
-   fixed defect rubric. the reporter's 32-entry taxonomy is a ready-made external rubric we did not author,
+   fixed defect rubric. The reporter's 32-entry taxonomy is a ready-made external rubric we did not author,
    which makes it unusually good evidence. Without this, any "correctness" change is unmeasured.
 2. **Pull versus push.** A coding agent reads a skill once, at the start, then writes for hours. Ask
    whether there is a preflight affordance worth exposing for a build session — something an agent
@@ -157,7 +157,7 @@ Unranked, none committed. Each needs its own evidence before it becomes work.
    (`indexed`, `msg.sender`, `nonReentrant`, `address(0)`). `q-sor-evm-to-soroban-porting` is
    currently the only golden case entering from that vocabulary, and it carries a very wide surface
    alone.
-4. **The silent-success family.** the reporter's own headline: 7 of the 32 (#2, #17, #23, #24, #26, #27,
+4. **The silent-success family.** The reporter's own headline: 7 of the 32 (#2, #17, #23, #24, #26, #27,
    #28) collapse to one shape — *an operation that reports success while changing nothing, or
    changing the wrong thing*. The reporter calls it the most productive class to hunt. Raven already models
    this distinction internally as soft-empty versus error. Worth asking whether that discipline is
@@ -166,7 +166,7 @@ Unranked, none committed. Each needs its own evidence before it becomes work.
    better or better-timed *text*. The silent-success family may be structural to AI codegen and
    immune to documentation: an operation that reports success while changing nothing is caught by
    compile gates, property tests, mutation testing, or differential execution against the EVM
-   reference — not by a paragraph the model did not read. the reporter's own ten-pass audit loop is
+   reference — not by a paragraph the model did not read. The reporter's own ten-pass audit loop is
    evidence for this reading, and it is a mitigation built without us. If this direction is
    right, most of the others are misdirected, and Raven's honest contribution is discovery, not
    correctness. Do not skip past this one because it is the least flattering.

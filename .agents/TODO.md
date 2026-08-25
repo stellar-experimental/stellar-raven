@@ -12,8 +12,8 @@ archive. Each item states what is wrong, how it was found, and what "done" means
 ### `improvements:lint` does not enforce the filer's own contract
 
 `scripts/improvements-lint.mjs` never checks `upstreamTitle`. The 20–120 character cap lives only in
-`scripts/improvements-file-issue.mjs:321`, which runs at filing time. So a finding can pass lint,
-pass CI, and merge, and still be impossible to file.
+`issueTitle` in `scripts/improvements-file-issue.mjs`, which runs at filing time. So a finding can
+pass lint, pass CI, and merge, and still be impossible to file.
 
 Found 2026-08-25: sls-073 merged with a 124-character title and `improvements:file` refused it.
 Three reviews had passed the record because none of them tried to send it.
@@ -41,15 +41,6 @@ Done when: each carries a dated live re-check and the correct status. Use `impro
 `improvements/README.md` calls that state short-lived and requires a distinct reviewer to re-run the
 original trigger before the file is retired.
 
-### sd-001 is unfiled and its diagnosis is too narrow
-
-The only finding still at `verified`. It has no `upstreamTitle`, so it was never prepared for
-filing. It still reproduces — see the finding for the dated re-check and the widened evidence.
-
-Done when: the scope question is settled — file it upstream, or fix it with the Algolia operator
-credentials under the guardrails in `AGENTS.md` and
-`research/services/stellar-docs-algolia.md`.
-
 ## Tests
 
 ### The `ai` tool-loop guard is never exercised
@@ -60,6 +51,17 @@ credentials under the guardrails in `AGENTS.md` and
 the guard exists for. Affects `/demo/chat` only.
 
 Done when: a test stubs the model rather than the module, so the real tool loop runs.
+
+## Legal
+
+### Set the Terms effective date after counsel approves it
+
+`TERMS_EFFECTIVE_DATE` in `src/site.ts` remains `August 5, 2026`. PR #59 retained that date because
+the Terms include a 2026-08-25 counsel edit and were not in force on the approved document's
+`July 30, 2026` date.
+
+Done when: counsel approves the effective date, `TERMS_EFFECTIVE_DATE` matches it, and the `/terms`
+route tests pass.
 
 ## Routing
 

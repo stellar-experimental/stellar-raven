@@ -24,8 +24,8 @@ path; upstream remains the source.
 
 **3. Responses carry the content and nothing else.** `skill.read` returns the markdown body, with
 the transformations described below. Every response's `url` field names the exact upstream file at
-its pinned commit, so a caller can always reach the source and its licence. Whether that pointer is
-the right notice mechanism for each upstream licence is an open question under review; it is not a
+its pinned commit, so a caller can always reach the source and its license. Whether that pointer is
+the right notice mechanism for each upstream license is an open question under review; it is not a
 settled compliance position.
 
 For completeness, what the service does to the text it forwards: whole reads strip the YAML
