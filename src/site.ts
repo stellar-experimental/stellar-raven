@@ -682,7 +682,8 @@ export function landingPage(): string {
     ) +
     `<div class="stage"><canvas id="gl"></canvas></div><div class="scrim"></div>` +
     `<header class="top"><div class="wrap top-in">${brand()}` +
-    `<nav class="top-nav"><a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
+    `<nav class="top-nav"><a class="btn btn-ghost" href="/docs">Docs</a>` +
+    `<a class="btn btn-ghost" href="/playground">Playground</a></nav></div></header>` +
     `<main class="wrap"><section class="hero" id="connect"><div class="hero-in">
   <p class="eyebrow">Remote MCP server <span class="live"><span class="dot"></span>live</span></p>
   <h1 class="title">Stellar <span class="r">Raven</span></h1>
@@ -800,7 +801,7 @@ export function landingPage(): string {
   );
 }
 
-export function siteFooter(): string {
+function siteFooter(): string {
   return `<footer><div class="wrap foot">
   <div class="l">${escapeHtml(HOST)} <b>·</b> Stellar context, one connection</div>
   <div class="foot-links">
@@ -1265,6 +1266,11 @@ const DOCS_CSS = `
 .trace-note{padding:12px 18px;font-family:var(--sans);font-size:13px;color:var(--dim);line-height:1.6}
 .trace-note b{color:var(--fog);font-weight:600}
 @media (max-width:820px){.docs{padding:8px 22px 64px}}
+/* The longest inline code span is 37 characters — wider than a 320px
+   viewport's text column. body sets overflow-x:hidden, so a nowrap span
+   that wide is clipped rather than scrolled. Below 400px the spans wrap
+   instead; wider viewports keep them on one line. */
+@media (max-width:400px){.docs code{white-space:pre-wrap;overflow-wrap:anywhere}}
 `;
 
 function docTrace(): string {

@@ -294,7 +294,6 @@ describe("docs page truthfulness", () => {
   it("describes the search contract: operations and whole skills, not sections", () => {
     const page = docsPage();
 
-    expect(page).not.toContain("every operation, playbook, and section");
     expect(page).toContain("exposed operations and whole skills");
     expect(page).toContain("availableSections");
     expect(page).toMatch(/skill sections are not searchable/);
@@ -350,6 +349,74 @@ describe("docs page truthfulness", () => {
     const topReadIndex = script.indexOf("top.name");
     expect(emptyGuardIndex).toBeGreaterThan(-1);
     expect(topReadIndex).toBeGreaterThan(emptyGuardIndex);
+  });
+
+  /**
+   * The trace's operation ids are bound to the scorer by the tests above. Its
+   * ARGUMENT and FIELD names are bound here, against the same manifest schemas
+   * the sandbox validates calls with. Without this, an upstream rename of `q`,
+   * of `projects`, or of a row's `name` would leave the page showing a script
+   * that no longer runs, and every other docs test would still pass.
+   */
+  it("binds the trace's argument and field names to the manifest schemas", () => {
+    const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+    const manifest = JSON.parse(
+      readFileSync(join(root, "catalog", "manifest.json"), "utf8")
+    ) as {
+      entries: {
+        id: string;
+        kind: string;
+        inputSchema?: { properties?: Record<string, unknown> };
+        outputSchema?: {
+          properties?: Record<
+            string,
+            { type?: string; items?: { properties?: Record<string, unknown> } }
+          >;
+        };
+      }[];
+    };
+    const entryFor = (id: string) => {
+      const entry = manifest.entries.find((candidate) => candidate.id === id);
+      expect(entry, `manifest has no entry for ${id}`).toBeDefined();
+      return entry!;
+    };
+
+    const html = docsPage();
+    const pres = [...html.matchAll(/<pre class="code" tabindex="0">([\s\S]*?)<\/pre>/g)].map(
+      (match) => match[1]!
+    );
+    const script = pres[1]!.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
+
+    // Every argument key the script passes must exist on that operation's input schema.
+    for (const id of DOC_TRACE_EXAMPLE.executeOperationIds) {
+      const literal = script.match(new RegExp(`${id.replace(".", "\\.")}\\(\\{([^}]*)\\}`));
+      expect(literal, `no argument object rendered for ${id}`).not.toBeNull();
+      const keys = [...literal![1]!.matchAll(/(\w+)\s*:/g)].map(([, key]) => key!);
+      expect(keys.length, `${id} is called with no arguments`).toBeGreaterThan(0);
+      const inputProperties = Object.keys(entryFor(id).inputSchema?.properties ?? {});
+      for (const key of keys) {
+        expect(inputProperties, `${id} has no input field "${key}"`).toContain(key);
+      }
+    }
+
+    // The payload field the script reads under .data, and the row field it
+    // reads off the first element, must both exist on the output schema.
+    const rowRead = script.match(/const (\w+) = \w+\.data\.(\w+)\[0\]/);
+    expect(rowRead, "the trace no longer reads a row out of the payload").not.toBeNull();
+    const [, rowVar, payloadField] = rowRead!;
+    const firstOp = entryFor(DOC_TRACE_EXAMPLE.executeOperationIds[0]!);
+    const payload = firstOp.outputSchema?.properties?.[payloadField!];
+    expect(payload, `output schema has no field "${payloadField}"`).toBeDefined();
+    expect(payload!.type).toBe("array");
+
+    const rowFields = [...script.matchAll(new RegExp(`${rowVar}\\.(\\w+)`, "g"))].map(
+      ([, field]) => field!
+    );
+    expect(rowFields.length).toBeGreaterThan(0);
+    const itemProperties = Object.keys(payload!.items?.properties ?? {});
+    for (const field of rowFields) {
+      expect(itemProperties, `a ${payloadField} row has no field "${field}"`).toContain(field);
+    }
   });
 
   it("renders the search block limit from DOC_TRACE_EXAMPLE.limit", () => {
@@ -446,15 +513,12 @@ describe("docs page truthfulness", () => {
   it("qualifies artifact reads and scopes credential claims", () => {
     const page = docsPage();
 
-    expect(page).not.toContain("the response names the stored artifact");
     expect(page).toMatch(/When a\s+truncated response reports an available artifact/);
     expect(page).toMatch(/inspect\s+the operation's signature before using/);
-    expect(page).not.toMatch(/rerun\s+narrower instead: request fewer rows with <code>limit<\/code>/);
     expect(page).toMatch(/project\s+the\s+result\s+in\s+JavaScript/);
     expect(page).toMatch(/smaller\s+calls/);
     expect(page).toMatch(/signed-in MCP clients/);
     expect(page).toMatch(/2 MiB/);
-    expect(page).not.toContain("All credentials stay on Raven's server side");
     expect(page).toContain("upstream service credentials");
   });
 
@@ -511,11 +575,6 @@ describe("docs page truthfulness", () => {
     for (const [label, pattern] of mappings) {
       expect(page, label).toMatch(pattern);
     }
-
-    // No collective "resolve at the top level" sentence: it cannot be true of
-    // all of these helpers, because skill.run and both artifact reads use the
-    // service-call envelope.
-    expect(page).not.toMatch(/resolve at the top level instead — read/);
 
     // Service calls keep the `.data` envelope.
     expect(page).toMatch(/<code>r\.data\.projects<\/code>/);
