@@ -8,8 +8,12 @@
  *
  * A saved QA result records the full selected input snapshot. Before spending
  * on a re-judge, this tool reconstructs that snapshot from meta.casesPath and
- * refuses if it no longer hashes to the recorded value. --allow-non-identical
- * makes that exceptional decision explicit in the output artifact.
+ * refuses if it no longer hashes to the recorded value. --flips-vs holds its
+ * baseline to the same snapshot and judge-tuple contract, and additionally
+ * compares case content for every id the two artifacts share, because the
+ * baseline decides which rows get paid for. That baseline guard is absolute.
+ * --allow-non-identical makes an exceptional SOURCE decision explicit in the
+ * output artifact; it never waives a baseline mismatch.
  */
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -65,6 +69,28 @@ function requireVerdictScore(row, label) {
   if (typeof row.verdict?.score !== "string") {
     fail(`${label} row ${row.id} has no saved verdict.score and cannot be compared/re-judged`);
   }
+}
+
+export function effectiveVerdictScore(verdict) {
+  return verdict?.score === "error" && typeof verdict.judgeScore === "string"
+    ? verdict.judgeScore
+    : verdict?.score;
+}
+
+/**
+ * Whether two verdicts agree on the grade — `null` when the question does not
+ * apply. `agreement` measures grade variance between two judge calls, so it
+ * needs a grade on both sides. An effective "error" is not a grade: the CLI
+ * crashed, or the reply was unparseable, and nothing about the candidate was
+ * measured. Reporting that as `false` would count a missing measurement as a
+ * disagreement and inflate every disagreement rate computed from the artifact.
+ */
+export function verdictAgreement(original, next) {
+  const before = effectiveVerdictScore(original);
+  const after = effectiveVerdictScore(next);
+  if (typeof before !== "string" || typeof after !== "string") return null;
+  if (before === "error" || after === "error") return null;
+  return before === after;
 }
 
 function parseArgs(argv) {
@@ -160,12 +186,12 @@ function readCasesAtRevision(casesPath, casesRef, repoRoot) {
   }
 }
 
-export function verifySourceCases(results, sourceResultsPath, { casesRef, repoRoot = REPO_ROOT } = {}) {
+export function verifySourceCases(results, sourceResultsPath, { casesRef, repoRoot = REPO_ROOT, label = "source results" } = {}) {
   const casesPath = results?.meta?.casesPath;
   const expectedCasesSha256 = results?.meta?.inputSnapshot?.casesSha256;
-  if (typeof casesPath !== "string" || !casesPath) fail("source results meta.casesPath is required for the identity guard");
+  if (typeof casesPath !== "string" || !casesPath) fail(`${label} meta.casesPath is required for the identity guard`);
   if (typeof expectedCasesSha256 !== "string" || !expectedCasesSha256) {
-    fail("source results meta.inputSnapshot.casesSha256 is required for the identity guard");
+    fail(`${label} meta.inputSnapshot.casesSha256 is required for the identity guard`);
   }
 
   const historical = casesRef === undefined ? null : readCasesAtRevision(casesPath, casesRef, repoRoot);
@@ -240,6 +266,78 @@ export function tupleGuard(results, judgeModel) {
   };
 }
 
+// The --flips-vs baseline decides which rows are worth paying to re-judge, so
+// it carries the same identity contract as the source: its recorded
+// selected-case snapshot must still reproduce, its judge tuple must be the
+// current one, and every case id it shares with the source must carry identical
+// content on both sides. Only then is a score difference a real flip rather
+// than an artifact of a drifted corpus, a different judge, or the same id
+// holding a different question. This guard is ABSOLUTE: --allow-non-identical
+// covers a source snapshot that no longer reproduces and never waives a
+// baseline mismatch. The caller refuses before selection and before the first
+// judge call, so --dry-run refuses too.
+export function verifyBaselineIdentity(baseline, baselinePath, { casesRef, judgeModel, sourceCaseById, sharedIds = [], repoRoot = REPO_ROOT } = {}) {
+  let cases;
+  let baselineCaseById;
+  try {
+    const verified = verifySourceCases(baseline, baselinePath, { casesRef, repoRoot, label: "baseline results" });
+    cases = verified.guard;
+    baselineCaseById = verified.caseById;
+  } catch (error) {
+    // A revision-pinned guard and a malformed snapshot both throw. Both mean
+    // the baseline cannot be trusted, so record the reason and fail closed.
+    cases = { matches: false, reason: error.message };
+  }
+  const tuple = tupleGuard(baseline, judgeModel);
+  // Each side reproducing its own snapshot is not enough: two cases files can
+  // each be self-consistent while the SAME id carries a different question or
+  // golden on each side. A score difference would then be a different question,
+  // not a flip, so every shared id is compared by content.
+  const mismatchedIds = [];
+  const comparedIds = [];
+  for (const id of sharedIds) {
+    comparedIds.push(id);
+    const sourceCase = sourceCaseById?.get(id);
+    const baselineCase = baselineCaseById?.get(id);
+    if (!baselineCaseById || JSON.stringify(sourceCase) !== JSON.stringify(baselineCase)) mismatchedIds.push(id);
+  }
+  const sharedCases = { comparedIds, mismatchedIds, matches: mismatchedIds.length === 0 };
+  return {
+    baselinePath,
+    cases,
+    tuple,
+    sharedCases,
+    matches: cases.matches && tuple.matches && sharedCases.matches
+  };
+}
+
+// Every reason a baseline is not comparable to the source. Reported together so
+// one refusal names all of them.
+export function baselineRefusalReasons(guard) {
+  const reasons = [];
+  if (!guard.cases.matches) {
+    reasons.push(
+      `baseline case input snapshot differs (${
+        guard.cases.reason ??
+        `expected ${guard.cases.expectedCasesSha256}, got ${guard.cases.actualCasesSha256}; ` +
+          `missing ids: ${guard.cases.missingCaseIds.join(", ") || "none"}; order matches: ${guard.cases.orderMatches}`
+      })`
+    );
+  }
+  if (!guard.tuple.matches) {
+    reasons.push(
+      `baseline judge tuple differs (baseline model ${guard.tuple.source.model ?? "missing"}/rubric ${guard.tuple.source.rubric ?? "missing"}/pack ${guard.tuple.source.packVersion ?? "missing"}; ` +
+        `current ${guard.tuple.current.model}/${guard.tuple.current.rubric}/${guard.tuple.current.packVersion})`
+    );
+  }
+  if (!guard.sharedCases.matches) {
+    reasons.push(
+      `shared case content differs between source and baseline for ${guard.sharedCases.mismatchedIds.length} of ` +
+        `${guard.sharedCases.comparedIds.length} shared ids: ${guard.sharedCases.mismatchedIds.join(", ")}`
+    );
+  }
+  return reasons;
+}
 export function judgeCostAccounting(rows, expectedJudgeCalls) {
   const reportedCosts = rows.map((row) => row.new?.costUsd).filter((cost) => Number.isFinite(cost));
   return {
@@ -250,7 +348,7 @@ export function judgeCostAccounting(rows, expectedJudgeCalls) {
   };
 }
 
-function selectRows(results, { ids, flipsVs, allowEmpty }) {
+function selectRows(results, { ids, flipsVs, allowEmpty, casesRef, judgeModel }, identity) {
   if (ids !== undefined) {
     const wanted = ids.split(",").map((id) => id.trim()).filter(Boolean);
     if (!wanted.length) fail("--ids requires at least one non-empty id");
@@ -275,18 +373,35 @@ function selectRows(results, { ids, flipsVs, allowEmpty }) {
   if (sourceOnly.length) {
     fail(`baseline results is missing source result ids: ${sourceOnly.join(", ")}`);
   }
+
+  // The baseline is what makes a score difference mean anything, so its guard
+  // is absolute: --allow-non-identical covers a source snapshot that no longer
+  // reproduces, never a baseline that is not comparable. Refused here, before
+  // selection and before any judge call, so --dry-run refuses too.
+  const baselineGuard = verifyBaselineIdentity(baseline, baselinePath, {
+    casesRef,
+    judgeModel,
+    sourceCaseById: identity?.caseById,
+    sharedIds: results.rows.map((row) => row.id).filter((id) => baselineById.has(id))
+  });
+  if (!baselineGuard.matches) {
+    fail(
+      `refusing re-judge against a non-comparable baseline: ${baselineRefusalReasons(baselineGuard).join("; ")}. ` +
+        "--allow-non-identical does not waive a baseline mismatch; re-judge the baseline under the current tuple instead."
+    );
+  }
   const selected = results.rows.filter((row) => {
     requireVerdictScore(row, "source results");
     const baselineRow = baselineById.get(row.id);
     requireVerdictScore(baselineRow, "baseline results");
-    return row.verdict.score !== baselineRow.verdict.score;
+    return effectiveVerdictScore(row.verdict) !== effectiveVerdictScore(baselineRow.verdict);
   });
   if (!selected.length) {
     const message = "--flips-vs found no score changes; refusing to create an empty re-judge artifact (pass --allow-empty to override)";
     if (!allowEmpty) fail(message);
     console.warn(`warning: ${message}`);
   }
-  return { mode: "flips-vs", rows: selected, baselinePath, baselineSha256, initialJudging: false };
+  return { mode: "flips-vs", rows: selected, baselinePath, baselineSha256, baselineGuard, initialJudging: false };
 }
 
 export async function rejudgeRows({
@@ -318,7 +433,7 @@ export async function rejudgeRows({
       id: row.id,
       original: row.verdict,
       new: verdict,
-      agreement: typeof row.verdict?.score === "string" ? row.verdict.score === verdict.score : null,
+      agreement: verdictAgreement(row.verdict, verdict),
       evidencePack: {
         packVersion: PACK_VERSION,
         chars: transcriptEvidence.length,
@@ -326,7 +441,7 @@ export async function rejudgeRows({
       }
     });
     await checkpoint(rows);
-    log(`${row.verdict?.score ?? "unjudged"} → ${verdict.score}`);
+    log(`${effectiveVerdictScore(row.verdict) ?? "unjudged"} → ${effectiveVerdictScore(verdict)}`);
   }
   return rows;
 }
@@ -343,7 +458,7 @@ async function main() {
 
   const identity = verifySourceCases(results, sourceResultsPath, { casesRef: options.casesRef });
   const tuple = tupleGuard(results, options.judgeModel);
-  const selection = selectRows(results, options);
+  const selection = selectRows(results, options, identity);
   const nonIdentical = !identity.guard.matches || !tuple.matches;
   const guards = {
     cases: identity.guard,
@@ -357,6 +472,7 @@ async function main() {
         }
       : {}),
     tuple,
+    ...(selection.baselineGuard ? { baseline: selection.baselineGuard } : {}),
     allowNonIdentical: options.allowNonIdentical,
     wouldRefuse: nonIdentical && !options.allowNonIdentical
   };
@@ -420,6 +536,7 @@ async function main() {
       nonIdentical,
       identity: identity.guard,
       tuple,
+      ...(selection.baselineGuard ? { baselineGuard: selection.baselineGuard } : {}),
       judgeModel: options.judgeModel,
       judgeRubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,

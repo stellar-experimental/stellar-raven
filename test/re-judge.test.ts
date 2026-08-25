@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -28,6 +28,9 @@ type RejudgeRows = (options: {
   checkpoint: (rows: unknown[]) => void;
   log?: (message: string) => void;
 }) => Promise<unknown[]>;
+type EffectiveVerdictScore = (verdict: { score?: string; judgeScore?: string } | null) => string | undefined;
+type StoredVerdict = { score?: string; judgeScore?: string } | null | undefined;
+type VerdictAgreement = (original: StoredVerdict, next: StoredVerdict) => boolean | null;
 
 async function loadVerifySourceCases(): Promise<VerifySourceCases> {
   const modulePath = "../eval/qa/re-judge.mjs";
@@ -42,6 +45,16 @@ async function loadJudgeCostAccounting(): Promise<JudgeCostAccounting> {
 async function loadRejudgeRows(): Promise<RejudgeRows> {
   const modulePath = "../eval/qa/re-judge.mjs";
   return (await import(modulePath) as { rejudgeRows: RejudgeRows }).rejudgeRows;
+}
+
+async function loadEffectiveVerdictScore(): Promise<EffectiveVerdictScore> {
+  const modulePath = "../eval/qa/re-judge.mjs";
+  return (await import(modulePath) as { effectiveVerdictScore: EffectiveVerdictScore }).effectiveVerdictScore;
+}
+
+async function loadVerdictAgreement(): Promise<VerdictAgreement> {
+  const modulePath = "../eval/qa/re-judge.mjs";
+  return (await import(modulePath) as { verdictAgreement: VerdictAgreement }).verdictAgreement;
 }
 
 function sha256(value: string): string {
@@ -73,6 +86,78 @@ function writeResults(verdicts: Array<null | { score: string }>) {
     })}\n`
   );
   return { resultsPath, ids: selected.map((item: { id: string }) => item.id) };
+}
+
+type JudgeTuple = { judgeModel: string; judgeRubric: string; packVersion: string };
+
+async function loadJudgeTuple(): Promise<JudgeTuple> {
+  const judgePath = "../eval/qa/judge.mjs";
+  const packPath = "../eval/qa/evidence-pack.mjs";
+  const judge = (await import(judgePath)) as { JUDGE_MODEL: string; JUDGE_RUBRIC: string };
+  const pack = (await import(packPath)) as { PACK_VERSION: string };
+  return { judgeModel: judge.JUDGE_MODEL, judgeRubric: judge.JUDGE_RUBRIC, packVersion: pack.PACK_VERSION };
+}
+
+// A source and a baseline over the same single case, both identical to the
+// current corpus and judge tuple unless `baselineMeta` drifts the baseline.
+function writeFlipsPair(tuple: JudgeTuple, baselineMeta: Record<string, unknown> = {}) {
+  const battery = JSON.parse(readFileSync(CASES_PATH, "utf8"));
+  const selected = battery.cases.slice(0, 1);
+  const directory = mkdtempSync(join(tmpdir(), "raven-rejudge-flips-"));
+  temporaryDirectories.push(directory);
+  const identicalMeta = {
+    casesPath: CASES_PATH,
+    ...tuple,
+    inputSnapshot: { casesSha256: sha256(JSON.stringify(selected)) }
+  };
+  const rows = (score: string) =>
+    selected.map((item: { id: string }) => ({
+      id: item.id,
+      answer: "Saved answer.",
+      transcript: [],
+      verdict: { score }
+    }));
+  const resultsPath = join(directory, "results.json");
+  const baselinePath = join(directory, "baseline.json");
+  writeFileSync(resultsPath, `${JSON.stringify({ meta: identicalMeta, rows: rows("correct") })}\n`);
+  writeFileSync(
+    baselinePath,
+    `${JSON.stringify({ meta: { ...identicalMeta, ...baselineMeta }, rows: rows("partial") })}\n`
+  );
+  return { resultsPath, baselinePath, ids: selected.map((item: { id: string }) => item.id) };
+}
+
+// PATH for a refusal test: `claude` exists but fails immediately, so a missed
+// guard shows up as a wrong exit status instead of a paid judge call.
+// A source and a baseline that each reproduce their own snapshot, but whose
+// shared case id carries different content. Only a cross-comparison catches it.
+function writeDivergentCasesPair(tuple: JudgeTuple, id = "shared-drift-case") {
+  const directory = mkdtempSync(join(tmpdir(), "raven-rejudge-drift-"));
+  temporaryDirectories.push(directory);
+  const write = (name: string, question: string, score: string) => {
+    const kase = { id, question, golden: { answer: question, keyFacts: [], avoid: [], notes: "" } };
+    const casesPath = join(directory, `${name}-cases.json`);
+    writeFileSync(casesPath, `${JSON.stringify({ cases: [kase] })}\n`);
+    const resultsPath = join(directory, `${name}.json`);
+    writeFileSync(
+      resultsPath,
+      `${JSON.stringify({
+        meta: { casesPath, ...tuple, inputSnapshot: { casesSha256: sha256(JSON.stringify([kase])) } },
+        rows: [{ id, answer: "Saved answer.", transcript: [], verdict: { score } }]
+      })}\n`
+    );
+    return resultsPath;
+  };
+  return { resultsPath: write("results", "Question as judged in the source.", "correct"), baselinePath: write("baseline", "A different question under the same id.", "partial") };
+}
+
+function stubClaudeDirectory(): string {
+  const directory = mkdtempSync(join(tmpdir(), "raven-rejudge-stub-"));
+  temporaryDirectories.push(directory);
+  const executable = join(directory, "claude");
+  writeFileSync(executable, "#!/bin/sh\nexit 70\n");
+  chmodSync(executable, 0o755);
+  return directory;
 }
 
 function writeGitCases(cases: unknown, casesPath = "eval/qa/cases.json") {
@@ -119,6 +204,96 @@ afterEach(() => {
 });
 
 describe("re-judge saved-answer selection", () => {
+  it("uses the raw judge score for validation-error comparisons", async () => {
+    const effectiveVerdictScore = await loadEffectiveVerdictScore();
+
+    expect(effectiveVerdictScore({ score: "error", judgeScore: "partial" })).toBe("partial");
+    expect(effectiveVerdictScore({ score: "wrong" })).toBe("wrong");
+    expect(effectiveVerdictScore(null)).toBeUndefined();
+  });
+
+  it("does not select a validation error as a grade change", async () => {
+    const { resultsPath } = writeResults([{ score: "error" }]);
+    const source = JSON.parse(readFileSync(resultsPath, "utf8"));
+    source.rows[0].verdict = { score: "error", judgeScore: "partial" };
+    writeFileSync(resultsPath, `${JSON.stringify(source)}\n`);
+    const baselinePath = join(resultsPath, "..", "baseline.json");
+    const baseline = structuredClone(source);
+    // The baseline guard is absolute, so only the source may be non-identical.
+    baseline.meta = { ...baseline.meta, ...(await loadJudgeTuple()) };
+    baseline.rows[0].verdict = { score: "partial" };
+    writeFileSync(baselinePath, `${JSON.stringify(baseline)}\n`);
+
+    const result = spawnSync(
+      process.execPath,
+      [
+        REJUDGE_PATH,
+        resultsPath,
+        "--flips-vs",
+        baselinePath,
+        "--allow-non-identical",
+        "--allow-empty",
+        "--dry-run"
+      ],
+      { cwd: ROOT, encoding: "utf8" }
+    );
+
+    expect(result.status, result.stderr).toBe(0);
+    expect(JSON.parse(result.stdout).selectedIds).toEqual([]);
+  });
+
+  it("records agreement when both verdicts have the same raw judge score", async () => {
+    const rejudgeRows = await loadRejudgeRows();
+    const selectedRows = [
+      {
+        id: "one",
+        answer: "Saved answer.",
+        transcript: [],
+        verdict: { score: "error", judgeScore: "partial" }
+      }
+    ];
+    const rows = await rejudgeRows({
+      selectedRows,
+      caseById: new Map([["one", { id: "one", question: "Question?" }]]),
+      judgeModel: "stub-judge",
+      judge: async () => ({ score: "partial", costUsd: 0.1 }),
+      checkpoint: () => {},
+      log: () => {}
+    }) as Array<{ agreement: boolean }>;
+
+    expect(rows[0]?.agreement).toBe(true);
+  });
+
+  // agreement measures grade variance, so it needs a grade on both sides. An
+  // effective error measured nothing, and reporting it as a disagreement would
+  // inflate every rate computed from the artifact.
+  it("reports no agreement value when either side has no grade", async () => {
+    const verdictAgreement = await loadVerdictAgreement();
+
+    expect(verdictAgreement({ score: "wrong" }, { score: "wrong" })).toBe(true);
+    expect(verdictAgreement({ score: "wrong" }, { score: "error", judgeScore: "wrong" })).toBe(true);
+    expect(verdictAgreement({ score: "wrong" }, { score: "partial" })).toBe(false);
+    expect(verdictAgreement({ score: "wrong" }, { score: "error" })).toBeNull();
+    expect(verdictAgreement({ score: "error" }, { score: "correct" })).toBeNull();
+    expect(verdictAgreement(undefined, { score: "correct" })).toBeNull();
+  });
+
+  it("records no agreement when the re-judge itself fails", async () => {
+    const rejudgeRows = await loadRejudgeRows();
+    const rows = await rejudgeRows({
+      selectedRows: [
+        { id: "one", answer: "Saved answer.", transcript: [], verdict: { score: "wrong" } }
+      ],
+      caseById: new Map([["one", { id: "one", question: "Question?" }]]),
+      judgeModel: "stub-judge",
+      judge: async () => ({ score: "error", costUsd: 0 }),
+      checkpoint: () => {},
+      log: () => {}
+    }) as Array<{ agreement: boolean | null }>;
+
+    expect(rows[0]?.agreement).toBeNull();
+  });
+
   it("checkpoints each paid verdict before the next judge call", async () => {
     const rejudgeRows = await loadRejudgeRows();
     const checkpoints: unknown[][] = [];
@@ -138,7 +313,12 @@ describe("re-judge saved-answer selection", () => {
         judge: async () => {
           calls++;
           if (calls === 2) throw new Error("second judge failed");
-          return { score: "partial", costUsd: 0.25 };
+          return {
+            score: "error",
+            judgeScore: "wrong",
+            consistencyViolations: ["omission-only-wrong"],
+            costUsd: 0.25
+          };
         },
         checkpoint: (rows) => checkpoints.push(structuredClone(rows)),
         log: () => {}
@@ -147,7 +327,16 @@ describe("re-judge saved-answer selection", () => {
 
     expect(checkpoints).toHaveLength(1);
     expect(checkpoints[0]).toMatchObject([
-      { id: "one", original: { score: "correct" }, new: { score: "partial", costUsd: 0.25 } }
+      {
+        id: "one",
+        original: { score: "correct" },
+        new: {
+          score: "error",
+          judgeScore: "wrong",
+          consistencyViolations: ["omission-only-wrong"],
+          costUsd: 0.25
+        }
+      }
     ]);
   });
 
@@ -302,6 +491,88 @@ describe("re-judge saved-answer selection", () => {
     });
     expect(baseline.status).toBe(1);
     expect(baseline.stderr).toContain("non-promotable playground quarantine");
+  });
+
+  it("reports an identical --flips-vs baseline as guarded", async () => {
+    const { resultsPath, baselinePath, ids } = writeFlipsPair(await loadJudgeTuple());
+    const result = spawnSync(
+      process.execPath,
+      [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, "--dry-run"],
+      { cwd: ROOT, encoding: "utf8" }
+    );
+
+    expect(result.status, result.stderr).toBe(0);
+    const guards = JSON.parse(result.stdout).guards;
+    expect(guards.baseline).toMatchObject({
+      matches: true,
+      cases: { matches: true },
+      tuple: { matches: true }
+    });
+    expect(guards.wouldRefuse).toBe(false);
+    expect(JSON.parse(result.stdout).selectedIds).toEqual(ids);
+  });
+
+  it("refuses a --flips-vs baseline whose snapshot or judge tuple differs", async () => {
+    const tuple = await loadJudgeTuple();
+    const drifted: Array<[string, Record<string, unknown>, string]> = [
+      ["snapshot", { inputSnapshot: { casesSha256: sha256("drifted baseline snapshot") } }, "case input snapshot differs"],
+      ["model", { judgeModel: "claude-some-other-model" }, "judge tuple differs"],
+      ["rubric", { judgeRubric: "v0.0" }, "judge tuple differs"],
+      ["pack", { packVersion: "p0" }, "judge tuple differs"]
+    ];
+
+    for (const [label, baselineMeta, reason] of drifted) {
+      const { resultsPath, baselinePath } = writeFlipsPair(tuple, baselineMeta);
+
+      // PATH holds only a stub `claude`, so a guard that fails to fire cannot
+      // reach the paid judge.
+      for (const extra of [["--dry-run"], []]) {
+        const result = spawnSync(
+          process.execPath,
+          [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, ...extra],
+          { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: stubClaudeDirectory() } }
+        );
+
+        expect(result.status, `${label} ${extra.join(" ")}: ${result.stdout}`).toBe(1);
+        expect(result.stderr, label).toContain("baseline");
+        expect(result.stderr, label).toContain(reason);
+      }
+    }
+  });
+
+  it("refuses a drifted --flips-vs baseline even with --allow-non-identical", async () => {
+    // The override covers a source snapshot that no longer reproduces. It
+    // never covers the baseline, which decides what gets paid for.
+    const tuple = await loadJudgeTuple();
+    for (const baselineMeta of [
+      { judgeRubric: "v0.0" },
+      { inputSnapshot: { casesSha256: sha256("drifted baseline snapshot") } }
+    ]) {
+      const { resultsPath, baselinePath } = writeFlipsPair(tuple, baselineMeta);
+      const result = spawnSync(
+        process.execPath,
+        [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, "--allow-non-identical", "--dry-run"],
+        { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: stubClaudeDirectory() } }
+      );
+
+      expect(result.status, result.stdout).toBe(1);
+      expect(result.stderr).toContain("--allow-non-identical does not waive");
+    }
+  });
+
+  it("refuses when a shared case id has different content in source and baseline", async () => {
+    // Both artifacts reproduce their own snapshot, so only a cross-comparison
+    // catches it: the same id is a different question on each side.
+    const { resultsPath, baselinePath } = writeDivergentCasesPair(await loadJudgeTuple());
+    const result = spawnSync(
+      process.execPath,
+      [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, "--dry-run"],
+      { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: stubClaudeDirectory() } }
+    );
+
+    expect(result.status, result.stdout).toBe(1);
+    expect(result.stderr).toContain("shared case");
+    expect(result.stderr).toContain("shared-drift-case");
   });
 
   it("labels an all-unjudged --ids dry run as initial judging without spending", () => {

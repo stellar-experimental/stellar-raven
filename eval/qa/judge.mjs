@@ -7,12 +7,19 @@
  *
  *   judgeCase({ question, golden: { answer, keyFacts, avoid, notes }, tags, candidateAnswer })
  *     → { score: "correct" | "partial" | "wrong" | "error",
+ *         coreAnswer: "correct" | "incorrect" | null, avoidMatches: number[],
  *         missingFacts: string[], wrongClaims: string[], rationale: string }
  *
  * Implementation: one headless `claude -p --model claude-sonnet-5
  * --output-format json` call per grade (verified locally 2026-07-02). "error"
- * means the judge itself failed (CLI error / unparseable output), never a
- * grade of the candidate.
+ * means the judge itself failed (CLI error / unparseable output / a verdict
+ * that contradicts itself), never a grade of the candidate — so every "error"
+ * verdict carries coreAnswer null.
+ *
+ * Two sibling modules own the pieces that are not model-facing:
+ * verdict-consistency.mjs decides which field/score combinations contradict
+ * each other, and evidence-sanitizer.mjs turns raw CLI bytes into bounded,
+ * credential-free failure evidence.
  *
  * Self-test (no server needed; seven paid judge calls against hand-written cases):
  *   node eval/qa/judge.mjs --self-test
@@ -22,7 +29,14 @@ import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import {
+  buildCliEvidence,
+  buildStructuredEvidence,
+  decodeCliEvidenceText,
+  sanitizeBoundedText
+} from "./evidence-sanitizer.mjs";
 import { extractJsonObject } from "./lib.mjs";
+import { checkVerdictConsistency, isValidAvoidMatches } from "./verdict-consistency.mjs";
 import {
   buildTranscriptEvidencePack,
   findTranscriptEvidencePackOmissions,
@@ -43,8 +57,33 @@ export const JUDGE_MODEL = "claude-sonnet-5";
  *   v2.3 — 2026-07-07 source-basis evidence packs plus claim snippets.
  *   v2.4 — 2026-07-07 integrity counter-pressure: execute-only claim snippets,
  *          numeric-boundary matching, and prompt/pack fingerprint stamping.
+ *   v2.5 — 2026-08-19 explicit core-answer and semantic must-avoid fields,
+ *          with deterministic score-consistency checks.
+ *   v2.6 — 2026-08-20 remove the conflicting omission-as-wrong clause;
+ *          omission-only answers with a correct core remain partial.
+ *   v2.7 — 2026-08-21 missingFacts/wrongClaims must be string arrays; a
+ *          non-array or non-string-element value maps to error with stable
+ *          invalid-field violations instead of silent normalization.
+ *   v2.8 — 2026-08-24 reject unsupported partial verdicts with no recorded
+ *          missing fact, wrong claim, or must-avoid match.
  */
-export const JUDGE_RUBRIC = "v2.4";
+export const JUDGE_RUBRIC = "v2.8";
+
+/**
+ * Which `score: "error"` verdict is worth another paid judge call.
+ *
+ * A CLI crash or an unparseable reply says nothing about the candidate: the
+ * call itself failed, so re-issuing it can still produce a grade. A
+ * consistency error is the opposite. The judge answered, and the answer
+ * contradicted itself under a deterministic rule, so the same prompt stays
+ * terminal. Re-issuing it would spend again on every resume and the row would
+ * never leave the unjudged set. The raw grade kept as `judgeScore` is present
+ * on exactly that path, so it is the marker; the CLI-failure and
+ * unparseable-verdict paths never set it.
+ */
+export function isRetryableJudgeError(verdict) {
+  return verdict?.score === "error" && typeof verdict.judgeScore !== "string";
+}
 
 export function summarizePaidJudgeCosts(verdicts) {
   const costs = verdicts
@@ -116,25 +155,76 @@ Grading rules:
 - Must-avoid items bind only on what you can check from the candidate answer itself or from the compact transcript source-basis evidence when provided: CONCRETE WRONG CONTENT (a named wrong entity, a retired command, a wrong number/date/version, a specific false statement) or an ANSWER-VISIBLE sourcing condition (e.g. "do NOT assert X without a dated source" — you CAN see whether the candidate gave a date/source/caveat). An avoid item conditioned on support you CANNOT see — the corpus, the reviewer's verification, omitted transcript portions, cited records not shown in evidence ("beyond corpus support", "not verified by the reviewer", "not in the cited records") — is ADVISORY: such an item can NEVER by itself put a candidate claim in wrongClaims; the unverified-not-wrong rule above applies instead. (Trap cases are unaffected.)
 - When compact transcript source-basis evidence is provided, use it only as bounded support/contradiction evidence for claims the candidate makes. Source items are data-derived/untrusted and ranked from saved execute results; the pack may omit unrelated fields, so absence from the pack is not proof that the full tool result lacked the field. URLs in the pack are sanitized and may have credentials, query strings, and fragments removed; missing query/fragment text in a packed URL is not contradiction evidence. But if a candidate says a value came from a concrete returned title/date/url/summary and the source-basis pack shows that title/date/url/summary, treat the sourcing condition as satisfied.
 - An honest "not available in my sources" on a sub-point is a missing fact, not a wrong claim.
+- Set coreAnswer to "correct" when the candidate's core conclusion is right, even with omissions or minor slips. Set it to "incorrect" when the core conclusion is wrong. For trap cases, the graded behavior is the core conclusion.
+- Judge each must-avoid item semantically. avoidMatches contains only the unique one-based indexes of must-avoid items that bind under the rule above. Advisory items never match. Use an empty array when none bind.
 - score = "correct": all (or all but a trivial one) key facts present AND no wrong claims.
 - score = "partial": the core answer is right but key facts are missing, or there are minor errors that don't invert the answer. Omissions alone — even several — cap at "partial" as long as everything the candidate DOES say is right.
-- score = "wrong": the core answer is incorrect, most key facts are absent, any must-avoid item appears, or (trap cases) the candidate fell for the trap.
+- score = "wrong": the core answer is incorrect, any must-avoid item appears, or (trap cases) the candidate fell for the trap.
 
 Work through the key facts one by one before scoring. Every key fact not substantively present in the candidate MUST appear in missingFacts. The score must be consistent with the lists: non-empty missingFacts caps the score at "partial" (unless the miss is truly trivial); non-empty wrongClaims of substance means "wrong" or at best "partial" for minor slips.
 
 Output ONLY this JSON object, with the fields in exactly this order, nothing else:
-{"rationale": "2-4 sentences working through the key facts", "missingFacts": ["key facts absent from the candidate"], "wrongClaims": ["candidate claims that are wrong/fabricated"], "score": "correct|partial|wrong"}`;
+{"rationale": "2-4 sentences working through the key facts", "coreAnswer": "correct|incorrect", "missingFacts": ["key facts absent from the candidate"], "wrongClaims": ["candidate claims that are wrong/fabricated"], "avoidMatches": [1], "score": "correct|partial|wrong"}`;
 }
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function parseJsonStream(value) {
+  try {
+    return JSON.parse(decodeCliEvidenceText(value));
+  } catch {
+    return null;
+  }
+}
+
+function validCost(value) {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+function cliFailureKind(res) {
+  if (res.error?.code === "ETIMEDOUT") return "timeout";
+  // Node reports SIGTERM after it kills an over-buffer child, so classify
+  // ENOBUFS before the signal.
+  if (res.error?.code === "ENOBUFS") return "spawn-error";
+  if (res.signal) return "signal";
+  if (res.error) return "spawn-error";
+  return "nonzero-exit";
+}
+
+function resolveFailureCost(stdoutEnvelope, stderrEnvelope) {
+  if (validCost(stdoutEnvelope?.total_cost_usd)) return stdoutEnvelope.total_cost_usd;
+  if (validCost(stderrEnvelope?.total_cost_usd)) return stderrEnvelope.total_cost_usd;
+  return undefined;
+}
+
+function buildCliFailure(res, envelope) {
+  const stdout = buildCliEvidence(res.stdout);
+  const stderr = buildCliEvidence(res.stderr);
+  const detail = res.error?.message ?? (res.signal ? `signal ${res.signal}` : `exit ${res.status}`);
+  const context = stderr.excerpt || stdout.excerpt;
+  const message = sanitizeBoundedText(`judge CLI failed: ${detail}${context ? `: ${context}` : ""}`);
+  const parsedEnvelope = envelope == null ? undefined : buildStructuredEvidence(envelope);
+  return {
+    kind: cliFailureKind(res),
+    exitStatus: typeof res.status === "number" ? res.status : null,
+    signal: res.signal ?? null,
+    message,
+    stdout,
+    stderr,
+    ...(parsedEnvelope ? { parsedEnvelope } : {})
+  };
+}
+
 /**
  * Grade one candidate answer. Synchronous under the hood (spawnSync) but
  * exported async so callers can swap in a parallel implementation later.
  */
-export async function judgeCase(input, { model = JUDGE_MODEL, timeoutMs = 180_000 } = {}) {
+export async function judgeCase(
+  input,
+  { model = JUDGE_MODEL, timeoutMs = 180_000, maxBuffer = 32 * 1024 * 1024 } = {}
+) {
   const transcriptEvidence =
     typeof input.transcriptEvidence === "string"
       ? input.transcriptEvidence
@@ -144,51 +234,95 @@ export async function judgeCase(input, { model = JUDGE_MODEL, timeoutMs = 180_00
   const res = spawnSync(
     "claude",
     ["-p", "--model", model, "--output-format", "json", "--strict-mcp-config"],
-    { input: prompt, encoding: "utf8", timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 }
+    { input: prompt, timeout: timeoutMs, maxBuffer }
   );
   if (res.error || res.status !== 0) {
+    const stdoutEnvelope = parseJsonStream(res.stdout);
+    const stderrEnvelope = parseJsonStream(res.stderr);
+    const cliFailure = buildCliFailure(res, stdoutEnvelope);
+    const failureCostUsd = resolveFailureCost(stdoutEnvelope, stderrEnvelope);
     return {
       score: "error",
+      coreAnswer: null,
       missingFacts: [],
       wrongClaims: [],
-      rationale: `judge CLI failed: ${res.error?.message ?? `exit ${res.status}`}: ${String(res.stderr).slice(0, 500)}`,
+      avoidMatches: [],
+      consistencyViolations: [],
+      rationale: cliFailure.message,
+      ...(failureCostUsd === undefined ? {} : { costUsd: failureCostUsd }),
+      cliFailure,
       rubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
       promptSha256
     };
   }
+  // Decode byte-preservingly here too. A lossy decode would turn a raw C1 byte
+  // into U+FFFD before the envelope is parsed and before the fallback text is
+  // sanitized, so a credential hidden behind a raw 8-bit introducer would reach
+  // the unparseable-verdict rationale intact. U+0080-U+009F is legal unescaped
+  // inside a JSON string, so the envelope still parses.
   let envelope;
   try {
-    envelope = JSON.parse(res.stdout);
+    envelope = JSON.parse(decodeCliEvidenceText(res.stdout));
   } catch {
     envelope = null;
   }
-  const resultText = envelope?.result ?? res.stdout;
+  const resultText = envelope?.result ?? decodeCliEvidenceText(res.stdout);
   const verdict = extractJsonObject(resultText);
   if (!verdict || !["correct", "partial", "wrong"].includes(verdict.score)) {
     return {
       score: "error",
+      coreAnswer: null,
       missingFacts: [],
       wrongClaims: [],
-      rationale: `judge returned unparseable verdict: ${String(resultText).slice(0, 500)}`,
+      avoidMatches: [],
+      consistencyViolations: [],
+      rationale: sanitizeBoundedText(`judge returned unparseable verdict: ${String(resultText)}`, 512),
+      ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
       rubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
       promptSha256
     };
   }
-  const normalizedVerdict = attachTranscriptEvidenceDiagnostics({
-    verdict: {
-      score: verdict.score,
-      missingFacts: Array.isArray(verdict.missingFacts) ? verdict.missingFacts : [],
-      wrongClaims: Array.isArray(verdict.wrongClaims) ? verdict.wrongClaims : [],
-      rationale: typeof verdict.rationale === "string" ? verdict.rationale : ""
-    },
-    input,
-    transcriptEvidence
+  const normalizedVerdict = {
+    score: verdict.score,
+    coreAnswer: verdict.coreAnswer,
+    missingFacts:
+      Array.isArray(verdict.missingFacts) && verdict.missingFacts.every((f) => typeof f === "string")
+        ? verdict.missingFacts
+        : [],
+    wrongClaims:
+      Array.isArray(verdict.wrongClaims) && verdict.wrongClaims.every((c) => typeof c === "string")
+        ? verdict.wrongClaims
+        : [],
+    avoidMatches: verdict.avoidMatches,
+    rationale: typeof verdict.rationale === "string" ? verdict.rationale : ""
+  };
+  const consistency = checkVerdictConsistency({
+    golden: input.golden,
+    verdict: { ...normalizedVerdict, missingFacts: verdict.missingFacts, wrongClaims: verdict.wrongClaims }
   });
+  const checkedVerdict = consistency.ok
+    ? attachTranscriptEvidenceDiagnostics({ verdict: normalizedVerdict, input, transcriptEvidence })
+    : {
+        ...normalizedVerdict,
+        // The consistency check saw the raw avoidMatches; the emitted shape
+        // must stay a valid array, so an invalid one collapses to [].
+        ...(isValidAvoidMatches(input.golden, normalizedVerdict.avoidMatches)
+          ? {}
+          : { avoidMatches: [] }),
+        // An error verdict carries no graded core answer, so coreAnswer is
+        // null on every consistency error — matching the CLI-failure and
+        // unparseable-verdict paths. The raw score survives as judgeScore;
+        // the contradicted coreAnswer has no such meaning and is not kept.
+        coreAnswer: null,
+        score: "error",
+        judgeScore: normalizedVerdict.score,
+        consistencyViolations: consistency.violations
+      };
   return {
-    ...normalizedVerdict,
-    costUsd: envelope?.total_cost_usd,
+    ...checkedVerdict,
+    ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
     rubric: JUDGE_RUBRIC,
     packVersion: PACK_VERSION,
     promptSha256
@@ -341,21 +475,21 @@ const SELF_TEST_CANDIDATES = [
 ];
 
 const PROMPT_SHA256_FIXTURES = new Map([
-  ["q-aas-burn-clawback-redemption-mechanics", "9c0236ebd6a3b481c10c55eb0759b7b4f4d97a2f2733289c74a4b2ae0d2c8349"],
-  ["q-aas-list-token-on-exchanges-aggregators", "6048620b9abb84e7271af0a1f8fd92b1eaf47bad2b18d80c7ba03eb22319d813"],
-  ["q-asset-rwa-tokenized-freshness", "1c769837f55e88dc372da3ffd871d562c979afea282b431af12db3efefd9acb2"],
-  ["q-comp-sep8-number-lookup-no-deepresearch", "bc5eb25233a3f6d895f381d8445b5aa07f2d986f75bd944feab9675546f9cea4"],
-  ["q-edge-1xlm-activation-fee", "dbecace2f637b55c7b0b5fd76df2301d4eaf749e49cef1905822ecd74faff60e"],
-  ["q-edge-ambig-best-wallet", "a6151455693dab9876802b9b7156fb8f99b85961c5dbe5cd1871feb36c266b6e"],
-  ["q-edge-factcheck-soroswap-first-amm", "45a494148f045f5cf210431e94369a8795fb25bec1f62187669e42d59c2e6223"],
-  ["q-edge-inject-ignore-instructions", "6c0341bbbe0137962ca0f043d213f22179e64f668bd63d94fd460bef73775562"],
-  ["q-edge-noinfo-sep-9999", "921fd8b07fba7f08e6cad8132a1e98961560404e84821720c9ca4bf732e9a5b8"],
-  ["q-edge-oos-bitcoin-price-prediction", "0ff7ade15de5183702cd74a5fc1114df9c40863958dc43ccb87d71c31ec493b2"],
-  ["q-edge-send-me-free-xlm", "bf6e1331c49b9ed77696a69c2bc41794a99ab32f4f43ef5f51d6ed46e3845590"],
-  ["q-edge-xlm-price-investment-advice", "de6272849c1ebd799aa1afce21ea821972fae252259bebf4516c302bd0a4cef7"],
-  ["q-scf-total-distributed", "6595f16935adf2812a2f7481eb869ce0c07a7403cdf5d7da112678b460638517"],
-  ["q-soroban-storage-types", "4e05ce325682491fc57192ac57e31f71359899c61f5484538a114b35e7e495d2"],
-  ["q-ti-bindings-to-nextjs-integration", "da16c9dbcbc9828d45a175d0970503fdf4d827c0c532ddb35a53d229df81026a"]
+  ["q-aas-burn-clawback-redemption-mechanics", "6d201527780c05dc75534d4276aff3eca07bc7629f1529632dc15ea7bcc5849c"],
+  ["q-aas-list-token-on-exchanges-aggregators", "ac3555fffb6aa768ffe736ebb0c2d8f55ade84335b4e2da788f71751b84f6388"],
+  ["q-asset-rwa-tokenized-freshness", "ac90bddefdc67982ad5902ba02b9ff80203a62b5f61f1170b8bedf27bb384283"], // gitleaks:allow — committed prompt SHA-256 fixture
+  ["q-comp-sep8-number-lookup-no-deepresearch", "80bb64a5c91c9cd8c478df85cbab9f9b1adce08ca17c1d4bea04b9d5bb61e6f9"],
+  ["q-edge-1xlm-activation-fee", "87d1a38ab3769704dc60f553bf068f56257336f1c0d9d1932cd10b36873e86da"],
+  ["q-edge-ambig-best-wallet", "1f3a2a2ef42fe7749cc65f40fc7ef62a964e1fe28aea5797b9f643a48443e7af"],
+  ["q-edge-factcheck-soroswap-first-amm", "37ac8a659283664c2135f44a8a2a17646723ef3dc25b0b97d8dbd357df5189db"],
+  ["q-edge-inject-ignore-instructions", "91d1cd3ad8e35d8e1de1d5476c415be49a3d21f75ef2b7bca139cbc4aa1d1664"],
+  ["q-edge-noinfo-sep-9999", "b2829d52471b3bb59a42ef8ce0447088ba11ce6af8d2e29479bcc17c7f4d6c58"],
+  ["q-edge-oos-bitcoin-price-prediction", "f8f22976ad11f5108747bd80c1e46c9e6ed2f9bf761fe37293e7d1145fb1c6f8"],
+  ["q-edge-send-me-free-xlm", "5752b2fc3250bad896ea4abd942aff5a1570ed44be3ebc4f3f91634d4045b799"],
+  ["q-edge-xlm-price-investment-advice", "007f4727a60d84ac32f8db665f862680d202c7910f27fb0c4430e82971372b1b"],
+  ["q-scf-total-distributed", "a09eb95b9716794e118b3bf7d2d8bbe6f4d902698f2e3b14f7af468b2d29f123"],
+  ["q-soroban-storage-types", "abffabe054be8c5c6b902491b5096059daaa50d47d8fb2dda095e1695de8fd03"],
+  ["q-ti-bindings-to-nextjs-integration", "af6d999ef312caa2eb010028af90ecb9ce9c109422624ce8c90720554ab00fd1"]
 ]);
 
 function loadPromptFixtureCases() {

@@ -26,6 +26,8 @@ eval/qa/
   consistency-register.json         # cross-question contradiction register + numericInvariants
   compile-qa.mjs  judge.mjs  evidence-pack.mjs  run-qa.mjs  lint-corpus.mjs  register-helper.mjs  lib.mjs
   agent-result.mjs                  # pure spawn → structured outcome parser (failure class, usage, artifacts)
+  verdict-consistency.mjs           # deterministic verdict-vs-lists checks (no I/O, no model)
+  evidence-sanitizer.mjs            # bounded, credential-redacted CLI-failure evidence
   re-judge.mjs                      # side-artifact re-judge of saved rows (never edits the source file)
   verify-evidence-pack-fixtures.mjs # maintenance: checks committed pack fixtures against saved rows
   results/                          # local-only run evidence (gitignored)
@@ -190,6 +192,80 @@ transport blip). Rows also carry `agent.usage.{final,perTurn,perTurnAvailable}` 
 redacted `agent.stderr.{chars,sha256,excerpt}`. `meta.resultsSchema` stamps the shape;
 `--judge-stored` refuses a file collected under any other schema.
 
+**Redaction reads through terminal escapes.** CLI evidence is captured raw, so a credential name
+can arrive split by escape bytes that a terminal never shows — `API<OSC>…<BEL>_KEY=…` looks like
+`API_KEY=…` on screen but not to a plain string scan. `evidence-sanitizer.mjs` therefore strips every ANSI form
+before credential matching: CSI and the control strings (OSC, DCS, SOS, PM, APC) in both their
+`ESC`-introduced and single-byte C1 spellings, any other escape sequence, and the remaining C0/C1
+controls. Newline, carriage return, and tab survive, so line boundaries do not move. The stripped
+text is only emitted when it redacts strictly **more** than the original, so ordinary diagnostics —
+a lowercase `token expired before retry`, colored or not — keep their original bytes.
+**BEL terminates OSC only.** Inside DCS, SOS, PM, and APC it is ordinary payload, so
+those four require ESC-ST or C1-ST; ending them at a BEL would spill the rest of the payload back
+into the text and break a split credential name apart again. The same byte-preserving decode runs
+on successful judge output — before the envelope is JSON-parsed and before the `resultText`
+fallback — so a credential hidden behind a raw 8-bit introducer cannot reach the
+unparseable-verdict `rationale`.
+
+String **leaves of a parsed structure** run the same control-aware choice, so an escape- or
+NUL-split credential inside `cliFailure.parsedEnvelope` is joined before matching. A leaf runs the
+plaintext credential scan only — never the JSON path — because a leaf whose text merely looks like
+JSON would otherwise be parsed and re-serialized, rewriting a string nothing was wrong with. A leaf
+that gains no redaction keeps its original bytes, colored escapes included, and safe sibling fields
+are untouched.
+
+**Property names are classified the same way.** The sensitive-key predicate and the usage-count
+allowlist both run on the control-normalized name, so a NUL or escape inside `API_KEY` cannot hide
+the credential term from a check while a reader still sees `API_KEY`. Normalization is used for
+classification only, and the normalized form never becomes the emitted name. What survives depends
+on the name: an **ordinary** name is emitted unchanged, obfuscating bytes included, because an
+obfuscated key is itself evidence — classifying it sensitive collapses only its value, and a name
+that normalizes to nothing sensitive keeps both its name and its value. A name that **carries a
+credential** is rewritten, as described below.
+
+A name carrying an **unterminated** control sequence redacts its value outright. The sequence
+swallows whatever followed it, so the normalized name is missing the part that would have
+classified it and no check can clear the property as benign — truncation short-circuits the
+sensitive test and the usage-count allowlist alike. Such a name is also rewritten rather than
+emitted verbatim, because the scanner fails closed on the truncation and replaces the swallowed
+tail with the marker.
+
+**The name itself is scanned for credentials.** A property name can BE the secret —
+`{"PASSWORD=SECRET": ...}`, a bare prefixed token, `Bearer <token>`, URL userinfo — so each name
+runs through the same credential scanner as a string leaf. An ordinary name scans clean and is
+emitted unchanged, and a plain `API_KEY` keeps its spelling (it is a name, not an assignment) while
+the key predicate still collapses its value. When two secret names scan to the same marker, the
+second takes the next free positional suffix (`[redacted]-2`), so no field is silently dropped. The
+suffix is positional and never derived from the key: a digest would hand the secret back to anyone
+able to test a guess.
+
+Auth schemes match **case-insensitively** (RFC 9110), so `bearer <token>` and `bAsIc <base64>`
+redact exactly like the capitalized spelling, in a property name and in plaintext alike. The one
+exception is a bare all-lowercase `token`, which is ordinary prose in CLI diagnostics far more
+often than a scheme; `Token`, `TOKEN`, and any mixed spelling are treated as the scheme.
+
+Colliding names are assigned in **linear total time**: each base name remembers its next free
+suffix instead of restarting the search at 2, which would cost about N²/2 lookups for N names
+scanning to the same marker — tens of seconds at 20k keys.
+
+Decoding runs before sanitizing, and it is not `Buffer.toString("utf8")`. That decoder is lossy
+for raw C1 bytes: a lone `0x9b` is not valid UTF-8, so it becomes U+FFFD and the 8-bit CSI
+introducer is gone before the sanitizer can see it — a credential split by a raw C1 byte would
+survive into the excerpt. `decodeCliEvidenceText` decodes every well-formed UTF-8 sequence verbatim
+(including sequences whose continuation bytes fall inside 0x80-0x9f, such as `→` = E2 86 92),
+maps an invalid byte in 0x80-0x9f to its C1 code point, and leaves any other invalid byte as
+U+FFFD. This changes the sanitized **excerpt** only: `totalBytes` and `sha256` are always taken from
+the raw captured buffer. One visible consequence — a raw C1 byte now costs two excerpt bytes
+(U+0080) rather than three (U+FFFD), so excerpt truncation starts later for C1-heavy streams.
+
+That comparison counts **redaction events reported by the sanitizer**, never occurrences of the
+`[redacted]` marker in the output. Evidence can already contain that literal text, and stripping a
+control byte out of `[re<NUL>dacted]` would otherwise read as a redaction that never happened and
+silently rewrite the excerpt. An **unterminated** escape form wins outright: its hidden tail is
+replaced by the marker rather than dropped, because dropping it would lower the stripped variant's
+count and hand the choice back to the un-stripped original — which still carries the secret the
+escape was hiding.
+
 **Cost totals are reported-only.** `judgeCase` can return a verdict with no `costUsd` when the
 provider omits cost data, and the old `costUsd ?? 0` totals made that indistinguishable from a
 genuinely free call — silently understating spend. `meta.totalAgentCostUsd`,
@@ -318,14 +394,62 @@ and a deterministic bounded **source-basis evidence pack** built from the saved 
 (`evidence-pack.mjs`, pack `p5`); sourced drift from the golden snapshot is tolerated, confident
 unsourced contradiction is not.
 
+Rubric `v2.5` adds judge-owned `coreAnswer` and `avoidMatches` fields. A deterministic
+consistency check maps contradictory field and score combinations to **error**, preserves the
+raw model score as `judgeScore`, and records stable `consistencyViolations`. The check never
+parses candidate prose or decides whether an avoid item matches.
+
+Rubric `v2.6` removes the conflicting wrong-score clause for missing key facts. The existing
+omission-only partial rule now controls when the core answer is correct.
+
+Rubric `v2.7` (2026-08-21) makes the claim fields strict: `missingFacts`, `wrongClaims`, and
+`avoidMatches` must be arrays of the right element type. A non-array or non-string-element value
+maps the verdict to **error** with stable `invalid-missing-facts` / `invalid-wrong-claims`
+violations instead of silent normalization; returned fields stay arrays. The omission-only-wrong
+check fires only when both `wrongClaims` and `avoidMatches` are valid, so an invalid field reports
+its own violation rather than a competing score rule.
+
+`avoidMatches` has its own element rules under `v2.7`: entries must be **unique one-based
+integers within the golden `avoid` range** (`1 <= index <= avoid.length`). A duplicate,
+zero, non-integer, or out-of-range entry emits a stable `invalid-avoid-match` violation and maps
+the verdict to **error**. The consistency check always sees the raw model array, but the emitted
+verdict collapses an invalid `avoidMatches` to `[]`; a valid fired index is retained even when a
+different violation maps the verdict to error.
+
+Rubric `v2.8` (2026-08-24) rejects a `partial` verdict when the core answer is correct and all
+three issue arrays are empty. Such a verdict has no recorded reason for the lower score.
+
+Every consistency error emits `coreAnswer: null`, whatever the judge returned. An **error** is not
+a grade, so it carries no graded core answer — the same shape the CLI-failure and
+unparseable-verdict paths already emit. The raw model score is still recoverable as `judgeScore`;
+the contradicted `coreAnswer` has no equivalent meaning and is not kept. This changes the emitted
+shape only. The judge prompt is byte-identical and no score changes, so it needs no rubric bump.
+
+**A consistency error is terminal; a judge-side CLI or parse error is not.** `--judge-stored`
+re-attempts an `error` verdict on an answered row only when the call itself failed
+(`isRetryableJudgeError` in `judge.mjs`). A consistency error carries `judgeScore`, so the same
+prompt contradicts itself again on every attempt: the row keeps its verdict, the file still
+finalizes, and no resume spends a second paid call on it.
+
 **Comparability rules:**
 
 - Re-judge identity is the **judge model + rubric + pack** tuple (currently `claude-sonnet-5` /
-  `v2.4` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
+  `v2.8` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
   `evidence-pack.mjs`, each with a short changelog in its own file header). Compare stored rows
-  only when that tuple and
-  prompt/pack-hash semantics match — otherwise re-judge the saved `rows[].answer` under the
+  only when that tuple, the exact selected-case snapshot, and prompt/pack-hash semantics match.
+  Otherwise, re-judge the saved `rows[].answer` under the
   target tuple first (cheap; feed back through `judgeCase` with the row's transcript).
+- `re-judge.mjs --flips-vs <baseline>` guards the **baseline** on the same contract as the source,
+  and that guard is **absolute**. The baseline selects which rows are worth paying to re-judge, so
+  a score difference is only a real flip when three things hold: the baseline's recorded
+  selected-case snapshot still reproduces, its judge tuple is the current one, and **every case id
+  shared with the source has identical content on both sides**. The last one needs its own check —
+  two cases files can each reproduce their own snapshot while the same id carries a different
+  question or golden on each side, which reads as a flip but is a different question. A mismatch
+  refuses before selection and before the first judge call, so `--dry-run` refuses too.
+  `--allow-non-identical` covers a source snapshot that no longer reproduces; it does **not** waive
+  a baseline mismatch. Re-judge the baseline under the current tuple instead. A passing guard is
+  reported as `guards.baseline` and recorded as `meta.baselineGuard`.
 - A `--no-judge` capture has no source judge tuple or verdict. Its first judging goes through
   `run-qa.mjs --judge-stored <results>` (2026-07-29, Solo todo 1261): judges every unjudged row
   in place, stamps the judge tuple, per-row + meta judge costs, and a `meta.judgeStored`
@@ -847,6 +971,13 @@ tuple (`packVersion: "p3"` vs `"p5"`), and a real run fails with
 `refusing non-identical re-judge: judge tuple differs (…)`. Drop `--allow-non-identical` only
 when the source artifact's tuple still matches the current one — then the re-judge is genuinely
 identical-input.
+
+**Effective score and agreement.** `re-judge.mjs` compares the **effective** score — `judgeScore`
+when a verdict is a consistency error, the recorded score otherwise — so a stored `wrong` and a
+recomputed `{score: "error", judgeScore: "wrong"}` count as the same grade in `--flips-vs`
+selection and in the per-row log. Each artifact row also carries `agreement`, which is `null`
+whenever either side has no grade at all: an unjudged source row, or an effective `error` from a
+CLI crash or an unparseable reply. A missing measurement is not a disagreement.
 
 Every flag `re-judge.mjs` accepts:
 
