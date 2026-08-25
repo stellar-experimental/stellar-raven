@@ -1,10 +1,28 @@
 # Agent model roster
 
-Verified 2026-07-15 against Solo project 49, the installed CLI help/model catalogs, live Solo
-spawns, provider announcements/docs, and independent Artificial Analysis results. This is the
-availability, mechanics, and external-evidence record for repo-work fan-out. `AGENTS.md` owns the
-repo's active model/effort policy; the global `fan-solo` family owns Solo workflow selection.
-Historical house ratings are not an operational routing surface.
+Runtime facts re-verified 2026-08-25 against the installed CLIs and their on-disk model catalogs
+on this host. The external-benchmark snapshot below is still the 2026-07-09 pass and was **not**
+re-checked; it is labelled in place. Solo-spawn mechanics carry over from the 2026-07-15 pass.
+
+This is the availability, mechanics, and external-evidence record for repo-work fan-out.
+`AGENTS.md` owns the repo's active model/effort policy; the global `fan-solo` family owns Solo
+workflow selection. Historical house ratings are not an operational routing surface.
+
+### How to re-verify the runtime facts
+
+Every id, context window, and effort list in the next three sections comes from a catalog the CLI
+caches on disk. Read them directly instead of trusting this file:
+
+```sh
+codex --version && jq '.client_version, (.models[]|{slug, visibility, context_window, max_context_window, efforts:[.supported_reasoning_levels[].effort]})' ~/.codex/models_cache.json
+grok --version && grok models && jq '.grok_version, (.models[].info|{id, context_window, efforts:[.reasoning_efforts[]|{id, default}]})' ~/.grok/models_cache.json
+claude --version && claude --help | grep -A6 -- --model
+opencode --version
+```
+
+`grok models` reaches the network and is the only source for which model is the CLI default. It
+can print `Settings fetch failed` warnings first; those are harmless and it still exits zero. The
+`jq` read of the cache is offline and covers everything else.
 
 ## Callable Solo runtimes
 
@@ -12,8 +30,11 @@ Historical house ratings are not an operational routing surface.
 |---|---|---|---|
 | Codex | `codex --yolo` | `gpt-5.6-sol` (host config: high; catalog default: low) | `-m <model>` |
 | Claude | `claude --dangerously-skip-permissions` | account/runtime default | `--model <alias-or-id>` |
-| Grok | `grok --yolo` | `grok-4.5` | `-m <model>` |
+| Grok | `grok --yolo` | `grok-4.6` | `-m <model>` |
 | OpenCode | `opencode --auto` | runtime/provider dependent | `-m <provider/model>` |
+
+Installed versions on 2026-08-25: Codex `0.149.1`, Claude Code `2.1.245`, Grok `1.0.5`,
+OpenCode `1.18.22`.
 
 The saved commands already contain permission-bypass flags, but generic runtimes can still expose
 setup/trust prompts. Inspect
@@ -22,13 +43,22 @@ one. In particular, passing a second Codex `--yolo` in `extra_args` kills the sp
 
 ## Codex models
 
-Installed Codex CLI `0.144.4` exposes these relevant ids:
+Installed Codex CLI `0.149.1` exposes these relevant ids:
 
-| id | catalog positioning | Codex context | reasoning efforts |
-|---|---|---:|---|
-| `gpt-5.6-sol` | latest frontier agentic coding model | 372k | low, medium, high, xhigh, max, ultra |
-| `gpt-5.6-terra` | balanced everyday agentic coding model | 372k | low, medium, high, xhigh, max, ultra |
-| `gpt-5.6-luna` | fast/affordable agentic coding model | 372k | low, medium, high, xhigh, max |
+| id | catalog positioning | working context | max context | reasoning efforts |
+|---|---|---:|---:|---|
+| `gpt-5.6-sol` | latest frontier agentic coding model | 272k | 872k | low, medium, high, xhigh, max, ultra |
+| `gpt-5.6-terra` | balanced everyday agentic coding model | 272k | 872k | low, medium, high, xhigh, max, ultra |
+| `gpt-5.6-luna` | fast/affordable agentic coding model | 272k | 872k | low, medium, high, xhigh, max |
+| `gpt-daybreak-blue-latest` | frontier model for broad defensive cybersecurity work | 272k | 872k | low, medium, high, xhigh, max, ultra |
+
+`gpt-daybreak-blue-latest` is listed as callable but is **not** a house lane. `AGENTS.md` does not
+route to it. Treat it as evidence-only until a gauntlet says otherwise.
+
+Those four are every model the catalog marks `visibility: list` today. It also lists the
+prior-generation `gpt-5.5`, `gpt-5.4`, `gpt-5.4-mini`, and `gpt-5.3-codex-spark`, which are kept
+for reference and are not fan-out lanes, plus one `visibility: hide` entry, `codex-auto-review`,
+which Codex uses internally for approval review and which is never a fan-out target.
 
 Solo examples (the saved Codex tool already supplies `--yolo`):
 
@@ -49,15 +79,19 @@ or Luna slug explicitly.
 
 ## Grok models
 
-Installed Grok CLI `0.2.101` reports:
+Installed Grok CLI `1.0.5` reports exactly two models:
 
-- `grok-4.5` — default frontier model, 500k context, low/medium/high reasoning.
-- `grok-composer-2.5-fast` — fast coding model without the same reasoning-effort control.
+- `grok-4.6` — **default** frontier model, 500k context, low/medium/high/**xhigh** reasoning,
+  defaulting to high.
+- `grok-4.5` — prior frontier model, 500k context, low/medium/high reasoning, defaulting to high.
+
+Two changes since the 2026-07-15 pass. Grok 4.6 adds an `xhigh` effort that 4.5 does not have, and
+`grok-composer-2.5-fast` is gone from the catalog.
 
 Solo's Grok tool is a first-class vendor-diverse review arm:
 
 ```text
-spawn_agent(agent_tool_id=<Grok>, extra_args=["-m", "grok-4.5", "--reasoning-effort", "high"])
+spawn_agent(agent_tool_id=<Grok>, extra_args=["-m", "grok-4.6", "--reasoning-effort", "high"])
 ```
 
 Do not repeat `--yolo`; the saved tool command already includes it.
@@ -68,6 +102,10 @@ delivery. Verify status/output after spawn. For bounded read-only review, curren
 blind trust input or assume saved `--yolo` alone makes generic tool non-interactive.
 
 ## Public evidence snapshot — 2026-07-09
+
+**Not re-verified in the 2026-08-25 pass.** Every figure below is the 2026-07-09 reading and
+describes Grok **4.5**, not the 4.6 that is now the CLI default. No public Grok 4.6 figure has been
+recorded here. Do not quote this table as current.
 
 This is directional evidence for calibration if house axes are reintroduced, not a second
 operational routing table. Public API prices do not define a house `cost` score; any future score
@@ -117,15 +155,17 @@ Relevant external evidence:
 
 ### Context and effort boundaries
 
-- The installed Codex catalog exposes a 372k working context for Sol, Terra, and Luna; the public
-  API/Artificial Analysis specification reports a 1M model context. Say **372k Codex context** in
-  repo fan-out guidance so these two surfaces are not conflated.
+- The installed Codex catalog reports two different context numbers per model: a 272k
+  `context_window` and an 872k `max_context_window`, with an `effective_context_window_percent` of
+  95. The public API/Artificial Analysis specification reports a 1M model context. Say **272k
+  working Codex context** in repo fan-out guidance so these surfaces are not conflated. The
+  2026-07-15 pass recorded 372k; that figure was wrong or has since changed, and it is retired.
 - The installed catalog exposes low/medium/high/xhigh/max/ultra for Sol and Terra, and
   low/medium/high/xhigh/max for Luna. Its catalog defaults are low for Sol and medium for
   Terra/Luna. This host's `~/.codex/config.toml` selects Sol at high effort, and the Solo Codex
   command inherits that host configuration; the repository itself does not set that default.
-- Grok 4.5 exposes low/medium/high and defaults to high. The installed Grok CLI reports 500k
-  context.
+- Grok 4.6 exposes low/medium/high/xhigh and defaults to high. Grok 4.5 exposes low/medium/high
+  and defaults to high. The installed Grok CLI reports 500k context for both.
 
 ### What remains to calibrate
 
@@ -138,25 +178,30 @@ Relevant external evidence:
   low/medium/high/xhigh/max curve on this repo's work.
 
 To calibrate the currently unscored models, run the same representative repo tasks at explicit configurations:
-Sol `high` and `max`, Terra `medium` and `max`, Luna `medium` and `max`, and Grok 4.5 `high`.
+Sol `high` and `max`, Terra `medium` and `max`, Luna `medium` and `max`, and Grok 4.6 `high`
+and `xhigh`.
 Record unsupervised completion quality, retries/interventions, wall time, allowance or credit
 consumption, and a blind paired taste judgment from a reviewer other than the author. Treat
 Sol/Terra `ultra` as a separate multi-agent arm.
 
 ## Claude aliases
 
-Claude Code `2.1.210` accepts `fable`, `opus`, and `sonnet` aliases. Fable 5 must be invoked as
+Claude Code `2.1.245` accepts `fable`, `opus`, and `sonnet` aliases. Fable 5 must be invoked as
 `--model fable` (or the full `claude-fable-5` id); `--model fable-5` is not a valid CLI alias.
 Solo's saved Claude command already includes `--dangerously-skip-permissions`.
 
 ## Evidence boundaries
 
-- GPT-5.6 Sol/Terra, Claude Fable/Opus, and Grok 4.5 are verified callable and covered by the
-  active routing policy in `AGENTS.md`. Luna is verified callable but intentionally remains
+- GPT-5.6 Sol/Terra/Luna, Claude Fable/Opus, and Grok 4.6 are **catalog-listed** and selectable
+  from their CLIs, and are covered by the active routing policy in `AGENTS.md`. Catalog presence
+  is not proof of a working call. Two of them carry dated call evidence from this pass: on
+  2026-08-25 `gpt-5.6-sol` at high effort and `grok-4.6` at high effort each completed an
+  independent review of this repository. The others are listed-and-selectable only. Luna stays
   evidence-only, not an active house lane. External benchmarks support interim roles; local
   gauntlets or Tyler's direct judgment would be required before reintroducing house
   cost/intelligence/taste scores.
-- The public demo's Workers AI/provider models are a separate surface and measurement contract
-  (`research/demo-model-gauntlet-2026-07-07.md`). Do not infer Solo-agent quality from that table.
+- The public demo's Workers AI/provider models are a separate surface and measurement contract.
+  Its current verdict is `research/gauntlets/2026-08-06-primary-selection-summary.md`; the
+  2026-07-07 gauntlet is superseded. Do not infer Solo-agent quality from either.
 - QA answering and judge defaults are another separate measurement contract (`run-evals` skill).
   A new fan-out model never changes those defaults implicitly.
