@@ -95,11 +95,12 @@ Reject the candidate after any blocking control, security, exposure, or comparab
 
 | Lane | Agent | Model and effort | Write set | Status |
 | --- | --- | --- | --- | --- |
-| Coordination and ledger | root | Codex, current | ledger and reconciliation | active |
+| Coordination and ledger | root | Codex, current | ledger and reconciliation | complete |
 | Description candidate | `connector-impl`, pane `wE:p2` | Terra high | `src/mcp/tools.ts`, focused tests | complete |
 | Evaluation design | `connector-eval`, pane `wE:p3` | Sol high | read-only report | complete |
 | Product and policy review | `connector-policy`, pane `wE:p4` | Fable high | read-only report | complete |
-| Adversarial pre-spend review | `connector-adversary`, pane `wE:p5` | Grok high | read-only `/tmp` report | delta review pending |
+| Adversarial pre-spend review | `connector-adversary`, pane `wE:p5` | Grok high | read-only `/tmp` report | complete |
+| Independent final review | `connector-final`, pane `wE:p6` | Fable high | read-only `/tmp` report | complete |
 
 ## Results
 
@@ -334,15 +335,39 @@ First-pair mechanism review:
 - B1-1 used Lumenloop and Scout only.
 - This violates the cross-service coverage gate.
 - The open-world control used no tools in either arm.
-- B1-1 therefore also fails the absolute open-world recovery gate.
+- The question names no entity, so neither arm could run the requested recovery.
+- This is a shared case-design condition, not a B1 regression.
 - The closed-world control stopped at `scout.getBuilders` in both arms.
 - The soft-empty control used `scout.getPartner` and explained `soft-empty` in both arms.
 - The narrow debugging control used no Scout prior-art detour in either arm.
 - The escrow design target used Scout prior art in both arms.
 - Each arm recorded one execution failure on the escrow target, so B1 added no new execution failure.
+- A1 made six `scout.searchRepos` calls on the escrow target, above its stated bound.
+- A1 misused `.data` on a skill-read result despite the long description.
+- B1-1 treated a skill section array as an object, then recovered with later scripts.
+- The answering agent also read this repository's `AGENTS.md` in both arms.
+- This shared harness input weakens external validity but does not bias the comparison.
+- Search result bodies were not stored, so result-hit differences remain unreviewable.
 
 The required first-pair stop fired. B1-2, A2, and all judging were cancelled before spend.
 
 ## Outcome
 
-Pending.
+Reject candidate `1f961ab1116bb23f97c32b14502401ccb2441be7` under the preregistered rules.
+
+- The first-pair stop fired correctly after two independent treatment regressions.
+- The indexer target lost its Scout prior-art pass and required-plan coverage.
+- The MoneyGram control lost the Stellar Docs family and its official SEP citation.
+- Each regression has one observation per arm.
+- Therefore, the causal claim remains inconclusive at this sample size.
+- The result is sufficient to reject this candidate under the fixed stop rules.
+- The runtime service efficacy stayed unchanged.
+- Claude Code model-planning efficacy became narrower in two of eight cases.
+- No more paid run or judge call has decision value for this candidate.
+- Do not deploy, merge, or submit this candidate to the Directory.
+- Ask SDF security to confirm the exact scope of item 8 before another implementation.
+- Confirm whether the Directory client injects MCP server instructions.
+- Address the per-call `nextSteps` size under the literal Policy 5.B wording.
+- Prefer a host-owned checkpoint design for missing source families.
+- Fix the harness before another paid round.
+- Test a redesigned candidate only after the scope and client questions have answers.
