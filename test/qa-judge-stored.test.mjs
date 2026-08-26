@@ -225,6 +225,14 @@ describe("run-qa --judge-stored", () => {
       expect(written.meta.judgeRubric).toBe(JUDGE_RUBRIC);
       expect(written.meta.totalJudgeCostUsd).toBeCloseTo(0.25);
       expect(written.meta.totalCostUsd).toBeCloseTo(0.6 + 0.25);
+      expect(written.meta).toMatchObject({
+        strictCorrectShare: 0.5,
+        halfCreditShare: 0.5,
+        coreAnswerCorrectShare: 1,
+        gradedCoreAnswerNullCount: 0,
+        meanContinuousCoverage: 1,
+        continuousCoverageRowCount: 1
+      });
       // judgedIds is spend provenance: only rows that actually reached a paid
       // judge belong in it. The empty-answer row is stamped without a call.
       expect(written.meta.judgeStored).toMatchObject({
@@ -524,6 +532,29 @@ describe("run-qa --judge-stored", () => {
       await expect(
         judgeStoredResults(resultsPath, { judge: stubJudge(), log: () => {} })
       ).rejects.toThrow(/evidence pack/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("treats an absent stored judge panel as a single-call panel", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      results.meta.judgeModel = "stub-judge";
+      results.meta.judgeRubric = JUDGE_RUBRIC;
+      results.rows[0].verdict = { ...stubVerdict };
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+
+      await expect(
+        judgeStoredResults(resultsPath, {
+          judgeModel: "stub-judge",
+          judgePanel: 2,
+          judge: stubJudge(),
+          log: () => {}
+        })
+      ).rejects.toThrow(/panel size 1; refusing to mix in 2/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

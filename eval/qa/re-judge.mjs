@@ -5,6 +5,7 @@
  * Usage:
  *   node eval/qa/re-judge.mjs <results.json> --ids id-a,id-b
  *   node eval/qa/re-judge.mjs <results.json> --flips-vs <baseline.json>
+ *   node eval/qa/re-judge.mjs <results.json> --ids id-a --cases-ref worktree
  *
  * A saved QA result records the full selected input snapshot. Before spending
  * on a re-judge, this tool reconstructs that snapshot from meta.casesPath and
@@ -14,13 +15,23 @@
  * baseline decides which rows get paid for. That baseline guard is absolute.
  * --allow-non-identical makes an exceptional SOURCE decision explicit in the
  * output artifact; it never waives a baseline mismatch.
+ * --cases-ref worktree selects current compiled cases without a revision pin.
+ * The ordinary identity and golden-time guards still apply in that mode.
  */
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { buildTranscriptEvidence, JUDGE_MODEL, JUDGE_RUBRIC, judgeCase } from "./judge.mjs";
+import {
+  buildAgentErrorVerdict,
+  buildTranscriptEvidence,
+  hasSuccessfulAnswer,
+  judgeCase,
+  judgeCasePanel,
+  JUDGE_MODEL,
+  JUDGE_RUBRIC
+} from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import {
   PLAYGROUND_ARTIFACT_CONTRACT,
@@ -30,7 +41,7 @@ import {
 
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
-const TOOL_VERSION = "re-judge/v3";
+const TOOL_VERSION = "re-judge/v4";
 const GIT_MAX_BUFFER = 32 * 1024 * 1024;
 
 function sha256(value) {
@@ -99,7 +110,9 @@ function parseArgs(argv) {
   let flipsVs;
   let judgeModel = JUDGE_MODEL;
   let casesRef;
+  let judgePanel = 1;
   let allowNonIdentical = false;
+  let allowGoldenDrift = false;
   let allowEmpty = false;
   let dryRun = false;
 
@@ -119,15 +132,23 @@ function parseArgs(argv) {
     } else if (arg === "--cases-ref") {
       if (casesRef !== undefined) fail("--cases-ref may be supplied only once");
       casesRef = argv[++i];
-      if (!casesRef || casesRef.startsWith("--")) fail("--cases-ref requires a Git revision");
+      if (!casesRef || casesRef.startsWith("--")) fail("--cases-ref requires a Git revision or worktree");
+    } else if (arg === "--judge-panel") {
+      const value = argv[++i];
+      judgePanel = Number(value);
+      if ((judgePanel !== 2 && judgePanel !== 3) || !Number.isInteger(judgePanel)) {
+        fail(`--judge-panel must be 2 or 3, got ${value}`);
+      }
     } else if (arg === "--allow-non-identical") {
       allowNonIdentical = true;
+    } else if (arg === "--allow-golden-drift") {
+      allowGoldenDrift = true;
     } else if (arg === "--allow-empty") {
       allowEmpty = true;
     } else if (arg === "--dry-run") {
       dryRun = true;
     } else if (arg === "--help" || arg === "-h") {
-      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--cases-ref <git-revision>] [--allow-non-identical] [--allow-empty] [--dry-run]");
+      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
       process.exit(0);
     } else if (arg.startsWith("--")) {
       fail(`unknown flag ${arg}`);
@@ -140,16 +161,36 @@ function parseArgs(argv) {
   if ((ids !== undefined) === (flipsVs !== undefined)) {
     fail("provide exactly one of --ids or --flips-vs <baseline-results.json>");
   }
-  return { resultsPath: positional[0], ids, flipsVs, judgeModel, casesRef, allowNonIdentical, allowEmpty, dryRun };
+  return {
+    resultsPath: positional[0],
+    ids,
+    flipsVs,
+    judgeModel,
+    judgePanel,
+    casesRef,
+    allowNonIdentical,
+    allowGoldenDrift,
+    allowEmpty,
+    dryRun
+  };
+}
+
+function mappedRepositoryRelativePath(casesPath, repoRoot) {
+  const absolutePath = path.isAbsolute(casesPath) ? path.resolve(casesPath) : path.resolve(repoRoot, casesPath);
+  const relativePath = path.relative(repoRoot, absolutePath);
+  if (relativePath && relativePath !== ".." && !relativePath.startsWith(`..${path.sep}`) && !path.isAbsolute(relativePath)) {
+    return relativePath.split(path.sep).join("/");
+  }
+  const normalized = absolutePath.split(path.sep).join("/");
+  const marker = "/eval/qa/";
+  const markerIndex = normalized.lastIndexOf(marker);
+  return markerIndex === -1 ? null : `eval/qa/${normalized.slice(markerIndex + marker.length)}`;
 }
 
 function repositoryRelativePath(casesPath, repoRoot) {
-  const absolutePath = path.isAbsolute(casesPath) ? path.resolve(casesPath) : path.resolve(repoRoot, casesPath);
-  const relativePath = path.relative(repoRoot, absolutePath);
-  if (!relativePath || relativePath === ".." || relativePath.startsWith(`..${path.sep}`) || path.isAbsolute(relativePath)) {
-    fail(`source results meta.casesPath is outside the repository: ${casesPath}`);
-  }
-  return relativePath.split(path.sep).join("/");
+  const mapped = mappedRepositoryRelativePath(casesPath, repoRoot);
+  if (!mapped) fail(`source results meta.casesPath is outside the repository: ${casesPath}`);
+  return mapped;
 }
 
 function git(repoRoot, args, label) {
@@ -195,8 +236,12 @@ export function verifySourceCases(results, sourceResultsPath, { casesRef, repoRo
   }
 
   const historical = casesRef === undefined ? null : readCasesAtRevision(casesPath, casesRef, repoRoot);
+  const mappedCasesPath = mappedRepositoryRelativePath(casesPath, repoRoot);
   const casePathCandidates = path.isAbsolute(casesPath)
-    ? [casesPath]
+    ? [
+        ...(mappedCasesPath ? [path.resolve(repoRoot, mappedCasesPath)] : []),
+        casesPath
+      ]
     : [
         path.resolve(path.dirname(sourceResultsPath), casesPath),
         path.resolve(REPO_ROOT, casesPath)
@@ -240,6 +285,51 @@ export function verifySourceCases(results, sourceResultsPath, { casesRef, repoRo
       matches
     }
   };
+}
+
+function goldenDates(kase) {
+  return [
+    ["truth.asOf", kase?.truth?.asOf],
+    ["truth.verified.date", kase?.truth?.verified?.date],
+    ["truth.verificationDate", kase?.truth?.verificationDate]
+  ].filter(([, value]) => typeof value === "string" && value);
+}
+
+export function resolveCasesRef(results, explicitCasesRef) {
+  if (explicitCasesRef === "worktree") return undefined;
+  if (explicitCasesRef !== undefined) return explicitCasesRef;
+  const recorded = results?.meta?.sourceIdentity?.runnerRevision;
+  return typeof recorded === "string" && recorded ? recorded : undefined;
+}
+
+export function isUngradeableSavedRow(row) {
+  const legacyAgentError =
+    row?.verdict?.score === "error" &&
+    row.verdict.promptSha256 == null &&
+    typeof row.verdict.judgeScore !== "string";
+  return !hasSuccessfulAnswer(row?.answer, row?.agent?.failure) || legacyAgentError;
+}
+
+export function goldenTimeConsistency(results, selectedRows, caseById) {
+  const finishedAt = results?.meta?.finishedAt;
+  const finishedAtMs = Date.parse(finishedAt);
+  const violations = [];
+  if (!Number.isFinite(finishedAtMs)) {
+    return { matches: true, finishedAt: finishedAt ?? null, checkedIds: [], violations };
+  }
+  const checkedIds = [];
+  for (const row of selectedRows) {
+    const kase = caseById.get(row.id);
+    if (kase?.tags?.freshness !== "live" && kase?.tags?.freshness !== "scheduled") continue;
+    checkedIds.push(row.id);
+    for (const [field, value] of goldenDates(kase)) {
+      const goldenMs = Date.parse(value);
+      if (Number.isFinite(goldenMs) && goldenMs > finishedAtMs) {
+        violations.push({ id: row.id, freshness: kase.tags.freshness, field, value });
+      }
+    }
+  }
+  return { matches: violations.length === 0, finishedAt, checkedIds, violations };
 }
 
 export function tupleGuard(results, judgeModel) {
@@ -340,10 +430,16 @@ export function baselineRefusalReasons(guard) {
 }
 export function judgeCostAccounting(rows, expectedJudgeCalls) {
   const reportedCosts = rows.map((row) => row.new?.costUsd).filter((cost) => Number.isFinite(cost));
+  const reportedJudgeCalls = rows.reduce(
+    (sum, row) => sum + (Number.isInteger(row.new?.meta?.panelReportedCostCount)
+      ? row.new.meta.panelReportedCostCount
+      : Number.isFinite(row.new?.costUsd) ? 1 : 0),
+    0
+  );
   return {
     expectedJudgeCalls,
-    reportedJudgeCalls: reportedCosts.length,
-    missingJudgeCosts: expectedJudgeCalls - reportedCosts.length,
+    reportedJudgeCalls,
+    missingJudgeCosts: expectedJudgeCalls - reportedJudgeCalls,
     totalJudgeCostUsd: Number(reportedCosts.reduce((sum, cost) => sum + cost, 0).toFixed(12))
   };
 }
@@ -408,6 +504,7 @@ export async function rejudgeRows({
   selectedRows,
   caseById,
   judgeModel,
+  judgePanel = 1,
   judge = judgeCase,
   checkpoint,
   log = console.log
@@ -416,13 +513,28 @@ export async function rejudgeRows({
   for (const [index, row] of selectedRows.entries()) {
     const kase = caseById.get(row.id);
     if (!kase) fail(`source cases file no longer contains selected case ${row.id}`);
-    if (typeof row.answer !== "string") fail(`source results row ${row.id} has no saved answer string`);
-    if (!Array.isArray(row.transcript)) fail(`source results row ${row.id} has no saved transcript array`);
 
     log(`[${index + 1}/${selectedRows.length}] ${row.id} …`);
-    const verdict = await judge(
+    if (isUngradeableSavedRow(row)) {
+      const verdict = row.verdict?.score === "error"
+        ? row.verdict
+        : buildAgentErrorVerdict(row.agent?.failure);
+      rows.push({
+        id: row.id,
+        original: row.verdict,
+        new: verdict,
+        agreement: verdictAgreement(row.verdict, verdict),
+        skipped: { reason: "unsuccessful-answer" },
+        evidencePack: { packVersion: PACK_VERSION, chars: 0, sha256: null }
+      });
+      await checkpoint(rows);
+      log(`${effectiveVerdictScore(row.verdict) ?? "unjudged"} → skipped (unsuccessful answer)`);
+      continue;
+    }
+    if (!Array.isArray(row.transcript)) fail(`source results row ${row.id} has no saved transcript array`);
+    const verdict = await judgeCasePanel(
       { ...kase, candidateAnswer: row.answer, transcript: row.transcript },
-      { model: judgeModel }
+      { model: judgeModel, panelSize: judgePanel, judge }
     );
     const transcriptEvidence = buildTranscriptEvidence({
       ...kase,
@@ -456,12 +568,26 @@ async function main() {
     assertPlaygroundArtifactMeta(results.meta);
   }
 
-  const identity = verifySourceCases(results, sourceResultsPath, { casesRef: options.casesRef });
+  const casesRef = resolveCasesRef(results, options.casesRef);
+  const casesMode = casesRef === undefined ? "worktree" : "revision";
+  const effectiveOptions = { ...options, casesRef };
+  const identity = verifySourceCases(results, sourceResultsPath, { casesRef });
   const tuple = tupleGuard(results, options.judgeModel);
-  const selection = selectRows(results, options, identity);
+  const selection = selectRows(results, effectiveOptions, identity);
+  const goldenTime = goldenTimeConsistency(results, selection.rows, identity.caseById);
+  if (!goldenTime.matches && !options.allowGoldenDrift) {
+    const details = goldenTime.violations
+      .map((item) => `${item.id} ${item.field}=${item.value}`)
+      .join(", ");
+    fail(
+      `refusing time-inconsistent re-judge: source run finished at ${goldenTime.finishedAt}, but selected live/scheduled goldens are newer: ${details}. ` +
+        "Pass --allow-golden-drift to acknowledge this golden drift explicitly."
+    );
+  }
   const nonIdentical = !identity.guard.matches || !tuple.matches;
   const guards = {
     cases: identity.guard,
+    casesMode,
     ...(identity.revision
       ? {
           historicalCases: {
@@ -472,6 +598,7 @@ async function main() {
         }
       : {}),
     tuple,
+    goldenTime: { ...goldenTime, allowGoldenDrift: options.allowGoldenDrift },
     ...(selection.baselineGuard ? { baseline: selection.baselineGuard } : {}),
     allowNonIdentical: options.allowNonIdentical,
     wouldRefuse: nonIdentical && !options.allowNonIdentical
@@ -522,6 +649,7 @@ async function main() {
       selectedIds: selection.rows.map((row) => row.id),
       emptySelection: selection.rows.length === 0,
       sourceCasesPath: identity.sourceCasesPath,
+      casesMode,
       casesSha256: identity.guard.actualCasesSha256,
       inputSnapshotCasesSha256: identity.guard.expectedCasesSha256,
       ...(identity.revision
@@ -536,8 +664,10 @@ async function main() {
       nonIdentical,
       identity: identity.guard,
       tuple,
+      goldenTime: { ...goldenTime, allowGoldenDrift: options.allowGoldenDrift },
       ...(selection.baselineGuard ? { baselineGuard: selection.baselineGuard } : {}),
       judgeModel: options.judgeModel,
+      ...(options.judgePanel > 1 ? { judgePanel: options.judgePanel } : {}),
       judgeRubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
       startedAt,
@@ -550,7 +680,10 @@ async function main() {
         ...baseMeta,
         completedIds: rows.map((row) => row.id),
         promptSha256ById: Object.fromEntries(rows.map((row) => [row.id, row.new.promptSha256 ?? null])),
-        costs: judgeCostAccounting(rows, selection.rows.length),
+        costs: judgeCostAccounting(
+          rows,
+          selection.rows.filter((row) => !isUngradeableSavedRow(row)).length * options.judgePanel
+        ),
         finishedAt
       },
       rows
@@ -564,6 +697,7 @@ async function main() {
     selectedRows: selection.rows,
     caseById: identity.caseById,
     judgeModel: options.judgeModel,
+    judgePanel: options.judgePanel,
     checkpoint: (completedRows) => writeCheckpoint(completedRows),
     log: (message) => console.log(message)
   });
