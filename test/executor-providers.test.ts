@@ -92,6 +92,46 @@ describe("host structural service evidence", () => {
       { outcome: "soft-empty", hasServiceData: undefined }
     ]);
   });
+
+  it("captures only the named source-metadata locations", async () => {
+    const calls: OpLedgerCall[] = [];
+    const fetchImpl: FetchLike = async () =>
+      Response.json({
+        rfps: [],
+        meta: {
+          generatedAt: "2026-08-26T12:00:00Z",
+          counts: { returned: 0, total: 14 },
+          scfRound: {
+            asOf: "2026-08-26",
+            currentRound: 40,
+            currentPhase: "submission",
+            submissionWindow: { closes: "2026-09-01T00:00:00Z", secret: "excluded" }
+          },
+          arbitrary: { generatedAt: "excluded" }
+        },
+        rows: [{ asOf: "excluded" }]
+      });
+    const providers = buildSandbox(catalog, skillSource, env, {
+      fetchImpl,
+      onOpCall: (call) => calls.push(call)
+    });
+
+    await fnsOf(providers, "scout").getRfps!({});
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.sourceMetadata).toEqual([
+      { path: "data.meta.generatedAt", value: "2026-08-26T12:00:00Z" },
+      { path: "data.meta.counts.total", value: 14 },
+      { path: "data.meta.scfRound.asOf", value: "2026-08-26" },
+      { path: "data.meta.scfRound.currentRound", value: 40 },
+      { path: "data.meta.scfRound.currentPhase", value: "submission" },
+      {
+        path: "data.meta.scfRound.submissionWindow.closes",
+        value: "2026-09-01T00:00:00Z"
+      }
+    ]);
+    expect(JSON.stringify(calls[0]?.sourceMetadata)).not.toContain("excluded");
+  });
 });
 
 describe("sandbox surface shape", () => {
@@ -421,13 +461,27 @@ describe("dispatch behavior (error-as-data, exposure, parallelism)", () => {
 // preludes over them exactly as the executor module does. Shared by the
 // envelope-guard and skill.read-guard suites so the scope reconstruction
 // cannot drift from itself.
-function guardedNamespaces(fetchImpl?: FetchLike) {
+function guardedNamespaces(
+  fetchImpl?: FetchLike,
+  beforePrelude?: (namespaces: Record<string, Record<string, unknown>>) => void
+) {
   const providers = buildSandbox(catalog, skillSource, env, fetchImpl ? { fetchImpl } : undefined);
   const ns: Record<string, Record<string, unknown>> = {};
   for (const p of providers) ns[p.name] = { ...p.fns };
+  beforePrelude?.(ns);
   const preludes = providers.map((p) => p.prelude ?? "").join("\n");
   new Function(...Object.keys(ns), preludes)(...Object.values(ns));
   return ns as Record<string, Record<string, (args?: unknown) => Promise<unknown>>>;
+}
+
+async function guardSyntheticPayload<T>(payload: T): Promise<{ ok: true; data: T }> {
+  const ns = guardedNamespaces(undefined, (namespaces) => {
+    namespaces.lumenloop!.search_directory = async () => ({ ok: true, data: payload });
+  });
+  return (await ns.lumenloop!.search_directory!({ query: "synthetic" })) as {
+    ok: true;
+    data: T;
+  };
 }
 
 describe("envelope guard prelude (fail-loud wrong-level access)", () => {
@@ -453,6 +507,50 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(r.data.projects[0]!.slug).toBe("soroswap"); // correct path untouched
     expect(() => (r as Record<string, unknown>).projects).toThrow(/use r\.data\.projects/);
     expect(() => (r as Record<string, unknown>).count).toThrow(/use r\.data\.count/);
+  });
+
+  it("object payload: array-only reads list keys and point at the obvious array", async () => {
+    const docsFetch: FetchLike = async () =>
+      Response.json({
+        hits: [
+          {
+            url: "https://developers.stellar.org/docs/learn/fundamentals/fees",
+            hierarchy: { lvl0: "Learn", lvl1: "Fees" }
+          }
+        ],
+        nbHits: 1,
+        page: 0,
+        nbPages: 1,
+        hitsPerPage: 5
+      });
+    const ns = guardedNamespaces(docsFetch);
+    const r = (await ns.stellarDocs!.search_docs!({ query: "fees" })) as {
+      data: Record<string, unknown> & { hits: Array<{ url: string }> };
+    };
+
+    // The common path reads the own `hits` property directly. The diagnostic
+    // proxy sits only on the payload prototype and does not wrap this array.
+    expect(r.data.hits.map((hit) => hit.url)).toEqual([
+      "https://developers.stellar.org/docs/learn/fundamentals/fees"
+    ]);
+    for (const key of ["map", "filter", "length"] as const) {
+      expect(() => r.data[key]).toThrow(/result payload is an object, not an array/);
+      expect(() => r.data[key]).toThrow(/Top-level payload keys: hits, nbHits, nbPages, page/);
+      expect(() => r.data[key]).toThrow(/Use r\.data\.hits for the array/);
+    }
+    expect(() => [...(r.data as unknown as Iterable<unknown>)]).toThrow(/iteration is array-only/);
+  });
+
+  it("array payload: map, filter, length, and iteration stay unchanged", async () => {
+    const arrayFetch: FetchLike = async () =>
+      Response.json({ success: true, data: ["payments", "defi"], error: null });
+    const ns = guardedNamespaces(arrayFetch);
+    const r = (await ns.lumenloop!.get_categories!({})) as { data: string[] };
+
+    expect(r.data.map((value) => value.toUpperCase())).toEqual(["PAYMENTS", "DEFI"]);
+    expect(r.data.filter((value) => value.startsWith("d"))).toEqual(["defi"]);
+    expect(r.data.length).toBe(2);
+    expect([...r.data]).toEqual(["payments", "defi"]);
   });
 
   it("payload meta is trapped too: r.meta on a scout-shaped envelope points at r.data.meta", async () => {
@@ -505,12 +603,99 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
 
   it("traps are non-enumerable: keys/JSON/structured clone (Workers RPC serialization) stay clean", async () => {
     const ns = guardedNamespaces(directoryFetch);
-    const r = (await ns.lumenloop!.search_directory!({ query: "soroswap" })) as object;
+    const r = (await ns.lumenloop!.search_directory!({ query: "soroswap" })) as {
+      data: object;
+    };
     expect(Object.keys(r).sort()).toEqual(["data", "ok"]);
+    expect(r.data).toBeInstanceOf(Object);
     expect(JSON.stringify(r)).toContain('"count":1'); // stringify never hits a trap
     // A script returning the raw envelope must still serialize across RPC.
     expect(() => structuredClone(r)).not.toThrow();
     expect((structuredClone(r) as { data: { count: number } }).data.count).toBe(1);
+  });
+
+  it("keeps class prototypes and instanceof behavior", async () => {
+    class Payload {
+      hits = [{ id: 1 }];
+      label = "class-payload";
+
+      describe() {
+        return this.label;
+      }
+    }
+
+    const payload = new Payload();
+    const r = await guardSyntheticPayload(payload);
+
+    expect(r.data).toBe(payload);
+    expect(r.data).toBeInstanceOf(Payload);
+    expect(r.data).toBeInstanceOf(Object);
+    expect(r.data.describe()).toBe("class-payload");
+    expect(Object.getPrototypeOf(Object.getPrototypeOf(r.data))).toBe(Payload.prototype);
+    expect(() => (r.data as unknown as { map: unknown }).map).toThrow(/Use r\.data\.hits/);
+  });
+
+  it("keeps a null-prototype payload outside the Object prototype chain", async () => {
+    const payload = Object.assign(Object.create(null) as Record<string, unknown>, {
+      hits: [{ id: 1 }]
+    });
+    const r = await guardSyntheticPayload(payload);
+
+    expect(r.data).toBe(payload);
+    expect(r.data instanceof Object).toBe(false);
+    expect(r.data.toString).toBeUndefined();
+    expect(Object.getPrototypeOf(Object.getPrototypeOf(r.data))).toBeNull();
+    expect(() => r.data.map).toThrow(/Use r\.data\.hits/);
+  });
+
+  it("keeps Map and Set internal-slot operations available", async () => {
+    const map = new Map([["project", "soroswap"]]);
+    const set = new Set(["payments"]);
+    const mapResult = await guardSyntheticPayload(map);
+    const setResult = await guardSyntheticPayload(set);
+
+    expect(mapResult.data).toBeInstanceOf(Map);
+    expect(mapResult.data.get("project")).toBe("soroswap");
+    mapResult.data.set("network", "stellar");
+    expect(mapResult.data.size).toBe(2);
+    expect(setResult.data).toBeInstanceOf(Set);
+    expect(setResult.data.has("payments")).toBe(true);
+    setResult.data.add("defi");
+    expect(setResult.data.size).toBe(2);
+    expect(() => structuredClone(mapResult)).not.toThrow();
+    expect(() => structuredClone(setResult)).not.toThrow();
+  });
+
+  it("does not invoke own getters while it searches for an array field", async () => {
+    let getterReads = 0;
+    const payload = { hits: [{ id: 1 }] } as Record<string, unknown>;
+    Object.defineProperty(payload, "danger", {
+      enumerable: true,
+      get() {
+        getterReads += 1;
+        throw new Error("danger getter ran");
+      }
+    });
+    const r = await guardSyntheticPayload(payload);
+
+    expect(getterReads).toBe(0);
+    expect(() => r.data.map).toThrow(/Use r\.data\.hits/);
+    expect(getterReads).toBe(0);
+    expect(() => r.data.danger).toThrow("danger getter ran");
+    expect(getterReads).toBe(1);
+  });
+
+  it("passes through frozen payloads and keeps them structured-clone safe", async () => {
+    const payload = Object.freeze({ hits: [{ id: 1 }] });
+    const originalPrototype = Object.getPrototypeOf(payload);
+    const r = await guardSyntheticPayload(payload);
+
+    expect(r.data).toBe(payload);
+    expect(Object.isFrozen(r.data)).toBe(true);
+    expect(Object.getPrototypeOf(r.data)).toBe(originalPrototype);
+    expect(r.data.hits).toEqual([{ id: 1 }]);
+    expect((r.data as unknown as { map?: unknown }).map).toBeUndefined();
+    expect(() => structuredClone(r)).not.toThrow();
   });
 
   it("codemode discovery fns are not guarded — their own shapes (hits at top level) stay accessible", async () => {

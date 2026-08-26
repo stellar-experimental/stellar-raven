@@ -82,6 +82,7 @@ import { callService } from "../adapters/index.ts";
 import type { AdapterEnv, FetchLike } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
 import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
+import type { SourceMetadataField, SourceMetadataPath } from "../policy/source-basis.ts";
 import { readSkill } from "../skills/store.ts";
 import type { SkillRetrievalFrom, SkillSource } from "../skills/source.ts";
 import { runSkill, assertRunnersWired } from "../skills/run.ts";
@@ -107,8 +108,95 @@ export type OpLedgerCall = {
   outcome: "ok" | "error" | "soft-empty";
   /** Host-only structural evidence signal. It never changes the service envelope. */
   hasServiceData?: boolean;
+  /** Exact allowlisted response metadata captured before sandbox projection. */
+  sourceMetadata?: SourceMetadataField[];
   ms: number;
 };
+
+type SourceMetadataRule = {
+  path: SourceMetadataPath;
+  segments: readonly string[];
+  kind: "string" | "number" | "string-or-number";
+};
+
+/**
+ * These are the only response locations the host may copy into the provenance
+ * sidecar. They cover payload-root metadata, the standard `meta` block and its
+ * `counts` block, plus Scout's named `meta.scfRound` scheduling summary.
+ * No recursive walk occurs, so row content, credentials and partner details
+ * cannot enter through an unexpected nested field with a familiar name.
+ */
+const SOURCE_METADATA_RULES: readonly SourceMetadataRule[] = [
+  { path: "data.generatedAt", segments: ["generatedAt"], kind: "string" },
+  { path: "data.dataAsOf", segments: ["dataAsOf"], kind: "string" },
+  { path: "data.asOf", segments: ["asOf"], kind: "string" },
+  { path: "data.matchMode", segments: ["matchMode"], kind: "string" },
+  { path: "data.match_mode", segments: ["match_mode"], kind: "string" },
+  { path: "data.count", segments: ["count"], kind: "number" },
+  { path: "data.total", segments: ["total"], kind: "number" },
+  { path: "data.meta.generatedAt", segments: ["meta", "generatedAt"], kind: "string" },
+  { path: "data.meta.dataAsOf", segments: ["meta", "dataAsOf"], kind: "string" },
+  { path: "data.meta.asOf", segments: ["meta", "asOf"], kind: "string" },
+  { path: "data.meta.matchMode", segments: ["meta", "matchMode"], kind: "string" },
+  { path: "data.meta.match_mode", segments: ["meta", "match_mode"], kind: "string" },
+  { path: "data.meta.count", segments: ["meta", "count"], kind: "number" },
+  { path: "data.meta.total", segments: ["meta", "total"], kind: "number" },
+  { path: "data.meta.counts.count", segments: ["meta", "counts", "count"], kind: "number" },
+  { path: "data.meta.counts.total", segments: ["meta", "counts", "total"], kind: "number" },
+  { path: "data.meta.scfRound.asOf", segments: ["meta", "scfRound", "asOf"], kind: "string" },
+  {
+    path: "data.meta.scfRound.currentRound",
+    segments: ["meta", "scfRound", "currentRound"],
+    kind: "string-or-number"
+  },
+  {
+    path: "data.meta.scfRound.currentPhase",
+    segments: ["meta", "scfRound", "currentPhase"],
+    kind: "string"
+  },
+  {
+    path: "data.meta.scfRound.submissionWindow.closes",
+    segments: ["meta", "scfRound", "submissionWindow", "closes"],
+    kind: "string"
+  }
+];
+
+function captureSourceMetadata(payload: unknown): SourceMetadataField[] | undefined {
+  if (payload === null || typeof payload !== "object" || Array.isArray(payload)) return undefined;
+  const fields: SourceMetadataField[] = [];
+  for (const rule of SOURCE_METADATA_RULES) {
+    let current: unknown = payload;
+    let present = true;
+    for (const segment of rule.segments) {
+      if (
+        current === null ||
+        typeof current !== "object" ||
+        Array.isArray(current) ||
+        !Object.prototype.hasOwnProperty.call(current, segment)
+      ) {
+        present = false;
+        break;
+      }
+      current = (current as Record<string, unknown>)[segment];
+    }
+    if (!present) continue;
+    if (current === null) {
+      fields.push({ path: rule.path, value: null });
+      continue;
+    }
+    if (rule.kind === "number" && typeof current === "number" && Number.isFinite(current)) {
+      fields.push({ path: rule.path, value: current });
+    } else if (rule.kind === "string" && typeof current === "string") {
+      fields.push({ path: rule.path, value: current });
+    } else if (
+      rule.kind === "string-or-number" &&
+      (typeof current === "string" || (typeof current === "number" && Number.isFinite(current)))
+    ) {
+      fields.push({ path: rule.path, value: current });
+    }
+  }
+  return fields.length > 0 ? fields : undefined;
+}
 
 /**
  * An ok envelope is not by itself factual service evidence. Collections carry
@@ -259,17 +347,42 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
     ([svc, ops]) =>
       `    for (const __op of ${JSON.stringify(ops)}) {\n` +
       `      const __orig = ${svc}[__op];\n` +
-      `      ${svc}[__op] = async (...__a) => __guardEnvelope(await __orig(...__a), "${svc}." + __op);\n` +
+      `      ${svc}[__op] = async (...__a) => __guardEnvelope(await __orig(...__a), "${svc}." + __op, true);\n` +
       `    }`
   );
   return [
     "    const __warned = new Set();",
-    "    const __guardEnvelope = (r, call) => {",
+    "    const __guardEnvelope = (r, call, guardPayloadShape = false) => {",
     '      if (r === null || typeof r !== "object" || typeof r.ok !== "boolean") return r;',
     "      const __trap = (key, desc) => {",
     "        try { Object.defineProperty(r, key, { ...desc, enumerable: false, configurable: true }); } catch {}",
     "      };",
     '      if (r.ok && r.data && typeof r.data === "object" && !Array.isArray(r.data)) {',
+    "        if (guardPayloadShape) {",
+    "          try {",
+    "            const data = r.data;",
+    "            const base = Object.getPrototypeOf(data);",
+    "            const bridge = Object.create(base);",
+    "            const arrayReads = new Set(['map', 'filter', 'length']);",
+    "            const diagnosticPrototype = new Proxy(bridge, {",
+    "              get(target, key, receiver) {",
+    "                if (key === Symbol.iterator || arrayReads.has(key)) {",
+    "                  const keys = Object.keys(data);",
+    "                  const arrays = keys.filter((candidate) => {",
+    "                    const descriptor = Object.getOwnPropertyDescriptor(data, candidate);",
+    "                    return descriptor && Object.prototype.hasOwnProperty.call(descriptor, 'value') && Array.isArray(descriptor.value);",
+    "                  });",
+    "                  const accessor = arrays.includes('hits') ? 'hits' : arrays.length === 1 ? arrays[0] : null;",
+    "                  const read = key === Symbol.iterator ? 'iteration' : '.' + String(key);",
+    "                  const suggestion = accessor ? ' Use r.data.' + accessor + ' for the array.' : '';",
+    "                  throw new Error(call + ' result payload is an object, not an array: ' + read + ' is array-only. Top-level payload keys: ' + (keys.length ? keys.join(', ') : '(none)') + '.' + suggestion);",
+    "                }",
+    "                return Reflect.get(target, key, receiver);",
+    "              }",
+    "            });",
+    "            Object.setPrototypeOf(data, diagnosticPrototype);",
+    "          } catch {}",
+    "        }",
     "        for (const key of Object.keys(r.data)) {",
     '          if (key === "ok" || key === "data" || key === "error" || key === "then" || key === "toJSON") continue;',
     '          const msg = call + \' result: ".\' + key + \'" is on the data payload, not the envelope — use r.data.\' + key + " (every call resolves to { ok: true, data } | { ok: false, error })";',
@@ -349,6 +462,10 @@ export function buildOpsFns(
         fetchImpl
       );
       const ms = Date.now() - t0;
+      const redactedResult = redactSecrets(result, secrets);
+      const sourceMetadata = redactedResult.ok
+        ? captureSourceMetadata(redactedResult.data)
+        : undefined;
       logEvent("op", {
         id: entry.id,
         outcome: result.ok ? "ok" : result.error.kind,
@@ -358,9 +475,10 @@ export function buildOpsFns(
         op: entry.id,
         outcome: result.ok ? "ok" : result.error.kind,
         hasServiceData: result.ok ? hasServiceData(result.data) : undefined,
+        sourceMetadata,
         ms
       });
-      return redactSecrets(result, secrets);
+      return redactedResult;
     };
   }
   return byService;
