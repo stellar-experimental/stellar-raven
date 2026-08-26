@@ -7,16 +7,18 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "On **2025-09-12**, WisdomTree launched the **WisdomTree Private Credit and Alternative Income Digital Fund**—fund ticker **CRDYX**, digital token ticker **CRDT**—on **Ethereum and Stellar**. It is an SEC-registered, non-diversified open-end mutual-fund share/digital representation tracking the Gapstow private-credit/alternative-income index before fees. It is not a stablecoin, Treasury MMF, bank deposit, FDIC-insured deposit, or SIPC-protected product.\n\nThe SEC prospectus makes WisdomTree Transfers' transfer-agent book-entry record determinative; blockchain records are supplementary and reconciled. Transfers require eligible/whitelisted wallets and the asset carries authorization/revocation/clawback controls. At launch the issuer described a $25 minimum, T+0 subscription, and T+2 redemption. Current Stellar metadata identifies issuer `GBWMQUGGGS5PC6CDJCZDCOVBA4LAJ6NYZVBFFXXCPRZCKW3ERQHJ2P45` and SAC `CBQDK4Y3EWQHI7S4EYYICV2GZ4ETC2376IKLZHH4MDCYXM5SWY2UK3P`; re-verify before integration. Preserve dated source roles where distributor wording differs rather than forcing one timeless label.",
+    "answer": "On **2025-09-12**, WisdomTree launched the **WisdomTree Private Credit and Alternative Income Digital Fund**—fund ticker **CRDYX**, digital token ticker **CRDT**—on **Ethereum and Stellar**. It is an SEC-registered, non-diversified open-end mutual-fund share/digital representation tracking the Gapstow private-credit/alternative-income index before fees. It is not a stablecoin, Treasury MMF, bank deposit, FDIC-insured deposit, or SIPC-protected product.\n\nThe SEC prospectus makes WisdomTree Transfers' transfer-agent book-entry record determinative; blockchain records are supplementary and reconciled. Transfers require eligible/whitelisted wallets and the asset carries authorization/revocation/clawback controls. At launch the issuer described a $25 minimum, T+0 subscription, and T+2 redemption. As of **2026-08-26**, Stellar metadata identifies issuer `GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45` and SAC `CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P`; re-verify before integration. Preserve dated source roles where distributor wording differs rather than forcing one timeless label.",
     "keyFacts": [
       "Identifies CRDYX/CRDT, private-credit/alternative-income nature, and Ethereum+Stellar launch date.",
-      "Explains transfer-agent record priority, eligibility/controls, and exact dated Stellar issuer/SAC."
+      "Explains transfer-agent record priority and wallet eligibility controls.",
+      "Names CRDT issuer `GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45`.",
+      "Names CRDT SAC `CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P`."
     ],
     "avoid": [
       "Do NOT call CRDT a stablecoin, Treasury/MMF, bank deposit, or Franklin/Ondo product.",
       "Do NOT imply blockchain records supersede the transfer-agent record or that public peer transfer proves a public secondary market."
     ],
-    "notes": "Entity-grounded → find_content_by_entity. CRDT = private credit, NOT Treasuries (precision trap). Verified against WisdomTree IR press release (Sep 12 2025) + Stellar case study. CRDT tracks the Gapstow GLACI index; ~$25 min; T+0 subscription / T+2 redemption; Stellar + Ethereum.\nAlso good if the answer: Notes accessibility via WisdomTree Connect / WisdomTree Prime with a low minimum investment (around $25).\nGolden cites: A dated source on WisdomTree CRDT's Stellar launch (Sep 2025).\nGT-18 CORRECTION 2026-07-10: issuer IR + SEC + issuer TOML are authoritative. Preserve legal/on-chain record hierarchy and dated role conflicts; do not require volatile holder/balance counts."
+    "notes": "Entity-grounded → find_content_by_entity. CRDT = private credit, NOT Treasuries (precision trap). Verified against WisdomTree IR press release (Sep 12 2025) + Stellar case study. CRDT tracks the Gapstow GLACI index; ~$25 min; T+0 subscription / T+2 redemption; Stellar + Ethereum.\nAlso good if the answer: Notes accessibility via WisdomTree Connect / WisdomTree Prime with a low minimum investment (around $25).\nGolden cites: A dated source on WisdomTree CRDT's Stellar launch (Sep 2025).\nGT-18 CORRECTION 2026-07-10: issuer IR + SEC + issuer TOML are authoritative. Preserve legal/on-chain record hierarchy and dated role conflicts; do not require volatile holder/balance counts.\nVerified on 2026-08-26: https://stellar.wisdomtree.com/.well-known/stellar.toml reported issuer `GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45`, and https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 reported the same issuer with SAC `CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P`."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -26,9 +28,10 @@
   "truth": {
     "domain": "real-world",
     "status": "confirmed",
+    "asOf": "2026-08-26",
     "sources": [
       {
-        "class": "D",
+        "class": "A",
         "ref": "https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of",
         "note": "class inferred at migration"
       },
@@ -38,14 +41,19 @@
         "note": "class inferred at migration"
       },
       {
-        "class": "D",
+        "class": "A",
         "ref": "https://stellar.wisdomtree.com/.well-known/stellar.toml",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
+        "note": "Live exact-issuer asset lookup"
       }
     ],
     "corroboration": [
       {
-        "claim": "WisdomTree launched the CRDYX fund with CRDT digital representation on Ethereum and Stellar on 2025-09-12; transfer-agent records are authoritative and the exact Stellar issuer/SAC are provider-confirmed.",
+        "claim": "WisdomTree launched the CRDYX fund with CRDT digital representation on Ethereum and Stellar on 2025-09-12; transfer-agent records are authoritative; the CRDT issuer is GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 and its SAC is CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P as of 2026-08-26.",
         "verdict": "confirmed",
         "evidence": [
           {
@@ -55,10 +63,10 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           },
           {
-            "class": "F",
-            "ref": "F: Horizon exact issuer/asset reads",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "C",
+            "ref": "https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
+            "observedAt": "2026-08-26",
+            "note": "Horizon returned the exact issuer and SAC."
           },
           {
             "class": "D",
@@ -70,16 +78,15 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited launch/product core was correct but underspecified the legal instrument, authoritative record, eligibility/controls, exact Stellar identity, and dated role conflict. A Stellar case study was not sufficient issuer/legal proof.",
+      "date": "2026-08-26",
+      "by": "lane/corpus-goldens live CRDT identity verification",
       "evidence": [
-        "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
-        "Sibling sweep: q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, and q-hist-wisdomtree-rwa"
+        "https://stellar.wisdomtree.com/.well-known/stellar.toml fetched 2026-08-26T16:54:45Z: CRDT issuer GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
+        "https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 fetched 2026-08-26T16:54:46Z: issuer GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45; SAC CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P",
+        "Sibling sweep on 2026-08-26 checked q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, and q-hist-wisdomtree-rwa; none contains a conflicting CRDT issuer or SAC."
       ],
       "rootCause": [
-        "A secondary case study and product shorthand omitted issuer/legal/on-chain record hierarchy.",
-        "improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md",
-        "improvements/lumenloop/ll-012-rwa-live-planned-recall.md"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-defi-wisdomtree-crdt"

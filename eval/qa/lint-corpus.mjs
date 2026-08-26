@@ -77,6 +77,9 @@ const AVOID_PATTERNS = [
 const JUDGE_BLIND_RE = /\b(corpus|reviewer|golden|source data|cited records?|catalog|directory|transcripts?)\b/i;
 const NUMERIC_RE = /(?:\$\s*\d|\b\d+(?:\.\d+)?\s*(?:%|bps?|ms|seconds?|minutes?|hours?|days?|weeks?|months?|years?|xlm|usdc|usd|million|billion|k|m|b)\b|\b(?:v|version\s*)\d+(?:\.\d+)*\b|\b(?:protocol|cap-|sep-)\s*\d+\b|\b20\d{2}-\d{2}(?:-\d{2})?\b)/i;
 const NEGATIVE_RE = /\b(?:no|none|not|never|without|cannot|can't|doesn't|isn't|aren't|unavailable|absent)\b/i;
+const KEY_FACT_PREDICATE_RE = /\b(?:is|are|was|were|has|have|uses?|states?|explains?|identifies?|distinguishes?|separates?|rejects?|dates?|keeps?|preserves?|gives?|names?|describes?|reports?|requires?|mentions?|covers?|includes?|adds?|defines?|warns?|notes?|compares?|lists?|clarifies?|treats?|calls?|recommends?|shows?|attributes?|acknowledges?|frames?|presents?|omits?|can|must|should)\b/i;
+const NON_CONTENT_AVOID_RE = /^(?:omits?|skips?|frames?|phrases?|words?|portrays?|characterizes?|presents?)\b|^fail(?:s)?\s+to\b|\b(?:without|unless)\b[^.;]*\b(?:date|dating|mention|stating|including|presenting|framing|phrasing)\b|\bdates?\s+(?:its|the)\b/i;
+const NEGATIVE_PREDICATE_RE = /\b(?:rejects?|separates?|distinguishes?)\s+(.+?)(?=\s+(?:from|and)\b|[.,;]|$)/i;
 const LIVE_CONTRACT_VERSION_RE = /-v(\d+)$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const REVERIFY_BY_REFERENCE_RE = /\b(q-[a-z0-9-]+)\s+reverifyBy\s+(\d{4}-\d{2}-\d{2})\b/g;
@@ -319,6 +322,66 @@ export function lintAvoidPhrases(cases) {
       if (hits.length === 0) continue;
       const tier = JUDGE_BLIND_RE.test(item) ? "judge-blind" : "sourcing-guard";
       findings.push(finding("warn", "avoid", kase.id, `${tier} [${hits.join(",")}]: ${item}`));
+    }
+  }
+  return findings;
+}
+
+function hasMultiplePredicates(fact) {
+  const clauses = String(fact).split(/\s+(?:and|but|while|whereas)\s+|;\s*/i);
+  return clauses.filter((clause) => KEY_FACT_PREDICATE_RE.test(clause)).length > 1;
+}
+
+function significantTerms(text) {
+  const stop = new Set(["a", "an", "and", "from", "its", "of", "or", "the", "to", "with"]);
+  return (String(text).toLowerCase().match(/[a-z0-9][a-z0-9-]{2,}/g) ?? [])
+    .filter((term) => !stop.has(term));
+}
+
+function questionContainsObject(question, object) {
+  const questionText = String(question).toLowerCase();
+  const objectTerms = significantTerms(object);
+  return objectTerms.length > 0 && objectTerms.some((term) => questionText.includes(term));
+}
+
+function hasSymmetricCaution(notes) {
+  const text = String(notes ?? "");
+  return /\b(?:canonical|official|upstream)\b[^.!?]{0,80}\b(?:source|page|documentation)\b/i.test(text)
+    && /\bnot (?:a )?wrong claim\b/i.test(text)
+    && /\b(?:cap|caps|capped|grade)\b[^.!?]{0,60}\bpartial\b/i.test(text);
+}
+
+export function lintGoldenAuthoring(cases) {
+  const findings = [];
+  for (const kase of cases) {
+    const snapshotDates = new Set([kase.truth?.asOf, kase.truth?.verified?.date].filter((date) => DATE_RE.test(date ?? "")));
+    for (const fact of kase.golden?.keyFacts ?? []) {
+      if (fact.length > 90) {
+        findings.push(finding("warn", "key-fact", kase.id, `key fact exceeds 90 characters (${fact.length}): ${fact}`));
+      }
+      if (hasMultiplePredicates(fact)) {
+        findings.push(finding("warn", "key-fact", kase.id, `key fact contains multiple predicates: ${fact}`));
+      }
+      const match = NEGATIVE_PREDICATE_RE.exec(fact);
+      if (match && !questionContainsObject(kase.question, match[1])) {
+        findings.push(finding("warn", "key-fact", kase.id, `negative predicate object is absent from the question; consider moving it to golden.avoid: ${fact}`));
+      }
+      for (const date of snapshotDates) {
+        if (fact.includes(date)) {
+          findings.push(finding("warn", "snapshot-date", kase.id, `key fact requires the golden snapshot date ${date}: ${fact}`));
+        }
+      }
+    }
+    for (const item of kase.golden?.avoid ?? []) {
+      const body = item.replace(/^\s*do\s+not\b/i, "").trim();
+      if (NON_CONTENT_AVOID_RE.test(body)) {
+        findings.push(finding("warn", "avoid", kase.id, `presentation, omission, or phrasing requirement is not a concrete false-content avoid item: ${item}`));
+      }
+    }
+    const hasImprovementRootCause = (kase.truth?.verified?.rootCause ?? [])
+      .some((item) => /(?:^|\s)improvements\//i.test(String(item)));
+    if (hasImprovementRootCause && !hasSymmetricCaution(kase.golden?.notes)) {
+      findings.push(finding("warn", "symmetric-caution", kase.id, "improvements/ rootCause has no symmetric canonical-source grading caution in golden.notes"));
     }
   }
   return findings;
@@ -603,7 +666,7 @@ export function lintLiveContract(contract, previousContract) {
   if (!digest) findings.push(finding("error", "live-contract", "-", "contractProvenance.caseContentDigest must be sha256(JSON.stringify(cases))=<hex>"));
   else if (digest !== contractDigest(cases)) findings.push(finding("error", "live-contract", "-", "contractProvenance.caseContentDigest does not match case content"));
   for (const kase of cases) findings.push(...liveCaseSchemaFindings(kase));
-  findings.push(...lintCorroboration(cases, {}), ...liveBehavioralGoldenFindings(cases));
+  findings.push(...lintGoldenAuthoring(cases), ...lintCorroboration(cases, {}), ...liveBehavioralGoldenFindings(cases));
 
   if (!previousContract) return findings;
   const previousCases = Array.isArray(previousContract.cases) ? previousContract.cases : [];
@@ -711,6 +774,7 @@ export function runLint({ cases, manifest, register = {}, ledger, previousCases,
     ...lintNumericInvariants(cases, register),
     ...lintDateContingentTraps(cases, register),
     ...lintAvoidPhrases(cases),
+    ...lintGoldenAuthoring(cases),
     ...lintCorroboration(cases, register),
     ...lintLedger(cases, ledger, enforceFloors)
   ];
