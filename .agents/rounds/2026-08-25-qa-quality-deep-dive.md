@@ -123,3 +123,15 @@ All lanes read-only against the repository except their own report file.
   smoke 4 / 82; eval:selftest pass; routing GATE PASS vs 2026-08-25 baseline;
   secrets scan clean. No push performed. Worktrees retained at `../sr-wt-*` with
   lane branches for inspection.
+- `2026-08-26T19:20Z` — round documents committed (`b707953`): both synthesis docs,
+  five lane reports, two review reports, three build reports, WisdomTree live
+  receipts; working tree clean. Same-100-id rerun started at this pinned revision
+  against a fresh single dev server (port 8788, `--host localhost`); answering and
+  judging model `claude-sonnet-5`, variant A, ids from
+  `2026-08-14T03-56-23-variantA.json`. Pull request opened:
+  stellar-experimental/stellar-raven#68
+  (`qa/quality-round-2026-08-25`). Four other worktrees noted as NOT part of this
+  round — `sr-wt-connectors-{guidance,item8,item8-baseline,item8-runtime}` belong
+  to the separate connectors session (`wE`/`wH` agents) and were left untouched;
+  their `item8` commits are not ancestors of main.
+
