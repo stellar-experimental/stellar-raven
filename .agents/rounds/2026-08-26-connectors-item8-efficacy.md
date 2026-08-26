@@ -306,6 +306,43 @@ Collection stop rules:
 - The remaining limits are not launch blockers.
 - A pass still does not close item 8 or authorize Directory shipment.
 
+### Paid first pair
+
+- A1 result: `eval/qa/results/2026-08-26T17-39-11-variantA.json` in the baseline worktree.
+- A1 SHA-256: `02ac68ae8607f9bdbecc0a558b902d16eb9b1710449a13abf94cef7240606de9`.
+- A1 collected 8 answers with zero agent failures and zero missing costs.
+- A1 answering cost: `$2.3136272`.
+- B1-1 result: `eval/qa/results/2026-08-26T17-44-25-variantA.json` in the baseline worktree.
+- B1-1 SHA-256: `3d40f8768a019175d6c0eabf20dba10f4e5e46250c46785adf7b2f59b42a1c9e`.
+- B1-1 collected 8 answers with zero agent failures and zero missing costs.
+- B1-1 answering cost: `$1.3409158`.
+- Total paid answering cost: `$3.6545430` across 16 calls.
+- No judge call ran.
+- Both artifacts match the case hashes, source guard, model, prompt, and live surface pins.
+- No retry or rejudge occurred.
+
+First-pair mechanism review:
+
+- A1 covered 7 of 8 required plans.
+- B1-1 covered 6 of 8 required plans.
+- The greenfield indexer target regressed from required-plan coverage to a miss.
+- A1 called `scout.searchProjects` twice for indexer prior art.
+- B1-1 called no Scout operation for that target.
+- This violates the target prior-art and no-plan-loss gates.
+- The MoneyGram control lost the Stellar Docs family.
+- A1 used Lumenloop, Scout, and Stellar Docs for that control.
+- B1-1 used Lumenloop and Scout only.
+- This violates the cross-service coverage gate.
+- The open-world control used no tools in either arm.
+- B1-1 therefore also fails the absolute open-world recovery gate.
+- The closed-world control stopped at `scout.getBuilders` in both arms.
+- The soft-empty control used `scout.getPartner` and explained `soft-empty` in both arms.
+- The narrow debugging control used no Scout prior-art detour in either arm.
+- The escrow design target used Scout prior art in both arms.
+- Each arm recorded one execution failure on the escrow target, so B1 added no new execution failure.
+
+The required first-pair stop fired. B1-2, A2, and all judging were cancelled before spend.
+
 ## Outcome
 
 Pending.
