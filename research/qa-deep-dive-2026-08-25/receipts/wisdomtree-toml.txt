@@ -1,0 +1,301 @@
+NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
+ACCOUNTS=[
+"GC2ATEL4K2O5BJO7Z76MYSV6TKHCROKV5GXEOU7NO2TUEOOMFDDIPWID",
+"GC33QUM35DONISNWLDPALVMIKGPT3MNDU3NJVNKR7K4NG3RWTKKBUQZA",
+"GDJLBEEVGEPB42TCSEF4VYHSLQZJGZ6EUMXNOANI4G2XMTJCDBHF6P4Z",
+"GCK75CK3VX5L4ZLSD7HHNVA4L3LKGIAYWLCZO2IBNGOFTBV3HJBE2MPJ",
+"GDJBVX3QA5HJPBSAU5VIX2W6MC37NU4UFXPKEGK42SJCYN6AEQ4Z6COM",
+"GBBV5CF7UPA2PYRPA632URLB55BWML7X4H33ZRCDWMTULOXDGPHJR5VI",
+"GDEBI5X7J4IDXCSVV3KPFZIHQRCBVF3DAZMS5H7KYOBK45T6XYGDE77P",
+"GBTZKH3RNKW46XEZNCGZEBAGJISKDZKQXKSQ2N5G5SFX36TLWKKR6QJ6",
+"GDMBNMFJ3TRFLASJ6UGETFME3PJPNKPU24C7KFDBEBPQFG2CI6UC3JG6",
+"GAK7PE7DD4ZRJQN3VBCQFBKFV53JGUM2SQATQAKLFK6MVONPGNYK34XH",
+"GAD22PDBRFEMXAKPFDP4JGDFWKKD6VPXWUWEAXBS6ZYJYFFQDUN7HAFG",
+"GB3ZUC7FGDEEBXY3BDEJWMPNGBFA66YRI4QQT6PBO3ZT6F33S7RL36VF",
+"GAKODZFS4MV36JGDTULJACWJKBJCO33CJTVTWSQFSUV7XLZJNXTDH6D6",
+"GAHOGWBAWNIKESGNNW7Y7JU5KL54HIEHJGY6Y5QLY6YR3J7WZIDHLC6D",
+"GANULT25TFO6V6BFWSEG4VSCR4QXBNHV5T344R2AFZEPE6B324LVLOOJ",
+"GDSAW27GPR7EWKPTFDPGN2WWZYUHBFKVDBLOUUEKSNKHID4ZWUVOBF5R",
+"GAJ4KSYLVBJKQ4UBPKJJXPYWVIRZWVTIYRMHBXTHGCDS4XJXXYEUALVD",
+"GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45
+]
+VERSION="2.0.0"
+
+[DOCUMENTATION]
+ORG_NAME="WisdomTree, Inc."
+ORG_URL="https://www.wisdomtree.com"
+ORG_LOGO="https://stellar.wisdomtree.com/.well-known/wtlogo.png"
+ORG_DESCRIPTION="WisdomTree is a global financial innovator, offering a well-diversified suite of exchange-traded products (ETPs), models, solutions and products leveraging blockchain technology. We empower investors and consumers to shape their future and support financial professionals to better serve their clients and grow their businesses. WisdomTree is leveraging the latest financial infrastructure to create products that provide access, transparency and an enhanced user experience."
+ORG_PHYSICAL_ADDRESS="250 W 34th Street, New York, NY 10119, United States"
+ORG_OFFICIAL_EMAIL="support@wisdomtreeprime.com"
+ORG_SUPPORT_EMAIL="support@wisdomtreeprime.com"
+
+[[CURRENCIES]]
+code="USD"
+issuer="GC2ATEL4K2O5BJO7Z76MYSV6TKHCROKV5GXEOU7NO2TUEOOMFDDIPWID"
+name="WisdomTree Dollar Token"
+desc="WisdomTree Dollar Token"
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="fiat"
+anchor_asset="USD"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtreeprime.com/attestations/"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="BTC"
+issuer="GC33QUM35DONISNWLDPALVMIKGPT3MNDU3NJVNKR7K4NG3RWTKKBUQZA"
+name="Bitcoin"
+desc="Bitcoin is the world's largest and most established crypto asset. Leveraging public-key cryptography, the Bitcoin network allows users to transfer value to each other on a peer-to-peer basis via the Internet without the use of a central administrator or clearing agency. According to the Bitcoin protocol, there is a cap of 21 million bitcoins that can ever be produced."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="crypto"
+anchor_asset="BTC"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtreeprime.com/attestations/"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="ETH"
+issuer="GDJLBEEVGEPB42TCSEF4VYHSLQZJGZ6EUMXNOANI4G2XMTJCDBHF6P4Z"
+name="Ether"
+desc="Ether is the world's second largest crypto asset. Ether is the native currency of the Ethereum network. Ethereum is a blockchain that allows both record keeping and code execution. Building off the foundations of Bitcoin, Ethereum allows users to engage in peer-to-peer transactions with automatic and/or conditional transfers of value and information."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="crypto"
+anchor_asset="ETH"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtreeprime.com/attestations/"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="GOLD"
+issuer="GCK75CK3VX5L4ZLSD7HHNVA4L3LKGIAYWLCZO2IBNGOFTBV3HJBE2MPJ"
+name="WisdomTree Gold Token"
+desc="Each WisdomTree Gold Token serves as a document of title to physical gold, with secure storage of physical gold at an independent gold custodian and transparency into the actual gold bars held at the custodian. Gold is held to quality standards and is valued via an independent price source, while the amount of gold in the custodian's vault associated with WisdomTree Gold Tokens is independently audited."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="commodity"
+anchor_asset="GOLD"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtreeprime.com/attestations/"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="WTTS"
+issuer="GBBV5CF7UPA2PYRPA632URLB55BWML7X4H33ZRCDWMTULOXDGPHJR5VI"
+name="WisdomTree 3-7 Year Treasury Digital Fund"
+desc="The WisdomTree 3-7 Year Treasury Digital Fund seeks to track the performance, before fees and expenses, of an index designed to measure the performance of obligations of the U.S. Treasury with maturities between 3 and 7 years."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="bond"
+anchor_asset="WTTSX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/fixed-income/wttsx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="WTST"
+issuer="GDEBI5X7J4IDXCSVV3KPFZIHQRCBVF3DAZMS5H7KYOBK45T6XYGDE77P"
+name="WisdomTree 7-10 Year Treasury Digital Fund"
+desc="The WisdomTree 7-10 Year Treasury Digital Fund seeks to track the performance, before fees and expenses, of an index designed to measure the performance of obligations of the U.S. Treasury with maturities between 7 and 10 years."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="bond"
+anchor_asset="WTSTX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/fixed-income/wtstx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="FLTT"
+issuer="GBTZKH3RNKW46XEZNCGZEBAGJISKDZKQXKSQ2N5G5SFX36TLWKKR6QJ6"
+name="WisdomTree Floating Rate Treasury Digital Fund"
+desc="The WisdomTree Floating Rate Treasury Digital Fund seeks to track the performance, before fees and expenses, of an index designed to measure the performance of floating rate bonds of the U.S. Treasury."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="bond"
+anchor_asset="FLTTX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/fixed-income/flttx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="WTGX"
+issuer="GDMBNMFJ3TRFLASJ6UGETFME3PJPNKPU24C7KFDBEBPQFG2CI6UC3JG6"
+name="WisdomTree Government Money Market Digital Fund"
+desc="The WisdomTree Government Money Market Digital Fund seeks to provide investors with a high level of current income consistent with preservation of capital and liquidity and the maintenance of a stable $1.00 net asset value (NAV) per share."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="bond"
+anchor_asset="WTGXX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/money-market/wtgxx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="WTLG"
+issuer="GAK7PE7DD4ZRJQN3VBCQFBKFV53JGUM2SQATQAKLFK6MVONPGNYK34XH"
+name="WisdomTree Long Term Treasury Digital Fund"
+desc="The WisdomTree Long-Term Treasury Digital Fund seeks to track the performance, before fees and expenses, of an Index designed to measure the performance of obligations of the U.S. Treasury with maturities greater than 20 years."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="bond"
+anchor_asset="WTLGX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/fixed-income/wtlgx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="WTSI"
+issuer="GAD22PDBRFEMXAKPFDP4JGDFWKKD6VPXWUWEAXBS6ZYJYFFQDUN7HAFG"
+name="WisdomTree Short-Duration Income Digital Fund"
+desc="The WisdomTree Short-Duration Income Digital Fund seeks income consistent with the preservation of capital."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="bond"
+anchor_asset="WTSIX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/asset-allocation/wtsix"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="WTSY"
+issuer="GB3ZUC7FGDEEBXY3BDEJWMPNGBFA66YRI4QQT6PBO3ZT6F33S7RL36VF"
+name="WisdomTree Short-Term Treasury Digital Fund"
+desc="The WisdomTree Short-Term Treasury Digital Fund seeks to track the performance, before fees and expenses, of an Index designed to measure the performance of obligations of the U.S. Treasury, which include notes and bonds issued by the U.S. Treasury, all with maturities between one and three years."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="bond"
+anchor_asset="WTSYX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/fixed-income/wtsyx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="TIPS"
+issuer="GAJ4KSYLVBJKQ4UBPKJJXPYWVIRZWVTIYRMHBXTHGCDS4XJXXYEUALVD"
+name="WisdomTree TIPS Digital Fund"
+desc="The WisdomTree TIPS Digital Fund seeks to track the performance, before fees and expenses, of an Index designed to measure the performance of inflation-protected obligations of the U.S. Treasury."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="bond"
+anchor_asset="TIPSX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/fixed-income/tipsx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="EQTY"
+issuer="GAKODZFS4MV36JGDTULJACWJKBJCO33CJTVTWSQFSUV7XLZJNXTDH6D6"
+name="WisdomTree Siegel Global Equity Digital Fund"
+desc="The WisdomTree Siegel Global Equity Digital Fund seeks long-term capital appreciation utilizing an asset allocation strategy by predominantly investing in exchange traded funds, including a significant portion of WisdomTree ETFs. It invests at least 80% of its net assets, plus the amount of any borrowings for investment purposes, in equity investments (including U.S. and international, and may include emerging markets). The Fund's asset allocation is constructed by the Fund's adviser, WisdomTree Digital Management, Inc. and implemented by a sub-adviser."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="stock"
+anchor_asset="EQTYX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/asset-allocation/eqtyx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="LNGV"
+issuer="GAHOGWBAWNIKESGNNW7Y7JU5KL54HIEHJGY6Y5QLY6YR3J7WZIDHLC6D"
+name="WisdomTree Siegel Longevity Digital Fund"
+desc="The WisdomTree Siegel Longevity Digital Fund seeks long-term capital appreciation utilizing an asset allocation strategy by predominantly investing in exchange traded funds, including a significant portion of WisdomTree ETFs. The Fund is designed to challenge the more traditional 60/40 allocation (i.e., 60% equities/40% fixed income) by weighting the allocation more toward equities in seeking to address increased longevity as people are generally living longer. The Fund's asset allocation is constructed by the Fund's adviser, WisdomTree Digital Management, Inc. and implemented by a sub-adviser."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="other"
+anchor_asset="LNGVX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/asset-allocation/lngvx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="MODR"
+issuer="GANULT25TFO6V6BFWSEG4VSCR4QXBNHV5T344R2AFZEPE6B324LVLOOJ"
+name="WisdomTree Siegel Moderate Digital Fund"
+desc="The WisdomTree Siegel Moderate Digital Fund seeks long-term capital appreciation utilizing an asset allocation strategy by predominantly investing in exchange-traded funds, including a significant portion of WisdomTree ETFs. The Fund is designed to follow the traditional 60/40 allocation (i.e., 60% equities/40% fixed income). The Fund's asset allocation is constructed by the Fund's adviser, WisdomTree Digital Management, Inc. and implemented by a sub-adviser."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="other"
+anchor_asset="MODRX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/asset-allocation/modrx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="SPXU"
+issuer="GDJBVX3QA5HJPBSAU5VIX2W6MC37NU4UFXPKEGK42SJCYN6AEQ4Z6COM"
+name="WisdomTree 500 Digital Fund"
+desc="The WisdomTree 500 Digital Fund seeks to track the price and yield performance, before fees and expenses, of the WisdomTree 500 Index."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="stock"
+anchor_asset="SPXUX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/equity/spxux"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="TECH"
+issuer="GDSAW27GPR7EWKPTFDPGN2WWZYUHBFKVDBLOUUEKSNKHID4ZWUVOBF5R"
+name="WisdomTree Technology & Innovation 100 Digital Fund"
+desc="The WisdomTree Technology and Innovation 100 Digital Fund seeks to track the performance, before fees and expenses, of the WisdomTree Technology and Innovation 100 Index."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="stock"
+anchor_asset="TECHX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/equity/techx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
+
+[[CURRENCIES]]
+code="CRDT"
+issuer="GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45"
+name="WisdomTree Private Credit and Alternative Income Digital Fund"
+desc="The WisdomTree Private Credit and Alternative Income Digital Fund seeks to track the price and yield performance, before fees and expenses, of the Gapstow Private Credit and Alternative Income Index."
+status="live"
+display_decimals=7
+is_asset_anchored=true
+is_unlimited=true
+anchor_asset_type="stock"
+anchor_asset="CRDYX"
+redemption_instructions="Sign up for a WisdomTree Prime account using our iOS and Android apps"
+attestation_of_reserve="https://www.wisdomtree.com/investments/digital-funds/fixed-income/crdyx"
+image="https://stellar.wisdomtree.com/.well-known/wt.png"
