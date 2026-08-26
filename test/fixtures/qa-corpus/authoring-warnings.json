@@ -1,0 +1,151 @@
+{
+  "keyFacts": {
+    "positive": [
+      {
+        "id": "q-fixture-key-fact",
+        "question": "How does the API work?",
+        "golden": {
+          "keyFacts": [
+            "Explains the first independently graded behavior in excessive detail that makes this key fact longer than ninety characters.",
+            "Explains cursor handling and states the retry rule."
+          ],
+          "avoid": []
+        },
+        "truth": { "verified": {} }
+      }
+    ],
+    "negative": [
+      {
+        "id": "q-fixture-key-fact-atomic",
+        "question": "How does the API work?",
+        "golden": {
+          "keyFacts": ["Explains cursor handling."],
+          "avoid": []
+        },
+        "truth": { "verified": {} }
+      }
+    ]
+  },
+  "avoid": {
+    "positive": [
+      {
+        "id": "q-fixture-avoid-style",
+        "question": "Which providers are active?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT present the observed roster as complete."]
+        },
+        "truth": { "verified": {} }
+      },
+      {
+        "id": "q-fixture-avoid-omission",
+        "question": "What must the recipient know?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT omit the transfer warning."]
+        },
+        "truth": { "verified": {} }
+      }
+    ],
+    "negative": [
+      {
+        "id": "q-fixture-avoid-content",
+        "question": "Which protocol is active?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT state that Protocol 26 is active when the ledger reports Protocol 27."]
+        },
+        "truth": { "verified": {} }
+      },
+      {
+        "id": "q-fixture-avoid-sourcing-fields",
+        "question": "What is the current measurement?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT present a changeable current measurement without its provider, scope, and observation date."]
+        },
+        "truth": { "verified": {} }
+      },
+      {
+        "id": "q-fixture-avoid-dated-source",
+        "question": "Which providers are active?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT present a current provider roster without a dated source."]
+        },
+        "truth": { "verified": {} }
+      },
+      {
+        "id": "q-fixture-avoid-date-changeable",
+        "question": "Which version is current?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT present version-sensitive observations as timeless; date the changeable part without weakening stable facts."]
+        },
+        "truth": { "verified": {} }
+      }
+    ]
+  },
+  "negativePredicate": {
+    "positive": [
+      {
+        "id": "q-fixture-negative-predicate",
+        "question": "How does the award schedule work?",
+        "golden": {
+          "keyFacts": ["Rejects a unified Growth track."],
+          "avoid": []
+        },
+        "truth": { "verified": {} }
+      }
+    ],
+    "negative": [
+      {
+        "id": "q-fixture-negative-predicate-question",
+        "question": "Does the program use a unified Growth track?",
+        "golden": {
+          "keyFacts": ["Rejects a unified Growth track."],
+          "avoid": []
+        },
+        "truth": { "verified": {} }
+      }
+    ]
+  },
+  "provenance": {
+    "positive": [
+      {
+        "id": "q-fixture-provenance",
+        "question": "What status did the source report?",
+        "golden": {
+          "keyFacts": ["States the status observed on 2026-08-25."],
+          "avoid": [],
+          "notes": "The source contains a known defect."
+        },
+        "truth": {
+          "asOf": "2026-08-25",
+          "verified": {
+            "date": "2026-08-25",
+            "rootCause": ["improvements/stellar-docs/sd-fixture.md"]
+          }
+        }
+      }
+    ],
+    "negative": [
+      {
+        "id": "q-fixture-provenance-cautioned",
+        "question": "What status did the source report?",
+        "golden": {
+          "keyFacts": ["States a dated status."],
+          "avoid": [],
+          "notes": "Accurately quoting the canonical source page is not a wrong claim. Grade caps at partial for this dispute."
+        },
+        "truth": {
+          "asOf": "2026-08-25",
+          "verified": {
+            "date": "2026-08-25",
+            "rootCause": ["improvements/stellar-docs/sd-fixture.md"]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -39,6 +39,17 @@ Done when: each carries a dated live re-check and the correct status. Use `impro
 `improvements/README.md` calls that state short-lived and requires a distinct reviewer to re-run the
 original trigger before the file is retired.
 
+## Goldens
+
+### Prevent invalid Stellar strkeys in golden imports
+
+The 2026-07-11 `q-defi-wisdomtree-crdt` import contained an invalid issuer and an invalid SAC.
+Both identifiers failed CRC16 validation, so the error was a transcription defect rather than freshness drift.
+
+Found 2026-08-26 during the independent review of `lane/corpus-goldens-20260825`.
+
+Done when: golden authoring validates exact Stellar strkeys before import, with positive and negative tests for account and contract keys.
+
 ## Tests
 
 ### The `ai` tool-loop guard is never exercised

@@ -8,6 +8,7 @@ import {
   isPullRequestCI,
   lintCorroboration,
   lintDateContingentTraps,
+  lintGoldenAuthoring,
   lintGospelChanges,
   runLint,
   lintStale,
@@ -106,6 +107,44 @@ describe("QA corpus lint lanes", () => {
         message: expect.stringContaining("possible negative claim")
       })
     ]);
+  });
+
+  it("warns on compound and overlong key facts but accepts atomic facts", () => {
+    const fixtures = load("authoring-warnings.json");
+    const positive = lintGoldenAuthoring(fixtures.keyFacts.positive);
+    expect(positive).toEqual(expect.arrayContaining([
+      expect.objectContaining({ level: "warn", lane: "key-fact", message: expect.stringContaining("exceeds 90") }),
+      expect.objectContaining({ level: "warn", lane: "key-fact", message: expect.stringContaining("multiple predicates") })
+    ]));
+    expect(lintGoldenAuthoring(fixtures.keyFacts.negative)).toEqual([]);
+  });
+
+  it("warns on non-content avoid items but accepts concrete false-content items", () => {
+    const fixtures = load("authoring-warnings.json");
+    const positive = lintGoldenAuthoring(fixtures.avoid.positive);
+    expect(positive).toHaveLength(2);
+    expect(positive).toEqual(expect.arrayContaining([
+      expect.objectContaining({ level: "warn", lane: "avoid", message: expect.stringContaining("presentation, omission, or phrasing") })
+    ]));
+    expect(lintGoldenAuthoring(fixtures.avoid.negative)).toEqual([]);
+  });
+
+  it("warns when a negative-predicate object is absent from the question", () => {
+    const fixtures = load("authoring-warnings.json");
+    expect(lintGoldenAuthoring(fixtures.negativePredicate.positive)).toEqual([
+      expect.objectContaining({ level: "warn", lane: "key-fact", message: expect.stringContaining("absent from the question") })
+    ]);
+    expect(lintGoldenAuthoring(fixtures.negativePredicate.negative)).toEqual([]);
+  });
+
+  it("warns on self-referential dates and missing symmetric cautions", () => {
+    const fixtures = load("authoring-warnings.json");
+    const positive = lintGoldenAuthoring(fixtures.provenance.positive);
+    expect(positive).toEqual(expect.arrayContaining([
+      expect.objectContaining({ level: "warn", lane: "snapshot-date", message: expect.stringContaining("snapshot date") }),
+      expect.objectContaining({ level: "warn", lane: "symmetric-caution", message: expect.stringContaining("no symmetric") })
+    ]));
+    expect(lintGoldenAuthoring(fixtures.provenance.negative)).toEqual([]);
   });
 
   it("rejects non-manifest surfaces and reuses the emitted-text exclusion guard", () => {
