@@ -36,6 +36,15 @@
           "avoid": ["Do NOT present the observed roster as complete."]
         },
         "truth": { "verified": {} }
+      },
+      {
+        "id": "q-fixture-avoid-omission",
+        "question": "What must the recipient know?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT omit the transfer warning."]
+        },
+        "truth": { "verified": {} }
       }
     ],
     "negative": [
@@ -45,6 +54,33 @@
         "golden": {
           "keyFacts": [],
           "avoid": ["Do NOT state that Protocol 26 is active when the ledger reports Protocol 27."]
+        },
+        "truth": { "verified": {} }
+      },
+      {
+        "id": "q-fixture-avoid-sourcing-fields",
+        "question": "What is the current measurement?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT present a changeable current measurement without its provider, scope, and observation date."]
+        },
+        "truth": { "verified": {} }
+      },
+      {
+        "id": "q-fixture-avoid-dated-source",
+        "question": "Which providers are active?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT present a current provider roster without a dated source."]
+        },
+        "truth": { "verified": {} }
+      },
+      {
+        "id": "q-fixture-avoid-date-changeable",
+        "question": "Which version is current?",
+        "golden": {
+          "keyFacts": [],
+          "avoid": ["Do NOT present version-sensitive observations as timeless; date the changeable part without weakening stable facts."]
         },
         "truth": { "verified": {} }
       }

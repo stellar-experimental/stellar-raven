@@ -121,9 +121,11 @@ describe("QA corpus lint lanes", () => {
 
   it("warns on non-content avoid items but accepts concrete false-content items", () => {
     const fixtures = load("authoring-warnings.json");
-    expect(lintGoldenAuthoring(fixtures.avoid.positive)).toEqual([
+    const positive = lintGoldenAuthoring(fixtures.avoid.positive);
+    expect(positive).toHaveLength(2);
+    expect(positive).toEqual(expect.arrayContaining([
       expect.objectContaining({ level: "warn", lane: "avoid", message: expect.stringContaining("presentation, omission, or phrasing") })
-    ]);
+    ]));
     expect(lintGoldenAuthoring(fixtures.avoid.negative)).toEqual([]);
   });
 

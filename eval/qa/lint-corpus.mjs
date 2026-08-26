@@ -79,6 +79,7 @@ const NUMERIC_RE = /(?:\$\s*\d|\b\d+(?:\.\d+)?\s*(?:%|bps?|ms|seconds?|minutes?|
 const NEGATIVE_RE = /\b(?:no|none|not|never|without|cannot|can't|doesn't|isn't|aren't|unavailable|absent)\b/i;
 const KEY_FACT_PREDICATE_RE = /\b(?:is|are|was|were|has|have|uses?|states?|explains?|identifies?|distinguishes?|separates?|rejects?|dates?|keeps?|preserves?|gives?|names?|describes?|reports?|requires?|mentions?|covers?|includes?|adds?|defines?|warns?|notes?|compares?|lists?|clarifies?|treats?|calls?|recommends?|shows?|attributes?|acknowledges?|frames?|presents?|omits?|can|must|should)\b/i;
 const NON_CONTENT_AVOID_RE = /^(?:omits?|skips?|frames?|phrases?|words?|portrays?|characterizes?|presents?)\b|^fail(?:s)?\s+to\b|\b(?:without|unless)\b[^.;]*\b(?:date|dating|mention|stating|including|presenting|framing|phrasing)\b|\bdates?\s+(?:its|the)\b/i;
+const ANSWER_VISIBLE_SOURCING_AVOID_RE = /\bwithout\b[^.;]*\b(?:dated?\s+(?:source|citation|evidence)|source|citation|provider|scope|(?:observation|as-of)\s+date|date)\b|(?:^|;\s*)date\s+the\s+changeable\s+part\b/i;
 const NEGATIVE_PREDICATE_RE = /\b(?:rejects?|separates?|distinguishes?)\s+(.+?)(?=\s+(?:from|and)\b|[.,;]|$)/i;
 const LIVE_CONTRACT_VERSION_RE = /-v(\d+)$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -374,7 +375,7 @@ export function lintGoldenAuthoring(cases) {
     }
     for (const item of kase.golden?.avoid ?? []) {
       const body = item.replace(/^\s*do\s+not\b/i, "").trim();
-      if (NON_CONTENT_AVOID_RE.test(body)) {
+      if (NON_CONTENT_AVOID_RE.test(body) && !ANSWER_VISIBLE_SOURCING_AVOID_RE.test(body)) {
         findings.push(finding("warn", "avoid", kase.id, `presentation, omission, or phrasing requirement is not a concrete false-content avoid item: ${item}`));
       }
     }
