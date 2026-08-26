@@ -53,6 +53,10 @@ function artifactIdFrom(text: string): string {
   return match[1];
 }
 
+function parseResultJson(text: string): unknown {
+  return JSON.parse(text.split("\n--- SOURCE BASIS ---", 1)[0]!);
+}
+
 const BIG_SECRET_RESULT_CODE = `async () => {
   const refused = await lumenloop.search_directory({ limit: 2 });
   return {
@@ -131,8 +135,8 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       requestId: "smoke-request",
       rayId: "smoke-ray"
     });
-    expect(outcome.ok).toBe(true);
     if (!outcome.ok) throw new Error(outcome.error);
+    expect(outcome.ok).toBe(true);
     expect(outcome.truncated).toBe(true);
     expect(outcome.result).toContain("--- SOURCE BASIS ---");
     expect(outcome.result).not.toContain("--- TRUNCATED ---");
@@ -418,6 +422,64 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(outcome.operationSummary.candidateEvidence).toBeUndefined();
   });
 
+  it("preserves allowlisted source metadata after a compact sandbox projection", async () => {
+    vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
+      const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
+      expect(url.pathname).toBe("/api/repos/search");
+      return Response.json({
+        repos: [{ fullName: "example/escrow", url: "https://github.com/example/escrow" }],
+        meta: {
+          generatedAt: "2026-08-26T12:00:00Z",
+          counts: { returned: 1, total: 9 },
+          matchMode: "strict",
+          privateDetail: "must-not-propagate"
+        }
+      });
+    });
+
+    const outcome = await run(`async () => {
+      const r = await scout.searchRepos({ q: "escrow", limit: 1 });
+      return r.ok ? r.data.repos.map((repo) => repo.fullName) : [];
+    }`);
+
+    expect(outcome.ok).toBe(true);
+    if (!outcome.ok) throw new Error(outcome.error);
+    expect(outcome.truncated).toBe(false);
+    expect(outcome.result).toContain('["example/escrow"]');
+    expect(outcome.result).toContain("--- SOURCE BASIS ---");
+    expect(outcome.result).toContain(
+      'scout.searchRepos data.meta.generatedAt="2026-08-26T12:00:00Z"'
+    );
+    expect(outcome.result).toContain("data.meta.counts.total=9");
+    expect(outcome.result).toContain('data.meta.matchMode="strict"');
+    expect(outcome.result).not.toContain("privateDetail");
+    expect(outcome.sourceBasis?.sourceMetadata).toHaveLength(3);
+  });
+
+  it("leaves compact results unchanged when an operation has no allowlisted metadata", async () => {
+    vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
+      const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
+      expect(url.pathname).toBe("/v1/tools/search_content_semantic");
+      return Response.json({
+        success: true,
+        data: { articles: [{ title: "A grounded result" }] },
+        error: null,
+        meta: { tool: "search_content_semantic", format: "json" }
+      });
+    });
+
+    const outcome = await run(`async () => {
+      const r = await lumenloop.search_content_semantic({ query: "grounded", limit: 1 });
+      return r.ok ? r.data.items.map((item) => item.title) : [];
+    }`);
+
+    if (!outcome.ok) throw new Error(outcome.error);
+    expect(outcome.ok).toBe(true);
+    expect(outcome.truncated).toBe(false);
+    expect(outcome.result).toBe('["A grounded result"]');
+    expect(outcome.sourceBasis).toBeUndefined();
+  });
+
   it("derives narrow and conditional recovery advice from the attempted-operation graph", async () => {
     vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
       const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
@@ -619,7 +681,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`, { artifactOwner: owner });
     expect(sameOwner.ok).toBe(true);
     if (sameOwner.ok) {
-      expect(JSON.parse(sameOwner.result)).toEqual({
+      expect(parseResultJson(sameOwner.result)).toEqual({
         ok: true,
         count: 2500,
         firstSecret: "[REDACTED]"
@@ -634,7 +696,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`, { artifactOwner: uniqueOwner("wrong") });
     expect(wrongOwner.ok).toBe(true);
     if (wrongOwner.ok) {
-      expect(JSON.parse(wrongOwner.result)).toEqual({
+      expect(parseResultJson(wrongOwner.result)).toEqual({
         ok: false,
         kind: "error",
         message: "artifact not found"
@@ -648,7 +710,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`, { artifactOwner: owner });
     expect(capped.ok).toBe(true);
     if (capped.ok) {
-      expect(JSON.parse(capped.result)).toEqual({
+      expect(parseResultJson(capped.result)).toEqual({
         ok: false,
         message: "artifact read cap exceeded: max 4 reads per execute"
       });
@@ -706,7 +768,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(continuation.ok).toBe(true);
       if (!continuation.ok) throw new Error(continuation.error);
 
-      const projection = JSON.parse(continuation.result) as {
+      const projection = parseResultJson(continuation.result) as {
         stage: string;
         ok: boolean;
         tail: string;
@@ -743,7 +805,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       }`, { artifactOwner: owner });
       expect(missing.ok).toBe(true);
       if (missing.ok) {
-        expect(JSON.parse(missing.result)).toEqual({
+        expect(parseResultJson(missing.result)).toEqual({
           ok: false,
           kind: "error",
           message: "artifact not found"
@@ -776,7 +838,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       }`, { artifactOwner: owner });
       expect(expired.ok).toBe(true);
       if (expired.ok) {
-        expect(JSON.parse(expired.result)).toEqual({
+        expect(parseResultJson(expired.result)).toEqual({
           infoOk: false,
           infoMessage: "artifact not found",
           readOk: false,
@@ -814,7 +876,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       }`, { artifactOwner: owner });
       expect(wrongLevel.ok).toBe(true);
       if (wrongLevel.ok) {
-        const parsed = JSON.parse(wrongLevel.result) as { ok: boolean; viaData: string; pointer: string };
+        const parsed = parseResultJson(wrongLevel.result) as { ok: boolean; viaData: string; pointer: string };
         expect(parsed.ok).toBe(true);
         expect(parsed.viaData).toBe(SENTINEL);
         expect(parsed.pointer).toContain("r.data.tailNote");
@@ -833,7 +895,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as { fetched: boolean; message: string };
+      const parsed = parseResultJson(outcome.result) as { fetched: boolean; message: string };
       expect(parsed.fetched).toBe(false);
       expect(parsed.message.length).toBeGreaterThan(0);
     }
@@ -850,7 +912,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as { threw: boolean; message: string };
+      const parsed = parseResultJson(outcome.result) as { threw: boolean; message: string };
       expect(parsed.threw).toBe(true); // unknown name — nothing uncallable exists
     }
   });
@@ -865,7 +927,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      expect(JSON.parse(outcome.result)).toEqual({ dataIsUndefined: true, note: "write-through ok" });
+      expect(parseResultJson(outcome.result)).toEqual({ dataIsUndefined: true, note: "write-through ok" });
       expect(outcome.logs.join("\n")).toContain("[envelope] lumenloop.search_directory");
     }
   });
@@ -895,7 +957,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as {
+      const parsed = parseResultJson(outcome.result) as {
         ok: boolean;
         viaData: number;
         payloadReadError: string;
@@ -919,7 +981,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as {
+      const parsed = parseResultJson(outcome.result) as {
         ok: boolean;
         hasContent: boolean;
         dataReadError: string;
@@ -964,7 +1026,7 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as {
+      const parsed = parseResultJson(outcome.result) as {
         topHit: string | null;
         allCallable: boolean;
         skillOk: boolean;
@@ -1058,7 +1120,7 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as {
+      const parsed = parseResultJson(outcome.result) as {
         ok: boolean;
         window: { dateStart: string; dateEnd: string };
         softEmpty: boolean;
@@ -1092,7 +1154,7 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as { ok: boolean; message: string; dataIsUndefined: boolean };
+      const parsed = parseResultJson(outcome.result) as { ok: boolean; message: string; dataIsUndefined: boolean };
       expect(parsed.ok).toBe(false);
       expect(parsed.message).toContain('unknown runnable skill "skills.lumenloop.stellar-ecosystem-diges"');
       expect(parsed.message).toContain("skills.lumenloop.stellar-ecosystem-digest");
@@ -1113,7 +1175,7 @@ describe("spec-search runner (kept for A/Bs, ADR-0001)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
-      const parsed = JSON.parse(outcome.result) as { services: number };
+      const parsed = parseResultJson(outcome.result) as { services: number };
       expect(parsed.services).toBeGreaterThan(0);
     }
   });

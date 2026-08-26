@@ -4,9 +4,48 @@ export const SOURCE_BASIS_MANIFEST_MAX_CHARS = 1600;
 
 const MAX_URLS = 5;
 const INITIAL_MAX_CALLS = 14;
+const INITIAL_MAX_SOURCE_METADATA = 12;
 const INITIAL_SHAPE_DETAIL_CHARS = 420;
 const MIN_SHAPE_DETAIL_CHARS = 120;
 const MAX_ATOM_CHARS = 96;
+
+/**
+ * Host-captured metadata is restricted to these exact payload locations.
+ * The op dispatcher owns the matching traversal rules; the source-basis
+ * formatter rejects every path outside this list as a second guard.
+ */
+export const SOURCE_METADATA_PATHS = [
+  "data.generatedAt",
+  "data.dataAsOf",
+  "data.asOf",
+  "data.matchMode",
+  "data.match_mode",
+  "data.count",
+  "data.total",
+  "data.meta.generatedAt",
+  "data.meta.dataAsOf",
+  "data.meta.asOf",
+  "data.meta.matchMode",
+  "data.meta.match_mode",
+  "data.meta.count",
+  "data.meta.total",
+  "data.meta.counts.count",
+  "data.meta.counts.total",
+  "data.meta.scfRound.asOf",
+  "data.meta.scfRound.currentRound",
+  "data.meta.scfRound.currentPhase",
+  "data.meta.scfRound.submissionWindow.closes"
+] as const;
+
+export type SourceMetadataPath = (typeof SOURCE_METADATA_PATHS)[number];
+export type SourceMetadataValue = string | number | null;
+export type SourceMetadataField = {
+  path: SourceMetadataPath;
+  value: SourceMetadataValue;
+};
+export type SourceMetadataEntry = SourceMetadataField & {
+  op: string;
+};
 
 export type SourceBasisShapeKind = "object" | "array" | "string";
 
@@ -50,9 +89,12 @@ export type SourceBasisArtifact =
 export type BuildSourceBasisManifestInput = {
   shape: SourceBasisShape;
   calls: SourceBasisCall[];
+  sourceMetadata?: SourceMetadataEntry[];
   canonicalUrls?: string[];
   artifact?: SourceBasisArtifact;
   skillSectionAdvice?: boolean;
+  /** False only when metadata, rather than truncation, caused this block. */
+  truncated?: boolean;
 };
 
 export type BuildSourceBasisManifestOptions = {
@@ -118,13 +160,16 @@ export function buildSourceBasisManifest(
 ): string {
   const maxChars = positiveInteger(options.maxChars) ?? SOURCE_BASIS_MANIFEST_MAX_CHARS;
   const urls = sanitizeCanonicalUrls(input.canonicalUrls ?? []);
+  const sourceMetadata = normalizeSourceMetadata(input.sourceMetadata ?? []);
   let callLimit = Math.min(input.calls.length, INITIAL_MAX_CALLS);
+  let sourceMetadataLimit = Math.min(sourceMetadata.entries.length, INITIAL_MAX_SOURCE_METADATA);
   let urlLimit = Math.min(urls.length, MAX_URLS);
   let shapeDetailLimit = INITIAL_SHAPE_DETAIL_CHARS;
 
   for (;;) {
-    const text = serializeManifest(input, urls, {
+    const text = serializeManifest(input, urls, sourceMetadata, {
       callLimit,
+      sourceMetadataLimit,
       urlLimit,
       shapeDetailLimit
     });
@@ -137,13 +182,22 @@ export function buildSourceBasisManifest(
       urlLimit -= 1;
       continue;
     }
+    if (sourceMetadataLimit > 1) {
+      sourceMetadataLimit -= 1;
+      continue;
+    }
     if (shapeDetailLimit > MIN_SHAPE_DETAIL_CHARS) {
       shapeDetailLimit = Math.max(MIN_SHAPE_DETAIL_CHARS, shapeDetailLimit - 60);
       continue;
     }
+    if (sourceMetadataLimit > 0) {
+      sourceMetadataLimit = 0;
+      continue;
+    }
 
-    const fallback = serializeManifest(input, urls, {
+    const fallback = serializeManifest(input, urls, sourceMetadata, {
       callLimit: 0,
+      sourceMetadataLimit: 0,
       urlLimit: 0,
       shapeDetailLimit: MIN_SHAPE_DETAIL_CHARS
     });
@@ -178,19 +232,36 @@ export function sanitizeCanonicalUrls(rawUrls: string[]): string[] {
 function serializeManifest(
   input: BuildSourceBasisManifestInput,
   urls: string[],
-  limits: { callLimit: number; urlLimit: number; shapeDetailLimit: number }
+  sourceMetadata: NormalizedSourceMetadata,
+  limits: {
+    callLimit: number;
+    sourceMetadataLimit: number;
+    urlLimit: number;
+    shapeDetailLimit: number;
+  }
 ): string {
-  return [
+  const lines = [
     "--- SOURCE BASIS ---",
     `shape: ${shapeLine(input.shape, limits.shapeDetailLimit)}`,
-    `calls: ${callsLine(input.calls, limits.callLimit)}`,
+    `calls: ${callsLine(input.calls, limits.callLimit)}`
+  ];
+  if (sourceMetadata.entries.length > 0) {
+    lines.push(
+      `sourceMetadata: ${sourceMetadataLine(sourceMetadata, limits.sourceMetadataLimit)}`
+    );
+  }
+  lines.push(
     `canonicalUrls: ${urlsLine(urls, input.canonicalUrls?.length ?? 0, limits.urlLimit)}`,
     `artifact: ${artifactLine(input.artifact)}`,
     `guidance: ${guidanceLine(input)}`
-  ].join("\n");
+  );
+  return lines.join("\n");
 }
 
 function guidanceLine(input: BuildSourceBasisManifestInput): string {
+  if (input.truncated === false) {
+    return "host-captured source metadata survived sandbox projection; preserve its dates, modes, and counts when answering.";
+  }
   const skillClause = input.skillSectionAdvice
     ? " This run read skill content: return specific sections or aggregates, not whole skill bodies."
     : "";
@@ -223,6 +294,58 @@ function callsLine(calls: SourceBasisCall[], limit: number): string {
   const totals = callTotals(calls);
   const suffix = calls.length > shown.length ? ` (+${calls.length - shown.length} more; ${totals})` : ` (${totals})`;
   return shown.length > 0 ? `${shown.join("; ")}${suffix}` : `${calls.length} calls omitted (${totals})`;
+}
+
+const SOURCE_METADATA_PATH_SET = new Set<string>(SOURCE_METADATA_PATHS);
+
+type NormalizedSourceMetadata = {
+  entries: SourceMetadataEntry[];
+  duplicates: number;
+};
+
+function normalizeSourceMetadata(entries: SourceMetadataEntry[]): NormalizedSourceMetadata {
+  const normalized: SourceMetadataEntry[] = [];
+  const seen = new Set<string>();
+  let duplicates = 0;
+  for (const entry of entries) {
+    if (!entry || typeof entry.op !== "string" || !SOURCE_METADATA_PATH_SET.has(entry.path)) continue;
+    if (
+      entry.value !== null &&
+      typeof entry.value !== "string" &&
+      !(typeof entry.value === "number" && Number.isFinite(entry.value))
+    ) {
+      continue;
+    }
+    const key = `${entry.op}\u0000${entry.path}\u0000${typeof entry.value}\u0000${String(entry.value)}`;
+    if (seen.has(key)) {
+      duplicates += 1;
+      continue;
+    }
+    seen.add(key);
+    normalized.push(entry);
+  }
+  return { entries: normalized, duplicates };
+}
+
+function sourceMetadataLine(metadata: NormalizedSourceMetadata, limit: number): string {
+  const shown = metadata.entries.slice(0, Math.max(0, limit)).map((entry) => {
+    const op = truncateAtom(entry.op, MAX_ATOM_CHARS);
+    return `${op} ${entry.path}=${sourceMetadataValue(entry.value)}`;
+  });
+  const suffixParts: string[] = [];
+  const omitted = Math.max(0, metadata.entries.length - shown.length);
+  if (omitted > 0) suffixParts.push(`${omitted} unique omitted`);
+  if (metadata.duplicates > 0) suffixParts.push(`${metadata.duplicates} duplicates`);
+  const suffix = suffixParts.length > 0 ? ` (+${suffixParts.join("; ")})` : "";
+  return shown.length > 0
+    ? `${shown.join("; ")}${suffix}`
+    : `${metadata.entries.length} unique fields omitted${suffix}`;
+}
+
+function sourceMetadataValue(value: SourceMetadataValue): string {
+  if (value === null) return "null";
+  if (typeof value === "number") return String(value);
+  return JSON.stringify(truncateAtom(value, MAX_ATOM_CHARS));
 }
 
 function urlsLine(urls: string[], rawCount: number, limit: number): string {

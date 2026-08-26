@@ -100,6 +100,39 @@ describe("source-basis manifest", () => {
     expect(text).toContain("guidance:");
   });
 
+  it("bounds and deduplicates oversized allowlisted source metadata", () => {
+    const repeated = Array.from({ length: 200 }, () => ({
+      op: "scout.searchRepos",
+      path: "data.meta.generatedAt" as const,
+      value: `2026-08-26T12:00:00Z${"x".repeat(10_000)}`
+    }));
+    const text = buildSourceBasisManifest({
+      shape: validArrayShape,
+      calls: calls(2),
+      sourceMetadata: repeated,
+      artifact: { state: "absent", reason: "not-truncated" },
+      truncated: false
+    });
+
+    expect(text.length).toBeLessThanOrEqual(SOURCE_BASIS_MANIFEST_MAX_CHARS);
+    expect(text).toContain("sourceMetadata:");
+    expect(text).toContain("scout.searchRepos data.meta.generatedAt=");
+    expect(text).toContain("199 duplicates");
+    expect(text).toContain("host-captured source metadata survived sandbox projection");
+  });
+
+  it("does not change the manifest when source metadata is absent", () => {
+    const input: BuildSourceBasisManifestInput = {
+      shape: validObjectShape,
+      calls: calls(1),
+      artifact: { state: "absent" }
+    };
+
+    expect(buildSourceBasisManifest(input)).toBe(
+      buildSourceBasisManifest({ ...input, sourceMetadata: [] })
+    );
+  });
+
   it("sanitizes canonical URLs as data-derived and untrusted", () => {
     const sanitized = sanitizeCanonicalUrls([
       "https://user:pass@example.test/path?secret=1#frag",

@@ -58,6 +58,18 @@ describe("server instructions — Claude Code 2KB budget", () => {
     }
   });
 
+  it("carries the bounded evidence-discipline clause", () => {
+    for (const phrase of [
+      "date volatile values with their as-of",
+      "Copy exact symbols, types, formulas, and identifiers from results",
+      'Say "not found in these sources", not "does not exist"',
+      "State visible source conflicts instead of choosing silently",
+      "Broaden vocabulary or abstain after empty entity lookups"
+    ]) {
+      expect(BASE_SERVER_INSTRUCTIONS, phrase).toContain(phrase);
+    }
+  });
+
   it("micro-map still rides after BASE for full-injection clients", () => {
     expect(SERVER_INSTRUCTIONS.startsWith(`${BASE_SERVER_INSTRUCTIONS}\n\n`)).toBe(true);
     expect(SERVER_INSTRUCTIONS.length).toBeGreaterThan(CLAUDE_CODE_INSTRUCTIONS_CAP);

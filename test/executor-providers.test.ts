@@ -92,6 +92,46 @@ describe("host structural service evidence", () => {
       { outcome: "soft-empty", hasServiceData: undefined }
     ]);
   });
+
+  it("captures only the named source-metadata locations", async () => {
+    const calls: OpLedgerCall[] = [];
+    const fetchImpl: FetchLike = async () =>
+      Response.json({
+        rfps: [],
+        meta: {
+          generatedAt: "2026-08-26T12:00:00Z",
+          counts: { returned: 0, total: 14 },
+          scfRound: {
+            asOf: "2026-08-26",
+            currentRound: 40,
+            currentPhase: "submission",
+            submissionWindow: { closes: "2026-09-01T00:00:00Z", secret: "excluded" }
+          },
+          arbitrary: { generatedAt: "excluded" }
+        },
+        rows: [{ asOf: "excluded" }]
+      });
+    const providers = buildSandbox(catalog, skillSource, env, {
+      fetchImpl,
+      onOpCall: (call) => calls.push(call)
+    });
+
+    await fnsOf(providers, "scout").getRfps!({});
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.sourceMetadata).toEqual([
+      { path: "data.meta.generatedAt", value: "2026-08-26T12:00:00Z" },
+      { path: "data.meta.counts.total", value: 14 },
+      { path: "data.meta.scfRound.asOf", value: "2026-08-26" },
+      { path: "data.meta.scfRound.currentRound", value: 40 },
+      { path: "data.meta.scfRound.currentPhase", value: "submission" },
+      {
+        path: "data.meta.scfRound.submissionWindow.closes",
+        value: "2026-09-01T00:00:00Z"
+      }
+    ]);
+    expect(JSON.stringify(calls[0]?.sourceMetadata)).not.toContain("excluded");
+  });
 });
 
 describe("sandbox surface shape", () => {
@@ -453,6 +493,50 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(r.data.projects[0]!.slug).toBe("soroswap"); // correct path untouched
     expect(() => (r as Record<string, unknown>).projects).toThrow(/use r\.data\.projects/);
     expect(() => (r as Record<string, unknown>).count).toThrow(/use r\.data\.count/);
+  });
+
+  it("object payload: array-only reads list keys and point at the obvious array", async () => {
+    const docsFetch: FetchLike = async () =>
+      Response.json({
+        hits: [
+          {
+            url: "https://developers.stellar.org/docs/learn/fundamentals/fees",
+            hierarchy: { lvl0: "Learn", lvl1: "Fees" }
+          }
+        ],
+        nbHits: 1,
+        page: 0,
+        nbPages: 1,
+        hitsPerPage: 5
+      });
+    const ns = guardedNamespaces(docsFetch);
+    const r = (await ns.stellarDocs!.search_docs!({ query: "fees" })) as {
+      data: Record<string, unknown> & { hits: Array<{ url: string }> };
+    };
+
+    // The common path reads the own `hits` property directly. The diagnostic
+    // proxy sits only on the payload prototype and does not wrap this array.
+    expect(r.data.hits.map((hit) => hit.url)).toEqual([
+      "https://developers.stellar.org/docs/learn/fundamentals/fees"
+    ]);
+    for (const key of ["map", "filter", "length"] as const) {
+      expect(() => r.data[key]).toThrow(/result payload is an object, not an array/);
+      expect(() => r.data[key]).toThrow(/Top-level payload keys: hits, nbHits, nbPages, page/);
+      expect(() => r.data[key]).toThrow(/Use r\.data\.hits for the array/);
+    }
+    expect(() => [...(r.data as unknown as Iterable<unknown>)]).toThrow(/iteration is array-only/);
+  });
+
+  it("array payload: map, filter, length, and iteration stay unchanged", async () => {
+    const arrayFetch: FetchLike = async () =>
+      Response.json({ success: true, data: ["payments", "defi"], error: null });
+    const ns = guardedNamespaces(arrayFetch);
+    const r = (await ns.lumenloop!.get_categories!({})) as { data: string[] };
+
+    expect(r.data.map((value) => value.toUpperCase())).toEqual(["PAYMENTS", "DEFI"]);
+    expect(r.data.filter((value) => value.startsWith("d"))).toEqual(["defi"]);
+    expect(r.data.length).toBe(2);
+    expect([...r.data]).toEqual(["payments", "defi"]);
   });
 
   it("payload meta is trapped too: r.meta on a scout-shaped envelope points at r.data.meta", async () => {
