@@ -225,6 +225,14 @@ describe("run-qa --judge-stored", () => {
       expect(written.meta.judgeRubric).toBe(JUDGE_RUBRIC);
       expect(written.meta.totalJudgeCostUsd).toBeCloseTo(0.25);
       expect(written.meta.totalCostUsd).toBeCloseTo(0.6 + 0.25);
+      expect(written.meta).toMatchObject({
+        strictCorrectShare: 0.5,
+        halfCreditShare: 0.5,
+        coreAnswerCorrectShare: 1,
+        coreAnswerNullCount: 1,
+        meanContinuousCoverage: 1,
+        continuousCoverageRowCount: 1
+      });
       // judgedIds is spend provenance: only rows that actually reached a paid
       // judge belong in it. The empty-answer row is stamped without a call.
       expect(written.meta.judgeStored).toMatchObject({

@@ -41,6 +41,7 @@
  *                      (corpus/live/live-digest-supplement-cases.json); run separately.
  *   --model name       answering-agent model (default claude-sonnet-5)
  *   --judge-model name judge model (default judge.mjs JUDGE_MODEL)
+ *   --judge-panel N    opt-in 2- or 3-call judge panel (default 1)
  *   --surface name     search-execute (default) | per-operation. The latter
  *                      starts the isolated stdio proxy harness for the
  *                      manifest's 59 operations and still uses the existing
@@ -63,7 +64,16 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { QA_DIR, loadCases, stratifiedSample, summarize, formatSummaryTable } from "./lib.mjs";
-import { buildTranscriptEvidence, isRetryableJudgeError, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "./judge.mjs";
+import {
+  buildAgentErrorVerdict,
+  buildTranscriptEvidence,
+  hasSuccessfulAnswer,
+  isRetryableJudgeError,
+  judgeCase,
+  judgeCasePanel,
+  JUDGE_MODEL,
+  JUDGE_RUBRIC
+} from "./judge.mjs";
 import { verifySourceCases } from "./re-judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
@@ -88,24 +98,6 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
-/**
- * A row is judgeable only when the agent produced an answer AND the parser
- * found no failure. `parseAgentResult` blanks the `result` text of any errored
- * provider outcome, so a safeguard notice can never arrive here as an answer.
- */
-function hasSuccessfulAnswer(answer, failure) {
-  return Boolean(answer) && !failure;
-}
-
-/**
- * One deterministic rationale per failure class — the stored verdict names
- * WHERE the run died (provider safeguard vs transport vs agent turn cap), which
- * the pre-parser `error: "success"` string could not distinguish.
- */
-function agentErrorRationale(failure) {
-  return failure ? `${failure.class}: ${failure.reason}` : "empty answer";
-}
-
 /** Float-noise guard for money totals; mirrors eval/qa/re-judge.mjs. */
 function roundUsd(total) {
   return Number(total.toFixed(12));
@@ -117,6 +109,16 @@ function sumReported(values) {
 
 function reportedCosts(rows, pick) {
   return rows.map(pick).filter((cost) => Number.isFinite(cost));
+}
+
+function verdictCallCount(verdict) {
+  return Number.isInteger(verdict?.meta?.panelSize) ? verdict.meta.panelSize : 1;
+}
+
+function verdictReportedCostCount(verdict) {
+  return Number.isInteger(verdict?.meta?.panelReportedCostCount)
+    ? verdict.meta.panelReportedCostCount
+    : Number.isFinite(verdict?.costUsd) ? 1 : 0;
 }
 
 /**
@@ -131,19 +133,76 @@ function reportedCosts(rows, pick) {
  */
 function costAccounting(rows, judgeAttempts = null) {
   const judged = rows.filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure) && row.verdict != null);
-  const expectedJudgeCalls = Array.isArray(judgeAttempts) ? judgeAttempts.length : judged.length;
+  const expectedJudgeCalls = Array.isArray(judgeAttempts)
+    ? judgeAttempts.reduce((sum, attempt) => sum + (Number.isInteger(attempt.callCount) ? attempt.callCount : 1), 0)
+    : judged.reduce((sum, row) => sum + verdictCallCount(row.verdict), 0);
+  const reportedJudgeCalls = Array.isArray(judgeAttempts)
+    ? judgeAttempts.reduce(
+        (sum, attempt) => sum + (Number.isInteger(attempt.reportedCostCount)
+          ? attempt.reportedCostCount
+          : Number.isFinite(attempt.costUsd) ? 1 : 0),
+        0
+      )
+    : judged.reduce((sum, row) => sum + verdictReportedCostCount(row.verdict), 0);
   const judgeCosts = Array.isArray(judgeAttempts)
     ? reportedCosts(judgeAttempts, (attempt) => attempt.costUsd)
     : reportedCosts(judged, (row) => row.verdict?.costUsd);
   const agentCosts = reportedCosts(rows, (row) => row.agent?.costUsd);
   return {
     expectedJudgeCalls,
-    reportedJudgeCalls: judgeCosts.length,
-    missingJudgeCosts: expectedJudgeCalls - judgeCosts.length,
+    reportedJudgeCalls,
+    missingJudgeCosts: expectedJudgeCalls - reportedJudgeCalls,
     expectedAgentRuns: rows.length,
     reportedAgentCosts: agentCosts.length,
     missingAgentCosts: rows.length - agentCosts.length
   };
+}
+
+export function parseJudgePanel(value) {
+  if (value === undefined) return 1;
+  const panelSize = Number(value);
+  if (!Number.isInteger(panelSize) || (panelSize !== 2 && panelSize !== 3)) {
+    throw new Error(`--judge-panel must be 2 or 3, got ${value}`);
+  }
+  return panelSize;
+}
+
+export function qaMeasurementMetrics(rows, compiledCases) {
+  const caseById = compiledCases instanceof Map
+    ? compiledCases
+    : new Map((compiledCases ?? []).map((kase) => [kase.id, kase]));
+  const verdictRows = rows.filter((row) => typeof row.verdict?.score === "string");
+  const gradedRows = verdictRows.filter((row) => ["correct", "partial", "wrong"].includes(row.verdict.score));
+  const correctRows = rows.filter((row) => row.verdict?.score === "correct").length;
+  const partialRows = rows.filter((row) => row.verdict?.score === "partial").length;
+  const coreCorrectRows = gradedRows.filter((row) => row.verdict.coreAnswer === "correct").length;
+  const coreAnswerNullCount = verdictRows.filter((row) => row.verdict.coreAnswer == null).length;
+  const coverage = gradedRows.flatMap((row) => {
+    const keyFacts = caseById.get(row.id)?.golden?.keyFacts;
+    if (!Array.isArray(keyFacts) || keyFacts.length === 0 || !Array.isArray(row.verdict.missingFacts)) return [];
+    return [1 - row.verdict.missingFacts.length / keyFacts.length];
+  });
+  return {
+    halfCreditShare: rows.length ? (correctRows + partialRows / 2) / rows.length : null,
+    strictCorrectShare: rows.length ? correctRows / rows.length : null,
+    coreAnswerCorrectShare: gradedRows.length ? coreCorrectRows / gradedRows.length : null,
+    coreAnswerNullCount,
+    coreAnswerVerdictCount: gradedRows.length,
+    meanContinuousCoverage: coverage.length
+      ? coverage.reduce((sum, value) => sum + value, 0) / coverage.length
+      : null,
+    continuousCoverageRowCount: coverage.length
+  };
+}
+
+export function formatMeasurementMetrics(metrics) {
+  const share = (value) => value == null ? "n/a" : `${(value * 100).toFixed(1)}%`;
+  return [
+    `half-credit ${share(metrics.halfCreditShare)}`,
+    `strict-correct ${share(metrics.strictCorrectShare)}`,
+    `core-answer-correct ${share(metrics.coreAnswerCorrectShare)} (${metrics.coreAnswerNullCount} null)`,
+    `mean continuous coverage ${share(metrics.meanContinuousCoverage)} (${metrics.continuousCoverageRowCount} rows)`
+  ].join(" · ");
 }
 
 /** Totals over REPORTED costs only, plus the counts that qualify them. */
@@ -401,7 +460,7 @@ async function preflight(port, { surface, searchTool, plainSurface }) {
  */
 export async function judgeStoredResults(
   resultsPath,
-  { judgeModel = JUDGE_MODEL, judge = judgeCase, log = console.log } = {}
+  { judgeModel = JUDGE_MODEL, judgePanel = 1, judge = judgeCase, log = console.log } = {}
 ) {
   const sourceText = readFileSync(resultsPath, "utf8");
   const results = JSON.parse(sourceText);
@@ -427,6 +486,11 @@ export async function judgeStoredResults(
   if (meta.judgeRubric != null && meta.judgeRubric !== JUDGE_RUBRIC) {
     throw new Error(
       `--judge-stored: file already carries verdicts under rubric ${meta.judgeRubric}, current is ${JUDGE_RUBRIC} — use re-judge.mjs for cross-rubric work`
+    );
+  }
+  if (meta.judgePanel != null && meta.judgePanel !== judgePanel) {
+    throw new Error(
+      `--judge-stored: file already carries judge panel size ${meta.judgePanel}; refusing to mix in ${judgePanel}`
     );
   }
   const identity = verifySourceCases(results, resultsPath);
@@ -466,6 +530,12 @@ export async function judgeStoredResults(
         completedAt: null,
         outcome: row.verdict.score,
         costUsd: Number.isFinite(row.verdict.costUsd) ? row.verdict.costUsd : null,
+        ...(verdictCallCount(row.verdict) > 1
+          ? {
+              callCount: verdictCallCount(row.verdict),
+              reportedCostCount: verdictReportedCostCount(row.verdict)
+            }
+          : {}),
         provenance: "recorded-before-judge-stored-v2"
       }));
   const paidIds = [];
@@ -476,7 +546,9 @@ export async function judgeStoredResults(
   const writeState = ({ withSummary }) => {
     meta.judgeModel = judgeModel;
     meta.judgeRubric = JUDGE_RUBRIC;
+    if (judgePanel > 1) meta.judgePanel = judgePanel;
     Object.assign(meta, costTotals(results.rows, judgeAttempts));
+    Object.assign(meta, qaMeasurementMetrics(results.rows, identity.caseById));
     meta.judgeStored = {
       judgedAt: new Date().toISOString(),
       // Keep the ORIGINAL collection-time hash across resumes; re-hashing the
@@ -506,10 +578,15 @@ export async function judgeStoredResults(
     // leaving a paid file stuck with a null summary.
     writeState({ withSummary: true });
     log(`judge-stored: ${resultsPath} · nothing left to judge · finalized stamps + summary`);
-    return { judgedCount: 0, summary: results.summary, outPath: resultsPath };
+    return {
+      judgedCount: 0,
+      summary: results.summary,
+      metrics: qaMeasurementMetrics(results.rows, identity.caseById),
+      outPath: resultsPath
+    };
   }
   log(
-    `judge-stored: ${resultsPath} · ${unjudged.length}/${results.rows.length} unjudged row(s) · judge ${judgeModel}`
+    `judge-stored: ${resultsPath} · ${unjudged.length}/${results.rows.length} unjudged row(s) · judge ${judgeModel}${judgePanel > 1 ? ` panel ${judgePanel}` : ""}`
   );
 
   // Stamp the judge tuple BEFORE the first paid call so a crash-resume with a
@@ -546,41 +623,39 @@ export async function judgeStoredResults(
         startedAt: new Date().toISOString(),
         completedAt: null,
         outcome: null,
-        costUsd: null
+        costUsd: null,
+        ...(judgePanel > 1 ? { callCount: judgePanel, reportedCostCount: 0 } : {})
       };
       judgeAttempts.push(attempt);
       // The attempt and judge tuple must reach durable storage before spend.
       writeState({ withSummary: false });
-      row.verdict = await judge(
+      row.verdict = await judgeCasePanel(
         { ...kase, candidateAnswer: row.answer, transcript: row.transcript, transcriptEvidence },
-        { model: judgeModel }
+        { model: judgeModel, panelSize: judgePanel, judge }
       );
       attempt.completedAt = new Date().toISOString();
       attempt.outcome = row.verdict.score ?? "error";
       attempt.costUsd = Number.isFinite(row.verdict.costUsd) ? row.verdict.costUsd : null;
+      if (judgePanel > 1) {
+        attempt.reportedCostCount = verdictReportedCostCount(row.verdict);
+      }
       paidIds.push(row.id);
       // Persist after every judged row: a crash on row N keeps rows 1..N-1's
       // paid verdicts on disk (the run resumes as judge-all-unjudged).
       writeState({ withSummary: true });
     } else {
       // Mirror the inline no-answer verdict exactly.
-      row.verdict = {
-        score: "error",
-        coreAnswer: null,
-        missingFacts: [],
-        wrongClaims: [],
-        avoidMatches: [],
-        consistencyViolations: [],
-        rationale: agentErrorRationale(row.agent?.failure),
-        rubric: JUDGE_RUBRIC,
-        packVersion: PACK_VERSION,
-        promptSha256: null
-      };
+      row.verdict = buildAgentErrorVerdict(row.agent?.failure);
     }
   }
 
   writeState({ withSummary: true });
-  return { judgedCount: unjudged.length, summary: results.summary, outPath: resultsPath };
+  return {
+    judgedCount: unjudged.length,
+    summary: results.summary,
+    metrics: qaMeasurementMetrics(results.rows, identity.caseById),
+    outPath: resultsPath
+  };
 }
 
 async function main() {
@@ -592,10 +667,12 @@ async function main() {
   const judgeStoredPath = argVal("--judge-stored");
   if (judgeStoredPath) {
     if (args.includes("--no-judge")) throw new Error("--judge-stored and --no-judge are contradictory");
-    const { summary } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
-      judgeModel: argVal("--judge-model") ?? JUDGE_MODEL
+    const { summary, metrics } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
+      judgeModel: argVal("--judge-model") ?? JUDGE_MODEL,
+      judgePanel: parseJudgePanel(argVal("--judge-panel"))
     });
     console.log("\n" + formatSummaryTable(summary));
+    console.log(formatMeasurementMetrics(metrics));
     return;
   }
   const variant = (argVal("--variant") ?? "A").toUpperCase();
@@ -611,6 +688,7 @@ async function main() {
   const port = Number(argVal("--port") ?? 8788);
   const model = argVal("--model") ?? AGENT_MODEL;
   const judgeModel = argVal("--judge-model") ?? JUDGE_MODEL;
+  const judgePanel = parseJudgePanel(argVal("--judge-panel"));
   const noJudge = args.includes("--no-judge");
   const serverRevision = assertPinnedServerRevision(argVal("--server-revision"));
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
@@ -631,7 +709,7 @@ async function main() {
 
   const preflightResult = await preflight(port, { surface, searchTool, plainSurface });
   console.log(
-    `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${cases.length} cases · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : judgeModel}`
+    `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${cases.length} cases · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` panel ${judgePanel}` : ""}`}`
   );
 
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "qa-mcp-"));
@@ -664,22 +742,11 @@ async function main() {
       let verdict = null;
       if (!noJudge) {
         verdict = successfulAnswer
-          ? await judgeCase(
+          ? await judgeCasePanel(
               { ...c, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
-              { model: judgeModel }
+              { model: judgeModel, panelSize: judgePanel, judge: judgeCase }
             )
-          : {
-              score: "error",
-              coreAnswer: null,
-              missingFacts: [],
-              wrongClaims: [],
-              avoidMatches: [],
-              consistencyViolations: [],
-              rationale: agentErrorRationale(run.failure),
-              rubric: JUDGE_RUBRIC,
-              packVersion: PACK_VERSION,
-              promptSha256: null
-            };
+          : buildAgentErrorVerdict(run.failure);
       }
       const durationMs = Date.now() - t0;
       rows.push({
@@ -723,6 +790,7 @@ async function main() {
   }
 
   const summary = noJudge ? null : summarize(rows);
+  const metrics = noJudge ? qaMeasurementMetrics([], cases) : qaMeasurementMetrics(rows, cases);
   const stampSuffix = surface === "per-operation" ? "perOperation" : `variant${variant}`;
   const stamp = `${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}-${stampSuffix}`;
   const resultsDir = path.join(QA_DIR, "results");
@@ -742,6 +810,7 @@ async function main() {
           model,
           judgeModel: noJudge ? null : judgeModel,
           judgeRubric: noJudge ? null : JUDGE_RUBRIC,
+          ...(judgePanel > 1 && !noJudge ? { judgePanel } : {}),
           packVersion: PACK_VERSION,
           resultsSchema: AGENT_RESULT_SCHEMA,
           casesPath,
@@ -770,6 +839,7 @@ async function main() {
           sourceIdentity: collectionSourceIdentity,
           sourceIdentityGuard: collectionSourceIdentityGuard,
           toolSurface: preflightResult.metrics,
+          ...metrics,
           ...costTotals(rows)
         },
         summary,
@@ -787,6 +857,7 @@ async function main() {
   console.log(`\nwrote ${outPath}`);
   if (summary) {
     console.log("\n" + formatSummaryTable(summary));
+    console.log(formatMeasurementMetrics(metrics));
   }
 }
 

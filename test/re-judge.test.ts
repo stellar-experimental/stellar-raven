@@ -31,6 +31,7 @@ type RejudgeRows = (options: {
 type EffectiveVerdictScore = (verdict: { score?: string; judgeScore?: string } | null) => string | undefined;
 type StoredVerdict = { score?: string; judgeScore?: string } | null | undefined;
 type VerdictAgreement = (original: StoredVerdict, next: StoredVerdict) => boolean | null;
+type ResolveCasesRef = (results: object, explicit?: string) => string | undefined;
 
 async function loadVerifySourceCases(): Promise<VerifySourceCases> {
   const modulePath = "../eval/qa/re-judge.mjs";
@@ -55,6 +56,11 @@ async function loadEffectiveVerdictScore(): Promise<EffectiveVerdictScore> {
 async function loadVerdictAgreement(): Promise<VerdictAgreement> {
   const modulePath = "../eval/qa/re-judge.mjs";
   return (await import(modulePath) as { verdictAgreement: VerdictAgreement }).verdictAgreement;
+}
+
+async function loadResolveCasesRef(): Promise<ResolveCasesRef> {
+  const modulePath = "../eval/qa/re-judge.mjs";
+  return (await import(modulePath) as { resolveCasesRef: ResolveCasesRef }).resolveCasesRef;
 }
 
 function sha256(value: string): string {
@@ -86,6 +92,41 @@ function writeResults(verdicts: Array<null | { score: string }>) {
     })}\n`
   );
   return { resultsPath, ids: selected.map((item: { id: string }) => item.id) };
+}
+
+async function writeGoldenDriftResult() {
+  const tuple = await loadJudgeTuple();
+  const directory = mkdtempSync(join(tmpdir(), "raven-rejudge-time-"));
+  temporaryDirectories.push(directory);
+  const kase = {
+    id: "q-live-newer-golden",
+    question: "What is current?",
+    golden: { answer: "Current answer.", keyFacts: ["Current fact."], avoid: [], notes: "" },
+    tags: { freshness: "live" },
+    truth: { asOf: "2026-08-26", verified: { date: "2026-08-26" } }
+  };
+  const casesPath = join(directory, "cases.json");
+  writeFileSync(casesPath, `${JSON.stringify({ cases: [kase] })}\n`);
+  const resultsPath = join(directory, "results.json");
+  writeFileSync(
+    resultsPath,
+    `${JSON.stringify({
+      meta: {
+        casesPath,
+        ...tuple,
+        finishedAt: "2026-08-25T23:59:59.000Z",
+        inputSnapshot: { casesSha256: sha256(JSON.stringify([kase])) }
+      },
+      rows: [{
+        id: kase.id,
+        answer: "Saved answer.",
+        transcript: [],
+        agent: { failure: null },
+        verdict: { score: "correct" }
+      }]
+    })}\n`
+  );
+  return { resultsPath, id: kase.id };
 }
 
 type JudgeTuple = { judgeModel: string; judgeRubric: string; packVersion: string };
@@ -204,6 +245,34 @@ afterEach(() => {
 });
 
 describe("re-judge saved-answer selection", () => {
+  it("defaults the cases revision to the recorded runner revision", async () => {
+    const resolveCasesRef = await loadResolveCasesRef();
+    const recorded = "a".repeat(40);
+
+    expect(resolveCasesRef({ meta: { sourceIdentity: { runnerRevision: recorded } } })).toBe(recorded);
+    expect(resolveCasesRef({ meta: { sourceIdentity: { runnerRevision: recorded } } }, "HEAD~1")).toBe("HEAD~1");
+  });
+
+  it("refuses a newer live golden unless golden drift is explicit", async () => {
+    const { resultsPath, id } = await writeGoldenDriftResult();
+    const refused = spawnSync(
+      process.execPath,
+      [REJUDGE_PATH, resultsPath, "--ids", id, "--dry-run"],
+      { cwd: ROOT, encoding: "utf8" }
+    );
+
+    expect(refused.status).toBe(1);
+    expect(refused.stderr).toContain("time-inconsistent re-judge");
+    expect(refused.stderr).toContain("--allow-golden-drift");
+
+    const allowed = spawnSync(
+      process.execPath,
+      [REJUDGE_PATH, resultsPath, "--ids", id, "--allow-golden-drift", "--dry-run"],
+      { cwd: ROOT, encoding: "utf8" }
+    );
+    expect(allowed.status, allowed.stderr).toBe(0);
+  });
+
   it("uses the raw judge score for validation-error comparisons", async () => {
     const effectiveVerdictScore = await loadEffectiveVerdictScore();
 
@@ -262,6 +331,33 @@ describe("re-judge saved-answer selection", () => {
     }) as Array<{ agreement: boolean }>;
 
     expect(rows[0]?.agreement).toBe(true);
+  });
+
+  it("skips an ungradeable saved row and preserves its error verdict", async () => {
+    const rejudgeRows = await loadRejudgeRows();
+    let judgeCalls = 0;
+    const original = { score: "error" };
+    const rows = await rejudgeRows({
+      selectedRows: [{
+        id: "failed",
+        answer: "A provider safeguard message.",
+        transcript: [],
+        agent: { failure: { class: "provider-safeguard", reason: "blocked" } },
+        verdict: original
+      }] as never,
+      caseById: new Map([["failed", { id: "failed", question: "Question?" }]]),
+      judgeModel: "stub-judge",
+      judge: async () => {
+        judgeCalls++;
+        return { score: "wrong", costUsd: 0.1 };
+      },
+      checkpoint: () => {},
+      log: () => {}
+    }) as Array<{ new: { score: string }; skipped?: { reason: string } }>;
+
+    expect(judgeCalls).toBe(0);
+    expect(rows[0]?.new).toBe(original);
+    expect(rows[0]?.skipped).toEqual({ reason: "unsuccessful-answer" });
   });
 
   // agreement measures grade variance, so it needs a grade on both sides. An
