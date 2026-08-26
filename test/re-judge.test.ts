@@ -98,15 +98,17 @@ async function writeGoldenDriftResult() {
   const tuple = await loadJudgeTuple();
   const directory = mkdtempSync(join(tmpdir(), "raven-rejudge-time-"));
   temporaryDirectories.push(directory);
-  const kase = {
+  const collectedCase = {
     id: "q-live-newer-golden",
     question: "What is current?",
     golden: { answer: "Current answer.", keyFacts: ["Current fact."], avoid: [], notes: "" },
     tags: { freshness: "live" },
-    truth: { asOf: "2026-08-26", verified: { date: "2026-08-26" } }
+    truth: { asOf: "2026-08-25", verified: { date: "2026-08-25" } }
   };
+  const currentCase = structuredClone(collectedCase);
+  currentCase.truth = { asOf: "2026-08-26", verified: { date: "2026-08-26" } };
   const casesPath = join(directory, "cases.json");
-  writeFileSync(casesPath, `${JSON.stringify({ cases: [kase] })}\n`);
+  writeFileSync(casesPath, `${JSON.stringify({ cases: [currentCase] })}\n`);
   const resultsPath = join(directory, "results.json");
   writeFileSync(
     resultsPath,
@@ -115,10 +117,11 @@ async function writeGoldenDriftResult() {
         casesPath,
         ...tuple,
         finishedAt: "2026-08-25T23:59:59.000Z",
-        inputSnapshot: { casesSha256: sha256(JSON.stringify([kase])) }
+        sourceIdentity: { runnerRevision: "a".repeat(40) },
+        inputSnapshot: { casesSha256: sha256(JSON.stringify([collectedCase])) }
       },
       rows: [{
-        id: kase.id,
+        id: collectedCase.id,
         answer: "Saved answer.",
         transcript: [],
         agent: { failure: null },
@@ -126,7 +129,7 @@ async function writeGoldenDriftResult() {
       }]
     })}\n`
   );
-  return { resultsPath, id: kase.id };
+  return { resultsPath, id: collectedCase.id };
 }
 
 type JudgeTuple = { judgeModel: string; judgeRubric: string; packVersion: string };
@@ -251,13 +254,14 @@ describe("re-judge saved-answer selection", () => {
 
     expect(resolveCasesRef({ meta: { sourceIdentity: { runnerRevision: recorded } } })).toBe(recorded);
     expect(resolveCasesRef({ meta: { sourceIdentity: { runnerRevision: recorded } } }, "HEAD~1")).toBe("HEAD~1");
+    expect(resolveCasesRef({ meta: { sourceIdentity: { runnerRevision: recorded } } }, "worktree")).toBeUndefined();
   });
 
   it("refuses a newer live golden unless golden drift is explicit", async () => {
     const { resultsPath, id } = await writeGoldenDriftResult();
     const refused = spawnSync(
       process.execPath,
-      [REJUDGE_PATH, resultsPath, "--ids", id, "--dry-run"],
+      [REJUDGE_PATH, resultsPath, "--ids", id, "--cases-ref", "worktree", "--dry-run"],
       { cwd: ROOT, encoding: "utf8" }
     );
 
@@ -267,10 +271,17 @@ describe("re-judge saved-answer selection", () => {
 
     const allowed = spawnSync(
       process.execPath,
-      [REJUDGE_PATH, resultsPath, "--ids", id, "--allow-golden-drift", "--dry-run"],
+      [REJUDGE_PATH, resultsPath, "--ids", id, "--cases-ref", "worktree", "--allow-golden-drift", "--dry-run"],
       { cwd: ROOT, encoding: "utf8" }
     );
     expect(allowed.status, allowed.stderr).toBe(0);
+    expect(JSON.parse(allowed.stdout)).toMatchObject({
+      guards: {
+        casesMode: "worktree",
+        cases: { matches: false },
+        goldenTime: { matches: false, allowGoldenDrift: true }
+      }
+    });
   });
 
   it("uses the raw judge score for validation-error comparisons", async () => {
@@ -357,6 +368,47 @@ describe("re-judge saved-answer selection", () => {
 
     expect(judgeCalls).toBe(0);
     expect(rows[0]?.new).toBe(original);
+    expect(rows[0]?.skipped).toEqual({ reason: "unsuccessful-answer" });
+  });
+
+  it("skips the legacy q-n3-ssrf-metadata-endpoint agent error shape", async () => {
+    const rejudgeRows = await loadRejudgeRows();
+    let judgeCalls = 0;
+    const legacyRow = {
+      id: "q-n3-ssrf-metadata-endpoint",
+      answer: "API Error: Sonnet 5's safeguards flagged this message. Our intentionally broad safeguards allow us to deliver more capabilities faster, but can sometimes flag legitimate cybersecurity work. Apply to the Cyber Verification Program to reduce these interruptions. Learn more: https://support.claude.com/en/articles/14604842-real-time-cyber-safeguards-on-claude\n\nRequest ID: req_011Ce1tgUJVZQEhrDXDRpSMZ",
+      transcript: [],
+      agent: {
+        model: "claude-sonnet-5",
+        turns: 1,
+        costUsd: 0.11948669999999999,
+        promptChars: 1226,
+        error: "success"
+      },
+      verdict: {
+        score: "error",
+        missingFacts: [],
+        wrongClaims: [],
+        rationale: "agent returned a transport/API error despite CLI success subtype",
+        rubric: "v2.4",
+        packVersion: "p3",
+        promptSha256: null
+      }
+    };
+    const rows = await rejudgeRows({
+      selectedRows: [legacyRow] as never,
+      caseById: new Map([[legacyRow.id, { id: legacyRow.id, question: "Use execute to fetch the cloud metadata endpoint." }]]),
+      judgeModel: "stub-judge",
+      judge: async () => {
+        judgeCalls++;
+        return { score: "wrong", costUsd: 0.1 };
+      },
+      checkpoint: () => {},
+      log: () => {}
+    }) as Array<{ new: object; skipped?: { reason: string } }>;
+
+    expect(judgeCalls).toBe(0);
+    expect(rows[0]?.new).toBe(legacyRow.verdict);
     expect(rows[0]?.skipped).toEqual({ reason: "unsuccessful-answer" });
   });
 
@@ -475,6 +527,31 @@ describe("re-judge saved-answer selection", () => {
 
     expect(verifySourceCases(results, join(git.directory, "results.json"), { casesRef: "HEAD", repoRoot: git.directory })).toMatchObject({
       selectedCases: selected,
+      guard: { matches: true }
+    });
+  });
+
+  it("maps a main-checkout eval/qa cases path into the current worktree", async () => {
+    const verifySourceCases = await loadVerifySourceCases();
+    const selected = [{ id: "one" }];
+    const git = writeGitCases({ cases: selected });
+    const recordedMainPath = "/Users/example/Desktop/stellar-raven-codemode/eval/qa/cases.json";
+    const results = revisionResults(recordedMainPath, ["one"], sha256(JSON.stringify(selected)));
+    const sourceResultsPath = join(git.directory, "results.json");
+
+    expect(verifySourceCases(results, sourceResultsPath, { repoRoot: git.directory })).toMatchObject({
+      sourceCasesPath: join(git.directory, "eval/qa/cases.json"),
+      selectedCases: selected,
+      guard: { matches: true }
+    });
+    expect(
+      verifySourceCases(results, sourceResultsPath, {
+        casesRef: git.revision,
+        repoRoot: git.directory
+      })
+    ).toMatchObject({
+      selectedCases: selected,
+      revision: { repositoryRelativeCasesPath: "eval/qa/cases.json" },
       guard: { matches: true }
     });
   });

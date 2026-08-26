@@ -229,7 +229,7 @@ describe("run-qa --judge-stored", () => {
         strictCorrectShare: 0.5,
         halfCreditShare: 0.5,
         coreAnswerCorrectShare: 1,
-        coreAnswerNullCount: 1,
+        gradedCoreAnswerNullCount: 0,
         meanContinuousCoverage: 1,
         continuousCoverageRowCount: 1
       });
@@ -532,6 +532,29 @@ describe("run-qa --judge-stored", () => {
       await expect(
         judgeStoredResults(resultsPath, { judge: stubJudge(), log: () => {} })
       ).rejects.toThrow(/evidence pack/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("treats an absent stored judge panel as a single-call panel", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      results.meta.judgeModel = "stub-judge";
+      results.meta.judgeRubric = JUDGE_RUBRIC;
+      results.rows[0].verdict = { ...stubVerdict };
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+
+      await expect(
+        judgeStoredResults(resultsPath, {
+          judgeModel: "stub-judge",
+          judgePanel: 2,
+          judge: stubJudge(),
+          log: () => {}
+        })
+      ).rejects.toThrow(/panel size 1; refusing to mix in 2/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

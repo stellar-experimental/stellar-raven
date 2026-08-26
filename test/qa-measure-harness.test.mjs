@@ -62,6 +62,33 @@ describe("QA judge panel", () => {
     });
   });
 
+  it("treats error votes as abstentions when a graded vote remains", async () => {
+    const oneGrade = await judgeCasePanel(
+      {},
+      { panelSize: 2, judge: queuedJudge([verdict("correct"), verdict("error")]) }
+    );
+    const gradedTie = await judgeCasePanel(
+      {},
+      {
+        panelSize: 3,
+        judge: queuedJudge([verdict("error"), verdict("correct"), verdict("partial", ["fact"])])
+      }
+    );
+
+    expect(oneGrade.score).toBe("correct");
+    expect(oneGrade.meta).toMatchObject({
+      panelDisagreement: true,
+      panelTie: false,
+      panelScores: ["correct", "error"]
+    });
+    expect(gradedTie.score).toBe("partial");
+    expect(gradedTie.meta).toMatchObject({
+      panelDisagreement: true,
+      panelTie: true,
+      panelScores: ["error", "correct", "partial"]
+    });
+  });
+
   it("keeps the single-call verdict byte-compatible", async () => {
     const single = verdict("correct");
     expect(await judgeCasePanel({}, { judge: queuedJudge([single]) })).toBe(single);
@@ -86,12 +113,12 @@ describe("QA measurement metrics", () => {
       halfCreditShare: 0.5,
       strictCorrectShare: 1 / 3,
       coreAnswerCorrectShare: 1,
-      coreAnswerNullCount: 1,
+      gradedCoreAnswerNullCount: 0,
       coreAnswerVerdictCount: 2,
       meanContinuousCoverage: 0.75,
       continuousCoverageRowCount: 2
     });
-    expect(formatMeasurementMetrics(metrics)).toContain("1 null");
+    expect(formatMeasurementMetrics(metrics)).toContain("0 graded null");
   });
 
   it("guards empty denominators and rejects invalid panel sizes", () => {

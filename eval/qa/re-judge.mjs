@@ -5,6 +5,7 @@
  * Usage:
  *   node eval/qa/re-judge.mjs <results.json> --ids id-a,id-b
  *   node eval/qa/re-judge.mjs <results.json> --flips-vs <baseline.json>
+ *   node eval/qa/re-judge.mjs <results.json> --ids id-a --cases-ref worktree
  *
  * A saved QA result records the full selected input snapshot. Before spending
  * on a re-judge, this tool reconstructs that snapshot from meta.casesPath and
@@ -14,6 +15,8 @@
  * baseline decides which rows get paid for. That baseline guard is absolute.
  * --allow-non-identical makes an exceptional SOURCE decision explicit in the
  * output artifact; it never waives a baseline mismatch.
+ * --cases-ref worktree selects current compiled cases without a revision pin.
+ * The ordinary identity and golden-time guards still apply in that mode.
  */
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -129,7 +132,7 @@ function parseArgs(argv) {
     } else if (arg === "--cases-ref") {
       if (casesRef !== undefined) fail("--cases-ref may be supplied only once");
       casesRef = argv[++i];
-      if (!casesRef || casesRef.startsWith("--")) fail("--cases-ref requires a Git revision");
+      if (!casesRef || casesRef.startsWith("--")) fail("--cases-ref requires a Git revision or worktree");
     } else if (arg === "--judge-panel") {
       const value = argv[++i];
       judgePanel = Number(value);
@@ -145,7 +148,7 @@ function parseArgs(argv) {
     } else if (arg === "--dry-run") {
       dryRun = true;
     } else if (arg === "--help" || arg === "-h") {
-      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--cases-ref <git-revision>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
+      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
       process.exit(0);
     } else if (arg.startsWith("--")) {
       fail(`unknown flag ${arg}`);
@@ -172,13 +175,22 @@ function parseArgs(argv) {
   };
 }
 
-function repositoryRelativePath(casesPath, repoRoot) {
+function mappedRepositoryRelativePath(casesPath, repoRoot) {
   const absolutePath = path.isAbsolute(casesPath) ? path.resolve(casesPath) : path.resolve(repoRoot, casesPath);
   const relativePath = path.relative(repoRoot, absolutePath);
-  if (!relativePath || relativePath === ".." || relativePath.startsWith(`..${path.sep}`) || path.isAbsolute(relativePath)) {
-    fail(`source results meta.casesPath is outside the repository: ${casesPath}`);
+  if (relativePath && relativePath !== ".." && !relativePath.startsWith(`..${path.sep}`) && !path.isAbsolute(relativePath)) {
+    return relativePath.split(path.sep).join("/");
   }
-  return relativePath.split(path.sep).join("/");
+  const normalized = absolutePath.split(path.sep).join("/");
+  const marker = "/eval/qa/";
+  const markerIndex = normalized.lastIndexOf(marker);
+  return markerIndex === -1 ? null : `eval/qa/${normalized.slice(markerIndex + marker.length)}`;
+}
+
+function repositoryRelativePath(casesPath, repoRoot) {
+  const mapped = mappedRepositoryRelativePath(casesPath, repoRoot);
+  if (!mapped) fail(`source results meta.casesPath is outside the repository: ${casesPath}`);
+  return mapped;
 }
 
 function git(repoRoot, args, label) {
@@ -224,8 +236,12 @@ export function verifySourceCases(results, sourceResultsPath, { casesRef, repoRo
   }
 
   const historical = casesRef === undefined ? null : readCasesAtRevision(casesPath, casesRef, repoRoot);
+  const mappedCasesPath = mappedRepositoryRelativePath(casesPath, repoRoot);
   const casePathCandidates = path.isAbsolute(casesPath)
-    ? [casesPath]
+    ? [
+        ...(mappedCasesPath ? [path.resolve(repoRoot, mappedCasesPath)] : []),
+        casesPath
+      ]
     : [
         path.resolve(path.dirname(sourceResultsPath), casesPath),
         path.resolve(REPO_ROOT, casesPath)
@@ -280,9 +296,18 @@ function goldenDates(kase) {
 }
 
 export function resolveCasesRef(results, explicitCasesRef) {
+  if (explicitCasesRef === "worktree") return undefined;
   if (explicitCasesRef !== undefined) return explicitCasesRef;
   const recorded = results?.meta?.sourceIdentity?.runnerRevision;
   return typeof recorded === "string" && recorded ? recorded : undefined;
+}
+
+export function isUngradeableSavedRow(row) {
+  const legacyAgentError =
+    row?.verdict?.score === "error" &&
+    row.verdict.promptSha256 == null &&
+    typeof row.verdict.judgeScore !== "string";
+  return !hasSuccessfulAnswer(row?.answer, row?.agent?.failure) || legacyAgentError;
 }
 
 export function goldenTimeConsistency(results, selectedRows, caseById) {
@@ -490,7 +515,7 @@ export async function rejudgeRows({
     if (!kase) fail(`source cases file no longer contains selected case ${row.id}`);
 
     log(`[${index + 1}/${selectedRows.length}] ${row.id} …`);
-    if (!hasSuccessfulAnswer(row.answer, row.agent?.failure)) {
+    if (isUngradeableSavedRow(row)) {
       const verdict = row.verdict?.score === "error"
         ? row.verdict
         : buildAgentErrorVerdict(row.agent?.failure);
@@ -544,6 +569,7 @@ async function main() {
   }
 
   const casesRef = resolveCasesRef(results, options.casesRef);
+  const casesMode = casesRef === undefined ? "worktree" : "revision";
   const effectiveOptions = { ...options, casesRef };
   const identity = verifySourceCases(results, sourceResultsPath, { casesRef });
   const tuple = tupleGuard(results, options.judgeModel);
@@ -561,6 +587,7 @@ async function main() {
   const nonIdentical = !identity.guard.matches || !tuple.matches;
   const guards = {
     cases: identity.guard,
+    casesMode,
     ...(identity.revision
       ? {
           historicalCases: {
@@ -622,6 +649,7 @@ async function main() {
       selectedIds: selection.rows.map((row) => row.id),
       emptySelection: selection.rows.length === 0,
       sourceCasesPath: identity.sourceCasesPath,
+      casesMode,
       casesSha256: identity.guard.actualCasesSha256,
       inputSnapshotCasesSha256: identity.guard.expectedCasesSha256,
       ...(identity.revision
@@ -654,7 +682,7 @@ async function main() {
         promptSha256ById: Object.fromEntries(rows.map((row) => [row.id, row.new.promptSha256 ?? null])),
         costs: judgeCostAccounting(
           rows,
-          selection.rows.filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure)).length * options.judgePanel
+          selection.rows.filter((row) => !isUngradeableSavedRow(row)).length * options.judgePanel
         ),
         finishedAt
       },

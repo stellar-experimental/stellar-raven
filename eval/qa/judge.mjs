@@ -134,9 +134,10 @@ function panelWinner(scores) {
 }
 
 /**
- * Run an opt-in judge panel. A two-call tie resolves to the worse grade so the
- * result never promotes an answer without a majority. The first verdict with
- * the winning score supplies all fields except the unioned missingFacts list.
+ * Run an opt-in judge panel. Error votes abstain when any graded vote remains.
+ * A graded tie resolves to the worse grade, so the result never promotes an
+ * answer without a majority. The first winning verdict supplies all fields
+ * except the unioned missingFacts list.
  */
 export async function judgeCasePanel(
   input,
@@ -155,7 +156,8 @@ export async function judgeCasePanel(
     PANEL_SCORES_WORST_FIRST.includes(verdict?.score) ? verdict.score : "error"
   );
   const disagreement = new Set(scores).size > 1;
-  const winner = panelWinner(scores);
+  const gradedScores = scores.filter((score) => score !== "error");
+  const winner = panelWinner(gradedScores.length ? gradedScores : scores);
   const representative = verdicts.find((verdict) => verdict?.score === winner.score) ?? verdicts[0];
   const costs = verdicts.map((verdict) => verdict?.costUsd).filter((cost) => Number.isFinite(cost));
 

@@ -176,7 +176,7 @@ export function qaMeasurementMetrics(rows, compiledCases) {
   const correctRows = rows.filter((row) => row.verdict?.score === "correct").length;
   const partialRows = rows.filter((row) => row.verdict?.score === "partial").length;
   const coreCorrectRows = gradedRows.filter((row) => row.verdict.coreAnswer === "correct").length;
-  const coreAnswerNullCount = verdictRows.filter((row) => row.verdict.coreAnswer == null).length;
+  const gradedCoreAnswerNullCount = gradedRows.filter((row) => row.verdict.coreAnswer == null).length;
   const coverage = gradedRows.flatMap((row) => {
     const keyFacts = caseById.get(row.id)?.golden?.keyFacts;
     if (!Array.isArray(keyFacts) || keyFacts.length === 0 || !Array.isArray(row.verdict.missingFacts)) return [];
@@ -186,7 +186,7 @@ export function qaMeasurementMetrics(rows, compiledCases) {
     halfCreditShare: rows.length ? (correctRows + partialRows / 2) / rows.length : null,
     strictCorrectShare: rows.length ? correctRows / rows.length : null,
     coreAnswerCorrectShare: gradedRows.length ? coreCorrectRows / gradedRows.length : null,
-    coreAnswerNullCount,
+    gradedCoreAnswerNullCount,
     coreAnswerVerdictCount: gradedRows.length,
     meanContinuousCoverage: coverage.length
       ? coverage.reduce((sum, value) => sum + value, 0) / coverage.length
@@ -200,7 +200,7 @@ export function formatMeasurementMetrics(metrics) {
   return [
     `half-credit ${share(metrics.halfCreditShare)}`,
     `strict-correct ${share(metrics.strictCorrectShare)}`,
-    `core-answer-correct ${share(metrics.coreAnswerCorrectShare)} (${metrics.coreAnswerNullCount} null)`,
+    `core-answer-correct ${share(metrics.coreAnswerCorrectShare)} (${metrics.gradedCoreAnswerNullCount} graded null)`,
     `mean continuous coverage ${share(metrics.meanContinuousCoverage)} (${metrics.continuousCoverageRowCount} rows)`
   ].join(" · ");
 }
@@ -488,9 +488,11 @@ export async function judgeStoredResults(
       `--judge-stored: file already carries verdicts under rubric ${meta.judgeRubric}, current is ${JUDGE_RUBRIC} — use re-judge.mjs for cross-rubric work`
     );
   }
-  if (meta.judgePanel != null && meta.judgePanel !== judgePanel) {
+  const hasSavedVerdicts = results.rows.some((row) => typeof row.verdict?.score === "string");
+  const recordedJudgePanel = meta.judgePanel ?? 1;
+  if (hasSavedVerdicts && recordedJudgePanel !== judgePanel) {
     throw new Error(
-      `--judge-stored: file already carries judge panel size ${meta.judgePanel}; refusing to mix in ${judgePanel}`
+      `--judge-stored: file already carries judge panel size ${recordedJudgePanel}; refusing to mix in ${judgePanel}`
     );
   }
   const identity = verifySourceCases(results, resultsPath);
