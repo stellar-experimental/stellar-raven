@@ -292,6 +292,20 @@ Collection stop rules:
 - Each arm returned HTTP 200 for a real MCP initialize.
 - One Wrangler process ran at a time on port 8788.
 
+### Adversarial delta verdict
+
+- Reviewer: `connector-adversary`, Grok high.
+- Verdict: `LAUNCH-OK` for the scoped Claude Code QA path.
+- The immutable runtime and baseline worktrees are clean.
+- The wrapper pins and per-call limits match this ledger.
+- The first-pair transcript checkpoint occurs before the second pair.
+- The live surface fingerprints are pinned for both arms.
+- The measured client and non-Directory limitation are explicit.
+- Aggregate grades remain diagnostic only.
+- All item-8 mechanical facts are restored in the candidate.
+- The remaining limits are not launch blockers.
+- A pass still does not close item 8 or authorize Directory shipment.
+
 ## Outcome
 
 Pending.
