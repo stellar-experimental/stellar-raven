@@ -1,6 +1,11 @@
 import { CHARS_PER_TOKEN, DEFAULT_MAX_TOKENS, truncateForModel, type Truncated } from "./truncate.ts";
 
 export const SOURCE_BASIS_MANIFEST_MAX_CHARS = 1600;
+export const SOURCE_BASIS_MARKER = "--- SOURCE BASIS ---";
+export const SOURCE_METADATA_MARKER = "--- SOURCE METADATA ---";
+
+const ESCAPED_SOURCE_BASIS_MARKER = "--- SOURCE BASIS (result text) ---";
+const ESCAPED_SOURCE_METADATA_MARKER = "--- SOURCE METADATA (result text) ---";
 
 const MAX_URLS = 5;
 const INITIAL_MAX_CALLS = 14;
@@ -154,6 +159,16 @@ export function sourceBasisShapeFromTruncation(value: unknown, truncated: Trunca
   return { ...base, kind: "string", stringChars: truncated.originalChars };
 }
 
+/**
+ * A model-returned string must not impersonate a host-appended boundary.
+ * The final exact marker is therefore always the authoritative host block.
+ */
+export function escapeSourceManifestMarkerCollisions(text: string): string {
+  return text
+    .replaceAll(SOURCE_BASIS_MARKER, ESCAPED_SOURCE_BASIS_MARKER)
+    .replaceAll(SOURCE_METADATA_MARKER, ESCAPED_SOURCE_METADATA_MARKER);
+}
+
 export function buildSourceBasisManifest(
   input: BuildSourceBasisManifestInput,
   options: BuildSourceBasisManifestOptions = {}
@@ -241,7 +256,7 @@ function serializeManifest(
   }
 ): string {
   const lines = [
-    "--- SOURCE BASIS ---",
+    input.truncated === false ? SOURCE_METADATA_MARKER : SOURCE_BASIS_MARKER,
     `shape: ${shapeLine(input.shape, limits.shapeDetailLimit)}`,
     `calls: ${callsLine(input.calls, limits.callLimit)}`
   ];

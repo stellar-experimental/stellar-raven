@@ -40,6 +40,7 @@ import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
 import { truncateForModel, modelBoundaryMaxTokensFromEnv } from "../policy/truncate.ts";
 import {
   buildSourceBasisManifest,
+  escapeSourceManifestMarkerCollisions,
   sanitizeCanonicalUrls,
   sourceBasisShapeFromTruncation,
   type BuildSourceBasisManifestInput,
@@ -429,7 +430,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     const result = truncateForModel(redactedResult, modelBoundaryMaxTokens, {
       skillSectionAdvice: skillRead
     });
-    let text = result.text;
+    let text = escapeSourceManifestMarkerCollisions(result.text);
     let sourceBasis: BuildSourceBasisManifestInput | undefined;
     const sourceMetadata = sourceMetadataFromOperationLedger(opLedger);
     if (result.truncated || sourceMetadata.length > 0) {
@@ -507,7 +508,9 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
         skillSectionAdvice: skillRead,
         truncated: result.truncated
       };
-      const visibleResult = result.truncated ? result.text.slice(0, result.maxChars) : result.text;
+      const visibleResult = result.truncated
+        ? escapeSourceManifestMarkerCollisions(result.text.slice(0, result.maxChars))
+        : text;
       text = `${visibleResult}\n${buildSourceBasisManifest(sourceBasis)}`;
     }
     return {

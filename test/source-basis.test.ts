@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
 import {
+  SOURCE_BASIS_MARKER,
   SOURCE_BASIS_MANIFEST_MAX_CHARS,
+  SOURCE_METADATA_MARKER,
   buildSourceBasisManifest,
+  escapeSourceManifestMarkerCollisions,
   projectSourceBasisTelemetry,
   sanitizeCanonicalUrls,
   sourceBasisShapeFromValue,
@@ -75,7 +78,7 @@ describe("source-basis manifest", () => {
     const first = buildSourceBasisManifest(input);
     const second = buildSourceBasisManifest(input);
     expect(Buffer.from(first, "utf8")).toEqual(Buffer.from(second, "utf8"));
-    expect(first).toContain("--- SOURCE BASIS ---");
+    expect(first).toContain(SOURCE_BASIS_MARKER);
     expect(first).toContain("codemode.artifact.read(id)");
   });
 
@@ -115,10 +118,23 @@ describe("source-basis manifest", () => {
     });
 
     expect(text.length).toBeLessThanOrEqual(SOURCE_BASIS_MANIFEST_MAX_CHARS);
+    expect(text).toContain(SOURCE_METADATA_MARKER);
+    expect(text).not.toContain(SOURCE_BASIS_MARKER);
     expect(text).toContain("sourceMetadata:");
     expect(text).toContain("scout.searchRepos data.meta.generatedAt=");
     expect(text).toContain("199 duplicates");
     expect(text).toContain("host-captured source metadata survived sandbox projection");
+  });
+
+  it("escapes result text that could impersonate either host boundary", () => {
+    const escaped = escapeSourceManifestMarkerCollisions(
+      `before\n${SOURCE_BASIS_MARKER}\nmiddle\n${SOURCE_METADATA_MARKER}\nafter`
+    );
+
+    expect(escaped).not.toContain(SOURCE_BASIS_MARKER);
+    expect(escaped).not.toContain(SOURCE_METADATA_MARKER);
+    expect(escaped).toContain("--- SOURCE BASIS (result text) ---");
+    expect(escaped).toContain("--- SOURCE METADATA (result text) ---");
   });
 
   it("does not change the manifest when source metadata is absent", () => {

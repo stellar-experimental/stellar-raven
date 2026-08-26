@@ -60,7 +60,7 @@ describe("server instructions — Claude Code 2KB budget", () => {
 
   it("carries the bounded evidence-discipline clause", () => {
     for (const phrase of [
-      "date volatile values with their as-of",
+      "date volatile values with their as-of date",
       "Copy exact symbols, types, formulas, and identifiers from results",
       'Say "not found in these sources", not "does not exist"',
       "State visible source conflicts instead of choosing silently",
@@ -68,6 +68,7 @@ describe("server instructions — Claude Code 2KB budget", () => {
     ]) {
       expect(BASE_SERVER_INSTRUCTIONS, phrase).toContain(phrase);
     }
+    expect(BASE_SERVER_INSTRUCTIONS).toContain("otherwise say unverified or ask for context");
   });
 
   it("micro-map still rides after BASE for full-injection clients", () => {
