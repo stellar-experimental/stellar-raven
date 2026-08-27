@@ -26,7 +26,7 @@ import {
   makeSearchResultProjector,
   projectSearchResult
 } from "../eval/qa/search-projection.mjs";
-import { buildAgentSpawn, collectionAggregates } from "../eval/qa/run-qa.mjs";
+import { buildAgentSpawn, collectionAggregates, probeLiveSurface } from "../eval/qa/run-qa.mjs";
 import {
   buildDiscoveryAgentArgs,
   buildDiscoverySpawnOptions,
@@ -620,6 +620,16 @@ describe("P5 — the live surface fingerprint is one definition", () => {
     await expect(fetchLiveSurface("http://localhost:8788/mcp", { fetchImpl })).rejects.toThrow(
       /advertised no tools/
     );
+  });
+
+  it("requires the plain surface for a per-operation QA probe", async () => {
+    await expect(
+      probeLiveSurface(8788, {
+        surface: "per-operation",
+        searchTool: "search",
+        plainSurface: null
+      })
+    ).rejects.toThrow(/requires plainSurface/);
   });
 
   it("normalizes a bare origin to the MCP path", () => {

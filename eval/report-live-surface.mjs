@@ -59,6 +59,9 @@ export async function fetchLiveSurface(url, { fetchImpl = fetch, token = null } 
       headers: {
         "content-type": "application/json",
         accept: "application/json, text/event-stream",
+        // Paid discovery can call this after a synchronous agent. Use a fresh
+        // connection; see research/audits/2026-08-27-qa-postflight-keepalive.md.
+        connection: "close",
         ...(token ? { authorization: `Bearer ${token}` } : {})
       },
       body: JSON.stringify(body)
