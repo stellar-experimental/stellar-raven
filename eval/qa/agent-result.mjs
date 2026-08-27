@@ -16,8 +16,19 @@
  */
 import { createHash } from "node:crypto";
 
-/** Bump when the STORED outcome shape changes (run-qa stamps it in meta). */
-export const AGENT_RESULT_SCHEMA = "qa-agent-result-v1";
+/**
+ * Bump when the STORED outcome shape changes (run-qa stamps it in meta).
+ *
+ * v3 (2026-08-27): rows record the MCP connection status from the Claude
+ * system init event. Pre-v3 artifacts cannot prove the required server was
+ * connected under safe mode, so stored judging refuses them.
+ *
+ * v2 (2026-08-26): search calls keep their whole input and gain a bounded
+ * `resultProjection` (eval/qa/search-projection.mjs). v1 artifacts recorded a
+ * sliced query and no hits at all, so they are not comparable for any routing
+ * or coverage read — the readers refuse to mix the two rather than join them.
+ */
+export const AGENT_RESULT_SCHEMA = "qa-agent-result-v3";
 
 /**
  * Exclusive failure classes. `unclassified` is the deliberate default: an
@@ -445,12 +456,25 @@ function artifactOutcomes(transcript) {
  * @param {(toolName: string) => boolean} [options.keepWholeResult]
  *        Which tools' RESULTS are kept whole (default: execute). Downstream
  *        analyzers parse those bodies; other tools stay sliced.
+ * @param {(toolName: string) => boolean} [options.keepWholeInput]
+ *        Which tools' INPUTS are kept whole (default: same as keepWholeResult).
+ *        `search` needs its whole query even though its result is projected,
+ *        because the query IS the routing behaviour under test.
+ * @param {(toolName: string, resultText: string) => object|null} [options.projectResult]
+ *        Bounded evidence for a tool whose result is NOT kept whole. A
+ *        non-null return is stored as `resultProjection`. Used for `search`,
+ *        where the whole body is mostly prose but the ranking is the measurement.
+ * @param {string|null} [options.requiredMcpServerName]
+ *        Require this server to appear as connected in the system init event.
  * @returns {object} the structured outcome (see AGENT_RESULT_SCHEMA).
  */
 export function parseAgentResult(spawn, options = {}) {
   const { stdout = "", stderr = "", status = null, signal = null, spawnError = null } = spawn ?? {};
   const keepWholeResult = options.keepWholeResult ?? ((tool) => tool.endsWith("execute"));
+  const keepWholeInput = options.keepWholeInput ?? keepWholeResult;
+  const projectResult = options.projectResult ?? (() => null);
   const promptChars = options.promptChars ?? null;
+  const requiredMcpServerName = options.requiredMcpServerName ?? null;
 
   const transcript = [];
   const perTurn = [];
@@ -459,6 +483,7 @@ export function parseAgentResult(spawn, options = {}) {
   let turns = null;
   let finalUsage = null;
   let resultMessage = null;
+  let mcpServers = null;
   let sawAnyMessage = false;
   let protocolIssue = null;
   // Independent of `perTurn.length`: an assistant message that carries no usage
@@ -476,7 +501,14 @@ export function parseAgentResult(spawn, options = {}) {
     }
     sawAnyMessage = true;
 
-    if (msg.type === "assistant" && Array.isArray(msg.message?.content)) {
+    if (msg.type === "system" && msg.subtype === "init") {
+      mcpServers = Array.isArray(msg.mcp_servers)
+        ? msg.mcp_servers.map((server) => ({
+            name: String(server?.name ?? ""),
+            status: String(server?.status ?? "")
+          }))
+        : [];
+    } else if (msg.type === "assistant" && Array.isArray(msg.message?.content)) {
       assistantOrdinal += 1;
       const usage = perTurnUsage(msg.message.usage ?? null, assistantOrdinal);
       if (usage) perTurn.push(usage);
@@ -486,7 +518,7 @@ export function parseAgentResult(spawn, options = {}) {
         transcript.push({
           toolUseId: block.id,
           tool: block.name,
-          input: keepWholeResult(String(block.name)) ? rawInput : rawInput.slice(0, TOOL_INPUT_SLICE_CHARS)
+          input: keepWholeInput(String(block.name)) ? rawInput : rawInput.slice(0, TOOL_INPUT_SLICE_CHARS)
         });
       }
     } else if (msg.type === "user" && Array.isArray(msg.message?.content)) {
@@ -499,7 +531,14 @@ export function parseAgentResult(spawn, options = {}) {
           : String(block.content ?? "");
         entry.resultChars = text.length;
         entry.isError = Boolean(block.is_error);
-        if (keepWholeResult(String(entry.tool))) entry.result = text;
+        if (keepWholeResult(String(entry.tool))) {
+          entry.result = text;
+        } else {
+          // Bounded evidence only, and only where a projector is wired. A
+          // tool with neither stays a name, an input and a size — as before.
+          const projection = projectResult(String(entry.tool), text);
+          if (projection) entry.resultProjection = projection;
+        }
       }
     } else if (msg.type === "result") {
       resultMessage = msg;
@@ -509,6 +548,14 @@ export function parseAgentResult(spawn, options = {}) {
       // A provider notice is not a candidate answer: `answer` stays empty for
       // any errored result so no downstream consumer can grade it as one.
       answer = msg.is_error ? "" : (msg.result ?? "");
+    }
+  }
+
+  if (requiredMcpServerName) {
+    const required = mcpServers?.find((server) => server.name === requiredMcpServerName);
+    if (!required || required.status !== "connected") {
+      protocolIssue ??=
+        `required MCP server ${requiredMcpServerName} was ${required?.status || "not reported"} in system init`;
     }
   }
 
@@ -530,6 +577,7 @@ export function parseAgentResult(spawn, options = {}) {
     turns,
     costUsd,
     promptChars,
+    mcpServers,
     usage: {
       final: finalUsage,
       perTurn,

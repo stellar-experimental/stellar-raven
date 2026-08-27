@@ -303,7 +303,13 @@ function buildCliFailure(res, envelope) {
  */
 export async function judgeCase(
   input,
-  { model = JUDGE_MODEL, timeoutMs = 180_000, maxBuffer = 32 * 1024 * 1024 } = {}
+  {
+    model = JUDGE_MODEL,
+    timeoutMs = 180_000,
+    maxBuffer = 32 * 1024 * 1024,
+    command = "claude",
+    safeMode = true
+  } = {}
 ) {
   const transcriptEvidence =
     typeof input.transcriptEvidence === "string"
@@ -312,8 +318,16 @@ export async function judgeCase(
   const prompt = buildJudgePrompt({ ...input, transcriptEvidence });
   const promptSha256 = sha256(prompt);
   const res = spawnSync(
-    "claude",
-    ["-p", "--model", model, "--output-format", "json", "--strict-mcp-config"],
+    command,
+    [
+      "-p",
+      "--model",
+      model,
+      "--output-format",
+      "json",
+      "--strict-mcp-config",
+      ...(safeMode ? ["--safe-mode"] : [])
+    ],
     { input: prompt, timeout: timeoutMs, maxBuffer }
   );
   if (res.error || res.status !== 0) {

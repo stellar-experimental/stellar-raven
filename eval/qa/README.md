@@ -145,9 +145,9 @@ npm run eval:qa:lint -- --since <ref>      # + gospel-change guard vs that ref (
 npm run eval:qa:register                   # --seed to baseline, --check for CI-style dry run
 
 # Run the battery (boot the server first; see below)
-node eval/qa/run-qa.mjs --variant A --sample 30 --port 8788
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port 8788
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port 8788
+node eval/qa/run-qa.mjs --variant A --sample 30 --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json    # plan regrade, offline
 ```
 
@@ -165,20 +165,25 @@ sweep should cluster more of the remainder, weighted toward the strata where bre
 freshness-sensitive cases (141 of the 238 unclustered are `live`/`scheduled`) and numeric,
 version, or date claims, which drift between sweeps while `stable` conceptual cases mostly do not.
 
-Server for live lanes: reuse a pane already running `npm run dev` when one exists; otherwise
-`npx wrangler dev --port 8788 --host localhost` — `--host localhost` is REQUIRED (custom-domain
-routes otherwise rewrite request.url and every request 401s).
+Server for live lanes: reuse a pane already running `npm run dev:eval` when one exists. Otherwise,
+run `npm run dev:eval -- --port 8788`. The launcher requires a clean worktree and compiles its
+commit into the Worker's MCP `serverInfo`.
 
-`run-qa.mjs` flags: `--ids a,b,c` (smoke), `--no-judge` (collect only), `--model` /
-`--judge-model` (defaults `claude-sonnet-5`), `--cases <path>`, `--surface per-operation`
-(+`--server-revision`) for the isolated 50-operation architecture instrument
+`run-qa.mjs` requires `--server-revision <commit>`, `--expect-sha256 <surface-sha256>`, and
+`--expect-agent-binary-sha256 <wrapper-sha256>`. These flags pin the source revision, the bound
+server, and the capped Claude executable before spending. The runner checks the listener, revision,
+clean state, compiled source revision, and surface again after collection. It rejects a comparison
+if these values change.
+It still writes the paid rows. It marks the artifact as non-comparable and suppresses aggregates.
+Other flags include `--ids a,b,c`, `--no-judge`, `--model`, `--judge-model`, `--cases <path>`,
+and `--surface per-operation` for the isolated 50-operation architecture instrument
 (`compare-architecture-ab.mjs`). Variant A = the shipped `search` (ADR-0001); B requires a
 build exposing a code-shaped tool plus `--search-tool`. Results land in
 `eval/qa/results/<stamp>-variant<X>.json` (local-only): rows carry `truth.status`/`truth.asOf`
 for triage, the verdict's `{rubric, packVersion, promptSha256}` stamps, and the evidence-pack
 hash/size.
 
-**Stored agent outcome (`qa-agent-result-v1`, Solo todo 1566).** `eval/qa/agent-result.mjs` is the
+**Stored agent outcome (`qa-agent-result-v3`).** `eval/qa/agent-result.mjs` is the
 pure parser between one `claude -p --output-format stream-json` spawn and one row;
 `run-qa.mjs` and the saved stream fixtures in `test/fixtures/qa-agent-streams/` are its only
 adapters, so a failure shape can be pinned without spending. Each row carries exactly ONE
@@ -191,6 +196,19 @@ safeguard can no longer reach a judge as a candidate answer (the 2026-08-14
 transport blip). Rows also carry `agent.usage.{final,perTurn,perTurnAvailable}` and a bounded
 redacted `agent.stderr.{chars,sha256,excerpt}`. `meta.resultsSchema` stamps the shape;
 `--judge-stored` refuses a file collected under any other schema.
+
+Version 3 keeps the full search input and a bounded search-result projection. It also requires an
+answering-agent directory outside the repository and Claude `--safe-mode`. Recollect version 1
+and version 2 artifacts before comparison or stored judging. Each artifact hashes the inherited Claude-related
+environment without recording its values. Compare this hash between arms.
+Each row also records the MCP server status from Claude's system init event. The row fails unless
+the explicit `raven` server reports `connected`. The runner stops the batch after the first such
+failure and marks the saved artifact as non-comparable.
+Other agent failures remain visible as error rows. They do not make a complete QA artifact
+non-comparable by themselves. Discovery uses a stricter rule and suppresses aggregates after any
+agent error.
+
+The implementation hash covers `eval/qa/*.mjs` and every `eval/lib/*.mjs` file.
 
 **Redaction reads through terminal escapes.** CLI evidence is captured raw, so a credential name
 can arrive split by escape bytes that a terminal never shows — `API<OSC>…<BEL>_KEY=…` looks like

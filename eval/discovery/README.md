@@ -8,15 +8,27 @@ The runner talks to the real MCP server over HTTP and does not import `src/` sea
 
 ```sh
 node eval/discovery/run-discovery.mjs --url http://localhost:8788
-node eval/discovery/run-agent-discovery.mjs --url http://localhost:8787
+SERVER_REVISION=$(git rev-parse HEAD)
+SURFACE_SHA256=<surfaceSha256 from eval/report-live-surface.mjs>
+AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
+node eval/discovery/run-agent-discovery.mjs --url http://localhost:8787 --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
 node eval/discovery/run-replay.mjs --url http://localhost:8787
 ```
 
 `run-discovery.mjs` retains its historical `http://localhost:8788` default; the new agent and
-replay runners default to the repository's local `npm run dev` server at `http://localhost:8787`.
+replay runners default to the repository's local server at `http://localhost:8787`.
 Every `--url` may include or omit `/mcp`. For non-local targets, provide the full named
 credential (`name:token`) through `RAVEN_MCP_BEARER_TOKEN`; the runner sends it as a bearer
 credential and never prints it.
+
+The paid `run-agent-discovery.mjs` lane accepts only a local `dev:eval` server. The free one-shot
+and replay lanes can still use an authenticated remote target.
+
+Start paid agent-discovery servers with `npm run dev:eval -- --port 8787`. This launcher requires
+a clean worktree and compiles its commit into MCP `serverInfo`. The agent runner uses Claude
+`--safe-mode` with the explicit MCP configuration and the existing permission-bypass flag.
+Each row must report the explicit `raven` server as `connected`. The runner stops after the first
+failure and suppresses all aggregates.
 
 Results are written to `eval/discovery/results/<ISO-stamp>.json` and are local evidence, matching the existing eval results convention.
 
