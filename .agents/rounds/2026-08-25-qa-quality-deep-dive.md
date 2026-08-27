@@ -177,3 +177,13 @@ All lanes read-only against the repository except their own report file.
   Pull request: stellar-experimental/stellar-raven#75. Golden-truth crew
   session 2 in progress (negative-predicate class closed per program log;
   compound-predicate class underway; 6-hour stop-point declared).
+- `2026-08-27T23:35Z` — golden-truth crew session 2 complete (owner Fable; 3 Sol
+  workers + Grok reviewer; 58 worker prompts). Branch
+  `lane/golden-truth-burndown-2-20260827` (stacked on the round-2 branch):
+  negative-predicate 131→0 (127 cases), compound-predicate 188→0 (102 cases),
+  long key facts 790→372 as a one-pass side effect. Lint 1,212 → **475 warnings,
+  0 errors**. Zero factual edits; 35 reviewer FAILs were all form defects and
+  were repaired; no escalations; register reconciled with dated re-sweeps.
+  Honest tail: 372 long-fact warnings (expensive class, ~50 worker-prompts
+  estimated) plus 103 out-of-scope. Report:
+  `/tmp/raven-qadeep/golden-truth-owner2.md`; session assets `/tmp/raven-qadeep/gt2/`.
