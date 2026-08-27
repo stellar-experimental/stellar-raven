@@ -166,3 +166,14 @@ All lanes read-only against the repository except their own report file.
   1,362 tests, smoke 4/82, build ok, routing GATE PASS, lint 0/1,212, secrets
   clean. Pull request: stellar-experimental/stellar-raven#73
   (`qa/quality-round2-20260827`). Decision: LAND all three lanes.
+- `2026-08-27T22:10Z` — Lane 3 reframed and drafted as an idea, not a decision:
+  `ideas/source-delivery-ranked-references.md` on branch
+  `lane3-source-delivery-idea-20260827`. Philosophy per owner: deliver scored,
+  verifiable source pointers (repo/pinned-ref/path/locator/match-reason/
+  verification-URL); never fetch content on the agent's behalf; no golden-QA
+  overfit; battery is a regression check only. Drafted by Claude Fable; three
+  Sol xhigh verification cycles (9 → 4 → 2 findings) ended APPROVE-DRAFT.
+  Review records archived under `research/lane3-source-delivery-2026-08-27/`.
+  Pull request: stellar-experimental/stellar-raven#75. Golden-truth crew
+  session 2 in progress (negative-predicate class closed per program log;
+  compound-predicate class underway; 6-hour stop-point declared).
