@@ -187,3 +187,15 @@ All lanes read-only against the repository except their own report file.
   Honest tail: 372 long-fact warnings (expensive class, ~50 worker-prompts
   estimated) plus 103 out-of-scope. Report:
   `/tmp/raven-qadeep/golden-truth-owner2.md`; session assets `/tmp/raven-qadeep/gt2/`.
+- `2026-08-28T00:10Z` — cleanup complete. All three PRs merged by squash:
+  #73 (round two, `c242848`), #81 (crew session 2, `76d9f51`), #75 (lane-3
+  idea, `cef3bbf`). Copilot review comments addressed pre-merge: four
+  nullable `topScoreGap` assertions fixed; two gates.json consistency defects
+  found by CI selftest (acceptedTotals sync, localTrace pointer) fixed.
+  Session-2 merge conflicts resolved semantically (session-2 corpus newest;
+  main kept test fixes; ledger unioned) and proven by compile, register,
+  lint (0/475), selftest, and the full gate battery on main. Local main
+  reset to origin/main; all eight of my worktrees removed via Herdr; my
+  merged branches deleted locally; remote holds only `main`. Stashes: zero
+  everywhere. The connectors program's twelve worktrees and branches are
+  NOT mine and remain untouched. Follow-ups tracked in `.agents/TODO.md`.
