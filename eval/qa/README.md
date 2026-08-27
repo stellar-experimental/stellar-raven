@@ -524,6 +524,33 @@ finalizes, and no resume spends a second paid call on it.
   `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Use a common-id set for comparisons
   across this boundary, or disclose the sample change.
 
+## 2026-08-27 connector response-guidance A/B
+
+This targeted A/B tested the held connector response-guidance candidate against the merged
+control. Both arms used `claude-sonnet-5`, variant A, the same eight case IDs, and no judge.
+The qualification and both arms passed every revision, surface, environment, completeness, and
+comparability guard. Nothing was tuned after collection, and the numbers below are as-is.
+
+| Role | Results stamp | SHA-256 | Rows | Answering cost |
+| --- | --- | --- | ---: | ---: |
+| treatment qualification | `2026-08-27T18-20-57-variantA.json` | `1a93d19ed6dddeb0c1cda6f4e5e8175bcdaac9b1d38dc494a843d186b9230f6e` | 1 | `$0.1098888` |
+| treatment A1 | `2026-08-27T18-50-04-variantA.json` | `fc2cc5424a45a35c43f96ee7a76349970eb068876f18fe6904e82654cd233665` | 8 | `$2.2461662` |
+| control B1 | `2026-08-27T18-59-44-variantA.json` | `78170de4d3879d3a54d248309337500be58b40bb79b4e2bf58238a0c5cf2a295` | 8 | `$2.3726368` |
+
+The paired collection cost `$4.6188030`. The three v5 artifacts cost `$4.7286918`.
+The total task spend was `$4.9673564`, including earlier method and harness checks.
+
+Manual review found three treatment regressions. The MoneyGram answer omitted required Stellar
+Docs evidence. The indexer answer skipped Scout prior-art discovery. The escrow skeleton blocked
+all remaining milestones after one disputed milestone resolved. Both arms also promoted
+`Stroopy.AI` for the `Strupey` query because Scout labeled the spelling neighbor as a strict match.
+
+The `FIRST-PAIR-BLOCK` verdict rejected the candidate before replication or judging. No aggregate
+score is available from these raw, unjudged rows. The shared Scout defect became `sls-076` and
+[Stellar-Light/stellarlight#1055](https://github.com/Stellar-Light/stellarlight/issues/1055).
+The full case review and method record are in
+[`2026-08-27-connectors-description-ab.md`](../../.agents/rounds/2026-08-27-connectors-description-ab.md).
+
 ## 2026-08-18 retrieval-audit branch checkpoint
 
 This checkpoint tested clean branch revision `a94f11eeccd64a934fb6aed4ee29182f93172b34`.
