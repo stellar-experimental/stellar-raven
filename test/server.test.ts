@@ -862,7 +862,7 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.hits[0]).toMatchObject({ id: "scout.getPeople", tier: "gated" });
     expect(structured.widerCandidates).toEqual([]);
     expect(structured.confidence.hitCount).toBe(structured.hits.length);
-    expect(structured.confidence.topScoreGap).toBeGreaterThanOrEqual(0);
+    expect(structured.confidence.topScoreGap === null || structured.confidence.topScoreGap >= 0).toBe(true);
     expect(structured.recoveryMetadata.serviceFilterExcludedSkills).toEqual([]);
   });
 

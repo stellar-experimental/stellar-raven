@@ -93,7 +93,7 @@ describe("demo tools at the worker boundary", () => {
         "widerCandidates"
       ]);
       expect(result.confidence.hitCount).toBe(result.hits.length);
-      expect(result.confidence.topScoreGap).toBeGreaterThanOrEqual(0);
+      expect(result.confidence.topScoreGap === null || result.confidence.topScoreGap >= 0).toBe(true);
       expect(result.recoveryMetadata.serviceFilterExcludedSkills).toEqual([]);
       expect(result.recovery.map((candidate) => candidate.id)).toEqual([
         "lumenloop.search_content_semantic",

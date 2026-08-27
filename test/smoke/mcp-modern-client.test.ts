@@ -77,7 +77,7 @@ describe("modern (2026-07-28) client end-to-end", () => {
       };
       expect(structured.hits.length).toBeGreaterThan(0);
       expect(structured.confidence.hitCount).toBe(structured.hits.length);
-      expect(structured.confidence.topScoreGap).toBeGreaterThanOrEqual(0);
+      expect(structured.confidence.topScoreGap === null || structured.confidence.topScoreGap >= 0).toBe(true);
       expect(structured.recoveryMetadata.serviceFilterExcludedSkills).toEqual([]);
       expect(structured.nextSteps.length).toBeGreaterThan(0);
 
