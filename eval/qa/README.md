@@ -183,7 +183,7 @@ build exposing a code-shaped tool plus `--search-tool`. Results land in
 for triage, the verdict's `{rubric, packVersion, promptSha256}` stamps, and the evidence-pack
 hash/size.
 
-**Stored agent outcome (`qa-agent-result-v3`).** `eval/qa/agent-result.mjs` is the
+**Stored agent outcome (`qa-agent-result-v4`).** `eval/qa/agent-result.mjs` is the
 pure parser between one `claude -p --output-format stream-json` spawn and one row;
 `run-qa.mjs` and the saved stream fixtures in `test/fixtures/qa-agent-streams/` are its only
 adapters, so a failure shape can be pinned without spending. Each row carries exactly ONE
@@ -197,10 +197,13 @@ transport blip). Rows also carry `agent.usage.{final,perTurn,perTurnAvailable}` 
 redacted `agent.stderr.{chars,sha256,excerpt}`. `meta.resultsSchema` stamps the shape;
 `--judge-stored` refuses a file collected under any other schema.
 
-Version 3 keeps the full search input and a bounded search-result projection. It also requires an
-answering-agent directory outside the repository and Claude `--safe-mode`. Recollect version 1
-and version 2 artifacts before comparison or stored judging. Each artifact hashes the inherited Claude-related
-environment without recording its values. Compare this hash between arms.
+Version 4 keeps the full search input and a bounded search-result projection. It also requires an
+answering-agent directory outside the repository. Answering agents use `--setting-sources ""`,
+`--disable-slash-commands`, and `--strict-mcp-config`. They do not use `--safe-mode`, because
+Claude Code 2.1.247 drops explicit MCP servers in that mode. Judges keep `--safe-mode` because
+they use no MCP server. Recollect version 1, version 2, and version 3 artifacts before comparison
+or stored judging. Each artifact hashes the inherited Claude-related environment without recording
+its values. Compare this hash between arms.
 Each row also records the MCP server status from Claude's system init event. The row fails unless
 the explicit `raven` server reports `connected`. The runner stops the batch after the first such
 failure and marks the saved artifact as non-comparable.

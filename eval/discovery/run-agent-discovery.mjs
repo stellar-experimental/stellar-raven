@@ -11,6 +11,8 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   REQUIRED_MCP_SERVER_NAME,
+  answeringAgentIsolationArgs,
+  answeringAgentIsolationRecord,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
@@ -117,31 +119,36 @@ export function buildDiscoverySpawnOptions({ input, cwd }) {
   };
 }
 
+/** Exact Claude arguments for one isolated MCP discovery agent. */
+export function buildDiscoveryAgentArgs({ mcpConfigPath, model, effort, environment = process.env }) {
+  return [
+    "-p",
+    "--model",
+    model,
+    "--effort",
+    effort,
+    "--output-format",
+    "stream-json",
+    "--verbose",
+    "--json-schema",
+    JSON.stringify(OUTPUT_SCHEMA),
+    "--mcp-config",
+    mcpConfigPath,
+    "--strict-mcp-config",
+    ...answeringAgentIsolationArgs(environment),
+    "--allowedTools",
+    "mcp__raven__search",
+    "--max-turns",
+    String(MAX_TURNS),
+    "--dangerously-skip-permissions",
+    "--no-session-persistence"
+  ];
+}
+
 function runAgent(c, { mcpConfigPath, model, effort, agentCwd, agentCommand }) {
   const response = spawnSync(
     agentCommand,
-    [
-      "-p",
-      "--model",
-      model,
-      "--effort",
-      effort,
-      "--output-format",
-      "stream-json",
-      "--verbose",
-      "--json-schema",
-      JSON.stringify(OUTPUT_SCHEMA),
-      "--mcp-config",
-      mcpConfigPath,
-      "--strict-mcp-config",
-      "--safe-mode",
-      "--allowedTools",
-      "mcp__raven__search",
-      "--max-turns",
-      String(MAX_TURNS),
-      "--dangerously-skip-permissions",
-      "--no-session-persistence"
-    ],
+    buildDiscoveryAgentArgs({ mcpConfigPath, model, effort }),
     buildDiscoverySpawnOptions({ input: prompt(c.question), cwd: agentCwd })
   );
   if (response.error) {
@@ -429,7 +436,7 @@ async function main() {
       agentEnvironment: {
         cwd: agentCwd,
         cwdOutsideRepository: true,
-        safeMode: true,
+        isolation: answeringAgentIsolationRecord(),
         inherited: inheritedAgentEnvironment
       },
       agentBinary,

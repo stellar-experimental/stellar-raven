@@ -89,6 +89,8 @@ import {
 } from "../lib/mcp-surface.mjs";
 import {
   REQUIRED_MCP_SERVER_NAME,
+  answeringAgentIsolationArgs,
+  answeringAgentIsolationRecord,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
@@ -373,7 +375,15 @@ ${question}`;
  * working directory is assertable without paying for a live agent call: the
  * `cwd` is the whole of precondition P2 and it is invisible in the artifact.
  */
-export function buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cwd, command = "claude" }) {
+export function buildAgentSpawn({
+  prompt,
+  allowedTools,
+  mcpConfigPath,
+  model,
+  cwd,
+  command = "claude",
+  environment = process.env
+}) {
   assertNeutralAgentCwd(cwd, { repoRoot: REPO_ROOT, label: "run-qa answering agent" });
   return {
     command,
@@ -387,7 +397,7 @@ export function buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cw
       "--mcp-config",
       mcpConfigPath,
       "--strict-mcp-config",
-      "--safe-mode",
+      ...answeringAgentIsolationArgs(environment),
       "--allowedTools",
       allowedTools.join(","),
       "--max-turns",
@@ -1073,7 +1083,7 @@ async function main() {
           agentEnvironment: {
             cwd: agentCwd,
             cwdOutsideRepository: true,
-            safeMode: true,
+            isolation: answeringAgentIsolationRecord(),
             inherited: inheritedAgentEnvironment
           },
           ...(metrics ?? {}),

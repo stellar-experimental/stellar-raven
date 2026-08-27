@@ -78,6 +78,20 @@ describe("parseAgentResult — failure classes are exclusive and fixture-backed"
     );
     expect(missing.failure).toMatchObject({ class: "protocol", retryable: false });
     expect(missing.failure.reason).toContain("required MCP server raven was not reported");
+
+    const failed = parseAgentResult(
+      {
+        stdout:
+          '{"type":"system","subtype":"init","mcp_servers":[{"name":"raven","status":"failed"}]}\n',
+        stderr: "",
+        status: 0,
+        signal: null
+      },
+      { requiredMcpServerName: "raven" }
+    );
+    expect(failed.mcpServers).toEqual([{ name: "raven", status: "failed" }]);
+    expect(failed.failure).toMatchObject({ class: "protocol", retryable: false });
+    expect(failed.failure.reason).toContain("required MCP server raven was failed");
   });
 
   it("separates transport, agent turn-cap, protocol, spawn, and timeout from provider safeguards", () => {

@@ -271,8 +271,11 @@ AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
 ```
 
 The QA runner starts each answering agent in a temporary directory outside the repository.
-It also uses Claude `--safe-mode`. Confirm `meta.agentEnvironment.safeMode: true` and
-`meta.agentBinary.matches: true` in every result artifact. Compare
+It uses `--setting-sources ""`, `--disable-slash-commands`, and `--strict-mcp-config`.
+It does not use Claude `--safe-mode`, because Claude Code 2.1.247 drops explicit MCP servers in
+that mode. Judges use `--safe-mode` because they use no MCP server. Confirm
+`meta.agentEnvironment.isolation.safeMode: false` and `meta.agentBinary.matches: true` in every
+result artifact. Compare
 `meta.agentEnvironment.inherited.sha256` between arms. The artifact records variable names, but it
 does not record environment values.
 Confirm `agent.mcpServers` reports the explicit `raven` server as `connected` in every row.
