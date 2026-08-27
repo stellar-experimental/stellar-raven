@@ -319,15 +319,7 @@ export async function judgeCase(
   const promptSha256 = sha256(prompt);
   const res = spawnSync(
     command,
-    [
-      "-p",
-      "--model",
-      model,
-      "--output-format",
-      "json",
-      "--strict-mcp-config",
-      ...(safeMode ? ["--safe-mode"] : [])
-    ],
+    buildJudgeArgs({ model, safeMode }),
     { input: prompt, timeout: timeoutMs, maxBuffer }
   );
   if (res.error || res.status !== 0) {
@@ -422,6 +414,19 @@ export async function judgeCase(
     packVersion: PACK_VERSION,
     promptSha256
   };
+}
+
+/** Exact Claude arguments for a judge, which never needs MCP access. */
+export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true } = {}) {
+  return [
+    "-p",
+    "--model",
+    model,
+    "--output-format",
+    "json",
+    "--strict-mcp-config",
+    ...(safeMode ? ["--safe-mode"] : [])
+  ];
 }
 
 // ---------------------------------------------------------------------------

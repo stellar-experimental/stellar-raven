@@ -518,6 +518,12 @@ describe("run-qa --judge-stored", () => {
       await expect(
         judgeStoredResults(resultsPath, { judge: stubJudge(), log: () => {} })
       ).rejects.toThrow(/agent-result schema/);
+
+      results.meta.resultsSchema = "qa-agent-result-v3";
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+      await expect(
+        judgeStoredResults(resultsPath, { judge: stubJudge(), log: () => {} })
+      ).rejects.toThrow(/agent-result schema/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

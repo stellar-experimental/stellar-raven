@@ -21,6 +21,32 @@ import path from "node:path";
 export const REQUIRED_MCP_SERVER_NAME = "raven";
 
 /**
+ * Claude answering agents need explicit MCP access. Safe mode cannot be used:
+ * Claude Code 2.1.247 drops non-SDK MCP servers while safe mode is active.
+ */
+export function answeringAgentIsolationArgs(environment = {}) {
+  const safeMode = String(environment.CLAUDE_CODE_SAFE_MODE ?? "")
+    .trim()
+    .toLowerCase();
+  if (["1", "true", "yes", "on"].includes(safeMode)) {
+    throw new Error(
+      "answering agent: CLAUDE_CODE_SAFE_MODE disables explicit MCP servers; refusing paid calls"
+    );
+  }
+  return ["--setting-sources", "", "--disable-slash-commands"];
+}
+
+/** Machine-readable record of the answering-agent isolation contract. */
+export function answeringAgentIsolationRecord() {
+  return {
+    settingSources: [],
+    slashCommandsDisabled: true,
+    strictMcpConfig: true,
+    safeMode: false
+  };
+}
+
+/**
  * Refuse an answering-agent working directory that sits inside the repository.
  *
  * Neutrality is a property of the path, not of intent: any directory at or

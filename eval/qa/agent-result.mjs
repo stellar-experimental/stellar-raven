@@ -19,6 +19,10 @@ import { createHash } from "node:crypto";
 /**
  * Bump when the STORED outcome shape changes (run-qa stamps it in meta).
  *
+ * v4 (2026-08-27): answering agents use settings-free isolation instead of
+ * safe mode. Claude Code 2.1.247 drops explicit non-SDK MCP servers in safe
+ * mode, so v3 cannot prove usable MCP access under its stated contract.
+ *
  * v3 (2026-08-27): rows record the MCP connection status from the Claude
  * system init event. Pre-v3 artifacts cannot prove the required server was
  * connected under safe mode, so stored judging refuses them.
@@ -28,7 +32,7 @@ import { createHash } from "node:crypto";
  * sliced query and no hits at all, so they are not comparable for any routing
  * or coverage read — the readers refuse to mix the two rather than join them.
  */
-export const AGENT_RESULT_SCHEMA = "qa-agent-result-v3";
+export const AGENT_RESULT_SCHEMA = "qa-agent-result-v4";
 
 /**
  * Exclusive failure classes. `unclassified` is the deliberate default: an

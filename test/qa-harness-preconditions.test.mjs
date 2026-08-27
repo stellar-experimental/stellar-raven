@@ -18,6 +18,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "../eval/qa/agent-result.mjs";
+import { buildJudgeArgs } from "../eval/qa/judge.mjs";
 import {
   MAX_PROJECTED_HITS,
   MAX_PROJECTED_NEXT_STEPS_CHARS,
@@ -26,9 +27,15 @@ import {
   projectSearchResult
 } from "../eval/qa/search-projection.mjs";
 import { buildAgentSpawn, collectionAggregates } from "../eval/qa/run-qa.mjs";
-import { buildDiscoverySpawnOptions, gradeAgentRow } from "../eval/discovery/run-agent-discovery.mjs";
+import {
+  buildDiscoveryAgentArgs,
+  buildDiscoverySpawnOptions,
+  gradeAgentRow
+} from "../eval/discovery/run-agent-discovery.mjs";
 import {
   REQUIRED_MCP_SERVER_NAME,
+  answeringAgentIsolationArgs,
+  answeringAgentIsolationRecord,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
@@ -217,9 +224,8 @@ describe("P1 — search evidence is retained bounded, not discarded", () => {
     expect(makeSearchResultProjector([])(SEARCH_TOOL, searchBody())).toBeNull();
   });
 
-  it("stamps v3 so pre-v3 artifacts cannot be joined or judged", () => {
-    // v3 rows also prove the required MCP server was connected under safe mode.
-    expect(AGENT_RESULT_SCHEMA).toBe("qa-agent-result-v3");
+  it("stamps v4 so artifacts cannot claim impossible safe-mode MCP isolation", () => {
+    expect(AGENT_RESULT_SCHEMA).toBe("qa-agent-result-v4");
   });
 });
 
@@ -260,7 +266,10 @@ describe("P2 — answering agents run in a neutral working directory", () => {
     expect(spawn.command).toBe("claude");
     expect(spawn.options.cwd).toBe(NEUTRAL_CWD);
     expect(spawn.args).toContain("--strict-mcp-config");
-    expect(spawn.args).toContain("--safe-mode");
+    expect(spawn.args).not.toContain("--safe-mode");
+    expect(spawn.args).toContain("--disable-slash-commands");
+    const settingSources = spawn.args.indexOf("--setting-sources");
+    expect(spawn.args.slice(settingSources, settingSources + 2)).toEqual(["--setting-sources", ""]);
     expect(() =>
       buildAgentSpawn({
         prompt: "q",
@@ -278,6 +287,48 @@ describe("P2 — answering agents run in a neutral working directory", () => {
     expect(() => buildDiscoverySpawnOptions({ input: "q", cwd: path.join(REPO_ROOT, "eval") })).toThrow(
       /inside the repository/
     );
+  });
+
+  it("uses the same settings-free isolation in the discovery lane", () => {
+    const args = buildDiscoveryAgentArgs({
+      mcpConfigPath: "/tmp/mcp.json",
+      model: "claude-sonnet-5",
+      effort: "medium",
+      environment: {}
+    });
+    expect(args).not.toContain("--safe-mode");
+    expect(args).toContain("--strict-mcp-config");
+    expect(args).toContain("--disable-slash-commands");
+    const settingSources = args.indexOf("--setting-sources");
+    expect(args.slice(settingSources, settingSources + 2)).toEqual(["--setting-sources", ""]);
+    expect(answeringAgentIsolationRecord()).toEqual({
+      settingSources: [],
+      slashCommandsDisabled: true,
+      strictMcpConfig: true,
+      safeMode: false
+    });
+  });
+
+  it("refuses inherited Claude safe mode before an answering spawn", () => {
+    for (const value of ["1", "true", "yes", "on"]) {
+      expect(() => answeringAgentIsolationArgs({ CLAUDE_CODE_SAFE_MODE: value })).toThrow(
+        /disables explicit MCP servers/
+      );
+    }
+
+    for (const value of ["0", "false", "no", "off"]) {
+      expect(answeringAgentIsolationArgs({ CLAUDE_CODE_SAFE_MODE: value })).toEqual([
+        "--setting-sources",
+        "",
+        "--disable-slash-commands"
+      ]);
+    }
+  });
+
+  it("keeps the MCP-free judge in safe mode", () => {
+    const args = buildJudgeArgs({ model: "claude-sonnet-5" });
+    expect(args).toContain("--safe-mode");
+    expect(args).not.toContain("--mcp-config");
   });
 
   it("does not grade discovery evidence after the required MCP server failed", () => {

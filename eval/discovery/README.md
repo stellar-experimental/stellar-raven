@@ -25,8 +25,10 @@ The paid `run-agent-discovery.mjs` lane accepts only a local `dev:eval` server. 
 and replay lanes can still use an authenticated remote target.
 
 Start paid agent-discovery servers with `npm run dev:eval -- --port 8787`. This launcher requires
-a clean worktree and compiles its commit into MCP `serverInfo`. The agent runner uses Claude
-`--safe-mode` with the explicit MCP configuration and the existing permission-bypass flag.
+a clean worktree and compiles its commit into MCP `serverInfo`. The agent runner disables all
+user, project, and local setting sources and slash commands. It keeps the explicit strict MCP
+configuration and the existing permission-bypass flag. It does not use Claude `--safe-mode`,
+because Claude Code 2.1.247 drops explicit MCP servers in that mode.
 Each row must report the explicit `raven` server as `connected`. The runner stops after the first
 failure and suppresses all aggregates.
 
