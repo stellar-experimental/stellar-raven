@@ -618,4 +618,4 @@ comparable rows per arm. No judge, retry, replication, or method rerun occurred.
 
 Every failure was triaged. The rejected treatment needs no own-repository follow-up.
 The shared Scout defect was verified, committed, filed, and read back.
-The relevant checks and improvements lints passed. Port `8792` is free.
+The relevant checks and improvements lints passed. The owned evaluation server stopped cleanly.
