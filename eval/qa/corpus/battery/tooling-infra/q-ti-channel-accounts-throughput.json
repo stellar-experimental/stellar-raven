@@ -10,15 +10,16 @@
     "answer": "High-throughput classic submission is mostly sequence-lane management. A Stellar transaction is bound to its source account sequence; if multiple workers build from the same stale account snapshot, all but the first can hit `tx_bad_seq`. The official error-handling page says invalid sequence errors commonly come from concurrent submissions or outdated account views, and warns that blindly rebuilding with a new sequence can duplicate payments if the original user intent was only one payment (https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling).\n\nUse channel accounts when you need parallelism: pre-create/fund N accounts, assign each worker or queue partition to one channel account as transaction source, and serialize sequence consumption within each lane. For user-funded operations, keep the user or business account as the operation source/signer where needed, but use the channel account as the transaction source that pays fees and advances sequence.\n\nRetry policy should be conservative. `TRY_AGAIN_LATER` is explicitly a temporary submission status: wait before resubmitting, because Core may already have another transaction from the same source in memory or the fee was too low and retried too soon (https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling). Terminal transaction result codes such as `tx_bad_seq`, `tx_insufficient_balance`, and `tx_insufficient_fee` are documented separately and should be handled by inspecting the result code, not by generic retry loops (https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions). Fee-bump replacement exists for the \"same sequence, higher fee\" case and has its own replacement rule (https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions).\n\nSubmitting the same signed envelope to more than one provider is generally safe as a broadcast tactic because the transaction hash/envelope is identical; one provider may report pending, duplicate, not found yet, or accepted before another catches up. The unsafe move is changing the sequence or contents and treating that as the same intent. If a library throws `invalid u32` around sequence handling, debug the client/library typing path: Stellar sequence numbers are not a u32 throughput counter.",
     "keyFacts": [
       "Maps funded channel lanes, tx_bad_seq, tx sources, and operation-source signatures.",
-      "Warns not to blindly rebuild and resubmit payments after `tx_bad_seq`, because changing the sequence can make duplicate user intents succeed.",
-      "Classifies `TRY_AGAIN_LATER` as retryable with delay/same envelope or queue management, while terminal result codes require fixing/rebuilding the transaction.",
-      "States that pushing the same signed transaction envelope to multiple Horizon/RPC providers is idempotent at ledger level by hash, but clients must handle duplicate/pending/not-found/provider-lag responses and must not mutate the sequence/fee unless intentionally fee-bumping or rebuilding.",
-      "Mentions sequence values are 64-bit ledger/account sequence numbers; `invalid u32` usually points to a client parsing/typing bug, not a Stellar protocol sequence limit."
+      "Frames post-tx_bad_seq payment rebuild/resubmit as duplicate user-intent risk.",
+      "Maps TRY_AGAIN_LATER→delayed/same-envelope/queue retry; terminal result codes→fix/rebuild.",
+      "Same Horizon/RPC envelope is hash-idempotent; handle duplicate/pending/not-found/lag.",
+      "Usually maps invalid u32 to client parsing/typing bugs in 64-bit ledger/account sequences."
     ],
     "avoid": [
       "Do NOT submit uncoordinated transactions in one source-account sequence lane.",
-      "Do NOT rebuild every uncertain transaction with a new sequence or treat a mutated envelope as the same transaction.",
-      "Do NOT promise fixed/linear TPS, bypass network/provider limits, or confuse channel accounts with payment channels/contract accounts."
+      "Do NOT blindly rebuild an uncertain payment after tx_bad_seq with a new sequence, or treat a sequence/fee-mutated envelope as the same transaction; mutate only when intentionally fee-bumping or rebuilding.",
+      "Do NOT claim clients can ignore duplicate/pending/not-found/provider-lag responses, or retry terminal transaction result codes without fixing/rebuilding the transaction.",
+      "Do NOT promise fixed/linear TPS, bypass network/provider limits, confuse channel accounts with payment channels/contract accounts, or treat invalid u32 as a Stellar protocol sequence limit."
     ],
     "notes": "Primary docs verify sequence and retry semantics. The multi-provider RPC submission guidance is an inference from signed-envelope/hash idempotence plus documented duplicate/pending behavior; no live two-provider submission was run in Phase 3.\nAlso good if the answer: Mentions fee-bump replacement rules where relevant instead of using sequence changes as a replacement strategy. | Cites Horizon error handling/result-code docs and Soroban/Core retry guidance.\nGolden cites: Official Stellar error-handling docs for `tx_bad_seq` and `TRY_AGAIN_LATER`. | Official result-code docs for transaction-level failures.\nGT-51 PRECISION CORRECTION 2026-07-11: require transaction-source/operation-source/signature mapping, immutable-envelope hash handling, and no throughput guarantee."
   },
@@ -94,17 +95,26 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-51 processes 3353/3360 independently retained the channel core and added the source/signature, retry, and non-guarantee precision.",
         "Sibling sweep checked q-pc-fee-bump-channel-accounts-feepool and q-ti-tx-too-late-resubmit.",
         "Structural re-form (presentation-avoid): Moved the operation-source signature requirement into the existing channel-lane key fact and preserved the uncoordinated-sequence false-content trap; truth is unchanged.",
         "No live re-check needed: structural key-fact and avoid-item re-form; the required content and trap target are unchanged.",
-        "Sibling sweep 2026-08-27: grep channel accounts|tx_bad_seq|operation source → q-pc-fee-bump-channel-accounts-feepool, q-pc-sequence-numbers-ordering-replace, q-ti-channel-accounts-throughput; no contradiction"
+        "Sibling sweep 2026-08-27: grep channel accounts|tx_bad_seq|operation source → q-pc-fee-bump-channel-accounts-feepool, q-pc-sequence-numbers-ordering-replace, q-ti-channel-accounts-throughput; no contradiction",
+        "Structural re-form (compound-predicate): Recast four long or compound facts in place; response handling, mutation exceptions, and the invalid-u32 limit trap moved into concrete avoid claims.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/channel-accounts — funded channel sources still separate transaction sequence/fees from operation sources and signatures.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — blind new-sequence payment resubmission after tx_bad_seq can still duplicate one user intent.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — TRY_AGAIN_LATER remains temporary while terminal result codes require transaction correction.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/submit-async-transaction — identical-envelope submissions remain hash-identical while providers can return duplicate or pending states.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-xdr/blob/main/Stellar-types.x — account sequence numbers remain signed 64-bit values, preserving invalid-u32 as a client parsing/typing issue.",
+        "Sibling sweep 2026-08-27: grep channel account|tx_bad_seq|TRY_AGAIN_LATER|invalid u32|provider-lag → q-pc-fee-bump-channel-accounts-feepool, q-pc-sequence-numbers-ordering-replace, q-pc-surge-griefing-threat-model, q-ti-channel-accounts-throughput, q-ti-classic-submission-errors, q-ti-tx-too-late-resubmit; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part2.md): restored the required duplicate/pending/not-found/provider-lag handling as a keyFact; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "Eval-side architecture/rubric incompleteness: source/signature mapping and performance non-guarantees were not explicit.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-channel-accounts-throughput"

@@ -7,10 +7,11 @@
   "golden": {
     "answer": "A grounded answer checks the live official awards state and Scout round metadata, then dates every volatile claim. As of 2026-08-18, no SCF round is in Submission. SCF #45 is the current round in Initial Review, and its 2026-08-16 submission deadline has elapsed. SCF #44 remains in Notification & Award Distribution, while SCF #43 is the last concluded round.\n\nThe dated example is illustrative: a later grounded answer should report the state supported at its own observation time.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as current or dated, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "States that no round is currently in Submission and identifies SCF #45 as being in Initial Review.",
-      "Treats 2026-08-16 as SCF #45's elapsed submission deadline rather than a current closing date."
+      "Reports no Submission-phase round in the dated example.",
+      "Places SCF #45 in Initial Review in the dated example.",
+      "Treats 2026-08-16 as SCF #45's elapsed submission deadline, not its current close."
     ],
     "avoid": [
       "Do NOT claim that SCF #45 is still open for full-proposal submissions or that an open RFP brief proves an open round.",
@@ -73,16 +74,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
         "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch — live Scout agreement observed 2026-08-18T15:23Z–15:24Z.",
-        "Sibling sweep covered q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, the three live RFP cases, and q-edge-scf-v7-centralization-myths; the updated brief-versus-round distinction is consistent."
+        "Sibling sweep covered q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, the three live RFP cases, and q-edge-scf-v7-centralization-myths; the updated brief-versus-round distinction is consistent.",
+        "Structural re-form (compound-predicate): Tightened the sourcing rule, split the dated round state, and shortened the elapsed-deadline distinction; truth is unchanged.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — showed SCF #46 now in Submission, confirming that specific current content needs a dated source.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — showed a later Submission-phase round, confirming the no-Submission claim belongs only to the dated example.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — showed SCF #45 had progressed to Panel Review, confirming Initial Review is the dated example state.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — still listed 2026-08-16 as SCF #45's elapsed submission deadline.",
+        "Sibling sweep 2026-08-27: grep SCF #45|SCF #46|Submission|Initial Review → q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling; no contradiction with their dated examples"
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-current-round"

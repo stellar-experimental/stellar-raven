@@ -8,12 +8,12 @@
   "golden": {
     "answer": "Horizon and Stellar RPC have different retention and recovery mechanisms. As of **2026-07-11**, RPC **v27.1.1** defaults `HISTORY_RETENTION_WINDOW=120960`, `SERVE_LEDGERS_FROM_DATASTORE=false`, and `BACKFILL=false`. RPC retention is a positive ledger count; zero is invalid, and current source does not impose a seven-day maximum. An ordinary empty RPC database starts at the current History Archive State tip and accumulates forward. Increasing retention preserves more future local ledgers, transactions, and events; it does not recreate rows already pruned or never ingested.\n\nCurrent RPC does have an explicit backfill path. Since v25.1, `BACKFILL=true` can synchronously materialize approximately the configured trailing window from a compatible datastore before normal serving/live ingestion. It requires `SERVE_LEDGERS_FROM_DATASTORE=true`, available datastore coverage, and compatible/gapless local state; checkpoint alignment makes exact one-ledger coverage unsafe to promise. Without materialization, direct datastore fallback remains limited to `getLedgers`—`getTransaction`, `getTransactions`, and `getEvents` read retained local data.\n\nHorizon **v27.0.0** has a different executable default: `HISTORY_RETENTION_COUNT=0` means unlimited/no automatic history reaping. Official prose conflicts: `518400` is an approximate one-month recommendation, not the binary default. Missing Horizon history requires explicit `stellar-horizon db reingest range`; a nonzero active retention window can purge reingested rows outside that trailing window, and a requested ledger 1 normalizes to 2. Do not turn dated estimates such as 40 GB/day, 1.3 TB/month, or the v25.1 one-week backfill benchmark into universal sizing requirements—measure the chosen release, filters, schema, datastore, and workload.",
     "keyFacts": [
-      "States the three RPC v27.1.1 defaults and that RPC retention is positive-only with no source-enforced seven-day maximum.",
-      "Explains fresh-database tip start, future retention, and why raising a window alone does not restore missing rows.",
-      "Explains synchronous datastore-backed BACKFILL, its serve flag/coverage/state prerequisites, and approximate checkpoint-aligned scope.",
-      "Keeps direct datastore fallback getLedgers-only; local transaction/event methods require retained or materialized rows.",
-      "States Horizon v27.0.0 default 0/unlimited and preserves the official 0-versus-518400 wording conflict without pinning the recommendation as default.",
-      "Requires explicit Horizon range reingestion, notes nonzero reaping and ledger-1 normalization, and rejects universal storage/backfill benchmarks."
+      "States RPC v27.1.1 defaults: 120960 retention, false datastore serving, false BACKFILL.",
+      "Explains fresh tip starts, forward retention, and no restoration from larger windows.",
+      "Explains synchronous datastore BACKFILL with serve, coverage, state, and checkpoint scope.",
+      "Keeps datastore getLedgers-only; transaction/event methods on retained/materialized rows.",
+      "States Horizon v27.0.0 0/unlimited default and official 518400 wording conflict.",
+      "Requires range reingestion, nonzero reaping, ledger-1 normalization, and size caution."
     ],
     "avoid": [
       "Do NOT describe retention as downloading/backfilling history or promise that a larger window restores deleted or never-ingested rows.",
@@ -146,7 +146,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary process 3383 and pre-read-locked blind process 3386, independently reviewed 2026-07-11; the blind matrix was sealed before primary read and replaced the primary's cautious no-backfill treatment with v27.1.1 source/test evidence.",
         "Blind KV gt54/blind-lock/process-3386 records the ten-case seal at 2026-07-11T06:06:25.716Z, primaryReadAt 2026-07-11T06:13:03.599Z, and the retention amendment as an exact final action.",
@@ -154,14 +154,23 @@
         "Structural re-form (symmetric-caution): Added one narrow caution for two fixed retention wording conflicts and the open RPC BACKFILL gap; golden truth unchanged.",
         "Improvement findings read 2026-08-27: improvements/resolved.json entries sd-023 and sd-028 plus improvements/stellar-docs/sd-029-rpc-backfill-documentation-gap.md; disputed claims: old RPC retention wording, the old Horizon 518400 default, and the omitted RPC BACKFILL flag.",
         "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-        "Sibling sweep 2026-08-27: grep BACKFILL|HISTORY_RETENTION_COUNT|HISTORY_RETENTION_WINDOW → q-infra-rpc-methods-list, q-soroban-event-indexing-design, q-ti-self-host-retention-backfill; no contradiction"
+        "Sibling sweep 2026-08-27: grep BACKFILL|HISTORY_RETENTION_COUNT|HISTORY_RETENTION_WINDOW → q-infra-rpc-methods-list, q-soroban-event-indexing-design, q-ti-self-host-retention-backfill; no contradiction",
+        "Structural re-form (compound-predicate): Reworded six pinned migration facts with single predicates; truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-rpc/blob/v27.1.1/cmd/stellar-rpc/internal/config/options.go — v27.1.1 retained 120960, false datastore serving, and false BACKFILL defaults; the existing avoid retains positive-only and no-seven-day-maximum claims.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-rpc/blob/v27.1.1/cmd/stellar-rpc/internal/ingest/service.go — fresh state still began at the tip and larger future windows did not recreate missing rows.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-rpc/blob/v27.1.1/cmd/stellar-rpc/internal/ingest/backfill.go — synchronous datastore BACKFILL retained serve, coverage, state, and checkpoint scope constraints.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/data-lake-integration — direct datastore fallback remained getLedgers-only while transaction and event data required local materialization.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-horizon/blob/v27.0.0/internal/flags.go — Horizon v27.0.0 retained executable 0/unlimited behavior against the official 518400 wording conflict.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion — missing history still required range reingestion with retention-aware reaping; source retained ledger-1 normalization and benchmark caveats.",
+        "Sibling sweep 2026-08-27: grep HISTORY_RETENTION_COUNT|HISTORY_RETENTION_WINDOW|BACKFILL → q-infra-rpc-methods-list, q-ti-self-host-retention-backfill; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-023-rpc-event-retention-config-drift.md",
         "improvements/stellar-docs/sd-028-horizon-retention-default-wording-conflict.md",
         "improvements/stellar-docs/sd-029-rpc-backfill-documentation-gap.md",
         "Eval-side Horizon/RPC role collapse: retention, RPC BACKFILL, Horizon reingestion, Core catchup, migration/state rebuild and Galexie export were treated as one mechanism.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-self-host-retention-backfill"

@@ -8,9 +8,11 @@
   "golden": {
     "answer": "Stellar does not mandate Noir or any single ZK toolchain. Builders can use Circom/Groth16, Noir-based systems, or zkVM workflows such as RISC Zero, provided they supply a compatible Soroban verifier. On-chain verification uses a verifier contract plus native cryptographic host functions where applicable; Protocol 25 made BN254 and Poseidon/Poseidon2 primitives available, but those primitives do not by themselves create an end-to-end privacy system.",
     "keyFacts": [
-      "Stellar does not require Noir; multiple proof systems and circuit languages can target Soroban verifiers.",
-      "Proofs are checked by compatible Soroban verifier logic, using native host functions where the curve and primitives match.",
-      "Protocol 25 provides BN254 and Poseidon/Poseidon2 building blocks, not an automatic private-payment system."
+      "States that Stellar does not require Noir.",
+      "Covers multiple proof systems and circuit languages that target Soroban verifiers.",
+      "Proofs use compatible Soroban verifier logic/native host functions per curve/primitives.",
+      "Lists Protocol 25 BN254 and Poseidon/Poseidon2 building blocks.",
+      "Protocol 25 does not provide an automatic private-payment system."
     ],
     "avoid": [
       "Noir is the only supported way to build ZK applications on Stellar.",
@@ -121,11 +123,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/zk",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/README.md"
+        "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+        "Structural re-form (compound-predicate): Split three compound facts into five atomic facts; truth unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/zk — Stellar's workflow examples still include Noir without requiring it.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — the page still covers RISC Zero/Groth16, Circom, and Noir verifier paths.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — onchain verification still uses smart contracts built on matching cryptographic host functions.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — CAP-0074 and CAP-0075 still map BN254 and Poseidon/Poseidon2 to Protocol 25.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/zk — Protocol 25 primitives remain building blocks without automatic end-to-end private payments.",
+        "Sibling sweep 2026-08-27: grep BN254|Poseidon/Poseidon2|Noir|RISC Zero|Groth16|verifier → q-protocol-bn254-poseidon-xray, q-zk-host-functions-status, q-zk-circuit-setup, q-zk-verification-resource-budget, q-sor-cross-warmancer-zk-stack; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "kaan zk-proving-systems-languages"

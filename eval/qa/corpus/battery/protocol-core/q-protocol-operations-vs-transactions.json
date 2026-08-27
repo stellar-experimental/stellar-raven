@@ -8,8 +8,10 @@
   "golden": {
     "answer": "**Operations** are individual commands that modify the ledger (payment, create account, invoke\ncontract, manage offer) [1]. A **transaction** bundles one or more operations and is the **signed unit**\nsubmitted to the network [1]. The transaction carries a source account, sequence number, and fee, and\nits operations execute **atomically** (all-or-nothing) [1]. There is a per-transaction operation limit,\nand operations share the transaction's authorization, though each operation can optionally have its own\nsource account [1]. The containment is **operations ⊂ transaction** — operations are not independently\nsigned/submitted units [1].\n\n- [1] developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
     "keyFacts": [
-      "States operations are individual commands that modify the ledger (e.g. payment, create account, invoke contract, manage offer).",
-      "States a transaction bundles one or more operations and is the signed unit submitted to the network."
+      "Defines operations as individual ledger-changing commands.",
+      "Names payment, create account, invoke contract, and manage offer as examples.",
+      "States a transaction bundles one or more operations.",
+      "Treats the transaction as the signed unit submitted to the network."
     ],
     "avoid": [
       "Do NOT invert the relationship (claim a transaction is a single operation type or that operations contain transactions).",
@@ -33,10 +35,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-33-passphrases-operations-parallel-passkeys-consensus accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (compound-predicate): Split the operation definition, examples, transaction bundle, and signed-submission unit into atomic facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions defines operations as commands that modify the ledger.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions lists payment, create account, invoke contract, and manage offer operations.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions confirms a transaction bundles one or more operations.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions confirms the transaction is the signed unit submitted to the network.",
+        "Sibling sweep 2026-08-27: grep operations and transactions|invoke contract|manage offer → q-protocol-operation-types-list, q-pc-sequence-numbers-ordering-replace, q-protocol-accounts-signers-thresholds; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-operations-vs-transactions"

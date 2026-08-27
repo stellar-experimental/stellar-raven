@@ -12,8 +12,10 @@
     "answer": "- **SEP-8 is the Regulated Assets standard** for classic assets whose issuer requires per-transaction approval. The issuer sets both **Authorization Required and Authorization Revocable** and publishes regulated=true, approval_server, and approval_criteria in the asset's SEP-1 stellar.toml. **Clawback is separate and optional; it is not a SEP-8 prerequisite.**\n- The wallet builds and signs a transaction, detects the regulated asset, and POSTs its encoded transaction to the approval server. The server checks policy and returns success, revised, pending, action_required, or rejected. Success adds issuer approval to the compliant transaction. A revised transaction must preserve user intent, be inspected, and be re-signed by the wallet.\n- After all required signatures are present, **the wallet submits the transaction**. The approval server does not submit it. This is a classic-asset authorization flow and does not require Soroban.",
     "keyFacts": [
       "Names SEP-8 as the Regulated Assets standard.",
-      "Requires Authorization Required plus Authorization Revocable and the regulated, approval_server, and approval_criteria stellar.toml fields; clawback is optional.",
-      "The wallet posts a signed transaction, handles the five approval statuses, re-signs revisions, and submits the final transaction."
+      "SEP-8 requires Authorization Required/Authorization Revocable, with optional clawback.",
+      "It requires regulated, approval_server, and approval_criteria stellar.toml fields.",
+      "Wallet duties include signed-transaction posting and five approval statuses.",
+      "Wallet duties include revision re-signing and final-transaction submission."
     ],
     "avoid": [
       "Do NOT call SEP-8 KYC or authentication.",
@@ -111,13 +113,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The answer omitted SEP-8's normative Authorization Revocable prerequisite and described success as a generic dual-signature path without fully preserving wallet submission. SEP-8 requires Required plus Revocable; clawback is separate and optional. The approval server returns the transaction, and the wallet submits after inspecting/re-signing revisions.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-08 primary and blind matrices"
+        "Solo scratchpad 575 GT-08 primary and blind matrices",
+        "Structural re-form (compound-predicate): Split two compound key facts into four atomic facts; all SEP-8 flag, stellar.toml, clawback, status, signing, revision, and submission claims remain unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — required Authorization Required and Authorization Revocable; https://developers.stellar.org/docs/tokens/control-asset-access showed clawback as a separate optional flag.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — listed regulated, approval_server, and approval_criteria in stellar.toml.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — showed wallet posting of a signed transaction and handling of five approval statuses.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — showed wallet inspection/re-signing of revisions and final transaction submission.",
+        "Sibling sweep 2026-08-27: grep SEP-8|approval_server|Authorization Revocable → q-sep-8-regulated-assets, q-comp-sep8-number-lookup-no-deepresearch, q-comp-anchor-compliance-stack; no contradiction"
       ],
       "rootCause": [
-        "Partial paraphrase lost the normative flag pair and compressed success, revised, and submission responsibilities."
+        "Partial paraphrase lost the normative flag pair and compressed success, revised, and submission responsibilities.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-comp-sep8-regulated-assets-approval-server"

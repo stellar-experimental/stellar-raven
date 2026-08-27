@@ -12,10 +12,11 @@
   "golden": {
     "answer": "For the first `getTransactions` page, send an inclusive `startLedger` and an optional `limit`. For continuation, omit `startLedger` and send the prior response's opaque `pagination.cursor`; the cursor resumes after the last returned position. `startLedger` and `cursor` are mutually exclusive. Process idempotently and persist the new cursor only after downstream writes succeed.\n\nAs of **2026-07-11**, stock Stellar RPC configuration defaults `getTransactions` to 50 records and a maximum of 200, but source exposes operator-configurable default/max options; treat provider behavior as configurable rather than a protocol constant. Horizon is separately 1–200/default 10; stock `getEvents` is 100/10000 and `getLedgers` is 50/200. Check the current provider and `getHealth` retention bounds. RPC returns failed as well as successful transactions, diagnostic events may be absent, and a cursor cannot recover history outside retention; use a suitable indexer/data-lake path when falling behind.\n\nIn default base64 mode, decode `envelopeXdr` as `TransactionEnvelope`, `resultXdr` as `TransactionResult`, `resultMetaXdr` as `TransactionMeta`, `diagnosticEventsXdr` entries as `DiagnosticEvent`, and `transactionEventsXdr` entries as `TransactionEvent`; contract-event payloads use `ContractEvent`. The public JS SDK may already parse these fields. With `xdrFormat=json`, the response uses corresponding `*Json` names, so do not expect base64-field names or double-decode SDK values.",
     "keyFacts": [
-      "States that the first page uses inclusive startLedger and continuation uses the returned opaque cursor without repeating startLedger.",
-      "States stock/configurable method limits correctly and dates provider/default claims: getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, Horizon 10/200.",
-      "Explains retention/fall-behind behavior, failed-transaction inclusion, optional diagnostics, and idempotent cursor persistence.",
-      "Maps envelope/result/meta/event XDR fields to exact types and distinguishes base64 *Xdr names from JSON-mode *Json names and SDK-parsed values."
+      "Uses inclusive startLedger first, then the returned opaque cursor without startLedger.",
+      "Lists getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, Horizon 10/200.",
+      "Treats RPC limits as dated stock defaults that providers can configure.",
+      "Covers retention/fall-behind, failed txs, optional diagnostics, idempotent persistence.",
+      "Maps envelope/result/meta/event *Xdr to exact types, *Json names, and SDK-parsed values."
     ],
     "avoid": [
       "Do NOT claim the 200 limit is Horizon-only or that Stellar RPC has no 200-record cap — RPC `getTransactions` itself is capped at 200 (default 50).",
@@ -157,7 +158,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "eval/qa/results/2026-07-03T16-06-45-variantA.json (q-ti-rpc-gettransactions-pagination-xdr)",
         "Live 2026-07-03: developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — limit 'can range from 1 to 200 — an upper limit that is hardcoded in Stellar-RPC for performance reasons', default 50",
@@ -169,13 +170,22 @@
         "Independent Terra review 2026-07-14 rechecked stellar-docs#2567, current RPC pagination docs, and stellar-rpc configuration source; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review",
         "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; confirmed against improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md on 2026-08-26",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep getTransactions 50|200/50|max-transactions-limit|immutable limit → q-ti-rpc-gettransactions-pagination-xdr, q-ti-parse-raw-ledger-data; no contradiction"
+        "Sibling sweep 2026-08-27: grep getTransactions 50|200/50|max-transactions-limit|immutable limit → q-ti-rpc-gettransactions-pagination-xdr, q-ti-parse-raw-ledger-data; no contradiction",
+        "Structural re-form (compound-predicate): Split the limits claim and shortened four facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — startLedger was inclusive and omitted when a returned opaque cursor was used.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/pagination — the method table showed getTransactions 50/200, getEvents 100/10000, and getLedgers 50/200; Horizon remained a separate 10/200 surface.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-rpc/blob/04968c0a1711f57529ae777f414f7ddc7401ac97/cmd/stellar-rpc/internal/methods/get_transactions.go#L39-L68 — source retained configurable transaction-page limits behind the dated stock defaults.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — results still covered retained history, failed transactions, optional diagnostics, and cursor continuation.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/data-format — base64 *Xdr fields, JSON *Json fields, and SDK parsing remained distinct response forms.",
+        "Sibling sweep 2026-08-27: grep getTransactions|resultMetaXdr|xdrFormat → q-crp-export-tx-history-taxes, q-infra-rpc-methods-list, q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part3.md): restored the fall-behind behavior claim; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-003 (verified, awaiting upstream) — RPC method reference pages unindexed in Algolia; the upstream fix that would have prevented both the agent's and the golden author's error. When sd-003 is fixed-upstream, this override's facts should be re-verified against the then-indexed page but the correction itself remains valid.",
         "improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md",
         "solo://proj/49/todo/golden-fixes-q-scf-r--827",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-rpc-gettransactions-pagination-xdr"

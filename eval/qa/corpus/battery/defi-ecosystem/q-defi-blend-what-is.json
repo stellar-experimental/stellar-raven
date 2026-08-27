@@ -11,8 +11,11 @@
   "golden": {
     "answer": "**Blend** is a Soroban lending/borrowing protocol that lets users deploy permissionless, isolated pools, supply assets, and take over-collateralized loans. It was **created/developed by Script3**; the public protocol brand and code organization are **`blend-capital`**, and the SDF is not the builder. Official docs describe the immutable base protocol as having **no DAO or central operator**, but that does not make every pool governance-free: pool creators choose assets, owner/management strategy, oracle, backstop take, and risk parameters, and a pool can be owned/mutable or governed through a separate contract. Describe Blend as an important lending primitive without requiring an unsupported timeless dominance or Aave-equivalent ranking.",
     "keyFacts": [
-      "Blend is a Soroban lending protocol for permissionless isolated pools and over-collateralized borrowing.",
-      "Script3 developed Blend; blend-capital is the public code/brand organization, and protocol-level no-DAO design is distinct from pool-specific administration and risk."
+      "Blend is a Soroban lending protocol with permissionless isolated pools.",
+      "It supports over-collateralized borrowing.",
+      "Script3 developed Blend.",
+      "blend-capital is the public code/brand organization.",
+      "Protocol-level no-DAO design differs from pool-specific administration/risk."
     ],
     "avoid": [
       "Do NOT conflate Stellar Blend with blend.com, describe it as a DEX/oracle, or attribute it to the SDF.",
@@ -79,14 +82,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — GT-14 primary and blind reviews confirmed Blend's mechanics but independently rejected the inherited builder and governance shorthand: Script3 is the builder studio, blend-capital is the code/brand org, and protocol-level no-DAO language does not mean every pool lacks an owner, management strategy, or separate governance contract.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575: GT-14 process 3239 and blind process 3242",
-        "Direct Blend documentation and repository review 2026-07-10"
+        "Direct Blend documentation and repository review 2026-07-10",
+        "Structural re-form (compound-predicate): Split two compound key facts into five atomic facts; all Soroban, lending, pool, borrowing, Script3, blend-capital, no-DAO, administration, and risk claims remain unchanged.",
+        "Live re-check 2026-08-27: https://github.com/blend-capital/blend-contracts — identified Blend as a Soroban lending primitive with permissionless isolated pools.",
+        "Live re-check 2026-08-27: https://docs.blend.capital/users/lending-borrowing/lending — showed lending and collateral-backed borrowing through Blend pools.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/developers/composability-on-stellar-from-concept-to-reality — identified Blend as a lending protocol created by Script3.",
+        "Live re-check 2026-08-27: https://github.com/blend-capital — showed the public Blend code and brand organization.",
+        "Live re-check 2026-08-27: https://github.com/blend-capital/docs-v2/blob/main/pool-creators/general.md — showed Blend's no-DAO protocol design alongside owned or DAO-managed pool choices.",
+        "Sibling sweep 2026-08-27: grep Blend|Script3|blend-capital|isolated pools → q-defi-blend-alternatives, q-defi-cross-blend-rivool-sac, q-scf-blend-winners-live, q-edge-fresh-latest-blend-tvl; no contradiction"
       ],
       "rootCause": [
-        "eval-side entity/governance compression: builder, brand org, protocol control, and individual-pool governance were collapsed"
+        "eval-side entity/governance compression: builder, brand org, protocol control, and individual-pool governance were collapsed",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-blend-what-is"

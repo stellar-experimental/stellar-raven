@@ -1,1 +1,111 @@
-{"id":"q-scf-hackathon-compare-live","question":"Using current event data, compare Stellar Hacks: KALE x Reflector and Stellar Hacks: Blend on submissions and winners.","surface":["scout.getHackathons","scout.compareHackathons","scout.getHackathon"],"golden":{"answer":"Resolve both current event slugs, call getHackathon detail for each, and compare hackathon.stats.totalSubmissions and hackathon.stats.winners (or explicit equivalent fields). Use compareHackathons only for fields it actually returns, distinguish null from zero, and cite generatedAt/scope.","keyFacts":["Resolves both current slugs and uses two getHackathon detail calls.","Compares explicit totalSubmissions and winners fields, treating null as unknown rather than zero.","Uses compareHackathons only for fields it returns and dates/scopes the result."],"avoid":["Uses archived submission or winner counts as current when the live comparison differs or lacks them."]},"tags":{"category":"scf-grants-builders","service":"scout","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/hackathons"},{"class":"B","ref":"catalog/manifest.json#scout.compareHackathons"},{"class":"A","ref":"https://stellar.org/blog/ecosystem/the-story-of-kale"},{"class":"A","ref":"https://blend.capital/"}],"corroboration":[{"claim":"The comparison requires resolved live slugs, sourced fields, generated-at, and null-versus-zero discipline.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/hackathons","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.compareHackathons","observedAt":"2026-07-11"},{"class":"A","ref":"https://stellar.org/blog/ecosystem/the-story-of-kale","observedAt":"2026-07-11"},{"class":"A","ref":"https://blend.capital/","observedAt":"2026-07-11"}]},{"claim":"Archived event counts remain current indefinitely.","verdict":"contradicted","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/hackathons","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","catalog/manifest.json#scout.compareHackathons","https://stellar.org/blog/ecosystem/the-story-of-kale","https://blend.capital/"],"rootCause":["freshness-drift"]},"origin":"boxy sl-hackathon-kale-vs-blend-counts"}}
+{
+  "id": "q-scf-hackathon-compare-live",
+  "question": "Using current event data, compare Stellar Hacks: KALE x Reflector and Stellar Hacks: Blend on submissions and winners.",
+  "surface": [
+    "scout.getHackathons",
+    "scout.compareHackathons",
+    "scout.getHackathon"
+  ],
+  "golden": {
+    "answer": "Resolve both current event slugs, call getHackathon detail for each, and compare hackathon.stats.totalSubmissions and hackathon.stats.winners (or explicit equivalent fields). Use compareHackathons only for fields it actually returns, distinguish null from zero, and cite generatedAt/scope.",
+    "keyFacts": [
+      "Resolves both current slugs and uses two getHackathon detail calls.",
+      "Compares explicit totalSubmissions and winners fields.",
+      "Treats null as unknown rather than zero.",
+      "Uses compareHackathons only for its returned fields.",
+      "Includes the result date and scope."
+    ],
+    "avoid": [
+      "Uses archived submission or winner counts as current when the live comparison differs or lacks them."
+    ]
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.compareHackathons"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/the-story-of-kale"
+      },
+      {
+        "class": "A",
+        "ref": "https://blend.capital/"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The comparison requires resolved live slugs, sourced fields, generated-at, and null-versus-zero discipline.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.compareHackathons",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/the-story-of-kale",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://blend.capital/",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "Archived event counts remain current indefinitely.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "evidence": [
+        "solo://proj/49/process/3414",
+        "solo://proj/49/process/3420",
+        "catalog/manifest.json#scout.compareHackathons",
+        "https://stellar.org/blog/ecosystem/the-story-of-kale",
+        "https://blend.capital/",
+        "Structural re-form (compound-predicate): Split explicit detail fields, null handling, comparison-field scope, and result dating/scope into atomic facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current catalog retained totalSubmissions and winners as explicit hackathon fields.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current catalog retained absent-versus-zero field semantics.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current catalog defined the fields returned by compareHackathons.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/ — the current Hackathons section remained a live, changing event surface that needs a result date and scope.",
+        "Sibling sweep 2026-08-27: grep compareHackathons|totalSubmissions|winners|null → q-scf-current-hackathons-compare-live, q-gap-compare-hackathons, q-gap-hackathon-winner-order; no contradiction"
+      ],
+      "rootCause": [
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+      ]
+    },
+    "origin": "boxy sl-hackathon-kale-vs-blend-counts"
+  }
+}

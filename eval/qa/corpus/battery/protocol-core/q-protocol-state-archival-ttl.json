@@ -8,8 +8,11 @@
   "golden": {
     "answer": "- Soroban contract storage entries have a **TTL (time-to-live, in ledgers)**; when the TTL expires the entry is **archived** rather than kept live and must be **restored before use** [1].\n- Purpose: state archival bounds the size of live state so validators don't pay forever to host unused data (sustainable state growth / rent model) [1].\n- Durability tiers behave differently: **Temporary** entries are **deleted** on expiry; **Persistent** and **Instance** entries can be **restored** [1].\n- TTL can be extended (bumped) via host functions / extend-TTL operations (CAP-0053) [1].\n- Protocol 23 (Whisk) introduced live-vs-archival state separation (CAP-0062) to support this at scale [1].",
     "keyFacts": [
-      "Explains Soroban contract storage entries have a TTL (time-to-live, in ledgers); when TTL expires the entry is archived rather than kept live, and must be restored before use.",
-      "Explains the purpose: state archival bounds the size of live state so validators don't pay forever to host unused data (sustainable state growth / rent model)."
+      "Defines a TTL (time-to-live) in ledgers for Soroban contract storage entries.",
+      "Treats a TTL-expired entry as archived rather than live.",
+      "Requires archived-entry restoration before use.",
+      "Bounds live state size through state archival.",
+      "Limits perpetual validator storage of unused data through the sustainable rent model."
     ],
     "avoid": [
       "Do NOT claim Soroban contract data lives forever for free with no TTL/rent.",
@@ -33,10 +36,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-34-soroban-launch-archival-core-tier1-validators-history accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (compound-predicate): Split TTL units, expiry, restoration, live-state bounds, and validator storage purpose into atomic facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — defined TTL as ledgers remaining until an entry is no longer live.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — showed TTL expiry archives persistent and instance entries.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — required archived entries to be restored before access.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md — bounded live Soroban state through archival and dynamic rent.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0057.md and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md — tied archival and rent to lower validator storage requirements and sustainable scale.",
+        "Sibling sweep 2026-08-27: grep state archival|TTL|rent → q-sor-p23-auto-restore-extendto, q-soroban-storage-types, q-sor-ttl-defaults-extend; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-state-archival-ttl"

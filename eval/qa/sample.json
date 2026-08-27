@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "4f642ef425e31b8a19ce96aad585961c163da7e3fc235a7e3cb88e26064ab8dc",
+  "corpusContentSha256": "ddeddcffdca21ceb7d77a278433bdf11556cc9c8310243fd988a49f3cf499552",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -44,11 +44,13 @@
       "golden": {
         "answer": "For a classic issued asset, the issuer account is the asset's authority, not a normal holder of its own credit. Stellar's asset docs state that an asset is created by an issuing account payment and that deleting or burning an issued asset is done by sending it back to the issuing account. The SAC docs make the same accounting explicit: transfers to the issuer account burn, while transfers from the issuer mint. That is the mechanical basis for voluntary redemption: a holder pays the issuer/distributor according to the issuer's redemption process, and the asset balance is removed from outstanding holder balances.\n\nClawback is different. Under CAP-35 and the Stellar control-access docs, an issuer can claw back only assets/trustlines that were clawback-enabled under the required flags. The issuer submits a clawback operation against the holder's balance; the SAC interface describes the clawed-back amount as burned in the clawback process. It is not a normal user payment, does not require the affected holder's signature, and does not create a spendable issuer balance.\n\nSo: redemption/payment back to the issuer is holder-initiated and usually part of off-chain cash settlement; burn is the supply/accounting effect of returning issued credit to the issuer; clawback is issuer-initiated removal under regulated-asset controls.",
         "keyFacts": [
-          "Explains that a classic asset balance held by a non-issuer account represents issued supply; sending it back to the issuer is redemption/burn-like because the issuer does not hold its own asset as a normal balance.",
-          "Explains clawback removes a holder's balance under clawback-enabled issuer controls rather than transferring spendable tokens back to the issuer account.",
+          "Identifies non-issuer classic balances as issued supply.",
+          "Treats classic asset returns to the issuer as redemption/burn-like.",
+          "Clawback removes a holder balance under clawback-enabled issuer controls.",
           "Distinguishes voluntary redemption/payment back to issuer from issuer-initiated clawback."
         ],
         "avoid": [
+          "Do NOT say the issuer holds its own classic asset as a normal balance.",
           "Do NOT say clawed-back classic-asset tokens become a spendable issuer balance.",
           "Do NOT conflate user redemption with issuer clawback authorization.",
           "Do NOT detour into per-transfer fee hooks, max-supply caps, or the full AUTH_* flag enumeration; the question is the burn/clawback/redemption distinction."
@@ -86,10 +88,18 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "GT-01-asset-lifecycle-safety-metadata accepted in Solo scratchpad 575 rev 291",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
           "evidence": [
-            "solo://proj/49/scratchpad/truth-maintenance-20--575"
+            "solo://proj/49/scratchpad/truth-maintenance-20--575",
+            "Structural re-form (compound-predicate): Split supply and return mechanics, shortened clawback, and moved the issuer-balance trap to avoid; the truth is unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed issued classic balances outside the issuer.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed that returning an asset to its issuer burns it.",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — showed holder-balance removal under clawback-enabled issuer controls.",
+            "Sibling sweep 2026-08-27: grep burn|redemption|clawback|issuer balance → q-aas-issuer-fees-supply-cap-freeze, q-sep-clawback-prereq-flag, q-comp-clawback-cap0035, q-comp-clawback-holder-risk; no contradiction"
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
         },
         "origin": "raven-next q-aas-burn-clawback-redemption-mechanics"
@@ -199,8 +209,10 @@
         "answer": "ERC-8004 defines interoperable registries for agent identity, reputation feedback, and validation; it does not itself prove that an agent is honest or that a payment was made. Stellar ports such as stellar8004 are community implementations that map the registry pattern to Soroban and may expose SDK or CLI tooling. Treat any particular Stellar deployment, audit status, registry address, x402/MPP integration, or SEP analogue as status-sensitive and verify it from that project's current repository and deployment metadata before relying on it.",
         "keyFacts": [
           "ERC-8004 defines identity, reputation, and validation registries for agents.",
-          "Registry entries and feedback are signals; they do not by themselves guarantee trustworthiness or prove payment.",
-          "Stellar8004-style Soroban ports are community implementations, so deployment and audit claims require current project evidence."
+          "Registry entries and feedback are signals.",
+          "By themselves, they are neither trustworthiness guarantees nor payment proofs.",
+          "Stellar8004-style Soroban ports are community implementations.",
+          "Deployment and audit claims require current project evidence."
         ],
         "avoid": [
           "ERC-8004 is an official Stellar protocol feature that guarantees every registered agent is trustworthy.",
@@ -311,11 +323,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H2 primary+blind (Solo 3411/3412)",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
           "evidence": [
             "https://eips.ethereum.org/EIPS/eip-8004",
-            "https://github.com/trionlabs/stellar-8004"
+            "https://github.com/trionlabs/stellar-8004",
+            "Structural re-form (compound-predicate): Split signals, limitations, community status, and evidence requirements; the truth is unchanged.",
+            "Live re-check 2026-08-27: https://eips.ethereum.org/EIPS/eip-8004 — described registry entries and feedback as trust signals.",
+            "Live re-check 2026-08-27: https://eips.ethereum.org/EIPS/eip-8004 — kept payments orthogonal and made trust models pluggable.",
+            "Live re-check 2026-08-27: https://github.com/trionlabs/stellar-8004 — identified the Stellar8004 Soroban port as a project implementation.",
+            "Live re-check 2026-08-27: https://github.com/trionlabs/stellar-8004 — showed status-sensitive deployment details and project tooling.",
+            "Sibling sweep 2026-08-27: grep ERC-8004|stellar8004|identity registry|reputation registry|validation registry → q-defi-agent-identity-stellar-experimental; no contradiction"
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
         },
         "origin": "kaan agent-identity-reputation-8004"
@@ -493,7 +514,7 @@
         "answer": "Take the exact slug returned by partner discovery and call getPartner. Report only fields in the published profile—such as services, sectors, regions, contact or documentation links, verification, and freshness—and preserve the profile URL. Discovery selects candidates; detail verifies one candidate's public profile.",
         "keyFacts": [
           "Calls getPartner with an exact slug obtained from partner discovery.",
-          "Reports capabilities and freshness only when present in the returned profile."
+          "Reports capabilities and freshness only from fields in the returned profile."
         ],
         "avoid": [
           "Do NOT fabricate a service, corridor, contact method, or compliance claim absent from the profile.",
@@ -523,16 +544,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 coverage-closure lane (Solo process 3427)",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
           "evidence": [
             "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; getPartners supplied slug trustless-work and getPartner returned its published detail envelope.",
             "catalog/manifest.json exists and supports the behavioral golden.",
             "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (compound-predicate): Reworded one compound key fact with one predicate; capabilities, freshness, returned-profile presence, and report-only scope remain unchanged.",
+            "Live re-check 2026-08-27: https://raven.stellar.buzz/mcp — the current catalog exposed scout.getPartner by exact slug with published profile fields and freshness.",
+            "Sibling sweep 2026-08-27: grep getPartner|partner discovery|published profile → q-edge-partner-detail-soft-empty, q-gap-match-partners-degrade, q-scf-ecosystem-listing-partner-jobs, q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
         },
         "origin": "authored 2026-07 (coverage)"
@@ -548,16 +573,17 @@
       "golden": {
         "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nStellar supports path payments through `PathPaymentStrictSend` and `PathPaymentStrictReceive`; path payments can traverse orderbook liquidity, but the protocol does not make arbitrage or market making profitable. A strict-send quote fixes the source amount and estimates destination output, then the submitted transaction should protect the user with `destination_min`; a strict-receive quote fixes destination amount and protects the sender with `send_max`. If liquidity moves before inclusion, the operation can fail with path-payment result codes such as `UNDER_DESTMIN`, `OVER_SENDMAX`, or no usable path / too-few-offers. Sources: Stellar path-payment guide and Horizon operation-specific result-code docs.\n\nFor a small-capital bot, the defensible answer is \"possible to build, not reliably profitable.\" Expected costs and risks include spreads, slippage, base fees and surge pricing, failed transactions, stale quotes, minimum reserves/trustlines, path disappearance, competition, latency, inventory imbalance, and thin pools. Backtesting and testnet/paper trading are required before risking funds; Raven should not recommend a strategy as a guaranteed return.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Explains Stellar supports path payments and pathfinding concepts such as strict-send and strict-receive, but profitability is not guaranteed.",
-          "Mentions realistic bot profitability depends on liquidity, spreads, fees, slippage, latency, failed transactions, competition, and capital, especially for small accounts.",
-          "Explains path queries/simulation should be used to estimate destination amounts and guard with minimum/maximum constraints such as destination-min or send-max."
+          "Specific sourced observations visibly date changing roster/status/version/measurement.",
+          "Stellar supports path payments/pathfinding via strict-send/strict-receive.",
+          "Bot profitability depends on liquidity, spreads, fees, slippage, latency.",
+          "Failed transactions, competition, capital affect profit, especially for small accounts.",
+          "Path query/simulation estimates destination amounts under destination-min/send-max limits."
         ],
         "avoid": [
           "Do NOT promise profit or imply small-capital arbitrage is reliably profitable.",
           "Do NOT provide financial advice as a guaranteed strategy.",
-          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+          "Do NOT claim unsupported memory is a source-supported current observation."
         ],
         "notes": "Profitability is intentionally not gated on a current numeric estimate; Phase 3 should attack any answer that turns pathfinding mechanics into financial advice.\nAlso good if the answer: Mentions circular/same-asset arbitrage and batching should be tested carefully because paths can disappear or execute differently by submission time. | Mentions result-code traps such as under-destination-min or no-path when quoting and submitting.\nGolden cites: Stellar docs for path payments/pathfinding and dated market/liquidity sources for current profitability claims."
       },
@@ -593,17 +619,25 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
           "evidence": [
             "solo://proj/49/scratchpad/truth-maintenance-20--575",
             "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (compound-predicate): Recast five long or compound key facts as five atomic facts and moved the unsupported-memory contrast to avoid; every dating, pathfinding, profitability-risk, small-account, simulation, and guard claim remains unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/path-payments — provided current source-backed path-payment observations with dated page metadata.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/path-payments — showed strict-send/strict-receive path payments across SDEX or pool liquidity.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — showed liquidity, spreads, fees, slippage, and price-risk inputs to profitability.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — showed transaction costs and congestion; the existing truth retains failure, competition, capital, and small-account risks.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths — showed path estimates and strict-send destination constraints; the strict-receive endpoint showed send-max constraints.",
+            "Sibling sweep 2026-08-27: grep path payment|strict-send|strict-receive|arbitrage → q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, q-defi-sdex-offer-lifecycle, q-asset-sdex-vs-amm, q-scf-hummingbot-kelp-closed-rfp, q-protocol-operation-types-list; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
         },
         "origin": "raven-next q-defi-arbitrage-pathpayment-bots"
@@ -1587,8 +1621,9 @@
         "answer": "Stellar sequence numbers are per **transaction source account**, not a global order across unrelated accounts. By default, a transaction must use current sequence + 1; submitting N+2 while the account is at N yields `tx_bad_seq`, and it can become valid after N+1 applies. There is an important CAP-0021 exception: with a non-null `minSeqNum`, validation permits `minSeqNum <= current sequence < transaction sequence`, so a transaction at N+2 can apply while current is N when that lower bound is satisfied, then advance the account directly to N+2. Only an applied transaction consumes the sequence; a duplicate with the same source/sequence cannot apply after another transaction has consumed it.\n\nUnrelated source accounts have independent sequence domains even though consensus orders accepted transactions. For a transaction still in a submission queue, replacement behavior depends on the Core/RPC path: official fee-bump guidance describes replacing the same source/sequence transaction when the fee-bump bid is at least 10x, and timebounds or ledger bounds should limit stale execution. Distinguish queued, rejected, expired, and successfully applied states before resubmitting.",
         "keyFacts": [
           "Explains per-source-account rather than global ordering.",
-          "States default +1 behavior and the CAP-0021 minSeqNum exception that can skip N+1.",
-          "Explains duplicates, consumption-on-application, and scoped fee-bump replacement semantics."
+          "States default +1 behavior.",
+          "Covers the CAP-0021 minSeqNum exception that can skip N+1.",
+          "Covers duplicates, application-only consumption, and scoped fee-bump replacement."
         ],
         "avoid": [
           "Do NOT say N+2 can never apply before N+1; minSeqNum can authorize a sequence gap.",
@@ -1648,14 +1683,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The GT-30 sequence answer made N+2-after-N+1 unconditional, contradicting CAP-0021's minSeqNum gap semantics and the corrected account/signers case.",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
           "evidence": [
             "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently identified the GT-30 sibling contradiction.",
-            "2026-07-11 author re-check against CAP-0021's minSeqNum specification."
+            "2026-07-11 author re-check against CAP-0021's minSeqNum specification.",
+            "Structural re-form (compound-predicate): Split the default +1 rule from the CAP-0021 exception and shortened the lifecycle fact; every sequence and replacement claim is unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — current docs still describe source-account sequence consumption through transaction application.",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md — CAP-0021 still permits discontinuous sequences through non-null minSeqNum.",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md — CAP-0015 still defines same-source/sequence fee-bump replacement in the transaction queue.",
+            "Sibling sweep 2026-08-27: grep minSeqNum|fee-bump replacement|sequence gap → q-protocol-accounts-signers-thresholds, q-ti-channel-accounts-throughput; no contradiction"
           ],
           "rootCause": [
-            "Eval-side default-rule absolutism after adding a detailed replacement/queue answer."
+            "Eval-side default-rule absolutism after adding a detailed replacement/queue answer.",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
         },
         "origin": "raven-next q-pc-sequence-numbers-ordering-replace"
@@ -1850,7 +1891,8 @@
       "golden": {
         "answer": "XLM, also called a lumen, is Stellar's native asset. It is used to pay very small network fees and to help meet account-reserve requirements, and people can also send or trade it like other cryptoassets. It is not the same thing as every dollar-like token on Stellar: issued assets have an issuer and normally need trustlines, while XLM is native. Its market price can move, so explaining its network role is not a prediction about investment value.",
         "keyFacts": [
-          "Identifies XLM as Stellar's native asset and names fees/reserves as network roles.",
+          "Identifies XLM as Stellar's native asset.",
+          "Names fees and reserves as XLM network roles.",
           "Distinguishes XLM from issuer-backed Stellar assets."
         ],
         "avoid": [
@@ -1896,18 +1938,23 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
             "scratchpad/p4/h3-raph/fable-voice-review.md",
             "scratchpad/p4/h3-raph-blind/reconciliation.md",
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
-            "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x"
+            "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
+            "Structural re-form (compound-predicate): Split XLM identity from its fee and reserve roles; truth is unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens — identified XLM as Stellar's native currency.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens — listed transaction fees and minimum-balance reserves as XLM roles.",
+            "Sibling sweep 2026-08-27: grep XLM|native asset|issuer|trustline → q-raph-xlm-network-role, q-asset-trustline-basics, q-edge-ambig-stellar-token-meaning; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
         },
         "origin": "raph xlm-explained-simply-non-technical"
@@ -2493,8 +2540,10 @@
       "golden": {
         "answer": "Call a deployed contract either through a generated typed client (from `contractimport!` or generated bindings) or through `Env::invoke_contract`. The whole call tree shares the transaction's resource budget. Authorization is an invocation tree: an external address's `require_auth` must be covered for the relevant nested invocation and arguments. Separately, the address of the contract making a direct cross-contract call is implicitly authorized for that direct call; do not describe every boundary as an unconditional authorization reset.",
         "keyFacts": [
-          "Names generated typed clients and Env::invoke_contract as the two call mechanisms.",
-          "Explains both external-address invocation-tree coverage and direct-contract-invoker implicit authorization."
+          "Names generated typed clients as one call mechanism.",
+          "Names Env::invoke_contract as the other call mechanism.",
+          "Requires external-address invocation-tree coverage.",
+          "Names direct-contract-invoker implicit authorization."
         ],
         "avoid": [
           "Do NOT use Solidity interface/call/delegatecall semantics.",
@@ -2554,13 +2603,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited answer correctly described the two call mechanisms but made authorization a blanket per-boundary reset, omitting the host's direct-contract-invoker implicit-authorization rule.",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
           "evidence": [
-            "Solo scratchpad 575 GT-45 independent blind 3328; primary 3325 retained the overbroad sentence and was overturned on this atom."
+            "Solo scratchpad 575 GT-45 independent blind 3328; primary 3325 retained the overbroad sentence and was overturned on this atom.",
+            "Structural re-form (compound-predicate): Split two compound facts into four atomic facts; the two call mechanisms and both authorization rules are unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/conventions/cross-contract — the generated typed client wraps Env::invoke_contract.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/conventions/cross-contract — Env::invoke_contract remains the direct call mechanism.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — external-address authorization covers the requested invocation tree.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — direct contract calls remain implicitly authorized by the invoker.",
+            "Sibling sweep 2026-08-27: grep invoke_contract|direct-contract-invoker|invocation-tree → q-sor-decode-hosterror-codes, q-sor-require-auth-propagation, q-soroban-cross-contract-call; no contradiction"
           ],
           "rootCause": [
-            "Eval-side authorization model was compressed into an absolute that omitted the direct-invoker exception."
+            "Eval-side authorization model was compressed into an absolute that omitted the direct-invoker exception.",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
         },
         "origin": "raven-next q-soroban-cross-contract-call"
@@ -2808,11 +2864,11 @@
         "answer": "An `S...` value is SEP-23 StrKey encoding for one **32-byte Ed25519 secret seed**. It is not a BIP39 mnemonic and not BIP39's 64-byte derived seed. SEP-5 works forward: a BIP39 mnemonic plus the exact optional BIP39 passphrase produces a 64-byte seed; SLIP-10 then derives hardened Stellar children at `m/44'/148'/x'`, with index 0 as the primary account, and the child seed is encoded as `S...`. Ed25519 SLIP-10 uses hardened private-parent derivation only.\n\nThere is no standardized inverse from one child `S...` to its original mnemonic, passphrase, master seed/chain code, path, or index. Encoding those 32 bytes as BIP39 entropy invents a new mnemonic and normally derives a different hierarchy. Recovery must use the exact phrase, optional passphrase, path and index; verify only derived public `G...` addresses offline. Direct `S...` import, account scanning and whether an imported key is covered by the wallet's mnemonic backup are wallet/version-specific.\n\n**SEP-52 is not a 24-word encoding of one secret key.** Current SEP-52 v0.1.0 is **Draft** “Key Sharing Method for Stellar Keys”: it extends SEP-5 with SLIP-39 Shamir mnemonic shares. The shares are not BIP39 phrases; the proposal recommends 256-bit entropy, which produces 33-word SLIP-39 shares in the reference behavior.\n\nAs of **2026-07-11**, `stellar keys generate <name>` creates a new 24-word phrase; `--seed` is deterministic generation input, not the normal phrase-import flag. Current import is prompted `stellar keys add --secure-store`; deprecated `--secret-key`/`--seed-phrase` inputs also prompt, and `--hd-path` chooses the derived account. Never put a mnemonic or S-key in argv. Lab Saved Keypairs is documented for Testnet/Futurenet only, never Mainnet; current Laboratory source serializes saved keypair objects, including secret values in tests, as plaintext JSON in browser `localStorage`. Treat that as throwaway-test convenience, not secure or offline custody.",
         "keyFacts": [
           "Distinguishes one 32-byte S-key from a BIP39 mnemonic and 64-byte BIP39 seed.",
-          "Explains exact SEP-5/BIP39/SLIP-10 forward derivation at hardened m/44'/148'/x', including passphrase and index.",
-          "States no standardized inverse exists and raw-byte-to-words encoding creates a new hierarchy.",
-          "Defines SEP-52 as Draft SLIP-39 threshold sharing extending SEP-5, with non-BIP39 33-word shares for the recommended 256-bit entropy—not a 24-word one-key representation.",
-          "Uses current prompted CLI generate/import/secure-store/HD-path semantics and forbids argv secrets.",
-          "Treats Lab Saved Keypairs as Testnet/Futurenet-only plaintext browser storage, and keeps direct-import backup behavior wallet/version-specific."
+          "Covers SEP-5 forward hardened m/44'/148'/x' via BIP39/SLIP-10, exact passphrase, index.",
+          "States no standardized inverse or same hierarchy from raw-byte-to-words encoding.",
+          "Defines Draft SEP-52: SEP-5 SLIP-39 threshold, 256-bit, non-BIP39 33-word shares.",
+          "Uses current prompted CLI generation/import, secure-store, HD-path, and argv-secret ban.",
+          "Treats Lab Saved Keypairs as test plaintext with wallet/version-specific import backup."
         ],
         "avoid": [
           "Do NOT say a public G-address can reveal a secret or that an S-key can recover its original mnemonic/passphrase/path/index.",
@@ -2820,7 +2876,8 @@
           "Do NOT call SEP-52 a Final 24-word representation of one S-key or call SLIP-39 shares interchangeable with BIP39.",
           "Do NOT claim SEP-5 uses non-hardened change/address path components.",
           "Do NOT claim --seed imports a mnemonic, put secrets in argv/environment/logs, or use an online converter.",
-          "Do NOT assume a direct import joins or is backed up by a wallet mnemonic, or store production secrets in Lab/localStorage."
+          "Do NOT assume a direct import joins a mnemonic backup; behavior is wallet/version-specific.",
+          "Do NOT store production secrets in Lab/localStorage."
         ],
         "notes": "GT-54 CORRECTION 2026-07-11: grade the 32-byte child versus BIP39/SEP-5 hierarchy, the no-inverse rule, Draft SEP-52 SLIP-39 sharing, current prompted CLI import, and Lab's test-only plaintext localStorage boundary. Explicitly reject both the inherited SEP-52 description and the primary review's proposed '24-word representation of one S-key' correction.\nAccurately quoting the canonical Stellar documentation on pre-fix Saved Keypairs guidance without the obfuscated-not-encrypted warning is not a wrong claim while a cached or older copy still shows the guidance fixed on 2026-07-27 by sd-030; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
       },
@@ -2958,7 +3015,7 @@
         ],
         "verified": {
           "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
           "evidence": [
             "Solo scratchpad 575, GT-54 primary process 3383 and blind process 3386. The primary correctly identified CLI/Lab drift but misread SEP-52; the blind lane re-derived the standard before reading the primary and corrected it after seal.",
             "Blind KV gt54/blind-lock/process-3386 sealed exactly ten cases with primaryReportRead=false at 2026-07-11T06:06:25.716Z and records the SEP-52 adjudication after primaryReadAt 2026-07-11T06:13:03.599Z.",
@@ -2969,13 +3026,23 @@
             "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|September 2025 → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction",
             "Structural re-form (presentation-avoid): Reworded two avoid items as concrete false-content claims and folded two facts to meet the five-item hard bound; truth unchanged.",
             "Sibling sweep 2026-08-27: grep hardened apostrophes|--seed|mnemonic import|SEP-5|Saved Keypairs → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui, q-sep53-message-signing, q-sep-53-sign-verify-message; no contradiction",
-            "Owner correction 2026-08-27: restored the two original key facts the worker had folded; this case is a compile-time migration exception pinned at exactly six keyFacts. The deleted 'hardened apostrophes' omission avoid item is already required by the hardened m/44'/148'/x' key fact; no live re-check needed."
+            "Owner correction 2026-08-27: restored the two original key facts the worker had folded; this case is a compile-time migration exception pinned at exactly six keyFacts. The deleted 'hardened apostrophes' omission avoid item is already required by the hardened m/44'/148'/x' key fact; no live re-check needed.",
+            "Structural re-form (compound-predicate): Reworded six pinned migration facts with single predicates; truth is unchanged.",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — StrKey still encoded one Ed25519 secret seed separately from BIP39 mnemonic material.",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md — SEP-5 still specified BIP39, SLIP-10, hardened m/44'/148'/x', passphrases, and account indexes.",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md — the forward hierarchy still supplied no standardized inverse or same-hierarchy raw-byte mnemonic conversion.",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0052.md — Draft SEP-52 still defined SEP-5 SLIP-39 threshold shares with recommended 256-bit entropy and 33-word non-BIP39 shares.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — current CLI help retained prompted add, secure-store, HD-path, generate --seed semantics, and the argv-secret boundary.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab/saved/keypairs — Saved Keypairs remained Testnet/Futurenet-only browser storage; direct-import backup behavior remained wallet/version-specific.",
+            "Sibling sweep 2026-08-27: grep SEP-52|SLIP-39|Saved Keypairs|m/44'/148' → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction",
+            "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part3.md): restored the wallet/version-specific direct-import backup claim (pinned at 6 facts, reworded in place); truth unchanged versus HEAD."
           ],
           "rootCause": [
             "improvements/stellar-docs/sd-030-lab-saved-keypairs-offline-boundary.md",
             "Eval-side standards/tooling conflation: SEP-5 derivation, SEP-23 StrKey, Draft SEP-52 sharing, CLI generation/import and browser storage were compressed into one recovery-phrase claim.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
         },
         "origin": "raven-next q-ti-secret-key-vs-mnemonic-derivation"

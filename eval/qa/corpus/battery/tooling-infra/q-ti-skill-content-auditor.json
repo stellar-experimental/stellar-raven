@@ -1,1 +1,63 @@
-{"id":"q-ti-skill-content-auditor","question":"I have draft Stellar copy with project names, handles, and factual claims. What workflow should audit and enrich it before publication?","surface":["skills.lumenloop.stellar-content-auditor"],"golden":{"answer":"Use Stellar Content Auditor. Resolve named projects to canonical directory records, validate handles and names, search indexed content for support, preserve source URLs, separate supported facts from unsupported claims, and return an audit report with corrections and citation-ready enrichment. Treat summaries as leads and verify consequential specifics at their sources.","keyFacts":["Resolves canonical project names and handles before editing the draft.","Separates supported claims from unsupported ones and preserves source URLs."],"avoid":["Do NOT silently replace an uncertain handle with a guessed one.","Do NOT turn an indexed summary into an unattributed primary-source claim."],"notes":"Best-source case for the served Stellar Content Auditor skill."},"tags":{"category":"tooling-infra","service":"skills","freshness":"stable"},"truth":{"domain":"corpus-grounded","status":"confirmed","sources":[{"class":"B","ref":"skills.lumenloop.stellar-content-auditor","note":"Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow."},{"class":"C","ref":"http://localhost:8787/mcp","note":"Live localhost search→execute probe."}],"verified":{"date":"2026-07-30","by":"drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh","evidence":["2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.","2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.","skills.lumenloop.stellar-content-auditor exists and supports the behavioral golden.","Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.lumenloop.stellar-content-auditor'). Same bytes, re-verified by digest; only the pointer notation changed.","Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.","solo://proj/49/scratchpad/super-corpus-rebuild--585"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (coverage)"}}
+{
+  "id": "q-ti-skill-content-auditor",
+  "question": "I have draft Stellar copy with project names, handles, and factual claims. What workflow should audit and enrich it before publication?",
+  "surface": [
+    "skills.lumenloop.stellar-content-auditor"
+  ],
+  "golden": {
+    "answer": "Use Stellar Content Auditor. Resolve named projects to canonical directory records, validate handles and names, search indexed content for support, preserve source URLs, separate supported facts from unsupported claims, and return an audit report with corrections and citation-ready enrichment. Treat summaries as leads and verify consequential specifics at their sources.",
+    "keyFacts": [
+      "Resolves canonical project names and handles before editing the draft.",
+      "Separates supported claims from unsupported ones.",
+      "Preserves source URLs."
+    ],
+    "avoid": [
+      "Do NOT silently replace an uncertain handle with a guessed one.",
+      "Do NOT turn an indexed summary into an unattributed primary-source claim."
+    ],
+    "notes": "Best-source case for the served Stellar Content Auditor skill."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "skills",
+    "freshness": "stable"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "skills.lumenloop.stellar-content-auditor",
+        "note": "Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow."
+      },
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp",
+        "note": "Live localhost search→execute probe."
+      }
+    ],
+    "verified": {
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "evidence": [
+        "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
+        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.",
+        "skills.lumenloop.stellar-content-auditor exists and supports the behavioral golden.",
+        "Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.lumenloop.stellar-content-auditor'). Same bytes, re-verified by digest; only the pointer notation changed.",
+        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (compound-predicate): Split claim classification from URL preservation; truth is unchanged.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor/SKILL.md — the pinned workflow still resolved canonical project names and handles before draft edits.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor/SKILL.md — the pinned workflow still separated supported claims from unsupported ones.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor/reference/audit-report-template.md — the pinned report template still preserved source URLs.",
+        "Sibling sweep 2026-08-27: grep stellar-content-auditor|Stellar Content Auditor → q-ti-skill-content-auditor; no contradiction"
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+      ]
+    },
+    "origin": "authored 2026-07 (coverage)"
+  }
+}

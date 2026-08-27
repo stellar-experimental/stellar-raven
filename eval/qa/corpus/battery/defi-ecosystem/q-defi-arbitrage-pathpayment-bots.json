@@ -8,16 +8,17 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nStellar supports path payments through `PathPaymentStrictSend` and `PathPaymentStrictReceive`; path payments can traverse orderbook liquidity, but the protocol does not make arbitrage or market making profitable. A strict-send quote fixes the source amount and estimates destination output, then the submitted transaction should protect the user with `destination_min`; a strict-receive quote fixes destination amount and protects the sender with `send_max`. If liquidity moves before inclusion, the operation can fail with path-payment result codes such as `UNDER_DESTMIN`, `OVER_SENDMAX`, or no usable path / too-few-offers. Sources: Stellar path-payment guide and Horizon operation-specific result-code docs.\n\nFor a small-capital bot, the defensible answer is \"possible to build, not reliably profitable.\" Expected costs and risks include spreads, slippage, base fees and surge pricing, failed transactions, stale quotes, minimum reserves/trustlines, path disappearance, competition, latency, inventory imbalance, and thin pools. Backtesting and testnet/paper trading are required before risking funds; Raven should not recommend a strategy as a guaranteed return.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Explains Stellar supports path payments and pathfinding concepts such as strict-send and strict-receive, but profitability is not guaranteed.",
-      "Mentions realistic bot profitability depends on liquidity, spreads, fees, slippage, latency, failed transactions, competition, and capital, especially for small accounts.",
-      "Explains path queries/simulation should be used to estimate destination amounts and guard with minimum/maximum constraints such as destination-min or send-max."
+      "Specific sourced observations visibly date changing roster/status/version/measurement.",
+      "Stellar supports path payments/pathfinding via strict-send/strict-receive.",
+      "Bot profitability depends on liquidity, spreads, fees, slippage, latency.",
+      "Failed transactions, competition, capital affect profit, especially for small accounts.",
+      "Path query/simulation estimates destination amounts under destination-min/send-max limits."
     ],
     "avoid": [
       "Do NOT promise profit or imply small-capital arbitrage is reliably profitable.",
       "Do NOT provide financial advice as a guaranteed strategy.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+      "Do NOT claim unsupported memory is a source-supported current observation."
     ],
     "notes": "Profitability is intentionally not gated on a current numeric estimate; Phase 3 should attack any answer that turns pathfinding mechanics into financial advice.\nAlso good if the answer: Mentions circular/same-asset arbitrage and batching should be tested carefully because paths can disappear or execute differently by submission time. | Mentions result-code traps such as under-destination-min or no-path when quoting and submitting.\nGolden cites: Stellar docs for path payments/pathfinding and dated market/liquidity sources for current profitability claims."
   },
@@ -53,17 +54,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (compound-predicate): Recast five long or compound key facts as five atomic facts and moved the unsupported-memory contrast to avoid; every dating, pathfinding, profitability-risk, small-account, simulation, and guard claim remains unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/path-payments — provided current source-backed path-payment observations with dated page metadata.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/path-payments — showed strict-send/strict-receive path payments across SDEX or pool liquidity.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — showed liquidity, spreads, fees, slippage, and price-risk inputs to profitability.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — showed transaction costs and congestion; the existing truth retains failure, competition, capital, and small-account risks.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths — showed path estimates and strict-send destination constraints; the strict-receive endpoint showed send-max constraints.",
+        "Sibling sweep 2026-08-27: grep path payment|strict-send|strict-receive|arbitrage → q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, q-defi-sdex-offer-lifecycle, q-asset-sdex-vs-amm, q-scf-hummingbot-kelp-closed-rfp, q-protocol-operation-types-list; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-arbitrage-pathpayment-bots"

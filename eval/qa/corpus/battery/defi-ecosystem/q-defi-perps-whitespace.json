@@ -9,7 +9,8 @@
   "golden": {
     "answer": "Perpetuals on Stellar are **emerging, not empty**. As of **2026-07-10**, Noether's current repo and official demo describe a testnet perp DEX with mainnet planned after audit; Zenex's FAQ also says its current deployment is testnet. Stellars Finance may be cited as a dated directory/SCF entrant, not as independently verified mainnet trading.\n\nNo production/mainnet perp DEX was confirmed in the audited operator docs, official meeting, current repos, Raven directories, and conflict sweeps. That is a source-relative snapshot, not proof that none can exist or launch later. Re-check before answering. Do not mix leveraged spot/lending-loop products into the perp roster without explaining the different primitive.",
     "keyFacts": [
-      "Names real testnet/pre-release entrants and states the category is emerging rather than whitespace.",
+      "Names real testnet/pre-release entrants.",
+      "Treats the category as emerging rather than whitespace.",
       "Bounds the no-mainnet conclusion to the audited sources and 2026-07-10 as-of date."
     ],
     "avoid": [
@@ -84,18 +85,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-14",
-      "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://noether.exchange/",
         "https://docs.zenex.trade/faq",
         "https://developers.stellar.org/meetings/2026/04/16#what-they-showed",
         "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
         "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
-        "Sibling sweep: q-eco-defi-market-map remains claim-consistent; the register does not require matched scheduling metadata."
+        "Sibling sweep: q-eco-defi-market-map remains claim-consistent; the register does not require matched scheduling metadata.",
+        "Structural re-form (compound-predicate): split the entrant and category-status requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://noether.exchange/ — the current operator page still identifies a public testnet perpetuals entrant.",
+        "Live re-check 2026-08-27: https://docs.zenex.trade/faq — the current operator FAQ still supports an emerging category with another testnet entrant.",
+        "Sibling sweep 2026-08-27: grep perpetual|perps|mainnet-live|whitespace → q-defi-named-newer-protocols, q-eco-defi-market-map, q-crp-cme-xlm-futures-dates; no contradiction"
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-perps-whitespace"

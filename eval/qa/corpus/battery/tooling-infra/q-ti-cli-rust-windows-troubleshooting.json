@@ -10,17 +10,18 @@
   "golden": {
     "answer": "Triage the toolchain first. Current Stellar smart-contract setup requires Rust 1.84.0 or higher because the supported target is `wasm32v1-none`; the setup guide says to install that target and reinstall it after Rust toolchain updates (https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup). If the build says the wasm file does not exist, confirm that `stellar contract build` succeeded, that you are in the correct workspace/package, and that your deploy/bindings command points at the actual generated `target/.../*.wasm` path.\n\nOn Windows, `rustup` not recognized means Rust is missing from PATH; `link.exe` not recognized usually means the MSVC linker/build tools are missing or the shell is not a Visual Studio developer shell. Either fix the native MSVC toolchain or use WSL consistently. Do not mix WSL paths with Windows shells unless you know exactly which Rust toolchain is building.\n\nFor CLI identity/config errors, treat aliases as named local configuration. `alias already exists` means you already have that key/network alias; list/reuse/remove it instead of creating another with the same name. For funding, distinguish networks: testnet/futurenet/local can use Friendbot or Lab funding, while mainnet cannot. Stellar Lab documents account creation/funding for testnet/futurenet and custom RPC provider support (https://developers.stellar.org/docs/tools/lab). The CLI docs are the source of current command names; use `stellar --help` and the CLI docs before assuming a deprecated `stellar account` command exists (https://developers.stellar.org/docs/tools/cli). For checking balances without a CLI shortcut, use Horizon/RPC/Lab or token/SAC helper flows such as the CLI payments-and-assets cookbook (https://developers.stellar.org/docs/tools/cli/cookbook/payments-and-assets).",
     "keyFacts": [
-      "Uses the current Stellar smart-contract Rust target: Rust 1.84+ and `wasm32v1-none`, not only older `wasm32-unknown-unknown` advice.",
-      "Explains `wasm file No such file or directory` as usually a build/output-path problem: run the contract build from the right workspace and point deploy/bindings commands at the actual generated wasm path.",
-      "Handles Windows separately: install Rust/rustup and MSVC Build Tools or use WSL; `rustup`/`link.exe` not recognized is a PATH/toolchain problem before it is a Stellar problem.",
-      "Explains alias/key issues: `alias already exists` means the CLI identity/network alias is already configured; inspect/remove/reuse rather than creating duplicates.",
-      "Explains funding/mainnet: Friendbot/test funding is for testnet/futurenet/local flows; mainnet requires real funds and, in Lab/RPC flows, a valid selected or BYO RPC provider URL.",
-      "Corrects obsolete command assumptions such as expecting a generic `stellar account` balance subcommand when current docs point users to CLI tx/payment/contract helpers, Horizon/RPC, or Lab for balances."
+      "Uses current Stellar contract target: Rust 1.84+ / wasm32v1-none.",
+      "Usually maps missing Wasm to contract-build/workspace/built-Wasm path in deploy/bindings.",
+      "Install Windows Rust/rustup with MSVC or WSL; treat rustup/link.exe misses as PATH.",
+      "Maps alias already exists to inspect/reuse/remove configured CLI identity/network alias.",
+      "Maps Friendbot→testnet/futurenet/local; mainnet→real funds+valid selected/BYO Lab/RPC URL.",
+      "Routes balances: obsolete stellar account→CLI tx/payment/contract, Horizon/RPC, Lab."
     ],
     "avoid": [
       "Do NOT tell users to install only `wasm32-unknown-unknown` as the current target for Stellar contracts.",
       "Do NOT suggest using mainnet Friendbot or fake funding.",
-      "Do NOT hide Windows/MSVC prerequisites behind generic npm troubleshooting."
+      "Do NOT hide Windows Rust/rustup, MSVC Build Tools, WSL, or PATH prerequisites behind generic Stellar/npm troubleshooting.",
+      "Do NOT create a duplicate CLI identity/network alias after alias already exists; inspect/reuse/remove it."
     ],
     "notes": "Official docs verify Rust/target and Lab/CLI direction. Several quoted error strings are environment-specific and should be empirically reproduced by Phase 3 on Windows/WSL if exact remediation commands are required.\nAlso good if the answer: Cites official setup, CLI, Lab, and RPC/provider docs; uses dated source for current versions where possible.\nGolden cites: Official Stellar setup docs for Rust/target requirements. | Official Stellar CLI/Lab docs for current command and network/provider behavior.\nGT-51 PRECISION CORRECTION 2026-07-11: prefer prebuilt/Winget, require wasm32v1-none and explicit MSVC prerequisites, and keep environment-specific errors source-qualified.\nAccurately quoting the canonical smart-contract skill documentation without error-keyed rows for missing WASM, `link.exe`, identity or alias collisions, or funding is not a wrong claim while a cached or older copy still lacks the rows added by the 2026-08-14 fix; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
   },
@@ -99,18 +100,28 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary/blind matrices independently confirmed the current target and source-boundary correction.",
         "Sibling sweep checked q-tool-cli-install, q-tool-cli-init-build-deploy, and q-sor-build-target-wasm32v1; sk-006 already owns the missing error-keyed upstream coverage.",
         "Structural re-form (symmetric-caution): added a cached-skill grading caution for sk-006; the CLI and Windows troubleshooting facts are unchanged.",
         "No live recheck was required for this pure symmetric-caution re-form.",
         "Improvements review 2026-08-27: improvements/skills/sk-006-error-keyed-troubleshooting-gap.md records the 2026-08-14 upstream fix; the disputed claim is whether older skill copies contain error-keyed rows for missing WASM, link.exe, identity or alias collisions, and funding.",
-        "Sibling sweep 2026-08-27: grep sk-006|link.exe|No such file or directory wasm|Unable to fund account|alias already exists → no other topical case; no contradiction"
+        "Sibling sweep 2026-08-27: grep sk-006|link.exe|No such file or directory wasm|Unable to fund account|alias already exists → no other topical case; no contradiction",
+        "Structural re-form (compound-predicate): Reworded six pinned long or compound facts in place; the obsolete target and duplicate-alias tails remain concrete avoid claims.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — current contract setup still requires Rust 1.84+ and wasm32v1-none.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — contract build and bindings still require the correct generated Wasm path.",
+        "Live re-check 2026-08-27: https://learn.microsoft.com/en-us/windows/dev-environment/rust/setup — Windows Rust still requires rustup/PATH and MSVC Build Tools or a consistent WSL toolchain.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — aliases remain persistent CLI identity/network configuration with reuse, removal, and overwrite controls.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab — Friendbot funding remains limited to test networks while mainnet uses real funds and a selected or BYO provider.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — current balance inspection routes remain CLI transaction/payment/contract helpers, ledger entry fetch, Horizon/RPC, or Lab rather than a generic stellar account balance command.",
+        "Sibling sweep 2026-08-27: grep wasm32v1-none|link.exe|alias already exists|Unable to fund account|stellar account|BYO RPC → q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part2.md): restored the Windows Rust/rustup + MSVC-or-WSL install requirement as a keyFact; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "improvements/skills/sk-006-error-keyed-troubleshooting-gap.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-cli-rust-windows-troubleshooting"

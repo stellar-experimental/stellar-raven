@@ -8,8 +8,11 @@
   "golden": {
     "answer": "They are **two views of the same asset, not two different tokens.** Holding a classic asset means\nyour account has a **trustline ledger entry** to `<code:issuer>`; the **Stellar Asset Contract\n(SAC)** is a **protocol-reserved contract** that exposes that *same* classic asset to Soroban so\ncontracts can move it by contract ID [1]. There is **no separate \"USDC-on-Soroban\"** to migrate to\nor hold alongside — one source of truth backs both [1].\n\n- **Classic / trustline:** balances live in trustline entries; payments use classic operations and\n  respect issuer auth flags. Each trustline costs a base reserve.\n- **SAC:** a Soroban contract calls `transfer`/`balance`/etc. on the asset's SAC by contract ID;\n  account balances still resolve to the underlying **trustline**, while contract-to-contract\n  movements use **contract-data** entries [1].\n- Both share one supply; the SAC implements **CAP-46-6** and the **SEP-41** token interface; the\n  **issuer stays admin** (mint/clawback/set_authorized are issuer-only) [1].\n\nYou never redeploy, bridge, or wrap the asset to use it in Soroban.\n\nSource: [1] developers.stellar.org Stellar Asset Contract page.",
     "keyFacts": [
-      "Clarifies the SAC is NOT a separate/new token — it is a protocol-reserved contract that exposes the SAME classic asset to Soroban.",
-      "Classic holding uses a trustline ledger entry; the SAC lets Soroban contracts move the asset by contract ID (transfers between contracts use contract data entries)."
+      "The SAC is a protocol-reserved contract for the same classic asset.",
+      "It exposes that classic asset to Soroban.",
+      "Classic holdings use trustline ledger entries.",
+      "The SAC lets Soroban contracts move the asset by contract ID.",
+      "Contract-to-contract transfers use contract data entries."
     ],
     "avoid": [
       "Do NOT claim the SAC is a distinct token requiring users to migrate balances or hold two versions of the asset.",
@@ -33,10 +36,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-04-sac-stablecoins-issuance-fx accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (compound-predicate): Split two compound key facts into five atomic facts; the existing avoid clauses retain the separate-token negation, and the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — identified the SAC as a protocol-reserved contract for the same classic asset.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed that the SAC exposes the classic asset to Soroban.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed classic account balances in trustline ledger entries.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed Soroban contract access through the asset's contract ID.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed contract balances in contract data entries.",
+        "Sibling sweep 2026-08-27: q-comp-sac-inherits-flags, q-sor-contract-trustlines-c-address, and q-sor-sac-introspection; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-asset-trustline-vs-sac"

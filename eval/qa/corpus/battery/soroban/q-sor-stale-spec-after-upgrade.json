@@ -10,8 +10,10 @@
   "golden": {
     "answer": "An in-place upgrade preserves the C-address/storage but can change active Wasm/spec. Regenerate static/generated bindings and recreate any retained spec-aware Client/Spec; current dynamic `Client.from(options)` fetches the current instance, active Wasm hash, and embedded spec when recreated. Raw JS `new Contract(id).call(method, ...exactScVals)` is already the low-level spec-free operation builder: it passes supplied ScVals to `Operation.invokeContractFunction`, and RPC simulation executes that XDR without re-encoding it from a cached spec. Use raw exact ScVals/XDR to bypass stale typed wrappers; manual InvokeHostFunction construction is unnecessary. A `Bytes(5553)` argument was encoded by the caller, not transformed by RPC. Compare actual argument/result XDR with the upgraded guest signature; `UnreachableCodeReached` is a generic guest trap, not proof of server-side stale ABI. Handle storage migration/versioning separately.",
     "keyFacts": [
-      "Identifies generated/static/retained spec clients as stale surfaces and recreated Client.from as current-spec path.",
-      "States raw Contract.call is spec-free and simulation preserves supplied XDR."
+      "Identifies generated/static/retained spec clients as stale surfaces.",
+      "Identifies recreated Client.from as current-spec path.",
+      "States raw Contract.call is spec-free.",
+      "States simulation preserves supplied XDR."
     ],
     "avoid": [
       "Do NOT claim raw Contract.call caches a spec, blame RPC for changing ScVals, or treat a generic guest trap as proof of stale server metadata."
@@ -72,13 +74,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited diagnostic falsely claimed raw JS Contract.call caches/interprets contract specs; current source and XDR probes show it is the spec-free bypass.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-43 processes 3311/3320."
+        "Solo scratchpad 575 GT-43 processes 3311/3320.",
+        "Structural re-form (compound-predicate): split stale spec surfaces, the current-spec path, raw calls, and simulation into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/types/fully-typed-contracts — the current docs still distinguish generated, static, and retained spec-aware clients.",
+        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/blob/main/src/contract/client.ts — current Client.from still fetches the active contract instance, Wasm, and spec.",
+        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/blob/main/src/base/contract.ts — current Contract.call still passes supplied ScVals directly without a spec lookup.",
+        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/blob/main/src/rpc/server.ts — current simulation still sends the supplied transaction XDR.",
+        "Sibling sweep 2026-08-27: grep Client.from|Contract.call|stale spec|supplied XDR → q-sor-reflector-integration-code, q-soroban-oz-upgradeable-macro, q-soroban-storage-migration; no contradiction"
       ],
       "rootCause": [
-        "Eval-side SDK diagnostic inversion."
+        "Eval-side SDK diagnostic inversion.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-stale-spec-after-upgrade"

@@ -10,7 +10,8 @@
     "answer": "Classic Stellar multisig uses account-level signer weights plus low/medium/high thresholds. `SetOptions` adds/removes signers and changes master weight/thresholds; signer, threshold, and master-weight changes require the current high-threshold authorization. For an unambiguous **2-of-3**, define exactly three effective authorities: either master + two added signers at weight 1, or three added signers at weight 1 with master weight 0 only after they are proven usable; set the relevant medium/high threshold to 2. Master weight 0 disables the account key and can permanently lock the account if alternatives cannot satisfy thresholds. Rotate by adding the replacement, verifying the new quorum/signing path, then removing the old signer while the current quorum still authorizes the transaction.",
     "keyFacts": [
       "Uses SetOptions/current high threshold for signer/threshold/master-weight changes.",
-      "Defines exactly three effective authorities for 2-of-3 and adds/tests replacement before removal."
+      "Defines exactly three effective authorities for 2-of-3.",
+      "Adds/tests the replacement before removal."
     ],
     "avoid": [
       "Do NOT set master weight 0 before alternates are proven or accidentally configure four authorities while calling it 2-of-3.",
@@ -59,13 +60,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — Core multisig lifecycle guidance is correct, but the illustrative 'three signer keys' plus a separately weighted master can accidentally describe four effective authorities rather than 2-of-3.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 primary 3276 confirmed lifecycle mechanics; blind 3278 isolated the example-count ambiguity."
+        "Solo scratchpad 575 GT-29 primary 3276 confirmed lifecycle mechanics; blind 3278 isolated the example-count ambiguity.",
+        "Structural re-form (compound-predicate): Split the three-authority requirement from replacement rotation; the 2-of-3 lifecycle truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig — current docs still define signer weights and thresholds for a three-authority 2-of-3 design.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#set-options — SetOptions still manages signer addition, removal, weights, and thresholds.",
+        "Sibling sweep 2026-08-27: grep SetOptions|2-of-3|master weight|multisig → q-protocol-accounts-signers-thresholds, q-soroban-add-signer-smart-wallet-howto; no contradiction"
       ],
       "rootCause": [
-        "Eval-side illustrative authority-count ambiguity."
+        "Eval-side illustrative authority-count ambiguity.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-pc-multisig-setup-lifecycle"

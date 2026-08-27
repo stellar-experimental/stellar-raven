@@ -9,12 +9,14 @@
     "answer": "SDF published the Quantum Preparedness Plan on June 9, 2026 as a three-stage roadmap, not an announcement that Stellar was already quantum-safe. Stage 1 targets ML-DSA-44 and ML-DSA-65 signature-verification host functions for Soroban during 2026 so contract accounts can adopt quantum-safe authentication. Stage 2 targets protocol-level opt-in migration in 2027, and the plan says every Stellar account is expected to be able to add a quantum-safe signer by the end of 2027. The article explicitly says the quantum-safe signer type and verification primitives were missing at publication, so dates and capabilities are plans/expectations rather than shipped guarantees.",
     "keyFacts": [
       "SDF published the Quantum Preparedness Plan on June 9, 2026.",
-      "Stage 1 plans ML-DSA-44/65 verification host functions for Soroban contract accounts during 2026.",
-      "The plan is a roadmap; it did not mean Stellar accounts were already quantum-safe by default."
+      "Stage 1 plans ML-DSA-44/65 verification host functions during 2026.",
+      "The host functions target Soroban contract accounts.",
+      "Treats the plan as a roadmap."
     ],
     "avoid": [
       "Do NOT claim ML-DSA host functions or a native quantum-safe signer had already shipped when the plan was published.",
-      "Do NOT turn the 2026/2027 targets into guaranteed completion dates."
+      "Do NOT turn the 2026/2027 targets into guaranteed completion dates.",
+      "Do NOT claim Stellar accounts were already quantum-safe by default when the plan was published."
     ],
     "notes": "Roadmap status is volatile and must be reverified. Grade the dated distinction between planned and shipped behavior."
   },
@@ -81,18 +83,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 N2 primary+blind (Solo 3417/3423)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
         "scratchpad/p4/n2-events-blind/reconciliation.md",
         "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
         "https://stellar.org/protocol-upgrades",
-        "https://horizon.stellar.org/"
+        "https://horizon.stellar.org/",
+        "Structural re-form (compound-predicate): Split the Stage 1 fact and moved the default-safety trap to avoid; the pinned publication fact and truth are unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — Stage 1 still specifies 2026 ML-DSA-44/65 verification host functions.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — the planned host functions still target Soroban contract accounts.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — the article still presents a roadmap and identifies quantum-safe signer support as missing at publication.",
+        "Sibling sweep 2026-08-27: grep Quantum Preparedness|ML-DSA|quantum-safe → q-pc-quantum-preparedness-dormant; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

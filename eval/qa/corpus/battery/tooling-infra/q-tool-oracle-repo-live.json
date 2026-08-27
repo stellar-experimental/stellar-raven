@@ -8,9 +8,11 @@
   "golden": {
     "answer": "Filter live searchRepos results for relevant oracle repositories, explicitly compare repoScore, and paginate before a global superlative or say “among the returned page.” repoScore is the index's own answer-time ranking signal: it orders candidate rows for inspection and never establishes correctness, security, audit scope, maintenance, or production readiness, so a “best reference” claim is scoped to that ordering over the checked rows and rests on the cited repository evidence. Cite repository URLs and separate codeVerified/codeDepth, deployability, SDK status, and scan date; codeVerified is index scan evidence, not a security audit.",
     "keyFacts": [
-      "Filters for relevance and explicitly compares repoScore rather than trusting response order.",
+      "Uses relevance filters and explicit repoScore comparison over response order.",
       "Paginates before a global claim or scopes the conclusion to the checked page.",
-      "Keeps codeVerified/deployability/version signals distinct, uses repoScore only to rank and navigate candidates, and does not treat any of them as a security audit or as proof of correctness, maintenance, or production readiness."
+      "Keeps codeVerified, deployability, and version signals distinct.",
+      "Uses repoScore only to rank and navigate candidates.",
+      "Treats signals as no security audit or correctness/maintenance/production-readiness proof."
     ],
     "avoid": [
       "Recommends a deprecated repository solely because it led an archived three-row result.",
@@ -87,7 +89,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "solo://proj/49/process/3414",
         "solo://proj/49/process/3420",
@@ -97,13 +99,21 @@
         "Upstream schema evidence (inventory/stellar-light.json, searchRepos repoScore description; ADV-1 reconciliation 2026-07-28): repoScore is Scout's own composite 'Quality grade (0-100) = freshness + traction + hackathon/SCF/builder authority — Lead with high-score repos'. Its formula contains no correctness, security-audit, maintenance, or production-readiness input, so the golden's boundary — order candidates by it, never infer those attributes from it — restates the served contract's scope rather than contradicting the schema's quality-grade label.",
         "24h four-reviewer audit (2026-07-28, G-GT-1): the corroboration claim wording was aligned with the repoScore boundary shipped the same day — ranking/scan signals rather than the blanket word quality; the claim meaning and its evidence are unchanged.",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep repoScore|codeVerified|oracle repositories|production readiness → q-tool-oracle-repo-live, q-tool-passkey-repo-live, q-tool-zk-repo-live, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery; no contradiction"
+        "Sibling sweep 2026-08-27: grep repoScore|codeVerified|oracle repositories|production readiness → q-tool-oracle-repo-live, q-tool-passkey-repo-live, q-tool-zk-repo-live, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery; no contradiction",
+        "Structural re-form (compound-predicate): Split ranking, scan signals, and evidence boundaries into five atomic facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/repos/search?q=oracle — live oracle results still supported relevance filtering and explicit repoScore comparison over response order.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/repos/search?q=oracle — repository search still required pagination or a checked-page scope before a global claim.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/repos/search?q=oracle — returned codeVerified, deployability, and version signals remained distinct fields.",
+        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — searchRepos still limited repoScore to candidate ranking and navigation.",
+        "Live re-check 2026-08-27: https://github.com/reflector-network/reflector-contract — direct repository evidence remained necessary for audit, correctness, maintenance, and production-readiness claims.",
+        "Sibling sweep 2026-08-27: grep oracle repositories|repoScore|codeVerified|production readiness → q-tool-oracle-repo-live, q-tool-passkey-repo-live, q-tool-zk-repo-live, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
         "The golden's repoScore comparison instruction did not say what the ordering does and does not establish, leaving open a reading where 'strongest = highest repoScore' counts as proof of correctness, security, or production readiness — attributes outside the score's freshness/traction/authority formula.",
         "Tracked at solo://proj/49/todo/corpus-follow-ups-fr--1256 (todo 1256, F5) with the adversarial-review reconciliation in the same todo's comments.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "boxy sl-code-soroban-oracle-least-bad"

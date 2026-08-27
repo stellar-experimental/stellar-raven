@@ -100,3 +100,39 @@ Commit pitfalls: the gitleaks pre-commit hook flagged a sibling-sweep evidence l
 rule); the ids were reordered. The `YieldBlox borrowed XLM USDC totals` numeric invariant carried
 hashes but no verdict at `37dc50d` and was stamped `consistent` with a dated reason. The generated
 `eval/qa/cases.json` is committed with the batch, as in session 1.
+
+#### Batch 5 — compound-predicate class (102 cases not in batch 4; one pass per case) — in progress
+
+Chunks `/tmp/raven-qadeep/gt2/cmpchunk-NN` (26). Brief: `/tmp/raven-qadeep/gt2/batch5-compound.md`
+(includes the batch-4 reviewer feedback). Part 1 review (32 cases, chunks 00–03, 09–10, 18–19):
+`/tmp/raven-qadeep/gt2/review-b5-part1.md` — APPROVE-WITH-FIXES, 25 PASS / 7 FAIL. Three content
+fixes applied (removed the added qualifier "core"; restored RestoreFootprintOp as the required
+manual fallback together with the read-write footprint + archivedSorobanEntries requirement, which
+the reviewer's own replacement had dropped; restored `--network testnet` on the deploy command).
+Four FAILs were chunk 18: worker gt2-sol-c answered with ids that were not in its prompt, reported
+its four assigned cases "absent", edited an unassigned long-only case (q-soroban-publish-events —
+set aside unreviewed in `/tmp/raven-qadeep/gt2/stray/`), and re-touched the metadata of the
+already-reviewed batch-4 case q-ti-friendbot-ratelimit-alternatives minutes before the batch-4
+commit (keyFacts identical to the reviewed ones; `by` corrected). Chunk 18 is re-queued to worker
+gt2-sol-b after its loop, with the four ids spelled out.
+
+Part 2 review (32 cases, chunks 04–06, 11–13, 20–21): `/tmp/raven-qadeep/gt2/review-b5-part2.md`
+— APPROVE-WITH-FIXES, 28 PASS / 4 FAIL (a subject swap to "over-limit writes"; three must-state
+claims demoted to avoid traps: provider-response handling, the Windows rustup/MSVC-or-WSL install
+path, the Horizon C-address exclusion). All four fixed with the reviewer's exact text.
+
+Part 3 review (42 cases incl. the chunk-18 redo, chunks 07–08, 14–18, 22–25):
+`/tmp/raven-qadeep/gt2/review-b5-part3.md` — APPROVE-WITH-FIXES, 38 PASS / 4 FAIL (dropped the
+2026-08-16 deadline date; added qualifier "apt"; dropped the fall-behind claim; a must-state
+wallet/version-specific backup claim demoted to avoid on a pinned-6 case). All four fixed with the
+reviewer's exact text.
+
+Lint after batch 5: 0 errors, 475 warnings (compound 125 → 0; long 571 → 372; negative stays 0).
+Register: 70 entries auto-reopened, 62 closed by form-only reSwept events; the q-defi-perps-whitespace
+date trap carried a hash but no verdict at `daaa829` and was stamped `consistent` with a dated
+reason (its open disposition and 2026-10-29 reverifyBy unchanged); the nine pre-existing `reopen`
+clusters unchanged; reopen count equals HEAD. Gates: compile, lint --since 37dc50d --stale (0
+errors), typecheck, npm test, build, secrets scan — all green
+(`/tmp/raven-qadeep/gt2/gate-compound-predicate-*.txt`, re-run after the stamp as `gate-cp2-*`).
+The unreviewed stray edit to q-soroban-publish-events stays out of the commit
+(`/tmp/raven-qadeep/gt2/stray/`).

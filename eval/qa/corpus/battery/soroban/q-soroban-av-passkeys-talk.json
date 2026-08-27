@@ -9,7 +9,8 @@
     "answer": "Use the exact exposed operation `lumenloop.find_av_passages` with a query for Stellar passkeys, secp256r1, WebAuthn, or smart-wallet signing. Return each AI-generated `summary`/`long_summary` with the parent recording title, URL, and available channel/date metadata. The exposed response does **not** contain transcript text, so do not quote it as spoken words or attribute a summary to a named speaker. Treat `start_offset` as an opaque chunk/order key, not seconds or playback timestamp. If no relevant row appears, report a corpus-bounded miss and do not substitute a docs page as an A/V passage.",
     "keyFacts": [
       "Uses the exposed dot-qualified operation and returns summary-plus-source provenance.",
-      "States transcript text is absent and start_offset is opaque."
+      "States transcript text is absent.",
+      "Treats `start_offset` as opaque."
     ],
     "avoid": [
       "Do NOT emit retired lumenloop_find_av_passages, fabricate quotes/speakers/timestamps, or turn summary text into verbatim evidence.",
@@ -62,16 +63,21 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-44 processes 3316/3324; live Lumenloop probe 2026-07-11.",
         "Structural re-form (symmetric-caution): Added a dispute-scoped grading caution; the answer and facts are unchanged.",
         "Reviewed improvement 2026-08-27: improvements/skills/sk-004-av-passages-verbatim-claim.md — upstream skill playbooks wrongly describe returned AI summaries as verbatim transcript passages.",
-        "Sibling sweep 2026-08-27: grep find_av_passages|transcript passages|verbatim passages → q-asset-rwa-tokenized-freshness, q-defi-blend-what-is, q-eco-stellar-rwa-stablecoin-volume, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp, q-ti-video-tutorials; no contradiction"
+        "Sibling sweep 2026-08-27: grep find_av_passages|transcript passages|verbatim passages → q-asset-rwa-tokenized-freshness, q-defi-blend-what-is, q-eco-stellar-rwa-stablecoin-volume, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp, q-ti-video-tutorials; no contradiction",
+        "Structural re-form (compound-predicate): split transcript absence from start_offset semantics; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/lumenloop.md — the current service specification still returns AI summaries without transcript text.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/lumenloop.md — the current service specification still defines start_offset as an opaque ordering key.",
+        "Sibling sweep 2026-08-27: grep find_av_passages|transcript text|start_offset → q-gap-av-offset-not-timestamp, q-ti-video-tutorials, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history; no contradiction"
       ],
       "rootCause": [
         "improvements/skills/sk-004-av-passages-verbatim-claim.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-av-passkeys-talk"

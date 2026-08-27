@@ -7,10 +7,12 @@
   "golden": {
     "answer": "UNHCR, with UNICC and SDF, announced the Ukraine pilot in **December 2022**. It delivered Circle USDC on Stellar to recipient wallets with cash-out through MoneyGram, and independent contemporary reporting corroborated that deployed flow. Later SDF anniversary posts reported evolving adoption figures, but those issuer-reported snapshots use different dates, units, and scopes. Keep them separately attributed; do not add them together or silently generalize a Ukraine household/individual measure to other countries.",
     "keyFacts": [
-      "Correctly identifies the UNHCR/Ukraine/USDC flow and keeps later issuer-reported snapshots separately attributed without importing unsupported exact metrics into judge-facing gospel."
+      "Identifies the UNHCR, Ukraine, and USDC aid flow.",
+      "Keeps later issuer-reported snapshots separately attributed."
     ],
     "avoid": [
-      "Do NOT call the aid speculative XLM/Ripple, or merge individuals with households, Ukraine with multi-country scope, or first-year with later totals."
+      "Do NOT call the aid speculative XLM/Ripple, or merge individuals with households, Ukraine with multi-country scope, or first-year with later totals.",
+      "Do NOT import unsupported exact metrics from issuer snapshots into judge-facing gospel."
     ],
     "notes": "GT-27 2026-07-10: preserve the Dec-2022 UNHCR launch and USDC flow and keep later SDF anniversary snapshots distinct by unit, country, and window.\nGT-27 PRECISION 2026-07-13: the two-year page is dated 2024-12-19; exact anniversary metrics were removed from judge-facing gospel because they lacked an independent source class."
   },
@@ -74,8 +76,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Todo 972 release-closeout golden-truth reconciliation after independent Fable and Sol reviews",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "https://ukraine.un.org/en/211593-unhcr-launches-pilot-cash-based-intervention-using-blockchain-technology-humanitarian",
         "https://www.coindesk.com/consensus-magazine/2023/04/17/stellar-aid-assist-uses-stablecoins-for-humanitarian-relief",
@@ -83,12 +85,17 @@
         "https://stellar.org/blog/foundation-news/stellar-aid-assist-2-year-anniversary",
         "stellar-raven execute artifact b53313aa-d7db-4ff8-872a-5f24f9220bf7",
         "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol review",
-        "Sibling sweep: exact anniversary-post amounts were removed from judge-facing gospel because no independent source class was found; the answer retains only the independently corroborated launch flow and the attribution rule."
+        "Sibling sweep: exact anniversary-post amounts were removed from judge-facing gospel because no independent source class was found; the answer retains only the independently corroborated launch flow and the attribution rule.",
+        "Structural re-form (compound-predicate): Split the aid flow and snapshot-attribution claims, then moved the unsupported-metrics trap to avoid; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://www.unhcr.org/ua/en/news/unhcr-launches-pilot-cash-based-intervention-using-blockchain-technology-humanitarian-payments — UNHCR still documents the Ukraine USDC wallet and MoneyGram cash-out flow.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/stellar-aid-assist-2-year-anniversary — the later issuer snapshot still uses its own date, amount, household unit, and Ukraine scope.",
+        "Sibling sweep 2026-08-27: grep UNHCR|Stellar Aid Assist|aid disbursement → q-pay-sdp-disbursement, q-pay-travel-rule-aid-flows; no contradiction"
       ],
       "rootCause": [
         "Issuer-reported individuals, households, countries, and amount windows were treated as interchangeable.",
         "Eval metadata incorrectly labeled independently corroborated primary-source history as corpus-only.",
-        "solo://proj/49/todo/golden-truth-review--972"
+        "solo://proj/49/todo/golden-truth-review--972",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-hist-unhcr-stellar-aid-assist"

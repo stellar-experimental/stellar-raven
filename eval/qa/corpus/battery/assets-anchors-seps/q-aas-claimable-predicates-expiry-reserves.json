@@ -8,8 +8,9 @@
   "golden": {
     "answer": "A claimable balance contains an amount, an asset, a creator, and up to 10 claimants. Each claimant is an account plus a `ClaimPredicate`; that claimant can claim only when its predicate is true. Supported predicate shapes include unconditional, AND, OR, NOT, before absolute time, and before relative time. The docs also show after-time windows by negating a before-time predicate.\n\nExpiry is not automatic deletion. A common expiring-payment design is: recipient claimant can claim before a deadline; sender/creator claimant can claim after the deadline. After the deadline, someone still has to submit the claim operation from the reclaim claimant to consume the entry. If no predicate ever becomes usable by a real claimant, the claimable balance can be stranded.\n\nIf you list yourself (the sender/creator) as a claimant, that does NOT give you an at-will reclaim right: you can only claim when your own predicate evaluates true, and listing yourself never overrides another claimant's predicate. A claimable balance is not a custodial balance the creator can pull back at will, and the predicate set — not an issuer clawback flag — is the control surface. (Issuer clawback under CAP-35 is a separate regulated-asset feature, not the creator's ordinary reclaim mechanism.)\n\nReserve matters for high-volume or long-lived designs. Creating a claimable balance increases the creator's minimum balance by one base reserve per claimant, and the Stellar lumens docs describe claimable balances as ledger entries that require a base reserve per claimant. The reserve is released when the entry is consumed.",
     "keyFacts": [
-      "Explains that claimants are paired with predicates and a claimant can claim only while its predicate is true.",
-      "Covers time-based predicates for before/after absolute or relative time and how they can model expiry or reclaim windows.",
+      "Pairs each claimant with a predicate.",
+      "Requires the claimant's predicate to be true at claim time.",
+      "Uses before/after absolute or relative time predicates for expiry or reclaim windows.",
       "Mentions each claimable balance consumes reserve while it exists."
     ],
     "avoid": [
@@ -51,14 +52,20 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (presentation-avoid): Deleted a required-content avoid item already enforced by a key fact; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep claimable balance|reserve per claimant → q-aas-claimable-predicates-expiry-reserves, q-aas-claim-received-claimable-balances, q-asset-claimable-balance, q-sor-contract-as-claimable-arbiter; no contradiction"
+        "Sibling sweep 2026-08-27: grep claimable balance|reserve per claimant → q-aas-claimable-predicates-expiry-reserves, q-aas-claim-received-claimable-balances, q-asset-claimable-balance, q-sor-contract-as-claimable-arbiter; no contradiction",
+        "Structural re-form (compound-predicate): Split claimant eligibility and compressed the time-predicate fact; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — paired each claimant with a claim predicate.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — required a matching claimant with a satisfied predicate.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — showed absolute and relative time predicates for expiry/reclaim windows.",
+        "Sibling sweep 2026-08-27: grep claimable balance|ClaimPredicate|base reserve|reclaim window → q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-raph-claimable-balance-safety, q-protocol-base-reserve-min-balance; no contradiction"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-aas-claimable-predicates-expiry-reserves"
