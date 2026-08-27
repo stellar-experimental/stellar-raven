@@ -25,7 +25,10 @@ export const REQUIRED_MCP_SERVER_NAME = "raven";
  * Claude Code 2.1.247 drops non-SDK MCP servers while safe mode is active.
  */
 export function answeringAgentIsolationArgs(environment = {}) {
-  if (String(environment.CLAUDE_CODE_SAFE_MODE ?? "").trim()) {
+  const safeMode = String(environment.CLAUDE_CODE_SAFE_MODE ?? "")
+    .trim()
+    .toLowerCase();
+  if (["1", "true", "yes", "on"].includes(safeMode)) {
     throw new Error(
       "answering agent: CLAUDE_CODE_SAFE_MODE disables explicit MCP servers; refusing paid calls"
     );

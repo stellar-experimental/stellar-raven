@@ -310,9 +310,19 @@ describe("P2 — answering agents run in a neutral working directory", () => {
   });
 
   it("refuses inherited Claude safe mode before an answering spawn", () => {
-    expect(() => answeringAgentIsolationArgs({ CLAUDE_CODE_SAFE_MODE: "1" })).toThrow(
-      /disables explicit MCP servers/
-    );
+    for (const value of ["1", "true", "yes", "on"]) {
+      expect(() => answeringAgentIsolationArgs({ CLAUDE_CODE_SAFE_MODE: value })).toThrow(
+        /disables explicit MCP servers/
+      );
+    }
+
+    for (const value of ["0", "false", "no", "off"]) {
+      expect(answeringAgentIsolationArgs({ CLAUDE_CODE_SAFE_MODE: value })).toEqual([
+        "--setting-sources",
+        "",
+        "--disable-slash-commands"
+      ]);
+    }
   });
 
   it("keeps the MCP-free judge in safe mode", () => {
