@@ -40,7 +40,7 @@ Scout finding `sls-076` is reported upstream as issue `#1055`.
 - Treatment worktree: `sr-wt-connectors-v5-product`.
 - Treatment commit: `3966a59e77f2034726088e16be902270753211ae`.
 - Treatment patch SHA-256: `59d0197bcec10d117e5e60e7ea8abcd09215d9ed1f5f465449d58acd79057874`.
-- The patch matches the historical ten-file treatment patch exactly.
+- The patch matches the historical v4 ten-file treatment patch exactly.
 - Control surface SHA-256: `594578b995351e1abee1ec297e03662b51c1bfc4014daac4e39b4d8fa26611f3`.
 - Treatment surface SHA-256: `1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e`.
 - Control surface report SHA-256: `991fe0d7df55803be1339d3b32e121e0985e971e775c1369a78c7e5802a703bb`.
@@ -52,7 +52,7 @@ The wrapper, real Claude binary, model, environment rules, qualification case,
 and qualification case hashes remain pinned as recorded below.
 The call uses the treatment server and runner from `3966a59e77f2034726088e16be902270753211ae`.
 It must produce exactly one row and one reported answering cost.
-The maximum task spend after this call is `$1.9886646`.
+The maximum cumulative task spend allowed under this one-call authorization is `$1.9886646`.
 
 ### V5 free preflight
 
