@@ -6,7 +6,7 @@ Measure the held response-guidance candidate against the merged control.
 Do not trim startup tool descriptions or server instructions.
 Reject the candidate after any verified treatment regression.
 
-## Current status — first raw pair authorized
+## Current status — first raw pair blocked
 
 The historical replacement qualification remains spent and non-comparable.
 Do not run the historical qualification command below.
@@ -14,7 +14,7 @@ The user authorized one new treatment qualification on 2026-08-27.
 It permitted one answering call, no judge call, and a `$1.75` per-call cap.
 The user's broader spend tolerance does not remove the method-specific cap.
 The user authorized A1 and B1 on 2026-08-27 after the qualification passed.
-This authorization permits `16` answering calls and no judge calls.
+That authorization permitted `16` answering calls and no judge calls.
 Each answering call has a `$1.75` cap, and the stage has a `$28.00` cap.
 No retry, judging, replication, or method rerun is authorized.
 
@@ -25,7 +25,9 @@ Each arm uses its matching worktree and commit for both the server and runner.
 The v5 method never pairs a runner from one commit with another server commit.
 The independent pre-spend review returned `LAUNCH-OK`.
 The replacement qualification then passed every machine and manual gate.
-The authorized first pair runs treatment A1 and then control B1.
+The first pair ran treatment A1 and then control B1.
+Manual review found verified treatment regressions, so the candidate is rejected.
+No replication, judging, retry, or other paid method is authorized.
 
 ## Authorized v5 qualification
 
@@ -127,7 +129,7 @@ The maximum task spend after this call is `$1.9886646`.
 - The reviewer found no blocking issue.
 - The review made no paid call and does not authorize the next stage.
 
-### V5 first-pair authorization
+### V5 first-pair authorization — spent
 
 - Authorization date: `2026-08-27`.
 - Order: treatment A1, then control B1.
@@ -247,6 +249,39 @@ node eval/qa/run-qa.mjs --variant A \
 - Manual paired review is now required before any next paid method.
 - The owned control server stopped, and port `8792` is free.
 
+### V5 first-pair manual review
+
+- Independent reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed ledger commit: `177c6042397409754f1bf9c98ab196bbabe98dcd`.
+- Report: `/tmp/connectors-v5-first-pair-review.md`.
+- Report SHA-256: `244f545c64b18e26a1c8f6e3dc8b964e77f42b61bc68a38be2bcf5488a5c50de`.
+- Verdict: `FIRST-PAIR-BLOCK`.
+- The reviewer joined all `16` rows to their goldens.
+- The reviewer inspected every search projection, execute call, result, error, plan, and answer.
+- Treatment lost the required Stellar Docs source on the MoneyGram case.
+- Treatment skipped Scout prior-art discovery on the indexer greenfield case.
+- Treatment escrow code leaves global state `Disputed` after a partial dispute resolution.
+- That state blocks every remaining milestone from delivery, approval, automatic release, or dispute.
+- Treatment also called the undefined `service.scout` namespace before repairing the call.
+- The closed-world Strupey, partner soft-empty, simulation, and Wasm cases passed in both arms.
+- Both arms incorrectly promoted `Stroopy.AI` into the open-world `Strupey` answer.
+- Both arms saw Scout label `Stroopy.AI` as a strict match for `q=Strupey`.
+- New verified upstream finding: `sls-076`.
+- First-pair decision: reject the treatment candidate.
+- Do not run B2, A2, judging, retry, replication, or a method rerun.
+- Remaining authorized paid methods: `0`.
+
+| Case | Treatment A1 | Control B1 | Pair result |
+| --- | --- | --- | --- |
+| MoneyGram partnership and SEP-24 | Missing Docs execute | All three source families | Treatment regression |
+| Closed-world Strupey directory | Scout-only scoped miss | Scout-only scoped miss | Shared pass |
+| Partner detail soft-empty | Correct 404 soft-empty | Correct 404 soft-empty | Shared pass |
+| Open-world Strupey history | Promoted `Stroopy.AI` | Promoted `Stroopy.AI` | Shared failure; `sls-076` |
+| Simulate transaction | Official RPC evidence | Official RPC evidence | Shared pass |
+| `wasm32v1-none` build target | Current Docs, no detour | Current Docs, no detour | Shared pass |
+| Escrow greenfield design | Prior art, but frozen dispute lifecycle | Prior art, no global freeze | Treatment regression |
+| Indexer greenfield design | No Scout prior-art execute | Scout prior-art execute | Treatment regression |
+
 ### V5 replacement qualification command — spent once
 
 ```sh
@@ -350,8 +385,8 @@ self-test GREEN
 ## Method order
 
 Steps 1 and 2 completed.
-Steps 3 and 4 are authorized once.
-Steps 5 and 6 are required free review gates.
+Steps 3 and 4 completed once.
+Steps 5 and 6 completed and blocked the candidate.
 Steps 7 through 10 remain unauthorized.
 
 1. Run one replacement qualification against the treatment without judging.
