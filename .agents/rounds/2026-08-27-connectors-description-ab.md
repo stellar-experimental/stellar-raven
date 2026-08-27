@@ -219,6 +219,34 @@ node eval/qa/run-qa.mjs --variant A \
 - Machine checkpoint verdict: `PASS`.
 - Manual paired review remains pending until B1 exists.
 
+### V5 control B1 checkpoint
+
+- Artifact: `eval/qa/results/2026-08-27T18-59-44-variantA.json` in
+  `sr-wt-connectors-v5-control`.
+- Artifact SHA-256: `78170de4d3879d3a54d248309337500be58b40bb79b4e2bf58238a0c5cf2a295`.
+- Preflight surface report: `/tmp/raven-connectors-v5-b1-preflight-surface.json`.
+- Preflight report SHA-256: `99506b9bebdeb74a6e2a3cd9318b51f8824495dc934b38ebbbfee1c79d93f3b6`.
+- Rows: `8` expected and `8` collected.
+- Agent failures: `0`.
+- Reported answering costs: `8` expected and `8` collected.
+- B1 answering cost: `$2.3726368`.
+- Judge calls and judge cost: `0`.
+- First-pair answering cost: `$4.6188030`.
+- Counted task spend after B1: `$4.9673564`.
+- Remaining authorized paid methods: `0`.
+- All eight rows reported the `raven` MCP server as `connected`.
+- Both arms have identical eight-case and environment hashes.
+- The wrapper, runner, server, and control surface matched their pins.
+- Preflight and postflight source revisions and surfaces matched.
+- The source identity and server process guards matched.
+- The runner remained clean.
+- The artifact is complete and comparable.
+- `comparabilityReasons` is empty, and `postflightError` is null.
+- No B1 retry or judge call occurred.
+- Machine checkpoint verdict: `PASS`.
+- Manual paired review is now required before any next paid method.
+- The owned control server stopped, and port `8792` is free.
+
 ### V5 replacement qualification command — spent once
 
 ```sh
