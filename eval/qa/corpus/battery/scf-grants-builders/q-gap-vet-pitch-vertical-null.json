@@ -9,8 +9,9 @@
     "answer": "In both composites, `vertical: null` means the idea did not map to Scout's closed measurable vertical axis. It does not mean the idea has no market, competitors, prior art, demand, or funding history. Read any returned competitor, maturity, and prior-art blocks on their stated basis. Treat `gap: null` and `funding: null` as unavailable vertical-derived analyses, not zero values. In `scout.scfPitch`, evaluate the separate round block through `round.source` even when the vertical is null. Cite `generatedAt` and keep every conclusion source-relative.",
     "keyFacts": [
       "Defines a null vertical as an unmapped measurable axis, not a market-absence verdict.",
-      "Treats null gap and funding blocks as unavailable vertical-derived analyses rather than zero values.",
-      "Still inspects returned competitors, maturity, prior art, and the separate pitch-round source."
+      "Treats null gap and funding blocks as unavailable vertical-derived analyses.",
+      "Inspects returned competitors, maturity, and prior art.",
+      "Treats the pitch-round source as an independent block."
     ],
     "avoid": [
       "Do NOT claim that `vertical: null` proves the market, competition, demand, or prior art does not exist.",
@@ -77,16 +78,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1664 coverage-golden implementation",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Read-only vetIdea and scfPitch probes for the same unmapped idea on 2026-08-18.",
         "catalog/manifest.json#scout.vetIdea and #scout.scfPitch define the null and round semantics.",
         "Sibling sweep: idea-vetting cases use gap results as source-relative supply evidence and do not contradict the null boundary.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
+        "Structural re-form (negative-predicate): Moved the zero-value trap to the existing avoid clause and split the returned evidence blocks; the truth is unchanged.",
+        "Live re-check 2026-08-27: catalog/manifest.json#scout.vetIdea still defines null gap and funding as unavailable vertical-derived analyses.",
+        "Live re-check 2026-08-27: catalog/manifest.json#scout.vetIdea still requires inspection of returned competitor, maturity, and prior-art blocks.",
+        "Live re-check 2026-08-27: catalog/manifest.json#scout.scfPitch still treats round.source as an independent pitch-round block.",
+        "Sibling sweep 2026-08-27: grep vertical-derived|round.source|pitch vertical across eval/qa/corpus/battery found no contradictory case."
       ],
       "rootCause": [
-        "solo://proj/80/todo/author-five-new-cove--1664"
+        "solo://proj/80/todo/author-five-new-cove--1664",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

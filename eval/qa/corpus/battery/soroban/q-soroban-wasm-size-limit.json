@@ -8,7 +8,8 @@
   "golden": {
     "answer": "As of **2026-07-28**, Mainnet and Testnet report `contract_max_size_bytes=131072`—**128 KiB**—for uploaded contract Wasm. The separate `contract_data_entry_size_bytes=65536` value is not the code cap. These are network settings, so inspect the target network with Stellar Lab or `stellar network settings` instead of treating either number as permanent. Current Stellar CLI builds optimize by default; `--optimize` is accepted but redundant, `--optimize=false` disables it, and the standalone `stellar contract optimize` command is deprecated. Reduce dependencies/features and split logic across contracts when needed.",
     "keyFacts": [
-      "Reports the dated 128-KiB code cap and distinguishes the 64-KiB contract-data setting.",
+      "Reports the dated 128 KiB contract-code cap.",
+      "Treats the 64 KiB contract-data cap as a different network setting.",
       "Explains current default-on build optimization and deprecated standalone command."
     ],
     "avoid": [
@@ -71,17 +72,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane B Docs technical re-verification",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Production stellar-raven: stellarDocs.search_protocol_concepts_docs({query:'contract_max_size_bytes contract_data_entry_size_bytes network settings resource limits',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/learn/fundamentals/fees-resource-limits-metering',includeContent:true}) — resource settings pages returned.",
         "Empirical free reads: stellar 27.0.0 network settings --no-cache -n mainnet|testnet --output json-formatted both returned contract_max_size_bytes=131072 and contract_data_entry_size_bytes=65536.",
         "Empirical CLI surface: stellar contract build --help reports --optimize default true; stellar contract optimize --help reports 'Deprecated, use build --optimize.'",
         "Sibling sweep: q-soroban-wasm-language and q-soroban-deploy-cli distinguish wasm32v1-none/current build behavior and do not retain a 64 KiB Wasm cap.",
-        "Todo 1253 Lane B review (2026-07-28, F1): the grader notes still instructed the rubric to gate on '~64 KB ledger-entry cap' as the contract-code cap, which this case's own avoid clause and the sibling q-soroban-wasm-language forbid; the sentence now states the two distinct settings the verified answer asserts. Internal-consistency repair — no new external source consulted."
+        "Todo 1253 Lane B review (2026-07-28, F1): the grader notes still instructed the rubric to gate on '~64 KB ledger-entry cap' as the contract-code cap, which this case's own avoid clause and the sibling q-soroban-wasm-language forbid; the sentence now states the two distinct settings the verified answer asserts. Internal-consistency repair — no new external source consulted.",
+        "Structural re-form (negative-predicate): split one compound taxonomy fact into two atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — current documentation still reports a 128 KB Mainnet contract-code cap as a network setting",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — stellar 27.1.0 --no-cache reads still returned data-entry cap 65536 bytes apart from code cap 131072 bytes on Mainnet and Testnet",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — stellar contract build still optimizes by default and the standalone optimize command remains deprecated",
+        "Sibling sweep 2026-08-27: grep contract_max_size_bytes|contract_data_entry_size_bytes|contract optimize|wasm32v1-none → q-soroban-wasm-language, q-soroban-deploy-cli, q-sor-build-target-wasm32v1; no contradiction"
       ],
       "rootCause": [
-        "freshness-recheck"
+        "freshness-recheck",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-wasm-size-limit"

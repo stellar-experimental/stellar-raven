@@ -7,7 +7,7 @@
   "golden": {
     "answer": "Preserve the soft-empty distinction: the index may have matched pages before adapter filtering, but none belong to the requested docs category. Do not return cross-category hits as if they satisfied the filter. Suggest the correct category or a corpus-wide search when the user's scope allows it.",
     "keyFacts": [
-      "Distinguishes category-filtered soft-empty from a total index zero result.",
+      "Treats category-filtered soft-empty and a total index zero as different results.",
       "Does not leak cross-category matches into the scoped answer."
     ],
     "avoid": [
@@ -39,7 +39,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; a tokens/validator-quorum mismatch returned envelope ok=false with kind soft-empty and category guidance.",
         "specs/stellar-docs.json exists and supports the behavioral golden.",
@@ -47,11 +47,15 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep search_docs_in_category|soft-empty|tokens-category|validators page → q-pc-doc-category-validator-search; no contradiction"
+        "Sibling sweep 2026-08-27: grep search_docs_in_category|soft-empty|tokens-category|validators page → q-pc-doc-category-validator-search; no contradiction",
+        "Structural re-form (negative-predicate): recast the category-filter taxonomy as one positive atomic fact; category-filtered soft-empty and total index zero remain different results.",
+        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven and local specs/stellar-docs.json — current source retains adapter-side category filtering after a corpus-wide search.",
+        "Sibling sweep 2026-08-27: grep category-filtered soft-empty|total index zero|search_docs_in_category → q-pc-doc-category-validator-search, q-edge-doc-title-zero-hits, and q-edge-doc-page-sections-soft-empty; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

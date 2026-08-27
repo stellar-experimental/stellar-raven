@@ -9,10 +9,11 @@
   "golden": {
     "answer": "As of **2026-08-04**, use **`network.lightsail:stellar-sdk:4.0.1`**; Maven Central metadata and the 2026-07-16 GitHub release agree. Recheck the current Maven/release record rather than treating that number as timeless.\n\nA fee bump wraps a **fully signed inner transaction** in a separately signed outer fee-bump envelope. With Java SDK 4.0.1, parse/build the signed inner `Transaction`, then call `FeeBumpTransaction.createWithBaseFee(feeSource, baseFee, inner)` or `createWithFee(...)`; the old `FeeBumpTransaction.Builder` is removed. The inner source still supplies sequence, time bounds, and required signatures. The fee-source account pays/signs the outer and needs the applicable low-threshold authorization/XLM; verify the total fee for the inner operation count plus wrapper and preserve Soroban resource fees.\n\nFor an external wallet, send only the XDR that wallet-controlled role should sign—usually inner XDR to the user wallet, then outer fee-bump XDR to the fee payer if it controls that account. Never export a wallet secret into Java. Submit/poll the final fee-bump envelope and handle inner failure separately.",
     "keyFacts": [
-      "Dates the current Maven coordinates/version and current factory names.",
-      "Separates fully signed inner authorization/sequence from outer fee-source signature/payment.",
+      "Dates current Maven coordinates and version.",
+      "Names current fee-bump factories.",
+      "Treats fully signed inner authorization/sequence and outer fee-source roles as distinct.",
       "Uses role-specific external-wallet XDR signing without exporting secrets.",
-      "Rejects the removed Builder and preserves fee calculation/Soroban resource fees."
+      "Preserves fee-source signature/payment, fee calculation, and Soroban resource fees."
     ],
     "avoid": [
       "Do NOT report the superseded beta0/3.1.0 split as current or use stale org.stellar coordinates.",
@@ -97,14 +98,21 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the dated release while preserving the factory, role, fee, and custody boundaries.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-52 primary/blind matrices established the current factories and role boundaries; Todo 1347 correction verification refreshed the release to 4.0.1.",
-        "Sibling sweep checked q-tool-java-sdk, q-pc-fee-bump-channel-accounts-feepool, and secret-custody cases."
+        "Sibling sweep checked q-tool-java-sdk, q-pc-fee-bump-channel-accounts-feepool, and secret-custody cases.",
+        "Structural re-form (negative-predicate): split the dated dependency fact, expressed inner/outer roles positively, and removed the Builder rejection already held in avoid; truth is unchanged",
+        "Live re-check 2026-08-27: https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml — current Maven coordinates and version remain dated provider observations",
+        "Live re-check 2026-08-27: https://github.com/lightsail-network/java-stellar-sdk/blob/4.0.1/src/main/java/org/stellar/sdk/FeeBumpTransaction.java — current fee-bump factory names remain version-specific",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions — fully signed inner authorization/sequence and outer fee-source roles remain distinct",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md — fee-source signature/payment, fee calculation, and Soroban resource-fee preservation remain required",
+        "Sibling sweep 2026-08-27: grep network.lightsail|FeeBumpTransaction|createWithBaseFee|fee-source → q-pc-fee-bump-channel-accounts-feepool; no contradiction"
       ],
       "rootCause": [
-        "Plain SDK release drift plus eval-side external-wallet/fee-bump procedure incompleteness."
+        "Plain SDK release drift plus eval-side external-wallet/fee-bump procedure incompleteness.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-java-sdk-wallet-feebump"

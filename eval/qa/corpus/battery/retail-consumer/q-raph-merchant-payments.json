@@ -8,7 +8,7 @@
   "golden": {
     "answer": "Yes—use a payment provider or build a flow that quotes the price, receives the agreed Stellar asset, and off-ramps it to your business bank account where available. Decide whether you will keep the asset or convert it, and have a professional review tax, consumer-protection, licensing, and recordkeeping obligations for your location. Verify the asset issuer, network, deposit instructions, fees, and refund process; a payment is not automatically reversible.",
     "keyFacts": [
-      "Separates accepting a Stellar payment from choosing to hold or off-ramp it.",
+      "Treats payment acceptance, holding, and off-ramping as distinct choices.",
       "Requires local compliance and operational checks."
     ],
     "avoid": [
@@ -55,18 +55,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
         "scratchpad/p4/h3-raph/fable-voice-review.md",
         "scratchpad/p4/h3-raph-blind/reconciliation.md",
         "https://developers.stellar.org/platforms/anchor-platform",
-        "https://stellar.org/"
+        "https://stellar.org/",
+        "Structural re-form (negative-predicate): Recast the payment-versus-conversion comparison as a positive three-choice taxonomy; truth unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/platforms/anchor-platform — Anchor Platform exposed deposit, withdrawal, payment, quote, and exchange workflows as distinct operations.",
+        "Sibling sweep 2026-08-27: grep merchant|off-ramp|accept XLM|accept USDC → q-anchor-platform-what, q-crp-become-an-anchor-licensing, q-raph-offramp-xlm-usdc, q-raph-remittance-path-payment; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raph merchant-accept-crypto-payments-compliant"

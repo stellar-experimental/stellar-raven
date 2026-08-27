@@ -11,8 +11,9 @@
     "keyFacts": [
       "States that loss of the sole usable passkey may be irrecoverable.",
       "Requires a preconfigured surviving signer/policy with authority to rotate signers.",
-      "Separates credential sync, relaying, indexing, and address discovery from on-chain authorization.",
-      "Separates SEP-30 classic G-account recovery from C-account/passkey recovery."
+      "Names credential sync, relaying, indexing, and address discovery as distinct functions.",
+      "Treats on-chain authorization as a different function.",
+      "Names SEP-30 classic G-account and C-account passkey recovery as distinct models."
     ],
     "avoid": [
       "Do NOT promise that every lost passkey or single-signer wallet is recoverable.",
@@ -115,19 +116,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Bounded archived-pointer repair from Solo Todo 1355 comment 3687",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-56 primary process 3394 and sealed blind process 3398 independently rejected the blanket recovery promise and relayer/session-key shortcut.",
         "Sibling sweep checked q-aas-sep30-recoverable-wallets, q-soroban-add-signer-smart-wallet-howto, q-infra-secp256r1-passkeys, and q-soroban-auth-delegation-p27; the correction preserves their authorization boundaries.",
         "https://github.com/kalepail/smart-account-kit — archived move page; historical 2026-07-11 evidence remains unchanged.",
         "https://github.com/stellar/smart-account-kit — current canonical continuation observed 2026-08-05.",
-        "solo://proj/49/todo/reconcile-bounded-tr--1355"
+        "solo://proj/49/todo/reconcile-bounded-tr--1355",
+        "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — live re-check 2026-08-27 confirms contract-specific WebAuthn authorization and policy checks.",
+        "Structural re-form 2026-08-27: preserved passkey loss, surviving authority, signer rotation, mechanism taxonomy, and SEP-30 account scope.",
+        "Sibling sweep 2026-08-27: q-aas-sep30-recoverable-wallets and q-soroban-add-signer-smart-wallet-howto showed no contradiction."
       ],
       "rootCause": [
         "Eval-side security error: the existence of add/remove signer APIs was mistaken for a surviving authority after the only signer is lost.",
         "Provenance correction: the false blanket assurance remains only in the read-only vendored corpus and is superseded by this override.",
-        "truth-metadata maintenance"
+        "truth-metadata maintenance",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-passkey-wallet-recovery"

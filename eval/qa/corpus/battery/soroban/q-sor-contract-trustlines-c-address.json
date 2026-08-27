@@ -11,11 +11,11 @@
   "golden": {
     "answer": "Use the **Stellar Asset Contract (SAC)** mental model. Contracts interact with classic assets through\nthe SAC, not by behaving exactly like a G-address receiving a classic Payment operation. The SAC docs\nstate it is the only way for contracts to interact with native XLM or issued Stellar assets\n(https://developers.stellar.org/docs/tokens/stellar-asset-contract).\n\nFor `Address::Account`, the balance must exist in a classic account/native balance or trustline; if\nthe trustline/account is missing, a function touching that balance fails. For `Address::Contract`, the\nbalance and authorization state live in contract storage, not a classic trustline, and balances are\nstored as i128 rather than trustline i64\n(https://developers.stellar.org/docs/tokens/stellar-asset-contract). So a `C...` contract/smart-wallet\ndoes not \"open a trustline\" with classic Change Trust the way a `G...` account does.\n\nTo receive/send USDC with a C-address, route through SAC transfer flows. The C-account guide describes\npayments to/from contract accounts as SAC transfers and notes RPC/Horizon monitoring needs to look at\nSAC/unified asset events\n(https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts). To send\nassets back out, the contract/smart wallet invokes the SAC `transfer` with the required Soroban\nauthorization. If the recipient is a G-address and lacks a trustline, Protocol 26's SAC `trust`\nfunction can create it as part of an invocation, but it still preserves opt-in authorization and the\naccount must satisfy the base reserve for the new trustline\n(https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin).",
     "keyFacts": [
-      "Explains that contracts interact with classic assets through the Stellar Asset Contract (SAC), not by receiving a classic payment operation exactly like a G-address.",
-      "Distinguishes operationally that a `C...` contract holds a classic asset's balance in contract storage (no classic trustline) whereas a `G...` account holds it in a trustline/native balance; the exact ledger-entry/integer-width internals are out of scope here.",
-      "States that a C-address does not open a classic trustline like a G-address, but sending/receiving through SAC creates/uses contract-address balance and authorization state.",
-      "Explains outbound asset movement is a SAC `transfer` invocation from the contract/smart wallet, with Soroban authorization as required.",
-      "Mentions G-address recipients still need a trustline and enough XLM/base reserve unless the SAC `trust` function creates the trustline under Protocol 26 with the address's authorization."
+      "Contracts use SAC to interact with classic assets.",
+      "C-address contract storage and G-address trustline/native balances are distinct models.",
+      "C-address sending/receiving uses SAC balance plus authorization state.",
+      "An outbound SAC `transfer` requires Soroban authorization.",
+      "G-address recipients need a funded trustline unless Protocol 26 SAC `trust` creates it."
     ],
     "avoid": [
       "Do not tell users to use classic Change Trust on a C-address.",
@@ -60,16 +60,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (negative-predicate): replaced long compound facts with five atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — contracts still use SAC to interact with classic assets",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — C-address balances use contract storage and G-address issued-asset balances use trustlines",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts — C-address payments still use SAC transfer flows and authorization state",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — outbound SAC transfer requires spending-address authorization",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — Protocol 26 SAC trust creates an authorized G-address trustline subject to reserve",
+        "Sibling sweep 2026-08-27: grep C-address|contract storage|SAC trust → q-pc-protocol-26-yardstick, q-ti-fetch-all-balances-classic-sac, q-sor-sac-introspection; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored the default G-address trustline/reserve rule; truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-contract-trustlines-c-address",

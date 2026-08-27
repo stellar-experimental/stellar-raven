@@ -9,9 +9,10 @@
   "golden": {
     "answer": "Use **`@stellar/freighter-api`** in a browser/client context after mount and inspect the structured `isConnected()` result/error. Separate installation detection from authorization: `isConnected` checks the extension, `isAllowed` checks allowed state, and `requestAccess` is the permission/public-address flow. Verify the same browser profile/window, extension enabled/unlocked, reload after install/update, network, site permission, and a top-level page rather than an iframe before investigating RPC/Horizon CORS.\n\nCurrent Freighter 5.43 source/manifest matches `<all_urls>` at `document_start`, omits `all_frames`, and falls back after no content-script response; plain top-level HTTP localhost is therefore not categorically blocked by a Freighter origin allowlist. Official Stellar frontend docs nevertheless say HTTPS is required. Use HTTPS as the supported setup/workaround when needed, but do not grade it as the only possible detection fix or claim localhost universally works. Never bypass the wallet by exporting a secret into local code.",
     "keyFacts": [
-      "Uses supported client-side Freighter APIs and distinguishes installed, allowed/authorized, unlocked, and connected.",
+      "Uses supported client-side Freighter APIs.",
+      "Treats installation, authorization, unlock, and connection as distinct conditions.",
       "Troubleshoots profile/extension/reload/top-level frame/errors before chain CORS.",
-      "Preserves the official HTTPS versus current source/manifest disagreement instead of pinning a universal rule.",
+      "Preserves the official HTTPS and current source/manifest disagreement.",
       "Keeps signing in the wallet and secrets out of local code."
     ],
     "avoid": [
@@ -97,14 +98,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited fallback implied that localhost/127.0.0.1, HTTPS, or a tunnel would categorically fix detection. Current Freighter source permits top-level localhost injection while official frontend docs say HTTPS is required, so the dispute must be preserved.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-52 primary/blind matrices independently required a full provider-qualified rewrite; blind sealed the source/docs disagreement before reading the primary.",
-        "Sibling sweep checked q-ti-connect-wallet-button-code, q-ti-bindings-to-nextjs-integration, q-tool-freighter-wallet, and secret-handling cases."
+        "Sibling sweep checked q-ti-connect-wallet-button-code, q-ti-bindings-to-nextjs-integration, q-tool-freighter-wallet, and secret-handling cases.",
+        "Structural re-form (negative-predicate): split two long taxonomy facts into three atomic positive facts; the existing avoid item retains the universal HTTP/HTTPS trap, so truth is unchanged",
+        "Live re-check 2026-08-27: https://docs.freighter.app/extension-freighter-api/connecting — uses supported client-side Freighter APIs",
+        "Live re-check 2026-08-27: https://docs.freighter.app/extension-freighter-api/connecting — treats installation, authorization, unlock, and connection as distinct conditions",
+        "Live re-check 2026-08-27: https://docs.freighter.app/extension-freighter-api/connecting — troubleshoots profile/extension/reload/top-level frame/errors before chain CORS",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/dapps/frontend-guide#setup-https-on-localhost and https://github.com/stellar/freighter/releases/tag/5.43.0 — preserves the official HTTPS and current source/manifest disagreement",
+        "Live re-check 2026-08-27: https://docs.freighter.app/ — keeps signing in the wallet and secrets out of local code",
+        "Sibling sweep 2026-08-27: grep isConnected|isAllowed|localhost|HTTPS|Freighter → q-ti-connect-wallet-button-code, q-tool-freighter-wallet; no contradiction"
       ],
       "rootCause": [
-        "Eval-side browser/product overgeneralization; the Freighter HTTPS/detection mismatch is recorded as a research candidate because no existing deduped finding owns it."
+        "Eval-side browser/product overgeneralization; the Freighter HTTPS/detection mismatch is recorded as a research candidate because no existing deduped finding owns it.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-freighter-localhost-not-detected"

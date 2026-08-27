@@ -8,7 +8,8 @@
   "golden": {
     "answer": "There is no stable count of 'serious players' until the criterion is stated. A dated analysis should separate: **native Stellar SDEX/AMM liquidity**, **independent AMM venues**, **routers/aggregators**, and **wallet/UI/order-book clients**. As of 2026-07-10, a strict live venue-family review had to consider at least native Stellar liquidity, Aquarius, Sushi, Soroswap, and Phoenix; products such as StellarX, StellarTerm, Scopuly, StellarBroker, or AXIS require role and independent-liquidity verification before counting them as venues. Report mainnet status plus measurable TVL/volume/integration evidence instead of one timeless total.",
     "keyFacts": [
-      "Defines the counting criterion and distinguishes native venues, AMMs, aggregators/routers, and UIs before discussing saturation."
+      "Defines the counting criterion before discussing saturation.",
+      "Treats native venues, AMMs, aggregators/routers, and UIs as distinct roles."
     ],
     "avoid": [
       "Do NOT hard-code three serious players, equate a DEX tag with independent liquidity, or claim routing absorbs competitors.",
@@ -62,13 +63,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — No defensible 'roughly three serious players' count exists without a venue/role/usage criterion; current sources show more liquidity venues and many non-venue DEX-tagged records.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; the reviewers intentionally differed on venue membership because the inherited criterion is undefined."
+        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; the reviewers intentionally differed on venue membership because the inherited criterion is undefined.",
+        "Structural re-form (negative-predicate): split the compound saturation requirement into two atomic positive facts; the counting criterion and all four role categories are unchanged.",
+        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — current directory clustering still requires an explicit counting criterion before saturation analysis.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools and https://soroswap.finance/ — native liquidity and Soroban aggregation remain different product roles.",
+        "Sibling sweep 2026-08-27: grep serious players|native venues|aggregators/routers|DEX saturation|independent liquidity → q-eco-defi-market-map, q-asset-sdex-vs-amm, and q-defi-soroswap-vs-stellarx; no contradiction"
       ],
       "rootCause": [
-        "Role-taxonomy collapse and an undefined qualitative threshold became an exact competitor count."
+        "Role-taxonomy collapse and an undefined qualitative threshold became an exact competitor count.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-eco-dex-saturation"

@@ -7,8 +7,9 @@
   "golden": {
     "answer": "Select the exact live Reflector contract by network/type from the operator registry and fetch its current spec before encoding arguments. Current Pulse uses `lastprice(asset)`; Beam uses `lastprice(caller, asset)`. `Asset` is `Stellar(Address)` or `Other(Symbol)`, and the return is `Option<PriceData>{price:i128,timestamp:u64}`; apply `decimals()` scaling and reject None/stale data. Current mainnet registry examples as of 2026-07-11 are external-exchanges `CAFJZQW...N34DLN`, on-chain/pubnet `CALI2BY...B2PLE6M`, and forex `CBKGPWG...DXMCJZC`. Re-fetch full IDs/specs rather than copying abbreviations. `CBQSUF...XQLSE` is a DAO, not an oracle. Current public Pulse ABI exposes `lastprice`, not stale `x_last_price`; official site text mentioning x_* conflicts with current source/live ABI. For JS traps, inspect network, ID, live spec/WASM, Pulse-versus-Beam signature, UDT ScVals, and simulation diagnostics—do not assert one cause. Beam's deeper XRF call may require `authorize_as_current_contract` for the nested call.",
     "keyFacts": [
-      "Uses current registry/type/network plus live ABI, correct Pulse/Beam signatures and Asset/PriceData types.",
-      "Rejects stale x_* and DAO examples and bounds diagnostic inference."
+      "Use the current registry, network, type, and live ABI.",
+      "Pulse/Beam signatures use the documented `Asset` and `PriceData` types.",
+      "Trap diagnosis depends on current specs and simulation diagnostics."
     ],
     "avoid": [
       "Do NOT call CBQ a price oracle, grade x_last_price as current, freeze IDs/specs, or assert a trap cause without diagnostics."
@@ -74,13 +75,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer used stale x_* methods and a DAO contract as an oracle example; current source, registry, live ABI, and invocation contradict those details.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-42 processes 3308/3315; live mainnet probe 2026-07-11."
+        "Solo scratchpad 575 GT-42 processes 3308/3315; live mainnet probe 2026-07-11.",
+        "Structural re-form (negative-predicate): split the long positive fact and moved no truth because equivalent traps already exist in avoid; truth is unchanged",
+        "Live re-check 2026-08-27: https://orchestrator.reflector.network/config — the operator registry remains the live network/type selection surface",
+        "Live re-check 2026-08-27: https://github.com/reflector-network/reflector-contract — Pulse/Beam lastprice signatures still use Asset and PriceData",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — simulation returns failure details and diagnostic events for trap analysis",
+        "Sibling sweep 2026-08-27: grep Reflector|lastprice|SEP-40 → q-defi-reflector-oracle, q-tool-oracle-repo-live, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40; no contradiction"
       ],
       "rootCause": [
-        "Operator docs/spec drift captured in research/audits/2026-07-11-gt42-archival-events-reflector.md"
+        "Operator docs/spec drift captured in research/audits/2026-07-11-gt42-archival-events-reflector.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-reflector-integration-code"

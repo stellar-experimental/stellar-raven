@@ -11,8 +11,10 @@
   "golden": {
     "answer": "There is **no 'create asset' operation** — a classic asset is defined by its **`(asset_code, issuer account)`** pair and simply comes into existence the first time the issuer pays it out [1][2]. The flow:\n\n1. Create/fund the **issuing account** and a separate **distribution account** (two-account best practice) [1].\n2. Optionally set issuer **authorization flags** first (e.g. AUTH_REQUIRED/REVOCABLE, or clawback) — these only apply to trustlines created afterward [1].\n3. The **distribution account opens a trustline** to the asset via **`ChangeTrust`** [2].\n4. The **issuer sends** (a `Payment`) the desired supply to the distribution account — this is the issuance/mint [2].\n5. Publish a **`stellar.toml` (SEP-1)** so wallets can discover and identify the asset [1].\n6. Optionally cap supply by locking the issuer (set master weight to 0 / AUTH_IMMUTABLE) [1].",
     "keyFacts": [
-      "An asset is defined by its code + issuing account; there is no separate 'create asset' transaction — the asset exists once the issuer sends it.",
-      "The distribution account must establish a trustline (ChangeTrust) to the issuer, then the issuer sends (payment) the supply to it."
+      "A classic asset is defined by its asset code and issuing account.",
+      "The asset exists after the issuer sends it to an account with a trustline.",
+      "The distribution account establishes the asset trustline with ChangeTrust.",
+      "The issuer sends the supply to the distribution account with a Payment."
     ],
     "avoid": [
       "Do NOT describe issuing a Stellar asset as deploying a Solidity/ERC-20 contract.",
@@ -41,10 +43,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-03-classic-assets-clawback-trustlines-paths accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (negative-predicate): split two compound facts into four atomic facts and removed the redundant create-operation negation; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the asset object combines an asset code with an issuing public key.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — an issuer payment issues or mints the asset for an account with a trustline.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the distribution account establishes its trustline with ChangeTrust.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the issuer sends the supply through a Payment to the distribution account.",
+        "Sibling sweep 2026-08-27: grep create asset|ChangeTrust|Payment → q-asset-trustline-basics, q-aas-trustline-limit-lifecycle, q-protocol-operation-types-list; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-asset-issue-asset-howto"

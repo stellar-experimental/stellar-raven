@@ -9,12 +9,14 @@
     "answer": "Run the **live Scout repository search** with exact owner/name and broader smart-account/passkey vocabulary, then report only the rows actually returned, with `generatedAt`/as-of, exact URL, role, owner, activity/archive state, and maturity/audit caveat. Preserve an exact zero honestly and broaden the query, but never turn either a zero or a returned row into an open-world repository or quality claim.\n\nFor direct current verification outside the Scout rows, label the source boundary explicitly: **`stellar/smart-account-kit`** is a TypeScript integration SDK for OpenZeppelin Stellar smart accounts; **`OpenZeppelin/stellar-contracts` account packages** are the underlying account framework; and **`stellar/passkey-kit`** is a separate passkey-wallet SDK with a different authorization model and its own security caveats. The former kalepail repositories are archived move pointers. Direct links may supplement a current Scout result, but must not be attributed to Scout if absent from its response. Repository/indexer discovery neither proves control nor supplies signer recovery, and an audit claim applies only to the exact artifact/release reviewed.",
     "keyFacts": [
       "Returns only observed live Scout rows and dates the response.",
-      "Treats either exact zeroes or returned rows as source-scoped retrieval results, not open-world proof, and broadens vocabulary.",
-      "Labels direct Smart Account Kit, OpenZeppelin account contracts, and separate Passkey Kit verification separately from Scout.",
-      "Distinguishes current versus legacy purpose and keeps discovery separate from audit, authorization, custody, and recovery."
+      "Treats exact zeroes and returned rows as source-scoped results across broad vocabulary.",
+      "Marks Smart Account Kit/OpenZeppelin account contracts/Passkey Kit as direct non-Scout.",
+      "Names current and legacy repository purposes.",
+      "Treats discovery, audit, authorization, custody, and recovery as distinct functions."
     ],
     "avoid": [
       "Do NOT claim Scout surfaced a repository it did not return or treat an exact zero result as repository absence.",
+      "Do NOT treat a returned row as proof of complete open-world repository coverage.",
       "Do NOT freeze repoScore/order or infer maintenance, security, audit scope, or production readiness from search rank.",
       "Do NOT collapse Passkey Kit and Smart Account Kit into one authorization or audit claim, or omit their source-specific security caveats.",
       "Do NOT call repository or indexer discovery proof of account control or a recovery mechanism."
@@ -97,16 +99,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Solo Todo 1390 independent early scheduled repository-discovery re-verification.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "C: Scout exact searches on 2026-08-05 returned the active stellar/smart-account-kit and stellar/passkey-kit rows alongside archived kalepail move pointers; results remain dated source-scoped retrieval evidence, not proof of quality or completeness.",
         "B: current READMEs at https://github.com/stellar/smart-account-kit and https://github.com/stellar/passkey-kit show distinct authorization models and security caveats; https://github.com/OpenZeppelin/stellar-contracts identifies its accounts package as the framework. Direct repository metadata confirmed the stellar repositories active and the kalepail pointers archived.",
         "A: the current developers.stellar.org smart-wallet guide still links the archived kalepail/passkey-kit pointer; that residual is already owned by active finding sd-034 rather than a new finding.",
-        "Sibling sweep: q-tool-passkeykit-smart-wallet now describes Passkey Kit as maintained rather than legacy/unaudited; the cases are consistent. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery."
+        "Sibling sweep: q-tool-passkeykit-smart-wallet now describes Passkey Kit as maintained rather than legacy/unaudited; the cases are consistent. q-tool-passkey-wallet-recovery remains consistent that discovery does not authorize recovery.",
+        "Structural re-form (negative-predicate): compressed the source-scoped search rule, split the repository-purpose taxonomy, and moved the open-world trap to avoid; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/smart-account-kit — confirmed the current Smart Account Kit repository and account SDK role.",
+        "Live re-check 2026-08-27: https://github.com/OpenZeppelin/stellar-contracts — confirmed the OpenZeppelin account-contract framework source.",
+        "Live re-check 2026-08-27: https://github.com/stellar/passkey-kit — confirmed the separate Passkey Kit repository source.",
+        "Sibling sweep 2026-08-27: grep smart-account-kit|passkey-kit|recovery → q-tool-passkeykit-smart-wallet, q-tool-passkey-wallet-recovery; no contradiction"
       ],
       "rootCause": [
-        "scheduled freshness re-verification found no golden drift; refreshed current ownership/index evidence and routed the official-doc residual to existing sd-034"
+        "scheduled freshness re-verification found no golden drift; refreshed current ownership/index evidence and routed the official-doc residual to existing sd-034",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-smart-wallet-repos-discovery"

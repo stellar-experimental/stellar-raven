@@ -7,12 +7,13 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSCF Build accepts eligible individuals, teams, and organizations building meaningful Stellar applications/protocols; it is not limited to registered companies. The current flow has distinct gates. The initial interest/referral step establishes fit and eligibility. **Prescreen is a completeness/readiness check, not an idea-strength or traction judgment**: current criteria require a detailed self-contained submission, meaningful Stellar integration/architecture, team readiness, budget, differentiation, an open-source plan for contracts where applicable, and three deliverable tranches. The panel/review stage then evaluates ecosystem value or validated need, feasibility, roadmap, traction where relevant, and team capability. Open-track projects alone proceed to community vote; revision may occur before final selection. KYC/KYB and participant/sanctions rules apply before payout. Do not invent universal minimum-TVL, token-launch, or US-only gates, but do not deny real track/category/participant constraints.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates eligibility, completeness prescreen, panel merits, vote/revision, and KYC stages.",
-      "States that individuals/teams may qualify while preserving real participant and track-specific constraints."
+      "Lists eligibility, prescreen, panel merits, vote, revision, and KYC as distinct stages.",
+      "States that individuals and teams may qualify under participant and track constraints."
     ],
     "avoid": [
+      "Do NOT substitute an unsupported memory claim for source-supported content.",
       "Do NOT say weak traction or unclear fit is itself the prescreen definition; those are merit/fit considerations at other stages.",
       "Do NOT invent universal TVL/token/US-only gates or claim no hard participant/category constraints exist.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
@@ -66,18 +67,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-37 primary 3296 and blind 3298; GT-36 Build-track/tranche reconciliation.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory-claim trap to avoid, and restated stage and eligibility scopes; truth unchanged.",
+        "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/scf-build/submission-review-criteria — showed current source-supported Build criteria.",
+        "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/scf-build/submission-review-criteria — showed recently updated prescreen and panel criteria for visible dating.",
+        "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — showed distinct prescreen, panel, revision, Open Track vote, and KYC stages.",
+        "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions — showed team and organization eligibility under participant and program rules.",
+        "Sibling sweep 2026-08-27: grep prescreen|panel review|community vote|KYC/KYB|participant eligibility → q-scf-eligibility-criteria, q-scf-how-to-apply, q-scf-rfp-tooling, and q-scf-submission-lifecycle-deadlines; no contradiction."
       ],
       "rootCause": [
         "Eval-side stage conflation and stale high-level prescreen summary.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-eligibility-criteria"

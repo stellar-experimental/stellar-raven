@@ -9,9 +9,11 @@
   "golden": {
     "answer": "Use the live Scout skills catalog and report **returned rows**, not its enums as a frozen roster. `scout.listSkills({})` advertises valid kind filters `skill-md`, `mcp-server`, `sdk`, `cli`, `agent-kit`, and `tool`, and valid source filters `sdf`, `stellarlight`, `lumenloop`, `external`, and `community`. Those values describe what the API accepts; they do **not** promise that every category has a current entry.\n\nFor each row actually returned, give its name/slug, kind, source/owner, install or configuration command, repository/docs URL, scope, and maturity/security caveat. Re-run filtered calls for the requested kinds and preserve an empty array honestly. Verify install commands against each current repository/package README and distinguish SDF-owned from community tooling.",
     "keyFacts": [
-      "Uses Scout's broad live skills catalog and returns concrete current rows across requested tooling kinds.",
-      "Separates valid filter enums from populated rows and treats empty categories as valid current results.",
-      "Includes row-level install/configuration, ownership, scope, URLs, and maturity caveats rather than fabricating from enum names."
+      "Uses Scout's broad live skills catalog across requested tooling kinds.",
+      "Returns concrete current rows from the catalog.",
+      "Treats valid filter enums versus populated rows as distinct catalog categories.",
+      "Accepts empty categories as valid current results.",
+      "Includes row install/config, ownership, scope, URLs, and maturity caveats."
     ],
     "avoid": [
       "Do NOT claim every valid kind/source enum currently has a row or turn one empty response into permanent absence.",
@@ -123,16 +125,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Post-QA Harvest freshness lane plus Solo Todo 1390 independent source-list reconciliation.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "C: https://stellarlight.xyz/api/skills at 2026-08-05T20:45:26.922Z returned 42 rows and six valid kinds/five valid sources; filtered kind=agent-kit and source=community each returned 0 rows, confirming that accepted filters do not promise populated categories.",
         "A/B: https://skills.stellar.org/, https://github.com/stellar/stellar-dev-skill, https://github.com/stellar/stellar-cli, and https://www.npmjs.com/package/@stellar-light/scout-mcp independently confirmed row-level ownership/install details and the need to preserve community-tool caveats.",
         "Dated uncertainty: Scout /api/status reported nine upstream SDF skills while /api/skills?source=sdf returned seven rows; no reconciliation or frozen count is inferred from those source-relative values.",
-        "Sibling sweep: q-tool-skill-detail-install remains the exact-detail lane, q-gap-scout-list-skill-directory keeps its historical roster date-scoped, and the routing-corpus q-tool-mcp-servers-skills-discovery remains the narrow MCP-only lane."
+        "Sibling sweep: q-tool-skill-detail-install remains the exact-detail lane, q-gap-scout-list-skill-directory keeps its historical roster date-scoped, and the routing-corpus q-tool-mcp-servers-skills-discovery remains the narrow MCP-only lane.",
+        "Structural re-form (negative-predicate): split three compound facts into five atomic positive facts; the existing avoid items retain enum-fabrication traps, so truth is unchanged",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/skills — Scout still exposes a broad live skills catalog across requested tooling kinds",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/skills — concrete current rows remain the catalog output",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/skills — valid filter enums versus populated rows remain distinct catalog categories",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/skills — empty categories remain valid current results",
+        "Live re-check 2026-08-27: https://skills.stellar.org/ and https://github.com/Stellar-Light/scout-mcp — returned rows still need install/config, ownership, scope, URLs, and maturity caveats",
+        "Sibling sweep 2026-08-27: grep Scout skills|validKinds|agent-kit|mcp-server → q-defi-skill-ecosystem-scout, q-scf-skill-stellar-scout; no contradiction"
       ],
       "rootCause": [
-        "freshness-recheck"
+        "freshness-recheck",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-cli-skills-discovery"

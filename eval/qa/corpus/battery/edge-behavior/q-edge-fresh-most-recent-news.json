@@ -7,15 +7,16 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-07-11, the live research search returned a 2026-06-26 LumenLoop item, `Constellations: how the Stellar ecosystem connects`, among its dated results.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Uses an explicit window/asOf, validates and labels the date field, chronologically post-sorts candidates, and excludes undated rows.",
-      "Separates recency from editorial significance.",
+      "Requires window/asOf, valid date-field labels, date-order post-sort, and dated rows only.",
+      "Treats recency and editorial significance as different criteria.",
       "States the digest is non-exhaustive."
     ],
     "avoid": [
       "Do NOT treat the top semantic hit, ingestion/scrape time, or an undated row as the newest publication/event; do not fabricate news or expose retired/non-manifest operation names.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+      "Do NOT use an unsupported memory claim as current ecosystem news."
     ],
     "notes": "GT-23 2026-07-10: require explicit window/asOf, eligible date-field validation, chronological post-sort, exclusion of undated rows, significance rationale, and non-exhaustive scope. Semantic relevance is not chronology; publication, event, ingestion, and scrape dates are distinct.\nGT-23 CORRECTION 2026-07-10: current exposed-surface wording and chronology checks replace legacy operation names and top-hit=newest assumptions."
   },
@@ -79,18 +80,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-23 primary 3264 and blind 3267; ll-006 recurrence. July 6 UNDP/SDF and July 8 P27 are illustrative, not gating.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live research search returned a 2026-06-26 LumenLoop item, `Constellations: how the Stellar ecosystem connects`, among its dated results.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (negative-predicate): tightened the dated-observation fact, moved the unsupported-memory trap to avoid, and recast the retrieval and significance requirements as atomic positive facts; no claim changed.",
+        "Live re-check 2026-08-27: https://stellar.org/blog — the current official feed presents source-owned posts with publication dates for dated observations.",
+        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the current semantic-search contract exposes date bounds and date-field labels, while similarity controls result order.",
+        "Live re-check 2026-08-27: https://stellar.org/blog — the current feed exposes a recency sort, while the question's editorial significance criterion remains separate.",
+        "Sibling sweep 2026-08-27: grep most recent|chronological post-sort|editorial significance|non-exhaustive → q-edge-fresh-latest-protocol-version and q-edge-exhaustive-defi-deep-report; no contradiction"
       ],
       "rootCause": [
         "Prior-art routing metadata leaked into gospel and a generic freshness template treated relevance rank as sufficiently recent.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-edge-fresh-most-recent-news"

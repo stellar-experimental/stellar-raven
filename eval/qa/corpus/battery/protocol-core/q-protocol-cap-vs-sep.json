@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A **CAP** specifies a proposed change to Stellar's core protocol. Acceptance/finality of a CAP is not itself network activation: the change must be implemented and validators later vote a network upgrade into effect. A **SEP** specifies ecosystem-facing interoperability or application conventions—such as anchor, wallet, auth, or asset workflows—and does not by itself change consensus rules. Check the proposal status, implementation/release state, and live network version separately.",
     "keyFacts": [
-      "Distinguishes core-protocol CAPs from ecosystem interoperability SEPs.",
+      "Treats core-protocol CAPs and ecosystem interoperability SEPs as different standards.",
       "Separates CAP proposal/acceptance, implementation, and validator activation."
     ],
     "avoid": [
@@ -56,13 +56,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited shorthand collapsed proposal/specification, implementation, and validator activation into one CAP event.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-32 primary 3281 and blind 3284."
+        "Solo scratchpad 575 GT-32 primary 3281 and blind 3284.",
+        "Structural re-form (negative-predicate): Recast the CAP-versus-SEP comparison as a positive taxonomy requirement; truth unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — the current page described SEPs as ecosystem interoperability standards and contrasted them with CAPs.",
+        "Sibling sweep 2026-08-27: grep CAPs|SEPs|CAP proposal → q-protocol-cap-process, q-protocol-cap-vs-sep, q-protocol-23-whisk-caps, and related CAP cases; no contradiction"
       ],
       "rootCause": [
-        "Eval-side proposal/implementation/activation compression."
+        "Eval-side proposal/implementation/activation compression.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-cap-vs-sep"

@@ -8,7 +8,8 @@
     "answer": "At genesis Stellar created **100 billion** units; XLM was not mined. The historical allocation plan earmarked **5% for operations, 50% for direct sign-up, 25% for nonprofit/partnership distribution, and 20% for Bitcoin/XRP holders** (later described as 19% BTC and 1% XRP). These were allocation plans, not proof that every amount was distributed on launch day. Separately, Stripe's **$3 million 2014 loan** was later repaid with **2 billion lumens**; it was not a launch-distribution bucket. The roughly 1% inflation mechanism was disabled by the validator-approved Protocol 12/CAP-0026 upgrade on 2019-10-28, and SDF's November treasury burn was a distinct later event. Do not substitute today's total or circulating supply for the 100B genesis amount.",
     "keyFacts": [
       "States 100B genesis creation without mining and the historical 50/25/20/5 allocation plan.",
-      "Separates planned allocations, Stripe loan repayment, inflation removal, treasury burn, and current supply."
+      "Treats planned allocations, Stripe loan repayment, and inflation removal distinctly.",
+      "Treats treasury burn and current supply as distinct from those three."
     ],
     "avoid": [
       "Do NOT call planned allocations fully distributed at launch or describe Stripe's 2B repayment as a launch bucket/seed allocation.",
@@ -73,13 +74,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The 100B genesis and no-mining facts are correct, but the inherited answer compressed a planned 50/25/20/5 allocation, later Stripe loan repayment, inflation removal, burn, and current supply into one distribution narrative.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-28 primary 3274 and blind 3275; independent agreement on allocation-versus-realization and Stripe distinction."
+        "Solo scratchpad 575 GT-28 primary 3274 and blind 3275; independent agreement on allocation-versus-realization and Stripe distinction.",
+        "Structural re-form (negative-predicate): split one taxonomy fact into two atomic positive facts; planned allocations, Stripe loan repayment, inflation removal, treasury burn, and current supply remain distinct, so truth is unchanged",
+        "Live re-check 2026-08-27: https://stellar.org/foundation/mandate/2017 and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0026.md — planned allocations, Stripe loan repayment, and inflation removal remain distinct events",
+        "Live re-check 2026-08-27: https://stellar.org/learn/lumens — the treasury burn and current supply remain distinct from the earlier allocation, repayment, and inflation events",
+        "Sibling sweep 2026-08-27: grep 100 billion|50/25/20/5|Stripe loan|inflation removal|treasury burn → q-hot-fee-pool-burn-deflation; no contradiction"
       ],
       "rootCause": [
-        "Eval-side launch creation, planned allocation, realized distribution, loan repayment, inflation, burn, and current-supply conflation."
+        "Eval-side launch creation, planned allocation, realized distribution, loan repayment, inflation, burn, and current-supply conflation.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-token-initial-supply-distribution"

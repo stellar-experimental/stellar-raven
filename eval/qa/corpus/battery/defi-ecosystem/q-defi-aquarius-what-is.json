@@ -9,8 +9,10 @@
   "golden": {
     "answer": "**Aquarius** is a Stellar/Soroban liquidity layer and AMM; **AQUA** is its transferable utility/reward asset. Locking AQUA creates a claimable balance and mints a non-transferable ICE-family position that melts toward unlock. Current docs distinguish **ICE** for lock/boost accounting, **upvoteICE** for liquidity-market voting, and **governICE** for DAO proposal voting; legacy downvoteICE was deprecated in June 2026. Longer locks can receive a larger multiplier.\n\nICE can boost AQUA rewards for eligible LP/SDEX activity, but simply holding ICE or casting governance votes does not guarantee/base-earn AQUA emissions; governance voting is documented as unrewarded. Aquarius is an AMM/liquidity protocol, not a lender, oracle, or bridge. Treat TVL and market-rank claims separately as live, dated metrics.",
     "keyFacts": [
-      "Identifies Aquarius as a Stellar/Soroban liquidity layer and AMM with AQUA as the transferable utility/reward asset.",
-      "Distinguishes non-transferable ICE, upvoteICE, and governICE roles and describes reward boosting as conditional on eligible LP/SDEX activity rather than guaranteed yield."
+      "Aquarius is a Stellar/Soroban liquidity layer and AMM.",
+      "AQUA is its transferable utility and reward asset.",
+      "Treats ICE, upvoteICE, and governICE as non-transferable tokens with distinct roles.",
+      "Limits AQUA reward boosts to eligible LP/SDEX activity."
     ],
     "avoid": [
       "Do NOT call ICE-family tokens transferable or collapse ICE, upvoteICE, and governICE into one governance/reward token.",
@@ -77,14 +79,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — GT-13 primary and blind reviews confirmed Aquarius' product identity but found the inherited AQUA/ICE model too coarse and its 'ICE earns AQUA emissions' key fact false as a general statement. Current docs distinguish non-transferable ICE, upvoteICE, and governICE, and make reward boosting conditional on eligible LP/SDEX activity.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575: GT-13 primary 3238 and blind 3240",
-        "Current Aquarius docs rechecked 2026-07-10; downvoteICE was deprecated in June 2026"
+        "Current Aquarius docs rechecked 2026-07-10; downvoteICE was deprecated in June 2026",
+        "Structural re-form 2026-08-27: split two long or negative key facts into four positive atomic forms; truth unchanged.",
+        "Live re-check 2026-08-27: https://docs.aqua.network/aquarius-aqua-rewards — current Aquarius documentation still describes liquidity voting and AMM reward activity.",
+        "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — AQUA remains the transferable utility and reward asset for the locking system.",
+        "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — ICE-family tokens remain non-transferable and role-specific.",
+        "Live re-check 2026-08-27: https://docs.aqua.network/ice/ice-tokens-locking-aqua-and-getting-benefits — reward boosts remain conditional on eligible markets and activity.",
+        "Sibling sweep 2026-08-27: grep Aquarius|AQUA|upvoteICE|governICE across the QA battery; no contradiction found."
       ],
       "rootCause": [
-        "eval-side token-model compression and documentation drift: specialized ICE derivatives and conditional boost mechanics were flattened into one guaranteed-emissions claim"
+        "eval-side token-model compression and documentation drift: specialized ICE derivatives and conditional boost mechanics were flattened into one guaranteed-emissions claim",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-aquarius-what-is"

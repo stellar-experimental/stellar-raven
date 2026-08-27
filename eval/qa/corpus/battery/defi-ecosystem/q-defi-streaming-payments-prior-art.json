@@ -12,7 +12,7 @@
     "answer": "Study prior art as a **dated maturity matrix**, not a bare repo list:\n\n- **SStream** — Rust create/claim/cancel stream code and SCF #16 $36K Awarded; linked UI was 404 and no public contract was verified.\n- **Tide Stream Payment / Zentra** — Rust contract/tests/frontend and SCF #23 $18.2K Awarded; frontend responded, but no mainnet contract was verified.\n- **Fluxity** — Soroban streaming contract/tests and an official SCF #21 $68K Awarded row; do not turn its internally inconsistent project aggregate into a second award; deployment remained inconclusive.\n- **Paystreme** — SCF #11 $50K Awarded proposal prior art; current public contract/source trail was not verified.\n- **ApiCharge** — substantial subscription/payment code, SCF #40 $79K Awarded, and a real pubnet contract; its custom time-subscription/x402-compatible scheme and runtime maturity must not be mislabeled canonical x402 exact.\n- **RouteDock/MPP session examples** — substantial testnet/reference channel and agent-vault work, not verified mainnet production.\n\nFor every result, show repo, official submission, UI status, contract/network, audit/source-verification status, and as-of date. Discovery does not prove production readiness.",
     "keyFacts": [
       "Returns real streaming/recurring-payment prior art with code and official provenance.",
-      "Separates funding, UI, contract/network, and production maturity for each item."
+      "Treats funding, UI, contract/network, and production maturity as per-item dimensions."
     ],
     "avoid": [
       "Do NOT invent repos or treat repository/SCF presence as current production deployment.",
@@ -95,18 +95,22 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
         "Sibling sweep: q-defi-agentic-payment-standards-compare, q-defi-x402-projects-discovery, and agentic-payment implementation cases",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for cached Scout repository recall; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/resolved.json entry sls-025 — fixed exact x402 and repository alias recall on 2026-07-14.",
-        "Sibling sweep 2026-08-27: grep SStream|Fluxity|RouteDock|recurring payments → q-defi-agentic-payment-standards-compare, q-stellar-recurring-payments; no contradiction"
+        "Sibling sweep 2026-08-27: grep SStream|Fluxity|RouteDock|recurring payments → q-defi-agentic-payment-standards-compare, q-stellar-recurring-payments; no contradiction",
+        "Structural re-form (negative-predicate): replaced the negative taxonomy verb with one positive predicate; all per-item maturity fields are unchanged.",
+        "Live re-check 2026-08-27: https://github.com/rahimklaber/SStream and https://github.com/StreamCharge/ApiCharge — current repositories still expose different code, UI, contract/network, and maturity surfaces.",
+        "Sibling sweep 2026-08-27: grep SStream|Tide|Fluxity|ApiCharge|streaming|recurring-payment → q-stellar-recurring-payments and q-defi-agentic-payment-standards-compare; no contradiction"
       ],
       "rootCause": [
         "Repository discovery was treated as deployment proof and a static handle list replaced a maturity comparison.",
         "improvements/stellar-light-scout/sls-025-agent-standard-alias-recall.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-streaming-payments-prior-art"

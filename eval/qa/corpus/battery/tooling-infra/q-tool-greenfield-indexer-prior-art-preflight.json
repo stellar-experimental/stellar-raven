@@ -10,17 +10,19 @@
   "golden": {
     "answer": "Treat this as a substantial infrastructure design, so do one bounded prior-art pass before selecting the architecture. Consult the data skill and current official indexer/event-ingestion Docs for authority, while using Scout repos/projects to compare existing roles and decide build versus integrate. Return no more than three materially distinct candidates.\n\nReturn a role-labeled shortlist rather than one undifferentiated repo list: recent RPC event polling, a ledger-data exporter such as Galexie, an ingest library, an ETL pipeline, a turnkey/narrow indexer, and a hosted-service client solve different layers. Report exact URLs, indexed activity/archive evidence, and actual role. Raven has no repo-license field, so license, audit, deployment, and compatibility stay unknown unless a source-backed result establishes them; treat candidates as study-only until direct repository inspection clears reuse. `repoScore`, stars, or rank are navigation metadata, not proof of correctness or production fitness.\n\nA concrete plan should use a checkpointed ingestion worker, durable append-only raw event/ledger storage, idempotent normalization into versioned relational/query tables, a replay/backfill path (using the appropriate historical data source rather than assuming RPC is archival), monitoring/dead-letter handling, and a serving API. RPC retention is not durable history; define cursor recovery, duplicate handling, schema/version evolution, and operational ownership. If no close turnkey implementation appears, report the search scope and compose from official ingestion patterns plus the closest maintained primitives rather than claiming no public prior art exists.",
     "keyFacts": [
-      "Performs a bounded prior-art pass for a substantial non-escrow infrastructure design before selecting architecture.",
-      "Keeps official data skills/docs authoritative while using repos/projects for role comparison and build-vs-integrate decisions.",
-      "Separates RPC polling, exporter/data lake, ingest library, ETL, indexer, and hosted client roles.",
-      "Leaves unsupported license/audit/deployment/compatibility fields unknown, blocks reuse claims until direct source inspection, and does not infer quality from ranking metadata."
+      "Selects a substantial non-escrow infrastructure design after a bounded prior-art pass.",
+      "Uses official data skills/docs as authority and repos/projects for role/build comparisons.",
+      "Names RPC polling, exporter/data lake, ingest library, and ETL roles.",
+      "Names indexer and hosted client as distinct roles.",
+      "Keeps unsupported license, audit, deployment, and compatibility fields unknown."
     ],
     "avoid": [
       "Do NOT answer only from generic data-skill patterns without checking existing Stellar indexing implementations.",
       "Do NOT call recent RPC `getEvents` polling a complete durable historical index or conflate Galexie with a serving query index.",
       "Do NOT freeze a named repository roster or treat an exact Scout zero result as proof that no public implementation exists.",
       "Do NOT infer correctness, security, license, maintenance, or production readiness from repoScore, stars, or rank.",
-      "Do NOT turn missing Raven license, audit, deployment, or compatibility fields into either a positive assertion or a global absence claim."
+      "Do NOT turn missing Raven license, audit, deployment, or compatibility fields into either a positive assertion or a global absence claim.",
+      "Do NOT claim a candidate is reusable before direct repository inspection clears reuse."
     ],
     "notes": "Non-escrow holdout for the same proactive design-stage behavior. It reuses the independently maintained truth basis of q-tool-indexer-repos-discovery but changes the user wording from an explicit repo request to an architecture/build request."
   },
@@ -122,8 +124,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-11",
-      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/data/indexers",
         "https://developers.stellar.org/docs/build/guides/events/ingest",
@@ -132,10 +134,14 @@
         "https://github.com/stellar/go-stellar-sdk/tree/main/ingest",
         "https://github.com/stellar/stellar-etl",
         "https://stellarlight.xyz/api/repos/search?q=stellar-ledger-data-indexer",
-        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
+        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
+        "https://developers.stellar.org/docs/data/indexers — live re-check 2026-08-27 confirms distinct hosted, exporter, ingest, ETL, and indexer roles.",
+        "Structural re-form 2026-08-27: preserved the bounded prior-art, authority, role taxonomy, unknown-field, inspection, and ranking claims.",
+        "Sibling sweep 2026-08-27: q-tool-indexer-repos-discovery and q-ti-self-host-retention-backfill showed no contradiction."
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "authored prior-art build-route review 2026-07-13"

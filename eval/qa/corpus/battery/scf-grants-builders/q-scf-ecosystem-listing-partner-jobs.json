@@ -12,11 +12,13 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nThese are separate workflows as of **2026-07-10**. Submit an ecosystem project through the embedded **Submit Your Project** form on Stellar's ecosystem page; inquire about service-provider participation through the current service-provider page/form, without assuming acceptance. Hackathon sponsorship is event/organizer-specific unless a named official intake exists, so use the relevant event page or Stellar connect/community channel. SDF jobs are on the Foundation careers/Ashby pages; ecosystem-company jobs belong on each company's own careers page. The **Matching Fund** is a separate Enterprise Fund co-investment path for pre-seed through Series B companies: current terms require a lead investor and term sheet, a **$200K minimum check**, **1:1 matching**, up to **$500K**, meaningful Stellar integration, and diligence. It is not SCF Build, an automatic directory listing, or a sponsorship promise.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates listing, provider, sponsorship, SDF jobs, ecosystem jobs, and Matching Fund paths."
+      "Lists distinct paths for project listing, providers, and sponsorship.",
+      "Lists distinct paths for SDF jobs, ecosystem jobs, and the Matching Fund."
     ],
     "avoid": [
+      "Do NOT substitute an unsupported memory claim for source-supported content.",
       "Do NOT promise listing/partner/sponsor acceptance or invent a universal sponsor intake.",
       "Do NOT conflate the Matching Fund with SCF Build or general Enterprise Fund outreach.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
@@ -87,7 +89,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://stellar.org/ecosystem",
         "https://stellar.org/grants-and-funding/matching-fund",
@@ -97,11 +99,18 @@
         "Sibling sweep: q-scf-vs-sdf-enterprise-fund remains claim-consistent; the consistency register does not require matched scheduling metadata.",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Matching Fund|Submit Your Project|Ashby → q-scf-ecosystem-listing-partner-jobs, q-scf-vs-sdf-enterprise-fund; no contradiction"
+        "Sibling sweep 2026-08-27: grep Matching Fund|Submit Your Project|Ashby → q-scf-ecosystem-listing-partner-jobs, q-scf-vs-sdf-enterprise-fund; no contradiction",
+        "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory-claim trap to avoid, and split the distinct workflows; truth unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/ecosystem — showed the current project-directory review form for source-supported dating.",
+        "Live re-check 2026-08-27: https://stellar.org/ecosystem — showed a current result roster and project-review intake for visible as-of dating.",
+        "Live re-check 2026-08-27: https://stellar.org/ecosystem/service-providers — showed the provider directory and its separate contact form; https://stellar.org/events/community showed event-specific community paths.",
+        "Live re-check 2026-08-27: https://stellar.org/foundation/careers — linked SDF positions to Ashby; https://stellar.org/grants-and-funding/matching-fund showed the separate matching application path.",
+        "Sibling sweep 2026-08-27: grep Matching Fund|Submit Your Project|service provider|Ashby|ecosystem jobs → q-scf-ecosystem-listing-partner-jobs and q-scf-vs-sdf-enterprise-fund; no contradiction."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-ecosystem-listing-partner-jobs"

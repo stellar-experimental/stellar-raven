@@ -10,10 +10,11 @@
   "golden": {
     "answer": "There is no single universal compliance order independent of the product, account type, asset, and jurisdiction. A practical capability-driven flow is:\n\n1. Discover the anchor's advertised services and endpoints through SEP-1 and its /info responses.\n2. When an endpoint requires authentication, use **SEP-10 for G/M accounts** or **SEP-45 for C accounts**. SEP-12 always uses the applicable JWT; SEP-6 authentication is conditional; SEP-24 protects user-data endpoints.\n3. If the client must provide KYC data directly, use **SEP-12 PUT /customer**. A SEP-24 hosted flow may collect information in the anchor UI instead.\n4. Use **SEP-6** for a programmatic deposit/withdrawal or **SEP-24** for a hosted interactive flow, according to the advertised capability.\n5. Only when the transferred classic asset is **SEP-8 regulated**, route the wallet-signed transaction to its separate approval server. SEP-8 requires **Authorization Required plus Authorization Revocable**; clawback is optional. The server signs/returns and the wallet submits.\n6. Apply the legal, licensing, AML, sanctions, custody, and disclosure obligations that attach to the actual actors, activity, route, and jurisdiction. Stellar and Anchor Platform supply technical rails; they do not transfer or guarantee regulatory compliance.\n\nAnchor Platform can implement several of these APIs, but its broad supported-SEP set is not a universal mandate for every anchor or deposit.",
     "keyFacts": [
-      "Explains that the required SEP sequence is capability-, account-, asset-, and jurisdiction-dependent.",
-      "Uses SEP-10 for G/M or SEP-45 for C when authentication is required; distinguishes SEP-12 KYC from SEP-6/24 transfer flows.",
-      "Applies SEP-8 only to regulated assets and states its Required + Revocable flags and wallet-submission flow.",
-      "Scopes legal obligations to actual actors, activities, routes, and jurisdictions rather than treating the protocol or platform as the regulated actor."
+      "Scopes the SEP sequence by capability, account, asset, and jurisdiction.",
+      "Uses SEP-10 for G/M accounts or SEP-45 for C accounts when authentication is required.",
+      "Treats SEP-12 as KYC and SEP-6/24 as transfer flows.",
+      "Uses SEP-8 only for regulated assets with Required + Revocable and wallet submission.",
+      "Scopes legal duties by actor, activity, route, and jurisdiction."
     ],
     "avoid": [
       "Do NOT scramble SEP roles.",
@@ -145,15 +146,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer turned individually valid SEP roles into one universal compliance sequence, made SEP-10 mandatory for every deposit, substituted clawback for SEP-8's Revocable requirement, and assigned all licensing burden to an entity named 'the anchor' without role or jurisdiction scope.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-07 primary and GT-08 blind reviews"
+        "Solo scratchpad 575 GT-07 primary and GT-08 blind reviews",
+        "Structural re-form (negative-predicate): split the authentication and SEP-role fact, then shortened all facts with positive predicates; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/anchors — the anchor flow remains capability-driven across several SEP services.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md — SEP-45 still supports C accounts while SEP-10 supports G and M accounts.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md — SEP-12 still defines authenticated customer-information upload through PUT /customer.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — SEP-24 still defines hosted interactive deposit and withdrawal flows.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — SEP-8 still defines the regulated-asset approval flow and Required + Revocable flags.",
+        "Live re-check 2026-08-27: https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — Travel Rule duties still depend on an institution's role in a transfer.",
+        "Sibling sweep 2026-08-27: grep SEP-45|SEP-12|SEP-8|Required + Revocable → q-sep-45-contract-auth, q-sep-12-kyc, q-sep-8-regulated-assets, q-comp-sep6-vs-sep12-roles, q-anchor-platform-what; no contradiction"
       ],
       "rootCause": [
         "Separate SEP descriptions were compressed into a false mandatory sequence.",
         "Optional clawback was substituted for SEP-8's normative Revocable flag.",
-        "Technical platform roles were generalized into categorical legal advice."
+        "Technical platform roles were generalized into categorical legal advice.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-comp-anchor-compliance-stack"

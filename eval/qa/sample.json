@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "a05744c8ed1c128bb8bdfed787f8c53b821c1f64e9ee82dfd76fd0375f55552e",
+  "corpusContentSha256": "4f642ef425e31b8a19ce96aad585961c163da7e3fc235a7e3cb88e26064ab8dc",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -711,11 +711,11 @@
       "golden": {
         "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nStart by identifying the exact venue and asset contracts/issuers. For a **classic Stellar constant-product pool**, establish the asset trustlines and pool-share trustline, submit `LiquidityPoolDeposit` with price bounds/minimums, retain the non-transferable pool shares, and later use `LiquidityPoolWithdraw` for a pro-rata redemption; classic pools charge the protocol-defined swap fee. For a **Soroban venue or vault**, review/approve the exact contract flow and verify admin/upgrades, reward contracts, oracle/keeper dependencies, lock or withdrawal queues, and current UI-contract provenance—mechanics are not interchangeable.\n\nCompare returns in separate dated components: swap-fee APR, reward-token emissions, lending/vault yield, and costs/slippage. **Impermanent loss** is LP underperformance versus simply holding the two reserve assets after their relative price changes; withdrawing realizes that relative outcome, and fees/incentives may or may not offset it. Check pool depth, volume, asset/issuer risk, contract/admin risk, oracle/keeper risk, reward-token price, lock/queue terms, and whether exits currently work. Use small test amounts. Never treat APY/TVL or withdrawals as guaranteed.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+          "Dates each source-supported roster, status, version, measurement, or current observation.",
           "Gives a venue-specific deposit/withdraw checklist.",
-          "Distinguishes classic pool-share operations from Soroban contract/vault flows.",
-          "Covers liquidity, issuer, contract/admin, oracle/keeper, reward-token, lock/queue, and withdrawal risks."
+          "Treats Classic pool-share operations and Soroban contract/vault flows as distinct.",
+          "Covers liquidity, issuer, contract/admin, oracle/keeper, and reward-token risks.",
+          "Covers lock/queue and withdrawal risks."
         ],
         "avoid": [
           "Do NOT promise returns, freeze APY/TVL, or assume all Stellar LP venues share the same deposit/withdraw mechanics.",
@@ -773,7 +773,7 @@
         ],
         "verified": {
           "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
           "evidence": [
             "Solo scratchpad 575 GT-16 primary 3244 and blind 3245",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -781,13 +781,19 @@
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
             "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-            "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share → q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no contradiction"
+            "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share → q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no contradiction",
+            "Structural re-form (negative-predicate): merged the two dating requirements, replaced the compound contrast form, and split the risk list; all claims remain unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — current built-in pool mechanics still support dated venue-specific guidance.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool — Soroban pools remain contract-defined and distinct from Classic pool-share operations.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the current guide still documents pool mechanics and liquidity-provider risk context.",
+            "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share|Soroban contract → q-asset-sdex-vs-amm and q-asset-amm-fee-reserve; no contradiction."
           ],
           "rootCause": [
             "eval-side answer completeness: correct warnings did not answer deposit/withdraw, yield comparison, or impermanent-loss mechanics",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },
         "origin": "raven-next q-defi-provide-liquidity-impermanent-loss"
@@ -804,9 +810,10 @@
       "golden": {
         "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\nUse a dated metric matrix and keep stocks and flows separate:\n\n- **SDF Q1 report (published 2026-05-07):** on-chain RWAs crossed **$2B shortly after Q1**, up from **$785M at YE2025**; Q1 stablecoin **payment volume** was **$5.5B**, +72% YoY.\n- **SDF-hosted Allium report (March 2026):** **$246M stablecoin supply**; last-12-month average monthly stablecoin transfer volume **$2.3B raw / $352M adjusted**, with the adjustment methodology stated; **67 RWA products totaling $1.4B**.\n- **rwa.xyz snapshot as of 2026-07-10:** **$3.02B distributed RWA value**, **$78.68M represented value**, **$844.13M 30-day RWA transfer volume**, **$340.86M stablecoin market cap**, and **$5.57B 30-day stablecoin transfer volume** under rwa.xyz definitions.\n\nThese numbers describe different dates, populations, stocks, and flows. Do not merge them, present them as permanent, or use them to claim an undefined 'strongest adoption story.' For a current answer, re-query and cite the source's metric definition, date, period, inclusion/exclusion scope, and raw/adjusted methodology.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+          "Uses current or dated source observations for specific claims.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Separates point-in-time supply/value/market-cap stocks from period payment/transfer-volume flows.",
+          "Treats supply, value, and market cap as point-in-time stocks.",
+          "Treats payment and transfer volumes as period flows.",
           "Flags staleness."
         ],
         "avoid": [
@@ -934,7 +941,7 @@
         ],
         "verified": {
           "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
           "evidence": [
             "eval/qa/consistency-register.json sweep 2026-07-03; deep-verification quotes/URLs in Solo scratchpad 521",
             "Solo scratchpad 575 GT-20 primary 3256 and blind 3257; current SDF/Allium/rwa.xyz metric matrix asOf 2026-07-10.",
@@ -946,7 +953,12 @@
             "Sibling sweep 2026-08-27: grep ll-009|1,700 monthly|$2.8B|Messari report → q-asset-rwa-tokenized-freshness; no contradiction",
             "Structural re-form (presentation-avoid): Reworded the historical-scalar presentation clause as a concrete false claim and preserved the adoption-superlative trap; truth is unchanged.",
             "No live re-check needed: wording-only avoid-item re-form; both trap targets are unchanged.",
-            "Sibling sweep 2026-08-27: grep $2.8B|1,700 monthly|payment volume|transfer volume → q-asset-rwa-tokenized-freshness, q-eco-stellar-rwa-stablecoin-volume; no contradiction"
+            "Sibling sweep 2026-08-27: grep $2.8B|1,700 monthly|payment volume|transfer volume → q-asset-rwa-tokenized-freshness, q-eco-stellar-rwa-stablecoin-volume; no contradiction",
+            "Structural re-form (negative-predicate): shortened the sourcing requirement and split the metric taxonomy into stock and flow facts; all claims are unchanged.",
+            "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — the current source remains a dated report for specific RWA and stablecoin observations.",
+            "Live re-check 2026-08-27: https://docs.rwa.xyz/methodology/metrics — current methodology still defines supply, value, and market-cap measures as point-in-time stocks.",
+            "Live re-check 2026-08-27: https://stellar.org/resources/institutional-infrastructure-report and https://docs.rwa.xyz/methodology/metrics — current sources still define payment and transfer volumes over periods.",
+            "Sibling sweep 2026-08-27: grep supply|market cap|payment volume|transfer volume|stock|flow → q-asset-rwa-tokenized-freshness; no contradiction"
           ],
           "rootCause": [
             "improvements/lumenloop/ll-009 — the upstream misattribution this golden inherited",
@@ -955,7 +967,8 @@
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },
         "origin": "raven-next q-eco-stellar-rwa-stablecoin-volume"
@@ -968,8 +981,10 @@
       "golden": {
         "answer": "As of **2026-07-10**, Stellar's base reserve is **0.5 XLM**. An empty, unsponsored G-account needs **1 XLM minimum balance** because the formula starts with two reserves; subentries and sponsorship change the requirement. That balance remains in the destination account. It is not a 1 XLM network activation/verification fee. Transaction inclusion fees are separate (the current minimum effective fee is 100 stroops per operation).\n\nFunding **your own** new G-address through CreateAccount can be legitimate. A request to send XLM to an unrelated address, reveal a seed, or sign something to 'unlock' existing funds is a high-risk scam pattern: do not send or disclose anything. Verify whether the destination is your account using an independently reached official wallet/support channel and Horizon. Do not adjudicate the provider's overall legitimacy without its exact URL/address and current primary evidence.",
         "keyFacts": [
-          "Distinguishes 0.5 XLM base reserve, 1 XLM empty-account minimum, and transaction fees.",
-          "Separates legitimate self-funding from a third-party unlock-payment scam pattern and keeps provider verdict conditional."
+          "Names 0.5 XLM as the base reserve and 1 XLM as the empty-account minimum.",
+          "Treats transaction fees as a third category.",
+          "Treats legitimate self-funding and third-party unlock-payment scams as different.",
+          "Keeps each provider verdict conditional."
         ],
         "avoid": [
           "Do NOT call 1 XLM the base reserve or an activation fee.",
@@ -1031,15 +1046,22 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited safety answer mislabeled the 1 XLM empty-account minimum as the base reserve and promoted a scam-pattern warning into an unsupported absolute provider verdict. Official docs, core source, and live Pubnet distinguish reserve, minimum balance, and fees.",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
           "evidence": [
             "Solo scratchpad 575 GT-21 primary 3260 and blind 3261",
-            "Sibling sweep: base-reserve, activation, sponsored-reserve, trustline, fee, and wallet-provisioning cases"
+            "Sibling sweep: base-reserve, activation, sponsored-reserve, trustline, fee, and wallet-provisioning cases",
+            "Structural re-form (negative-predicate): split two compound taxonomy facts into four atomic positive facts; both amounts, all fee and safety categories, and the conditional verdict remain unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens — current docs still state a 0.5 XLM base reserve and a 1 XLM empty-account minimum.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current docs still treat transaction fees separately from account reserves.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/create-account and https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — current sources still distinguish legitimate self-funding from third-party payment and secret-key scam patterns.",
+            "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — current guidance still requires checking the exact provider or communication before a verdict.",
+            "Sibling sweep 2026-08-27: grep 0.5 XLM|1 XLM|activation fee|empty-account|unlock-payment|base reserve → q-protocol-base-reserve-min-balance, q-pc-account-activation-not-found, and q-pc-sponsored-reserves; no contradiction"
           ],
           "rootCause": [
             "An account-minimum scalar was relabeled as base reserve and a conditional scam warning became an entity verdict.",
-            "eval-side numeric/safety authoring defect; Solo todo 935 is related freshness infrastructure but not this fact"
+            "eval-side numeric/safety authoring defect; Solo todo 935 is related freshness infrastructure but not this fact",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },
         "origin": "raven-next q-edge-1xlm-activation-fee"
@@ -1054,7 +1076,7 @@
       "golden": {
         "answer": "Treat the response as a soft-empty/not-found outcome, not as a successful empty profile and not as a transport outage. Preserve the returned 404-style status and hint, tell the user that the slug is not a published partner, and return to partner discovery for valid slugs.",
         "keyFacts": [
-          "Distinguishes the soft-empty not-found envelope from both data and service failure.",
+          "Treats the soft-empty not-found envelope, data, and service failure as different outcomes.",
           "Uses partner discovery as the recovery path for a valid published slug."
         ],
         "avoid": [
@@ -1085,16 +1107,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 coverage-closure lane (Solo process 3427)",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
           "evidence": [
             "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; getPartner on an unpublished slug returned envelope ok=false, kind soft-empty, status 404, with a directory hint.",
             "catalog/manifest.json exists and supports the behavioral golden.",
             "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (negative-predicate): recast the three-way soft-empty taxonomy as one positive atomic fact; all three outcomes are unchanged.",
+            "Live re-check 2026-08-27: https://stellarlight.xyz/api/openapi.json — current catalog provenance still defines getPartner as 404 for unknown or unpublished slugs.",
+            "Sibling sweep 2026-08-27: grep getPartner|unknown slug|partner discovery|soft-empty → q-crp-partner-detail-after-discovery, q-gap-match-partners-degrade, and q-scf-ecosystem-listing-partner-jobs; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },
         "origin": "authored 2026-07 (coverage)"
@@ -1179,8 +1205,9 @@
         "answer": "In both composites, `vertical: null` means the idea did not map to Scout's closed measurable vertical axis. It does not mean the idea has no market, competitors, prior art, demand, or funding history. Read any returned competitor, maturity, and prior-art blocks on their stated basis. Treat `gap: null` and `funding: null` as unavailable vertical-derived analyses, not zero values. In `scout.scfPitch`, evaluate the separate round block through `round.source` even when the vertical is null. Cite `generatedAt` and keep every conclusion source-relative.",
         "keyFacts": [
           "Defines a null vertical as an unmapped measurable axis, not a market-absence verdict.",
-          "Treats null gap and funding blocks as unavailable vertical-derived analyses rather than zero values.",
-          "Still inspects returned competitors, maturity, prior art, and the separate pitch-round source."
+          "Treats null gap and funding blocks as unavailable vertical-derived analyses.",
+          "Inspects returned competitors, maturity, and prior art.",
+          "Treats the pitch-round source as an independent block."
         ],
         "avoid": [
           "Do NOT claim that `vertical: null` proves the market, competition, demand, or prior art does not exist.",
@@ -1247,16 +1274,22 @@
           }
         ],
         "verified": {
-          "date": "2026-08-18",
-          "by": "Todo 1664 coverage-golden implementation",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
           "evidence": [
             "Read-only vetIdea and scfPitch probes for the same unmapped idea on 2026-08-18.",
             "catalog/manifest.json#scout.vetIdea and #scout.scfPitch define the null and round semantics.",
             "Sibling sweep: idea-vetting cases use gap results as source-relative supply evidence and do not contradict the null boundary.",
-            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
+            "Structural re-form (negative-predicate): Moved the zero-value trap to the existing avoid clause and split the returned evidence blocks; the truth is unchanged.",
+            "Live re-check 2026-08-27: catalog/manifest.json#scout.vetIdea still defines null gap and funding as unavailable vertical-derived analyses.",
+            "Live re-check 2026-08-27: catalog/manifest.json#scout.vetIdea still requires inspection of returned competitor, maturity, and prior-art blocks.",
+            "Live re-check 2026-08-27: catalog/manifest.json#scout.scfPitch still treats round.source as an independent pitch-round block.",
+            "Sibling sweep 2026-08-27: grep vertical-derived|round.source|pitch vertical across eval/qa/corpus/battery found no contradictory case."
           ],
           "rootCause": [
-            "solo://proj/80/todo/author-five-new-cove--1664"
+            "solo://proj/80/todo/author-five-new-cove--1664",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },
         "origin": "authored 2026-08 (coverage)"
@@ -1381,11 +1414,11 @@
       "golden": {
         "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-08-14, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nOn **2026-08-14**, the MoneyGram operator guide returned HTTP 200 and identified itself as **Version 1.2 · Stellar + USDC · July 2026**. Its production table stated a **15 USDC minimum**, a **950 USDC cash-in maximum**, and a **2,500 USDC cash-out maximum**. MoneyGram's live SEP-24 `/info` endpoint simultaneously advertised a **1 USDC minimum** for both directions, with the same **950 USDC cash-in maximum** and **2,500 USDC cash-out maximum**. The two official layers disagree on the minimum, so do not present either minimum as the single settled value.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+          "Presents sourced observations as current or dated.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Identifies Stellar USDC plus SEP-10/SEP-24.",
           "Treats country coverage as source-, date-, and direction-specific.",
-          "Separates corporate/broader marketing scopes."
+          "Treats corporate and broader marketing counts as distinct scopes."
         ],
         "avoid": [
           "Do NOT use the off-ramp maximum as the on-ramp maximum.",
@@ -1514,7 +1547,7 @@
         ],
         "verified": {
           "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
           "evidence": [
             "https://xramps.moneygram.com/ops/dev/stellar",
             "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
@@ -1527,12 +1560,17 @@
             "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC.",
             "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
             "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-            "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction"
+            "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction",
+            "Structural re-form (negative-predicate): Shortened the dated-source fact and recast the marketing-scope fact as a positive requirement; truth unchanged",
+            "Live re-check 2026-08-27: https://xramps.moneygram.com/ops/dev/stellar — the current guide identified SEP-10, SEP-24, Stellar USDC, dated limits, and 170+ off-ramp countries.",
+            "Live re-check 2026-08-27: https://xramps.moneygram.com/ops/dev/stellar — the current guide scoped its country count to off-ramps, consistent with treating broader marketing counts separately.",
+            "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-list-builders-discovery, q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction"
           ],
           "rootCause": [
             "freshness-drift",
             "eval-authoring: a disputed minimum remained pinned after the live official layers diverged.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },
         "origin": "raven-next q-pay-moneygram-ramps"
@@ -1708,7 +1746,7 @@
       "golden": {
         "answer": "A claimable balance is a ledger entry someone created for one or more named claimants; it is claimed in a separate operation when its conditions are met. For a non-XLM asset, the claimant must first have the matching trustline or the claim fails with a technical `op_no_trust` error. A claimable balance can be a legitimate payment flow, but an unexpected one is not proof of a reward—verify the issuer and do not follow external links or pay to unlock it.",
         "keyFacts": [
-          "Defines a claimable balance as a separate conditional ledger-entry flow.",
+          "Defines a claimable balance as a distinct conditional ledger-entry flow.",
           "Requires the matching trustline for a non-XLM claim."
         ],
         "avoid": [
@@ -1780,8 +1818,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
@@ -1790,10 +1828,14 @@
             "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
             "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
-            "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing"
+            "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+            "Structural re-form (negative-predicate): Replaced the adjective trigger with an equivalent positive taxonomy term; truth unchanged",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-0023 defined a conditional ClaimableBalanceEntry with distinct create and claim operations.",
+            "Sibling sweep 2026-08-27: grep claimable balance|ClaimableBalanceEntry|op_no_trust → q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-asset-claimable-balance, q-raph-phishing-pending-claim; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },
         "origin": "raph claimable-balance-claim-and-safety"
@@ -2113,12 +2155,12 @@
       "golden": {
         "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSCF v7 launched in **January 2026** around SCF #41. It introduced three Build tracks—Open, Integration, and RFP—plus a unified interest/referral entry, Instawards as the successor/evolution of Kickstart, and stronger mainnet/UX-readiness expectations. For payments, the launch blog's 'four-tranche' shorthand should be reconciled with current detailed mechanics: **four payments**, consisting of 10% acceptance plus **three deliverable tranches** at 20%, 30%, and 40%. v7 also described multiple post-launch growth pathways; it did **not** create one unified 'Growth track.' Current Instaward, Growth Hack, Liquidity, Marketing, and other program rules must be checked separately rather than inferred from the launch blog.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+          "Presents specific source-supported content as a current or dated observation.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "States four payments/three deliverable tranches.",
-          "Rejects a unified Growth track."
+          "States four payments/three deliverable tranches."
         ],
         "avoid": [
+          "Do NOT substitute an unsupported memory claim for source-supported content.",
           "Do NOT call acceptance a fourth deliverable milestone.",
           "Do NOT merge distinct post-launch/supporting programs into one Growth track or freeze launch shorthand as current terms.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
@@ -2180,18 +2222,23 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
           "evidence": [
             "Solo scratchpad 575 GT-36/39/40, 2026-07-10.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (negative-predicate): Shortened one source rule and moved the unified Growth trap to avoid; the truth is unchanged.",
+            "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — showed source-dated v7 content.",
+            "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — described plural post-launch growth pathways, not one unified Growth track.",
+            "Sibling sweep 2026-08-27: SCF v7|Growth track|four payments|three deliverable → q-scf-v7-changes, q-edge-scf-v7-centralization-myths, q-scf-ambassador-program, q-scf-instawards, q-scf-eligibility-criteria, q-scf-sdf-marketing-grant; no contradiction."
           ],
           "rootCause": [
             "Eval-side historical shorthand promoted into current mechanics.",
             "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]
         },
         "origin": "raven-next q-scf-v7-changes"

@@ -9,8 +9,11 @@
   "golden": {
     "answer": "Use a typed SAC/SEP-41 token client. Current direct `transfer(from: Address, to: MuxedAddress, amount: i128)` requires `from` authorization. When the contract sends its own balance, use its contract address as `from`; the immediate contract invoker is automatically authorized, so no external user signature or `authorize_as_current_contract` entry is needed for that direct token call. Explicit current-contract authorization is only for deeper calls. For allowance-based pulls use `transfer_from(spender, from, to: Address, amount)`, where spender auth and the owner's prior bounded allowance apply. Validate amount/order state, follow checks-effects-interactions, and rely on rollback for atomic failure. Current SAC/CAP-67 transfer events append the asset topic. SEP-41 is Draft, so version-qualify MuxedAddress support.",
     "keyFacts": [
-      "Uses current direct MuxedAddress transfer/from auth and automatic direct-contract invoker rule.",
-      "Separates allowance-based transfer_from and deeper authorization."
+      "`transfer` uses MuxedAddress for the direct destination.",
+      "Direct `transfer` requires authorization from `from`.",
+      "The immediate contract invoker has automatic authorization for a direct call.",
+      "`transfer_from` uses spender authorization with a prior bounded allowance.",
+      "`authorize_as_current_contract` applies to deeper calls."
     ],
     "avoid": [
       "Do NOT require ERC-20 allowance dance for every transfer, require an external signature to move the contract's own balance, or type current direct destination as plain Address."
@@ -71,13 +74,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The auth pattern was correct but the current direct-transfer destination is MuxedAddress and the explicit spec/version boundary was missing.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-42/43 blind reviews."
+        "Solo scratchpad 575 GT-42/43 blind reviews.",
+        "Structural re-form (negative-predicate): split two long facts into five atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the current direct transfer destination remains MuxedAddress",
+        "Live re-check 2026-08-27: https://github.com/stellar/soroban-examples/blob/main/token/src/contract.rs — the current token example still calls from.require_auth for direct transfer",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — the immediate contract invoker remains automatically authorized for a direct call",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — transfer_from still uses spender authorization and consumes a prior bounded allowance",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — explicit current-contract authorization still applies beyond the direct invoker call",
+        "Sibling sweep 2026-08-27: grep MuxedAddress|transfer_from|authorize_as_current_contract|direct invoker → q-sep-41-token-interface, q-sor-sep41-transfer-vs-transferfrom, q-sor-require-auth-propagation; no contradiction"
       ],
       "rootCause": [
-        "Eval-side Draft signature drift."
+        "Eval-side Draft signature drift.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-token-transfer-pattern"

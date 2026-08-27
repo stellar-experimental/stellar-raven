@@ -8,7 +8,7 @@
   "golden": {
     "answer": "There is no universal cheapest place to buy XLM: availability, spreads, withdrawal fees, payment method, identity checks, and local regulation vary by country and change often. Compare regulated providers that serve your location using the all-in quote for your amount, then verify the exact Stellar withdrawal network and any memo requirement before buying. Treat unsolicited 'discount XLM' offers as a red flag; never choose a provider from a DM alone.",
     "keyFacts": [
-      "Rejects a timeless single cheapest-provider recommendation.",
+      "Treats the cheapest provider as dependent on time and situation.",
       "Uses all-in cost and network/memo checks as comparison criteria."
     ],
     "avoid": [
@@ -83,8 +83,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Todo 972 provenance re-check; retained the behavioral golden without naming or ranking a provider",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
         "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
@@ -92,11 +92,15 @@
         "https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-scams",
         "https://www.forbes.com/advisor/investing/cryptocurrency/best-crypto-exchanges/",
         "2026-07-13 bounded web sweep found provider-specific buy/deposit guidance, not a durable universal cheapest-provider ranking; no judge-facing change warranted.",
-        "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol review"
+        "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol review",
+        "Structural re-form (negative-predicate): Recast the timeless-cheapest rejection as the same positive context-and-time requirement; truth unchanged",
+        "Live re-check 2026-08-27: https://www.forbes.com/advisor/investing/cryptocurrency/best-crypto-exchanges/ — the current comparison used a dated $1,000 scenario and provider-specific fees or spreads, not a timeless cheapest venue.",
+        "Sibling sweep 2026-08-27: grep cheapest|lowest fees|buy XLM|all-in cost → q-n3-xlm-personal-investment-advice, q-raph-buy-xlm-safely; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        "solo://proj/49/todo/golden-truth-review--972"
+        "solo://proj/49/todo/golden-truth-review--972",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raph buy-xlm-where-best-rates-fees"

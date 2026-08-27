@@ -11,12 +11,12 @@
   "golden": {
     "answer": "Use the current Stellar Lab at `lab.stellar.org` for Mainnet/Testnet/Futurenet selection; transaction build, sign, simulate and submit; contract deploy/invoke; RPC/Horizon exploration; XDR↔JSON; and saved/shareable requests. A current transaction walkthrough may say: select the network and source, **Fetch next sequence**, add `Change Trust` or another operation, then Build/Sign/Submit—but do not freeze screen coordinates or assume one wallet.\n\nCurrent signing paths include an extension wallet through the wallet kit, Ledger/hash-with-Ledger, Trezor, external signatures, and raw secret input. Prefer wallet, hardware or a separately trusted external signer. Lab's current source performs raw-secret signing in browser JavaScript. Saved Keypairs is documented for **Testnet/Futurenet only, never Mainnet**. Current guidance says saved secrets are obfuscated, not encrypted; entries saved before September 2025 may remain plaintext until re-saved. Do not treat Saved as secure custody.\n\nLab can be self-hosted, and Quickstart exposes a local `/lab` with custom endpoints, but local/self-hosted is not automatically offline or air-gapped. Hosted APIs, RPC/Horizon calls, simulation/submission and package/runtime loading use a network unless the environment is deliberately isolated and inspected. Source review does not prove a universal 'never transmits secrets' negative. For a real air gap, export unsigned XDR to a separately trusted offline/hardware signer and import only the signature/signed envelope.\n\nFor SACs, `stellar contract asset deploy` deploys the Stellar Asset Contract; `stellar contract id asset` only derives/returns the deterministic C-address. Do not claim Lab has a dedicated SAC-creation flow unless the current UI is reverified. Friendbot remains non-production Testnet funding, and a trustline does not itself credit asset units.",
     "keyFacts": [
-      "Covers current transaction/XDR/contract/RPC/Horizon/share capabilities without freezing UI coordinates.",
-      "Lists wallet-kit, hardware, external and raw-secret signer paths while preferring non-secret browser flows.",
-      "States Saved Keypairs is Testnet/Futurenet-only, obfuscated rather than encrypted, with possible pre-September-2025 plaintext entries until re-saved, and not secure custody.",
-      "Distinguishes self-hosted/local from deliberately isolated offline/air-gapped signing and avoids a universal non-egress claim.",
+      "Covers current transaction, XDR, contract, RPC, Horizon, and sharing capabilities.",
+      "Prefers non-secret browser flow across wallet-kit/hardware/external/raw-secret signers.",
+      "Calls Saved Keypairs obfuscated, with pre-September-2025 plaintext until re-saved.",
+      "Treats self-hosted/local and deliberately isolated offline/air-gapped signing as distinct.",
       "Distinguishes stellar contract asset deploy from contract id asset deterministic lookup.",
-      "Keeps Friendbot and trustline behavior network/asset-specific."
+      "Keeps Friendbot/trustlines asset-specific and Saved Keypairs Testnet/Futurenet-only."
     ],
     "avoid": [
       "Do NOT call Saved Keypairs encrypted, secure, offline, air-gapped or appropriate for a Mainnet seed; do not claim every current entry is plaintext either.",
@@ -152,7 +152,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently rejected the offline/SAC wording; blind helper 3388 was fully harvested before matrix seal.",
         "Current official Saved Keypairs guidance: obfuscated rather than encrypted; pre-September-2025 entries may remain plaintext until re-saved.",
@@ -160,12 +160,20 @@
         "Structural re-form (symmetric-caution): Added a narrow caution for the pre-fix Saved Keypairs warning; golden truth unchanged.",
         "Improvement finding read 2026-08-27: improvements/resolved.json entry sd-030; disputed claim: pre-fix Saved Keypairs guidance omitted the obfuscated-not-encrypted security boundary.",
         "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-        "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|September 2025 → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction"
+        "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|September 2025 → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction",
+        "Structural re-form (negative-predicate): tightened five facts in place while keeping the six-item migration exception; existing avoid items retain UI-freezing, encrypted/secure-custody, and universal non-egress traps, so truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab — current transaction, XDR, contract, RPC, Horizon, and sharing capabilities remain available",
+        "Live re-check 2026-08-27: https://github.com/stellar/laboratory — wallet-kit, hardware, external, and raw-secret signer paths remain present with non-secret browser flows preferred",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab/saved/keypairs — Saved Keypairs remain obfuscated, with pre-September-2025 plaintext possible until re-saved",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/quickstart — self-hosted/local Lab and deliberately isolated offline/air-gapped signing remain distinct",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks and https://developers.stellar.org/docs/tools/lab/saved/keypairs — Friendbot/trustlines remain asset-specific and Saved Keypairs remain Testnet/Futurenet-only",
+        "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|Stellar Lab|contract asset deploy → q-tool-lab-what-is, q-asset-deploy-sac-cli, q-ti-secret-key-vs-mnemonic-derivation; contradiction found: q-ti-secret-key-vs-mnemonic-derivation still calls Saved Keypairs plaintext browser storage"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-030-lab-saved-keypairs-offline-boundary.md",
         "Eval-side product/security drift: a browser-local convenience was promoted into a safe offline workflow and SAC identity was promoted into deployment.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-stellar-lab-usage-and-new-ui"

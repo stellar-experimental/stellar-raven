@@ -9,9 +9,9 @@
     "keyFacts": [
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Identifies SEP-0057 as Draft v0.3.0.",
-      "Separates its normative core from the non-normative claim-based appendix.",
-      "Explains that add_identity exists in the reference appendix and concrete OpenZeppelin implementation, not as a guaranteed stable core-token API.",
-      "Explains that technical policy enforcement does not establish legal compliance or off-chain rights."
+      "Treats the normative core and claim-based appendix as different specification layers.",
+      "`add_identity` appears in the appendix and OpenZeppelin code, outside the stable core API.",
+      "Treats legal compliance and off-chain rights as external to technical policy enforcement."
     ],
     "avoid": [
       "Do NOT claim SEP-0057 is already a final, native protocol standard.",
@@ -122,21 +122,27 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 569 Batch E, 2026-07-09; direct check of SEP-0057.",
         "Solo scratchpad 575 GT-10 primary/blind processes 3230/3232; pinned OpenZeppelin source/tests and hosted-doc conflict.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form 2026-08-27: rewrote three long or negative key facts as positive atomic forms; truth unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md — the specification still separates its minimal core from the claim-based reference architecture.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md — `add_identity` still appears outside the stable core interface.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — asset controls remain technical policy mechanisms, separate from legal and off-chain rights.",
+        "Sibling sweep 2026-08-27: grep SEP-0057|add_identity|OpenZeppelin|asset access across the QA battery; no contradiction found."
       ],
       "rootCause": [
         "Eval-side API freshness drift: absence from the minimal core trait was mistaken for nonexistence across appendix and implementation.",
         "Normative spec, non-normative reference appendix, concrete library, and stale hosted docs were conflated.",
         "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch E",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-crp-oz-rwa-erc3643-trex"

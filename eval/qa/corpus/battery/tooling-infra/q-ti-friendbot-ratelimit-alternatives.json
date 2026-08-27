@@ -14,7 +14,8 @@
       "Uses 429 Retry-After/backoff without inventing a numeric quota or evading limits.",
       "Uses fund-one-then-create-many for public Testnet and local Quickstart for hermetic CI.",
       "States that public-network Quickstart modes proxy public faucets.",
-      "Dates provider alternatives and distinguishes Futurenet and Circle test USDC from Testnet XLM."
+      "Dates provider alternatives for Testnet funding.",
+      "Treats Futurenet, Circle test USDC, and Testnet XLM as distinct resources."
     ],
     "avoid": [
       "Do NOT invent a request quota, rotate IPs, hammer retries, or automate value-changing faucet probes.",
@@ -97,14 +98,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited safety core was correct but omitted 429/backoff behavior, the official fund-one-then-create-many recipe, Quickstart's public-faucet proxy boundary, and the distinction among current provider XLM faucets, Futurenet, and Circle test USDC.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-52 primary/blind matrices independently retained safe alternatives and source-relative negative claims; blind added the operational/provider distinctions.",
-        "Sibling sweep checked q-infra-friendbot-fund-testnet, q-infra-quickstart-local-network, q-ti-testnet-usdc-faucet, and migration/CLI identity cases."
+        "Sibling sweep checked q-infra-friendbot-fund-testnet, q-infra-quickstart-local-network, q-ti-testnet-usdc-faucet, and migration/CLI identity cases.",
+        "Structural re-form (negative-predicate): split one compound taxonomy fact into two atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks — uses 429 Retry-After/backoff without inventing a numeric quota or evading limits",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks and https://developers.stellar.org/docs/tools/quickstart/faucet — uses fund-one-then-create-many for public Testnet and local Quickstart for hermetic CI",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/quickstart/faucet — states that public-network Quickstart modes proxy public faucets",
+        "Live re-check 2026-08-27: https://www.validationcloud.io/multi-chain-faucets — dates provider alternatives for Testnet funding",
+        "Live re-check 2026-08-27: https://faucet.circle.com/ and https://developers.stellar.org/docs/networks — treats Futurenet, Circle test USDC, and Testnet XLM as distinct resources",
+        "Sibling sweep 2026-08-27: grep Friendbot|Quickstart|Futurenet|test USDC|Testnet XLM → q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet, q-ti-testnet-usdc-faucet, q-n3-issues-842-backup-faucet-wallet; no contradiction",
+        "Structural re-form (compound-predicate): no keyFact change was needed because the prior atomic re-form already cleared this class; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep Friendbot|Quickstart|Futurenet|test USDC|Testnet XLM → q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet, q-ti-testnet-usdc-faucet; no contradiction"
       ],
       "rootCause": [
-        "Eval-side operational/freshness incompleteness; Friendbot 429/CI funding documentation remains a research candidate."
+        "Eval-side operational/freshness incompleteness; Friendbot 429/CI funding documentation remains a research candidate.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-friendbot-ratelimit-alternatives"

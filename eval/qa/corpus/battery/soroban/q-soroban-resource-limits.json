@@ -8,8 +8,10 @@
   "golden": {
     "answer": "Soroban limits several independent dimensions: transaction/envelope size, footprint entry counts and bytes, disk/ledger reads and writes, CPU instructions, memory, ledger-entry size, event bytes, and return-value size. The network settings are validator-controlled and can change. Enforcement is not uniformly 'during execution': declared transaction/footprint/size maxima can fail validation or preflight, while actual instruction, memory, I/O, event, and return usage can fail when the invocation is applied. Many resources also have ledger-wide budgets, but not every transaction resource has a one-for-one ledger analogue—for example, current configuration has a transaction memory cap without a separate ledger memory cap. Simulate and inspect the target network rather than freezing values.",
     "keyFacts": [
-      "Names the multidimensional limits including event, return, entry-size, footprint, I/O, CPU, memory, and transaction size.",
-      "Distinguishes validation/preflight from apply-time enforcement and says many, not all, resources have ledger aggregates."
+      "Names event, return, entry-size, footprint, I/O, CPU, and memory limits.",
+      "Includes transaction/envelope size among Soroban resource limits.",
+      "Treats validation/preflight and apply-time enforcement as different phases.",
+      "Ledger aggregates cover many transaction resources."
     ],
     "avoid": [
       "Do NOT reduce limits to one gas scalar or freeze network numbers.",
@@ -72,18 +74,26 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-47 primary 3327 and valid blind 3334; blind independently rejected the execution-only/every-resource-ledger-cap absolutes.",
         "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-024; the Soroban resource-limit facts are unchanged.",
         "No live recheck was required for this pure symmetric-caution re-form.",
         "Improvements review 2026-08-27: improvements/resolved.json entry sd-024 records the 2026-07-31 Docs fix; the disputed claims are retired resource-XDR fields and execution-only failure wording in older copies.",
-        "Sibling sweep 2026-08-27: grep sd-024|diskReadBytes|refundableFee|Soroban resource → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction"
+        "Sibling sweep 2026-08-27: grep sd-024|diskReadBytes|refundableFee|Soroban resource → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction",
+        "Structural re-form (negative-predicate): split two long compound facts into four atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still lists event, return, entry, footprint, I/O, CPU, and memory limits",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — transaction/envelope size remains a Soroban resource dimension",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still describes validation and apply-time enforcement as different phases",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md — CAP-0046-07 still defines ledger aggregates for many resources and only a transaction memory cap",
+        "Sibling sweep 2026-08-27: grep resource limits|ledger aggregate|memory cap|simulateTransaction → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): removed the added \"memory as an exception\" claim (no notes receipt); truth unchanged versus HEAD."
       ],
       "rootCause": [
         "Eval-side resource taxonomy flattened validation, pre-execution, and apply-time enforcement into one phase.",
         "improvements/stellar-docs/sd-024-transaction-resource-xdr-drift.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-resource-limits"

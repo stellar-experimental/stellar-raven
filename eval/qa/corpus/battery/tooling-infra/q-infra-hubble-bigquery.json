@@ -9,10 +9,10 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nHubble is SDF's public, read-only Stellar historical analytics dataset in BigQuery. The canonical project/dataset path is `crypto-stellar.crypto_stellar`, usable from the BigQuery UI, SDKs, SQL tools, and Looker-style analytics. It is for bulk historical queries, not transaction submission or low-latency current-state reads. Current docs describe intraday batch updates but no guaranteed same-day cadence, so date exact table/schema/freshness claims and do not call it real time.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names the public BigQuery dataset path and historical analytics workload.",
-      "Rejects real-time/submission use.",
+      "Defines Hubble as read-only historical analytics.",
       "Qualifies cadence/schema freshness."
     ],
     "avoid": [
@@ -101,8 +101,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-49 primary 3335 and blind 3341.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-infra-hubble-vs-rpc-layer",
@@ -113,11 +113,16 @@
         "Solo scratchpad 575 GT-49 primary 3335 and blind 3341; deduped to sd-023.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (negative-predicate): Shortened a sourcing fact and replaced a negative use restriction with its positive workload definition; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble — showed a public historical BigQuery dataset for analytic workloads.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble — showed that Hubble is read-only and cannot submit transactions or serve real-time retrieval.",
+        "Sibling sweep 2026-08-27: grep crypto-stellar.crypto_stellar|Hubble|intraday batches → q-crp-export-tx-history-taxes, q-infra-hubble-bigquery, q-infra-which-indexer, q-ti-compute-token-lp-market-data, q-ti-enumerate-all-contracts, q-ti-historical-pointintime-balances; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-infra-hubble-bigquery"

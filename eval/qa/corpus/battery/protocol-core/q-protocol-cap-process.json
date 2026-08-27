@@ -7,10 +7,11 @@
   "golden": {
     "answer": "A proposed core-protocol change starts with public discussion, then a markdown CAP PR under `stellar/stellar-protocol/core/` in **Draft**. After iteration it moves to **Awaiting Decision** and CAP Core Team review. The decision is branched: the Final Comment Period can lead to acceptance or rejection, while concerns can return it to Draft. **Accepted** is a specification decision, not deployment. The current registry workflow continues through **Implemented** and **Final**; `Implementation Review` is no longer a status. Those labels remain separate from network activation: validators configure scheduled upgrade proposals and SCP externalizes agreement through quorum sets under FBA, not a global node-count majority or XLM-holder vote. Testnet and Mainnet can activate at different times. CAPs define Core/protocol behavior; **SEPs** specify ecosystem interoperability conventions and do not by themselves change consensus rules.",
     "keyFacts": [
-      "Describes Draft, Awaiting Decision, acceptance/rejection FCP branches, and possible return to Draft.",
-      "Uses the current Draft → Awaiting Decision → FCP → Accepted → Implemented → Final workflow, with rejection and return-to-Draft branches.",
-      "Separates normative status/finalization, code implementation/release, and per-network SCP activation.",
-      "Uses quorum-set/FBA semantics and distinguishes CAPs from SEPs and token-holder votes."
+      "Describes Draft, Awaiting Decision, FCP accept or reject, and return to Draft.",
+      "Uses Draft → Awaiting Decision → FCP → Accepted → Implemented → Final.",
+      "Treats CAP status, implementation, release, and SCP activation as distinct stages.",
+      "Uses quorum-set/FBA semantics for network activation.",
+      "Treats CAPs, SEPs, and token-holder votes as distinct governance concepts."
     ],
     "avoid": [
       "Do NOT claim the process is an unconditional Draft-to-Final line or that Implementation Review is a current status.",
@@ -96,16 +97,25 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Current stellar-protocol core/README.md workflow observed 2026-08-04; independent Todo 1347 verifier c3625.",
         "2026-07-11 author re-check against stellar-protocol fbf05c9d CAP process and live P27/CAP-0071 counterexample.",
         "Structural re-form (presentation-avoid): Reworded two false claims and deleted an omission rule already enforced by key facts; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep Awaiting Decision|Implementation Review|Draft-to-Final|CAP process → q-protocol-cap-process only; no sibling contradiction"
+        "Sibling sweep 2026-08-27: grep Awaiting Decision|Implementation Review|Draft-to-Final|CAP process → q-protocol-cap-process only; no sibling contradiction",
+        "Structural re-form (negative-predicate): Shortened two lifecycle facts, recast one stage comparison, and split the governance fact; duplicated branch claims remain in the first fact, so truth is unchanged",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — the CAP workflow included Draft, Awaiting Decision, acceptance or rejection FCP, and return to Draft.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — the primary workflow continued through Accepted, Implemented, and Final.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — validator activation required a scheduled upgrade vote after implementation.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP used quorum sets and federated voting semantics.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — SEPs defined ecosystem standards above the network, unlike core-protocol CAPs.",
+        "Sibling sweep 2026-08-27: grep Awaiting Decision|Implementation Review|CAP process|FCP → q-protocol-cap-process; grep CAPs|SEPs → q-protocol-cap-vs-sep and related protocol cases; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): restored explicit FCP acceptance/rejection branches; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "Eval-side lifecycle drift and governance-layer collapse; the golden retained retired Implementation Review status.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-cap-process"

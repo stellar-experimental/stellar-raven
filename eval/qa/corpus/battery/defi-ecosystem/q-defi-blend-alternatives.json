@@ -8,8 +8,10 @@
   "golden": {
     "answer": "As of **2026-07-10**, Blend is a major Stellar lending primitive, but there is no source basis for grading it as the timeless \"dominant\" or \"near-single\" lender. Compare alternatives by category and label status by source:\n- **Direct lending designs:** Slender, Laina, K2 Lend, and Peridot are relevant candidates, but their deployment labels are not uniform. Scout marks Slender Inactive and Laina/K2 Live, while operator surfaces describe Slender as still accessible, Laina as early/testnet, and K2 as coming soon. Report the conflict and date rather than declaring all three Live.\n- **Built on or routing into Blend:** YieldBlox is a Blend money-market/pool; DeFindex is vault/yield-routing infrastructure. They are not independent base-protocol substitutes.\n- **Adjacent credit:** OrbitCDP, EquitX, and Templar are CDP, synthetic-asset, or cross-chain/cypher-lending systems rather than like-for-like isolated Soroban money markets. OrbitCDP's Scout and operator lifecycle labels also conflict.\n\nA useful answer names real projects, distinguishes these categories, and rechecks current operator plus directory evidence before asserting availability.",
     "keyFacts": [
-      "Names real Stellar lending/credit candidates but distinguishes direct lenders from Blend-built pools, yield routers, CDPs, and synthetic or cross-chain systems.",
-      "Treats lifecycle and market-rank claims as dated and source-relative where Scout and operator surfaces conflict."
+      "Names real Stellar lending and credit candidates.",
+      "Treats direct lenders, Blend-built pools, and yield routers as different categories.",
+      "Treats CDPs and synthetic or cross-chain systems as different categories.",
+      "Treats lifecycle and market-rank claims as dated, source-relative claims."
     ],
     "avoid": [
       "Do NOT call Slender, Laina, K2 Lend, OrbitCDP, or any other candidate unqualifiedly Live/Inactive when current directory and operator surfaces conflict.",
@@ -81,15 +83,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — GT-14 primary and blind golden-truth reviews (Solo 3239/3242, 2026-07-10) independently found that the inherited answer freezes unsupported market dominance and mixes direct lenders with Blend pools, routers, CDPs, and synthetic-asset systems. Current Scout lifecycle labels also conflict with several operators' own deployment language, so the correction preserves the conflict instead of choosing a winner.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575: GT-14 process 3239 matrix and independent blind process 3242 report",
-        "Direct operator/repository re-walk 2026-07-10 for Blend, Slender, Laina, K2 Lend, YieldBlox, DeFindex, OrbitCDP, EquitX, Peridot, and Templar"
+        "Direct operator/repository re-walk 2026-07-10 for Blend, Slender, Laina, K2 Lend, YieldBlox, DeFindex, OrbitCDP, EquitX, Peridot, and Templar",
+        "Structural re-form (negative-predicate): split two long compound key facts into four positive atomic facts; truth unchanged.",
+        "Live re-check 2026-08-27: https://github.com/code-423n4/2026-04-k2 — current code and documentation still identify a Stellar lending candidate.",
+        "Live re-check 2026-08-27: https://slender.fi/ — the current operator page still identifies Slender as a Stellar lending protocol.",
+        "Live re-check 2026-08-27: https://docs.defindex.io/defi-developers/03-how-to-create-a-strategy — DeFindex still documents a vault strategy that routes into Blend.",
+        "Live re-check 2026-08-27: https://docs.orbitcdp.finance/protocol-overview/whitepaper — Orbit still describes a CDP system that uses Blend.",
+        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — current Scout guidance still requires live, source-grounded ecosystem checks.",
+        "Sibling sweep 2026-08-27: grep Blend|Slender|DeFindex|OrbitCDP → q-defi-blend-what-is, q-defi-defindex-honest, q-eco-defi-market-map; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): removed the added qualifier \"adjacent credit\"; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "eval-side freshness/authoring: volatile directory lifecycle labels and an unsupported dominance judgment were promoted to durable grading facts",
-        "service-improvement candidate recorded by the 2026-07-10 golden audit: project lifecycle labels need operator-conflict provenance"
+        "service-improvement candidate recorded by the 2026-07-10 golden audit: project lifecycle labels need operator-conflict provenance",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-blend-alternatives"

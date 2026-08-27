@@ -9,9 +9,11 @@
   "golden": {
     "answer": "For Manage Sell Offer and Manage Buy Offer, `offer_id=0` requests creation; a nonzero ID updates an existing offer; setting sell `amount=0` or buy `buy_amount=0` deletes it. Save the submitted transaction hash and operation index, then decode the transaction **result XDR/meta**: CREATED and UPDATED carry the resulting `OfferEntry`; DELETED carries no entry; claimed offers explain executions during the operation. If an order fills immediately, Core may store no offer and allocate no real offer ID, while Horizon trade resources can expose a synthetic operation-derived ID.\n\nReconcile three surfaces:\n1. transaction result/meta for the authoritative create/update/delete transition and claimed offers;\n2. current `/accounts/{id}/offers` or `/offers/{id}` for an open remainder;\n3. `/trades` and `/offers/{id}/trades`, with cursor pagination/reconnect handling, for fill history. Correlate path-payment operations and trade/claim atoms because path payments can consume SDEX liquidity.\n\nDo not rely on Horizon offer-created/updated/removed effects: current `stellar/go` marks those effect types unused, and a live successful update returned no effects even though result XDR contained the updated offer. A missing offer can reflect immediate/full execution or explicit deletion/cancellation; **Classic offers do not expire at the protocol level**. Distinguish client-scheduled cancellation and Horizon retention limits from offer expiry.",
     "keyFacts": [
-      "Explains create/update/delete parameters and parses transaction result XDR/meta for the authoritative lifecycle transition and claimed offers.",
-      "Separates current open-offer state from trade history, including immediate fills and synthetic trade IDs.",
-      "Handles path-payment consumption, cursor pagination/reconnects, and explicitly states Classic offers do not expire."
+      "Explains create/update/delete offer parameters.",
+      "Parses authoritative lifecycle transitions and claimed offers from result XDR/meta.",
+      "Covers current offer state, trade history, immediate fills, and synthetic trade IDs.",
+      "Handles offer consumption by path payments and cursor pagination/reconnects.",
+      "States Classic protocol offer persistence."
     ],
     "avoid": [
       "Do NOT rely on unused Horizon offer-created/updated/removed effects to recover offer IDs.",
@@ -95,15 +97,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — The inherited bot flow invented offer expiry and relied on Horizon offer-created/updated/removed effects that current stellar/go marks unused. Independent source and live-operation checks show lifecycle transitions in transaction result XDR/meta, current offer state, and trade history; immediate fills may use synthetic trade IDs.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-17 primary process 3247 and blind process 3248, including live operation 272376861589106689 and offer/trade reads asOf 2026-07-10.",
-        "Sibling sweep: q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-defi-arbitrage-pathpayment-bots, q-asset-sdex-vs-amm, and q-defi-market-making-kelp."
+        "Sibling sweep: q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-defi-arbitrage-pathpayment-bots, q-asset-sdex-vs-amm, and q-defi-market-making-kelp.",
+        "Structural re-form (negative-predicate): split three compound key facts into five single-predicate facts and replaced the negative expiry wording; lifecycle truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x — ManageSellOffer parameters still encode create, update, and delete behavior.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — current operation documentation still points lifecycle interpretation to transaction results and metadata.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/offers — current offers and offer trades remain separate Horizon surfaces.",
+        "Live re-check 2026-08-27: https://github.com/stellar/go — current stellar/go remains the implementation source for immediate-fill and synthetic-trade-ID behavior.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools and https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x — path payments consume offers, and Classic OfferEntry has persistent state without an expiry field.",
+        "Sibling sweep 2026-08-27: grep Manage Buy|Manage Sell|offer_id|claimed offers|synthetic trade → q-asset-sdex-vs-amm, q-defi-market-making-kelp, and q-sor-classic-dex-from-contract; no contradiction."
       ],
       "rootCause": [
         "Stale documentation and generic API-absence caveats were promoted over current implementation behavior and invented protocol expiry.",
-        "eval-side lifecycle authoring lacked an empirical transaction/result/effects check"
+        "eval-side lifecycle authoring lacked an empirical transaction/result/effects check",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-sdex-offer-lifecycle"

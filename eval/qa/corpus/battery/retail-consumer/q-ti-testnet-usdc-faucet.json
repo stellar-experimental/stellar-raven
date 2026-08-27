@@ -10,11 +10,11 @@
   "golden": {
     "answer": "Friendbot creates/funds a Testnet account with fake **XLM only**; it is not a USDC faucet. First ensure the Testnet account exists and has enough XLM for its base reserve, then establish a trustline to the current Circle-issued Testnet USDC asset. A trustline only permits holding the asset—it does not credit any USDC.\n\nAs of **2026-07-11**, Circle Faucet supported Stellar Testnet and the classic USDC issuer was `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`. The UI observation of 20 test USDC per address/chain per two hours is volatile and is not a grading requirement; recheck issuer, chain support, amount and cooldown before use. A Circle faucet payment is separate from Friendbot, and an SDF/Lab path-payment demo is another distinct distribution path.\n\nFor classic accounts, identify USDC by code plus issuer/trustline. Its deterministic SAC C-address is the contract bridge for the same classic asset, not a second issuer or a wrapped token. Use only Testnet endpoints/assets and never represent faucet units as redeemable Mainnet value. Maintenance verification should inspect public issuer/service data without calling a faucet.",
     "keyFacts": [
-      "Friendbot funds fake Testnet XLM, not USDC.",
-      "A correct classic USDC trustline and XLM/base reserve are prerequisites, but the trustline does not credit balance.",
+      "Identifies Friendbot funding as fake Testnet XLM.",
+      "Requires the correct classic USDC trustline plus XLM for the base reserve.",
       "Dates Circle Testnet issuer, faucet amount, plus cooldown to an observation date.",
-      "Separates Circle faucet payment, Lab path-payment demo, classic issuer/trustline and deterministic SAC representation.",
-      "States test units are non-production/non-redeemable and audit probes must not invoke the faucet."
+      "Treats Circle faucet payment and Lab path-payment demo as distinct distribution paths.",
+      "Treats classic issuer/trustline and deterministic SAC as distinct representations."
     ],
     "avoid": [
       "Do NOT say Friendbot sends USDC, that a trustline creates a balance, or use a Mainnet/wrong-network issuer.",
@@ -113,7 +113,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently retained the core and required freshness/source precision; helper 3388 was harvested before seal.",
         "Sibling sweep checked Friendbot/faucet-rate-limit, trustline/SAC, Lab and Testnet→Mainnet cases; no sibling treats a trustline as balance or Circle faucet as Friendbot.",
@@ -122,11 +122,18 @@
         "Live re-check 2026-08-27: https://faucet.circle.com/ — listed Stellar Testnet and its current faucet limits.",
         "Sibling sweep 2026-08-27: grep Friendbot|Circle Faucet|testnet USDC → q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui, q-tool-lab-what-is; no contradiction",
         "Owner correction 2026-08-27: merged the dated-issuer and volatile-non-gate facts into one dated-observation fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
-        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged."
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged.",
+        "Structural re-form (negative-predicate): expressed the funding, trustline, distribution-path, and issuer/SAC boundaries as five atomic positive facts; existing avoid items retain the USDC, balance-credit, test-value, and no-probe traps, so truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks — Friendbot funding remains fake Testnet XLM",
+        "Live re-check 2026-08-27: https://developers.circle.com/stablecoins/quickstart-transfer-usdc-stellar — the correct classic USDC trustline plus XLM reserve remain prerequisites",
+        "Live re-check 2026-08-27: https://faucet.circle.com/ and https://developers.stellar.org/docs/tools/lab — Circle faucet payment and the Lab path-payment demo remain distinct distribution paths",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the classic issuer/trustline and deterministic SAC remain distinct representations of one asset",
+        "Sibling sweep 2026-08-27: grep Friendbot|Circle Faucet|testnet USDC|deterministic SAC → q-ti-friendbot-ratelimit-alternatives, q-tool-cctp-stellar-integration, q-tool-lab-what-is; no contradiction"
       ],
       "rootCause": [
         "Plain golden freshness drift: an external issuer/faucet/service limit was tagged static even though the durable protocol distinction remained correct.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-testnet-usdc-faucet"
