@@ -363,6 +363,26 @@ First-pair mechanism review:
 
 The required first-pair stop fired. B1-2, A2, and all judging were cancelled before spend.
 
+## Preservation revalidation — 2026-08-27
+
+Checked commit: `67b41b5`.
+
+Each command below returned exit code `0`. The text after the arrow is the exact observed terminal summary.
+
+- `npm ci` → `added 310 packages, and audited 311 packages in 6s`; npm also reported `4 high severity vulnerabilities`.
+- `npm run typegen` → `✨ Types written to env.d.ts`.
+- `npm run typecheck` → `tsc --noEmit` returned no diagnostic.
+- `npm test` → `Test Files  89 passed (89)` and `Tests  1365 passed (1365)`.
+- `npm run build` → `Total Upload: 6959.88 KiB / gzip: 1398.10 KiB` and `--dry-run: exiting now.`
+- `npm run test:smoke` → `Test Files  4 passed (4)` and `Tests  82 passed (82)`.
+- `npm run eval:selftest` → `self-test: all checks passed`.
+- `npm run eval:compile` → `compiled 338/395 legacy routing cases (281 with expected_any)` and `extended lane: 122/144 net-new 538-corpus cases (118 with expected_any)`.
+- `npm run eval:qa:compile` → `cases.json (499 cases; sha256 ddeddcffdca21ceb7d77a278433bdf11556cc9c8310243fd988a49f3cf499552)` and `sample.json (30 cases)`.
+- `npm run eval:qa:lint -- --stale` → `[lint-corpus] 0 error(s), 475 warning(s)`.
+- `npm run eval:routing -- --gate` → `GATE PASS` against the committed `2026-08-27T16:40:00.000Z` baseline.
+
+The generated files remained byte-identical. `git status --short` returned no output after revalidation.
+
 ## Outcome
 
 Reject candidate `1f961ab1116bb23f97c32b14502401ccb2441be7` under the preregistered rules.
