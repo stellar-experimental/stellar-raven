@@ -41,7 +41,11 @@
  *                      (corpus/live/live-digest-supplement-cases.json); run separately.
  *   --model name       answering-agent model (default claude-sonnet-5)
  *   --judge-model name judge model (default judge.mjs JUDGE_MODEL)
- *   --judge-panel N    opt-in 2- or 3-call judge panel (default 1)
+ *   --judge-panel N    force a 2- or 3-call judge panel. The default tier
+ *                      starts with one call and can escalate to three.
+ *   --max-panel-cases N cap boundary-triggered panels (default 10, or
+ *                      QA_MAX_PANEL_CASES). Stability-triggered panels do
+ *                      not consume this cap.
  *   --surface name     search-execute (default) | per-operation. The latter
  *                      starts the isolated stdio proxy harness for the
  *                      manifest's 59 operations and still uses the existing
@@ -70,10 +74,16 @@ import {
   hasSuccessfulAnswer,
   isRetryableJudgeError,
   judgeCase,
-  judgeCasePanel,
+  judgeCaseTiered,
+  createPanelCaseBudget,
+  DEFAULT_MAX_PANEL_CASES,
   JUDGE_MODEL,
   JUDGE_RUBRIC
 } from "./judge.mjs";
+import {
+  JUDGE_STABILITY_THRESHOLD,
+  loadJudgeStabilityRegister
+} from "./judge-stability.mjs";
 import { verifySourceCases } from "./re-judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
@@ -165,6 +175,15 @@ export function parseJudgePanel(value) {
     throw new Error(`--judge-panel must be 2 or 3, got ${value}`);
   }
   return panelSize;
+}
+
+export function parseMaxPanelCases(value) {
+  if (value === undefined || value === "") return DEFAULT_MAX_PANEL_CASES;
+  const maxPanelCases = Number(value);
+  if (!Number.isInteger(maxPanelCases) || maxPanelCases < 0) {
+    throw new Error(`--max-panel-cases must be a non-negative integer, got ${value}`);
+  }
+  return maxPanelCases;
 }
 
 export function qaMeasurementMetrics(rows, compiledCases) {
@@ -265,6 +284,14 @@ export function sourceIdentityGuard(before, after) {
   return changedKeys.length ? { matches: false, changedKeys } : { matches: true };
 }
 
+export function collectionGitStatus(status) {
+  if (status === null) return null;
+  return status
+    .split("\n")
+    .filter((line) => line && line !== "?? eval/qa/judge-stability.json")
+    .join("\n");
+}
+
 export function sourceIdentity(serverRevision) {
   const repoRoot = path.resolve(QA_DIR, "..", "..");
   const statusResult = spawnSync(
@@ -272,7 +299,9 @@ export function sourceIdentity(serverRevision) {
     ["status", "--porcelain=v1", "--untracked-files=all"],
     { cwd: repoRoot, encoding: "utf8" }
   );
-  const status = statusResult.status === 0 ? String(statusResult.stdout) : null;
+  const status = statusResult.status === 0
+    ? collectionGitStatus(String(statusResult.stdout))
+    : null;
   const fileSha256 = (name) => sha256(readFileSync(path.join(QA_DIR, name), "utf8"));
   const qaImplementationRecords = readdirSync(QA_DIR)
     .filter((name) => name.endsWith(".mjs"))
@@ -462,7 +491,14 @@ async function preflight(port, { surface, searchTool, plainSurface }) {
  */
 export async function judgeStoredResults(
   resultsPath,
-  { judgeModel = JUDGE_MODEL, judgePanel = 1, judge = judgeCase, log = console.log } = {}
+  {
+    judgeModel = JUDGE_MODEL,
+    judgePanel = 1,
+    judge = judgeCase,
+    maxPanelCases = DEFAULT_MAX_PANEL_CASES,
+    stabilityRegister = loadJudgeStabilityRegister(),
+    log = console.log
+  } = {}
 ) {
   const sourceText = readFileSync(resultsPath, "utf8");
   const results = JSON.parse(sourceText);
@@ -543,6 +579,7 @@ export async function judgeStoredResults(
         provenance: "recorded-before-judge-stored-v2"
       }));
   const paidIds = [];
+  const panelBudget = createPanelCaseBudget(maxPanelCases);
   const sourceResultsSha256 = priorJudgeStored.sourceResultsSha256 ?? sha256(sourceText);
   const initiallyJudgedIds = judgeAttempts
     .filter((attempt) => attempt.outcome !== null)
@@ -551,6 +588,14 @@ export async function judgeStoredResults(
     meta.judgeModel = judgeModel;
     meta.judgeRubric = JUDGE_RUBRIC;
     if (judgePanel > 1) meta.judgePanel = judgePanel;
+    meta.judgeTiering = {
+      policy: judgePanel > 1 ? "forced-panel" : "stability-boundary-v1",
+      stabilityThreshold: JUDGE_STABILITY_THRESHOLD,
+      stabilityRegisterStatus: stabilityRegister.status,
+      stabilityRegisterReason: stabilityRegister.reason ?? null,
+      maxPanelCases,
+      boundaryPanelCases: panelBudget.boundaryPanelCases
+    };
     Object.assign(meta, costTotals(results.rows, judgeAttempts));
     Object.assign(meta, qaMeasurementMetrics(results.rows, identity.caseById));
     meta.judgeStored = {
@@ -590,7 +635,8 @@ export async function judgeStoredResults(
     };
   }
   log(
-    `judge-stored: ${resultsPath} · ${unjudged.length}/${results.rows.length} unjudged row(s) · judge ${judgeModel}${judgePanel > 1 ? ` panel ${judgePanel}` : ""}`
+    `judge-stored: ${resultsPath} · ${unjudged.length}/${results.rows.length} unjudged row(s) · ` +
+    `judge ${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`
   );
 
   // Stamp the judge tuple BEFORE the first paid call so a crash-resume with a
@@ -633,20 +679,29 @@ export async function judgeStoredResults(
       judgeAttempts.push(attempt);
       // The attempt and judge tuple must reach durable storage before spend.
       writeState({ withSummary: false });
-      row.verdict = await judgeCasePanel(
+      row.verdict = await judgeCaseTiered(
         { ...kase, candidateAnswer: row.answer, transcript: row.transcript, transcriptEvidence },
-        { model: judgeModel, panelSize: judgePanel, judge }
+        {
+          model: judgeModel,
+          judgePanel,
+          judge,
+          stabilityRegister,
+          panelBudget
+        }
       );
       attempt.completedAt = new Date().toISOString();
       attempt.outcome = row.verdict.score ?? "error";
       attempt.costUsd = Number.isFinite(row.verdict.costUsd) ? row.verdict.costUsd : null;
-      if (judgePanel > 1) {
-        attempt.reportedCostCount = verdictReportedCostCount(row.verdict);
-      }
+      attempt.callCount = verdictCallCount(row.verdict);
+      attempt.reportedCostCount = verdictReportedCostCount(row.verdict);
       paidIds.push(row.id);
       // Persist after every judged row: a crash on row N keeps rows 1..N-1's
       // paid verdicts on disk (the run resumes as judge-all-unjudged).
       writeState({ withSummary: true });
+      log(
+        `${row.id} → ${row.verdict.score} · ${row.verdict.meta?.judgeTierUsed ?? "single"}` +
+        `${row.verdict.meta?.escalationReason ? ` (${row.verdict.meta.escalationReason})` : ""}`
+      );
     } else {
       // Mirror the inline no-answer verdict exactly.
       row.verdict = buildAgentErrorVerdict(row.agent?.failure);
@@ -673,7 +728,10 @@ async function main() {
     if (args.includes("--no-judge")) throw new Error("--judge-stored and --no-judge are contradictory");
     const { summary, metrics } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
       judgeModel: argVal("--judge-model") ?? JUDGE_MODEL,
-      judgePanel: parseJudgePanel(argVal("--judge-panel"))
+      judgePanel: parseJudgePanel(argVal("--judge-panel")),
+      maxPanelCases: parseMaxPanelCases(
+        argVal("--max-panel-cases") ?? process.env.QA_MAX_PANEL_CASES
+      )
     });
     console.log("\n" + formatSummaryTable(summary));
     console.log(formatMeasurementMetrics(metrics));
@@ -693,6 +751,11 @@ async function main() {
   const model = argVal("--model") ?? AGENT_MODEL;
   const judgeModel = argVal("--judge-model") ?? JUDGE_MODEL;
   const judgePanel = parseJudgePanel(argVal("--judge-panel"));
+  const maxPanelCases = parseMaxPanelCases(
+    argVal("--max-panel-cases") ?? process.env.QA_MAX_PANEL_CASES
+  );
+  const stabilityRegister = loadJudgeStabilityRegister();
+  const panelBudget = createPanelCaseBudget(maxPanelCases);
   const noJudge = args.includes("--no-judge");
   const serverRevision = assertPinnedServerRevision(argVal("--server-revision"));
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
@@ -713,7 +776,7 @@ async function main() {
 
   const preflightResult = await preflight(port, { surface, searchTool, plainSurface });
   console.log(
-    `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${cases.length} cases · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` panel ${judgePanel}` : ""}`}`
+    `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${cases.length} cases · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`}`
   );
 
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "qa-mcp-"));
@@ -746,9 +809,15 @@ async function main() {
       let verdict = null;
       if (!noJudge) {
         verdict = successfulAnswer
-          ? await judgeCasePanel(
+          ? await judgeCaseTiered(
               { ...c, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
-              { model: judgeModel, panelSize: judgePanel, judge: judgeCase }
+              {
+                model: judgeModel,
+                judgePanel,
+                judge: judgeCase,
+                stabilityRegister,
+                panelBudget
+              }
             )
           : buildAgentErrorVerdict(run.failure);
       }
@@ -786,7 +855,9 @@ async function main() {
         durationMs
       });
       console.log(
-        `${verdict ? verdict.score : "answered"} (${run.transcript.length} tool calls, ${Math.round(durationMs / 1000)}s)`
+        `${verdict ? verdict.score : "answered"}` +
+        `${verdict?.meta?.judgeTierUsed ? ` [${verdict.meta.judgeTierUsed}${verdict.meta.escalationReason ? `:${verdict.meta.escalationReason}` : ""}]` : ""} ` +
+        `(${run.transcript.length} tool calls, ${Math.round(durationMs / 1000)}s)`
       );
     }
   } finally {
@@ -815,6 +886,18 @@ async function main() {
           judgeModel: noJudge ? null : judgeModel,
           judgeRubric: noJudge ? null : JUDGE_RUBRIC,
           ...(judgePanel > 1 && !noJudge ? { judgePanel } : {}),
+          ...(!noJudge
+            ? {
+                judgeTiering: {
+                  policy: judgePanel > 1 ? "forced-panel" : "stability-boundary-v1",
+                  stabilityThreshold: JUDGE_STABILITY_THRESHOLD,
+                  stabilityRegisterStatus: stabilityRegister.status,
+                  stabilityRegisterReason: stabilityRegister.reason ?? null,
+                  maxPanelCases,
+                  boundaryPanelCases: panelBudget.boundaryPanelCases
+                }
+              }
+            : {}),
           packVersion: PACK_VERSION,
           resultsSchema: AGENT_RESULT_SCHEMA,
           casesPath,

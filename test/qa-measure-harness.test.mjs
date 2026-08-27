@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { judgeCasePanel } from "../eval/qa/judge.mjs";
 import {
   formatMeasurementMetrics,
+  parseMaxPanelCases,
   parseJudgePanel,
   qaMeasurementMetrics
 } from "../eval/qa/run-qa.mjs";
@@ -132,5 +133,8 @@ describe("QA measurement metrics", () => {
     expect(parseJudgePanel(undefined)).toBe(1);
     expect(() => parseJudgePanel("1")).toThrow(/2 or 3/);
     expect(() => parseJudgePanel("4")).toThrow(/2 or 3/);
+    expect(parseMaxPanelCases(undefined)).toBe(10);
+    expect(parseMaxPanelCases("0")).toBe(0);
+    expect(() => parseMaxPanelCases("-1")).toThrow(/non-negative integer/);
   });
 });

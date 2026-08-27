@@ -16,6 +16,7 @@ import { describe, expect, it } from "vitest";
 import {
   assertCollectionSourceIdentity,
   assertPinnedServerRevision,
+  collectionGitStatus,
   judgeStoredResults,
   sourceIdentity,
   sourceIdentityGuard
@@ -191,6 +192,10 @@ describe("run-qa --judge-stored", () => {
       matches: false,
       changedKeys: ["qaImplementationSha256"]
     });
+    expect(
+      collectionGitStatus("?? eval/qa/judge-stability.json\n M eval/qa/judge.mjs\n")
+    ).toBe(" M eval/qa/judge.mjs");
+    expect(collectionGitStatus("?? eval/qa/judge-stability.json\n")).toBe("");
   });
 
   it("judges every unjudged row in place and stamps summary + judge costs", async () => {
