@@ -6,7 +6,7 @@ Measure the held response-guidance candidate against the merged control.
 Do not trim startup tool descriptions or server instructions.
 Reject the candidate after any verified treatment regression.
 
-## Current status — rebuilt qualification pending review
+## Current status — rebuilt qualification authorized and reviewed
 
 The historical replacement qualification remains spent and non-comparable.
 Do not run the historical qualification command below.
@@ -20,7 +20,7 @@ The control stays at `7389e24880125ccf8fe0657a1435ca753dae52e6`.
 The treatment reapplies the held change as `3966a59e77f2034726088e16be902270753211ae`.
 The server and runner use the same treatment worktree and commit.
 The v5 method does not pair a runner from one commit with a server from another commit.
-An independent `LAUNCH-OK` review must precede the paid call.
+The independent pre-spend review returned `LAUNCH-OK`.
 
 ## Authorized v5 qualification
 
@@ -59,6 +59,16 @@ The maximum task spend after this call is `$1.9886646`.
 - Both arms passed the build and secret scan.
 - Treatment passed the eight-test connector contract lane.
 - Both worktrees remained clean after every free gate.
+
+### V5 pre-spend result
+
+- Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed ledger commit: `3e8a757dd7f39917d783011237e51bd5f4c446c7`.
+- Report: `/tmp/connectors-v5-launch-review.md`.
+- Report SHA-256: `6a42a24adbb40ade3143f6619301a2ca86c9a62141710845b16d97059a4b63bd`.
+- Verdict: `LAUNCH-OK`.
+- The reviewer found no blocker and independently recomputed every material pin.
+- Its ten operator findings bind the launch and post-call inspection.
 
 ### V5 replacement qualification command — authorized once
 
