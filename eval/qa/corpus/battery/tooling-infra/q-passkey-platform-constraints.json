@@ -36,6 +36,10 @@
         "ref": "https://www.w3.org/TR/webauthn-3/"
       },
       {
+        "class": "B",
+        "ref": "https://github.com/stellar/passkey-kit/tree/244e30adeee999884172111b55da439089ecdfce"
+      },
+      {
         "class": "A",
         "ref": "https://developer.apple.com/passkeys/"
       },
@@ -98,6 +102,11 @@
             "class": "D",
             "ref": "https://support.mozilla.org/kb/how-do-i-set-sync-my-computer",
             "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/passkey-kit/tree/244e30adeee999884172111b55da439089ecdfce",
+            "observedAt": "2026-08-27"
           }
         ]
       },
@@ -234,14 +243,14 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "PR #81 late-review correction, independently checked against WebAuthn and Stellar implementations",
+      "by": "PR #81 late-review correction, independently checked against WebAuthn and passkey-kit sources",
       "evidence": [
         "https://github.com/stellar-experimental/stellar-raven/pull/81#discussion_r3875968524",
         "https://www.w3.org/TR/webauthn-3/",
         "https://developer.apple.com/passkeys/",
         "https://developers.google.com/identity/passkeys/supported-environments",
         "https://support.mozilla.org/kb/how-do-i-set-sync-my-computer",
-        "https://github.com/kalepail/passkey-kit",
+        "https://github.com/stellar/passkey-kit/tree/244e30adeee999884172111b55da439089ecdfce",
         "Structural re-form 2026-08-27: Reworded the unclear fact while preserving RP ID, origin, and Stellar authorization requirements.",
         "Live re-check 2026-08-27: https://www.w3.org/TR/webauthn-3/ — WebAuthn remains secure-context scoped and still permits different native-platform RP binding rules.",
         "Live re-check 2026-08-27: https://www.w3.org/TR/webauthn-3/ — the specification still defines RP ID/origin validation, related origins, and credential scoping for handoff checks.",
@@ -251,6 +260,7 @@
       ],
       "rootCause": [
         "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
         "PR #81 review found unclear grammar in a compound grading fact."
       ]
     },
