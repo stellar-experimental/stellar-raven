@@ -103,6 +103,16 @@ main.play{display:flex;flex-direction:column;padding-bottom:18px}
 .mdt:empty{display:none}
 @keyframes blink{50%{opacity:0}}
 
+/* ---- answer action row ---- */
+/* Compact row under each finished answer, in the existing .btn-ghost idiom
+   (mono, 11px, ghost border) — a visible "Copy" label, not a bare icon. The
+   negative top margin pulls it under the bubble's own 14px margin so it reads
+   as attached to that answer. .copied comes from the shared BASE styles.
+   The ghost button is 29px tall (11px/1 + 8px*2 + 1px*2), above the WCAG
+   2.5.8 24px minimum, so it needs no mobile override. */
+.answer-actions{display:flex;align-items:center;gap:8px;margin:-8px 0 14px}
+.answer-actions .copyfail{color:#ff8b66;border-color:rgba(255,85,0,.5)}
+
 .pulse{display:flex;align-items:center;gap:10px;margin:14px 0;font-family:var(--mono);
 font-size:12px;color:var(--dim)}
 .pulse-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:640px}
@@ -248,7 +258,82 @@ function mdCommitIndex(s, from){
   return last;
 }`;
 
-const DEMO_SCRIPT = DEMO_SCRIPT_CORE + `
+// Copy action for a finished answer. Split out of the IIFE for the same reason
+// as mdCommitIndex above: test/demo-copy-core.test.ts evaluates this source and
+// drives it directly, so the "one row per answer" and "copy the raw accumulated
+// Markdown" rules are proved by behavior, not by grepping the page HTML.
+// `doc` and `nav` are injected (rather than closed over) purely so the test can
+// pass stubs — the page passes the real `document` / `navigator`.
+export const DEMO_COPY_CORE = `
+function buildCopyRow(doc, nav, source){
+  var row = doc.createElement("div");
+  row.className = "answer-actions";
+  var btn = doc.createElement("button");
+  btn.type = "button";
+  // Each row owns its status region, so copy feedback never competes with the
+  // shared #sr turn-progress region. The region is emptied before every
+  // message so an identical repeat still announces.
+  var status = doc.createElement("span");
+  status.className = "sr-only";
+  status.setAttribute("role", "status");
+  status.setAttribute("aria-atomic", "true");
+  var revert = null;
+  var pending = null;
+  // The visible label and the accessible name move together: "Copy" alone is
+  // ambiguous across many answers, so the idle name says what it copies.
+  function setLabel(label, name, mod){
+    btn.textContent = label;
+    btn.setAttribute("aria-label", name);
+    btn.className = "btn btn-ghost" + mod;
+  }
+  function announce(msg){
+    status.textContent = "";
+    if (pending) clearTimeout(pending);
+    pending = setTimeout(function(){ status.textContent = msg; pending = null; }, 50);
+  }
+  function flash(label, name, mod, msg){
+    setLabel(label, name, mod);
+    announce(msg);
+    if (revert) clearTimeout(revert);
+    revert = setTimeout(function(){
+      setLabel("Copy", "Copy this answer as Markdown", "");
+      revert = null;
+    }, 1600);
+  }
+  function failed(){
+    flash("Copy failed", "Copy failed", " copyfail",
+      "Copy failed \\u2014 select the answer and copy it manually.");
+  }
+  setLabel("Copy", "Copy this answer as Markdown", "");
+  btn.addEventListener("click", function(){
+    // Async Clipboard API only. It needs a secure context and can reject, so
+    // both the missing-API and the rejection path land in failed(). The
+    // deprecated synchronous copy command is deliberately not a fallback.
+    var clip = nav && nav.clipboard;
+    if (!clip || typeof clip.writeText !== "function") { failed(); return; }
+    clip.writeText(source).then(function(){
+      flash("Copied", "Copied this answer", " copied", "Answer copied to the clipboard.");
+    }, failed);
+  });
+  row.appendChild(btn);
+  row.appendChild(status);
+  return row;
+}
+
+// \`source\` is the turn's raw accumulated answer text, never the rendered DOM,
+// so tables, fenced code, and inline Markdown syntax survive the copy. No text
+// means no action row at all, and a bubble that already carries one is left
+// alone — exactly one Copy per assistant answer.
+function attachCopyRow(doc, nav, bubble, source){
+  if (!bubble || !bubble.parentNode || !source) return null;
+  var after = bubble.nextSibling;
+  if (after && after.className === "answer-actions") return null;
+  var row = buildCopyRow(doc, nav, source);
+  bubble.parentNode.insertBefore(row, after);
+  return row;
+}`;
+
+const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
 (function(){
   "use strict";
   var log = document.getElementById("log");
@@ -591,6 +676,10 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + `
     hidePulse();
     if (current) { finishRender(); current.classList.remove("streaming"); }
     if (acc) history.push({ role: "assistant", content: acc });
+    // Every path that ends a turn funnels through here — done, error, and the
+    // no-done-frame fallback — so a partial answer cut off by length,
+    // "incomplete", or a stream error still gets its Copy action.
+    attachCopyRow(document, navigator, current, acc);
     current = null;
     mdTail = null;
     committed = 0;
@@ -775,7 +864,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + `
 // hard-coded (Web Crypto is async, and these headers are a sync module const);
 // test/demo-page.test.ts recomputes it from the rendered page, so an edit to
 // DEMO_SCRIPT fails the suite with the new value to paste here.
-const DEMO_SCRIPT_SHA256 = "sha256-OeQEDNv2i8j9ly5c1JA8dWcys7Omawxbf2AxbIoFJAA=";
+const DEMO_SCRIPT_SHA256 = "sha256-JbJFm01ytf3s6BX5Y8xckkdvV4FJWN4YVkoEVRMxfkM=";
 
 export const DEMO_PAGE_HEADERS: Record<string, string> = {
   "content-type": "text/html; charset=utf-8",

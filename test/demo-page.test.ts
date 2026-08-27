@@ -135,6 +135,22 @@ describe("demo page states", () => {
     expect(chatHtml).not.toContain("stepline"); // no step dividers in the live trace either
   });
 
+  it("authenticated: wires one Copy action per answer to the async Clipboard API", () => {
+    // Behavior lives in test/demo-copy-core.test.ts; this pins the wiring that
+    // only exists in the assembled page.
+    expect(chatHtml).toContain("attachCopyRow(document, navigator, current, acc)");
+    expect(chatHtml).toContain("clip.writeText(source)");
+    expect(chatHtml).not.toContain("execCommand(");
+    // Copy feedback has its own per-row status node; the shared turn-progress
+    // region is untouched by the feature.
+    expect(chatHtml).toContain('<div id="sr" class="sr-only" role="status"></div>');
+    expect(chatHtml).toContain(".answer-actions{display:flex");
+    // The locked page ships zero script, so it gets no Copy action (the
+    // shared stylesheet still carries the .answer-actions rule).
+    expect(lockedHtml).not.toContain("attachCopyRow");
+    expect(lockedHtml).not.toContain("buildCopyRow");
+  });
+
   it("keeps demo-facing copy free of transport and envelope jargon", () => {
     expect(chatHtml).not.toContain("MCP OAuth transport");
     expect(chatHtml).not.toContain("error.kind");
