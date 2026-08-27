@@ -153,3 +153,16 @@ All lanes read-only against the repository except their own report file.
     evidence-poor recovery gap), 3 deliberate consistency-engine downgrades whose
     judge grades were partial.
 
+- `2026-08-27T17:00Z` — round two complete. Three lanes built in new worktrees
+  (`sr-wt-discovery`, `sr-wt-judging`, `sr-wt-goldentruth`), each independently
+  reviewed (Fable + Sol), all blockers fixed and re-verified to PASS (one residual
+  alias-trigger gap caught on re-verify and closed). Golden-truth owner ran its own
+  crew program: three Sol workers + Grok reviewer; three warning classes to zero;
+  SEP-38 factual error fixed with two-source verification; lint 1,390 → 1,212.
+  Foreign PRs #69–#71 landed mid-session on main; integrated by true-delta
+  application with compiler/register proof and semantic unions on run-qa.mjs
+  (safeJudge flows into judge adapters). Gates rebaselined (legacy top-5 312→311,
+  card@5 94→95 = accepted wisdomtree trade). Final battery green: 88 files /
+  1,362 tests, smoke 4/82, build ok, routing GATE PASS, lint 0/1,212, secrets
+  clean. Pull request: stellar-experimental/stellar-raven#73
+  (`qa/quality-round2-20260827`). Decision: LAND all three lanes.
