@@ -1,0 +1,496 @@
+{
+  "meta": {
+    "resultsPath": "eval/qa/results/2026-08-26T17-44-25-variantA.json",
+    "rulesPath": "/Users/kalepail/Desktop/sr-wt-connectors-item8-baseline/eval/plan/coverage-rules.json",
+    "rulesVersion": 1,
+    "opClassesPath": "/Users/kalepail/Desktop/sr-wt-connectors-item8-baseline/eval/plan/op-classes.json",
+    "runnerRegistry": {
+      "runnableIds": [
+        "skills.lumenloop.stellar-ecosystem-digest"
+      ]
+    },
+    "gradedAt": "2026-08-26T17:44:38.023Z"
+  },
+  "summary": {
+    "cases": 8,
+    "requiredCoveredCount": 6,
+    "meanOnPlanRatio": 1,
+    "progressionGraded": 3,
+    "progressionUsedCount": 2,
+    "byRequired": {
+      "covered": {
+        "correct": 0,
+        "partial": 0,
+        "wrong": 0,
+        "error": 6,
+        "total": 6
+      },
+      "missed": {
+        "correct": 0,
+        "partial": 0,
+        "wrong": 0,
+        "error": 2,
+        "total": 2
+      }
+    },
+    "byProgression": {
+      "used": {
+        "correct": 0,
+        "partial": 0,
+        "wrong": 0,
+        "error": 2,
+        "total": 2
+      },
+      "skipped": {
+        "correct": 0,
+        "partial": 0,
+        "wrong": 0,
+        "error": 1,
+        "total": 1
+      }
+    },
+    "offPlanCounts": {},
+    "truncatedRows": 0
+  },
+  "rows": [
+    {
+      "id": "q-comp-cross-moneygram-partnership-sep24",
+      "category": "compliance-rwa-payments",
+      "service": "lumenloop",
+      "ruleId": "compliance-ecosystem",
+      "progressionExpected": true,
+      "searchQueries": 2,
+      "executeCalls": 1,
+      "operationToolCalls": 0,
+      "truncatedInputs": 0,
+      "ops": [
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "lumenloop",
+          "op": "search_content_semantic"
+        },
+        {
+          "service": "scout",
+          "op": "searchProjects"
+        },
+        {
+          "service": "scout",
+          "op": "searchResearch"
+        }
+      ],
+      "touchedServices": [
+        "lumenloop",
+        "scout"
+      ],
+      "requiredCovered": true,
+      "onPlanRatio": 1,
+      "offPlanServices": [],
+      "progression": {
+        "lumenloop": {
+          "broadCalls": 1,
+          "detailCalls": 0,
+          "broadBeforeDetail": false
+        },
+        "scout": {
+          "broadCalls": 2,
+          "detailCalls": 0,
+          "broadBeforeDetail": false
+        }
+      },
+      "progressionUsed": false,
+      "verdictScore": null
+    },
+    {
+      "id": "q-edge-closed-world-builder-directory-miss",
+      "category": "edge-behavior",
+      "service": "scout",
+      "ruleId": "edge-behavior",
+      "progressionExpected": false,
+      "searchQueries": 1,
+      "executeCalls": 1,
+      "operationToolCalls": 0,
+      "truncatedInputs": 0,
+      "ops": [
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "scout",
+          "op": "getBuilders"
+        }
+      ],
+      "touchedServices": [
+        "scout"
+      ],
+      "requiredCovered": true,
+      "onPlanRatio": 1,
+      "offPlanServices": [],
+      "progression": {
+        "scout": {
+          "broadCalls": 1,
+          "detailCalls": 0,
+          "broadBeforeDetail": false
+        }
+      },
+      "progressionUsed": false,
+      "verdictScore": null
+    },
+    {
+      "id": "q-edge-open-world-recovery-after-narrow-miss",
+      "category": "edge-behavior",
+      "service": "lumenloop",
+      "ruleId": "edge-behavior",
+      "progressionExpected": false,
+      "searchQueries": 0,
+      "executeCalls": 0,
+      "operationToolCalls": 0,
+      "truncatedInputs": 0,
+      "ops": [],
+      "touchedServices": [],
+      "requiredCovered": false,
+      "onPlanRatio": null,
+      "offPlanServices": [],
+      "progression": {},
+      "progressionUsed": false,
+      "verdictScore": null
+    },
+    {
+      "id": "q-edge-partner-detail-soft-empty",
+      "category": "edge-behavior",
+      "service": "scout",
+      "ruleId": "edge-behavior",
+      "progressionExpected": false,
+      "searchQueries": 1,
+      "executeCalls": 1,
+      "operationToolCalls": 0,
+      "truncatedInputs": 0,
+      "ops": [
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "scout",
+          "op": "getPartner"
+        }
+      ],
+      "touchedServices": [
+        "scout"
+      ],
+      "requiredCovered": true,
+      "onPlanRatio": 1,
+      "offPlanServices": [],
+      "progression": {
+        "scout": {
+          "broadCalls": 0,
+          "detailCalls": 1,
+          "broadBeforeDetail": false
+        }
+      },
+      "progressionUsed": false,
+      "verdictScore": null
+    },
+    {
+      "id": "q-infra-simulate-transaction-howto",
+      "category": "tooling-infra",
+      "service": "stellarDocs",
+      "ruleId": "tooling-infra",
+      "progressionExpected": false,
+      "searchQueries": 1,
+      "executeCalls": 3,
+      "operationToolCalls": 0,
+      "truncatedInputs": 0,
+      "ops": [
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_rpc_horizon_data_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_sdk_cli_tools_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        }
+      ],
+      "touchedServices": [
+        "stellarDocs"
+      ],
+      "requiredCovered": true,
+      "onPlanRatio": 1,
+      "offPlanServices": [],
+      "progression": {
+        "stellarDocs": {
+          "broadCalls": 8,
+          "detailCalls": 0,
+          "broadBeforeDetail": false
+        }
+      },
+      "progressionUsed": false,
+      "verdictScore": null
+    },
+    {
+      "id": "q-sor-build-target-wasm32v1",
+      "category": "soroban",
+      "service": "stellarDocs",
+      "ruleId": "soroban",
+      "progressionExpected": false,
+      "searchQueries": 1,
+      "executeCalls": 1,
+      "operationToolCalls": 0,
+      "truncatedInputs": 0,
+      "ops": [
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_sdk_cli_tools_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        }
+      ],
+      "touchedServices": [
+        "stellarDocs"
+      ],
+      "requiredCovered": true,
+      "onPlanRatio": 1,
+      "offPlanServices": [],
+      "progression": {
+        "stellarDocs": {
+          "broadCalls": 4,
+          "detailCalls": 0,
+          "broadBeforeDetail": false
+        }
+      },
+      "progressionUsed": false,
+      "verdictScore": null
+    },
+    {
+      "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+      "category": "soroban",
+      "service": "scout",
+      "ruleId": "soroban-ecosystem",
+      "progressionExpected": true,
+      "searchQueries": 3,
+      "executeCalls": 5,
+      "operationToolCalls": 0,
+      "truncatedInputs": 0,
+      "ops": [
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_asset_token_docs"
+        },
+        {
+          "service": "scout",
+          "op": "searchRepos"
+        },
+        {
+          "service": "scout",
+          "op": "listContracts"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        }
+      ],
+      "touchedServices": [
+        "scout",
+        "skills",
+        "stellarDocs"
+      ],
+      "requiredCovered": true,
+      "onPlanRatio": 1,
+      "offPlanServices": [],
+      "progression": {
+        "skills": {
+          "broadCalls": 0,
+          "detailCalls": 12,
+          "broadBeforeDetail": true
+        },
+        "stellarDocs": {
+          "broadCalls": 3,
+          "detailCalls": 0,
+          "broadBeforeDetail": false
+        },
+        "scout": {
+          "broadCalls": 2,
+          "detailCalls": 0,
+          "broadBeforeDetail": false
+        }
+      },
+      "progressionUsed": true,
+      "verdictScore": null
+    },
+    {
+      "id": "q-tool-greenfield-indexer-prior-art-preflight",
+      "category": "tooling-infra",
+      "service": "scout",
+      "ruleId": "tooling-ecosystem",
+      "progressionExpected": true,
+      "searchQueries": 3,
+      "executeCalls": 1,
+      "operationToolCalls": 0,
+      "truncatedInputs": 0,
+      "ops": [
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "meta-discovery",
+          "op": "search"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_rpc_horizon_data_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_rpc_horizon_data_docs"
+        }
+      ],
+      "touchedServices": [
+        "skills",
+        "stellarDocs"
+      ],
+      "requiredCovered": false,
+      "onPlanRatio": 1,
+      "offPlanServices": [],
+      "progression": {
+        "skills": {
+          "broadCalls": 0,
+          "detailCalls": 1,
+          "broadBeforeDetail": true
+        },
+        "stellarDocs": {
+          "broadCalls": 3,
+          "detailCalls": 0,
+          "broadBeforeDetail": false
+        }
+      },
+      "progressionUsed": true,
+      "verdictScore": null
+    }
+  ]
+}
