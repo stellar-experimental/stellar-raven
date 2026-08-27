@@ -124,7 +124,8 @@ Reject the candidate after any blocking control, security, exposure, or comparab
 ### Product and policy review
 
 - Reviewer: `connector-policy`, Fable high, independent from the implementation author.
-- Sources: the SDF Google Doc, the Anthropic Software Directory Policy, review criteria, and submission guide.
+- Durable review: `research/audits/2026-08-26-connectors-item8-policy.md`.
+- Sources: the Anthropic Software Directory Policy, review criteria, submission guide, and the pinned repository surfaces.
 - Anthropic publishes no character limit for a tool description or server instructions.
 - The published rules require narrow, accurate descriptions that state function and invocation conditions.
 - The review criteria reject unrelated behavior instructions inside tool descriptions.
@@ -253,7 +254,7 @@ Cost and call limits:
 - Total limit: 64 calls and `$72.00`.
 - An out-of-tree Claude wrapper must enforce each per-call limit.
 - The runner has no working aggregate budget flag.
-- Wrapper path: `/tmp/connectors-item8-eval-bin/claude`.
+- Wrapper source: `eval/qa/reviewed/2026-08-26-connectors-item8/claude-wrapper.sh`.
 - Wrapper SHA-256: `6ff1e1663ba1f672723d75385be9d1f375d2d15757957f23847529e0c50b4ce5`.
 - Real Claude path: `$HOME/.local/bin/claude`.
 - Claude version: `2.1.246`.
@@ -324,7 +325,8 @@ Collection stop rules:
 Artifact preservation:
 
 - Cleanup restored the six gitignored result files from the 2026-08-27 17:21:53 local snapshot.
-- The files now live in the main checkout's local `eval/qa/results/` archive.
+- The files now live under `eval/qa/reviewed/2026-08-26-connectors-item8/`.
+- The B1-1 reviewed result redacts one Stellar secret seed and records both original and reviewed hashes.
 - The restored A1 result hash matches `02ac68ae8607f9bdbecc0a558b902d16eb9b1710449a13abf94cef7240606de9`.
 - The restored A1 plan hash is `4d7bbc8f110e10f98958a1c43115dd4ddfe7baf5dd1d163ef6e2c219ff90f14f`.
 - The restored A1 composition hash is `0688a31759317a8678b583fe2d52e672a071193dc0b5f682d3deee5a8c0f91eb`.
@@ -371,13 +373,10 @@ Reject candidate `1f961ab1116bb23f97c32b14502401ccb2441be7` under the preregiste
 - Each regression has one observation per arm.
 - Therefore, the causal claim remains inconclusive at this sample size.
 - The result is sufficient to reject this candidate under the fixed stop rules.
-- The runtime service efficacy stayed unchanged.
-- Claude Code model-planning efficacy became narrower in two of eight cases.
+- The production diff changed only the top-level tool descriptions and their tests.
+- The treatment showed two observed model-planning failures across eight cases.
+- One observation per arm cannot establish a causal model-planning change.
 - No more paid run or judge call has decision value for this candidate.
 - Do not deploy, merge, or submit this candidate to the Directory.
-- Ask SDF security to confirm the exact scope of item 8 before another implementation.
-- Confirm whether the Directory client injects MCP server instructions.
-- Address the per-call `nextSteps` size under the literal Policy 5.B wording.
-- Prefer a host-owned checkpoint design for missing source families.
-- Fix the harness before another paid round.
-- Test a redesigned candidate only after the scope and client questions have answers.
+- The later `2026-08-27-connectors-description-ab.md` round superseded the design follow-ups.
+- That round fixed the harness, tested a redesigned candidate, and rejected the candidate.

@@ -1,0 +1,526 @@
+{
+  "meta": {
+    "resultsPath": "eval/qa/results/2026-08-26T17-39-11-variantA.json",
+    "runnerRegistry": {
+      "runnableIds": [
+        "skills.lumenloop.stellar-ecosystem-digest"
+      ]
+    },
+    "analyzedAt": "2026-08-26T17:44:37.869Z"
+  },
+  "summary": {
+    "cases": 8,
+    "executeScripts": 14,
+    "meanScriptsPerCase": 1.75,
+    "adoptionCases": 0,
+    "skillRunCalls": 0,
+    "expandedOps": 0,
+    "opCallsTotal": 53,
+    "opCallsByService": {
+      "lumenloop": 2,
+      "scout": 13,
+      "stellarDocs": 30,
+      "skills": 8
+    },
+    "truncatedInputCases": 0,
+    "resultsCaptured": 14,
+    "truncatedResultCases": 5,
+    "executionFailures": 1,
+    "calls": {
+      "arrays": 0,
+      "calls": 0,
+      "ok": 0,
+      "error": 0,
+      "softEmpty": 0,
+      "unparsedResults": 13
+    },
+    "meanTurns": 5.75,
+    "totalCostUsd": 2.3136272
+  },
+  "notes": [],
+  "rows": [
+    {
+      "id": "q-comp-cross-moneygram-partnership-sep24",
+      "truth": {
+        "status": "confirmed",
+        "asOf": "2026-07-11"
+      },
+      "verdict": null,
+      "executeScripts": 2,
+      "adoption": false,
+      "skillRunCalls": 0,
+      "ops": [
+        {
+          "service": "lumenloop",
+          "op": "search_content_semantic"
+        },
+        {
+          "service": "lumenloop",
+          "op": "find_content_by_entity"
+        },
+        {
+          "service": "scout",
+          "op": "getPartners"
+        },
+        {
+          "service": "scout",
+          "op": "searchProjects"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_anchor_sep_docs"
+        },
+        {
+          "service": "scout",
+          "op": "getPartner"
+        }
+      ],
+      "opCounts": {
+        "lumenloop.search_content_semantic": 1,
+        "lumenloop.find_content_by_entity": 1,
+        "scout.getPartners": 1,
+        "scout.searchProjects": 1,
+        "stellarDocs.search_anchor_sep_docs": 1,
+        "scout.getPartner": 1
+      },
+      "opCallsTotal": 6,
+      "expandedOps": 0,
+      "truncatedInputs": 0,
+      "resultsCaptured": 2,
+      "truncatedResults": 1,
+      "executionFailures": 0,
+      "calls": {
+        "arrays": 0,
+        "calls": 0,
+        "ok": 0,
+        "error": 0,
+        "softEmpty": 0,
+        "unparsedResults": 1
+      },
+      "turns": 8,
+      "costUsd": 0.3903788
+    },
+    {
+      "id": "q-edge-closed-world-builder-directory-miss",
+      "truth": {
+        "status": "confirmed",
+        "asOf": "2026-07-13"
+      },
+      "verdict": null,
+      "executeScripts": 1,
+      "adoption": false,
+      "skillRunCalls": 0,
+      "ops": [
+        {
+          "service": "scout",
+          "op": "getBuilders"
+        }
+      ],
+      "opCounts": {
+        "scout.getBuilders": 1
+      },
+      "opCallsTotal": 1,
+      "expandedOps": 0,
+      "truncatedInputs": 0,
+      "resultsCaptured": 1,
+      "truncatedResults": 0,
+      "executionFailures": 0,
+      "calls": {
+        "arrays": 0,
+        "calls": 0,
+        "ok": 0,
+        "error": 0,
+        "softEmpty": 0,
+        "unparsedResults": 1
+      },
+      "turns": 4,
+      "costUsd": 0.1724378
+    },
+    {
+      "id": "q-edge-open-world-recovery-after-narrow-miss",
+      "truth": {
+        "status": "confirmed",
+        "asOf": "2026-07-13"
+      },
+      "verdict": null,
+      "executeScripts": 0,
+      "adoption": false,
+      "skillRunCalls": 0,
+      "ops": [],
+      "opCounts": {},
+      "opCallsTotal": 0,
+      "expandedOps": 0,
+      "truncatedInputs": 0,
+      "resultsCaptured": 0,
+      "truncatedResults": 0,
+      "executionFailures": 0,
+      "calls": {
+        "arrays": 0,
+        "calls": 0,
+        "ok": 0,
+        "error": 0,
+        "softEmpty": 0,
+        "unparsedResults": 0
+      },
+      "turns": 1,
+      "costUsd": 0.0883912
+    },
+    {
+      "id": "q-edge-partner-detail-soft-empty",
+      "truth": {
+        "status": "confirmed",
+        "asOf": "2026-07-11"
+      },
+      "verdict": null,
+      "executeScripts": 1,
+      "adoption": false,
+      "skillRunCalls": 0,
+      "ops": [
+        {
+          "service": "scout",
+          "op": "getPartner"
+        }
+      ],
+      "opCounts": {
+        "scout.getPartner": 1
+      },
+      "opCallsTotal": 1,
+      "expandedOps": 0,
+      "truncatedInputs": 0,
+      "resultsCaptured": 1,
+      "truncatedResults": 0,
+      "executionFailures": 0,
+      "calls": {
+        "arrays": 0,
+        "calls": 0,
+        "ok": 0,
+        "error": 0,
+        "softEmpty": 0,
+        "unparsedResults": 1
+      },
+      "turns": 4,
+      "costUsd": 0.1663828
+    },
+    {
+      "id": "q-infra-simulate-transaction-howto",
+      "truth": {
+        "status": "confirmed"
+      },
+      "verdict": null,
+      "executeScripts": 3,
+      "adoption": false,
+      "skillRunCalls": 0,
+      "ops": [
+        {
+          "service": "stellarDocs",
+          "op": "search_rpc_horizon_data_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_sdk_cli_tools_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        }
+      ],
+      "opCounts": {
+        "stellarDocs.search_rpc_horizon_data_docs": 1,
+        "stellarDocs.search_soroban_contract_docs": 1,
+        "stellarDocs.search_sdk_cli_tools_docs": 1,
+        "stellarDocs.search_docs": 4
+      },
+      "opCallsTotal": 7,
+      "expandedOps": 0,
+      "truncatedInputs": 0,
+      "resultsCaptured": 3,
+      "truncatedResults": 1,
+      "executionFailures": 0,
+      "calls": {
+        "arrays": 0,
+        "calls": 0,
+        "ok": 0,
+        "error": 0,
+        "softEmpty": 0,
+        "unparsedResults": 3
+      },
+      "turns": 7,
+      "costUsd": 0.3170038
+    },
+    {
+      "id": "q-sor-build-target-wasm32v1",
+      "truth": {
+        "status": "confirmed",
+        "asOf": "2026-07-13"
+      },
+      "verdict": null,
+      "executeScripts": 2,
+      "adoption": false,
+      "skillRunCalls": 0,
+      "ops": [
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_sdk_cli_tools_docs"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        }
+      ],
+      "opCounts": {
+        "stellarDocs.search_soroban_contract_docs": 2,
+        "stellarDocs.search_sdk_cli_tools_docs": 1,
+        "skills.skill.read": 2,
+        "stellarDocs.search_docs": 1
+      },
+      "opCallsTotal": 6,
+      "expandedOps": 0,
+      "truncatedInputs": 0,
+      "resultsCaptured": 2,
+      "truncatedResults": 1,
+      "executionFailures": 0,
+      "calls": {
+        "arrays": 0,
+        "calls": 0,
+        "ok": 0,
+        "error": 0,
+        "softEmpty": 0,
+        "unparsedResults": 2
+      },
+      "turns": 6,
+      "costUsd": 0.28947059999999997
+    },
+    {
+      "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+      "truth": {
+        "status": "confirmed",
+        "asOf": "2026-08-11"
+      },
+      "verdict": null,
+      "executeScripts": 3,
+      "adoption": false,
+      "skillRunCalls": 0,
+      "ops": [
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_asset_token_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "scout",
+          "op": "searchRepos"
+        },
+        {
+          "service": "scout",
+          "op": "searchRepos"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_asset_token_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_soroban_contract_docs"
+        },
+        {
+          "service": "scout",
+          "op": "searchRepos"
+        },
+        {
+          "service": "scout",
+          "op": "searchRepos"
+        },
+        {
+          "service": "scout",
+          "op": "searchRepos"
+        },
+        {
+          "service": "scout",
+          "op": "searchRepos"
+        },
+        {
+          "service": "skills",
+          "op": "skill.read"
+        }
+      ],
+      "opCounts": {
+        "skills.skill.read": 5,
+        "stellarDocs.search_soroban_contract_docs": 8,
+        "stellarDocs.search_asset_token_docs": 2,
+        "scout.searchRepos": 6
+      },
+      "opCallsTotal": 21,
+      "expandedOps": 0,
+      "truncatedInputs": 0,
+      "resultsCaptured": 3,
+      "truncatedResults": 2,
+      "executionFailures": 1,
+      "calls": {
+        "arrays": 0,
+        "calls": 0,
+        "ok": 0,
+        "error": 0,
+        "softEmpty": 0,
+        "unparsedResults": 3
+      },
+      "turns": 9,
+      "costUsd": 0.5111060000000001
+    },
+    {
+      "id": "q-tool-greenfield-indexer-prior-art-preflight",
+      "truth": {
+        "status": "confirmed",
+        "asOf": "2026-08-11"
+      },
+      "verdict": null,
+      "executeScripts": 2,
+      "adoption": false,
+      "skillRunCalls": 0,
+      "ops": [
+        {
+          "service": "skills",
+          "op": "skill.read"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_rpc_horizon_data_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_rpc_horizon_data_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_rpc_horizon_data_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "scout",
+          "op": "searchProjects"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_doc_titles"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "search_docs"
+        },
+        {
+          "service": "scout",
+          "op": "searchProjects"
+        },
+        {
+          "service": "stellarDocs",
+          "op": "get_doc_page_sections"
+        }
+      ],
+      "opCounts": {
+        "skills.skill.read": 1,
+        "stellarDocs.search_rpc_horizon_data_docs": 3,
+        "stellarDocs.search_docs": 3,
+        "scout.searchProjects": 2,
+        "stellarDocs.search_doc_titles": 1,
+        "stellarDocs.get_doc_page_sections": 1
+      },
+      "opCallsTotal": 11,
+      "expandedOps": 0,
+      "truncatedInputs": 0,
+      "resultsCaptured": 2,
+      "truncatedResults": 1,
+      "executionFailures": 0,
+      "calls": {
+        "arrays": 0,
+        "calls": 0,
+        "ok": 0,
+        "error": 0,
+        "softEmpty": 0,
+        "unparsedResults": 2
+      },
+      "turns": 7,
+      "costUsd": 0.3784562
+    }
+  ]
+}
