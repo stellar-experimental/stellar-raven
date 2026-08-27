@@ -276,23 +276,28 @@ export function selectJudgeTier({
     entry.comparisonCount > 0;
   const common = {
     stabilityRegisterStatus: stabilityRegister.status ?? "absent",
-    stabilityCaseStatus: usableHistory ? "available" : entry ? "insufficient" : "absent"
+    stabilityCaseStatus: usableHistory ? "available" : entry ? "insufficient" : "absent",
+    stabilityScore: usableHistory ? entry.stabilityScore : null
   };
+
+  // Judge errors are not candidate grades. The stored path owns their retry
+  // policy, so neither stability history nor a boundary may add paid calls.
+  if (verdict?.score === "error") {
+    return { ...common, judgeTierUsed: "single", escalationReason: null };
+  }
 
   if (usableHistory) {
     if (entry.stabilityScore < JUDGE_STABILITY_THRESHOLD) {
       return {
         ...common,
         judgeTierUsed: "panel",
-        escalationReason: "unstable-register",
-        stabilityScore: entry.stabilityScore
+        escalationReason: "unstable-register"
       };
     }
     return {
       ...common,
       judgeTierUsed: "single",
-      escalationReason: null,
-      stabilityScore: entry.stabilityScore
+      escalationReason: null
     };
   }
 
@@ -337,7 +342,8 @@ export async function judgeCaseTiered(
         judgeTierUsed: "panel",
         escalationReason: "forced-panel",
         stabilityRegisterStatus: stabilityRegister.status ?? "absent",
-        stabilityCaseStatus: "not-consulted"
+        stabilityCaseStatus: "not-consulted",
+        stabilityScore: null
       }
     : selectJudgeTier({
         caseId: input.id,

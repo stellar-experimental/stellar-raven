@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -14,6 +15,10 @@ import {
   judgeCaseTiered,
   selectJudgeTier
 } from "../eval/qa/judge.mjs";
+import {
+  judgeTieringMetadata,
+  prepareJudgeStabilityRegister
+} from "../eval/qa/run-qa.mjs";
 
 const correct = (extra = {}) => ({
   score: "correct",
@@ -152,12 +157,16 @@ describe("QA judge stability register", () => {
 
       const generated = generateStabilityRegister({ resultsDir, outPath });
       expect(generated.caseCount).toBe(1);
-      expect(JSON.parse(readFileSync(outPath, "utf8"))._meta.schemaVersion).toBe(
-        STABILITY_SCHEMA_VERSION
-      );
+      const sourceText = readFileSync(outPath, "utf8");
+      const document = JSON.parse(sourceText);
+      expect(document._meta.schemaVersion).toBe(STABILITY_SCHEMA_VERSION);
       expect(loadJudgeStabilityRegister(outPath)).toMatchObject({
         status: "available",
-        cases: { "case-a": { sampleCount: 1 } }
+        cases: { "case-a": { sampleCount: 1 } },
+        sha256: createHash("sha256").update(sourceText).digest("hex"),
+        generatedAt: document._meta.generatedAt,
+        sourceArtifactCount: 1,
+        caseCount: 1
       });
       writeFileSync(
         join(resultsDir, "one-variantA.json"),
@@ -166,11 +175,19 @@ describe("QA judge stability register", () => {
       expect(loadJudgeStabilityRegister(outPath)).toMatchObject({
         status: "stale",
         reason: "source-artifacts-changed",
-        cases: {}
+        cases: {},
+        sha256: createHash("sha256").update(sourceText).digest("hex"),
+        generatedAt: document._meta.generatedAt,
+        sourceArtifactCount: 1,
+        caseCount: 1
       });
       expect(loadJudgeStabilityRegister(join(root, "absent.json"))).toMatchObject({
         status: "absent",
-        cases: {}
+        cases: {},
+        sha256: null,
+        generatedAt: null,
+        sourceArtifactCount: null,
+        caseCount: 0
       });
 
       const stalePath = join(root, "stale.json");
@@ -182,6 +199,39 @@ describe("QA judge stability register", () => {
         status: "stale",
         cases: {}
       });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("regenerates at startup and treats refresh failures as non-fatal", () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-stability-refresh-"));
+    try {
+      const resultsDir = join(root, "results");
+      const registerPath = join(root, "judge-stability.json");
+      mkdirSync(resultsDir);
+      writeFileSync(
+        join(resultsDir, "one-variantA.json"),
+        JSON.stringify({ rows: [{ id: "case-a", verdict: correct() }] })
+      );
+      const logs = [];
+      const loaded = prepareJudgeStabilityRegister({
+        resultsDir,
+        registerPath,
+        log: (message) => logs.push(message)
+      });
+      expect(loaded).toMatchObject({ status: "available", caseCount: 1 });
+      expect(logs).toEqual([expect.stringContaining("1 case(s) from 1 artifact(s)")]);
+
+      const warnings = [];
+      const failed = prepareJudgeStabilityRegister({
+        resultsDir,
+        registerPath: join(root, "missing", "judge-stability.json"),
+        log: () => {},
+        warn: (message) => warnings.push(message)
+      });
+      expect(failed.status).toBe("absent");
+      expect(warnings).toEqual([expect.stringContaining("refresh failed")]);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
@@ -313,6 +363,51 @@ describe("tiered QA judge selection", () => {
       judgeTierUsed: "single",
       escalationReason: "boundary-wrong-claim",
       panelEscalationSkipped: "max-panel-cases"
+    });
+  });
+
+  it("does not escalate an error vote from history or a trap boundary", async () => {
+    const calls = [];
+    const verdict = await judgeCaseTiered(
+      { id: "case-a", tags: { trap: "scam-check" } },
+      {
+        judge: queuedJudge([{ ...correct(), score: "error", coreAnswer: null }], calls),
+        stabilityRegister: {
+          status: "available",
+          cases: { "case-a": { stabilityScore: 0.2, comparisonCount: 2 } }
+        },
+        panelBudget: createPanelCaseBudget(3)
+      }
+    );
+
+    expect(calls).toEqual(["case-a"]);
+    expect(verdict.meta).toMatchObject({
+      judgeTierUsed: "single",
+      escalationReason: null,
+      stabilityScore: 0.2
+    });
+  });
+
+  it("projects register identity into judge tiering metadata", () => {
+    expect(
+      judgeTieringMetadata({
+        judgePanel: 1,
+        stabilityRegister: {
+          status: "available",
+          reason: null,
+          sha256: "a".repeat(64),
+          generatedAt: "2026-08-27T00:00:00.000Z",
+          sourceArtifactCount: 187,
+          caseCount: 538
+        },
+        maxPanelCases: 10,
+        boundaryPanelCases: 2
+      })
+    ).toMatchObject({
+      stabilityRegisterSha256: "a".repeat(64),
+      stabilityRegisterGeneratedAt: "2026-08-27T00:00:00.000Z",
+      stabilityRegisterSourceArtifactCount: 187,
+      stabilityRegisterCaseCount: 538
     });
   });
 });

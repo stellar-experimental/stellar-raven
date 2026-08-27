@@ -60,10 +60,13 @@
  *                      Refuses if the case snapshot or judge tuple no longer
  *                      matches the recorded one (re-collect instead; the
  *                      loudly-labeled escape hatch stays re-judge.mjs).
+ *
+ * `re-judge.mjs` does not use stability tiering. Its default remains one
+ * judge call, or the fixed panel selected by its own `--judge-panel` flag.
  */
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtempSync, readFileSync, readdirSync, writeFileSync, mkdirSync, renameSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, readdirSync, writeFileSync, mkdirSync, renameSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -81,6 +84,9 @@ import {
   JUDGE_RUBRIC
 } from "./judge.mjs";
 import {
+  DEFAULT_STABILITY_REGISTER_PATH,
+  DEFAULT_STABILITY_RESULTS_DIR,
+  generateStabilityRegister,
   JUDGE_STABILITY_THRESHOLD,
   loadJudgeStabilityRegister
 } from "./judge-stability.mjs";
@@ -184,6 +190,49 @@ export function parseMaxPanelCases(value) {
     throw new Error(`--max-panel-cases must be a non-negative integer, got ${value}`);
   }
   return maxPanelCases;
+}
+
+export function prepareJudgeStabilityRegister({
+  resultsDir = DEFAULT_STABILITY_RESULTS_DIR,
+  registerPath = DEFAULT_STABILITY_REGISTER_PATH,
+  log = console.log,
+  warn = console.warn
+} = {}) {
+  if (existsSync(resultsDir)) {
+    try {
+      const generated = generateStabilityRegister({ resultsDir, outPath: registerPath });
+      log(
+        `judge-stability refresh: ${generated.caseCount} case(s) from ` +
+        `${generated.sourceArtifactCount} artifact(s)`
+      );
+    } catch (error) {
+      warn(
+        `warning: judge-stability refresh failed; continuing without a hard dependency: ` +
+        `${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+  }
+  return loadJudgeStabilityRegister(registerPath);
+}
+
+export function judgeTieringMetadata({
+  judgePanel,
+  stabilityRegister,
+  maxPanelCases,
+  boundaryPanelCases
+}) {
+  return {
+    policy: judgePanel > 1 ? "forced-panel" : "stability-boundary-v1",
+    stabilityThreshold: JUDGE_STABILITY_THRESHOLD,
+    stabilityRegisterStatus: stabilityRegister.status,
+    stabilityRegisterReason: stabilityRegister.reason ?? null,
+    stabilityRegisterSha256: stabilityRegister.sha256 ?? null,
+    stabilityRegisterGeneratedAt: stabilityRegister.generatedAt ?? null,
+    stabilityRegisterSourceArtifactCount: stabilityRegister.sourceArtifactCount ?? null,
+    stabilityRegisterCaseCount: stabilityRegister.caseCount ?? 0,
+    maxPanelCases,
+    boundaryPanelCases
+  };
 }
 
 export function qaMeasurementMetrics(rows, compiledCases) {
@@ -588,14 +637,12 @@ export async function judgeStoredResults(
     meta.judgeModel = judgeModel;
     meta.judgeRubric = JUDGE_RUBRIC;
     if (judgePanel > 1) meta.judgePanel = judgePanel;
-    meta.judgeTiering = {
-      policy: judgePanel > 1 ? "forced-panel" : "stability-boundary-v1",
-      stabilityThreshold: JUDGE_STABILITY_THRESHOLD,
-      stabilityRegisterStatus: stabilityRegister.status,
-      stabilityRegisterReason: stabilityRegister.reason ?? null,
+    meta.judgeTiering = judgeTieringMetadata({
+      judgePanel,
+      stabilityRegister,
       maxPanelCases,
       boundaryPanelCases: panelBudget.boundaryPanelCases
-    };
+    });
     Object.assign(meta, costTotals(results.rows, judgeAttempts));
     Object.assign(meta, qaMeasurementMetrics(results.rows, identity.caseById));
     meta.judgeStored = {
@@ -726,12 +773,14 @@ async function main() {
   const judgeStoredPath = argVal("--judge-stored");
   if (judgeStoredPath) {
     if (args.includes("--no-judge")) throw new Error("--judge-stored and --no-judge are contradictory");
+    const stabilityRegister = prepareJudgeStabilityRegister();
     const { summary, metrics } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
       judgeModel: argVal("--judge-model") ?? JUDGE_MODEL,
       judgePanel: parseJudgePanel(argVal("--judge-panel")),
       maxPanelCases: parseMaxPanelCases(
         argVal("--max-panel-cases") ?? process.env.QA_MAX_PANEL_CASES
-      )
+      ),
+      stabilityRegister
     });
     console.log("\n" + formatSummaryTable(summary));
     console.log(formatMeasurementMetrics(metrics));
@@ -754,7 +803,7 @@ async function main() {
   const maxPanelCases = parseMaxPanelCases(
     argVal("--max-panel-cases") ?? process.env.QA_MAX_PANEL_CASES
   );
-  const stabilityRegister = loadJudgeStabilityRegister();
+  const stabilityRegister = prepareJudgeStabilityRegister();
   const panelBudget = createPanelCaseBudget(maxPanelCases);
   const noJudge = args.includes("--no-judge");
   const serverRevision = assertPinnedServerRevision(argVal("--server-revision"));
@@ -888,14 +937,12 @@ async function main() {
           ...(judgePanel > 1 && !noJudge ? { judgePanel } : {}),
           ...(!noJudge
             ? {
-                judgeTiering: {
-                  policy: judgePanel > 1 ? "forced-panel" : "stability-boundary-v1",
-                  stabilityThreshold: JUDGE_STABILITY_THRESHOLD,
-                  stabilityRegisterStatus: stabilityRegister.status,
-                  stabilityRegisterReason: stabilityRegister.reason ?? null,
+                judgeTiering: judgeTieringMetadata({
+                  judgePanel,
+                  stabilityRegister,
                   maxPanelCases,
                   boundaryPanelCases: panelBudget.boundaryPanelCases
-                }
+                })
               }
             : {}),
           packVersion: PACK_VERSION,

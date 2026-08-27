@@ -206,6 +206,17 @@ describe("run-qa --judge-stored", () => {
       const out = await judgeStoredResults(resultsPath, {
         judgeModel: "stub-judge",
         judge: stubJudge(calls),
+        stabilityRegister: {
+          status: "available",
+          reason: null,
+          cases: {
+            "q-fixture-answered": { stabilityScore: 0.8, comparisonCount: 2 }
+          },
+          sha256: "a".repeat(64),
+          generatedAt: "2026-08-27T00:00:00.000Z",
+          sourceArtifactCount: 4,
+          caseCount: 2
+        },
         log: () => {}
       });
 
@@ -218,7 +229,12 @@ describe("run-qa --judge-stored", () => {
       expect(written.rows[0].verdict).toMatchObject({
         score: "correct",
         coreAnswer: "correct",
-        avoidMatches: []
+        avoidMatches: [],
+        meta: {
+          judgeTierUsed: "single",
+          escalationReason: null,
+          stabilityScore: 0.8
+        }
       });
       expect(written.rows[1].verdict).toMatchObject({
         score: "error",
@@ -228,6 +244,13 @@ describe("run-qa --judge-stored", () => {
       expect(written.summary.overall).toMatchObject({ correct: 1, error: 1, total: 2 });
       expect(written.meta.judgeModel).toBe("stub-judge");
       expect(written.meta.judgeRubric).toBe(JUDGE_RUBRIC);
+      expect(written.meta.judgeTiering).toMatchObject({
+        stabilityRegisterStatus: "available",
+        stabilityRegisterSha256: "a".repeat(64),
+        stabilityRegisterGeneratedAt: "2026-08-27T00:00:00.000Z",
+        stabilityRegisterSourceArtifactCount: 4,
+        stabilityRegisterCaseCount: 2
+      });
       expect(written.meta.totalJudgeCostUsd).toBeCloseTo(0.25);
       expect(written.meta.totalCostUsd).toBeCloseTo(0.6 + 0.25);
       expect(written.meta).toMatchObject({

@@ -12,6 +12,7 @@
  * original-to-new pair adds one comparison and one new sample. A case with
  * one sample and no comparison scores 1. A case with no sample scores null.
  */
+import { createHash } from "node:crypto";
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -201,6 +202,10 @@ function sameSignatures(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
 export function generateStabilityRegister({
   resultsDir = DEFAULT_STABILITY_RESULTS_DIR,
   outPath = DEFAULT_STABILITY_REGISTER_PATH,
@@ -271,23 +276,47 @@ export function loadJudgeStabilityRegister(
   registerPath = DEFAULT_STABILITY_REGISTER_PATH,
   { resultsDir, nowMs = Date.now(), maxAgeMs = Infinity, verifySources = true } = {}
 ) {
+  const unavailable = (status, reason, identity = {}) => ({
+    status,
+    reason,
+    cases: {},
+    sha256: identity.sha256 ?? null,
+    generatedAt: identity.generatedAt ?? null,
+    sourceArtifactCount: identity.sourceArtifactCount ?? null,
+    caseCount: identity.caseCount ?? 0
+  });
+  let sourceText;
+  try {
+    sourceText = readFileSync(registerPath, "utf8");
+  } catch (error) {
+    if (error?.code === "ENOENT") return unavailable("absent", "file-not-found");
+    return unavailable("stale", "unreadable-register");
+  }
   let document;
   try {
-    document = JSON.parse(readFileSync(registerPath, "utf8"));
-  } catch (error) {
-    if (error?.code === "ENOENT") return { status: "absent", reason: "file-not-found", cases: {} };
-    return { status: "stale", reason: "unreadable-register", cases: {} };
+    document = JSON.parse(sourceText);
+  } catch {
+    return unavailable("stale", "unreadable-register", { sha256: sha256(sourceText) });
   }
   const meta = document?._meta;
+  const cases = caseEntries(document);
+  const identity = {
+    sha256: sha256(sourceText),
+    generatedAt: typeof meta?.generatedAt === "string" ? meta.generatedAt : null,
+    sourceArtifactCount: Number.isInteger(meta?.sourceArtifactCount)
+      ? meta.sourceArtifactCount
+      : null,
+    caseCount: Object.keys(cases).length
+  };
   const generatedAtMs = Date.parse(meta?.generatedAt);
   if (meta?.schemaVersion !== STABILITY_SCHEMA_VERSION) {
-    return { status: "stale", reason: "schema-version", cases: {} };
+    return unavailable("stale", "schema-version", identity);
   }
   if (!Number.isFinite(generatedAtMs)) {
-    return { status: "stale", reason: "invalid-generated-at", cases: {} };
+    return unavailable("stale", "invalid-generated-at", identity);
   }
   if (Number.isFinite(maxAgeMs) && nowMs - generatedAtMs > maxAgeMs) {
-    return { status: "stale", reason: "max-age", cases: {} };
+    return unavailable("stale", "max-age", identity);
   }
   if (verifySources) {
     const sourceDir = path.resolve(resultsDir ?? meta.resultsDir ?? DEFAULT_STABILITY_RESULTS_DIR);
@@ -295,13 +324,13 @@ export function loadJudgeStabilityRegister(
     try {
       currentSignatures = sourceSignatures(sourceDir);
     } catch {
-      return { status: "stale", reason: "source-unreadable", cases: {} };
+      return unavailable("stale", "source-unreadable", identity);
     }
     if (!sameSignatures(currentSignatures, meta.sourceArtifacts ?? [])) {
-      return { status: "stale", reason: "source-artifacts-changed", cases: {} };
+      return unavailable("stale", "source-artifacts-changed", identity);
     }
   }
-  return { status: "available", reason: null, cases: caseEntries(document), meta };
+  return { status: "available", reason: null, cases, meta, ...identity };
 }
 
 function parseArgs(argv) {
