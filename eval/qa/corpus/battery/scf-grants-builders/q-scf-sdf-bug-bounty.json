@@ -16,7 +16,7 @@
       "Do NOT send new general SDF reports to deprecated Immunefi or merge OpenZeppelin's policy into SDF's.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Dossier §5.4. Trap: swapping the $250K-XLM / $50K-USD tiers, or confusing with Audit Bank.\nAlso good if the answer: The Bug Bounty is an SDF-direct program (stellar.org/grants-and-funding), separate from the SCF.\nGolden cites: stellar.org/grants-and-funding bug-bounty section.\nGT-40 blind reversed the primary top-line after following the cited controlling policy. Policy and intake are volatile; accept dated, scope-aware figures only."
+    "notes": "Dossier §5.4. Trap: swapping the $250K-XLM / $50K-USD tiers, or confusing with Audit Bank.\nAlso good if the answer: The Bug Bounty is an SDF-direct program (stellar.org/grants-and-funding), separate from the SCF.\nGolden cites: stellar.org/grants-and-funding bug-bounty section.\nGT-40 blind reversed the primary top-line after following the cited controlling policy. Policy and intake are volatile; accept dated, scope-aware figures only.\nAccurately quoting the canonical Scout source on the pre-fix security-program roster that omitted the 2026-05-07 HackerOne migration is not a wrong claim while a cached or older copy still shows the roster fixed on 2026-07-15 by sls-020; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -77,18 +77,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-40 blind process 3304; controlling policies fetched 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): Added a narrow caution for the pre-fix Scout security-program roster; golden truth unchanged.",
+        "Improvement finding read 2026-08-27: improvements/resolved.json entry sls-020; disputed claim: pre-fix Scout retrieval omitted the 2026-05-07 HackerOne migration.",
+        "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
+        "Sibling sweep 2026-08-27: grep HackerOne|general Immunefi → q-comp-security-disclosure-programs, q-scf-sdf-bug-bounty; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-020-security-program-migration-supersession.md",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-scf-sdf-bug-bounty"

@@ -20,7 +20,7 @@
       "Do NOT freeze star counts, broad integration/features, or current maintenance without dated evidence.",
       "Do NOT attribute xBull to SDF or Ultra Stellar."
     ],
-    "notes": "Per-project identity → lumenloop_get_project. Verified on Scout: xBull = open-source non-custodial Stellar wallet (browser ext + web + iOS/Android) by Creit-Tech; repo Creit-Tech/xBull-Wallet (TypeScript, ~32 stars, repoScore 61). Creit-Tech (CreitTech) also runs a Reflector oracle node — but xBull is the wallet. V2 = passkey-based hybrid.\nAlso good if the answer: Notes its V2 introduced a passkey-based hybrid wallet experience.\nGolden cites: A source identifying xBull / Creit-Tech.\nGT-20 CORRECTION 2026-07-10: completed-V2 and current-Android claims are contradicted. Platform/support/maintainer facts are quarterly-freshness even though inherited tags cannot yet be overridden."
+    "notes": "Per-project identity → lumenloop_get_project. Verified on Scout: xBull = open-source non-custodial Stellar wallet (browser ext + web + iOS/Android) by Creit-Tech; repo Creit-Tech/xBull-Wallet (TypeScript, ~32 stars, repoScore 61). Creit-Tech (CreitTech) also runs a Reflector oracle node — but xBull is the wallet. V2 = passkey-based hybrid.\nAlso good if the answer: Notes its V2 introduced a passkey-based hybrid wallet experience.\nGolden cites: A source identifying xBull / Creit-Tech.\nGT-20 CORRECTION 2026-07-10: completed-V2 and current-Android claims are contradicted. Platform/support/maintainer facts are quarterly-freshness even though inherited tags cannot yet be overridden.\nAccurately quoting the canonical Scout source on xBull's `Live` label as proof of Android availability is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "retail-consumer",
@@ -85,15 +85,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The narrow xBull identity is correct, but the inherited answer changed a forthcoming passkey/hybrid V2 roadmap into completed tense, claimed current Android availability despite a 404 Play listing, and froze stars/integration/features without freshness evidence.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-20 primary 3256 and blind 3257",
-        "Sibling sweep: wallet overview/list/similar and Wallets Kit integration cases"
+        "Sibling sweep: wallet overview/list/similar and Wallets Kit integration cases",
+        "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
+        "Reviewed improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed claim: xBull's Live label proves current Android availability.",
+        "Sibling sweep 2026-08-27: grep xBull|Creit-Tech|Google Play → q-builder-by-scf-tier, q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-eco-xbull-wallet, q-edge-ambig-best-wallet, q-soroban-x402-auth-entry-signing, q-ti-connect-wallet-button-code, q-tool-freighter-wallet, q-tool-wallets-comparison; no contradiction"
       ],
       "rootCause": [
         "A roadmap was rewritten as shipped behavior, and code/directory presence was promoted into current app-store availability.",
-        "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md"
+        "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-eco-xbull-wallet"

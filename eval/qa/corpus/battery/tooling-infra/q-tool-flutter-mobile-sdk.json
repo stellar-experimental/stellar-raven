@@ -17,7 +17,7 @@
       "Do NOT call either package SDF-maintained because official docs list it, or name a nonexistent package.",
       "Do NOT freeze versions, copy the stale tutorial pair blindly, or assert an unsupported comparative safety ranking among language SDKs."
     ],
-    "notes": "Verified against the client-SDKs page: the Flutter SDK is stellar_flutter_sdk, maintained by the community developer Soneso (NOT SDF). Soneso also maintains the iOS/macOS, Kotlin Multiplatform, and PHP SDKs. Maintainer tier is the load-bearing nuance.\nAlso good if the answer: Soneso also maintains the iOS/macOS, Kotlin Multiplatform, and PHP SDKs in the same family.\nGolden cites: developers.stellar.org client-sdks page or the Soneso/stellar_flutter_sdk repo.\nGT-55 CORRECTION 2026-07-11: a wallet answer must distinguish the Soneso wallet wrapper from the underlying general SDK. Versions are dated, community recognition is not SDF maintenance, and unsupported language-tier safety rankings are not rewarded. sd-032 tracks the stale official tutorial pair."
+    "notes": "Verified against the client-SDKs page: the Flutter SDK is stellar_flutter_sdk, maintained by the community developer Soneso (NOT SDF). Soneso also maintains the iOS/macOS, Kotlin Multiplatform, and PHP SDKs. Maintainer tier is the load-bearing nuance.\nAlso good if the answer: Soneso also maintains the iOS/macOS, Kotlin Multiplatform, and PHP SDKs in the same family.\nGolden cites: developers.stellar.org client-sdks page or the Soneso/stellar_flutter_sdk repo.\nGT-55 CORRECTION 2026-07-11: a wallet answer must distinguish the Soneso wallet wrapper from the underlying general SDK. Versions are dated, community recognition is not SDF maintenance, and unsupported language-tier safety rankings are not rewarded. sd-032 tracks the stale official tutorial pair.\nAccurately quoting the canonical Stellar Docs page on the Flutter tutorial pair as `stellar_wallet_flutter_sdk: ^1.0.6` with `stellar_flutter_sdk: ^2.1.3` is not a wrong claim while sd-032 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "tooling-infra",
@@ -113,16 +113,21 @@
       }
     ],
     "verified": {
-      "date": "2026-06-28",
-      "by": "Golden-truth sweep import — The inherited answer named only the lower-level general Flutter SDK even though the question asks for a wallet, and it promoted SDF-maintained languages as a safer production tier without evidence. Current Soneso wallet and general packages have distinct roles and dated releases.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
       "evidence": [
         "GT-55 blind 3393 independently distinguished the wallet-specific and general packages before reading the primary, which had marked the one-package answer no-change.",
         "Pub.dev reported stellar_wallet_flutter_sdk 1.1.3 published 2026-06-24 with stellar_flutter_sdk ^3.2.0, and stellar_flutter_sdk 3.2.1 published 2026-06-28.",
-        "Current official tutorial source pins wallet ^1.0.6 plus general ^2.1.3; the upstream docs defect is recorded separately."
+        "Current official tutorial source pins wallet ^1.0.6 plus general ^2.1.3; the upstream docs defect is recorded separately.",
+        "Structural re-form (symmetric-caution): added an upstream-documentation grading caution for sd-032; the package roles and dated versions are unchanged.",
+        "No live recheck was required for this pure symmetric-caution re-form.",
+        "Improvements review 2026-08-27: improvements/stellar-docs/sd-032-flutter-wallet-dependency-snippets-stale.md remains reported upstream; the disputed claim is the official tutorial's stale wallet ^1.0.6 plus general ^2.1.3 pair.",
+        "Sibling sweep 2026-08-27: grep sd-032|stellar_wallet_flutter_sdk|stellar_flutter_sdk → q-tool-wallets-comparison; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-032-flutter-wallet-dependency-snippets-stale.md",
-        "Eval-side package-role conflation and unsupported comparative safety ranking."
+        "Eval-side package-role conflation and unsupported comparative safety ranking.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-tool-flutter-mobile-sdk"

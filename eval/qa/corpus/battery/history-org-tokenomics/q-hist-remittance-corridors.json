@@ -17,7 +17,7 @@
       "Do NOT present every historic/announced capability as a current corridor, equate corporate footprint with Stellar coverage, globally ban XLM settlement, or freeze one coverage count.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "GT-27 2026-07-10: grade dated row-level lifecycle and settlement-asset evidence. MoneyGram is current; Nium/Velo-PDAX/Coins.ph/Onafriq require capability, announcement, historical, or coverage caveats. Counts remain source/time scoped.\nGT-27 CORRECTION 2026-07-10: a partner roster is not a current deployment census."
+    "notes": "GT-27 2026-07-10: grade dated row-level lifecycle and settlement-asset evidence. MoneyGram is current; Nium/Velo-PDAX/Coins.ph/Onafriq require capability, announcement, historical, or coverage caveats. Counts remain source/time scoped.\nGT-27 CORRECTION 2026-07-10: a partner roster is not a current deployment census.\nAccurately quoting the canonical Lumenloop or Scout source on MoneyGram's 200+ footprint or unqualified corridor lifecycle labels is not a wrong claim while ll-008 and sls-024 stand; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -73,20 +73,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-27 primary 3270 and blind 3272; corridor sibling sweep.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): Added a claim-specific caution for corridor coverage and lifecycle labels; the truth is unchanged.",
+        "Finding read 2026-08-27: improvements/lumenloop/ll-008-directory-record-coverage-field-quality.md — disputed MoneyGram's unscoped 200+ footprint as Stellar cash coverage.",
+        "Finding read 2026-08-27: improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed lifecycle labels without populated provenance or deployment scope.",
+        "Sibling sweep 2026-08-27: grep MoneyGram|Nium|Velo/PDAX|Coins.ph|Onafriq → q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-crp-regional-offramp-mobilemoney; no contradiction"
       ],
       "rootCause": [
         "Partner capability, announcement, historic route, and live consumer deployment were collapsed.",
         "improvements/lumenloop/ll-008-directory-record-coverage-field-quality.md",
         "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-hist-remittance-corridors"

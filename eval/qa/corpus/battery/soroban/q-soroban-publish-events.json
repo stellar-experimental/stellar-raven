@@ -15,7 +15,7 @@
       "Do NOT teach raw events as the preferred current API or call getEvents a subscription.",
       "Do NOT promise permanent history or freeze a universal retention window."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Retention (~7 days) is the key fact; 'forever queryable' is the trap. Verified: events published via env.events().publish, read via RPC getEvents with a bounded retention window (~7 days).\nAlso good if the answer: RPC retains queryable events for a limited window (about 7 days); for older events you need an external indexer. | The leading topics are indexed and used to filter event subscriptions.\nGolden cites: The developers.stellar.org events / RPC getEvents documentation.\nGT-46 CORRECTION 2026-07-11: typed-event-first API and provider-configured retention replace deprecated/stale wording."
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Retention (~7 days) is the key fact; 'forever queryable' is the trap. Verified: events published via env.events().publish, read via RPC getEvents with a bounded retention window (~7 days).\nAlso good if the answer: RPC retains queryable events for a limited window (about 7 days); for older events you need an external indexer. | The leading topics are indexed and used to filter event subscriptions.\nGolden cites: The developers.stellar.org events / RPC getEvents documentation.\nGT-46 CORRECTION 2026-07-11: typed-event-first API and provider-configured retention replace deprecated/stale wording.\nAccurately quoting the official Stellar documentation source on a 24-hour default and separate 7-day `getEvents` cap is not a wrong claim while a cached or older copy still shows those values before the 2026-07-27 sd-023 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "soroban",
@@ -78,13 +78,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer led with the deprecated raw publish API, called getEvents a subscription, and froze stale retention wording. Current SDK leads with typed contract events; RPC retention is provider/configuration dependent.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329 agreed on typed-event-first/current query semantics; blind identified a docs-versus-source/live retention conflict."
+        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329 agreed on typed-event-first/current query semantics; blind identified a docs-versus-source/live retention conflict.",
+        "Structural re-form (symmetric-caution): Added a cache-scoped grading caution; the answer and facts are unchanged.",
+        "Reviewed resolved improvement 2026-08-27: improvements/resolved.json entry sd-023 — the old docs stated a 24-hour default and separate 7-day cap before the 2026-07-27 fix.",
+        "Sibling sweep 2026-08-27: grep getEvents|history-retention-window|contractevent → q-crp-export-tx-history-taxes, q-soroban-contractmeta-vs-contractevent, q-soroban-event-indexing-design, q-soroban-publish-events, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-enumerate-all-contracts, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill, q-tool-greenfield-indexer-prior-art-preflight, q-tool-indexer-repos-discovery; no contradiction"
       ],
       "rootCause": [
-        "Plain SDK API drift plus hand-maintained RPC retention prose; improvements/stellar-docs/sd-023-rpc-event-retention-config-drift.md"
+        "Plain SDK API drift plus hand-maintained RPC retention prose; improvements/stellar-docs/sd-023-rpc-event-retention-config-drift.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-soroban-publish-events"

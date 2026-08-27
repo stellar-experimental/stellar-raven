@@ -20,7 +20,7 @@
       "SEP-24 requires the wallet to collect and host the anchor's KYC user interface.",
       "Do NOT claim SEP-38 is an Active SEP; the protocol repo lists it as Draft."
     ],
-    "notes": "Verified on 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md reported Status: Draft (Updated 2025-02-26, last commit 2025-06-17), and a Perplexity web sweep found no source calling SEP-38 Active; the retired keyFact that grouped SEP-38 with the Active SEPs overreached golden.answer."
+    "notes": "Verified on 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md reported Status: Draft (Updated 2025-02-26, last commit 2025-06-17), and a Perplexity web sweep found no source calling SEP-38 Active; the retired keyFact that grouped SEP-38 with the Active SEPs overreached golden.answer.\nAccurately quoting the official Stellar documentation on SEP-6 programmatic use and SEP-24 hosted flows without the SEP-6 interactive-component deprecation is not a wrong claim while sd-009 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -307,7 +307,8 @@
         "Sibling sweep: q-sep-6-24-deprecation now carries the same scheduled Active-status treatment; q-sep-interactive-deposit-withdraw has no mutable Active-status key fact.",
         "Structural re-form (snapshot-date): removed the snapshot-date literal and split the compound fact; the SEP-38 clause was corrected, see program-log.md E1.",
         "Live re-check 2026-08-27: sep-0006.md, sep-0024.md, sep-0031.md preambles read Status: Active; sep-0038.md reads Status: Draft.",
-        "Sibling sweep 2026-08-27: grep SEP-38|SEP-0038 → 12 cases incl. q-sep-38-quotes (states Status Draft), q-sep-31-cross-border, q-anchor-platform-what; only this case asserted SEP-38 Active"
+        "Sibling sweep 2026-08-27: grep SEP-38|SEP-0038 → 12 cases incl. q-sep-38-quotes (states Status Draft), q-sep-31-cross-border, q-anchor-platform-what; only this case asserted SEP-38 Active",
+        "Structural re-form (symmetric-caution): Added a narrow caution for the missing SEP-6 interactive-component deprecation; read improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md on 2026-08-27; no live re-check needed; sibling sweep grep SEP-6|SEP-24|interactive components → q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction; golden truth unchanged."
       ],
       "rootCause": [
         "freshness-drift",
@@ -315,7 +316,8 @@
         "Sibling consistency sweep for q-sep-6-24-deprecation",
         "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-        "Eval-side authoring overreach: the keyFact grouped SEP-38 with the Active SEPs although golden.answer never claimed it."
+        "Eval-side authoring overreach: the keyFact grouped SEP-38 with the Active SEPs although golden.answer never claimed it.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "kaan sep24-vs-sep31-vs-sep6"

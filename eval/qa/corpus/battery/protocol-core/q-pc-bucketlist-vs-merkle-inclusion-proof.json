@@ -15,7 +15,7 @@
       "Do NOT call BucketList a classic per-transaction Merkle proof or conflate state and transaction proofs.",
       "Do NOT present an RPC/Horizon/indexer row as self-authenticating or claim a compact standard proof API without a cited system."
     ],
-    "notes": "GT-29 CORRECTION 2026-07-10: verify full transaction-set/result XDR hashes, header chain, and SCP/quorum finality. BucketList commits state; retrieval rows are not self-authenticating, and no standard compact one-call per-transaction proof was found in the audited surfaces.\nGT-29 independently confirmed by processes 3276/3278; sd-014 owns the missing verification guide."
+    "notes": "GT-29 CORRECTION 2026-07-10: verify full transaction-set/result XDR hashes, header chain, and SCP/quorum finality. BucketList commits state; retrieval rows are not self-authenticating, and no standard compact one-call per-transaction proof was found in the audited surfaces.\nGT-29 independently confirmed by processes 3276/3278; sd-014 owns the missing verification guide.\nAccurately quoting the canonical Stellar documentation on Bucket List state commitments without a full-XDR inclusion recipe is not a wrong claim while sd-014 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "protocol-core",
@@ -70,13 +70,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The state-versus-transaction distinction is correct, but the inherited answer stopped at field names and retrieval sources rather than explaining hash recomputation and the SCP/header-finality trust boundary.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both required a concrete verification recipe. Reviewer retained official 'applied to previous ledger' semantics with clarified production relation."
+        "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both required a concrete verification recipe. Reviewer retained official 'applied to previous ledger' semantics with clarified production relation.",
+        "Structural re-form (symmetric-caution): Added a claim-specific caution for the missing transaction-inclusion recipe; the truth is unchanged.",
+        "Finding read 2026-08-27: improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md — disputed whether fragmented commitment docs provide a full-XDR inclusion proof recipe.",
+        "Sibling sweep 2026-08-27: grep Bucket List|txSetHash|txSetResultHash → q-protocol-ledger-header-fields, q-protocol-24-whisk-incident; no contradiction"
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md"
+        "improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-pc-bucketlist-vs-merkle-inclusion-proof"

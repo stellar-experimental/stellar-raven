@@ -22,7 +22,7 @@
       "Do NOT present the ranked stablecoin registry as the complete set of Stellar stablecoins; a missing asset is untracked, not absent from Stellar.",
       "Do NOT read a null supply, market cap, or holder value as zero, and do NOT compare raw supply across rows with different pegs; marketCapUSD is the comparable metric."
     ],
-    "notes": "VERIFIED issuers against dossier primary sources: Circle USDC + EURC; PayPal PYUSD (launched on Stellar Sep 18 2025); regional anchors like ClickPesa TZS; BENJI as quasi-stable RWA share. New issuers can appear, so flag the list as time-bounded. Stablecoin coverage → lumenloop_search_content_semantic.\nAlso good if the answer: Characterizes the stablecoin set as issuer-led dollars (USDC/EURC/PYUSD), with regional anchors (e.g. ClickPesa's TZS) and BENJI as a quasi-stable RWA.\nGolden cites: A dated source for each named stablecoin.\nGT-20 CORRECTION 2026-07-10 supersedes the inherited 'major set' and algorithmic-absence framing. Grade a dated non-exhaustive taxonomy, issuer roles, and product-class separation.\nSTABLECOIN REGISTRY BOUND (verified 2026-08-19): scout.getStablecoins serves a curated registry, not a census. A live read included Circle USDC and Circle EURC with measured values. Its coverage block states that absence means untracked, never absent from Stellar. GRADER CAUTION: grade the reading behavior instead of set membership. Cite meta.dataAsOf for ranking or size claims; meta.generatedAt only dates the response. marketCapUSD is the cross-peg size metric because supply uses each row's peg. Null means unmeasured, not zero. Use assetId or issuer as the identity because one ticker can have several issuers. counts.total is the filtered count before slicing, counts.tracked is the whole registry, and counts.returned is the served page. Do not require a pinned row count, order, timestamp lag, or position. The top marketCapUSD row can be a yield-bearing token, so preserve product-class distinctions. Circle's USDC issuer remains independently confirmed by Circle and Horizon."
+    "notes": "VERIFIED issuers against dossier primary sources: Circle USDC + EURC; PayPal PYUSD (launched on Stellar Sep 18 2025); regional anchors like ClickPesa TZS; BENJI as quasi-stable RWA share. New issuers can appear, so flag the list as time-bounded. Stablecoin coverage → lumenloop_search_content_semantic.\nAlso good if the answer: Characterizes the stablecoin set as issuer-led dollars (USDC/EURC/PYUSD), with regional anchors (e.g. ClickPesa's TZS) and BENJI as a quasi-stable RWA.\nGolden cites: A dated source for each named stablecoin.\nGT-20 CORRECTION 2026-07-10 supersedes the inherited 'major set' and algorithmic-absence framing. Grade a dated non-exhaustive taxonomy, issuer roles, and product-class separation.\nSTABLECOIN REGISTRY BOUND (verified 2026-08-19): scout.getStablecoins serves a curated registry, not a census. A live read included Circle USDC and Circle EURC with measured values. Its coverage block states that absence means untracked, never absent from Stellar. GRADER CAUTION: grade the reading behavior instead of set membership. Cite meta.dataAsOf for ranking or size claims; meta.generatedAt only dates the response. marketCapUSD is the cross-peg size metric because supply uses each row's peg. Null means unmeasured, not zero. Use assetId or issuer as the identity because one ticker can have several issuers. counts.total is the filtered count before slicing, counts.tracked is the whole registry, and counts.returned is the served page. Do not require a pinned row count, order, timestamp lag, or position. The top marketCapUSD row can be a yield-bearing token, so preserve product-class distinctions. Circle's USDC issuer remains independently confirmed by Circle and Horizon.\nAccurately quoting the canonical Scout source record on Circle USDC roster coverage is not a wrong claim while a cached or older copy still shows its pre-2026-08-19 omission; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -235,18 +235,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-19",
-      "by": "Solo truth-maintenance root, scratchpad 835: fresh A+C+F recheck",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
       "evidence": [
         "Class C 2026-08-19: https://stellarlight.xyz/api/stablecoins?limit=100 returned meta.dataAsOf 2026-08-19T18:57:38.745Z, coverage.basis curated-registry, and separate live rows for Circle USDC, Circle EURC, and MyKobo EURC. The filtered USD read returned counts.total 6 and counts.returned 6 while counts.tracked stayed 20.",
         "Class A 2026-08-19: https://developers.circle.com/stablecoins/usdc-contract-addresses lists Stellar Mainnet USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
         "Class F 2026-08-19: https://horizon.stellar.org/assets?asset_code=USDC&asset_issuer=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=1 returned the exact asset with a positive authorized balance.",
         "Sibling sweep 2026-08-19: q-asset-stablecoin-issuers-discovery and q-eco-stablecoins-on-stellar now use the same curated-registry semantics. The existing Circle issuer, product-class, and dated-roster rules remain consistent with sibling cases and clusters 015 and 028.",
-        "solo://proj/49/scratchpad/truth-maintenance-an--835"
+        "solo://proj/49/scratchpad/truth-maintenance-an--835",
+        "Structural re-form (symmetric-caution): added a cached-source grading caution for sls-066; the verified stablecoin taxonomy and registry facts are unchanged.",
+        "Improvements review 2026-08-27: improvements/resolved.json entry sls-066 records the 2026-08-19 fix; the disputed claim is Circle USDC roster coverage in an older Scout registry copy.",
+        "Sibling sweep 2026-08-27: grep sls-066|curated-registry → q-asset-stablecoin-issuers-discovery; no contradiction"
       ],
       "rootCause": [
         "improvements/resolved.json entry sls-066",
-        "solo://proj/49/scratchpad/truth-maintenance-an--835"
+        "solo://proj/49/scratchpad/truth-maintenance-an--835",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-eco-stablecoins-on-stellar"

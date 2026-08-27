@@ -21,7 +21,7 @@
       "Do NOT attribute a GitHub handle, SEP authorship, or other biography details without a source that establishes them.",
       "Do NOT turn an empty exact-person lane into a claim that Justin Rice has no Stellar history."
     ],
-    "notes": "Positive control for evidence-poor recovery. The answer should recover exact-name dated history from broad content/research after narrow directory or person lanes miss, while refusing to convert historical titles into a current-role assertion."
+    "notes": "Positive control for evidence-poor recovery. The answer should recover exact-name dated history from broad content/research after narrow directory or person lanes miss, while refusing to convert historical titles into a current-role assertion.\nAccurately quoting the canonical LumenLoop source on Justin Rice semantic matches without exact-name, matched-span, or source-date provenance is not a wrong claim while ll-017 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -153,13 +153,15 @@
         "Structural re-form (snapshot-date): Split the flagged compound key fact and removed its snapshot-date literal; truth is unchanged.",
         "Live re-check 2026-08-27: https://stellar.org/foundation/team — the live team page remained undated, supporting an observation-date gate.",
         "Live re-check 2026-08-27: https://stellar.org/community/events/ama-with-justin-rice and https://stellar.org/community/events/gbbc-university-dialogues-on-blockchain-digital-assets — the pages tied Rice's Head and VP roles to 2021 events.",
-        "Sibling sweep 2026-08-27: grep Justin Rice|VP of Ecosystem → q-builder-justin-rice-history, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback; no contradiction"
+        "Sibling sweep 2026-08-27: grep Justin Rice|VP of Ecosystem → q-builder-justin-rice-history, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback; no contradiction",
+        "Structural re-form (symmetric-caution): Added a narrow caution for Justin Rice semantic matches without exact-name provenance; read improvements/lumenloop/ll-017-semantic-person-match-provenance.md on 2026-08-27; no live re-check needed; sibling sweep grep Justin Rice|exact-name → q-builder-content-by-person, q-builder-justin-rice-history, q-edge-lumenloop-person-entity-empty; no contradiction; golden truth unchanged."
       ],
       "rootCause": [
         "Broad semantic capability existed but the interaction stopped after narrow evidence-poor calls.",
         "Historical role evidence needed an explicit source-date gate to avoid a current-role hallucination.",
         "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "authored 2026-07-13 from production miss and independent truth verification"

@@ -80,3 +80,29 @@ Lint: 1,390 → 1,365 warnings (snapshot-date 12 → 0; the splits also removed 
 warnings). Register: 4 clusters auto-reopened by member hashes, closed by reSwept events as
 form-only. Gates: compile, lint --since fadedf6 --stale (0 errors), typecheck, npm test (1270
 passed), build, secrets scan — all green.
+
+### Batch 2 — symmetric-caution class (70 cases, 70 warnings → 0)
+
+Crew: gt-sol-a, gt-sol-b, gt-sol-c (pane wQ:p5, Codex gpt-5.6-sol high), four cases per prompt
+(17 chunks; reports `/tmp/raven-qadeep/gt/report-gt-sol-*-batch2-*.md`); reviewer gt-grok-rev,
+review `/tmp/raven-qadeep/gt/review-batch2.md`.
+
+Edits: one caution sentence appended to golden.notes per case, naming the disputed claim from the
+improvements/ finding in rootCause (finding id or fix date for resolved ones); no keyFacts, avoid,
+or answer changed. One case (q-scf-history-soroswap) had an eval-side-only rootCause whose text
+merely contained the string "improvements/"; it was reworded ("no upstream finding warranted") and
+the reword is recorded in evidence. Workers flagged four cases with six pre-existing keyFacts; those
+are compile-time migration exceptions and were left as-is.
+
+Reviewer verdict: APPROVE-WITH-FIXES — 66 PASS, 4 FAIL. Three sd-008 cautions read as excusing a
+current "Protocol 26 is Mainnet-current" claim (truth rule 3); one sd-003 caution named the golden
+12-method inventory as the disputed claim, which would punish the golden fact. All four sentences
+were replaced with the reviewer's exact wording and the fix recorded in truth.verified.evidence.
+Reviewer independently confirmed Protocol 27 on Mainnet (software-versions page, Horizon) and
+spot-checked six improvements/ files.
+
+Lint: 1,365 → 1,295 warnings (symmetric-caution 70 → 0). Register: 79 entries auto-reopened by
+member hashes (78 clusters + the Protocol 27 date trap + one first-seeded numeric invariant) and
+closed by form-only reSwept events; the ten clusters already `reopen` at HEAD were left as they
+were. Gates: compile, lint --since fadedf6 --stale (0 errors), typecheck, npm test (1270 passed),
+build, secrets scan — all green.
