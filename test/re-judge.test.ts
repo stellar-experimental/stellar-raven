@@ -556,6 +556,59 @@ describe("re-judge saved-answer selection", () => {
     });
   });
 
+  it("maps a Windows checkout cases path on a POSIX runner", async () => {
+    const verifySourceCases = await loadVerifySourceCases();
+    const selected = [{ id: "one" }];
+    const git = writeGitCases({ cases: selected });
+    const recordedWindowsPath = "C:\\Users\\example\\stellar-raven-codemode\\eval\\qa\\cases.json";
+    const results = revisionResults(recordedWindowsPath, ["one"], sha256(JSON.stringify(selected)));
+
+    expect(
+      verifySourceCases(results, join(git.directory, "results.json"), {
+        casesRef: git.revision,
+        repoRoot: git.directory
+      })
+    ).toMatchObject({
+      selectedCases: selected,
+      revision: { repositoryRelativeCasesPath: "eval/qa/cases.json" },
+      guard: { matches: true }
+    });
+  });
+
+  it("maps a relative Windows cases path on a POSIX runner", async () => {
+    const verifySourceCases = await loadVerifySourceCases();
+    const selected = [{ id: "one" }];
+    const git = writeGitCases({ cases: selected });
+    const results = revisionResults("eval\\qa\\cases.json", ["one"], sha256(JSON.stringify(selected)));
+
+    expect(
+      verifySourceCases(results, join(git.directory, "results.json"), {
+        casesRef: git.revision,
+        repoRoot: git.directory
+      })
+    ).toMatchObject({
+      selectedCases: selected,
+      revision: { repositoryRelativeCasesPath: "eval/qa/cases.json" },
+      guard: { matches: true }
+    });
+  });
+
+  it.each([
+    "C:\\repo\\eval\\qa\\..\\..\\secret.json",
+    "C:\\elsewhere\\cases.json"
+  ])("rejects an unsafe Windows cases path: %s", async (recordedWindowsPath) => {
+    const verifySourceCases = await loadVerifySourceCases();
+    const git = writeGitCases({ cases: [{ id: "one" }] });
+    const results = revisionResults(recordedWindowsPath, ["one"], sha256(JSON.stringify([{ id: "one" }])));
+
+    expect(() =>
+      verifySourceCases(results, join(git.directory, "results.json"), {
+        casesRef: git.revision,
+        repoRoot: git.directory
+      })
+    ).toThrow("source results meta.casesPath is outside the repository");
+  });
+
   it("fails closed for an unavailable revision, blob, JSON, selected case, order, or hash", async () => {
     const verifySourceCases = await loadVerifySourceCases();
     const git = writeGitCases({ cases: [{ id: "one" }, { id: "two" }] });

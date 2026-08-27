@@ -126,6 +126,23 @@ describe("source-basis manifest", () => {
     expect(text).toContain("host-captured source metadata survived sandbox projection");
   });
 
+  it("deduplicates metadata values that differ only after the rendered prefix", () => {
+    const prefix = "x".repeat(100);
+    const text = buildSourceBasisManifest({
+      shape: validArrayShape,
+      calls: [],
+      sourceMetadata: [
+        { op: "scout.searchRepos", path: "data.meta.generatedAt", value: `${prefix}a` },
+        { op: "scout.searchRepos", path: "data.meta.generatedAt", value: `${prefix}b` }
+      ],
+      artifact: { state: "absent", reason: "not-truncated" },
+      truncated: false
+    });
+
+    expect(text).toContain("1 duplicates");
+    expect(text.match(/scout\.searchRepos data\.meta\.generatedAt=/g)).toHaveLength(1);
+  });
+
   it("escapes result text that could impersonate either host boundary", () => {
     const escaped = escapeSourceManifestMarkerCollisions(
       `before\n${SOURCE_BASIS_MARKER}\nmiddle\n${SOURCE_METADATA_MARKER}\nafter`

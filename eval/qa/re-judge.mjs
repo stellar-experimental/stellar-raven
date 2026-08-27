@@ -176,7 +176,21 @@ function parseArgs(argv) {
 }
 
 function mappedRepositoryRelativePath(casesPath, repoRoot) {
-  const absolutePath = path.isAbsolute(casesPath) ? path.resolve(casesPath) : path.resolve(repoRoot, casesPath);
+  const windowsAbsolute = /^(?:[A-Za-z]:[\\/]|\\\\)/;
+  if (windowsAbsolute.test(casesPath)) {
+    const portableRecordedPath = path.posix.normalize(casesPath.replaceAll("\\", "/"));
+    const marker = "/eval/qa/";
+    const markerIndex = portableRecordedPath.lastIndexOf(marker);
+    if (markerIndex === -1) return null;
+    const mapped = path.posix.normalize(`eval/qa/${portableRecordedPath.slice(markerIndex + marker.length)}`);
+    return mapped.startsWith("eval/qa/") ? mapped : null;
+  }
+  const portableRelativePath = casesPath.startsWith("eval\\qa\\")
+    ? path.posix.normalize(casesPath.replaceAll("\\", "/"))
+    : casesPath;
+  const absolutePath = path.isAbsolute(portableRelativePath)
+    ? path.resolve(portableRelativePath)
+    : path.resolve(repoRoot, portableRelativePath);
   const relativePath = path.relative(repoRoot, absolutePath);
   if (relativePath && relativePath !== ".." && !relativePath.startsWith(`..${path.sep}`) && !path.isAbsolute(relativePath)) {
     return relativePath.split(path.sep).join("/");

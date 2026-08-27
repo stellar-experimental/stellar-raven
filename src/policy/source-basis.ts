@@ -331,7 +331,12 @@ function normalizeSourceMetadata(entries: SourceMetadataEntry[]): NormalizedSour
     ) {
       continue;
     }
-    const key = `${entry.op}\u0000${entry.path}\u0000${typeof entry.value}\u0000${String(entry.value)}`;
+    // The manifest renders only this prefix. Tail-only differences can share one bounded entry.
+    const opKey = `${entry.op.length}:${entry.op.slice(0, MAX_ATOM_CHARS)}`;
+    const valueKey = typeof entry.value === "string"
+      ? `${entry.value.length}:${entry.value.slice(0, MAX_ATOM_CHARS)}`
+      : String(entry.value);
+    const key = `${opKey}\u0000${entry.path}\u0000${typeof entry.value}\u0000${valueKey}`;
     if (seen.has(key)) {
       duplicates += 1;
       continue;
