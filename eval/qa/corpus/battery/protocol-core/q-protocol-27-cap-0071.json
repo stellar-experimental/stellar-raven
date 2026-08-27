@@ -19,7 +19,7 @@
       "Do NOT present network status without a dated live source or freshness caveat.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "CORRECTION 2026-08-04: P27 is historical and live from ledger 63386819; CAP-0071 is now Final. Preserve CAP-status versus network-activation separation."
+    "notes": "CORRECTION 2026-08-04: P27 is historical and live from ledger 63386819; CAP-0071 is now Final. Preserve CAP-status versus network-activation separation.\nAccurately quoting a cached or older copy of the official Software Versions page that still shows Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current (fixed 2026-08-18 in sd-008) is not a wrong claim; grade caps at partial for that older-copy quote unless the answer presents Protocol 26 as currently Mainnet-current independently of that copy."
   },
   "tags": {
     "category": "protocol-core",
@@ -86,14 +86,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA CAP registry recheck; accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently retained the mechanics and required replacement of stale pending/future judge prose.",
         "2026-07-11 author re-check: Horizon P26/P27 boundary, two independent Pubnet RPCs, current CAP-0071 source, and official Zipper guide.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-008; the Protocol 27 and CAP-0071 facts are unchanged.",
+        "Improvements review 2026-08-27: improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md records the 2026-08-18 upstream fix; the disputed claim is the older Software Versions page showing Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current.",
+        "Sibling sweep 2026-08-27: grep sd-008|Protocol 27|63386819|CAP-0071 → q-edge-fresh-latest-protocol-version, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction",
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory."
       ],
       "rootCause": [
         "eval-side date-contingent status trap expired after the scheduled Mainnet vote and survived as contradictory inherited judge prose",
@@ -101,7 +105,8 @@
         "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
         "eval-authoring",
         "CAP-0071 advanced from Accepted to Final after the earlier snapshot.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-protocol-27-cap-0071"

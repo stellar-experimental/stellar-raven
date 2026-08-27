@@ -15,7 +15,7 @@
     ],
     "avoid": [
       "Do NOT guarantee listing, verification, price, or market-cap display just because a Stellar asset exists.",
-      "Do NOT present an official universal Stellar whitelist for every exchange/aggregator."
+      "Do NOT claim an official universal Stellar whitelist governs every exchange or aggregator."
     ],
     "notes": "Freshness-sensitive. Verified durable prerequisites with SEP-1 and SEP-42; do not require any specific exchange/aggregator policy beyond dated current-source citation. Re-verified 2026-06-29: SEP-0042 confirmed as 'Stellar Asset List (SAL)', SEP-0001 + the build/apps SEP-1 tutorial resolve; stellar.expert/asset-lists is a client-rendered SPA so its catalog couldn't be content-fetched but the route is valid (load-bearing SEP claims verified via the protocol repo).\nAlso good if the answer: Mentions liquidity and price/market-cap visibility generally require real markets and supply metadata rather than mere asset issuance. | Advises checking the current listing docs/forms for the specific venue or aggregator.\nGolden cites: SEP-1 or Stellar asset docs, plus dated venue/listing sources for freshness-specific claims."
   },
@@ -52,16 +52,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep1",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep universal Stellar whitelist|exchange/aggregator|asset list → q-aas-list-token-on-exchanges-aggregators, q-aas-trusted-asset-list-whitelist; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-aas-list-token-on-exchanges-aggregators",

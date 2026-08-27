@@ -17,7 +17,7 @@
     "avoid": [
       "Do NOT reference retired scout_rfps, claim a synthetic SCF #45 row is present, or count a round row as another brief.",
       "Do NOT claim an invited full proposal can still enter #45, that RFP awards use community vote, or that each brief has a published bounty.",
-      "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
     "notes": "Freshness item: the matching RFP set changes, so grade dated observation behavior rather than a permanent roster. As of 2026-08-18, the official RFP page and live feed support the two Q3 briefs. The newer awards state and Scout metadata show #45 in Initial Review with no open submission window. The rolling interest form remains the entry path, but it does not prove that #45 accepts a new full proposal."
   },
@@ -87,16 +87,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
         "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
-        "Sibling sweep covered q-scf-open-rfps, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-how-to-apply, q-scf-eligibility-criteria, q-scf-submission-lifecycle-deadlines, and q-scf-hummingbot-kelp-closed-rfp; the entry path and current-round claims remain consistent."
+        "Sibling sweep covered q-scf-open-rfps, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-how-to-apply, q-scf-eligibility-criteria, q-scf-submission-lifecycle-deadlines, and q-scf-hummingbot-kelp-closed-rfp; the entry path and current-round claims remain consistent.",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP tooling → q-scf-rfp-tooling, q-scf-open-rfps, q-scf-open-rfps-live; no contradiction"
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-scf-rfp-tooling"

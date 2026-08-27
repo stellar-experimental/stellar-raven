@@ -12,11 +12,11 @@
       "Requires provider, endpoint, retrieval/as-of time, inclusion basis, and pricing methodology."
     ],
     "avoid": [
-      "Do NOT present any provider value as an exact objective chain fact.",
+      "Do NOT claim any provider value is an exact objective chain fact.",
       "Do NOT claim Raven cannot access a live scalar, assert that TVL necessarily moves block-by-block, or silently combine incompatible scopes.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "GT-25 CORRECTION 2026-07-10: precise live provider scalars are accessible, but they are provider-defined snapshots rather than universal truth. Grade provider/endpoint/as-of/method scope and no false exactness; do not require an approximate range or claim block-by-block movement.\nGT-25 independently confirmed by processes 3268/3273; reuse sls-031/sls-038 rather than duplicate findings."
+    "notes": "GT-25 CORRECTION 2026-07-10: precise live provider scalars are accessible, but they are provider-defined snapshots rather than universal truth. Grade provider/endpoint/as-of/method scope and no false exactness; do not require an approximate range or claim block-by-block movement.\nGT-25 independently confirmed by processes 3268/3273; reuse sls-031/sls-038 rather than duplicate findings.\nAccurately quoting the canonical Scout documentation on missing provider/`tvlAsOf` fields or the absent `analyze.totalTvlUSD` rollup is not a wrong claim while a cached or older copy still omits the fields and rollup added by the 2026-07-14 fixes; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "edge-behavior",
@@ -67,21 +67,28 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; both independently observed DefiLlama /v2/chains value 229093918.7739924 at separate times.",
         "Existing improvements/stellar-light-scout/sls-031 and sls-038 cover provenance and ecosystem-rollup contract gaps.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sls-031 and sls-038; the provider-scoped TVL facts are unchanged.",
+        "Improvements review 2026-08-27: improvements/resolved.json entries sls-031 and sls-038 record 2026-07-14 fixes; the disputed claims are missing TVL methodology fields and the absent analyze.totalTvlUSD rollup in older Scout copies.",
+        "Sibling sweep 2026-08-27: grep sls-031|sls-038|totalTvlUSD|tvlMethodUrl → q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl; no contradiction",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; all symmetric-caution provenance is unchanged.",
+        "Sibling sweep 2026-08-27: grep exact objective chain fact|provider value|TVL methodology|totalTvlUSD → q-edge-noinfo-exact-tvl-figure, q-eco-defi-tvl-current; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-031-tvl-methodology-provenance.md",
         "improvements/stellar-light-scout/sls-038-analyze-tvl-contract-mismatch.md",
         "Eval-side aggregation/cadence explanation was overclaimed.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-edge-noinfo-exact-tvl-figure"

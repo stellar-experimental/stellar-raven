@@ -15,9 +15,9 @@
     "avoid": [
       "Do NOT invent a person's tier, advisor quality, or award history from the removed scfTier field or unsupported filter.",
       "Do NOT conflate Verified-Member governance roles with project awards.",
-      "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "GT-35 CORRECTION 2026-07-15: Scout removed the unpopulated scfTier field and now rejects the retired builder filter. Grade an honest limitation plus the governance-role/project-award/person-attribution distinction; no named advisor roster is required. Project award records remain a separate, dated signal and must not be promoted into person-level tier or advisor claims."
+    "notes": "GT-35 CORRECTION 2026-07-15: Scout removed the unpopulated scfTier field and now rejects the retired builder filter. Grade an honest limitation plus the governance-role/project-award/person-attribution distinction; no named advisor roster is required. Project award records remain a separate, dated signal and must not be promoted into person-level tier or advisor claims.\nAccurately quoting the canonical Scout documentation on the retired `scfTier` builder filter is not a wrong claim while a cached or older copy still shows it after the 2026-07-15 fix; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -72,20 +72,28 @@
       }
     ],
     "verified": {
-      "date": "2026-07-15",
-      "by": "live drift resolution with independent Solo review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "Official Scout OpenAPI 1.7.26 omits Builder.scfTier and the builders scfTier query parameter.",
         "Live 2026-07-15 GET /api/builders?scfTier=top returned HTTP 400; 118 builder rows omitted scfTier.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live SCF-awarded project directory reported 402 matching projects; Lobstr, xBull, and Reflector appeared on the first page.",
         "Sibling sweep: q-builder-rust-soroban-devs contains no scfTier claim and remains consistent.",
-        "solo://proj/49/scratchpad/ci-and-drift-review--665"
+        "solo://proj/49/scratchpad/ci-and-drift-review--665",
+        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sls-040; the retired-filter fact is unchanged.",
+        "Improvements review 2026-08-27: improvements/resolved.json entry sls-040 records the 2026-07-15 fix; the disputed claim is the retired scfTier builder filter in older Scout documentation.",
+        "Sibling sweep 2026-08-27: grep sls-040|scfTier → q-builder-by-region-latam, q-builder-rust-soroban-devs; no contradiction",
+        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
+        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+        "Sibling sweep 2026-08-27: grep scfTier|person-level SCF|project award records → q-builder-by-region-latam, q-builder-rust-soroban-devs; no contradiction"
       ],
       "rootCause": [
         "Desired/routed schema was promoted into factual gospel despite implementation and data disagreement.",
         "improvements/resolved.json entry sls-040",
         "freshness-drift",
-        "solo://proj/49/scratchpad/ci-and-drift-review--665"
+        "solo://proj/49/scratchpad/ci-and-drift-review--665",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-builder-by-scf-tier"

@@ -14,7 +14,7 @@
     "avoid": [
       "Do NOT cite an unversioned finding ID, convert hypothetical impact into a live exploit, or call it reentrancy."
     ],
-    "notes": "Added from theboycoder/StellarLight data-layer intake. Primary-source recheck on 2026-08-25 confirmed the versioned identifier history and the counted-versus-labeled distinction. V2 already contains the invalid-disposition analysis. V2.1 relocates that analysis to Appendix A.2.2. Both reports label the investigated item Critical, while their valid-vulnerability summaries count zero Critical issues. Scout currently exact-misses the real V-SOR-APP-VUL-003 identifier; treat that result as retrieval defect sls-074, not real-world absence.\nAlso good if the answer connects the finding to Soroban's contract-auth model instead of generic EVM reentrancy.\nGT-44 independently reconciled the V2/V2.1 renumbering."
+    "notes": "Added from theboycoder/StellarLight data-layer intake. Primary-source recheck on 2026-08-25 confirmed the versioned identifier history and the counted-versus-labeled distinction. V2 already contains the invalid-disposition analysis. V2.1 relocates that analysis to Appendix A.2.2. Both reports label the investigated item Critical, while their valid-vulnerability summaries count zero Critical issues. Scout currently exact-misses the real V-SOR-APP-VUL-003 identifier; treat that result as retrieval defect sls-074, not real-world absence.\nAlso good if the answer connects the finding to Soroban's contract-auth model instead of generic EVM reentrancy.\nGT-44 independently reconciled the V2/V2.1 renumbering.\nAccurately quoting the canonical Scout source on `V-SOR-APP-VUL-003` as absent from its indexed corpus is not a wrong claim while sls-074 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "soroban",
@@ -93,18 +93,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-25",
-      "by": "Independent Herdr Opus high and Grok 4.6 high primary-source rechecks",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
         "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
         "https://stellarsecurityportal.com/api/v1/reports/28",
         "https://stellarsecurityportal.com/api/v1/reports/42",
         "Two independent reviewers confirmed the version history, labels, disposition, and valid-vulnerability counts.",
-        "Sibling sweep: q-tool-soroban-auth-audit-live was updated and confirmed consistent on 2026-08-25."
+        "Sibling sweep: q-tool-soroban-auth-audit-live was updated and confirmed consistent on 2026-08-25.",
+        "Structural re-form (symmetric-caution): Added a dispute-scoped grading caution; the answer and facts are unchanged.",
+        "Reviewed improvement 2026-08-27: improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md — Scout exact-misses V-SOR-APP-VUL-003 despite its presence in the V2.1 appendix.",
+        "Sibling sweep 2026-08-27: grep V-SOR-APP-VUL-003|V-SOR-VUL-002 → q-soroban-auth-recursion-dos-audit, q-tool-soroban-auth-audit-live; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        "improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md"
+        "improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-soroban-auth-recursion-dos-audit"

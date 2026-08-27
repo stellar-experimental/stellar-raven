@@ -11,8 +11,7 @@
       "Use filter_by_contract for one contract and assert before a later top-level invocation replaces the observed list."
     ],
     "avoid": [
-      "Do NOT claim env.events().all() accumulates events from every top-level client call in the test.",
-      "Do NOT omit nested-call events from the successful outer invocation or reorder them by contract."
+      "Do NOT claim env.events().all() accumulates events from every top-level client call in the test."
     ],
     "notes": "This case tests event assertions after nested calls. Event publication syntax, RPC retention, diagnostics, and general HostError debugging belong to other cases."
   },
@@ -79,14 +78,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-12",
-      "by": "2026-08 public-source verification",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "solo://proj/49/scratchpad/784#event-assertion-ordering",
-        "Sibling sweep: q-soroban-publish-events owns publication and RPC retention; q-sor-decode-hosterror-codes owns failed-call rollback and diagnostics. Neither owns nested-call ordering."
+        "Sibling sweep: q-soroban-publish-events owns publication and RPC retention; q-sor-decode-hosterror-codes owns failed-call rollback and diagnostics. Neither owns nested-call ordering.",
+        "Structural re-form (presentation-avoid): deleted the omission avoid item because an existing key fact already requires nested events in order; the trap target remains enforced.",
+        "No live re-check was required because the avoid deletion does not change the required content.",
+        "Sibling sweep 2026-08-27: grep nested-call events|filter_by_contract|env.events().all → q-soroban-publish-events, q-sor-decode-hosterror-codes; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "authored 2026-08 (event-testing coverage closure)"

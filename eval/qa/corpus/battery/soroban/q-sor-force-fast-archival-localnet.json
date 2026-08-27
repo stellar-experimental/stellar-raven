@@ -18,7 +18,7 @@
       "Do NOT use restorePreamble or a mandatory restore-then-retry flow as the normal P23 signal/path.",
       "Do NOT conflate state archival with RPC event retention."
     ],
-    "notes": "Authoritative TTL/archive semantics verified. Exact standalone/quickstart config flag names are version-sensitive and should be spot-checked in Phase 3 against the local quickstart/core version if the eval expects commands.\nAlso good if the answer: Mentions proactive contract TTL extension and deliberately disabling/skipping it in a test contract if the goal is to force archival. | Recommends verifying the exact quickstart/core config names against the installed version because flags move.\nGolden cites: Official state archival docs for TTL/archive/restore behavior. | Official storage docs for persistent/instance/temporary differences.\nGT-42 independently reconciled current Core/RPC behavior. Exact config keys are release-sensitive; semantics and same-transaction P23 path are the grading core."
+    "notes": "Authoritative TTL/archive semantics verified. Exact standalone/quickstart config flag names are version-sensitive and should be spot-checked in Phase 3 against the local quickstart/core version if the eval expects commands.\nAlso good if the answer: Mentions proactive contract TTL extension and deliberately disabling/skipping it in a test contract if the goal is to force archival. | Recommends verifying the exact quickstart/core config names against the installed version because flags move.\nGolden cites: Official state archival docs for TTL/archive/restore behavior. | Official storage docs for persistent/instance/temporary differences.\nGT-42 independently reconciled current Core/RPC behavior. Exact config keys are release-sensitive; semantics and same-transaction P23 path are the grading core.\nAccurately quoting the official Stellar documentation on a required restore-then-retry P23 flow is not a wrong claim while a cached or older copy still shows that pre-2026-07-27 flow; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "soroban",
@@ -84,13 +84,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — The inherited local-archival recipe was not operational and retained a pre-P23 restore-then-retry flow.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-42 primary 3308 and blind 3315, 2026-07-10/11."
+        "Solo scratchpad 575 GT-42 primary 3308 and blind 3315, 2026-07-10/11.",
+        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
+        "Reviewed improvements/resolved.json entry sd-007 — fixed 2026-07-27; older documentation can require a separate restore-then-retry P23 flow.",
+        "Sibling sweep 2026-08-27: grep archivedSorobanEntries|restorePreamble|auto-restore|RestoreFootprint|extendTo → q-infra-simulate-transaction-howto, q-protocol-operation-types-list, q-sor-classic-dex-from-contract, q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto, q-sor-ttl-defaults-extend, q-soroban-simulate-resource-fee, q-soroban-storage-types, q-soroban-vuln-classes; no contradiction"
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-007-state-archival-auto-restore-ambiguity.md"
+        "improvements/stellar-docs/sd-007-state-archival-auto-restore-ambiguity.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-sor-force-fast-archival-localnet"

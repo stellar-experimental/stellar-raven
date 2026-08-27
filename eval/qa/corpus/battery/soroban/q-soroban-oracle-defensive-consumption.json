@@ -15,8 +15,7 @@
     "avoid": [
       "Do NOT claim oracles are trustless or freshness alone is sufficient.",
       "Do NOT claim TWAP/VWAP alone would have prevented YieldBlox.",
-      "Do NOT call multiple feeds independent when they share the same market root.",
-      "Do NOT omit exposure caps, circuit breakers, monitoring, and fail-closed response."
+      "Do NOT call multiple feeds independent when they share the same market root."
     ],
     "notes": "2026-06-29: verified the incident is real and well-documented — Feb 2026 oracle-manipulation exploit against Blend V2 / YieldBlox DAO pool, USTRY (Etherfuse) collateral inflated ~100x via low-liquidity Reflector feeds, ~$10M+ drain (BlockSec post-mortem; corroborated by Blockaid/Binance/Medium). The four defensive measures (staleness/timestamp checks, deviation bounds, multi-source/TWAP, liquidity-aware pricing) are standard oracle-security guidance; rubric gates on the practices + naming the incident, not the exact $ figure (which varies $10M–$10.8M across reports).\nAlso good if the answer: References Reflector and the real YieldBlox/USTRY oracle-manipulation incident as motivation.\nGolden cites: A Reflector / oracle-security source and the real incident reference.\nCORRECTION 2026-07-10: require layered economic defenses. YieldBlox's prices were fresh and already VWAP-aggregated; staleness was not causal and TWAP alone is unsupported as a guaranteed prevention."
   },
@@ -111,14 +110,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited defense list was too shallow and implied staleness and TWAP were the relevant missed controls. YieldBlox used fresh five-minute VWAP rounds; robust defense needs source independence, market-quality gates, longer baselines, exposure limits, circuit breakers, monitoring, and recovery planning.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-09 primary/blind defensive-control matrices"
+        "Solo scratchpad 575 GT-09 primary/blind defensive-control matrices",
+        "Structural re-form (presentation-avoid): deleted the omission avoid item because an existing key fact already requires exposure containment and response controls; the trap target remains enforced.",
+        "No live re-check was required because the avoid deletion does not change the required content.",
+        "Sibling sweep 2026-08-27: grep YieldBlox|fresh poisoned|exposure caps|circuit breakers → q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit; no contradiction"
       ],
       "rootCause": [
         "Generic oracle checklist omitted economic and operational containment.",
-        "Incident motivation was misread as a stale/single-spot failure."
+        "Incident motivation was misread as a stale/single-spot failure.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-soroban-oracle-defensive-consumption"

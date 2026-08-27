@@ -7,7 +7,8 @@
   "golden": {
     "answer": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-07-11; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are encrypted with user-password participation and stored locally/on-device, while accounts created before 2020-09-01 that were never migrated are a documented exception. Its 12-word Recovery Phrase (or older wallet-specific 10-word Recovery Code) must be kept private/offline; LOBSTR says it cannot reconstruct users’ phrase, code, secret, or password. Install only from links reached through `lobstr.co`, verify the app publisher, and use 2FA plus multisig or hardware signing when the threat model warrants it.",
     "keyFacts": [
-      "Identifies LOBSTR as an active Ultra Stellar third-party wallet as of 2026-07-11 without treating that as a security guarantee or SDF endorsement.",
+      "Identifies LOBSTR as an active Ultra Stellar third-party wallet.",
+      "Dates the LOBSTR activity assessment to an observation date.",
       "Attributes local/on-device storage to current LOBSTR documentation and preserves the pre-2020 unmigrated-account exception.",
       "States that recovery credentials must never be shared and cannot be reconstructed by support according to current documentation."
     ],
@@ -84,8 +85,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
@@ -94,10 +95,15 @@
         "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key-",
         "https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key-",
         "https://ultrastellar.com/",
-        "https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892"
+        "https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892",
+        "Structural re-form (snapshot-date): Split the wallet identity from its snapshot date; truth is unchanged.",
+        "Live re-check 2026-08-27: https://ultrastellar.com/ — Ultra Stellar listed LOBSTR as its web and mobile wallet product.",
+        "Live re-check 2026-08-27: https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892 — Apple listed the active LOBSTR app and ULTRA STELLAR, LLC as developer.",
+        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar → q-defi-aquarius-what-is, q-defi-soroswap-vs-stellarx, q-eco-dex-saturation, q-eco-freighter-wallet, q-eco-lobstr-wallet, q-eco-xbull-wallet, q-raph-lobstr-legitimacy; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
       ]
     },
     "origin": "raph wallet-lobstr-legitimacy-recovery-storage"

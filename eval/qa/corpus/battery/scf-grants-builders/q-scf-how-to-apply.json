@@ -13,7 +13,7 @@
     ],
     "avoid": [
       "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real).",
-      "Do NOT present stellar.org/enterprise-fund or its application form as the SCF Build application path, and do not attach SCF Build mechanics — the $150K XLM cap, milestone tranches, KYC-before-payment, delegate-panel review, or Open-Track community vote — to the separate Enterprise Fund. The Enterprise Fund's own application is live; the conflation is wrong."
+      "Do NOT claim stellar.org/enterprise-fund or its application form is the SCF Build application path, and do not attach SCF Build mechanics — the $150K XLM cap, milestone tranches, KYC-before-payment, delegate-panel review, or Open-Track community vote — to the separate Enterprise Fund. The Enterprise Fund's own application is live; the conflation is wrong."
     ],
     "notes": "Dossier §2.5. Trap: confusing the SCF Build application flow with the separate Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org."
   },
@@ -43,18 +43,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Solo Todo 1390 independent live re-verification, reproduced by the post-QA closeout lead",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award and its Open/Integration track pages, observed 2026-08-05T23:41–23:42Z, confirm the interest-form flow, three tracks, current panel names, typical 3–6 month timeline, $150K XLM cap, tranches, KYC/KYB gate, and Open-only community vote.",
         "https://stellar.org/enterprise-fund and https://stellar.org/enterprise-fund/apply — current primary pages expose Apply Now / Submit your application, observed 2026-08-05.",
         "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
         "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
-        "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap."
+        "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap.",
+        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
+        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+        "Sibling sweep 2026-08-27: grep Enterprise Fund|SCF Build application|interest form → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund; no contradiction"
       ],
       "rootCause": [
         "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current",
-        "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name"
+        "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-scf-how-to-apply"

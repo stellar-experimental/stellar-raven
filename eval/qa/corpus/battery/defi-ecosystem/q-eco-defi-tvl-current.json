@@ -17,7 +17,7 @@
       "Do NOT pin May 30 as the record, give an undated current scalar, sum overlapping rows, or compare contributors from mismatched snapshots/methods.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "FRESHNESS item, RE-VERIFIED LIVE 2026-06-29 (perplexity/DeFiLlama): figure is HIGHLY volatile and the dossier's ~$227M is stale. Record = ~$242M on May 30 2026 (confirmed via CryptoCompass/BSCNews). Live DeFiLlama chain reads have since ranged DOWN — mid-June 2026 reads near ~$200M, and the 2026-06-29 DeFiLlama read is ~$137.84M (matching the 06-22 scrape). So the gate MUST be on 'cite a dated source + flag staleness + confirm live', NOT a fixed number. Two distinct figures (record vs live snapshot) must not be merged. Confidence: low (volatile).\nAlso good if the answer: Attributes the figure to a specific dated source (DeFiLlama, SDF blog, or dated news) rather than a bare number. | Notes the live DeFiLlama snapshot moves substantially (it has ranged from a ~$242M May-2026 record down toward ~$140-200M since) — i.e. confirm against the live source.\nGolden cites: A dated TVL source (DeFiLlama / SDF / dated news) with a freshness caveat.\nGT-19 CORRECTION 2026-07-10: the June 19 historical point exceeds May 30. Gate provider/endpoint/asOf/definition and chain-vs-protocol separation, never one record/current scalar."
+    "notes": "FRESHNESS item, RE-VERIFIED LIVE 2026-06-29 (perplexity/DeFiLlama): figure is HIGHLY volatile and the dossier's ~$227M is stale. Record = ~$242M on May 30 2026 (confirmed via CryptoCompass/BSCNews). Live DeFiLlama chain reads have since ranged DOWN — mid-June 2026 reads near ~$200M, and the 2026-06-29 DeFiLlama read is ~$137.84M (matching the 06-22 scrape). So the gate MUST be on 'cite a dated source + flag staleness + confirm live', NOT a fixed number. Two distinct figures (record vs live snapshot) must not be merged. Confidence: low (volatile).\nAlso good if the answer: Attributes the figure to a specific dated source (DeFiLlama, SDF blog, or dated news) rather than a bare number. | Notes the live DeFiLlama snapshot moves substantially (it has ranged from a ~$242M May-2026 record down toward ~$140-200M since) — i.e. confirm against the live source.\nGolden cites: A dated TVL source (DeFiLlama / SDF / dated news) with a freshness caveat.\nGT-19 CORRECTION 2026-07-10: the June 19 historical point exceeds May 30. Gate provider/endpoint/asOf/definition and chain-vs-protocol separation, never one record/current scalar.\nAccurately quoting the canonical Scout documentation on DeFindex TVL methodology is not a wrong claim while a cached or older copy still omits the provider, `tvlAsOf`, `llamaSlugs`, or `tvlMethodUrl` fields added by the 2026-07-14 fix; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -66,19 +66,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; live 2026-07-10 reads moved around $229.1M intraday.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live research results included a 2026-04-23 developer meeting reporting $170M of DeFi TVL; older results reported different figures, demonstrating why provider and date matter.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sls-031; the TVL methodology facts are unchanged.",
+        "Improvements review 2026-08-27: improvements/resolved.json entry sls-031 records the 2026-07-14 fix; the disputed claim is whether older Scout DeFindex TVL records expose provider and methodology fields.",
+        "Sibling sweep 2026-08-27: grep sls-031|tvlMethodUrl → q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure; no contradiction"
       ],
       "rootCause": [
         "A volatile third-party scalar and record label were frozen; chain and protocol TVL definitions were under-specified.",
         "improvements/stellar-light-scout/sls-031-tvl-methodology-provenance.md",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-eco-defi-tvl-current"

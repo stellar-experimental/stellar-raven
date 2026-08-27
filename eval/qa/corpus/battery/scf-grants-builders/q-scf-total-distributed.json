@@ -20,7 +20,7 @@
       "Do NOT confuse SCF cumulative distribution with SDF treasury size, XLM total supply, or the SDF Enterprise Fund.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
-    "notes": "Dossier §11. scout_analyze funding dimension is the exact card ('how much has SCF distributed'). Re-verified live 2026-06-29: scout_analyze ?dimension=funding returned scfTotalDistributedUSD ~$19.97M, scfAwardedProjects 223, meanAwardUSD ~$89.5K (DOWN from the 2026-06-22 $21.36M/239 — the live metric recomputes and drifts in both directions). communityfund.stellar.org/awards counter showed 504 'Previously Awarded Submissions'. RECONCILED: two count bases (distinct funded projects ~223 vs awarded submissions ~504, since a project can win multiple rounds) and two denominations (USD analytics vs XLM-denominated press figures like ~200M XLM). Freshness-sensitive.\nAlso good if the answer: Flags that cumulative totals grow each round and should be confirmed against the live source, and notes the USD vs XLM denomination (budgets are set in USD, paid in XLM).\nGolden cites: Stellar Light analytics (scout_analyze funding) and/or the SCF history-of-SCF page.\nCorrected 2026-07-03 (todo 829 skeptic sweep): the prior golden pinned an unstable snapshot. Grading remains behavioral: accept dated, source-named figures and require count basis/denomination; punish fixed-truth and scope confusion. POST-FIX REOPEN 2026-07-09 (todo 901): sls-013 is fixed upstream. Live funding-v2 returned $40,160,145.13 across 398 distinct projects with computedAt, methodologyVersion, an explicit reconstruction/count basis, and populated byRound rows. This improves provenance but does not turn the reconstructed total into permanent or official truth."
+    "notes": "Dossier §11. scout_analyze funding dimension is the exact card ('how much has SCF distributed'). Re-verified live 2026-06-29: scout_analyze ?dimension=funding returned scfTotalDistributedUSD ~$19.97M, scfAwardedProjects 223, meanAwardUSD ~$89.5K (DOWN from the 2026-06-22 $21.36M/239 — the live metric recomputes and drifts in both directions). communityfund.stellar.org/awards counter showed 504 'Previously Awarded Submissions'. RECONCILED: two count bases (distinct funded projects ~223 vs awarded submissions ~504, since a project can win multiple rounds) and two denominations (USD analytics vs XLM-denominated press figures like ~200M XLM). Freshness-sensitive.\nAlso good if the answer: Flags that cumulative totals grow each round and should be confirmed against the live source, and notes the USD vs XLM denomination (budgets are set in USD, paid in XLM).\nGolden cites: Stellar Light analytics (scout_analyze funding) and/or the SCF history-of-SCF page.\nCorrected 2026-07-03 (todo 829 skeptic sweep): the prior golden pinned an unstable snapshot. Grading remains behavioral: accept dated, source-named figures and require count basis/denomination; punish fixed-truth and scope confusion. POST-FIX REOPEN 2026-07-09 (todo 901): sls-013 is fixed upstream. Live funding-v2 returned $40,160,145.13 across 398 distinct projects with computedAt, methodologyVersion, an explicit reconstruction/count basis, and populated byRound rows. This improves provenance but does not turn the reconstructed total into permanent or official truth.\nAccurately quoting the canonical Scout source on pre-fix funding totals without computedAt, methodologyVersion, countBasis, or byRound data is not a wrong claim while a cached or older copy still shows the surface fixed on 2026-07-14 by sls-013; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -70,20 +70,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
       "evidence": [
         "Skeptic sweep 2026-07-03 (scratchpad 521): live execute probe + communityfund.stellar.org fetches + SDF demo transcript, all asOf 2026-07-03",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): Added a narrow caution for pre-fix Scout funding totals; golden truth unchanged.",
+        "Improvement finding read 2026-08-27: improvements/resolved.json entry sls-013; disputed claim: pre-fix funding totals lacked computedAt, methodologyVersion, countBasis, and byRound data.",
+        "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
+        "Sibling sweep 2026-08-27: grep funding-v2|countBasis|SCF.{0,20}distributed → q-scf-funding-by-category, q-scf-total-distributed; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-013 — fixed upstream: funding-v2 now exposes computedAt, methodologyVersion, countBasis, populated byRound data, and an explicit funnel scope; the golden remains behavior-gated because totals are volatile reconstructed snapshots",
         "eval-side authoring: pinned a volatile corpus-only metric mid-recomputation and never ran the corpus-vs-world check against SDF's own cumulative statements",
         "solo://proj/49/todo/corpus-health-instru--829",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-scf-total-distributed"

@@ -18,9 +18,9 @@
     ],
     "avoid": [
       "Do NOT claim LOBSTR is built/operated by the Stellar Development Foundation.",
-      "Do NOT present user/download/transaction figures as one verified current total, assert absolute SDF non-affiliation, freeze a legal suffix, or pin either disputed cumulative SCF total."
+      "Do NOT claim user/download/transaction figures are one verified current total, assert absolute SDF non-affiliation, freeze a legal suffix, or pin either disputed cumulative SCF total."
     ],
-    "notes": "GROUNDED 2026-06-22: Scout confirms Lobstr (User-Facing App, type Wallet, Live, SCF $232,000, lobstr.co): 'a widely used non-custodial Stellar wallet on iOS, Android, web and a browser extension. Users hold, send, receive, buy and swap XLM, USDC and Stellar assets... fiat on/off-ramp.' Built by Ultra Stellar (independent of SDF). The dossier's '1M+ users / 10M+ monthly tx' figures are LOBSTR's own marketing claims — kept as nice_to_have, not hard-gated. Per-project identity → lumenloop_get_project.\nAlso good if the answer: Spans web, iOS, and Android, with components like LOBSTR Vault and a Signer Extension. | Supports Stellar plus the XRP Ledger.\nGolden cites: A source identifying LOBSTR / Ultra Stellar.\nGT-19 CORRECTION 2026-07-10: current Scout/operator evidence now supports XRPL, so the old 'not corpus-answerable' note is superseded. Keep Ultra Stellar/non-custody, date network/platform support, attribute conflicting scale claims, avoid absolute affiliation/legal-entity claims, and never pin either disputed cumulative SCF total."
+    "notes": "GROUNDED 2026-06-22: Scout confirms Lobstr (User-Facing App, type Wallet, Live, SCF $232,000, lobstr.co): 'a widely used non-custodial Stellar wallet on iOS, Android, web and a browser extension. Users hold, send, receive, buy and swap XLM, USDC and Stellar assets... fiat on/off-ramp.' Built by Ultra Stellar (independent of SDF). The dossier's '1M+ users / 10M+ monthly tx' figures are LOBSTR's own marketing claims — kept as nice_to_have, not hard-gated. Per-project identity → lumenloop_get_project.\nAlso good if the answer: Spans web, iOS, and Android, with components like LOBSTR Vault and a Signer Extension. | Supports Stellar plus the XRP Ledger.\nGolden cites: A source identifying LOBSTR / Ultra Stellar.\nGT-19 CORRECTION 2026-07-10: current Scout/operator evidence now supports XRPL, so the old 'not corpus-answerable' note is superseded. Keep Ultra Stellar/non-custody, date network/platform support, attribute conflicting scale claims, avoid absolute affiliation/legal-entity claims, and never pin either disputed cumulative SCF total.\nAccurately quoting the canonical Scout or LumenLoop source on LOBSTR's $232,000/$267,463 reconstructed SCF totals or `operating_region: [\"Indonesia\"]` is not a wrong claim while a cached or older Scout copy lacks the 2026-07-14 basis disclosure and ll-008 stands; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -110,17 +110,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-03",
-      "by": "Golden-truth sweep import — Judge-blind avoid item ('beyond what the source data states') re-armed as an answer-visible marketing-attribution guard; no concrete number trap is safe because the two live sources disagree on LOBSTR's SCF total. Deep verification (golden-truth skill, todo 828) confirmed the dispute is unresolvable: no official cumulative figure exists.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "Live production execute 2026-07-03: scout lobstr record — Ultra Stellar, User-Facing App, Live, scfTotalAwardedUSD 232000; lumenloop get_project lobstr — parent Ultra Stellar, scf awarded rounds [2,17,22] total 267463; the sources DISAGREE on the SCF total, so no dollar figure can be a hard trap",
         "Neither live record carries any user/transaction counts (the 1M+/10M+ figures are LOBSTR marketing, absent from both records) and neither mentions XRP Ledger support",
-        "Solo project 49: todo 826 comment 2224, scratchpad 521 follow-up section"
+        "Solo project 49: todo 826 comment 2224, scratchpad 521 follow-up section",
+        "Structural re-form (symmetric-caution): added a source-specific grading caution for sls-011 and ll-008; the disputed totals and region-field facts are unchanged.",
+        "Improvements review 2026-08-27: improvements/resolved.json entry sls-011 records the 2026-07-14 basis-disclosure fix, and improvements/lumenloop/ll-008-directory-record-coverage-field-quality.md remains open; the disputed claims are LOBSTR's reconstructed SCF totals and Indonesia operating-region value.",
+        "Sibling sweep 2026-08-27: grep LOBSTR.*Ultra Stellar|SCF.*LOBSTR → q-defi-soroswap-vs-stellarx, q-eco-stellar-wallets-list, q-raph-lobstr-legitimacy, q-builder-by-scf-tier; no contradiction",
+        "Structural re-form (presentation-avoid): Reworded the scale-figure presentation clause as a concrete false claim and preserved the remaining affiliation, legal-suffix, and SCF-total traps; truth is unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; all trap targets are unchanged.",
+        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|SCF total → q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-raph-lobstr-legitimacy; no contradiction"
       ],
       "rootCause": [
         "solo://proj/49/todo/judge-rubric-corpus--826 — judge-blind avoid phrasing (eval-side authoring)",
         "improvements/stellar-light-scout/sls-011 — fixed upstream for basis disclosure: Scout now labels the $232,000 total an in-house reconstruction and exposes rounds [2,17,22]; the cross-source total remains disputed because official per-award amounts are incomplete, so amount claims still cannot be hard-gated",
-        "improvements/lumenloop/ll-008 — lobstr operating_region ['Indonesia'] vs based_in Estonia (record data-quality)"
+        "improvements/lumenloop/ll-008 — lobstr operating_region ['Indonesia'] vs based_in Estonia (record data-quality)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-eco-lobstr-wallet"

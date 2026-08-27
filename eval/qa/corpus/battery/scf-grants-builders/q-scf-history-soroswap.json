@@ -92,8 +92,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
       "evidence": [
         "Live production execute 2026-07-07: lumenloop.get_scf_submissions({slug:'soroswap'}) -> 4 submissions with award_type + budget exactly as quoted; scout soroswap record scfTotalAwardedUSD 346750 'disclosed', rounds [15,17,21]",
         "Class-A verification 2026-07-06: communityfund.stellar.org/project/soroswapfinance-yax (canonical page; /projects/soroswap 404s) — full corroboration matrix in Solo todo 853 close + the verification agent transcript",
@@ -101,14 +101,18 @@
         "Sibling-consistency sweep 2026-07-07: q-defi-soroswap-scf ('roughly $346,750' source-relative) and q-defi-soroswap-resolve ('~$346,750') both consistent; no golden contradicts the 4-submission structure",
         "2026-07-11 localhost:8787 search→execute probe observed: the live submission lookup returned four Soroswap awards, including records for rounds 15, 17, and 21.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): reworded an eval-side root cause that falsely triggered the improvements-file lint; the Soroswap funding truth is unchanged.",
+        "Root-cause review 2026-08-27: no upstream finding exists for the richer Soroswap submissions record; reworded the entry to say no upstream finding was warranted.",
+        "Sibling sweep 2026-08-27: grep Soroswap SCF|346750|rounds 15 → q-defi-phoenix-what-is, q-defi-soroswap-what-is, q-eco-lobstr-wallet; no contradiction"
       ],
       "rootCause": [
         "solo://proj/49/todo/golden-gap-q-scf-his--853",
-        "Eval-side authoring lag, not an upstream defect: the corpus GREW richer (per-submission award_type/budget) after the golden was authored — no improvements/ finding warranted; the upstream change is an improvement",
+        "Eval-side authoring lag, not an upstream defect: the corpus GREW richer (per-submission award_type/budget) after the golden was authored — no upstream finding warranted; the upstream change is an improvement",
         "Transcript-blind judge class (third occurrence this week) — rubric-note decision deferred to a measured rubric round, recorded in todo 853 close",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-scf-history-soroswap"

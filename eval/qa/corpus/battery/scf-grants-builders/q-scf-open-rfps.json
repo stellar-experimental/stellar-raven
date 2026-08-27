@@ -17,8 +17,8 @@
     "avoid": [
       "Do NOT reference retired scout_rfps, claim a synthetic SCF #45 row is present, or count a round row as another brief.",
       "Do NOT claim that SCF #45 still accepts full proposals solely because the Q3 briefs remain published as open.",
-      "Do NOT present the roster as permanent, invent per-RFP bounties, or claim RFP projects use NQG voting.",
-      "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim the roster is permanent, invent per-RFP bounties, or claim RFP projects use NQG voting.",
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
     "notes": "Freshness item: the open set rotates, so grade dated observation behavior rather than a permanent roster. As of 2026-08-18, the official RFP page and live feed support two published Q3 briefs. The newer awards state and Scout round metadata show #45 in Initial Review with no open submission window. Do not penalize an answer that calls the briefs active while saying the #45 full-proposal window has closed. RFP Track review is panel-led, and the separate Build-cap cases own the $150,000 limit."
   },
@@ -88,16 +88,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
         "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
-        "Sibling sweep covered q-scf-rfp-tooling, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-hummingbot-kelp-closed-rfp, and q-edge-scf-v7-centralization-myths; no contradictory current-round or roster claim remains."
+        "Sibling sweep covered q-scf-rfp-tooling, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-hummingbot-kelp-closed-rfp, and q-edge-scf-v7-centralization-myths; no contradictory current-round or roster claim remains.",
+        "Structural re-form (presentation-avoid): rewrote two presentational avoid items as the same concrete false-content claims; both trap targets are unchanged.",
+        "No live re-check was required because the avoid rewrites do not change the forbidden claims.",
+        "Sibling sweep 2026-08-27: grep syntheticRounds|LayerZero DVN|x402 Facilitator with Bazaar → q-scf-rfp-tooling, q-scf-open-rfps-live; no contradiction"
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-scf-open-rfps"

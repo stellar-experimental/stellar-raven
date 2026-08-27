@@ -12,8 +12,8 @@
       "CAP-0059 introduced BLS12-381 host functions with minimum supported Protocol 22.",
       "Protocol 25 added BN254 via Final CAP-0074 and Poseidon/Poseidon2 via Final CAP-0075.",
       "Protocol 26 implemented Final CAP-0080, adding BN254 MSM, scalar-field add/subtract/multiply/power/inverse, and curve-membership checks.",
-      "Pubnet and testnet reported Protocol 27 on 2026-07-11, so the Protocol 22, 25, and 26 primitives were live there.",
-      "There were no documented native Goldilocks, NTT, or FRI host functions as of 2026-07-11."
+      "Marks Protocol 22, 25, and 26 primitives live on pubnet and testnet as of a stated date.",
+      "Dates the native Goldilocks/NTT/FRI host-function gap to an observation date."
     ],
     "avoid": [
       "CAP-0074 and CAP-0075 are still merely proposed and unavailable on mainnet as of July 2026.",
@@ -351,8 +351,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/networks/software-versions",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
@@ -360,7 +360,18 @@
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
         "https://horizon.stellar.org/",
-        "https://horizon-testnet.stellar.org/"
+        "https://horizon-testnet.stellar.org/",
+        "Structural re-form (snapshot-date): Replaced two literal snapshot dates and split protocol observation from primitive availability; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — reported Protocol 27 for pubnet and testnet.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — showed Protocol 22, 25, and 26 ZK host-function releases.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — listed BLS12-381, BN254, Poseidon, and CAP-0080 ZK functions without native Goldilocks, NTT, or FRI entries.",
+        "Sibling sweep 2026-08-27: grep CAP-0059|CAP-0074|CAP-0075|CAP-0080|Goldilocks|NTT|FRI → q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-zk-proof-systems-stellar; no contradiction",
+        "Owner correction 2026-08-27: the protocol-version key fact gates a dated observation, not the number 27, so a later protocol does not fail a truthful answer; Protocol 22/25/26 primitives stay a durable fact.",
+        "Owner correction 2026-08-27: merged the dated protocol-version fact and the live-primitives fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
       ]
     },
     "origin": "kaan zk-host-functions-cap-roadmap"

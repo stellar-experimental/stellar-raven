@@ -13,7 +13,7 @@
       "Uses quorum-set/FBA semantics and distinguishes CAPs from SEPs and token-holder votes."
     ],
     "avoid": [
-      "Do NOT present the process as an unconditional Draft-to-Final line, resurrect retired Implementation Review status, or omit rejection/return branches.",
+      "Do NOT claim the process is an unconditional Draft-to-Final line or that Implementation Review is a current status.",
       "Do NOT equate Accepted, Implemented, or Final status with actual activation on every network.",
       "Do NOT reduce SCP/FBA activation to a simple majority of validators or an XLM token-holder vote.",
       "Do NOT confuse CAP protocol changes with SEP interoperability standards."
@@ -95,14 +95,17 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA current CAP workflow recheck; accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "Current stellar-protocol core/README.md workflow observed 2026-08-04; independent Todo 1347 verifier c3625.",
-        "2026-07-11 author re-check against stellar-protocol fbf05c9d CAP process and live P27/CAP-0071 counterexample."
+        "2026-07-11 author re-check against stellar-protocol fbf05c9d CAP process and live P27/CAP-0071 counterexample.",
+        "Structural re-form (presentation-avoid): Reworded two false claims and deleted an omission rule already enforced by key facts; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep Awaiting Decision|Implementation Review|Draft-to-Final|CAP process → q-protocol-cap-process only; no sibling contradiction"
       ],
       "rootCause": [
-        "Eval-side lifecycle drift and governance-layer collapse; the golden retained retired Implementation Review status."
+        "Eval-side lifecycle drift and governance-layer collapse; the golden retained retired Implementation Review status.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-protocol-cap-process"

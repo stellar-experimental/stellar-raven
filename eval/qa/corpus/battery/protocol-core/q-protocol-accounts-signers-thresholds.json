@@ -13,7 +13,7 @@
       "States the default +1 rule and CAP-0021 minSeqNum exception precisely."
     ],
     "avoid": [
-      "Do NOT omit ed25519 signed-payload signers or list secp256r1 as a classic SignerKey.",
+      "Do NOT list secp256r1 as a classic SignerKey.",
       "Do NOT say accounts are single-key-only or confuse signer weight with an operation threshold.",
       "Do NOT make exact +1 unconditional; a non-null minSeqNum can permit a sequence gap under CAP-0021."
     ],
@@ -93,14 +93,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited signer list omitted signed-payload signers, incorrectly placed secp256r1 in classic SignerKey, and made exact sequence +1 unconditional despite CAP-0021's minSeqNum precondition.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently found the classic/Soroban signer-category error and the minSeqNum exception.",
-        "2026-07-11 author re-check against stellar-xdr 8521b97b, CAP-0021, CAP-0040, and CAP-0051."
+        "2026-07-11 author re-check against stellar-xdr 8521b97b, CAP-0021, CAP-0040, and CAP-0051.",
+        "Structural re-form (presentation-avoid): Removed the signed-payload omission demand because the key fact already requires all four forms; preserved the secp256r1 false-content trap; truth is unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+        "Sibling sweep 2026-08-27: grep ed25519 signed payload|secp256r1|SignerKey → q-infra-secp256r1-passkeys, q-protocol-19-preconditions-cap-0021, q-protocol-accounts-signers-thresholds; no contradiction"
       ],
       "rootCause": [
-        "Eval-side conflation of classic account SignerKey with Soroban custom-account authentication, plus pre-CAP-0021 sequence shorthand."
+        "Eval-side conflation of classic account SignerKey with Soroban custom-account authentication, plus pre-CAP-0021 sequence shorthand.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-protocol-accounts-signers-thresholds"

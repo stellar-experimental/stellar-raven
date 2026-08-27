@@ -16,11 +16,11 @@
     ],
     "avoid": [
       "Do NOT say Soroban contracts are written in Solidity or compiled to EVM bytecode.",
-      "Do NOT present `soroban deploy` as the current canonical command without noting the CLI is now `stellar` (the soroban-cli was renamed/merged into stellar-cli).",
-      "Do NOT present `wasm32-unknown-unknown`, `--global`, or `--source` as the current canonical happy-path deploy flow. `--source` may be mentioned only as an alias for `--source-account`.",
+      "Do NOT claim `soroban deploy` is the current canonical command; the CLI is now `stellar` (soroban-cli was renamed/merged into stellar-cli).",
+      "Do NOT claim `wasm32-unknown-unknown`, `--global`, or `--source` are the current canonical happy-path deploy flow. `--source` may be mentioned only as an alias for `--source-account`.",
       "Do NOT invent flags/commands that are not in the Stellar CLI."
     ],
-    "notes": "Exemplar (Phase-1 hand-authored). VERIFIED against the live 'Deploy to Testnet' docs (2026-06): binary is `stellar`; canonical command is `stellar contract deploy --wasm target/wasm32v1-none/release/<name>.wasm --source-account <id> --network testnet --alias <name>`; returns a C... contract id. Build target is wasm32v1-none.\nAlso good if the answer: Deploy returns a contract ID (C... address) used for subsequent `stellar contract invoke`. | A testnet account can be funded via Friendbot before deploying.\nGolden cites: At least one primary developers.stellar.org docs page (getting-started / deploy guide).\nCorrected 2026-07-07 via golden-truth workflow after Discord feedback on the demo: active golden answer now uses `wasm32v1-none`, omits obsolete `--global`, and shows canonical `--source-account`. Grading nuance: do not mark an answer wrong solely for using `--source`, because CLI 27.0.0 confirms it is an alias; do mark it stale/noncanonical if it presents `--source` as the preferred docs-form while omitting `--source-account`, or if it also uses the old target/`--global` path."
+    "notes": "Exemplar (Phase-1 hand-authored). VERIFIED against the live 'Deploy to Testnet' docs (2026-06): binary is `stellar`; canonical command is `stellar contract deploy --wasm target/wasm32v1-none/release/<name>.wasm --source-account <id> --network testnet --alias <name>`; returns a C... contract id. Build target is wasm32v1-none.\nAlso good if the answer: Deploy returns a contract ID (C... address) used for subsequent `stellar contract invoke`. | A testnet account can be funded via Friendbot before deploying.\nGolden cites: At least one primary developers.stellar.org docs page (getting-started / deploy guide).\nCorrected 2026-07-07 via golden-truth workflow after Discord feedback on the demo: active golden answer now uses `wasm32v1-none`, omits obsolete `--global`, and shows canonical `--source-account`. Grading nuance: do not mark an answer wrong solely for using `--source`, because CLI 27.0.0 confirms it is an alias; do mark it stale/noncanonical if it presents `--source` as the preferred docs-form while omitting `--source-account`, or if it also uses the old target/`--global` path.\nAccurately quoting the canonical upstream skill source on `wasm32-unknown-unknown`, `--global`, and `--source` as the deploy flow is not a wrong claim while a cached or older copy still shows those values before the 2026-07-15 sk-001 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "soroban",
@@ -135,16 +135,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-07",
-      "by": "Golden-truth sweep import — The compiled golden answer used the working-but-noncanonical `--source` alias and a placeholder `target/wasm32-...` path even though the same case's notes already identify the canonical current deploy command as `--source-account` with `target/wasm32v1-none/release/<name>.wasm`. Current CLI help confirms `--source` remains an alias, so this is a canonicalization/freshness correction rather than a behavior-invalidity correction.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "Stellar Raven production MCP probes 2026-07-07: official docs page reads for Hello World and Rust dialect; official docs searches for `--source-account` deploy/invoke examples; scout repo explanation for the `--source` alias.",
         "Local empirical execution 2026-07-07: `stellar --version` -> 27.0.0; `stellar contract deploy --help`; `stellar contract invoke --help`; `stellar keys generate --help`.",
-        "Sibling sweep 2026-07-07 across kept QA cases containing `wasm32-unknown-unknown`, `target/wasm32-...`, `--source`, or stale bundled-skill notes: q-soroban-deploy-cli, q-sor-bindings-from-wasm-no-address, q-tool-cli-testnet-identity-howto needed active golden-answer canonicalization; q-sor-build-target-wasm32v1 and q-ti-cli-rust-windows-troubleshooting were already target-correct."
+        "Sibling sweep 2026-07-07 across kept QA cases containing `wasm32-unknown-unknown`, `target/wasm32-...`, `--source`, or stale bundled-skill notes: q-soroban-deploy-cli, q-sor-bindings-from-wasm-no-address, q-tool-cli-testnet-identity-howto needed active golden-answer canonicalization; q-sor-build-target-wasm32v1 and q-ti-cli-rust-windows-troubleshooting were already target-correct.",
+        "Structural re-form (symmetric-caution): Added a cache-scoped grading caution; the answer and facts are unchanged.",
+        "Reviewed resolved improvement 2026-08-27: improvements/resolved.json entry sk-001 — the old skill used wasm32-unknown-unknown, --global, and noncanonical --source before the 2026-07-15 fix.",
+        "Sibling sweep 2026-08-27: grep wasm32v1-none|wasm32-unknown-unknown|--source-account|--global → q-asset-deploy-sac-cli, q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction",
+        "Structural re-form (presentation-avoid): Reworded two presentation demands as concrete false-content claims; the answer and facts are unchanged.",
+        "No live re-check needed: the avoid edits preserve the existing deploy traps.",
+        "Sibling sweep 2026-08-27: grep soroban deploy|wasm32-unknown-unknown|--source-account → q-soroban-deploy-cli, q-sor-build-target-wasm32v1, q-tool-cli-testnet-identity-howto, q-asset-deploy-sac-cli, q-ti-cli-rust-windows-troubleshooting; no contradiction"
       ],
       "rootCause": [
         "improvements/resolved.json entry sk-001 — fixed upstream and refreshed locally at stellar-dev-skill commit 3d75a157f6fe; the mirrored playbook now uses wasm32v1-none, no --global, and canonical --source-account examples.",
-        "Eval-side freshness/canonicalization drift: the deploy CLI golden answer lagged behind its own current notes and current CLI help by preserving an alias-focused example."
+        "Eval-side freshness/canonicalization drift: the deploy CLI golden answer lagged behind its own current notes and current CLI help by preserving an alias-focused example.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-soroban-deploy-cli"

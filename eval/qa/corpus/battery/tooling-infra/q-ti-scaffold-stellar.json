@@ -11,7 +11,8 @@
     "keyFacts": [
       "Gives the separately installed stellar-scaffold-cli and stellar scaffold init command shape.",
       "Defines Scaffold Stellar as full-stack contracts/clients/frontend/environment tooling and distinguishes stellar contract init as contract-only.",
-      "Dates the 0.0.26 registry and React/Svelte template examples to 2026-07-28 rather than making them permanent requirements.",
+      "Names React and Svelte as official template examples.",
+      "Dates each registry or template claim to an observation date.",
       "Requires checking generated scripts/prerequisites and treats community templates as supply-chain inputs."
     ],
     "avoid": [
@@ -110,16 +111,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane B Docs technical re-verification",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
       "evidence": [
         "Production stellar-raven: stellarDocs.search_sdk_cli_tools_docs({query:'Scaffold Stellar stellar scaffold init environments.toml bindings local network',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/tools/scaffold-stellar',includeContent:true}) — current page returns separate CLI installs, `stellar scaffold init`, build/watch, environments.toml, and Docker/local prerequisites.",
         "Canonical source: https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/src/commands/mod.rs — current subcommands include init, build, generate, upgrade, update-env, watch, and clean; https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/Cargo.toml declares 0.0.26.",
         "Registry: cargo search stellar-scaffold-cli --limit 3 and https://crates.io/api/v1/crates/stellar-scaffold-cli returned max_version=0.0.26, published 2026-07-23T20:11:45Z; 0.0.25 was published 2026-07-07.",
-        "Sibling sweep: q-soroban-deploy-cli and q-sor-build-target-wasm32v1 retain the narrower `stellar contract init`/build flow; no case conflates it with the full-stack plugin."
+        "Sibling sweep: q-soroban-deploy-cli and q-sor-build-target-wasm32v1 retain the narrower `stellar contract init`/build flow; no case conflates it with the full-stack plugin.",
+        "Structural re-form (snapshot-date): Split the registry version and template names from the snapshot-date requirement; truth is unchanged.",
+        "Live re-check 2026-08-27: https://crates.io/api/v1/crates/stellar-scaffold-cli/0.0.26 — the registry record showed version 0.0.26 published on 2026-07-23.",
+        "Live re-check 2026-08-27: https://api.github.com/repos/stellar-scaffold/ui/contents/templates — the official repository listed react and svelte template directories.",
+        "Live re-check 2026-08-27: https://crates.io/crates/stellar-scaffold-cli — the registry now showed 0.0.27, confirming that registry claims require observation dates.",
+        "Sibling sweep 2026-08-27: grep stellar-scaffold-cli|Scaffold Stellar|templates/react|templates/svelte → q-ti-scaffold-stellar only; no contradiction",
+        "Owner correction 2026-08-27: dropped the undated 'version 0.0.26' key fact because the registry already shows 0.0.27; the golden gates dating, not the pinned version."
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
       ]
     },
     "origin": "raven-next q-ti-scaffold-stellar"

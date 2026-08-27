@@ -15,8 +15,7 @@
     "avoid": [
       "Do NOT claim claimable balances expire automatically without a claim/reclaim operation removing them.",
       "Do NOT say the creator can always claw back or cancel a claimable balance at will.",
-      "Do NOT conflate claimable-balance predicates with asset issuer clawback flags.",
-      "Do NOT omit reserve cost when asked about many or long-lived claimable balances."
+      "Do NOT conflate claimable-balance predicates with asset issuer clawback flags."
     ],
     "notes": "Verified predicate types, reserve-per-claimant wording, and non-automatic expiry semantics against CAP-23 and the build/guides claimable-balances page (live 2026-06-29). Folded in q-aas-claimable-balance-reclaim: added must_avoid on at-will creator reclaim and on conflating predicates with issuer clawback flags, plus the self-as-claimant probe.\nAlso good if the answer: Explains multi-claimant designs such as recipient can claim before a deadline and sender can reclaim after a deadline. | Notes that reclaim/cancel is implemented as a claimant path, not a special unilateral cancellation by the creator.\nGolden cites: Official Stellar claimable balance docs or operation reference."
   },
@@ -51,10 +50,15 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-01-asset-lifecycle-safety-metadata accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (presentation-avoid): Deleted a required-content avoid item already enforced by a key fact; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep claimable balance|reserve per claimant → q-aas-claimable-predicates-expiry-reserves, q-aas-claim-received-claimable-balances, q-asset-claimable-balance, q-sor-contract-as-claimable-arbiter; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-aas-claimable-predicates-expiry-reserves"

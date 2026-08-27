@@ -16,7 +16,7 @@
       "Do NOT put planned DTCC Stellar work in the live bucket.",
       "Do NOT claim all RWA products use SEP-8 or one identical legal/control model.",
       "Do NOT freeze volatile AUM or roster counts without dated primary evidence.",
-      "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
     "notes": "2026-06-29 re-verified dated claims and freshness-gated. Franklin Templeton (BENJI/FOBXX, ~$654M AUM on Stellar) and WisdomTree (Prime funds + gold) confirmed; Figure YLDS = SEC-registered face-amount certificate, live on Stellar May 5, 2026 (stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network) — consistent with q-rwa-dtcc-tokenization which keeps DTCC's DTC service PLANNED for H1 2027 (not live). Ondo Finance also active. Landscape evolving/freshness-sensitive (quarterly). Trap: inventing projects or presenting DTCC's forward-dated plan as live.\nAlso good if the answer: Mentions other RWA/tokenization participants (e.g. DTCC's planned DTC tokenization service) and treats the landscape as evolving. | Notes these use Stellar's regulated-asset model (SEP-8 + flags).\nGolden cites: Scout/Lumenloop project directory entries and/or dated issuer sources.\nCORRECTION 2026-07-10: grade dated product-level deployment and legal/mechanism scope. DTCC is planned H1 2027 on Stellar. GOLD is the live WisdomTree code. No roster-wide SEP-8 gate."
   },
@@ -141,21 +141,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-11 live/planned and mechanism matrices",
         "improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md",
         "improvements/lumenloop/ll-012-rwa-live-planned-recall.md",
         "2026-07-11 localhost:8787 search→execute probe observed: a live RWA-tokenization project search returned 15 matches, including WisdomTree, Spydra, and Metafyed.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+        "Sibling sweep 2026-08-27: grep WisdomTree|DTCC|RWA products → q-asset-rwa-tokenized-freshness, q-crp-dtcc-stellar-connection-plan, q-rwa-projects-tokenizing-stellar; no contradiction"
       ],
       "rootCause": [
         "Entity status and directory presence were treated as product deployment proof.",
         "Different legal instruments/control models were collapsed into one SEP-8 implementation.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-rwa-projects-tokenizing-stellar"

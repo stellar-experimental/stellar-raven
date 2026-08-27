@@ -17,7 +17,7 @@
       "Do NOT treat a missing/wrong-network result as proof the object never existed.",
       "Do NOT claim an explorer proves custody, reverses transactions, recovers funds, or supplies timeless UI/market facts."
     ],
-    "notes": "Verified explorer home URLs and official Stellar Lab docs on 2026-06-29. Specific explorer UI fields can change; Phase 3 may screenshot current UI if it wants stricter UI-field claims.\nAlso good if the answer: Mentions StellarChain as an alternate explorer with contract support, with source caveat if only site-level verification was available. | Cites a live explorer URL and an official Stellar Lab/explorer-related docs page.\nGolden cites: A live explorer URL. | An official Stellar Lab or developer docs page describing transaction/contract inspection.\nGT-51 CORRECTION 2026-07-11: grade network/identifier discipline and dated explorer capability, not a memorized UI field list or a universal retention scalar."
+    "notes": "Verified explorer home URLs and official Stellar Lab docs on 2026-06-29. Specific explorer UI fields can change; Phase 3 may screenshot current UI if it wants stricter UI-field claims.\nAlso good if the answer: Mentions StellarChain as an alternate explorer with contract support, with source caveat if only site-level verification was available. | Cites a live explorer URL and an official Stellar Lab/explorer-related docs page.\nGolden cites: A live explorer URL. | An official Stellar Lab or developer docs page describing transaction/contract inspection.\nGT-51 CORRECTION 2026-07-11: grade network/identifier discipline and dated explorer capability, not a memorized UI field list or a universal retention scalar.\nAccurately quoting the canonical Stellar Docs page on a 24-hour RPC retention default and separate seven-day cap is not a wrong claim while a cached or older copy still shows that pre-2026-07-27 wording; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "retail-consumer",
@@ -88,15 +88,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited explorer overview treated network/UI coverage as timeless and did not clearly teach code-plus-issuer asset identity, wrong-network misses, or the official absence of StellarExpert Futurenet coverage.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary/blind matrices independently agreed on the product/network/freshness correction.",
-        "Sibling sweep checked q-ti-stellar-lab-usage-and-new-ui and the RPC-retention cluster; the answer does not promote Lab's stale seven-day scalar."
+        "Sibling sweep checked q-ti-stellar-lab-usage-and-new-ui and the RPC-retention cluster; the answer does not promote Lab's stale seven-day scalar.",
+        "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-023; the explorer network and identifier facts are unchanged.",
+        "No live recheck was required for this pure symmetric-caution re-form.",
+        "Improvements review 2026-08-27: improvements/resolved.json entry sd-023 records the 2026-07-27 Docs fix; the disputed claim is the older universal 24-hour RPC retention default and separate seven-day cap.",
+        "Sibling sweep 2026-08-27: grep sd-023|24-hour|120960 ledgers|retention → q-infra-rpc-provider-archive-tier, q-ti-self-host-retention-backfill, q-pc-tx-finality-failure-semantics; no contradiction"
       ],
       "rootCause": [
         "Eval-side product/network freshness drift.",
-        "improvements/stellar-docs/sd-023-rpc-event-retention-config-drift.md"
+        "improvements/stellar-docs/sd-023-rpc-event-retention-config-drift.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-ti-block-explorer-basics"
