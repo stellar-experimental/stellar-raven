@@ -1,12 +1,12 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in Solo (EVALS.md rule 1). Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-08-25T19:39:34.342Z",
+  "baselinedAt": "2026-08-27T16:40:00.000Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "b5e8c3214c08c2d7620439951d61d343959f677e6984d03420ede71f29978ed9"
+        "sha256": "9549a6f5ee06b7b4ea807a12f93fd4512235a803d4533e648b773ada5e8c415d"
       },
       {
         "path": "eval/routing-cases.json",
@@ -26,9 +26,9 @@
         "n": 338,
         "top1": 209,
         "top3": 279,
-        "top5": 312,
+        "top5": 311,
         "cardN": 182,
-        "cardHit5": 94
+        "cardHit5": 95
       },
       "skills": {
         "n": 23,
@@ -49,14 +49,14 @@
         "passed": 21
       }
     },
-    "localTrace": "routing-2026-08-25T21-09-17-030Z.json"
+    "localTrace": "routing-2026-08-27T16-32-13-620Z.json"
   },
-  "note": "The 2026-08-25 live Scout 1.8.87 refresh adds routing vocabulary, ten Stellar Docs titles, and the corresponding stellar-light skill pin. Raven withholds the new read-only resolveProject operation because its nested identity and evidence objects are opaque in OpenAPI; sls-075 tracks that upstream contract gap. The later routing-neutral stellar-dev and stellar-light pin refresh changes only catalog provenance and transport metadata. Legacy moves from 208/280/312 to 209/279/312 within the existing 1% band, with card@5 unchanged at 94/182. Skills remain 16/23/23. Holdout remains 10/22/25 with 11 forbidden captures. No scorer lever, routing corpus, per-question rule, floor, or band changed. Decision record: GitHub issue #35 and independent Herdr review. Historical movements remain in eval/README.md.",
+  "note": "2026-08-27 round-two integration: receipt-backed known-alias packs (WisdomTree CRDT family), broaden-or-abstain search affordances (service-filter-excluded skill advisories + confidence block, now exposed end-to-end), tiered judging with a stability register, and the golden-truth burn-down batches (snapshot-date, symmetric-caution, presentation-avoid classes to zero). Legacy strict top-5 moves 312 to 311 and card@5 94 to 95: the accepted trade is q-hist-wisdomtree-rwa where the CRDT entity card enters the top five and displaces scout.getRfps, while q-defi-wisdomtree-crdt gains its entity route at top-1. All other lanes unchanged (extended 89/109/117, skills 16/23/23, holdout 10/22/25 with 11 forbidden captures). Threshold floors and bands unchanged. Decision record: qa-quality-deep-dive round ledger plus two independent reviews.",
   "legacy": {
     "n": 338,
     "top1": 209,
     "top3": 279,
-    "top5": 312,
+    "top5": 311,
     "bandPct": 1
   },
   "skills": {

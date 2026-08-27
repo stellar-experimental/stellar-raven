@@ -12,7 +12,7 @@
     "keyFacts": [
       "Friendbot funds fake Testnet XLM, not USDC.",
       "A correct classic USDC trustline and XLM/base reserve are prerequisites, but the trustline does not credit balance.",
-      "Dates the current Circle Testnet issuer/faucet to 2026-07-11 and treats amount/cooldown/availability as volatile non-gates.",
+      "Dates Circle Testnet issuer, faucet amount, plus cooldown to an observation date.",
       "Separates Circle faucet payment, Lab path-payment demo, classic issuer/trustline and deterministic SAC representation.",
       "States test units are non-production/non-redeemable and audit probes must not invoke the faucet."
     ],
@@ -112,14 +112,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The core Friendbot/trustline distinction was correct, but the case was incorrectly marked non-fresh and did not clearly separate the volatile Circle issuer/faucet from the deterministic SAC representation and unrelated Lab path-payment demo.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently retained the core and required freshness/source precision; helper 3388 was harvested before seal.",
-        "Sibling sweep checked Friendbot/faucet-rate-limit, trustline/SAC, Lab and Testnet→Mainnet cases; no sibling treats a trustline as balance or Circle faucet as Friendbot."
+        "Sibling sweep checked Friendbot/faucet-rate-limit, trustline/SAC, Lab and Testnet→Mainnet cases; no sibling treats a trustline as balance or Circle faucet as Friendbot.",
+        "Structural re-form (snapshot-date): Replaced the literal snapshot date with observation-date behavior and split volatile faucet terms; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide — showed the Testnet USDC issuer and Circle faucet path.",
+        "Live re-check 2026-08-27: https://faucet.circle.com/ — listed Stellar Testnet and its current faucet limits.",
+        "Sibling sweep 2026-08-27: grep Friendbot|Circle Faucet|testnet USDC → q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui, q-tool-lab-what-is; no contradiction",
+        "Owner correction 2026-08-27: merged the dated-issuer and volatile-non-gate facts into one dated-observation fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged."
       ],
       "rootCause": [
-        "Plain golden freshness drift: an external issuer/faucet/service limit was tagged static even though the durable protocol distinction remained correct."
+        "Plain golden freshness drift: an external issuer/faucet/service limit was tagged static even though the durable protocol distinction remained correct.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
       ]
     },
     "origin": "raven-next q-ti-testnet-usdc-faucet"

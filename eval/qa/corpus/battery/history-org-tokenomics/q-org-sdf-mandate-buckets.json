@@ -18,7 +18,7 @@
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
       "Do NOT penalize an answer for accurately saying dated/current rows are visible; penalize only an unsupported claim that they constitute the promised synchronized real-time feed."
     ],
-    "notes": "GT-28 CORRECTION 2026-07-10: use /foundation/mandate/2019 for the 2019 taxonomy; /foundation/previous-mandate is the 2017 version. Current allocation updates are in progress and displayed rows are not one synchronized snapshot.\nGT-28 independently confirmed by processes 3274/3275; sd-012 owns current label/timestamp drift.\n2026-07-13: the live page's “imminently” sentence and simultaneously rendered rows are an internally mixed availability signal; grade dated descriptions of either visible state fairly while preserving the no-synchronized-total rule."
+    "notes": "GT-28 CORRECTION 2026-07-10: use /foundation/mandate/2019 for the 2019 taxonomy; /foundation/previous-mandate is the 2017 version. Current allocation updates are in progress and displayed rows are not one synchronized snapshot.\nGT-28 independently confirmed by processes 3274/3275; sd-012 owns current label/timestamp drift.\n2026-07-13: the live page's “imminently” sentence and simultaneously rendered rows are an internally mixed availability signal; grade dated descriptions of either visible state fairly while preserving the no-synchronized-total rule.\nAccurately quoting the official Stellar documentation on Direct Development or Ecosystem Support as current SDF buckets is not a wrong claim while a cached or older copy still shows those pre-2026-07-27 labels; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -80,22 +80,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-14",
-      "by": "Todo 993 adversarial closeout corroboration repair after independent Sol review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
         "https://stellar.org/foundation/mandate",
         "https://stellar.org/foundation/mandate/2019",
         "scout.searchResearch({ q: \"Stellar Development Foundation mandate buckets 2019 current allocation SDF Development Stellar Growth Product and Innovation Assets and Liquidity\", limit: 8 }) — live 2026-07-14 discovery probe returned the official updated-mandate blog and lumen-supply documentation; it is an aggregator re-surfacing class-A sources, not an independent class",
         "research/evidence-poor-retrieval-2026-07-13.md#intermediary-source-boundary--2026-07-14 — replayable query, returned sources, and mediation boundary",
         "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol live-page reviews",
-        "Sibling sweep: q-org-sdf-structure-mandate and q-org-sdf-enterprise-fund preserve metric/source scope."
+        "Sibling sweep: q-org-sdf-structure-mandate and q-org-sdf-enterprise-fund preserve metric/source scope.",
+        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
+        "Reviewed improvements/resolved.json entry sd-012 — fixed 2026-07-27; older documentation can show 2019 mandate labels as current.",
+        "Sibling sweep 2026-08-27: grep Direct Development|SDF Development|Product and Innovation|Assets and Liquidity|mandate buckets → q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets; no contradiction"
       ],
       "rootCause": [
         "Eval-side historical route/version confusion and detached timestamp semantics.",
         "improvements/stellar-docs/sd-012-mandate-wallet-label-drift.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "solo://proj/49/todo/golden-truth-review--972"
+        "solo://proj/49/todo/golden-truth-review--972",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-org-sdf-mandate-buckets"

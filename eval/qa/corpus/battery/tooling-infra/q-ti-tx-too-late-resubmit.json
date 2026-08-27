@@ -19,7 +19,7 @@
       "Do NOT claim every failed transaction preserves sequence/fee or apply the ordinary precondition rule to all fee-bump/post-inclusion outcomes.",
       "Do NOT treat a hash lookup miss before expiry as proof of rejection or rebuild when the old transaction was found.",
       "Do NOT reuse a stale sequence, manually alter XDR with old signatures, or skip Soroban re-simulation.",
-      "Do NOT present higher fee/fee bump as the fix for an expired maxTime or create duplicate intent after a timeout."
+      "Do NOT claim a higher fee or fee bump fixes an expired maxTime, or create duplicate intent after a timeout."
     ],
     "notes": "GT-54 CORRECTION 2026-07-11: grade the ordinary outer precondition scope, ambiguous old-hash decision flow, current-sequence rebuild/re-sign/new-hash path, and separate Soroban/fee-bump stages. Higher fee or fee bump does not cure an expired maxTime."
   },
@@ -109,14 +109,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited core separated tx_too_late from tx_bad_seq, but it did not precisely scope fee/sequence effects to an ordinary outer precondition rejection, blurred hash lookup with resubmission evidence, and implied fee bump/higher fee was a generic expiry remedy.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently retained the duplicate/hash guard; blind helper 3388 supplied the exact fee/sequence/failure-stage scope before seal.",
-        "Sibling sweep checked classic submission errors, sequence ordering, finality, fee bump/channel accounts and Soroban simulation; no blanket no-fee/no-sequence rule is applied to fee-bump inner results or post-inclusion failures."
+        "Sibling sweep checked classic submission errors, sequence ordering, finality, fee bump/channel accounts and Soroban simulation; no blanket no-fee/no-sequence rule is applied to fee-bump inner results or post-inclusion failures.",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep tx_too_late|txTOO_LATE|expired maxTime|fee bump → q-ti-tx-too-late-resubmit, q-pc-fee-bump-channel-accounts-feepool, q-ti-java-sdk-wallet-feebump; no contradiction"
       ],
       "rootCause": [
-        "Eval-side lifecycle precision gap: transaction hash lookup, unchanged-envelope resubmission, precondition expiry, sequence/fee consumption and fee-bump/post-inclusion stages were treated as one failure state."
+        "Eval-side lifecycle precision gap: transaction hash lookup, unchanged-envelope resubmission, precondition expiry, sequence/fee consumption and fee-bump/post-inclusion stages were treated as one failure state.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-ti-tx-too-late-resubmit"

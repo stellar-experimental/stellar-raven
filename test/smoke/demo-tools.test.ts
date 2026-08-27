@@ -76,18 +76,25 @@ describe("demo tools at the worker boundary", () => {
           outputItemKeys?: Record<string, string[]>;
         }>;
         widerCandidates: unknown[];
+        confidence: { hitCount: number; topScoreGap: number | null };
+        recoveryMetadata: { serviceFilterExcludedSkills: unknown[] };
         nextSteps: string;
       };
 
       expect(result.hits).toEqual(baseline.hits);
       expect(Object.keys(result).sort()).toEqual([
+        "confidence",
         "hits",
         "nextSteps",
         "recovery",
+        "recoveryMetadata",
         "total",
         "truncated",
         "widerCandidates"
       ]);
+      expect(result.confidence.hitCount).toBe(result.hits.length);
+      expect(result.confidence.topScoreGap === null || result.confidence.topScoreGap >= 0).toBe(true);
+      expect(result.recoveryMetadata.serviceFilterExcludedSkills).toEqual([]);
       expect(result.recovery.map((candidate) => candidate.id)).toEqual([
         "lumenloop.search_content_semantic",
         "scout.searchResearch"

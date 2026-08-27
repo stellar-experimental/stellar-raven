@@ -33,10 +33,13 @@ import {
 } from "./types.ts";
 import { lastIdSegment, VALID_IDENT } from "./id.ts";
 import {
+  STOPWORDS,
   scoreEntryWeighted,
   scoreEntryWeightedUngated,
   diversifyByService
 } from "./scoring.ts";
+import { tokenize } from "./vendor/search-scoring.ts";
+import { prepareAliasQuery, queryContainsAliasTrigger } from "./known-aliases.ts";
 import {
   jsonSchemaToType,
   sanitizeToolName,
@@ -112,6 +115,31 @@ export type WiderCandidate = {
   outputItemKeys?: Record<string, string[]>;
 };
 
+export type ServiceFilterExcludedSkillAdvisory = {
+  id: string;
+  service: "skills";
+  kind: "skill";
+  score: number;
+  tier: SearchHit["tier"];
+  basis: "service-filter-excluded-skill";
+  description: string;
+  availableSections?: string[];
+};
+
+export type SearchConfidence = {
+  /** Number of ranked hits returned on this page. */
+  hitCount: number;
+  /** Absolute score gap between the first two hits; null with fewer than two hits. */
+  topScoreGap: number | null;
+  /** Tiers of the first two hits whose absolute score difference is reported. */
+  topScoreTiers: { first: SearchHit["tier"]; second: SearchHit["tier"] } | null;
+};
+
+export type SearchRecoveryMetadata = {
+  /** Matching skills omitted only because a non-skills service filter was active. */
+  serviceFilterExcludedSkills: ServiceFilterExcludedSkillAdvisory[];
+};
+
 export type SearchOptions = {
   query: string;
   kind?: CatalogKind;
@@ -142,6 +170,10 @@ export type SearchPage = {
    * pages. Separate from ranked hits: never counted, scored, or paginated.
    */
   widerCandidates: WiderCandidate[];
+  /** Lightweight ranking facts for caller-controlled broaden-or-abstain decisions. */
+  confidence: SearchConfidence;
+  /** Advisory matches kept separate from ranked hits and exact-ID recovery. */
+  recoveryMetadata: SearchRecoveryMetadata;
 };
 
 export const DEFAULT_SEARCH_LIMIT = 10;
@@ -292,6 +324,15 @@ export function loadManifest(json: unknown): Catalog {
 /** Last id segment (after the final "."), used as the high-weight name field. */
 function entryName(entry: CatalogEntry): string {
   return lastIdSegment(entry.id);
+}
+
+function entryScoringName(entry: CatalogEntry, queryTokens: readonly string[]): string {
+  const triggered = entry.knownAliasTriggers?.some((trigger) =>
+    queryContainsAliasTrigger(queryTokens, trigger)
+  );
+  return triggered && entry.knownAliases?.length
+    ? `${entryName(entry)} ${entry.knownAliases.flatMap(tokenize).filter((token) => !STOPWORDS.has(token)).join(" ")}`
+    : entryName(entry);
 }
 
 function outputKeysOf(entry: CatalogEntry): string[] {
@@ -460,6 +501,7 @@ function scoreCandidates(
   scoreFn: typeof scoreEntryWeighted
 ): { entry: CatalogEntry; score: number }[] {
   const scored: { entry: CatalogEntry; score: number }[] = [];
+  const aliasQueryTokens = prepareAliasQuery(opts.query);
   for (const entry of catalog.entries) {
     // Search-visibility seam (skills-form arms): searchable:false entries are
     // exposed (exact-id describe/read/run) but never scored or counted here.
@@ -469,7 +511,7 @@ function scoreCandidates(
     const score = scoreFn(
       {
         id: entry.id,
-        name: entryName(entry),
+        name: entryScoringName(entry, aliasQueryTokens),
         service: entry.service,
         kind: entry.kind,
         description: entry.description,
@@ -621,13 +663,54 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     return hit;
   });
 
+  const recoveryMetadata: SearchRecoveryMetadata = {
+    serviceFilterExcludedSkills: deriveServiceFilterExcludedSkillAdvisories(catalog, opts)
+  };
   return {
     hits,
     total,
     truncated: total > hits.length,
     effectiveLimit: limit,
-    widerCandidates: deriveWiderCandidates(catalog, hits, opts)
+    widerCandidates: deriveWiderCandidates(catalog, hits, opts),
+    confidence: {
+      hitCount: hits.length,
+      topScoreGap: hits.length >= 2 ? Math.abs(hits[0]!.score - hits[1]!.score) : null,
+      topScoreTiers: hits.length >= 2 ? { first: hits[0]!.tier, second: hits[1]!.tier } : null
+    },
+    recoveryMetadata
   };
+}
+
+function deriveServiceFilterExcludedSkillAdvisories(
+  catalog: Catalog,
+  opts: SearchOptions,
+  limit = 3
+): ServiceFilterExcludedSkillAdvisory[] {
+  if (
+    limit <= 0 ||
+    opts.service === undefined ||
+    opts.service === "skills" ||
+    opts.kind === "operation"
+  ) {
+    return [];
+  }
+  // This bounded second pass cannot recurse because its service is "skills".
+  const skillsPage = searchCatalogPage(catalog, {
+    query: opts.query,
+    kind: "skill",
+    service: "skills",
+    limit
+  });
+  return skillsPage.hits.map((hit) => ({
+    id: hit.id,
+    service: "skills",
+    kind: "skill",
+    score: hit.score,
+    tier: hit.tier,
+    basis: "service-filter-excluded-skill",
+    description: hit.description,
+    ...(hit.availableSections ? { availableSections: hit.availableSections } : {})
+  }));
 }
 
 function widerCandidateOf(

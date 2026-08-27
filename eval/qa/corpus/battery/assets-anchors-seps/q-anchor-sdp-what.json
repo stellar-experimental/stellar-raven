@@ -11,7 +11,7 @@
       "Current SDP implements native SEP-10/24 and does not universally require an external Anchor Platform; downstream anchor or cash-out rails are optional deployment choices."
     ],
     "avoid": [
-      "Do NOT present the product page's dated 'up to 10,000 payments' advertisement as a hard implementation or protocol invariant.",
+      "Do NOT claim the product page's dated 'up to 10,000 payments' advertisement is a hard implementation or protocol invariant.",
       "Do NOT confuse SDP with the Anchor Platform, describe it as a wallet, or claim it universally depends on SEP-12/SEP-31 anchor rails."
     ],
     "notes": "Re-scoped 2026-08-05 because the declared developers.stellar.org search surface supports SDP's current architecture but not the stellar.org product page's numeric advertisement. As of 2026-08-05, the product page advertises up to 10,000 payments in one batch; treat that as dated product positioning, not a source-code-enforced ceiling, and do not require the number from a Docs-only answer."
@@ -93,19 +93,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Bounded truth repair from Solo Todo 1355 comment 3687",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "solo://proj/49/todo/reconcile-bounded-tr--1355",
         "2026-08-05 exact-phrase lumenloop.search_content_semantic probe for 'up to 10,000 payments' returned 20 candidates and no exact matching row or primary-linked SDF evidence; the numeric ask was therefore removed from the declared Docs-only surface.",
         "https://stellar.org/products-and-tools/disbursement-platform",
         "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
         "https://github.com/stellar/stellar-disbursement-platform-backend",
-        "Sibling sweep: q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails."
+        "Sibling sweep: q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails.",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep 10,000 payments|hard implementation|SDP → q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, q-pay-sdp-disbursement; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
-        "solo://proj/49/todo/reconcile-bounded-tr--1355"
+        "solo://proj/49/todo/reconcile-bounded-tr--1355",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-anchor-sdp-what"

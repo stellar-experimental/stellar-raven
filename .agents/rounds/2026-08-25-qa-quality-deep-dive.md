@@ -153,3 +153,37 @@ All lanes read-only against the repository except their own report file.
     evidence-poor recovery gap), 3 deliberate consistency-engine downgrades whose
     judge grades were partial.
 
+- `2026-08-27T17:00Z` — round two complete. Three lanes built in new worktrees
+  (`sr-wt-discovery`, `sr-wt-judging`, `sr-wt-goldentruth`), each independently
+  reviewed (Fable + Sol), all blockers fixed and re-verified to PASS (one residual
+  alias-trigger gap caught on re-verify and closed). Golden-truth owner ran its own
+  crew program: three Sol workers + Grok reviewer; three warning classes to zero;
+  SEP-38 factual error fixed with two-source verification; lint 1,390 → 1,212.
+  Foreign PRs #69–#71 landed mid-session on main; integrated by true-delta
+  application with compiler/register proof and semantic unions on run-qa.mjs
+  (safeJudge flows into judge adapters). Gates rebaselined (legacy top-5 312→311,
+  card@5 94→95 = accepted wisdomtree trade). Final battery green: 88 files /
+  1,362 tests, smoke 4/82, build ok, routing GATE PASS, lint 0/1,212, secrets
+  clean. Pull request: stellar-experimental/stellar-raven#73
+  (`qa/quality-round2-20260827`). Decision: LAND all three lanes.
+- `2026-08-27T22:10Z` — Lane 3 reframed and drafted as an idea, not a decision:
+  `ideas/source-delivery-ranked-references.md` on branch
+  `lane3-source-delivery-idea-20260827`. Philosophy per owner: deliver scored,
+  verifiable source pointers (repo/pinned-ref/path/locator/match-reason/
+  verification-URL); never fetch content on the agent's behalf; no golden-QA
+  overfit; battery is a regression check only. Drafted by Claude Fable; three
+  Sol xhigh verification cycles (9 → 4 → 2 findings) ended APPROVE-DRAFT.
+  Review records archived under `research/lane3-source-delivery-2026-08-27/`.
+  Pull request: stellar-experimental/stellar-raven#75. Golden-truth crew
+  session 2 in progress (negative-predicate class closed per program log;
+  compound-predicate class underway; 6-hour stop-point declared).
+- `2026-08-27T23:35Z` — golden-truth crew session 2 complete (owner Fable; 3 Sol
+  workers + Grok reviewer; 58 worker prompts). Branch
+  `lane/golden-truth-burndown-2-20260827` (stacked on the round-2 branch):
+  negative-predicate 131→0 (127 cases), compound-predicate 188→0 (102 cases),
+  long key facts 790→372 as a one-pass side effect. Lint 1,212 → **475 warnings,
+  0 errors**. Zero factual edits; 35 reviewer FAILs were all form defects and
+  were repaired; no escalations; register reconciled with dated re-sweeps.
+  Honest tail: 372 long-fact warnings (expensive class, ~50 worker-prompts
+  estimated) plus 103 out-of-scope. Report:
+  `/tmp/raven-qadeep/golden-truth-owner2.md`; session assets `/tmp/raven-qadeep/gt2/`.

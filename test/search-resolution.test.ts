@@ -9,7 +9,9 @@ import {
   recoveryCandidates,
   searchCatalogPage,
   type RecoveryCandidate,
+  type SearchConfidence,
   type SearchHit,
+  type SearchRecoveryMetadata,
   type WiderCandidate
 } from "../src/catalog/search.ts";
 import { buildSandbox } from "../src/executor/providers.ts";
@@ -22,6 +24,8 @@ type SearchFacts = {
   truncated: boolean;
   recovery: RecoveryCandidate[];
   widerCandidates: WiderCandidate[];
+  confidence: SearchConfidence;
+  recoveryMetadata: SearchRecoveryMetadata;
 };
 
 type McpSearchResult = {
@@ -75,7 +79,9 @@ async function mcpFacts(arguments_: Record<string, unknown>): Promise<SearchFact
     total: facts.total,
     truncated: facts.truncated,
     recovery: facts.recovery,
-    widerCandidates: facts.widerCandidates
+    widerCandidates: facts.widerCandidates,
+    confidence: facts.confidence,
+    recoveryMetadata: facts.recoveryMetadata
   };
 }
 
@@ -87,7 +93,9 @@ async function sandboxFacts(arguments_: Record<string, unknown>): Promise<Search
     total: result.total,
     truncated: result.truncated,
     recovery: result.recovery,
-    widerCandidates: result.widerCandidates
+    widerCandidates: result.widerCandidates,
+    confidence: result.confidence,
+    recoveryMetadata: result.recoveryMetadata
   };
 }
 
@@ -185,6 +193,8 @@ describe("MCP and sandbox search-resolution parity", () => {
       truncated: false,
       recovery: [],
       widerCandidates: [],
+      confidence: { hitCount: 0, topScoreGap: null, topScoreTiers: null },
+      recoveryMetadata: { serviceFilterExcludedSkills: [] },
       nextSteps: 'Unknown service "stellardocs" — service filter values are exact-match. Valid services: lumenloop, scout, skills, stellarDocs. Retry with one of those exact values, or drop the `service` filter.'
     });
     expect(mcp.content?.[0]?.text).toBe(JSON.stringify(structured));
@@ -225,6 +235,8 @@ describe("MCP and sandbox search-resolution parity", () => {
       truncated: false,
       recovery: [],
       widerCandidates: [],
+      confidence: { hitCount: 0, topScoreGap: null, topScoreTiers: null },
+      recoveryMetadata: { serviceFilterExcludedSkills: [] },
       nextSteps: 'Unknown recoverFrom operation id(s): "scout.getBuilder". Recovery ids are exact-match; discover valid operations with search first.'
     });
     expect(mcp.content?.[0]?.text).toBe(JSON.stringify(structured));

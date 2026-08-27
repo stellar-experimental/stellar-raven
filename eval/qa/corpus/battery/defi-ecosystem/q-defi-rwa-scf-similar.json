@@ -21,7 +21,7 @@
       "Do NOT assert BENJI, CRDT, or USDY never had any SCF relationship without a matching exhaustive official record.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "GROUNDED 2026-07-10: semantic/directory results are discovery only. Grade explicit official submission status and URL, distinguish Awarded from Test Transaction/Ready for Payment/Information Collection, and do not infer current project status from an award.\nAlso good if the answer says issuer primaries describe BENJI/CRDT/USDY as issuer-led and no exact official funded-page match was found asOf, without turning that into a timeless no-SCF claim.\nGolden cites: SCF archive matches (or an explicit 'none found' note).\nGT-17 CORRECTION 2026-07-10: current official status wins over semantic award fields; all amounts/statuses are dated and submission-specific."
+    "notes": "GROUNDED 2026-07-10: semantic/directory results are discovery only. Grade explicit official submission status and URL, distinguish Awarded from Test Transaction/Ready for Payment/Information Collection, and do not infer current project status from an award.\nAlso good if the answer says issuer primaries describe BENJI/CRDT/USDY as issuer-led and no exact official funded-page match was found asOf, without turning that into a timeless no-SCF claim.\nGolden cites: SCF archive matches (or an explicit 'none found' note).\nGT-17 CORRECTION 2026-07-10: current official status wins over semantic award fields; all amounts/statuses are dated and submission-specific.\nAccurately quoting the canonical Lumenloop or Scout source on bare SCF budgets, award status, and reconstructed totals is not a wrong claim while ll-013 stands or a cached Scout copy still shows the pre-2026-07-14 aggregate fixed by sls-026; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -115,15 +115,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA current SCF status verification; accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
       "evidence": [
         "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
         "Current official Talwex and TERWA SCF43 submission pages observed 2026-08-04.",
         "Sibling sweep: q-scf-funded-similar-oracle, q-scf-history-orbit-cdp, q-defi-orbit-cdp, and BENJI/CRDT/USDY product cases.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): Added a claim-specific caution for Lumenloop and cached Scout SCF status fields; the truth is unchanged.",
+        "Finding read 2026-08-27: improvements/lumenloop/ll-013-scf-submission-award-fields.md — disputed whether bare budget and award_type establish Awarded or paid status.",
+        "Finding read 2026-08-27: improvements/resolved.json entry sls-026 — fixed Scout's status-collapsed SCF aggregate on 2026-07-14.",
+        "Sibling sweep 2026-08-27: grep award_type|totalPaid|RWA → q-scf-skill-submission-radar, q-defi-rwa-treasury-funding-live, q-rwa-projects-tokenizing-stellar; no contradiction"
       ],
       "rootCause": [
         "Semantic similarity, directory status, reconstructed totals, and award_type were collapsed into official award/current-product truth.",
@@ -131,7 +135,8 @@
         "improvements/stellar-light-scout/sls-026-scf-status-aggregate-conflict.md",
         "eval-authoring",
         "Official SCF workflow labels changed; the former Talwex/Lend/TERWA counterexamples became Awarded and require requested-budget versus totalPaid separation.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-defi-rwa-scf-similar"

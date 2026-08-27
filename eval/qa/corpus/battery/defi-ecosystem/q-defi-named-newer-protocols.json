@@ -18,7 +18,7 @@
       "Do NOT call Zenex mainnet-live, FxDAO production-ready, or JST a current Stellar-specific DeFi protocol without dated evidence.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Scout found OrbitCDP and Zenex directly. FxDAO was verified primarily through Scout codeReferences plus GitHub repo metadata, not a first-class project row in the returned search. JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-live status. | Mentions alternate spellings/domains only when sourced.\nGolden cites: Dated Scout/LumenLoop/project/web sources for every named entity claim.\nCorrected 2026-07-10. Grade honest entity/status separation; a directory row or live-looking site alone is not deployment proof."
+    "notes": "Scout found OrbitCDP and Zenex directly. FxDAO was verified primarily through Scout codeReferences plus GitHub repo metadata, not a first-class project row in the returned search. JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-live status. | Mentions alternate spellings/domains only when sourced.\nGolden cites: Dated Scout/LumenLoop/project/web sources for every named entity claim.\nCorrected 2026-07-10. Grade honest entity/status separation; a directory row or live-looking site alone is not deployment proof.\nAccurately quoting the canonical Scout source on OrbitCDP's `Inactive` lifecycle label is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -84,19 +84,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-16 primary 3244 and blind 3245",
         "2026-07-11 localhost:8787 search→execute probe observed: a live DeFi directory query returned 39 matches; DeFindex, HedgePay, and HiYield appeared on the first page.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
+        "Reviewed improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed claim: OrbitCDP's Scout lifecycle label proves deployment status.",
+        "Sibling sweep 2026-08-27: grep OrbitCDP|FxDAO|Zenex|zenex|JST → q-defi-blend-alternatives, q-defi-etherfuse-stablebonds, q-defi-named-newer-protocols, q-defi-perps-whitespace, q-defi-rwa-scf-similar, q-eco-defi-market-map; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-024 — lifecycle labels conflict with operator deployment language",
         "eval-side entity resolution promoted one directory status and treated a failed exact search as nonexistence",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-defi-named-newer-protocols"

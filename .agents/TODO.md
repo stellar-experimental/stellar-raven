@@ -22,6 +22,24 @@ Done when: lint enforces the cap, and requires an `upstreamTitle` on any finding
 (records predating the field stay grandfathered). An improvements PR should also run
 `improvements:file --dry-run` as a check — it posts nothing.
 
+## Golden corpus
+
+### Golden authoring lint warnings burn-down
+
+`npm run eval:qa:lint` reported 0 errors and 1,390 warnings on 2026-08-27 (merge of the QA
+deep-dive round). Six warning classes: keyFacts over 90 characters, compound predicates,
+negative predicates whose object is absent from the question, presentation/omission avoid items,
+keyFacts that demand the golden's own snapshot date, and improvements-rooted cases with no
+symmetric canonical-source caution. Each is an authoring-form defect: the golden gates the judge
+on shape, not on truth.
+
+Found 2026-08-27: the lint classes landed in the corpus-goldens lane and the backlog was never
+burned down. Fixes are structural (split, move to avoid, date the behavior, add the caution) and
+must not change facts without two independent live sources.
+
+Done when: all six classes report zero warnings, every touched case carries a refreshed
+`truth.verified` naming this entry, and each batch is committed with its lint delta.
+
 ## Improvements backlog
 
 ### Five findings are stale against their upstream issue

@@ -20,7 +20,7 @@
     "avoid": [
       "Do NOT claim the 200 limit is Horizon-only or that Stellar RPC has no 200-record cap — RPC `getTransactions` itself is capped at 200 (default 50).",
       "Do NOT repeat startLedger with cursor, edit the opaque cursor, or treat it as a ledger number.",
-      "Do NOT present stock 200/50 as an immutable limit for every provider.",
+      "Do NOT claim stock 200/50 is an immutable limit for every provider.",
       "Do NOT hard-code Horizon's 200 limit as the RPC getEvents limit.",
       "Do NOT expect *Xdr names in xdrFormat=json or double-decode SDK-parsed XDR values."
     ],
@@ -156,8 +156,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-26",
-      "by": "lane/corpus-goldens symmetric-caution review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "eval/qa/results/2026-07-03T16-06-45-variantA.json (q-ti-rpc-gettransactions-pagination-xdr)",
         "Live 2026-07-03: developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — limit 'can range from 1 to 200 — an upper limit that is hardcoded in Stellar-RPC for performance reasons', default 50",
@@ -167,12 +167,15 @@
         "Live scout.explainRepo answer grounded in stellar/stellar-rpc options.go and main.go for configurable 50/200 defaults, 2026-07-13",
         "solo://proj/49/scratchpad/truth-maintenance-20--627#fable-open-questions-audit",
         "Independent Terra review 2026-07-14 rechecked stellar-docs#2567, current RPC pagination docs, and stellar-rpc configuration source; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review",
-        "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; confirmed against improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md on 2026-08-26"
+        "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; confirmed against improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md on 2026-08-26",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep getTransactions 50|200/50|max-transactions-limit|immutable limit → q-ti-rpc-gettransactions-pagination-xdr, q-ti-parse-raw-ledger-data; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-003 (verified, awaiting upstream) — RPC method reference pages unindexed in Algolia; the upstream fix that would have prevented both the agent's and the golden author's error. When sd-003 is fixed-upstream, this override's facts should be re-verified against the then-indexed page but the correction itself remains valid.",
         "improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md",
-        "solo://proj/49/todo/golden-fixes-q-scf-r--827"
+        "solo://proj/49/todo/golden-fixes-q-scf-r--827",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-ti-rpc-gettransactions-pagination-xdr"

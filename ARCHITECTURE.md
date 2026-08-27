@@ -120,7 +120,8 @@ IDs, reason, then page and recovery resolution. An unknown reason therefore retu
 `searchCatalogPage` or `recoveryCandidates` runs. `getCatalog()` (`src/catalog/load.ts`) imports the
 generated `catalog/manifest.json` as a bundled JSON module and validates it once per isolate via
 `loadManifest` — a malformed manifest throws loudly at first use, never softens. The
-response is `{ hits, total, truncated, recovery, widerCandidates, nextSteps }` (as both `text` and
+response is `{ hits, total, truncated, recovery, widerCandidates, confidence, recoveryMetadata,
+nextSteps }` (as both `text` and
 `structuredContent`): `total` counts every distinct catalog entry the consulted scorer
 tiers matched (post-filter, pre-paging), `truncated` = `total > hits.length` (retry with a
 higher `limit`, the other candidate family, or varied vocabulary), and
@@ -217,8 +218,12 @@ way:
 carry a manifest-validated `retrievalProfile` whose exact-ID `recoverWith` edges name bounded wider,
 cross-family, cited-research, or different-medium contingencies for `empty | weak | adjacent |
 ambiguous | partial` outcomes. When an operation-search page has zero hits or only backfill hits,
-public `search`, in-sandbox `codemode.search`, and Playground search return up to three advisory
-`widerCandidates` separately from ranked hits. Page-resident broad operations lead on all-backfill
+public `search`, in-sandbox `codemode.search`, and Playground search return `confidence` and
+`recoveryMetadata` with the ranked page. `confidence.topScoreGap` is an absolute difference and
+includes both compared tiers because tier ordering can differ from score ordering.
+`recoveryMetadata.serviceFilterExcludedSkills` identifies matching skills excluded only by a
+non-skills service filter. These surfaces also return up to three advisory `widerCandidates`
+separately from ranked hits. Page-resident broad operations lead on all-backfill
 pages, then deterministic manifest anchors fill one slot per remaining broad lane; zero-hit pages
 use anchors only. Service filters constrain the advice and skill-only searches suppress it. Public
 `search`, in-sandbox `codemode.search`, and Playground search also accept caller-reported exact
@@ -487,7 +492,8 @@ The `codemode` provider (`buildCodemodeProvider`, `src/executor/providers.ts`) i
   `createSpecSearchRunner` (`src/executor/run.ts`) keeps the source-injection variant
   buildable for future A/Bs.
 - **`codemode.search(queryOrOpts)`** — the same host-side `searchCatalogPage`, mid-script:
-  resolves to `{ ok: true, hits, total, truncated, widerCandidates, recovery }` (tier-marked
+  resolves to `{ ok: true, hits, total, truncated, widerCandidates, recovery, confidence,
+  recoveryMetadata }` (tier-marked
   hits, pagination facts, structural wider advice, and explicit prior-attempt recovery, §1/§2),
   with the same kind/service/recoverFrom validation at the sandbox boundary — an unknown filter
   or recovery operation id returns `{ ok: false, error }` naming the valid scope (explicit `null`

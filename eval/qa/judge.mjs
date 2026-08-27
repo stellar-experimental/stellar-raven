@@ -11,10 +11,11 @@
  *         missingFacts: string[], wrongClaims: string[], rationale: string }
  *
  * Implementation: one headless `claude -p --model claude-sonnet-5
- * --output-format json` call per grade (verified locally 2026-07-02). "error"
- * means the judge itself failed (CLI error / unparseable output / a verdict
- * that contradicts itself), never a grade of the candidate — so every "error"
- * verdict carries coreAnswer null.
+ * --output-format json` call first. The tiered path can add two calls when
+ * stability history or a boundary verdict requires the three-vote panel.
+ * "error" means the judge itself failed (CLI error / unparseable output / a
+ * verdict that contradicts itself), never a grade of the candidate — so every
+ * "error" verdict carries coreAnswer null.
  *
  * Two sibling modules own the pieces that are not model-facing:
  * verdict-consistency.mjs decides which field/score combinations contradict
@@ -42,8 +43,10 @@ import {
   findTranscriptEvidencePackOmissions,
   PACK_VERSION
 } from "./evidence-pack.mjs";
+import { JUDGE_STABILITY_THRESHOLD } from "./judge-stability.mjs";
 
 export const JUDGE_MODEL = "claude-sonnet-5";
+export const DEFAULT_MAX_PANEL_CASES = 10;
 const PANEL_SCORES_WORST_FIRST = ["error", "wrong", "partial", "correct"];
 
 /**
@@ -134,6 +137,50 @@ function panelWinner(scores) {
 }
 
 /**
+ * A judge adapter supplies one vote. The Claude CLI adapter is the only live
+ * adapter in this round. A panel can repeat it or receive several adapters.
+ */
+export function createClaudeJudgeAdapter(judge = judgeCase) {
+  return {
+    id: "claude-cli",
+    vote(input, options) {
+      return judge(input, options);
+    }
+  };
+}
+
+/**
+ * This stub shows the cross-organization seam. Do not enable another adapter
+ * until its JSON output contract, cost reporting, PII/safety parity, and
+ * identical rubric text have all been verified.
+ */
+export const UNVERIFIED_CROSS_ORG_JUDGE_ADAPTER_STUB = Object.freeze({
+  id: "unverified-cross-org",
+  enabled: false,
+  async vote() {
+    throw new Error(
+      "cross-organization judge adapter is disabled pending output, cost, safety, and rubric verification"
+    );
+  }
+});
+
+function resolveJudgeAdapters(adapters, judge) {
+  const resolved = adapters ?? [createClaudeJudgeAdapter(judge)];
+  if (!Array.isArray(resolved) || resolved.length === 0) {
+    throw new Error("judge adapters must contain at least one adapter");
+  }
+  for (const adapter of resolved) {
+    if (typeof adapter?.id !== "string" || typeof adapter?.vote !== "function") {
+      throw new Error("each judge adapter requires a string id and vote function");
+    }
+    if (adapter.enabled === false) {
+      throw new Error(`judge adapter ${adapter.id} is disabled`);
+    }
+  }
+  return resolved;
+}
+
+/**
  * Run an opt-in judge panel. Error votes abstain when any graded vote remains.
  * A graded tie resolves to the worse grade, so the result never promotes an
  * answer without a majority. The first winning verdict supplies all fields
@@ -141,16 +188,32 @@ function panelWinner(scores) {
  */
 export async function judgeCasePanel(
   input,
-  { panelSize = 1, judge = judgeCase, ...judgeOptions } = {}
+  {
+    panelSize = 1,
+    judge = judgeCase,
+    adapters,
+    initialVerdicts = [],
+    ...judgeOptions
+  } = {}
 ) {
   if (![1, 2, 3].includes(panelSize)) {
     throw new Error(`judge panel size must be 1, 2, or 3, got ${panelSize}`);
   }
-  if (panelSize === 1) return judge(input, judgeOptions);
+  if (!Array.isArray(initialVerdicts) || initialVerdicts.length > panelSize) {
+    throw new Error("initial judge verdicts must be an array no larger than the panel");
+  }
+  const judgeAdapters = resolveJudgeAdapters(adapters, judge);
+  if (panelSize === 1 && initialVerdicts.length === 0) {
+    return judgeAdapters[0].vote(input, judgeOptions);
+  }
+  if (panelSize === 1) return initialVerdicts[0];
 
-  const verdicts = [];
-  for (let index = 0; index < panelSize; index++) {
-    verdicts.push(await judge(input, judgeOptions));
+  const verdicts = [...initialVerdicts];
+  const adapterIds = initialVerdicts.map((_, index) => judgeAdapters[index % judgeAdapters.length].id);
+  for (let index = verdicts.length; index < panelSize; index++) {
+    const adapter = judgeAdapters[index % judgeAdapters.length];
+    verdicts.push(await adapter.vote(input, judgeOptions));
+    adapterIds.push(adapter.id);
   }
   const scores = verdicts.map((verdict) =>
     PANEL_SCORES_WORST_FIRST.includes(verdict?.score) ? verdict.score : "error"
@@ -170,10 +233,142 @@ export async function judgeCasePanel(
       panelSize,
       panelDisagreement: disagreement,
       panelTie: winner.tied,
+      panelAdapters: adapterIds,
       panelReportedCostCount: costs.length,
       panelMissingCostCount: panelSize - costs.length,
       ...(disagreement ? { panelScores: scores } : {})
     }
+  };
+}
+
+export function createPanelCaseBudget(maxPanelCases = DEFAULT_MAX_PANEL_CASES) {
+  if (!Number.isInteger(maxPanelCases) || maxPanelCases < 0) {
+    throw new Error(`max panel cases must be a non-negative integer, got ${maxPanelCases}`);
+  }
+  return { maxPanelCases, boundaryPanelCases: 0 };
+}
+
+function boundaryEscalationReason(verdict, tags) {
+  if (verdict?.score === "partial" && Array.isArray(verdict.missingFacts) && verdict.missingFacts.length <= 1) {
+    return "boundary-partial";
+  }
+  if (Array.isArray(verdict?.wrongClaims) && verdict.wrongClaims.length === 1) {
+    return "boundary-wrong-claim";
+  }
+  if (tags?.trap && verdict?.score !== "correct") return "boundary-trap";
+  return null;
+}
+
+/** Select the tier after the first vote. Boundary panels consume the cap. */
+export function selectJudgeTier({
+  caseId,
+  verdict,
+  tags,
+  stabilityRegister = { status: "absent", cases: {} },
+  panelBudget = createPanelCaseBudget()
+}) {
+  const entry = stabilityRegister.status === "available"
+    ? stabilityRegister.cases?.[caseId]
+    : undefined;
+  const usableHistory =
+    Number.isFinite(entry?.stabilityScore) &&
+    Number.isInteger(entry?.comparisonCount) &&
+    entry.comparisonCount > 0;
+  const common = {
+    stabilityRegisterStatus: stabilityRegister.status ?? "absent",
+    stabilityCaseStatus: usableHistory ? "available" : entry ? "insufficient" : "absent",
+    stabilityScore: usableHistory ? entry.stabilityScore : null
+  };
+
+  // Judge errors are not candidate grades. The stored path owns their retry
+  // policy, so neither stability history nor a boundary may add paid calls.
+  if (verdict?.score === "error") {
+    return { ...common, judgeTierUsed: "single", escalationReason: null };
+  }
+
+  if (usableHistory) {
+    if (entry.stabilityScore < JUDGE_STABILITY_THRESHOLD) {
+      return {
+        ...common,
+        judgeTierUsed: "panel",
+        escalationReason: "unstable-register"
+      };
+    }
+    return {
+      ...common,
+      judgeTierUsed: "single",
+      escalationReason: null
+    };
+  }
+
+  const escalationReason = boundaryEscalationReason(verdict, tags);
+  if (!escalationReason) {
+    return { ...common, judgeTierUsed: "single", escalationReason: null };
+  }
+  if (panelBudget.boundaryPanelCases >= panelBudget.maxPanelCases) {
+    return {
+      ...common,
+      judgeTierUsed: "single",
+      escalationReason,
+      panelEscalationSkipped: "max-panel-cases"
+    };
+  }
+  panelBudget.boundaryPanelCases += 1;
+  return { ...common, judgeTierUsed: "panel", escalationReason };
+}
+
+/**
+ * Run one vote, then reuse it as vote one if the adaptive or forced policy
+ * selects a panel. Adaptive panels always contain three total calls.
+ */
+export async function judgeCaseTiered(
+  input,
+  {
+    judge = judgeCase,
+    adapters,
+    judgePanel = 1,
+    stabilityRegister = { status: "absent", cases: {} },
+    panelBudget = createPanelCaseBudget(),
+    ...judgeOptions
+  } = {}
+) {
+  if (![1, 2, 3].includes(judgePanel)) {
+    throw new Error(`judge panel size must be 1, 2, or 3, got ${judgePanel}`);
+  }
+  const judgeAdapters = resolveJudgeAdapters(adapters, judge);
+  const firstVerdict = await judgeAdapters[0].vote(input, judgeOptions);
+  const selection = judgePanel > 1
+    ? {
+        judgeTierUsed: "panel",
+        escalationReason: "forced-panel",
+        stabilityRegisterStatus: stabilityRegister.status ?? "absent",
+        stabilityCaseStatus: "not-consulted",
+        stabilityScore: null
+      }
+    : selectJudgeTier({
+        caseId: input.id,
+        verdict: firstVerdict,
+        tags: input.tags,
+        stabilityRegister,
+        panelBudget
+      });
+
+  if (selection.judgeTierUsed === "single") {
+    return {
+      ...firstVerdict,
+      meta: { ...(firstVerdict?.meta ?? {}), ...selection }
+    };
+  }
+
+  const panelVerdict = await judgeCasePanel(input, {
+    ...judgeOptions,
+    panelSize: judgePanel > 1 ? judgePanel : 3,
+    adapters: judgeAdapters,
+    initialVerdicts: [firstVerdict]
+  });
+  return {
+    ...panelVerdict,
+    meta: { ...(panelVerdict.meta ?? {}), ...selection }
   };
 }
 

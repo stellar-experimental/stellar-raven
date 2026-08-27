@@ -15,7 +15,7 @@
       "Do NOT emit retired lumenloop_find_av_passages, fabricate quotes/speakers/timestamps, or turn summary text into verbatim evidence.",
       "Do NOT silently substitute docs when the requested A/V corpus misses."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routing/behavior case — the 'answer' is the correct tool + honest corpus-bounded behavior, not a factual essay. lumenloop_find_av_passages is the transcript/AV-passage lane; semantic content search is acceptable but the explicit 'recorded passage, not docs' intent favors the av_passages card. No fixed source URL: graded on returning real transcript passages (with their talk/podcast provenance) or honestly reporting none in corpus. Fabrication is the trap.\nAlso good if the answer: Frames the topic as passkeys / secp256r1 smart-wallet signing on Stellar when surfacing passages.\nGolden cites: Each surfaced passage carries its talk/podcast source (lumenloop_find_av_passages).\nGT-44 live service contract 2026-07-11. Grade routing/output honesty; source URLs come from returned rows and are volatile."
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routing/behavior case — the 'answer' is the correct tool + honest corpus-bounded behavior, not a factual essay. lumenloop_find_av_passages is the transcript/AV-passage lane; semantic content search is acceptable but the explicit 'recorded passage, not docs' intent favors the av_passages card. No fixed source URL: graded on returning real transcript passages (with their talk/podcast provenance) or honestly reporting none in corpus. Fabrication is the trap.\nAlso good if the answer: Frames the topic as passkeys / secp256r1 smart-wallet signing on Stellar when surfacing passages.\nGolden cites: Each surfaced passage carries its talk/podcast source (lumenloop_find_av_passages).\nGT-44 live service contract 2026-07-11. Grade routing/output honesty; source URLs come from returned rows and are volatile.\nAccurately quoting the canonical upstream skill source that `find_av_passages` returns verbatim transcript passages is not a wrong claim while sk-004 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "soroban",
@@ -61,13 +61,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer named a non-exposed underscore operation and required transcript quotes/timestamps absent from the live payload.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-44 processes 3316/3324; live Lumenloop probe 2026-07-11."
+        "Solo scratchpad 575 GT-44 processes 3316/3324; live Lumenloop probe 2026-07-11.",
+        "Structural re-form (symmetric-caution): Added a dispute-scoped grading caution; the answer and facts are unchanged.",
+        "Reviewed improvement 2026-08-27: improvements/skills/sk-004-av-passages-verbatim-claim.md — upstream skill playbooks wrongly describe returned AI summaries as verbatim transcript passages.",
+        "Sibling sweep 2026-08-27: grep find_av_passages|transcript passages|verbatim passages → q-asset-rwa-tokenized-freshness, q-defi-blend-what-is, q-eco-stellar-rwa-stablecoin-volume, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp, q-ti-video-tutorials; no contradiction"
       ],
       "rootCause": [
-        "improvements/skills/sk-004-av-passages-verbatim-claim.md"
+        "improvements/skills/sk-004-av-passages-verbatim-claim.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-soroban-av-passkeys-talk"

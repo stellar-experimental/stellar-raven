@@ -31,7 +31,8 @@
  *     provider RPC instead (a source-injected `const codemode` would shadow
  *     this provider global) — same resolved document either way.
  *   codemode.search(queryOrOpts)      — host-side searchCatalogPage (ranked;
- *     { ok, hits, total, truncated, recovery, widerCandidates } — truncated ⇒ retry with a higher limit
+ *     { ok, hits, total, truncated, recovery, widerCandidates, confidence, recoveryMetadata }
+ *     — truncated ⇒ retry with a higher limit
  *     or narrower filters). Unknown kind/service filter values are rejected
  *     as error envelopes naming the valid set. The
  *     searchCatalog contract keeps filters silent, so the validation lives
@@ -892,7 +893,7 @@ export function buildCodemodeProvider(
               limit: typeof opts.limit === "number" ? opts.limit : undefined,
               reason: reason as RetrievalReason | undefined
             });
-            const { hits, total, truncated, widerCandidates } = page;
+            const { hits, total, truncated, widerCandidates, confidence, recoveryMetadata } = page;
             logEvent("search", {
               source: "codemode",
               ...searchEventFields({
@@ -901,10 +902,19 @@ export function buildCodemodeProvider(
                 page,
                 summary: { hits, total, truncated, recovery, widerCandidates }
               }),
-              responseChars: JSON.stringify({ hits, recovery, widerCandidates }).length,
+              responseChars: JSON.stringify({ hits, recovery, widerCandidates, confidence, recoveryMetadata }).length,
               ms: Date.now() - t0
             });
-            return { ok: true, hits, total, truncated, recovery, widerCandidates };
+            return {
+              ok: true,
+              hits,
+              total,
+              truncated,
+              recovery,
+              widerCandidates,
+              confidence,
+              recoveryMetadata
+            };
           },
 
           // The canonical detail-on-demand step mirrors upstream

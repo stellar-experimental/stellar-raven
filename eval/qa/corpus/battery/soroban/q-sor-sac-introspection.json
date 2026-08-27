@@ -15,7 +15,7 @@
     "avoid": [
       "Do NOT use obsolete CONTRACT_EXECUTABLE_TOKEN/old preimage names, infer SAC from SEP-41 methods alone, claim every reserved SAC is deployed, or treat admin as immutable issuer identity."
     ],
-    "notes": "Also good if the answer: Mentions native XLM's SAC has no issuer/admin.\nGolden cites: Official SAC docs. | Official contract transaction/XDR docs for `CONTRACT_ID_PREIMAGE_FROM_ASSET`. | SEP-41 or token guide for token-interface distinction.\nGT-43 blind controls current XDR/executable and mutable-admin precision."
+    "notes": "Also good if the answer: Mentions native XLM's SAC has no issuer/admin.\nGolden cites: Official SAC docs. | Official contract transaction/XDR docs for `CONTRACT_ID_PREIMAGE_FROM_ASSET`. | SEP-41 or token guide for token-interface distinction.\nGT-43 blind controls current XDR/executable and mutable-admin precision.\nAccurately quoting the official Stellar documentation on `CONTRACT_EXECUTABLE_TOKEN` or immutable SAC issuer/admin identity is not a wrong claim while a cached or older copy still shows those pre-2026-07-31 values; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "soroban",
@@ -76,13 +76,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer used obsolete SAC executable/XDR names, missed executable-based detection and public name() identity, and treated issuer/admin as immutable.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-43 primary 3311 and blind 3320."
+        "Solo scratchpad 575 GT-43 primary 3311 and blind 3320.",
+        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
+        "Reviewed improvements/resolved.json entry sd-020 — fixed 2026-07-31; older documentation can show obsolete SAC XDR names or immutable issuer/admin identity.",
+        "Sibling sweep 2026-08-27: grep CONTRACT_EXECUTABLE_STELLAR_ASSET|CONTRACT_EXECUTABLE_TOKEN|CONTRACT_ID_PREIMAGE_FROM_ASSET|set_admin → q-comp-sac-inherits-flags, q-sor-sac-introspection; no contradiction"
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-020-sac-xdr-introspection-admin-drift.md"
+        "improvements/stellar-docs/sd-020-sac-xdr-introspection-admin-drift.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-sor-sac-introspection"

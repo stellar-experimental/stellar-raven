@@ -11,7 +11,8 @@
       "The current Stellar x402 scheme signs a Soroban authorization entry for an exact SAC transfer that a facilitator or relayer submits.",
       "Verification covers scheme/version, CAIP network, invocation/auth shape, expiration, simulation, unexpected effects, finality, and request-level replay/idempotency.",
       "A Horizon operation-list match is insufficient for an inner contract transfer; audit successful transaction meta/events and exact SAC effects.",
-      "Built on Stellar hosted and OpenZeppelin self-hosted facilitator paths are current attributed options as of 2026-07-11, not protocol requirements."
+      "Names Built on Stellar (hosted) and OpenZeppelin (self-hosted) as facilitator options.",
+      "Dates facilitator availability to an observation date."
     ],
     "avoid": [
       "Possession of any Stellar transaction hash proves the required x402 payment.",
@@ -206,13 +207,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/agentic-payments/x402",
         "https://docs.x402.org/",
         "https://github.com/coinbase/x402/tree/main/typescript/packages/mechanisms/stellar",
-        "https://github.com/OpenZeppelin/openzeppelin-relayer"
+        "https://github.com/OpenZeppelin/openzeppelin-relayer",
+        "Structural re-form (snapshot-date): Split the attributed facilitator options, dating behavior, and implementation choice; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar — showed the Built on Stellar hosted facilitator.",
+        "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/1.4.x/guides/stellar-x402-facilitator-guide — showed the OpenZeppelin self-hosted facilitator path.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — showed current facilitator availability.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar — described hosted use and self-hosting as implementation choices.",
+        "Sibling sweep 2026-08-27: grep Built on Stellar|OpenZeppelin|x402 facilitator → q-soroban-x402-auth-entry-signing, q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction",
+        "Owner correction 2026-08-27: merged the two facilitator-name facts and dropped the new implementation-specific fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
       ]
     },
     "origin": "kaan x402-payment-verification-stellar"

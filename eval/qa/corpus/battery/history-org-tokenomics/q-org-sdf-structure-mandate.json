@@ -14,7 +14,7 @@
       "Do NOT call SDF for-profit, Ripple, or the unilateral owner/operator of Stellar.",
       "Do NOT repeat ~30B as a current reserve or treat named accounts/report rows as exhaustive without date and scope."
     ],
-    "notes": "GT-28 CORRECTION 2026-07-10: organizational/legal core confirmed. Remove the stale ~30B reserve; any holdings figure requires a dated dashboard/mandate/report and explicit scope.\nGT-28 independently confirmed by processes 3274/3275.\n2026-07-13 provenance repair: current SDF mandate/foundation pages support the mission, self-funding, tax, and no-shareholder claims; independent WEF/LobbyFacts records support the non-stock form; official developer material supports the public, decentralized network distinction."
+    "notes": "GT-28 CORRECTION 2026-07-10: organizational/legal core confirmed. Remove the stale ~30B reserve; any holdings figure requires a dated dashboard/mandate/report and explicit scope.\nGT-28 independently confirmed by processes 3274/3275.\n2026-07-13 provenance repair: current SDF mandate/foundation pages support the mission, self-funding, tax, and no-shareholder claims; independent WEF/LobbyFacts records support the non-stock form; official developer material supports the public, decentralized network distinction.\nAccurately quoting the official Stellar documentation on a roughly 30B XLM current reserve is not a wrong claim while a cached or older copy still shows that pre-2026-07-27 figure; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -115,8 +115,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Todo 972 release-closeout golden-truth reconciliation after independent Fable and Sol reviews",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
       "evidence": [
         "https://stellar.org/foundation/mandate",
         "https://developers.stellar.org/",
@@ -124,12 +124,16 @@
         "https://stellar.org/terms-of-service",
         "https://www.lobbyfacts.eu/datacard/stellar-development-foundation?rid=244864450367-86",
         "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol ship/hold reviews",
-        "Sibling sweep: q-org-sdf-mandate-buckets and q-org-sdf-enterprise-fund retain dated metric scope; no stable reserve scalar was reintroduced."
+        "Sibling sweep: q-org-sdf-mandate-buckets and q-org-sdf-enterprise-fund retain dated metric scope; no stable reserve scalar was reintroduced.",
+        "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
+        "Reviewed improvements/resolved.json entry sd-012 — fixed 2026-07-27; older documentation can show a roughly 30B XLM reserve as current.",
+        "Sibling sweep 2026-08-27: grep non-stock nonprofit|no shareholders|30B|mandate holdings|SDF structure → q-org-sdf-structure-mandate only; no contradiction"
       ],
       "rootCause": [
         "Eval-side historical reserve rounding became an undated present-tense fact.",
         "improvements/stellar-docs/sd-012-mandate-wallet-label-drift.md",
-        "solo://proj/49/todo/golden-truth-review--972"
+        "solo://proj/49/todo/golden-truth-review--972",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-org-sdf-structure-mandate"

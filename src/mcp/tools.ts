@@ -24,8 +24,10 @@ import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/server";
 import {
   type RecoveryCandidate,
+  type SearchConfidence,
   type SearchHit,
   type SearchPage,
+  type SearchRecoveryMetadata,
   type WiderCandidate
 } from "../catalog/search.ts";
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
@@ -157,6 +159,30 @@ export const widerCandidateSchema = z.object({
   outputItemKeys: z.record(z.string(), z.array(z.string())).optional()
 });
 
+export const searchConfidenceSchema = z.object({
+  hitCount: z.number().int().nonnegative(),
+  topScoreGap: z.number().nonnegative().nullable(),
+  topScoreTiers: z
+    .object({ first: z.enum(["gated", "backfill"]), second: z.enum(["gated", "backfill"]) })
+    .nullable()
+    .describe("Tiers of the first two ordered hits. Use them with the absolute topScoreGap.")
+});
+
+export const serviceFilterExcludedSkillAdvisorySchema = z.object({
+  id: z.string(),
+  service: z.literal("skills"),
+  kind: z.literal("skill"),
+  score: z.number(),
+  tier: z.enum(["gated", "backfill"]),
+  basis: z.literal("service-filter-excluded-skill"),
+  description: z.string(),
+  availableSections: z.array(z.string()).optional()
+});
+
+export const searchRecoveryMetadataSchema = z.object({
+  serviceFilterExcludedSkills: z.array(serviceFilterExcludedSkillAdvisorySchema).max(3)
+});
+
 export const rankedSearchOutputSchema = {
   hits: z
     .array(searchHitSchema)
@@ -184,6 +210,12 @@ export const rankedSearchOutputSchema = {
     .describe(
       "Up to three advisory broad operations on zero-hit or all-backfill operation pages. Separate from ranked hits and derived only from page tiers plus manifest retrieval metadata."
     ),
+  confidence: searchConfidenceSchema.describe(
+    "Ranking facts for caller-controlled broadening or abstention. topScoreGap is absolute because tier ordering can differ from score ordering."
+  ),
+  recoveryMetadata: searchRecoveryMetadataSchema.describe(
+    "Advisory skill matches excluded only by a non-skills service filter. These entries do not change ranked hits."
+  ),
   nextSteps: z.string().describe("What to do with these results (server hint).")
 };
 
@@ -217,7 +249,7 @@ export const UPSTREAM_DOC_LINKS = `Upstream documentation: Lumenloop — API gui
 
 export const SEARCH_DESCRIPTION = `Ranked lexical search over every exposed service operation (lumenloop.*, scout.*, stellarDocs.*) and whole skill. Skill sections are exact-read affordances exposed on whole-skill hits through availableSections; they are not independent ranked hits.
 
-Returns ranked hits with rendered TypeScript signatures so you can call them from the \`execute\` tool without guessing. Structurally poor operation pages also return bounded \`widerCandidates\` that explicitly recommend broad semantic/research/A/V/corpus operations without changing ranking. Pass caller-reported exact attempted ids in \`recoverFrom\` (and optionally \`reason\`) to receive bounded recovery candidates separately from both ranking and wider-page advice.
+Returns ranked hits with rendered TypeScript signatures, \`confidence\`, and \`recoveryMetadata\`. Structurally poor operation pages also return bounded \`widerCandidates\` that explicitly recommend broad semantic/research/A/V/corpus operations without changing ranking. Pass caller-reported exact attempted ids in \`recoverFrom\` (and optionally \`reason\`) to receive bounded recovery candidates separately from both ranking and wider-page advice.
 
 ## Workflow
 
@@ -275,7 +307,7 @@ Every service call resolves (never throws) to either { ok: true, data } or { ok:
 
 - The ONLY globals are \`lumenloop\`, \`scout\`, \`stellarDocs\`, \`codemode\`, and standard JavaScript. There is no \`host\`, \`fs\`, \`require\`, \`process\`, or Node.js API.
 - Never guess method names — call an operation as \`<service>.<name>(args)\` exactly as the spec's operationId / x-execute line (or a search hit's signature) shows. Unknown names fail; there is no fuzzy resolution.
-- Mid-script discovery: \`codemode.spec()\` returns the unified OpenAPI-style super spec covering every service ($refs resolved inline — paths keyed "/{service}/{operation}", operationId = the exact callable, x-execute = the exact sandbox call line); \`codemode.search("targeted query")\` (or \`{ query, kind?, service?, limit?, recoverFrom?, reason? }\`) for RANKED results plus advisory broad-operation and exact-ID recovery candidates — resolves to { ok: true, hits, total, truncated, widerCandidates, recovery }. \`widerCandidates\` is populated only for structurally poor operation pages and never changes ranking; \`recovery\` requires explicit \`recoverFrom\` ids. Truncated means more entries matched than returned (raise \`limit\`, try the other candidate family, or vary vocabulary — \`total\` is a floor, not exhaustive: it counts only the scorer tiers consulted for this page and can grow at a higher \`limit\`), and an unknown \`kind\`/\`service\`/\`recoverFrom\` value comes back as an error listing the valid scope; and \`codemode.catalog({ kind?, service?, compact? })\` for exact-filtered catalog data. Default/full entries include id, service, kind, description, inputSchema, outputSchema, and any retrievalProfile; \`compact: true\` omits the schemas. Everything listed is callable/readable. Use these for follow-ups instead of ending the script early.
+- Mid-script discovery: \`codemode.spec()\` returns the unified OpenAPI-style super spec covering every service ($refs resolved inline — paths keyed "/{service}/{operation}", operationId = the exact callable, x-execute = the exact sandbox call line); \`codemode.search("targeted query")\` (or \`{ query, kind?, service?, limit?, recoverFrom?, reason? }\`) for RANKED results plus advisory broad-operation and exact-ID recovery candidates — resolves to { ok: true, hits, total, truncated, widerCandidates, recovery, confidence, recoveryMetadata }. \`confidence\` reports hit count, the absolute top-score gap, and both compared tiers. \`recoveryMetadata\` reports matching skills excluded only by a service filter. \`widerCandidates\` is populated only for structurally poor operation pages and never changes ranking; \`recovery\` requires explicit \`recoverFrom\` ids. Truncated means more entries matched than returned (raise \`limit\`, try the other candidate family, or vary vocabulary — \`total\` is a floor, not exhaustive: it counts only the scorer tiers consulted for this page and can grow at a higher \`limit\`), and an unknown \`kind\`/\`service\`/\`recoverFrom\` value comes back as an error listing the valid scope; and \`codemode.catalog({ kind?, service?, compact? })\` for exact-filtered catalog data. Default/full entries include id, service, kind, description, inputSchema, outputSchema, and any retrievalProfile; \`compact: true\` omits the schemas. Everything listed is callable/readable. Use these for follow-ups instead of ending the script early.
 - \`codemode.describe("<exact id>")\` is the canonical detail step after \`search\`: for an operation it returns the FULL rendered signature (complete output type, even where the search hit showed a compacted stub), the raw inputSchema/outputSchema as data, and a \`usage\` line; for a skill, its \`availableSections\` plus the skill.read call to make; for a skill section, the parent skill id, section key, and the exact skill.read call. Reach for it whenever a search hit's stub, description, or field names aren't enough to write the call or select payload fields.
 - Skills are operational playbooks — tested build/integration/recovery procedures: \`codemode.skill.read("<exact skill id>", { sections: ["<section-slug>"] })\`; section keys come from search hits' \`availableSections\` or the spec's x-skill-index. \`{ sections }\` is the ONLY option (unknown option keys are rejected, not ignored). It resolves to { ok: true, id, content | sections, availableSections, notice? } — skill content sits at the TOP LEVEL of the result, not under \`.data\` (that envelope is for service calls); failures are { ok: false, error } as usual. Large reads come back whole for in-sandbox use (grep/aggregate freely) with an advisory \`notice\` — but RETURN sections or aggregates from the script, not whole bodies. Pair build skill sections with \`stellarDocs.search_*\` for current reference truth. When designing a new contract, app, integration, protocol, or infrastructure component, also run one prior-art pass in the SAME script: at most two \`scout.searchRepos\`/\`scout.searchProjects\` discovery calls, one focused detail call, and three returned candidates. Use it for scope, pitfalls, and build-vs-integrate decisions; return exact URL, role/applicability, freshness/provenance, and limitations, with license/audit/deployment/compatibility unknown unless source-backed. It is never API, security, maintenance, or production authority. Skip it for single-step how-tos and debugging; purely factual questions use docs first.
 - A few skills are RUNNABLE: \`codemode.skill.run("<exact skill id>", input)\` executes that skill's data-gathering pipeline host-side in one call, resolving to the ordinary service-call envelope ({ ok: true, data } | { ok: false, error }) with \`data.calls\` auditing every constituent call it made — ids are exact-match (runnable search hits and \`codemode.describe\` show the exact callable line and input type), and \`skill.read\` on the same id still returns the prose playbook: run gathers the data, read carries the judgment steps.
@@ -355,6 +387,8 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         truncated: boolean;
         recovery: RecoveryCandidate[];
         widerCandidates: WiderCandidate[];
+        confidence: SearchConfidence;
+        recoveryMetadata: SearchRecoveryMetadata;
         nextSteps: string;
       }, page: SearchPage | null, isError?: true) => {
         const text = JSON.stringify(structured);
@@ -385,6 +419,8 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
           truncated: false,
           recovery: [],
           widerCandidates: [],
+          confidence: { hitCount: 0, topScoreGap: null, topScoreTiers: null },
+          recoveryMetadata: { serviceFilterExcludedSkills: [] },
           nextSteps: `Unknown service "${prepared.issue.service}" — service filter values are exact-match. Valid services: ${prepared.issue.validServices.join(", ")}. Retry with one of those exact values, or drop the \`service\` filter.`
         }, null, true);
       }
@@ -397,6 +433,8 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
           truncated: false,
           recovery: [],
           widerCandidates: [],
+          confidence: { hitCount: 0, topScoreGap: null, topScoreTiers: null },
+          recoveryMetadata: { serviceFilterExcludedSkills: [] },
           nextSteps: `Unknown recoverFrom operation id(s): ${recoveryStage.issue.ids.map((id) => JSON.stringify(id)).join(", ")}. Recovery ids are exact-match; discover valid operations with search first.`
         }, null, true);
       }
@@ -407,7 +445,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         limit: args.limit,
         reason: args.reason
       });
-      const { hits, total, truncated, widerCandidates } = page;
+      const { hits, total, truncated, widerCandidates, confidence, recoveryMetadata } = page;
       const baseNextSteps =
         hits.length > 0
           ? `These hits are composable: write ONE \`execute\` script that calls the several relevant operations (Promise.all across services for independent calls), then follows up with deeper calls parameterized by their results — e.g. \`await lumenloop.search_directory({ query: "..." })\` then \`lumenloop.get_project({ slug })\`. Every call resolves to { ok: true, data } or { ok: false, error: { kind, message, hint? } } — payload fields live under \`.data\` (\`r.data.projects\`, never \`r.projects\`); check \`r.ok\` first. Skill hits are operational playbooks — read the sections you need in-script via \`codemode.skill.read(id, { sections })\` (keys: the hit's \`availableSections\`), and pair them with stellarDocs searches for current reference truth. For a design-stage request to create a new artifact, make one prior-art pass before architecture: at most two \`scout.searchRepos\`/\`scout.searchProjects\` discovery calls, one focused detail call, and three returned candidates. Return exact URL, role/applicability, freshness/provenance, and limitations; license/audit/deployment/compatibility stay unknown unless source-backed. Skip it for a single-step how-to or debugging task. Hits whose \`signature\` shows a \`codemode.skill.run("<exact id>", input)\` line are runnable skills — call that line verbatim to run the whole pipeline in one step (payload under \`.data\`, constituent calls audited in \`data.calls\`). Hit order is the ranking to trust: gated hits rank first, and a backfill hit appears above gated hits only when its score decisively dominates them. Recovery candidates are bounded exact-ID contingencies, separate from ranking: use relevant ones in the same execute when an open-world answer remains empty, weak, adjacent, ambiguous, or partial, and validate identity/source/date before asserting. Signatures with a stubbed output type (\`{ /* N top-level fields: ... */ }\`) list the payload's top-level field names — for the full output shape call \`codemode.describe("<exact id>")\` inside \`execute\`. For directory/list rows, inspect keys or filter raw row JSON and nested/common field variants before projecting compact columns. Use \`codemode.search(...)\` mid-script for follow-up discovery; search again here with the other candidate family, varied vocabulary, or \`kind\`/\`service\` filters if none fit.${truncated ? " More entries matched than shown (truncated) — raise `limit`, try the other candidate family, or vary vocabulary if none of these fit." : ""}`
@@ -418,7 +456,7 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
             ? `${baseNextSteps} This page has no gated operation match, so the ranked hits are lexical-only candidates; prefer the leading hit that fits the question, and if none does, run one bounded broad pass over the advisory widerCandidates.`
             : `${baseNextSteps} No gated operation matched either; run one bounded broad pass over the advisory widerCandidates before retrying, and still do not conclude absence.`
           : baseNextSteps;
-      return respond({ hits, total, truncated, recovery, widerCandidates, nextSteps }, page);
+      return respond({ hits, total, truncated, recovery, widerCandidates, confidence, recoveryMetadata, nextSteps }, page);
     }
   );
 

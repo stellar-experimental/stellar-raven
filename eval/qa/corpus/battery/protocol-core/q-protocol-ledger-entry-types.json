@@ -12,7 +12,7 @@
       "Distinguishes account/trustline and contract data/code/config/TTL roles."
     ],
     "avoid": [
-      "Do NOT present an abbreviated subset as exhaustive or collapse trustline/contract variants."
+      "Do NOT claim an abbreviated subset is exhaustive or collapse trustline/contract variants."
     ],
     "notes": "List-style. Liquidity pools (P18) and contract data (P20) are the modern additions; trap is UTXO/EVM model confusion.\nAlso good if the answer: Notes each ledger links to the previous ledger via its hash (genesis ledger sequence number is 1, N+1 references N). | Mentions ledger state is summarized by a bucket list hash in the ledger header.\nGolden cites: The ledgers / data-structures page on developers.stellar.org.\nGT-32 CORRECTION 2026-07-10: exhaustive list is source-derived from P27 XDR."
   },
@@ -58,13 +58,16 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The answer called a pedagogical subset the ledger-entry types and omitted four current P27 XDR variants.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-32 primary 3281 and blind 3284; full agreement."
+        "Solo scratchpad 575 GT-32 primary 3281 and blind 3284; full agreement.",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep LedgerEntryType|CONTRACT_CODE|CONFIG_SETTING|ledger-entry variants → q-protocol-ledger-entry-types, q-protocol-23-whisk-caps, q-ti-enumerate-all-contracts; no contradiction"
       ],
       "rootCause": [
-        "Old pedagogical subset fossilized after protocol extensions."
+        "Old pedagogical subset fossilized after protocol extensions.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-protocol-ledger-entry-types"

@@ -18,7 +18,7 @@
       "Do NOT state first/best marketing as independently proven history.",
       "Do NOT claim classic SDEX is directly executed by the on-chain Soroban aggregator or that code presence proves an active adapter."
     ],
-    "notes": "GROUNDED 2026-06-22 (re-verified 2026-06-29): live Scout confirms Soroswap (Live, DEX, SCF $346,750, by Palta Labs, soroswap.finance): 'the first DEX and DEX aggregator on Stellar Soroban... routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius)... Route API returns quotes and optimal routing across Stellar DEXs including the Stellar classic DEX (SDEX).' This is the IDENTITY + differentiation lane → lumenloop_get_project — DISTINCT from q-defi-soroswap-resolve (lumenloop_search_directory; strict website+category field lookup). Confusable trap: Soroswap (aggregator) vs StellarX (UI).\nAlso good if the answer: Built by Palta Labs; product surface includes a swap App, a Soroswap REST API, and Soroswap Earn (yield via Defindex).\nGolden cites: A source identifying Soroswap as the Stellar DEX aggregator (Lumenloop record, soroswap.finance, or Stellar ecosystem source).\nGT-18 CORRECTION 2026-07-10: the inherited first/best and routing composite is non-gating; reward layer separation, attribution, and dated deployment evidence."
+    "notes": "GROUNDED 2026-06-22 (re-verified 2026-06-29): live Scout confirms Soroswap (Live, DEX, SCF $346,750, by Palta Labs, soroswap.finance): 'the first DEX and DEX aggregator on Stellar Soroban... routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius)... Route API returns quotes and optimal routing across Stellar DEXs including the Stellar classic DEX (SDEX).' This is the IDENTITY + differentiation lane → lumenloop_get_project — DISTINCT from q-defi-soroswap-resolve (lumenloop_search_directory; strict website+category field lookup). Confusable trap: Soroswap (aggregator) vs StellarX (UI).\nAlso good if the answer: Built by Palta Labs; product surface includes a swap App, a Soroswap REST API, and Soroswap Earn (yield via Defindex).\nGolden cites: A source identifying Soroswap as the Stellar DEX aggregator (Lumenloop record, soroswap.finance, or Stellar ecosystem source).\nGT-18 CORRECTION 2026-07-10: the inherited first/best and routing composite is non-gating; reward layer separation, attribution, and dated deployment evidence.\nAccurately quoting the canonical Scout source on Soroswap's first/best and routing description is not a wrong claim while a cached or older copy still shows the pre-2026-07-14 editorial text fixed by sls-015; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -72,15 +72,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer promoted Soroswap's first/best marketing and merged API routing with the currently deployed on-chain adapter set. Independent code and live reads support a narrower, dated deployment description.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
-        "Sibling sweep: q-edge-factcheck-soroswap-first-amm and q-scf-history-soroswap"
+        "Sibling sweep: q-edge-factcheck-soroswap-first-amm and q-scf-history-soroswap",
+        "Structural re-form (symmetric-caution): Added a claim-specific caution for cached Scout Soroswap editorial text; the truth is unchanged.",
+        "Finding read 2026-08-27: improvements/resolved.json entry sls-015 — fixed editorial product capture in Scout searchProjects prose on 2026-07-14.",
+        "Sibling sweep 2026-08-27: grep Soroswap|PaltaLabs|first AMM → q-edge-factcheck-soroswap-first-amm, q-scf-history-soroswap, q-defi-soroswap-vs-stellarx; no contradiction"
       ],
       "rootCause": [
         "Operator marketing and code-available adapters were promoted into independent chronology and current deployment truth.",
-        "improvements/stellar-light-scout/sls-015-searchprojects-description-editorial-capture.md"
+        "improvements/stellar-light-scout/sls-015-searchprojects-description-editorial-capture.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-defi-soroswap-what-is"

@@ -15,7 +15,7 @@
       "Do NOT claim all of SEP-6 is deprecated/removed (only the interactive components are).",
       "Do NOT recommend SEP-31 or SEP-12 as the replacement for interactive deposit/withdrawal."
     ],
-    "notes": "Nuance: only SEP-6 interactive parts are deprecated. Dossier §8.2(1). Verified: SEP-0006 'Deposit and Withdrawal API' Active; SEP-0024 'Hosted Deposit and Withdrawal' Active. Interactive components of SEP-6 are deprecated in favor of SEP-24.\nAlso good if the answer: An anchor wanting a hosted webview/KYC experience should implement SEP-24, not the SEP-6 interactive flow.\nGolden cites: SEP-0006 / SEP-0024 on the stellar-protocol repo or developers.stellar.org."
+    "notes": "Nuance: only SEP-6 interactive parts are deprecated. Dossier §8.2(1). Verified: SEP-0006 'Deposit and Withdrawal API' Active; SEP-0024 'Hosted Deposit and Withdrawal' Active. Interactive components of SEP-6 are deprecated in favor of SEP-24.\nAlso good if the answer: An anchor wanting a hosted webview/KYC experience should implement SEP-24, not the SEP-6 interactive flow.\nGolden cites: SEP-0006 / SEP-0024 on the stellar-protocol repo or developers.stellar.org.\nAccurately quoting the official Stellar documentation on SEP-6 programmatic use and SEP-24 hosted flows without the SEP-6 interactive-component deprecation is not a wrong claim while sd-009 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -40,8 +40,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-14",
-      "by": "Todo 993 adversarial freshness correction after independent Sol review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/anchors",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
@@ -50,12 +50,17 @@
         "solo://proj/49/scratchpad/truth-maintenance-20--627#fable-open-questions-audit",
         "solo://proj/49/scratchpad/24-hour-adversarial--629#sol-box-review",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (symmetric-caution): Added a narrow caution for the missing SEP-6 interactive-component deprecation; golden truth unchanged.",
+        "Improvement finding read 2026-08-27: improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md; disputed claim: official Docs omit SEP-6's interactive-component deprecation in favor of SEP-24.",
+        "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
+        "Sibling sweep 2026-08-27: grep SEP-6|SEP-24|interactive components → q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
         "eval-authoring",
-        "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md"
+        "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-sep-6-24-deprecation",

@@ -16,7 +16,7 @@
       "Do NOT use the deprecated `soroban` CLI binary name as the current command (it is the unified `stellar` CLI).",
       "Do NOT claim a new testnet account is usable without funding (it needs the base reserve from Friendbot)."
     ],
-    "notes": "Axis-C how-to rebalance. Procedure → stellar_docs_mcp. Distinct from q-infra-friendbot-fund-testnet (funding focus) and q-tool-cli-install. Trap = deprecated `soroban` binary or unfunded account.\nAlso good if the answer: Notes the identity can then be referenced by name as the source/signer in subsequent CLI commands. | Mentions inspecting the public key (e.g. `stellar keys address <name>`).\nGolden cites: A Stellar CLI / keys / testnet setup page on developers.stellar.org.\nCorrected 2026-07-07: the signer example now uses `--source-account`. `--source` is a valid alias, so do not fail alias-only answers unless they frame it as canonical while omitting `--source-account` or pair it with stale `--global`/old-target instructions."
+    "notes": "Axis-C how-to rebalance. Procedure → stellar_docs_mcp. Distinct from q-infra-friendbot-fund-testnet (funding focus) and q-tool-cli-install. Trap = deprecated `soroban` binary or unfunded account.\nAlso good if the answer: Notes the identity can then be referenced by name as the source/signer in subsequent CLI commands. | Mentions inspecting the public key (e.g. `stellar keys address <name>`).\nGolden cites: A Stellar CLI / keys / testnet setup page on developers.stellar.org.\nCorrected 2026-07-07: the signer example now uses `--source-account`. `--source` is a valid alias, so do not fail alias-only answers unless they frame it as canonical while omitting `--source-account` or pair it with stale `--global`/old-target instructions.\nAccurately quoting the canonical upstream skill source on `--global` for key generation or `--source` as the canonical signer flag is not a wrong claim while a cached or older copy still shows that pre-2026-07-15 sk-001 content; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "tooling-infra",
@@ -89,16 +89,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-07",
-      "by": "Golden-truth sweep import — The golden identity setup answer correctly used `stellar keys generate <name> --network testnet --fund` but its later signer example used the noncanonical `--source` alias. Current CLI help and docs prefer `--source-account` for contract transactions.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
       "evidence": [
         "Local empirical execution 2026-07-07: `stellar keys generate --help` and `stellar contract invoke --help` from `stellar 27.0.0`.",
         "Stellar Raven production MCP probes 2026-07-07: official docs search for key generation and repo explanation for source-account alias behavior.",
-        "Sibling sweep 2026-07-07 identified this kept case as an answer-level signer example needing canonicalization."
+        "Sibling sweep 2026-07-07 identified this kept case as an answer-level signer example needing canonicalization.",
+        "Structural re-form (symmetric-caution): added a cached-skill grading caution for sk-001; the identity and signer facts are unchanged.",
+        "No live recheck was required for this pure symmetric-caution re-form.",
+        "Improvements review 2026-08-27: improvements/resolved.json entry sk-001 records the 2026-07-15 upstream fix; the disputed claims are older `--global` key-generation and canonical `--source` signer guidance.",
+        "Sibling sweep 2026-08-27: grep sk-001|--global|--source-account|keys generate → q-soroban-deploy-cli, q-sor-build-target-wasm32v1, q-ti-cli-rust-windows-troubleshooting; no contradiction"
       ],
       "rootCause": [
         "Eval-side canonicalization drift: the identity setup was current, but the follow-up contract signer example preserved the alias form.",
-        "improvements/resolved.json entry sk-001 — fixed upstream and refreshed locally at commit 3d75a157f6fe; current mirrored examples use wasm32v1-none and --source-account."
+        "improvements/resolved.json entry sk-001 — fixed upstream and refreshed locally at commit 3d75a157f6fe; current mirrored examples use wasm32v1-none and --source-account.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-tool-cli-testnet-identity-howto"

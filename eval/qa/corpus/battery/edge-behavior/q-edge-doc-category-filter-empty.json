@@ -11,7 +11,7 @@
       "Does not leak cross-category matches into the scoped answer."
     ],
     "avoid": [
-      "Do NOT present a validators page as a tokens-category result.",
+      "Do NOT claim a validators page is a tokens-category result.",
       "Do NOT report the filtered empty response as a network outage."
     ],
     "notes": "NEG / soft-empty category-filter contract."
@@ -38,16 +38,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; a tokens/validator-quorum mismatch returned envelope ok=false with kind soft-empty and category guidance.",
         "specs/stellar-docs.json exists and supports the behavioral golden.",
         "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
+        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+        "Sibling sweep 2026-08-27: grep search_docs_in_category|soft-empty|tokens-category|validators page → q-pc-doc-category-validator-search; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

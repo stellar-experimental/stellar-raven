@@ -16,7 +16,6 @@
       "The bounded review precedes but does not replace the requested architecture, compact contract skeleton, security boundaries, and invariant-focused tests; it leaves unsupported license/audit/deployment/compatibility fields unknown."
     ],
     "avoid": [
-      "Do NOT skip the bounded ecosystem/source-code prior-art pass and jump directly from generic skill patterns to a production-minded architecture.",
       "Do NOT require Trustless Work, DevAsign, or any fixed repository roster in future answers; re-query and verify current results.",
       "Do NOT call timelock, atomic swap, single offer, or a misleading repo description exact production escrow without checking applicability.",
       "Do NOT infer license, security, audit, maintenance, deployment, or production readiness from public visibility, stars, repoScore, funding, or directory status."
@@ -109,18 +108,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-11",
-      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment",
         "https://developers.stellar.org/meetings/2024/12/05",
         "https://runtimeverification.com/public-report/trustless-work",
         "https://api.github.com/repos/Trustless-Work/trustlesswork-smart-contract-stellar",
         "https://api.github.com/repos/devasignhq/bounty-escrow",
-        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
+        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
+        "Structural re-form (presentation-avoid): deleted the omission avoid item because an existing key fact already requires the bounded prior-art pass; the trap target remains enforced.",
+        "No live re-check was required because the avoid deletion does not change the required content.",
+        "Sibling sweep 2026-08-27: grep milestone escrow|Trustless Work|prior-art pass → q-sor-recurring-escrow-patterns, q-tool-greenfield-indexer-prior-art-preflight; no contradiction"
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "authored prior-art build-route review 2026-07-13"

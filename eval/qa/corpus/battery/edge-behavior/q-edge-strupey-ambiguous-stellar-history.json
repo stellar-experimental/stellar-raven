@@ -22,7 +22,7 @@
       "Do NOT say simply that Strupey does not exist; keep the result source-scoped and dated.",
       "Do NOT stop at one narrow directory if the user asked an open-world history question."
     ],
-    "notes": "Negative/ambiguous control paired with the Justin Rice positive. The safe outcome after one broad pass is scoped non-verification plus clarification, not a semantic-neighbor answer or an absolute negative."
+    "notes": "Negative/ambiguous control paired with the Justin Rice positive. The safe outcome after one broad pass is scoped non-verification plus clarification, not a semantic-neighbor answer or an absolute negative.\nAccurately quoting the canonical LumenLoop source on Strupey semantic neighbors without exact-token provenance is not a wrong claim while ll-017 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "edge-behavior",
@@ -106,17 +106,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Coordinator after independent Opus and Sol truth matrices",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
       "evidence": [
         "Current gateway broad-family exact-token projection.",
         "Exact GitHub API user and repository searches, official-docs zero-hit, and exact-handle counterevidence documented in solo://proj/49/scratchpad/evidence-poor-retrie--611.",
-        "solo://proj/49/scratchpad/evidence-poor-retrie--611"
+        "solo://proj/49/scratchpad/evidence-poor-retrie--611",
+        "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-017; the scoped Strupey non-verification is unchanged.",
+        "Improvements review 2026-08-27: improvements/lumenloop/ll-017-semantic-person-match-provenance.md remains reported upstream; the disputed claim is whether Strupey semantic neighbors establish an exact identity without exact-token provenance.",
+        "Sibling sweep 2026-08-27: grep ll-017|Strupey → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction"
       ],
       "rootCause": [
         "Semantic systems can return high-volume adjacent rows even when the requested term is absent.",
         "A negative open-world existence claim requires scoped non-verification and clarification rather than neighbor attribution.",
-        "improvements/lumenloop/ll-017-semantic-person-match-provenance.md"
+        "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "authored 2026-07-13 as a negative control for evidence-poor retrieval"

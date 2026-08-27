@@ -139,7 +139,7 @@ export const retrievalProfileSchema = z.object({
   })).min(1).max(6)
 });
 
-export const catalogEntrySchema = z.object({
+const catalogEntryBaseSchema = z.object({
   /** Exact-match id, `<namespace>.<name>` (+ `#<section>` for skill sections). */
   id: z.string().min(1),
   service: z.enum(CATALOG_SERVICES),
@@ -165,6 +165,10 @@ export const catalogEntrySchema = z.object({
    * schema-derived shrapnel. Never rendered to users.
    */
   routingKeywords: z.array(z.string()).optional(),
+  /** Receipt-backed entity identities, activated only by a complete trigger. */
+  knownAliases: z.array(z.string().trim().min(1)).min(2).optional(),
+  /** Distinctive complete sequences that activate knownAliases during search. */
+  knownAliasTriggers: z.array(z.string().trim().min(1)).min(1).optional(),
   /** Query-independent exact-ID recovery graph, validated at catalog build/load. */
   retrievalProfile: retrievalProfileSchema.optional(),
   /**
@@ -206,6 +210,15 @@ export const catalogEntrySchema = z.object({
   outputSchema: jsonSchemaShape.nullable(),
   transport: transportSchema.nullable(),
   provenance: provenanceSchema
+});
+
+export const catalogEntrySchema = catalogEntryBaseSchema.superRefine((entry, ctx) => {
+  if ((entry.knownAliases === undefined) !== (entry.knownAliasTriggers === undefined)) {
+    ctx.addIssue({
+      code: "custom",
+      message: "knownAliases and knownAliasTriggers must appear together"
+    });
+  }
 });
 
 export type CatalogEntry = z.infer<typeof catalogEntrySchema>;

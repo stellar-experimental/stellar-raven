@@ -25,7 +25,7 @@
       "Do NOT claim contract id asset deploys a SAC or invent a dedicated current Lab SAC button without rechecking.",
       "Do NOT freeze old Laboratory URLs/screenshots/coordinates, use Mainnet Friendbot, or say a trustline credits tokens."
     ],
-    "notes": "GT-54 refreshed 2026-08-04: grade current capability and signer categories, test-only Saved Keypairs that are obfuscated rather than encrypted (with pre-September-2025 plaintext migration caveat), the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise remains false; source inspection cannot prove universal non-egress."
+    "notes": "GT-54 refreshed 2026-08-04: grade current capability and signer categories, test-only Saved Keypairs that are obfuscated rather than encrypted (with pre-September-2025 plaintext migration caveat), the self-hosted-versus-air-gap distinction, and SAC deploy-versus-ID lookup. The inherited 'safe Lab-local/offline-ish' premise remains false; source inspection cannot prove universal non-egress.\nAccurately quoting the canonical Stellar documentation on pre-fix Saved Keypairs guidance without the obfuscated-not-encrypted warning is not a wrong claim while a cached or older copy still shows the guidance fixed on 2026-07-27 by sd-030; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "tooling-infra",
@@ -151,16 +151,21 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed Saved Keypairs from blanket plaintext wording to the current obfuscated-not-encrypted migration boundary.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently rejected the offline/SAC wording; blind helper 3388 was fully harvested before matrix seal.",
         "Current official Saved Keypairs guidance: obfuscated rather than encrypted; pre-September-2025 entries may remain plaintext until re-saved.",
-        "Sibling sweep checked q-tool-lab-what-is, Quickstart/local network, native XLM SAC, SAC/custom-token, secret recovery and faucet cases; no sibling may equate local browser state with an air gap or ID derivation with deployment."
+        "Sibling sweep checked q-tool-lab-what-is, Quickstart/local network, native XLM SAC, SAC/custom-token, secret recovery and faucet cases; no sibling may equate local browser state with an air gap or ID derivation with deployment.",
+        "Structural re-form (symmetric-caution): Added a narrow caution for the pre-fix Saved Keypairs warning; golden truth unchanged.",
+        "Improvement finding read 2026-08-27: improvements/resolved.json entry sd-030; disputed claim: pre-fix Saved Keypairs guidance omitted the obfuscated-not-encrypted security boundary.",
+        "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
+        "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|September 2025 → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-030-lab-saved-keypairs-offline-boundary.md",
-        "Eval-side product/security drift: a browser-local convenience was promoted into a safe offline workflow and SAC identity was promoted into deployment."
+        "Eval-side product/security drift: a browser-local convenience was promoted into a safe offline workflow and SAC identity was promoted into deployment.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
       ]
     },
     "origin": "raven-next q-ti-stellar-lab-usage-and-new-ui"

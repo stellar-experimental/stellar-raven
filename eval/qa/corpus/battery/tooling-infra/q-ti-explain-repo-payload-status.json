@@ -12,7 +12,7 @@
     ],
     "avoid": [
       "Do NOT treat envelope success alone as proof that the upstream produced an answer.",
-      "Do NOT present an AI-generated repo explanation as stronger than the cited source code."
+      "Do NOT claim an AI-generated repo explanation is stronger than the cited source code."
     ],
     "notes": "Behavioral contract case for Scout's nested payload status and graceful degradation."
   },
@@ -38,16 +38,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; explainRepo returned envelope ok=true and payload data.ok=true with an explicitly routed stellar/stellar-core answer and repo sources.",
         "catalog/manifest.json exists and supports the behavioral golden.",
         "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (presentation-avoid): Reworded the repo-explanation presentation trap as a concrete false claim; the trap target and truth are unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+        "Sibling sweep 2026-08-27: grep explainRepo|data.ok|repo explanation → q-gap-explainrepo-payload-ok, q-gap-scout-status-envelope, q-ti-explain-repo-payload-status; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"
