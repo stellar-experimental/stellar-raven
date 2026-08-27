@@ -133,6 +133,14 @@ describe("server instructions — Claude Code 2KB budget", () => {
     expect(rankedSearchInputSchema.recoverFrom.description).toContain("not an execution ledger");
     expect(recovery).toContain("does not verify an execution ledger");
   });
+
+  it("publishes ranking confidence and service-filter recovery metadata", () => {
+    expect(rankedSearchOutputSchema.confidence.description).toContain("topScoreGap");
+    expect(rankedSearchOutputSchema.recoveryMetadata.description).toContain("service filter");
+    expect(SEARCH_DESCRIPTION).toContain("`confidence`");
+    expect(SEARCH_DESCRIPTION).toContain("`recoveryMetadata`");
+    expect(EXECUTE_DESCRIPTION).toContain("confidence, recoveryMetadata");
+  });
 });
 
 /**

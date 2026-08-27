@@ -895,6 +895,8 @@ describe("codemode fns", () => {
       hits: { tier: string }[];
       total: number;
       truncated: boolean;
+      confidence: { hitCount: number; topScoreGap: number | null };
+      recoveryMetadata: { serviceFilterExcludedSkills: unknown[] };
     };
     expect(r.ok).toBe(true);
     expect(r.hits).toHaveLength(5);
@@ -903,6 +905,24 @@ describe("codemode fns", () => {
     // over the real manifest matches far more than one page.
     expect(r.total).toBeGreaterThan(r.hits.length);
     expect(r.truncated).toBe(true);
+    expect(r.confidence.hitCount).toBe(r.hits.length);
+    expect(r.confidence.topScoreGap).toBeGreaterThanOrEqual(0);
+    expect(r.recoveryMetadata.serviceFilterExcludedSkills).toEqual([]);
+  });
+
+  it("search returns service-filter recovery metadata inside the sandbox", async () => {
+    const r = (await codemode.search!({
+      query: "agentic payments MPP",
+      service: "lumenloop",
+      limit: 5
+    })) as {
+      ok: boolean;
+      recoveryMetadata: { serviceFilterExcludedSkills: Array<{ id: string }> };
+    };
+    expect(r.ok).toBe(true);
+    expect(r.recoveryMetadata.serviceFilterExcludedSkills.map((entry) => entry.id)).toContain(
+      "skills.stellar-dev.agentic-payments"
+    );
   });
 
   it("search returns exact-ID recovery separately and leaves ranking unchanged", async () => {

@@ -139,6 +139,8 @@ describe("shape and counts", () => {
     expect(description).toContain("Scores share one scale");
     expect(description).toContain(">=1.6x");
     expect(description).toContain("hit order is authoritative");
+    expect(description).toContain("absolute top-two score gap");
+    expect(description).toContain("recoveryMetadata");
     expect(description).not.toMatch(/always ranked below every gated hit/i);
     expect(description).not.toMatch(/only among same-tier/i);
     expect(search.summary).toBe("Ranked lexical search over whole skills.");

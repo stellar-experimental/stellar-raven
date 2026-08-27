@@ -17,14 +17,16 @@
  * (catalogSchema) in test/catalog.test.ts; this script stays plain JS so it
  * runs with `node` alone.
  */
-import { readFileSync, mkdirSync } from "node:fs";
-import { join, dirname, resolve } from "node:path";
+import { readFileSync, mkdirSync, statSync } from "node:fs";
+import { join, dirname, resolve, relative, isAbsolute } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 // Loaded via native type stripping (Node >= 23.6) — the same way
 // eval/run-routing.mjs imports src/catalog/search.ts. Still zero deps.
 import { extractKeywords } from "../src/catalog/extract-keywords.ts";
 import { tokenize } from "../src/catalog/vendor/search-scoring.ts";
+import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
 // The runnable-skill allowlist-as-data (research/skill-run-design.md §2/§5):
 // the SAME registry the runtime dispatch and the super-spec emitter consume,
 // so the exposed runnable surface cannot drift between emitters.
@@ -32,6 +34,7 @@ import { RUNNERS } from "../src/skills/runners/index.ts";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts, skillFileUrl } from "./lib/skill-mirror.mjs";
 import { RETRIEVAL_PROFILES } from "./catalog-data/retrieval-profiles.mjs";
+import { KNOWN_ALIAS_PACKS } from "./catalog-data/known-aliases.mjs";
 import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
 import { lumenloopInputSchema, lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
 
@@ -159,6 +162,108 @@ function attachRoutingKeywords(entries, bodiesById) {
     });
     return routingKeywords.length > 0 ? { ...entry, routingKeywords } : entry;
   });
+}
+
+/**
+ * Attach receipt-backed entity aliases to exact catalog entries. The search
+ * layer scores this field with the high-weight name field. Fail loudly when
+ * an alias target disappears, or when two packs repeat an alias on one entry.
+ */
+export function attachKnownAliases(entries, packs = KNOWN_ALIAS_PACKS) {
+  const byId = new Map(entries.map((entry) => [entry.id, entry]));
+  const aliasesById = new Map();
+  const triggersById = new Map();
+
+  for (const pack of packs) {
+    if (!Array.isArray(pack.provenance) || pack.provenance.length === 0) {
+      throw new Error("known alias pack has no receipt provenance");
+    }
+    for (const receipt of pack.provenance) validateAliasReceipt(receipt);
+    if (!Array.isArray(pack.aliases) || pack.aliases.length < 2) {
+      throw new Error("known alias pack must contain at least two entity identities");
+    }
+    if (!Array.isArray(pack.triggers) || pack.triggers.length === 0) {
+      throw new Error("known alias pack must contain at least one distinctive trigger");
+    }
+    for (const trigger of pack.triggers) {
+      if (typeof trigger !== "string" || !trigger.trim()) {
+        throw new Error("known alias pack contains an empty trigger");
+      }
+      if (isGenericAliasTrigger(trigger)) {
+        throw new Error(
+          `known alias trigger ${JSON.stringify(trigger)} is generic or a stopword`
+        );
+      }
+    }
+    if (!Array.isArray(pack.entryIds) || pack.entryIds.length === 0) {
+      throw new Error("known alias pack must target at least one catalog entry");
+    }
+    for (const id of pack.entryIds ?? []) {
+      if (!byId.has(id)) {
+        throw new Error(`known alias pack references non-exposed catalog entry "${id}"`);
+      }
+      const aliases = aliasesById.get(id) ?? new Set();
+      for (const alias of pack.aliases) {
+        if (aliases.has(alias)) {
+          throw new Error(`known alias pack repeats "${alias}" on catalog entry "${id}"`);
+        }
+        aliases.add(alias);
+      }
+      aliasesById.set(id, aliases);
+      const triggers = triggersById.get(id) ?? new Set();
+      for (const trigger of pack.triggers) triggers.add(trigger);
+      triggersById.set(id, triggers);
+    }
+  }
+
+  return entries.map((entry) => {
+    const aliases = aliasesById.get(entry.id);
+    return aliases
+      ? { ...entry, knownAliases: [...aliases], knownAliasTriggers: [...triggersById.get(entry.id)] }
+      : entry;
+  });
+}
+
+function validateAliasReceipt(receipt) {
+  if (!receipt || typeof receipt !== "object" || Array.isArray(receipt)) {
+    throw new Error("known alias provenance must contain receipt objects");
+  }
+  const receiptPath = receipt.path;
+  if (typeof receiptPath !== "string" || !receiptPath.trim() || isAbsolute(receiptPath)) {
+    throw new Error("known alias provenance path must be repository-relative");
+  }
+  const absolutePath = resolve(ROOT, receiptPath);
+  const fromRoot = relative(ROOT, absolutePath);
+  if (!fromRoot || fromRoot.startsWith("..") || isAbsolute(fromRoot)) {
+    throw new Error(
+      `known alias provenance path escapes the repository: ${JSON.stringify(receiptPath)}`
+    );
+  }
+  try {
+    if (!statSync(absolutePath).isFile()) throw new Error("not a file");
+  } catch {
+    throw new Error(`known alias provenance file does not exist: ${JSON.stringify(receiptPath)}`);
+  }
+  try {
+    execFileSync("git", ["ls-files", "--error-unmatch", "--", receiptPath], {
+      cwd: ROOT,
+      stdio: "ignore"
+    });
+  } catch {
+    throw new Error(`known alias provenance file is not checked in: ${JSON.stringify(receiptPath)}`);
+  }
+  if (receipt.sha256 === undefined) {
+    throw new Error(`known alias provenance requires SHA-256: ${JSON.stringify(receiptPath)}`);
+  }
+  if (typeof receipt.sha256 !== "string" || !/^[0-9a-f]{64}$/.test(receipt.sha256)) {
+    throw new Error(
+      `known alias provenance has an invalid SHA-256: ${JSON.stringify(receiptPath)}`
+    );
+  }
+  const actual = createHash("sha256").update(readFileSync(absolutePath)).digest("hex");
+  if (actual !== receipt.sha256) {
+    throw new Error(`known alias provenance SHA-256 does not match: ${JSON.stringify(receiptPath)}`);
+  }
 }
 
 /**
@@ -946,6 +1051,8 @@ export function assertNoNonExposedRefs(entries) {
       entry.description ?? "",
       ...(entry.keywords ?? []),
       ...(entry.routingKeywords ?? []),
+      ...(entry.knownAliases ?? []),
+      ...(entry.knownAliasTriggers ?? []),
       // Operation and runnable-skill schemas ship to the model through
       // signatures and describe/catalog views. Guard their whole JSON.
       ...(entry.kind === "operation" || entry.runnable === true
@@ -1005,7 +1112,7 @@ async function main() {
   // Runnable attachment runs over the FULLY assembled set: its declared-op
   // guard needs every service's operation entries in scope, not just skills.
   const entries = applySkillsFormArm(
-    attachRetrievalProfiles(attachRunnableSkills(
+    attachKnownAliases(attachRetrievalProfiles(attachRunnableSkills(
       [
         ...attachOperationKeywords(buildLumenloop(lumenloop)),
         // Scout ops: x-routing vocabulary → routingKeywords (lever 7) first,
@@ -1021,7 +1128,7 @@ async function main() {
         ),
         ...buildSkills(skillsManifest, skillTexts, arm)
       ].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
-    )),
+    ))),
     arm
   );
 

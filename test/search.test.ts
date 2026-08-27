@@ -30,8 +30,9 @@ import {
 import { readSkill } from "../src/skills/store.ts";
 import { lazyPinnedSkillSource as skillSource } from "./helpers/skill-source.ts";
 import { RUNNERS } from "../src/skills/runners/index.ts";
-import { scoreEntryWeighted, canonicalizeQuery } from "../src/catalog/scoring.ts";
+import { STOPWORDS, scoreEntryWeighted, canonicalizeQuery } from "../src/catalog/scoring.ts";
 import { lastIdSegment } from "../src/catalog/id.ts";
+import { prepareAliasQuery, queryContainsAliasTrigger } from "../src/catalog/known-aliases.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -64,6 +65,28 @@ describe("searchCatalog — contract shape", () => {
   it("boosts an exact id match to the top", () => {
     const hits = searchCatalog(catalog, { query: "lumenloop.search_directory" });
     expect(hits[0]?.id).toBe("lumenloop.search_directory");
+  });
+
+  it("scores receipt-backed entity aliases only for complete normalized triggers", () => {
+    const expected = [
+      "lumenloop.find_content_by_entity"
+    ];
+    for (const query of ["CRDT", "CRD-T", "CRDYX", "WisdomTree Private Credit", "wisdomtree", "wisdom-tree"]) {
+      const ids = searchCatalog(catalog, {
+        query,
+        service: "lumenloop",
+        limit: 5
+      }).map((hit) => hit.id);
+      expect(ids.slice(0, 1), query).toEqual(expected);
+    }
+    for (const query of ["merkle tree", "tree", "wisdom", "credit card"]) {
+      const ids = searchCatalog(catalog, {
+        query,
+        service: "lumenloop",
+        limit: 50
+      }).map((hit) => hit.id);
+      expect(ids, query).not.toContain("lumenloop.find_content_by_entity");
+    }
   });
 
   it("defaults to limit 10 and honors an explicit limit", () => {
@@ -218,6 +241,68 @@ describe("recoveryCandidatesFromSources — execute-time contingency graph", () 
 });
 
 describe("searchCatalogPage — structural wider candidates", () => {
+  it("keeps service-filter-excluded skill matches in labeled recovery metadata", () => {
+    const page = searchCatalogPage(catalog, {
+      query: "agentic payments MPP",
+      service: "lumenloop",
+      limit: 5
+    });
+    const advisories = page.recoveryMetadata.serviceFilterExcludedSkills;
+
+    expect(page.hits.every((hit) => hit.service === "lumenloop")).toBe(true);
+    expect(page.hits.map((hit) => hit.id)).not.toContain(
+      "skills.stellar-dev.agentic-payments"
+    );
+    expect(advisories).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "skills.stellar-dev.agentic-payments",
+          service: "skills",
+          kind: "skill",
+          basis: "service-filter-excluded-skill"
+        })
+      ])
+    );
+  });
+
+  it("does not add excluded-skill advisories to explicit operation searches", () => {
+    const page = searchCatalogPage(catalog, {
+      query: "agentic payments MPP",
+      kind: "operation",
+      service: "lumenloop"
+    });
+    expect(page.recoveryMetadata.serviceFilterExcludedSkills).toEqual([]);
+  });
+
+  it("reports hit count and the absolute top-two score gap", () => {
+    const page = searchCatalogPage(catalog, { query: "search directory", limit: 5 });
+    expect(page.confidence.hitCount).toBe(page.hits.length);
+    expect(page.confidence.topScoreGap).toBe(
+      Math.abs(page.hits[0]!.score - page.hits[1]!.score)
+    );
+    expect(page.confidence.topScoreTiers).toEqual({
+      first: page.hits[0]!.tier,
+      second: page.hits[1]!.tier
+    });
+
+    const empty = searchCatalogPage(catalog, { query: "zzzzqqqq zzqqzzqq", kind: "skill" });
+    expect(empty.confidence).toEqual({ hitCount: 0, topScoreGap: null, topScoreTiers: null });
+  });
+
+  it("reports an absolute gap with tier context when gated order leads a higher score", () => {
+    const page = searchCatalogPage(catalog, {
+      query: "What functions does the Stellar Asset Contract expose, and which are restricted to the asset issuer/admin?",
+      limit: 5
+    });
+    expect(page.hits[0]!.tier).toBe("gated");
+    expect(page.hits[1]!.tier).toBe("backfill");
+    expect(page.hits[1]!.score).toBeGreaterThan(page.hits[0]!.score);
+    expect(page.confidence).toMatchObject({
+      topScoreGap: page.hits[1]!.score - page.hits[0]!.score,
+      topScoreTiers: { first: "gated", second: "backfill" }
+    });
+  });
+
   it("uses canonical Lumenloop lanes for the production-shaped Tomer Weller query", () => {
     const page = searchCatalogPage(catalog, {
       query: "Tomer Weller",
@@ -490,10 +575,19 @@ describe("searchCatalog — tiered gate-rescue backfill", () => {
   function gatedScore(hitId: string, query: string): number | null {
     const entry = catalog.entries.find((e) => e.id === hitId)!;
     expect(entry).toBeDefined();
+    const aliases = entry.knownAliases ?? [];
+    const triggers = entry.knownAliasTriggers ?? [];
+    const queryTokens = prepareAliasQuery(query);
+    const triggered = triggers.some((trigger) =>
+      queryContainsAliasTrigger(queryTokens, trigger)
+    );
+    const aliasTokens = aliases
+      .flatMap((alias) => alias.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean))
+      .filter((token) => !STOPWORDS.has(token));
     return scoreEntryWeighted(
       {
         id: entry.id,
-        name: lastIdSegment(entry.id),
+        name: [lastIdSegment(entry.id), ...(triggered ? aliasTokens : [])].join(" "),
         service: entry.service,
         kind: entry.kind,
         description: entry.description,

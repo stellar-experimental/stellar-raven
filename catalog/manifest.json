@@ -306,6 +306,17 @@
         "min"
       ],
       "kind": "operation",
+      "knownAliasTriggers": [
+        "CRDT",
+        "CRDYX",
+        "WisdomTree"
+      ],
+      "knownAliases": [
+        "CRDT",
+        "CRDYX",
+        "WisdomTree Private Credit and Alternative Income Digital Fund",
+        "WisdomTree Private Credit"
+      ],
       "outputSchema": null,
       "provenance": {
         "fetchedAt": "2026-07-06T21:16:56.676Z",

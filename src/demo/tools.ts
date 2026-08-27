@@ -30,8 +30,10 @@ import {
   catalogServices,
   recoveryCandidates,
   type RecoveryCandidate,
+  type SearchConfidence,
   type SearchHit,
   type SearchPage,
+  type SearchRecoveryMetadata,
   type WiderCandidate
 } from "../catalog/search.ts";
 import type { RetrievalReason } from "../catalog/types.ts";
@@ -89,6 +91,8 @@ type SearchStructured = {
   truncated: boolean;
   recovery: RecoveryCandidate[];
   widerCandidates: WiderCandidate[];
+  confidence: SearchConfidence;
+  recoveryMetadata: SearchRecoveryMetadata;
   nextSteps: string;
 };
 
@@ -297,6 +301,8 @@ export function buildDemoTools(opts: {
           truncated: false,
           recovery: [],
           widerCandidates: [],
+          confidence: { hitCount: 0, topScoreGap: null, topScoreTiers: null },
+          recoveryMetadata: { serviceFilterExcludedSkills: [] },
           nextSteps: "Search call limit reached for this demo turn. Earlier hits are navigation only; use an exact discovered id in execute if an execute call remains, then summarize only from factual tool evidence."
         };
         logEvent("demo-search-refused", {
@@ -323,6 +329,8 @@ export function buildDemoTools(opts: {
           truncated: false,
           recovery: [],
           widerCandidates: [],
+          confidence: { hitCount: 0, topScoreGap: null, topScoreTiers: null },
+          recoveryMetadata: { serviceFilterExcludedSkills: [] },
           nextSteps: `Unknown service "${args.service}" — service filter values are exact-match. Valid services: ${services.join(", ")}. Retry with one of those exact values, or drop the \`service\` filter.`
         }, null);
       }
@@ -338,6 +346,8 @@ export function buildDemoTools(opts: {
           truncated: false,
           recovery: [],
           widerCandidates: [],
+          confidence: { hitCount: 0, topScoreGap: null, topScoreTiers: null },
+          recoveryMetadata: { serviceFilterExcludedSkills: [] },
           nextSteps: `Unknown recoverFrom operation id(s): ${unknownRecoveryIds.map((id) => JSON.stringify(id)).join(", ")}. Recovery ids are exact-match; discover valid operations with search first.`
         }, null);
       }
@@ -379,7 +389,16 @@ export function buildDemoTools(opts: {
             ? `${baseNextSteps} This page has no gated operation match, so the ranked hits are lexical-only candidates; prefer the leading hit that fits the question, and if none does, run one bounded broad pass over the advisory widerCandidates.`
             : `${baseNextSteps} No gated operation matched either; run one bounded broad pass over the advisory widerCandidates before retrying, and still do not conclude absence.`
           : baseNextSteps;
-      return respond({ hits, total, truncated, recovery, widerCandidates, nextSteps }, page);
+      return respond({
+        hits,
+        total,
+        truncated,
+        recovery,
+        widerCandidates,
+        confidence: page.confidence,
+        recoveryMetadata: page.recoveryMetadata,
+        nextSteps
+      }, page);
     }
   });
 
