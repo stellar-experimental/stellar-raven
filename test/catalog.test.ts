@@ -130,18 +130,33 @@ describe("build-catalog.mjs", () => {
       entryIds: ["lumenloop.search_directory"]
     }])).toThrow(/not checked in/);
     expect(() => attachKnownAliases(entries, [{
+      provenance: [{ path: VALID_ALIAS_RECEIPTS[0].path }],
+      aliases: ["one", "two"],
+      triggers: ["one"],
+      entryIds: ["lumenloop.search_directory"]
+    }])).toThrow(/requires SHA-256/);
+    expect(() => attachKnownAliases(entries, [{
       provenance: [{ ...VALID_ALIAS_RECEIPTS[0], sha256: "0".repeat(64) }],
       aliases: ["one", "two"],
       triggers: ["one"],
       entryIds: ["lumenloop.search_directory"]
     }])).toThrow(/SHA-256 does not match/);
-    for (const trigger of ["private credit", "credit card", "CreditCard", "creditcard", "the and"]) {
+    for (const trigger of [
+      "credit",
+      "token",
+      "the",
+      "private credit",
+      "credit card",
+      "CreditCard",
+      "creditcard",
+      "the and"
+    ]) {
       expect(() => attachKnownAliases(entries, [{
         provenance: VALID_ALIAS_RECEIPTS,
         aliases: ["one", "two"],
         triggers: [trigger],
         entryIds: ["lumenloop.search_directory"]
-      }]), trigger).toThrow(/generic multi-word sequence/);
+      }]), trigger).toThrow(/generic or a stopword/);
     }
     expect(() => attachKnownAliases(entries, [{
       provenance: VALID_ALIAS_RECEIPTS,

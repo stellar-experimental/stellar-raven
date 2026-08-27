@@ -57,7 +57,7 @@ export function queryContainsAliasTrigger(
 
 export function isGenericAliasTrigger(trigger: string): boolean {
   const words = tokenize(trigger);
-  if (words.length > 1 && words.every((word) => GENERIC_TRIGGER_WORDS.has(word))) return true;
+  if (words.length > 0 && words.every((word) => GENERIC_TRIGGER_WORDS.has(word))) return true;
 
   const normalized = normalizeAliasSequence(trigger);
   const memo = new Map<string, boolean>();

@@ -191,7 +191,7 @@ export function attachKnownAliases(entries, packs = KNOWN_ALIAS_PACKS) {
       }
       if (isGenericAliasTrigger(trigger)) {
         throw new Error(
-          `known alias trigger ${JSON.stringify(trigger)} is a generic multi-word sequence`
+          `known alias trigger ${JSON.stringify(trigger)} is generic or a stopword`
         );
       }
     }
@@ -252,16 +252,17 @@ function validateAliasReceipt(receipt) {
   } catch {
     throw new Error(`known alias provenance file is not checked in: ${JSON.stringify(receiptPath)}`);
   }
-  if (receipt.sha256 !== undefined) {
-    if (typeof receipt.sha256 !== "string" || !/^[0-9a-f]{64}$/.test(receipt.sha256)) {
-      throw new Error(
-        `known alias provenance has an invalid SHA-256: ${JSON.stringify(receiptPath)}`
-      );
-    }
-    const actual = createHash("sha256").update(readFileSync(absolutePath)).digest("hex");
-    if (actual !== receipt.sha256) {
-      throw new Error(`known alias provenance SHA-256 does not match: ${JSON.stringify(receiptPath)}`);
-    }
+  if (receipt.sha256 === undefined) {
+    throw new Error(`known alias provenance requires SHA-256: ${JSON.stringify(receiptPath)}`);
+  }
+  if (typeof receipt.sha256 !== "string" || !/^[0-9a-f]{64}$/.test(receipt.sha256)) {
+    throw new Error(
+      `known alias provenance has an invalid SHA-256: ${JSON.stringify(receiptPath)}`
+    );
+  }
+  const actual = createHash("sha256").update(readFileSync(absolutePath)).digest("hex");
+  if (actual !== receipt.sha256) {
+    throw new Error(`known alias provenance SHA-256 does not match: ${JSON.stringify(receiptPath)}`);
   }
 }
 
