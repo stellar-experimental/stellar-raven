@@ -6,14 +6,17 @@ Measure the held response-guidance candidate against the merged control.
 Do not trim startup tool descriptions or server instructions.
 Reject the candidate after any verified treatment regression.
 
-## Current status — rebuilt qualification passed
+## Current status — first raw pair authorized
 
 The historical replacement qualification remains spent and non-comparable.
 Do not run the historical qualification command below.
 The user authorized one new treatment qualification on 2026-08-27.
 It permitted one answering call, no judge call, and a `$1.75` per-call cap.
 The user's broader spend tolerance does not remove the method-specific cap.
-No A1, B1, judging, retry, or method rerun is authorized yet.
+The user authorized A1 and B1 on 2026-08-27 after the qualification passed.
+This authorization permits `16` answering calls and no judge calls.
+Each answering call has a `$1.75` cap, and the stage has a `$28.00` cap.
+No retry, judging, replication, or method rerun is authorized.
 
 Both v5 arms now include the postflight fix from PR `#72`.
 The control stays at `7389e24880125ccf8fe0657a1435ca753dae52e6`.
@@ -22,7 +25,7 @@ The server and runner use the same treatment worktree and commit.
 The v5 method does not pair a runner from one commit with a server from another commit.
 The independent pre-spend review returned `LAUNCH-OK`.
 The replacement qualification then passed every machine and manual gate.
-No paid method remains authorized.
+The authorized first pair runs treatment A1 and then control B1.
 
 ## Authorized v5 qualification
 
@@ -123,6 +126,57 @@ The maximum task spend after this call is `$1.9886646`.
 - The reviewer confirmed the serialization repair stayed on `scout.getBuilders`.
 - The reviewer found no blocking issue.
 - The review made no paid call and does not authorize the next stage.
+
+### V5 first-pair authorization
+
+- Authorization date: `2026-08-27`.
+- Order: treatment A1, then control B1.
+- Fixed membership: the eight case IDs under `Fixed cases`.
+- Answer model: `claude-sonnet-5`.
+- Judge calls: `0`.
+- Answer calls: `8` per arm and `16` total.
+- Per-call cap: `$1.75`.
+- Stage cap: `$28.00`.
+- Maximum counted task spend after this stage: `$28.3485534`.
+- Both arms use the pinned wrapper and an unset `QA_AGENT_PROMPT_APPEND`.
+- Each arm uses one clean worktree for both its server and runner.
+- Port `8792` serves only one arm at a time.
+- Stop and record after A1 before starting B1.
+- Stop after any incomplete row, missing cost, MCP failure, or comparability failure.
+- Do not retry a failed arm under this authorization.
+- Do not run a judge, replication pair, or method rerun under this authorization.
+
+Treatment A1 runs from `sr-wt-connectors-v5-product`:
+
+```sh
+export PATH="/tmp/connectors-contract-eval-bin:$PATH"
+unset QA_AGENT_PROMPT_APPEND
+unset RAVEN_CLAUDE_ANSWER_MAX_BUDGET_USD
+unset RAVEN_CLAUDE_JUDGE_MAX_BUDGET_USD
+hash -r
+node eval/qa/run-qa.mjs --variant A \
+  --ids q-comp-cross-moneygram-partnership-sep24,q-edge-closed-world-builder-directory-miss,q-edge-partner-detail-soft-empty,q-edge-strupey-ambiguous-stellar-history,q-infra-simulate-transaction-howto,q-sor-build-target-wasm32v1,q-soroban-greenfield-escrow-prior-art-preflight,q-tool-greenfield-indexer-prior-art-preflight \
+  --no-judge --port 8792 --model claude-sonnet-5 \
+  --server-revision 3966a59e77f2034726088e16be902270753211ae \
+  --expect-sha256 1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e \
+  --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+```
+
+Control B1 runs from `sr-wt-connectors-v5-control`:
+
+```sh
+export PATH="/tmp/connectors-contract-eval-bin:$PATH"
+unset QA_AGENT_PROMPT_APPEND
+unset RAVEN_CLAUDE_ANSWER_MAX_BUDGET_USD
+unset RAVEN_CLAUDE_JUDGE_MAX_BUDGET_USD
+hash -r
+node eval/qa/run-qa.mjs --variant A \
+  --ids q-comp-cross-moneygram-partnership-sep24,q-edge-closed-world-builder-directory-miss,q-edge-partner-detail-soft-empty,q-edge-strupey-ambiguous-stellar-history,q-infra-simulate-transaction-howto,q-sor-build-target-wasm32v1,q-soroban-greenfield-escrow-prior-art-preflight,q-tool-greenfield-indexer-prior-art-preflight \
+  --no-judge --port 8792 --model claude-sonnet-5 \
+  --server-revision 7389e24880125ccf8fe0657a1435ca753dae52e6 \
+  --expect-sha256 594578b995351e1abee1ec297e03662b51c1bfc4014daac4e39b4d8fa26611f3 \
+  --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+```
 
 ### V5 replacement qualification command — authorized once
 
