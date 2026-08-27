@@ -614,6 +614,7 @@ comparable rows per arm. No judge, retry, replication, or method rerun occurred.
   `23dd74375b06a3b0358a22a5cddb7e19878cf806`.
 - Upstream filing record: `https://github.com/stellar-experimental/stellar-raven/pull/78`, merged as
   `16f9c6719b16e81499e4bde7dc7f38174f41161e`.
+- Final round record: `https://github.com/stellar-experimental/stellar-raven/pull/79`.
 
 Every failure was triaged. The rejected treatment needs no own-repository follow-up.
 The shared Scout defect was verified, committed, filed, and read back.
