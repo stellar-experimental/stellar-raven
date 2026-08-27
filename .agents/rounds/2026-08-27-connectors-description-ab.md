@@ -6,18 +6,81 @@ Measure the held response-guidance candidate against the merged control.
 Do not trim startup tool descriptions or server instructions.
 Reject the candidate after any verified treatment regression.
 
-## Current status — blocked
+## Current status — rebuilt qualification pending review
 
-The replacement qualification is spent and non-comparable.
+The historical replacement qualification remains spent and non-comparable.
 Do not run the historical qualification command below.
-No qualification, A1, B1, judging, or method rerun is authorized.
+The user authorized one new treatment qualification on 2026-08-27.
+It permits one answering call, no judge call, and a `$1.75` per-call cap.
+The user's broader spend tolerance does not remove the method-specific cap.
+No A1, B1, judging, retry, or method rerun is authorized yet.
 
-The historical arm commits predate the postflight fix in PR `#72`.
-The chosen continuation method rebuilds both arms from `7389e24880125ccf8fe0657a1435ca753dae52e6`.
-It then reapplies the held treatment change and recomputes every revision and surface pin.
-Do not use a split runner and server method.
-This method pairs a fixed runner commit with a server from a historical arm commit.
-A new reviewed brief and bounded user authorization must precede any paid call.
+Both v5 arms now include the postflight fix from PR `#72`.
+The control stays at `7389e24880125ccf8fe0657a1435ca753dae52e6`.
+The treatment reapplies the held change as `3966a59e77f2034726088e16be902270753211ae`.
+The server and runner use the same treatment worktree and commit.
+The v5 method does not pair a runner from one commit with a server from another commit.
+An independent `LAUNCH-OK` review must precede the paid call.
+
+## Authorized v5 qualification
+
+- Control branch: `eval/connectors-v5-control-20260827`.
+- Control worktree: `sr-wt-connectors-v5-control`.
+- Control commit: `7389e24880125ccf8fe0657a1435ca753dae52e6`.
+- Treatment branch: `feat/connectors-v5-product-20260827`.
+- Treatment worktree: `sr-wt-connectors-v5-product`.
+- Treatment commit: `3966a59e77f2034726088e16be902270753211ae`.
+- Treatment patch SHA-256: `59d0197bcec10d117e5e60e7ea8abcd09215d9ed1f5f465449d58acd79057874`.
+- The patch matches the historical ten-file treatment patch exactly.
+- Control surface SHA-256: `594578b995351e1abee1ec297e03662b51c1bfc4014daac4e39b4d8fa26611f3`.
+- Treatment surface SHA-256: `1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e`.
+- Control surface report SHA-256: `991fe0d7df55803be1339d3b32e121e0985e971e775c1369a78c7e5802a703bb`.
+- Treatment surface report SHA-256: `8b50c2fc88a29d1a19a5ae36f23fc77e431b153ca54fbec2a9fd16cd47c728a4`.
+- The treatment server runs alone on port `8792` in owned pane `w3:p1Q`.
+- The historical server on port `8791` remains outside this method.
+
+The wrapper, real Claude binary, model, environment rules, qualification case,
+and qualification case hashes remain pinned as recorded below.
+The call uses the treatment server and runner from `3966a59e77f2034726088e16be902270753211ae`.
+It must produce exactly one row and one reported answering cost.
+The maximum task spend after this call is `$1.9886646`.
+
+### V5 free preflight
+
+- Both arms passed `npm run typecheck`.
+- Both arms passed `npm run eval:selftest`.
+- Both arms compiled the `499`-case QA corpus with SHA-256
+  `c29ae61708dc564c0cceb19fe4ae34c444961c297449ebed3bcad5ef41dfa846`.
+- Both arms passed the stale corpus lint with `0` errors and `1,390` warnings.
+- Both arms passed the routing gate with identical numbers.
+- Control passed `88` test files and `1,335` tests.
+- Treatment passed `89` test files and `1,343` tests.
+- Both arms passed `82` smoke tests.
+- Both arms passed the build and secret scan.
+- Treatment passed the eight-test connector contract lane.
+- Both worktrees remained clean after every free gate.
+
+### V5 replacement qualification command — authorized once
+
+```sh
+export PATH="/tmp/connectors-contract-eval-bin:$PATH"
+unset QA_AGENT_PROMPT_APPEND
+unset RAVEN_CLAUDE_ANSWER_MAX_BUDGET_USD
+unset RAVEN_CLAUDE_JUDGE_MAX_BUDGET_USD
+hash -r
+test "$(command -v claude)" = /tmp/connectors-contract-eval-bin/claude
+test "$(shasum -a 256 /tmp/connectors-contract-eval-bin/claude | awk '{print $1}')" = a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+node eval/qa/run-qa.mjs --variant A \
+  --ids q-edge-closed-world-builder-directory-miss \
+  --no-judge --port 8792 --model claude-sonnet-5 \
+  --server-revision 3966a59e77f2034726088e16be902270753211ae \
+  --expect-sha256 1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e \
+  --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+```
+
+Stop after any missing row, agent failure, missing cost, wrapper mismatch,
+MCP connection failure, revision mismatch, surface mismatch, or comparability failure.
+Do not retry this command under the same authorization.
 
 ## Prior evidence
 
@@ -41,7 +104,7 @@ self-test GREEN
 - The self-test did not evaluate the product candidate.
 - Total paid spend before the `2026-08-27T15-43-06-variantA.json` call was `$0.1432890`.
 
-## Arms
+## Historical v4 arms
 
 - Control branch: `eval/connectors-v4-control-20260827`.
 - Control worktree: `sr-wt-connectors-v4-control`.
@@ -186,7 +249,7 @@ node eval/qa/run-qa.mjs --variant A \
   --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
 ```
 
-## Free preflight
+## Historical v4 free preflight
 
 - Both arms passed `npm run typecheck`.
 - Both arms passed `npm run eval:selftest`.
