@@ -160,6 +160,7 @@ describe("playground answer copy — attachment", () => {
   it("stays unavailable when the turn produced no assistant text", () => {
     const log = new FakeNode("div");
     expect(attachCopyRow(doc, {}, bubbleIn(log, ""), "")).toBeNull();
+    expect(attachCopyRow(doc, {}, bubbleIn(log, ""), " \n\t")).toBeNull();
     expect(attachCopyRow(doc, {}, null, MARKDOWN)).toBeNull();
     expect(log.children.filter((n) => n.className === "answer-actions")).toHaveLength(0);
   });

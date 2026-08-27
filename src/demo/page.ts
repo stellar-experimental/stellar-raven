@@ -325,7 +325,7 @@ function buildCopyRow(doc, nav, source){
 // means no action row at all, and a bubble that already carries one is left
 // alone — exactly one Copy per assistant answer.
 function attachCopyRow(doc, nav, bubble, source){
-  if (!bubble || !bubble.parentNode || !source) return null;
+  if (!bubble || !bubble.parentNode || !source.trim()) return null;
   var after = bubble.nextSibling;
   if (after && after.className === "answer-actions") return null;
   var row = buildCopyRow(doc, nav, source);
@@ -864,7 +864,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
 // hard-coded (Web Crypto is async, and these headers are a sync module const);
 // test/demo-page.test.ts recomputes it from the rendered page, so an edit to
 // DEMO_SCRIPT fails the suite with the new value to paste here.
-const DEMO_SCRIPT_SHA256 = "sha256-JbJFm01ytf3s6BX5Y8xckkdvV4FJWN4YVkoEVRMxfkM=";
+const DEMO_SCRIPT_SHA256 = "sha256-J5utxnf3Yyxow6cDGr6zPQ9lyVj1Y4JUbUBOYCGDJus=";
 
 export const DEMO_PAGE_HEADERS: Record<string, string> = {
   "content-type": "text/html; charset=utf-8",
