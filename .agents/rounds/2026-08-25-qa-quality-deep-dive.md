@@ -125,13 +125,31 @@ All lanes read-only against the repository except their own report file.
   lane branches for inspection.
 - `2026-08-26T19:20Z` — round documents committed (`b707953`): both synthesis docs,
   five lane reports, two review reports, three build reports, WisdomTree live
-  receipts; working tree clean. Same-100-id rerun started at this pinned revision
-  against a fresh single dev server (port 8788, `--host localhost`); answering and
-  judging model `claude-sonnet-5`, variant A, ids from
-  `2026-08-14T03-56-23-variantA.json`. Pull request opened:
-  stellar-experimental/stellar-raven#68
-  (`qa/quality-round-2026-08-25`). Four other worktrees noted as NOT part of this
-  round — `sr-wt-connectors-{guidance,item8,item8-baseline,item8-runtime}` belong
-  to the separate connectors session (`wE`/`wH` agents) and were left untouched;
-  their `item8` commits are not ancestors of main.
+  receipts; working tree clean. Pull request opened:
+  stellar-experimental/stellar-raven#68 (`qa/quality-round-2026-08-25`).
+  Four other worktrees noted as NOT part of this round —
+  `sr-wt-connectors-{guidance,item8,item8-baseline,item8-runtime}` belong to the
+  separate connectors session (`wE`/`wH` agents) and were left untouched; their
+  `item8` commits are not ancestors of main.
+- `2026-08-27T00:10Z` — same-100 rerun history (all at variant A, ids from the
+  2026-08-14 baseline):
+  - Run 1 (`2026-08-26T20-56-34`) completed 100/100 but self-labeled
+    non-comparable: the orchestrator edited this ledger mid-collection, dirtying
+    the tree (runnerDirty guard fired correctly). Saved copy archived outside the
+    repo at `/tmp/raven-qadeep/run1-noncomparable-variantA.json`. Directional:
+    43/41/12/4, all nine targeted recoveries visible.
+  - Run 2 (`2026-08-27T00:02` attempt at 21:01Z) invalidated: reused run 1's
+    long-lived dev server; the server degraded around case 31 (90 consecutive
+    non-correct). Lesson recorded: one freshly started dev server per collection.
+    Artifact committed for forensics only if needed.
+  - Run 3 (clean benchmark, `eval/qa/results/2026-08-27T00-02-11-variantA.json`,
+    pinned `b707953…9bb465d` revision, fresh server, clean tree throughout,
+    112 min): **48 correct / 35 partial / 13 wrong / 4 errors, half-credit 65.5%,
+    strict 48.0%** vs baseline 64.5%/45.0%. First-ever instrument readings:
+    **core-answer-correct 91.7%**, mean continuous coverage 71.7%. All 17 case
+    improvements match round predictions (banked skill re-pins, golden repairs,
+    symmetric cautions, judge fixes); churn within the known ±3–4 noise band.
+    Errors decompose: 1 retryable agent `error_max_turns` (WisdomTree CRDT — the
+    evidence-poor recovery gap), 3 deliberate consistency-engine downgrades whose
+    judge grades were partial.
 
