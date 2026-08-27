@@ -8,7 +8,7 @@
     "answer": "Start with the official **Stellar Development Foundation** YouTube channel and its **Developer Tutorials** playlist, then pair each video with current written docs and release notes. Current Lab documentation links a Lumen Loop Lab playlist, and current Scaffold/getting-started docs provide concrete full-stack/smart-contract video entry points.\n\nAs of **2026-07-11**, the Developer Tutorials playlist inspection found 59 entries, a latest update of 2026-03-12, and one unavailable item. Those are live observations, not grading requirements: membership, titles, dates and availability can change. A video's upload date or playlist update does not prove its CLI, SDK, RPC, UI or network examples remain current. Older “Soroban” videos may preserve useful concepts while commands, package names, endpoints and branding have drifted; verify executable steps against current docs/releases.\n\nUse a real playback timestamp only when the media source exposes one. LumenLoop AV `start_offset` is an opaque passage offset and must not automatically be rendered as seconds. Community creators can supplement the official path, but label them as secondary and do not invent titles, timestamps or official status.",
     "keyFacts": [
       "Names the official SDF channel and Developer Tutorials playlist plus current Lab/Scaffold/docs entry points.",
-      "Dates playlist count/update/unavailable observations to 2026-07-11 and makes them non-gating.",
+      "Dates volatile playlist metadata to an observation date instead of gating on it.",
       "Separates upload/playlist metadata from current command/version applicability.",
       "Explains older Soroban concepts may remain useful while executable details must be checked.",
       "Requires source-exposed playback timestamps and rejects treating LumenLoop start_offset as seconds."
@@ -104,14 +104,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The recommendation core was reasonable but incorrectly tagged static, lacked a concrete current official playlist, and allowed opaque LumenLoop AV offsets or upload dates to stand in for real playback timestamps and code applicability.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently required freshness/timestamp repair; helper 3388's complete video row was harvested before seal.",
-        "Sibling sweep checked AV/recommendation, Lab, Scaffold and CLI getting-started cases; official status, media metadata and current command applicability remain distinct."
+        "Sibling sweep checked AV/recommendation, Lab, Scaffold and CLI getting-started cases; official status, media metadata and current command applicability remain distinct.",
+        "Structural re-form (snapshot-date): Replaced the literal snapshot date and split dating behavior from non-gating playlist metadata; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i — showed the official Developer Tutorials playlist and current metadata.",
+        "Live re-check 2026-08-27: https://www.youtube.com/c/StellarDevelopmentFoundation/playlists — showed a current playlist count, which remains volatile and non-gating.",
+        "Sibling sweep 2026-08-27: grep Developer Tutorials|start_offset|Scaffold Stellar → q-ti-scaffold-stellar, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp; no contradiction",
+        "Owner correction 2026-08-27: merged the dated-metadata and non-gating facts to keep golden.keyFacts within the 1-5 compile bound; truth unchanged."
       ],
       "rootCause": [
-        "Plain freshness and source-semantics drift: a live media catalog was tagged static and an aggregator offset was allowed to masquerade as a playback timestamp."
+        "Plain freshness and source-semantics drift: a live media catalog was tagged static and an aggregator offset was allowed to masquerade as a playback timestamp.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
       ]
     },
     "origin": "raven-next q-ti-video-tutorials"

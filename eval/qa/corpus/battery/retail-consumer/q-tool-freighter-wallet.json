@@ -8,7 +8,7 @@
     "answer": "As of **2026-07-11**, **Freighter is an official SDF-provided Stellar wallet product**: open source at `stellar/freighter`, noncustodial, and available through browser and mobile clients. Users control their keys and use Freighter to hold Stellar assets, sign transactions, and connect to Stellar/Soroban applications. SDF does not custody the user's seed merely because it provides the product.\n\nThat does **not** make Freighter the Stellar network's one exclusive 'official wallet' or the only valid wallet. Stellar supports a multi-wallet ecosystem with independent products. Freighter is also not the Stellar Wallets Kit: the kit is a separate community-maintained multi-wallet integration layer. Recheck client/platform availability on product releases rather than treating browser-only or mobile availability as timeless.",
     "keyFacts": [
       "Identifies Freighter as an SDF-provided, open-source, noncustodial Stellar wallet product whose users control keys and sign transactions.",
-      "Dates its browser and mobile scope to 2026-07-11.",
+      "Dates browser/mobile client scope to an observation date.",
       "Rejects network exclusivity and distinguishes Freighter from Stellar Wallets Kit and other wallets."
     ],
     "avoid": [
@@ -96,15 +96,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited 'the official Stellar wallet' and 'reference wallet' wording could imply a network-exclusive status. Current primary sources support an SDF-provided open-source noncustodial product across browser and mobile, not exclusivity over independent wallets.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
       "evidence": [
         "GT-55 primary 3392 retained the inherited wording; sealed blind 3393 independently required the exclusive/reference qualifier and current mobile scope.",
         "Current developers.stellar.org calls Freighter provided by SDF; freighter.app and stellar/freighter establish noncustodial browser/mobile and open-source status.",
-        "Sibling sweep kept Freighter distinct from the community-maintained Stellar Wallets Kit and from other independent wallets."
+        "Sibling sweep kept Freighter distinct from the community-maintained Stellar Wallets Kit and from other independent wallets.",
+        "Structural re-form (snapshot-date): Replaced the literal snapshot date with observation-date behavior for client scope; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/freighter-developer-docs — showed Freighter browser-extension and mobile-app clients.",
+        "Sibling sweep 2026-08-27: grep Freighter|Stellar Wallets Kit|browser/mobile → q-eco-freighter-wallet, q-tool-wallets-comparison, q-eco-stellar-wallets-list; no contradiction",
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged."
       ],
       "rootCause": [
-        "Eval-side product/status collapse: 'an official SDF-provided wallet' became the network-exclusive 'official/reference wallet'."
+        "Eval-side product/status collapse: 'an official SDF-provided wallet' became the network-exclusive 'official/reference wallet'.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
       ]
     },
     "origin": "raven-next q-tool-freighter-wallet"

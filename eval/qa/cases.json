@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "c29ae61708dc564c0cceb19fe4ae34c444961c297449ebed3bcad5ef41dfa846",
+  "corpusContentSha256": "036ec3c1556fcdb4257b5b58930b88c14047c93e36f0e8cce0803fa5c4d1bf10",
   "counts": {
     "total": 499,
     "byCategory": {
@@ -3094,7 +3094,8 @@
         "answer": "Justin Rice is a documented Stellar Development Foundation ecosystem leader. As observed on 2026-07-13, SDF's live but undated leadership page listed him as **VP of Ecosystem**; that is a dated page observation, not a title inferred from old material. Historical first-party pages called him **Head of Ecosystem** for a 2021-02-16 AMA and **VP of Ecosystem** by the 2021-04-20 GBBC University Dialogues event. CoinDesk independently interviewed him as Stellar's “head of ecosystem” in an article published 2021-11-03; treat that wording as contemporary corroboration, not proof of a later demotion. Rice is also the named author of SDF's **“Introducing Automated Market Makers on Stellar”** (2021-07-01) and **“Soroban Is Feature Complete”** (2023-08-22). The reviewed sources establish a dated role and work history but not an exact SDF joining or promotion date. Broad semantic results are discovery leads—verify the exact full name, source, and date before attribution.",
         "keyFacts": [
           "Identifies Justin Rice as a historically documented SDF ecosystem leader using exact-name, dated first-party sources.",
-          "Reports the live team-page title only as observed on 2026-07-13 and keeps the 2021–2024 role references historically dated.",
+          "Dates the live SDF team-page title to an observation date.",
+          "Keeps the 2021–2024 role references historically dated.",
           "Mentions at least one dated, exact-name SDF publication or event contribution.",
           "Treats semantic matches as candidates and validates exact identity, source, and date before attribution."
         ],
@@ -3227,17 +3228,22 @@
           }
         ],
         "verified": {
-          "date": "2026-07-13",
-          "by": "Coordinator after independent Opus and Sol truth matrices",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
           "evidence": [
             "First-party Stellar event and blog pages plus https://www.coindesk.com/business/2021/11/03/stellar-validators-vote-in-amm-integration-that-could-boost-liquidity and https://theorg.com/org/stellar-org/org-chart/justin-rice.",
             "Production and localhost retrieval probes demonstrating narrow miss and broad exact-name recovery.",
-            "solo://proj/49/scratchpad/evidence-poor-retrie--611"
+            "solo://proj/49/scratchpad/evidence-poor-retrie--611",
+            "Structural re-form (snapshot-date): Split the flagged compound key fact and removed its snapshot-date literal; truth is unchanged.",
+            "Live re-check 2026-08-27: https://stellar.org/foundation/team — the live team page remained undated, supporting an observation-date gate.",
+            "Live re-check 2026-08-27: https://stellar.org/community/events/ama-with-justin-rice and https://stellar.org/community/events/gbbc-university-dialogues-on-blockchain-digital-assets — the pages tied Rice's Head and VP roles to 2021 events.",
+            "Sibling sweep 2026-08-27: grep Justin Rice|VP of Ecosystem → q-builder-justin-rice-history, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback; no contradiction"
           ],
           "rootCause": [
             "Broad semantic capability existed but the interaction stopped after narrow evidence-poor calls.",
             "Historical role evidence needed an explicit source-date gate to avoid a current-role hallucination.",
-            "improvements/lumenloop/ll-017-semantic-person-match-provenance.md"
+            "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "authored 2026-07-13 from production miss and independent truth verification"
@@ -20513,7 +20519,8 @@
       "golden": {
         "answer": "Query `scout.getPeople` with `section: \"Board of directors\"`, page until the returned count reaches the filtered total, and verify the names against SDF's official team page. As of 2026-08-18, the official page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji. Report each returned role and affiliation with the row's `observedAt` and `sourceUrl`; treat both the roster and roles as dated facts. These are SDF governance records, not builder or availability records.",
         "keyFacts": [
-          "As of 2026-08-18, the official SDF page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji under Board of directors.",
+          "Names Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
+          "Dates the official SDF board roster to an observation date.",
           "Uses the board section, pagination counts, source URL, and observed date for a current answer.",
           "Keeps the SDF people roster distinct from the builder directory."
         ],
@@ -20566,16 +20573,21 @@
           }
         ],
         "verified": {
-          "date": "2026-08-18",
-          "by": "Todo 1664 coverage-golden implementation",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
           "evidence": [
             "https://stellar.org/foundation/team inspected directly on 2026-08-18.",
             "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 returned the same five names on 2026-08-18.",
             "Sibling sweep: q-org-mazieres-chief-scientist uses the same people source and keeps its dated title qualification.",
-            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
+            "Structural re-form (snapshot-date): Split the board roster from its snapshot date; truth is unchanged.",
+            "Live re-check 2026-08-27: https://stellar.org/foundation/team — the Board of directors section listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
+            "Live re-check 2026-08-27: https://stellar.org/foundation/team — the live roster page remained undated, supporting an observation-date gate.",
+            "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji → q-org-sdf-board-directors only; no contradiction"
           ],
           "rootCause": [
-            "solo://proj/80/todo/author-five-new-cove--1664"
+            "solo://proj/80/todo/author-five-new-cove--1664",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "authored 2026-08 (coverage)"
@@ -26821,7 +26833,8 @@
       "golden": {
         "answer": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-07-11; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are encrypted with user-password participation and stored locally/on-device, while accounts created before 2020-09-01 that were never migrated are a documented exception. Its 12-word Recovery Phrase (or older wallet-specific 10-word Recovery Code) must be kept private/offline; LOBSTR says it cannot reconstruct users’ phrase, code, secret, or password. Install only from links reached through `lobstr.co`, verify the app publisher, and use 2FA plus multisig or hardware signing when the threat model warrants it.",
         "keyFacts": [
-          "Identifies LOBSTR as an active Ultra Stellar third-party wallet as of 2026-07-11 without treating that as a security guarantee or SDF endorsement.",
+          "Identifies LOBSTR as an active Ultra Stellar third-party wallet.",
+          "Dates the LOBSTR activity assessment to an observation date.",
           "Attributes local/on-device storage to current LOBSTR documentation and preserves the pre-2020 unmigrated-account exception.",
           "States that recovery credentials must never be shared and cannot be reconstructed by support according to current documentation."
         ],
@@ -26898,8 +26911,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
@@ -26908,10 +26921,15 @@
             "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key-",
             "https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key-",
             "https://ultrastellar.com/",
-            "https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892"
+            "https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892",
+            "Structural re-form (snapshot-date): Split the wallet identity from its snapshot date; truth is unchanged.",
+            "Live re-check 2026-08-27: https://ultrastellar.com/ — Ultra Stellar listed LOBSTR as its web and mobile wallet product.",
+            "Live re-check 2026-08-27: https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892 — Apple listed the active LOBSTR app and ULTRA STELLAR, LLC as developer.",
+            "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar → q-defi-aquarius-what-is, q-defi-soroswap-vs-stellarx, q-eco-dex-saturation, q-eco-freighter-wallet, q-eco-lobstr-wallet, q-eco-xbull-wallet, q-raph-lobstr-legitimacy; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "raph wallet-lobstr-legitimacy-recovery-storage"
@@ -34212,13 +34230,15 @@
           "SEP-24 is the anchor-hosted interactive deposit/withdrawal flow; SEP-6 is the programmatic deposit/withdrawal API.",
           "SEP-6 remains Active; its legacy interactive flow, not the whole SEP, is deprecated in favor of SEP-24.",
           "SEP-31 has a Sending Anchor call a Receiving Anchor under an established bilateral/commercial relationship.",
-          "SEP-6, SEP-24, SEP-31, and SEP-38 were Active as of 2026-07-11; SEP-38 applies when quotes/rates are part of the corridor.",
+          "Gives dated Active status for SEP-6, SEP-24, SEP-31 plus SEP-38 for quotes/rates.",
           "SEP-1 keys TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, and DIRECT_PAYMENT_SERVER distinguish the endpoints."
         ],
         "avoid": [
           "SEP-31 is simply the newest replacement for both SEP-6 and SEP-24.",
-          "SEP-24 requires the wallet to collect and host the anchor's KYC user interface."
-        ]
+          "SEP-24 requires the wallet to collect and host the anchor's KYC user interface.",
+          "Do NOT claim SEP-38 is an Active SEP; the protocol repo lists it as Draft."
+        ],
+        "notes": "Verified on 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md reported Status: Draft (Updated 2025-02-26, last commit 2025-06-17), and a Perplexity web sweep found no source calling SEP-38 Active; the retired keyFact that grouped SEP-38 with the Active SEPs overreached golden.answer."
       },
       "tags": {
         "category": "assets-anchors-seps",
@@ -34469,11 +34489,30 @@
                 "observedAt": "2026-07-11"
               }
             ]
+          },
+          {
+            "claim": "SEP-38 (Anchor RFQ API) was an Active SEP as of 2026-07-11.",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md",
+                "observedAt": "2026-08-27",
+                "note": "Preamble reads Status: Draft, Updated 2025-02-26; last commit 2025-06-17 (#1740). README table lists SEP-0038 under Draft Proposals."
+              },
+              {
+                "class": "D",
+                "ref": "Perplexity search: SEP-38 \"Anchor RFQ API\" status Draft stellar (2026-08-27)",
+                "observedAt": "2026-08-27",
+                "note": "No result calls SEP-38 Active; developers.stellar.org Anchor Platform pages describe SEP-38 support, which is adoption, not SEP status."
+              }
+            ],
+            "note": "Mirrored in golden.avoid; SEP-6/24/31 remain Active per their preambles (checked 2026-08-27)."
           }
         ],
         "verified": {
-          "date": "2026-07-14",
-          "by": "Todo 993 adversarial freshness correction after independent Sol review",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, owner edit after worker gt-sol-a escalation E1; gt-grok-rev co-signed the correction in /tmp/raven-qadeep/gt/review-batch1.md)",
           "evidence": [
             "https://developers.stellar.org/docs/anchoring-assets/anchor-platform",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
@@ -34483,13 +34522,18 @@
             "Live scout.searchResearch result quoting SEP-0006 status and canonical URL, 2026-07-13",
             "solo://proj/49/scratchpad/truth-maintenance-20--627#fable-open-questions-audit",
             "solo://proj/49/scratchpad/24-hour-adversarial--629#sol-box-review",
-            "Sibling sweep: q-sep-6-24-deprecation now carries the same scheduled Active-status treatment; q-sep-interactive-deposit-withdraw has no mutable Active-status key fact."
+            "Sibling sweep: q-sep-6-24-deprecation now carries the same scheduled Active-status treatment; q-sep-interactive-deposit-withdraw has no mutable Active-status key fact.",
+            "Structural re-form (snapshot-date): removed the snapshot-date literal and split the compound fact; the SEP-38 clause was corrected, see program-log.md E1.",
+            "Live re-check 2026-08-27: sep-0006.md, sep-0024.md, sep-0031.md preambles read Status: Active; sep-0038.md reads Status: Draft.",
+            "Sibling sweep 2026-08-27: grep SEP-38|SEP-0038 → 12 cases incl. q-sep-38-quotes (states Status Draft), q-sep-31-cross-border, q-anchor-platform-what; only this case asserted SEP-38 Active"
           ],
           "rootCause": [
             "freshness-drift",
             "eval-authoring",
             "Sibling consistency sweep for q-sep-6-24-deprecation",
-            "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md"
+            "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+            "Eval-side authoring overreach: the keyFact grouped SEP-38 with the Active SEPs although golden.answer never claimed it."
           ]
         },
         "origin": "kaan sep24-vs-sep31-vs-sep6"
@@ -42800,7 +42844,8 @@
           "Distinguishes self-hosted OpenZeppelin Relayer from managed OpenZeppelin Channels.",
           "Describes Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support without turning managed features into protocol guarantees.",
           "Separates self-hosted account funding from managed Channels billing/top-up policy.",
-          "Dates version/provider-health claims and discloses the v1.7.0-versus-rendered-1.5.x disagreement as of 2026-08-04."
+          "Reports the observed v1.7.0-versus-rendered-1.5.x documentation mismatch.",
+          "Dates each version or provider-health claim to an observation date."
         ],
         "avoid": [
           "Do NOT conflate self-hosted Relayer with managed Channels.",
@@ -42892,14 +42937,19 @@
           }
         ],
         "verified": {
-          "date": "2026-08-04",
-          "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the release while preserving the Relayer/Channels and funding boundaries.",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
           "evidence": [
             "Solo scratchpad 575, GT-53 primary 3372 and blind 3378, independently reviewed 2026-07-11.",
-            "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime."
+            "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime.",
+            "Structural re-form (snapshot-date): Split the documented version mismatch from its snapshot-date requirement; truth is unchanged.",
+            "Live re-check 2026-08-27: https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.7.0 and https://docs.openzeppelin.com/relayer/stellar — the release page showed v1.7.0 while the rendered docs pointed to stable v1.5.x.",
+            "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/stellar — the page labeled its main-branch content as development documentation, supporting an observation-date gate.",
+            "Sibling sweep 2026-08-27: grep OpenZeppelin Relayer|v1.7.0|Stellar Channels → q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction"
           ],
           "rootCause": [
-            "Eval-side product-identity collapse and freshness drift; the cross-owner SDF/OpenZeppelin cleanup candidate is recorded in the GT-53 audit rather than forced into one upstream finding."
+            "Eval-side product-identity collapse and freshness drift; the cross-owner SDF/OpenZeppelin cleanup candidate is recorded in the GT-53 audit rather than forced into one upstream finding.",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "raven-next q-ti-openzeppelin-relayer"
@@ -43262,7 +43312,8 @@
         "keyFacts": [
           "Gives the separately installed stellar-scaffold-cli and stellar scaffold init command shape.",
           "Defines Scaffold Stellar as full-stack contracts/clients/frontend/environment tooling and distinguishes stellar contract init as contract-only.",
-          "Dates the 0.0.26 registry and React/Svelte template examples to 2026-07-28 rather than making them permanent requirements.",
+          "Names React and Svelte as official template examples.",
+          "Dates each registry or template claim to an observation date.",
           "Requires checking generated scripts/prerequisites and treats community templates as supply-chain inputs."
         ],
         "avoid": [
@@ -43361,16 +43412,23 @@
           }
         ],
         "verified": {
-          "date": "2026-07-28",
-          "by": "Todo 1248 Lane B Docs technical re-verification",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
           "evidence": [
             "Production stellar-raven: stellarDocs.search_sdk_cli_tools_docs({query:'Scaffold Stellar stellar scaffold init environments.toml bindings local network',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/tools/scaffold-stellar',includeContent:true}) — current page returns separate CLI installs, `stellar scaffold init`, build/watch, environments.toml, and Docker/local prerequisites.",
             "Canonical source: https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/src/commands/mod.rs — current subcommands include init, build, generate, upgrade, update-env, watch, and clean; https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/Cargo.toml declares 0.0.26.",
             "Registry: cargo search stellar-scaffold-cli --limit 3 and https://crates.io/api/v1/crates/stellar-scaffold-cli returned max_version=0.0.26, published 2026-07-23T20:11:45Z; 0.0.25 was published 2026-07-07.",
-            "Sibling sweep: q-soroban-deploy-cli and q-sor-build-target-wasm32v1 retain the narrower `stellar contract init`/build flow; no case conflates it with the full-stack plugin."
+            "Sibling sweep: q-soroban-deploy-cli and q-sor-build-target-wasm32v1 retain the narrower `stellar contract init`/build flow; no case conflates it with the full-stack plugin.",
+            "Structural re-form (snapshot-date): Split the registry version and template names from the snapshot-date requirement; truth is unchanged.",
+            "Live re-check 2026-08-27: https://crates.io/api/v1/crates/stellar-scaffold-cli/0.0.26 — the registry record showed version 0.0.26 published on 2026-07-23.",
+            "Live re-check 2026-08-27: https://api.github.com/repos/stellar-scaffold/ui/contents/templates — the official repository listed react and svelte template directories.",
+            "Live re-check 2026-08-27: https://crates.io/crates/stellar-scaffold-cli — the registry now showed 0.0.27, confirming that registry claims require observation dates.",
+            "Sibling sweep 2026-08-27: grep stellar-scaffold-cli|Scaffold Stellar|templates/react|templates/svelte → q-ti-scaffold-stellar only; no contradiction",
+            "Owner correction 2026-08-27: dropped the undated 'version 0.0.26' key fact because the registry already shows 0.0.27; the golden gates dating, not the pinned version."
           ],
           "rootCause": [
-            "freshness-drift"
+            "freshness-drift",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "raven-next q-ti-scaffold-stellar"
@@ -44220,7 +44278,7 @@
         "keyFacts": [
           "Friendbot funds fake Testnet XLM, not USDC.",
           "A correct classic USDC trustline and XLM/base reserve are prerequisites, but the trustline does not credit balance.",
-          "Dates the current Circle Testnet issuer/faucet to 2026-07-11 and treats amount/cooldown/availability as volatile non-gates.",
+          "Dates Circle Testnet issuer, faucet amount, plus cooldown to an observation date.",
           "Separates Circle faucet payment, Lab path-payment demo, classic issuer/trustline and deterministic SAC representation.",
           "States test units are non-production/non-redeemable and audit probes must not invoke the faucet."
         ],
@@ -44320,14 +44378,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The core Friendbot/trustline distinction was correct, but the case was incorrectly marked non-fresh and did not clearly separate the volatile Circle issuer/faucet from the deterministic SAC representation and unrelated Lab path-payment demo.",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
           "evidence": [
             "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently retained the core and required freshness/source precision; helper 3388 was harvested before seal.",
-            "Sibling sweep checked Friendbot/faucet-rate-limit, trustline/SAC, Lab and Testnet→Mainnet cases; no sibling treats a trustline as balance or Circle faucet as Friendbot."
+            "Sibling sweep checked Friendbot/faucet-rate-limit, trustline/SAC, Lab and Testnet→Mainnet cases; no sibling treats a trustline as balance or Circle faucet as Friendbot.",
+            "Structural re-form (snapshot-date): Replaced the literal snapshot date with observation-date behavior and split volatile faucet terms; the truth is unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide — showed the Testnet USDC issuer and Circle faucet path.",
+            "Live re-check 2026-08-27: https://faucet.circle.com/ — listed Stellar Testnet and its current faucet limits.",
+            "Sibling sweep 2026-08-27: grep Friendbot|Circle Faucet|testnet USDC → q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui, q-tool-lab-what-is; no contradiction",
+            "Owner correction 2026-08-27: merged the dated-issuer and volatile-non-gate facts into one dated-observation fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
+            "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged."
           ],
           "rootCause": [
-            "Plain golden freshness drift: an external issuer/faucet/service limit was tagged static even though the durable protocol distinction remained correct."
+            "Plain golden freshness drift: an external issuer/faucet/service limit was tagged static even though the durable protocol distinction remained correct.",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "raven-next q-ti-testnet-usdc-faucet"
@@ -44467,7 +44532,7 @@
         "answer": "Start with the official **Stellar Development Foundation** YouTube channel and its **Developer Tutorials** playlist, then pair each video with current written docs and release notes. Current Lab documentation links a Lumen Loop Lab playlist, and current Scaffold/getting-started docs provide concrete full-stack/smart-contract video entry points.\n\nAs of **2026-07-11**, the Developer Tutorials playlist inspection found 59 entries, a latest update of 2026-03-12, and one unavailable item. Those are live observations, not grading requirements: membership, titles, dates and availability can change. A video's upload date or playlist update does not prove its CLI, SDK, RPC, UI or network examples remain current. Older “Soroban” videos may preserve useful concepts while commands, package names, endpoints and branding have drifted; verify executable steps against current docs/releases.\n\nUse a real playback timestamp only when the media source exposes one. LumenLoop AV `start_offset` is an opaque passage offset and must not automatically be rendered as seconds. Community creators can supplement the official path, but label them as secondary and do not invent titles, timestamps or official status.",
         "keyFacts": [
           "Names the official SDF channel and Developer Tutorials playlist plus current Lab/Scaffold/docs entry points.",
-          "Dates playlist count/update/unavailable observations to 2026-07-11 and makes them non-gating.",
+          "Dates volatile playlist metadata to an observation date instead of gating on it.",
           "Separates upload/playlist metadata from current command/version applicability.",
           "Explains older Soroban concepts may remain useful while executable details must be checked.",
           "Requires source-exposed playback timestamps and rejects treating LumenLoop start_offset as seconds."
@@ -44563,14 +44628,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The recommendation core was reasonable but incorrectly tagged static, lacked a concrete current official playlist, and allowed opaque LumenLoop AV offsets or upload dates to stand in for real playback timestamps and code applicability.",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
           "evidence": [
             "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently required freshness/timestamp repair; helper 3388's complete video row was harvested before seal.",
-            "Sibling sweep checked AV/recommendation, Lab, Scaffold and CLI getting-started cases; official status, media metadata and current command applicability remain distinct."
+            "Sibling sweep checked AV/recommendation, Lab, Scaffold and CLI getting-started cases; official status, media metadata and current command applicability remain distinct.",
+            "Structural re-form (snapshot-date): Replaced the literal snapshot date and split dating behavior from non-gating playlist metadata; the truth is unchanged.",
+            "Live re-check 2026-08-27: https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i — showed the official Developer Tutorials playlist and current metadata.",
+            "Live re-check 2026-08-27: https://www.youtube.com/c/StellarDevelopmentFoundation/playlists — showed a current playlist count, which remains volatile and non-gating.",
+            "Sibling sweep 2026-08-27: grep Developer Tutorials|start_offset|Scaffold Stellar → q-ti-scaffold-stellar, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp; no contradiction",
+            "Owner correction 2026-08-27: merged the dated-metadata and non-gating facts to keep golden.keyFacts within the 1-5 compile bound; truth unchanged."
           ],
           "rootCause": [
-            "Plain freshness and source-semantics drift: a live media catalog was tagged static and an aggregator offset was allowed to masquerade as a playback timestamp."
+            "Plain freshness and source-semantics drift: a live media catalog was tagged static and an aggregator offset was allowed to masquerade as a playback timestamp.",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "raven-next q-ti-video-tutorials"
@@ -45660,7 +45731,7 @@
         "answer": "As of **2026-07-11**, **Freighter is an official SDF-provided Stellar wallet product**: open source at `stellar/freighter`, noncustodial, and available through browser and mobile clients. Users control their keys and use Freighter to hold Stellar assets, sign transactions, and connect to Stellar/Soroban applications. SDF does not custody the user's seed merely because it provides the product.\n\nThat does **not** make Freighter the Stellar network's one exclusive 'official wallet' or the only valid wallet. Stellar supports a multi-wallet ecosystem with independent products. Freighter is also not the Stellar Wallets Kit: the kit is a separate community-maintained multi-wallet integration layer. Recheck client/platform availability on product releases rather than treating browser-only or mobile availability as timeless.",
         "keyFacts": [
           "Identifies Freighter as an SDF-provided, open-source, noncustodial Stellar wallet product whose users control keys and sign transactions.",
-          "Dates its browser and mobile scope to 2026-07-11.",
+          "Dates browser/mobile client scope to an observation date.",
           "Rejects network exclusivity and distinguishes Freighter from Stellar Wallets Kit and other wallets."
         ],
         "avoid": [
@@ -45748,15 +45819,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited 'the official Stellar wallet' and 'reference wallet' wording could imply a network-exclusive status. Current primary sources support an SDF-provided open-source noncustodial product across browser and mobile, not exclusivity over independent wallets.",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
           "evidence": [
             "GT-55 primary 3392 retained the inherited wording; sealed blind 3393 independently required the exclusive/reference qualifier and current mobile scope.",
             "Current developers.stellar.org calls Freighter provided by SDF; freighter.app and stellar/freighter establish noncustodial browser/mobile and open-source status.",
-            "Sibling sweep kept Freighter distinct from the community-maintained Stellar Wallets Kit and from other independent wallets."
+            "Sibling sweep kept Freighter distinct from the community-maintained Stellar Wallets Kit and from other independent wallets.",
+            "Structural re-form (snapshot-date): Replaced the literal snapshot date with observation-date behavior for client scope; the truth is unchanged.",
+            "Live re-check 2026-08-27: https://github.com/stellar/freighter-developer-docs — showed Freighter browser-extension and mobile-app clients.",
+            "Sibling sweep 2026-08-27: grep Freighter|Stellar Wallets Kit|browser/mobile → q-eco-freighter-wallet, q-tool-wallets-comparison, q-eco-stellar-wallets-list; no contradiction",
+            "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged."
           ],
           "rootCause": [
-            "Eval-side product/status collapse: 'an official SDF-provided wallet' became the network-exclusive 'official/reference wallet'."
+            "Eval-side product/status collapse: 'an official SDF-provided wallet' became the network-exclusive 'official/reference wallet'.",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "raven-next q-tool-freighter-wallet"
@@ -48103,7 +48179,8 @@
           "The current Stellar x402 scheme signs a Soroban authorization entry for an exact SAC transfer that a facilitator or relayer submits.",
           "Verification covers scheme/version, CAIP network, invocation/auth shape, expiration, simulation, unexpected effects, finality, and request-level replay/idempotency.",
           "A Horizon operation-list match is insufficient for an inner contract transfer; audit successful transaction meta/events and exact SAC effects.",
-          "Built on Stellar hosted and OpenZeppelin self-hosted facilitator paths are current attributed options as of 2026-07-11, not protocol requirements."
+          "Names Built on Stellar (hosted) and OpenZeppelin (self-hosted) as facilitator options.",
+          "Dates facilitator availability to an observation date."
         ],
         "avoid": [
           "Possession of any Stellar transaction hash proves the required x402 payment.",
@@ -48298,13 +48375,23 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H2 primary+blind (Solo 3411/3412)",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
           "evidence": [
             "https://developers.stellar.org/docs/build/apps/agentic-payments/x402",
             "https://docs.x402.org/",
             "https://github.com/coinbase/x402/tree/main/typescript/packages/mechanisms/stellar",
-            "https://github.com/OpenZeppelin/openzeppelin-relayer"
+            "https://github.com/OpenZeppelin/openzeppelin-relayer",
+            "Structural re-form (snapshot-date): Split the attributed facilitator options, dating behavior, and implementation choice; the truth is unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar — showed the Built on Stellar hosted facilitator.",
+            "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/1.4.x/guides/stellar-x402-facilitator-guide — showed the OpenZeppelin self-hosted facilitator path.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — showed current facilitator availability.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar — described hosted use and self-hosting as implementation choices.",
+            "Sibling sweep 2026-08-27: grep Built on Stellar|OpenZeppelin|x402 facilitator → q-soroban-x402-auth-entry-signing, q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction",
+            "Owner correction 2026-08-27: merged the two facilitator-name facts and dropped the new implementation-specific fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged."
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "kaan x402-payment-verification-stellar"
@@ -48454,8 +48541,8 @@
           "CAP-0059 introduced BLS12-381 host functions with minimum supported Protocol 22.",
           "Protocol 25 added BN254 via Final CAP-0074 and Poseidon/Poseidon2 via Final CAP-0075.",
           "Protocol 26 implemented Final CAP-0080, adding BN254 MSM, scalar-field add/subtract/multiply/power/inverse, and curve-membership checks.",
-          "Pubnet and testnet reported Protocol 27 on 2026-07-11, so the Protocol 22, 25, and 26 primitives were live there.",
-          "There were no documented native Goldilocks, NTT, or FRI host functions as of 2026-07-11."
+          "Marks Protocol 22, 25, and 26 primitives live on pubnet and testnet as of a stated date.",
+          "Dates the native Goldilocks/NTT/FRI host-function gap to an observation date."
         ],
         "avoid": [
           "CAP-0074 and CAP-0075 are still merely proposed and unavailable on mainnet as of July 2026.",
@@ -48793,8 +48880,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H2 primary+blind (Solo 3411/3412)",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
           "evidence": [
             "https://developers.stellar.org/docs/networks/software-versions",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
@@ -48802,7 +48889,18 @@
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
             "https://horizon.stellar.org/",
-            "https://horizon-testnet.stellar.org/"
+            "https://horizon-testnet.stellar.org/",
+            "Structural re-form (snapshot-date): Replaced two literal snapshot dates and split protocol observation from primitive availability; the truth is unchanged.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — reported Protocol 27 for pubnet and testnet.",
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — showed Protocol 22, 25, and 26 ZK host-function releases.",
+            "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — listed BLS12-381, BN254, Poseidon, and CAP-0080 ZK functions without native Goldilocks, NTT, or FRI entries.",
+            "Sibling sweep 2026-08-27: grep CAP-0059|CAP-0074|CAP-0075|CAP-0080|Goldilocks|NTT|FRI → q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-zk-proof-systems-stellar; no contradiction",
+            "Owner correction 2026-08-27: the protocol-version key fact gates a dated observation, not the number 27, so a later protocol does not fail a truthful answer; Protocol 22/25/26 primitives stay a durable fact.",
+            "Owner correction 2026-08-27: merged the dated protocol-version fact and the live-primitives fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
+            "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged."
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
           ]
         },
         "origin": "kaan zk-host-functions-cap-roadmap"

@@ -12,13 +12,15 @@
       "SEP-24 is the anchor-hosted interactive deposit/withdrawal flow; SEP-6 is the programmatic deposit/withdrawal API.",
       "SEP-6 remains Active; its legacy interactive flow, not the whole SEP, is deprecated in favor of SEP-24.",
       "SEP-31 has a Sending Anchor call a Receiving Anchor under an established bilateral/commercial relationship.",
-      "SEP-6, SEP-24, SEP-31, and SEP-38 were Active as of 2026-07-11; SEP-38 applies when quotes/rates are part of the corridor.",
+      "Gives dated Active status for SEP-6, SEP-24, SEP-31 plus SEP-38 for quotes/rates.",
       "SEP-1 keys TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, and DIRECT_PAYMENT_SERVER distinguish the endpoints."
     ],
     "avoid": [
       "SEP-31 is simply the newest replacement for both SEP-6 and SEP-24.",
-      "SEP-24 requires the wallet to collect and host the anchor's KYC user interface."
-    ]
+      "SEP-24 requires the wallet to collect and host the anchor's KYC user interface.",
+      "Do NOT claim SEP-38 is an Active SEP; the protocol repo lists it as Draft."
+    ],
+    "notes": "Verified on 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md reported Status: Draft (Updated 2025-02-26, last commit 2025-06-17), and a Perplexity web sweep found no source calling SEP-38 Active; the retired keyFact that grouped SEP-38 with the Active SEPs overreached golden.answer."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -269,11 +271,30 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "SEP-38 (Anchor RFQ API) was an Active SEP as of 2026-07-11.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md",
+            "observedAt": "2026-08-27",
+            "note": "Preamble reads Status: Draft, Updated 2025-02-26; last commit 2025-06-17 (#1740). README table lists SEP-0038 under Draft Proposals."
+          },
+          {
+            "class": "D",
+            "ref": "Perplexity search: SEP-38 \"Anchor RFQ API\" status Draft stellar (2026-08-27)",
+            "observedAt": "2026-08-27",
+            "note": "No result calls SEP-38 Active; developers.stellar.org Anchor Platform pages describe SEP-38 support, which is adoption, not SEP status."
+          }
+        ],
+        "note": "Mirrored in golden.avoid; SEP-6/24/31 remain Active per their preambles (checked 2026-08-27)."
       }
     ],
     "verified": {
-      "date": "2026-07-14",
-      "by": "Todo 993 adversarial freshness correction after independent Sol review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, owner edit after worker gt-sol-a escalation E1; gt-grok-rev co-signed the correction in /tmp/raven-qadeep/gt/review-batch1.md)",
       "evidence": [
         "https://developers.stellar.org/docs/anchoring-assets/anchor-platform",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
@@ -283,13 +304,18 @@
         "Live scout.searchResearch result quoting SEP-0006 status and canonical URL, 2026-07-13",
         "solo://proj/49/scratchpad/truth-maintenance-20--627#fable-open-questions-audit",
         "solo://proj/49/scratchpad/24-hour-adversarial--629#sol-box-review",
-        "Sibling sweep: q-sep-6-24-deprecation now carries the same scheduled Active-status treatment; q-sep-interactive-deposit-withdraw has no mutable Active-status key fact."
+        "Sibling sweep: q-sep-6-24-deprecation now carries the same scheduled Active-status treatment; q-sep-interactive-deposit-withdraw has no mutable Active-status key fact.",
+        "Structural re-form (snapshot-date): removed the snapshot-date literal and split the compound fact; the SEP-38 clause was corrected, see program-log.md E1.",
+        "Live re-check 2026-08-27: sep-0006.md, sep-0024.md, sep-0031.md preambles read Status: Active; sep-0038.md reads Status: Draft.",
+        "Sibling sweep 2026-08-27: grep SEP-38|SEP-0038 → 12 cases incl. q-sep-38-quotes (states Status Draft), q-sep-31-cross-border, q-anchor-platform-what; only this case asserted SEP-38 Active"
       ],
       "rootCause": [
         "freshness-drift",
         "eval-authoring",
         "Sibling consistency sweep for q-sep-6-24-deprecation",
-        "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md"
+        "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+        "Eval-side authoring overreach: the keyFact grouped SEP-38 with the Active SEPs although golden.answer never claimed it."
       ]
     },
     "origin": "kaan sep24-vs-sep31-vs-sep6"

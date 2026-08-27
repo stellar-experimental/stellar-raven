@@ -10,7 +10,8 @@
       "Distinguishes self-hosted OpenZeppelin Relayer from managed OpenZeppelin Channels.",
       "Describes Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support without turning managed features into protocol guarantees.",
       "Separates self-hosted account funding from managed Channels billing/top-up policy.",
-      "Dates version/provider-health claims and discloses the v1.7.0-versus-rendered-1.5.x disagreement as of 2026-08-04."
+      "Reports the observed v1.7.0-versus-rendered-1.5.x documentation mismatch.",
+      "Dates each version or provider-health claim to an observation date."
     ],
     "avoid": [
       "Do NOT conflate self-hosted Relayer with managed Channels.",
@@ -102,14 +103,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the release while preserving the Relayer/Channels and funding boundaries.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
       "evidence": [
         "Solo scratchpad 575, GT-53 primary 3372 and blind 3378, independently reviewed 2026-07-11.",
-        "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime."
+        "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime.",
+        "Structural re-form (snapshot-date): Split the documented version mismatch from its snapshot-date requirement; truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.7.0 and https://docs.openzeppelin.com/relayer/stellar — the release page showed v1.7.0 while the rendered docs pointed to stable v1.5.x.",
+        "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/stellar — the page labeled its main-branch content as development documentation, supporting an observation-date gate.",
+        "Sibling sweep 2026-08-27: grep OpenZeppelin Relayer|v1.7.0|Stellar Channels → q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction"
       ],
       "rootCause": [
-        "Eval-side product-identity collapse and freshness drift; the cross-owner SDF/OpenZeppelin cleanup candidate is recorded in the GT-53 audit rather than forced into one upstream finding."
+        "Eval-side product-identity collapse and freshness drift; the cross-owner SDF/OpenZeppelin cleanup candidate is recorded in the GT-53 audit rather than forced into one upstream finding.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
       ]
     },
     "origin": "raven-next q-ti-openzeppelin-relayer"

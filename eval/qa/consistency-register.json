@@ -729,10 +729,10 @@
           "q-tool-cli-testnet-identity-howto"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (snapshot-date batch 1): members q-ti-testnet-usdc-faucet changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -742,7 +742,7 @@
           "q-infra-testnet-vs-futurenet": "066d76eb94cd44a9e6e035476918a49d55e356002e980821f1f0ff4d07933afd",
           "q-ti-custodial-account-generation-c-address": "3ba70a2fe3b41c5fdafba93ac87f41b161fde2cf8d375f162e4cf3c3f5ec9a24",
           "q-ti-stellar-lab-usage-and-new-ui": "a608a05a5b044c543a2feb7edf6322e987d33736a0d2784571b3d9afde7e8500",
-          "q-ti-testnet-usdc-faucet": "698fdb4fecb12cd170708f6d8a4c60ac0a4a4602b6f2dbd44dee5a18baad892b",
+          "q-ti-testnet-usdc-faucet": "60c3bd1bc2497ea37daf1c23625398e360f18ce9833a0ae0fde240dfffa14991",
           "q-tool-cli-testnet-identity-howto": "c54a67a128f09221dd1b7046504c4b9db11bce3b81c498a0533286c98a16a01c"
         }
       },
@@ -2383,10 +2383,10 @@
           "q-ti-scaffold-stellar"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-28",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-28",
-          "reason": "2026-07-28 reopened-cluster sweep: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (snapshot-date batch 1): members q-ti-scaffold-stellar changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Current target is wasm32v1-none. Local Wasm supplies the spec for bindings; generated deploy requires installed wasmHash; SDK helper return types are version-sensitive. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-scaffold-stellar joins because it asserts where this flow's boundary lies — Scaffold Stellar is a separately installed plugin (cargo install stellar-scaffold-cli, stellar scaffold init) that generates contracts, TypeScript clients/bindings, frontend, and environment config, and is NOT bundled with a core Stellar CLI install nor equivalent to 'stellar contract init'. Verified 2026-07-28 against q-soroban-cli-bindings, q-sor-build-target-wasm32v1, and q-soroban-deploy-cli: no case conflates the plugin with the core CLI, and no case claims the plugin replaces 'stellar contract bindings'. Alternative considered and rejected: a standalone scaffold-versus-core-CLI cluster, which would duplicate this one's membership without adding a distinct claim.",
@@ -2394,11 +2394,7 @@
           "q-sor-build-target-wasm32v1": "bf62592393191f3af68fc8800c82a925f545bd707ec033984a525f48ebcb3fae",
           "q-sor-deploy-invoke-from-js-sdk": "047663bd622d64b729cec1af5b93c1ffdbfd2c6b364028bbcf5d5b94bface78f",
           "q-soroban-cli-bindings": "3396321d4045f93017334131da88b86c55d7583b77ae0417c8e38a3c36ab2c70",
-          "q-ti-scaffold-stellar": "3362dd21b8e8f6950d3fb8c0f4d3dae3204e56658eb177fcd16d43daf44c24ec"
-        },
-        "reopened": {
-          "date": "2026-07-28",
-          "reason": "member-content-changed"
+          "q-ti-scaffold-stellar": "4269746485b86b20290350910b9d9a165e6a1a9ccdd7b335d18beb82a053bde8"
         }
       },
       {
@@ -3093,22 +3089,18 @@
           "q-x402-payment-verification"
         ],
         "verdict": "reopen",
-        "lastChecked": "2026-07-28",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-28",
-          "reason": "todo 1251 separated raw auth-entry signing from tested end-to-end x402 compatibility and rechecked owner/integration sources",
-          "verdict": "tension"
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (snapshot-date batch 1): members q-x402-payment-verification changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"reopen\" stands.",
+          "verdict": "reopen"
         },
         "note": "The 2026-03-10 announcement is historical; current facilitator, wallet, sponsorship, and verification capabilities are separately dated and do not make x402 a SEP. The official roster lists Freighter Browser, Albedo, Hana, HOT, Klever, and OneKey and excludes Freighter Mobile, while Freighter owner docs expose extension signAuthEntry and mobile stellar_signAuthEntry and Stellar Wallets Kit explicitly throws for Albedo. Raw auth-entry capability is not tested end-to-end x402 compatibility. Wallet-owner proof of current end-to-end x402 compatibility remains unverified for Hana, HOT, Klever, and OneKey; Hana owner docs recommend Wallets Kit but do not establish that stronger claim.",
         "memberContentSha256": {
           "q-defi-x402-on-stellar-what": "7db2a172fc2b1e4d29dc67d4a9b19db6a4282c165641d5017042574e0e093a6d",
           "q-hist-x402-stellar-announcement": "ca26c13709468a5d5c0157951d268f1aef1f982ed316eb4f5cbdecb99e0385e7",
           "q-soroban-x402-auth-entry-signing": "2065b64f2debfc6237f0458928985f02fc1939313eb7d30dad6a11f7f14fed0c",
-          "q-x402-payment-verification": "52bbb38d8c8ba2408339cf26ce992080ee92f4d4c62d62a278a23afc9fb19f6f"
-        },
-        "reopened": {
-          "date": "2026-08-11",
-          "reason": "member-content-changed"
+          "q-x402-payment-verification": "195b7a68675c593f5a4ae5d0d24a07ac597e1a88f073700d873fd09fd0ecac21"
         }
       },
       {
@@ -3176,16 +3168,16 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "Archived-pointer repair preserved the 2026-07-13 person-content observation and added only its current canonical repository continuation; closed-world and open-world recovery boundaries are unchanged.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (snapshot-date batch 1): members q-builder-justin-rice-history changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
           "q-builder-content-by-person": "ddd30cf13b7d8b049b3e62fcc335cfb9bf223b6937d3fb4fc7adb6d246c4d68d",
-          "q-builder-justin-rice-history": "7ebc1f8beb22ea7347698b6b332b37bd635e82b67e7017467e58efd17e979974",
+          "q-builder-justin-rice-history": "de6a7c654c8675197f89eef39c18f2fa6ceff954a3b45186978754e9cb9d1b8d",
           "q-edge-closed-world-builder-directory-miss": "dfbfb41a8d5128bc8697c7a9e2549178e32d57bab617c55c1c34554f5ebee95b",
           "q-edge-lumenloop-person-entity-empty": "8fd57c5a935d1c21d49da72dcbe3d72e5b395f1ce52ea935c97dc799ebc41251",
           "q-edge-open-world-recovery-after-narrow-miss": "c4ee3baaa84587a6febe8d5427df3d4b2522048a9e377cbace298593e32b49bf",
