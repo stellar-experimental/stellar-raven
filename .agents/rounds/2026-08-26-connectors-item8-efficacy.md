@@ -19,10 +19,9 @@ Paid evaluation remains bounded by this ledger and its independent pre-spend rev
 ## Pinned state
 
 - Date: 2026-08-26.
-- Worktree: `/Users/kalepail/Desktop/sr-wt-connectors-item8`.
+- Worktree label: `sr-wt-connectors-item8`.
 - Branch: `audit/connectors-item8-20260826`.
 - Base revision: `e488c4fc6a4a44b01ee58f4276baf7cd4dde2f47`.
-- Source tree contained unrelated untracked research files. This worktree excludes them.
 - Manifest SHA-256: `b5e8c3214c08c2d7620439951d61d343959f677e6984d03420ede71f29978ed9`.
 - QA corpus SHA-256: `85a6b3d1b3c2d365908cab95bb8efb40cb27e3d5be214375cf659354348cabbb`.
 - QA sample SHA-256: `28c2f1ef76c8a5f332572f5d3e9e00be23e78ba3686ce231567419438043f3c0`.
@@ -256,7 +255,7 @@ Cost and call limits:
 - The runner has no working aggregate budget flag.
 - Wrapper path: `/tmp/connectors-item8-eval-bin/claude`.
 - Wrapper SHA-256: `6ff1e1663ba1f672723d75385be9d1f375d2d15757957f23847529e0c50b4ce5`.
-- Real Claude path: `/Users/kalepail/.local/bin/claude`.
+- Real Claude path: `$HOME/.local/bin/claude`.
 - Claude version: `2.1.246`.
 - Claude SHA-256: `7b09f01cb76a38e0e3a7c47c5d698d382162a5ff26538fc778683770caf9218b`.
 
@@ -321,6 +320,17 @@ Collection stop rules:
 - No judge call ran.
 - Both artifacts match the case hashes, source guard, model, prompt, and live surface pins.
 - No retry or rejudge occurred.
+
+Artifact preservation:
+
+- Cleanup restored the six gitignored result files from the 2026-08-27 17:21:53 local snapshot.
+- The files now live in the main checkout's local `eval/qa/results/` archive.
+- The restored A1 result hash matches `02ac68ae8607f9bdbecc0a558b902d16eb9b1710449a13abf94cef7240606de9`.
+- The restored A1 plan hash is `4d7bbc8f110e10f98958a1c43115dd4ddfe7baf5dd1d163ef6e2c219ff90f14f`.
+- The restored A1 composition hash is `0688a31759317a8678b583fe2d52e672a071193dc0b5f682d3deee5a8c0f91eb`.
+- The restored B1-1 result hash matches `3d40f8768a019175d6c0eabf20dba10f4e5e46250c46785adf7b2f59b42a1c9e`.
+- The restored B1-1 plan hash is `e37bb2dcdc8f313a682d51a39240e4915d50db1915bcfd79a9958931e2e6454d`.
+- The restored B1-1 composition hash is `ca8a596521fae3ab31a699a9e32191cf3a5a7b15d9da8fd2f3b8b09475903f0f`.
 
 First-pair mechanism review:
 
