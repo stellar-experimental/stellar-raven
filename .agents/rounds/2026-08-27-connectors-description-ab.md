@@ -111,6 +111,19 @@ The maximum task spend after this call is `$1.9886646`.
 - Manual qualification verdict: `PASS`.
 - No command rerun or paid retry occurred.
 
+### V5 post-collection review
+
+- Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed ledger commit: `ed3aef520553b6064b2d442f26094dda9243edec`.
+- Report: `/tmp/connectors-v5-qualification-review.md`.
+- Report SHA-256: `e868acf2f6466aed08d2f603a7930d33e4fedacb3c25eb21a169f56a2b6dba1b`.
+- Verdict: `QUALIFICATION-PASS`.
+- The reviewer independently recomputed the artifact and one-case hashes.
+- The reviewer joined the raw row to every golden key fact and avoid clause.
+- The reviewer confirmed the serialization repair stayed on `scout.getBuilders`.
+- The reviewer found no blocking issue.
+- The review made no paid call and does not authorize the next stage.
+
 ### V5 replacement qualification command — authorized once
 
 ```sh
