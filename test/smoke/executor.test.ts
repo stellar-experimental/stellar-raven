@@ -1087,6 +1087,8 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       const skill = await codemode.skill.read("skills.lumenloop.stellar-project-dossier");
       return {
         topHit: found.ok ? found.hits[0]?.id ?? null : null,
+        confidence: found.ok ? found.confidence : null,
+        recoveryMetadata: found.ok ? found.recoveryMetadata : null,
         allCallable: catalog.entries.every((e) => !("policy" in e)), // ADR-0003: no policy layer
         skillOk: skill.ok === true && skill.availableSections.length > 0
       };
@@ -1095,10 +1097,15 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     if (outcome.ok) {
       const parsed = JSON.parse(outcome.result) as {
         topHit: string | null;
+        confidence: { hitCount: number; topScoreGap: number | null } | null;
+        recoveryMetadata: { serviceFilterExcludedSkills: unknown[] } | null;
         allCallable: boolean;
         skillOk: boolean;
       };
       expect(parsed.topHit).toBe("lumenloop.search_directory");
+      expect(parsed.confidence?.hitCount).toBeGreaterThan(0);
+      expect(parsed.confidence?.topScoreGap).toBeGreaterThanOrEqual(0);
+      expect(parsed.recoveryMetadata?.serviceFilterExcludedSkills).toEqual([]);
       expect(parsed.allCallable).toBe(true);
       expect(parsed.skillOk).toBe(true);
       expect(outcome.evidenceSummary.kind).toBe("skill-content");

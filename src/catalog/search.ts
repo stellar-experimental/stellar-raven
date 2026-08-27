@@ -39,6 +39,7 @@ import {
   diversifyByService
 } from "./scoring.ts";
 import { tokenize } from "./vendor/search-scoring.ts";
+import { prepareAliasQuery, queryContainsAliasTrigger } from "./known-aliases.ts";
 import {
   jsonSchemaToType,
   sanitizeToolName,
@@ -130,6 +131,8 @@ export type SearchConfidence = {
   hitCount: number;
   /** Absolute score gap between the first two hits; null with fewer than two hits. */
   topScoreGap: number | null;
+  /** Tiers of the first two hits whose absolute score difference is reported. */
+  topScoreTiers: { first: SearchHit["tier"]; second: SearchHit["tier"] } | null;
 };
 
 export type SearchRecoveryMetadata = {
@@ -315,39 +318,7 @@ const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
  * failure is a build bug, not a runtime condition to soften.
  */
 export function loadManifest(json: unknown): Catalog {
-  const aliasProjection = z
-    .object({
-      entries: z.array(
-        z
-          .object({
-            id: z.string().min(1),
-            knownAliases: z.array(z.string().trim().min(1)).min(2).optional(),
-            knownAliasTriggers: z.array(z.string().trim().min(1)).min(1).optional()
-          })
-          .passthrough()
-      )
-    })
-    .passthrough()
-    .parse(json);
-  const catalog = refinedCatalogSchema.parse(json);
-  const aliasesById = new Map(
-    aliasProjection.entries
-      .filter((entry) => entry.knownAliases !== undefined)
-      .map((entry) => [entry.id, entry.knownAliases!] as const)
-  );
-  const aliasTriggersById = new Map(
-    aliasProjection.entries
-      .filter((entry) => entry.knownAliasTriggers !== undefined)
-      .map((entry) => [entry.id, entry.knownAliasTriggers!] as const)
-  );
-  return {
-    ...catalog,
-    entries: catalog.entries.map((entry) => {
-      const knownAliases = aliasesById.get(entry.id);
-      const knownAliasTriggers = aliasTriggersById.get(entry.id);
-      return knownAliases ? { ...entry, knownAliases, knownAliasTriggers } : entry;
-    })
-  } as Catalog;
+  return refinedCatalogSchema.parse(json);
 }
 
 /** Last id segment (after the final "."), used as the high-weight name field. */
@@ -355,19 +326,12 @@ function entryName(entry: CatalogEntry): string {
   return lastIdSegment(entry.id);
 }
 
-type AliasCatalogEntry = CatalogEntry & {
-  knownAliases?: readonly string[];
-  knownAliasTriggers?: readonly string[];
-};
-
-function entryScoringName(entry: CatalogEntry, query: string): string {
-  const aliasEntry = entry as AliasCatalogEntry;
-  const queryTokens = new Set(tokenize(query));
-  const triggered = aliasEntry.knownAliasTriggers?.some((trigger) =>
-    tokenize(trigger).some((token) => queryTokens.has(token))
+function entryScoringName(entry: CatalogEntry, queryTokens: readonly string[]): string {
+  const triggered = entry.knownAliasTriggers?.some((trigger) =>
+    queryContainsAliasTrigger(queryTokens, trigger)
   );
-  return triggered && aliasEntry.knownAliases?.length
-    ? `${entryName(entry)} ${aliasEntry.knownAliases.flatMap(tokenize).filter((token) => !STOPWORDS.has(token)).join(" ")}`
+  return triggered && entry.knownAliases?.length
+    ? `${entryName(entry)} ${entry.knownAliases.flatMap(tokenize).filter((token) => !STOPWORDS.has(token)).join(" ")}`
     : entryName(entry);
 }
 
@@ -537,6 +501,7 @@ function scoreCandidates(
   scoreFn: typeof scoreEntryWeighted
 ): { entry: CatalogEntry; score: number }[] {
   const scored: { entry: CatalogEntry; score: number }[] = [];
+  const aliasQueryTokens = prepareAliasQuery(opts.query);
   for (const entry of catalog.entries) {
     // Search-visibility seam (skills-form arms): searchable:false entries are
     // exposed (exact-id describe/read/run) but never scored or counted here.
@@ -546,7 +511,7 @@ function scoreCandidates(
     const score = scoreFn(
       {
         id: entry.id,
-        name: entryScoringName(entry, opts.query),
+        name: entryScoringName(entry, aliasQueryTokens),
         service: entry.service,
         kind: entry.kind,
         description: entry.description,
@@ -709,7 +674,8 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     widerCandidates: deriveWiderCandidates(catalog, hits, opts),
     confidence: {
       hitCount: hits.length,
-      topScoreGap: hits.length >= 2 ? hits[0]!.score - hits[1]!.score : null
+      topScoreGap: hits.length >= 2 ? Math.abs(hits[0]!.score - hits[1]!.score) : null,
+      topScoreTiers: hits.length >= 2 ? { first: hits[0]!.tier, second: hits[1]!.tier } : null
     },
     recoveryMetadata
   };
@@ -728,6 +694,7 @@ function deriveServiceFilterExcludedSkillAdvisories(
   ) {
     return [];
   }
+  // This bounded second pass cannot recurse because its service is "skills".
   const skillsPage = searchCatalogPage(catalog, {
     query: opts.query,
     kind: "skill",

@@ -23,6 +23,16 @@ import { MICRO_MAP } from "../src/mcp/micro-map.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = join(ROOT, "catalog", "manifest.json");
+const VALID_ALIAS_RECEIPTS = [
+  {
+    path: "research/qa-deep-dive-2026-08-25/receipts/wisdomtree-live-sources.json",
+    sha256: "49df01cdaaf1368881dd643ff53c93d2fa238bfa39fb7eaa6d4efea4eb8bedb6"
+  },
+  {
+    path: "research/qa-deep-dive-2026-08-25/receipts/wisdomtree-toml.txt",
+    sha256: "773b534176e3a9b7bdc9671568226d15978192fed4914725d786534a8168c156"
+  }
+] as const;
 
 function runBuilder(): string {
   execFileSync(process.execPath, [join(ROOT, "scripts", "build-catalog.mjs")], {
@@ -73,19 +83,19 @@ describe("build-catalog.mjs", () => {
 
   it("attaches only the receipt-backed WisdomTree entity alias pack", () => {
     const aliased = catalog.entries.filter(
-      (entry) => (entry as typeof entry & { knownAliases?: string[] }).knownAliases
+      (entry) => entry.knownAliases
     );
     expect(aliased.map((entry) => entry.id)).toEqual([
       "lumenloop.find_content_by_entity"
     ]);
     for (const entry of aliased) {
-      expect((entry as typeof entry & { knownAliases: string[] }).knownAliases).toEqual([
+      expect(entry.knownAliases).toEqual([
         "CRDT",
         "CRDYX",
         "WisdomTree Private Credit and Alternative Income Digital Fund",
         "WisdomTree Private Credit"
       ]);
-      expect((entry as typeof entry & { knownAliasTriggers: string[] }).knownAliasTriggers).toEqual([
+      expect(entry.knownAliasTriggers).toEqual([
         "CRDT",
         "CRDYX",
         "WisdomTree"
@@ -93,7 +103,7 @@ describe("build-catalog.mjs", () => {
     }
   });
 
-  it("fails loud on unproven or orphaned alias packs", () => {
+  it("rejects invalid alias provenance, generic triggers, and orphaned targets", () => {
     const entries = catalog.entries;
     expect(() => attachKnownAliases(entries, [{
       provenance: [],
@@ -102,11 +112,49 @@ describe("build-catalog.mjs", () => {
       entryIds: ["lumenloop.search_directory"]
     }])).toThrow(/no receipt provenance/);
     expect(() => attachKnownAliases(entries, [{
-      provenance: ["research/receipt.txt"],
+      provenance: [null],
+      aliases: ["one", "two"],
+      triggers: ["one"],
+      entryIds: ["lumenloop.search_directory"]
+    }])).toThrow(/receipt objects/);
+    expect(() => attachKnownAliases(entries, [{
+      provenance: [{ path: "research/does-not-exist.txt" }],
+      aliases: ["one", "two"],
+      triggers: ["one"],
+      entryIds: ["lumenloop.search_directory"]
+    }])).toThrow(/does not exist/);
+    expect(() => attachKnownAliases(entries, [{
+      provenance: [{ path: "node_modules/.package-lock.json" }],
+      aliases: ["one", "two"],
+      triggers: ["one"],
+      entryIds: ["lumenloop.search_directory"]
+    }])).toThrow(/not checked in/);
+    expect(() => attachKnownAliases(entries, [{
+      provenance: [{ ...VALID_ALIAS_RECEIPTS[0], sha256: "0".repeat(64) }],
+      aliases: ["one", "two"],
+      triggers: ["one"],
+      entryIds: ["lumenloop.search_directory"]
+    }])).toThrow(/SHA-256 does not match/);
+    for (const trigger of ["private credit", "credit card", "CreditCard", "creditcard", "the and"]) {
+      expect(() => attachKnownAliases(entries, [{
+        provenance: VALID_ALIAS_RECEIPTS,
+        aliases: ["one", "two"],
+        triggers: [trigger],
+        entryIds: ["lumenloop.search_directory"]
+      }]), trigger).toThrow(/generic multi-word sequence/);
+    }
+    expect(() => attachKnownAliases(entries, [{
+      provenance: VALID_ALIAS_RECEIPTS,
       aliases: ["one", "two"],
       triggers: ["one"],
       entryIds: ["lumenloop.not_exposed"]
     }])).toThrow(/non-exposed catalog entry/);
+  });
+
+  it("rejects unpaired canonical alias fields", () => {
+    const rawCatalog = JSON.parse(raw) as { entries: Array<Record<string, unknown>> };
+    rawCatalog.entries[0]!.knownAliases = ["one", "two"];
+    expect(() => loadManifest(rawCatalog)).toThrow(/must appear together/);
   });
 
   it("attaches only exact, exposed operation recovery edges", () => {

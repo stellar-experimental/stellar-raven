@@ -855,10 +855,33 @@ describe("search behavior (host-side ranked)", () => {
     const structured = result.structuredContent as {
       hits: Array<{ id: string; tier: string }>;
       widerCandidates: Array<{ id: string; lane: string; basis: string }>;
+      confidence: { hitCount: number; topScoreGap: number | null; topScoreTiers: unknown };
+      recoveryMetadata: { serviceFilterExcludedSkills: unknown[] };
       nextSteps: string;
     };
     expect(structured.hits[0]).toMatchObject({ id: "scout.getPeople", tier: "gated" });
     expect(structured.widerCandidates).toEqual([]);
+    expect(structured.confidence.hitCount).toBe(structured.hits.length);
+    expect(structured.confidence.topScoreGap).toBeGreaterThanOrEqual(0);
+    expect(structured.recoveryMetadata.serviceFilterExcludedSkills).toEqual([]);
+  });
+
+  it("surfaces service-filter recovery metadata through the MCP search response", async () => {
+    const result = await client.callTool({
+      name: "search",
+      arguments: { query: "agentic payments MPP", service: "lumenloop", limit: 5 }
+    });
+    const structured = result.structuredContent as {
+      recoveryMetadata: { serviceFilterExcludedSkills: Array<{ id: string; basis: string }> };
+    };
+    expect(structured.recoveryMetadata.serviceFilterExcludedSkills).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "skills.stellar-dev.agentic-payments",
+          basis: "service-filter-excluded-skill"
+        })
+      ])
+    );
   });
 
   it("keeps hit-aware guidance on all-backfill pages with wider candidates", async () => {

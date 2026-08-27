@@ -17,14 +17,16 @@
  * (catalogSchema) in test/catalog.test.ts; this script stays plain JS so it
  * runs with `node` alone.
  */
-import { readFileSync, mkdirSync } from "node:fs";
-import { join, dirname, resolve } from "node:path";
+import { readFileSync, mkdirSync, statSync } from "node:fs";
+import { join, dirname, resolve, relative, isAbsolute } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 // Loaded via native type stripping (Node >= 23.6) — the same way
 // eval/run-routing.mjs imports src/catalog/search.ts. Still zero deps.
 import { extractKeywords } from "../src/catalog/extract-keywords.ts";
 import { tokenize } from "../src/catalog/vendor/search-scoring.ts";
+import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
 // The runnable-skill allowlist-as-data (research/skill-run-design.md §2/§5):
 // the SAME registry the runtime dispatch and the super-spec emitter consume,
 // so the exposed runnable surface cannot drift between emitters.
@@ -176,11 +178,22 @@ export function attachKnownAliases(entries, packs = KNOWN_ALIAS_PACKS) {
     if (!Array.isArray(pack.provenance) || pack.provenance.length === 0) {
       throw new Error("known alias pack has no receipt provenance");
     }
+    for (const receipt of pack.provenance) validateAliasReceipt(receipt);
     if (!Array.isArray(pack.aliases) || pack.aliases.length < 2) {
       throw new Error("known alias pack must contain at least two entity identities");
     }
     if (!Array.isArray(pack.triggers) || pack.triggers.length === 0) {
       throw new Error("known alias pack must contain at least one distinctive trigger");
+    }
+    for (const trigger of pack.triggers) {
+      if (typeof trigger !== "string" || !trigger.trim()) {
+        throw new Error("known alias pack contains an empty trigger");
+      }
+      if (isGenericAliasTrigger(trigger)) {
+        throw new Error(
+          `known alias trigger ${JSON.stringify(trigger)} is a generic multi-word sequence`
+        );
+      }
     }
     if (!Array.isArray(pack.entryIds) || pack.entryIds.length === 0) {
       throw new Error("known alias pack must target at least one catalog entry");
@@ -209,6 +222,47 @@ export function attachKnownAliases(entries, packs = KNOWN_ALIAS_PACKS) {
       ? { ...entry, knownAliases: [...aliases], knownAliasTriggers: [...triggersById.get(entry.id)] }
       : entry;
   });
+}
+
+function validateAliasReceipt(receipt) {
+  if (!receipt || typeof receipt !== "object" || Array.isArray(receipt)) {
+    throw new Error("known alias provenance must contain receipt objects");
+  }
+  const receiptPath = receipt.path;
+  if (typeof receiptPath !== "string" || !receiptPath.trim() || isAbsolute(receiptPath)) {
+    throw new Error("known alias provenance path must be repository-relative");
+  }
+  const absolutePath = resolve(ROOT, receiptPath);
+  const fromRoot = relative(ROOT, absolutePath);
+  if (!fromRoot || fromRoot.startsWith("..") || isAbsolute(fromRoot)) {
+    throw new Error(
+      `known alias provenance path escapes the repository: ${JSON.stringify(receiptPath)}`
+    );
+  }
+  try {
+    if (!statSync(absolutePath).isFile()) throw new Error("not a file");
+  } catch {
+    throw new Error(`known alias provenance file does not exist: ${JSON.stringify(receiptPath)}`);
+  }
+  try {
+    execFileSync("git", ["ls-files", "--error-unmatch", "--", receiptPath], {
+      cwd: ROOT,
+      stdio: "ignore"
+    });
+  } catch {
+    throw new Error(`known alias provenance file is not checked in: ${JSON.stringify(receiptPath)}`);
+  }
+  if (receipt.sha256 !== undefined) {
+    if (typeof receipt.sha256 !== "string" || !/^[0-9a-f]{64}$/.test(receipt.sha256)) {
+      throw new Error(
+        `known alias provenance has an invalid SHA-256: ${JSON.stringify(receiptPath)}`
+      );
+    }
+    const actual = createHash("sha256").update(readFileSync(absolutePath)).digest("hex");
+    if (actual !== receipt.sha256) {
+      throw new Error(`known alias provenance SHA-256 does not match: ${JSON.stringify(receiptPath)}`);
+    }
+  }
 }
 
 /**

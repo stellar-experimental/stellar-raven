@@ -653,11 +653,11 @@ function buildSkillsPaths(skillIndex, runnableIndex) {
         responses: {
           200: {
             description:
-              "{ ok: true, hits: [{ id, service, kind, score, tier, description }], total, truncated } or " +
+              "{ ok: true, hits: [{ id, service, kind, score, tier, description }], total, truncated, confidence, recoveryMetadata } or " +
               "{ ok: false, error } (an unknown kind/service filter value is rejected with the valid names — " +
               "filters are exact-match). Each hit's tier is \"gated\" (strict primary scorer) or \"backfill\" " +
               "(gate-relaxed page fill). Scores share one scale; gated hits lead except a backfill hit may be " +
-              "promoted when it decisively dominates (>=1.6x), so hit order is authoritative. " +
+              "promoted when it decisively dominates (>=1.6x), so hit order is authoritative. confidence reports hit count, the absolute top-two score gap, and both tiers. recoveryMetadata reports relevant skills excluded only by a service filter. " +
               "truncated: true means more entries matched (total) than returned — raise limit, try a different family, or vary vocabulary."
           }
         },
