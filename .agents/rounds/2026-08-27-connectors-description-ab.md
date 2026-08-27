@@ -590,3 +590,31 @@ These verdicts and hashes preserve the local review results in this ledger.
 
 No product A/B call ran under the stopped v4 method.
 The v5 first pair now has the separate bounded authorization recorded above.
+
+## Outcome
+
+The v5 treatment qualification passed. The first raw pair then produced eight complete and
+comparable rows per arm. No judge, retry, replication, or method rerun occurred.
+
+- Verdict: `FIRST-PAIR-BLOCK`; reject the treatment candidate.
+- Treatment A1: `2026-08-27T18-50-04-variantA.json`, SHA-256
+  `fc2cc5424a45a35c43f96ee7a76349970eb068876f18fe6904e82654cd233665`.
+- Control B1: `2026-08-27T18-59-44-variantA.json`, SHA-256
+  `78170de4d3879d3a54d248309337500be58b40bb79b4e2bf58238a0c5cf2a295`.
+- First-pair cost: `$4.6188030`; total task spend: `$4.9673564`.
+- Treatment regressions: missing MoneyGram Docs evidence, skipped indexer prior art, and a frozen
+  escrow dispute lifecycle.
+- Shared upstream defect: `sls-076`, reported as
+  `https://github.com/Stellar-Light/stellarlight/issues/1055`.
+- Independent raw review: `FIRST-PAIR-BLOCK`, report SHA-256
+  `244f545c64b18e26a1c8f6e3dc8b964e77f42b61bc68a38be2bcf5488a5c50de`.
+- Independent closeout review: `CLOSEOUT-OK`, report SHA-256
+  `6bace3c29f676813d34597e7fba20862f73cd1bf6ec804eb917deb1d0c68e1fb`.
+- First-pair record: `https://github.com/stellar-experimental/stellar-raven/pull/77`, merged as
+  `23dd74375b06a3b0358a22a5cddb7e19878cf806`.
+- Upstream filing record: `https://github.com/stellar-experimental/stellar-raven/pull/78`, merged as
+  `16f9c6719b16e81499e4bde7dc7f38174f41161e`.
+
+Every failure was triaged. The rejected treatment needs no own-repository follow-up.
+The shared Scout defect was verified, committed, filed, and read back.
+The relevant checks and improvements lints passed. Port `8792` is free.
