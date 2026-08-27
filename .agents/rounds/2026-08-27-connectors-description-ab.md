@@ -151,8 +151,9 @@ The maximum task spend after this call is `$1.9886646`.
 - Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
 - Reviewed ledger commit: `8d9cfb3cd7b14f68a3eea12af127707b129a86f2`.
 - Report: `/tmp/connectors-v5-first-pair-launch-review.md`.
-- Report SHA-256: `bd67f19dd446999bbc7a3dfdd120f7ca5b32d28d4a53d4a244d900f4f24af298`.
+- Report SHA-256: `81b7650bd64f87086bad501c27b8228eca943591c60ed39f2533b7d218d5fb1c`.
 - Verdict: `FIRST-PAIR-LAUNCH-OK`.
+- Reconciliation commit: `5a5824fcd2078a84fd43f9124bb9622d51413c8f`.
 - The stale ledger wording and missing wrapper checks are corrected below.
 - No paid call occurred during this review.
 
@@ -192,7 +193,7 @@ node eval/qa/run-qa.mjs --variant A \
   --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
 ```
 
-### V5 replacement qualification command — authorized once
+### V5 replacement qualification command — spent once
 
 ```sh
 export PATH="/tmp/connectors-contract-eval-bin:$PATH"
