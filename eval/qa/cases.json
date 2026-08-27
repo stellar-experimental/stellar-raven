@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "ddeddcffdca21ceb7d77a278433bdf11556cc9c8310243fd988a49f3cf499552",
+  "corpusContentSha256": "1d6716af02b558430a663098121542760d371552db00febc974500eb5404b252",
   "counts": {
     "total": 499,
     "byCategory": {
@@ -21966,7 +21966,7 @@
         "answer": "WebAuthn's web API needs a secure context, but native apps can use platform credential or passkey APIs. Credentials are scoped to an RP ID rather than an exact page URL; validate RP ID and origin, account for permitted subdomain or related-origin designs, and bind any wallet/dApp handoff challenge to the intended Stellar authorization. Apple and Google providers support synchronized passkeys, but sync versus device-bound behavior is provider-specific. Mozilla's current Sync data-type list does not list passkeys, while Firefox may delegate to an OS/provider, so 'Firefox-local' is not a valid blanket rule. Explicit recovery remains necessary.",
         "keyFacts": [
           "Maps WebAuthn web APIs to secure context; native apps to platform credential/passkey APIs.",
-          "Tests RP ID/origin, related-origin/subdomain designs and Stellar-bound handoff challenges.",
+          "Checks RP ID, origin, and related-origin rules; binds handoffs to Stellar authorization.",
           "Reports Apple/Google synced passkeys with provider-specific sync/device-bound behavior.",
           "Reports no current Mozilla Sync passkey data type; Firefox may delegate to an OS/provider.",
           "Cross-device uncertainty requires an explicit recovery path."
@@ -21991,6 +21991,10 @@
           {
             "class": "A",
             "ref": "https://www.w3.org/TR/webauthn-3/"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/passkey-kit/tree/244e30adeee999884172111b55da439089ecdfce"
           },
           {
             "class": "A",
@@ -22055,6 +22059,11 @@
                 "class": "D",
                 "ref": "https://support.mozilla.org/kb/how-do-i-set-sync-my-computer",
                 "observedAt": "2026-07-11"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/passkey-kit/tree/244e30adeee999884172111b55da439089ecdfce",
+                "observedAt": "2026-08-27"
               }
             ]
           },
@@ -22191,21 +22200,25 @@
         ],
         "verified": {
           "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "by": "PR #81 late-review correction, independently checked against WebAuthn and passkey-kit sources",
           "evidence": [
+            "https://github.com/stellar-experimental/stellar-raven/pull/81#discussion_r3875968524",
             "https://www.w3.org/TR/webauthn-3/",
             "https://developer.apple.com/passkeys/",
             "https://developers.google.com/identity/passkeys/supported-environments",
             "https://support.mozilla.org/kb/how-do-i-set-sync-my-computer",
-            "Structural re-form (compound-predicate): Recast four platform constraints as atomic single-predicate facts; the recovery fact and truth are unchanged.",
+            "https://github.com/stellar/passkey-kit/tree/244e30adeee999884172111b55da439089ecdfce",
+            "Structural re-form 2026-08-27: Reworded the unclear fact while preserving RP ID, origin, and Stellar authorization requirements.",
             "Live re-check 2026-08-27: https://www.w3.org/TR/webauthn-3/ — WebAuthn remains secure-context scoped and still permits different native-platform RP binding rules.",
             "Live re-check 2026-08-27: https://www.w3.org/TR/webauthn-3/ — the specification still defines RP ID/origin validation, related origins, and credential scoping for handoff checks.",
             "Live re-check 2026-08-27: https://developer.apple.com/passkeys/ and https://developers.google.com/identity/passkeys/supported-environments — provider-specific synchronized and device-bound passkey behavior remains documented.",
             "Live re-check 2026-08-27: https://support.mozilla.org/en-US/kb/how-do-i-set-sync-my-computer — Mozilla's current Sync data-type page still does not list passkeys.",
-            "Sibling sweep 2026-08-27: grep WebAuthn|passkey|related-origin|Mozilla Sync → q-infra-secp256r1-passkeys, q-passkey-smart-account-architecture, q-passkey-wallet-recovery; no contradiction"
+            "Sibling sweep 2026-08-27: q-infra-secp256r1-passkeys, q-passkey-smart-account-architecture, q-passkey-wallet-recovery, q-soroban-check-auth-custom-account, q-soroban-add-signer-smart-wallet-howto, q-tool-passkeykit-smart-wallet, and q-tool-passkey-wallet-recovery; no contradiction"
           ],
           "rootCause": [
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            "PR #81 review found unclear grammar in a compound grading fact."
           ]
         },
         "origin": "kaan passkey-wallet-constraints"
@@ -29093,7 +29106,8 @@
       "golden": {
         "answer": "No. A cryptographic hash is one-way: it is not a backup from which the original secret key can be recovered. Encrypted ciphertext is different: it is recoverable only with the separate decryption key or password and the correct scheme; putting ciphertext on-chain makes it public and permanent, so weak-password and offline-guessing risk remains. Publishing a raw secret key on-chain is unsafe, and a database or password manager only helps if it stores a properly protected backup that you can actually recover; it does not create a network-level reset option. Use the wallet's documented recovery/backup design, keep recovery material private, and test your backup process before relying on it. Do not send a secret key or its recovery phrase to anyone offering recovery help.",
         "keyFacts": [
-          "States that a hash cannot be reversed to recover the secret key."
+          "States that a hash cannot be reversed to recover the secret key.",
+          "States that Stellar has no network-level reset for a lost secret key."
         ],
         "avoid": [
           "Do NOT say an on-chain key hash enables recovery.",
@@ -29127,6 +29141,14 @@
           {
             "class": "D",
             "ref": "https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md"
           }
         ],
         "corroboration": [
@@ -29161,27 +29183,41 @@
                 "observedAt": "2026-07-11"
               }
             ]
+          },
+          {
+            "claim": "Stellar has no network-level reset for a lost secret key; recovery requires an existing backup or a preconfigured signer path.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig",
+                "observedAt": "2026-08-27"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
+                "observedAt": "2026-08-27"
+              }
+            ]
           }
         ],
         "verified": {
           "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "by": "PR #81 late-review correction, independently checked against protocol and recovery sources",
           "evidence": [
-            "solo://proj/49/process/3415",
-            "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "https://github.com/stellar-experimental/stellar-raven/pull/81#discussion_r3875968441",
             "https://stellar.org/blog/developers/key-management-101",
-            "https://github.com/stellar/java-stellar-sdk/blob/master/src/main/java/org/stellar/sdk/KeyPair.java",
+            "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig",
+            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
             "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
             "https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html",
-            "Structural re-form (negative-predicate): Moved the false network-reset promise from keyFacts to a concrete avoid item; truth unchanged",
-            "Live re-check 2026-08-27: https://stellar.org/blog/developers/key-management-101 — Stellar key recovery depended on wallet key-management and backup design, not a network-level secret-key reset.",
-            "Sibling sweep 2026-08-27: grep key reset|secret key recovery|key hash → q-aas-sep30-recoverable-wallets, q-n3-generate-secret-key-refusal, q-raph-restore-wallet, q-ti-secret-key-vs-mnemonic-derivation; no contradiction"
+            "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig — recovery requires retained material or an authority configured before key loss; a hash cannot reset a key.",
+            "Sibling sweep 2026-08-27: q-aas-sep30-recoverable-wallets, q-pc-multisig-setup-lifecycle, q-passkey-wallet-recovery, q-tool-passkey-wallet-recovery, q-soroban-add-signer-smart-wallet-howto, q-raph-restore-wallet, q-ti-secret-key-vs-mnemonic-derivation, q-raph-stolen-wallet-recovery, and q-n3-generate-secret-key-refusal; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            "PR #81 review found that the positive grading requirement was removed during a negative-predicate cleanup."
           ]
         },
         "origin": "raph secret-key-storage-and-hash-recovery"

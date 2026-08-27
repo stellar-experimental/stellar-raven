@@ -177,6 +177,16 @@ All lanes read-only against the repository except their own report file.
   Pull request: stellar-experimental/stellar-raven#75. Golden-truth crew
   session 2 in progress (negative-predicate class closed per program log;
   compound-predicate class underway; 6-hour stop-point declared).
+- `2026-08-27T22:50Z` — two comments filed at 21:21Z, two minutes after PR #81
+  merged at 21:19Z, received late corrections in substantive commit `cf68ca6`:
+  `r3875968441` restored the positive network-reset
+  grading requirement in `q-raph-secret-key-hash-recovery`, and `r3875968524`
+  clarified the RP ID/origin fact in `q-passkey-platform-constraints`. A Grok 4.6
+  high Spec review found one lost related-origin requirement; the follow-up restored
+  it. A Claude Opus 5 high Standards review found six provenance, duplication, and
+  ledger defects; the follow-up repaired all six. Corpus lint stayed at 0 errors and
+  475 warnings. Compile output, the consistency register, baseline tests, build,
+  secret scan, and both independent review axes passed before the follow-up PR.
 - `2026-08-27T23:35Z` — golden-truth crew session 2 complete (owner Fable; 3 Sol
   workers + Grok reviewer; 58 worker prompts). Branch
   `lane/golden-truth-burndown-2-20260827` (stacked on the round-2 branch):
