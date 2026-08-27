@@ -14,13 +14,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-eco-stellar-rwa-stablecoin-volume changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-eco-stellar-rwa-stablecoin-volume changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "resolved by provenance-bearing overrides on 2026-07-03; retained as historical contradiction evidence and rechecked in the 2026-07-09 corpus-health sweep",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "62473233a43096cd407d20d6683b7cbe54f32759a3888251db95dbe1cf83c9c0",
-          "q-eco-stellar-rwa-stablecoin-volume": "d4aa7ca19277f7ac4508b5e94100ae545c8525a3f9b1480426e326d4382f3ec6"
+          "q-eco-stellar-rwa-stablecoin-volume": "17c570590dcc1ce3ca0328b19c0cde7354bceb8042069132518ebe408ef2dbe1"
         }
       },
       {
@@ -34,13 +34,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-hist-remittance-corridors changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-hist-remittance-corridors changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-crp-anchors-by-corridor": "28479e5d8761a65ea84f0bf37cb53bf425ad85127e0ace331b8459d33fee92aa",
-          "q-hist-remittance-corridors": "26eca93b85ac33ea9503bae2e83e35c16dc87dc1937409505d74c40ebc9be8ae"
+          "q-hist-remittance-corridors": "a3c7a2d0bf027ffe3e05487060d643ab50fe78989886ee9880b9275e65813019"
         }
       },
       {
@@ -51,16 +51,16 @@
           "q-rwa-projects-tokenizing-stellar"
         ],
         "verdict": "tension",
-        "lastChecked": "2026-07-11",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-11",
-          "reason": "P4 member absorbed or replaced; survivor claims rechecked",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-rwa-projects-tokenizing-stellar changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"tension\" stands.",
           "verdict": "tension"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-defi-benji-franklin-templeton": "4013b5d48f17b52495c9c282db319e6a97e3442d04fe30c1b4d7557e61967a4b",
-          "q-rwa-projects-tokenizing-stellar": "485df7eb0211a7bf2f6a3493d7a5907fa99bb4bbcd803cf232a90c0329364043"
+          "q-rwa-projects-tokenizing-stellar": "46c0eae9cbf2b5f86c049b3ec39f0c88413f448af0046a80b8692f4b40cf8982"
         }
       },
       {
@@ -89,13 +89,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-scf-funding-by-category changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"tension\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-funding-by-category changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"tension\" stands.",
           "verdict": "tension"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-eco-defi-market-map": "0b8e5c99627f1c90a4299d14485d192750ec313a1d72e70e78f4e9361432da3a",
-          "q-scf-funding-by-category": "6af745c9591b80fe231e7dc761a430ba7b8157041577583cdcf60d57ab39ebdf"
+          "q-scf-funding-by-category": "52158b19d75bf63ce7fb0b58511fa2680c2adc0c7108cf56ef936ff54d990440"
         }
       },
       {
@@ -109,13 +109,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-eco-lobstr-wallet, q-eco-stellar-wallets-list changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"tension\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-eco-lobstr-wallet, q-eco-stellar-wallets-list changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"tension\" stands.",
           "verdict": "tension"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
-          "q-eco-lobstr-wallet": "11d0da539c98b60544def178bbfb58daef450715c53a604be5c697a67cd739ba",
-          "q-eco-stellar-wallets-list": "d4ea6de4ce62e8fd748287d78f3d1cc5db070ad8a3528710fb962abed43c0874"
+          "q-eco-lobstr-wallet": "2b828b060a24ea7ecf106160b51e49ad14cd25f41ac2feae6324b2a636a49d5c",
+          "q-eco-stellar-wallets-list": "5332ed2cf70123290886e3173efa00c94676a7f90211c2b5eab49e052149e0a7"
         }
       },
       {
@@ -143,17 +143,17 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-bn254-poseidon-xray changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-hist-soroban-launch-protocol20, q-pc-protocol-upgrade-timing, q-protocol-23-whisk-caps changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "0c7f2cf1a6afb878e347f69066c7963342f49803711387bd6a0eaa8c3667c25e",
           "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
-          "q-hist-soroban-launch-protocol20": "84b2553a92c0e1be6aadb90a623d02a6b16c3abebecb2101df6e45bbfd6aa79a",
+          "q-hist-soroban-launch-protocol20": "0b526952822cbeea6e22108217e8596d92f68699a723f9249cc17a21a75d2ca0",
           "q-infra-secp256r1-passkeys": "b6b88399a7b9f11733b5570eebe7c98adab9aa223f3ac8e9540a1c6f709120ff",
-          "q-pc-protocol-upgrade-timing": "b00553a8fc855f5bc3975438e2aea096127ed1b404ae3e6d2c2968cc7db8b7db",
-          "q-protocol-23-whisk-caps": "06d3060bc86235dadcf1606821dcadd93a97fcd47905d9603f8689ac0745cce5",
+          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
+          "q-protocol-23-whisk-caps": "01d9ad127a672301eb7fb38df44475a25ecf89e1d66e98c07951ba71826edbc8",
           "q-protocol-24-whisk-incident": "ab20fc1e57bac81dc235394042b073a7bdc509ecf02b15e0fcbf3051d83ebf6b",
           "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
           "q-protocol-amm-cap-0038": "43fb785cf05f8436cd71f9287dad88d0ec3b7eeefc56febb7f306e104c88a78e",
@@ -195,10 +195,10 @@
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Implemented/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "0c7f2cf1a6afb878e347f69066c7963342f49803711387bd6a0eaa8c3667c25e",
-          "q-comp-clawback-holder-risk": "35de6b3c1352355daf670a1eaf7fff660911168e06b68d34b35138e8590392a8",
+          "q-comp-clawback-holder-risk": "13b112d7a0ba83c41940234a44ffbb0ff568ad2f6fa97033cf66d2659f8494ea",
           "q-edge-factcheck-soroswap-first-amm": "fd9baa4e2cd3077dc0d948c8fcac79907dc70af1c4794937d131fde0b7f2662a",
           "q-infra-secp256r1-passkeys": "b6b88399a7b9f11733b5570eebe7c98adab9aa223f3ac8e9540a1c6f709120ff",
-          "q-protocol-23-whisk-caps": "06d3060bc86235dadcf1606821dcadd93a97fcd47905d9603f8689ac0745cce5",
+          "q-protocol-23-whisk-caps": "01d9ad127a672301eb7fb38df44475a25ecf89e1d66e98c07951ba71826edbc8",
           "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
           "q-protocol-bls12-381-cap59": "d4bc4977e5484b4f97ca70b3485fb903688ca9818762b366c6995e22dbfed8e6",
           "q-protocol-bn254-poseidon-xray": "df7ae3f7c688cd5d36678153c0ee91552f57323023961fbaa877fb3848ea11bf",
@@ -207,7 +207,11 @@
           "q-sor-contract-trustlines-c-address": "e89a7f3dc71cb6b24ba93e21f71b6dac7e6d1bd7c5967ab5012dcd36992ad184",
           "q-soroban-auth-delegation-p27": "3428b9c18c52c359ec6c24b161b7a846711b8b3ea7ca2535fba09dd37bcae012",
           "q-soroban-constructor-lifecycle": "93f786a9e51fd8ceac58b997005c45e1d7cd933180d6ab0118b3975fe4a35582",
-          "q-ti-rpc-gettransactions-pagination-xdr": "3bccc74fa5276819f61dd733ca843db9b470bebf6d4d46f5d77980de509edec6"
+          "q-ti-rpc-gettransactions-pagination-xdr": "b2f1b481a188b6019a9ae633fb1639180c29802261aa7328b09671927089aae8"
+        },
+        "reopened": {
+          "date": "2026-08-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -304,7 +308,7 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-scf-regional-india, q-scf-total-distributed changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-hackathons-active, q-scf-how-to-apply, q-scf-nqg-voting, q-scf-open-rfps, q-scf-rfp-tooling, q-scf-vs-sdf-enterprise-fund changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
@@ -315,17 +319,17 @@
           "q-scf-audit-bank": "eafff8d4f82f024e59dd59a56d50d5b3472ea9cff31896773c2ec207bd7b1832",
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
           "q-scf-current-round": "265a0187e1352f77d40bded191773879283952c417411c80af503540e6ee5a9a",
-          "q-scf-hackathons-active": "67d54e68f5e839b863b03f4d293f0cbe90ca1328f94de31905500250390b7cfb",
-          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
+          "q-scf-hackathons-active": "89506b8afc08eb7a720a48e212e36dc790a462227b83ddf3c379de343f04a545",
+          "q-scf-how-to-apply": "ac2d60ad96be7a7b6a4cc9eb914d7934c9c34403cb0adeb12667b4ce498b30f3",
           "q-scf-instawards": "de0cc5be7ed0e01f5c6d5752fd7c2384069cbd5f2312a42b26297fe17a2a1d84",
-          "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
-          "q-scf-open-rfps": "df13084cf7a22d85210863d97c220f6504aa212170094f21c13f842f3fe5d209",
+          "q-scf-nqg-voting": "a88c1897d0118da3e1d460fb02277db23836e73a69da3f1d9a9d5c18d7672177",
+          "q-scf-open-rfps": "75f744214fd07ddb42b5f7cd56d664f28c04c938cae46a6f51378fc762ee6530",
           "q-scf-regional-india": "9baa27010cd06f0854224dade3531a6d6fb87edb595ef26ab29f65542d6d116c",
-          "q-scf-rfp-tooling": "b87afd0e8c875b547e8deeb39957e07fe5d948538144fcbe10be6e0a18675b42",
+          "q-scf-rfp-tooling": "d8b6a44ded5f342746b8f4a2579976f5008265083d9c5072c25fee6984e7db38",
           "q-scf-sdf-marketing-grant": "116228f80fe5ad918402f58030b9443ac50a9c501281ede85370325a042cd71d",
           "q-scf-total-distributed": "c126484f55b07c00aafcc9584f0c1a510444282b878544ec1ec21caa5887d9ff",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d",
-          "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
+          "q-scf-vs-sdf-enterprise-fund": "0ff04d99f85e8c3672338aa13710c2cca570325b7d0fb06f48766e6f17f7bf86"
         }
       },
       {
@@ -349,7 +353,7 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-defi-reflector-oracle, q-defi-rwa-scf-similar, q-defi-soroswap-what-is, q-defi-x402-on-stellar-what, q-eco-stellar-wallets-list, q-scf-history-soroswap changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-eco-stellar-wallets-list changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, OrbitCDP $280K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster.",
@@ -363,7 +367,7 @@
           "q-defi-soroswap-what-is": "5fe024b23d61c8b466603a885aba46c00ff3a1f14976da76be65d96873d4ba05",
           "q-defi-x402-on-stellar-what": "e2965f969aac279738ce5364c4c769579b0b5df0003257902e5ed2ec84692518",
           "q-eco-hana-wallet-scf": "76900c4257c93b31cad7eee7cc826a9fda1536895b2e85bb7958502d009b040e",
-          "q-eco-stellar-wallets-list": "d4ea6de4ce62e8fd748287d78f3d1cc5db070ad8a3528710fb962abed43c0874",
+          "q-eco-stellar-wallets-list": "5332ed2cf70123290886e3173efa00c94676a7f90211c2b5eab49e052149e0a7",
           "q-scf-history-soroswap": "931d1566e00c9c906bce32a9536624a7d89538ba7d66f982252a6832e98c49f5",
           "q-scf-verified-members": "3ff7a8f7be683d3b952829d57f46657b6818ff8b3f213be0d67c8e6f369edefb"
         }
@@ -383,7 +387,7 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-defi-reflector-oracle changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-soroban-oracle-defensive-consumption changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "The cases consistently separate the 61,249,278.31-XLM and 1,000,196.70-USDC exploit transfers from source-specific combined USD valuations around $10M-$10.86M and from Blockaid's separately attributed 48,069,094-XLM quarantine. The decoded pre-state's roughly 14,000-USDC liability is not a second exploit transfer, quarantine is not recovery, and the prior Script3 ~$10.5M net-loss attribution remains unverified. Date, USTRY/Reflector vector, and app-level-not-protocol-level framing remain compatible. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes no longer assert Script3 depositor compensation as settled; remediation-vs-recovery discipline is now uniform with the answer and siblings. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append. Added 2026-07-28 (todo 1253 Lane B, G8): q-hist-yieldblox-v2-2026-exploit joins as the primary bearer of this cluster's claims. Without it, an edit to the corpus's main incident case reopened cluster-126 and the YieldBlox numericInvariant but never this cluster, leaving the date, USTRY/Reflector vector, and app-level-not-protocol-level framing claims with no reopen path. Verified 2026-07-28: its transfer figures, quarantine-is-not-recovery discipline, combined-USD-valuation framing, pre-existing ~14,000-USDC liability, and unverifiable Script3 ~$10.5M attribution match this cluster's note exactly. cluster-126 is now a strict membership subset: kept deliberately — 126 states the quantity invariant, this cluster states the incident framing.",
@@ -393,7 +397,7 @@
           "q-defi-etherfuse-stablebonds": "3ce3dcee9a8e9cb1a9993c814ab15f3d5f8d129db9dd982c10bb9a5ede03d5dc",
           "q-defi-reflector-oracle": "5a236fdc11122a96865594f7cdcb9fac02cb67ac57574ff5acbfd52714597847",
           "q-hist-yieldblox-v2-2026-exploit": "4842db0eb27e60ebb864892dc40412c54a9cafe605ed86b68ae2c70e8e9111b1",
-          "q-soroban-oracle-defensive-consumption": "96589f90b771c258a8adc60ab9f68377b54db23c17b1ce2f1911eb79e078b91f"
+          "q-soroban-oracle-defensive-consumption": "5066d6310dc8b4b54765d59951b9c8d6bbfd471dbf15c03a0a7fa3651e7dc8be"
         }
       },
       {
@@ -452,10 +456,14 @@
           "q-defi-ondo-usdy": "084bf1b02daebdc1f0ddfcc018a104f9d28917e9aa902890a6fc937136074308",
           "q-defi-wisdomtree-crdt": "8bee522b927cf6b3865985a0b7d81dff15ac11a6c48b63e8c3e1e36de84820a4",
           "q-eco-pyusd-stellar-freshness": "44d6406ac29fe55d8a05f988e810eae6ee301418f4148aa8fb8c0cf0c02e4ec1",
-          "q-eco-stablecoins-on-stellar": "adafd5d7013a2f54705979e73f4bc8355d97186b465cc83c693f3cfb6a76a05a",
-          "q-rwa-projects-tokenizing-stellar": "485df7eb0211a7bf2f6a3493d7a5907fa99bb4bbcd803cf232a90c0329364043",
+          "q-eco-stablecoins-on-stellar": "71d36a32a85ae99b7b64f01b8d3f8b7796e757b7d4d8a9345cf24b8369549ef0",
+          "q-rwa-projects-tokenizing-stellar": "46c0eae9cbf2b5f86c049b3ec39f0c88413f448af0046a80b8692f4b40cf8982",
           "q-token-circle-usdc-on-stellar": "9dde11c6f861287c9565810f1b8d5c3cd48e50a415d6c8e73a17311be0b71520",
           "q-tool-cctp-stellar-integration": "2c87fc83efbe501d669814b9c7a8aa163a46932dcbb9adf5459312651ee70737"
+        },
+        "reopened": {
+          "date": "2026-08-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -473,12 +481,12 @@
         "memberContentSha256": {
           "q-anchor-moneygram-ramps": "7acb916052b426d65ed0e7f5624aea190bccfed52153bd6b35e256bb313d4371",
           "q-crp-anchors-by-corridor": "28479e5d8761a65ea84f0bf37cb53bf425ad85127e0ace331b8459d33fee92aa",
-          "q-hist-remittance-corridors": "26eca93b85ac33ea9503bae2e83e35c16dc87dc1937409505d74c40ebc9be8ae",
-          "q-pay-moneygram-ramps": "55a3147af27f41e77cc2a8712801f29b2019dee6216bc33ef70437eaf3c39213"
+          "q-hist-remittance-corridors": "a3c7a2d0bf027ffe3e05487060d643ab50fe78989886ee9880b9275e65813019",
+          "q-pay-moneygram-ramps": "3176ffb0459c34e9d44e152d6fab08aa354e2cbec2ea0901502d5d432d999401"
         },
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-hist-remittance-corridors changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-hist-remittance-corridors, q-pay-moneygram-ramps changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -506,7 +514,7 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-practical-fee-setting, q-pc-sponsored-reserves, q-sor-doc-timestamping-manage-data changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-practical-fee-setting, q-protocol-base-reserve-min-balance changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -519,9 +527,9 @@
           "q-edge-noinfo-stellar-pos-staking-rewards": "23b7f3e25cbbd6121be7c3fd8029e7eb3ddef8a7ae7aea767b161fc0a2aa46e6",
           "q-hot-fee-pool-burn-deflation": "b0228760656129f0856cdef7bbf2d476604be0f604ab7456a548ea47b9d42076",
           "q-pc-account-activation-not-found": "9b661b2d84134e41cba184045521cd92f432738fe6bd843e02fef254c727c46d",
-          "q-pc-practical-fee-setting": "70af03e071f45dbb5739bc3f89fca48b86dc0d1463a44181cd8ce89555a18300",
+          "q-pc-practical-fee-setting": "b9986933f0c294c71feb9461d03036bce385dd1ca2b1febd4ecf20944f427dd0",
           "q-pc-sponsored-reserves": "6f2d6b112116596f0c07690e4e2071b9d7bb55cbf5156463b2b849e1dafbac8d",
-          "q-protocol-base-reserve-min-balance": "72815e61a551a67e8b43a1ebbf18fb402fe0aed9e36044c5f34ca93ac6573b48",
+          "q-protocol-base-reserve-min-balance": "6635b18ab83824b7296d210d0433cfacac056f22de2141a90a9c60bcffedb886",
           "q-protocol-ledger-close-time": "1538fc8f452dfd22d1107a087331c6138eb053d9d30505e756b2dd43bc637ca3",
           "q-sor-doc-timestamping-manage-data": "38c04a8825c84056b4411956a8756695f86bd8cf3fcc3e3793a427afe2e92696",
           "q-soroban-simulate-resource-fee": "899602e1b6dedaef452be0bcf9b226c774a5aa3a4d146d341944fb612cb37f27",
@@ -554,7 +562,7 @@
         },
         "note": "Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose still conflicts with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. Archive/data-lake integration extends getLedgers only; older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "782a889973123dd5baec2dd2f211a36cbe38d5cf52e3bcf5b4d564acb0cd002a",
+          "q-infra-horizon-vs-rpc": "9fe6023a6f77776d556b569a5010b3e5bec169c84589f0ff58ec46f5a8ded71f",
           "q-infra-hubble-bigquery": "4e680dbee5f23fa86d8497df5a5ae70a17fb7b29b800728f2b9dce4bfb2bc11f",
           "q-infra-rpc-methods-list": "5851e15b214c9a6d28289830f5627c2e2652b5cb0a368804009f69dae4c137af",
           "q-infra-rpc-provider-archive-tier": "7653a690669185dec265457d14b56334f78195e156f4be6b97ec0311cb58778c",
@@ -564,8 +572,12 @@
           "q-ti-compute-token-lp-market-data": "a0db1a03d4295daae70d43e7a73a10ca2c4ae90e3dd1169b5eb191d734a55a30",
           "q-ti-enumerate-holders-airdrop": "0d3769a35dd3fc69290e4df4e54930b6fddfb582ef1ca7dfb247140dd84603a6",
           "q-ti-historical-pointintime-balances": "4e46b1cba6ee581630f428a44bb306bf5c01c34823b08a43344886c26f513194",
-          "q-ti-rpc-gettransactions-pagination-xdr": "3bccc74fa5276819f61dd733ca843db9b470bebf6d4d46f5d77980de509edec6",
+          "q-ti-rpc-gettransactions-pagination-xdr": "b2f1b481a188b6019a9ae633fb1639180c29802261aa7328b09671927089aae8",
           "q-ti-self-host-retention-backfill": "86b4d94dea24848041d1e9700faf6ddcd15b05720e563a489e1218636b6ea9e2"
+        },
+        "reopened": {
+          "date": "2026-08-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -632,7 +644,7 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-edge-noinfo-exact-tvl-figure changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "All gate on provider/endpoint/definition/as-of discipline rather than frozen numbers. Blend additionally requires a same-provider declared-quarter start/end trend; current, quarter peak, record, borrowed, pool/backstop, fees, and volume are distinct. DeFiLlama's Stellar history reports a June 19 point above May 30, so May 30 is not an all-time-high gate. Chain, protocol, RWA, asset, and CEX measures must not be summed.",
@@ -641,7 +653,7 @@
           "q-defi-defindex-honest": "abde03c42e2b7f805f2db555856385da3020bb715f76289034199f915e8320df",
           "q-eco-defi-tvl-current": "3625bf4dbc9b5715ec8fe4b52b359a1228013a4ba309bde5016bd873da15496b",
           "q-edge-fresh-latest-blend-tvl": "2efd14fdf91d7f8bfc47d7c9ea0ae8d50061779d35c69bd06c2ae4b3a8d7fc78",
-          "q-edge-noinfo-exact-tvl-figure": "6a98623013a6f07ad69ca2414a1cc757266f727c27c6505cc43f3d3ba0a26e3f"
+          "q-edge-noinfo-exact-tvl-figure": "a34cb2f29d9ea15eff0483b1fb400ca8457f5ed5f0ab8ca517dfd49f92981c4f"
         }
       },
       {
@@ -666,10 +678,14 @@
         "memberContentSha256": {
           "q-defi-soroswap-vs-stellarx": "2029c303131f07f42f04fc4897140fd058f605063ae398281cbd5bc8786ab267",
           "q-eco-dex-saturation": "b7ddea4105290d4f53c7667f5f77fadbf1c05a714a42aa5c679f1270705d0432",
-          "q-eco-lobstr-wallet": "11d0da539c98b60544def178bbfb58daef450715c53a604be5c697a67cd739ba",
-          "q-eco-stellar-wallets-list": "d4ea6de4ce62e8fd748287d78f3d1cc5db070ad8a3528710fb962abed43c0874",
-          "q-tool-passkeykit-smart-wallet": "13e6002892df351d813df933b981477cf5be23acd79ec46fed72a60ca46b249f",
+          "q-eco-lobstr-wallet": "2b828b060a24ea7ecf106160b51e49ad14cd25f41ac2feae6324b2a636a49d5c",
+          "q-eco-stellar-wallets-list": "5332ed2cf70123290886e3173efa00c94676a7f90211c2b5eab49e052149e0a7",
+          "q-tool-passkeykit-smart-wallet": "e11fefc26e5fab0d97cde5bef94f50f750b7d185b08b1285e8ddef7d0920053a",
           "q-tool-smart-wallet-repos-discovery": "0348664e448f99cdbd94f18d0baed6821c5bff16c1f0c64fce2aeca22be12035"
+        },
+        "reopened": {
+          "date": "2026-08-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -715,12 +731,12 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-protocol-upgrade-timing changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "grader caution + improvements/stellar-docs/sd-008 Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "b00553a8fc855f5bc3975438e2aea096127ed1b404ae3e6d2c2968cc7db8b7db",
+          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
           "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-tool-rust-soroban-sdk": "7200f3e8673c9c0f3668b1bba26a42cb36c3ab7c2691f469706fa93651257ebf"
@@ -742,13 +758,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-protocol-upgrade-timing changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z; CAP-0071 provides authentication delegation/address-bound credentials; stellar-core, soroban-sdk, and stellar-cli have stable v27 releases. The edge latest-version case remains behavior-gated rather than number-gated, and the stellar-core identity case never carried an activation claim. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
-          "q-pc-protocol-upgrade-timing": "b00553a8fc855f5bc3975438e2aea096127ed1b404ae3e6d2c2968cc7db8b7db",
+          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
           "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
           "q-protocol-scp-consensus-algorithm": "b0abcca6dd8fd672dba5a6accbd1c04cf999b9b9af135bb27bac4f1e74eed12b",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
@@ -812,14 +828,14 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-defi-named-newer-protocols, q-eco-stablecoins-on-stellar changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-eco-stablecoins-on-stellar changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "resolved as PayPal-branded/Paxos-issued with explicit dated LLC-versus-N.A. disagreement",
         "memberContentSha256": {
           "q-defi-named-newer-protocols": "255a618b76cbd51ce1021624dc5833e657cbbe0cc6f8711a217b60cb063aad85",
           "q-eco-pyusd-stellar-freshness": "44d6406ac29fe55d8a05f988e810eae6ee301418f4148aa8fb8c0cf0c02e4ec1",
-          "q-eco-stablecoins-on-stellar": "adafd5d7013a2f54705979e73f4bc8355d97186b465cc83c693f3cfb6a76a05a"
+          "q-eco-stablecoins-on-stellar": "71d36a32a85ae99b7b64f01b8d3f8b7796e757b7d4d8a9345cf24b8369549ef0"
         }
       },
       {
@@ -834,14 +850,14 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-eco-stellar-wallets-list changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-eco-stellar-wallets-list changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "resolved by removing the unverifiable clauses and retaining the supported core",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "62473233a43096cd407d20d6683b7cbe54f32759a3888251db95dbe1cf83c9c0",
           "q-defi-agent-identity-stellar-experimental": "4fda7022ef0d8c4ff920aedd4bb9af2e1183addc8bdd01afd51ba8e21ffc301a",
-          "q-eco-stellar-wallets-list": "d4ea6de4ce62e8fd748287d78f3d1cc5db070ad8a3528710fb962abed43c0874"
+          "q-eco-stellar-wallets-list": "5332ed2cf70123290886e3173efa00c94676a7f90211c2b5eab49e052149e0a7"
         }
       },
       {
@@ -857,15 +873,15 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-defi-reflector-oracle, q-scf-funding-by-category changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"tension\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-funding-by-category, q-scf-open-rfps changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"tension\" stands.",
           "verdict": "tension"
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
         "memberContentSha256": {
           "q-defi-phoenix-what-is": "32980d4c5993ed82d867536747b536f9e192db054d12bab2ebab2bb12e626772",
           "q-defi-reflector-oracle": "5a236fdc11122a96865594f7cdcb9fac02cb67ac57574ff5acbfd52714597847",
-          "q-scf-funding-by-category": "6af745c9591b80fe231e7dc761a430ba7b8157041577583cdcf60d57ab39ebdf",
-          "q-scf-open-rfps": "df13084cf7a22d85210863d97c220f6504aa212170094f21c13f842f3fe5d209"
+          "q-scf-funding-by-category": "52158b19d75bf63ce7fb0b58511fa2680c2adc0c7108cf56ef936ff54d990440",
+          "q-scf-open-rfps": "75f744214fd07ddb42b5f7cd56d664f28c04c938cae46a6f51378fc762ee6530"
         }
       },
       {
@@ -881,13 +897,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-eco-lobstr-wallet changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-eco-lobstr-wallet changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "retain grader caution and accept accurately dated/source-scoped answers",
         "memberContentSha256": {
           "q-crp-anchors-by-corridor": "28479e5d8761a65ea84f0bf37cb53bf425ad85127e0ace331b8459d33fee92aa",
-          "q-eco-lobstr-wallet": "11d0da539c98b60544def178bbfb58daef450715c53a604be5c697a67cd739ba",
+          "q-eco-lobstr-wallet": "2b828b060a24ea7ecf106160b51e49ad14cd25f41ac2feae6324b2a636a49d5c",
           "q-sep-8-regulated-assets": "ba888ea81f0d00a190f38783fead2894fb8fe8d594c27cea4387438c434ee26c",
           "q-sep-catalog-list": "a0d9ad9232cff22cee1b08343c99a0d875b701efa502158af35751811c0cb421"
         }
@@ -954,18 +970,18 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-builder-by-region-latam, q-eco-stellar-wallets-list, q-scf-funding-by-category, q-soroban-deploy-cli changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-builder-by-region-latam, q-eco-stellar-wallets-list, q-scf-funding-by-category, q-soroban-deploy-cli changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Dated/provenance-bearing overrides now distinguish source snapshots, legal entities, directory reconstructions, and current CLI/API semantics without unsupported comparisons. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "62473233a43096cd407d20d6683b7cbe54f32759a3888251db95dbe1cf83c9c0",
           "q-asset-usdc-eurc-issuer": "f66c9cf923e027db215975b2a2f41de0a444ea36bcd376baed6d23fd53db4ec1",
-          "q-builder-by-region-latam": "ebe8e772a859abc2335aac97a90548ae34574dce32d6bd3ae5194a6dfeb73214",
+          "q-builder-by-region-latam": "91bbd6af1bd3c8fbf64244da6bc1c9e09b40596eeca6070dc365b6b45704cdd8",
           "q-eco-pyusd-stellar-freshness": "44d6406ac29fe55d8a05f988e810eae6ee301418f4148aa8fb8c0cf0c02e4ec1",
-          "q-eco-stellar-wallets-list": "d4ea6de4ce62e8fd748287d78f3d1cc5db070ad8a3528710fb962abed43c0874",
-          "q-scf-funding-by-category": "6af745c9591b80fe231e7dc761a430ba7b8157041577583cdcf60d57ab39ebdf",
-          "q-soroban-deploy-cli": "5e3e17d3090c1a335f97acdca5e97edf17eafe9e1894eeab4df29db831a630e1"
+          "q-eco-stellar-wallets-list": "5332ed2cf70123290886e3173efa00c94676a7f90211c2b5eab49e052149e0a7",
+          "q-scf-funding-by-category": "52158b19d75bf63ce7fb0b58511fa2680c2adc0c7108cf56ef936ff54d990440",
+          "q-soroban-deploy-cli": "ba5b6577b5a9e5979aad3361e51456dc4e9ea154cf5856b5f92d559f81641a64"
         }
       },
       {
@@ -1095,23 +1111,19 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-18",
-          "reason": "Re-read all members after #45 entered Initial Review; current-round cases carry phase truth, while v7 cases retain grant and protocol distinctions.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-edge-fresh-latest-scf-round, q-scf-how-to-apply changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "The dated Build schedule is 10/20/30/40 with current 90-day completion-form/unpaid-tranche terms. Grant administration and normative fairness are distinct from protocol authority. Current round/phase/deadline facts stay in the dedicated round cases rather than standing in for award terms.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "3def8bbc5f9c5c59d39e846d2ae8cc1e1ae284083903993a4eb5e2f57848ae22",
+          "q-edge-fresh-latest-scf-round": "0b12f7caf13dc2b2480420b8e63fea8fc248e54847a440268e269ee3549401bd",
           "q-edge-scf-v7-centralization-myths": "de70f2a521a7d2b11c310da9a6dbf0fcd2012a01b90194691cd19a9ef483281a",
           "q-scf-current-round": "265a0187e1352f77d40bded191773879283952c417411c80af503540e6ee5a9a",
-          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
+          "q-scf-how-to-apply": "ac2d60ad96be7a7b6a4cc9eb914d7934c9c34403cb0adeb12667b4ce498b30f3",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
-        },
-        "reopened": {
-          "date": "2026-08-18",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -1149,13 +1161,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-practical-fee-setting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-practical-fee-setting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Core accounts transaction/resource fees in an inaccessible fee pool that remains inside totalCoins conservation; this is non-circulating sequestration, not automatic supply burn. CAP-26 ended inflation on 2019-10-28; SDF's ~55.44B treasury burn on 2019-11-04 was separate. Fees are not validator rewards.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "b0228760656129f0856cdef7bbf2d476604be0f604ab7456a548ea47b9d42076",
-          "q-pc-practical-fee-setting": "70af03e071f45dbb5739bc3f89fca48b86dc0d1463a44181cd8ce89555a18300"
+          "q-pc-practical-fee-setting": "b9986933f0c294c71feb9461d03036bce385dd1ca2b1febd4ecf20944f427dd0"
         }
       },
       {
@@ -1179,9 +1191,13 @@
         "memberContentSha256": {
           "q-defi-benji-franklin-templeton": "4013b5d48f17b52495c9c282db319e6a97e3442d04fe30c1b4d7557e61967a4b",
           "q-defi-wisdomtree-crdt": "8bee522b927cf6b3865985a0b7d81dff15ac11a6c48b63e8c3e1e36de84820a4",
-          "q-hist-remittance-corridors": "26eca93b85ac33ea9503bae2e83e35c16dc87dc1937409505d74c40ebc9be8ae",
-          "q-hist-soroban-launch-protocol20": "84b2553a92c0e1be6aadb90a623d02a6b16c3abebecb2101df6e45bbfd6aa79a",
+          "q-hist-remittance-corridors": "a3c7a2d0bf027ffe3e05487060d643ab50fe78989886ee9880b9275e65813019",
+          "q-hist-soroban-launch-protocol20": "0b526952822cbeea6e22108217e8596d92f68699a723f9249cc17a21a75d2ca0",
           "q-hist-unhcr-stellar-aid-assist": "59aab085c3b1a25a13db9ffb68c312fa6e9fa777429c37b353e704be227d87a8"
+        },
+        "reopened": {
+          "date": "2026-08-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1194,16 +1210,16 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-protocol-23-whisk-caps changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "No official sharding CAP was found in the dated registry/history sweep. P23 introduced CAP-0063 scheduling support with ledgerMaxDependentTxClusters initially one (no multi-cluster parallel execution); later settings activation led to the current Mainnet value two. Parallel scheduling is not sharding, and the setting-change date is not invented.",
         "memberContentSha256": {
           "q-edge-noinfo-sep-9999": "ebb480f4c44fa8e116af72eda2273d47f85b893eba694e389814245e2cbc9479",
-          "q-protocol-23-whisk-caps": "06d3060bc86235dadcf1606821dcadd93a97fcd47905d9603f8689ac0745cce5",
+          "q-protocol-23-whisk-caps": "01d9ad127a672301eb7fb38df44475a25ecf89e1d66e98c07951ba71826edbc8",
           "q-protocol-parallel-execution": "dffcbee9a462ecc12ba4e2dbf3f78a8dcd39da72b528c37d0edbd41004f6b2ca",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25"
         }
@@ -1222,7 +1238,7 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-edge-noinfo-exact-tvl-figure changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "A live provider may expose a many-decimal scalar, but it remains a provider/endpoint/as-of/inclusion/pricing snapshot rather than an objective protocol fact. The corpus no longer requires an approximate range or claims TVL necessarily moves block-by-block.",
@@ -1231,7 +1247,7 @@
           "q-defi-defindex-honest": "abde03c42e2b7f805f2db555856385da3020bb715f76289034199f915e8320df",
           "q-eco-defi-tvl-current": "3625bf4dbc9b5715ec8fe4b52b359a1228013a4ba309bde5016bd873da15496b",
           "q-edge-fresh-latest-blend-tvl": "2efd14fdf91d7f8bfc47d7c9ea0ae8d50061779d35c69bd06c2ae4b3a8d7fc78",
-          "q-edge-noinfo-exact-tvl-figure": "6a98623013a6f07ad69ca2414a1cc757266f727c27c6505cc43f3d3ba0a26e3f"
+          "q-edge-noinfo-exact-tvl-figure": "a34cb2f29d9ea15eff0483b1fb400ca8457f5ed5f0ab8ca517dfd49f92981c4f"
         }
       },
       {
@@ -1356,16 +1372,16 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-13",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-13",
-          "reason": "Release closeout confirmed both siblings retain source-reported over-$100m portfolio wording and keep the MoneyGram cash-treasury investment outside the Enterprise Fund.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-vs-sdf-enterprise-fund changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "SDF's current 'portfolio totals over $100m' wording is not an exact cumulative-cash, fair-value, or cost-basis scalar. MoneyGram was funded from SDF cash treasury outside the Enterprise Fund.",
         "memberContentSha256": {
           "q-org-sdf-enterprise-fund": "cd9b822d53fc0e9b7b7fc82aee6dbc27c302f598cda72cc031d5ff4d83bab1dd",
-          "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
+          "q-scf-vs-sdf-enterprise-fund": "0ff04d99f85e8c3672338aa13710c2cca570325b7d0fb06f48766e6f17f7bf86"
         }
       },
       {
@@ -1442,12 +1458,12 @@
         "note": "BucketList commits state. Transaction verification recomputes full transaction-set/result hashes, follows the ledger-header chain, and relies on SCP/quorum finality assumptions; RPC/Horizon/indexer rows are retrieval evidence, not compact self-authenticating per-transaction Merkle proofs.",
         "memberContentSha256": {
           "q-edge-validators-reverse-tx-fork-detection": "dbbe9c000c77b0effe576f0fd5ccbf2efb0710c9b6aeb4c0689720011fb7acd0",
-          "q-pc-bucketlist-vs-merkle-inclusion-proof": "1120bd45ea622c1d4140a4534ec455f72e3378bff738e784c6736b6f75caedf0",
-          "q-protocol-ledger-entry-types": "814e60b05e0c1276b9938dd2eda014821b070f3acfbb28590fca0e05ca8a63cb"
+          "q-pc-bucketlist-vs-merkle-inclusion-proof": "c4d6260d7cbb70a84c87d0687b654a27e9a1266453f0b6b7c532baba21fb2711",
+          "q-protocol-ledger-entry-types": "d1de7b54cbf03998906ad424456df6ac5050242a02316a74d8df28d1ca0acf70"
         },
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-bucketlist-vs-merkle-inclusion-proof changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-bucketlist-vs-merkle-inclusion-proof, q-protocol-ledger-entry-types changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1465,16 +1481,16 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-practical-fee-setting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-practical-fee-setting, q-ti-channel-accounts-throughput changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Fee source pays the outer charged fee once; inner/outer visible fee fields are not additive charges. Channel transaction sources consume their own sequences. Live estimates should use RPC getFeeStats/current CLI or Horizon /fee_stats; Horizon is legacy/no-new-features but not formally deprecated, and Hubble is historical analytics. Fees are not validator rewards. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "b0228760656129f0856cdef7bbf2d476604be0f604ab7456a548ea47b9d42076",
           "q-pc-fee-bump-channel-accounts-feepool": "e479bc72dae1f72c1267658757e11ebe413bccc8c289f0a2fc51160414c85176",
-          "q-pc-practical-fee-setting": "70af03e071f45dbb5739bc3f89fca48b86dc0d1463a44181cd8ce89555a18300",
+          "q-pc-practical-fee-setting": "b9986933f0c294c71feb9461d03036bce385dd1ca2b1febd4ecf20944f427dd0",
           "q-pc-sequence-numbers-ordering-replace": "389c3e3194c82019e1d23f0c7b40eb7ff34bbc6817491ba815590a1176843af5",
-          "q-ti-channel-accounts-throughput": "fb76f42befdcf8cbd5b258b0787b042f6137dab82c94e8a19f9c75ad1f948e8f"
+          "q-ti-channel-accounts-throughput": "06ec8e60080eda0d75c262b858dffd8bce27b8196a3385f7db6152582bcd1398"
         }
       },
       {
@@ -1537,16 +1553,16 @@
           "q-protocol-accounts-signers-thresholds"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-11",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-11",
-          "reason": "P4 member absorbed or replaced; survivor claims rechecked",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-protocol-accounts-signers-thresholds changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "SetOptions signer/threshold/master-weight changes use current high-threshold authority. A 2-of-3 example has exactly three effective authorities; master counts when nonzero. Add/test replacement authority before removing the old signer or disabling master.",
         "memberContentSha256": {
           "q-pc-multisig-setup-lifecycle": "753c5864002ab1fe8eaf16056671eb6887651d54f4054571573a536e41f47aeb",
-          "q-protocol-accounts-signers-thresholds": "c6ebfce9dad5d3ecb75dece6b6c5d43942e9a6bf5a5c70ab501500903eee4381"
+          "q-protocol-accounts-signers-thresholds": "d4215610531d7ee29271ef90e1f64b2515e0acb051e2373085b3322f8aab037c"
         }
       },
       {
@@ -1565,8 +1581,12 @@
         },
         "note": "encode dispute; sd-017",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "782a889973123dd5baec2dd2f211a36cbe38d5cf52e3bcf5b4d564acb0cd002a",
-          "q-pc-practical-fee-setting": "70af03e071f45dbb5739bc3f89fca48b86dc0d1463a44181cd8ce89555a18300"
+          "q-infra-horizon-vs-rpc": "9fe6023a6f77776d556b569a5010b3e5bec169c84589f0ff58ec46f5a8ded71f",
+          "q-pc-practical-fee-setting": "b9986933f0c294c71feb9461d03036bce385dd1ca2b1febd4ecf20944f427dd0"
+        },
+        "reopened": {
+          "date": "2026-08-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1605,8 +1625,12 @@
         },
         "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. Official Horizon lifecycle polarity is disputed.",
         "memberContentSha256": {
-          "q-infra-horizon-vs-rpc": "782a889973123dd5baec2dd2f211a36cbe38d5cf52e3bcf5b4d564acb0cd002a",
-          "q-pc-practical-fee-setting": "70af03e071f45dbb5739bc3f89fca48b86dc0d1463a44181cd8ce89555a18300"
+          "q-infra-horizon-vs-rpc": "9fe6023a6f77776d556b569a5010b3e5bec169c84589f0ff58ec46f5a8ded71f",
+          "q-pc-practical-fee-setting": "b9986933f0c294c71feb9461d03036bce385dd1ca2b1febd4ecf20944f427dd0"
+        },
+        "reopened": {
+          "date": "2026-08-27",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1621,13 +1645,13 @@
         "lastChecked": "2026-08-27",
         "note": "P27 source-derived exhaustive entry/header lists distinguish direct versus scpValue-nested fields and state versus transaction commitments.",
         "memberContentSha256": {
-          "q-pc-bucketlist-vs-merkle-inclusion-proof": "1120bd45ea622c1d4140a4534ec455f72e3378bff738e784c6736b6f75caedf0",
-          "q-protocol-ledger-entry-types": "814e60b05e0c1276b9938dd2eda014821b070f3acfbb28590fca0e05ca8a63cb",
-          "q-protocol-ledger-header-fields": "58c755c62c80f7bb650eecf67a656a80e513ca37ef0e7a788f501ea99bd7f698"
+          "q-pc-bucketlist-vs-merkle-inclusion-proof": "c4d6260d7cbb70a84c87d0687b654a27e9a1266453f0b6b7c532baba21fb2711",
+          "q-protocol-ledger-entry-types": "d1de7b54cbf03998906ad424456df6ac5050242a02316a74d8df28d1ca0acf70",
+          "q-protocol-ledger-header-fields": "0e0643a49502332d7af16db92d7bfbfa4dc73ae798ab4f790787058c622edc4b"
         },
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-bucketlist-vs-merkle-inclusion-proof changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-bucketlist-vs-merkle-inclusion-proof, q-protocol-ledger-entry-types, q-protocol-ledger-header-fields changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1684,15 +1708,15 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-hist-soroban-launch-protocol20 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "P20 activated Soroban on 2024-02-20; the March milestone raised capacity. Software major versions indicate protocol support but do not by themselves prove live activation. P27 is live from ledger 63386819. Duplicate version-history override keys were consolidated and stale pending-P27 grader notes replaced.",
         "memberContentSha256": {
-          "q-hist-soroban-launch-protocol20": "84b2553a92c0e1be6aadb90a623d02a6b16c3abebecb2101df6e45bbfd6aa79a",
+          "q-hist-soroban-launch-protocol20": "0b526952822cbeea6e22108217e8596d92f68699a723f9249cc17a21a75d2ca0",
           "q-protocol-scp-consensus-algorithm": "b0abcca6dd8fd672dba5a6accbd1c04cf999b9b9af135bb27bac4f1e74eed12b",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25"
         }
@@ -1773,14 +1797,14 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-builder-by-region-latam, q-builder-rust-soroban-devs changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-anchor-list-builders-discovery, q-builder-by-region-latam, q-builder-rust-soroban-devs changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Scout is candidate discovery. Membership/counts are dated; public footprints corroborate returned rows but do not establish deployment, audit status, seniority, or availability. Skill matches need row-level provenance (sls-041). Re-swept 2026-07-28: the 2026-07-15 reopen was only q-builder-by-region-latam changing an improvement root-cause pointer; roster/evidence-tier claims remain consistent.",
         "memberContentSha256": {
-          "q-anchor-list-builders-discovery": "1c3b59f17bcc98d702950d7ef34bdefba182a29ad124764d89bb1fcbcfd51df4",
-          "q-builder-by-region-latam": "ebe8e772a859abc2335aac97a90548ae34574dce32d6bd3ae5194a6dfeb73214",
-          "q-builder-rust-soroban-devs": "0fec136482174b2cc2a8447fa112a758717589d5e6f772516b4fa3cbbc312bb4"
+          "q-anchor-list-builders-discovery": "fab547521cf20766a787dbf92ff1a12ac2175e27095d7ea9a5ac4773bc93ca4f",
+          "q-builder-by-region-latam": "91bbd6af1bd3c8fbf64244da6bc1c9e09b40596eeca6070dc365b6b45704cdd8",
+          "q-builder-rust-soroban-devs": "54f19506cf85e5f5f245de03573d2dab4bccf65654e69704c0d5c66fb3c7a2a1"
         }
       },
       {
@@ -1796,14 +1820,14 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-builder-by-scf-tier changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-builder-by-scf-tier, q-scf-nqg-voting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Verified/Pathfinder/Navigator/Pilot are governance roles. Award programs and submission records concern projects. Neither supplies a person-level advisor ranking without a current attribution crosswalk. Re-swept 2026-07-28: Scout removed the retired scfTier field/filter on 2026-07-15; governance roles, project awards, and person-level attribution remain consistently separated.",
         "memberContentSha256": {
-          "q-builder-by-scf-tier": "7fbbef20fcefcfa668dbb17f73832417f95577bd512c45f1a5cadc38a94165a9",
+          "q-builder-by-scf-tier": "269bddefec2600849f9703763772899dc42790154213f3b8fda55c7963c97365",
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
+          "q-scf-nqg-voting": "a88c1897d0118da3e1d460fb02277db23836e73a69da3f1d9a9d5c18d7672177",
           "q-scf-verified-members": "3ff7a8f7be683d3b952829d57f46657b6818ff8b3f213be0d67c8e6f369edefb"
         }
       },
@@ -1840,16 +1864,16 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-11",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-11",
-          "reason": "P4 member absorbed or replaced; survivor claims rechecked",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-hackathons-active changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Each selected team receives $20K; the $50K/$100K/$200K performance amount is one cohort-wide pool shared among the top five, not a per-team ceiling. Landing awaits GT-36 blind reconciliation.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-hackathons-active": "67d54e68f5e839b863b03f4d293f0cbe90ca1328f94de31905500250390b7cfb",
+          "q-scf-hackathons-active": "89506b8afc08eb7a720a48e212e36dc790a462227b83ddf3c379de343f04a545",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
         }
       },
@@ -1863,17 +1887,17 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "note": "Open interest form precedes eligibility/referral confirmation and invitation to a full proposal; revision, track-specific review/Open vote, and later KYC/KYB remain distinct. Reverified against the current official application flow on 2026-08-05.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "19238d0361b840e2d14cffadc029300b44042a3ed99aad71561f5e0d17c1ec06",
-          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
+          "q-scf-how-to-apply": "ac2d60ad96be7a7b6a4cc9eb914d7934c9c34403cb0adeb12667b4ce498b30f3",
           "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d",
-          "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
+          "q-scf-vs-sdf-enterprise-fund": "0ff04d99f85e8c3672338aa13710c2cca570325b7d0fb06f48766e6f17f7bf86"
         },
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-how-to-apply, q-scf-vs-sdf-enterprise-fund changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1908,16 +1932,16 @@
           "q-scf-how-to-apply"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "note": "Academic grants are institution/PI-led and distinct from Build, but SCF is not categorically unavailable as a separate path. Build separates open interest/eligibility, completeness prescreen, panel merits, Open-only vote/revision, and KYC.",
         "memberContentSha256": {
           "q-scf-academic-research-grant": "e03bdf74c8c85bfba8598acd9c367e7c535129389dbb1d01f6811e10efb8c62b",
           "q-scf-eligibility-criteria": "19238d0361b840e2d14cffadc029300b44042a3ed99aad71561f5e0d17c1ec06",
-          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258"
+          "q-scf-how-to-apply": "ac2d60ad96be7a7b6a4cc9eb914d7934c9c34403cb0adeb12667b4ce498b30f3"
         },
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-how-to-apply changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1930,17 +1954,17 @@
           "q-scf-how-to-apply"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-build-tracks, q-scf-how-to-apply changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Single award cap is $150K USD-equivalent paid in XLM. Open/Integration/RFP are the three tracks; only Open project awards use community vote. Current mechanics are four payments: acceptance plus three deliverable tranches.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-build-tracks": "142edb2a6a1254d6454411084074c99b6a8986fa63caec6efee43d646fd31767",
-          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258"
+          "q-scf-build-tracks": "6edefb0d2682ec9dd66e452d7630e82d2deb84246ee67dc1049e00cc77e20922",
+          "q-scf-how-to-apply": "ac2d60ad96be7a7b6a4cc9eb914d7934c9c34403cb0adeb12667b4ce498b30f3"
         }
       },
       {
@@ -1952,16 +1976,16 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-11",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-11",
-          "reason": "P4 member absorbed or replaced; survivor claims rechecked",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-hackathons-active changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "$20K is per selected company; one dynamic $50K/$100K/$200K pool is shared among the top five. Program-menu/v7 siblings await GT-39/40 independent completion.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-hackathons-active": "67d54e68f5e839b863b03f4d293f0cbe90ca1328f94de31905500250390b7cfb",
+          "q-scf-hackathons-active": "89506b8afc08eb7a720a48e212e36dc790a462227b83ddf3c379de343f04a545",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
         }
       },
@@ -1974,16 +1998,16 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-nqg-voting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Build-cap, NQG-voting, and Verified-member role distinctions remain consistent; reverified against the current official program and governance pages on 2026-08-05.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
+          "q-scf-nqg-voting": "a88c1897d0118da3e1d460fb02277db23836e73a69da3f1d9a9d5c18d7672177",
           "q-scf-verified-members": "3ff7a8f7be683d3b952829d57f46657b6818ff8b3f213be0d67c8e6f369edefb"
         }
       },
@@ -1995,20 +2019,16 @@
           "q-scf-rfp-tooling"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "note": "As of 2026-08-18, the official Q3 page and live feed support two open briefs, the live response has syntheticRounds=0, and #45 is in Initial Review.",
         "memberContentSha256": {
-          "q-scf-open-rfps": "df13084cf7a22d85210863d97c220f6504aa212170094f21c13f842f3fe5d209",
-          "q-scf-rfp-tooling": "b87afd0e8c875b547e8deeb39957e07fe5d948538144fcbe10be6e0a18675b42"
+          "q-scf-open-rfps": "75f744214fd07ddb42b5f7cd56d664f28c04c938cae46a6f51378fc762ee6530",
+          "q-scf-rfp-tooling": "d8b6a44ded5f342746b8f4a2579976f5008265083d9c5072c25fee6984e7db38"
         },
         "reSwept": {
-          "date": "2026-08-18",
-          "reason": "Re-read both RFP cases after the accepted refresh; each separates open briefs from the closed #45 full-proposal window and removes the synthetic row.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-open-rfps, q-scf-rfp-tooling changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
-        },
-        "reopened": {
-          "date": "2026-08-18",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -2087,20 +2107,16 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "note": "The Q1-2026 Hummingbot/Kelp-replacement brief is closed and absent from the two current Q3 briefs. No unverified later #41 submission, official merge, or fulfillment claim was added.",
         "memberContentSha256": {
-          "q-scf-hummingbot-kelp-closed-rfp": "bf9b4bdf328100fb02ec060d03357749246fcdb5fc325bda963fe32335ca4cc5",
-          "q-scf-open-rfps": "df13084cf7a22d85210863d97c220f6504aa212170094f21c13f842f3fe5d209"
+          "q-scf-hummingbot-kelp-closed-rfp": "a3cca9295128168d3fbe86b275c69628a1dcd837f1913cd3b810983d131eae7d",
+          "q-scf-open-rfps": "75f744214fd07ddb42b5f7cd56d664f28c04c938cae46a6f51378fc762ee6530"
         },
         "reSwept": {
-          "date": "2026-08-18",
-          "reason": "Re-read the closed historical Hummingbot brief and current Q3 roster; the historical brief remains absent and closed without stronger fulfillment claims.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-hummingbot-kelp-closed-rfp, q-scf-open-rfps changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
-        },
-        "reopened": {
-          "date": "2026-08-18",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -2131,16 +2147,16 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-13",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-13",
-          "reason": "Release closeout confirmed the Enterprise Fund metadata repair preserves the existing current-form conflict and source-scope guidance in both siblings.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-vs-sdf-enterprise-fund changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "route to current form with explicit conflict; sibling follow-up remains.",
         "memberContentSha256": {
           "q-org-sdf-enterprise-fund": "cd9b822d53fc0e9b7b7fc82aee6dbc27c302f598cda72cc031d5ff4d83bab1dd",
-          "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
+          "q-scf-vs-sdf-enterprise-fund": "0ff04d99f85e8c3672338aa13710c2cca570325b7d0fb06f48766e6f17f7bf86"
         }
       },
       {
@@ -2152,15 +2168,15 @@
           "q-scf-v7-changes"
         ],
         "verdict": "tension",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF/Soroswap truth refresh; the documented protocol or lifecycle tension remains intentional.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-how-to-apply changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"tension\" stands.",
           "verdict": "tension"
         },
         "note": "accept either label only with the correct 10/20/30/40 mechanics and acceptance distinction.",
         "memberContentSha256": {
-          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
+          "q-scf-how-to-apply": "ac2d60ad96be7a7b6a4cc9eb914d7934c9c34403cb0adeb12667b4ce498b30f3",
           "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
         }
@@ -2175,22 +2191,18 @@
           "q-scf-submission-lifecycle-deadlines"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "note": "Rolling interest precedes eligibility/referral and invitation to a full proposal. Only Open uses project-level community voting; Integration/RFP are panel-led.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "19238d0361b840e2d14cffadc029300b44042a3ed99aad71561f5e0d17c1ec06",
-          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
-          "q-scf-rfp-tooling": "b87afd0e8c875b547e8deeb39957e07fe5d948538144fcbe10be6e0a18675b42",
+          "q-scf-how-to-apply": "ac2d60ad96be7a7b6a4cc9eb914d7934c9c34403cb0adeb12667b4ce498b30f3",
+          "q-scf-rfp-tooling": "d8b6a44ded5f342746b8f4a2579976f5008265083d9c5072c25fee6984e7db38",
           "q-scf-submission-lifecycle-deadlines": "e9964da5deed30d9bf4afb93abdedf2da068c1203a38d8cf1a502c3798d9e61d"
         },
         "reSwept": {
-          "date": "2026-08-18",
-          "reason": "Re-read all entry-flow members; rolling interest, invitation, panel review, and the closed #45 full-proposal window remain consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-how-to-apply, q-scf-rfp-tooling changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
-        },
-        "reopened": {
-          "date": "2026-08-18",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -2202,16 +2214,16 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-nqg-voting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Verified views, Pathfinder delegates, Navigator/Pilot actively vote, and Pilot may delegate/govern. Vote objects and Public Goods eligibility remain program-specific; payout KYC is separate.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-nqg-voting": "96092a60368d3d49fdd7ac11b4868f323c0d54fa68b00862feafa5c8f6aed606",
+          "q-scf-nqg-voting": "a88c1897d0118da3e1d460fb02277db23836e73a69da3f1d9a9d5c18d7672177",
           "q-scf-verified-members": "3ff7a8f7be683d3b952829d57f46657b6818ff8b3f213be0d67c8e6f369edefb"
         }
       },
@@ -2225,16 +2237,16 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-11",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-11",
-          "reason": "P4 member absorbed or replaced; survivor claims rechecked",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-hackathons-active changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "v7 introduced three Build tracks and post-launch pathways, not one unified Growth track. Current detailed rules control each separate program.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-hackathons-active": "67d54e68f5e839b863b03f4d293f0cbe90ca1328f94de31905500250390b7cfb",
+          "q-scf-hackathons-active": "89506b8afc08eb7a720a48e212e36dc790a462227b83ddf3c379de343f04a545",
           "q-scf-instawards": "de0cc5be7ed0e01f5c6d5752fd7c2384069cbd5f2312a42b26297fe17a2a1d84",
           "q-scf-v7-changes": "7452762ecb6878aef471e354de3e9424b137429caed8a8737ee9598d5f4d9d1d"
         }
@@ -2265,12 +2277,12 @@
         "lastChecked": "2026-08-27",
         "note": "corrected; sd-014 recurrence.",
         "memberContentSha256": {
-          "q-pc-bucketlist-vs-merkle-inclusion-proof": "1120bd45ea622c1d4140a4534ec455f72e3378bff738e784c6736b6f75caedf0",
+          "q-pc-bucketlist-vs-merkle-inclusion-proof": "c4d6260d7cbb70a84c87d0687b654a27e9a1266453f0b6b7c532baba21fb2711",
           "q-sor-doc-timestamping-manage-data": "38c04a8825c84056b4411956a8756695f86bd8cf3fcc3e3793a427afe2e92696"
         },
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-bucketlist-vs-merkle-inclusion-proof, q-sor-doc-timestamping-manage-data changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-bucketlist-vs-merkle-inclusion-proof changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2304,12 +2316,12 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (snapshot-date batch 1): members q-ti-scaffold-stellar changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-sor-build-target-wasm32v1 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Current target is wasm32v1-none. Local Wasm supplies the spec for bindings; generated deploy requires installed wasmHash; SDK helper return types are version-sensitive. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-scaffold-stellar joins because it asserts where this flow's boundary lies — Scaffold Stellar is a separately installed plugin (cargo install stellar-scaffold-cli, stellar scaffold init) that generates contracts, TypeScript clients/bindings, frontend, and environment config, and is NOT bundled with a core Stellar CLI install nor equivalent to 'stellar contract init'. Verified 2026-07-28 against q-soroban-cli-bindings, q-sor-build-target-wasm32v1, and q-soroban-deploy-cli: no case conflates the plugin with the core CLI, and no case claims the plugin replaces 'stellar contract bindings'. Alternative considered and rejected: a standalone scaffold-versus-core-CLI cluster, which would duplicate this one's membership without adding a distinct claim.",
         "memberContentSha256": {
-          "q-sor-build-target-wasm32v1": "bf62592393191f3af68fc8800c82a925f545bd707ec033984a525f48ebcb3fae",
+          "q-sor-build-target-wasm32v1": "698d07f04e42db3c0c12754ba287b9f3ee6dd560d5e8638b3d12c084fc3084b2",
           "q-sor-deploy-invoke-from-js-sdk": "047663bd622d64b729cec1af5b93c1ffdbfd2c6b364028bbcf5d5b94bface78f",
           "q-soroban-cli-bindings": "3396321d4045f93017334131da88b86c55d7583b77ae0417c8e38a3c36ab2c70",
           "q-ti-scaffold-stellar": "4269746485b86b20290350910b9d9a165e6a1a9ccdd7b335d18beb82a053bde8"
@@ -2480,13 +2492,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-soroban-deploy-cli changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-soroban-deploy-cli changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "corrected; owner candidate captured in research. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-soroban-cli-bindings": "3396321d4045f93017334131da88b86c55d7583b77ae0417c8e38a3c36ab2c70",
-          "q-soroban-deploy-cli": "5e3e17d3090c1a335f97acdca5e97edf17eafe9e1894eeab4df29db831a630e1"
+          "q-soroban-deploy-cli": "ba5b6577b5a9e5979aad3361e51456dc4e9ea154cf5856b5f92d559f81641a64"
         }
       },
       {
@@ -2519,15 +2531,15 @@
           "q-tool-smart-wallet-repos-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-ti-connect-wallet-button-code changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Official docs/soroban-examples/SDKs/OZ remain current; Wallets Kit is optional multi-wallet abstraction, not mandatory for Freighter-only flows. Re-swept 2026-07-28: after Scout began returning the two direct repository rows, wallet-library and source-bound discovery claims remain consistent.",
         "memberContentSha256": {
-          "q-ti-connect-wallet-button-code": "a8ed70870eb800d5b50c48821af0071902f9351b83729bf0b44d467eff9b099f",
+          "q-ti-connect-wallet-button-code": "2b5bdf1973bc3696108dd2fd69b2ef127966744d4e6dd9237b9fa229b6c7a1c7",
           "q-tool-smart-wallet-repos-discovery": "0348664e448f99cdbd94f18d0baed6821c5bff16c1f0c64fce2aeca22be12035"
         }
       },
@@ -2586,13 +2598,13 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-soroban-publish-events changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-sor-test-event-assertion-ordering changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "mock_all_auths is a happy-path convenience. Exact negative-auth failures require generated try_* and diagnostic interpretation. Failed invocations roll events back. Successful nested calls contribute ordered events to the last top-level invocation. Publication and RPC retention remain separate from event-test ordering.",
         "memberContentSha256": {
           "q-sor-decode-hosterror-codes": "a2f2713ff9f640b38d2c7d4bed731b8db8dae32c94ca413d22736fcd5142c611",
-          "q-sor-test-event-assertion-ordering": "59ccbbe4d957e6c20645e04549ba816f5d66985231e3689f13d16b2525117369",
+          "q-sor-test-event-assertion-ordering": "34ce4f8ce562c1e68a2cadc4d84292095a2140c988498f13629512887b20a9bc",
           "q-soroban-publish-events": "e24cba78945220bf1cd9f761a1fef00a3754f24e7e020a7cb8437726051db04a",
           "q-soroban-unit-testing": "ac626f747bf7fdfbf9fbc6d73d6b75b538d070e6ed44d8a43e3b2f36178a42a9"
         }
@@ -2648,16 +2660,16 @@
           "q-protocol-parallel-execution"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-11",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-11",
-          "reason": "P4 member absorbed or replaced; survivor claims rechecked",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-protocol-23-whisk-caps changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "target corrected; fake-sharding path/freshness corrected; later coherent parallel sibling retained.",
         "memberContentSha256": {
           "q-edge-noinfo-sep-9999": "ebb480f4c44fa8e116af72eda2273d47f85b893eba694e389814245e2cbc9479",
-          "q-protocol-23-whisk-caps": "06d3060bc86235dadcf1606821dcadd93a97fcd47905d9603f8689ac0745cce5",
+          "q-protocol-23-whisk-caps": "01d9ad127a672301eb7fb38df44475a25ecf89e1d66e98c07951ba71826edbc8",
           "q-protocol-parallel-execution": "dffcbee9a462ecc12ba4e2dbf3f78a8dcd39da72b528c37d0edbd41004f6b2ca"
         }
       },
@@ -2674,12 +2686,12 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-protocol-upgrade-timing changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "stale spans replaced; delegation/V2 mechanics and CAP Accepted-versus-network-live distinction retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "b00553a8fc855f5bc3975438e2aea096127ed1b404ae3e6d2c2968cc7db8b7db",
+          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
           "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-soroban-auth-delegation-p27": "3428b9c18c52c359ec6c24b161b7a846711b8b3ea7ca2535fba09dd37bcae012"
@@ -2694,12 +2706,17 @@
           "q-protocol-accounts-signers-thresholds"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-11",
+        "lastChecked": "2026-08-27",
         "note": "target and GT-30 sequence sibling corrected; P19 sibling retained.",
         "memberContentSha256": {
           "q-pc-sequence-numbers-ordering-replace": "389c3e3194c82019e1d23f0c7b40eb7ff34bbc6817491ba815590a1176843af5",
           "q-protocol-19-preconditions-cap-0021": "fc8a9eefc50d0d7a0f08e491503ac3980c58e4605991a83af49a9a59edc12cf4",
-          "q-protocol-accounts-signers-thresholds": "c6ebfce9dad5d3ecb75dece6b6c5d43942e9a6bf5a5c70ab501500903eee4381"
+          "q-protocol-accounts-signers-thresholds": "d4215610531d7ee29271ef90e1f64b2515e0acb051e2373085b3322f8aab037c"
+        },
+        "reSwept": {
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-protocol-accounts-signers-thresholds changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "verdict": "consistent"
         }
       },
       {
@@ -2715,7 +2732,7 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-pc-sponsored-reserves changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-protocol-base-reserve-min-balance changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "target corrected; later GT-29/32 siblings retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -2723,7 +2740,7 @@
           "q-asset-amm-fee-reserve": "b6a6f8cf8cb877dc04e54fc4bdffc85bece09121aca3bb910507f5bb9317d521",
           "q-pc-account-activation-not-found": "9b661b2d84134e41cba184045521cd92f432738fe6bd843e02fef254c727c46d",
           "q-pc-sponsored-reserves": "6f2d6b112116596f0c07690e4e2071b9d7bb55cbf5156463b2b849e1dafbac8d",
-          "q-protocol-base-reserve-min-balance": "72815e61a551a67e8b43a1ebbf18fb402fe0aed9e36044c5f34ca93ac6573b48"
+          "q-protocol-base-reserve-min-balance": "6635b18ab83824b7296d210d0433cfacac056f22de2141a90a9c60bcffedb886"
         }
       },
       {
@@ -2735,16 +2752,16 @@
           "q-protocol-validator-upgrade-vote"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "note": "CAP-process target corrected; coherent CAP-vs-SEP and validator siblings retained.",
         "memberContentSha256": {
-          "q-protocol-cap-process": "bc7c3625bacdc265ddc9e9745f4b091b174fe4f78e00559be0a955e068819cb4",
+          "q-protocol-cap-process": "fb175bdb7af04ff950f8eaca192f927ca8346d73078523d3d6013918b8dc5136",
           "q-protocol-cap-vs-sep": "e2e7cf884ba4ef657e71acc45147dab5578f5515e5c26806568e77f0e7ff0b08",
           "q-protocol-validator-upgrade-vote": "808bed902c1e811ba3428e27ec037a3c6059d02bb13ffd86d5e692d978076e88"
         },
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-protocol-cap-process changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2792,16 +2809,16 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "note": "P23 initialized one cluster; a separate settings upgrade activated two on 2026-01-29. Current value two is dated/configuration-sensitive and canonical SLP path is limits/slp-0004.md.",
         "memberContentSha256": {
-          "q-protocol-23-whisk-caps": "06d3060bc86235dadcf1606821dcadd93a97fcd47905d9603f8689ac0745cce5",
+          "q-protocol-23-whisk-caps": "01d9ad127a672301eb7fb38df44475a25ecf89e1d66e98c07951ba71826edbc8",
           "q-protocol-parallel-execution": "dffcbee9a462ecc12ba4e2dbf3f78a8dcd39da72b528c37d0edbd41004f6b2ca",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25"
         },
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 post-QA evidence harvest: re-read all members across the four accepted evidence waves and incorporated the accepted metadata/truth repairs; claims remain consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-protocol-23-whisk-caps changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2842,14 +2859,14 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-protocol-upgrade-timing changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "P27 is current on Mainnet from ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features. P28/AddressV2 remains a future recheck, not current activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
           "q-pc-protocol-27-zipper": "b40f6aa28bf6613da9ba19408499d450b2515af80fdb8fc2c78e6c6e5fc3a193",
-          "q-pc-protocol-upgrade-timing": "b00553a8fc855f5bc3975438e2aea096127ed1b404ae3e6d2c2968cc7db8b7db",
+          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
           "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-soroban-auth-delegation-p27": "3428b9c18c52c359ec6c24b161b7a846711b8b3ea7ca2535fba09dd37bcae012"
@@ -2867,24 +2884,20 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-18",
-          "reason": "Re-read all members after removing unrelated cap evidence from current-round cases; the $150,000 Build cap remains unchanged and scoped correctly.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-scf-build-tracks, q-scf-how-to-apply, q-scf-vs-sdf-enterprise-fund changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "All cases distinguish the current SCF Build cap of $150,000 worth of XLM from project-history amounts and other SDF programs.",
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "de70f2a521a7d2b11c310da9a6dbf0fcd2012a01b90194691cd19a9ef483281a",
           "q-scf-build-award-cap": "917fecc6d5c337a3c8db48319dac04ca7b3a68f55b65ebb2cdeebebca55d7ab0",
-          "q-scf-build-tracks": "142edb2a6a1254d6454411084074c99b6a8986fa63caec6efee43d646fd31767",
+          "q-scf-build-tracks": "6edefb0d2682ec9dd66e452d7630e82d2deb84246ee67dc1049e00cc77e20922",
           "q-scf-current-round": "265a0187e1352f77d40bded191773879283952c417411c80af503540e6ee5a9a",
-          "q-scf-how-to-apply": "7b90e0009aa1ae0546b1d577ff848e659499a8ab554b1ffb36934f7f40826258",
-          "q-scf-vs-sdf-enterprise-fund": "f23b76159fbda94b4972ba85f81cc5701ce34bed415bba98f4b26900081d6d27"
-        },
-        "reopened": {
-          "date": "2026-08-18",
-          "reason": "member-content-changed"
+          "q-scf-how-to-apply": "ac2d60ad96be7a7b6a4cc9eb914d7934c9c34403cb0adeb12667b4ce498b30f3",
+          "q-scf-vs-sdf-enterprise-fund": "0ff04d99f85e8c3672338aa13710c2cca570325b7d0fb06f48766e6f17f7bf86"
         }
       },
       {
@@ -2921,10 +2934,10 @@
           "q-raph-low-xlm-transfer-fail"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-28",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-28",
-          "reason": "2026-07-28 reopened-cluster sweep: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-protocol-base-reserve-min-balance changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "At the checked network setting, one base reserve is 0.5 XLM; an empty unsponsored account needs two reserves (1 XLM), ordinary subentries add one reserve, and a pool-share trustline adds two. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -2933,12 +2946,8 @@
           "q-asset-trustline-basics": "cf63cc5bf2858594e4f033d491ff2b6982d7716887ae28874f2ed1288bcb481b",
           "q-edge-1xlm-activation-fee": "e11bf06d657c1649e7f65faab3714e42c003fd47a22fe591cc589ff1cf063635",
           "q-pc-account-activation-not-found": "9b661b2d84134e41cba184045521cd92f432738fe6bd843e02fef254c727c46d",
-          "q-protocol-base-reserve-min-balance": "72815e61a551a67e8b43a1ebbf18fb402fe0aed9e36044c5f34ca93ac6573b48",
+          "q-protocol-base-reserve-min-balance": "6635b18ab83824b7296d210d0433cfacac056f22de2141a90a9c60bcffedb886",
           "q-raph-low-xlm-transfer-fail": "8a823e31b0e9b69ff1975a8719dfb13922907e7c7cd3d0b9c174bfd1da0d2ce7"
-        },
-        "reopened": {
-          "date": "2026-07-28",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -3002,21 +3011,17 @@
           "q-soroban-oracle-defensive-consumption"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-07-28",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-07-28",
-          "reason": "todo 1251 round: yieldblox quantity-discipline reconciliation",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-soroban-oracle-defensive-consumption changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "The incident cases consistently identify 61,249,278.31 XLM plus 1,000,196.70 USDC as the exploit transfers, treat the roughly 14,000-USDC pre-state liability as pre-existing, label roughly $10M-$10.86M figures as source-specific combined USD valuations, and keep Blockaid's 48,069,094-XLM quarantine distinct from recovery or reimbursement. The Script3 ~$10.5M net-loss attribution remains unverified; remediation-status claims require dated evidence. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes drop the settled-compensation claim; transfer/valuation/quarantine/recovery separations unchanged. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
           "q-comp-yieldblox-oracle-incident": "20c07b717ed3154a2a658435cb76d302dd131e79af408d1d315198f7d52971ad",
           "q-hist-yieldblox-v2-2026-exploit": "4842db0eb27e60ebb864892dc40412c54a9cafe605ed86b68ae2c70e8e9111b1",
-          "q-soroban-oracle-defensive-consumption": "96589f90b771c258a8adc60ab9f68377b54db23c17b1ce2f1911eb79e078b91f"
-        },
-        "reopened": {
-          "date": "2026-07-28",
-          "reason": "member-content-changed"
+          "q-soroban-oracle-defensive-consumption": "5066d6310dc8b4b54765d59951b9c8d6bbfd471dbf15c03a0a7fa3651e7dc8be"
         }
       },
       {
@@ -3061,18 +3066,18 @@
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-builder-content-by-person, q-builder-justin-rice-history, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-builder-justin-rice-history, q-gap-semantic-directory-fallback changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
           "q-builder-content-by-person": "235b2747547978675ac8c8dc5eaf11798572479c3efd218eecaf0853e5acfa54",
-          "q-builder-justin-rice-history": "afc6b7d0ac405e0f2dd73b25fbe99dfcbbf57ecd4303bbe3635d8413606d82c7",
+          "q-builder-justin-rice-history": "9e6263d2567ee7b978f3eda296092c6fa2c456de21307e4e5421360c3f773339",
           "q-edge-closed-world-builder-directory-miss": "dfbfb41a8d5128bc8697c7a9e2549178e32d57bab617c55c1c34554f5ebee95b",
           "q-edge-lumenloop-person-entity-empty": "8fd57c5a935d1c21d49da72dcbe3d72e5b395f1ce52ea935c97dc799ebc41251",
           "q-edge-open-world-recovery-after-narrow-miss": "0768b8d4a1e6e77abd303d5fa901bc53bb456f5b77f86b77546092e350e36509",
           "q-edge-strupey-ambiguous-stellar-history": "fca9b01dab959450bdcd3acd9d39f406df37b19fcb4dfa6271bac06909515b50",
-          "q-gap-semantic-directory-fallback": "18e3c7c55d94539056156a826661f68d3826e932e0dd8d4bb54ae6b17b99a16e"
+          "q-gap-semantic-directory-fallback": "c8d4b8f43004579fb5077d8280c8de4513a859a1b092c9ef602852864240cac7"
         }
       },
       {
@@ -3092,12 +3097,12 @@
         },
         "note": "Substantial greenfield architecture requests make one bounded repos/projects pass alongside authoritative skills/docs, label candidate roles, and leave unsupported license/audit/deployment/compatibility claims unknown. A scoped build/debug question stays on current official mechanics without an ecosystem landscape detour.",
         "memberContentSha256": {
-          "q-sor-build-target-wasm32v1": "bf62592393191f3af68fc8800c82a925f545bd707ec033984a525f48ebcb3fae",
-          "q-soroban-greenfield-escrow-prior-art-preflight": "81d97ce6f762e028dc5b48f51e349b876aef2b165e352eba7345f7eef03fb5a4",
+          "q-sor-build-target-wasm32v1": "698d07f04e42db3c0c12754ba287b9f3ee6dd560d5e8638b3d12c084fc3084b2",
+          "q-soroban-greenfield-escrow-prior-art-preflight": "8f17d6b0978ad93e66341c27c8bac48469c5cd8772264ee309808c2e5d4433c0",
           "q-tool-greenfield-indexer-prior-art-preflight": "6b34af826a75a9ef5151f5e2feaebd73a76c7a0360dcb1de349326bc1c58788a"
         },
         "reopened": {
-          "date": "2026-08-11",
+          "date": "2026-08-27",
           "reason": "member-content-changed"
         }
       },
@@ -3139,24 +3144,20 @@
           "q-tool-zk-repo-live"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-18",
+        "lastChecked": "2026-08-27",
         "note": "All six members are mutually compatible on one boundary, and each grades the subset its own golden states: repository rows come from the live index at answer time (no static roster), and repoScore never establishes properties outside its freshness/traction/authority formula — correctness, security, audit scope, maintenance, production readiness (no member grades every property; e.g. the indexer and sdk discovery cases do not grade the audit-scope non-inference and the smart-wallet case does not grade the correctness one, but no member permits any inference the others forbid). The three DISCOVERY-TABLE members (q-tool-indexer-repos-discovery, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery) additionally grade the richer per-row contract — response generatedAt/as-of, exact owner/name URL, role, maintainer tier, archive state, dated activity, external-supplement labelling, exact-zero source scoping, and extending the non-inference rule to ownership and to stars/semantic rank — which the three REPO-LIVE members (q-tool-passkey-repo-live, q-tool-oracle-repo-live, q-tool-zk-repo-live) do not grade; the repo-live members instead grade explicit repoScore comparison/sort with superlatives scoped to the checked rows, plus their own signal separations (codeVerified is scan evidence not a security audit; hackathonWinner stays index-relative absent exact event evidence). Verified 2026-07-28 (todo 1253 Lane B for the discovery trio; todo 1256 F5 for the repo-live trio, each read in full). 2026-07-28 adversarial review (ADV-2, two passes) corrected this note: earlier revisions attributed the full discovery-table contract, the ownership clause, and the stars/semantic-rank scope to all six members; membership asserts only the all-six rule above. Re-swept 2026-07-28 (ADV-1 reconciliation): hash churn from scoping the repo-live members blanket quality-verdict wording to the specific non-inferences and adding upstream-schema evidence plus durable rootCause pointers; the edits move the members further toward this cluster rule. Re-swept 2026-07-28 (G-GT-1): hash churn from aligning two corroboration claims (oracle/passkey) to ranking/scan wording; claim meaning unchanged.",
         "memberContentSha256": {
           "q-tool-indexer-repos-discovery": "1ebceb7620e72f1080f47616c01333400e248e14f136d6b78ee121b540534b76",
-          "q-tool-oracle-repo-live": "18b90aad08579320affe3a1dbbeafde00ec0470640d1991b894bd9be47df0f0d",
-          "q-tool-passkey-repo-live": "f26aa896e61edaac95d492774eefc4f227d25e934a353a126efb99e25acccd9f",
+          "q-tool-oracle-repo-live": "7cdcf8817196a69a3ba62dc1fbcb9f13b34d0aca572e376115f0f3a3458ca378",
+          "q-tool-passkey-repo-live": "a29178747905cc816d5b0baf954f7cdd4dd923028466ffb765509a6cfdc6f954",
           "q-tool-sdk-repos-discovery": "1c02179bf497f6afed37e2d12c1a12a950c93fb1ae54abe9d59d5cfac2c32868",
           "q-tool-smart-wallet-repos-discovery": "0348664e448f99cdbd94f18d0baed6821c5bff16c1f0c64fce2aeca22be12035",
           "q-tool-zk-repo-live": "203744a4008dbb4612808560998b4ba1bdbbaa59d84fd10e8072c5fa60b7599d"
         },
         "reSwept": {
-          "date": "2026-08-18",
-          "reason": "Re-read all six members after adding exact Scout repository surfaces to the oracle and ZK cases. The surface-only changes preserve live-row, repoScore, and non-inference rules.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-tool-oracle-repo-live, q-tool-passkey-repo-live changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
-        },
-        "reopened": {
-          "date": "2026-08-18",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -3217,22 +3218,18 @@
           "q-eco-most-active-defi-projects"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "note": "All four members are mutually consistent on the scout.getLeaderboard contract; the invariant graded by EVERY member is the project-vs-person boundary — the leaderboard ranks PROJECTS (with aggregate developer metrics) and is not a people directory; getBuilders answers person-level questions. Member-level grading beyond that boundary: q-tool-leaderboard-open-issues grades the metric separations (open-issue volume is a backlog signal, never activity/quality/popularity or a stand-in for stars/activity/repoScore) plus an explicit sort/range and response generatedAt/scope; q-tool-developer-leaderboard-live grades an explicit current sort/range and generatedAt without the detailed issues/stars/TVL distinctions; q-eco-most-active-defi-projects requires a visible as-of date, an explicit activity basis (activity is meta.metricDefinitions latest-commit recency, not commit volume and not repoScore, which is a repo-level scout.searchRepos signal), and a DeFi inclusion rule, satisfiable from live directory or research evidence rather than the leaderboard alone; q-gap-leaderboard-project-not-builder grades only the shared boundary. Verified 2026-07-28 (todo 1253 Lane B for the original trio; todo 1256 F6 for q-eco-most-active-defi-projects after its metric-conflation note was corrected to the served schema — catalog/manifest.json scout.getLeaderboard metricDefinitions). 2026-07-28 adversarial review (ADV-3, two passes) corrected this note: earlier revisions attributed sort/range/generatedAt, metric semantics, and the no-stored-ordering rule to every member; the opening now distinguishes cluster-wide compatibility from member-level grading.",
         "memberContentSha256": {
-          "q-eco-most-active-defi-projects": "9e28de74b4d7d72aaed87f7af97ecadfd8219cab95806818f88ba0e0d73fab97",
-          "q-gap-leaderboard-project-not-builder": "941d05d5bed43a0957dba2bf116b099a84c8b7fac47245798d2e3e5e3499c584",
+          "q-eco-most-active-defi-projects": "4b4b9e4e49748de04dde13339bda70f7acc9d56d9be94f412e9b1278af8c676b",
+          "q-gap-leaderboard-project-not-builder": "703aa508b05e14b0f3972fc7a248532cb818cbbac21432db02703360ae9bed87",
           "q-tool-developer-leaderboard-live": "638b62d50f869f281dca14ff6875120b981c6c90e862b5b247314466b2e9fa1a",
           "q-tool-leaderboard-open-issues": "79026b5c100ad33eeec0b1e46815b8270284a0d9910ab24bd0ed47213a1c1f66"
         },
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 golden-freshness sweep: re-read all four members after a dated provenance-only update to q-tool-leaderboard-open-issues; project-vs-person scope and the separation of issue backlog, activity, stars, TVL, and repoScore remain unchanged and mutually consistent.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-eco-most-active-defi-projects, q-gap-leaderboard-project-not-builder changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
-        },
-        "reopened": {
-          "date": "2026-08-05",
-          "reason": "member-content-changed"
         }
       },
       {
@@ -3245,16 +3242,16 @@
           "q-pay-sdp-disbursement"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-05",
+        "lastChecked": "2026-08-27",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "Todo 1355 bounded SDP truth repair re-read all four answers and reconciled the numeric and architecture claims.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-anchor-sdp-what changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "All four cases agree that current SDP is a bulk-disbursement application whose Core implements native SEP-10/24 and does not universally require an external Anchor Platform; downstream wallet, cash-out, or anchor rails are optional deployment choices. The stellar.org product page's as-of 2026-08-05 'up to 10,000 payments' statement is advertised capacity, not a hard implementation or protocol invariant, and is not required by the two Docs-only questions after the exact-phrase Lumenloop probe returned no exact primary-linked evidence.",
         "memberContentSha256": {
           "q-anchor-sdp-vs-anchor-platform": "ac51118497fb7419f320ec975f88ff2fbcc1e419851acd0ca1f229b71f8decad",
-          "q-anchor-sdp-what": "4de8a8ff25060939290d3666ce3b89ce42f409e1df662e355721411dfe266ae6",
+          "q-anchor-sdp-what": "8b3a48c7689a904739ba88a1d27f4f3a3647a5a9caecdb81b03b4f352e56c5dd",
           "q-crp-sdp-operation": "f8823508c2f843b01caeea62eda59f6e2cfe19d542209cc4edad6a69041e99a3",
           "q-pay-sdp-disbursement": "c2eca75b720ab12301f296e85704b38a963e25d46ad4845fa5670c87731771ce"
         }
@@ -3348,8 +3345,15 @@
         "memberContentSha256": {
           "q-asset-trustline-basics": "cf63cc5bf2858594e4f033d491ff2b6982d7716887ae28874f2ed1288bcb481b",
           "q-edge-1xlm-activation-fee": "e11bf06d657c1649e7f65faab3714e42c003fd47a22fe591cc589ff1cf063635",
-          "q-protocol-base-reserve-min-balance": "72815e61a551a67e8b43a1ebbf18fb402fe0aed9e36044c5f34ca93ac6573b48",
+          "q-protocol-base-reserve-min-balance": "6635b18ab83824b7296d210d0433cfacac056f22de2141a90a9c60bcffedb886",
           "q-raph-low-xlm-transfer-fail": "8a823e31b0e9b69ff1975a8719dfb13922907e7c7cd3d0b9c174bfd1da0d2ce7"
+        },
+        "verdict": "consistent",
+        "lastChecked": "2026-08-27",
+        "reSwept": {
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): the entry carried member hashes but no verdict at HEAD; q-protocol-base-reserve-min-balance changed by form-only avoid rewrites with refreshed truth.verified; no fact, number, or date changed, verdict \"consistent\" stands.",
+          "verdict": "consistent"
         }
       },
       {
@@ -3394,14 +3398,14 @@
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
           "q-pc-protocol-27-zipper": "b40f6aa28bf6613da9ba19408499d450b2515af80fdb8fc2c78e6c6e5fc3a193",
-          "q-pc-protocol-upgrade-timing": "b00553a8fc855f5bc3975438e2aea096127ed1b404ae3e6d2c2968cc7db8b7db",
+          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
           "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
           "q-soroban-auth-delegation-p27": "3428b9c18c52c359ec6c24b161b7a846711b8b3ea7ca2535fba09dd37bcae012"
         },
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-protocol-upgrade-timing changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "lastChecked": "2026-08-27"
@@ -3581,19 +3585,16 @@
           "q-scf-current-round"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "3def8bbc5f9c5c59d39e846d2ae8cc1e1ae284083903993a4eb5e2f57848ae22",
+          "q-edge-fresh-latest-scf-round": "0b12f7caf13dc2b2480420b8e63fea8fc248e54847a440268e269ee3549401bd",
           "q-scf-current-round": "265a0187e1352f77d40bded191773879283952c417411c80af503540e6ee5a9a"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-18",
-          "reason": "2026-08-18 accepted primary and blind adversarial reviews established #45 Initial Review, the elapsed deadline, and no Submission-phase round.",
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-edge-fresh-latest-scf-round changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
-        "reopened": {
-          "date": "2026-08-18",
-          "reason": "member-content-changed"
-        }
+        "lastChecked": "2026-08-27"
       },
       {
         "label": "Stellar base fee floor",
@@ -3630,14 +3631,15 @@
         ],
         "memberContentSha256": {
           "q-edge-1xlm-activation-fee": "e11bf06d657c1649e7f65faab3714e42c003fd47a22fe591cc589ff1cf063635",
-          "q-pc-practical-fee-setting": "70af03e071f45dbb5739bc3f89fca48b86dc0d1463a44181cd8ce89555a18300"
+          "q-pc-practical-fee-setting": "b9986933f0c294c71feb9461d03036bce385dd1ca2b1febd4ecf20944f427dd0"
         },
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): member hashes were first seeded and q-pc-practical-fee-setting changed by a form-only caution add with refreshed truth.verified; the 100-stroop base-fee invariant is untouched in both members.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-pc-practical-fee-setting changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
-        }
+        },
+        "lastChecked": "2026-08-27"
       }
     ]
   },
@@ -3705,7 +3707,7 @@
           "q-scf-total-distributed"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "3def8bbc5f9c5c59d39e846d2ae8cc1e1ae284083903993a4eb5e2f57848ae22",
+          "q-edge-fresh-latest-scf-round": "0b12f7caf13dc2b2480420b8e63fea8fc248e54847a440268e269ee3549401bd",
           "q-scf-current-round": "265a0187e1352f77d40bded191773879283952c417411c80af503540e6ee5a9a",
           "q-scf-round-43-results": "2121ee826d497e68cbbc1131846eef55f1a8b782d8c6d1e1e0bfd23c3a077204",
           "q-scf-total-distributed": "c126484f55b07c00aafcc9584f0c1a510444282b878544ec1ec21caa5887d9ff"
@@ -3713,7 +3715,7 @@
         "verdict": "consistent",
         "reSwept": {
           "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (symmetric-caution batch 2): members q-scf-total-distributed changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-edge-fresh-latest-scf-round changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "lastChecked": "2026-08-27"
@@ -3730,7 +3732,14 @@
         "memberContentSha256": {
           "q-comp-yieldblox-oracle-incident": "20c07b717ed3154a2a658435cb76d302dd131e79af408d1d315198f7d52971ad",
           "q-hist-yieldblox-v2-2026-exploit": "4842db0eb27e60ebb864892dc40412c54a9cafe605ed86b68ae2c70e8e9111b1",
-          "q-soroban-oracle-defensive-consumption": "96589f90b771c258a8adc60ab9f68377b54db23c17b1ce2f1911eb79e078b91f"
+          "q-soroban-oracle-defensive-consumption": "5066d6310dc8b4b54765d59951b9c8d6bbfd471dbf15c03a0a7fa3651e7dc8be"
+        },
+        "verdict": "consistent",
+        "lastChecked": "2026-08-27",
+        "reSwept": {
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): members q-soroban-oracle-defensive-consumption changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "verdict": "consistent"
         }
       },
       {
@@ -3756,7 +3765,14 @@
           "q-hist-meridian-2026-corrected-venue"
         ],
         "memberContentSha256": {
-          "q-hist-meridian-2026-corrected-venue": "5064b9515d3faecb09f5be7a7c82399ab46b8c78f90ff70e8ced19e206661339"
+          "q-hist-meridian-2026-corrected-venue": "4253a8b2c46fbef973cd1c000a0165a1c5c3adac70671061cf90b99f50205648"
+        },
+        "verdict": "consistent",
+        "lastChecked": "2026-08-27",
+        "reSwept": {
+          "date": "2026-08-27",
+          "reason": "Golden-truth burn-down 2026-08-27 (presentation-avoid batch 3): the entry carried member hashes but no verdict at HEAD; q-hist-meridian-2026-corrected-venue changed by form-only avoid rewrites with refreshed truth.verified; no fact, number, or date changed, verdict \"consistent\" stands.",
+          "verdict": "consistent"
         }
       },
       {

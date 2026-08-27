@@ -13,7 +13,7 @@
       "It exposes holders to issuer-side counterparty risk: the issuer can burn the asset from a holder's balance (e.g. after fraud, error, or regulatory/sanctions action)."
     ],
     "avoid": [
-      "Do NOT frame clawback as a hack/exploit or claim any account can claw back another's funds.",
+      "Do NOT claim clawback is a hack/exploit or that any account can claw back another's funds.",
       "Do NOT claim all Stellar assets (including XLM) are subject to issuer clawback."
     ],
     "notes": "Risk framing rooted in protocol mechanics → stellar_docs. Clawback is opt-in (AUTH_REVOCABLE+AUTH_CLAWBACK_ENABLED), issuer-only; XLM/ordinary assets without the flag aren't clawbackable. Trap: framing clawback as an exploit or universal.\nAlso good if the answer: Only assets explicitly issued with clawback enabled (AUTH_REVOCABLE + AUTH_CLAWBACK_ENABLED) carry this; XLM and ordinary assets without the flag are not clawbackable.\nGolden cites: developers.stellar.org clawbacks / control-asset-access docs."
@@ -39,10 +39,16 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-07-regulated-controls-anchor-security accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (presentation-avoid): Reworded the clawback framing trap as a concrete false claim; the trap target and truth are unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+        "Sibling sweep 2026-08-27: grep clawback|AUTH_CLAWBACK_ENABLED|hack/exploit → q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-sep-clawback-prereq-flag; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-comp-clawback-holder-risk"

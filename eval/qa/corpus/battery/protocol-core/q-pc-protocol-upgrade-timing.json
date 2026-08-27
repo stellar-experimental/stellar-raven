@@ -14,7 +14,7 @@
       "Explains that protocol activation depends on validator-coordinated network upgrade timing."
     ],
     "avoid": [
-      "Do NOT present the completed July 8, 2026 Protocol 27 vote as a future or next upgrade.",
+      "Do NOT claim the completed July 8, 2026 Protocol 27 vote is a future or next upgrade.",
       "Do NOT invent a later protocol vote date without a dated primary source.",
       "Do NOT confuse protocol upgrade voting with SEP/CAP approval or a software release alone.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
@@ -87,7 +87,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "2026-07-09 independent re-verification in Solo scratchpad 567: Horizon boundary ledgers + SDF upgrade guide",
         "Sibling sweep covered all compiled cases mentioning Protocol 27, Zipper, or 2026-07-08",
@@ -97,7 +97,10 @@
         "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-008; the completed Protocol 27 activation facts are unchanged.",
         "Improvements review 2026-08-27: improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md records the 2026-08-18 upstream fix; the disputed claim is the older Software Versions page showing Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current.",
         "Sibling sweep 2026-08-27: grep sd-008|Protocol 27|63386819|Zipper → q-edge-fresh-latest-protocol-version, q-pc-protocol-27-zipper, q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction",
-        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory."
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory.",
+        "Structural re-form (presentation-avoid): rewrote the presentational Protocol 27 clause as the same concrete false-content claim; the trap target is unchanged.",
+        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+        "Sibling sweep 2026-08-27: grep Protocol 27|July 8|upgrade vote → q-pc-protocol-27-zipper, q-protocol-27-cap-0071; no contradiction"
       ],
       "rootCause": [
         "eval-side freshness drift: a forward-looking schedule aged past its vote date",
@@ -105,7 +108,8 @@
         "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-pc-protocol-upgrade-timing"

@@ -13,7 +13,7 @@
     ],
     "avoid": [
       "Do NOT convert `round.source: \"unavailable\"` into a claim that no submission round is open.",
-      "Do NOT present deterministic angles as reviewer judgments or predict that SCF will fund the idea.",
+      "Do NOT claim deterministic angles are reviewer judgments or predict that SCF will fund the idea.",
       "Do NOT pin a round number, peer count, or award total as a timeless pitch requirement."
     ],
     "notes": "Grade the service contract and evidence use. Current round phases, peer rows, and award totals can change."
@@ -83,17 +83,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1664 coverage-golden implementation",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "Read-only scfPitch probe for a streaming-payments idea on 2026-08-18.",
         "https://communityfund.stellar.org/awards inspected directly on 2026-08-18.",
         "catalog/manifest.json#scout.scfPitch defines the round-source and evidence boundaries.",
         "Sibling sweep: current-round cases remain outside this case; this case pins no round number, phase, count, or amount.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep scfPitch|deterministic angles|funding decision → q-scf-pitch-prep-live, q-gap-vet-pitch-vertical-null; no contradiction"
       ],
       "rootCause": [
-        "solo://proj/80/todo/author-five-new-cove--1664"
+        "solo://proj/80/todo/author-five-new-cove--1664",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

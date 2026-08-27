@@ -106,3 +106,26 @@ member hashes (78 clusters + the Protocol 27 date trap + one first-seeded numeri
 closed by form-only reSwept events; the ten clusters already `reopen` at HEAD were left as they
 were. Gates: compile, lint --since fadedf6 --stale (0 errors), typecheck, npm test (1270 passed),
 build, secrets scan — all green.
+
+### Batch 3 — presentation-avoid class (73 cases, 81 warnings → 0) — in progress
+
+Crew: gt-sol-a/b/c, four cases per prompt; reviewer gt-grok-rev in two parts. Part 1 (24 cases,
+chunks 00–05): `/tmp/raven-qadeep/gt/review-batch3-part1.md` — APPROVE, 24 PASS. Twenty-one
+rewrites are "Do NOT present/frame X as Y" → "Do NOT claim X is Y"; three omission items were
+deleted because a keyFact already requires the content (quoted in the review). Reviewer
+independently confirmed the CAP-0068/0069 P23 membership and the 2022 Soroban Adoption Fund date.
+Part 2 (30 cases, chunks 06–13): `/tmp/raven-qadeep/gt/review-batch3-part2.md` — APPROVE, 30 PASS.
+Seven omission items deleted (each quoted against its covering keyFact); one moved into a new
+83-character atomic keyFact (channel accounts). Reviewer independently re-checked the tx_bad_seq
+error-handling page and the dated 0.5 XLM base reserve.
+Part 3 (19 overlap cases also edited in batch 2): `/tmp/raven-qadeep/gt/review-batch3-part3.md` —
+APPROVE-WITH-FIXES, 15 PASS, 4 FAIL on provenance only (`truth.verified.by` still named the
+batch-2 worker); fixed. Owner correction: q-ti-secret-key-vs-mnemonic-derivation is a compile-time
+migration exception pinned at exactly six keyFacts; the worker's fold to five was reverted and the
+reviewer confirmed the deleted omission item is covered by the hardened-path keyFact.
+
+Lint: 1,295 → 1,212 warnings (presentation-avoid 81 → 0; two "without an observation date"
+sourcing guards now match the allowed form). Register: reopened clusters closed by form-only
+reSwept events; two entries that carried hashes but no verdict at HEAD were stamped `consistent`
+with a dated reason; the ten pre-existing `reopen` clusters remain untouched. Gates: compile, lint
+--since fadedf6 --stale (0 errors), typecheck, npm test (1270 passed), build, secrets — all green.

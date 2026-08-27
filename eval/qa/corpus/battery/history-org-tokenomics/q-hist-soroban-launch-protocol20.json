@@ -10,7 +10,7 @@
       "Separates Protocol activation, phased GA, and the 2022 fund announcement; describes Soroban as Wasm/Rust-first and non-EVM."
     ],
     "avoid": [
-      "Do NOT use one 2024 date for every rollout stage, date the fund to launch, claim a 2021/22 Mainnet launch, or call Soroban Solidity/EVM/Rust-only."
+      "Do NOT use one 2024 date for every rollout stage, claim the fund was a 2024 launch event, claim a 2021/22 Mainnet launch, or call Soroban Solidity/EVM/Rust-only."
     ],
     "notes": "GT-27 2026-07-10: distinguish Feb 20 Phase 0, Feb 27 Phase 1, Mar 19 GA, and the Oct 12 2022 fund announcement. Soroban is Wasm/Rust-first and non-EVM, not Rust-exclusive.\nGT-27 CORRECTION 2026-07-10: preserve the phased rollout rather than one blended launch date."
   },
@@ -66,13 +66,16 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The broad 2024 claim is right but collapses Protocol-20 activation, phased rollout/general availability, and the 2022 Adoption Fund announcement; it also makes Rust sound exclusive rather than Rust-first/Wasm.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-27 primary 3270 and blind 3272."
+        "Solo scratchpad 575 GT-27 primary 3270 and blind 3272.",
+        "Structural re-form (presentation-avoid): Reworded a date-presentation clause as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep Soroban Adoption Fund|Phase 0|March 19 → q-hist-soroban-launch-protocol20 only; no sibling contradiction"
       ],
       "rootCause": [
-        "Distinct activation/GA/funding events were compressed and language support was over-narrowed."
+        "Distinct activation/GA/funding events were compressed and language support was over-narrowed.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-hist-soroban-launch-protocol20"

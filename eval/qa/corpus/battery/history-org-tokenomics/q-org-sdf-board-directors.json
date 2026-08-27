@@ -13,7 +13,7 @@
       "Keeps the SDF people roster distinct from the builder directory."
     ],
     "avoid": [
-      "Do NOT present the dated roster or roles as timeless facts.",
+      "Do NOT claim the dated roster or roles are timeless facts.",
       "Do NOT treat an SDF board member as a GitHub builder or as available for contact."
     ],
     "notes": "The roster is volatile. Grade a current, source-qualified roster and accept later official changes when the answer cites its observation date."
@@ -62,7 +62,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "https://stellar.org/foundation/team inspected directly on 2026-08-18.",
         "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 returned the same five names on 2026-08-18.",
@@ -71,11 +71,15 @@
         "Structural re-form (snapshot-date): Split the board roster from its snapshot date; truth is unchanged.",
         "Live re-check 2026-08-27: https://stellar.org/foundation/team — the Board of directors section listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
         "Live re-check 2026-08-27: https://stellar.org/foundation/team — the live roster page remained undated, supporting an observation-date gate.",
+        "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji → q-org-sdf-board-directors only; no contradiction",
+        "Structural re-form (presentation-avoid): Reworded the timeless-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
         "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji → q-org-sdf-board-directors only; no contradiction"
       ],
       "rootCause": [
         "solo://proj/80/todo/author-five-new-cove--1664",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

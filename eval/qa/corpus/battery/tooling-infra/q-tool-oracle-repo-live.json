@@ -14,7 +14,7 @@
     ],
     "avoid": [
       "Recommends a deprecated repository solely because it led an archived three-row result.",
-      "Presents a high repoScore as evidence of correctness, security, maintenance, or production readiness."
+      "Claims a high repoScore is evidence of correctness, security, maintenance, or production readiness."
     ]
   },
   "tags": {
@@ -86,8 +86,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420) + todo 1256 corpus lane (F5) consistency alignment 2026-07-28",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "solo://proj/49/process/3414",
         "solo://proj/49/process/3420",
@@ -95,12 +95,15 @@
         "https://github.com/reflector-network/reflector-contract",
         "Todo 1256 corpus lane (2026-07-28, F5): the golden told the grader to compare repoScore and pick the “best” oracle code references without saying what that ordering is evidence of, while cluster-131's members forbid inferring correctness, security, audit scope, maintenance, or production readiness from repoScore. The wording now states that the repoScore ordering is the index's answer-time navigation/ranking signal and scopes the superlative to it. Internal-consistency repair — no new external source consulted; the case now joins cluster-131.",
         "Upstream schema evidence (inventory/stellar-light.json, searchRepos repoScore description; ADV-1 reconciliation 2026-07-28): repoScore is Scout's own composite 'Quality grade (0-100) = freshness + traction + hackathon/SCF/builder authority — Lead with high-score repos'. Its formula contains no correctness, security-audit, maintenance, or production-readiness input, so the golden's boundary — order candidates by it, never infer those attributes from it — restates the served contract's scope rather than contradicting the schema's quality-grade label.",
-        "24h four-reviewer audit (2026-07-28, G-GT-1): the corroboration claim wording was aligned with the repoScore boundary shipped the same day — ranking/scan signals rather than the blanket word quality; the claim meaning and its evidence are unchanged."
+        "24h four-reviewer audit (2026-07-28, G-GT-1): the corroboration claim wording was aligned with the repoScore boundary shipped the same day — ranking/scan signals rather than the blanket word quality; the claim meaning and its evidence are unchanged.",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep repoScore|codeVerified|oracle repositories|production readiness → q-tool-oracle-repo-live, q-tool-passkey-repo-live, q-tool-zk-repo-live, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
         "The golden's repoScore comparison instruction did not say what the ordering does and does not establish, leaving open a reading where 'strongest = highest repoScore' counts as proof of correctness, security, or production readiness — attributes outside the score's freshness/traction/authority formula.",
-        "Tracked at solo://proj/49/todo/corpus-follow-ups-fr--1256 (todo 1256, F5) with the adversarial-review reconciliation in the same todo's comments."
+        "Tracked at solo://proj/49/todo/corpus-follow-ups-fr--1256 (todo 1256, F5) with the adversarial-review reconciliation in the same todo's comments.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "boxy sl-code-soroban-oracle-least-bad"

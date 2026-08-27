@@ -15,7 +15,7 @@
     "avoid": [
       "Do NOT use retired `soroban contract bindings ts`, assume a generated `Contract` export, or hand-edit generated output.",
       "Do NOT call Freighter during SSR/server rendering or hard-code a mismatched network/passphrase.",
-      "Do NOT skip simulation/assembly or put a secret in browser code.",
+      "Do NOT put a secret in browser code.",
       "Do NOT describe Tx.fee as inclusion-only or every resource charge as refundable."
     ],
     "notes": "Verified docs and GitHub release URLs on 2026-06-29. The exact generated client method names can drift with CLI/bindings output, so keep code-level assertions tied to a freshly generated package/version.\nAlso good if the answer: Mentions current JS SDK/package drift and tells the user to verify generated binding README/types against the installed `@stellar/stellar-sdk` and binding output. | Cites the generated bindings/frontend guide and the Stellar fee/resource-fee documentation.\nGolden cites: Primary Stellar docs for TypeScript bindings/frontend integration. | Primary Stellar docs for Soroban resource fee and inclusion fee semantics. | Freighter docs or repo for browser signing behavior.\nGT-51 CORRECTION 2026-07-11: compile against freshly generated types; generated README prose is not authority over generated source. Exact package/API versions remain dated."
@@ -102,14 +102,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer had the right package/fee core but let stale generated README names stand, omitted the current generated `Client` shape and network/signing boundary, and described resource fees too coarsely.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary process 3353 and blind process 3360 independently agreed on the fee, client-only wallet, generated-type, and current-command corrections; blind matrix sealed before primary read.",
-        "Sibling sweep checked q-sor-bindings-from-wasm-no-address, q-sor-deploy-invoke-from-js-sdk, and q-soroban-fee-structure; they are consistent models."
+        "Sibling sweep checked q-sor-bindings-from-wasm-no-address, q-sor-deploy-invoke-from-js-sdk, and q-soroban-fee-structure; they are consistent models.",
+        "Structural re-form (presentation-avoid): Removed the simulation/assembly omission demand because a key fact already requires that ordering; preserved the browser-secret false-content trap; truth is unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+        "Sibling sweep 2026-08-27: grep contract bindings typescript|AssembledTransaction|Tx.fee → q-sor-deploy-invoke-from-js-sdk, q-soroban-cli-bindings, q-ti-bindings-to-nextjs-integration; no contradiction"
       ],
       "rootCause": [
-        "Eval-side generated-artifact/API drift; the upstream stale generated README is recorded as a research candidate because only the blind lane directly verified the template defect."
+        "Eval-side generated-artifact/API drift; the upstream stale generated README is recorded as a research candidate because only the blind lane directly verified the template defect.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-ti-bindings-to-nextjs-integration"

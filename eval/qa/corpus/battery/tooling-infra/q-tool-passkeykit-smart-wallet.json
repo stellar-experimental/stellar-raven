@@ -16,7 +16,7 @@
     ],
     "avoid": [
       "Do NOT characterise Passkey Kit as legacy, superseded, or demo-only material, and do NOT say the README directs readers to Smart Account Kit instead; that composite framing was removed on 2026-07-12. Noting that it carries no third-party audit is accurate and must NOT be penalised — the current README still asks readers to review the contract and SDK themselves before holding meaningful value.",
-      "Do NOT present either kit as the universal greenfield default without matching its authorization model to the application.",
+      "Do NOT claim either kit is the universal greenfield default for every authorization model.",
       "Do NOT say both kits expose identical primitives or APIs across versions.",
       "Do NOT imply that an OpenZeppelin contract audit covers Smart Account Kit, the relayer, indexer, frontend, policies, and deployment configuration as one inherited guarantee.",
       "Do NOT confuse transaction submission or fee sponsorship with smart-account authorization."
@@ -126,8 +126,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-11",
-      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra tooling matrix",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "https://github.com/stellar/passkey-kit",
         "https://github.com/stellar/smart-account-kit",
@@ -137,10 +137,14 @@
         "https://github.com/stellar/passkey-kit/commit/c7483e71f5fd153b95ba9da1772c17298b3cf198",
         "https://github.com/stellar/passkey-kit/commit/c6e46dab3ac123fabb5ecf1e80e9a043c86ae526",
         "https://api.github.com/repos/kalepail/passkey-kit",
-        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
+        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
+        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
+        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+        "Sibling sweep 2026-08-27: grep passkey-kit|smart-account-kit|authorization model → q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery; no contradiction"
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-tool-passkeykit-smart-wallet"

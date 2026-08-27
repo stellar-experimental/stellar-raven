@@ -14,7 +14,7 @@
     ],
     "avoid": [
       "Do NOT write `if (await isConnected())` as though the result were boolean or conflate installed/authorized/unlocked.",
-      "Do NOT present setAllowed as the only current connect flow, prompt on mount, ignore network/rejection, or handle a secret.",
+      "Do NOT claim setAllowed is the only current connect flow, prompt on mount, ignore network/rejection, or handle a secret.",
       "Do NOT invent missing exports or depend on private Wallets Kit modal structure."
     ],
     "notes": "Freighter and Wallets Kit releases were verified on 2026-06-29. Exact Wallets Kit modal customization APIs require current project docs/source inspection in Phase 3 because official Stellar docs only list/support the kit at a high level.\nAlso good if the answer: Cites official Freighter/Stellar frontend docs and the Wallets Kit docs/repo/release. | Mentions version skew: missing `getAddress` export means docs/example and package version are mismatched or an older API is installed.\nGolden cites: Official Stellar/Freighter docs for browser signing. | Wallets Kit docs/repo or official developer-tooling listing for multi-wallet support.\nGT-51 CORRECTION 2026-07-11: requestAccess is the current recommended one-call permission/address flow; setAllowed remains valid but should not mask structured results or network/error UX."
@@ -101,14 +101,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited button flow copied stale structured-result semantics and led with setAllowed, while current Freighter docs distinguish installation from authorization and recommend requestAccess for the one-call permission/address flow.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary/blind matrices independently required the current-API repair; both preserve setAllowed as valid but not the sole recommended flow.",
-        "Sibling sweep checked q-ti-freighter-localhost-not-detected, q-tool-freighter-wallet, and q-tool-wallets-kit."
+        "Sibling sweep checked q-ti-freighter-localhost-not-detected, q-tool-freighter-wallet, and q-tool-wallets-kit.",
+        "Structural re-form (presentation-avoid): Reworded the setAllowed presentation clause as a concrete false claim and preserved the remaining wallet-flow traps; truth is unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; all trap targets are unchanged.",
+        "Sibling sweep 2026-08-27: grep requestAccess|setAllowed|Wallets Kit → q-ti-connect-wallet-button-code, q-ti-freighter-localhost-not-detected, q-tool-freighter-wallet; no contradiction"
       ],
       "rootCause": [
-        "Eval-side wallet API drift; the possible upstream frontend-guide mismatch is recorded as a research candidate rather than filed from one direct defect lane."
+        "Eval-side wallet API drift; the possible upstream frontend-guide mismatch is recorded as a research candidate rather than filed from one direct defect lane.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-ti-connect-wallet-button-code"

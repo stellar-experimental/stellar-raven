@@ -14,7 +14,7 @@
     "avoid": [
       "Do NOT claim that an empty contract array proves no relevant contract exists on mainnet.",
       "Do NOT claim that a null domain proves the idea has no contract surface or market.",
-      "Do NOT present `whatNotToClaim` as free-form advice, an external judgment, or a complete risk review."
+      "Do NOT claim `whatNotToClaim` is free-form advice, an external judgment, or a complete risk review."
     ],
     "notes": "Grade the durable absence, mapping, and caution semantics. The observed empty result is evidence, not a permanent expected value."
   },
@@ -60,16 +60,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-19",
-      "by": "Todo 1797 coverage-golden implementation",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "Read-only hackathonBrief probe returned an empty registry result and null mapped domain on 2026-08-19.",
         "catalog/manifest.json#scout.hackathonBrief defines the durable absence, mapping, and caution semantics.",
         "Sibling sweep: q-gap-contracts-domain-empty owns the standalone registry boundary; this case tests that boundary inside the hackathon composite. The vet, pitch, prior-art, and event cases retain their distinct intents.",
-        "solo://proj/49/scratchpad/repository-issue-and--837#golden-verdict"
+        "solo://proj/49/scratchpad/repository-issue-and--837#golden-verdict",
+        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
+        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+        "Sibling sweep 2026-08-27: grep hackathonBrief|whatNotToClaim|liveContracts.contracts → q-gap-contracts-domain-empty, q-scout-hackathon-brief-first-hour; no contradiction"
       ],
       "rootCause": [
-        "solo://proj/49/todo/add-broad-scout-hack--1797"
+        "solo://proj/49/todo/add-broad-scout-hack--1797",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

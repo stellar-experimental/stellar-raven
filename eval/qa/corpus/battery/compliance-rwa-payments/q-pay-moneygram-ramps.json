@@ -19,7 +19,7 @@
       "Do NOT use the off-ramp maximum as the on-ramp maximum.",
       "Do NOT pin 174, 180+, or 200+ as one current bidirectional Stellar cash-coverage count.",
       "Do NOT conflate MoneyGram Ramps with SDP.",
-      "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
     "notes": "CORRECTION 2026-08-14: MoneyGram's live Version 1.2 operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum. Both official layers were observed on 2026-08-14. Both layers agree on the 950 USDC cash-in maximum and 2,500 USDC cash-out maximum. Sources disagree on the minimum; do not penalize either minimum when the answer dates and attributes it accurately. Penalize an unsupported winner or an undated minimum. Limits and country counts are freshness-sensitive. Trap: wrong SEP (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
   },
@@ -141,8 +141,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-14",
-      "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "https://xramps.moneygram.com/ops/dev/stellar",
         "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
@@ -152,11 +152,15 @@
         "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
         "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
         "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
-        "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC."
+        "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC.",
+        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+        "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
-        "eval-authoring: a disputed minimum remained pinned after the live official layers diverged."
+        "eval-authoring: a disputed minimum remained pinned after the live official layers diverged.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-pay-moneygram-ramps"

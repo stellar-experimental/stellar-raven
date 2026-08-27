@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "ac7472d3e2a77ff87bab90d5193afa8faa609c96c8d61f8fb5d1942c42be71ef",
+  "corpusContentSha256": "a05744c8ed1c128bb8bdfed787f8c53b821c1f64e9ee82dfd76fd0375f55552e",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -112,7 +112,7 @@
         ],
         "avoid": [
           "Do NOT guarantee listing, verification, price, or market-cap display just because a Stellar asset exists.",
-          "Do NOT present an official universal Stellar whitelist for every exchange/aggregator."
+          "Do NOT claim an official universal Stellar whitelist governs every exchange or aggregator."
         ],
         "notes": "Freshness-sensitive. Verified durable prerequisites with SEP-1 and SEP-42; do not require any specific exchange/aggregator policy beyond dated current-source citation. Re-verified 2026-06-29: SEP-0042 confirmed as 'Stellar Asset List (SAL)', SEP-0001 + the build/apps SEP-1 tutorial resolve; stellar.expert/asset-lists is a client-rendered SPA so its catalog couldn't be content-fetched but the route is valid (load-bearing SEP claims verified via the protocol repo).\nAlso good if the answer: Mentions liquidity and price/market-cap visibility generally require real markets and supply metadata rather than mere asset issuance. | Advises checking the current listing docs/forms for the specific venue or aggregator.\nGolden cites: SEP-1 or Stellar asset docs, plus dated venue/listing sources for freshness-specific claims."
       },
@@ -149,16 +149,19 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 5B numeric corroboration backfill",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
           "evidence": [
             "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep1",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+            "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+            "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+            "Sibling sweep 2026-08-27: grep universal Stellar whitelist|exchange/aggregator|asset list → q-aas-list-token-on-exchanges-aggregators, q-aas-trusted-asset-list-whitelist; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
         "origin": "raven-next q-aas-list-token-on-exchanges-aggregators",
@@ -717,7 +720,7 @@
         "avoid": [
           "Do NOT promise returns, freeze APY/TVL, or assume all Stellar LP venues share the same deposit/withdraw mechanics.",
           "Do NOT describe impermanent loss as a guaranteed permanent loss before comparing the LP position with holding and accounting for fees/incentives.",
-          "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+          "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
         "notes": "Do not preserve any APY/TVL number without a date. Phase 3 should re-check protocol UIs/DeFiLlama if a numeric yield/TVL claim appears. REVIEWED 2026-06-29: re-verified named LP/swap venues live on Scout — Soroswap (first Soroban DEX/aggregator, Live), Aquarius (AMM/AQUA, Live), Phoenix (DeFi Hub AMM, PHO, Live); Soroswap aggregates Soroswap/Phoenix/Aquarius liquidity. No static APY/TVL numbers asserted in the gospel (risk-framed, source-gated) — kept that way. Stellar-docs SDEX/liquidity-pools source URL returns 200.\nAlso good if the answer: Explains withdrawal may depend on pool liquidity, protocol health, wallet support, lockups/incentive terms, and contract state. | Mentions comparing net returns after fees, slippage, incentives, and asset price exposure.\nGolden cites: Current protocol/project sources or Scout records for any named yield/liquidity claim.\nExpanded 2026-07-10. The answer must be operational and risk-specific, not merely a warning against yield promotion."
       },
@@ -769,18 +772,22 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
           "evidence": [
             "Solo scratchpad 575 GT-16 primary 3244 and blind 3245",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
+            "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+            "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share → q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no contradiction"
           ],
           "rootCause": [
             "eval-side answer completeness: correct warnings did not answer deposit/withdraw, yield comparison, or impermanent-loss mechanics",
             "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
         "origin": "raven-next q-defi-provide-liquidity-impermanent-loss"
@@ -804,7 +811,7 @@
         ],
         "avoid": [
           "Do NOT sum or compare supply, market cap, distributed/represented value, payment volume, transfer volume, and TVL as though they share one scope.",
-          "Do NOT present a historical scalar as current or assert an undefined adoption superlative.",
+          "Do NOT claim a historical scalar is current or assert an undefined adoption superlative.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
         "notes": "FRESHNESS item (quarterly). Two dated sources, slightly different cuts: SDF Q1 2026 'Execution at network scale' cites $2B+ on-chain RWAs, $5.5B stablecoin payment volume, ~86% dev growth; Messari 'State of Stellar Q1 2026' (per Lumenloop roundup, week of May 29 2026) puts the tokenized-RWA stack at ~$2.8B (4th among ecosystems) with ~1,700 monthly active devs. Don't gate on one exact number — gate on 'cite a dated Q1-2026 report + flag it's a snapshot.' 2026-06-29 reviewed: directly verified both anchors — SDF blog 'Q1 2026: Execution at network scale' confirms RWAs crossed $2B (from $785M YE2025), stablecoin payment volume $5.5B (+72% YoY); SDF President interview (2026-06-04) states RWA stack now ~$2.8B, '3rd or 4th' among chains. LinkedIn/Messari cross-check shows Stellar #4 RWA (~$1.7B registered-fund scope) — note the $1.2-2B vs $2.8B gap is a scope difference (registered funds vs broad RWA incl. stablecoins); file already gates on caveat. Confidence kept medium (figures move quarterly).\nAlso good if the answer: Attributes the numbers to a specific dated report (SDF Q1 2026 update or Messari State of Stellar Q1 2026) rather than asserting bare figures.\nGolden cites: A dated report (SDF Q1 2026 update or Messari State of Stellar Q1 2026) for the figures.\nGT-20 CORRECTION 2026-07-10 supersedes inherited scope/superlative prose. Grade explicit date, metric definition, stock-versus-flow separation, period, and methodology. Historical $1.52B/$2B/~$2.8B points remain valid only with their dated sources; do not require them in a current snapshot.\nAccurately quoting the canonical LumenLoop source on the $2.8B RWA and 1,700 monthly active developers attribution to the written Messari report is not a wrong claim while ll-009 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
@@ -927,7 +934,7 @@
         ],
         "verified": {
           "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
           "evidence": [
             "eval/qa/consistency-register.json sweep 2026-07-03; deep-verification quotes/URLs in Solo scratchpad 521",
             "Solo scratchpad 575 GT-20 primary 3256 and blind 3257; current SDF/Allium/rwa.xyz metric matrix asOf 2026-07-10.",
@@ -936,7 +943,10 @@
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-009; the corrected RWA and developer-stat attributions are unchanged.",
             "Improvements review 2026-08-27: improvements/lumenloop/ll-009-messari-report-misattribution.md remains reported upstream; the disputed claim is LumenLoop's attribution of the $2.8B RWA value and 1,700 monthly active developers to the written Messari report.",
-            "Sibling sweep 2026-08-27: grep ll-009|1,700 monthly|$2.8B|Messari report → q-asset-rwa-tokenized-freshness; no contradiction"
+            "Sibling sweep 2026-08-27: grep ll-009|1,700 monthly|$2.8B|Messari report → q-asset-rwa-tokenized-freshness; no contradiction",
+            "Structural re-form (presentation-avoid): Reworded the historical-scalar presentation clause as a concrete false claim and preserved the adoption-superlative trap; truth is unchanged.",
+            "No live re-check needed: wording-only avoid-item re-form; both trap targets are unchanged.",
+            "Sibling sweep 2026-08-27: grep $2.8B|1,700 monthly|payment volume|transfer volume → q-asset-rwa-tokenized-freshness, q-eco-stellar-rwa-stablecoin-volume; no contradiction"
           ],
           "rootCause": [
             "improvements/lumenloop/ll-009 — the upstream misattribution this golden inherited",
@@ -944,7 +954,8 @@
             "solo://proj/49/todo/corpus-health-instru--829",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
         "origin": "raven-next q-eco-stellar-rwa-stablecoin-volume"
@@ -1266,7 +1277,7 @@
           "Abu Dhabi October 21–22 was the superseded schedule; SDF announced the Lisbon change on April 1, 2026."
         ],
         "avoid": [
-          "Do NOT present Abu Dhabi/Yas Marina on October 21–22 as the current Meridian 2026 schedule.",
+          "Do NOT claim Abu Dhabi/Yas Marina on October 21–22 is the current Meridian 2026 schedule.",
           "Do NOT state the Lisbon schedule without an as-of qualifier while the event remains upcoming."
         ],
         "notes": "Corrected-fact, freshness-sensitive case. The stale CoinDesk sponsored recap is useful evidence of the prior schedule but must not override the current official event site."
@@ -1338,8 +1349,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 N2 primary+blind (Solo 3417/3423)",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
@@ -1347,10 +1358,13 @@
             "https://meridian.stellar.org/",
             "https://meridian.stellar.org/event-details",
             "https://x.com/StellarOrg/status/2039405316803031315",
-            "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference"
+            "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference",
+            "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
+            "Sibling sweep 2026-08-27: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no sibling contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -1377,7 +1391,7 @@
           "Do NOT use the off-ramp maximum as the on-ramp maximum.",
           "Do NOT pin 174, 180+, or 200+ as one current bidirectional Stellar cash-coverage count.",
           "Do NOT conflate MoneyGram Ramps with SDP.",
-          "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+          "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
         "notes": "CORRECTION 2026-08-14: MoneyGram's live Version 1.2 operator guide states a 15 USDC minimum, while the live SEP-24 /info endpoint states a 1 USDC minimum. Both official layers were observed on 2026-08-14. Both layers agree on the 950 USDC cash-in maximum and 2,500 USDC cash-out maximum. Sources disagree on the minimum; do not penalize either minimum when the answer dates and attributes it accurately. Penalize an unsupported winner or an undated minimum. Limits and country counts are freshness-sensitive. Trap: wrong SEP (it is SEP-24 with SEP-10, not SEP-6/31) or using broader corporate footprint as bidirectional Stellar cash-ramp coverage."
       },
@@ -1499,8 +1513,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-14",
-          "by": "Root-reconciled golden-truth matrices in Solo todos 1546 and 1547",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
           "evidence": [
             "https://xramps.moneygram.com/ops/dev/stellar",
             "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
@@ -1510,11 +1524,15 @@
             "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
             "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
             "solo://proj/49/scratchpad/mcp-quality-and-heal--809",
-            "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC."
+            "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC.",
+            "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
+            "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+            "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction"
           ],
           "rootCause": [
             "freshness-drift",
-            "eval-authoring: a disputed minimum remained pinned after the live official layers diverged."
+            "eval-authoring: a disputed minimum remained pinned after the live official layers diverged.",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
         "origin": "raven-next q-pay-moneygram-ramps"
@@ -1871,7 +1889,7 @@
           "Do NOT put planned DTCC Stellar work in the live bucket.",
           "Do NOT claim all RWA products use SEP-8 or one identical legal/control model.",
           "Do NOT freeze volatile AUM or roster counts without dated primary evidence.",
-          "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+          "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
         "notes": "2026-06-29 re-verified dated claims and freshness-gated. Franklin Templeton (BENJI/FOBXX, ~$654M AUM on Stellar) and WisdomTree (Prime funds + gold) confirmed; Figure YLDS = SEC-registered face-amount certificate, live on Stellar May 5, 2026 (stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network) — consistent with q-rwa-dtcc-tokenization which keeps DTCC's DTC service PLANNED for H1 2027 (not live). Ondo Finance also active. Landscape evolving/freshness-sensitive (quarterly). Trap: inventing projects or presenting DTCC's forward-dated plan as live.\nAlso good if the answer: Mentions other RWA/tokenization participants (e.g. DTCC's planned DTC tokenization service) and treats the landscape as evolving. | Notes these use Stellar's regulated-asset model (SEP-8 + flags).\nGolden cites: Scout/Lumenloop project directory entries and/or dated issuer sources.\nCORRECTION 2026-07-10: grade dated product-level deployment and legal/mechanism scope. DTCC is planned H1 2027 on Stellar. GOLD is the live WisdomTree code. No roster-wide SEP-8 gate."
       },
@@ -1996,21 +2014,25 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
           "evidence": [
             "Solo scratchpad 575 GT-11 live/planned and mechanism matrices",
             "improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md",
             "improvements/lumenloop/ll-012-rwa-live-planned-recall.md",
             "2026-07-11 localhost:8787 search→execute probe observed: a live RWA-tokenization project search returned 15 matches, including WisdomTree, Spydra, and Metafyed.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
+            "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+            "Sibling sweep 2026-08-27: grep WisdomTree|DTCC|RWA products → q-asset-rwa-tokenized-freshness, q-crp-dtcc-stellar-connection-plan, q-rwa-projects-tokenizing-stellar; no contradiction"
           ],
           "rootCause": [
             "Entity status and directory presence were treated as product deployment proof.",
             "Different legal instruments/control models were collapsed into one SEP-8 implementation.",
             "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
         "origin": "raven-next q-rwa-projects-tokenizing-stellar"
@@ -2031,7 +2053,7 @@
         ],
         "avoid": [
           "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real).",
-          "Do NOT present stellar.org/enterprise-fund or its application form as the SCF Build application path, and do not attach SCF Build mechanics — the $150K XLM cap, milestone tranches, KYC-before-payment, delegate-panel review, or Open-Track community vote — to the separate Enterprise Fund. The Enterprise Fund's own application is live; the conflation is wrong."
+          "Do NOT claim stellar.org/enterprise-fund or its application form is the SCF Build application path, and do not attach SCF Build mechanics — the $150K XLM cap, milestone tranches, KYC-before-payment, delegate-panel review, or Open-Track community vote — to the separate Enterprise Fund. The Enterprise Fund's own application is live; the conflation is wrong."
         ],
         "notes": "Dossier §2.5. Trap: confusing the SCF Build application flow with the separate Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org."
       },
@@ -2061,18 +2083,22 @@
           }
         ],
         "verified": {
-          "date": "2026-08-05",
-          "by": "Solo Todo 1390 independent live re-verification, reproduced by the post-QA closeout lead",
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
           "evidence": [
             "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award and its Open/Integration track pages, observed 2026-08-05T23:41–23:42Z, confirm the interest-form flow, three tracks, current panel names, typical 3–6 month timeline, $150K XLM cap, tranches, KYC/KYB gate, and Open-only community vote.",
             "https://stellar.org/enterprise-fund and https://stellar.org/enterprise-fund/apply — current primary pages expose Apply Now / Submit your application, observed 2026-08-05.",
             "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
             "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
-            "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap."
+            "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap.",
+            "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
+            "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+            "Sibling sweep 2026-08-27: grep Enterprise Fund|SCF Build application|interest form → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund; no contradiction"
           ],
           "rootCause": [
             "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current",
-            "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name"
+            "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
         "origin": "raven-next q-scf-how-to-apply"
@@ -2745,8 +2771,8 @@
           "Do NOT say a public G-address can reveal a secret or that an S-key can recover its original mnemonic/passphrase/path/index.",
           "Do NOT conflate an S-key, BIP39 entropy/seed, SEP-5 hierarchy, SEP-23 StrKey or SEP-52/SLIP-39 shares.",
           "Do NOT call SEP-52 a Final 24-word representation of one S-key or call SLIP-39 shares interchangeable with BIP39.",
-          "Do NOT omit hardened apostrophes or invent non-hardened change/address path components for SEP-5.",
-          "Do NOT present --seed as mnemonic import, put secrets in argv/environment/logs, or use an online converter.",
+          "Do NOT claim SEP-5 uses non-hardened change/address path components.",
+          "Do NOT claim --seed imports a mnemonic, put secrets in argv/environment/logs, or use an online converter.",
           "Do NOT assume a direct import joins or is backed up by a wallet mnemonic, or store production secrets in Lab/localStorage."
         ],
         "notes": "GT-54 CORRECTION 2026-07-11: grade the 32-byte child versus BIP39/SEP-5 hierarchy, the no-inverse rule, Draft SEP-52 SLIP-39 sharing, current prompted CLI import, and Lab's test-only plaintext localStorage boundary. Explicitly reject both the inherited SEP-52 description and the primary review's proposed '24-word representation of one S-key' correction.\nAccurately quoting the canonical Stellar documentation on pre-fix Saved Keypairs guidance without the obfuscated-not-encrypted warning is not a wrong claim while a cached or older copy still shows the guidance fixed on 2026-07-27 by sd-030; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
@@ -2885,7 +2911,7 @@
         ],
         "verified": {
           "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
           "evidence": [
             "Solo scratchpad 575, GT-54 primary process 3383 and blind process 3386. The primary correctly identified CLI/Lab drift but misread SEP-52; the blind lane re-derived the standard before reading the primary and corrected it after seal.",
             "Blind KV gt54/blind-lock/process-3386 sealed exactly ten cases with primaryReportRead=false at 2026-07-11T06:06:25.716Z and records the SEP-52 adjudication after primaryReadAt 2026-07-11T06:13:03.599Z.",
@@ -2893,12 +2919,16 @@
             "Structural re-form (symmetric-caution): Added a narrow caution for the pre-fix Saved Keypairs warning; golden truth unchanged.",
             "Improvement finding read 2026-08-27: improvements/resolved.json entry sd-030; disputed claim: pre-fix Saved Keypairs guidance omitted the obfuscated-not-encrypted security boundary.",
             "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-            "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|September 2025 → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction"
+            "Sibling sweep 2026-08-27: grep Saved Keypairs|obfuscated|September 2025 → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction",
+            "Structural re-form (presentation-avoid): Reworded two avoid items as concrete false-content claims and folded two facts to meet the five-item hard bound; truth unchanged.",
+            "Sibling sweep 2026-08-27: grep hardened apostrophes|--seed|mnemonic import|SEP-5|Saved Keypairs → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui, q-sep53-message-signing, q-sep-53-sign-verify-message; no contradiction",
+            "Owner correction 2026-08-27: restored the two original key facts the worker had folded; this case is a compile-time migration exception pinned at exactly six keyFacts. The deleted 'hardened apostrophes' omission avoid item is already required by the hardened m/44'/148'/x' key fact; no live re-check needed."
           ],
           "rootCause": [
             "improvements/stellar-docs/sd-030-lab-saved-keypairs-offline-boundary.md",
             "Eval-side standards/tooling conflation: SEP-5 derivation, SEP-23 StrKey, Draft SEP-52 sharing, CLI generation/import and browser storage were compressed into one recovery-phrase claim.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
         "origin": "raven-next q-ti-secret-key-vs-mnemonic-derivation"

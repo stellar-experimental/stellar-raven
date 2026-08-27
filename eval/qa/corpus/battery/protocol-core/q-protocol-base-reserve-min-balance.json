@@ -17,7 +17,7 @@
     "avoid": [
       "Do NOT use (2 + subentries) * baseReserve as a universal post-sponsorship formula or add liabilities inside Core's minimum-balance calculation.",
       "Do NOT claim every trustline costs one reserve or that a sponsored account can remain under-reserved after sponsorship ends.",
-      "Do NOT present 0.5 XLM as timeless or apply classic account reserves to Soroban contract storage."
+      "Do NOT claim 0.5 XLM is timeless or that classic account reserves apply to Soroban contract storage."
     ],
     "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve."
   },
@@ -103,14 +103,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer used the pre-sponsorship shorthand as a universal formula, omitted liabilities and sponsorship reserve shifts, counted every trustline as one unit, and treated the current 0.5 XLM setting as timeless.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the full sponsorship formula, liabilities boundary, zero-start and reserve-shift semantics, two-reserve pool shares, dated live value, and contract-rent distinction.",
-        "2026-07-11 author re-check against stellar-core c16a6d17 TransactionUtils.cpp and live Horizon."
+        "2026-07-11 author re-check against stellar-core c16a6d17 TransactionUtils.cpp and live Horizon.",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claims; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep baseReserve|minimumBalance|0.5 XLM|pool-share trustline → q-protocol-base-reserve-min-balance, q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics; no contradiction"
       ],
       "rootCause": [
-        "Eval-side pre-P14 formula shorthand and classic-account-versus-contract-storage collapse; current sibling corrections in GT-29/GT-32 were preserved."
+        "Eval-side pre-P14 formula shorthand and classic-account-versus-contract-storage collapse; current sibling corrections in GT-29/GT-32 were preserved.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-protocol-base-reserve-min-balance"

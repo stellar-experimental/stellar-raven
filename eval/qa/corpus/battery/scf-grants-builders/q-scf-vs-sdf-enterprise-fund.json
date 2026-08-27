@@ -15,8 +15,8 @@
     "avoid": [
       "Do NOT say all SCF proposals are openly submitted/public-voted.",
       "Do NOT tell founders never to apply to Enterprise while the current application form is live, or hide the official source conflict.",
-      "Do NOT present Enterprise investment as an SCF grant or invent a general per-company cap.",
-      "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim Enterprise investment is an SCF grant or invent a general per-company cap.",
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
     "notes": "Dossier §1/§5/§10. THE category-defining trap: confusing SCF (open, community-voted) with the SDF Enterprise Fund (outreach-only). Higher threshold.\nAlso good if the answer: The SCF Build cap is $150K XLM; SDF-direct lines (Matching/Marketing) reach ~$500K with different mechanisms.\nGolden cites: stellar.org/grants-and-funding (SDF programs) and the SCF handbook.\nGT-40 blind reversed the primary/outreach-only conclusion after verifying the live general Enterprise application. Qualified answers may mention the older official conflict but must not prohibit the current form."
   },
@@ -78,18 +78,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-40 processes 3301/3304; current pages fetched 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (presentation-avoid): Reworded two presentation traps as the same concrete false claims; the truth is unchanged.",
+        "Sibling sweep 2026-08-27: grep Enterprise Fund|Matching Fund|Enterprise investment|per-company cap → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-how-to-apply; no contradiction"
       ],
       "rootCause": [
         "Official current Enterprise application contradicts older outreach-only copy; eval preserved the older statement.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-scf-vs-sdf-enterprise-fund"

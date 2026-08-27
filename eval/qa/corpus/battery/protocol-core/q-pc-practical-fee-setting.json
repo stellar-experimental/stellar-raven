@@ -14,7 +14,7 @@
     ],
     "avoid": [
       "Do NOT say 100 always wins, freeze current percentiles, or use Ethereum gas/gwei framing.",
-      "Do NOT present Hubble as the primary real-time submission estimator or overbid without an application risk cap."
+      "Do NOT claim Hubble is the primary real-time submission estimator or overbid without an application risk cap."
     ],
     "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint/discoverability recurrence attaches to sd-003. GT-32 blind found an official deprecated/not-yet-deprecated wording conflict tracked by sd-017; grade durable endpoint behavior rather than a categorical label.\nAccurately quoting the canonical Stellar documentation on RPC getFeeStats method discoverability is not a wrong claim while sd-003 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
@@ -76,17 +76,21 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; mechanics agreed, reviewer independently corrected endpoint priority.",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for RPC getFeeStats discoverability; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md — disputed reliable search discovery of generated RPC method references.",
-        "Sibling sweep 2026-08-27: grep getFeeStats|fee_stats|100 stroops|surge pricing → q-pc-fee-bump-channel-accounts-feepool, q-pc-surge-griefing-threat-model, q-edge-1xlm-activation-fee; no contradiction"
+        "Sibling sweep 2026-08-27: grep getFeeStats|fee_stats|100 stroops|surge pricing → q-pc-fee-bump-channel-accounts-feepool, q-pc-surge-griefing-threat-model, q-edge-1xlm-activation-fee; no contradiction",
+        "Structural re-form (presentation-avoid): rewrote the presentational Hubble clause as the same concrete false-content claim; both trap targets are unchanged.",
+        "No live re-check was required because the avoid rewrite does not change the forbidden claims.",
+        "Sibling sweep 2026-08-27: grep Hubble|real-time estimator|overbid → q-infra-hubble-bigquery, q-ti-compute-token-lp-market-data; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md",
         "Eval-side current-versus-historical endpoint routing error.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-pc-practical-fee-setting"

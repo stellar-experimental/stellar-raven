@@ -16,7 +16,7 @@
     "avoid": [
       "Do NOT give legal or licensing advice as definitive for all jurisdictions.",
       "Do NOT imply Stellar removes the need for fiat partners, KYC/AML, liquidity, or customer remediation.",
-      "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
     "notes": "2026-06-29: Differentiated toward stablecoin-selection + business architecture — promoted stablecoin-choice to a 5-weight must_have, demoted the SEP rail-map to should_have (the rail-map lane is owned by q-crp-become-an-anchor-licensing). Specific corridor/provider recommendations still require fresh provider checks; architecture/stablecoin-selection guidance is high confidence.\nAlso good if the answer: Maps relevant SEP rails as applicable: SEP-1 discovery, SEP-10 auth, SEP-12 KYC, SEP-24/6 deposit-withdrawal, SEP-31 cross-border payments, SEP-38 quotes. | Mentions integrating existing anchors is usually lower lift than becoming an anchor in every corridor.\nGolden cites: Stellar SEP/anchor docs plus dated corridor/provider sources for concrete recommendations."
   },
@@ -52,17 +52,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Preserved main's 2026-06-29 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+        "Sibling sweep 2026-08-27: grep remittance business|stablecoin choice|corridor → q-crp-anchors-by-corridor, q-crp-remittance-founder-advisory, q-hist-remittance-corridors, q-sep6-sep24-sep31-choice; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-crp-remittance-founder-advisory"

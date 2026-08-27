@@ -12,7 +12,7 @@
       "Requires provider, endpoint, retrieval/as-of time, inclusion basis, and pricing methodology."
     ],
     "avoid": [
-      "Do NOT present any provider value as an exact objective chain fact.",
+      "Do NOT claim any provider value is an exact objective chain fact.",
       "Do NOT claim Raven cannot access a live scalar, assert that TVL necessarily moves block-by-block, or silently combine incompatible scopes.",
       "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
     ],
@@ -68,7 +68,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; both independently observed DefiLlama /v2/chains value 229093918.7739924 at separate times.",
         "Existing improvements/stellar-light-scout/sls-031 and sls-038 cover provenance and ecosystem-rollup contract gaps.",
@@ -77,7 +77,9 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sls-031 and sls-038; the provider-scoped TVL facts are unchanged.",
         "Improvements review 2026-08-27: improvements/resolved.json entries sls-031 and sls-038 record 2026-07-14 fixes; the disputed claims are missing TVL methodology fields and the absent analyze.totalTvlUSD rollup in older Scout copies.",
-        "Sibling sweep 2026-08-27: grep sls-031|sls-038|totalTvlUSD|tvlMethodUrl → q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl; no contradiction"
+        "Sibling sweep 2026-08-27: grep sls-031|sls-038|totalTvlUSD|tvlMethodUrl → q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl; no contradiction",
+        "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; all symmetric-caution provenance is unchanged.",
+        "Sibling sweep 2026-08-27: grep exact objective chain fact|provider value|TVL methodology|totalTvlUSD → q-edge-noinfo-exact-tvl-figure, q-eco-defi-tvl-current; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-031-tvl-methodology-provenance.md",
@@ -85,7 +87,8 @@
         "Eval-side aggregation/cadence explanation was overclaimed.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-edge-noinfo-exact-tvl-figure"

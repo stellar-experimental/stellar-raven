@@ -1,1 +1,71 @@
-{"id":"q-gap-digest-soroban-adjacent","question":"How should a recent Soroban roundup use the runnable Lumenloop digest skill?","surface":["skills.lumenloop.stellar-ecosystem-digest"],"golden":{"answer":"Run the digest with a theme subject such as `Soroban`. The observed result included a dated window, deduplicated typed items, per-type counts, `softEmpty`, `upcomingEvents`, and a constituent-call audit. State the returned window; a digest is a corpus roundup, not protocol authority.","keyFacts":["Uses the runnable digest and reports its returned date window.","Checks `softEmpty` and the call audit instead of treating no items as an error."],"avoid":["Do NOT present roundup snippets as authoritative protocol specification."],"notes":"N1 live contract probe 2026-07-11: Succeeded for Soroban over seven days; returned article, AV, event, and research items plus calls and softEmpty=false."},"tags":{"category":"soroban","service":"skills","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"A","ref":"catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest","note":"Exposed operation contract and catalog notes."},{"class":"B","ref":"inventory/lumenloop.json","note":"Committed inventory snapshot for the service family."}],"corroboration":[{"claim":"Uses the runnable digest and reports its returned date window.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","observedAt":"2026-07-11","note":"Succeeded for Soroban over seven days; returned article, AV, event, and research items plus calls and softEmpty=false."}]}],"verified":{"date":"2026-07-11","by":"P4 Lane N1 gap-ops authoring","evidence":["http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest","inventory/lumenloop.json"],"rootCause":["solo://project/49/scratchpad/p4/n1-gapops"]},"origin":"authored 2026-07 (gap-ops)"}}
+{
+  "id": "q-gap-digest-soroban-adjacent",
+  "question": "How should a recent Soroban roundup use the runnable Lumenloop digest skill?",
+  "surface": [
+    "skills.lumenloop.stellar-ecosystem-digest"
+  ],
+  "golden": {
+    "answer": "Run the digest with a theme subject such as `Soroban`. The observed result included a dated window, deduplicated typed items, per-type counts, `softEmpty`, `upcomingEvents`, and a constituent-call audit. State the returned window; a digest is a corpus roundup, not protocol authority.",
+    "keyFacts": [
+      "Uses the runnable digest and reports its returned date window.",
+      "Checks `softEmpty` and the call audit instead of treating no items as an error."
+    ],
+    "avoid": [
+      "Do NOT claim roundup snippets constitute authoritative protocol specification."
+    ],
+    "notes": "N1 live contract probe 2026-07-11: Succeeded for Soroban over seven days; returned article, AV, event, and research items plus calls and softEmpty=false."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "skills",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest",
+        "note": "Exposed operation contract and catalog notes."
+      },
+      {
+        "class": "B",
+        "ref": "inventory/lumenloop.json",
+        "note": "Committed inventory snapshot for the service family."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Uses the runnable digest and reports its returned date window.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+            "observedAt": "2026-07-11",
+            "note": "Succeeded for Soroban over seven days; returned article, AV, event, and research items plus calls and softEmpty=false."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "evidence": [
+        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+        "catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest",
+        "inventory/lumenloop.json",
+        "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
+        "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
+        "Sibling sweep 2026-08-27: grep stellar-ecosystem-digest|softEmpty|corpus roundup → q-gap-digest-defi-adjacent; no contradiction"
+      ],
+      "rootCause": [
+        "solo://project/49/scratchpad/p4/n1-gapops",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+      ]
+    },
+    "origin": "authored 2026-07 (gap-ops)"
+  }
+}

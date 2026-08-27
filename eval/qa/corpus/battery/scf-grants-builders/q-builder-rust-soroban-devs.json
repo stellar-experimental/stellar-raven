@@ -14,7 +14,7 @@
     "avoid": [
       "Do NOT claim every text match is experienced or currently available.",
       "Do NOT claim Scout exposes populated skills/scfTier attributes or removed scfTier/featured filters.",
-      "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
     "notes": "GT-35 CORRECTION 2026-07-10: grade a dated live-union candidate roster with direct code evidence and explicit evidence tiers. A directory match does not prove experience, seniority, deployment, or availability.\nGT-35 independently confirmed by processes 3287/3289; re-check roster and activity at answer time.\nAccurately quoting the canonical Scout source on Rust builder match provenance is not a wrong claim while a cached or older copy still shows matches without provenance before the 2026-07-14 fix; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
@@ -98,7 +98,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-35 primary 3287 and blind 3289; live union and direct repository sweep 2026-07-10.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live builder directory returned five Rust matches, including Samuel Ogera and Asman Malika.",
@@ -106,14 +106,18 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Scout copies; truth is unchanged.",
         "Reviewed improvements/resolved.json entry sls-041 — fixed 2026-07-14; older Scout copies can omit Rust builder match provenance.",
-        "Sibling sweep 2026-08-27: grep Samuel Ogera|Asman Malika|matchBasis|codeEvidence → q-builder-rust-soroban-devs only; no contradiction"
+        "Sibling sweep 2026-08-27: grep Samuel Ogera|Asman Malika|matchBasis|codeEvidence → q-builder-rust-soroban-devs only; no contradiction",
+        "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
+        "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
+        "Sibling sweep 2026-08-27: grep Samuel Ogera|Asman Malika|Rust builder → q-builder-rust-soroban-devs only; no contradiction"
       ],
       "rootCause": [
         "Directory match was conflated with expertise/seniority and stale schema descriptions were copied into gospel.",
         "improvements/stellar-light-scout/sls-041-builder-skill-match-provenance.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
       ]
     },
     "origin": "raven-next q-builder-rust-soroban-devs"
