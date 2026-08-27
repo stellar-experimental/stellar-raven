@@ -21,8 +21,8 @@ No retry, judging, replication, or method rerun is authorized.
 Both v5 arms now include the postflight fix from PR `#72`.
 The control stays at `7389e24880125ccf8fe0657a1435ca753dae52e6`.
 The treatment reapplies the held change as `3966a59e77f2034726088e16be902270753211ae`.
-The server and runner use the same treatment worktree and commit.
-The v5 method does not pair a runner from one commit with a server from another commit.
+Each arm uses its matching worktree and commit for both the server and runner.
+The v5 method never pairs a runner from one commit with another server commit.
 The independent pre-spend review returned `LAUNCH-OK`.
 The replacement qualification then passed every machine and manual gate.
 The authorized first pair runs treatment A1 and then control B1.
@@ -41,7 +41,7 @@ The authorized first pair runs treatment A1 and then control B1.
 - Treatment surface SHA-256: `1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e`.
 - Control surface report SHA-256: `991fe0d7df55803be1339d3b32e121e0985e971e775c1369a78c7e5802a703bb`.
 - Treatment surface report SHA-256: `8b50c2fc88a29d1a19a5ae36f23fc77e431b153ca54fbec2a9fd16cd47c728a4`.
-- The treatment server runs alone on port `8792` in owned pane `w3:p1Q`.
+- The treatment server runs alone on port `8792` during treatment collection.
 - The historical server on port `8791` remains outside this method.
 
 The wrapper, real Claude binary, model, environment rules, qualification case,
@@ -92,7 +92,7 @@ The maximum task spend after this call is `$1.9886646`.
 - Answering cost: `$0.1098888`.
 - Judge calls and judge cost: `0`.
 - Total counted task spend: `$0.3485534`.
-- Remaining authorized paid methods: `0`.
+- Remaining authorized paid methods at that checkpoint: `0`.
 - `raven` MCP status: `connected`.
 - Wrapper path and SHA-256 matched their pins.
 - Runner and server revisions both matched
@@ -146,6 +146,16 @@ The maximum task spend after this call is `$1.9886646`.
 - Do not retry a failed arm under this authorization.
 - Do not run a judge, replication pair, or method rerun under this authorization.
 
+### V5 first-pair delta review
+
+- Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed ledger commit: `8d9cfb3cd7b14f68a3eea12af127707b129a86f2`.
+- Report: `/tmp/connectors-v5-first-pair-launch-review.md`.
+- Report SHA-256: `bd67f19dd446999bbc7a3dfdd120f7ca5b32d28d4a53d4a244d900f4f24af298`.
+- Verdict: `FIRST-PAIR-LAUNCH-OK`.
+- The stale ledger wording and missing wrapper checks are corrected below.
+- No paid call occurred during this review.
+
 Treatment A1 runs from `sr-wt-connectors-v5-product`:
 
 ```sh
@@ -154,6 +164,8 @@ unset QA_AGENT_PROMPT_APPEND
 unset RAVEN_CLAUDE_ANSWER_MAX_BUDGET_USD
 unset RAVEN_CLAUDE_JUDGE_MAX_BUDGET_USD
 hash -r
+test "$(command -v claude)" = /tmp/connectors-contract-eval-bin/claude
+test "$(shasum -a 256 /tmp/connectors-contract-eval-bin/claude | awk '{print $1}')" = a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
 node eval/qa/run-qa.mjs --variant A \
   --ids q-comp-cross-moneygram-partnership-sep24,q-edge-closed-world-builder-directory-miss,q-edge-partner-detail-soft-empty,q-edge-strupey-ambiguous-stellar-history,q-infra-simulate-transaction-howto,q-sor-build-target-wasm32v1,q-soroban-greenfield-escrow-prior-art-preflight,q-tool-greenfield-indexer-prior-art-preflight \
   --no-judge --port 8792 --model claude-sonnet-5 \
@@ -170,6 +182,8 @@ unset QA_AGENT_PROMPT_APPEND
 unset RAVEN_CLAUDE_ANSWER_MAX_BUDGET_USD
 unset RAVEN_CLAUDE_JUDGE_MAX_BUDGET_USD
 hash -r
+test "$(command -v claude)" = /tmp/connectors-contract-eval-bin/claude
+test "$(shasum -a 256 /tmp/connectors-contract-eval-bin/claude | awk '{print $1}')" = a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
 node eval/qa/run-qa.mjs --variant A \
   --ids q-comp-cross-moneygram-partnership-sep24,q-edge-closed-world-builder-directory-miss,q-edge-partner-detail-soft-empty,q-edge-strupey-ambiguous-stellar-history,q-infra-simulate-transaction-howto,q-sor-build-target-wasm32v1,q-soroban-greenfield-escrow-prior-art-preflight,q-tool-greenfield-indexer-prior-art-preflight \
   --no-judge --port 8792 --model claude-sonnet-5 \
@@ -278,10 +292,12 @@ self-test GREEN
 - The answering harness must report the explicit `raven` MCP server as connected.
 - The answering environment must match across arms.
 
-## Historical order — stopped
+## Method order
 
-Steps 1 and 2 ran.
-Steps 3 through 10 did not run.
+Steps 1 and 2 completed.
+Steps 3 and 4 are authorized once.
+Steps 5 and 6 are required free review gates.
+Steps 7 through 10 remain unauthorized.
 
 1. Run one replacement qualification against the treatment without judging.
 2. Review its MCP connection, transcript, row count, costs, and comparison stamps.
@@ -294,7 +310,7 @@ Steps 3 through 10 did not run.
 9. Judge only after both raw pairs pass.
 10. Run the offline plan grader and composition analyzer for all four artifacts.
 
-No retry, repair, rejudge, or method rerun is authorized in this round.
+No retry, repair, rejudge, replication, or method rerun is authorized.
 
 ## Mechanism gates
 
@@ -315,7 +331,7 @@ No retry, repair, rejudge, or method rerun is authorized in this round.
 Aggregate scores are diagnostic.
 A verified fact or mechanism regression overrides an aggregate gain.
 
-## Historical cost limits — spent
+## Historical v4 cost limits — superseded
 
 These limits governed the stopped attempt.
 
@@ -331,8 +347,8 @@ These limits governed the stopped attempt.
 - The wrapper enforces each call limit.
 - Every method rerun needs a new authorization.
 - The seven-call self-test and the replacement qualification count toward task spend.
-- Counted task spend is `$0.2386646`.
-- Remaining authorized paid methods: `0`.
+- Counted task spend at the stopped v4 checkpoint was `$0.2386646`.
+- That historical authorization has no remaining paid method.
 
 ## Stop rules
 
@@ -341,7 +357,7 @@ These limits governed the stopped attempt.
 - Stop if either worktree is dirty or lacks an immutable commit.
 - Stop if the treatment diff includes an unplanned file.
 - Stop if any case, revision, surface, model, wrapper, or environment pin differs.
-- Stop if another Wrangler process conflicts with port `8791`.
+- Stop if another Wrangler process conflicts with port `8792`.
 - Stop after a missing row, agent failure, missing cost, or wrapper limit.
 - Stop after any first-pair mechanism regression.
 - Stop after a judge error or comparability failure.
@@ -409,7 +425,7 @@ The author, orchestrator, and closeout reviewer must differ.
 - The whole treatment commit is the attribution unit.
 - `/demo` behavior is outside this QA comparison.
 
-## Outcome
+## Historical v4 outcome
 
 The replacement qualification ran once and then stopped on the comparability rule.
 
@@ -454,5 +470,5 @@ Its final report SHA-256 is
 It reported no missing requirement, scope issue, or incorrect behavior on `01b0a3d`.
 These verdicts and hashes preserve the local review results in this ledger.
 
-No product A/B call ran.
-The paid comparison remains blocked until a new bounded rerun is authorized.
+No product A/B call ran under the stopped v4 method.
+The v5 first pair now has the separate bounded authorization recorded above.
