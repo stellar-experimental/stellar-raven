@@ -165,3 +165,8 @@ Next session: long keyFacts (372 warnings, 204 cases, all long-only now). Reuse
 claim-by-claim check — 33 of 233 reviewed cases in this session dropped or added a claim while
 tightening. The unreviewed stray edit to q-soroban-publish-events is at
 `/tmp/raven-qadeep/gt2/stray/` and may be used as a draft.
+
+## Session 2 ledger receipt (added by orchestrator at collection)
+
+Round ledger entry appended in the PR for this branch; report archived from
+/tmp/raven-qadeep/golden-truth-owner2.md.
