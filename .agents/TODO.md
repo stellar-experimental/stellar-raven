@@ -163,3 +163,30 @@ amount basis), and `cluster-091` (v7 program menu). All four are SCF program fac
 the `scout.hackathonBrief` operation. Whether the new cases join a cluster is a content decision.
 
 Done when: `golden-truth` settles cluster membership and the comment matches the corpus.
+
+## QA quality round — tracked follow-ups (2026-08-27)
+
+Source: `research/qa-improvement-plan-2026-08-25.md` and round ledger
+`.agents/rounds/2026-08-25-qa-quality-deep-dive.md`.
+
+- [ ] Golden-truth session 3: close the last 372 long-keyFact warnings on 204
+  cases. Full hand-off plan in session 2's owner report; assets under
+  `/tmp/raven-qadeep/gt2/` (rules, dispatch/gates scripts, reconcile helper).
+  Copy assets into the repo or a fresh namespace before they expire.
+  Done when: `eval:qa:lint` reports 0 long-fact warnings; gates green.
+- [ ] Decide whether to include the two out-of-scope lint classes (47
+  sourcing-guard avoid warnings, 56 corroboration warnings). Owner call made
+  when: included in a session brief or explicitly declined in the ledger.
+- [ ] Lane 3 (source delivery): answer the 11 owner questions in
+  `ideas/source-delivery-ranked-references.md` §8 (pin freshness, agents
+  without fetch tools, index cost/budget, line ranges, attribution,
+  docs-vs-source neutrality, query ownership, index availability, CPU/latency
+  limits, conflict grouping, skill sourceRoles metadata). Done when: each has
+  a recorded decision; then a phase-zero spike brief (1-2 repos,
+  `sources.locate` only) can be written.
+- [ ] Judge stability register: regenerate after every collection run
+  (`node eval/qa/judge-stability.mjs`); verify escalation tiers appear in
+  result metadata. Done when: a run records judgeTierUsed on every verdict.
+- [ ] Benchmarks to re-measure after the corpus burn-down: same-100 rerun at
+  current main; compare against `eval/qa/results/2026-08-27T00-02-11-variantA.json`
+  (48/35/13/4, half 65.5, strict 48.0, core-answer 91.7%).
