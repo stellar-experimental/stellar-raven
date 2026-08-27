@@ -6,18 +6,145 @@ Measure the held response-guidance candidate against the merged control.
 Do not trim startup tool descriptions or server instructions.
 Reject the candidate after any verified treatment regression.
 
-## Current status — blocked
+## Current status — rebuilt qualification passed
 
-The replacement qualification is spent and non-comparable.
+The historical replacement qualification remains spent and non-comparable.
 Do not run the historical qualification command below.
-No qualification, A1, B1, judging, or method rerun is authorized.
+The user authorized one new treatment qualification on 2026-08-27.
+It permitted one answering call, no judge call, and a `$1.75` per-call cap.
+The user's broader spend tolerance does not remove the method-specific cap.
+No A1, B1, judging, retry, or method rerun is authorized yet.
 
-The historical arm commits predate the postflight fix in PR `#72`.
-The chosen continuation method rebuilds both arms from `7389e24880125ccf8fe0657a1435ca753dae52e6`.
-It then reapplies the held treatment change and recomputes every revision and surface pin.
-Do not use a split runner and server method.
-This method pairs a fixed runner commit with a server from a historical arm commit.
-A new reviewed brief and bounded user authorization must precede any paid call.
+Both v5 arms now include the postflight fix from PR `#72`.
+The control stays at `7389e24880125ccf8fe0657a1435ca753dae52e6`.
+The treatment reapplies the held change as `3966a59e77f2034726088e16be902270753211ae`.
+The server and runner use the same treatment worktree and commit.
+The v5 method does not pair a runner from one commit with a server from another commit.
+The independent pre-spend review returned `LAUNCH-OK`.
+The replacement qualification then passed every machine and manual gate.
+No paid method remains authorized.
+
+## Authorized v5 qualification
+
+- Control branch: `eval/connectors-v5-control-20260827`.
+- Control worktree: `sr-wt-connectors-v5-control`.
+- Control commit: `7389e24880125ccf8fe0657a1435ca753dae52e6`.
+- Treatment branch: `feat/connectors-v5-product-20260827`.
+- Treatment worktree: `sr-wt-connectors-v5-product`.
+- Treatment commit: `3966a59e77f2034726088e16be902270753211ae`.
+- Treatment patch SHA-256: `59d0197bcec10d117e5e60e7ea8abcd09215d9ed1f5f465449d58acd79057874`.
+- The patch matches the historical ten-file treatment patch exactly.
+- Control surface SHA-256: `594578b995351e1abee1ec297e03662b51c1bfc4014daac4e39b4d8fa26611f3`.
+- Treatment surface SHA-256: `1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e`.
+- Control surface report SHA-256: `991fe0d7df55803be1339d3b32e121e0985e971e775c1369a78c7e5802a703bb`.
+- Treatment surface report SHA-256: `8b50c2fc88a29d1a19a5ae36f23fc77e431b153ca54fbec2a9fd16cd47c728a4`.
+- The treatment server runs alone on port `8792` in owned pane `w3:p1Q`.
+- The historical server on port `8791` remains outside this method.
+
+The wrapper, real Claude binary, model, environment rules, qualification case,
+and qualification case hashes remain pinned as recorded below.
+The call uses the treatment server and runner from `3966a59e77f2034726088e16be902270753211ae`.
+It must produce exactly one row and one reported answering cost.
+The maximum task spend after this call is `$1.9886646`.
+
+### V5 free preflight
+
+- Both arms passed `npm run typecheck`.
+- Both arms passed `npm run eval:selftest`.
+- Both arms compiled the `499`-case QA corpus with SHA-256
+  `c29ae61708dc564c0cceb19fe4ae34c444961c297449ebed3bcad5ef41dfa846`.
+- Both arms passed the stale corpus lint with `0` errors and `1,390` warnings.
+- Both arms passed the routing gate with identical numbers.
+- Control passed `88` test files and `1,335` tests.
+- Treatment passed `89` test files and `1,343` tests.
+- Both arms passed `82` smoke tests.
+- Both arms passed the build and secret scan.
+- Treatment passed the eight-test connector contract lane.
+- Both worktrees remained clean after every free gate.
+
+### V5 pre-spend result
+
+- Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed ledger commit: `3e8a757dd7f39917d783011237e51bd5f4c446c7`.
+- Report: `/tmp/connectors-v5-launch-review.md`.
+- Report SHA-256: `6a42a24adbb40ade3143f6619301a2ca86c9a62141710845b16d97059a4b63bd`.
+- Verdict: `LAUNCH-OK`.
+- The reviewer found no blocker and independently recomputed every material pin.
+- Its ten operator findings bind the launch and post-call inspection.
+
+### V5 replacement qualification result
+
+- Artifact: `eval/qa/results/2026-08-27T18-20-57-variantA.json` in
+  `sr-wt-connectors-v5-product`.
+- Artifact SHA-256: `1a93d19ed6dddeb0c1cda6f4e5e8175bcdaac9b1d38dc494a843d186b9230f6e`.
+- Result schema: `qa-agent-result-v4`.
+- Case: `q-edge-closed-world-builder-directory-miss`.
+- Qualification `casesSha256`:
+  `11c46002d8152a55fe558f298158792676e45b1dbe900abcfc131f9567c92680`.
+- Qualification `caseIdsSha256`:
+  `21e6b68f463f5164c94d7ec272dbbb8868cd9e5a86a8bae15cf249353e463a29`.
+- Rows: `1` expected and `1` collected.
+- Agent failures: `0`.
+- Reported answering costs: `1` expected and `1` collected.
+- Answering cost: `$0.1098888`.
+- Judge calls and judge cost: `0`.
+- Total counted task spend: `$0.3485534`.
+- Remaining authorized paid methods: `0`.
+- `raven` MCP status: `connected`.
+- Wrapper path and SHA-256 matched their pins.
+- Runner and server revisions both matched
+  `3966a59e77f2034726088e16be902270753211ae`.
+- Preflight and postflight source revisions matched.
+- Preflight and postflight treatment surfaces matched
+  `1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e`.
+- The source identity and server process guards matched.
+- The runner was clean.
+- The row was complete, comparable, and free of suppressed aggregates.
+- `comparabilityReasons` was empty, and `postflightError` was null.
+- The call used three tool calls: one catalog search and two Scout executes.
+- The first execute hit a serialization error before source projection.
+- The second execute repeated only `scout.getBuilders(q=Strupey)` with JSON serialization.
+- The successful result reported zero matches across both Scout builder indexes.
+- The answer stopped at Scout's builder-directory scope.
+- The answer did not call Lumenloop, research, A/V, docs, or another Scout operation.
+- The answer did not claim that `Strupey` has no broader ecosystem history.
+- Manual qualification verdict: `PASS`.
+- No command rerun or paid retry occurred.
+
+### V5 post-collection review
+
+- Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed ledger commit: `ed3aef520553b6064b2d442f26094dda9243edec`.
+- Report: `/tmp/connectors-v5-qualification-review.md`.
+- Report SHA-256: `e868acf2f6466aed08d2f603a7930d33e4fedacb3c25eb21a169f56a2b6dba1b`.
+- Verdict: `QUALIFICATION-PASS`.
+- The reviewer independently recomputed the artifact and one-case hashes.
+- The reviewer joined the raw row to every golden key fact and avoid clause.
+- The reviewer confirmed the serialization repair stayed on `scout.getBuilders`.
+- The reviewer found no blocking issue.
+- The review made no paid call and does not authorize the next stage.
+
+### V5 replacement qualification command — authorized once
+
+```sh
+export PATH="/tmp/connectors-contract-eval-bin:$PATH"
+unset QA_AGENT_PROMPT_APPEND
+unset RAVEN_CLAUDE_ANSWER_MAX_BUDGET_USD
+unset RAVEN_CLAUDE_JUDGE_MAX_BUDGET_USD
+hash -r
+test "$(command -v claude)" = /tmp/connectors-contract-eval-bin/claude
+test "$(shasum -a 256 /tmp/connectors-contract-eval-bin/claude | awk '{print $1}')" = a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+node eval/qa/run-qa.mjs --variant A \
+  --ids q-edge-closed-world-builder-directory-miss \
+  --no-judge --port 8792 --model claude-sonnet-5 \
+  --server-revision 3966a59e77f2034726088e16be902270753211ae \
+  --expect-sha256 1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e \
+  --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+```
+
+Stop after any missing row, agent failure, missing cost, wrapper mismatch,
+MCP connection failure, revision mismatch, surface mismatch, or comparability failure.
+Do not retry this command under the same authorization.
 
 ## Prior evidence
 
@@ -41,7 +168,7 @@ self-test GREEN
 - The self-test did not evaluate the product candidate.
 - Total paid spend before the `2026-08-27T15-43-06-variantA.json` call was `$0.1432890`.
 
-## Arms
+## Historical v4 arms
 
 - Control branch: `eval/connectors-v4-control-20260827`.
 - Control worktree: `sr-wt-connectors-v4-control`.
@@ -186,7 +313,7 @@ node eval/qa/run-qa.mjs --variant A \
   --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
 ```
 
-## Free preflight
+## Historical v4 free preflight
 
 - Both arms passed `npm run typecheck`.
 - Both arms passed `npm run eval:selftest`.
