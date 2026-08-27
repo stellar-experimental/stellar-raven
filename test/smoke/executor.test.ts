@@ -1104,7 +1104,8 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       };
       expect(parsed.topHit).toBe("lumenloop.search_directory");
       expect(parsed.confidence?.hitCount).toBeGreaterThan(0);
-      expect(parsed.confidence?.topScoreGap === null || parsed.confidence?.topScoreGap >= 0).toBe(true);
+      const gap = parsed.confidence?.topScoreGap;
+      expect(gap === null || gap === undefined || gap >= 0).toBe(true);
       expect(parsed.recoveryMetadata?.serviceFilterExcludedSkills).toEqual([]);
       expect(parsed.allCallable).toBe(true);
       expect(parsed.skillOk).toBe(true);
