@@ -17,10 +17,9 @@
  * After a run: file service-level findings in improvements/ per eval/EVALS.md.
  *
  * Usage:
- *   npx wrangler dev --port 8788 --host localhost   # in another terminal
- *   (--host localhost is required: with custom-domain routes configured,
- *   wrangler dev rewrites request.url to the production host and the
- *   DEV_ALLOW_UNAUTHENTICATED loopback gate 401s every request)
+ *   npm run dev:eval -- --port 8788   # in another terminal
+ *   (the launcher requires a clean worktree and compiles its commit into the
+ *   Worker's MCP serverInfo)
  *   node eval/qa/run-qa.mjs --variant A --sample 30 [--port 8788]
  *
  * Flags:
@@ -48,6 +47,9 @@
  *                      local Wrangler server for adapter/executor traffic.
  *   --server-revision  git revision of the checkout running the already-bound
  *                      Wrangler process (recorded for reproducibility)
+ *   --expect-sha256    required SHA-256 of the bound MCP surface
+ *   --expect-agent-binary-sha256
+ *                      required SHA-256 of the capped Claude executable
  *   --no-judge         collect answers only (judge later)
  *   --judge-stored F   two-phase mode, phase 2: judge a saved --no-judge
  *                      results file IN PLACE (no server, no agent). Judges
@@ -80,16 +82,27 @@ import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
 import { makeSearchResultProjector } from "./search-projection.mjs";
 import {
   MCP_PROTOCOL_VERSION,
+  assertExpectedSourceRevision,
   assertExpectedSurface,
   parseMcpHttpPayload,
   surfaceMetrics
 } from "../lib/mcp-surface.mjs";
 import {
+  REQUIRED_MCP_SERVER_NAME,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
   runCompleteness
 } from "../lib/harness-guards.mjs";
+import {
+  agentEnvironmentIdentity,
+  assertExpectedExecutable,
+  executableIdentity
+} from "../lib/executable-identity.mjs";
+import {
+  assertStableBoundServerIdentity,
+  boundServerIdentity
+} from "../lib/bound-server-identity.mjs";
 import {
   PLAIN_SERVER_INSTRUCTIONS,
   loadPlainOperationSurface,
@@ -288,19 +301,15 @@ export function sourceIdentity(serverRevision) {
     { cwd: repoRoot, encoding: "utf8" }
   );
   const status = statusResult.status === 0 ? String(statusResult.stdout) : null;
+  const libraryDir = path.resolve(QA_DIR, "../lib");
   const fileSha256 = (name) => sha256(readFileSync(path.join(QA_DIR, name), "utf8"));
   const qaImplementationFiles = [
     ...readdirSync(QA_DIR)
       .filter((name) => name.endsWith(".mjs"))
       .map((name) => ({ label: name, filePath: path.join(QA_DIR, name) })),
-    {
-      label: "../lib/harness-guards.mjs",
-      filePath: path.resolve(QA_DIR, "../lib/harness-guards.mjs")
-    },
-    {
-      label: "../lib/mcp-surface.mjs",
-      filePath: path.resolve(QA_DIR, "../lib/mcp-surface.mjs")
-    }
+    ...readdirSync(libraryDir)
+      .filter((name) => name.endsWith(".mjs"))
+      .map((name) => ({ label: `../lib/${name}`, filePath: path.join(libraryDir, name) }))
   ];
   const qaImplementationRecords = qaImplementationFiles
     .sort((a, b) => a.label.localeCompare(b.label))
@@ -364,10 +373,10 @@ ${question}`;
  * working directory is assertable without paying for a live agent call: the
  * `cwd` is the whole of precondition P2 and it is invisible in the artifact.
  */
-export function buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cwd }) {
+export function buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cwd, command = "claude" }) {
   assertNeutralAgentCwd(cwd, { repoRoot: REPO_ROOT, label: "run-qa answering agent" });
   return {
-    command: "claude",
+    command,
     args: [
       "-p",
       "--model",
@@ -378,6 +387,7 @@ export function buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cw
       "--mcp-config",
       mcpConfigPath,
       "--strict-mcp-config",
+      "--safe-mode",
       "--allowedTools",
       allowedTools.join(","),
       "--max-turns",
@@ -401,9 +411,16 @@ export function buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cw
  * `transport` failure is even eligible, and a provider safeguard must never be
  * re-issued in any form.
  */
-function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, model, agentCwd }) {
+function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, model, agentCwd, agentCommand }) {
   const prompt = agentPrompt(question, { surface, searchTool });
-  const spawn = buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cwd: agentCwd });
+  const spawn = buildAgentSpawn({
+    prompt,
+    allowedTools,
+    mcpConfigPath,
+    model,
+    cwd: agentCwd,
+    command: agentCommand
+  });
   const res = spawnSync(spawn.command, spawn.args, spawn.options);
   const searchToolNames =
     surface === "search-execute" ? [`mcp__raven__${searchTool}`] : [];
@@ -431,8 +448,16 @@ function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, 
       // sliced. Its RESULT includes descriptions, signatures, and conditional
       // response guidance, so it is projected instead of stored.
       keepWholeInput: (tool) => keepWholeResult(tool) || isSearchTool(tool),
-      projectResult: makeSearchResultProjector(searchToolNames)
+      projectResult: makeSearchResultProjector(searchToolNames),
+      requiredMcpServerName: REQUIRED_MCP_SERVER_NAME
     }
+  );
+}
+
+function isRequiredMcpServerFailure(failure) {
+  return (
+    failure?.class === "protocol" &&
+    String(failure.reason ?? "").startsWith(`required MCP server ${REQUIRED_MCP_SERVER_NAME}`)
   );
 }
 
@@ -474,13 +499,15 @@ async function preflight(port, { surface, searchTool, plainSurface }) {
     return {
       upstreamNames: names,
       exposedNames: plainSurface.tools.map((tool) => tool.name),
-      metrics: { ...plainSurface.metrics, instructionsSha256: sha256(PLAIN_SERVER_INSTRUCTIONS) }
+      metrics: { ...plainSurface.metrics, instructionsSha256: sha256(PLAIN_SERVER_INSTRUCTIONS) },
+      serverInfo: initialized.result?.serverInfo ?? null
     };
   }
   return {
     upstreamNames: names,
     exposedNames: names,
-    metrics: surfaceMetrics(upstreamTools, initialized.result?.instructions)
+    metrics: surfaceMetrics(upstreamTools, initialized.result?.instructions),
+    serverInfo: initialized.result?.serverInfo ?? null
   };
 }
 
@@ -498,10 +525,22 @@ async function preflight(port, { surface, searchTool, plainSurface }) {
  */
 export async function judgeStoredResults(
   resultsPath,
-  { judgeModel = JUDGE_MODEL, judgePanel = 1, judge = judgeCase, log = console.log } = {}
+  {
+    judgeModel = JUDGE_MODEL,
+    judgePanel = 1,
+    judge = judgeCase,
+    judgeBinary = null,
+    judgeEnvironment = null,
+    log = console.log
+  } = {}
 ) {
   const sourceText = readFileSync(resultsPath, "utf8");
   const results = JSON.parse(sourceText);
+  if (results.meta?.comparable === false) {
+    throw new Error(
+      `--judge-stored: artifact is non-comparable: ${(results.meta.comparabilityReasons ?? []).join("; ") || "collection guard failed"}`
+    );
+  }
   if (!Array.isArray(results?.rows) || results.rows.length === 0) {
     throw new Error("--judge-stored: results file has no rows[]");
   }
@@ -580,6 +619,8 @@ export async function judgeStoredResults(
       }));
   const paidIds = [];
   const sourceResultsSha256 = priorJudgeStored.sourceResultsSha256 ?? sha256(sourceText);
+  const collectionAggregatesAllowed =
+    meta.comparable !== false && meta.completeness?.aggregatesAllowed === true;
   const initiallyJudgedIds = judgeAttempts
     .filter((attempt) => attempt.outcome !== null)
     .map((attempt) => attempt.id);
@@ -588,7 +629,6 @@ export async function judgeStoredResults(
     meta.judgeRubric = JUDGE_RUBRIC;
     if (judgePanel > 1) meta.judgePanel = judgePanel;
     Object.assign(meta, costTotals(results.rows, judgeAttempts));
-    Object.assign(meta, qaMeasurementMetrics(results.rows, identity.caseById));
     // P4 for the two-phase path: the case snapshot is already guarded by
     // verifySourceCases, so what stays checkable here is the judged
     // denominator — a summary must never describe partly judged rows.
@@ -597,8 +637,14 @@ export async function judgeStoredResults(
       rows: results.rows,
       judging: true
     });
-    meta.completeness = completeness;
-    meta.aggregatesSuppressed = !completeness.aggregatesAllowed;
+    meta.judgingCompleteness = completeness;
+    const aggregatesAllowed = collectionAggregatesAllowed && completeness.aggregatesAllowed;
+    meta.aggregatesSuppressed = !aggregatesAllowed;
+    const measurementMetrics = qaMeasurementMetrics(results.rows, identity.caseById);
+    for (const key of Object.keys(measurementMetrics)) delete meta[key];
+    if (aggregatesAllowed) Object.assign(meta, measurementMetrics);
+    if (judgeBinary) meta.judgeBinary = judgeBinary;
+    if (judgeEnvironment) meta.judgeEnvironment = judgeEnvironment;
     meta.judgeStored = {
       judgedAt: new Date().toISOString(),
       // Keep the ORIGINAL collection-time hash across resumes; re-hashing the
@@ -613,8 +659,8 @@ export async function judgeStoredResults(
     };
     results.meta = meta;
     if (withSummary) {
-      results.summary = completeness.aggregatesAllowed ? summarize(results.rows) : null;
-      if (!completeness.aggregatesAllowed) {
+      results.summary = aggregatesAllowed ? summarize(results.rows) : null;
+      if (!aggregatesAllowed) {
         log(formatCompletenessNotice(completeness, { label: "judge-stored" }));
       }
     }
@@ -636,7 +682,9 @@ export async function judgeStoredResults(
     return {
       judgedCount: 0,
       summary: results.summary,
-      metrics: qaMeasurementMetrics(results.rows, identity.caseById),
+      metrics: meta.aggregatesSuppressed
+        ? null
+        : qaMeasurementMetrics(results.rows, identity.caseById),
       outPath: resultsPath
     };
   }
@@ -708,7 +756,9 @@ export async function judgeStoredResults(
   return {
     judgedCount: unjudged.length,
     summary: results.summary,
-    metrics: qaMeasurementMetrics(results.rows, identity.caseById),
+    metrics: meta.aggregatesSuppressed
+      ? null
+      : qaMeasurementMetrics(results.rows, identity.caseById),
     outPath: resultsPath
   };
 }
@@ -743,15 +793,26 @@ async function main() {
     const i = args.indexOf(flag);
     return i !== -1 ? args[i + 1] : undefined;
   };
+  const agentBinary = assertExpectedExecutable(
+    executableIdentity("claude"),
+    argVal("--expect-agent-binary-sha256"),
+    { label: "Claude CLI" }
+  );
+  const inheritedAgentEnvironment = agentEnvironmentIdentity();
+  const safeJudge = (input, options) =>
+    judgeCase(input, { ...options, command: agentBinary.resolvedPath, safeMode: true });
   const judgeStoredPath = argVal("--judge-stored");
   if (judgeStoredPath) {
     if (args.includes("--no-judge")) throw new Error("--judge-stored and --no-judge are contradictory");
     const { summary, metrics } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
       judgeModel: argVal("--judge-model") ?? JUDGE_MODEL,
-      judgePanel: parseJudgePanel(argVal("--judge-panel"))
+      judgePanel: parseJudgePanel(argVal("--judge-panel")),
+      judge: safeJudge,
+      judgeBinary: agentBinary,
+      judgeEnvironment: inheritedAgentEnvironment
     });
     console.log("\n" + formatSummaryTable(summary));
-    console.log(formatMeasurementMetrics(metrics));
+    if (metrics) console.log(formatMeasurementMetrics(metrics));
     return;
   }
   const variant = (argVal("--variant") ?? "A").toUpperCase();
@@ -793,6 +854,10 @@ async function main() {
   const surfacePin = assertExpectedSurface(preflightResult.metrics, argVal("--expect-sha256"), {
     label: "run-qa live MCP surface"
   });
+  const sourceRevisionPin = assertExpectedSourceRevision(preflightResult.serverInfo, serverRevision, {
+    label: "run-qa live Worker"
+  });
+  const serverProcess = boundServerIdentity(port, serverRevision);
   console.log(
     `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${cases.length} cases · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` panel ${judgePanel}` : ""}`}`
   );
@@ -812,7 +877,10 @@ async function main() {
           args: [path.join(QA_DIR, "plain-operation-harness.mjs"), "--upstream", upstreamUrl]
         }
       : { type: "http", url: upstreamUrl };
-  writeFileSync(mcpConfigPath, JSON.stringify({ mcpServers: { raven: mcpServerConfig } }));
+  writeFileSync(
+    mcpConfigPath,
+    JSON.stringify({ mcpServers: { [REQUIRED_MCP_SERVER_NAME]: mcpServerConfig } })
+  );
   const allowedTools =
     surface === "per-operation"
       ? plainSurface.tools.map((tool) => `mcp__raven__${tool.name}`)
@@ -820,11 +888,26 @@ async function main() {
 
   const rows = [];
   const startedAt = new Date().toISOString();
+  let collectionError = null;
+  let postflightResult;
+  let surfacePinAfter;
+  let sourceRevisionPinAfter;
+  let serverProcessAfter;
+  let serverProcessGuard;
+  let postflightError = null;
   try {
     for (const [i, c] of cases.entries()) {
       const t0 = Date.now();
       process.stdout.write(`[${i + 1}/${cases.length}] ${c.id} … `);
-      const run = runAgent(c.question, { surface, searchTool, allowedTools, mcpConfigPath, model, agentCwd });
+      const run = runAgent(c.question, {
+        surface,
+        searchTool,
+        allowedTools,
+        mcpConfigPath,
+        model,
+        agentCwd,
+        agentCommand: agentBinary.resolvedPath
+      });
       const successfulAnswer = hasSuccessfulAnswer(run.answer, run.failure);
       const transcriptEvidence = successfulAnswer
         ? buildTranscriptEvidence({ ...c, candidateAnswer: run.answer, transcript: run.transcript })
@@ -834,7 +917,7 @@ async function main() {
         verdict = successfulAnswer
           ? await judgeCasePanel(
               { ...c, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
-              { model: judgeModel, panelSize: judgePanel, judge: judgeCase }
+              { model: judgeModel, panelSize: judgePanel, judge: safeJudge }
             )
           : buildAgentErrorVerdict(run.failure);
       }
@@ -854,6 +937,7 @@ async function main() {
           turns: run.turns,
           costUsd: run.costUsd,
           usage: run.usage,
+          mcpServers: run.mcpServers,
           promptChars: run.promptChars,
           stderr: run.stderr,
           // ONE failure field. A row is failed iff this is non-null.
@@ -874,20 +958,56 @@ async function main() {
       console.log(
         `${verdict ? verdict.score : "answered"} (${run.transcript.length} tool calls, ${Math.round(durationMs / 1000)}s)`
       );
+      if (isRequiredMcpServerFailure(run.failure)) {
+        throw new Error(`answering harness failed: ${run.failure.reason}`);
+      }
     }
+  } catch (error) {
+    collectionError = error;
   } finally {
     rmSync(tmpDir, { recursive: true, force: true });
     rmSync(agentCwd, { recursive: true, force: true });
   }
 
-  const { completeness, summary, metrics } = collectionAggregates(rows, cases, { judging: !noJudge });
+  try {
+    postflightResult = await preflight(port, { surface, searchTool, plainSurface });
+    surfacePinAfter = assertExpectedSurface(postflightResult.metrics, argVal("--expect-sha256"), {
+      label: "run-qa final live MCP surface"
+    });
+    sourceRevisionPinAfter = assertExpectedSourceRevision(postflightResult.serverInfo, serverRevision, {
+      label: "run-qa final live Worker"
+    });
+    serverProcessAfter = boundServerIdentity(port, serverRevision);
+    serverProcessGuard = assertStableBoundServerIdentity(serverProcess, serverProcessAfter);
+  } catch (error) {
+    postflightError = error;
+  }
+
+  const finalSourceIdentity = sourceIdentity(serverRevision);
+  const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
+  const comparabilityReasons = [
+    ...(collectionError ? [`collection failed: ${String(collectionError.message ?? collectionError)}`] : []),
+    ...(postflightError ? [`postflight failed: ${String(postflightError.message ?? postflightError)}`] : []),
+    ...(!collectionSourceIdentityGuard.matches
+      ? [`source identity changed: ${collectionSourceIdentityGuard.changedKeys.join(", ")}`]
+      : [])
+  ];
+  const comparable = comparabilityReasons.length === 0;
+  const aggregates = collectionAggregates(rows, cases, { judging: !noJudge });
+  const completeness = comparable
+    ? aggregates.completeness
+    : {
+        ...aggregates.completeness,
+        aggregatesAllowed: false,
+        reasons: [...aggregates.completeness.reasons, ...comparabilityReasons]
+      };
+  const summary = comparable ? aggregates.summary : null;
+  const metrics = comparable ? aggregates.metrics : null;
   const stampSuffix = surface === "per-operation" ? "perOperation" : `variant${variant}`;
   const stamp = `${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}-${stampSuffix}`;
   const resultsDir = path.join(QA_DIR, "results");
   mkdirSync(resultsDir, { recursive: true });
   const outPath = path.join(resultsDir, `${stamp}.json`);
-  const finalSourceIdentity = sourceIdentity(serverRevision);
-  const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
   writeFileSync(
     outPath,
     JSON.stringify(
@@ -928,13 +1048,34 @@ async function main() {
           },
           sourceIdentity: collectionSourceIdentity,
           sourceIdentityGuard: collectionSourceIdentityGuard,
+          comparable,
+          comparabilityReasons,
+          serverProcess,
+          serverProcessAfter,
+          serverProcessGuard,
           toolSurface: preflightResult.metrics,
+          toolSurfaceAfter: postflightResult?.metrics ?? null,
           surfacePin,
+          surfacePinAfter: surfacePinAfter ?? null,
+          serverInfo: preflightResult.serverInfo,
+          serverInfoAfter: postflightResult?.serverInfo ?? null,
+          sourceRevisionPin,
+          sourceRevisionPinAfter: sourceRevisionPinAfter ?? null,
+          postflightError: postflightError
+            ? { message: String(postflightError.message ?? postflightError) }
+            : null,
+          agentBinary,
           // Denominator facts, always present. `aggregatesSuppressed` is the
           // one-field answer to "may I quote a percentage from this file?".
           completeness,
           aggregatesSuppressed: !completeness.aggregatesAllowed,
           agentCwdNeutral: true,
+          agentEnvironment: {
+            cwd: agentCwd,
+            cwdOutsideRepository: true,
+            safeMode: true,
+            inherited: inheritedAgentEnvironment
+          },
           ...(metrics ?? {}),
           ...costTotals(rows)
         },
@@ -945,9 +1086,9 @@ async function main() {
       2
     ) + "\n"
   );
-  if (!collectionSourceIdentityGuard.matches) {
+  if (!comparable) {
     throw new Error(
-      `QA source identity changed during collection (${collectionSourceIdentityGuard.changedKeys.join(", ")}); saved a non-comparable artifact at ${outPath}`
+      `QA collection is non-comparable; saved evidence at ${outPath}: ${comparabilityReasons.join("; ")}`
     );
   }
   console.log(`\nwrote ${outPath}`);

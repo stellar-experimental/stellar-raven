@@ -134,6 +134,15 @@ function writeFixture(root, { rows: rowOverrides } = {}) {
         casesSha256: sha256(JSON.stringify(selectedCases)),
         caseIdsSha256: sha256(JSON.stringify(rows.map((row) => row.id)))
       },
+      comparable: true,
+      completeness: {
+        expectedRows: rows.length,
+        collectedRows: rows.length,
+        judgedRows: 0,
+        complete: true,
+        aggregatesAllowed: true,
+        reasons: []
+      },
       totalAgentCostUsd: rows.reduce((s, r) => s + (r.agent?.costUsd ?? 0), 0),
       totalJudgeCostUsd: 0,
       totalCostUsd: rows.reduce((s, r) => s + (r.agent?.costUsd ?? 0), 0)
@@ -167,6 +176,53 @@ function stubJudge(calls = []) {
 }
 
 describe("run-qa --judge-stored", () => {
+  it("refuses to judge a collection that a final guard marked non-comparable", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      results.meta.comparable = false;
+      results.meta.comparabilityReasons = ["postflight failed: listener changed"];
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+      await expect(
+        judgeStoredResults(resultsPath, { judge: stubJudge(), log: () => {} })
+      ).rejects.toThrow(/non-comparable.*listener changed/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not restore aggregates for an incomplete original collection", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      results.meta.completeness = {
+        expectedRows: 3,
+        collectedRows: 2,
+        judgedRows: 0,
+        complete: false,
+        aggregatesAllowed: false,
+        reasons: ["missing one collected row"]
+      };
+      results.meta.aggregatesSuppressed = true;
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+
+      const output = await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: stubJudge(),
+        log: () => {}
+      });
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(output.metrics).toBeNull();
+      expect(written.summary).toBeNull();
+      expect(written.meta.aggregatesSuppressed).toBe(true);
+      expect(written.meta).not.toHaveProperty("strictCorrectShare");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("requires a non-empty server revision before collection", () => {
     expect(() => assertPinnedServerRevision(undefined)).toThrow(/--server-revision/);
     expect(() => assertPinnedServerRevision("   ")).toThrow(/--server-revision/);
@@ -628,6 +684,11 @@ describe("run-qa --judge-stored", () => {
       expect(afterCrash.rows[1].verdict).toBeFalsy();
       expect(afterCrash.meta.judgeModel).toBe("stub-judge");
       expect(afterCrash.meta.totalJudgeCostUsd).toBeCloseTo(0.25);
+      expect(afterCrash.meta.aggregatesSuppressed).toBe(true);
+      expect(afterCrash.meta.judgingCompleteness.aggregatesAllowed).toBe(false);
+      expect(afterCrash.meta).not.toHaveProperty("halfCreditShare");
+      expect(afterCrash.meta).not.toHaveProperty("strictCorrectShare");
+      expect(afterCrash.meta).not.toHaveProperty("meanContinuousCoverage");
       // Only the row that actually reached a paid judge is recorded.
       expect(afterCrash.meta.judgeStored.judgedIds).toEqual(["q-fixture-answered"]);
       const originalHash = afterCrash.meta.judgeStored.sourceResultsSha256;
@@ -717,10 +778,11 @@ describe("run-qa --judge-stored", () => {
     const qaImplementationRecords = readdirSync("eval/qa")
       .filter((name) => name.endsWith(".mjs"))
       .map((name) => ({ label: name, filePath: join("eval/qa", name) }))
-      .concat([
-        { label: "../lib/harness-guards.mjs", filePath: "eval/lib/harness-guards.mjs" },
-        { label: "../lib/mcp-surface.mjs", filePath: "eval/lib/mcp-surface.mjs" }
-      ])
+      .concat(
+        readdirSync("eval/lib")
+          .filter((name) => name.endsWith(".mjs"))
+          .map((name) => ({ label: `../lib/${name}`, filePath: join("eval/lib", name) }))
+      )
       .sort((a, b) => a.label.localeCompare(b.label))
       .map(({ label, filePath }) => `${label}\0${sha256(readFileSync(filePath, "utf8"))}`)
       .join("\n");

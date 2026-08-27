@@ -10,11 +10,28 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
+  REQUIRED_MCP_SERVER_NAME,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
   runCompleteness
 } from "../lib/harness-guards.mjs";
+import {
+  assertExpectedSourceRevision,
+  assertExpectedSurface
+} from "../lib/mcp-surface.mjs";
+import {
+  agentEnvironmentIdentity,
+  assertExpectedExecutable,
+  executableIdentity
+} from "../lib/executable-identity.mjs";
+import {
+  assertStableGitWorktreeIdentity,
+  assertStableBoundServerIdentity,
+  boundServerIdentity,
+  gitWorktreeIdentity
+} from "../lib/bound-server-identity.mjs";
+import { fetchLiveSurface } from "../report-live-surface.mjs";
 import {
   capSearchEvidence,
   compactHit,
@@ -100,9 +117,9 @@ export function buildDiscoverySpawnOptions({ input, cwd }) {
   };
 }
 
-function runAgent(c, { mcpConfigPath, model, effort, agentCwd }) {
+function runAgent(c, { mcpConfigPath, model, effort, agentCwd, agentCommand }) {
   const response = spawnSync(
-    "claude",
+    agentCommand,
     [
       "-p",
       "--model",
@@ -117,6 +134,7 @@ function runAgent(c, { mcpConfigPath, model, effort, agentCwd }) {
       "--mcp-config",
       mcpConfigPath,
       "--strict-mcp-config",
+      "--safe-mode",
       "--allowedTools",
       "mcp__raven__search",
       "--max-turns",
@@ -139,6 +157,7 @@ function runAgent(c, { mcpConfigPath, model, effort, agentCwd }) {
   const pending = new Map();
   const searches = [];
   let output = null;
+  let mcpServers = null;
   let costUsd = null;
   let turns = null;
   let resultError = null;
@@ -150,7 +169,14 @@ function runAgent(c, { mcpConfigPath, model, effort, agentCwd }) {
     } catch {
       continue;
     }
-    if (message.type === "assistant" && Array.isArray(message.message?.content)) {
+    if (message.type === "system" && message.subtype === "init") {
+      mcpServers = Array.isArray(message.mcp_servers)
+        ? message.mcp_servers.map((server) => ({
+            name: String(server?.name ?? ""),
+            status: String(server?.status ?? "")
+          }))
+        : [];
+    } else if (message.type === "assistant" && Array.isArray(message.message?.content)) {
       for (const block of message.message.content) {
         if (block.type !== "tool_use" || !block.name.endsWith("search")) continue;
         pending.set(block.id, { query: String(block.input?.query ?? ""), limit: block.input?.limit ?? null });
@@ -188,10 +214,19 @@ function runAgent(c, { mcpConfigPath, model, effort, agentCwd }) {
   if (!output && !resultError) {
     resultError = `missing structured output (exit ${response.status}): ${String(response.stderr).slice(0, 400)}`;
   }
-  return { ...capped, output, costUsd, turns, error: resultError };
+  const raven = mcpServers?.find((server) => server.name === REQUIRED_MCP_SERVER_NAME);
+  if (!raven || raven.status !== "connected") {
+    const mcpError =
+      `required MCP server ${REQUIRED_MCP_SERVER_NAME} was ${raven?.status || "not reported"} in system init`;
+    resultError = resultError ? `${resultError}; ${mcpError}` : mcpError;
+  }
+  return { ...capped, output, costUsd, turns, mcpServers, error: resultError };
 }
 
-function gradeAgentRow(c, run) {
+export function gradeAgentRow(c, run) {
+  if (run.error) {
+    return { familyHitAt3: null, usableOpAt5: null, primaryHit: null, anyHit: null };
+  }
   const visible = gradeVisibleSearches(c, run.searches);
   const expected = new Set(expectedFamiliesOf(c));
   const validOutput = run.searchContractValid ? run.output : null;
@@ -211,6 +246,10 @@ async function main() {
   const effort = argValue("--effort") ?? DEFAULT_EFFORT;
   const repeat = Number(argValue("--repeat") ?? 1);
   const runLabel = argValue("--run-label") ?? "agent";
+  const serverRevision = argValue("--server-revision");
+  if (!/^[a-f0-9]{40}$/.test(String(serverRevision ?? ""))) {
+    throw new Error("--server-revision must be a clean 40-character commit");
+  }
   const ids = argValue("--ids")?.split(",").map((id) => id.trim()).filter(Boolean);
   if (!Number.isInteger(repeat) || repeat < 1) throw new Error("--repeat must be a positive integer");
 
@@ -224,6 +263,31 @@ async function main() {
   }
   assertRunPlan(cases.map((c) => c.id), { label: "run-agent-discovery" });
   await preflightSearch(url, "agent-discovery-eval");
+  const liveSurface = await fetchLiveSurface(url, {
+    token: process.env.RAVEN_MCP_BEARER_TOKEN ?? null
+  });
+  const surfacePin = assertExpectedSurface(liveSurface.metrics, argValue("--expect-sha256"), {
+    label: "agent-discovery live MCP surface"
+  });
+  const sourceRevisionPin = assertExpectedSourceRevision(liveSurface.serverInfo, serverRevision, {
+    label: "agent-discovery live Worker"
+  });
+  const serverUrl = new URL(url);
+  if (!["localhost", "127.0.0.1", "::1", "[::1]"].includes(serverUrl.hostname.toLowerCase())) {
+    throw new Error("agent-discovery paid runs require a local dev:eval server");
+  }
+  const serverPort = Number(serverUrl.port || (serverUrl.protocol === "https:" ? 443 : 80));
+  const serverProcess = boundServerIdentity(serverPort, serverRevision);
+  const runnerWorktree = gitWorktreeIdentity(REPO);
+  if (runnerWorktree.dirty) {
+    throw new Error("agent-discovery runner worktree is dirty; refusing paid calls");
+  }
+  const agentBinary = assertExpectedExecutable(
+    executableIdentity("claude"),
+    argValue("--expect-agent-binary-sha256"),
+    { label: "Claude CLI" }
+  );
+  const inheritedAgentEnvironment = agentEnvironmentIdentity();
 
   const tempDir = mkdtempSync(path.join(os.tmpdir(), "agent-discovery-"));
   // Precondition P2: an empty directory outside the repository, so the agent
@@ -231,13 +295,31 @@ async function main() {
   const agentCwd = mkdtempSync(path.join(os.tmpdir(), "agent-discovery-cwd-"));
   assertNeutralAgentCwd(agentCwd, { repoRoot: REPO, label: "discovery answering agent" });
   const mcpConfigPath = path.join(tempDir, "mcp.json");
-  writeFileSync(mcpConfigPath, JSON.stringify({ mcpServers: { raven: { type: "http", url } } }));
+  writeFileSync(
+    mcpConfigPath,
+    JSON.stringify({ mcpServers: { [REQUIRED_MCP_SERVER_NAME]: { type: "http", url } } })
+  );
   const rows = [];
+  let collectionError = null;
+  let liveSurfaceAfter;
+  let surfacePinAfter;
+  let sourceRevisionPinAfter;
+  let serverProcessAfter;
+  let serverProcessGuard;
+  let runnerWorktreeAfter;
+  let runnerWorktreeGuard;
+  let postflightError = null;
   try {
     for (let runIndex = 1; runIndex <= repeat; runIndex += 1) {
       for (const [index, c] of cases.entries()) {
         process.stdout.write(`[run ${runIndex}/${repeat} ${index + 1}/${cases.length}] ${c.id} ... `);
-        const run = runAgent(c, { mcpConfigPath, model, effort, agentCwd });
+        const run = runAgent(c, {
+          mcpConfigPath,
+          model,
+          effort,
+          agentCwd,
+          agentCommand: agentBinary.resolvedPath
+        });
         const grade = gradeAgentRow(c, run);
         rows.push({
           run: runIndex,
@@ -254,6 +336,7 @@ async function main() {
             effort,
             turns: run.turns,
             costUsd: run.costUsd,
+            mcpServers: run.mcpServers,
             observedSearchCount: run.observedSearchCount,
             searchContractValid: run.searchContractValid,
             error: run.error ?? null
@@ -262,16 +345,56 @@ async function main() {
         console.log(
           `searches=${run.observedSearchCount} visible-family=${grade.familyHitAt3 ? "hit" : "miss"} primary=${grade.primaryHit ? "hit" : "miss"}${run.error ? ` error=${run.error}` : ""}`
         );
+        if (String(run.error ?? "").includes(`required MCP server ${REQUIRED_MCP_SERVER_NAME}`)) {
+          throw new Error(`answering harness failed: ${run.error}`);
+        }
       }
     }
+  } catch (error) {
+    collectionError = error;
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
     rmSync(agentCwd, { recursive: true, force: true });
   }
 
+  try {
+    liveSurfaceAfter = await fetchLiveSurface(url, {
+      token: process.env.RAVEN_MCP_BEARER_TOKEN ?? null
+    });
+    surfacePinAfter = assertExpectedSurface(liveSurfaceAfter.metrics, argValue("--expect-sha256"), {
+      label: "agent-discovery final live MCP surface"
+    });
+    sourceRevisionPinAfter = assertExpectedSourceRevision(liveSurfaceAfter.serverInfo, serverRevision, {
+      label: "agent-discovery final live Worker"
+    });
+    serverProcessAfter = boundServerIdentity(serverPort, serverRevision);
+    serverProcessGuard = assertStableBoundServerIdentity(serverProcess, serverProcessAfter);
+    runnerWorktreeAfter = gitWorktreeIdentity(REPO);
+    runnerWorktreeGuard = assertStableGitWorktreeIdentity(runnerWorktree, runnerWorktreeAfter, {
+      label: "agent-discovery runner worktree"
+    });
+  } catch (error) {
+    postflightError = error;
+  }
+
+  const comparabilityReasons = [
+    ...(collectionError ? [`collection failed: ${String(collectionError.message ?? collectionError)}`] : []),
+    ...(postflightError ? [`postflight failed: ${String(postflightError.message ?? postflightError)}`] : []),
+    ...(rows.some((row) => row.agent?.error)
+      ? [`${rows.filter((row) => row.agent?.error).length} agent row(s) failed`]
+      : [])
+  ];
+  const comparable = comparabilityReasons.length === 0;
   // Precondition P4: a lane that lost rows is incomplete, not smaller. Rows
   // are always written; only the per-run aggregates are withheld.
-  const completeness = runCompleteness({ expectedIds: cases.map((c) => c.id), rows, repeat });
+  const baseCompleteness = runCompleteness({ expectedIds: cases.map((c) => c.id), rows, repeat });
+  const completeness = comparable
+    ? baseCompleteness
+    : {
+        ...baseCompleteness,
+        aggregatesAllowed: false,
+        reasons: [...baseCompleteness.reasons, ...comparabilityReasons]
+      };
   const summariesByRun = {};
   if (completeness.aggregatesAllowed) {
     for (let runIndex = 1; runIndex <= repeat; runIndex += 1) {
@@ -298,9 +421,35 @@ async function main() {
       runLabel,
       startedAt,
       finishedAt: new Date().toISOString(),
+      comparable,
+      comparabilityReasons,
       completeness,
       aggregatesSuppressed: !completeness.aggregatesAllowed,
       agentCwdNeutral: true,
+      agentEnvironment: {
+        cwd: agentCwd,
+        cwdOutsideRepository: true,
+        safeMode: true,
+        inherited: inheritedAgentEnvironment
+      },
+      agentBinary,
+      toolSurface: liveSurface.metrics,
+      toolSurfaceAfter: liveSurfaceAfter?.metrics ?? null,
+      surfacePin,
+      surfacePinAfter: surfacePinAfter ?? null,
+      serverInfo: liveSurface.serverInfo,
+      serverInfoAfter: liveSurfaceAfter?.serverInfo ?? null,
+      sourceRevisionPin,
+      sourceRevisionPinAfter: sourceRevisionPinAfter ?? null,
+      serverProcess,
+      serverProcessAfter,
+      serverProcessGuard,
+      runnerWorktree,
+      runnerWorktreeAfter,
+      runnerWorktreeGuard,
+      postflightError: postflightError
+        ? { message: String(postflightError.message ?? postflightError) }
+        : null,
       totalAgentCostUsd: rows.reduce((sum, row) => sum + (row.agent.costUsd ?? 0), 0)
     },
     summariesByRun,
@@ -309,6 +458,11 @@ async function main() {
   console.log(`results -> ${outPath}`);
   if (!completeness.aggregatesAllowed) {
     console.log(formatCompletenessNotice(completeness, { label: "agent-discovery" }));
+  }
+  if (!comparable) {
+    throw new Error(
+      `agent-discovery is non-comparable; saved evidence at ${outPath}: ${comparabilityReasons.join("; ")}`
+    );
   }
 }
 

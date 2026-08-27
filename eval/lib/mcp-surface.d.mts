@@ -52,3 +52,21 @@ export function assertExpectedSurface(
   expectedSha256?: string | null,
   options?: { label?: string }
 ): McpSurfacePin;
+
+export type McpSourceRevisionPin = {
+  expected: string | null;
+  actual: string | null;
+  checked: boolean;
+  matches: boolean | null;
+};
+
+export function checkExpectedSourceRevision(
+  serverInfo: Record<string, unknown> | null | undefined,
+  expectedRevision?: string | null
+): McpSourceRevisionPin;
+
+export function assertExpectedSourceRevision(
+  serverInfo: Record<string, unknown> | null | undefined,
+  expectedRevision?: string | null,
+  options?: { label?: string }
+): McpSourceRevisionPin;

@@ -9,6 +9,7 @@
     "prepare": "git config core.hooksPath scripts/git-hooks || true",
     "secrets:scan": "node scripts/scan-secrets.mjs",
     "dev": "wrangler dev --host localhost",
+    "dev:eval": "node scripts/run-eval-server.mjs",
     "mcp-key": "node scripts/mcp-key.mjs",
     "mcp:surface": "esbuild scripts/report-mcp-surface.mjs --bundle --platform=node --format=esm --log-level=silent --outfile=/tmp/stellar-raven-mcp-surface-report.mjs && node /tmp/stellar-raven-mcp-surface-report.mjs",
     "mcp:surface:live": "node eval/report-live-surface.mjs",

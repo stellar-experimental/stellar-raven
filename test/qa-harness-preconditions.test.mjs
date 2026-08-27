@@ -15,6 +15,7 @@
 import { createHash } from "node:crypto";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "../eval/qa/agent-result.mjs";
 import {
@@ -25,8 +26,9 @@ import {
   projectSearchResult
 } from "../eval/qa/search-projection.mjs";
 import { buildAgentSpawn, collectionAggregates } from "../eval/qa/run-qa.mjs";
-import { buildDiscoverySpawnOptions } from "../eval/discovery/run-agent-discovery.mjs";
+import { buildDiscoverySpawnOptions, gradeAgentRow } from "../eval/discovery/run-agent-discovery.mjs";
 import {
+  REQUIRED_MCP_SERVER_NAME,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
@@ -35,15 +37,29 @@ import {
 import {
   MCP_PROTOCOL_VERSION,
   MCP_SURFACE_SCHEMA,
+  assertExpectedSourceRevision,
   assertExpectedSurface,
+  checkExpectedSourceRevision,
   checkExpectedSurface,
   formatSurfaceReport,
   parseMcpHttpPayload,
   surfaceMetrics
 } from "../eval/lib/mcp-surface.mjs";
+import {
+  agentEnvironmentIdentity,
+  assertExpectedExecutable,
+  executableIdentity,
+  resolveExecutable
+} from "../eval/lib/executable-identity.mjs";
+import {
+  assertStableGitWorktreeIdentity,
+  assertStableBoundServerIdentity,
+  boundServerIdentity,
+  gitWorktreeIdentity
+} from "../eval/lib/bound-server-identity.mjs";
 import { fetchLiveSurface, normalizeServerUrl } from "../eval/report-live-surface.mjs";
 
-const REPO_ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const NEUTRAL_CWD = path.join(os.tmpdir(), "qa-agent-cwd-fixture");
 const sha256 = (s) => createHash("sha256").update(s).digest("hex");
 
@@ -201,13 +217,17 @@ describe("P1 — search evidence is retained bounded, not discarded", () => {
     expect(makeSearchResultProjector([])(SEARCH_TOOL, searchBody())).toBeNull();
   });
 
-  it("stamps a new results schema so v1 artifacts cannot be joined to v2 ones", () => {
-    // v1 rows carry a sliced query and no hits: not comparable for routing.
-    expect(AGENT_RESULT_SCHEMA).toBe("qa-agent-result-v2");
+  it("stamps v3 so pre-v3 artifacts cannot be joined or judged", () => {
+    // v3 rows also prove the required MCP server was connected under safe mode.
+    expect(AGENT_RESULT_SCHEMA).toBe("qa-agent-result-v3");
   });
 });
 
 describe("P2 — answering agents run in a neutral working directory", () => {
+  it("uses one required MCP server name across paid lanes", () => {
+    expect(REQUIRED_MCP_SERVER_NAME).toBe("raven");
+  });
+
   it("refuses the repository root and any directory inside it", () => {
     expect(() => assertNeutralAgentCwd(REPO_ROOT, { repoRoot: REPO_ROOT })).toThrow(/inside the repository/);
     expect(() => assertNeutralAgentCwd(path.join(REPO_ROOT, "eval"), { repoRoot: REPO_ROOT })).toThrow(
@@ -240,6 +260,7 @@ describe("P2 — answering agents run in a neutral working directory", () => {
     expect(spawn.command).toBe("claude");
     expect(spawn.options.cwd).toBe(NEUTRAL_CWD);
     expect(spawn.args).toContain("--strict-mcp-config");
+    expect(spawn.args).toContain("--safe-mode");
     expect(() =>
       buildAgentSpawn({
         prompt: "q",
@@ -256,6 +277,112 @@ describe("P2 — answering agents run in a neutral working directory", () => {
     expect(options.cwd).toBe(NEUTRAL_CWD);
     expect(() => buildDiscoverySpawnOptions({ input: "q", cwd: path.join(REPO_ROOT, "eval") })).toThrow(
       /inside the repository/
+    );
+  });
+
+  it("does not grade discovery evidence after the required MCP server failed", () => {
+    const grade = gradeAgentRow(
+      { expected_service: "scout" },
+      {
+        error: "required MCP server raven was failed in system init",
+        searches: [{ hits: [{ service: "scout", id: "scout.searchRepos" }] }],
+        searchContractValid: true,
+        output: { primaryService: "scout", alternateToolIds: [] }
+      }
+    );
+    expect(grade).toEqual({
+      familyHitAt3: null,
+      usableOpAt5: null,
+      primaryHit: null,
+      anyHit: null
+    });
+  });
+});
+
+describe("P3 — the paid executable is resolved and pinned", () => {
+  it("records the resolved path, bytes, and version", () => {
+    const identity = executableIdentity(process.execPath);
+    expect(identity.resolvedPath).toBe(path.resolve(process.execPath));
+    expect(identity.sha256).toMatch(/^[a-f0-9]{64}$/);
+    expect(identity.version).toMatch(/^v?\d+/);
+    expect(assertExpectedExecutable(identity, identity.sha256).matches).toBe(true);
+  });
+
+  it("fails closed for a missing executable or a wrong expected hash", () => {
+    expect(() => resolveExecutable("definitely-not-a-real-raven-eval-command", { PATH: "" })).toThrow(
+      /not found on PATH/
+    );
+    const identity = executableIdentity(process.execPath);
+    expect(() => assertExpectedExecutable(identity, "0".repeat(64))).toThrow(/refusing paid calls/);
+    expect(() => assertExpectedExecutable(identity, undefined)).toThrow(/expect-agent-binary-sha256/);
+  });
+
+  it("hashes relevant inherited environment values without recording them", () => {
+    const first = agentEnvironmentIdentity({
+      PATH: "/tmp/bin",
+      ANTHROPIC_API_KEY: "secret-a",
+      UNRELATED: "ignored"
+    });
+    const second = agentEnvironmentIdentity({
+      PATH: "/tmp/bin",
+      ANTHROPIC_API_KEY: "secret-b",
+      UNRELATED: "changed"
+    });
+    expect(first.variableNames).toEqual(["ANTHROPIC_API_KEY", "PATH"]);
+    expect(JSON.stringify(first)).not.toContain("secret-a");
+    expect(first.sha256).not.toBe(second.sha256);
+  });
+});
+
+describe("P3 — the bound server revision is verified from its listener", () => {
+  const revision = "a".repeat(40);
+  const spawnSyncImpl = (command, args) => {
+    if (command === "lsof" && args.includes("-iTCP:8788")) {
+      return { status: 0, stdout: "p123\ncworkerd\n", stderr: "" };
+    }
+    if (command === "lsof" && args.includes("cwd")) {
+      return { status: 0, stdout: "p123\nfcwd\nn/tmp/raven-arm\n", stderr: "" };
+    }
+    if (command === "git" && args.includes("rev-parse")) {
+      return { status: 0, stdout: `${revision}\n`, stderr: "" };
+    }
+    if (command === "git" && args.includes("status")) {
+      return { status: 0, stdout: "", stderr: "" };
+    }
+    return { status: 1, stdout: "", stderr: "unexpected command" };
+  };
+
+  it("binds one listener pid to a clean worktree revision", () => {
+    expect(boundServerIdentity(8788, revision, { spawnSyncImpl })).toEqual({
+      verification: "listener-process-cwd",
+      port: 8788,
+      pid: 123,
+      command: "workerd",
+      cwd: "/tmp/raven-arm",
+      revision,
+      dirty: false
+    });
+  });
+
+  it("refuses a revision mismatch", () => {
+    expect(() => boundServerIdentity(8788, "b".repeat(40), { spawnSyncImpl })).toThrow(
+      /listener cwd .* is a{40}/
+    );
+  });
+
+  it("requires the same listener before and after paid calls", () => {
+    const before = boundServerIdentity(8788, revision, { spawnSyncImpl });
+    expect(assertStableBoundServerIdentity(before, { ...before }).matches).toBe(true);
+    expect(() => assertStableBoundServerIdentity(before, { ...before, pid: 124 })).toThrow(
+      /changed during paid calls \(pid\)/
+    );
+  });
+
+  it("requires the runner worktree to stay clean at one revision", () => {
+    const before = gitWorktreeIdentity("/tmp/raven-arm", { spawnSyncImpl });
+    expect(assertStableGitWorktreeIdentity(before, { ...before }).matches).toBe(true);
+    expect(() => assertStableGitWorktreeIdentity(before, { ...before, dirty: true })).toThrow(
+      /worktree changed during paid calls/
     );
   });
 });
@@ -389,14 +516,37 @@ describe("P5 — the live surface fingerprint is one definition", () => {
     expect(checkExpectedSurface(metrics, undefined)).toMatchObject({ checked: false, matches: null });
   });
 
+  it("requires the bound Worker to report the expected source revision", () => {
+    const revision = "a".repeat(40);
+    const serverInfo = { name: "raven", sourceRevision: revision };
+    expect(checkExpectedSourceRevision(serverInfo, revision.toUpperCase())).toMatchObject({
+      checked: true,
+      matches: true
+    });
+    expect(assertExpectedSourceRevision(serverInfo, revision).matches).toBe(true);
+    expect(() => assertExpectedSourceRevision({ name: "raven" }, revision)).toThrow(
+      /live Worker reports none/
+    );
+  });
+
   it("parses both plain JSON and SSE framing from a Streamable HTTP server", () => {
     expect(parseMcpHttpPayload('{"jsonrpc":"2.0","id":1,"result":{}}').id).toBe(1);
     expect(parseMcpHttpPayload('event: message\ndata: {"jsonrpc":"2.0","id":2,"result":{}}\n\n').id).toBe(2);
+    expect(
+      parseMcpHttpPayload(': keepalive\n\nevent: message\ndata:{"jsonrpc":"2.0",\ndata:"id":3,"result":{}}\n\n').id
+    ).toBe(3);
   });
 
   it("fingerprints a bound server over the wire with the same numbers", async () => {
+    const revision = "a".repeat(40);
     const responses = [
-      { result: { protocolVersion: MCP_PROTOCOL_VERSION, serverInfo: { name: "raven" }, instructions } },
+      {
+        result: {
+          protocolVersion: MCP_PROTOCOL_VERSION,
+          serverInfo: { name: "raven", sourceRevision: revision },
+          instructions
+        }
+      },
       { result: { tools } }
     ];
     const seen = [];
@@ -407,6 +557,7 @@ describe("P5 — the live surface fingerprint is one definition", () => {
     const surface = await fetchLiveSurface("http://localhost:8788/mcp", { fetchImpl });
     expect(seen).toEqual(["initialize", "tools/list"]);
     expect(surface.toolNames).toEqual(["search", "execute"]);
+    expect(surface.serverInfo.sourceRevision).toBe(revision);
     expect(surface.metrics.surfaceSha256).toBe(surfaceMetrics(tools, instructions).surfaceSha256);
   });
 

@@ -30,6 +30,7 @@ export const MCP_SURFACE_SCHEMA = "mcp-surface-v1";
 export const MCP_PROTOCOL_VERSION = "2025-06-18";
 
 const sha256 = (s) => createHash("sha256").update(s).digest("hex");
+const SOURCE_REVISION_PATTERN = /^[a-f0-9]{40}$/;
 
 const chars = (value) =>
   typeof value === "string" ? value.length : JSON.stringify(value ?? {}).length;
@@ -80,9 +81,16 @@ export function surfaceMetrics(tools, instructions) {
  */
 export function parseMcpHttpPayload(text) {
   const body = String(text ?? "");
-  const data = body.startsWith("event:") ? body.split("data: ")[1] : body;
-  if (data === undefined) throw new Error("MCP SSE frame carried no data: line");
-  return JSON.parse(data.trim().split("\n")[0]);
+  if (body.trimStart().startsWith("{")) return JSON.parse(body.trim());
+  for (const block of body.split(/\r?\n\r?\n/)) {
+    const data = block
+      .split(/\r?\n/)
+      .filter((line) => line.startsWith("data:"))
+      .map((line) => line.slice(5).replace(/^ /, ""))
+      .join("\n");
+    if (data) return JSON.parse(data);
+  }
+  throw new Error("MCP SSE frame carried no data line");
 }
 
 /**
@@ -110,6 +118,41 @@ export function assertExpectedSurface(metrics, expectedSha256, { label = "MCP su
   if (!pin.matches) {
     throw new Error(
       `${label}: expected surfaceSha256 ${pin.expected}, live server serves ${pin.actual}; refusing collection`
+    );
+  }
+  return pin;
+}
+
+export function checkExpectedSourceRevision(serverInfo, expectedRevision) {
+  const actual =
+    typeof serverInfo?.sourceRevision === "string"
+      ? serverInfo.sourceRevision.trim().toLowerCase()
+      : null;
+  const expected = expectedRevision ? String(expectedRevision).trim().toLowerCase() : null;
+  return {
+    expected,
+    actual,
+    checked: expected !== null,
+    matches:
+      expected === null
+        ? null
+        : SOURCE_REVISION_PATTERN.test(expected) && expected === actual
+  };
+}
+
+/** Require the live Worker bundle to identify the exact expected commit. */
+export function assertExpectedSourceRevision(
+  serverInfo,
+  expectedRevision,
+  { label = "MCP source revision" } = {}
+) {
+  const pin = checkExpectedSourceRevision(serverInfo, expectedRevision);
+  if (!pin.checked || !SOURCE_REVISION_PATTERN.test(String(pin.expected ?? ""))) {
+    throw new Error(`${label}: a 40-character --server-revision is required before collection`);
+  }
+  if (!pin.matches) {
+    throw new Error(
+      `${label}: expected ${pin.expected}, live Worker reports ${pin.actual ?? "none"}; refusing collection`
     );
   }
   return pin;

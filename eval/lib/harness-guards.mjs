@@ -17,6 +17,9 @@
  */
 import path from "node:path";
 
+/** The explicit MCP server every paid answering agent must connect to. */
+export const REQUIRED_MCP_SERVER_NAME = "raven";
+
 /**
  * Refuse an answering-agent working directory that sits inside the repository.
  *

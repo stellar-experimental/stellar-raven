@@ -221,16 +221,16 @@ it — Step 1 already covers the free lanes.
 
 ## Step 2 — live server (only for QA / agentic / live-data lanes)
 
-Reuse a running server first. Look for a pane already running `npm run dev` (`herdr pane list`)
+Reuse a running server first. Look for a pane already running `npm run dev:eval` (`herdr pane list`)
 and read its bound port from that pane's output (`herdr pane read <id>`). Pass that port to the
 eval runner. Do not start a duplicate Wrangler process just because the example below uses `8788`.
 
 If no dev pane exists and a live lane needs one, split your own pane and run it there
-(`herdr pane run <id> "npm run dev"`). Close only a pane you split yourself, and stop it before
+(`herdr pane run <id> "npm run dev:eval -- --port 8788"`). Close only a pane you split yourself, and stop it before
 finalizing:
 
 ```sh
-npx wrangler dev --port 8788 --host localhost
+npm run dev:eval -- --port 8788
 ```
 
 `--host localhost` is REQUIRED: the production routes make wrangler present request.url as a
@@ -253,19 +253,29 @@ curl -s -o /dev/null -w '%{http_code}' -X POST "http://localhost:${PORT}/mcp" \
   -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"probe","version":"0"}}}'
 ```
 
-Expect `200`. A `401` here means the `--host localhost` gotcha above bit you.
+Expect `200`. The `dev:eval` launcher adds the required `--host localhost` flag.
 
-Before a QA launch, fingerprint the bound server. Record its `surfaceSha256` and the clean server
-commit. `run-qa.mjs` refuses collection without both values.
+Before a QA launch, start the server with `npm run dev:eval -- --port "$PORT"`. The launcher
+requires a clean worktree and compiles its commit into MCP `serverInfo`. Record its `surfaceSha256`
+and commit. `run-qa.mjs` refuses collection without both values. It checks the same listener,
+revision, clean state, compiled source revision, and surface after collection. Treat any change as
+a failed comparison.
+The runner still writes paid rows after a failed final check. It marks them non-comparable and
+suppresses all aggregates.
 
 ```sh
-node eval/report-live-surface.mjs --port "$PORT" --json /tmp/raven-eval-surface.json
 SERVER_REVISION=<clean 40-character server commit>
+node eval/report-live-surface.mjs --port "$PORT" --expect-source-revision "$SERVER_REVISION" --json /tmp/raven-eval-surface.json
 SURFACE_SHA256=<surfaceSha256 from the report>
+AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
 ```
 
-The QA runner starts each answering agent in a neutral temporary directory. Confirm
-`meta.agentCwdNeutral: true` in every result artifact.
+The QA runner starts each answering agent in a temporary directory outside the repository.
+It also uses Claude `--safe-mode`. Confirm `meta.agentEnvironment.safeMode: true` and
+`meta.agentBinary.matches: true` in every result artifact. Compare
+`meta.agentEnvironment.inherited.sha256` between arms. The artifact records variable names, but it
+does not record environment values.
+Confirm `agent.mcpServers` reports the explicit `raven` server as `connected` in every row.
 
 ## Step 3 — run the instruments
 
@@ -274,14 +284,14 @@ The QA runner starts each answering agent in a neutral temporary directory. Conf
 npm run eval:routing -- --gate            # exit 1 on gate breach or changed denominator
 
 # QA headline (sample) — variant A = the shipped `search` tool
-node eval/qa/run-qa.mjs --variant A --sample 30 --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256"
+node eval/qa/run-qa.mjs --variant A --sample 30 --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
 # targeted smoke: --ids a,b,c ; collect-only: --no-judge ; overrides: --model/--judge-model
 
 # QA live-data lane (grounding behavior; graded behaviorally, never on snapshot values)
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
 
 # Opt-in digest supplement — run and report separately from the canonical lane
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
 
 # Plan regrade (offline, reads stored transcripts)
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json

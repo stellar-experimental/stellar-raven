@@ -64,6 +64,22 @@ describe("parseAgentResult — provider safeguard before any MCP call", () => {
 });
 
 describe("parseAgentResult — failure classes are exclusive and fixture-backed", () => {
+  it("requires the explicit raven server to connect in the system init event", () => {
+    const connected = parseAgentResult(
+      { stdout: stream("usage-gap"), stderr: "", status: 0, signal: null },
+      { requiredMcpServerName: "raven" }
+    );
+    expect(connected.mcpServers).toEqual([{ name: "raven", status: "connected" }]);
+    expect(connected.failure).toBeNull();
+
+    const missing = parseAgentResult(
+      { stdout: '{"type":"system","subtype":"init","mcp_servers":[]}\n', stderr: "", status: 0, signal: null },
+      { requiredMcpServerName: "raven" }
+    );
+    expect(missing.failure).toMatchObject({ class: "protocol", retryable: false });
+    expect(missing.failure.reason).toContain("required MCP server raven was not reported");
+  });
+
   it("separates transport, agent turn-cap, protocol, spawn, and timeout from provider safeguards", () => {
     const transport = parseAgentResult(
       { stdout: stream("transport-connection-closed"), stderr: "", status: 0, signal: null }

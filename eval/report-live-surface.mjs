@@ -25,6 +25,7 @@
  *   --label NAME        arm label recorded in the artifact (default "live")
  *   --json PATH         also write the report as JSON
  *   --expect-sha256 HEX refuse (exit 1) unless the live surfaceSha256 matches
+ *   --expect-source-revision SHA refuse unless the live Worker reports this commit
  *
  * A non-local target needs a full named credential in RAVEN_MCP_BEARER_TOKEN.
  * The token is sent and never printed.
@@ -33,6 +34,7 @@ import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import {
   MCP_PROTOCOL_VERSION,
+  checkExpectedSourceRevision,
   checkExpectedSurface,
   formatSurfaceReport,
   parseMcpHttpPayload,
@@ -98,11 +100,13 @@ async function main(argv) {
   const label = argVal("--label") ?? "live";
   const jsonPath = argVal("--json");
   const expectSha256 = argVal("--expect-sha256");
+  const expectSourceRevision = argVal("--expect-source-revision");
 
   const surface = await fetchLiveSurface(url, {
     token: process.env.RAVEN_MCP_BEARER_TOKEN ?? null
   });
   const pin = checkExpectedSurface(surface.metrics, expectSha256);
+  const sourceRevisionPin = checkExpectedSourceRevision(surface.serverInfo, expectSourceRevision);
   const report = {
     label,
     capturedAt: new Date().toISOString(),
@@ -111,6 +115,7 @@ async function main(argv) {
     serverInfo: surface.serverInfo,
     toolNames: surface.toolNames,
     surfacePin: pin,
+    sourceRevisionPin,
     ...surface.metrics
   };
 
@@ -126,6 +131,12 @@ async function main(argv) {
     );
   }
   if (pin.checked) console.log(`arm pin OK: ${pin.actual}`);
+  if (sourceRevisionPin.checked && !sourceRevisionPin.matches) {
+    throw new Error(
+      `source revision pin FAILED: expected ${sourceRevisionPin.expected}, live Worker reports ${sourceRevisionPin.actual ?? "none"}`
+    );
+  }
+  if (sourceRevisionPin.checked) console.log(`source revision pin OK: ${sourceRevisionPin.actual}`);
 }
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;

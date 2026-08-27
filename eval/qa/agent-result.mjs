@@ -19,12 +19,16 @@ import { createHash } from "node:crypto";
 /**
  * Bump when the STORED outcome shape changes (run-qa stamps it in meta).
  *
+ * v3 (2026-08-27): rows record the MCP connection status from the Claude
+ * system init event. Pre-v3 artifacts cannot prove the required server was
+ * connected under safe mode, so stored judging refuses them.
+ *
  * v2 (2026-08-26): search calls keep their whole input and gain a bounded
  * `resultProjection` (eval/qa/search-projection.mjs). v1 artifacts recorded a
  * sliced query and no hits at all, so they are not comparable for any routing
  * or coverage read — the readers refuse to mix the two rather than join them.
  */
-export const AGENT_RESULT_SCHEMA = "qa-agent-result-v2";
+export const AGENT_RESULT_SCHEMA = "qa-agent-result-v3";
 
 /**
  * Exclusive failure classes. `unclassified` is the deliberate default: an
@@ -460,6 +464,8 @@ function artifactOutcomes(transcript) {
  *        Bounded evidence for a tool whose result is NOT kept whole. A
  *        non-null return is stored as `resultProjection`. Used for `search`,
  *        where the whole body is mostly prose but the ranking is the measurement.
+ * @param {string|null} [options.requiredMcpServerName]
+ *        Require this server to appear as connected in the system init event.
  * @returns {object} the structured outcome (see AGENT_RESULT_SCHEMA).
  */
 export function parseAgentResult(spawn, options = {}) {
@@ -468,6 +474,7 @@ export function parseAgentResult(spawn, options = {}) {
   const keepWholeInput = options.keepWholeInput ?? keepWholeResult;
   const projectResult = options.projectResult ?? (() => null);
   const promptChars = options.promptChars ?? null;
+  const requiredMcpServerName = options.requiredMcpServerName ?? null;
 
   const transcript = [];
   const perTurn = [];
@@ -476,6 +483,7 @@ export function parseAgentResult(spawn, options = {}) {
   let turns = null;
   let finalUsage = null;
   let resultMessage = null;
+  let mcpServers = null;
   let sawAnyMessage = false;
   let protocolIssue = null;
   // Independent of `perTurn.length`: an assistant message that carries no usage
@@ -493,7 +501,14 @@ export function parseAgentResult(spawn, options = {}) {
     }
     sawAnyMessage = true;
 
-    if (msg.type === "assistant" && Array.isArray(msg.message?.content)) {
+    if (msg.type === "system" && msg.subtype === "init") {
+      mcpServers = Array.isArray(msg.mcp_servers)
+        ? msg.mcp_servers.map((server) => ({
+            name: String(server?.name ?? ""),
+            status: String(server?.status ?? "")
+          }))
+        : [];
+    } else if (msg.type === "assistant" && Array.isArray(msg.message?.content)) {
       assistantOrdinal += 1;
       const usage = perTurnUsage(msg.message.usage ?? null, assistantOrdinal);
       if (usage) perTurn.push(usage);
@@ -536,6 +551,14 @@ export function parseAgentResult(spawn, options = {}) {
     }
   }
 
+  if (requiredMcpServerName) {
+    const required = mcpServers?.find((server) => server.name === requiredMcpServerName);
+    if (!required || required.status !== "connected") {
+      protocolIssue ??=
+        `required MCP server ${requiredMcpServerName} was ${required?.status || "not reported"} in system init`;
+    }
+  }
+
   const failure = classifyFailure({
     spawnError,
     status,
@@ -554,6 +577,7 @@ export function parseAgentResult(spawn, options = {}) {
     turns,
     costUsd,
     promptChars,
+    mcpServers,
     usage: {
       final: finalUsage,
       perTurn,

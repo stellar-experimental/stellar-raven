@@ -40,7 +40,16 @@ import {
   normalizeRayId
 } from "./observability-request";
 
-const SERVER_INFO = { name: "stellar-raven-codemode", version: "0.1.0" };
+declare const __RAVEN_SOURCE_REVISION__: string | undefined;
+const SOURCE_REVISION =
+  typeof __RAVEN_SOURCE_REVISION__ === "string" && /^[a-f0-9]{40}$/.test(__RAVEN_SOURCE_REVISION__)
+    ? __RAVEN_SOURCE_REVISION__
+    : null;
+const SERVER_INFO = {
+  name: "stellar-raven-codemode",
+  version: "0.1.0",
+  ...(SOURCE_REVISION ? { sourceRevision: SOURCE_REVISION } : {})
+};
 const DEV_LOCAL_ARTIFACT_OWNER = "dev-local";
 // Keep in sync with wrangler.jsonc routes; loopback entries preserve local dev.
 const MCP_ALLOWED_ORIGIN_HOSTNAMES = [
