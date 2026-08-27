@@ -7,7 +7,8 @@
   "golden": {
     "answer": "XLM, also called a lumen, is Stellar's native asset. It is used to pay very small network fees and to help meet account-reserve requirements, and people can also send or trade it like other cryptoassets. It is not the same thing as every dollar-like token on Stellar: issued assets have an issuer and normally need trustlines, while XLM is native. Its market price can move, so explaining its network role is not a prediction about investment value.",
     "keyFacts": [
-      "Identifies XLM as Stellar's native asset and names fees/reserves as network roles.",
+      "Identifies XLM as Stellar's native asset.",
+      "Names fees and reserves as XLM network roles.",
       "Distinguishes XLM from issuer-backed Stellar assets."
     ],
     "avoid": [
@@ -53,18 +54,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
         "scratchpad/p4/h3-raph/fable-voice-review.md",
         "scratchpad/p4/h3-raph-blind/reconciliation.md",
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
-        "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x"
+        "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
+        "Structural re-form (compound-predicate): Split XLM identity from its fee and reserve roles; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens — identified XLM as Stellar's native currency.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens — listed transaction fees and minimum-balance reserves as XLM roles.",
+        "Sibling sweep 2026-08-27: grep XLM|native asset|issuer|trustline → q-raph-xlm-network-role, q-asset-trustline-basics, q-edge-ambig-stellar-token-meaning; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raph xlm-explained-simply-non-technical"

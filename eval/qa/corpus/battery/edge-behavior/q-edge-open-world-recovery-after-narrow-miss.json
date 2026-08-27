@@ -13,10 +13,10 @@
     "answer": "No—not for that open-world conclusion. Empty exact builder/project lookups support only scoped statements about those directories. First make one bounded wider pass using the surface that fits the claim: `lumenloop.search_content_semantic` for ecosystem content and events, `scout.searchResearch` for cited history, `lumenloop.find_av_passages` for spoken material, and `stellarDocs.search_docs` when the question is about official technical wording. Broad semantic rows remain candidates, not proof. Attribute a person, project, event, or role only when an exact identity or canonical slug is tied to a source and date. If the wider pass is still empty, off-target, adjacent, or ambiguous, report that the requested Stellar history could not be verified from the searched sources and ask for a spelling, handle, project, link, or timeframe. A closed-world question such as “is this exact name in the builder directory?” may stop at the directory-scoped answer.",
     "keyFacts": [
       "Does not turn empty narrow directories into an open-world claim that no history exists.",
-      "Makes one bounded broad pass using semantic content, cited research, A/V, or official docs according to the claim.",
-      "Treats semantic neighbors as candidates and requires exact identity or canonical slug plus source and date before attribution.",
+      "Makes one bounded broad pass: semantic content, cited research, A/V, or official docs.",
+      "Keeps semantic neighbors as candidates until exact ID/canonical slug plus dated source.",
       "Allows a closed-world directory question to end with a clearly source-scoped result.",
-      "When broad evidence remains insufficient, gives a scoped unverified answer and asks for disambiguating context."
+      "Gives a scoped unverified answer for broad-evidence gaps, seeking disambiguating context."
     ],
     "avoid": [
       "Do NOT claim that several empty or off-target `ok` responses prove absence.",
@@ -87,7 +87,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Cloudflare production rays a1a519aa3907e144 through a1a51b394acdc572 for the shared Stellar Raven interaction.",
         "2026-07-13 localhost positive and negative recovery probes against the existing Solo dev process.",
@@ -95,14 +95,21 @@
         "solo://proj/49/scratchpad/evidence-poor-retrie--611",
         "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-017; the open-world recovery and identity-validation rules are unchanged.",
         "Improvements review 2026-08-27: improvements/lumenloop/ll-017-semantic-person-match-provenance.md remains reported upstream; the disputed claim is whether semantic person matches establish identity without exact-match or matched-span provenance.",
-        "Sibling sweep 2026-08-27: grep ll-017|semantic exact identity → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-strupey-ambiguous-stellar-history, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction"
+        "Sibling sweep 2026-08-27: grep ll-017|semantic exact identity → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-strupey-ambiguous-stellar-history, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction",
+        "Structural re-form (compound-predicate): tightened broad-pass, candidate-validation, and insufficient-evidence requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/scripts/catalog-data/retrieval-profiles.mjs — the matching current local source still routes one bounded, claim-fit recovery pass across semantic content, research, A/V, or docs.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — the matching current local source still keeps semantic neighbors provisional until exact identity and dated provenance support attribution.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — the matching current local source still requires a scoped unverified result and disambiguation after evidence gaps.",
+        "Sibling sweep 2026-08-27: grep open-world|semantic neighbor|canonical slug|disambiguat → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-strupey-ambiguous-stellar-history, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part3.md): removed the added qualifier \"apt\"; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "Evidence sufficiency was inferred from healthy envelopes rather than the answer's claim scope.",
         "Broad recovery capability existed but was not surfaced as a bounded contingency after narrow misses.",
         "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
         "solo://proj/49/scratchpad/evidence-poor-retrie--611",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-07-13 from production miss and multi-model SOLO review"

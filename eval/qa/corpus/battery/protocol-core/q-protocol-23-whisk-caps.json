@@ -8,10 +8,10 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\n**Protocol 23 (Whisk)** activated on Mainnet on **2025-09-03 at 17:00 UTC** and contains exactly eight Final CAPs: **CAP-0062** Soroban Live State Prioritization, **CAP-0063** parallelism-friendly transaction scheduling, **CAP-0065** reusable module cache, **CAP-0066** Soroban in-memory read resource, **CAP-0067** unified asset events, **CAP-0068** the host function for getting an executable for an `Address`, **CAP-0069** String/Bytes conversion host functions, and **CAP-0070** configurable SCP timing parameters. CAP-0064 was rejected and is not part of P23.\n\nCAP-0063's protocol transition initialized `ledgerMaxDependentTxClusters` to **1**, so P23 activation did not itself enable multi-cluster application. A separate network-settings vote later raised the value to **2** at ledger **60993066** on **2026-01-29**; two independent Mainnet RPC reads on **2026-07-11** still decoded **2**. Treat one as the P23 initial value and two as dated, volatile network configuration. The canonical settings proposal is `limits/slp-0004.md`.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Lists the complete eight-CAP P23 set: 0062, 0063, 0065, 0066, 0067, 0068, 0069, and 0070.",
-      "Distinguishes CAP-0063's initial value one from the later, freshness-sensitive Mainnet value two.",
+      "Treats CAP-0063 value one as initial and the later Mainnet value two as volatile.",
       "Uses limits/slp-0004.md."
     ],
     "avoid": [
@@ -98,7 +98,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently identified the incomplete CAP set, bad SLP path, and transition-versus-live-setting conflation.",
         "2026-07-11 author re-check: stellar-protocol fbf05c9d registry lists exactly eight Final P23 CAPs; two independent Pubnet RPCs decoded CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 as two, last modified at ledger 60993066.",
@@ -107,13 +107,19 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Removed a covered CAP-0068/CAP-0069 omission demand and preserved the CAP-0064/Soroban false-content trap; reworded the live-roster trap as a concrete false claim; truth is unchanged.",
         "No live re-check needed: wording-only avoid-item re-forms; both trap targets are unchanged.",
-        "Sibling sweep 2026-08-27: grep CAP-0068|CAP-0069|CAP-0064|Whisk → q-protocol-23-whisk-caps, q-protocol-parallel-execution, q-protocol-version-history-list; no contradiction"
+        "Sibling sweep 2026-08-27: grep CAP-0068|CAP-0069|CAP-0064|Whisk → q-protocol-23-whisk-caps, q-protocol-parallel-execution, q-protocol-version-history-list; no contradiction",
+        "Structural re-form (negative-predicate): Shortened the dated-source fact and recast the CAP-0063 value comparison as a positive requirement; truth unchanged",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — the current registry listed Protocol 23 CAPs and their statuses.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md — CAP-0063 set the protocol-transition value to one and required a later SLP vote for parallel execution.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md — Final SLP-0004 specified a later two-thread ledger configuration.",
+        "Sibling sweep 2026-08-27: grep Whisk|CAP-0063|slp-0004|Protocol 23 → q-pc-slp-0004-0006-status, q-protocol-24-whisk-incident, q-protocol-parallel-execution, q-protocol-version-history-list; no contradiction"
       ],
       "rootCause": [
         "Eval-side CAP-family omission, stale source path, and protocol-transition-versus-network-configuration compression.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-23-whisk-caps"

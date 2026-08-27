@@ -7,7 +7,8 @@
   "golden": {
     "answer": "Once a node externalizes a ledger, it does not later change that slot; this finality depends on the trusted quorum retaining SCP safety/quorum intersection. An individual validator has no normal operation to erase a confirmed native-XLM payment. Issuer clawback of an eligible issued asset and custodian bookkeeping are different visible operations.\n\nTo detect split risk, compare the same ledger sequence/hash and transaction result across independently operated Core/RPC/Horizon sources; inspect Core `/info` and quorum diagnostics such as disagreement and transitive intersection/potential split; and compare independently operated history archives plus integrity scans. One endpoint or archive cannot prove absence of a fork.",
     "keyFacts": [
-      "Explains finality relative to quorum-intersection assumptions and distinguishes native-XLM finality from issuer/custodian controls.",
+      "Explains finality relative to quorum-intersection assumptions.",
+      "Treats native-XLM finality and issuer/custodian controls as different mechanisms.",
       "Provides actionable source-diverse ledger, Core quorum, and archive-integrity checks."
     ],
     "avoid": [
@@ -72,13 +73,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The core finality/quorum answer is correct; the evidence and operational fork-detection guidance were too generic and did not name the strongest Core quorum diagnostics.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; consensus/clawback sibling sweep."
+        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; consensus/clawback sibling sweep.",
+        "Structural re-form (negative-predicate): split the compound finality fact into its quorum assumption and control taxonomy; native XLM, issuer controls, and custodian controls are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol and https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — current docs still ground finality in SCP consensus assumptions.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/clawbacks and https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — current docs still treat issuer clawback and custodian accounting as mechanisms apart from native-XLM finality.",
+        "Sibling sweep 2026-08-27: grep native XLM|clawback|custodian controls|network reversal → q-comp-clawback-holder-risk and q-raph-missing-exchange-memo; no contradiction"
       ],
       "rootCause": [
-        "No core truth error; generic archive citations displaced actionable validator-monitoring evidence."
+        "No core truth error; generic archive citations displaced actionable validator-monitoring evidence.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-edge-validators-reverse-tx-fork-detection"

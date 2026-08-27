@@ -8,7 +8,7 @@
     "answer": "Stellar does not use proof-of-stake, so holding XLM does not natively stake it or earn protocol staking rewards. If a third party advertises 'XLM staking,' it is offering its own product, not activating a native network feature; investigate its custody, lockup, withdrawal, counterparty, and scam risks independently. Never send a secret key or funds to a promoter just to 'activate' staking. As of 2026-07-11, current Protocol 27 materials and a live sweep of the official accepted and proposed CAP repository show no native-staking or validator-reward proposal. That is a dated record claim, not a promise that future governance can never change.",
     "keyFacts": [
       "States that Stellar has no native proof-of-stake reward for holding XLM.",
-      "Distinguishes a third-party yield product from native staking."
+      "Treats a third-party yield product as different from native staking."
     ],
     "avoid": [
       "Do NOT say SDF runs an official staking program.",
@@ -88,8 +88,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
@@ -99,10 +99,14 @@
         "https://stellar.org/blog/ecosystem/the-hidden-risks-of-proof-of-stake",
         "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide",
         "https://github.com/stellar/stellar-protocol",
-        "https://www.ftc.gov/media/cryptocurrency-scams"
+        "https://www.ftc.gov/media/cryptocurrency-scams",
+        "Structural re-form (negative-predicate): Recast the third-party-yield versus native-staking comparison with a positive taxonomy verb; truth unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — the current page described SCP as proof of agreement, so third-party yield remains different from native staking.",
+        "Sibling sweep 2026-08-27: grep XLM staking|native staking|third-party yield|proof-of-stake → q-defi-build-staking-for-own-token, q-defi-liquid-staking-whitespace, q-edge-noinfo-stellar-pos-staking-rewards; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raph xlm-native-staking-not-supported"

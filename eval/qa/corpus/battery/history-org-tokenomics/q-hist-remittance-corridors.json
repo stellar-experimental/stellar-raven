@@ -8,14 +8,15 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nUse a dated status table rather than one timeless deployment list. **MoneyGram Ramps** is a current Stellar/USDC cash-in/out example, with exact coverage stated from a dated operator source. **Nium's ~190-country statement** is a 2022 platform capability claim; **Velo/PDAX** described an agreement/intended Philippines corridor; **Coins.ph** is a historical Stellar route; and Onafriq's broad corporate footprint does not by itself prove current Stellar consumer availability in every market. For every row label live, historical, announced, or capability-only, identify the actual settlement asset when known, and verify current corridor/provider availability.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names specific remittance corridors supported by dated evidence.",
-      "Distinguishes historical corridor evidence from current availability."
+      "Treats historical corridor evidence and current availability as different conditions."
     ],
     "avoid": [
       "Do NOT claim every historic/announced capability is a current corridor, equate corporate footprint with Stellar coverage, globally ban XLM settlement, or freeze one coverage count.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+      "Do NOT use an unsupported memory claim as a current remittance-corridor fact."
     ],
     "notes": "GT-27 2026-07-10: grade dated row-level lifecycle and settlement-asset evidence. MoneyGram is current; Nium/Velo-PDAX/Coins.ph/Onafriq require capability, announcement, historical, or coverage caveats. Counts remain source/time scoped.\nGT-27 CORRECTION 2026-07-10: a partner roster is not a current deployment census.\nAccurately quoting the canonical Lumenloop or Scout source on MoneyGram's 200+ footprint or unqualified corridor lifecycle labels is not a wrong claim while ll-008 and sls-024 stand; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
@@ -74,7 +75,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-27 primary 3270 and blind 3272; corridor sibling sweep.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -85,7 +86,11 @@
         "Finding read 2026-08-27: improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed lifecycle labels without populated provenance or deployment scope.",
         "Sibling sweep 2026-08-27: grep MoneyGram|Nium|Velo/PDAX|Coins.ph|Onafriq → q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-crp-regional-offramp-mobilemoney; no contradiction",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; all symmetric-caution provenance is unchanged.",
-        "Sibling sweep 2026-08-27: grep historic corridor|MoneyGram|Nium|Velo/PDAX|Onafriq → q-hist-remittance-corridors, q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-crp-regional-offramp-mobilemoney; no contradiction"
+        "Sibling sweep 2026-08-27: grep historic corridor|MoneyGram|Nium|Velo/PDAX|Onafriq → q-hist-remittance-corridors, q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-crp-regional-offramp-mobilemoney; no contradiction",
+        "Structural re-form (negative-predicate): Moved the unsupported-memory trap to avoid and reworded the lifecycle taxonomy; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/products-and-tools/moneygram still supports a current, source-dated MoneyGram Ramps observation.",
+        "Live re-check 2026-08-27: https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries still identifies its corridor claim as a June 22, 2022 announcement.",
+        "Sibling sweep 2026-08-27: q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, and q-crp-regional-offramp-mobilemoney preserve the same dated lifecycle boundaries."
       ],
       "rootCause": [
         "Partner capability, announcement, historic route, and live consumer deployment were collapsed.",
@@ -94,7 +99,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-hist-remittance-corridors"

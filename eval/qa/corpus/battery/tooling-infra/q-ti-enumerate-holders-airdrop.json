@@ -10,13 +10,14 @@
   "golden": {
     "answer": "For Classic `G...` trustlines, paginate Horizon **`GET /accounts?asset=CODE:ISSUER`** and follow the server-provided next link/cursor; do not build a giant account-ID URL. The collection represents trustline accounts and can include a zero balance, so inspect the target balance row and apply the campaign's positive-balance/authorization rules. It does not include `C...` contract balances.\n\nA multi-page live crawl is not an atomic exact-ledger snapshot. For deterministic distribution, pin the network and target ledger and use Hubble/owned ingestion or another provider that explicitly supplies snapshot semantics. Define treatment of claimable balances, liquidity pools, frozen/unauthorized trustlines, issuer/distribution accounts, muxed IDs, and contract holders. For SAC/custom SEP-41 holders, use complete indexed state/events plus current-balance validation; SEP-41 does not standardize storage enumeration. Freeze a recipient ledger, store computed amount/tx hash/status/retry count, manage sequence/fees, dry-run/canary, and make retries idempotent.",
     "keyFacts": [
-      "Uses cursor-paginated `/accounts?asset=CODE:ISSUER` for Classic trustlines and filters zero balances/eligibility.",
-      "States that the Horizon collection excludes C-address token balances and a moving crawl is not an atomic historical snapshot.",
+      "Uses cursor-paginated /accounts?asset=CODE:ISSUER; filters zero balances/eligibility.",
+      "States the Horizon collection excludes C-address token balances.",
+      "States a moving Horizon crawl is not an atomic historical snapshot.",
       "Pins network/ledger and defines claimable/pool/auth/issuer/muxed/contract eligibility.",
       "Requires an idempotent recipient ledger and retry/sequence/fee/canary controls."
     ],
     "avoid": [
-      "Do NOT equate trustline existence with a positive holder or claim `/accounts?asset` includes contract holders.",
+      "Do NOT equate trustline existence with a positive holder or claim `/accounts?asset` includes C-address token balances/contract holders.",
       "Do NOT call a moving Horizon crawl an exact-ledger snapshot or stuff hundreds of IDs into one URL.",
       "Do NOT airdrop before defining holder classes/deduplication or without idempotent retry state."
     ],
@@ -104,14 +105,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited paging/idempotency core omitted the actual Horizon asset-holder endpoint, zero-balance trustlines, non-atomic moving crawls, C-address exclusions, and the eligibility classes needed for a deterministic airdrop snapshot.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-52 processes 3356/3368 independently retained paging/idempotency and required the current-snapshot split; blind added zero-balance, exact-ledger, and holder-class semantics.",
-        "Sibling sweep checked q-asset-trustline-vs-sac, q-sor-contract-trustlines-c-address, q-soroban-sac-balance-storage, q-ti-fetch-all-balances-classic-sac, and claimable-balance cases."
+        "Sibling sweep checked q-asset-trustline-vs-sac, q-sor-contract-trustlines-c-address, q-soroban-sac-balance-storage, q-ti-fetch-all-balances-classic-sac, and claimable-balance cases.",
+        "Structural re-form (compound-predicate): Split the Classic trustline fact and moved the C-address exclusion into the existing concrete avoid; snapshot, eligibility, and retry claims are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-all-accounts — /accounts?asset=CODE:ISSUER remains cursor-paginated for Classic trustline accounts.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — trustline/account results still require zero-balance and campaign-eligibility filtering.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/structure/pagination — a moving cursor crawl remains non-atomic and does not define one historical-ledger snapshot.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — deterministic holder sets still require a pinned network/ledger and explicit claimable/pool/auth/issuer/muxed/contract eligibility.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/channel-accounts — batched distributions still require recipient state plus retry, sequence, fee, and canary controls.",
+        "Sibling sweep 2026-08-27: grep /accounts?asset|zero balances|C-address token balances|atomic historical snapshot|idempotent recipient → q-ti-enumerate-all-contracts, q-ti-enumerate-holders-airdrop; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part2.md): restored the Horizon C-address exclusion as a keyFact by merging the trustline/filter pair; truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "Eval-side snapshot/eligibility incompleteness; exact-ledger holder snapshot guidance remains a documented research candidate, not a manufactured finding."
+        "Eval-side snapshot/eligibility incompleteness; exact-ledger holder snapshot guidance remains a documented research candidate, not a manufactured finding.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-enumerate-holders-airdrop"

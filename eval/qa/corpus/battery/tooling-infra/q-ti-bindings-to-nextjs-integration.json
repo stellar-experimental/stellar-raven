@@ -7,10 +7,11 @@
   "golden": {
     "answer": "Generate TypeScript bindings with the current **`stellar contract bindings typescript`** command, then consume the generated output as a workspace/local, packed, or published npm package. Inspect the generated package itself: current v27 output exports a typed **`Client`** and network metadata, while generated README snippets can lag. Regenerate rather than hand-edit generated files when the contract spec changes.\n\nIn a Next.js App Router app, keep Freighter in a **`\"use client\"`** component. Obtain the public address/permission, verify the expected network passphrase, create the generated client with its contract/network/RPC/signing options, call the typed method, let simulation/assembly provide Soroban data/auth/resources, sign the assembled XDR with Freighter, submit through RPC, and poll. Never put a secret key in the browser.\n\nFor a contract transaction, `Tx.fee` is the maximum total: the inclusion-fee bid plus `sorobanData.resourceFee`. The resource budget includes non-refundable charges and potentially refundable budget; do not call the whole resource fee automatically refundable or the total fee inclusion-only.",
     "keyFacts": [
-      "Uses the current stellar contract bindings typescript command and generated Client/types rather than stale README names.",
-      "Uses a workspace/installed package and a Next.js client boundary for Freighter, with explicit network validation and no browser secret.",
+      "Uses `stellar contract bindings typescript` with the generated `Client` and types.",
+      "Uses an installed/workspace package, a Next.js client boundary, and network validation.",
       "Preserves build/simulate/assemble/sign/submit/poll ordering.",
-      "Defines Tx.fee as inclusion plus resource fee and distinguishes refundable from non-refundable resource components."
+      "Defines `Tx.fee` as inclusion fee plus Soroban resource fee.",
+      "Treats refundable and non-refundable resource components as distinct."
     ],
     "avoid": [
       "Do NOT use retired `soroban contract bindings ts`, assume a generated `Contract` export, or hand-edit generated output.",
@@ -103,17 +104,25 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary process 3353 and blind process 3360 independently agreed on the fee, client-only wallet, generated-type, and current-command corrections; blind matrix sealed before primary read.",
         "Sibling sweep checked q-sor-bindings-from-wasm-no-address, q-sor-deploy-invoke-from-js-sdk, and q-soroban-fee-structure; they are consistent models.",
         "Structural re-form (presentation-avoid): Removed the simulation/assembly omission demand because a key fact already requires that ordering; preserved the browser-secret false-content trap; truth is unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep contract bindings typescript|AssembledTransaction|Tx.fee → q-sor-deploy-invoke-from-js-sdk, q-soroban-cli-bindings, q-ti-bindings-to-nextjs-integration; no contradiction"
+        "Sibling sweep 2026-08-27: grep contract bindings typescript|AssembledTransaction|Tx.fee → q-sor-deploy-invoke-from-js-sdk, q-soroban-cli-bindings, q-ti-bindings-to-nextjs-integration; no contradiction",
+        "Structural re-form (negative-predicate): split four compound facts into five atomic positive facts; existing avoid items retain the stale-name and browser-secret traps, so truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/guestbook/bindings — uses `stellar contract bindings typescript` with the generated `Client` and types",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/dapps/frontend-guide — uses an installed/workspace package, a Next.js client boundary, and network validation",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/guestbook/bindings — preserves build/simulate/assemble/sign/submit/poll ordering",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — defines `Tx.fee` as inclusion fee plus Soroban resource fee",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — treats refundable and non-refundable resource components as distinct",
+        "Sibling sweep 2026-08-27: grep bindings typescript|Client|Tx.fee|resource fee → q-sor-deploy-invoke-from-js-sdk, q-soroban-cli-bindings; no contradiction"
       ],
       "rootCause": [
         "Eval-side generated-artifact/API drift; the upstream stale generated README is recorded as a research candidate because only the blind lane directly verified the template defect.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-bindings-to-nextjs-integration"

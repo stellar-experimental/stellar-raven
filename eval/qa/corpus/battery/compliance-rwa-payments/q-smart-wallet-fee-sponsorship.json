@@ -9,14 +9,17 @@
   "golden": {
     "answer": "Start with the account type. A C-address can hold USDC through its Stellar Asset Contract interface/balance without a G-account or trustline reserve; a G-account still has activation and trustline reserves unless those entries are sponsored. A fee bump or relayer pays transaction fees, while beginSponsoringFutureReserves/endSponsoringFutureReserves assigns eligible reserve liability. Deployment and resources still cost someone. Token-paid FeeForwarder designs and hosted facilitators are current provider designs with caps, liquidity, and abuse controls, not a universal native paymaster.",
     "keyFacts": [
-      "A C-address SAC balance needs no G-account or trustline reserve; a G-account retains activation and trustline reserves unless sponsored.",
-      "A fee bump or relayer pays transaction fees, while beginSponsoringFutureReserves/endSponsoringFutureReserves assigns reserve liability.",
-      "USDC is used through its Stellar Asset Contract interface/balance, not as a separate wrapped asset.",
-      "Token-paid relaying and hosted facilitators are provider designs with caps, liquidity, and abuse controls, not a universal native paymaster."
+      "Activation/trustline reserves apply only to unsponsored G-accounts in this comparison.",
+      "Fee bumps or relayers pay transaction fees.",
+      "`beginSponsoringFutureReserves`/`endSponsoringFutureReserves` assign reserve liability.",
+      "USDC uses its Stellar Asset Contract interface and balance.",
+      "Token-relay or hosted-facilitator designs use caps, liquidity, and abuse controls."
     ],
     "avoid": [
       "Gasless onboarding eliminates all network and reserve costs rather than shifting them to a sponsor.",
-      "A classic account can hold an issued USDC asset without a trustline or sponsored trustline."
+      "A classic account can hold an issued USDC asset without a trustline or sponsored trustline.",
+      "Do NOT claim USDC is a separate wrapped asset.",
+      "Do NOT claim Stellar has a universal native paymaster."
     ],
     "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence."
   },
@@ -207,13 +210,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/smart-wallets/fee-sponsorship",
         "https://developers.stellar.org/docs/learn/encyclopedia/sponsored-reserves",
         "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
-        "https://github.com/OpenZeppelin/openzeppelin-relayer"
+        "https://github.com/OpenZeppelin/openzeppelin-relayer",
+        "Structural re-form (negative-predicate): split long facts and moved wrapped-asset/paymaster traps to avoid; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/overview — contract ledger entries do not add to an account minimum balance",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions — fee bumps let a service cover user transaction fees",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — begin/end sponsorship assigns account and trustline reserve responsibility",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — SAC is the contract interface for issued Stellar assets",
+        "Live re-check 2026-08-27: https://github.com/OpenZeppelin/openzeppelin-relayer — token relaying remains a provider implementation with operational controls",
+        "Sibling sweep 2026-08-27: grep C-address|sponsored reserves|SAC → q-pc-sponsored-reserves, q-ti-fetch-all-balances-classic-sac, q-sor-contract-trustlines-c-address; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored hosted facilitators as a required provider design; truth unchanged versus HEAD."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "kaan smart-wallet-fee-sponsorship-onboarding"

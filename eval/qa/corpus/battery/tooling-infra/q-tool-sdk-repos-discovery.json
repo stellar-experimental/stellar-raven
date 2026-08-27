@@ -7,10 +7,10 @@
   "golden": {
     "answer": "Run the **current Scout repository search** with SDK/client/XDR/contract vocabulary and return only the rows actually observed. Include the response `generatedAt`/as-of time and, for each row, its exact owner/name and direct URL, client-versus-contract role, language, maintainer tier, archive state, last push/release or other dated activity, and the source used to corroborate identity. If you supplement the Scout rows from official docs or a package registry, label that repository as an external corroborated supplement rather than pretending Scout returned it.\n\nDo not publish a static 'top' roster. `repoScore`, stars, semantic rank, and ordering are answer-time navigation signals, not proof of maintenance, security, correctness, SDF ownership, or production readiness. Verify canonical SDF repositories and community repositories against their current source and package records, and explain repository moves or aliases rather than silently using retired topology.",
     "keyFacts": [
-      "Returns only current observed Scout rows and labels any direct external supplement separately.",
-      "Includes generatedAt/as-of, exact direct URL, role, language, maintainer tier, archive state, and dated activity per repository.",
-      "Corroborates repository identity and ownership through official docs, source, or package registries.",
-      "Rejects static rankings/star counts and quality or ownership inference from repoScore/rank."
+      "Returns only current observed Scout rows with external supplements labeled separately.",
+      "Includes generatedAt/as-of, exact direct URL, role, language, and maintainer tier.",
+      "Includes archive state and dated activity for each repository.",
+      "Corroborates identity and ownership with official docs, source, or package registries."
     ],
     "avoid": [
       "Do NOT freeze a top-rated roster, star count, ordering, repository topology, or score threshold.",
@@ -97,16 +97,21 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Post-QA Harvest freshness lane (Solo todo 1377; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "C: https://stellarlight.xyz/api/repos/search?q=sdk&limit=10 at 2026-08-05T20:47:26.563Z returned 10 of 334 current rows, including stellar/js-stellar-sdk, stellar/rs-soroban-sdk, and stellar/go-stellar-sdk with answer-time rank/activity metadata; an XDR probe separately returned stellar/stellar-xdr and stellar/rs-stellar-xdr.",
         "A/B: https://developers.stellar.org/docs/tools/sdks/client-sdks, https://developers.stellar.org/docs/tools/sdks/contract-sdks, the direct repository APIs, and the @stellar/stellar-sdk package independently confirmed role, owner, language, archive state, activity, and package identity.",
         "Uncertainty remains source-bounded: Scout rank, score, stars, and current rows do not establish global coverage, security, correctness, ownership, or production readiness.",
-        "Sibling sweep: q-tool-indexer-repos-discovery preserves the same no-static-roster/no-repoScore-quality rule, and q-tool-skill-detail-install remains a separate exact-detail lane."
+        "Sibling sweep: q-tool-indexer-repos-discovery preserves the same no-static-roster/no-repoScore-quality rule, and q-tool-skill-detail-install remains a separate exact-detail lane.",
+        "Structural re-form (negative-predicate): split the repository fields into atomic facts and moved the ranking and inference traps to their existing avoid items; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/sdks/client-sdks — confirmed current client SDK roles, source URLs, and maintainer tiers.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/sdks/contract-sdks — confirmed the separate contract SDK role used for repository classification.",
+        "Sibling sweep 2026-08-27: grep generatedAt|repoScore|client SDK|contract SDK → q-tool-indexer-repos-discovery; no contradiction"
       ],
       "rootCause": [
-        "freshness-recheck"
+        "freshness-recheck",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-sdk-repos-discovery"

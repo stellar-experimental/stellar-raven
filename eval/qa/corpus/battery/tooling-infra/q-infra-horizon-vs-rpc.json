@@ -9,9 +9,9 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nHorizon is a REST/HAL API and indexer with curated entity/relationship resources, HAL pagination, and documented SSE streaming. Stellar RPC is the forward JSON-RPC gateway for live/current network state, recent/raw transactions and events, classic plus smart-contract queries, simulation, and submission. It is not Soroban-only and is not a full Horizon indexer. Use RPC for new smart-contract/current-state work, but keep Horizon, an indexer, Portfolio APIs, or Hubble where curated/full-history workloads require them. Official pages currently dispute whether Horizon is already 'deprecated' versus nearing EOL, so state that conflict rather than pinning either label.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Distinguishes transport/data shapes and overlap without full parity.",
+      "Treats transport/data shapes as different with partial overlap.",
       "States RPC's classic+contract scope and encodes the Horizon lifecycle dispute."
     ],
     "avoid": [
@@ -104,7 +104,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-49 primary 3335 and blind 3341; sibling q-protocol-horizon-vs-rpc already encoded the dispute.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -112,14 +112,19 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; confirmed against improvements/stellar-docs/sd-017-horizon-lifecycle-wording-conflict.md on 2026-08-26",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep Horizon|RPC|complete or permanent roster → q-infra-horizon-vs-rpc, q-gap-rpc-horizon-unindexed-reference, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier; no contradiction"
+        "Sibling sweep 2026-08-27: grep Horizon|RPC|complete or permanent roster → q-infra-horizon-vs-rpc, q-gap-rpc-horizon-unindexed-reference, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier; no contradiction",
+        "Structural re-form (negative-predicate): Shortened a sourcing fact and stated the Horizon/RPC taxonomy positively; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — showed current REST/HAL and JSON-RPC descriptions.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — showed partial endpoint mappings and endpoints without direct replacements.",
+        "Sibling sweep 2026-08-27: grep Horizon|RPC|full parity → q-gap-rpc-horizon-unindexed-reference, q-infra-horizon-vs-rpc, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-compute-token-lp-market-data; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-017-horizon-lifecycle-wording-conflict.md",
         "Historical Soroban RPC naming persisted after scope expansion.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-infra-horizon-vs-rpc"

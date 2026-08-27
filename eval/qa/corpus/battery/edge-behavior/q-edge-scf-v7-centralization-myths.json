@@ -7,14 +7,15 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSCF payment terms and Stellar Mainnet authority are separate. As of **2026-07-10**, the published Build Award schedule is **10% on award acceptance, 20% after MVP, 30% after Testnet/equivalent, and 40% after verified Mainnet launch plus UX readiness**. Later payments require verified deliverables. Current public guidelines require each completion form within 90 calendar days of the preceding payment and allow SDF, absent timely written delay notice and acknowledgement, to deem unpaid tranches forfeited and the award terminated. Project-specific agreements and future terms may differ.\n\nThat structure shifts execution and cash-flow risk to recipients; whether it is 'predatory' or fair is an evaluative judgment, not established by the 10% fact alone. SDF can administer, suspend, modify, or end its grants and control its sites/branding. That does **not** create a unilateral protocol switch to delete an independently operated Mainnet contract/app, though an app can depend on its own admins, issuers, front end, SDF-operated services, and network/quorum choices.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates grant administration from protocol-level ability to erase an independently operated app."
+      "Treats grant administration and protocol erasure of an independently run app as different."
     ],
     "avoid": [
       "Do NOT infer fairness/predation from 10% alone, claim already-paid funds are automatically clawed back, or duplicate the current-round/deadline answer here.",
       "Do NOT claim SCF acceptance gives SDF unilateral protocol power to delete a Mainnet app.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+      "Do NOT use an unsupported memory claim as a current SCF v7 fact."
     ],
     "notes": "GT-26 2026-07-10: grade the dated 10/20/30/40 schedule, current 90-day/unpaid-tranche term, normative fairness caution, and grant-versus-protocol authority distinction. Current-round facts belong to the dedicated SCF-round cases.\nGT-26 CORRECTION 2026-07-10: replace current-round scope creep with the actual Build payment/forfeiture terms and durable grant-versus-network distinction."
   },
@@ -83,16 +84,21 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1659 SCF sibling cleanup after accepted primary and blind adversarial review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; current 90-day/unpaid-tranche terms checked 2026-07-10.",
         "Preserved the 2026-07-10 payment-schedule and network-authority observation; this event does not claim a later re-observation of those facts.",
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — primary and blind adversarial reviews required removal of the unrelated stale SCF #45 Submission row.",
-        "Sibling sweep covered q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, and the three live RFP cases; current-round facts now stay in the dedicated cases."
+        "Sibling sweep covered q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-open-rfps, q-scf-rfp-tooling, and the three live RFP cases; current-round facts now stay in the dedicated cases.",
+        "Structural re-form (negative-predicate): tightened the observation fact, moved its unsupported-memory trap to avoid, and recast the grant-versus-protocol taxonomy positively; no claim changed.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — the official SCF v7 page remains a dated primary source for current or dated claims.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 and https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — current sources still assign grant decisions to SDF and ledger consensus to trusted nodes.",
+        "Sibling sweep 2026-08-27: grep SCF v7|grant administration|protocol erasure|unsupported memory → q-scf-v7-changes and q-scf-instawards; no contradiction"
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-edge-scf-v7-centralization-myths"

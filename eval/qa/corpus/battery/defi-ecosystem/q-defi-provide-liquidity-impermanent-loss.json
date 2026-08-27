@@ -7,11 +7,11 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nStart by identifying the exact venue and asset contracts/issuers. For a **classic Stellar constant-product pool**, establish the asset trustlines and pool-share trustline, submit `LiquidityPoolDeposit` with price bounds/minimums, retain the non-transferable pool shares, and later use `LiquidityPoolWithdraw` for a pro-rata redemption; classic pools charge the protocol-defined swap fee. For a **Soroban venue or vault**, review/approve the exact contract flow and verify admin/upgrades, reward contracts, oracle/keeper dependencies, lock or withdrawal queues, and current UI-contract provenance—mechanics are not interchangeable.\n\nCompare returns in separate dated components: swap-fee APR, reward-token emissions, lending/vault yield, and costs/slippage. **Impermanent loss** is LP underperformance versus simply holding the two reserve assets after their relative price changes; withdrawing realizes that relative outcome, and fees/incentives may or may not offset it. Check pool depth, volume, asset/issuer risk, contract/admin risk, oracle/keeper risk, reward-token price, lock/queue terms, and whether exits currently work. Use small test amounts. Never treat APY/TVL or withdrawals as guaranteed.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "Dates each source-supported roster, status, version, measurement, or current observation.",
       "Gives a venue-specific deposit/withdraw checklist.",
-      "Distinguishes classic pool-share operations from Soroban contract/vault flows.",
-      "Covers liquidity, issuer, contract/admin, oracle/keeper, reward-token, lock/queue, and withdrawal risks."
+      "Treats Classic pool-share operations and Soroban contract/vault flows as distinct.",
+      "Covers liquidity, issuer, contract/admin, oracle/keeper, and reward-token risks.",
+      "Covers lock/queue and withdrawal risks."
     ],
     "avoid": [
       "Do NOT promise returns, freeze APY/TVL, or assume all Stellar LP venues share the same deposit/withdraw mechanics.",
@@ -69,7 +69,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-16 primary 3244 and blind 3245",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -77,13 +77,19 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share → q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no contradiction"
+        "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share → q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no contradiction",
+        "Structural re-form (negative-predicate): merged the two dating requirements, replaced the compound contrast form, and split the risk list; all claims remain unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — current built-in pool mechanics still support dated venue-specific guidance.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool — Soroban pools remain contract-defined and distinct from Classic pool-share operations.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the current guide still documents pool mechanics and liquidity-provider risk context.",
+        "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share|Soroban contract → q-asset-sdex-vs-amm and q-asset-amm-fee-reserve; no contradiction."
       ],
       "rootCause": [
         "eval-side answer completeness: correct warnings did not answer deposit/withdraw, yield comparison, or impermanent-loss mechanics",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-provide-liquidity-impermanent-loss"

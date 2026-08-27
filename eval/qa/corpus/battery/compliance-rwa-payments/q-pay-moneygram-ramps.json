@@ -9,11 +9,11 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the current official operator documentation, then dates them so they are not presented as permanent. As of 2026-08-14, the verified sources supported this observed answer:\n\nMoneyGram Ramps lets supported wallets/exchanges move **USDC on Stellar** between digital wallets and MoneyGram cash locations. The integration uses **SEP-10 authentication** and **SEP-24 interactive deposit/withdrawal**. It is distinct from SDP.\n\nOn **2026-08-14**, the MoneyGram operator guide returned HTTP 200 and identified itself as **Version 1.2 · Stellar + USDC · July 2026**. Its production table stated a **15 USDC minimum**, a **950 USDC cash-in maximum**, and a **2,500 USDC cash-out maximum**. MoneyGram's live SEP-24 `/info` endpoint simultaneously advertised a **1 USDC minimum** for both directions, with the same **950 USDC cash-in maximum** and **2,500 USDC cash-out maximum**. The two official layers disagree on the minimum, so do not present either minimum as the single settled value.\n\nCoverage remains source-, date-, and direction-specific: the operator guide says 170+ off-ramp countries, while other MoneyGram surfaces use broader cash-network, fiat-rail, or corporate-footprint figures. Cite the exact surface/date/direction or omit a country total rather than choosing one magic number.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Identifies Stellar USDC plus SEP-10/SEP-24.",
       "Treats country coverage as source-, date-, and direction-specific.",
-      "Separates corporate/broader marketing scopes."
+      "Treats corporate and broader marketing counts as distinct scopes."
     ],
     "avoid": [
       "Do NOT use the off-ramp maximum as the on-ramp maximum.",
@@ -142,7 +142,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://xramps.moneygram.com/ops/dev/stellar",
         "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
@@ -155,12 +155,17 @@
         "Sibling sweep: q-anchor-moneygram-ramps and q-comp-cross-moneygram-partnership-sep24 state no transaction limits and remain consistent with SEP-24 plus Stellar USDC.",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction"
+        "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction",
+        "Structural re-form (negative-predicate): Shortened the dated-source fact and recast the marketing-scope fact as a positive requirement; truth unchanged",
+        "Live re-check 2026-08-27: https://xramps.moneygram.com/ops/dev/stellar — the current guide identified SEP-10, SEP-24, Stellar USDC, dated limits, and 170+ off-ramp countries.",
+        "Live re-check 2026-08-27: https://xramps.moneygram.com/ops/dev/stellar — the current guide scoped its country count to off-ramps, consistent with treating broader marketing counts separately.",
+        "Sibling sweep 2026-08-27: grep MoneyGram Ramps|950 USDC|2,500 USDC → q-anchor-list-builders-discovery, q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-hist-remittance-corridors, q-pay-moneygram-ramps; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
         "eval-authoring: a disputed minimum remained pinned after the live official layers diverged.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-pay-moneygram-ramps"

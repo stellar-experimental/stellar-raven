@@ -7,7 +7,8 @@
   "golden": {
     "answer": "Transaction fees—including inclusion fees and applicable Soroban resource fees—are paid in XLM into the protocol **fee pool**. No account can access that pool under current rules, so its balance is non-circulating, but Core does **not** subtract it from `totalCoins`; the conservation invariant includes the pool. That is sequestration, not an automatic irreversible burn, and future protocol changes could alter treatment. Fees are not validator rewards.\n\nSeparately, validators ended the historical 1% inflation mechanism on **2019-10-28** through CAP-26, and SDF burned about **55.44B XLM on 2019-11-04**. Do not market tiny ongoing fees as a guaranteed deflationary burn engine.",
     "keyFacts": [
-      "Distinguishes fee-pool sequestration, total supply, inflation removal, and the one-time SDF treasury burn."
+      "Treats fee-pool sequestration and total supply as different accounting concepts.",
+      "Treats inflation removal and the one-time SDF treasury burn as different events."
     ],
     "avoid": [
       "Do NOT call ongoing fees automatically burned from total supply, cite CAP-5 for inflation removal, pay fees to validators, or merge the fee pool with SDF's 2019 burn."
@@ -76,13 +77,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer conflated inaccessible fee-pool accumulation with automatic supply burning, and used CAP-5 instead of CAP-26 for inflation removal.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-27 primary 3270 and blind 3272; fee/supply sibling sweep."
+        "Solo scratchpad 575 GT-27 primary 3270 and blind 3272; fee/supply sibling sweep.",
+        "Structural re-form (negative-predicate): Split the accounting and historical event distinctions into independent facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens still places the inaccessible fee pool inside total supply.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0026.md and https://stellar.org/blog/foundation-news/sdfs-next-steps still document inflation removal and the one-time SDF burn as different events.",
+        "Sibling sweep 2026-08-27: grep fee pool|inflation mechanism|SDF burn across eval/qa/corpus/battery found no contradictory accounting or event taxonomy."
       ],
       "rootCause": [
-        "Fee-pool lockup, inflation removal, and SDF treasury burn were compressed into one deflation narrative."
+        "Fee-pool lockup, inflation removal, and SDF treasury burn were compressed into one deflation narrative.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-hot-fee-pool-burn-deflation"

@@ -9,11 +9,15 @@
   "golden": {
     "answer": "Classic Stellar assets do not have a protocol-level per-transfer issuer-fee hook like a custom token tax. They are identified by asset code plus issuer account, held on trustlines, and moved with Stellar payment/path-payment/offer operations. If an issuer needs custom transfer logic, that is a separate Soroban/custom-token design question, not a classic asset flag.\n\nSupply caps are operational for classic assets. The issuer can stop minting, lock or disable issuer signing authority, and document supply commitments, but there is no immutable max-supply field attached to an arbitrary issued asset. (Supply is tracked as outstanding balances held outside the issuer; the burn/redemption accounting itself is covered separately in q-aas-burn-clawback-redemption-mechanics.)\n\nFreeze and clawback are protocol controls, but only when configured correctly. `AUTH_REQUIRED_FLAG` requires authorization before holding/transacting; `AUTH_REVOCABLE_FLAG` lets the issuer deauthorize trustlines; `AUTH_CLAWBACK_ENABLED_FLAG` allows clawback for subsequent clawback-enabled trustlines and requires revocable authorization. Freezing/deauthorization blocks use; clawback removes/burns a specified amount under CAP-35. These controls are holder-risk and decentralization tradeoffs, not hidden transfer fees.",
     "keyFacts": [
-      "Explains classic Stellar assets do not have a built-in per-transfer issuer fee hook like a custom smart-contract tax.",
-      "Explains supply cap is operational/governance-based for classic assets: the issuer can stop minting or lock/disable issuer control, but the protocol does not encode an immutable max supply field for arbitrary issued assets.",
-      "Explains authorization flags can authorize/deauthorize trustlines and clawback-enabled assets can claw back balances under the required flags."
+      "Classic Stellar assets omit a built-in per-transfer issuer fee hook.",
+      "Classic asset supply caps use operational/governance controls.",
+      "The issuer can stop minting or lock/disable issuer control.",
+      "Authorization flags can authorize or deauthorize trustlines.",
+      "Clawback-enabled assets can claw back balances under the required flags."
     ],
     "avoid": [
+      "Do NOT claim classic Stellar assets have a custom smart-contract tax.",
+      "Do NOT claim the protocol encodes an immutable max-supply field for arbitrary issued assets.",
       "Do NOT claim classic Stellar assets can arbitrarily tax every transfer at the protocol level.",
       "Do NOT claim clawback/freeze is available unless the relevant flags and trustline authorization model are in place.",
       "Do NOT re-derive the full burn/redemption accounting (transfers-to-issuer-burn); reference clawback as an issuer control and stay on the fee/cap/freeze feasibility question."
@@ -51,10 +55,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-01-asset-lifecycle-safety-metadata accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (compound-predicate): Split fee, cap, issuer-control, authorization, and clawback claims; moved two false tails to avoid; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed the classic asset model without a built-in per-transfer issuer fee hook.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed operational supply limiting through issuer controls.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed stop-minting and locked/disabled issuer-control patterns.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed authorization and deauthorization of trustlines.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — showed clawback under the required issuer and trustline flags.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed supply limiting through account controls rather than an immutable max-supply field.",
+        "Sibling sweep 2026-08-27: grep per-transfer|supply cap|max supply|AUTH_REVOCABLE_FLAG|AUTH_CLAWBACK_ENABLED_FLAG → q-aas-burn-clawback-redemption-mechanics, q-sep-clawback-prereq-flag, q-comp-auth-flags-overview, q-comp-clawback-holder-risk; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-aas-issuer-fees-supply-cap-freeze"

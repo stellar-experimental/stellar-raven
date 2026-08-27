@@ -1,1 +1,86 @@
-{"id":"q-tool-developer-leaderboard-live","question":"What currently appears near the top of Stellar's developer-activity leaderboard, and how should that ranking be interpreted?","surface":["scout.getLeaderboard"],"golden":{"answer":"Request an explicit sort/range, name current project rows with generatedAt, and explain that they are projects rather than people. Cite meta.source/meta.docs; include per-row GitHub fields only when returned. Do not require a project URL that this surface does not provide.","keyFacts":["Uses explicit leaderboard sort/range and current returned rows.","Names project rows and cites meta.source/meta.docs; includes per-row GitHub fields only as returned.","Explains that projects—not people—are ranked and the result is scope-dependent."],"avoid":["Calls the returned project the ecosystem's permanently most active developer."]},"tags":{"category":"tooling-infra","service":"scout","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3"},{"class":"B","ref":"catalog/manifest.json#scout.getLeaderboard"}],"corroboration":[{"claim":"Leaderboard answers require explicit metric/window, generatedAt, project-level evidence, and coverage caveats.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.getLeaderboard","observedAt":"2026-07-11"}]},{"claim":"The leaderboard ranks individual developers or supplies a permanent ecosystem leader.","verdict":"contradicted","evidence":[{"class":"B","ref":"catalog/manifest.json#scout.getLeaderboard","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","catalog/manifest.json#scout.getLeaderboard"],"rootCause":["freshness-drift"]},"origin":"core-35 developer-activity-leaderboard"}}
+{
+  "id": "q-tool-developer-leaderboard-live",
+  "question": "What currently appears near the top of Stellar's developer-activity leaderboard, and how should that ranking be interpreted?",
+  "surface": [
+    "scout.getLeaderboard"
+  ],
+  "golden": {
+    "answer": "Request an explicit sort/range, name current project rows with generatedAt, and explain that they are projects rather than people. Cite meta.source/meta.docs; include per-row GitHub fields only when returned. Do not require a project URL that this surface does not provide.",
+    "keyFacts": [
+      "Uses explicit leaderboard sort/range and current returned rows.",
+      "Reports project rows, meta.source/meta.docs, and only returned per-row GitHub fields.",
+      "Treats projects—not people—as ranked, scope-dependent results."
+    ],
+    "avoid": [
+      "Calls the returned project the ecosystem's permanently most active developer."
+    ]
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.getLeaderboard"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Leaderboard answers require explicit metric/window, generatedAt, project-level evidence, and coverage caveats.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getLeaderboard",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "The leaderboard ranks individual developers or supplies a permanent ecosystem leader.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getLeaderboard",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "evidence": [
+        "solo://proj/49/process/3414",
+        "solo://proj/49/process/3420",
+        "catalog/manifest.json#scout.getLeaderboard",
+        "Structural re-form (compound-predicate): Recast row evidence and ranking scope as single-predicate lists; truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3 — the endpoint still accepted explicit activity, 30d, and limit parameters and returned current rows.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=3 — current project rows retained response metadata and returned-only GitHub fields.",
+        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — scout.getLeaderboard still described ranked projects, not people, with sort/range scope.",
+        "Sibling sweep 2026-08-27: grep scout.getLeaderboard|meta.source|meta.docs|developer-activity leaderboard → q-eco-most-active-defi-projects, q-gap-leaderboard-project-not-builder, q-tool-developer-leaderboard-live, q-tool-leaderboard-open-issues; no contradiction"
+      ],
+      "rootCause": [
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+      ]
+    },
+    "origin": "core-35 developer-activity-leaderboard"
+  }
+}

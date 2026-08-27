@@ -7,9 +7,9 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, the live builder directory returned five Rust matches, including Samuel Ogera and Asman Malika.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Uses dated source observations for changeable claims.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates directory matching, direct code evidence, and subjective experience/availability."
+      "Treats directory matches, code evidence, and experience as distinct signals."
     ],
     "avoid": [
       "Do NOT claim every text match is experienced or currently available.",
@@ -98,7 +98,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-35 primary 3287 and blind 3289; live union and direct repository sweep 2026-07-10.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live builder directory returned five Rust matches, including Samuel Ogera and Asman Malika.",
@@ -109,7 +109,11 @@
         "Sibling sweep 2026-08-27: grep Samuel Ogera|Asman Malika|matchBasis|codeEvidence → q-builder-rust-soroban-devs only; no contradiction",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Samuel Ogera|Asman Malika|Rust builder → q-builder-rust-soroban-devs only; no contradiction"
+        "Sibling sweep 2026-08-27: grep Samuel Ogera|Asman Malika|Rust builder → q-builder-rust-soroban-devs only; no contradiction",
+        "Structural re-form (negative-predicate): shortened the dated-source fact and stated the three evidence types as distinct signals; truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellarlight — the current service describes a fresh builder index for people and agents.",
+        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellarlight — the service distinguishes directory data from repository code-truth signals.",
+        "Sibling sweep 2026-08-27: grep Rust builder|direct code evidence|experience → q-builder-by-region-latam, q-builder-by-scf-tier, q-builder-rust-soroban-devs; no contradiction"
       ],
       "rootCause": [
         "Directory match was conflated with expertise/seniority and stale schema descriptions were copied into gospel.",
@@ -117,7 +121,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-builder-rust-soroban-devs"

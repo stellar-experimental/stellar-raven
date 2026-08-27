@@ -8,7 +8,7 @@
     "answer": "Take the exact slug returned by partner discovery and call getPartner. Report only fields in the published profile—such as services, sectors, regions, contact or documentation links, verification, and freshness—and preserve the profile URL. Discovery selects candidates; detail verifies one candidate's public profile.",
     "keyFacts": [
       "Calls getPartner with an exact slug obtained from partner discovery.",
-      "Reports capabilities and freshness only when present in the returned profile."
+      "Reports capabilities and freshness only from fields in the returned profile."
     ],
     "avoid": [
       "Do NOT fabricate a service, corridor, contact method, or compliance claim absent from the profile.",
@@ -38,16 +38,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; getPartners supplied slug trustless-work and getPartner returned its published detail envelope.",
         "catalog/manifest.json exists and supports the behavioral golden.",
         "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (compound-predicate): Reworded one compound key fact with one predicate; capabilities, freshness, returned-profile presence, and report-only scope remain unchanged.",
+        "Live re-check 2026-08-27: https://raven.stellar.buzz/mcp — the current catalog exposed scout.getPartner by exact slug with published profile fields and freshness.",
+        "Sibling sweep 2026-08-27: grep getPartner|partner discovery|published profile → q-edge-partner-detail-soft-empty, q-gap-match-partners-degrade, q-scf-ecosystem-listing-partner-jobs, q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

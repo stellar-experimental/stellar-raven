@@ -12,7 +12,8 @@
       "Gives the full sponsorship-aware minimum-balance formula.",
       "Separates minimum balance from the selling-liability spendable boundary.",
       "Explains sponsored zero-balance account creation and later reserve-obligation shift.",
-      "States pool-share trustlines cost two reserves, dates current 0.5 XLM, and keeps contract rent separate."
+      "Sets a pool-share trustline reserve cost at twice the current 0.5 XLM base reserve.",
+      "Describes Soroban contract rent as its own storage-cost model."
     ],
     "avoid": [
       "Do NOT use (2 + subentries) * baseReserve as a universal post-sponsorship formula or add liabilities inside Core's minimum-balance calculation.",
@@ -104,16 +105,21 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the full sponsorship formula, liabilities boundary, zero-start and reserve-shift semantics, two-reserve pool shares, dated live value, and contract-rent distinction.",
         "2026-07-11 author re-check against stellar-core c16a6d17 TransactionUtils.cpp and live Horizon.",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claims; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep baseReserve|minimumBalance|0.5 XLM|pool-share trustline → q-protocol-base-reserve-min-balance, q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics; no contradiction"
+        "Sibling sweep 2026-08-27: grep baseReserve|minimumBalance|0.5 XLM|pool-share trustline → q-protocol-base-reserve-min-balance, q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics; no contradiction",
+        "Structural re-form (compound-predicate): Kept the dated base reserve as a modifier of the pool-share cost and made contract rent an atomic fact; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools confirms a pool-share trustline requires two base reserves.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens confirms the current 0.5 XLM base reserve and separate smart-contract rent model.",
+        "Sibling sweep 2026-08-27: grep baseReserve|minimumBalance|0.5 XLM|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics; no contradiction"
       ],
       "rootCause": [
         "Eval-side pre-P14 formula shorthand and classic-account-versus-contract-storage collapse; current sibling corrections in GT-29/GT-32 were preserved.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-base-reserve-min-balance"

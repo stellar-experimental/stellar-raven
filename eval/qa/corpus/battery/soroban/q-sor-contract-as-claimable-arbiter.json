@@ -9,10 +9,11 @@
   "golden": {
     "answer": "A Soroban contract cannot directly act as the claimant/arbiter for a **classic claimable balance**.\nThe official smart-contract FAQ says contracts can interact with accounts/assets through the Stellar\nAsset Contract, but cannot interact with SDEX, claimable balances, or sponsorships\n(https://developers.stellar.org/docs/build/smart-contracts/overview).\n\nIf you want programmable escrow, build it as Soroban escrow: hold SAC/SEP-41 token balances under a\ncontract address/contract storage and release with contract logic. The SAC docs state that the Stellar\nAsset Contract is the way contracts interact with native XLM and issued Stellar assets, and that\ncontract-address balances are stored in contract storage rather than classic trustlines\n(https://developers.stellar.org/docs/tokens/stellar-asset-contract).\n\nFor `approve`: this is not a magic \"spend user funds\" escape hatch. SAC/SEP-41 approvals are contract\ncalls that must satisfy Soroban authorization. The transaction docs describe SorobanAuthorizationEntry\nand authorized invocation trees, and the authorization docs describe `require_auth` as the mechanism\nfor an address to authorize an invocation\n(https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction,\nhttps://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization). A contract\ncan approve only for an address/balance it controls, or when the user/address has authorized that\nspecific invocation.",
     "keyFacts": [
-      "States that a Soroban contract cannot directly be the claimant/arbiter of a classic claimable balance or call classic claim-claimable-balance logic; official docs say contracts cannot interact with claimable balances.",
-      "Provides the correct Soroban escrow design: hold SAC/SEP-41 token balances in contract storage or contract-owned balances and release with contract logic/authorization.",
-      "Explains SAC `approve`/allowance is a token-contract call governed by Soroban authorization; a contract cannot approve on a user's behalf unless the user/address authorizes the invocation or the contract already controls the relevant address/balance.",
-      "Distinguishes classic claimable-balance predicates from programmable Soroban escrow conditions."
+      "Soroban contracts cannot claim or arbitrate classic claimable balances.",
+      "Soroban escrow holds SAC/SEP-41 balances in contract storage for authorized release.",
+      "`approve` is a SAC token-contract call.",
+      "The invocation needs user authorization or control of the relevant address/balance.",
+      "Classic claim predicates and Soroban escrow conditions are different mechanisms."
     ],
     "avoid": [
       "Do not claim a contract can claim a classic claimable balance directly.",
@@ -52,16 +53,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (negative-predicate): split long facts and made the classic/Soroban taxonomy positive; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/overview — contracts cannot interact with classic claimable balances",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — contracts hold and move Stellar assets through SAC",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — approve remains a SEP-41 token-interface call",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — address authorization governs contract invocation trees",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — classic claim predicates govern claimable-balance release",
+        "Sibling sweep 2026-08-27: grep claimable balance|Soroban escrow|approve → q-asset-claimable-balance, q-aas-claimable-predicates-expiry-reserves, q-soroban-greenfield-escrow-prior-art-preflight, q-sor-sep41-transfer-vs-transferfrom; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-contract-as-claimable-arbiter",

@@ -9,10 +9,11 @@
   "golden": {
     "answer": "Choose between the two currently maintained SDKs by authorization model, then pin and inspect the exact releases and contracts you deploy. **`passkey-kit`** provides its own Stellar smart-wallet contract and a flat multi-signer `Signatures` model for WebAuthn/passkey, Ed25519, and policy signers. Its current README says to review the contract and SDK before holding meaningful value and read the caveats; it no longer presents the project as legacy unaudited demo material. **`smart-account-kit`** is the sibling SDK for the OpenZeppelin Stellar smart-account contracts and uses a different context-rule, auth-digest, signer, and policy model. The two are not drop-in compatible, so pick the model that fits the application rather than treating one as a universal successor.\n\nAudit and review claims remain component- and release-specific. OpenZeppelin contract review does not automatically cover either SDK, relayers, indexers, frontends, policies, deployment configuration, or application code. A separate G-account or relayer may submit and pay, but authorization remains in the selected C-account's `__check_auth` path and signer/policy contracts.",
     "keyFacts": [
-      "Presents Passkey Kit and Smart Account Kit as currently maintained but different, non-drop-in authorization models.",
-      "Explains Passkey Kit's flat multi-signer model versus Smart Account Kit's OpenZeppelin context-rule/auth-digest/policy model.",
-      "Uses Passkey Kit's current review-and-caveats warning rather than the stale legacy/unaudited-demo wording.",
-      "Ties behavior and audit claims to exact selected releases/components and separates relaying from authorization."
+      "Calls both kits maintained, different, non-drop-in authorization models.",
+      "Passkey Kit: flat multi-signer; Smart Account Kit: OZ context-rule/auth-digest/policy.",
+      "Uses Passkey Kit's current review-and-caveats warning.",
+      "Ties behavior and audit claims to exact selected releases and components.",
+      "Treats relaying and authorization as distinct functions."
     ],
     "avoid": [
       "Do NOT characterise Passkey Kit as legacy, superseded, or demo-only material, and do NOT say the README directs readers to Smart Account Kit instead; that composite framing was removed on 2026-07-12. Noting that it carries no third-party audit is accurate and must NOT be penalised — the current README still asks readers to review the contract and SDK themselves before holding meaningful value.",
@@ -127,7 +128,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "https://github.com/stellar/passkey-kit",
         "https://github.com/stellar/smart-account-kit",
@@ -140,11 +141,15 @@
         "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep passkey-kit|smart-account-kit|authorization model → q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery; no contradiction"
+        "Sibling sweep 2026-08-27: grep passkey-kit|smart-account-kit|authorization model → q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery; no contradiction",
+        "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — live re-check 2026-08-27 confirms Passkey Kit's WebAuthn smart-wallet role.",
+        "Structural re-form 2026-08-27: preserved maintenance, non-drop-in models, flat multi-signer, context/auth-digest/policy, review caveat, release/component scope, and relaying boundaries.",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part3.md): restored OpenZeppelin (as OZ, for the 90-char cap) and context-rule alongside flat multi-signer and auth-digest/policy; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-passkeykit-smart-wallet"

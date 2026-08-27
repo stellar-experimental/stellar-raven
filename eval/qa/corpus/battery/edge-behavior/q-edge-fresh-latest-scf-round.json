@@ -9,16 +9,17 @@
   "golden": {
     "answer": "As of 2026-08-18, no SCF round is open in the Submission phase. SCF #45 is the current round in Initial Review, and its 2026-08-16 submission deadline has elapsed. SCF #44 remains in Notification & Award Distribution, while SCF #43 is the last concluded round. A grounded answer checks and dates the live official awards state and Scout round metadata.\n\nThe dated example is illustrative: a later grounded answer should report the state supported at its own observation time.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Identifies the current SCF round and phase.",
-      "States that no round is currently in Submission and that SCF #45's 2026-08-16 deadline has elapsed.",
-      "Distinguishes #45 as current, #44 as distributing, and #43 as last concluded."
+      "Specific content uses a source-supported current or dated observation.",
+      "Every changeable roster, status, version, or measurement shows an as-of date.",
+      "Dated map gives current #45 and phase, distributing #44, and last-concluded #43.",
+      "The dated example reports no SCF round in Submission.",
+      "The dated example treats SCF #45's 2026-08-16 deadline as elapsed."
     ],
     "avoid": [
       "Do NOT call SCF #45 open for full-proposal submissions, substitute #44 or #43 as current, or give only a dashboard pointer.",
       "Do NOT invent a deadline time, timezone, notification date, or submission count.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical.",
+      "Do NOT use unsupported memory for specific current or dated content."
     ],
     "notes": "GT-23 refreshed 2026-08-18: require an actual dated round, phase, and deadline answer plus official and live-source pointers. No round is in Submission; #45 is in Initial Review after its deadline, #44 is distributing, and #43 is concluded. The two published Q3 RFP briefs do not prove that #45 still accepts full proposals."
   },
@@ -78,7 +79,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
@@ -86,11 +87,20 @@
         "Sibling sweep covered q-scf-current-round, q-scf-open-rfps, q-scf-rfp-tooling, the three live RFP cases, and q-edge-scf-v7-centralization-myths; the updated brief-versus-round distinction is consistent.",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep SCF #45|current SCF round|Submission phase → q-scf-current-round, q-scf-open-rfps; no contradiction"
+        "Sibling sweep 2026-08-27: grep SCF #45|current SCF round|Submission phase → q-scf-current-round, q-scf-open-rfps; no contradiction",
+        "Structural re-form (compound-predicate): folded the dated round map into five atomic facts and moved the unsupported-memory tail to avoid; the dated 2026-08-16 example remains in the answer, so truth is unchanged.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — the current official page now shows a new source-supported round state, confirming that specific content needs a current or dated observation.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — the current official page now shows SCF #46 in Submission, demonstrating why every changeable round map needs an as-of date.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — the current rollover confirms that the preserved #45/#44/#43 map is the answer's dated 2026-08-18 example.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg — the current #46 detail page shows Submission, confirming that the old no-Submission result is only the dated example.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — the current page places #45 after Submission, consistent with its deadline being elapsed in the dated example.",
+        "Sibling sweep 2026-08-27: grep SCF #45|SCF #46|current SCF round|Submission phase → q-scf-current-round, q-scf-open-rfps-live, q-scf-open-rfps, q-scf-rfp-tooling, q-scf-passkey-rfps-live, q-scf-contract-verification-rfp-live, q-edge-scf-v7-centralization-myths; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part3.md): restored the 2026-08-16 deadline date; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-edge-fresh-latest-scf-round"

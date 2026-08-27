@@ -8,9 +8,11 @@
   "golden": {
     "answer": "Call `address.require_auth()` or `address.require_auth_for_args(args)` for the Address whose authority is required. `require_auth_for_args` binds the authorization entry to the explicit deterministic argument vector you provide; it is not limited to a predefined subset of function arguments. For classic-account credentials the host validates the credential/signature path. For a contract/custom-account address, the host invokes that account contract's `__check_auth`. Soroban address authorization entries use their own nonce and ledger expiration; do not conflate that with the transaction source account's sequence number. A directly invoking contract address is implicitly authorized for its direct call. Tests may mock auth, but production checks must not.",
     "keyFacts": [
-      "Explains explicit-argument binding and the classic-host versus custom-account __check_auth paths.",
-      "Distinguishes Soroban auth nonce/expiration, source-account sequence, and direct-invoker implicit authorization.",
-      "Separates authentication, authorization, and business policy."
+      "`require_auth_for_args` binds explicit deterministic arguments.",
+      "Names classic host checks and custom-account `__check_auth` as credential paths.",
+      "Soroban auth uses its own nonce and ledger expiration.",
+      "Source-account sequence and direct-invoker auth are different mechanisms.",
+      "Treats authentication, authorization, and business policy as distinct layers."
     ],
     "avoid": [
       "Do NOT use msg.sender/tx.origin or reduce auth to the transaction source account.",
@@ -86,17 +88,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 Lane R absorb triage",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-46 primary 3326 and blind 3329 agreed on the classic/custom distinction; blind supplied exact args, nonce, and direct-invoker precision.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-soroban-auth-vs-authn",
         "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md",
-        "Solo scratchpad 575 GT-44 processes 3316/3324."
+        "Solo scratchpad 575 GT-44 processes 3316/3324.",
+        "Structural re-form (negative-predicate): split three long facts into five atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — require_auth_for_args still binds explicit deterministic arguments",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — classic host checks and custom-account __check_auth remain credential paths",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — Soroban authorization still uses a nonce and ledger expiration",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — source-account sequencing and direct-invoker authorization remain different mechanisms",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — authentication, authorization, and business policy remain distinct layers",
+        "Sibling sweep 2026-08-27: grep require_auth_for_args|__check_auth|nonce|direct invoker → q-sor-require-auth-propagation, q-soroban-check-auth-custom-account, q-soroban-auth-delegation-p27; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-require-auth"

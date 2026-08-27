@@ -7,9 +7,9 @@
   "golden": {
     "answer": "Start by mapping the route and legal roles, not by assigning the Travel Rule to the aid organization or an entity called the anchor. Identify the ordering and beneficiary financial institutions/VASPs/CASPs, any custodial wallet or SDP host controlling value, unhosted-wallet legs, transaction amount, and every applicable jurisdiction.\n\nCovered intermediaries obtain, hold, and transmit originator/beneficiary information under local law. **CDD/KYC, beneficiary eligibility, sanctions screening, recordkeeping, and Travel Rule transmission are related but distinct duties.** An aid organization paying its own beneficiaries through a regulated provider is not automatically the covered intermediary; it becomes covered only if its activities meet local definitions. Infrastructure/software alone is generally not the obliged actor, while a custodial operator may be.\n\nVASP-to-VASP routes generally engage both covered sides. On VASP-to-unhosted routes, the VASP still collects/scrutinizes required information, but there may be no obliged individual recipient to receive Travel Rule data. Pure unhosted-to-unhosted users acting for themselves are outside FATF's intermediary scope, subject to local sanctions/reporting rules. Thresholds differ: US transmittal record/travel rules commonly use $3,000; FATF and EU rules differ, including EU self-hosted ownership/control checks above €1,000. Do not apply future FATF changes early. This is not legal advice.",
     "keyFacts": [
-      "Allocates duties to covered ordering/beneficiary intermediaries based on route, custody, activity, threshold, and jurisdiction.",
-      "Separates Travel Rule data transmission from CDD/KYC, sanctions, beneficiary eligibility, and recordkeeping.",
-      "Distinguishes VASP-to-VASP, VASP-to-unhosted, and unhosted-to-unhosted routes."
+      "Allocates duties by intermediary, route, custody, activity, threshold, and law.",
+      "Treats Travel Rule data, CDD/KYC, sanctions, eligibility, and records as distinct duties.",
+      "Treats VASP-to-VASP, VASP-to-unhosted, and unhosted-to-unhosted as distinct routes."
     ],
     "avoid": [
       "Do NOT say the aid organization or anchor automatically holds every obligation.",
@@ -76,14 +76,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The case fused beneficiary KYC with Travel Rule data transmission and assigned duties to nouns such as aid organization or anchor. Obligations attach to covered ordering/beneficiary institutions or VASPs under applicable local law, with route, custody, threshold, and jurisdiction distinctions.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-11 legal role/route matrices"
+        "Solo scratchpad 575 GT-11 legal role/route matrices",
+        "Structural re-form (negative-predicate): Shortened the duty-allocation fact and recast two comparison facts as positive requirements; truth unchanged",
+        "Live re-check 2026-08-27: https://www.ecfr.gov/current/title-31/part-1010/section-1010.410 — the rule assigned different data and record duties by financial-institution role and applied a $3,000 threshold.",
+        "Live re-check 2026-08-27: https://www.fatf-gafi.org/content/dam/fatf-gafi/guidance/Updated-Guidance-VA-VASP.pdf.coredownload.inline.pdf — FATF described Travel Rule data duties separately from CDD and other preventive measures.",
+        "Live re-check 2026-08-27: https://www.fatf-gafi.org/content/dam/fatf-gafi/guidance/Updated-Guidance-VA-VASP.pdf.coredownload.inline.pdf — FATF distinguished transfers involving VASPs from peer-to-peer transfers without an obliged entity.",
+        "Sibling sweep 2026-08-27: grep Travel Rule|VASP-to-unhosted|CDD/KYC|humanitarian aid → q-comp-anchor-compliance-stack, q-comp-finclusive-caas, q-hist-unhcr-stellar-aid-assist, q-pay-travel-rule-aid-flows; no contradiction"
       ],
       "rootCause": [
         "Program roles and a network disclaimer were promoted into legal conclusions.",
-        "CDD/KYC and intermediary Travel Rule duties were conflated."
+        "CDD/KYC and intermediary Travel Rule duties were conflated.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-pay-travel-rule-aid-flows"

@@ -9,8 +9,11 @@
   "golden": {
     "answer": "- **SDEX** is an on-chain **central-limit orderbook**: accounts post offers via `ManageBuyOffer`/`ManageSellOffer`/`CreatePassiveSellOffer`; matching is on-ledger and atomic. Offers can be priced **tighter or wider** at the maker's discretion [1].\n- **AMM liquidity pools** price via a **constant-product (x·y=k)** curve; each swap charges a **fixed 30 basis points (0.30%)** fee, separate from the network fee. Fees accrue into the pool (growing `k`) and are paid out to LPs proportional to their pool shares [1].\n- Both live **in-ledger (no off-chain matching engine)**, and a single **path payment** can route across **both** offers and pools in one atomic transaction [1].\n- **AMM pool-share trustlines cost two base reserves** (vs one for a normal asset trustline). High-volume pairs tend to concentrate on offers; exotic/long-tail pairs on pools [1].",
     "keyFacts": [
-      "SDEX is an on-chain central-limit orderbook (offers via ManageBuy/SellOffer); AMM pools price via a constant-product (x*y=k) curve.",
-      "AMM swaps charge a fixed 30 basis points (0.30%) fee, separate from the network fee; orderbook offers can be priced tighter or wider."
+      "SDEX uses an on-chain central-limit orderbook with ManageBuyOffer or ManageSellOffer.",
+      "AMM pools use a constant-product (x*y=k) pricing curve.",
+      "AMM swaps charge a fixed 30 basis points (0.30%) fee.",
+      "The AMM swap fee applies in addition to the network fee.",
+      "Orderbook makers set tighter or wider prices."
     ],
     "avoid": [
       "Do NOT state the AMM fee is a different number (e.g. 0.03%, 1%, 0.25%) as the canonical Stellar pool fee.",
@@ -34,10 +37,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-04-sac-stablecoins-issuance-fx accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (negative-predicate): split two compound facts into five atomic facts and replaced 'separate from' with positive fee wording; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — SDEX uses orderbooks with Manage Buy Offer and Manage Sell Offer operations.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — Stellar AMMs enforce a constant-product invariant.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the Stellar AMM trade fee remains 30 bps or 0.30%.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — AMM trade fees remain completely separate from network fees.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — an orderbook maker specifies each offer price.",
+        "Sibling sweep 2026-08-27: grep SDEX|constant-product|30 basis points|network fee → q-protocol-amm-cap-0038, q-asset-amm-fee-reserve, q-edge-factcheck-soroswap-first-amm, q-defi-provide-liquidity-impermanent-loss; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored the central-limit orderbook claim; truth unchanged versus HEAD."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-asset-sdex-vs-amm"

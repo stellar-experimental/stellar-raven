@@ -9,16 +9,19 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the current LumenLoop corpus, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live partner query requiring both on- and off-ramp capability returned six matches, including Etherfuse, CLPX, and FinClusive.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Lays out the build-vs-integrate decision: integrating an existing anchor is usually the lower-risk first launch, while building your own anchor requires licensing/compliance, banking/payout relationships, liquidity/float, and SEP/API implementation."
+      "An existing-anchor integration is usually the lower-risk first launch.",
+      "Building your own anchor requires licensing/compliance plus banking/payout relationships.",
+      "It also requires liquidity/float and SEP/API implementation."
     ],
     "avoid": [
       "Do NOT name a specific anchor-to-country/currency corridor pairing (e.g. 'anchor X currently serves country Y') as currently live without citing a dated source for that pairing.",
       "Do NOT attribute MoneyGram's 200+-country corporate money-transfer footprint (all-rails boilerplate: 'over 200 countries and territories') to its Stellar USDC off-ramp — MoneyGram's own developer docs put the off-ramp at 174 countries (as of 2026-07; marketing rounds to 170+, older SDF material says 180+). Any figure in the 170-180 band traceable to MoneyGram/SDF is acceptable; 185+ or 200+ for the Stellar cash-out network is not supported by any source.",
       "Do NOT confuse SEP-defined APIs with a guarantee of liquidity, licensing, or coverage.",
       "Do NOT collapse this into a last-mile mobile-money payout how-to; this question owns corridor selection, cost structure, and build-vs-integrate.",
-      "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+      "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements.",
+      "Do NOT claim an unsupported memory account is source-supported corridor evidence."
     ],
     "notes": "2026-06-29: Differentiated to own corridor SELECTION + anchor-to-anchor cost structure + build-vs-integrate; dropped mobile-money lane (now owned by q-crp-regional-offramp-mobilemoney) and added a must_avoid against collapsing into a last-mile payout how-to. MoneyGram Ramps uses Stellar USDC with SEP-10/24. As of 2026-08-14, its 2,500 USDC cash-out maximum remains corroborated, while the minimum is disputed: the live operator guide states 15 USDC, and the live SEP-24 /info endpoint states 1 USDC. Both official layers were observed on 2026-08-14. This corridor case does not grade a transaction minimum. Corridor/provider coverage stays monthly-freshness.\nAlso good if the answer: Names candidate discovery surfaces such as ecosystem directories, anchor docs, or specific anchor quote/info/interactive endpoints to compare corridors. | Avoids giving universal per-transaction costs without querying dated anchor quote sources.\nGolden cites: Dated anchor directory or anchor documentation for any named corridor; SEP docs for API flow claims.\nAvoid list re-armed 2026-07-03 (todo 826 residual), deep-verified same day per the golden-truth skill (todo 828): dated-citation guard is answer-visible (and satisfiable — matchPartners returns dated, freshness-stamped corridor matches); the conflation trap is triangulated across MoneyGram dev docs (174, exact), MoneyGram marketing (170+), SDF material (180+), and corporate boilerplate (200+ all-rails). Accept any Stellar-off-ramp figure in the 170-180 band with a MoneyGram/SDF source; punish 185+ and 200+ attributed to the Stellar cash-out network (unsourced anywhere). The conflation framing resists rot better than a bare number: the corporate footprint always exceeds off-ramp coverage. Secondary caution: the ON-ramp is only 30+ countries — don't let candidates conflate on-ramp and off-ramp coverage."
   },
@@ -144,18 +147,25 @@
       }
     ],
     "verified": {
-      "date": "2026-08-14",
-      "by": "MoneyGram sibling-consistency sweep for root-reconciled golden-truth todo 1548",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://xramps.moneygram.com/ops/dev/stellar",
         "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
         "solo://proj/49/todo/build-blind-indepen--1546#comment-4075",
         "solo://proj/49/todo/build-primary-golden--1547#comment-4076",
-        "Sibling sweep: q-pay-moneygram-ramps now carries the dated minimum dispute; q-anchor-moneygram-ramps and q-hist-remittance-corridors state no transaction minimum."
+        "Sibling sweep: q-pay-moneygram-ramps now carries the dated minimum dispute; q-anchor-moneygram-ramps and q-hist-remittance-corridors state no transaction minimum.",
+        "Structural re-form (compound-predicate): Split two long compound key facts into four atomic facts and moved the unsupported-memory contrast to avoid; all source, dating, integration-risk, licensing/compliance, banking/payout, liquidity/float, and SEP/API claims remain unchanged.",
+        "Live re-check 2026-08-27: https://anchors.stellar.org/ — showed the current anchor directory as a source basis for dated corridor observations.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/anchors — showed existing anchor services and Anchor Platform integration paths for a first launch.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — showed bilateral agreements, licensing, fees, and banking/payout responsibilities for anchor operation.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration — showed liquidity, FX, status, rail, and SEP/API integration responsibilities.",
+        "Sibling sweep 2026-08-27: grep anchor corridor|build anchor|existing anchor → q-crp-become-an-anchor-licensing, q-crp-remittance-founder-advisory, q-anchor-platform-what, q-hist-remittance-corridors, q-crp-regional-offramp-mobilemoney, q-anchor-list-builders-discovery; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
-        "eval-authoring: the sibling notes retained a stale 5 USDC minimum after the source layers diverged."
+        "eval-authoring: the sibling notes retained a stale 5 USDC minimum after the source layers diverged.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-crp-anchors-by-corridor"

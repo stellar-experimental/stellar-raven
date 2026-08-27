@@ -9,7 +9,7 @@
     "answer": "Current Protocol 27 XDR defines ten `LedgerEntryType` variants: `ACCOUNT`, `TRUSTLINE`, `OFFER`, `DATA`, `CLAIMABLE_BALANCE`, `LIQUIDITY_POOL`, `CONTRACT_DATA`, `CONTRACT_CODE`, `CONFIG_SETTING`, and `TTL`. Trustlines represent non-native asset balances/authorization rather than a generic balance entry; native XLM lives on Account entries. Contract code/data, configuration, and TTL are distinct Soroban-era entries. If giving only examples, label them as examples rather than an exhaustive list.",
     "keyFacts": [
       "Enumerates all ten current P27 ledger-entry variants.",
-      "Distinguishes account/trustline and contract data/code/config/TTL roles."
+      "Treats account/trustline and contract data/code/config/TTL as distinct roles."
     ],
     "avoid": [
       "Do NOT claim an abbreviated subset is exhaustive or collapse trustline/contract variants."
@@ -59,15 +59,19 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-32 primary 3281 and blind 3284; full agreement.",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep LedgerEntryType|CONTRACT_CODE|CONFIG_SETTING|ledger-entry variants → q-protocol-ledger-entry-types, q-protocol-23-whisk-caps, q-ti-enumerate-all-contracts; no contradiction"
+        "Sibling sweep 2026-08-27: grep LedgerEntryType|CONTRACT_CODE|CONFIG_SETTING|ledger-entry variants → q-protocol-ledger-entry-types, q-protocol-23-whisk-caps, q-ti-enumerate-all-contracts; no contradiction",
+        "Structural re-form (negative-predicate): Recast the entry-role comparison as a positive taxonomy requirement; truth unchanged",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-xdr/v27.0/Stellar-ledger-entries.x — P27 XDR defined separate account, trustline, contract data, contract code, config setting, and TTL variants.",
+        "Sibling sweep 2026-08-27: grep LedgerEntryType|CONTRACT_CODE|CONFIG_SETTING|TTLEntry → q-protocol-23-whisk-caps, q-protocol-ledger-entry-types; no contradiction"
       ],
       "rootCause": [
         "Old pedagogical subset fossilized after protocol extensions.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-ledger-entry-types"

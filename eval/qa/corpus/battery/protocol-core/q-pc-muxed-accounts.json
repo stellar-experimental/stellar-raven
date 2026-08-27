@@ -9,7 +9,8 @@
     "answer": "A muxed `M...` address encodes an underlying `G...` Ed25519 account plus a uint64 ID. It is not a separate ledger account: the G-account owns funds, reserves, authorization, and sequence. Decode M to G + unsigned 8-byte ID; that conversion moves nothing. M differs from a transaction memo because the ID travels in a supported account field. Current protocol positions include transaction/operation source, fee-bump fee source, Payment and strict-send/strict-receive path-payment destination, AccountMerge destination, and Clawback `from`. Not every AccountID field accepts M, and current InvokeHostFunction transactions reject muxed transaction/operation sources. Wallet/exchange/anchor support changes, so verify the receiving service as of use time; otherwise use its required G+memo flow.",
     "keyFacts": [
       "Defines M as G+uint64 with the underlying G owning sequence/funds/state.",
-      "Lists current supported positions and warns that Soroban/source and service support are not universal."
+      "Lists current supported positions.",
+      "Warns against universal Soroban/source or service support."
     ],
     "avoid": [
       "Do NOT call M an independent account or say it replaces memos everywhere.",
@@ -75,13 +76,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The G+ID/sequence semantics are correct, but the explicit where-can-I-use-it clause was unanswered and compatibility was left as an undated generic caveat.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 blind 3278; primary 3276 independently confirmed identity/sequence/memo mechanics."
+        "Solo scratchpad 575 GT-29 blind 3278; primary 3276 independently confirmed identity/sequence/memo mechanics.",
+        "Structural re-form (compound-predicate): Split supported positions from Soroban/source and service limitations; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — the current guide still lists the protocol positions that accept muxed accounts.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/signing-soroban-invocations — current Soroban signing guidance still requires G-account sources, preserving the non-universal support warning.",
+        "Sibling sweep 2026-08-27: grep muxed|M-account|CAP-0027 → q-pc-address-types-strkey, q-pc-memos-reference; no contradiction"
       ],
       "rootCause": [
-        "Eval-side supported-field matrix and freshness omission."
+        "Eval-side supported-field matrix and freshness omission.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-pc-muxed-accounts"

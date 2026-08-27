@@ -7,8 +7,11 @@
   "golden": {
     "answer": "A **factory contract deploys child contracts on-chain** using the **`env.deployer()`** API — Soroban\ncontracts can deploy other contracts, no off-chain CLI step required. The flow:\n\n1. **Upload the child Wasm once** (`stellar contract upload`, or an upload host call) to get its\n   **Wasm hash**; the factory references the child **by hash**, not by re-embedding bytecode each\n   deploy.\n2. The factory calls `env.deployer().with_address(deployer_addr, salt)` /\n   `with_current_contract(salt)` then `.deploy_v2(wasm_hash, constructor_args)` to instantiate a\n   child.\n\nThe child's **contract ID/address is deterministic** from the network ID plus the deployer\naddress/preimage and **salt**, so the factory can pre-compute and control child addresses for a given\ndeployer/salt pair. The **Wasm hash selects the executable code** used for the deployment; it is not\npart of the contract ID/address derivation. A child **`__constructor`** can initialize each instance\natomically at deploy time.\n\nThis is **not** Solidity `new Contract()` / `CREATE2` — it is the native `env.deployer()` mechanism.\nSee the soroban-examples **`deployer`** example.",
     "keyFacts": [
-      "A factory deploys child contracts on-chain using `env.deployer()` (e.g., `deploy_v2` / `with_current_contract` / `with_address`) from an already-uploaded Wasm hash and a salt.",
-      "The child's contract ID/address is deterministic from the network ID plus the deployer address/preimage and salt; the Wasm hash selects the executable code but is not part of the contract ID derivation."
+      "Factory uses env.deployer() for on-chain child-contract deployment.",
+      "Names deploy_v2, with_current_contract, and with_address as deployment APIs.",
+      "Requires an already-uploaded Wasm hash and a salt.",
+      "Gives deterministic child ID/address from network ID, deployer address/preimage, and salt.",
+      "Uses the Wasm hash to select executable code."
     ],
     "avoid": [
       "Do NOT describe Solidity `new Contract()` / CREATE2 opcode as the Soroban mechanism.",
@@ -38,10 +41,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-45-constructor-verification-ids-events-cross-contract-versions accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (compound-predicate): Split two compound facts into five atomic facts; the existing avoid retains the Wasm-hash derivation trap.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — a factory contract still deploys children through env.deployer().",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — deploy_v2, with_current_contract, and with_address remain the shown deployment APIs.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — deployment still takes an uploaded Wasm hash and salt.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — the child address remains deterministic from the deployer address and salt; the network ID remains part of the address preimage.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — the Wasm hash still selects the deployed implementation.",
+        "Sibling sweep 2026-08-27: grep env.deployer|deploy_v2|with_current_contract|with_address|Wasm hash → q-passkey-smart-account-architecture, q-sor-stale-spec-after-upgrade, q-soroban-contract-id-derivation, q-soroban-factory-pattern, q-soroban-oz-upgradeable-macro, q-soroban-upgradeable-storage-compat, q-ti-enumerate-all-contracts; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-factory-pattern"

@@ -10,8 +10,9 @@
     "answer": "Use SDF's current Go module **`github.com/stellar/go-stellar-sdk`**. For a ledger-streaming/ingestion service, import **`github.com/stellar/go-stellar-sdk/ingest`** to parse raw ledger XDR into higher-level models and use **`github.com/stellar/go-stellar-sdk/ingest/ledgerbackend`** for the selected ledger source. Backend choice is architecture-specific: Captive Core, history/data-lake/Galexie, or supported RPC/archive inputs have different retention and operating costs.\n\nThe module also contains `txnbuild`, `clients/horizonclient`, and `clients/rpcclient`, but Horizon API polling is not the same thing as raw ledger ingestion. The old **`github.com/stellar/go/...`** SDK import path and `stellar/go` monorepo provenance are deprecated/archived after the October 2025 split; do not start new code there. As of **2026-07-11**, the split SDK release was v0.6.0, but recheck Go module/release metadata before pinning.",
     "keyFacts": [
       "Names the current official module `github.com/stellar/go-stellar-sdk`.",
-      "Uses `github.com/stellar/go-stellar-sdk/ingest` and `.../ingest/ledgerbackend` for raw ledger parsing and source backends.",
-      "Rejects deprecated `github.com/stellar/go/...` imports and distinguishes raw ingestion from Horizon polling."
+      "Uses `github.com/stellar/go-stellar-sdk/ingest` for raw ledger parsing.",
+      "Uses `.../ingest/ledgerbackend` for source backends.",
+      "Treats raw ingestion and Horizon polling as distinct workflows."
     ],
     "avoid": [
       "Do NOT cite or import `github.com/stellar/go/ingest` as the current SDK path.",
@@ -108,15 +109,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited functional recommendation was correct, but its source and grader provenance taught the archived `stellar/go` repository and could lead users to deprecated `github.com/stellar/go/...` imports after the SDK split.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "GT-55 primary 3392 and sealed blind 3393 independently agreed on the module/repository correction and ingestion package paths.",
         "Current official docs import `github.com/stellar/go-stellar-sdk/ingest` and `github.com/stellar/go-stellar-sdk/ingest/ledgerbackend`.",
-        "Sibling sweep checked q-tool-official-sdks-list, q-tool-official-sdks-repos, q-ti-js-go-sdk-package-migration, and raw XDR/ingestion cases; their current paths already use go-stellar-sdk."
+        "Sibling sweep checked q-tool-official-sdks-list, q-tool-official-sdks-repos, q-ti-js-go-sdk-package-migration, and raw XDR/ingestion cases; their current paths already use go-stellar-sdk.",
+        "Structural re-form (negative-predicate): split the two ingest package roles and expressed raw-ingestion/Horizon taxonomy positively; the deprecated import trap already exists in avoid, so truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/ingest-sdk/overview and https://github.com/stellar/go-stellar-sdk/tree/main/ingest — github.com/stellar/go-stellar-sdk/ingest remains the raw-ledger parser",
+        "Live re-check 2026-08-27: https://github.com/stellar/go-stellar-sdk/tree/main/ingest/ledgerbackend — .../ingest/ledgerbackend remains the source-backend package",
+        "Live re-check 2026-08-27: https://github.com/stellar/go-stellar-sdk — raw ingestion and Horizon polling remain distinct workflows",
+        "Sibling sweep 2026-08-27: grep go-stellar-sdk/ingest|ledgerbackend|Horizon polling|github.com/stellar/go/ingest → q-tool-indexer-repos-discovery, q-pc-bucketlist-vs-merkle-inclusion-proof; no contradiction"
       ],
       "rootCause": [
-        "Eval-side repository/module provenance drift after the October 2025 Go SDK split; upstream docs and repository are already current."
+        "Eval-side repository/module provenance drift after the October 2025 Go SDK split; upstream docs and repository are already current.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-go-sdk-ingest"

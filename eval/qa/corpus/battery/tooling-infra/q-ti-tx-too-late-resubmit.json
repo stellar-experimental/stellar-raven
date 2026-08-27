@@ -8,11 +8,11 @@
   "golden": {
     "answer": "Protocol `txTOO_LATE` (Horizon `tx_too_late`) means the ledger close time is later than the transaction's `maxTime`; `maxTime=0` has no upper bound. It is distinct from `txBAD_SEQ`. For an ordinary outer transaction rejected during precondition validation, expiry itself does not apply the transaction, increment the source sequence, or charge an on-chain fee. A concurrent or successful transaction may still have changed the account sequence, and fee-bump inner/outer or post-inclusion failures must be analyzed separately.\n\nIf the original submission outcome is ambiguous, query the old transaction hash and current account state until the transaction is found or the time bound has expired. A lookup miss before expiry is not proof it was never submitted. If it is found/included, do not rebuild the same intent. If it remains absent after expiry, resubmitting the unchanged envelope will still be too late: reload the current next sequence, choose appropriate future bounds and current fee, re-simulate Soroban transactions/authorization/footprint, rebuild, re-sign, submit, and track the **new hash**.\n\nDo not edit signed XDR and retain the old signatures—bounds, sequence, fee and Soroban data are signed contents, so any change creates a new signature base. Preserve idempotency/intent records so a timeout cannot turn into a duplicate payment.",
     "keyFacts": [
-      "Defines txTOO_LATE/maxTime=0 and distinguishes txBAD_SEQ.",
-      "Scopes no sequence increment/no on-chain fee to an ordinary outer precondition rejection and keeps concurrent/fee-bump/post-inclusion cases separate.",
-      "Uses old-hash and account-state polling for ambiguous submission and does not treat an early lookup miss as final.",
-      "After confirmed absence/expiry, reloads current sequence, rebuilds future bounds/current fee, re-simulates Soroban, re-signs and tracks a new hash.",
-      "Forbids editing XDR while retaining signatures and requires duplicate-intent/idempotency protection."
+      "Treats txTOO_LATE/maxTime=0 and txBAD_SEQ as different result-code cases.",
+      "Keeps no-sequence/no-fee scope at ordinary outer precondition rejection.",
+      "Uses old-hash/account-state polling for ambiguity, with early misses still nonfinal.",
+      "Covers absence/expiry, current sequence/fee, future bounds, Soroban resim/sign, new hash.",
+      "Forbids signed-XDR edits, retained signatures, and duplicate intent without idempotency."
     ],
     "avoid": [
       "Do NOT simply resubmit an expired signed envelope or call tx_too_late tx_bad_seq.",
@@ -110,16 +110,24 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently retained the duplicate/hash guard; blind helper 3388 supplied the exact fee/sequence/failure-stage scope before seal.",
         "Sibling sweep checked classic submission errors, sequence ordering, finality, fee bump/channel accounts and Soroban simulation; no blanket no-fee/no-sequence rule is applied to fee-bump inner results or post-inclusion failures.",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep tx_too_late|txTOO_LATE|expired maxTime|fee bump → q-ti-tx-too-late-resubmit, q-pc-fee-bump-channel-accounts-feepool, q-ti-java-sdk-wallet-feebump; no contradiction"
+        "Sibling sweep 2026-08-27: grep tx_too_late|txTOO_LATE|expired maxTime|fee bump → q-ti-tx-too-late-resubmit, q-pc-fee-bump-channel-accounts-feepool, q-ti-java-sdk-wallet-feebump; no contradiction",
+        "Structural re-form (compound-predicate): Recast five capped facts as single-predicate lists; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions — txTOO_LATE/maxTime remained distinct from txBAD_SEQ.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — ordinary outer precondition rejection still consumed no sequence or on-chain fee; existing avoids retain concurrency, fee-bump, and post-inclusion scope.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — ambiguous submission still required old-hash and account-state polling without treating an early miss as final.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — an absent expired transaction still required current sequence/fee, future bounds, Soroban re-simulation/signing, and new-hash tracking.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — sequence, fee, bounds, and signatures remained signed transaction content requiring idempotent intent protection.",
+        "Sibling sweep 2026-08-27: grep txTOO_LATE|tx_too_late|maxTime|txBAD_SEQ → q-ti-tx-too-late-resubmit; no contradiction"
       ],
       "rootCause": [
         "Eval-side lifecycle precision gap: transaction hash lookup, unchanged-envelope resubmission, precondition expiry, sequence/fee consumption and fee-bump/post-inclusion stages were treated as one failure state.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-tx-too-late-resubmit"

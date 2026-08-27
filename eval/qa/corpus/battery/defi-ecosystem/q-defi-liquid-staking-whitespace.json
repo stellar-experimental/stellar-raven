@@ -8,8 +8,10 @@
   "golden": {
     "answer": "Stellar uses **SCP/FBA, not proof of stake**, and validators receive no protocol monetary reward, so there is no native validator-staking position for a canonical XLM LST to tokenize. As of **2026-07-10**, no live native-XLM liquid-staking token/protocol was identified across official Stellar docs/site search, current Scout/Lumenloop directories, provider/repository searches, DeFiLlama, and deep web conflict sweeps. This is a bounded snapshot, not a permanent impossibility.\n\nDo not misclassify alternatives: **yXLM** is an issuer/anchor-backed interest-earning XLM token whose primary record does not attribute yield to validator staking; **Chrysalis** was an SCF concept converting XLM to ETH and staking ETH via Lido, with no verified Stellar mainnet deployment; Blend deposits, LP/vault shares, RWA yield tokens, and external-asset wrappers are also not native XLM LSTs.",
     "keyFacts": [
-      "Explains the SCP/no-validator-reward structural reason and states the no-live-native-XLM-LST result with source universe and date.",
-      "Distinguishes issuer-funded XLM yield, lending/LP/vault positions, and external ETH staking wrappers from native validator staking."
+      "Explains Stellar's SCP and lack of protocol validator rewards.",
+      "Reports no live native-XLM LST in the dated source universe.",
+      "Treats issuer-funded XLM yield and lending/LP/vault positions as non-LSTs.",
+      "Treats external ETH staking wrappers as different from native validator staking."
     ],
     "avoid": [
       "Do NOT state a permanent global absence or call any XLM yield token a native LST without a validator-staking reward source.",
@@ -74,13 +76,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — GT-15 lanes confirmed the structural native-XLM LST negative but found the inherited answer both under-bounded ('no dominant') and over-absolute ('genuine whitespace') from one undated directory. The correction records the audited source universe and non-LST counterexamples.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-15 primary 3243 and blind 3246; 952-project Scout snapshot plus official/provider/repo sweeps"
+        "Solo scratchpad 575 GT-15 primary 3243 and blind 3246; 952-project Scout snapshot plus official/provider/repo sweeps",
+        "Structural re-form (negative-predicate): split two compound key facts into three single-predicate facts; the source-bounded native-XLM LST negative and product taxonomy are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP remains an FBA protocol without protocol validator rewards.",
+        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — the current directory source remains available; the preserved dated audit still supports the bounded zero-result claim.",
+        "Live re-check 2026-08-27: https://ultracapital.xyz/.well-known/stellar.toml and https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — issuer yield and LP/vault positions remain distinct from protocol validator staking.",
+        "Live re-check 2026-08-27: https://chrysalis.raum.network and https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — Chrysalis remains a cross-chain liquid-staking surface, while SCP remains non-PoS.",
+        "Sibling sweep 2026-08-27: grep liquid staking|native-XLM|yXLM|Chrysalis → q-eco-defi-market-map and related staking cases; no contradiction.",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): removed the added qualifier \"audited\"; truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "eval-side negative claim lacked search universe/date and conflated third-party yield with validator staking"
+        "eval-side negative claim lacked search universe/date and conflated third-party yield with validator staking",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-liquid-staking-whitespace"

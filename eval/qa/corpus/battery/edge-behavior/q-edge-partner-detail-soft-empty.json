@@ -7,7 +7,7 @@
   "golden": {
     "answer": "Treat the response as a soft-empty/not-found outcome, not as a successful empty profile and not as a transport outage. Preserve the returned 404-style status and hint, tell the user that the slug is not a published partner, and return to partner discovery for valid slugs.",
     "keyFacts": [
-      "Distinguishes the soft-empty not-found envelope from both data and service failure.",
+      "Treats the soft-empty not-found envelope, data, and service failure as different outcomes.",
       "Uses partner discovery as the recovery path for a valid published slug."
     ],
     "avoid": [
@@ -38,16 +38,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; getPartner on an unpublished slug returned envelope ok=false, kind soft-empty, status 404, with a directory hint.",
         "catalog/manifest.json exists and supports the behavioral golden.",
         "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (negative-predicate): recast the three-way soft-empty taxonomy as one positive atomic fact; all three outcomes are unchanged.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/openapi.json — current catalog provenance still defines getPartner as 404 for unknown or unpublished slugs.",
+        "Sibling sweep 2026-08-27: grep getPartner|unknown slug|partner discovery|soft-empty → q-crp-partner-detail-after-discovery, q-gap-match-partners-degrade, and q-scf-ecosystem-listing-partner-jobs; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

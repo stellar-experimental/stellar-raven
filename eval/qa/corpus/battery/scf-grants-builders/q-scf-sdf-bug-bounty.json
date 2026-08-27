@@ -7,11 +7,13 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nFor new general SDF reports, use the **Stellar HackerOne policy**. Consolidation took effect **2026-05-07**; the old general Stellar Immunefi program is deprecated for new submissions. Under the HackerOne matrix, standard Critical/High/Medium/Low/Note maxima are **25K/15K/10K/2K/500 points**; one point is currently $1 and rewards are paid in XLM. A special core/protocol carveout can calculate a critical reward as 10% of directly affected funds, capped at **250K points**. That carveout covers `stellar-core`, `stellar-protocol`, and Soroban runtime/host code—not arbitrary third-party Soroban apps, which are outside SDF's program. The separate OpenZeppelin Stellar Contracts Immunefi bounty remains distinct, with a $25K maximum single critical payout and $250K total contest maximum. Audit Bank funds audits; it is not the vulnerability-report bounty.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates deprecated general Immunefi, the independent OpenZeppelin bounty, third-party apps, and Audit Bank."
+      "Treats deprecated general Immunefi and the independent OpenZeppelin bounty as distinct.",
+      "Treats third-party apps and Audit Bank as two other distinct scopes."
     ],
     "avoid": [
+      "Do NOT substitute an unsupported memory claim for source-supported content.",
       "Do NOT repeat a timeless $250K protocol/$50K Soroban-app split.",
       "Do NOT send new general SDF reports to deprecated Immunefi or merge OpenZeppelin's policy into SDF's.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
@@ -78,7 +80,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-40 blind process 3304; controlling policies fetched 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
@@ -87,13 +89,19 @@
         "Structural re-form (symmetric-caution): Added a narrow caution for the pre-fix Scout security-program roster; golden truth unchanged.",
         "Improvement finding read 2026-08-27: improvements/resolved.json entry sls-020; disputed claim: pre-fix Scout retrieval omitted the 2026-05-07 HackerOne migration.",
         "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-        "Sibling sweep 2026-08-27: grep HackerOne|general Immunefi → q-comp-security-disclosure-programs, q-scf-sdf-bug-bounty; no contradiction"
+        "Sibling sweep 2026-08-27: grep HackerOne|general Immunefi → q-comp-security-disclosure-programs, q-scf-sdf-bug-bounty; no contradiction",
+        "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory trap to avoid, and split the four-scope taxonomy; truth unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/grants-and-funding/bug-bounty — showed the current official program scope for dated, source-supported content.",
+        "Live re-check 2026-08-27: https://immunefi.com/bug-bounty/stellar/information/ returned 404, while https://immunefi.com/bug-bounty/openzeppelin-stellar/information/ showed the independent OpenZeppelin program.",
+        "Live re-check 2026-08-27: https://stellar.org/grants-and-funding/bug-bounty — excluded third-party applications; https://stellar.gitbook.io/scf-handbook/scf-awards/build-award showed Audit Bank as audit support.",
+        "Sibling sweep 2026-08-27: grep HackerOne|general Immunefi|OpenZeppelin bounty|third-party apps|Audit Bank → q-comp-security-disclosure-programs, q-scf-sdf-bug-bounty, and q-scf-audit-bank; no contradiction."
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-020-security-program-migration-supersession.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-sdf-bug-bounty"

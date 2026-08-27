@@ -8,9 +8,11 @@
   "golden": {
     "answer": "Yes: using a classic issued asset through its deterministic Stellar Asset Contract does not create a control-free wrapped token or erase the asset's authorization/clawback model.\n\nFor a **G account**, balances and eligibility use the classic account/trustline ledger state: transfer requires an authorized line, and clawback requires the trustline's clawback-enabled flag. For a **C contract address**, the balance is stored in persistent ContractData rather than a classic trustline; that balance carries analogous authorized and clawback state derived and enforced by the SAC.\n\nFor an issued asset, the issuer is the **initial/default SAC admin**, but current admin can be delegated to another G or C address. After delegation, current-admin authorization controls privileged SAC operations. Native XLM is a separate exception with no admin. Thus the classic asset's control model remains relevant, but the issuer does not necessarily remain the current SAC admin forever.",
     "keyFacts": [
-      "SAC exposes the same classic asset and preserves its authorization/clawback control model.",
-      "G accounts use classic trustline state; C addresses use ContractData with analogous authorization and clawback fields.",
-      "The issuer is initial/default admin for issued assets, but current admin may be delegated to G or C; native XLM has no admin."
+      "SAC exposure preserves the same classic asset's authorization/clawback control model.",
+      "G accounts use classic trustline state.",
+      "C addresses use ContractData with analogous authorization/clawback fields.",
+      "Initial/default SAC admins are issuers for issued assets, with none for native XLM.",
+      "Current SAC admin may be delegated to a G or C address."
     ],
     "avoid": [
       "Do NOT claim SAC strips authorization or clawback controls.",
@@ -106,15 +108,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The headline that SAC use preserves the classic asset's control model is correct, but the answer generalized G-account trustline storage to C-address balances and treated the issuer's initial/default admin identity as permanent. C balances use ContractData with analogous authorization/clawback fields; current SAC admin may be delegated to G or C.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-04 and GT-07 primary/blind reviews",
-        "Sibling sweep included q-asset-sac-functions, q-asset-trustline-vs-sac, and q-ti-fetch-all-balances-classic-sac"
+        "Sibling sweep included q-asset-sac-functions, q-asset-trustline-vs-sac, and q-ti-fetch-all-balances-classic-sac",
+        "Structural re-form (compound-predicate): Split three compound key facts into five atomic facts; all same-asset, state-storage, control-field, admin, delegation, address-type, and native-XLM claims remain unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed one classic asset with preserved SAC authorization and clawback controls.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed G-account issued-asset balances in classic trustlines.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed C-address balances and authorization state in ContractData with analogous clawback rules.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed issuer initial/default administration for issued assets and no administrator for native XLM.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — showed current-admin delegation to G or C addresses.",
+        "Sibling sweep 2026-08-27: grep SAC admin|ContractData|native XLM → q-sor-contract-trustlines-c-address, q-ti-fetch-all-balances-classic-sac, q-sor-sac-introspection, q-comp-auth-flags-overview, q-asset-trustline-vs-sac; contradiction found in q-asset-trustline-vs-sac answer's permanent-issuer-admin wording"
       ],
       "rootCause": [
         "G-address trustline wording was generalized to C contracts.",
-        "Initial/default admin was conflated with permanent current admin."
+        "Initial/default admin was conflated with permanent current admin.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-comp-sac-inherits-flags"

@@ -7,14 +7,15 @@
   "golden": {
     "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. Hosted service billing/top-up policy is a Channels contract; it is not a generic address or rule that applies to every self-hosted Relayer. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-08-04**, the repository's latest release was **v1.7.0**, published 2026-07-28, while rendered documentation still exposed 1.5.x/current paths inconsistently. A hosted endpoint's authentication response proves reachability rather than successful relaying; recheck the current release, supported networks, funding terms, and official service status before production use.",
     "keyFacts": [
-      "Distinguishes self-hosted OpenZeppelin Relayer from managed OpenZeppelin Channels.",
-      "Describes Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support without turning managed features into protocol guarantees.",
-      "Separates self-hosted account funding from managed Channels billing/top-up policy.",
+      "Treats self-hosted OpenZeppelin Relayer and managed OpenZeppelin Channels as distinct.",
+      "Covers Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support.",
+      "Treats self-hosted account funding and managed Channels billing/top-up as distinct.",
       "Reports the observed v1.7.0-versus-rendered-1.5.x documentation mismatch.",
       "Dates each version or provider-health claim to an observation date."
     ],
     "avoid": [
       "Do NOT conflate self-hosted Relayer with managed Channels.",
+      "Do NOT claim managed Channels features are Stellar protocol guarantees.",
       "Do NOT publish a generic hosted top-up address or claim relaying is free of funded fee authority.",
       "Do NOT interpret HTTP 401 as downtime or one reachable request as successful full service health.",
       "Do NOT pin release, network support, or provider health without an as-of date."
@@ -104,18 +105,24 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575, GT-53 primary 3372 and blind 3378, independently reviewed 2026-07-11.",
         "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime.",
         "Structural re-form (snapshot-date): Split the documented version mismatch from its snapshot-date requirement; truth is unchanged.",
         "Live re-check 2026-08-27: https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.7.0 and https://docs.openzeppelin.com/relayer/stellar — the release page showed v1.7.0 while the rendered docs pointed to stable v1.5.x.",
         "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/stellar — the page labeled its main-branch content as development documentation, supporting an observation-date gate.",
-        "Sibling sweep 2026-08-27: grep OpenZeppelin Relayer|v1.7.0|Stellar Channels → q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction"
+        "Sibling sweep 2026-08-27: grep OpenZeppelin Relayer|v1.7.0|Stellar Channels → q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction",
+        "Structural re-form (negative-predicate): expressed two product boundaries positively and moved the managed-feature protocol trap to avoid; all support and funding claims remain, so truth is unchanged",
+        "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/stellar and https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide — self-hosted Relayer and managed Channels remain distinct products",
+        "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/stellar — Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support remains documented",
+        "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/1.5.x/plugins/channels — self-hosted account funding and managed Channels billing/top-up remain distinct",
+        "Sibling sweep 2026-08-27: grep OpenZeppelin Relayer|OpenZeppelin Channels|v1.7.0 → q-defi-x402-on-stellar-what, q-soroban-x402-auth-entry-signing; no contradiction"
       ],
       "rootCause": [
         "Eval-side product-identity collapse and freshness drift; the cross-owner SDF/OpenZeppelin cleanup candidate is recorded in the GT-53 audit rather than forced into one upstream finding.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-openzeppelin-relayer"

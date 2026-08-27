@@ -1,1 +1,98 @@
-{"id":"q-tool-taxonomy-dispatch-live","question":"What project categories and project-tag vocabulary does the live curated knowledge base expose?","surface":["lumenloop.get_categories","lumenloop.get_project_tags_vocabulary"],"golden":{"answer":"Call both dispatch-backed vocabulary operations, report their current counts and representative exact returned values, and state each vocabulary's distinct scope. Include an as-of; do not invent or merge category and tag strings.","keyFacts":["Calls both category and project-tag vocabulary operations.","Reports current exact values/counts and keeps their scopes distinct.","Includes an as-of and does not fabricate taxonomy values."],"avoid":["Substitutes remembered taxonomy labels for the live controlled vocabularies."]},"tags":{"category":"tooling-infra","service":"lumenloop","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://api.lumenloop.com/v1/tools/get_categories"},{"class":"C","ref":"https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary"},{"class":"B","ref":"catalog/manifest.json#lumenloop.get_categories"}],"corroboration":[{"claim":"The two live operations expose distinct controlled vocabularies with exact values and counts.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://api.lumenloop.com/v1/tools/get_categories","observedAt":"2026-07-11"},{"class":"C","ref":"https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#lumenloop.get_categories","observedAt":"2026-07-11"}]},{"claim":"Remembered taxonomy labels may replace the controlled vocabulary.","verdict":"contradicted","evidence":[{"class":"B","ref":"catalog/manifest.json#lumenloop.get_categories","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","catalog/manifest.json#lumenloop.get_categories"],"rootCause":["eval-authoring"]},"origin":"core-35 ecosystem-taxonomy-dispatch"}}
+{
+  "id": "q-tool-taxonomy-dispatch-live",
+  "question": "What project categories and project-tag vocabulary does the live curated knowledge base expose?",
+  "surface": [
+    "lumenloop.get_categories",
+    "lumenloop.get_project_tags_vocabulary"
+  ],
+  "golden": {
+    "answer": "Call both dispatch-backed vocabulary operations, report their current counts and representative exact returned values, and state each vocabulary's distinct scope. Include an as-of; do not invent or merge category and tag strings.",
+    "keyFacts": [
+      "Calls both category and project-tag vocabulary operations.",
+      "Reports current exact values and counts.",
+      "Keeps category and project-tag scopes distinct.",
+      "Includes an as-of and does not fabricate taxonomy values."
+    ],
+    "avoid": [
+      "Substitutes remembered taxonomy labels for the live controlled vocabularies."
+    ]
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "lumenloop",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://api.lumenloop.com/v1/tools/get_categories"
+      },
+      {
+        "class": "C",
+        "ref": "https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#lumenloop.get_categories"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The two live operations expose distinct controlled vocabularies with exact values and counts.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://api.lumenloop.com/v1/tools/get_categories",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "C",
+            "ref": "https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#lumenloop.get_categories",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "Remembered taxonomy labels may replace the controlled vocabulary.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#lumenloop.get_categories",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "evidence": [
+        "solo://proj/49/process/3414",
+        "solo://proj/49/process/3420",
+        "catalog/manifest.json#lumenloop.get_categories",
+        "Structural re-form (compound-predicate): Split exact values/counts from the distinct-scope claim; truth is unchanged.",
+        "Live re-check 2026-08-27: https://api.lumenloop.com/v1/tools/get_categories and https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary — both dispatch-backed vocabulary operations remained exposed.",
+        "Live re-check 2026-08-27: https://api.lumenloop.com/v1/tools/get_categories and https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary — live responses retained exact values and counts.",
+        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — categories and project tags retained distinct operation scopes.",
+        "Live re-check 2026-08-27: https://api.lumenloop.com/v1/tools/get_categories and https://api.lumenloop.com/v1/tools/get_project_tags_vocabulary — answer-time values still required an as-of rather than fabricated taxonomy labels.",
+        "Sibling sweep 2026-08-27: grep get_categories|get_project_tags_vocabulary|taxonomy values|project-tag vocabulary → q-defi-lumenloop-categories-vocab, q-gap-lumen-project-tag-vocabulary, q-ti-vocab-project-categories-live, q-ti-vocab-project-tags-live, q-tool-taxonomy-dispatch-live; no contradiction"
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+      ]
+    },
+    "origin": "core-35 ecosystem-taxonomy-dispatch"
+  }
+}

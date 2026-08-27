@@ -14,7 +14,10 @@
   "golden": {
     "answer": "**LOBSTR** is a non-custodial wallet operated by the **Ultra Stellar** brand, not an SDF-operated wallet. As of **2026-07-10**, current operator and live directory evidence supported Stellar and XRPL, plus web/mobile wallet surfaces; date those network/platform claims. LOBSTR's own site says 1M+ users and 10M+ monthly transactions, Google Play shows 1M+ downloads, and another ecosystem source says 1.5M users: these are differently defined, attributed claims, not one independently measured current scale. Use the operator brand unless a dated jurisdiction-specific legal entity matters. Do not assert absolute non-affiliation with SDF, and do not pin a cumulative SCF dollar total because official amounts are incomplete and aggregators disagree.",
     "keyFacts": [
-      "Identifies Ultra Stellar as operator and LOBSTR as non-custodial; dates Stellar/XRPL/platform support and attributes every scale claim to its source."
+      "Identifies Ultra Stellar as LOBSTR's operator.",
+      "Identifies LOBSTR as non-custodial.",
+      "Dates Stellar, XRPL, and platform support.",
+      "Attributes every scale claim to its source."
     ],
     "avoid": [
       "Do NOT claim LOBSTR is built/operated by the Stellar Development Foundation.",
@@ -111,7 +114,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Live production execute 2026-07-03: scout lobstr record — Ultra Stellar, User-Facing App, Live, scfTotalAwardedUSD 232000; lumenloop get_project lobstr — parent Ultra Stellar, scf awarded rounds [2,17,22] total 267463; the sources DISAGREE on the SCF total, so no dollar figure can be a hard trap",
         "Neither live record carries any user/transaction counts (the 1M+/10M+ figures are LOBSTR marketing, absent from both records) and neither mentions XRP Ledger support",
@@ -121,14 +124,21 @@
         "Sibling sweep 2026-08-27: grep LOBSTR.*Ultra Stellar|SCF.*LOBSTR → q-defi-soroswap-vs-stellarx, q-eco-stellar-wallets-list, q-raph-lobstr-legitimacy, q-builder-by-scf-tier; no contradiction",
         "Structural re-form (presentation-avoid): Reworded the scale-figure presentation clause as a concrete false claim and preserved the remaining affiliation, legal-suffix, and SCF-total traps; truth is unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; all trap targets are unchanged.",
-        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|SCF total → q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-raph-lobstr-legitimacy; no contradiction"
+        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|SCF total → q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-raph-lobstr-legitimacy; no contradiction",
+        "Structural re-form (compound-predicate): split operator, custody, dated support, and scale-attribution requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://ultrastellar.com/ — the current operator site still lists LOBSTR as an Ultra Stellar product.",
+        "Live re-check 2026-08-27: https://lobstr.co/ — the current operator page still states that users control their keys.",
+        "Live re-check 2026-08-27: https://play.google.com/store/apps/details?id=com.lobstr.client — the current listing still names Stellar, XRPL, mobile support, and its update date.",
+        "Live re-check 2026-08-27: https://www.xrpl-commons.org/newsroom/lobstr-brings-native-xrpl-access-to-1-5-million-users — the dated announcement still attributes its 1.5 million-user claim to that source.",
+        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|XRPL|scale claim → q-raph-lobstr-legitimacy, q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-builder-by-scf-tier, q-defi-soroswap-vs-stellarx; no contradiction"
       ],
       "rootCause": [
         "solo://proj/49/todo/judge-rubric-corpus--826 — judge-blind avoid phrasing (eval-side authoring)",
         "improvements/stellar-light-scout/sls-011 — fixed upstream for basis disclosure: Scout now labels the $232,000 total an in-house reconstruction and exposes rounds [2,17,22]; the cross-source total remains disputed because official per-award amounts are incomplete, so amount claims still cannot be hard-gated",
         "improvements/lumenloop/ll-008 — lobstr operating_region ['Indonesia'] vs based_in Estonia (record data-quality)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-eco-lobstr-wallet"

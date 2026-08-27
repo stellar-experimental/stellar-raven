@@ -11,16 +11,17 @@
     "answer": "Decode according to the **source field and method**, not a generic 'raw ledger XDR' label. With default base64 XDR, RPC `getLedgers.headerXdr` is a `LedgerHeaderHistoryEntry` and `metadataXdr` is a `LedgerCloseMeta`. `getTransactions.envelopeXdr` is a `TransactionEnvelope`, `resultXdr` a `TransactionResult`, and `resultMetaXdr` a `TransactionMeta`; transaction and diagnostic event fields have their own event XDR types. `getLatestLedger.header` and `getLedgerEntries` use different wrappers again.\n\nRaw JSON-RPC responses carry base64 strings. A public JavaScript SDK call may already parse those fields into XDR objects while retaining names such as `headerXdr`/`metadataXdr`, so check the client layer before decoding and do not double-decode. With `xdrFormat=json`, RPC renames fields to `headerJson`, `metadataJson`, and the corresponding `*Json` transaction fields; that JSON representation is explicitly less stable than canonical XDR. The CLI path is `stellar xdr decode --type <ExactType> --input single-base64`.\n\nFor `.xdr.zst` data-lake objects, decompress zstd and then follow that dataset's documented framing and XDR type; do not assume each compressed object is one bare `LedgerCloseMeta`. For production historical iteration use the current Go Ingest SDK/data-lake backend where practical. Pin a protocol-compatible SDK, preserve ledger/transaction indices, and extract operations, ledger-entry changes, and contract events from the correctly typed layer.",
     "keyFacts": [
       "Maps getLedgers headerXdr to LedgerHeaderHistoryEntry and metadataXdr to LedgerCloseMeta.",
-      "Separates getTransactions TransactionEnvelope/TransactionResult/TransactionMeta from ledger-level metadata and from adjacent RPC method types.",
-      "Distinguishes raw base64 RPC values from already-parsed public SDK values and warns against double-decoding.",
-      "States that xdrFormat=json renames fields to *Json and is a less-stable representation.",
-      "Requires zstd decompression plus dataset-specific framing/type handling for .xdr.zst rather than assuming one bare LedgerCloseMeta per file."
+      "Maps getTransactions to TransactionEnvelope, TransactionResult, and TransactionMeta.",
+      "Treats raw base64 RPC values and public SDK-parsed XDR objects as distinct inputs.",
+      "Defines xdrFormat=json as field renaming to a less-stable *Json representation.",
+      "Requires zstd decompression and dataset-specific framing/type handling for .xdr.zst."
     ],
     "avoid": [
       "Do NOT decode getLedgers headerXdr as LedgerHeader or collapse LedgerCloseMeta into transaction-level TransactionMeta.",
       "Do NOT double-decode SDK-parsed XDR objects or expect *Xdr field names in JSON mode.",
       "Do NOT assume nearby RPC methods use the same XDR wrapper or provider page limits are protocol constants.",
-      "Do NOT claim a compressed data-lake object is a bare XDR record."
+      "Do NOT claim a compressed data-lake object is a bare XDR record.",
+      "Do NOT assume each .xdr.zst file contains one bare LedgerCloseMeta."
     ],
     "notes": "Also good if the answer: Mentions the AWS Open Data S3 path `s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet` as the public data lake cited by Stellar RPC docs. | Mentions `.zst` decompression before XDR decode when consuming compressed files directly.\nGolden cites: Primary Stellar Ingest SDK and RPC/data-lake docs.\nGT-53 independently verified the exact getLedgers types and JSON-mode field renaming on 2026-07-11. Gate method/field/type boundaries; do not require a universal data-lake framing that the evidence did not establish."
   },
@@ -95,16 +96,23 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575, GT-53 primary 3372 and blind 3378; both rejected the ledger-level versus transaction-level collapse.",
         "Blind child 3381 and parent independently recorded LedgerHeaderHistoryEntry, LedgerCloseMeta, TransactionMeta, SDK parsing, and *Json renaming before comparison.",
         "Structural re-form (presentation-avoid): Reworded a framing requirement as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep compressed data-lake|bare XDR|xdr.zst|LedgerCloseMeta → q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr, q-pc-bucketlist-vs-merkle-inclusion-proof; no contradiction"
+        "Sibling sweep 2026-08-27: grep compressed data-lake|bare XDR|xdr.zst|LedgerCloseMeta → q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr, q-pc-bucketlist-vs-merkle-inclusion-proof; no contradiction",
+        "Structural re-form (negative-predicate): expressed RPC and SDK type boundaries positively, tightened JSON and zstd facts, and moved the one-bare-LedgerCloseMeta trap to avoid; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — getTransactions maps to TransactionEnvelope, TransactionResult, and TransactionMeta",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/data-format/xdr and https://github.com/stellar/js-stellar-sdk/blob/becb237a4ffc563941f0fc989e89e601e3cba303/src/rpc/parsers.ts#L266-L290 — raw base64 RPC values and public SDK-parsed XDR objects remain distinct inputs",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers — xdrFormat=json renames fields to a less-stable *Json representation",
+        "Live re-check 2026-08-27: https://github.com/stellar/go-stellar-sdk/tree/master/ingest — .xdr.zst processing still requires zstd decompression plus dataset-specific framing and XDR type handling",
+        "Sibling sweep 2026-08-27: grep metadataXdr|LedgerCloseMeta|xdrFormat=json|xdr.zst → q-ti-rpc-gettransactions-pagination-xdr, q-pc-bucketlist-vs-merkle-inclusion-proof; no contradiction"
       ],
       "rootCause": [
         "Eval-side source/type collapse: the inherited sources array contained a serialized rubric object rather than a URL, and the answer merged distinct RPC/XDR layers; the upstream cross-link candidate is recorded in the dated GT-53 audit.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-parse-raw-ledger-data"

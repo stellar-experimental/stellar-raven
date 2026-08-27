@@ -9,9 +9,9 @@
   "golden": {
     "answer": "FinClusive currently markets Compliance as a Service, KYC/KYB and financial-crime-compliance orchestration, reusable FinCID/CDD credentials, and gateway connectivity that includes Stellar. Treat those as current operator product claims, not proof that the service guarantees legal compliance. FinClusive's operating provisions describe a third-party service-provider/payment-partner structure and say FinClusive is not itself a bank or licensed MSB; that is the company's current self-description, not an independent regulator determination.\n\nA 2020 SDF article described a shared-verification model across multiple anchors and documented Biccos as a use case. That is dated historical context, not proof of current network-wide adoption. The audit did not verify MoneyGram, Bitso, Kado, or Nium as FinClusive CaaS partners, so they should not be listed as such.\n\nTravel Rule, BSA/AML, licensing, custody, and sanctions duties depend on the covered actor, activity, transaction, route, threshold, and jurisdiction. Stellar is technical infrastructure, but it is also overbroad to say one entity called the anchor always carries every obligation. CaaS can support compliance workflows; it does not transfer or conclusively satisfy legal duties. This is not legal advice.",
     "keyFacts": [
-      "Describes current FinClusive CaaS/KYC/KYB and reusable-verification tooling as operator product claims.",
-      "Separates dated 2020 Biccos/shared-utility history from current adoption.",
-      "Scopes legal obligations to actual actors, activities, transactions, and jurisdictions; CaaS does not guarantee compliance."
+      "Treats FinClusive CaaS, KYC/KYB, and reusable-verification tools as operator claims.",
+      "Treats the 2020 Biccos/shared-utility history as dated context for current adoption.",
+      "Scopes legal duties by actor, activity, transaction, and jurisdiction."
     ],
     "avoid": [
       "Do NOT say Stellar performs Travel Rule screening or holds licenses.",
@@ -136,16 +136,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — A dated 2020 SDF partnership story was frozen into current product and legal truth. It promoted a hypothetical reusable-verification model into established network-wide adoption, attached unrelated Stellar ecosystem companies as FinClusive partners, and treated CaaS tooling as satisfying universal Travel Rule/BSA obligations.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-07 primary and blind matrices",
-        "Current FinCEN registry exact-name probe was inconclusive and is not used to infer licensing"
+        "Current FinCEN registry exact-name probe was inconclusive and is not used to infer licensing",
+        "Structural re-form (negative-predicate): shortened three facts, used positive taxonomy wording, and kept the CaaS-guarantee trap in golden.avoid; truth is unchanged.",
+        "Live re-check 2026-08-27: https://finclusive.com/products/compliance-as-a-service — FinClusive still markets KYC/KYB orchestration and reusable FinCID credentials.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/policy/drive-inclusion-through-compliance — SDF's dated story still presents Biccos as the documented FinClusive use case.",
+        "Live re-check 2026-08-27: https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — Travel Rule duties still vary by role and covered activity.",
+        "Sibling sweep 2026-08-27: grep FinClusive|Biccos|Travel Rule → q-comp-anchor-compliance-stack, q-crp-become-an-anchor-licensing, q-comp-finclusive-caas; no contradiction"
       ],
       "rootCause": [
         "Historical partnership content became timeless product/legal authority.",
         "Unrelated ecosystem relationships were conflated with FinClusive partnerships.",
-        "Technical anchor and legal regulated-person roles were collapsed."
+        "Technical anchor and legal regulated-person roles were collapsed.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-comp-finclusive-caas"

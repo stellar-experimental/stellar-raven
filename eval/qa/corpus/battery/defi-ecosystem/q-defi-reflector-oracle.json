@@ -9,9 +9,11 @@
   "golden": {
     "answer": "**Reflector** is a Stellar/Soroban oracle and data-feed system. Provider nodes independently calculate values from Stellar Classic/Soroban markets and external market/FX source classes, build matching transactions, and exchange signatures; only matching transaction hashes aggregate. As of **2026-07-10**, its three public mainnet feeds (Stellar DEX/USDC, external USD markets, and FX/USD) were deployed and updating. Their admin accounts used seven shared weight-1 signers with threshold four, and recent updates carried four signatures. Treat that as the observed implementation, not a timeless security guarantee.\n\nPublic price feeds are described as free and expose SEP-40-style oracle interfaces. Do not extend that into an absolute claim of no limits or no possible paid service: Reflector also documents subscriptions/webhooks and governance can change terms. Exact upstream venues/weights, operator roster, deployments, and integration roster are freshness-sensitive. No reproducible evidence establishes a universal 'most-integrated' ranking.",
     "keyFacts": [
-      "Identifies Reflector as a Stellar/Soroban oracle and explains matching-value transaction/signature aggregation.",
-      "States the dated observed 4-of-7 signer implementation and active public mainnet feed classes.",
-      "Scopes free access to public feeds and treats deployments, operators, integrations, and terms as freshness-sensitive."
+      "Reflector is a Stellar/Soroban oracle.",
+      "Reflector uses matching-value transaction and signature aggregation.",
+      "States the dated 4-of-7 signer implementation and active public mainnet feed classes.",
+      "Free access applies to public feeds.",
+      "Deployments, operators, integrations, and terms are freshness-sensitive."
     ],
     "avoid": [
       "Do NOT describe Reflector as a DEX, AMM, lender, or bridge.",
@@ -97,18 +99,26 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-17 primary process 3247 and blind process 3248, including live mainnet contract/admin/update reads asOf 2026-07-10.",
         "Sibling sweep: q-defi-reflector-alternatives, q-defi-reflector-content, q-defi-reflector-related-projects, and q-eco-defi-market-map.",
         "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
         "Reviewed improvements/stellar-light-scout/sls-029-oracle-product-network-evidence.md — disputed claim: Reflector's provider-level Live label proves product or network deployment.",
-        "Sibling sweep 2026-08-27: grep Reflector|4-of-7|oracleDeployments → q-builder-by-scf-tier, q-comp-yieldblox-oracle-incident, q-defi-etherfuse-stablebonds, q-defi-oracle-landscape-live, q-defi-reflector-oracle, q-eco-defi-market-map, q-eco-defi-projects-discovery, q-eco-most-active-defi-projects, q-eco-xbull-wallet, q-hist-yieldblox-v2-2026-exploit, q-pc-cross-redstone-sep40, q-scf-cross-reflector-rounds-current, q-scf-hackathon-compare-live, q-scf-kale-winner-live, q-sor-reflector-integration-code, q-soroban-oracle-defensive-consumption; no contradiction"
+        "Sibling sweep 2026-08-27: grep Reflector|4-of-7|oracleDeployments → q-builder-by-scf-tier, q-comp-yieldblox-oracle-incident, q-defi-etherfuse-stablebonds, q-defi-oracle-landscape-live, q-defi-reflector-oracle, q-eco-defi-market-map, q-eco-defi-projects-discovery, q-eco-most-active-defi-projects, q-eco-xbull-wallet, q-hist-yieldblox-v2-2026-exploit, q-pc-cross-redstone-sep40, q-scf-cross-reflector-rounds-current, q-scf-hackathon-compare-live, q-scf-kale-winner-live, q-sor-reflector-integration-code, q-soroban-oracle-defensive-consumption; no contradiction",
+        "Structural re-form (compound-predicate): split identity, aggregation, signer, feed, access, and freshness requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/oracles/oracle-providers — the current provider page still identifies Reflector as a Stellar/Soroban oracle.",
+        "Live re-check 2026-08-27: https://github.com/reflector-network/reflector-contract — the current source still documents matching-value transaction and signature aggregation.",
+        "Live re-check 2026-08-27: https://reflector.network/ — the current operator roster and threshold materials remain consistent with the dated 4-of-7 observation and mainnet feed classes.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/oracles/oracle-providers — the current provider page still scopes free access to public feeds.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/oracles/oracle-providers — current deployment, operator, integration, and service details remain changeable.",
+        "Sibling sweep 2026-08-27: grep Reflector|4-of-7|Pulse|Beam|oracleDeployments → q-defi-oracle-landscape-live, q-scf-cross-reflector-rounds-current, q-sor-reflector-integration-code, q-soroban-oracle-defensive-consumption, q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit; no contradiction"
       ],
       "rootCause": [
         "Provider marketing, directory labels, and a dated roster were promoted to protocol invariants and market rank.",
         "improvements/stellar-light-scout/sls-029-oracle-product-network-evidence.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-reflector-oracle"

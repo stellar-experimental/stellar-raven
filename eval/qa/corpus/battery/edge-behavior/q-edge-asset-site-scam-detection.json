@@ -10,7 +10,8 @@
     "answer": "Start with exact identity: classic asset **code+issuer**, or the exact **contract ID** for a custom contract token. A ticker, logo, or popularity is non-unique. For classic assets, check the issuer's `home_domain`, fetch that exact HTTPS domain's SEP-1 `stellar.toml`, verify it lists the same code+issuer, and reverse-check that the issuer claims the domain.\n\nThis is corroboration, not certification: an account can self-assert `home_domain`, and matching TOML/explorer metadata does not prove backing, honest economics, or absence of fraud. Inspect flags, issuer history, liquidity, official legal/product sources, and conflicts; treat missing/conflicting evidence as **unverified**. Never connect/sign/send funds or reveal a secret/recovery phrase merely to test legitimacy.",
     "keyFacts": [
       "Requires exact code+issuer or contract ID.",
-      "Uses bidirectional issuer-domain/TOML verification while stating it is not certification.",
+      "Uses bidirectional issuer-domain/TOML verification.",
+      "Treats that verification as corroboration rather than certification.",
       "Treats explorer/logo/flags/history as signals, not a trust oracle."
     ],
     "avoid": [
@@ -71,14 +72,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The existing safety flow is sound but needed explicit contract-token identity and stronger trust boundaries: home_domain is self-asserted, TOML is corroboration rather than certification, and explorer metadata is not a legitimacy oracle.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-21 primary 3260 and blind 3261",
-        "Sibling sweep: asset metadata, SEP-1, explorer verification, secret-key safety"
+        "Sibling sweep: asset metadata, SEP-1, explorer verification, secret-key safety",
+        "Structural re-form (compound-predicate): split bidirectional verification and non-certification requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0032.md — the current source still describes forward and reverse issuer-domain/TOML checks.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — the current official safety guide still requires independent diligence rather than certification from one signal.",
+        "Sibling sweep 2026-08-27: grep code+issuer|contract ID|TOML|trust oracle → q-sep-1-toml, q-aas-trusted-asset-list-whitelist, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-raph-claimable-balance-safety, q-raph-lobstr-legitimacy; no contradiction"
       ],
       "rootCause": [
-        "Useful identity evidence was written too close to a certification/legitimacy conclusion."
+        "Useful identity evidence was written too close to a certification/legitimacy conclusion.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-edge-asset-site-scam-detection"

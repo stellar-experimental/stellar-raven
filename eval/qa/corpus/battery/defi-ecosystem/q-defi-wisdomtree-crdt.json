@@ -9,7 +9,8 @@
   "golden": {
     "answer": "On **2025-09-12**, WisdomTree launched the **WisdomTree Private Credit and Alternative Income Digital Fund**—fund ticker **CRDYX**, digital token ticker **CRDT**—on **Ethereum and Stellar**. It is an SEC-registered, non-diversified open-end mutual-fund share/digital representation tracking the Gapstow private-credit/alternative-income index before fees. It is not a stablecoin, Treasury MMF, bank deposit, FDIC-insured deposit, or SIPC-protected product.\n\nThe SEC prospectus makes WisdomTree Transfers' transfer-agent book-entry record determinative; blockchain records are supplementary and reconciled. Transfers require eligible/whitelisted wallets and the asset carries authorization/revocation/clawback controls. At launch the issuer described a $25 minimum, T+0 subscription, and T+2 redemption. As of **2026-08-26**, Stellar metadata identifies issuer `GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45` and SAC `CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P`; re-verify before integration. Preserve dated source roles where distributor wording differs rather than forcing one timeless label.",
     "keyFacts": [
-      "Identifies CRDYX/CRDT, private-credit/alternative-income nature, and Ethereum+Stellar launch date.",
+      "Identifies CRDYX/CRDT and their private-credit/alternative-income nature.",
+      "Gives the Ethereum+Stellar launch date.",
       "Explains transfer-agent record priority and wallet eligibility controls.",
       "Names CRDT issuer `GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45`.",
       "Names CRDT SAC `CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P`."
@@ -78,19 +79,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-26",
-      "by": "lane/corpus-goldens live CRDT verification and independent correction review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://stellar.wisdomtree.com/.well-known/stellar.toml fetched 2026-08-26T16:54:45Z: CRDT issuer GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
         "https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 fetched 2026-08-26T16:54:46Z: issuer GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45; SAC CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P",
         "Sibling sweep on 2026-08-26 checked q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, and q-hist-wisdomtree-rwa; none contains a conflicting CRDT issuer or SAC.",
-        "/tmp/raven-qadeep/review-judge.md Target 2 independently validated both corrected strkeys and found that both 2026-07-11 imported identifiers failed CRC16 validation."
+        "/tmp/raven-qadeep/review-judge.md Target 2 independently validated both corrected strkeys and found that both 2026-07-11 imported identifiers failed CRC16 validation.",
+        "Structural re-form (compound-predicate): split the CRDYX/CRDT identity and launch-date requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of — the current issuer release still identifies CRDYX/CRDT and their private-credit/alternative-income nature.",
+        "Live re-check 2026-08-27: https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of — the current issuer release still gives the Ethereum and Stellar launch date.",
+        "Sibling sweep 2026-08-27: grep WisdomTree|CRDT|CRDYX|private credit → q-asset-rwa-tokenized-freshness, q-rwa-projects-tokenizing-stellar, q-defi-benji-franklin-templeton, q-defi-ondo-usdy, q-defi-rwa-scf-similar, q-eco-defi-market-map; no contradiction"
       ],
       "rootCause": [
         "Transcription error in the 2026-07-11 golden import produced invalid Stellar strkeys.",
         ".agents/TODO.md#prevent-invalid-stellar-strkeys-in-golden-imports",
         "improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md",
-        "improvements/lumenloop/ll-012-rwa-live-planned-recall.md"
+        "improvements/lumenloop/ll-012-rwa-live-planned-recall.md",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-wisdomtree-crdt"

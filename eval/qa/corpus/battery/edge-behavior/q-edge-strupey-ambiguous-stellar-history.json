@@ -11,10 +11,11 @@
   "golden": {
     "answer": "I could not verify a Stellar person, project, token, protocol, or topic named **“Strupey”** from the broad Stellar sources searched as of 2026-07-13. The searches returned no exact-token row; nearby semantic results therefore do not establish an identity or history. That is a dated, source-scoped non-verification—not proof that the name cannot exist in a private community, under another spelling, or outside the indexed sources. Please clarify the spelling, whether Strupey is a person/handle/project/token, and any project, link, social handle, event, or timeframe you have. I would not substitute an unrelated real-world namesake, Justin Rice, or any fuzzy semantic neighbor for the requested identity.",
     "keyFacts": [
-      "Reports that no exact Stellar identity/history was verified, scoped to the searched sources and observation date.",
-      "Does not promote semantic neighbors into an exact person, project, token, protocol, or topic match.",
-      "Asks for spelling, entity type, handle/link/project, or timeframe to disambiguate the request.",
-      "Does not turn non-verification into an absolute claim that the person or name cannot exist."
+      "Reports no verified exact Stellar identity/history in the searched sources.",
+      "Dates the scoped non-verification to its observation date.",
+      "Does not promote semantic neighbors to an exact person/project/token/protocol/topic match.",
+      "Asks for spelling/entity type/handle/link/project/timeframe to disambiguate the request.",
+      "Does not turn non-verification into an absolute claim that the person/name cannot exist."
     ],
     "avoid": [
       "Do NOT invent a Stellar history for Strupey from nearby semantic rows.",
@@ -107,20 +108,28 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Current gateway broad-family exact-token projection.",
         "Exact GitHub API user and repository searches, official-docs zero-hit, and exact-handle counterevidence documented in solo://proj/49/scratchpad/evidence-poor-retrie--611.",
         "solo://proj/49/scratchpad/evidence-poor-retrie--611",
         "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-017; the scoped Strupey non-verification is unchanged.",
         "Improvements review 2026-08-27: improvements/lumenloop/ll-017-semantic-person-match-provenance.md remains reported upstream; the disputed claim is whether Strupey semantic neighbors establish an exact identity without exact-token provenance.",
-        "Sibling sweep 2026-08-27: grep ll-017|Strupey → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction"
+        "Sibling sweep 2026-08-27: grep ll-017|Strupey → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction",
+        "Structural re-form (compound-predicate): split source scope and dating, then tightened three long facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://api.github.com/search/users?q=strupey%20in%3Alogin&per_page=10 — the current exact user search still returns zero, supporting only searched-source non-verification.",
+        "Live re-check 2026-08-27: https://api.github.com/search/repositories?q=strupey%20in%3Aname%2Cdescription%2Creadme&per_page=10 — the current exact repository search dates the same scoped non-verification.",
+        "Live re-check 2026-08-27: https://www.joestrupek.com/about — the current unrelated Joe Strupek biography still cannot establish an exact Stellar identity or history.",
+        "Live re-check 2026-08-27: https://api.github.com/search/users?q=strupey%20in%3Alogin&per_page=10 — the current exact-name miss still warrants spelling, entity-type, link, and timeframe clarification.",
+        "Live re-check 2026-08-27: https://www.joestrupek.com/about — the current unrelated namesake remains counterevidence to conflation, not proof that Strupey cannot exist.",
+        "Sibling sweep 2026-08-27: grep Strupey|semantic neighbor|exact identity → q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-builder-content-by-person, q-builder-justin-rice-history; no contradiction"
       ],
       "rootCause": [
         "Semantic systems can return high-volume adjacent rows even when the requested term is absent.",
         "A negative open-world existence claim requires scoped non-verification and clarification rather than neighbor attribution.",
         "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-07-13 as a negative control for evidence-poor retrieval"

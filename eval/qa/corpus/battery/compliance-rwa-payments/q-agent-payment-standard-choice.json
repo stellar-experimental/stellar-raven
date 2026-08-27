@@ -8,14 +8,17 @@
   "golden": {
     "answer": "Choose by interaction and settlement model, then isolate it behind an adapter covering quote/payment intent, payment evidence, settlement, fulfillment, idempotency, and refunds. x402 V2 and MPP both use HTTP 402 but have different payloads and infrastructure. x402 V2 has extensions and discovery, but its core specification leaves session handling to applications. MPP Charge settles on-chain while Session uses a channel for repeated traffic. AP2 supplies authorization, mandate, and audit semantics that can sit above a rail; ACP is a beta commerce protocol for catalog, cart, checkout, and orders, not Stellar settlement. Cite each protocol's own specification and keep entitlement independent.",
     "keyFacts": [
-      "x402 V2 and MPP are distinct HTTP-402 protocols with different payloads, settlement, and infrastructure; x402 V2 has extensions and discovery, while session handling is application-level and outside its core specification.",
-      "MPP Charge settles on-chain, while MPP Session uses cumulative off-chain channel commitments.",
-      "AP2 supplies authorization/mandate/audit semantics above a rail; ACP is a beta commerce protocol, not Stellar settlement.",
-      "A protocol adapter covers quote/payment intent, payment evidence, settlement, fulfillment, idempotency, and refunds."
+      "The x402 V2 and MPP HTTP-402 protocols differ in payloads, settlement, and infrastructure.",
+      "x402 V2 provides extensions and discovery.",
+      "MPP uses on-chain Charge settlement and cumulative off-chain Session channel commitments.",
+      "AP2/ACP cover above-rail authorization/mandate/audit and beta commerce, respectively.",
+      "Adapter covers quote, payment intent/evidence, settlement/fulfillment/idempotency/refunds."
     ],
     "avoid": [
       "x402, MPP, AP2, and ACP are interchangeable names for the same protocol.",
-      "MPP always requires one on-chain transaction for every paid response."
+      "MPP always requires one on-chain transaction for every paid response.",
+      "Do NOT claim ACP is Stellar settlement.",
+      "Do NOT place application-level session handling inside the x402 V2 core specification."
     ],
     "notes": "Status-sensitive details are stated as of 2026-08-04; grade later sourced changes leniently and require dated primary evidence."
   },
@@ -244,19 +247,28 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA truth maintenance; independently verified in Todo 1347 c3625/c3627",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://docs.x402.org/",
         "https://github.com/x402-foundation/x402/blob/main/specs/x402-specification-v2.md",
         "https://ap2-protocol.org/",
         "https://developers.openai.com/commerce/",
         "https://github.com/stellar/mpp",
-        "https://github.com/google-agentic-commerce/AP2"
+        "https://github.com/google-agentic-commerce/AP2",
+        "Structural re-form (compound-predicate): Split four compound key facts into five atomic facts and moved two negative tails to avoid; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — showed the x402 V2 HTTP-402 payload, settlement, extension, and discovery model.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — placed application-level session handling outside the core specification.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-mpp-sdk — showed on-chain Charge settlement and cumulative off-chain Session channel commitments.",
+        "Live re-check 2026-08-27: https://ap2-protocol.org/ — showed AP2 authorization, mandate, and audit semantics; https://github.com/agentic-commerce-protocol/agentic-commerce-protocol showed ACP commerce functions.",
+        "Live re-check 2026-08-27: https://github.com/agentic-commerce-protocol/agentic-commerce-protocol — showed protocol commerce flows that support the adapter boundary.",
+        "Sibling sweep 2026-08-27: q-defi-x402-on-stellar-what, q-defi-agentic-payment-standards-compare, and q-mpp-discovery-and-modes; no contradiction.",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part1.md): removed the added qualifier \"core\"; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "eval-authoring",
-        "The golden attributed session handling to x402 V2 core although its specification declares sessions out of scope."
+        "The golden attributed session handling to x402 V2 core although its specification declares sessions out of scope.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "kaan agentic-payment-standard-choice"

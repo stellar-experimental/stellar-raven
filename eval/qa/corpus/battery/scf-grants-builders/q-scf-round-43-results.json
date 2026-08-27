@@ -8,9 +8,11 @@
   "golden": {
     "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. Its headline/prose says results span all three tracks, and a June 11 official Stellar social post repeats that wording. However, the recipient sections account for all 29 as 10 Open Track plus 19 Integration Track projects and list no RFP recipient. Report that primary-source inconsistency explicitly; do not invent an RFP winner or convert the absence of a recipient list into proof that the official all-three-tracks wording is false. June 11 is a post date, not an established conclusion date. Transient dashboard card/payment states do not revise the official 29 / $3,139,069 selection result.",
     "keyFacts": [
-      "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions.",
-      "The official sources are internally inconsistent: headline/social say all three tracks, while recipient sections total 10 Open plus 19 Integration and list no RFP recipient.",
-      "The official selection total was $3,139,069 worth of XLM; the dashboard’s transient 28 / $3,049,069 snapshot is not the final result."
+      "Dates the official SCF #43 recap to June 2, 2026.",
+      "Reports 85 submissions in the official recap.",
+      "Reports headline/social all-three-tracks wording as inconsistent with recipient sections.",
+      "Lists 10 Open, 19 Integration, and no RFP recipient in the recipient sections.",
+      "Treats official $3,139,069 XLM-worth as final over dashboard's transient 28 / $3,049,069."
     ],
     "avoid": [
       "Do NOT report 3,139,069 as the number of XLM tokens awarded.",
@@ -128,8 +130,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA primary-source contradiction review; accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
@@ -137,11 +139,19 @@
         "https://medium.com/feed/stellar-community",
         "https://x.com/StellarOrg/status/2065181135135559896",
         "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
-        "Sibling sweep: q-edge-fresh-latest-scf-round identifies SCF #43 as concluded but pins no conflicting result date or amount."
+        "Sibling sweep: q-edge-fresh-latest-scf-round identifies SCF #43 as concluded but pins no conflicting result date or amount.",
+        "Structural re-form (compound-predicate): Split the recap date, submission count, source inconsistency, recipient accounting, and final-versus-transient totals into atomic facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://lumenloop.com/news/scf-43-round-recap — dated the original SCF #43 article to June 2, 2026.",
+        "Live re-check 2026-08-27: https://lumenloop.com/news/scf-43-round-recap — repeated the official recap's 85 submissions.",
+        "Live re-check 2026-08-27: https://lumenloop.com/news/scf-43-round-recap and https://x.com/StellarOrg/status/2065181135135559896 — retained all-three-tracks headline/social wording against the recipient-section accounting.",
+        "Live re-check 2026-08-27: https://lumenloop.com/news/scf-43-round-recap — showed 10 Open and 19 Integration recipients with no RFP recipient section.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N and https://medium.com/stellar-community/scf-43-round-recap-62942f07757e — showed the dashboard lifecycle had moved beyond the recorded transient snapshot while the official final total remained the recap result.",
+        "Sibling sweep 2026-08-27: grep SCF #43|85 submissions|3,139,069|3,049,069 → q-edge-fresh-latest-scf-round, q-scf-current-round, q-scf-round-43-results; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        "The golden resolved an internal official-source contradiction categorically instead of representing it as disputed."
+        "The golden resolved an internal official-source contradiction categorically instead of representing it as disputed.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

@@ -10,12 +10,13 @@
   "golden": {
     "answer": "A grounded answer consults current official chapter and event sources and dates changeable claims. As of **2026-08-04**, the official Stellar Ambassador Program lists **Stellar India** among its active Asia-Pacific chapters, with the status **Exploratory Chapter**. Its dedicated page names Sahitya Roy of Rise In as Chapter Lead. Direct event evidence includes the **Jaipur Builders Camp, August 21–25, 2026**, a five-day Rise In / Stellar India builder residency. Treat events as dated operator evidence, not proof that SDF centrally runs every activation or that participation is paid. Regional chapters may guide eligible builders toward Instawards, but chapter support is not a funding commitment; SDF retains final approval.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Confirms the officially listed active Stellar India Exploratory Chapter.",
-      "Distinguishes that label from a claim that SDF centrally operates every local event."
+      "Confirms the officially listed active Stellar India Exploratory Chapter."
     ],
     "avoid": [
+      "Do NOT substitute an unsupported memory claim for source-supported content.",
+      "Do NOT claim the official chapter label means SDF centrally operates every local event.",
       "Do NOT turn a bounded Scout directory or hackathon miss into evidence that India lacks builders, events, or an official chapter.",
       "Do NOT repeat the stale Goa/July Builders Camp description or present historical project counts as current cumulative totals.",
       "Do NOT claim regional chapters approve SCF Build or Instaward funding; SDF retains final approval.",
@@ -99,7 +100,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575, GT-39 primary process 3300 and blind process 3303, independently executed 2026-07-10.",
         "Official Ambassador APAC index and dedicated India Chapter page list Stellar India as an active Exploratory Chapter led by Sahitya Roy of Rise In.",
@@ -109,7 +110,11 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-007; the current India chapter and Jaipur event facts are unchanged.",
         "Improvements review 2026-08-27: improvements/lumenloop/ll-007-event-summary-date-prose-mismatch.md remains reported upstream; the disputed claim is the stale LumenLoop Goa identity and August 14–18 Builders Camp dates versus the direct Jaipur event source.",
-        "Sibling sweep 2026-08-27: grep Stellar India|India Chapter|Jaipur|Kozhikode|Bhopal|Jabalpur → no other topical case; no contradiction"
+        "Sibling sweep 2026-08-27: grep Stellar India|India Chapter|Jaipur|Kozhikode|Bhopal|Jabalpur → no other topical case; no contradiction",
+        "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory trap to avoid, and moved the false central-operation claim to avoid; truth unchanged.",
+        "Live re-check 2026-08-27: https://www.risein.com/stellar — showed current India Stellar activity for dated, source-supported content.",
+        "Live re-check 2026-08-27: https://luma.com/ajcns4mc — showed Rise In, SDF, and Stellar India as named Jaipur event hosts, not the chapter label as a sole operator claim.",
+        "Sibling sweep 2026-08-27: grep Stellar India|India Chapter|Exploratory Chapter|Jaipur Builders Camp|centrally operates → q-scf-regional-india only; no contradiction."
       ],
       "rootCause": [
         "solo://proj/49/todo/judge-rubric-corpus--826 — the avoid-clause judge-artifact class (FIXED: rubric v2.1 + eval:qa:lint, commit 18e234f)",
@@ -117,7 +122,8 @@
         "improvements/lumenloop/ll-007-event-summary-date-prose-mismatch.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-regional-india"

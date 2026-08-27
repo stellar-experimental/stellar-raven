@@ -7,12 +7,13 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nUse **SCF Build** for an up-to-$150K XLM-valued development grant: the interest form is open, but eligibility/referral review precedes an invited full proposal, and only the Open Track uses project-level community voting. **SDF Marketing Grants** are a separate direct application path, up to $500K for growth/user acquisition. **Enterprise Fund** is venture-style strategic investment rather than an SCF grant. Current dedicated Enterprise pages now say Apply Now/Submit your application, although older official funding-index/mandate copy still says SDF finds companies and has no application; disclose that source conflict and follow the live form for current routing. **Matching Fund**, within Enterprise, is an explicit application track for pre-seed through Series B companies with a lead term sheet, 1:1 matching, and a $200K–$500K SDF check.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates SCF Build, Marketing, general Enterprise, and Matching mechanisms.",
+      "Treats SCF Build, Marketing, general Enterprise, and Matching as distinct mechanisms.",
       "Explains SCF interest-to-invitation and Open-only voting."
     ],
     "avoid": [
+      "Do NOT substitute an unsupported memory claim for source-supported content.",
       "Do NOT say all SCF proposals are openly submitted/public-voted.",
       "Do NOT tell founders never to apply to Enterprise while the current application form is live, or hide the official source conflict.",
       "Do NOT claim Enterprise investment is an SCF grant or invent a general per-company cap.",
@@ -79,20 +80,25 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-40 processes 3301/3304; current pages fetched 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded two presentation traps as the same concrete false claims; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep Enterprise Fund|Matching Fund|Enterprise investment|per-company cap → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-how-to-apply; no contradiction"
+        "Sibling sweep 2026-08-27: grep Enterprise Fund|Matching Fund|Enterprise investment|per-company cap → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-how-to-apply; no contradiction",
+        "Structural re-form (negative-predicate): Shortened one source rule and reworded one taxonomy fact; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — showed source-dated SCF Build content and its intake/voting workflow.",
+        "Live re-check 2026-08-27: https://stellar.org/enterprise-fund, https://stellar.org/grants-and-funding/matching-fund, and https://stellar.org/grants-and-funding/marketing-grants — showed distinct Enterprise, Matching, and Marketing mechanisms.",
+        "Sibling sweep 2026-08-27: SCF Build|Marketing Grants|Enterprise Fund|Matching Fund → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-how-to-apply, q-scf-academic-research-grant, q-scf-ecosystem-listing-partner-jobs, q-scf-submission-lifecycle-deadlines, q-scf-total-distributed, q-scf-build-award-cap, q-scf-eligibility-criteria, q-scf-regional-india, q-scf-ambassador-program, q-scf-build-tracks; no contradiction."
       ],
       "rootCause": [
         "Official current Enterprise application contradicts older outreach-only copy; eval preserved the older statement.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-vs-sdf-enterprise-fund"

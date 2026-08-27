@@ -11,10 +11,11 @@
   "golden": {
     "answer": "For a conventional custodial account, generate an Ed25519 keypair only in the backend/HSM/KMS, expose the `G...` public address, and keep the `S...` secret out of clients/logs. `Keypair.random()` creates key material, not an on-ledger account; create/fund the account with `CreateAccount` or a documented sponsored-reserve flow. Vanity G addresses require brute-force key generation, so outsourcing exposes the winning secret.\n\nA `C...` address is a contract ID, not a keypair and not creatable with `CreateAccount`. A C account has no corresponding Stellar seed and authorizes Soroban auth entries through its contract-defined `__check_auth`; a separate G account submits and pays/sponsors fees. G-to-C asset funding is a simulated/assembled SAC/token `transfer`, and C balances are relevant token/SAC contract state. If an exchange does not currently support C withdrawals, withdraw to a controlled G account and transfer to C. For C-to-custodian deposits requiring a memo ID, use the custodian's supplied `M...` address or construct the muxed destination from G plus the u64 ID; keep provider support dated.",
     "keyFacts": [
-      "Separates generated G/S key material from creation/funding of an on-ledger account and requires backend custody.",
-      "States that C is a contract ID with contract-defined auth, no seed, and a separate fee-paying/submitting G account.",
-      "Uses SAC/token transfer and contract-state balance semantics for G↔C.",
-      "Uses muxed M/G+u64 handling for memo-based custodial deposits and dates exchange support."
+      "Treats backend-custodied G/S keys and on-ledger creation/funding as distinct.",
+      "Defines C as a contract ID with contract auth and a fee-paying/submitting G account.",
+      "Uses SAC/token transfers with contract-held balance records for G↔C.",
+      "Uses M addresses or G+u64 for memo-based custodial deposits.",
+      "Dates exchange support for C-address withdrawals."
     ],
     "avoid": [
       "Do NOT generate/log custodial secrets in clients or accept third-party vanity seeds.",
@@ -106,19 +107,27 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary/blind matrices independently agreed on memo/muxed and freshness repair; blind added keypair/live-account and C authorization boundaries.",
         "Sibling sweep checked q-sor-contract-trustlines-c-address, q-sep-45-contract-auth, and account-creation siblings; sd-013 already owns sponsored-creation docs semantics.",
         "Structural re-form (symmetric-caution): Added a narrow caution for the pre-fix sponsored account-creation wording; golden truth unchanged.",
         "Improvement finding read 2026-08-27: improvements/resolved.json entry sd-013; disputed claim: pre-fix account-creation guidance omitted sponsored zero starting balance.",
         "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-        "Sibling sweep 2026-08-27: grep sponsored startingBalance|C account|CreateAccount → q-pc-account-merge-reclaim-reserve, q-sor-contract-trustlines-c-address, q-ti-custodial-account-generation-c-address; no contradiction"
+        "Sibling sweep 2026-08-27: grep sponsored startingBalance|C account|CreateAccount → q-pc-account-merge-reclaim-reserve, q-sor-contract-trustlines-c-address, q-ti-custodial-account-generation-c-address; no contradiction",
+        "Structural re-form (negative-predicate): split four compound facts into five atomic positive facts; the existing avoid item retains the no-seed/keypair trap, so truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/create-account — treats backend-custodied G/S keys and on-ledger creation/funding as distinct",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/contract-accounts — defines C as a contract ID with contract auth and a fee-paying/submitting G account",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts — uses SAC/token transfers with contract-held balance records for G↔C",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts — uses M addresses or G+u64 for memo-based custodial deposits",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts — dates exchange support for C-address withdrawals",
+        "Sibling sweep 2026-08-27: grep C account|contract auth|muxed|memo-based custodial → q-sor-contract-trustlines-c-address, q-sep-45-contract-auth, q-pc-account-activation-not-found; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-013-account-creation-merge-sponsorship-semantics.md",
         "Eval-side custody/contract-account completeness gap.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-custodial-account-generation-c-address"

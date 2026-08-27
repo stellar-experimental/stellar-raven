@@ -9,8 +9,9 @@
   "golden": {
     "answer": "First define **all**: currently live contract instances, archived-but-restorable instances, or every instance ever created. Stellar RPC has no global list-all-contracts method: `getLedgerEntries` requires explicit keys and `getEvents` is retention/range bounded.\n\nFor a practical current list, Stellar Lab currently consumes a paginated StellarExpert contract endpoint; treat that as third-party indexed coverage, not a protocol registry or completeness guarantee. For ledger-controlled coverage, use Hubble/current state views or ingest complete ledger metadata with Galexie/Ingest SDK, identify contract-instance ledger entries, join TTL/current state, and replay creation/archive history when the requirement is all-ever. Use the live Hubble catalog names at query time rather than freezing guessed SQL. Distinguish contract instances from uploaded Wasm code hashes and from asset-derived SAC contracts; multiple instances may reference one Wasm hash.",
     "keyFacts": [
-      "States that RPC does not enumerate all contracts and defines live, archived, and all-ever coverage separately.",
-      "Discloses current Lab/StellarExpert provider provenance and does not call it canonical/complete.",
+      "States RPC does not enumerate all contracts.",
+      "Defines live, archived, and all-ever coverage separately.",
+      "Discloses current Lab/StellarExpert provider provenance.",
       "Uses Hubble or complete ledger ingestion with TTL/history for controlled coverage.",
       "Separates contract instances, Wasm code hashes, and SAC built-ins."
     ],
@@ -103,14 +104,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited live-versus-all-ever distinction was sound but omitted that RPC has no contract enumerator, failed to disclose Lab's current StellarExpert provenance, and did not sharply separate instances, uploaded Wasm, SACs, and archived state.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-52 primary process 3356 and blind process 3368 independently agreed on live-versus-ever/state-table semantics; blind matrix sealed before primary read and added RPC/provider provenance.",
-        "Sibling sweep checked Hubble/Galexie/indexer, contract build/upgrade, Wasm-size, and archive cases; no sibling now equates code hashes with deployments."
+        "Sibling sweep checked Hubble/Galexie/indexer, contract build/upgrade, Wasm-size, and archive cases; no sibling now equates code hashes with deployments.",
+        "Structural re-form (compound-predicate): Split the RPC coverage fact and moved the canonical/completeness tail to the existing avoid; all provider, ingestion, state, Wasm, and SAC distinctions are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries — RPC still retrieves explicit ledger keys rather than enumerating all contracts.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival — live, archived, and all-ever coverage remain different sets.",
+        "Live re-check 2026-08-27: https://github.com/stellar/laboratory/blob/5e4343067bb936b68bf678ea81e6b7557cbc54f2/src/query/external/useSEContractsList.ts — Lab contract listing still records StellarExpert provider provenance.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/history-vs-state-tables — Hubble state/history and complete ledger ingestion remain the controlled-coverage paths.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — contract instances, Wasm code hashes, and SAC built-ins remain distinct ledger concepts.",
+        "Sibling sweep 2026-08-27: grep enumerate all contracts|Lab/StellarExpert|contract instances|Wasm code hashes|all-ever → q-ti-enumerate-all-contracts, q-ti-enumerate-holders-airdrop; no contradiction"
       ],
       "rootCause": [
-        "Eval-side coverage/provenance incompleteness; Lab/StellarExpert contract-list provenance is recorded as a research candidate because no existing deduped upstream finding owns it."
+        "Eval-side coverage/provenance incompleteness; Lab/StellarExpert contract-list provenance is recorded as a research candidate because no existing deduped upstream finding owns it.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-enumerate-all-contracts"

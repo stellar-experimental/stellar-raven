@@ -9,7 +9,8 @@
     "answer": "`require_auth` checks the exact Address passed. In user → A → B, B's `user.require_auth()` is satisfied only by the user's signed invocation tree; requiring user auth at A's entry prevents an inner authorization from being replayed through an unintended wrapper. If B instead calls `a_address.require_auth()` for immediate invoker A, the host automatically authorizes that direct A → B relationship. A must **not** put direct B in `authorize_as_current_contract` entries. Explicit current-contract authorization is for deeper calls, e.g. A → B → C where C requires A: before calling B, A authorizes the exact C invocation and nested sub-invocations. This is invocation-tree authorization, not ambient msg.sender; `__check_auth` is not used for the automatic direct-contract-invoker case.",
     "keyFacts": [
       "Explains user auth propagation and wrapper/front-running boundary.",
-      "States direct A→B contract auth is automatic and authorize_as_current_contract describes C/deeper calls."
+      "States direct A→B contract auth is automatic.",
+      "Uses authorize_as_current_contract for C/deeper calls."
     ],
     "avoid": [
       "Do NOT include the direct next-contract call in auth_entries, infer msg.sender, or call __check_auth for the automatic direct-invoker case."
@@ -70,13 +71,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer taught authorize_as_current_contract for the direct A→B relation, while current SDK/host rules authorize the immediate contract invoker automatically; explicit authorization begins at deeper calls.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-42 processes 3308/3315."
+        "Solo scratchpad 575 GT-42 processes 3308/3315.",
+        "Structural re-form (compound-predicate): split automatic direct-contract auth from explicit deeper-call authorization; no claim changed.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — confirmed direct A→B contract-invoker authorization is automatic.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — confirmed authorize_as_current_contract applies to C/deeper calls.",
+        "Sibling sweep 2026-08-27: grep authorize_as_current_contract|direct invoker|deeper → q-sor-recurring-escrow-patterns, q-sor-reflector-integration-code, q-soroban-token-transfer-pattern; no contradiction"
       ],
       "rootCause": [
-        "Eval-side call-depth auth inversion."
+        "Eval-side call-depth auth inversion.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-require-auth-propagation"

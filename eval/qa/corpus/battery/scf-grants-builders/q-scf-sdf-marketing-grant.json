@@ -7,9 +7,10 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\nYes—an already-launched Stellar project may apply for an SDF Marketing Grant, but being live is not a universal prerequisite: the current page covers **new and existing projects**. Grants are up to **$500,000**, with the funding index listing USD, USDC, or XLM, for growth/user acquisition work such as media, incentives, communications, agencies, and tools. Applicants need concrete use cases, timelines, budget/benchmarks, and a capable team, and must respect exclusions around manipulation or investment promotion. This is a separate SDF-direct application path, not an SCF Build track.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as current or dated, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Describes growth purpose, execution requirements, and separate SDF application."
+      "Describes growth purpose and execution requirements.",
+      "Separates the SDF application from the SCF Build track."
     ],
     "avoid": [
       "Do NOT say only already-live/post-launch projects qualify.",
@@ -60,18 +61,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-40 processes 3301/3304, 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (compound-predicate): split growth/execution from the separate SDF application and shortened the observation wording; no claim changed.",
+        "Live re-check 2026-08-27: https://stellar.org/grants-and-funding/marketing-grants is the current dedicated source for the dated observation.",
+        "Live re-check 2026-08-27: https://stellar.org/grants-and-funding/marketing-grants states the growth/user-acquisition purpose and execution requirements.",
+        "Live re-check 2026-08-27: https://stellar.org/grants-and-funding/marketing-grants provides a separate SDF Marketing Grant application outside the SCF Build track.",
+        "Sibling sweep 2026-08-27: q-scf-vs-sdf-enterprise-fund keeps Marketing Grants separate from SCF and introduces no contradiction."
       ],
       "rootCause": [
         "Eval-side eligibility drift.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-sdf-marketing-grant"

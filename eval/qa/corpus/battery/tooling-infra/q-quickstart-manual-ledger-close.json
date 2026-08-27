@@ -8,11 +8,11 @@
   "golden": {
     "answer": "For current Quickstart local mode, ordinary --local auto-closes roughly every second through testing acceleration. To control closes, start with --enable-core-manual-close (default false), which sets Core MANUAL_CLOSE, then call manualclose; each current call advances one ledger. A requested count parameter remains open in stellar-core issue #4040. Repeated closes advance sequence and close time but do not set an arbitrary timestamp. Use soroban-sdk ledger test utilities for direct unit-test timestamp/sequence mutation, and Quickstart for Core/RPC/TTL/archive integration. Pin the image, and use a fresh volume or explicit reconfiguration if initialized supervisor/service configuration conflicts with changed flags.",
     "keyFacts": [
-      "Ordinary Quickstart --local auto-closes roughly every second; --enable-core-manual-close is a separate opt-in flag that sets MANUAL_CLOSE.",
-      "Current manualclose advances one ledger per call; a count parameter remains open in stellar-core issue #4040.",
-      "Repeated closes advance ledger sequence and close time but do not set an arbitrary timestamp.",
-      "Use soroban-sdk test utilities for direct unit-test ledger mutation and Quickstart for Core/RPC/TTL/archive integration.",
-      "Changed startup flags or services may require a fresh persistent volume or explicit supervisor/service reconfiguration."
+      "States --local closes at ~1s and opt-in --enable-core-manual-close sets MANUAL_CLOSE.",
+      "States manualclose advances one ledger per call, with count support open in issue #4040.",
+      "States repeated closes advance sequence and close time, without an arbitrary timestamp.",
+      "Uses soroban-sdk test utilities for mutation and Quickstart for Core/RPC/TTL/archive.",
+      "Notes startup flag/service changes may need a fresh volume or supervisor reconfiguration."
     ],
     "avoid": [
       "A Quickstart manual-close endpoint can accelerate testnet or pubnet ledgers.",
@@ -287,13 +287,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/build/smart-contracts/testing",
         "https://github.com/stellar/quickstart",
         "https://github.com/stellar/stellar-core/issues/4040",
-        "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html"
+        "https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html",
+        "Structural re-form (negative-predicate): Shortened five long facts in place and removed the adjective-triggered comparison; truth unchanged",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/quickstart/main/local/core/etc/stellar-core.cfg — local mode enabled testing acceleration and mapped MANUAL_CLOSE from the startup placeholder.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-core/issues/4040 — issue #4040 still requested a count parameter whose default would preserve one-ledger behavior.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-core/master/docs/stellar-core_example.cfg — Core documented manual close independently from arbitrary close-time testing configuration.",
+        "Live re-check 2026-08-27: https://docs.rs/soroban-sdk/latest/soroban_sdk/testutils/trait.Ledger.html — testutils exposed direct sequence-number and timestamp setters.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/quickstart — Quickstart bundled local Core and RPC services for integration testing.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/quickstart/main/start — persistent initialization reused existing configuration and service files.",
+        "Sibling sweep 2026-08-27: grep manualclose|enable-core-manual-close|MANUAL_CLOSE|ARTIFICIALLY_ACCELERATE → q-sor-force-fast-archival-localnet, q-quickstart-manual-ledger-close; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "kaan local-fast-ledger-testing"

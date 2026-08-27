@@ -7,8 +7,11 @@
   "golden": {
     "answer": "Import `soroban_sdk::testutils::Events as _` and inspect `env.events().all()` immediately after the successful outer client call. The result contains successful events from that last top-level invocation, including nested calls, in emission order. For A → B → A, the combined list keeps that order. Use `filter_by_contract(&a)` when the assertion should contain only A's first and third events. Reading `all()` does not clear the list, but a later top-level client call replaces the observable result with that later invocation's events.",
     "keyFacts": [
-      "The last successful top-level invocation exposes its ordered events, including nested contract calls.",
-      "Use filter_by_contract for one contract and assert before a later top-level invocation replaces the observed list."
+      "The last successful top-level invocation exposes its events.",
+      "The ordered event list includes events from nested contract calls.",
+      "Use filter_by_contract for one contract.",
+      "Assert before a later top-level invocation.",
+      "A later top-level invocation replaces the observed list."
     ],
     "avoid": [
       "Do NOT claim env.events().all() accumulates events from every top-level client call in the test."
@@ -79,17 +82,25 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "solo://proj/49/scratchpad/784#event-assertion-ordering",
         "Sibling sweep: q-soroban-publish-events owns publication and RPC retention; q-sor-decode-hosterror-codes owns failed-call rollback and diagnostics. Neither owns nested-call ordering.",
         "Structural re-form (presentation-avoid): deleted the omission avoid item because an existing key fact already requires nested events in order; the trap target remains enforced.",
         "No live re-check was required because the avoid deletion does not change the required content.",
-        "Sibling sweep 2026-08-27: grep nested-call events|filter_by_contract|env.events().all → q-soroban-publish-events, q-sor-decode-hosterror-codes; no contradiction"
+        "Sibling sweep 2026-08-27: grep nested-call events|filter_by_contract|env.events().all → q-soroban-publish-events, q-sor-decode-hosterror-codes; no contradiction",
+        "Structural re-form (compound-predicate): split invocation scope, ordering, filtering, assertion timing, and replacement into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events — the current guide still scopes env.events().all() to the last successful invocation.",
+        "Live re-check 2026-08-27: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/tests/contract_event.rs — the SDK test still verifies ordered A, B, A nested-call events.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events — the current guide still documents filter_by_contract for one contract.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events — the current examples still assert events immediately after each client call.",
+        "Live re-check 2026-08-27: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk/src/_migrating/v25_event_testing.rs — the current migration example still defines per-invocation event replacement.",
+        "Sibling sweep 2026-08-27: grep nested-call events|filter_by_contract|env.events().all → q-soroban-publish-events, q-sor-decode-hosterror-codes, q-sor-require-auth-propagation, q-soroban-auth-delegation-p27; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-08 (event-testing coverage closure)"

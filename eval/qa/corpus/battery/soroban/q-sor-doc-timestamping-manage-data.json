@@ -9,9 +9,11 @@
   "golden": {
     "answer": "Hash the exact off-chain file bytes with SHA-256 and anchor only the 32-byte digest (plus a compact pointer if useful). Manage Data allows names and values up to 64 bytes; each entry is an account subentry that increases minimum balance, and accounts have a subentry limit. A Soroban registry is preferable for many documents, access control, version/revocation logic, or events; keep the full file off-chain/IPFS in either design.\n\nFor historical timestamp evidence, do **not** rely only on the account's current mutable DataEntry. Preserve or retrieve the successful Manage Data transaction, its result, ledger sequence/hash, and ledger close metadata/time, then verify the operation value and recompute the file digest. Current account state is a convenience check and may have been overwritten or deleted. Ledger close time is network-recorded evidence, not a trusted wall-clock notarization by itself. RPC/Horizon/indexer records are retrieval evidence; stronger cryptographic verification requires the ledger/header/transaction-set trust recipe described by the inclusion-proof boundary. MEMO_HASH is a transaction-level 32-byte alternative, not a persistent named entry.",
     "keyFacts": [
-      "Stores only a 32-byte digest and explains Manage Data size, reserve, and subentry constraints.",
-      "Requires successful historical transaction/result and ledger-close evidence rather than mutable current state alone.",
-      "Explains when Soroban or MEMO_HASH is appropriate and states the proof trust boundary."
+      "Stores only a 32-byte digest.",
+      "Explains Manage Data size, reserve, and subentry constraints.",
+      "Needs successful past tx/result, ledger-close evidence—not mutable current state alone.",
+      "Explains when Soroban or MEMO_HASH is appropriate.",
+      "States the proof trust boundary."
     ],
     "avoid": [
       "Do NOT store the full document or exceed 64-byte Manage Data values.",
@@ -77,18 +79,26 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-41 processes 3302/3305; 32/64-byte values accepted and 65-byte value rejected.",
         "Structural re-form (symmetric-caution): Added a narrow caution for the missing transaction-inclusion verification recipe; golden truth unchanged.",
         "Improvement finding read 2026-08-27: improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md; disputed claim: official Docs lack a complete transaction-inclusion verification recipe for historical ledger evidence.",
         "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-        "Sibling sweep 2026-08-27: grep Manage Data|LedgerCloseMeta|current DataEntry → q-pc-bucketlist-vs-merkle-inclusion-proof, q-sor-doc-timestamping-manage-data, q-ti-parse-raw-ledger-data; no contradiction"
+        "Sibling sweep 2026-08-27: grep Manage Data|LedgerCloseMeta|current DataEntry → q-pc-bucketlist-vs-merkle-inclusion-proof, q-sor-doc-timestamping-manage-data, q-ti-parse-raw-ledger-data; no contradiction",
+        "Structural re-form (compound-predicate): split the digest, Manage Data constraints, retrieval evidence, design choices, and trust boundary into five atomic facts; no claim changed.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#manage-data — confirmed the 32-byte digest fits in Manage Data's value field.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#manage-data and https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#subentries — confirmed Manage Data size, reserve, and subentry constraints.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations and https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers — confirmed successful transaction/result and ledger-close evidence rather than mutable current state alone.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#memo — confirmed MEMO_HASH as a transaction-level alternative; the golden answer keeps Soroban for richer registry needs.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers — confirmed the ledger evidence used by the stated proof trust boundary.",
+        "Sibling sweep 2026-08-27: grep Manage Data|MEMO_HASH|DataEntry|ledger-close → q-pc-memos-reference, q-protocol-ledger-close-time, q-pc-bucketlist-vs-merkle-inclusion-proof, q-ti-parse-raw-ledger-data; no contradiction"
       ],
       "rootCause": [
         "Eval-side current-state versus historical-evidence conflation.",
         "improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-doc-timestamping-manage-data"

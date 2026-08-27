@@ -5,7 +5,10 @@
   "golden": {
     "answer": "**Behavioral case — the correct answer is the behavior, not a verdict.** \"Best wallet\" is subjective\nand use-case-dependent, and it implicitly assumes a Stellar context. Raven should **clarify the\ncriteria before recommending** — developer vs end-user, mobile vs browser-extension, custodial vs\nself-custody, passkey/smart-wallet needs — and confirm this is a Stellar wallet question (not e.g.\nMetaMask). It should **not crown a single \"best\" wallet** as objective fact. If it offers options, it\nframes \"best\" as situational and notes several reputable Stellar wallets suited to different needs\n(e.g. Freighter, Lobstr, Hana, xBull). The directory lookup\n(`scout_projects` / `lumenloop_search_directory`) belongs to a *later* run, after the use-case is set.",
     "keyFacts": [
-      "Clarifies the criteria/use-case before recommending (developer vs end-user, mobile vs browser extension, custody, passkey/smart-wallet needs) and confirms it is a Stellar wallet question.",
+      "Clarifies the wallet use case before recommending.",
+      "Covers developer/end-user, mobile/browser-extension, and custody criteria.",
+      "Covers passkey and smart-wallet needs.",
+      "Confirms it is a Stellar wallet question.",
       "Does NOT declare a single 'best' wallet as an objective fact."
     ],
     "avoid": [
@@ -31,10 +34,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-21-user-safety-ambiguity-scam accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (compound-predicate): split use-case clarification, criteria, and Stellar-context requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/developer-tools/wallets — the current official page lists multiple wallets and integration choices, supporting use-case clarification before a recommendation.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/developer-tools/wallets — the current official page shows distinct end-user, developer, browser-extension, hardware, and integration choices.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — the current official page documents distinct passkey, policy, device, and signer needs.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/developer-tools/wallets — the current official page identifies the listed choices as Stellar ecosystem wallets.",
+        "Sibling sweep 2026-08-27: grep best wallet|wallet comparison|Freighter|LOBSTR|xBull|Hana → q-eco-stellar-wallets-list, q-tool-wallets-comparison, q-eco-freighter-wallet, q-eco-lobstr-wallet, q-eco-xbull-wallet, q-eco-hana-wallet-scf; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-edge-ambig-best-wallet"

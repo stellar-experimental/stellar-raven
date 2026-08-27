@@ -8,9 +8,11 @@
   "golden": {
     "answer": "As of July 11, 2026, SLP-0004 was Final. It raised Soroban limits including per-transaction instructions from 100 million to 400 million, write entries from 50 to 200, and footprint size from 100 to 200 entries; it also proposed roughly fourfold reductions for most non-refundable resource fees. SLP-0006 was still Draft. It proposes moving the existing overlay-layer block on three accounts associated with the February 22 YieldBlox V2 exploit into network configuration using CAP-0077. SLPs are Stellar Limits Proposals, not CAPs or SEPs, and SLP-0006's Draft text is not proof that its freeze configuration has been approved or applied.",
     "keyFacts": [
-      "As of July 11, 2026, SLP-0004 was Final and SLP-0006 was Draft.",
-      "SLP-0004 raised per-transaction instructions 100M to 400M, write entries 50 to 200, and footprint 100 to 200, while reducing most non-refundable fees about fourfold.",
-      "SLP-0006 proposes using CAP-0077 network configuration for three already overlay-blocked YieldBlox exploit accounts."
+      "Reports SLP status as of July 11, 2026: SLP-0004 Final, SLP-0006 Draft.",
+      "Lists SLP-0004 per-tx instructions 100M→400M, write entries 50→200, footprint 100→200.",
+      "Reports roughly fourfold cuts to most SLP-0004 non-refundable fees.",
+      "Describes SLP-0006's proposed CAP-0077 network configuration.",
+      "Names 3 already overlay-blocked YieldBlox exploit accounts."
     ],
     "avoid": [
       "Do NOT call either proposal a SEP or CAP.",
@@ -85,8 +87,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 N2 primary+blind (Solo 3417/3423)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
@@ -94,10 +96,18 @@
         "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md",
         "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
         "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
-        "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/"
+        "https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/",
+        "Structural re-form (compound-predicate): Folded both dated statuses under one verb, split limits from fees, and split the SLP-0006 mechanism from its three accounts; every status, number, name, and caveat is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md and https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — the current proposal files still show SLP-0004 Final and SLP-0006 Draft.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — the table still gives 100M→400M instructions, 50→200 write entries, and 100→200 footprint entries.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — the fee section still proposes roughly fourfold cuts to most non-refundable fees.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — SLP-0006 still proposes CAP-0077 network configuration.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — the proposal still names three already overlay-blocked YieldBlox exploit accounts.",
+        "Sibling sweep 2026-08-27: grep SLP-0004|SLP-0006|CAP-0077 → q-hist-yieldblox-v2-2026-exploit, q-pc-protocol-26-yardstick; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

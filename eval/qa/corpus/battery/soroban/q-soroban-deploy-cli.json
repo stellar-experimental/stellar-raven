@@ -9,10 +9,11 @@
   "golden": {
     "answer": "Soroban/Stellar smart contracts are written in **Rust** with `soroban-sdk`, built to a **Wasm** artifact, and deployed with the unified **Stellar CLI** (`stellar`, formerly `soroban-cli`). Canonical testnet flow:\n\n1. Build the contract: `stellar contract build`. Current output is under `target/wasm32v1-none/release/<contract>.wasm`.\n2. Create and fund a testnet identity: `stellar keys generate alice --network testnet --fund` (or create/fund by another Friendbot/Lab flow).\n3. Deploy with the canonical source-account flag: `stellar contract deploy --wasm target/wasm32v1-none/release/<contract>.wasm --source-account alice --network testnet` plus `--alias <name>` if desired. Constructor arguments go after the separator, e.g. `-- --admin alice`.\n4. Invoke with the returned `C...` contract ID: `stellar contract invoke --id <C...> --source-account alice --network testnet -- <fn> ...`.\n\n`--source` is still accepted by the CLI as an alias for `--source-account`, but canonical docs/help should show `--source-account`. Source of truth: current developers.stellar.org contract/CLI docs and `stellar contract deploy --help`.",
     "keyFacts": [
-      "Contracts are built to a Wasm artifact first with `stellar contract build`; current output is under `target/wasm32v1-none/release/`.",
-      "Deployment uses the Stellar CLI `stellar contract deploy` command with the built `.wasm` and the canonical `--source-account <identity>` flag.",
-      "A network must be specified/targeted as testnet (e.g. `--network testnet`) and a funded source identity/account used; current key generation is `stellar keys generate <name> --network testnet --fund`.",
-      "Deploy returns a `C...` contract ID used for subsequent `stellar contract invoke --id <C...> --source-account <identity> --network testnet -- <fn> ...` calls."
+      "Builds Wasm artifact first via stellar contract build into target/wasm32v1-none/release/.",
+      "Uses stellar contract deploy with .wasm, --source-account, and --network testnet.",
+      "Uses funded identity/account from stellar keys generate <name> --network testnet --fund.",
+      "Uses the returned C... ID via stellar contract invoke --id <C...>.",
+      "Gives the invoke tail: `--source-account <identity> --network testnet -- <fn> ...`."
     ],
     "avoid": [
       "Do NOT say Soroban contracts are written in Solidity or compiled to EVM bytecode.",
@@ -136,7 +137,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Stellar Raven production MCP probes 2026-07-07: official docs page reads for Hello World and Rust dialect; official docs searches for `--source-account` deploy/invoke examples; scout repo explanation for the `--source` alias.",
         "Local empirical execution 2026-07-07: `stellar --version` -> 27.0.0; `stellar contract deploy --help`; `stellar contract invoke --help`; `stellar keys generate --help`.",
@@ -146,13 +147,22 @@
         "Sibling sweep 2026-08-27: grep wasm32v1-none|wasm32-unknown-unknown|--source-account|--global → q-asset-deploy-sac-cli, q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction",
         "Structural re-form (presentation-avoid): Reworded two presentation demands as concrete false-content claims; the answer and facts are unchanged.",
         "No live re-check needed: the avoid edits preserve the existing deploy traps.",
-        "Sibling sweep 2026-08-27: grep soroban deploy|wasm32-unknown-unknown|--source-account → q-soroban-deploy-cli, q-sor-build-target-wasm32v1, q-tool-cli-testnet-identity-howto, q-asset-deploy-sac-cli, q-ti-cli-rust-windows-troubleshooting; no contradiction"
+        "Sibling sweep 2026-08-27: grep soroban deploy|wasm32-unknown-unknown|--source-account → q-soroban-deploy-cli, q-sor-build-target-wasm32v1, q-tool-cli-testnet-identity-howto, q-asset-deploy-sac-cli, q-ti-cli-rust-windows-troubleshooting; no contradiction",
+        "Structural re-form (compound-predicate): Recast four compound or long facts as five atomic command facts; all commands, flags, paths, and return values are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet — stellar contract build still creates target/wasm32v1-none/release/ Wasm output.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet — deployment still uses stellar contract deploy with .wasm, --source-account, and --network testnet.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet — Testnet setup still uses a funded identity from stellar keys generate <name> --network testnet --fund.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet — deploy still returns a C-prefixed contract ID for stellar contract invoke --id.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet — invoke still uses --source-account, --network testnet, and the -- function separator.",
+        "Sibling sweep 2026-08-27: grep stellar contract deploy|wasm32v1-none|source-account|stellar keys generate → q-asset-deploy-sac-cli, q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part1.md): restored --network testnet on the deploy command; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "improvements/resolved.json entry sk-001 — fixed upstream and refreshed locally at stellar-dev-skill commit 3d75a157f6fe; the mirrored playbook now uses wasm32v1-none, no --global, and canonical --source-account examples.",
         "Eval-side freshness/canonicalization drift: the deploy CLI golden answer lagged behind its own current notes and current CLI help by preserving an alias-focused example.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-deploy-cli"
