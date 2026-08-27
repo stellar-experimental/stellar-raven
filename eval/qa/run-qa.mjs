@@ -471,12 +471,21 @@ function isRequiredMcpServerFailure(failure) {
   );
 }
 
-async function preflight(port, { surface, searchTool, plainSurface }) {
+export async function probeLiveSurface(port, { surface, searchTool, plainSurface }) {
+  if (surface === "per-operation" && !plainSurface) {
+    throw new Error('probeLiveSurface requires plainSurface for the "per-operation" surface');
+  }
   const url = `http://localhost:${port}/mcp`;
   const post = async (body) => {
     const r = await fetch(url, {
       method: "POST",
-      headers: { "content-type": "application/json", accept: "application/json, text/event-stream" },
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+        // The synchronous agent can outlive Wrangler's pooled socket. Use a fresh
+        // connection for each probe; see research/audits/2026-08-27-qa-postflight-keepalive.md.
+        connection: "close"
+      },
       body: JSON.stringify(body)
     });
     const text = await r.text();
@@ -860,7 +869,7 @@ async function main() {
   // twice for one case and then collapses on every per-id join.
   assertRunPlan(cases.map((c) => c.id), { label: "run-qa" });
 
-  const preflightResult = await preflight(port, { surface, searchTool, plainSurface });
+  const preflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
   const surfacePin = assertExpectedSurface(preflightResult.metrics, argVal("--expect-sha256"), {
     label: "run-qa live MCP surface"
   });
@@ -980,7 +989,7 @@ async function main() {
   }
 
   try {
-    postflightResult = await preflight(port, { surface, searchTool, plainSurface });
+    postflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
     surfacePinAfter = assertExpectedSurface(postflightResult.metrics, argVal("--expect-sha256"), {
       label: "run-qa final live MCP surface"
     });
