@@ -77,6 +77,19 @@ import {
 import { verifySourceCases } from "./re-judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
+import { makeSearchResultProjector } from "./search-projection.mjs";
+import {
+  MCP_PROTOCOL_VERSION,
+  assertExpectedSurface,
+  parseMcpHttpPayload,
+  surfaceMetrics
+} from "../lib/mcp-surface.mjs";
+import {
+  assertNeutralAgentCwd,
+  assertRunPlan,
+  formatCompletenessNotice,
+  runCompleteness
+} from "../lib/harness-guards.mjs";
 import {
   PLAIN_SERVER_INSTRUCTIONS,
   loadPlainOperationSurface,
@@ -93,6 +106,8 @@ const AGENT_MODEL = "claude-sonnet-5";
 const MAX_TURNS = 24;
 const AGENT_TIMEOUT_MS = 10 * 60_000;
 const SURFACES = new Set(["search-execute", "per-operation"]);
+/** Repository root — the directory an answering agent must NOT be spawned in. */
+const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -274,10 +289,22 @@ export function sourceIdentity(serverRevision) {
   );
   const status = statusResult.status === 0 ? String(statusResult.stdout) : null;
   const fileSha256 = (name) => sha256(readFileSync(path.join(QA_DIR, name), "utf8"));
-  const qaImplementationRecords = readdirSync(QA_DIR)
-    .filter((name) => name.endsWith(".mjs"))
-    .sort()
-    .map((name) => `${name}\0${fileSha256(name)}`)
+  const qaImplementationFiles = [
+    ...readdirSync(QA_DIR)
+      .filter((name) => name.endsWith(".mjs"))
+      .map((name) => ({ label: name, filePath: path.join(QA_DIR, name) })),
+    {
+      label: "../lib/harness-guards.mjs",
+      filePath: path.resolve(QA_DIR, "../lib/harness-guards.mjs")
+    },
+    {
+      label: "../lib/mcp-surface.mjs",
+      filePath: path.resolve(QA_DIR, "../lib/mcp-surface.mjs")
+    }
+  ];
+  const qaImplementationRecords = qaImplementationFiles
+    .sort((a, b) => a.label.localeCompare(b.label))
+    .map(({ label, filePath }) => `${label}\0${sha256(readFileSync(filePath, "utf8"))}`)
     .join("\n");
   return {
     runnerRevision: gitValue(["rev-parse", "HEAD"]),
@@ -333,16 +360,15 @@ ${question}`;
 }
 
 /**
- * Run one answering agent ONCE and hand the raw spawn to the pure parser
- * (eval/qa/agent-result.mjs). There is deliberately no retry here: only a
- * `transport` failure is even eligible, and a provider safeguard must never be
- * re-issued in any form.
+ * Build the exact spawn for one answering agent. Exported so the neutral
+ * working directory is assertable without paying for a live agent call: the
+ * `cwd` is the whole of precondition P2 and it is invisible in the artifact.
  */
-function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, model }) {
-  const prompt = agentPrompt(question, { surface, searchTool });
-  const res = spawnSync(
-    "claude",
-    [
+export function buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cwd }) {
+  assertNeutralAgentCwd(cwd, { repoRoot: REPO_ROOT, label: "run-qa answering agent" });
+  return {
+    command: "claude",
+    args: [
       "-p",
       "--model",
       model,
@@ -357,13 +383,33 @@ function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, 
       "--max-turns",
       String(MAX_TURNS)
     ],
-    {
+    options: {
       input: prompt,
       encoding: "utf8",
       timeout: AGENT_TIMEOUT_MS,
-      maxBuffer: 64 * 1024 * 1024
+      maxBuffer: 64 * 1024 * 1024,
+      // The agent under test must not read this repository's AGENTS.md and
+      // CLAUDE.md — they describe the measurement grading it.
+      cwd
     }
-  );
+  };
+}
+
+/**
+ * Run one answering agent ONCE and hand the raw spawn to the pure parser
+ * (eval/qa/agent-result.mjs). There is deliberately no retry here: only a
+ * `transport` failure is even eligible, and a provider safeguard must never be
+ * re-issued in any form.
+ */
+function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, model, agentCwd }) {
+  const prompt = agentPrompt(question, { surface, searchTool });
+  const spawn = buildAgentSpawn({ prompt, allowedTools, mcpConfigPath, model, cwd: agentCwd });
+  const res = spawnSync(spawn.command, spawn.args, spawn.options);
+  const searchToolNames =
+    surface === "search-execute" ? [`mcp__raven__${searchTool}`] : [];
+  const isSearchTool = (tool) => searchToolNames.includes(String(tool));
+  const keepWholeResult = (tool) =>
+    tool.endsWith("execute") || operationIdFromPlainTool(String(tool).replace(/^mcp__[^_]+__/, "")) !== null;
   return parseAgentResult(
     {
       stdout: res.stdout ?? "",
@@ -380,27 +426,14 @@ function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, 
       // Bounded: the server already caps execute results at ~6k tokens via
       // truncateForModel (src/policy/truncate.ts). The per-operation surface's
       // manifest tools get the same whole treatment for the same reason.
-      keepWholeResult: (tool) =>
-        tool.endsWith("execute") || operationIdFromPlainTool(String(tool).replace(/^mcp__[^_]+__/, "")) !== null
+      keepWholeResult,
+      // The search QUERY is the routing behaviour under test, so it is never
+      // sliced. Its RESULT includes descriptions, signatures, and conditional
+      // response guidance, so it is projected instead of stored.
+      keepWholeInput: (tool) => keepWholeResult(tool) || isSearchTool(tool),
+      projectResult: makeSearchResultProjector(searchToolNames)
     }
   );
-}
-
-function surfaceMetrics(tools, instructions) {
-  const serializedTools = JSON.stringify({ tools });
-  const instructionsChars = String(instructions ?? "").length;
-  const advertisedWireChars = serializedTools.length + instructionsChars;
-  return {
-    toolCount: tools.length,
-    descriptionsChars: tools.reduce((sum, tool) => sum + String(tool.description ?? "").length, 0),
-    inputSchemaChars: tools.reduce((sum, tool) => sum + JSON.stringify(tool.inputSchema ?? {}).length, 0),
-    serializedToolsChars: serializedTools.length,
-    instructionsChars,
-    advertisedWireChars,
-    estimatedAdvertisedWireTokens: Math.ceil(advertisedWireChars / 4),
-    metricMeaning: "serialized MCP tool definitions plus server instructions; not consumed model context",
-    surfaceSha256: sha256(`${instructions ?? ""}\n${serializedTools}`)
-  };
 }
 
 async function preflight(port, { surface, searchTool, plainSurface }) {
@@ -413,14 +446,17 @@ async function preflight(port, { surface, searchTool, plainSurface }) {
     });
     const text = await r.text();
     if (!r.ok) throw new Error(`${url} → HTTP ${r.status}: ${text.slice(0, 200)}`);
-    const data = text.startsWith("event:") ? text.split("data: ")[1] : text;
-    return JSON.parse(data.trim().split("\n")[0]);
+    return parseMcpHttpPayload(text);
   };
   const initialized = await post({
     jsonrpc: "2.0",
     id: 1,
     method: "initialize",
-    params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "run-qa", version: "0" } }
+    params: {
+      protocolVersion: MCP_PROTOCOL_VERSION,
+      capabilities: {},
+      clientInfo: { name: "run-qa", version: "0" }
+    }
   });
   const list = await post({ jsonrpc: "2.0", id: 2, method: "tools/list", params: {} });
   const upstreamTools = list.result?.tools ?? [];
@@ -553,6 +589,16 @@ export async function judgeStoredResults(
     if (judgePanel > 1) meta.judgePanel = judgePanel;
     Object.assign(meta, costTotals(results.rows, judgeAttempts));
     Object.assign(meta, qaMeasurementMetrics(results.rows, identity.caseById));
+    // P4 for the two-phase path: the case snapshot is already guarded by
+    // verifySourceCases, so what stays checkable here is the judged
+    // denominator — a summary must never describe partly judged rows.
+    const completeness = runCompleteness({
+      expectedIds: results.rows.map((row) => row.id),
+      rows: results.rows,
+      judging: true
+    });
+    meta.completeness = completeness;
+    meta.aggregatesSuppressed = !completeness.aggregatesAllowed;
     meta.judgeStored = {
       judgedAt: new Date().toISOString(),
       // Keep the ORIGINAL collection-time hash across resumes; re-hashing the
@@ -566,7 +612,12 @@ export async function judgeStoredResults(
       toolVersion: "run-qa/judge-stored-v2"
     };
     results.meta = meta;
-    if (withSummary) results.summary = summarize(results.rows);
+    if (withSummary) {
+      results.summary = completeness.aggregatesAllowed ? summarize(results.rows) : null;
+      if (!completeness.aggregatesAllowed) {
+        log(formatCompletenessNotice(completeness, { label: "judge-stored" }));
+      }
+    }
     // Temp-then-rename: a truncate-in-place rewrite of the sole copy holding
     // every paid verdict is the loss this feature exists to prevent.
     const tmpPath = `${resultsPath}.tmp`;
@@ -662,6 +713,30 @@ export async function judgeStoredResults(
   };
 }
 
+/**
+ * Precondition P4: decide whether this run may report an aggregate at all.
+ *
+ * A lane that lost rows is incomplete, not smaller — but the rows it did buy
+ * are still evidence, so the artifact is always written. Only the aggregate is
+ * withheld, with the reason recorded next to it. Exported so the decision is
+ * testable without paying for a run.
+ */
+export function collectionAggregates(rows, cases, { judging }) {
+  const completeness = runCompleteness({
+    expectedIds: cases.map((c) => c.id),
+    rows,
+    judging
+  });
+  if (!completeness.aggregatesAllowed) {
+    return { completeness, summary: null, metrics: null };
+  }
+  return {
+    completeness,
+    summary: judging ? summarize(rows) : null,
+    metrics: qaMeasurementMetrics(judging ? rows : [], cases)
+  };
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const argVal = (flag) => {
@@ -710,13 +785,24 @@ async function main() {
   }
   const sampleN = argVal("--sample") ? Number(argVal("--sample")) : undefined;
   if (sampleN) cases = stratifiedSample(cases, sampleN);
+  // Pre-spend: an empty selection spawns nothing, and a duplicated id pays
+  // twice for one case and then collapses on every per-id join.
+  assertRunPlan(cases.map((c) => c.id), { label: "run-qa" });
 
   const preflightResult = await preflight(port, { surface, searchTool, plainSurface });
+  const surfacePin = assertExpectedSurface(preflightResult.metrics, argVal("--expect-sha256"), {
+    label: "run-qa live MCP surface"
+  });
   console.log(
     `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${cases.length} cases · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` panel ${judgePanel}` : ""}`}`
   );
 
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "qa-mcp-"));
+  // Precondition P2: the answering agent runs here, not in the repository.
+  // An empty directory outside the repo keeps AGENTS.md and CLAUDE.md off its
+  // project-instruction discovery walk.
+  const agentCwd = mkdtempSync(path.join(os.tmpdir(), "qa-agent-cwd-"));
+  assertNeutralAgentCwd(agentCwd, { repoRoot: REPO_ROOT, label: "run-qa answering agent" });
   const mcpConfigPath = path.join(tmpDir, "mcp.json");
   const upstreamUrl = `http://localhost:${port}/mcp`;
   const mcpServerConfig =
@@ -738,7 +824,7 @@ async function main() {
     for (const [i, c] of cases.entries()) {
       const t0 = Date.now();
       process.stdout.write(`[${i + 1}/${cases.length}] ${c.id} … `);
-      const run = runAgent(c.question, { surface, searchTool, allowedTools, mcpConfigPath, model });
+      const run = runAgent(c.question, { surface, searchTool, allowedTools, mcpConfigPath, model, agentCwd });
       const successfulAnswer = hasSuccessfulAnswer(run.answer, run.failure);
       const transcriptEvidence = successfulAnswer
         ? buildTranscriptEvidence({ ...c, candidateAnswer: run.answer, transcript: run.transcript })
@@ -791,10 +877,10 @@ async function main() {
     }
   } finally {
     rmSync(tmpDir, { recursive: true, force: true });
+    rmSync(agentCwd, { recursive: true, force: true });
   }
 
-  const summary = noJudge ? null : summarize(rows);
-  const metrics = noJudge ? qaMeasurementMetrics([], cases) : qaMeasurementMetrics(rows, cases);
+  const { completeness, summary, metrics } = collectionAggregates(rows, cases, { judging: !noJudge });
   const stampSuffix = surface === "per-operation" ? "perOperation" : `variant${variant}`;
   const stamp = `${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}-${stampSuffix}`;
   const resultsDir = path.join(QA_DIR, "results");
@@ -843,7 +929,13 @@ async function main() {
           sourceIdentity: collectionSourceIdentity,
           sourceIdentityGuard: collectionSourceIdentityGuard,
           toolSurface: preflightResult.metrics,
-          ...metrics,
+          surfacePin,
+          // Denominator facts, always present. `aggregatesSuppressed` is the
+          // one-field answer to "may I quote a percentage from this file?".
+          completeness,
+          aggregatesSuppressed: !completeness.aggregatesAllowed,
+          agentCwdNeutral: true,
+          ...(metrics ?? {}),
           ...costTotals(rows)
         },
         summary,
@@ -859,7 +951,9 @@ async function main() {
     );
   }
   console.log(`\nwrote ${outPath}`);
-  if (summary) {
+  if (!completeness.aggregatesAllowed) {
+    console.log("\n" + formatCompletenessNotice(completeness, { label: "run-qa collection" }));
+  } else if (summary) {
     console.log("\n" + formatSummaryTable(summary));
     console.log(formatMeasurementMetrics(metrics));
   }

@@ -8,7 +8,13 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import {
+  assertNeutralAgentCwd,
+  assertRunPlan,
+  formatCompletenessNotice,
+  runCompleteness
+} from "../lib/harness-guards.mjs";
 import {
   capSearchEvidence,
   compactHit,
@@ -77,7 +83,24 @@ function parseSearchResultText(text) {
   return payload.hits.slice(0, 8).map((hit, index) => compactHit(hit, index + 1));
 }
 
-function runAgent(c, { mcpConfigPath, model, effort }) {
+/**
+ * Spawn options for one discovery agent. Exported so the neutral working
+ * directory (precondition P2) is assertable without a paid agent call.
+ */
+export function buildDiscoverySpawnOptions({ input, cwd }) {
+  assertNeutralAgentCwd(cwd, { repoRoot: REPO, label: "discovery answering agent" });
+  return {
+    input,
+    encoding: "utf8",
+    timeout: TIMEOUT_MS,
+    maxBuffer: 32 * 1024 * 1024,
+    // The agent under test must not read this repository's AGENTS.md and
+    // CLAUDE.md — they describe the measurement grading it.
+    cwd
+  };
+}
+
+function runAgent(c, { mcpConfigPath, model, effort, agentCwd }) {
   const response = spawnSync(
     "claude",
     [
@@ -101,12 +124,7 @@ function runAgent(c, { mcpConfigPath, model, effort }) {
       "--dangerously-skip-permissions",
       "--no-session-persistence"
     ],
-    {
-      input: prompt(c.question),
-      encoding: "utf8",
-      timeout: TIMEOUT_MS,
-      maxBuffer: 32 * 1024 * 1024
-    }
+    buildDiscoverySpawnOptions({ input: prompt(c.question), cwd: agentCwd })
   );
   if (response.error) {
     return {
@@ -204,9 +222,14 @@ async function main() {
     const missing = ids.filter((id) => !cases.some((c) => c.id === id));
     if (missing.length) throw new Error(`--ids not found: ${missing.join(", ")}`);
   }
+  assertRunPlan(cases.map((c) => c.id), { label: "run-agent-discovery" });
   await preflightSearch(url, "agent-discovery-eval");
 
   const tempDir = mkdtempSync(path.join(os.tmpdir(), "agent-discovery-"));
+  // Precondition P2: an empty directory outside the repository, so the agent
+  // under test cannot read AGENTS.md/CLAUDE.md as project instructions.
+  const agentCwd = mkdtempSync(path.join(os.tmpdir(), "agent-discovery-cwd-"));
+  assertNeutralAgentCwd(agentCwd, { repoRoot: REPO, label: "discovery answering agent" });
   const mcpConfigPath = path.join(tempDir, "mcp.json");
   writeFileSync(mcpConfigPath, JSON.stringify({ mcpServers: { raven: { type: "http", url } } }));
   const rows = [];
@@ -214,7 +237,7 @@ async function main() {
     for (let runIndex = 1; runIndex <= repeat; runIndex += 1) {
       for (const [index, c] of cases.entries()) {
         process.stdout.write(`[run ${runIndex}/${repeat} ${index + 1}/${cases.length}] ${c.id} ... `);
-        const run = runAgent(c, { mcpConfigPath, model, effort });
+        const run = runAgent(c, { mcpConfigPath, model, effort, agentCwd });
         const grade = gradeAgentRow(c, run);
         rows.push({
           run: runIndex,
@@ -243,11 +266,21 @@ async function main() {
     }
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
+    rmSync(agentCwd, { recursive: true, force: true });
   }
 
+  // Precondition P4: a lane that lost rows is incomplete, not smaller. Rows
+  // are always written; only the per-run aggregates are withheld.
+  const completeness = runCompleteness({ expectedIds: cases.map((c) => c.id), rows, repeat });
   const summariesByRun = {};
-  for (let runIndex = 1; runIndex <= repeat; runIndex += 1) {
-    summariesByRun[runIndex] = summarizeDiscovery(rows.filter((row) => row.run === runIndex));
+  if (completeness.aggregatesAllowed) {
+    for (let runIndex = 1; runIndex <= repeat; runIndex += 1) {
+      const runRows = rows.filter((row) => row.run === runIndex);
+      const runCompleted = runCompleteness({ expectedIds: cases.map((c) => c.id), rows: runRows });
+      summariesByRun[runIndex] = runCompleted.aggregatesAllowed
+        ? summarizeDiscovery(runRows)
+        : null;
+    }
   }
   const stamp = resultStamp(`${runLabel}-agent`);
   const outPath = path.join(DIR, "results", `${stamp}.json`);
@@ -265,15 +298,24 @@ async function main() {
       runLabel,
       startedAt,
       finishedAt: new Date().toISOString(),
+      completeness,
+      aggregatesSuppressed: !completeness.aggregatesAllowed,
+      agentCwdNeutral: true,
       totalAgentCostUsd: rows.reduce((sum, row) => sum + (row.agent.costUsd ?? 0), 0)
     },
     summariesByRun,
     rows
   });
   console.log(`results -> ${outPath}`);
+  if (!completeness.aggregatesAllowed) {
+    console.log(formatCompletenessNotice(completeness, { label: "agent-discovery" }));
+  }
 }
 
-main().catch((error) => {
-  console.error(`run-agent-discovery failed: ${error.message}`);
-  process.exit(1);
-});
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) {
+  main().catch((error) => {
+    console.error(`run-agent-discovery failed: ${error.message}`);
+    process.exit(1);
+  });
+}

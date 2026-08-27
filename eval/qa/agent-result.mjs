@@ -16,8 +16,15 @@
  */
 import { createHash } from "node:crypto";
 
-/** Bump when the STORED outcome shape changes (run-qa stamps it in meta). */
-export const AGENT_RESULT_SCHEMA = "qa-agent-result-v1";
+/**
+ * Bump when the STORED outcome shape changes (run-qa stamps it in meta).
+ *
+ * v2 (2026-08-26): search calls keep their whole input and gain a bounded
+ * `resultProjection` (eval/qa/search-projection.mjs). v1 artifacts recorded a
+ * sliced query and no hits at all, so they are not comparable for any routing
+ * or coverage read — the readers refuse to mix the two rather than join them.
+ */
+export const AGENT_RESULT_SCHEMA = "qa-agent-result-v2";
 
 /**
  * Exclusive failure classes. `unclassified` is the deliberate default: an
@@ -445,11 +452,21 @@ function artifactOutcomes(transcript) {
  * @param {(toolName: string) => boolean} [options.keepWholeResult]
  *        Which tools' RESULTS are kept whole (default: execute). Downstream
  *        analyzers parse those bodies; other tools stay sliced.
+ * @param {(toolName: string) => boolean} [options.keepWholeInput]
+ *        Which tools' INPUTS are kept whole (default: same as keepWholeResult).
+ *        `search` needs its whole query even though its result is projected,
+ *        because the query IS the routing behaviour under test.
+ * @param {(toolName: string, resultText: string) => object|null} [options.projectResult]
+ *        Bounded evidence for a tool whose result is NOT kept whole. A
+ *        non-null return is stored as `resultProjection`. Used for `search`,
+ *        where the whole body is mostly prose but the ranking is the measurement.
  * @returns {object} the structured outcome (see AGENT_RESULT_SCHEMA).
  */
 export function parseAgentResult(spawn, options = {}) {
   const { stdout = "", stderr = "", status = null, signal = null, spawnError = null } = spawn ?? {};
   const keepWholeResult = options.keepWholeResult ?? ((tool) => tool.endsWith("execute"));
+  const keepWholeInput = options.keepWholeInput ?? keepWholeResult;
+  const projectResult = options.projectResult ?? (() => null);
   const promptChars = options.promptChars ?? null;
 
   const transcript = [];
@@ -486,7 +503,7 @@ export function parseAgentResult(spawn, options = {}) {
         transcript.push({
           toolUseId: block.id,
           tool: block.name,
-          input: keepWholeResult(String(block.name)) ? rawInput : rawInput.slice(0, TOOL_INPUT_SLICE_CHARS)
+          input: keepWholeInput(String(block.name)) ? rawInput : rawInput.slice(0, TOOL_INPUT_SLICE_CHARS)
         });
       }
     } else if (msg.type === "user" && Array.isArray(msg.message?.content)) {
@@ -499,7 +516,14 @@ export function parseAgentResult(spawn, options = {}) {
           : String(block.content ?? "");
         entry.resultChars = text.length;
         entry.isError = Boolean(block.is_error);
-        if (keepWholeResult(String(entry.tool))) entry.result = text;
+        if (keepWholeResult(String(entry.tool))) {
+          entry.result = text;
+        } else {
+          // Bounded evidence only, and only where a projector is wired. A
+          // tool with neither stays a name, an input and a size — as before.
+          const projection = projectResult(String(entry.tool), text);
+          if (projection) entry.resultProjection = projection;
+        }
       }
     } else if (msg.type === "result") {
       resultMessage = msg;

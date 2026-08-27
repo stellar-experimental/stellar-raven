@@ -255,6 +255,18 @@ curl -s -o /dev/null -w '%{http_code}' -X POST "http://localhost:${PORT}/mcp" \
 
 Expect `200`. A `401` here means the `--host localhost` gotcha above bit you.
 
+Before a QA launch, fingerprint the bound server. Record its `surfaceSha256` and the clean server
+commit. `run-qa.mjs` refuses collection without both values.
+
+```sh
+node eval/report-live-surface.mjs --port "$PORT" --json /tmp/raven-eval-surface.json
+SERVER_REVISION=<clean 40-character server commit>
+SURFACE_SHA256=<surfaceSha256 from the report>
+```
+
+The QA runner starts each answering agent in a neutral temporary directory. Confirm
+`meta.agentCwdNeutral: true` in every result artifact.
+
 ## Step 3 — run the instruments
 
 ```sh
@@ -262,14 +274,14 @@ Expect `200`. A `401` here means the `--host localhost` gotcha above bit you.
 npm run eval:routing -- --gate            # exit 1 on gate breach or changed denominator
 
 # QA headline (sample) — variant A = the shipped `search` tool
-node eval/qa/run-qa.mjs --variant A --sample 30 --port "$PORT"
+node eval/qa/run-qa.mjs --variant A --sample 30 --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256"
 # targeted smoke: --ids a,b,c ; collect-only: --no-judge ; overrides: --model/--judge-model
 
 # QA live-data lane (grounding behavior; graded behaviorally, never on snapshot values)
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port "$PORT"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256"
 
 # Opt-in digest supplement — run and report separately from the canonical lane
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port "$PORT"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256"
 
 # Plan regrade (offline, reads stored transcripts)
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json

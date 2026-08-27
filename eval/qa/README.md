@@ -145,9 +145,9 @@ npm run eval:qa:lint -- --since <ref>      # + gospel-change guard vs that ref (
 npm run eval:qa:register                   # --seed to baseline, --check for CI-style dry run
 
 # Run the battery (boot the server first; see below)
-node eval/qa/run-qa.mjs --variant A --sample 30 --port 8788
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port 8788
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port 8788
+node eval/qa/run-qa.mjs --variant A --sample 30 --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256>
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json    # plan regrade, offline
 ```
 
@@ -169,16 +169,17 @@ Server for live lanes: reuse a pane already running `npm run dev` when one exist
 `npx wrangler dev --port 8788 --host localhost` — `--host localhost` is REQUIRED (custom-domain
 routes otherwise rewrite request.url and every request 401s).
 
-`run-qa.mjs` flags: `--ids a,b,c` (smoke), `--no-judge` (collect only), `--model` /
-`--judge-model` (defaults `claude-sonnet-5`), `--cases <path>`, `--surface per-operation`
-(+`--server-revision`) for the isolated 50-operation architecture instrument
+`run-qa.mjs` requires `--server-revision <commit>` and `--expect-sha256 <surface-sha256>`.
+The first flag pins the source revision. The second flag pins the bound server before spending.
+Other flags include `--ids a,b,c`, `--no-judge`, `--model`, `--judge-model`, `--cases <path>`,
+and `--surface per-operation` for the isolated 50-operation architecture instrument
 (`compare-architecture-ab.mjs`). Variant A = the shipped `search` (ADR-0001); B requires a
 build exposing a code-shaped tool plus `--search-tool`. Results land in
 `eval/qa/results/<stamp>-variant<X>.json` (local-only): rows carry `truth.status`/`truth.asOf`
 for triage, the verdict's `{rubric, packVersion, promptSha256}` stamps, and the evidence-pack
 hash/size.
 
-**Stored agent outcome (`qa-agent-result-v1`, Solo todo 1566).** `eval/qa/agent-result.mjs` is the
+**Stored agent outcome (`qa-agent-result-v2`).** `eval/qa/agent-result.mjs` is the
 pure parser between one `claude -p --output-format stream-json` spawn and one row;
 `run-qa.mjs` and the saved stream fixtures in `test/fixtures/qa-agent-streams/` are its only
 adapters, so a failure shape can be pinned without spending. Each row carries exactly ONE
@@ -191,6 +192,13 @@ safeguard can no longer reach a judge as a candidate answer (the 2026-08-14
 transport blip). Rows also carry `agent.usage.{final,perTurn,perTurnAvailable}` and a bounded
 redacted `agent.stderr.{chars,sha256,excerpt}`. `meta.resultsSchema` stamps the shape;
 `--judge-stored` refuses a file collected under any other schema.
+
+Version 2 keeps the full search input and a bounded search-result projection. It also requires a
+neutral answering-agent working directory. Recollect version 1 artifacts before comparison or
+stored judging.
+
+The implementation hash covers `eval/qa/*.mjs`, `eval/lib/harness-guards.mjs`, and
+`eval/lib/mcp-surface.mjs`.
 
 **Redaction reads through terminal escapes.** CLI evidence is captured raw, so a credential name
 can arrive split by escape bytes that a terminal never shows — `API<OSC>…<BEL>_KEY=…` looks like

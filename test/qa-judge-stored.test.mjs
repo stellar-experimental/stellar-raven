@@ -716,8 +716,13 @@ describe("run-qa --judge-stored", () => {
     const identity = sourceIdentity(null);
     const qaImplementationRecords = readdirSync("eval/qa")
       .filter((name) => name.endsWith(".mjs"))
-      .sort()
-      .map((name) => `${name}\0${sha256(readFileSync(join("eval/qa", name), "utf8"))}`)
+      .map((name) => ({ label: name, filePath: join("eval/qa", name) }))
+      .concat([
+        { label: "../lib/harness-guards.mjs", filePath: "eval/lib/harness-guards.mjs" },
+        { label: "../lib/mcp-surface.mjs", filePath: "eval/lib/mcp-surface.mjs" }
+      ])
+      .sort((a, b) => a.label.localeCompare(b.label))
+      .map(({ label, filePath }) => `${label}\0${sha256(readFileSync(filePath, "utf8"))}`)
       .join("\n");
     expect(identity).toMatchObject({
       runnerFileSha256: sha256(readFileSync("eval/qa/run-qa.mjs", "utf8")),
