@@ -6,12 +6,12 @@ Measure the held response-guidance candidate against the merged control.
 Do not trim startup tool descriptions or server instructions.
 Reject the candidate after any verified treatment regression.
 
-## Current status — rebuilt qualification authorized and reviewed
+## Current status — rebuilt qualification passed
 
 The historical replacement qualification remains spent and non-comparable.
 Do not run the historical qualification command below.
 The user authorized one new treatment qualification on 2026-08-27.
-It permits one answering call, no judge call, and a `$1.75` per-call cap.
+It permitted one answering call, no judge call, and a `$1.75` per-call cap.
 The user's broader spend tolerance does not remove the method-specific cap.
 No A1, B1, judging, retry, or method rerun is authorized yet.
 
@@ -21,6 +21,8 @@ The treatment reapplies the held change as `3966a59e77f2034726088e16be9022707532
 The server and runner use the same treatment worktree and commit.
 The v5 method does not pair a runner from one commit with a server from another commit.
 The independent pre-spend review returned `LAUNCH-OK`.
+The replacement qualification then passed every machine and manual gate.
+No paid method remains authorized.
 
 ## Authorized v5 qualification
 
@@ -69,6 +71,45 @@ The maximum task spend after this call is `$1.9886646`.
 - Verdict: `LAUNCH-OK`.
 - The reviewer found no blocker and independently recomputed every material pin.
 - Its ten operator findings bind the launch and post-call inspection.
+
+### V5 replacement qualification result
+
+- Artifact: `eval/qa/results/2026-08-27T18-20-57-variantA.json` in
+  `sr-wt-connectors-v5-product`.
+- Artifact SHA-256: `1a93d19ed6dddeb0c1cda6f4e5e8175bcdaac9b1d38dc494a843d186b9230f6e`.
+- Result schema: `qa-agent-result-v4`.
+- Case: `q-edge-closed-world-builder-directory-miss`.
+- Qualification `casesSha256`:
+  `11c46002d8152a55fe558f298158792676e45b1dbe900abcfc131f9567c92680`.
+- Qualification `caseIdsSha256`:
+  `21e6b68f463f5164c94d7ec272dbbb8868cd9e5a86a8bae15cf249353e463a29`.
+- Rows: `1` expected and `1` collected.
+- Agent failures: `0`.
+- Reported answering costs: `1` expected and `1` collected.
+- Answering cost: `$0.1098888`.
+- Judge calls and judge cost: `0`.
+- Total counted task spend: `$0.3485534`.
+- Remaining authorized paid methods: `0`.
+- `raven` MCP status: `connected`.
+- Wrapper path and SHA-256 matched their pins.
+- Runner and server revisions both matched
+  `3966a59e77f2034726088e16be902270753211ae`.
+- Preflight and postflight source revisions matched.
+- Preflight and postflight treatment surfaces matched
+  `1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e`.
+- The source identity and server process guards matched.
+- The runner was clean.
+- The row was complete, comparable, and free of suppressed aggregates.
+- `comparabilityReasons` was empty, and `postflightError` was null.
+- The call used three tool calls: one catalog search and two Scout executes.
+- The first execute hit a serialization error before source projection.
+- The second execute repeated only `scout.getBuilders(q=Strupey)` with JSON serialization.
+- The successful result reported zero matches across both Scout builder indexes.
+- The answer stopped at Scout's builder-directory scope.
+- The answer did not call Lumenloop, research, A/V, docs, or another Scout operation.
+- The answer did not claim that `Strupey` has no broader ecosystem history.
+- Manual qualification verdict: `PASS`.
+- No command rerun or paid retry occurred.
 
 ### V5 replacement qualification command — authorized once
 
