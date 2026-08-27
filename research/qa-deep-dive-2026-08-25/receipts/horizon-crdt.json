@@ -1,0 +1,51 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://horizon.stellar.org/assets?asset_code=CRDT\u0026asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45\u0026cursor=\u0026limit=10\u0026order=asc"
+    },
+    "next": {
+      "href": "https://horizon.stellar.org/assets?asset_code=CRDT\u0026asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45\u0026cursor=CRDT_GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45_credit_alphanum4\u0026limit=10\u0026order=asc"
+    },
+    "prev": {
+      "href": "https://horizon.stellar.org/assets?asset_code=CRDT\u0026asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45\u0026cursor=CRDT_GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45_credit_alphanum4\u0026limit=10\u0026order=desc"
+    }
+  },
+  "_embedded": {
+    "records": [
+      {
+        "_links": {
+          "toml": {
+            "href": "https://stellar.wisdomtree.com/.well-known/stellar.toml"
+          }
+        },
+        "asset_type": "credit_alphanum4",
+        "asset_code": "CRDT",
+        "asset_issuer": "GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
+        "paging_token": "CRDT_GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45_credit_alphanum4",
+        "contract_id": "CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P",
+        "num_claimable_balances": 0,
+        "num_liquidity_pools": 0,
+        "num_contracts": 0,
+        "accounts": {
+          "authorized": 231,
+          "authorized_to_maintain_liabilities": 0,
+          "unauthorized": 1563
+        },
+        "claimable_balances_amount": "0.0000000",
+        "liquidity_pools_amount": "0.0000000",
+        "contracts_amount": "0.0000000",
+        "balances": {
+          "authorized": "36360.4196637",
+          "authorized_to_maintain_liabilities": "0.0000000",
+          "unauthorized": "0.0000000"
+        },
+        "flags": {
+          "auth_required": true,
+          "auth_revocable": true,
+          "auth_immutable": false,
+          "auth_clawback_enabled": true
+        }
+      }
+    ]
+  }
+}

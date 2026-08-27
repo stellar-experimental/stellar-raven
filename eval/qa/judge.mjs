@@ -44,6 +44,7 @@ import {
 } from "./evidence-pack.mjs";
 
 export const JUDGE_MODEL = "claude-sonnet-5";
+const PANEL_SCORES_WORST_FIRST = ["error", "wrong", "partial", "correct"];
 
 /**
  * Rubric version, stamped into every verdict. Bump whenever the judge prompt
@@ -85,6 +86,27 @@ export function isRetryableJudgeError(verdict) {
   return verdict?.score === "error" && typeof verdict.judgeScore !== "string";
 }
 
+/** A row is judgeable only when collection produced an answer without a failure. */
+export function hasSuccessfulAnswer(answer, failure) {
+  return Boolean(answer) && !failure;
+}
+
+/** Build the same no-answer verdict for inline, stored, and re-judge paths. */
+export function buildAgentErrorVerdict(failure) {
+  return {
+    score: "error",
+    coreAnswer: null,
+    missingFacts: [],
+    wrongClaims: [],
+    avoidMatches: [],
+    consistencyViolations: [],
+    rationale: failure ? `${failure.class}: ${failure.reason}` : "empty answer",
+    rubric: JUDGE_RUBRIC,
+    packVersion: PACK_VERSION,
+    promptSha256: null
+  };
+}
+
 export function summarizePaidJudgeCosts(verdicts) {
   const costs = verdicts
     .map((verdict) => verdict?.costUsd)
@@ -94,6 +116,64 @@ export function summarizePaidJudgeCosts(verdicts) {
     reportedCostCount: costs.length,
     missingCostCount: verdicts.length - costs.length,
     totalCostUsd: Number(costs.reduce((sum, cost) => sum + cost, 0).toFixed(12))
+  };
+}
+
+function unionStrings(verdicts, field) {
+  return [...new Set(verdicts.flatMap((verdict) =>
+    Array.isArray(verdict?.[field]) ? verdict[field].filter((item) => typeof item === "string") : []
+  ))];
+}
+
+function panelWinner(scores) {
+  const counts = new Map(PANEL_SCORES_WORST_FIRST.map((score) => [score, 0]));
+  for (const score of scores) counts.set(score, (counts.get(score) ?? 0) + 1);
+  const winningCount = Math.max(...counts.values());
+  const tiedScores = PANEL_SCORES_WORST_FIRST.filter((score) => counts.get(score) === winningCount);
+  return { score: tiedScores[0], tied: tiedScores.length > 1 };
+}
+
+/**
+ * Run an opt-in judge panel. Error votes abstain when any graded vote remains.
+ * A graded tie resolves to the worse grade, so the result never promotes an
+ * answer without a majority. The first winning verdict supplies all fields
+ * except the unioned missingFacts list.
+ */
+export async function judgeCasePanel(
+  input,
+  { panelSize = 1, judge = judgeCase, ...judgeOptions } = {}
+) {
+  if (![1, 2, 3].includes(panelSize)) {
+    throw new Error(`judge panel size must be 1, 2, or 3, got ${panelSize}`);
+  }
+  if (panelSize === 1) return judge(input, judgeOptions);
+
+  const verdicts = [];
+  for (let index = 0; index < panelSize; index++) {
+    verdicts.push(await judge(input, judgeOptions));
+  }
+  const scores = verdicts.map((verdict) =>
+    PANEL_SCORES_WORST_FIRST.includes(verdict?.score) ? verdict.score : "error"
+  );
+  const disagreement = new Set(scores).size > 1;
+  const gradedScores = scores.filter((score) => score !== "error");
+  const winner = panelWinner(gradedScores.length ? gradedScores : scores);
+  const representative = verdicts.find((verdict) => verdict?.score === winner.score) ?? verdicts[0];
+  const costs = verdicts.map((verdict) => verdict?.costUsd).filter((cost) => Number.isFinite(cost));
+
+  return {
+    ...representative,
+    missingFacts: unionStrings(verdicts, "missingFacts"),
+    ...(costs.length ? { costUsd: Number(costs.reduce((sum, cost) => sum + cost, 0).toFixed(12)) } : {}),
+    meta: {
+      ...(representative?.meta ?? {}),
+      panelSize,
+      panelDisagreement: disagreement,
+      panelTie: winner.tied,
+      panelReportedCostCount: costs.length,
+      panelMissingCostCount: panelSize - costs.length,
+      ...(disagreement ? { panelScores: scores } : {})
+    }
   };
 }
 
@@ -300,6 +380,7 @@ export async function judgeCase(
   };
   const consistency = checkVerdictConsistency({
     golden: input.golden,
+    tags: input.tags,
     verdict: { ...normalizedVerdict, missingFacts: verdict.missingFacts, wrongClaims: verdict.wrongClaims }
   });
   const checkedVerdict = consistency.ok

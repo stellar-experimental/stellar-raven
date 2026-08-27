@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "8226e7c290903525456cd7e7239db7b590eceb540ec4cbb2b6dd0634d197baed",
+  "corpusContentSha256": "c29ae61708dc564c0cceb19fe4ae34c444961c297449ebed3bcad5ef41dfa846",
   "counts": {
     "total": 499,
     "byCategory": {
@@ -10327,16 +10327,18 @@
         "lumenloop.search_directory"
       ],
       "golden": {
-        "answer": "On **2025-09-12**, WisdomTree launched the **WisdomTree Private Credit and Alternative Income Digital Fund**—fund ticker **CRDYX**, digital token ticker **CRDT**—on **Ethereum and Stellar**. It is an SEC-registered, non-diversified open-end mutual-fund share/digital representation tracking the Gapstow private-credit/alternative-income index before fees. It is not a stablecoin, Treasury MMF, bank deposit, FDIC-insured deposit, or SIPC-protected product.\n\nThe SEC prospectus makes WisdomTree Transfers' transfer-agent book-entry record determinative; blockchain records are supplementary and reconciled. Transfers require eligible/whitelisted wallets and the asset carries authorization/revocation/clawback controls. At launch the issuer described a $25 minimum, T+0 subscription, and T+2 redemption. Current Stellar metadata identifies issuer `GBWMQUGGGS5PC6CDJCZDCOVBA4LAJ6NYZVBFFXXCPRZCKW3ERQHJ2P45` and SAC `CBQDK4Y3EWQHI7S4EYYICV2GZ4ETC2376IKLZHH4MDCYXM5SWY2UK3P`; re-verify before integration. Preserve dated source roles where distributor wording differs rather than forcing one timeless label.",
+        "answer": "On **2025-09-12**, WisdomTree launched the **WisdomTree Private Credit and Alternative Income Digital Fund**—fund ticker **CRDYX**, digital token ticker **CRDT**—on **Ethereum and Stellar**. It is an SEC-registered, non-diversified open-end mutual-fund share/digital representation tracking the Gapstow private-credit/alternative-income index before fees. It is not a stablecoin, Treasury MMF, bank deposit, FDIC-insured deposit, or SIPC-protected product.\n\nThe SEC prospectus makes WisdomTree Transfers' transfer-agent book-entry record determinative; blockchain records are supplementary and reconciled. Transfers require eligible/whitelisted wallets and the asset carries authorization/revocation/clawback controls. At launch the issuer described a $25 minimum, T+0 subscription, and T+2 redemption. As of **2026-08-26**, Stellar metadata identifies issuer `GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45` and SAC `CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P`; re-verify before integration. Preserve dated source roles where distributor wording differs rather than forcing one timeless label.",
         "keyFacts": [
           "Identifies CRDYX/CRDT, private-credit/alternative-income nature, and Ethereum+Stellar launch date.",
-          "Explains transfer-agent record priority, eligibility/controls, and exact dated Stellar issuer/SAC."
+          "Explains transfer-agent record priority and wallet eligibility controls.",
+          "Names CRDT issuer `GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45`.",
+          "Names CRDT SAC `CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P`."
         ],
         "avoid": [
           "Do NOT call CRDT a stablecoin, Treasury/MMF, bank deposit, or Franklin/Ondo product.",
           "Do NOT imply blockchain records supersede the transfer-agent record or that public peer transfer proves a public secondary market."
         ],
-        "notes": "Entity-grounded → find_content_by_entity. CRDT = private credit, NOT Treasuries (precision trap). Verified against WisdomTree IR press release (Sep 12 2025) + Stellar case study. CRDT tracks the Gapstow GLACI index; ~$25 min; T+0 subscription / T+2 redemption; Stellar + Ethereum.\nAlso good if the answer: Notes accessibility via WisdomTree Connect / WisdomTree Prime with a low minimum investment (around $25).\nGolden cites: A dated source on WisdomTree CRDT's Stellar launch (Sep 2025).\nGT-18 CORRECTION 2026-07-10: issuer IR + SEC + issuer TOML are authoritative. Preserve legal/on-chain record hierarchy and dated role conflicts; do not require volatile holder/balance counts."
+        "notes": "Entity-grounded → find_content_by_entity. CRDT = private credit, NOT Treasuries (precision trap). Verified against WisdomTree IR press release (Sep 12 2025) + Stellar case study. CRDT tracks the Gapstow GLACI index; ~$25 min; T+0 subscription / T+2 redemption; Stellar + Ethereum.\nAlso good if the answer: Notes accessibility via WisdomTree Connect / WisdomTree Prime with a low minimum investment (around $25).\nGolden cites: A dated source on WisdomTree CRDT's Stellar launch (Sep 2025).\nGT-18 CORRECTION 2026-07-10: issuer IR + SEC + issuer TOML are authoritative. Preserve legal/on-chain record hierarchy and dated role conflicts; do not require volatile holder/balance counts.\nVerified on 2026-08-26: https://stellar.wisdomtree.com/.well-known/stellar.toml reported issuer `GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45`, and https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 reported the same issuer with SAC `CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P`.\nAccurately quoting the canonical source page is not a wrong claim while the filed upstream defect stands; grade caps at partial for that deployment-status dispute unless the answer contradicts the golden fact independently of the quoted page."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -10346,9 +10348,10 @@
       "truth": {
         "domain": "real-world",
         "status": "confirmed",
+        "asOf": "2026-08-26",
         "sources": [
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of",
             "note": "class inferred at migration"
           },
@@ -10358,14 +10361,19 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://stellar.wisdomtree.com/.well-known/stellar.toml",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
+            "note": "Live exact-issuer asset lookup"
           }
         ],
         "corroboration": [
           {
-            "claim": "WisdomTree launched the CRDYX fund with CRDT digital representation on Ethereum and Stellar on 2025-09-12; transfer-agent records are authoritative and the exact Stellar issuer/SAC are provider-confirmed.",
+            "claim": "WisdomTree launched the CRDYX fund with CRDT digital representation on Ethereum and Stellar on 2025-09-12; transfer-agent records are authoritative; the CRDT issuer is GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 and its SAC is CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P as of 2026-08-26.",
             "verdict": "confirmed",
             "evidence": [
               {
@@ -10375,10 +10383,10 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               },
               {
-                "class": "F",
-                "ref": "F: Horizon exact issuer/asset reads",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "C",
+                "ref": "https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
+                "observedAt": "2026-08-26",
+                "note": "Horizon returned the exact issuer and SAC."
               },
               {
                 "class": "D",
@@ -10390,14 +10398,17 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited launch/product core was correct but underspecified the legal instrument, authoritative record, eligibility/controls, exact Stellar identity, and dated role conflict. A Stellar case study was not sufficient issuer/legal proof.",
+          "date": "2026-08-26",
+          "by": "lane/corpus-goldens live CRDT verification and independent correction review",
           "evidence": [
-            "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
-            "Sibling sweep: q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, and q-hist-wisdomtree-rwa"
+            "https://stellar.wisdomtree.com/.well-known/stellar.toml fetched 2026-08-26T16:54:45Z: CRDT issuer GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45",
+            "https://horizon.stellar.org/assets?asset_code=CRDT&asset_issuer=GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 fetched 2026-08-26T16:54:46Z: issuer GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45; SAC CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P",
+            "Sibling sweep on 2026-08-26 checked q-defi-rwa-overview, q-rwa-projects-tokenizing-stellar, and q-hist-wisdomtree-rwa; none contains a conflicting CRDT issuer or SAC.",
+            "/tmp/raven-qadeep/review-judge.md Target 2 independently validated both corrected strkeys and found that both 2026-07-11 imported identifiers failed CRC16 validation."
           ],
           "rootCause": [
-            "A secondary case study and product shorthand omitted issuer/legal/on-chain record hierarchy.",
+            "Transcription error in the 2026-07-11 golden import produced invalid Stellar strkeys.",
+            ".agents/TODO.md#prevent-invalid-stellar-strkeys-in-golden-imports",
             "improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md",
             "improvements/lumenloop/ll-012-rwa-live-planned-recall.md"
           ]
@@ -18074,7 +18085,7 @@
           "Do NOT pin a categorical Horizon status or promise universal full history.",
           "Do NOT present the observed live result set as a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture; lifecycle polarity remains disputed."
+        "notes": "Core must_avoid: confusing Horizon/RPC roles + over-claiming a wholesale migration. This is the must_avoid the brief flagged.\nAlso good if the answer: Roughly half of Horizon's endpoints have no direct RPC equivalent (e.g. claimable balances, offers, liquidity pools, operations/{id}, effects), so Horizon or an indexer is still needed for those. | Both return XDR values inside JSON.\nGolden cites: developers.stellar.org Horizon overview, RPC overview, and the migrate-from-horizon-to-rpc guide.\nGT-49 CORRECTION 2026-07-11: weight durable architecture; lifecycle polarity remains disputed.\nAccurately quoting the canonical source page is not a wrong claim while the filed upstream defect stands; grade caps at partial for that dispute unless the answer contradicts the golden fact independently of the quoted page."
       },
       "tags": {
         "category": "tooling-infra",
@@ -18158,13 +18169,14 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-26",
+          "by": "lane/corpus-goldens symmetric-caution review",
           "evidence": [
             "Solo scratchpad 575 GT-49 primary 3335 and blind 3341; sibling q-protocol-horizon-vs-rpc already encoded the dispute.",
             "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; confirmed against improvements/stellar-docs/sd-017-horizon-lifecycle-wording-conflict.md on 2026-08-26"
           ],
           "rootCause": [
             "improvements/stellar-docs/sd-017-horizon-lifecycle-wording-conflict.md",
@@ -43083,7 +43095,7 @@
           "Do NOT hard-code Horizon's 200 limit as the RPC getEvents limit.",
           "Do NOT expect *Xdr names in xdrFormat=json or double-decode SDK-parsed XDR values."
         ],
-        "notes": "GT-53 CORRECTION 2026-07-11: getTransactions has stock 50/default and 200/max options, but providers may configure them. First-page startLedger is inclusive; continuation uses cursor without startLedger. The old Horizon-only premise is false.\nAlso good if the answer: Mentions that RPC/Horizon are not perfect substitutes and some Horizon endpoints/effects require XDR decoding or an indexer. | Recommends idempotent processing keyed by transaction hash/ledger/index to survive retries.\nGolden cites: Primary RPC pagination docs and Horizon-to-RPC migration/XDR docs.\nPreserve the 2026-07-03 sd-003/sd-004 correction: docs/search missed the RPC method page and docs call configurable defaults hardcoded. GT-53 adds exact cursor exclusivity and XDR/JSON types. Do not penalize provider-configurability precision or a dated live limit that differs from stock defaults. Per stellar-docs#2567, grade either the documented effective stock 50/200 cap or a dated source-level configurable-default qualifier as correct, provided the answer does not call the cap compile-time immutable or recommend raising it."
+        "notes": "GT-53 CORRECTION 2026-07-11: getTransactions has stock 50/default and 200/max options, but providers may configure them. First-page startLedger is inclusive; continuation uses cursor without startLedger. The old Horizon-only premise is false.\nAlso good if the answer: Mentions that RPC/Horizon are not perfect substitutes and some Horizon endpoints/effects require XDR decoding or an indexer. | Recommends idempotent processing keyed by transaction hash/ledger/index to survive retries.\nGolden cites: Primary RPC pagination docs and Horizon-to-RPC migration/XDR docs.\nPreserve the 2026-07-03 sd-003/sd-004 correction: docs/search missed the RPC method page and docs call configurable defaults hardcoded. GT-53 adds exact cursor exclusivity and XDR/JSON types. Do not penalize provider-configurability precision or a dated live limit that differs from stock defaults. Per stellar-docs#2567, grade either the documented effective stock 50/200 cap or a dated source-level configurable-default qualifier as correct, provided the answer does not call the cap compile-time immutable or recommend raising it.\nAccurately quoting the canonical source page is not a wrong claim while the filed upstream defect stands; grade caps at partial for that dispute unless the answer contradicts the golden fact independently of the quoted page."
       },
       "tags": {
         "category": "tooling-infra",
@@ -43215,8 +43227,8 @@
           }
         ],
         "verified": {
-          "date": "2026-07-14",
-          "by": "Golden-truth sweep plus independent Terra owner-policy and source verification",
+          "date": "2026-08-26",
+          "by": "lane/corpus-goldens symmetric-caution review",
           "evidence": [
             "eval/qa/results/2026-07-03T16-06-45-variantA.json (q-ti-rpc-gettransactions-pagination-xdr)",
             "Live 2026-07-03: developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — limit 'can range from 1 to 200 — an upper limit that is hardcoded in Stellar-RPC for performance reasons', default 50",
@@ -43225,7 +43237,8 @@
             "Live scout.searchResearch reachability for the official getTransactions and pagination pages, 2026-07-13",
             "Live scout.explainRepo answer grounded in stellar/stellar-rpc options.go and main.go for configurable 50/200 defaults, 2026-07-13",
             "solo://proj/49/scratchpad/truth-maintenance-20--627#fable-open-questions-audit",
-            "Independent Terra review 2026-07-14 rechecked stellar-docs#2567, current RPC pagination docs, and stellar-rpc configuration source; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review"
+            "Independent Terra review 2026-07-14 rechecked stellar-docs#2567, current RPC pagination docs, and stellar-rpc configuration source; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review",
+            "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; confirmed against improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md on 2026-08-26"
           ],
           "rootCause": [
             "improvements/stellar-docs/sd-003 (verified, awaiting upstream) — RPC method reference pages unindexed in Algolia; the upstream fix that would have prevented both the agent's and the golden author's error. When sd-003 is fixed-upstream, this override's facts should be re-verified against the then-indexed page but the correction itself remains valid.",

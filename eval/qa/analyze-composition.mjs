@@ -47,6 +47,8 @@ export const ADOPTION_RE = /\bcodemode\.skill(?:\.run|_run)\s*\(/;
  */
 const TRUNCATION_MARKER = "--- TRUNCATED ---";
 const SOURCE_BASIS_MARKER = "--- SOURCE BASIS ---";
+// Provenance sidecar on untruncated results; a non-loss boundary section.
+const SOURCE_METADATA_MARKER = "--- SOURCE METADATA ---";
 /** src/mcp/tools.ts appends logs after this marker; strip before JSON parsing. */
 const CONSOLE_MARKER = "\n\n--- console (";
 
@@ -67,8 +69,11 @@ export function tallyCallsArrays(resultText) {
   let body = String(resultText ?? "");
   const consoleAt = body.indexOf(CONSOLE_MARKER);
   if (consoleAt !== -1) body = body.slice(0, consoleAt);
-  const footerAt = body.indexOf(`\n${TRUNCATION_MARKER}`);
-  if (footerAt !== -1) body = body.slice(0, footerAt);
+  // Cut at the earliest host section of any kind so JSON.parse sees only result body.
+  const footerHits = [`\n${TRUNCATION_MARKER}`, `\n${SOURCE_BASIS_MARKER}`, `\n${SOURCE_METADATA_MARKER}`]
+    .map((marker) => body.indexOf(marker))
+    .filter((index) => index !== -1);
+  if (footerHits.length) body = body.slice(0, Math.min(...footerHits));
 
   const count = (ok, errorKind) => {
     tally.calls++;

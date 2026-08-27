@@ -13,6 +13,9 @@ const MIN_SUMMARY_CHARS = 180;
 const INITIAL_CLAIM_SNIPPET_CHARS = 520;
 const MIN_CLAIM_SNIPPET_CHARS = 260;
 const SOURCE_BASIS_MARKER = "\n--- SOURCE BASIS ---";
+// Host provenance sidecar on untruncated results (src/policy/source-basis.ts).
+// A loss boundary signal, unlike SOURCE BASIS: it does not set `truncated`.
+const SOURCE_METADATA_MARKER = "\n--- SOURCE METADATA ---";
 const LEGACY_TRUNCATION_MARKER = "\n--- TRUNCATED ---";
 const CONSOLE_MARKER = "\n\n--- console (";
 
@@ -263,9 +266,10 @@ function shouldIncludeTranscriptEvidence(tags = {}) {
 function splitExecuteResult(result) {
   const text = stripAnsi(result);
   const sourceBasisAt = text.indexOf(SOURCE_BASIS_MARKER);
+  const sourceMetadataAt = text.indexOf(SOURCE_METADATA_MARKER);
   const legacyTruncationAt = text.indexOf(LEGACY_TRUNCATION_MARKER);
   const consoleAt = text.indexOf(CONSOLE_MARKER);
-  const bodyEnd = [sourceBasisAt, legacyTruncationAt, consoleAt]
+  const bodyEnd = [sourceBasisAt, sourceMetadataAt, legacyTruncationAt, consoleAt]
     .filter((index) => index >= 0)
     .reduce((earliest, index) => Math.min(earliest, index), text.length);
   const sectionEnd = (start) => {
@@ -278,6 +282,8 @@ function splitExecuteResult(result) {
     body: text.slice(0, bodyEnd),
     sourceBasis:
       sourceBasisAt >= 0 ? text.slice(sourceBasisAt + 1, sectionEnd(sourceBasisAt)) : "",
+    sourceMetadata:
+      sourceMetadataAt >= 0 ? text.slice(sourceMetadataAt + 1, sectionEnd(sourceMetadataAt)) : "",
     legacyTruncation:
       legacyTruncationAt >= 0 ? text.slice(legacyTruncationAt + 1, sectionEnd(legacyTruncationAt)) : "",
     truncated: sourceBasisAt >= 0 || legacyTruncationAt >= 0
@@ -1002,6 +1008,18 @@ function truncationLine(entries) {
   return footers.join(" | ");
 }
 
+/** Host provenance sidecars are NOT loss boundaries; they carry as-of/matchMode. */
+function provenanceLine(entries) {
+  const footers = [];
+  for (const [index, entry] of entries.entries()) {
+    const { sourceMetadata } = splitExecuteResult(entry.result);
+    if (sourceMetadata) {
+      footers.push(`execute#${index + 1}: ${truncate(sanitizeUrlsInText(sourceMetadata), 400)}`);
+    }
+  }
+  return footers.join(" | ");
+}
+
 function serializePack({
   entries,
   ranked,
@@ -1061,6 +1079,8 @@ function serializePack({
   }
   const truncation = truncationLine(entries);
   if (truncation) lines.push(`truncation: ${truncation}`);
+  const provenance = provenanceLine(entries);
+  if (provenance) lines.push(`provenance: ${provenance}`);
   return lines.join("\n");
 }
 

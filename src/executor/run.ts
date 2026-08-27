@@ -40,10 +40,12 @@ import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
 import { truncateForModel, modelBoundaryMaxTokensFromEnv } from "../policy/truncate.ts";
 import {
   buildSourceBasisManifest,
+  escapeSourceManifestMarkerCollisions,
   sanitizeCanonicalUrls,
   sourceBasisShapeFromTruncation,
   type BuildSourceBasisManifestInput,
-  type SourceBasisArtifact
+  type SourceBasisArtifact,
+  type SourceMetadataEntry
 } from "../policy/source-basis.ts";
 import { shapeLogs } from "./shape-logs.ts";
 import { put as putArtifact, type ArtifactMime } from "../artifacts/store.ts";
@@ -176,6 +178,12 @@ function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperat
   if (candidateEvidence > 0) summary.candidateEvidence = candidateEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
   return summary;
+}
+
+function sourceMetadataFromOperationLedger(calls: readonly OpLedgerCall[]): SourceMetadataEntry[] {
+  return calls.flatMap((call) =>
+    (call.sourceMetadata ?? []).map((field) => ({ op: call.op, ...field }))
+  );
 }
 
 function evidenceRecoveryHint(
@@ -422,78 +430,88 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     const result = truncateForModel(redactedResult, modelBoundaryMaxTokens, {
       skillSectionAdvice: skillRead
     });
-    let text = result.text;
+    let text = escapeSourceManifestMarkerCollisions(result.text);
     let sourceBasis: BuildSourceBasisManifestInput | undefined;
-    if (result.truncated) {
+    const sourceMetadata = sourceMetadataFromOperationLedger(opLedger);
+    if (result.truncated || sourceMetadata.length > 0) {
       let artifact: SourceBasisArtifact = { state: "absent", reason: "unavailable" };
-      const serialized = serializedResult(redactedResult);
-      const writeStart = Date.now();
-      if (context.artifactOwner) {
-        try {
-          const written = await putArtifact(env.ARTIFACTS, context.artifactOwner, {
-            body: serialized.body,
-            mime: serialized.mime,
-            requestId: context.requestId,
-            rayId: context.rayId,
-            capTokens: result.maxTokens,
-            originalChars: result.originalChars,
-            opLedger: opLedger.map((call) => ({
-              op: call.op,
-              status: call.outcome,
-              ms: call.ms
-            })),
-            catalogGeneratedAt: catalog.generatedAt
-          });
-          if (written.ok) {
-            artifact = {
-              state: "available",
-              id: written.artifact.id,
-              sha256: written.artifact.sha256,
-              bytes: written.artifact.bytes,
-              expiresAt: written.artifact.expiresAt
-            };
-            await logArtifactWrite({
-              owner: context.artifactOwner,
-              bytes: written.artifact.bytes,
-              ms: Date.now() - writeStart,
-              ok: true
+      if (result.truncated) {
+        const serialized = serializedResult(redactedResult);
+        const writeStart = Date.now();
+        if (context.artifactOwner) {
+          try {
+            const written = await putArtifact(env.ARTIFACTS, context.artifactOwner, {
+              body: serialized.body,
+              mime: serialized.mime,
+              requestId: context.requestId,
+              rayId: context.rayId,
+              capTokens: result.maxTokens,
+              originalChars: result.originalChars,
+              opLedger: opLedger.map((call) => ({
+                op: call.op,
+                status: call.outcome,
+                ms: call.ms
+              })),
+              catalogGeneratedAt: catalog.generatedAt
             });
-          } else {
-            artifact = { state: "skipped", reason: written.skipped };
+            if (written.ok) {
+              artifact = {
+                state: "available",
+                id: written.artifact.id,
+                sha256: written.artifact.sha256,
+                bytes: written.artifact.bytes,
+                expiresAt: written.artifact.expiresAt
+              };
+              await logArtifactWrite({
+                owner: context.artifactOwner,
+                bytes: written.artifact.bytes,
+                ms: Date.now() - writeStart,
+                ok: true
+              });
+            } else {
+              artifact = { state: "skipped", reason: written.skipped };
+              await logArtifactWrite({
+                owner: context.artifactOwner,
+                bytes: written.bytes,
+                ms: Date.now() - writeStart,
+                ok: false,
+                skipped: written.skipped
+              });
+            }
+          } catch (e) {
             await logArtifactWrite({
               owner: context.artifactOwner,
-              bytes: written.bytes,
+              bytes: serialized.body.length,
               ms: Date.now() - writeStart,
               ok: false,
-              skipped: written.skipped
+              errorName: e instanceof Error ? e.name : "error"
             });
+            artifact = { state: "absent", reason: "unavailable" };
           }
-        } catch (e) {
+        } else {
           await logArtifactWrite({
-            owner: context.artifactOwner,
             bytes: serialized.body.length,
             ms: Date.now() - writeStart,
             ok: false,
-            errorName: e instanceof Error ? e.name : "error"
+            skipped: "unavailable"
           });
-          artifact = { state: "absent", reason: "unavailable" };
         }
       } else {
-        await logArtifactWrite({
-          bytes: serialized.body.length,
-          ms: Date.now() - writeStart,
-          ok: false,
-          skipped: "unavailable"
-        });
+        artifact = { state: "absent", reason: "not-truncated" };
       }
       sourceBasis = {
         shape: sourceBasisShapeFromTruncation(redactedResult, result),
         calls: opLedger,
+        sourceMetadata,
         canonicalUrls: sanitizeCanonicalUrls(collectCanonicalUrlCandidates(redactedResult)),
         artifact,
-        skillSectionAdvice: skillRead
+        skillSectionAdvice: skillRead,
+        truncated: result.truncated
       };
-      text = `${result.text.slice(0, result.maxChars)}\n${buildSourceBasisManifest(sourceBasis)}`;
+      const visibleResult = result.truncated
+        ? escapeSourceManifestMarkerCollisions(result.text.slice(0, result.maxChars))
+        : text;
+      text = `${visibleResult}\n${buildSourceBasisManifest(sourceBasis)}`;
     }
     return {
       ok: true,
