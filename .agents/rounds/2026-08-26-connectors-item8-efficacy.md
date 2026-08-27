@@ -365,7 +365,7 @@ The required first-pair stop fired. B1-2, A2, and all judging were cancelled bef
 
 ## Preservation revalidation — 2026-08-27
 
-Checked commit: `67b41b5`.
+Core gate commit: `67b41b5`. Full-tree secret-scan commit: `49692d3`.
 
 Each command below returned exit code `0`. The text after the arrow is the exact observed terminal summary.
 
@@ -380,6 +380,7 @@ Each command below returned exit code `0`. The text after the arrow is the exact
 - `npm run eval:qa:compile` → `cases.json (499 cases; sha256 ddeddcffdca21ceb7d77a278433bdf11556cc9c8310243fd988a49f3cf499552)` and `sample.json (30 cases)`.
 - `npm run eval:qa:lint -- --stale` → `[lint-corpus] 0 error(s), 475 warning(s)`.
 - `npm run eval:routing -- --gate` → `GATE PASS` against the committed `2026-08-27T16:40:00.000Z` baseline.
+- `npm run secrets:scan -- --tree` → `secret-scan: clean (+ gitleaks) — scanned all tracked files.`
 
 The generated files remained byte-identical. `git status --short` returned no output after revalidation.
 
