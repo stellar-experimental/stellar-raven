@@ -28,6 +28,8 @@ The replacement qualification then passed every machine and manual gate.
 The first pair ran treatment A1 and then control B1.
 Manual review found verified treatment regressions, so the candidate is rejected.
 No replication, judging, retry, or other paid method is authorized.
+The round closeout merged through PR `#77`.
+Scout finding `sls-076` is reported upstream as issue `#1055`.
 
 ## Authorized v5 qualification
 
@@ -292,6 +294,21 @@ node eval/qa/run-qa.mjs --variant A \
 - The reviewer confirmed the ledger, finding ID, evidence, owner, and recommendation.
 - The reviewer approved standard filing after the finding reaches `main`.
 - The review made no paid call.
+
+### V5 merge and upstream filing
+
+- Closeout PR: `https://github.com/stellar-experimental/stellar-raven/pull/77`.
+- Merge commit: `23dd74375b06a3b0358a22a5cddb7e19878cf806`.
+- CI tests, secrets, CodeQL, and Copilot review passed.
+- Upstream finding: `sls-076`.
+- Intake owner: `Stellar-Light/stellarlight`.
+- Upstream issue: `https://github.com/Stellar-Light/stellarlight/issues/1055`.
+- Issue state after readback: `OPEN`.
+- The readback confirmed the title, body, author, marker, and source links.
+- The issue includes immutable source snapshot `c9d7e8657262c1e3c7e7c4d8e0f86588c8aadb4f`.
+- Finding status: `reported-upstream`.
+- Base and live improvements lint passed with `69` findings.
+- No other first-pair result needs an upstream finding.
 
 ### V5 replacement qualification command — spent once
 

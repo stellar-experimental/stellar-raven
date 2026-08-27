@@ -1,7 +1,7 @@
 ---
 id: sls-076
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-27
 upstreamTitle: Do not label spelling neighbors as strict project matches
 evidence:
@@ -14,6 +14,7 @@ evidence:
   - eval/qa/results/2026-08-27T18-50-04-variantA.json in the treatment worktree
   - eval/qa/results/2026-08-27T18-59-44-variantA.json in the control worktree
   - .agents/rounds/2026-08-27-connectors-description-ab.md
+  - upstream issue filed 2026-08-27: https://github.com/Stellar-Light/stellarlight/issues/1055
 ---
 
 ## Finding
