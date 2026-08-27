@@ -193,6 +193,32 @@ node eval/qa/run-qa.mjs --variant A \
   --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
 ```
 
+### V5 treatment A1 checkpoint
+
+- Artifact: `eval/qa/results/2026-08-27T18-50-04-variantA.json` in
+  `sr-wt-connectors-v5-product`.
+- Artifact SHA-256: `fc2cc5424a45a35c43f96ee7a76349970eb068876f18fe6904e82654cd233665`.
+- Preflight surface report: `/tmp/raven-connectors-v5-a1-preflight-surface.json`.
+- Preflight report SHA-256: `ba0477d8f5b42b2c3efa3bcb89e1bc07dc7baa65814171840bb8d3ca7eac9418`.
+- Rows: `8` expected and `8` collected.
+- Agent failures: `0`.
+- Reported answering costs: `8` expected and `8` collected.
+- A1 answering cost: `$2.2461662`.
+- Judge calls and judge cost: `0`.
+- Counted task spend after A1: `$2.5947196`.
+- Remaining authorized calls: the eight B1 answering calls only.
+- Remaining first-pair cap: `$25.7538338`.
+- All eight rows reported the `raven` MCP server as `connected`.
+- The wrapper, eight-case hashes, runner, server, and treatment surface matched their pins.
+- Preflight and postflight source revisions and surfaces matched.
+- The source identity and server process guards matched.
+- The runner remained clean.
+- The artifact is complete and comparable.
+- `comparabilityReasons` is empty, and `postflightError` is null.
+- No A1 retry or judge call occurred.
+- Machine checkpoint verdict: `PASS`.
+- Manual paired review remains pending until B1 exists.
+
 ### V5 replacement qualification command — spent once
 
 ```sh
