@@ -30,7 +30,7 @@ Total findings: 69
 | sls-073 | The Stellar Light vet-idea endpoint returns an empty report.competitors.projects array for records that the directory does hold             | reported-upstream | 2026-08-21 | 0           |
 | sls-074 | Scout reports V-SOR-APP-VUL-003 as an exact miss. The Veridise V2.1 report contains that exact identifier in Appendix A.2.2 for Denial of…  | reported-upstream | 2026-08-25 | 0           |
 | sls-075 | Scout OpenAPI 1.8.87 adds GET /api/projects/resolve, but its core nested response objects are opaque. subject, current, and evidence…       | reported-upstream | 2026-08-25 | 0           |
-| sls-076 | scout.searchProjects({ q: "Strupey" }) returns Stroopy.AI as a strict keyword match. The response says that all keywords matched            | verified          | 2026-08-27 | 0           |
+| sls-076 | scout.searchProjects({ q: "Strupey" }) returns Stroopy.AI as a strict keyword match. The response says that all keywords matched            | reported-upstream | 2026-08-27 | 0           |
 
 ## stellar-docs
 
