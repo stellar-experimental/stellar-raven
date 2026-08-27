@@ -282,6 +282,17 @@ node eval/qa/run-qa.mjs --variant A \
 | Escrow greenfield design | Prior art, but frozen dispute lifecycle | Prior art, no global freeze | Treatment regression |
 | Indexer greenfield design | No Scout prior-art execute | Scout prior-art execute | Treatment regression |
 
+### V5 first-pair closeout review
+
+- Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed commit: `c9d7e8657262c1e3c7e7c4d8e0f86588c8aadb4f`.
+- Report: `/tmp/connectors-v5-first-pair-closeout-review.md`.
+- Report SHA-256: `6bace3c29f676813d34597e7fba20862f73cd1bf6ec804eb917deb1d0c68e1fb`.
+- Verdict: `CLOSEOUT-OK`.
+- The reviewer confirmed the ledger, finding ID, evidence, owner, and recommendation.
+- The reviewer approved standard filing after the finding reaches `main`.
+- The review made no paid call.
+
 ### V5 replacement qualification command — spent once
 
 ```sh
