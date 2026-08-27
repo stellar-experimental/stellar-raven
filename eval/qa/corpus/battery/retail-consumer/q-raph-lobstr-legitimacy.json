@@ -9,8 +9,9 @@
     "keyFacts": [
       "Identifies LOBSTR as an active Ultra Stellar third-party wallet.",
       "Dates the LOBSTR activity assessment to an observation date.",
-      "Attributes local/on-device storage to current LOBSTR documentation and preserves the pre-2020 unmigrated-account exception.",
-      "States that recovery credentials must never be shared and cannot be reconstructed by support according to current documentation."
+      "Attributes local/on-device storage to current LOBSTR documentation.",
+      "Preserves the pre-2020 unmigrated-account exception.",
+      "Requires credentials to remain unshared and support-unrecoverable per current LOBSTR docs."
     ],
     "avoid": [
       "Do NOT say a wallet provider or SDF can recover a secret phrase you lost.",
@@ -86,7 +87,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
@@ -99,11 +100,17 @@
         "Structural re-form (snapshot-date): Split the wallet identity from its snapshot date; truth is unchanged.",
         "Live re-check 2026-08-27: https://ultrastellar.com/ — Ultra Stellar listed LOBSTR as its web and mobile wallet product.",
         "Live re-check 2026-08-27: https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892 — Apple listed the active LOBSTR app and ULTRA STELLAR, LLC as developer.",
-        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar → q-defi-aquarius-what-is, q-defi-soroswap-vs-stellarx, q-eco-dex-saturation, q-eco-freighter-wallet, q-eco-lobstr-wallet, q-eco-xbull-wallet, q-raph-lobstr-legitimacy; no contradiction"
+        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar → q-defi-aquarius-what-is, q-defi-soroswap-vs-stellarx, q-eco-dex-saturation, q-eco-freighter-wallet, q-eco-lobstr-wallet, q-eco-xbull-wallet, q-raph-lobstr-legitimacy; no contradiction",
+        "Structural re-form (compound-predicate): Split current storage documentation, the pre-2020 exception, and recovery-credential handling into atomic facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — described on-device access and local storage of downloaded encrypted keys.",
+        "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000001273 — preserved the pre-2020 unmigrated wallet-key storage exception.",
+        "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — required credentials to stay unshared and stated LOBSTR lacks access to them.",
+        "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|recovery phrase → q-eco-lobstr-wallet, q-defi-aquarius-what-is, q-raph-lobstr-legitimacy; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raph wallet-lobstr-legitimacy-recovery-storage"

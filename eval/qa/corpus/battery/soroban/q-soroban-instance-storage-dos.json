@@ -7,8 +7,10 @@
   "golden": {
     "answer": "Instance storage is part of the contract-instance ledger entry and is loaded with the contract, so unbounded per-user data makes every invocation read and deserialize more bytes. Operations can eventually hit fee, resource, or ledger-entry-size limits; an over-limit write fails and the prior valid state remains, but application paths that require further growth can become unavailable—a real DoS risk, not an automatic permanent brick. Keep Instance storage small and fixed. Put per-user/unbounded data in separate Persistent keys and shard any growing collection.",
     "keyFacts": [
-      "Unbounded Instance storage increases the cost of every invocation and can make growth-dependent paths fail.",
-      "Over-limit writes are rejected with prior valid state preserved; use separate Persistent keys/sharding."
+      "Unbounded Instance storage raises every invocation's cost.",
+      "Growth-dependent paths can fail at resource or entry limits.",
+      "Over-limit writes fail atomically with prior valid state preserved.",
+      "Use Persistent keys or sharding for unbounded data."
     ],
     "avoid": [
       "Do NOT call the first over-limit write an irreversible permanent brick.",
@@ -68,13 +70,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited golden correctly warned against unbounded Instance storage but falsely made hitting the entry limit an irreversible permanent brick. Over-limit writes fail atomically and preserve the prior valid state.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329 independently rejected the permanent-brick claim; blind narrowed the exact failure semantics."
+        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329 independently rejected the permanent-brick claim; blind narrowed the exact failure semantics.",
+        "Structural re-form (negative-predicate): split two long compound facts into four atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/storage/storage-strategies — Instance storage still loads with contract execution, so unbounded growth raises invocation cost",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/storage/storage-strategies — unbounded loops and oversized Instance entries can still fail at resource or entry limits",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-05.md — transaction execution still writes modified ledger entries after successful execution, preserving prior state on failure",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage — Persistent storage remains the documented choice for independently managed unbounded data",
+        "Sibling sweep 2026-08-27: grep Instance storage|Persistent keys|entry limit|unbounded collection → q-soroban-storage-types, q-sor-persistent-unbounded-collection-cap, q-soroban-vuln-classes; no contradiction"
       ],
       "rootCause": [
-        "Eval-side extrapolation turned a resource/availability risk into an unsupported irreversible-state claim."
+        "Eval-side extrapolation turned a resource/availability risk into an unsupported irreversible-state claim.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-instance-storage-dos"

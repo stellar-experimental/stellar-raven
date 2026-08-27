@@ -7,12 +7,12 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSCF v7 launched in **January 2026** around SCF #41. It introduced three Build tracks—Open, Integration, and RFP—plus a unified interest/referral entry, Instawards as the successor/evolution of Kickstart, and stronger mainnet/UX-readiness expectations. For payments, the launch blog's 'four-tranche' shorthand should be reconciled with current detailed mechanics: **four payments**, consisting of 10% acceptance plus **three deliverable tranches** at 20%, 30%, and 40%. v7 also described multiple post-launch growth pathways; it did **not** create one unified 'Growth track.' Current Instaward, Growth Hack, Liquidity, Marketing, and other program rules must be checked separately rather than inferred from the launch blog.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "States four payments/three deliverable tranches.",
-      "Rejects a unified Growth track."
+      "States four payments/three deliverable tranches."
     ],
     "avoid": [
+      "Do NOT substitute an unsupported memory claim for source-supported content.",
       "Do NOT call acceptance a fourth deliverable milestone.",
       "Do NOT merge distinct post-launch/supporting programs into one Growth track or freeze launch shorthand as current terms.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
@@ -74,18 +74,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-36/39/40, 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (negative-predicate): Shortened one source rule and moved the unified Growth trap to avoid; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — showed source-dated v7 content.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — described plural post-launch growth pathways, not one unified Growth track.",
+        "Sibling sweep 2026-08-27: SCF v7|Growth track|four payments|three deliverable → q-scf-v7-changes, q-edge-scf-v7-centralization-myths, q-scf-ambassador-program, q-scf-instawards, q-scf-eligibility-criteria, q-scf-sdf-marketing-grant; no contradiction."
       ],
       "rootCause": [
         "Eval-side historical shorthand promoted into current mechanics.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-v7-changes"

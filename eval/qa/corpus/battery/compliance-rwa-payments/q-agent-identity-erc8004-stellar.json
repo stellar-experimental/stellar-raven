@@ -10,8 +10,10 @@
     "answer": "ERC-8004 defines interoperable registries for agent identity, reputation feedback, and validation; it does not itself prove that an agent is honest or that a payment was made. Stellar ports such as stellar8004 are community implementations that map the registry pattern to Soroban and may expose SDK or CLI tooling. Treat any particular Stellar deployment, audit status, registry address, x402/MPP integration, or SEP analogue as status-sensitive and verify it from that project's current repository and deployment metadata before relying on it.",
     "keyFacts": [
       "ERC-8004 defines identity, reputation, and validation registries for agents.",
-      "Registry entries and feedback are signals; they do not by themselves guarantee trustworthiness or prove payment.",
-      "Stellar8004-style Soroban ports are community implementations, so deployment and audit claims require current project evidence."
+      "Registry entries and feedback are signals.",
+      "By themselves, they are neither trustworthiness guarantees nor payment proofs.",
+      "Stellar8004-style Soroban ports are community implementations.",
+      "Deployment and audit claims require current project evidence."
     ],
     "avoid": [
       "ERC-8004 is an official Stellar protocol feature that guarantees every registered agent is trustworthy.",
@@ -122,11 +124,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://eips.ethereum.org/EIPS/eip-8004",
-        "https://github.com/trionlabs/stellar-8004"
+        "https://github.com/trionlabs/stellar-8004",
+        "Structural re-form (compound-predicate): Split signals, limitations, community status, and evidence requirements; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://eips.ethereum.org/EIPS/eip-8004 — described registry entries and feedback as trust signals.",
+        "Live re-check 2026-08-27: https://eips.ethereum.org/EIPS/eip-8004 — kept payments orthogonal and made trust models pluggable.",
+        "Live re-check 2026-08-27: https://github.com/trionlabs/stellar-8004 — identified the Stellar8004 Soroban port as a project implementation.",
+        "Live re-check 2026-08-27: https://github.com/trionlabs/stellar-8004 — showed status-sensitive deployment details and project tooling.",
+        "Sibling sweep 2026-08-27: grep ERC-8004|stellar8004|identity registry|reputation registry|validation registry → q-defi-agent-identity-stellar-experimental; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "kaan agent-identity-reputation-8004"

@@ -9,7 +9,7 @@
     "keyFacts": [
       "Names Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
       "Dates the official SDF board roster to an observation date.",
-      "Uses the board section, pagination counts, source URL, and observed date for a current answer.",
+      "Uses board section, pagination counts, sourceUrl, and observedAt for current answers.",
       "Keeps the SDF people roster distinct from the builder directory."
     ],
     "avoid": [
@@ -62,7 +62,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "https://stellar.org/foundation/team inspected directly on 2026-08-18.",
         "https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 returned the same five names on 2026-08-18.",
@@ -74,12 +74,16 @@
         "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji → q-org-sdf-board-directors only; no contradiction",
         "Structural re-form (presentation-avoid): Reworded the timeless-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji → q-org-sdf-board-directors only; no contradiction"
+        "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji → q-org-sdf-board-directors only; no contradiction",
+        "Structural re-form (compound-predicate): Replaced prose labels with the exact sourceUrl and observedAt fields under one predicate; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/foundation/team and catalog/manifest.json#scout.getPeople — the official board section and current service contract still support section filtering, pagination, sourceUrl, and observedAt.",
+        "Sibling sweep 2026-08-27: grep Board of directors|Asiff Hirji|sourceUrl|observedAt → q-org-mazieres-chief-scientist; no contradiction"
       ],
       "rootCause": [
         "solo://proj/80/todo/author-five-new-cove--1664",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

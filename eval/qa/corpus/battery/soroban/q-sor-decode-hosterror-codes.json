@@ -9,13 +9,15 @@
   "golden": {
     "answer": "Start with diagnostic events/meta. `Error(Contract, #N)` is contract-defined: inspect that contract's error enum/spec/source; there is no global #N table. `Error(Budget, ExceededLimit)` is resource exhaustion; simulate and inspect CPU/memory/read/write/resource fees. `Error(WasmVm, …)` is a Wasm execution/type/trap class. `Bad union switch` from `scValToNative` means the XDR union/expected return type is wrong, stale, or invalid—decode only a successful expected `ScVal`.\n\nKeep auth/context failures distinct. A nested non-root auth tree under `mock_all_auths` can produce `Error(Auth, InvalidAction)`; use `mock_all_auths_allowing_non_root_auth` only for that intended test shape. `Error(Context, InternalError)` with “no contract running” or “Current context has no contract ID” means code requiring contract context ran outside an invocation; call through the generated client or use `env.as_contract` in tests. Literal `Error(Auth, InternalError)` requires its diagnostics and must not be automatically assigned the non-root remedy.\n\nGenerated client `try_*` methods preserve layers you must inspect. For a declared `Result<T, E>` function, the generated type is `Result<Result<T, T::Error>, Result<E, InvokeError>>`. Common branches are `Ok(Ok(value))` for success, `Err(Ok(contract_error))` for a decodable declared error, and `Err(Err(invoke_error))` for another invocation failure. A caller may map a caught failure to its own error, so a returned domain error does not prove the original host failure class. Preserve diagnostics and the original branch before remapping. For events import `testutils::Events as _` and inspect `env.events().all().events()`; failed calls roll events back. For time import `testutils::Ledger as _` before `env.ledger().set_timestamp(...)`.",
     "keyFacts": [
-      "Separates contract-defined, budget, WasmVM, XDR-union, auth, and missing-context errors.",
-      "Gives exact non-root auth, contract-context, events, and ledger-testutils remedies without treating one as universal.",
-      "Reads both generated try_* Result layers and preserves the original failure class before caller remapping."
+      "Names contract, budget, WasmVM, XDR-union, auth, and missing-context error classes.",
+      "Matches non-root auth, context, event, and ledger-testutils remedies to diagnostics.",
+      "Generated `try_*` clients expose both nested `Result` layers.",
+      "Preserve the original failure class before caller remapping."
     ],
     "avoid": [
       "Do NOT use a universal Contract #N table or guess an SCVal union.",
-      "Do NOT claim mock_all_auths_allowing_non_root_auth explains every Auth/InternalError or that no contract ID always means an unregistered client."
+      "Do NOT claim mock_all_auths_allowing_non_root_auth explains every Auth/InternalError or that no contract ID always means an unregistered client.",
+      "Do NOT treat one HostError remedy as universal."
     ],
     "notes": "Verified core guidance with official docs and SDK source. The generated `try_*` nested Result is the required failure-path interpretation surface. The broad claim that callers must never catch or remap authorization failures is false; grade preservation and inspection of the original branch instead. Some example-specific fixes (`set_timestamp` import path, custom auth internals) are SDK-version-sensitive.\nAlso good if the answer: Cites official debugging-errors docs, error-enum convention docs, and testing docs/examples. | Recommends re-running with CLI/RPC simulation and verbose diagnostics before changing contract logic.\nGolden cites: Must cite Stellar debugging-errors docs and at least one official testing or contract-error convention source.\nGT-41 independently confirmed exact empirical distinctions on SDK 27. The current rendered diagnostic is Error(Budget, ExceededLimit); do not hard-gate older LimitExceeded wording."
   },
@@ -114,18 +116,26 @@
       }
     ],
     "verified": {
-      "date": "2026-08-12",
-      "by": "2026-08 public-source verification",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "solo://proj/49/scratchpad/784#authorization-failures-and-generated-try-clients",
         "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
         "https://developers.stellar.org/docs/build/guides/conventions/error-enum",
         "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/soroban-sdk-macros/src/derive_client.rs",
         "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs",
-        "Sibling sweep: q-soroban-unit-testing owns happy-path setup; this case owns exact failure interpretation; q-soroban-publish-events owns event publication and RPC retention."
+        "Sibling sweep: q-soroban-unit-testing owns happy-path setup; this case owns exact failure interpretation; q-soroban-publish-events owns event publication and RPC retention.",
+        "Structural re-form (negative-predicate): replaced the taxonomy negation and split two long compound facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — HostError classes still require class-specific diagnostic interpretation",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — diagnostics still determine the matching auth, context, event, or ledger remedy",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — generated try methods still expose nested Result layers",
+        "Live re-check 2026-08-27: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs — SDK tests still preserve distinct declared-error and InvokeError branches",
+        "Sibling sweep 2026-08-27: grep HostError|try_*|events|set_timestamp → q-soroban-unit-testing, q-sor-test-event-assertion-ordering, q-sor-stale-spec-after-upgrade; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored ledger-testutils and moved the non-universal-remedy caveat into golden.avoid; truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-decode-hosterror-codes"

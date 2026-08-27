@@ -8,7 +8,7 @@
     "answer": "Stellar smart contracts execute deterministic WebAssembly. The supported/default toolchain is Rust with `soroban-sdk`, compiled to `wasm32v1-none`; Wasm is the execution format, not a claim that every source language is equally supported. Contract code is `#![no_std]`, `std` and floating point are unavailable, and host-backed SDK types are preferred. Guest allocation is off by default but the SDK `alloc` feature or a custom allocator can enable allocation at CPU/code-size cost. Do not pin 64 KiB as the code limit: as of 2026-07-28 Mainnet and Testnet configure 131072 bytes (128 KiB), and the setting is network-controlled.",
     "keyFacts": [
       "Explains Rust/soroban-sdk to wasm32v1-none no_std execution and optional allocation.",
-      "Separates the live network-configured code cap from stale 64 KiB/data-entry values."
+      "Names the live code cap and 64 KiB data-entry cap as distinct network settings."
     ],
     "avoid": [
       "Do NOT say Solidity/EVM bytecode is the Soroban runtime.",
@@ -70,16 +70,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane B Docs technical re-verification",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Production stellar-raven: stellarDocs.search_soroban_contract_docs({query:'Rust dialect wasm32v1 none no_std allocation floating point',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/learn/fundamentals/contract-development/rust-dialect',includeContent:true}) — Rust/no_std/wasm32v1-none and allocation wording returned.",
         "Canonical SDK source: https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/alloc/mod.rs — alloc feature disabled by default; custom allocator supported.",
         "Empirical free reads: stellar 27.0.0 network settings --no-cache -n mainnet|testnet --output json-formatted both returned contract_max_size_bytes=131072 and contract_data_entry_size_bytes=65536.",
-        "Sibling sweep: q-sor-build-target-wasm32v1, q-soroban-deploy-cli, and q-tool-rust-soroban-sdk use wasm32v1-none and do not contradict this result."
+        "Sibling sweep: q-sor-build-target-wasm32v1, q-soroban-deploy-cli, and q-tool-rust-soroban-sdk use wasm32v1-none and do not contradict this result.",
+        "Structural re-form (negative-predicate): replaced one negative taxonomy fact with an atomic positive taxonomy fact; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect — current documentation still specifies Rust, no_std, wasm32v1-none, and optional allocation",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — stellar 27.1.0 --no-cache reads still returned code cap 131072 bytes and data-entry cap 65536 bytes on Mainnet and Testnet",
+        "Sibling sweep 2026-08-27: grep wasm32v1-none|no_std|alloc feature|contract_max_size_bytes → q-sor-build-target-wasm32v1, q-soroban-no-std-constraints, q-tool-rust-soroban-sdk; no contradiction"
       ],
       "rootCause": [
-        "freshness-recheck"
+        "freshness-recheck",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-wasm-language"

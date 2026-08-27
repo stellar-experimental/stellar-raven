@@ -7,10 +7,11 @@
   "golden": {
     "answer": "`G...` is an Ed25519 public account key, `S...` is the corresponding secret seed/private key material, `M...` is a muxed account address, and `C...` is a contract address [1]. StrKey is not base58 or raw hex: SEP-0023 defines it as a version byte whose top 5 bits pick the type, followed by the binary payload, a CRC16 checksum, and RFC4648 base32 without padding [1]. For normal Ed25519 public keys and contract hashes the payload is 32 bytes; muxed accounts append an 8-byte ID to the underlying Ed25519 key before checksum/base32 encoding [1][2]. Decoding a G-address yields the raw 32-byte Ed25519 public key. Decoding an S-seed yields private signing material and should never be requested from or shared by a user. C-addresses are Stellar contract addresses, not EVM `0x` addresses [3].",
     "keyFacts": [
-      "Identifies G as public account, S as secret seed, M as muxed account, and C as contract address.",
-      "Explains StrKey is version-byte plus payload plus checksum encoded in base32 rather than raw base58/hex.",
+      "Names G public account, S secret seed, M muxed account, and C contract address.",
+      "Defines StrKey as base32-encoded version byte, payload, and checksum—not raw base58/hex.",
       "Mentions checksum protection and the relevant payload sizes at a high level.",
-      "Explains decoding a G-address yields the raw Ed25519 public key bytes, while S is secret material and must not be shared."
+      "Maps G-address decoding to raw Ed25519 public key bytes.",
+      "Warns that S is secret material that must not be shared."
     ],
     "avoid": [
       "Do NOT treat G/C/M/S addresses as interchangeable.",
@@ -44,10 +45,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-29-accounts-addresses-fees-memos-multisig-channels accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (compound-predicate): Shortened the address and encoding facts, then split public-key decoding from secret-material handling; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — SEP-0023 still maps G, S, M, and C to public, private-seed, muxed, and contract types.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — StrKey still uses a version byte, payload, CRC16 checksum, and unpadded RFC4648 base32.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — decoding still reverses StrKey to its binary key payload.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — SEP-0023 still classifies S as an Ed25519 private key or seed.",
+        "Sibling sweep 2026-08-27: grep StrKey|G-address|muxed account|SEP-0023 → q-pc-muxed-accounts, q-sor-contract-trustlines-c-address, q-ti-secret-key-vs-mnemonic-derivation; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-pc-address-types-strkey"

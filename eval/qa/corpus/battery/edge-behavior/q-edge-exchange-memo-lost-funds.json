@@ -10,8 +10,11 @@
   "golden": {
     "answer": "First verify the transaction hash and result. If it **failed**, the assets did not settle. If it **succeeded**, they reached the recorded on-chain destination, but a missing/wrong memo or muxed ID may have prevented the custodian's internal credit. Confirm the exact network, classic asset code+issuer or contract identity, destination, amount, time, and memo/M-address details. Then contact the receiving exchange through an independently reached official support channel. It may manually credit or return funds, possibly using a separate correction transaction, but recovery is discretionary and Stellar consensus, SDF, and Raven cannot reverse or force it. Do not post personal deposit data publicly or share a seed phrase/private key, exchange password, 2FA code, recovery phrase, or support-session signature.",
     "keyFacts": [
-      "Checks success/failure first; distinguishes on-chain settlement from the custodian's internal attribution; supports memo and muxed-address deposit models.",
-      "Directs the user to official custodian support with non-secret transaction details and makes recovery discretionary."
+      "Checks transaction success or failure first.",
+      "Treats on-chain settlement and custodian attribution as different layers.",
+      "Supports memo and muxed-address deposit models.",
+      "Directs the user to official custodian support with non-secret transaction details.",
+      "Treats recovery as discretionary."
     ],
     "avoid": [
       "Do NOT promise recovery, automatic loss/refund, consensus reversal, or universal G-account-plus-memo behavior.",
@@ -71,13 +74,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The custody-dependent recovery core was correct, but the answer assumed one G-account-plus-memo model and omitted transaction-status, muxed-address, correction-transaction, wrong-network/issuer, and credential-safety branches.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-22 primary 3262 and blind 3265; memo/muxed/custody sibling sweep."
+        "Solo scratchpad 575 GT-22 primary 3262 and blind 3265; memo/muxed/custody sibling sweep.",
+        "Structural re-form (negative-predicate): split both compound recovery requirements into five atomic positive facts; status, settlement, deposit models, support details, and discretion are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — current transaction guidance retains distinct success and failure results.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — current guidance still places pooled-customer attribution in the custodian's internal database.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — current guidance still covers both memo and muxed-account deposit models.",
+        "Live re-check 2026-08-27: https://support.kraken.com/in/articles/crypto-assets-deposit-recovery — current provider guidance directs users to support with non-secret transaction details.",
+        "Live re-check 2026-08-27: https://support.kraken.com/in/articles/crypto-assets-deposit-recovery — current provider guidance states that recovery is not guaranteed.",
+        "Sibling sweep 2026-08-27: grep missing exchange memo|muxed accounts|custodian support|recovery discretionary → q-raph-missing-exchange-memo, q-pc-muxed-accounts, and q-raph-exchange-memo; no contradiction"
       ],
       "rootCause": [
-        "One common exchange deposit implementation was generalized and status-first/security/category-error recovery branches were omitted."
+        "One common exchange deposit implementation was generalized and status-first/security/category-error recovery branches were omitted.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-edge-exchange-memo-lost-funds"

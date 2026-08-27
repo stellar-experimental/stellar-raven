@@ -9,10 +9,10 @@
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nEtherfuse describes **Stablebonds** as tokenized sovereign-debt products backed through regulated custody and redeemable according to the product terms. **USTRY** represents a U.S. Treasury-note product; **CETES** represents Mexican short-term federal treasury certificates. Attribute collateralization, custody, and redemption statements to current Etherfuse materials and check eligibility restrictions; the current legal page says services are unavailable in the United States.\n\nOn Stellar, verify the exact asset by **code plus issuer**, not ticker alone. As of **2026-07-10**, Etherfuse's stellar.toml and Horizon identified both under issuer `GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC`; deterministic SACs were USTRY `CBLV4ATSIWU67CFSQU2NVRKINQIKUZ2ODSZBUJTJ43VJVRSBTZYOPNUR` and CETES `CAL6ER2TI6CTRAY6BFXWNWA7WTYXUXTQCHUBCIBU5O6KM3HJFG6Z6VXV`. Re-verify before integration. G-account holders use classic trustlines; contracts use the SAC/SEP-41 interface and C-address contract storage. Confirm decimals, authorization/clawback state, redemption terms, and current attestations.\n\nFor DeFi use, evaluate custody/issuer/redemption/NAV and maturity/currency risks plus secondary-market depth, active traders, oracle-source independence, price bounds, exposure caps, and admin/operational controls. Date any APY, liquidity, venue, or collateral-use example. The February YieldBlox incident was a thin-market/oracle-consumer failure involving USTRY collateral; it was not shown to be an Etherfuse issuer-contract exploit.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Identifies Etherfuse Stablebonds as operator-described tokenized sovereign-debt products.",
-      "Distinguishes USTRY from CETES.",
-      "Covers legal/redemption/custody, maturity/currency, liquidity, oracle, exposure, and operational risks.",
-      "Separates the YieldBlox consumer/pool incident from an Etherfuse issuer exploit."
+      "Treats USTRY and CETES as different tokenized Etherfuse Stablebond products.",
+      "Covers legal, redemption, custody, maturity, and currency risks.",
+      "Covers liquidity, oracle, exposure, and operational risks.",
+      "Attributes the YieldBlox incident to the consumer/pool boundary."
     ],
     "avoid": [
       "Do NOT confuse Etherfuse with other RWA issuers.",
@@ -120,19 +120,27 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-09 primary/blind Etherfuse matrices",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (negative-predicate): merged the product taxonomy, split the long risk fact, and retained the incident's positive boundary; truth unchanged.",
+        "Live re-check 2026-08-27: https://etherfuse.com/products/stablebonds — the operator still names USTRY and CETES as sovereign-debt Stablebonds.",
+        "Live re-check 2026-08-27: https://app.etherfuse.com/bonds/cetes — the current product page still exposes custody, currency, maturity, and redemption-related product details.",
+        "Live re-check 2026-08-27: https://etherfuse.com/products/stablebonds — the current page still exposes NAV, custody, redemption, collateral, DeFi use, and integration inputs for risk review.",
+        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — current incident evidence still places the failure at the YieldBlox pool/oracle-consumer boundary.",
+        "Sibling sweep 2026-08-27: grep Etherfuse|Stablebonds|USTRY|CETES|YieldBlox → q-ass-cross-bando-stablebonds-sac, q-ass-cross-etherfuse-cetes-controls, q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): restored the USTRY-vs-CETES distinction; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "A discovery record was promoted into current product/integration truth.",
         "Issuer/product risk was conflated with a downstream pool's oracle-consumption failure.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-etherfuse-stablebonds"

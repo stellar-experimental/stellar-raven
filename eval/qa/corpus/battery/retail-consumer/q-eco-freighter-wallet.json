@@ -14,7 +14,8 @@
   "golden": {
     "answer": "**Freighter** is an open-source, self-custody Stellar wallet provided and maintained by the Stellar Development Foundation. As of **2026-07-10**, official sources showed browser-extension and iOS/Android surfaces. It signs Stellar transactions, including smart-contract interactions. Treat specific browsers, security integrations, swaps, NFT handling, biometrics, and multi-address support as current feature/platform claims that must be rechecked rather than durable identity facts.",
     "keyFacts": [
-      "Identifies Freighter as SDF-maintained, open-source, and self-custody; dates current platform/feature claims."
+      "Identifies Freighter as SDF-maintained, open-source, and self-custody.",
+      "Dates current platform and feature claims."
     ],
     "avoid": [
       "Do NOT describe Freighter as custodial, an Ultra Stellar product, or broadly multi-chain.",
@@ -73,13 +74,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — Freighter's SDF/self-custody identity is durable, but platforms and feature claims are current-state facts despite inherited freshness=false metadata.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; wallet sibling sweep."
+        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; wallet sibling sweep.",
+        "Structural re-form (compound-predicate): split Freighter identity and dating requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://freighter.app/ — the current operator site still identifies Freighter as SDF-provided, non-custodial, and open source.",
+        "Live re-check 2026-08-27: https://freighter.app/ — the current operator site still shows changeable browser and mobile platform features that require dating.",
+        "Sibling sweep 2026-08-27: grep Freighter|SDF-maintained|self-custody|platform → q-tool-freighter-wallet, q-tool-wallets-comparison, q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-eco-lobstr-wallet, q-eco-xbull-wallet; no contradiction"
       ],
       "rootCause": [
-        "Volatile platform/features were embedded under freshness=false; Solo todo 935 tracks tag override support."
+        "Volatile platform/features were embedded under freshness=false; Solo todo 935 tracks tag override support.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-eco-freighter-wallet"

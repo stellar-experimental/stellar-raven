@@ -9,7 +9,8 @@
     "answer": "A classic Stellar account has a master key and optional additional **signers**, each with a weight. Operations are assigned **low, medium, or high** thresholds, and the valid signatures' combined weight must meet the transaction's required threshold; this is Stellar's native multisig model. Classic `SignerKey` has exactly four forms: **ed25519**, **pre-authorized transaction hash**, **hashX**, and **ed25519 signed payload** (the last added by CAP-0040 in Protocol 19). **secp256r1 is not a classic SignerKey**: CAP-0051/P21 exposed secp256r1 verification for Soroban custom-account/passkey authorization.\n\nThe transaction source account's sequence number provides replay protection and source-local ordering. Under the default precondition, a transaction's sequence must be exactly current + 1. That rule is not unconditional: CAP-0021/P19 `minSeqNum` makes a transaction valid when `minSeqNum <= current account sequence < transaction sequence`; if it succeeds, the account advances directly to the transaction sequence. Failed or unapplied transactions do not automatically consume the sequence.",
     "keyFacts": [
       "Explains signer weights and low/medium/high thresholds for classic native multisig.",
-      "Lists all four classic SignerKey forms and keeps secp256r1 in Soroban/custom auth.",
+      "Lists all four classic SignerKey forms.",
+      "Keeps secp256r1 in Soroban/custom auth.",
       "States the default +1 rule and CAP-0021 minSeqNum exception precisely."
     ],
     "avoid": [
@@ -94,17 +95,22 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently found the classic/Soroban signer-category error and the minSeqNum exception.",
         "2026-07-11 author re-check against stellar-xdr 8521b97b, CAP-0021, CAP-0040, and CAP-0051.",
         "Structural re-form (presentation-avoid): Removed the signed-payload omission demand because the key fact already requires all four forms; preserved the secp256r1 false-content trap; truth is unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep ed25519 signed payload|secp256r1|SignerKey → q-infra-secp256r1-passkeys, q-protocol-19-preconditions-cap-0021, q-protocol-accounts-signers-thresholds; no contradiction"
+        "Sibling sweep 2026-08-27: grep ed25519 signed payload|secp256r1|SignerKey → q-infra-secp256r1-passkeys, q-protocol-19-preconditions-cap-0021, q-protocol-accounts-signers-thresholds; no contradiction",
+        "Structural re-form (compound-predicate): Split the classic SignerKey forms from Soroban/custom authentication; truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-xdr/blob/master/Stellar-types.x and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0040.md confirm the four classic SignerKey forms.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md confirms secp256r1 verification for Soroban custom-account authentication.",
+        "Sibling sweep 2026-08-27: grep SignerKey|secp256r1|custom auth → q-infra-secp256r1-passkeys, q-protocol-19-preconditions-cap-0021, q-pc-multisig-setup-lifecycle; no contradiction"
       ],
       "rootCause": [
         "Eval-side conflation of classic account SignerKey with Soroban custom-account authentication, plus pre-CAP-0021 sequence shorthand.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-accounts-signers-thresholds"

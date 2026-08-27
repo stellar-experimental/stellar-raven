@@ -9,8 +9,9 @@
     "answer": "Stellar sequence numbers are per **transaction source account**, not a global order across unrelated accounts. By default, a transaction must use current sequence + 1; submitting N+2 while the account is at N yields `tx_bad_seq`, and it can become valid after N+1 applies. There is an important CAP-0021 exception: with a non-null `minSeqNum`, validation permits `minSeqNum <= current sequence < transaction sequence`, so a transaction at N+2 can apply while current is N when that lower bound is satisfied, then advance the account directly to N+2. Only an applied transaction consumes the sequence; a duplicate with the same source/sequence cannot apply after another transaction has consumed it.\n\nUnrelated source accounts have independent sequence domains even though consensus orders accepted transactions. For a transaction still in a submission queue, replacement behavior depends on the Core/RPC path: official fee-bump guidance describes replacing the same source/sequence transaction when the fee-bump bid is at least 10x, and timebounds or ledger bounds should limit stale execution. Distinguish queued, rejected, expired, and successfully applied states before resubmitting.",
     "keyFacts": [
       "Explains per-source-account rather than global ordering.",
-      "States default +1 behavior and the CAP-0021 minSeqNum exception that can skip N+1.",
-      "Explains duplicates, consumption-on-application, and scoped fee-bump replacement semantics."
+      "States default +1 behavior.",
+      "Covers the CAP-0021 minSeqNum exception that can skip N+1.",
+      "Covers duplicates, application-only consumption, and scoped fee-bump replacement."
     ],
     "avoid": [
       "Do NOT say N+2 can never apply before N+1; minSeqNum can authorize a sequence gap.",
@@ -70,14 +71,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The GT-30 sequence answer made N+2-after-N+1 unconditional, contradicting CAP-0021's minSeqNum gap semantics and the corrected account/signers case.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently identified the GT-30 sibling contradiction.",
-        "2026-07-11 author re-check against CAP-0021's minSeqNum specification."
+        "2026-07-11 author re-check against CAP-0021's minSeqNum specification.",
+        "Structural re-form (compound-predicate): Split the default +1 rule from the CAP-0021 exception and shortened the lifecycle fact; every sequence and replacement claim is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — current docs still describe source-account sequence consumption through transaction application.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md — CAP-0021 still permits discontinuous sequences through non-null minSeqNum.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md — CAP-0015 still defines same-source/sequence fee-bump replacement in the transaction queue.",
+        "Sibling sweep 2026-08-27: grep minSeqNum|fee-bump replacement|sequence gap → q-protocol-accounts-signers-thresholds, q-ti-channel-accounts-throughput; no contradiction"
       ],
       "rootCause": [
-        "Eval-side default-rule absolutism after adding a detailed replacement/queue answer."
+        "Eval-side default-rule absolutism after adding a detailed replacement/queue answer.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-pc-sequence-numbers-ordering-replace"

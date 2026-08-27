@@ -8,7 +8,8 @@
   "golden": {
     "answer": "**David Mazières** is an SDF/Stellar **founder or co-founder**, the single author of the 2015 Stellar Consensus Protocol paper that introduced Federated Byzantine Agreement, and a Stanford computer-science professor. When observed on 2026-07-13, SDF's team-page data described him as **“Founder and Chief Scientist,”** but the rendered Leadership card showed only his name. Treat that title as a dated first-party page-data observation, not as a visibly displayed or timeless current role. He is not SDF's CEO. Early sources describe McCaleb, Joyce Kim, Mazières, network development, and foundation leadership with different scopes, so do not force an exclusive founder list.",
     "keyFacts": [
-      "Identifies Mazières as SDF/Stellar founder/co-founder and treats Founder and Chief Scientist as a dated, source-qualified title rather than a timeless current role.",
+      "Identifies Mazières as an SDF/Stellar founder or co-founder.",
+      "Treats Founder and Chief Scientist as a dated, source-qualified title.",
       "Credits him as author of the SCP paper and a Stanford CS professor."
     ],
     "avoid": [
@@ -78,19 +79,24 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "https://stellar.org/foundation/team page source and rendered Leadership card observed 2026-07-13.",
         "https://fdc.stanford.edu/people/david-mazieres and https://www.scs.stanford.edu/~dm/home/papers/stellar-consensus-sosp15.pdf.",
         "solo://proj/49/scratchpad/sdf-organizational-s--630",
         "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
         "Reviewed improvements/lumenloop/ll-005-person-entity-empty-lane.md — disputed claim: an empty person-entity lane proves David Mazières has no corpus history.",
-        "Sibling sweep 2026-08-27: grep David Mazières|Mazières|Chief Scientist|SCP paper → q-edge-validators-reverse-tx-fork-detection, q-hist-scp-rewrite-2015, q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm; no contradiction"
+        "Sibling sweep 2026-08-27: grep David Mazières|Mazières|Chief Scientist|SCP paper → q-edge-validators-reverse-tx-fork-detection, q-hist-scp-rewrite-2015, q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm; no contradiction",
+        "Structural re-form (compound-predicate): Split founder status from the dated title qualification; the timeless-title trap remains in avoid, so the truth is unchanged.",
+        "Live re-check 2026-08-27: https://fdc.stanford.edu/people/david-mazieres — Stanford still identifies Mazières as an SDF co-founder.",
+        "Live re-check 2026-08-27: https://stellar.org/foundation/team — the rendered Leadership section still shows Mazières without a visible title, preserving the dated source-qualified title rule.",
+        "Sibling sweep 2026-08-27: grep David Mazières|Chief Scientist|SCP paper → q-hist-scp-rewrite-2015, q-protocol-scp-consensus-algorithm; no contradiction"
       ],
       "rootCause": [
         "The golden treated embedded team-page title data as visibly displayed current wording and marked the mixed claim stable.",
         "improvements/lumenloop/ll-005-person-entity-empty-lane.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-org-mazieres-chief-scientist"

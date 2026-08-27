@@ -10,9 +10,10 @@
   "golden": {
     "answer": "Yes. **Stellar Lab** at **`https://lab.stellar.org`** is the official web toolkit for building, signing, simulating, and submitting Stellar transactions without writing application code. It also exposes account/keypair workflows, Horizon and Stellar RPC explorers, XDR↔JSON tools, and contract deploy/invoke/simulate flows. The current open-source implementation is `stellar/laboratory`.\n\nLab can be used for account-creation workflows on **Mainnet, Testnet, and Futurenet**. **Friendbot funding is only for Testnet and Futurenet—never Mainnet.** A Mainnet account needs a real funded transaction and production signing safeguards. This is the current Stellar Lab, successor to the older Stellar Laboratory branding; detailed button locations and storage/signing safety belong to the dedicated workflow guidance and can change with the UI.",
     "keyFacts": [
-      "Identifies official Stellar Lab and its build/sign/simulate/submit plus contract/API/XDR scope.",
-      "Separates account creation on Mainnet/Testnet/Futurenet from Friendbot funding on Testnet/Futurenet only.",
-      "Keeps this existence/capabilities answer distinct from a brittle step-by-step UI walkthrough."
+      "Names Stellar Lab as the official build, sign, simulate, and submit web tool.",
+      "Covers contract, API, and XDR workflows.",
+      "Supports account creation on Mainnet, Testnet, and Futurenet.",
+      "Limits Friendbot funding to Testnet and Futurenet."
     ],
     "avoid": [
       "Do NOT imply Friendbot funds Mainnet, that an unsigned transaction can be submitted, or that Mainnet account creation is free.",
@@ -98,15 +99,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited capabilities were broadly correct but grouped Mainnet with Friendbot funding. Current official Lab docs support account creation across Mainnet/Testnet/Futurenet while explicitly limiting Friendbot funding to Testnet/Futurenet.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "GT-55 primary 3392 and sealed blind 3393 independently agreed on the Mainnet/account versus Testnet-Futurenet/Friendbot boundary.",
         "Current Lab page and live product establish build/sign/simulate/submit, Horizon/RPC, contract, account, and XDR capabilities.",
-        "Sibling q-ti-stellar-lab-usage-and-new-ui already carries the detailed UI, localStorage, signing, and self-hosted/offline boundary; this case remains capabilities-at-a-glance."
+        "Sibling q-ti-stellar-lab-usage-and-new-ui already carries the detailed UI, localStorage, signing, and self-hosted/offline boundary; this case remains capabilities-at-a-glance.",
+        "https://developers.stellar.org/docs/tools/lab — live re-check 2026-08-27 confirms the official capabilities and network scope.",
+        "https://developers.stellar.org/docs/networks — live re-check 2026-08-27 confirms Friendbot funds only Testnet and Futurenet.",
+        "Structural re-form 2026-08-27: preserved Stellar Lab, build/sign/simulate/submit, contract/API/XDR, account-network, Friendbot, and workflow-scope claims.",
+        "Sibling sweep 2026-08-27: q-ti-stellar-lab-usage-and-new-ui showed no contradiction."
       ],
       "rootCause": [
-        "Eval-side network/faucet wording ambiguity; current upstream Lab documentation already states the correct boundary."
+        "Eval-side network/faucet wording ambiguity; current upstream Lab documentation already states the correct boundary.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-lab-what-is"

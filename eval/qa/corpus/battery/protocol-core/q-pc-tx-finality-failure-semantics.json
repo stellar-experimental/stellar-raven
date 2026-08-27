@@ -7,8 +7,11 @@
   "golden": {
     "answer": "Submission is not finality. If a transaction is rejected before ledger inclusion, it consumes neither sequence nor fee. If included with `tx_failed`, the failure is ledger history, the fee and source sequence are consumed, and operation effects are rolled back according to protocol semantics. Expired or dropped pre-inclusion submissions are different. Stellar RPC **`getTransaction` returns only `SUCCESS`, `FAILED`, or `NOT_FOUND`**. `PENDING` is a `sendTransaction` admission/polling status, not a getTransaction result, and send acceptance is not ledger finality. Poll getTransaction or a sufficient-retention history source. `NOT_FOUND` alone cannot prove nonexistence because it may mean not yet recorded, absent, or outside that provider's retention. Check submission response, result XDR/code, ledger inclusion, timebounds, and retained history.",
     "keyFacts": [
-      "Distinguishes rejected/dropped pre-inclusion transactions from included success/failure and their fee/sequence effects.",
-      "Separates sendTransaction PENDING from getTransaction SUCCESS/FAILED/NOT_FOUND and explains retention ambiguity."
+      "Treats pre-inclusion rejection/drop and included success/failure as different outcomes.",
+      "States included transactions consume fees and source sequences.",
+      "States pre-inclusion rejections and drops consume neither.",
+      "States PENDING belongs to sendTransaction, not getTransaction.",
+      "Explains getTransaction SUCCESS/FAILED/NOT_FOUND and retention ambiguity."
     ],
     "avoid": [
       "Do NOT say every submission is on-ledger or that included failure leaves fee/sequence untouched.",
@@ -69,17 +72,25 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-30 primary 3277 and blind lock/report 3279; exact truth agreement on the status-surface correction.",
         "Structural re-form (symmetric-caution): added a discoverability-specific grading caution for sd-003; the transaction status and finality facts are unchanged.",
         "Improvements review 2026-08-27: improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md remains reported upstream; the disputed claim is which status values belong to getTransaction versus sendTransaction when the method pages are absent from search.",
-        "Sibling sweep 2026-08-27: grep sd-003|getTransaction PENDING|sendTransaction PENDING → q-pc-practical-fee-setting, q-infra-rpc-methods-list, q-ti-rpc-gettransactions-pagination-xdr; no contradiction"
+        "Sibling sweep 2026-08-27: grep sd-003|getTransaction PENDING|sendTransaction PENDING → q-pc-practical-fee-setting, q-infra-rpc-methods-list, q-ti-rpc-gettransactions-pagination-xdr; no contradiction",
+        "Structural re-form (negative-predicate): Split two long comparison facts into five atomic positive requirements; truth unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — the lifecycle treated pre-inclusion rejection and ledger application as different outcomes.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — fees were collected before application and included failure rolled back operation effects.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — immediate invalid rejection consumed no fee or sequence number.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/sendTransaction — sendTransaction used PENDING for an enqueued transaction and required later polling.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction — getTransaction allowed SUCCESS, FAILED, or NOT_FOUND and documented bounded history.",
+        "Sibling sweep 2026-08-27: grep getTransaction|sendTransaction|tx_failed|NOT_FOUND → q-crp-export-tx-history-taxes, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-classic-submission-errors, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md",
         "Eval-side sendTransaction/getTransaction status conflation.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-pc-tx-finality-failure-semantics"

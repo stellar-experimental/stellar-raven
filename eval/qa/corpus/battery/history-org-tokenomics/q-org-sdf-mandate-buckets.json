@@ -7,10 +7,10 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-13, the verified sources supported this observed answer:\n\nSDF organizes its work under mandate buckets funded from entrusted XLM rather than shareholder equity. The framework has changed: **2019** used Direct Development, Ecosystem Support, Use-Case Investment, and User Acquisition; the **2025-era** framing uses SDF Development, Stellar Growth, Product and Innovation, and Assets and Liquidity. The live page simultaneously says real-time public balances will be made available again “imminently” while rendering current-balance rows. Treat that only as a dated, first-party page-state observation: no independent source class was found for the interface state, so it is not independently verified telemetry. It is fair to report that rows were visible at that observation time, but not to call them a synchronized real-time feed. Cite the applicable dated mandate, attach an as-of date to any balance, and do not invent an exact allocation split or mechanically sum asynchronous rows as one synchronized total.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates the 2019 mandate bucket names from the 2025-era mandate bucket names.",
-      "Describes balance availability as a dated page-state observation rather than treating visible rows as a synchronized real-time feed."
+      "Treats the 2019 bucket set versus the 2025-era bucket set as different.",
+      "Treats visible balance rows as a dated page-state observation, not a synchronized feed."
     ],
     "avoid": [
       "Do NOT use the 2017 previous-mandate route as proof of the 2019 taxonomy.",
@@ -81,7 +81,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://stellar.org/foundation/mandate",
         "https://stellar.org/foundation/mandate/2019",
@@ -91,7 +91,12 @@
         "Sibling sweep: q-org-sdf-structure-mandate and q-org-sdf-enterprise-fund preserve metric/source scope.",
         "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
         "Reviewed improvements/resolved.json entry sd-012 — fixed 2026-07-27; older documentation can show 2019 mandate labels as current.",
-        "Sibling sweep 2026-08-27: grep Direct Development|SDF Development|Product and Innovation|Assets and Liquidity|mandate buckets → q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets; no contradiction"
+        "Sibling sweep 2026-08-27: grep Direct Development|SDF Development|Product and Innovation|Assets and Liquidity|mandate buckets → q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets; no contradiction",
+        "Structural re-form (negative-predicate): Shortened the sourcing fact and stated the taxonomy and page-state distinctions positively; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/foundation/mandate — showed current sourced observations with separately updated bucket balances.",
+        "Live re-check 2026-08-27: https://stellar.org/foundation/mandate/2019 — showed the 2019 Direct Development, Ecosystem Support, Use-Case Investment, and User Acquisition taxonomy.",
+        "Live re-check 2026-08-27: https://stellar.org/foundation/mandate — showed visible rows with different update timestamps alongside the real-time-balances 'imminently' statement.",
+        "Sibling sweep 2026-08-27: grep Direct Development|Ecosystem Support|SDF Development|Product and Innovation|Assets and Liquidity → q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets, q-scf-sdf-marketing-grant, q-scf-vs-sdf-enterprise-fund; no contradiction"
       ],
       "rootCause": [
         "Eval-side historical route/version confusion and detached timestamp semantics.",
@@ -99,7 +104,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "solo://proj/49/todo/golden-truth-review--972",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-org-sdf-mandate-buckets"

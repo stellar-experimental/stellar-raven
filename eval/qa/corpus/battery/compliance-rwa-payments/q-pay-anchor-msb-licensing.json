@@ -9,9 +9,9 @@
   "golden": {
     "answer": "Do not decide licensing from the word anchor. Identify each participating legal entity and ask who accepts, transmits, exchanges, issues, redeems, or custodies fiat/crypto for another person; who controls hosted-wallet value; which customer/transaction jurisdictions apply; and whether an exemption, agent, bank, payment partner, or other structure changes the perimeter.\n\nAn on/off-ramp operator doing fiat/crypto exchange or transmission is commonly regulated, but the exact US analysis separates **FinCEN MSB registration** from **state money-transmitter licensing** and remains facts-and-circumstances. A custodial wallet or program operator can also be in scope; noncustodial signing software alone generally is not. Each route participant assesses its own duties.\n\nStellar/SDF is not automatically the licensee merely because the network settles a transfer, but that statement is bounded by the actual network/SDF activity and custody posture. This is a classification framework, not legal advice; use current primary law and counsel for each jurisdiction.",
     "keyFacts": [
-      "Allocates obligations by legal entity, activity, custody/control, route, and jurisdiction—not the anchor label.",
+      "Maps duties to legal entity/activity/custody/control/route/jurisdiction—not anchor label.",
       "Separates federal MSB registration from state money-transmitter licensing.",
-      "Explains that wallets/operators may be covered based on custody/activity while infrastructure alone is not automatically the licensee."
+      "Frames wallet/operator scope by custody/activity; no automatic infrastructure licensee."
     ],
     "avoid": [
       "Do NOT say every anchor holds one universal MSB/money-transmitter license.",
@@ -78,14 +78,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The case categorically assigned an MSB/money-transmitter license to the anchor. Duties attach to actual legal entities and regulated activities; federal MSB registration and state money-transmitter licensing are distinct, and custodial wallets or other route participants may also be in scope.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-11 primary/blind legal matrices"
+        "Solo scratchpad 575 GT-11 primary/blind legal matrices",
+        "Structural re-form (compound-predicate): Shortened two legal-classification facts under single predicates; the entity, activity, custody, route, jurisdiction, and infrastructure distinctions are unchanged.",
+        "Live re-check 2026-08-27: https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering — FinCEN still assigns duties by the person's exchange, acceptance, and transmission activity plus applicable exceptions.",
+        "Live re-check 2026-08-27: https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf — FinCEN still distinguishes wallet models by control and regulated activity rather than infrastructure labels.",
+        "Sibling sweep 2026-08-27: grep money-transmitter|MSB|FinCEN|anchor label → q-crp-become-an-anchor-licensing, q-crp-custodial-vs-noncustodial-wallets; no contradiction"
       ],
       "rootCause": [
         "Stellar product-role terminology was promoted into a legal classification.",
-        "Registration, licensing, custody, and multi-entity routes were collapsed."
+        "Registration, licensing, custody, and multi-entity routes were collapsed.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-pay-anchor-msb-licensing"

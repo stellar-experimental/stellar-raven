@@ -10,11 +10,11 @@
   "golden": {
     "answer": "Circle's release notes record **Stellar mainnet support on 2026-05-18**, and SDF and Circle publicly announced CCTP live on Stellar on **2026-05-19**. The earlier **2026-02-24** date previously called the launch was not recoverable from accessible primary material, so do not collapse it with either confirmed May milestone. Stellar is CCTP domain 27. CCTP burns native USDC on the source and mints native USDC on the destination. For Stellar G-, M-, or C-address recipients, use Circle's CctpForwarder path; a wrong mintRecipient or destinationCaller can strand funds. Stellar USDC uses 7 decimals while CCTP messages use 6, so the seventh outbound decimal remains on Stellar. On 2026-07-11, Circle's fee endpoint returned Fast/Standard 0/0 for domain 27→0 and 1 bp/0 for 0→27; re-query /v2/burn/USDC/fees. Circle transfer fees are separate from network resources, relayer, integrator, and any swap charges.",
     "keyFacts": [
-      "Separates Circle's 2026-05-18 Stellar-mainnet-support milestone from the 2026-05-19 SDF/Circle public-live announcement; the prior 2026-02-24 launch attribution is unverified.",
-      "Use Circle's CctpForwarder for Stellar G-, M-, or C-address recipients; incorrect mintRecipient or destinationCaller values can strand funds.",
-      "Stellar USDC has 7 decimals while CCTP messages use 6; the seventh outbound decimal remains on Stellar.",
-      "The 2026-07-11 fee probe found Fast/Standard 0/0 for 27→0 and 1 bp/0 for 0→27; callers must re-query /v2/burn/USDC/fees.",
-      "Circle transfer fees are separate from network resource, relayer, integrator, and swap charges."
+      "Circle dates Stellar support to 2026-05-18 and the public-live announcement to 2026-05-19.",
+      "Use CctpForwarder with correct mintRecipient or destinationCaller for G/M/C funds.",
+      "The 6-decimal CCTP format leaves Stellar USDC's seventh decimal on Stellar.",
+      "Re-query /v2/burn/USDC/fees for 2026-07-11 Fast/Standard 27→0 0/0, 0→27 1 bp/0.",
+      "Treats Circle fees, network resources, relayers, integrators, and swaps as distinct costs."
     ],
     "avoid": [
       "CCTP locks USDC and issues a wrapped Stellar token.",
@@ -270,8 +270,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1251 Lane A — sibling contradictions (solo://proj/49/scratchpad/todo-1251-lane-a-sib--731)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Production stellarDocs.search_docs recovered the current CCTP-on-Stellar documentation boundary and delegated deployment/support provenance to Circle.",
         "https://developers.circle.com/release-notes/cctp-2026",
@@ -283,10 +283,19 @@
         "https://developers.circle.com/cctp/stellar-cctp-forwarder",
         "https://github.com/circlefin/stablecoin-evm",
         "improvements/lumenloop/ll-022-cctp-milestone-provenance.md",
-        "Sibling sweep: q-tool-cctp-stellar-integration, q-hist-cctp-stellar-live-announcement, and q-token-circle-usdc-on-stellar now use compatible milestone-specific language rather than one collapsed launch date."
+        "Sibling sweep: q-tool-cctp-stellar-integration, q-hist-cctp-stellar-live-announcement, and q-token-circle-usdc-on-stellar now use compatible milestone-specific language rather than one collapsed launch date.",
+        "Structural re-form (negative-predicate): reworded five compound or long facts in place and left the unverified 2026-02-24 claim in golden.avoid; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.circle.com/release-notes/cctp-2026 — Circle still records Stellar mainnet support on 2026-05-18.",
+        "Live re-check 2026-08-27: https://github.com/circlefin/stellar-cctp — the CCTP Forwarder still performs post-mint forwarding to specified recipients.",
+        "Live re-check 2026-08-27: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc — Circle still documents 7-decimal Stellar USDC transfer amounts and cross-chain conversion.",
+        "Live re-check 2026-08-27: https://developers.circle.com/cctp/concepts/fees — Circle still requires callers to retrieve current route fees from /v2/burn/USDC/fees.",
+        "Live re-check 2026-08-27: https://developers.circle.com/cctp/concepts/fees — Circle still describes CCTP protocol fees separately from forwarding costs.",
+        "Sibling sweep 2026-08-27: grep CctpForwarder|2026-05-18|2026-05-19|27→0 → q-tool-cctp-stellar-integration, q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored the mintRecipient/destinationCaller stranding fields; truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "Eval-authoring flaw: the case promoted an unsupported 2026-02-24 date to 'launch' and collapsed it with later technical-support and public-announcement milestones."
+        "Eval-authoring flaw: the case promoted an unsupported 2026-02-24 date to 'launch' and collapsed it with later technical-support and public-announcement milestones.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "kaan cctp-usdc-stellar-crosschain"

@@ -8,7 +8,9 @@
     "answer": "In Stellar x402, the payer wallet signs the required **Soroban authorization entries**, not the facilitator's entire settlement transaction. The facilitator reconstructs the transaction with its source account, sponsors fees, verifies/simulates the authorization, signs, submits, and the client retries the paid request.\n\nAs of **2026-07-28**, the official Stellar x402 page lists Freighter Browser Extension, Albedo, Hana, HOT, Klever, and OneKey and says Freighter Mobile is unsupported, but that roster is **disputed** by implementation evidence. Freighter's owner documentation exposes `signAuthEntry` for the extension and `stellar_signAuthEntry` for mobile over direct WalletConnect, while Stellar Wallets Kit explicitly throws that Albedo does not support `signAuthEntry`. Wallets Kit contains auth-entry adapters for Hana, HOT, Klever, and OneKey, but this review did not find wallet-owner documentation proving each wallet's current end-to-end x402 compatibility. Separate raw auth-entry capability from a tested x402 integration and test the exact wallet/transport; do not present the official roster as independently verified.\n\nThe hosted provider is **Build on Stellar Relayer with the OpenZeppelin x402 Plugin**, backed by OpenZeppelin Channels; that hosted setup requires a bearer API key. Do not imply that x402 itself, the payer wallet, or every facilitator intrinsically requires an API key. Coinbase remains Testnet-only in the official roster; use any compatible SEP-41 token, with USDC the default example.",
     "keyFacts": [
       "Separates payer auth-entry signing from facilitator transaction sponsorship/submission.",
-      "Marks the official wallet roster disputed, distinguishes raw auth-entry support from end-to-end x402 compatibility, and identifies the specific Freighter/Albedo evidence conflict.",
+      "Marks the official wallet roster as disputed.",
+      "Separates raw auth-entry support from end-to-end x402 compatibility.",
+      "Identifies the specific Freighter/Albedo evidence conflict.",
       "Dates provider/network coverage and narrows API-key requirements to the hosted setup."
     ],
     "avoid": [
@@ -131,19 +133,28 @@
       }
     ],
     "verified": {
-      "date": "2026-08-11",
-      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra payments matrix",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/agentic-payments/x402",
         "https://docs.freighter.app/extension-freighter-api/signing",
         "https://docs.freighter.app/mobile-walletconnect/signing",
         "https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts",
         "https://github.com/OpenZeppelin/relayer-plugin-x402-facilitator",
-        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification"
+        "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
+        "Structural re-form (compound-predicate): Split the disputed-roster compound fact into three atomic facts; payment flow, dispute, compatibility distinction, evidence conflict, and hosted scope are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar — the payer still signs an auth entry while the facilitator verifies and settles.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — the official wallet roster remains published as current.",
+        "Live re-check 2026-08-27: https://github.com/Creit-Tech/Stellar-Wallets-Kit/blob/main/src/sdk/modules/albedo.module.ts — implementation evidence still conflicts with the official Albedo roster claim.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — auth-entry capability remains the stated wallet prerequisite, not proof of tested end-to-end compatibility.",
+        "Live re-check 2026-08-27: https://docs.freighter.app/extension-freighter-api/signing — Freighter still documents signAuthEntry, preserving the Freighter/Albedo evidence conflict.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — provider networks and hosted API-key requirements remain provider-scoped.",
+        "Sibling sweep 2026-08-27: grep x402|signAuthEntry|auth-entry|Albedo|Freighter Mobile → q-agent-payment-standard-choice, q-defi-agentic-payment-standards-compare, q-defi-x402-on-stellar-what, q-hist-x402-stellar-announcement, q-soroban-x402-auth-entry-signing, q-ti-openzeppelin-relayer, q-tool-wallets-comparison, q-x402-payment-verification; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
-        "Official wallet roster and independently checked implementation evidence still conflict; preserve the dispute rather than pinning either source."
+        "Official wallet roster and independently checked implementation evidence still conflict; preserve the dispute rather than pinning either source.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-x402-auth-entry-signing"

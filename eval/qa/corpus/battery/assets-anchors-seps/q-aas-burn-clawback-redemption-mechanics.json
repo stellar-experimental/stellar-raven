@@ -9,11 +9,13 @@
   "golden": {
     "answer": "For a classic issued asset, the issuer account is the asset's authority, not a normal holder of its own credit. Stellar's asset docs state that an asset is created by an issuing account payment and that deleting or burning an issued asset is done by sending it back to the issuing account. The SAC docs make the same accounting explicit: transfers to the issuer account burn, while transfers from the issuer mint. That is the mechanical basis for voluntary redemption: a holder pays the issuer/distributor according to the issuer's redemption process, and the asset balance is removed from outstanding holder balances.\n\nClawback is different. Under CAP-35 and the Stellar control-access docs, an issuer can claw back only assets/trustlines that were clawback-enabled under the required flags. The issuer submits a clawback operation against the holder's balance; the SAC interface describes the clawed-back amount as burned in the clawback process. It is not a normal user payment, does not require the affected holder's signature, and does not create a spendable issuer balance.\n\nSo: redemption/payment back to the issuer is holder-initiated and usually part of off-chain cash settlement; burn is the supply/accounting effect of returning issued credit to the issuer; clawback is issuer-initiated removal under regulated-asset controls.",
     "keyFacts": [
-      "Explains that a classic asset balance held by a non-issuer account represents issued supply; sending it back to the issuer is redemption/burn-like because the issuer does not hold its own asset as a normal balance.",
-      "Explains clawback removes a holder's balance under clawback-enabled issuer controls rather than transferring spendable tokens back to the issuer account.",
+      "Identifies non-issuer classic balances as issued supply.",
+      "Treats classic asset returns to the issuer as redemption/burn-like.",
+      "Clawback removes a holder balance under clawback-enabled issuer controls.",
       "Distinguishes voluntary redemption/payment back to issuer from issuer-initiated clawback."
     ],
     "avoid": [
+      "Do NOT say the issuer holds its own classic asset as a normal balance.",
       "Do NOT say clawed-back classic-asset tokens become a spendable issuer balance.",
       "Do NOT conflate user redemption with issuer clawback authorization.",
       "Do NOT detour into per-transfer fee hooks, max-supply caps, or the full AUTH_* flag enumeration; the question is the burn/clawback/redemption distinction."
@@ -51,10 +53,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-01-asset-lifecycle-safety-metadata accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (compound-predicate): Split supply and return mechanics, shortened clawback, and moved the issuer-balance trap to avoid; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed issued classic balances outside the issuer.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed that returning an asset to its issuer burns it.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — showed holder-balance removal under clawback-enabled issuer controls.",
+        "Sibling sweep 2026-08-27: grep burn|redemption|clawback|issuer balance → q-aas-issuer-fees-supply-cap-freeze, q-sep-clawback-prereq-flag, q-comp-clawback-cap0035, q-comp-clawback-holder-risk; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-aas-burn-clawback-redemption-mechanics"

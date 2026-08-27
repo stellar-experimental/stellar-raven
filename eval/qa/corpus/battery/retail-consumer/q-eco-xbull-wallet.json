@@ -13,7 +13,9 @@
     "answer": "**xBull** is an open-source, non-custodial Stellar wallet built by **Creit-Tech**. As of **2026-07-10**, current evidence supported the Chrome/Firefox extension, web/PWA, and iOS surfaces, with the public repo/release still on the v1.x line. The project's own page described the passkey-based hybrid **V2 as coming**, not already introduced. The Google Play URL returned 404, so do not claim current Android store availability without a fresh listing.\n\nRe-check platform availability, maintained release, signing/Soroban features, and integrations before recommending it. Stars and broad 'widely integrated' claims are volatile and not part of identity. xBull is not an SDF or Ultra Stellar product.",
     "keyFacts": [
       "Identifies xBull as Creit-Tech's open-source non-custodial Stellar wallet.",
-      "Dates verified platforms and correctly treats passkey/hybrid V2 as forthcoming and Android availability as unverified/absent at the checked store URL."
+      "Dates verified platform claims.",
+      "Treats passkey/hybrid V2 as forthcoming.",
+      "Treats Android availability as unverified/absent at the checked store URL."
     ],
     "avoid": [
       "Do NOT say V2/passkeys were already introduced or claim Android availability from code/directory metadata alone.",
@@ -86,18 +88,24 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-20 primary 3256 and blind 3257",
         "Sibling sweep: wallet overview/list/similar and Wallets Kit integration cases",
         "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
         "Reviewed improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed claim: xBull's Live label proves current Android availability.",
-        "Sibling sweep 2026-08-27: grep xBull|Creit-Tech|Google Play → q-builder-by-scf-tier, q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-eco-xbull-wallet, q-edge-ambig-best-wallet, q-soroban-x402-auth-entry-signing, q-ti-connect-wallet-button-code, q-tool-freighter-wallet, q-tool-wallets-comparison; no contradiction"
+        "Sibling sweep 2026-08-27: grep xBull|Creit-Tech|Google Play → q-builder-by-scf-tier, q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-eco-xbull-wallet, q-edge-ambig-best-wallet, q-soroban-x402-auth-entry-signing, q-ti-connect-wallet-button-code, q-tool-freighter-wallet, q-tool-wallets-comparison; no contradiction",
+        "Structural re-form (compound-predicate): split platform dating, V2 status, and Android store-status requirements into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://chromewebstore.google.com/detail/xbull-wallet/omajpeaffjgmlpmhbfdjepdejoemifpe — the current listing exposes a dated platform version for verification.",
+        "Live re-check 2026-08-27: https://xbull.app/ — the current operator page still describes passkey/hybrid V2 as coming.",
+        "Live re-check 2026-08-27: https://play.google.com/store/apps/details?id=app.xbull.mobile — the current check could not retrieve a listing, so Android availability remains unverified at that URL.",
+        "Sibling sweep 2026-08-27: grep xBull|Creit-Tech|passkey|Google Play → q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-builder-by-scf-tier, q-tool-wallets-comparison, q-ti-connect-wallet-button-code, q-soroban-x402-auth-entry-signing, q-eco-lobstr-wallet, q-tool-freighter-wallet; no contradiction"
       ],
       "rootCause": [
         "A roadmap was rewritten as shipped behavior, and code/directory presence was promoted into current app-store availability.",
         "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-eco-xbull-wallet"

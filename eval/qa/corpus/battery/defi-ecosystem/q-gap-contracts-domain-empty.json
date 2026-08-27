@@ -8,8 +8,10 @@
     "answer": "Preserve the requested domain, `generatedAt`, and returned counts. An empty `contracts` array with a successful response is an ok-with-empty registry result, not a soft-empty error envelope. `scout.listContracts` is evidence-gated: it includes contracts only after a scanner verifies a claimed mainnet id or on-chain enrichment attributes activity. Therefore, report that the current registry returned no verified rows for that filter. Do not claim that no such contract exists. Use broader project, repository, or research discovery for an open-world existence question, and keep any later contract claim tied to its own evidence.",
     "keyFacts": [
       "Distinguishes a successful empty contracts payload from a soft-empty error envelope.",
-      "Explains the evidence-gated membership rule and keeps absence registry-relative.",
-      "Reports the filter, timestamp, counts, and a broader recovery route for open-world existence."
+      "Explains the evidence-gated membership rule.",
+      "Keeps absence registry-relative.",
+      "Reports the filter, timestamp, and counts.",
+      "Reports a broader recovery route for open-world existence."
     ],
     "avoid": [
       "Do NOT claim that an empty filtered registry proves no contract in that domain exists.",
@@ -60,16 +62,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1664 coverage-golden implementation",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Read-only listContracts domain probe returned a successful empty payload on 2026-08-18.",
         "catalog/manifest.json#scout.listContracts defines the durable evidence-gated absence boundary.",
         "Sibling sweep: q-ti-enumerate-all-contracts already rejects this registry as a complete deployment inventory.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
+        "Structural re-form (compound-predicate): split membership, absence scope, reporting fields, and recovery into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current manifest still separates a successful contracts payload from a soft-empty error.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current listContracts contract still defines evidence-gated membership.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the current listContracts contract still limits absence to registry scope.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current service specification still defines response metadata and filters.",
+        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/stellar-light.md — the current service specification still distinguishes registry data from open-world discovery.",
+        "Sibling sweep 2026-08-27: grep listContracts|evidence-gated|registry absence → q-ti-enumerate-all-contracts, q-gap-hackathon-brief-evidence-boundaries, q-scout-hackathon-brief-first-hour, q-defi-oracle-landscape-live, q-sor-reflector-integration-code; no contradiction"
       ],
       "rootCause": [
-        "solo://proj/80/todo/author-five-new-cove--1664"
+        "solo://proj/80/todo/author-five-new-cove--1664",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

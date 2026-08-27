@@ -8,7 +8,8 @@
   "golden": {
     "answer": "A defensible market map must be a **dated, source-relative snapshot**, not a timeless verdict. As of **2026-07-10**, Scout's type clusters showed many directory-tagged entries in RWA, DEX, wallets, lending, and NFTs, but those counts mix roles and lifecycle states and do not measure independent competitors, maturity, TVL, or usage. Map each lane with: directory count/source, independently verified live products, role, deployment state, and an observable concentration metric. Treat liquid staking, insurance, identity/attestation, perps, and RWA composability as **opportunity hypotheses to verify**, not empty categories. Named counterexamples already make absolute equity/real-estate, identity, and NFT whitespace claims unsafe.",
     "keyFacts": [
-      "Uses dated source-relative counts plus operator/status/usage checks and distinguishes directory density from competition or maturity."
+      "Uses dated source-relative counts with operator, status, and usage checks.",
+      "Treats directory density, competition, and maturity as different measures."
     ],
     "avoid": [
       "Do NOT hard-code a timeless crowded/whitespace map, infer maturity from tags, or assert a category is empty without a strict dated search and operator verification.",
@@ -68,13 +69,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited static market map promotes directory tags and old snapshots into maturity, competition, and whitespace claims. Current Scout counts and named counterexamples invalidate several absolutes.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; sibling sweep of lending, perps, liquid staking, RWA, NFT, and oracle cases."
+        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; sibling sweep of lending, perps, liquid staking, RWA, NFT, and oracle cases.",
+        "Structural re-form (negative-predicate): split the compound market-map fact into two atomic positive facts; the dated methodology and metric taxonomy are unchanged.",
+        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout and https://stellar.org/blog/ecosystem/what-the-defi-is-happening-on-stellar — current directory endpoints and operator examples still require dated status and usage checks.",
+        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — current cluster and analysis endpoints remain directory-taxonomy surfaces, not competition or maturity measures.",
+        "Sibling sweep 2026-08-27: grep directory density|market map|crowded|whitespace|competition|maturity → q-defi-category-saturation-live, q-defi-perps-whitespace, and q-eco-defi-projects-discovery; no contradiction"
       ],
       "rootCause": [
-        "Snapshot promotion, taxonomy/behavior conflation, and unsupported negative claims."
+        "Snapshot promotion, taxonomy/behavior conflation, and unsupported negative claims.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-eco-defi-market-map"

@@ -8,8 +8,10 @@
   "golden": {
     "answer": "**Yes. Protocol 27 (Zipper), live on Mainnet since 2026-07-08, adds first-class delegated signers for custom accounts through CAP-0071.** It introduces `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES`, nested `SorobanDelegateSignature` chains, and `ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS`. CAP-0071 also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, binding credentials to the account address to prevent cross-account replay. Legacy custom-account delegation was already possible from Protocol 20 by calling `require_auth_for_args` inside `__check_auth`; P27 did not invent all delegation capability, but made it a first-class host/credential-mediated protocol feature. Clients still need compatible SDK/CLI versions and network activation must be checked live.",
     "keyFacts": [
-      "States that Protocol 27/CAP-0071 adds first-class authentication delegation for custom accounts and is live on Mainnet since 2026-07-08.",
-      "Names the delegated/address-bound credential mechanisms, including SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES and SOROBAN_CREDENTIALS_ADDRESS_V2."
+      "Protocol 27/CAP-0071 adds first-class authentication delegation for custom accounts.",
+      "Protocol 27 is live on Mainnet since 2026-07-08.",
+      "Delegated credential mechanisms include SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES.",
+      "Address-bound credential mechanisms include SOROBAN_CREDENTIALS_ADDRESS_V2."
     ],
     "avoid": [
       "Do NOT claim CAP-0071's first-class delegated credential format existed before P27; also do not deny the older P20 custom-account delegation pattern.",
@@ -76,14 +78,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-09",
-      "by": "Golden-truth sweep import — Live P27/CAP-0071 mechanics are correct, but the effective avoid clause can punish the true distinction that custom-account delegation existed from P20 while P27 made delegation first-class.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "2026-07-09 independent CAP/source/network verification in Solo scratchpad 567"
+        "2026-07-09 independent CAP/source/network verification in Solo scratchpad 567",
+        "Structural re-form (compound-predicate): split the CAP relationship, Mainnet date, delegated field, and address-bound field into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071.md — the current Final CAP still assigns first-class custom-account delegation to Protocol 27/CAP-0071.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — the current history still records Protocol 27 on Mainnet from 2026-07-08.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md — the current Final CAP still defines SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — the current Final CAP still defines address-bound SOROBAN_CREDENTIALS_ADDRESS_V2.",
+        "Sibling sweep 2026-08-27: grep CAP-0071|SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES|SOROBAN_CREDENTIALS_ADDRESS_V2 → q-pc-protocol-27-zipper, q-protocol-27-cap-0071, q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-version-history-list, q-protocol-cap-process; no contradiction"
       ],
       "rootCause": [
         "eval-side date-contingent timing prose expired after P27 activation",
-        "solo://proj/49/todo/date-contingent-trap--831"
+        "solo://proj/49/todo/date-contingent-trap--831",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-auth-delegation-p27"

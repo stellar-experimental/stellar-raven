@@ -7,8 +7,10 @@
   "golden": {
     "answer": "Call a deployed contract either through a generated typed client (from `contractimport!` or generated bindings) or through `Env::invoke_contract`. The whole call tree shares the transaction's resource budget. Authorization is an invocation tree: an external address's `require_auth` must be covered for the relevant nested invocation and arguments. Separately, the address of the contract making a direct cross-contract call is implicitly authorized for that direct call; do not describe every boundary as an unconditional authorization reset.",
     "keyFacts": [
-      "Names generated typed clients and Env::invoke_contract as the two call mechanisms.",
-      "Explains both external-address invocation-tree coverage and direct-contract-invoker implicit authorization."
+      "Names generated typed clients as one call mechanism.",
+      "Names Env::invoke_contract as the other call mechanism.",
+      "Requires external-address invocation-tree coverage.",
+      "Names direct-contract-invoker implicit authorization."
     ],
     "avoid": [
       "Do NOT use Solidity interface/call/delegatecall semantics.",
@@ -68,13 +70,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer correctly described the two call mechanisms but made authorization a blanket per-boundary reset, omitting the host's direct-contract-invoker implicit-authorization rule.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-45 independent blind 3328; primary 3325 retained the overbroad sentence and was overturned on this atom."
+        "Solo scratchpad 575 GT-45 independent blind 3328; primary 3325 retained the overbroad sentence and was overturned on this atom.",
+        "Structural re-form (compound-predicate): Split two compound facts into four atomic facts; the two call mechanisms and both authorization rules are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/conventions/cross-contract — the generated typed client wraps Env::invoke_contract.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/conventions/cross-contract — Env::invoke_contract remains the direct call mechanism.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — external-address authorization covers the requested invocation tree.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — direct contract calls remain implicitly authorized by the invoker.",
+        "Sibling sweep 2026-08-27: grep invoke_contract|direct-contract-invoker|invocation-tree → q-sor-decode-hosterror-codes, q-sor-require-auth-propagation, q-soroban-cross-contract-call; no contradiction"
       ],
       "rootCause": [
-        "Eval-side authorization model was compressed into an absolute that omitted the direct-invoker exception."
+        "Eval-side authorization model was compressed into an absolute that omitted the direct-invoker exception.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-cross-contract-call"

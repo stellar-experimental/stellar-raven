@@ -1,1 +1,113 @@
-{"id":"q-sor-cross-socketfi-auth","question":"The ecosystem feed indexed @socketfi/server in July 2026. What kind of project is SocketFi according to Scout, and which Soroban hook do official docs say its passkey-style contract account must implement?","surface":["lumenloop.search_directory","lumenloop.find_content_about_project","scout.searchProjects","stellarDocs.search_docs"],"golden":{"answer":"As observed on 2026-07-11, Lumenloop's indexed @socketfi/server item describes a backend SDK that verifies SocketFi authentication tokens and prepares simulated/assembled Soroban transactions for paymaster signing. Scout lists SocketFi as a live, SCF-funded, non-custodial Soroban smart-wallet dApp using passkey sign-in with social-profile binding and gas abstraction. Official Stellar docs say a contract account implements `__check_auth`: `require_auth` for that contract address invokes this hook with the signed payload, signatures, and authorization context, and the hook accepts or rejects authentication and policy checks.","keyFacts":["Reports the indexed @socketfi/server backend role: token verification plus Soroban transaction preparation for paymaster signing.","Uses Scout to identify SocketFi as a live SCF-funded non-custodial Soroban smart wallet using passkeys.","Names `__check_auth` as the contract-account hook and explains that `require_auth` invokes it to enforce authentication/authorization."],"avoid":["Do NOT describe SocketFi as a classic G-address wallet whose passkeys are checked by SEP-10.","Do NOT claim the npm package itself is the on-chain account contract."],"notes":"Both the current project/package evidence and the official contract-account mechanism are mandatory."},"tags":{"category":"soroban","service":"scout","freshness":"scheduled"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","reverifyBy":"2026-10-22","sources":[{"class":"C","ref":"http://localhost:8787/mcp — Lumenloop and Scout live probes, observed 2026-07-11"},{"class":"A","ref":"https://registry.npmjs.org/@socketfi%2Fserver"},{"class":"A","ref":"https://developers.stellar.org/docs/build/guides/contract-accounts"},{"class":"B","ref":"https://github.com/socket-fi"}],"corroboration":[{"claim":"SocketFi is a live passkey-oriented Soroban smart-wallet project and @socketfi/server is its backend integration package.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"lumenloop.find_content_about_project(slug=socketfi) + scout.searchProjects(q=SocketFi)","observedAt":"2026-07-11"},{"class":"A","ref":"https://registry.npmjs.org/@socketfi%2Fserver","observedAt":"2026-07-11"},{"class":"B","ref":"https://github.com/socket-fi","observedAt":"2026-07-11"}]},{"claim":"Soroban contract accounts implement __check_auth, which is reached through require_auth.","verdict":"confirmed","evidence":[{"class":"E","ref":"stellarDocs.search_docs(query=__check_auth custom account contract passkey)","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account#policy-modification","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 Lane X cross-service live composition probe","evidence":["http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md","Sibling sweep: SocketFi/passkey/__check_auth battery mentions reviewed; no contradiction found"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (cross-service)"}}
+{
+  "id": "q-sor-cross-socketfi-auth",
+  "question": "The ecosystem feed indexed @socketfi/server in July 2026. What kind of project is SocketFi according to Scout, and which Soroban hook do official docs say its passkey-style contract account must implement?",
+  "surface": [
+    "lumenloop.search_directory",
+    "lumenloop.find_content_about_project",
+    "scout.searchProjects",
+    "stellarDocs.search_docs"
+  ],
+  "golden": {
+    "answer": "As observed on 2026-07-11, Lumenloop's indexed @socketfi/server item describes a backend SDK that verifies SocketFi authentication tokens and prepares simulated/assembled Soroban transactions for paymaster signing. Scout lists SocketFi as a live, SCF-funded, non-custodial Soroban smart-wallet dApp using passkey sign-in with social-profile binding and gas abstraction. Official Stellar docs say a contract account implements `__check_auth`: `require_auth` for that contract address invokes this hook with the signed payload, signatures, and authorization context, and the hook accepts or rejects authentication and policy checks.",
+    "keyFacts": [
+      "Reports indexed @socketfi/server as a token-verifying backend SDK.",
+      "Reports Soroban transaction preparation for paymaster signing.",
+      "Uses Scout for SocketFi: live, SCF-funded, non-custodial Soroban smart wallet, passkeys.",
+      "Names `__check_auth` as the contract-account hook.",
+      "Explains `require_auth` invokes the hook for authentication and authorization checks."
+    ],
+    "avoid": [
+      "Do NOT describe SocketFi as a classic G-address wallet whose passkeys are checked by SEP-10.",
+      "Do NOT claim the npm package itself is the on-chain account contract."
+    ],
+    "notes": "Both the current project/package evidence and the official contract-account mechanism are mandatory."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "reverifyBy": "2026-10-22",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp — Lumenloop and Scout live probes, observed 2026-07-11"
+      },
+      {
+        "class": "A",
+        "ref": "https://registry.npmjs.org/@socketfi%2Fserver"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/socket-fi"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "SocketFi is a live passkey-oriented Soroban smart-wallet project and @socketfi/server is its backend integration package.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "lumenloop.find_content_about_project(slug=socketfi) + scout.searchProjects(q=SocketFi)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://registry.npmjs.org/@socketfi%2Fserver",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/socket-fi",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "Soroban contract accounts implement __check_auth, which is reached through require_auth.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_docs(query=__check_auth custom account contract passkey)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account#policy-modification",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "evidence": [
+        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
+        "Sibling sweep: SocketFi/passkey/__check_auth battery mentions reviewed; no contradiction found",
+        "Structural re-form (compound-predicate): split the package role and contract-account mechanism into five atomic facts; no claim changed.",
+        "Live re-check 2026-08-27: https://registry.npmjs.org/@socketfi%2Fserver and https://github.com/socket-fi support the indexed token-verifying backend SDK claim.",
+        "Live re-check 2026-08-27: https://registry.npmjs.org/@socketfi%2Fserver supports Soroban transaction preparation for paymaster signing.",
+        "Live re-check 2026-08-27: https://www.socket.fi/ and https://lumenloop.com/projects/socketfi support the live, SCF-funded, non-custodial Soroban smart-wallet and passkey claims.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization names `__check_auth` as the contract-account hook.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/auth/contract-authorization states that `require_auth` invokes the hook for credentials and policy checks.",
+        "Sibling sweep 2026-08-27: q-passkey-smart-account-architecture, q-soroban-check-auth-custom-account, q-soroban-require-auth, and q-tool-passkeykit-smart-wallet introduce no contradiction."
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+      ]
+    },
+    "origin": "authored 2026-07 (cross-service)"
+  }
+}

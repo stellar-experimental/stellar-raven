@@ -9,11 +9,11 @@
   "golden": {
     "answer": "The passkey has no Stellar seed to recover, so recovery must be pre-authorized in contract policy; an Ed25519 fallback may itself use an independently secured Stellar seed. Configure independent signers, guardians, admin, or upgrade authority before loss. Losing every authorized path is unrecoverable at protocol level. Recovery policy can add rotation/revocation, delays, notifications, cancellation, thresholds, and audit events, while explicitly disclosing guardian or provider takeover power. Platform sync improves availability but is not an independent contract recovery path.",
     "keyFacts": [
-      "The passkey has no Stellar seed to recover; recovery must be pre-authorized in contract policy, while an Ed25519 fallback may use its own secured seed.",
-      "Loss of every signer, admin, guardian, and upgrade authority is unrecoverable at protocol level.",
-      "Recovery controls may include rotation/revocation, delays, notifications, cancellation, thresholds, and audit events.",
+      "Requires pre-loss contract policy for seedless passkeys with secure-seed Ed25519 fallback.",
+      "Treats loss of every signer/admin/guardian/upgrade authority as protocol-unrecoverable.",
+      "Lists rotation/revocation, delays, notifications, cancellation, thresholds, audit events.",
       "Guardian or provider takeover power must be disclosed and constrained.",
-      "Platform passkey synchronization improves availability but is not an independent contract recovery path."
+      "Treats platform passkey sync as availability support, not independent contract recovery."
     ],
     "avoid": [
       "A lost passkey can always be recreated from the Stellar contract address.",
@@ -214,12 +214,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/smart-wallets/recovery",
         "https://developers.google.com/identity/passkeys/supported-environments",
-        "https://github.com/OpenZeppelin/stellar-contracts/tree/master/packages/accounts"
+        "https://github.com/OpenZeppelin/stellar-contracts/tree/master/packages/accounts",
+        "Structural re-form (compound-predicate): Recast four compound or long recovery facts with single predicates; every recovery claim is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/passkey-kit — the current wallet supports passkey, Ed25519, and policy signers plus pre-loss signer management.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — smart-wallet authority still comes from contract-defined signers and policy.",
+        "Live re-check 2026-08-27: https://docs.openzeppelin.com/stellar-contracts/accounts/policies — current policies still support thresholds, time restrictions, and configurable controls.",
+        "Live re-check 2026-08-27: https://developers.google.com/identity/passkeys/supported-environments — provider sync remains availability behavior, not Stellar contract authority.",
+        "Sibling sweep 2026-08-27: grep passkey|recovery signer|guardian → q-passkey-smart-account-architecture, q-passkey-platform-constraints, q-smart-account-scoped-policy-signers, q-tool-passkey-wallet-recovery; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "kaan passkey-wallet-recovery"

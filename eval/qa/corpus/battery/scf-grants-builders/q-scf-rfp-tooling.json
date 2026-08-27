@@ -8,9 +8,9 @@
   "golden": {
     "answer": "Yes. As of 2026-08-18, the published Q3 roster contains two open infrastructure and tooling briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response reports `syntheticRounds=0`. RFP applicants start with the rolling interest form and submit a full proposal only if invited. SCF #45 is already in Initial Review, so an invitation or open brief does not establish that a new full proposal can still enter #45.\n\nThe dated example is illustrative: a later grounded answer should report the roster and round state supported at its own observation time.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as current or dated, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Uses current official and live sources and states that no synthetic round row is present.",
+      "Uses current official/live sources with no synthetic round row present.",
       "Explains the rolling interest-form-to-invitation path.",
       "Distinguishes an open brief from an open SCF full-proposal window."
     ],
@@ -88,18 +88,23 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
         "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",
         "Sibling sweep covered q-scf-open-rfps, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-how-to-apply, q-scf-eligibility-criteria, q-scf-submission-lifecycle-deadlines, and q-scf-hummingbot-kelp-closed-rfp; the entry path and current-round claims remain consistent.",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP tooling → q-scf-rfp-tooling, q-scf-open-rfps, q-scf-open-rfps-live; no contradiction"
+        "Sibling sweep 2026-08-27: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP tooling → q-scf-rfp-tooling, q-scf-open-rfps, q-scf-open-rfps-live; no contradiction",
+        "Structural re-form (compound-predicate): Tightened the sourcing rule and merged the official/live source requirement with the no-synthetic-row datum under one predicate; truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/rfp-track.md — showed the current official Q3 RFP roster and its dated publication context.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/rfps?status=open and https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — retained the live RFP source and its syntheticRounds response field; the dated zero-row receipt remains unchanged.",
+        "Sibling sweep 2026-08-27: grep LayerZero DVN|x402 Facilitator|syntheticRounds|RFP → q-scf-open-rfps, q-scf-open-rfps-live, q-scf-current-round; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-rfp-tooling"

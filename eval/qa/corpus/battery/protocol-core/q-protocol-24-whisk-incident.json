@@ -8,8 +8,10 @@
     "answer": "**Protocol 24** was the focused corrective upgrade after Protocol 23/Whisk, activated on Mainnet on **2025-10-22**. P23's persistent-eviction retrofit reused an eviction scan that loaded the latest **TTL** but did not reload the latest **entry version**. A candidate encountered in an arbitrary older Bucket List layer could therefore be written to Hot Archive instead of the newest value; restoring it later made that old value observable as live state.\n\nThe exact scope was **478** corrupted entries. Before quarantine, **84** were restored and **77 of those were subsequently modified**; the remaining **394 were never restored**. **CAP-0076** amended only entries still in Hot Archive whose corruption had never been observed, restoring those 394 to their verifiable pre-archival values. It did not rewrite the 84 restored entries; affected protocols and issuers handled those separately. CAP-0076 also added **31,879,035 stroops** to the fee pool to account for two restored XLM contract balances that had burned 1,000,000 and 30,879,035 stroops. The incident did **not** cause a chain fork, but a blanket 'no loss of funds' claim is false.",
     "keyFacts": [
       "Explains the exact latest-TTL-versus-stale-entry-version eviction defect.",
-      "States 478 affected, 84 restored, 77 restored-and-modified, and 394 never restored/amended by CAP-0076.",
-      "States the 31,879,035-stroop fee-pool remediation for two actual XLM burns and preserves the no-fork qualifier."
+      "Reports 478 affected, 84 restored, and 77 restored-and-modified.",
+      "Reports CAP-0076 amended the 394 never-restored entries.",
+      "Reports 31,879,035-stroop fee-pool remediation for two actual XLM burns.",
+      "Preserves the no-fork qualifier."
     ],
     "avoid": [
       "Do NOT say P24 restored or rewrote all 478 affected entries; CAP-0076 amended the 394 never-restored entries only.",
@@ -87,14 +89,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited incident summary blurred the exact eviction/version defect, implied all affected entries were restored by P24, and carried a false broad no-loss trap despite two restored XLM balances burning 31,879,035 stroops.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the exact root cause, affected/restored qualifiers, CAP-0076 scope, and removal of the no-loss trap.",
-        "2026-07-11 author re-check against CAP-0076 at stellar-protocol fbf05c9d and both SDF incident reports."
+        "2026-07-11 author re-check against CAP-0076 at stellar-protocol fbf05c9d and both SDF incident reports.",
+        "Structural re-form (compound-predicate): Split the incident counts, CAP amendment, fee remediation, and no-fork qualifier into atomic facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/developers/addressing-state-archival-inconsistencies-protocol-upgrade-vote-next-week confirms 478 affected, 84 restored, and 77 restored-and-modified.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md confirms CAP-0076 amended the 394 never-restored entries.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md confirms 31,879,035 stroops and two actual XLM burns.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem describes ledger-state remediation without a network fork.",
+        "Sibling sweep 2026-08-27: grep Whisk|CAP-0076|state archival → q-protocol-23-whisk-caps, q-protocol-version-history-list, q-pc-protocol-26-yardstick; no contradiction"
       ],
       "rootCause": [
-        "Eval-side incident compression treated corrupted archival, observed restoration, protocol amendment, and issuer/protocol mitigation as one generic restore path."
+        "Eval-side incident compression treated corrupted archival, observed restoration, protocol amendment, and issuer/protocol mitigation as one generic restore path.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-protocol-24-whisk-incident"

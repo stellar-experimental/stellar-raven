@@ -7,7 +7,9 @@
   "golden": {
     "answer": "Soroban's Mainnet rollout was phased: **Protocol 20/Phase 0 activated February 20, 2024**, Phase 1 followed February 27, and **Phase 2/general availability arrived March 19**. SDF's roughly **$100M Soroban Adoption Fund** was announced earlier, with Futurenet on **October 12, 2022**; it was not itself a 2024 launch event. Soroban is a non-EVM, Wasm-based contract platform with a Rust-first toolchain, not a Solidity/EVM environment or a protocol restricted in principle to Rust.",
     "keyFacts": [
-      "Separates Protocol activation, phased GA, and the 2022 fund announcement; describes Soroban as Wasm/Rust-first and non-EVM."
+      "Treats Protocol activation, phased GA, and the 2022 fund announcement as distinct events.",
+      "Describes Soroban as a Wasm platform with a Rust-first toolchain.",
+      "Describes Soroban as non-EVM."
     ],
     "avoid": [
       "Do NOT use one 2024 date for every rollout stage, claim the fund was a 2024 launch event, claim a 2021/22 Mainnet launch, or call Soroban Solidity/EVM/Rust-only."
@@ -67,15 +69,21 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-27 primary 3270 and blind 3272.",
         "Structural re-form (presentation-avoid): Reworded a date-presentation clause as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep Soroban Adoption Fund|Phase 0|March 19 → q-hist-soroban-launch-protocol20 only; no sibling contradiction"
+        "Sibling sweep 2026-08-27: grep Soroban Adoption Fund|Phase 0|March 19 → q-hist-soroban-launch-protocol20 only; no sibling contradiction",
+        "Structural re-form (negative-predicate): Split the rollout, platform, and compatibility claims into independent facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/developers/protocol-20-upgrade-guide and https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet still separate the 2024 rollout from the 2022 fund announcement.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/overview still documents Wasm execution and Rust as a supported contract language.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/migrate/evm still requires EVM contracts to adapt or compile to Wasm for Stellar.",
+        "Sibling sweep 2026-08-27: grep Protocol 20|Soroban Adoption Fund|Wasm/Rust-first across eval/qa/corpus/battery found no contradictory launch chronology or platform label."
       ],
       "rootCause": [
         "Distinct activation/GA/funding events were compressed and language support was over-narrowed.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-hist-soroban-launch-protocol20"

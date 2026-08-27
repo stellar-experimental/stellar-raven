@@ -10,7 +10,8 @@
     "answer": "`TransactionBuilder`'s fee is a maximum inclusion-fee bid per operation, not guaranteed spend. **As of 2026-07-10**, the effective base-fee floor is 100 stroops per operation, but 100 does not guarantee inclusion under surge; a low bid can be delayed or discarded. Smart-contract transactions also pay resource fees and compete against resource limits. For live estimates, use Stellar RPC **`getFeeStats`** (also exposed by current `stellar fees stats`) for classic/Soroban inclusion-fee percentiles. Horizon `GET /fee_stats` remains available and some Horizon endpoints lack direct RPC equivalents; official Docs currently conflict between calling Horizon deprecated and calling it legacy/no-new-features, nearing EOL but not yet deprecated. Hubble is historical analytics rather than the primary real-time submission estimator. Estimate immediately before submission, cap risk, add bounds, and treat values/status as dated.",
     "keyFacts": [
       "Explains maximum per-op bid, dated 100-stroop floor, and surge delay/exclusion.",
-      "Prioritizes live RPC getFeeStats/CLI or Horizon fee_stats and distinguishes Hubble historical analytics."
+      "Prioritizes live RPC getFeeStats, CLI, or Horizon fee_stats.",
+      "Treats Hubble as historical analytics, not a live fee estimator."
     ],
     "avoid": [
       "Do NOT say 100 always wins, freeze current percentiles, or use Ethereum gas/gwei framing.",
@@ -76,7 +77,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; mechanics agreed, reviewer independently corrected endpoint priority.",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for RPC getFeeStats discoverability; the truth is unchanged.",
@@ -84,13 +85,18 @@
         "Sibling sweep 2026-08-27: grep getFeeStats|fee_stats|100 stroops|surge pricing → q-pc-fee-bump-channel-accounts-feepool, q-pc-surge-griefing-threat-model, q-edge-1xlm-activation-fee; no contradiction",
         "Structural re-form (presentation-avoid): rewrote the presentational Hubble clause as the same concrete false-content claim; both trap targets are unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claims.",
-        "Sibling sweep 2026-08-27: grep Hubble|real-time estimator|overbid → q-infra-hubble-bigquery, q-ti-compute-token-lp-market-data; no contradiction"
+        "Sibling sweep 2026-08-27: grep Hubble|real-time estimator|overbid → q-infra-hubble-bigquery, q-ti-compute-token-lp-market-data; no contradiction",
+        "Structural re-form (negative-predicate): Split the endpoint-priority fact from the Hubble role fact; truth unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getFeeStats — getFeeStats returned recent inclusion-fee distributions for Soroban and classic transactions.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the fee guide treated current bids and surge conditions as submission-time inputs, consistent with using Hubble only for historical analytics.",
+        "Sibling sweep 2026-08-27: grep getFeeStats|fee_stats|100 stroops|Hubble → q-edge-1xlm-activation-fee, q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-rpc-methods-list, q-pc-practical-fee-setting, q-ti-compute-token-lp-market-data; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-003-rpc-method-reference-pages-unindexed.md",
         "Eval-side current-versus-historical endpoint routing error.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-pc-practical-fee-setting"

@@ -9,10 +9,11 @@
   "golden": {
     "answer": "A Stellar passkey smart account combines three layers: the browser's **WebAuthn ceremony**, the contract account's **`__check_auth` authorization policy**, and **CAP-0051's Protocol-21 secp256r1/P-256 signature-verification host primitive**. The host verifies a 65-byte uncompressed SEC1 public key, a 32-byte digest, and a 64-byte compact low-s signature; it does **not** parse or semantically validate a WebAuthn assertion.\n\nMost/common WebAuthn credentials using COSE ES256 use P-256, but WebAuthn also permits other algorithms. The relying party/verifier must bind the challenge and intended authorization payload, parse `clientDataJSON`/`authenticatorData`, and enforce the chosen origin, RP-ID hash, user-presence/verification and backup flags, credential identity, expiry/replay/counter policy, and application authorization context. A reviewed OpenZeppelin verifier supplies part of that validation and intentionally leaves several relying-party checks to application policy. A separate classic account/relayer submits and pays; fee sponsorship does not replace smart-account authorization.",
     "keyFacts": [
-      "CAP-0051/P21 supplies the native P-256 verification primitive used inside contract-account authorization.",
+      "CAP-0051/P21 supplies native P-256 verification for contract-account authorization.",
       "P-256/ES256 is common for WebAuthn, not the universal passkey curve.",
-      "Full WebAuthn and authorization require challenge/context, origin/RP-ID, flags, credential, replay/counter, and policy checks beyond a valid P-256 signature.",
-      "Separates the authorizing C-account from the G-account/relayer that submits and pays."
+      "Requires challenge/context, origin/RP-ID, flags, and credential checks.",
+      "Requires replay/counter and authorization-policy checks beyond P-256.",
+      "Treats the authorizing C-account and paying G-account/relayer as distinct roles."
     ],
     "avoid": [
       "Do NOT claim CAP-0051 performs full WebAuthn verification or that a valid P-256 signature alone authorizes an operation.",
@@ -97,14 +98,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer universalized P-256 across WebAuthn and collapsed a full WebAuthn assertion/policy check into CAP-0051's low-level signature primitive, creating a security-sensitive false equivalence.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-50 primary process 3349 confirmed the most-versus-all correction; blind process 3361 independently required the fuller WebAuthn/host/__check_auth separation.",
-        "Sibling sweep checked q-protocol-passkeys-secp256r1, q-soroban-check-auth-custom-account, q-tool-passkeykit-smart-wallet, q-tool-passkey-wallet-recovery, and q-soroban-add-signer-smart-wallet-howto."
+        "Sibling sweep checked q-protocol-passkeys-secp256r1, q-soroban-check-auth-custom-account, q-tool-passkeykit-smart-wallet, q-tool-passkey-wallet-recovery, and q-soroban-add-signer-smart-wallet-howto.",
+        "Structural re-form (negative-predicate): Shortened the CAP fact, split WebAuthn checks into atomic facts, and stated the account-role taxonomy positively; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md — showed Final CAP-0051, Protocol 21, and the secp256r1 verification host interface.",
+        "Live re-check 2026-08-27: https://www.w3.org/TR/webauthn-3/ — showed challenge, origin, credential-algorithm, and authenticator verification requirements.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.7.2/packages/accounts/src/verifiers/webauthn.rs — showed WebAuthn flag checks and explicit relying-party policy omissions beyond signature verification.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — showed C-account authorization in __check_auth and a relayer handling submission and fees.",
+        "Sibling sweep 2026-08-27: grep CAP-0051|secp256r1|WebAuthn|relayer → q-infra-secp256r1-passkeys, q-passkey-platform-constraints, q-protocol-accounts-signers-thresholds, q-soroban-check-auth-custom-account, q-tool-passkey-wallet-recovery, q-tool-passkeykit-smart-wallet; no contradiction"
       ],
       "rootCause": [
-        "Eval-side security-layer collapse: WebAuthn ceremony, signature primitive, and contract authorization policy were authored as one operation."
+        "Eval-side security-layer collapse: WebAuthn ceremony, signature primitive, and contract authorization policy were authored as one operation.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-infra-secp256r1-passkeys"

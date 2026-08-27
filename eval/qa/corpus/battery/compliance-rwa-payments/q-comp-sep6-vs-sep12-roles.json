@@ -10,12 +10,16 @@
   "golden": {
     "answer": "- **SEP-12 carries customer KYC data; SEP-6 does not define the KYC schema.** SEP-6 is the programmatic Deposit and Withdrawal API and uses SEP-12 PUT /customer when its flow requires client-supplied KYC.\n- SEP-6 authentication is conditional and advertised through /info; when required, use SEP-10 for G/M accounts or SEP-45 for C accounts.\n- SEP-24 is the hosted interactive alternative: the anchor UI may collect KYC, while protected user-data endpoints use the supported SEP-10/45 JWT. SEP-8 is a separate regulated-asset transaction approval standard.",
     "keyFacts": [
-      "SEP-12, not SEP-6, carries KYC/customer data; SEP-6 is the programmatic deposit/withdrawal API.",
-      "SEP-6 authentication is conditional, while SEP-12 and protected SEP-24 endpoints use account-appropriate SEP-10 or SEP-45 authentication."
+      "SEP-12 carries KYC/customer data.",
+      "SEP-6 is the programmatic deposit/withdrawal API.",
+      "SEP-6 authentication is conditional.",
+      "SEP-12 uses account-appropriate SEP-10 or SEP-45 authentication.",
+      "Protected SEP-24 endpoints use account-appropriate SEP-10 or SEP-45 authentication."
     ],
     "avoid": [
       "Do NOT claim SEP-6 defines the KYC schema.",
-      "Do NOT claim every SEP-6/24 flow universally starts with SEP-10 or use SEP-10 for C accounts."
+      "Do NOT claim every SEP-6/24 flow universally starts with SEP-10 or use SEP-10 for C accounts.",
+      "Do NOT claim SEP-6 carries KYC/customer data."
     ],
     "notes": "Verified: SEP-12 is the 'KYC API' (carries the customer data); SEP-6 is the programmatic Deposit & Withdrawal API and relies on SEP-12 for KYC, with SEP-10 auth first. Trap: thinking SEP-6 carries the KYC schema itself.\nAlso good if the answer: In SEP-6 (programmatic, no hosted UI) the wallet collects and submits KYC via SEP-12; in SEP-24 the anchor's hosted flow collects it. | Both authenticate via SEP-10 first.\nGolden cites: SEP-6 and SEP-12 specs / developers.stellar.org docs.\nCORRECTION 2026-07-10: preserve the SEP-6 versus SEP-12 role split, but do not gate on SEP-10-first. SEP-6 auth is conditional; SEP-12 and protected SEP-24 endpoints use SEP-10 G/M or SEP-45 C."
   },
@@ -94,13 +98,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The durable role split was correct, but the answer falsely universalized SEP-10-first authentication. SEP-6 authentication is advertised per endpoint/asset and may be optional; SEP-12 and SEP-24 use the applicable SEP-10 G/M or SEP-45 C JWT.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-05 blind, GT-08 primary, and GT-08 blind sections"
+        "Solo scratchpad 575 GT-05 blind, GT-08 primary, and GT-08 blind sections",
+        "Structural re-form (compound-predicate): Split two compound key facts into five atomic facts and moved the SEP-6 KYC-data negation to avoid; all SEP roles, endpoint scopes, and authentication mappings remain unchanged.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md — identified SEP-12 as the KYC API that carries customer data.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md — identified SEP-6 as the programmatic Deposit and Withdrawal API.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md — showed authentication_required as optional and endpoint/asset-specific.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md — required SEP-10 or SEP-45 authentication for SEP-12 endpoints.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0024.md — required SEP-10 or SEP-45 JWTs for protected user-data endpoints.",
+        "Sibling sweep 2026-08-27: grep SEP-6|SEP-12|SEP-24|SEP-45 → q-sep-12-kyc, q-sep-6-24-deprecation, q-sep-45-contract-auth, q-sep6-sep24-sep31-choice, q-comp-anchor-compliance-stack; no contradiction"
       ],
       "rootCause": [
-        "An older classic-account example was generalized into a universal prerequisite."
+        "An older classic-account example was generalized into a universal prerequisite.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-comp-sep6-vs-sep12-roles"

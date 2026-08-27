@@ -10,9 +10,11 @@
   "golden": {
     "answer": "- **SEP-12 — KYC API** is the API for authenticated customer-data exchange with an anchor. **PUT /customer** idempotently creates or updates customer fields; **GET /customer** returns required fields and customer/KYC status; **DELETE /customer/[account]** removes a customer. Optional binary files may be uploaded separately with **POST /customer/files** and referenced from a later PUT.\n- **SEP-9 — Standard KYC Fields** is the data dictionary of field names such as first_name, email_address, and id_type. It is vocabulary used by SEP-12 and related flows, not an API.\n- Every SEP-12 request uses a bearer JWT from **SEP-10 for G/M accounts** or **SEP-45 for C accounts**. SEP-12 is then used where the chosen SEP-6, SEP-24, or SEP-31 flow needs customer information.",
     "keyFacts": [
-      "Names SEP-12 as the KYC API: PUT /customer creates or updates customer data, while GET /customer discovers required fields and checks status; optional binary files use POST /customer/files.",
+      "Names SEP-12 as the KYC API.",
+      "Uses PUT /customer for create/update and GET /customer for fields/status.",
+      "Uses POST /customer/files for optional binary files.",
       "Names SEP-9 as the Standard KYC Fields data dictionary that SEP-12 uses.",
-      "States that SEP-12 requests use SEP-10 authentication for G/M accounts or SEP-45 for C accounts."
+      "Uses SEP-10 authentication for G/M accounts and SEP-45 for C accounts."
     ],
     "avoid": [
       "Do NOT misnumber KYC: SEP-12 is the API and SEP-9 is its field dictionary.",
@@ -97,15 +99,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The compiled key fact contradicts its own answer and SEP-12 by calling POST /customer the customer-record upload. Current SEP-12 uses PUT /customer for idempotent create/update, GET /customer for requirements/status, and POST only for the optional /customer/files helper. The inherited answer also retained SEP-10-only wording after SEP-45 added contract-account authentication.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575: GT-05 primary process 3220, blind process 3221, and independent GT-08 process 3225",
-        "stellar-protocol git history shows PUT /customer from SEP-12's initial version; POST /customer/files was added later as a separate helper"
+        "stellar-protocol git history shows PUT /customer from SEP-12's initial version; POST /customer/files was added later as a separate helper",
+        "Structural re-form (compound-predicate): split the SEP-12 API, customer endpoints, file endpoint, and account authentication into atomic facts; no claim changed.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md names SEP-12 as the KYC API.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md gives PUT /customer the create/update role and GET /customer the fields/status role.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md lists POST /customer/files for optional binary files.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md requires SEP-10 or SEP-45 authentication and distinguishes G/M from C accounts.",
+        "Sibling sweep 2026-08-27: q-sep-45-contract-auth, q-comp-sep6-vs-sep12-roles, and q-anchor-platform-what preserve the same SEP-12/SEP-45 distinctions."
       ],
       "rootCause": [
         "Inherited frontmatter typo conflated the main upload with SEP-10 POST, callback delivery, or POST /customer/files.",
-        "SEP-45 account support was not propagated into older SEP-10-only prose."
+        "SEP-45 account support was not propagated into older SEP-10-only prose.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-sep-12-kyc"

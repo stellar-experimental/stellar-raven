@@ -11,8 +11,9 @@
     "keyFacts": [
       "Requires explicit identity, quote, window, methodology, source, and as-of time.",
       "Separates Classic SDEX/pool data from Soroban AMM contract/indexer data.",
-      "Provides volume, fee, TVL, and price formulas without calling one product number canonical.",
-      "Uses Hubble/indexers for history and states the current official Horizon lifecycle without erasing endpoint-specific migration boundaries."
+      "Gives volume, fee, TVL, and price formulas without one canonical product number.",
+      "Uses Hubble/indexers for history.",
+      "States current official Horizon lifecycle with endpoint-specific migration boundaries."
     ],
     "avoid": [
       "Do NOT claim a canonical TVL/price or exact product match without methodology.",
@@ -93,16 +94,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Production stellar-raven: stellarDocs.search_rpc_horizon_data_docs({query:'Hubble historical data Horizon RPC indexers liquidity pools trades',hitsPerPage:10,includeContent:true}) and stellarDocs.get_doc_page_sections({path:'/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data',includeContent:true}) — Hubble offers historical Horizon/RPC-like pool and trade queries.",
         "Production stellar-raven: stellarDocs.get_doc_page_sections({path:'/docs/data/apis/migrate-from-horizon-to-rpc',includeContent:true}) — resource-by-resource API mappings retained; no single explorer-market methodology is canonical.",
         "Canonical Horizon source: https://github.com/stellar/stellar-horizon/blob/main/internal/ingest/processors/trades_processor.go — only successful trades are processed and liquidity-pool trades carry pool/reserve data.",
-        "Sibling sweep: q-protocol-amm-cap-0038 and q-ti-historical-pointintime-balances agree that Classic liquidity pools are protocol pools and history/analytics need a bounded source/methodology."
+        "Sibling sweep: q-protocol-amm-cap-0038 and q-ti-historical-pointintime-balances agree that Classic liquidity pools are protocol pools and history/analytics need a bounded source/methodology.",
+        "Structural re-form (compound-predicate): Tightened one long formula fact and split one lifecycle fact; all metrics, sources, lifecycle wording, and migration boundaries are unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — asset/pool metrics still require explicit identity, quote, window, source, and as-of methodology.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/indexers — Classic SDEX/pool data and Soroban AMM contract/indexer data remain separate source shapes.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — pool reserves and trades remain inputs for explicit volume, fee, TVL, and price formulas rather than canonical product numbers.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/analytics/hubble — Hubble remains the official bulk historical analytics source.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis — Horizon remains near end-of-life while endpoint-specific RPC/indexer boundaries remain necessary.",
+        "Sibling sweep 2026-08-27: grep StellarX|Scopuly|Hubble/indexers|Horizon lifecycle|TVL|endpoint-specific migration → q-defi-soroswap-vs-stellarx, q-eco-defi-tvl-current, q-infra-horizon-vs-rpc, q-ti-compute-token-lp-market-data; no contradiction"
       ],
       "rootCause": [
-        "freshness-recheck"
+        "freshness-recheck",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-ti-compute-token-lp-market-data"

@@ -8,7 +8,8 @@
     "answer": "OpenZeppelin's current upgrade support wraps Soroban's native `env.deployer().update_current_contract_wasm(new_wasm_hash)`; it is not an EVM proxy/delegatecall. Use the current `Upgradeable` trait/client/helper surface and implement authorization explicitly before replacement. Storage remains at the same address, so compatible layout and any migration are the application's responsibility. Where the new implementation must run migration after replacement, use the documented explicit migration pattern or auxiliary Upgrader flow so upgrade and migration are transaction-atomic. Check the pinned OZ release docs/source instead of relying on retired `#[derive(Upgradeable)]`, `UpgradeableMigratable`, or `*Internal` APIs.",
     "keyFacts": [
       "Uses native in-place Wasm replacement at the same contract address/state.",
-      "Names current trait/helper and explicit migration patterns; rejects retired derive APIs."
+      "Names the current `Upgradeable` trait, client, and helper surface.",
+      "Uses explicit migration or the auxiliary `Upgrader` flow."
     ],
     "avoid": [
       "Do NOT describe EVM proxy/delegatecall mechanics.",
@@ -70,13 +71,19 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — current source still uses direct traits/helpers and explicit migration patterns over native Wasm replacement.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and independent blind 3329 fully agreed the historical derives/Internal/Migratable surface must be replaced."
+        "Solo scratchpad 575 GT-46 primary 3326 and independent blind 3329 fully agreed the historical derives/Internal/Migratable surface must be replaced.",
+        "Structural re-form (negative-predicate): split the current API and migration fact; the retired-API trap remains in avoid, so truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts — native update_current_contract_wasm still replaces Wasm at the same contract address",
+        "Live re-check 2026-08-27: https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable — the current surface still uses the Upgradeable trait, generated client, and helper",
+        "Live re-check 2026-08-27: https://docs.openzeppelin.com/stellar-contracts/utils/upgradeable — explicit migration and the auxiliary Upgrader flow remain current patterns",
+        "Sibling sweep 2026-08-27: grep Upgradeable|Upgrader|update_current_contract_wasm|migration → q-soroban-upgradeable-storage-compat, q-soroban-storage-migration, q-sor-stale-spec-after-upgrade; no contradiction"
       ],
       "rootCause": [
-        "Plain upstream API drift: a historical OpenZeppelin macro surface was treated as permanent."
+        "Plain upstream API drift: a historical OpenZeppelin macro surface was treated as permanent.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-oz-upgradeable-macro"

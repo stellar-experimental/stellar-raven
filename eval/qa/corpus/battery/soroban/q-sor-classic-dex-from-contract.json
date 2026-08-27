@@ -9,10 +9,11 @@
   "golden": {
     "answer": "No, a Soroban contract cannot directly place classic SDEX orders or read/control classic liquidity-pool\nstate from inside contract execution. The official smart-contract FAQ says Soroban can interact with\naccounts/assets through the built-in Stellar Asset Contract, but otherwise cannot interact with SDEX,\nclaimable balances, or sponsorships (https://developers.stellar.org/docs/build/smart-contracts/overview).\nThe SDEX itself is the classic operation surface: Manage Buy Offer / Manage Sell Offer operations\nplace orders on the distributed exchange\n(https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools).\n\nYou also cannot combine a classic op and a contract invocation in the same transaction. Stellar's\ntransaction docs state that smart-contract transactions containing InvokeHostFunctionOp,\nExtendFootprintTTLOp, or RestoreFootprintOp can only have one operation per transaction\n(https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions).\nThe Soroban transaction docs also state there is only one InvokeHostFunctionOp allowed per transaction\nand that contracts should be used for multiple atomic contract-side actions\n(https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction).\n\nPractical answer: for on-chain contract composition, use SAC/SEP-41 token transfers and Soroban-native\nDEX/AMM contracts. If you must use classic SDEX or AMM operations, orchestrate that as a separate\nclassic transaction from an off-chain service or user wallet, and treat the boundary as non-atomic\nunless your application explicitly handles the two-step state machine.",
     "keyFacts": [
-      "States that Soroban contracts cannot directly interact with the classic SDEX, claimable balances, sponsorships, or classic AMM/LP ledger operations except via the supported account/asset surface.",
-      "Explains SDEX order placement is done by classic operations such as Manage Buy Offer / Manage Sell Offer, not by a Soroban host function callable from contract code.",
-      "States that smart-contract transactions containing InvokeHostFunctionOp / ExtendFootprintTTLOp / RestoreFootprintOp can only have one operation per transaction, so a classic op cannot be bundled with a contract invocation in the same tx.",
-      "Gives the practical design alternative: use SAC/SEP-41 token transfers and Soroban-native DEX/AMM contracts, or orchestrate classic and Soroban actions in separate transactions off-chain."
+      "Contracts use SAC for accounts/assets, excluding classic SDEX/AMM/claim/sponsor ops.",
+      "Classic Manage Buy Offer / Manage Sell Offer operations place SDEX orders.",
+      "`InvokeHostFunctionOp`/`ExtendFootprintTTLOp`/`RestoreFootprintOp` allow one op per tx.",
+      "A classic operation cannot share a transaction with a contract invocation.",
+      "Use SAC/SEP-41 or Soroban DEX/AMM contracts, or run classic actions off-chain."
     ],
     "avoid": [
       "Do not claim a contract can call classic ManageOffer, PathPayment, or LiquidityPool operations directly.",
@@ -52,16 +53,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/smart-contracts/overview",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (negative-predicate): split long compound facts and used positive operation boundaries; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/overview — contracts use SAC for assets but cannot use SDEX, claimable balances, or sponsorships",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Manage Buy Offer and Manage Sell Offer remain classic operations",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — the three smart-contract operation types permit one operation per transaction",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction — one InvokeHostFunctionOp is allowed per transaction",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — SAC remains the contract surface for Stellar assets",
+        "Sibling sweep 2026-08-27: grep classic SDEX|Manage Buy Offer|Soroban DEX → q-defi-sdex-offer-lifecycle, q-edge-factcheck-soroswap-first-amm; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-classic-dex-from-contract",

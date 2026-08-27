@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A claimable balance is a ledger entry someone created for one or more named claimants; it is claimed in a separate operation when its conditions are met. For a non-XLM asset, the claimant must first have the matching trustline or the claim fails with a technical `op_no_trust` error. A claimable balance can be a legitimate payment flow, but an unexpected one is not proof of a reward—verify the issuer and do not follow external links or pay to unlock it.",
     "keyFacts": [
-      "Defines a claimable balance as a separate conditional ledger-entry flow.",
+      "Defines a claimable balance as a distinct conditional ledger-entry flow.",
       "Requires the matching trustline for a non-XLM claim."
     ],
     "avoid": [
@@ -79,8 +79,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
@@ -89,10 +89,14 @@
         "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
         "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
-        "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing"
+        "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+        "Structural re-form (negative-predicate): Replaced the adjective trigger with an equivalent positive taxonomy term; truth unchanged",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-0023 defined a conditional ClaimableBalanceEntry with distinct create and claim operations.",
+        "Sibling sweep 2026-08-27: grep claimable balance|ClaimableBalanceEntry|op_no_trust → q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-asset-claimable-balance, q-raph-phishing-pending-claim; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raph claimable-balance-claim-and-safety"

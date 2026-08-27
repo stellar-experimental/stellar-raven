@@ -7,11 +7,13 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nInstawards are chapter-guided, short-sprint awards for eligible early execution. A **typical initial award is $1,000–$5,000 in USD value paid in XLM**. After successful completion, a project may receive **up to two conditional follow-ons**, with **$15,000 aggregate maximum over time**; follow-ons are not automatic. There is no standard public/open application form, but there is a real chapter-guided request and scoping process. Chapter support is non-binding: **SDF alone makes the final approval and funding commitment**, generally after reviewing the scope and eligibility. Instawards are not community/NQG-voted Build grants.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Distinguishes no standard public form from no process and makes SDF approval final."
+      "Describes no standard public form and a real process as different conditions.",
+      "Names SDF approval as final."
     ],
     "avoid": [
+      "Do NOT substitute an unsupported memory claim for source-supported content.",
       "Do NOT call $15K the automatic initial award or imply follow-ons are guaranteed.",
       "Do NOT say chapter leads commit SDF funds or that Instawards use NQG voting.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
@@ -66,18 +68,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-39 processes 3300/3303 and GT-40 process 3304, 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory trap to avoid, and split the form/process and approval claims; truth unchanged.",
+        "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules — showed the current official program rules for dated, source-supported content.",
+        "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules — showed no standard open application and a chapter-guided request process.",
+        "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules — showed SDF independent review and final approval.",
+        "Sibling sweep 2026-08-27: grep Instawards|Instaward|standard open application|Chapter Leads → q-scf-instawards, q-scf-v7-changes, q-scf-regional-india, q-scf-ambassador-program, and q-edge-scf-v7-centralization-myths; no contradiction."
       ],
       "rootCause": [
         "Eval-side program-version drift and amount-basis collapse.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-instawards"

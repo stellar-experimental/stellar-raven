@@ -8,14 +8,16 @@
   "golden": {
     "answer": "Compare layers rather than saying Stellar is native and Ethereum is bespoke.\n\n**Classic Stellar:** issuer/trustline authorization flags and CAP-35 clawback are opt-in protocol/ledger primitives with a relatively fixed surface. **SEP-8 is not ledger-native**; it is an ecosystem approval-server workflow discovered through SEP-1, layered on Required+Revocable classic controls, where the server signs/returns and the wallet submits. **SAC/CAP-46-6** exposes classic assets to contracts through a protocol-known SEP-41-compatible interface. Draft SEP-57/OpenZeppelin RWA contracts are a separate, evolving Soroban path.\n\n**Ethereum:** base ERC-20 defines the basic token interface and does not include allowlists, freezes, forced transfer, or clawback. Those can be custom logic or standardized contract suites such as **ERC-3643/T-REX**, which defines identity/compliance registries, freeze/pause, forced transfer, and recovery patterns.\n\nTradeoffs are bounded. Stellar's fixed classic primitives may reduce custom code for common issuer controls; Ethereum/Soroban contract suites can express richer policy but add implementation, upgrade, audit, interoperability, and governance surface. Neither architecture creates legal compliance or is universally easier for counsel to audit; custody, legal rights, disclosures, operational controls, and jurisdiction still govern.",
     "keyFacts": [
-      "Separates classic ledger flags/clawback, off-chain SEP-8, SAC, and draft Soroban regulated-token contracts.",
+      "Treats classic ledger flags/clawback, off-chain SEP-8, and SAC as distinct layers.",
+      "Treats draft Soroban regulated-token contracts as another distinct layer.",
       "Separates base ERC-20 from standardized ERC-3643/T-REX regulated-token suites.",
-      "Frames engineering/audit tradeoffs without claiming technical controls establish legal compliance."
+      "Frames engineering and audit tradeoffs."
     ],
     "avoid": [
       "Do NOT call SEP-8 itself ledger-native.",
       "Do NOT say Ethereum has only bespoke regulated-token wrappers or ignore ERC-3643.",
-      "Do NOT claim one architecture is universally legally compliant or easier for counsel to audit."
+      "Do NOT claim one architecture is universally legally compliant or easier for counsel to audit.",
+      "Do NOT claim technical controls establish legal compliance."
     ],
     "notes": "Comparison rooted in on-chain mechanics → stellar_docs primary. Trap: claiming ERC-20 has native clawback.\nAlso good if the answer: Stellar's regulated-asset tokenization can be a no-smart-contract, few-step process, which is easier to audit for issuer counsel.\nGolden cites: developers.stellar.org asset-control docs and/or a regulated-asset case study.\nCORRECTION 2026-07-10: require layer separation. SEP-8 is off-chain; classic flags/clawback are protocol-native; SAC and draft SEP-57 are separate; ERC-3643 is a standardized Ethereum alternative."
   },
@@ -104,14 +106,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The comparison called SEP-8 ledger-native, collapsed classic flags/clawback/SAC into one native mechanism, treated base ERC-20 as the entire Ethereum regulated-token ecosystem, and made a categorical legal/auditability judgment.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-11 protocol comparison matrices"
+        "Solo scratchpad 575 GT-11 protocol comparison matrices",
+        "Structural re-form (negative-predicate): Split the four-layer taxonomy and moved the legal-compliance negation into a concrete avoid item; truth unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — classic authorization flags and clawback appeared as ledger-level issuer controls.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — SEP-8 defined an off-chain approval-server workflow layered on authorization flags.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md — SAC provided a distinct native contract compatibility layer for classic assets.",
+        "Live re-check 2026-08-27: https://eips.ethereum.org/EIPS/eip-3643 — ERC-3643 defined technical identity and compliance interfaces whose parameters still follow issuer or regulator requirements.",
+        "Sibling sweep 2026-08-27: grep SEP-8|ERC-3643|T-REX|CAP-0046-06|regulated-token → q-sep-8-regulated-assets, q-comp-anchor-compliance-stack, q-comp-sep8-regulated-assets-approval-server, q-crp-oz-rwa-erc3643-trex, q-sep-41-token-interface; no contradiction"
       ],
       "rootCause": [
         "Protocol primitives, off-chain SEP workflow, SAC, and contract suites were collapsed into native versus custom.",
-        "An engineering tradeoff was promoted into categorical legal advice."
+        "An engineering tradeoff was promoted into categorical legal advice.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-rwa-stellar-vs-erc20-regulated"

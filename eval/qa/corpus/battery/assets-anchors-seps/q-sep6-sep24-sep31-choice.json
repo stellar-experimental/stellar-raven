@@ -9,11 +9,11 @@
   "golden": {
     "answer": "As of 2026-07-11, SEP-6, SEP-24, and SEP-31 are Active. Use SEP-24 for an anchor-hosted interactive deposit/withdrawal UI; use SEP-6 for programmatic deposit/withdrawal—the legacy interactive SEP-6 flow is deprecated in favor of SEP-24, not the whole SEP. For SEP-31, a Sending Anchor calls a Receiving Anchor under an established bilateral or commercial relationship for cross-border payout. Discover them through SEP-1 keys TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, and DIRECT_PAYMENT_SERVER respectively. Add SEP-38 when quotes or rates are part of the corridor.",
     "keyFacts": [
-      "SEP-24 is the anchor-hosted interactive deposit/withdrawal flow; SEP-6 is the programmatic deposit/withdrawal API.",
-      "SEP-6 remains Active; its legacy interactive flow, not the whole SEP, is deprecated in favor of SEP-24.",
-      "SEP-31 has a Sending Anchor call a Receiving Anchor under an established bilateral/commercial relationship.",
+      "Maps SEP-24 to anchor-hosted interactive deposit/withdrawal; SEP-6 to programmatic API.",
+      "Keeps SEP-6 Active with only its legacy interactive flow deprecated in favor of SEP-24.",
+      "Uses SEP-31 for Sending→Receiving Anchor calls with established bilateral/commercial ties.",
       "Gives dated Active status for SEP-6, SEP-24, SEP-31 plus SEP-38 for quotes/rates.",
-      "SEP-1 keys TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, and DIRECT_PAYMENT_SERVER distinguish the endpoints."
+      "Maps SEP-1 keys TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, and DIRECT_PAYMENT_SERVER."
     ],
     "avoid": [
       "SEP-31 is simply the newest replacement for both SEP-6 and SEP-24.",
@@ -294,7 +294,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, owner edit after worker gt-sol-a escalation E1; gt-grok-rev co-signed the correction in /tmp/raven-qadeep/gt/review-batch1.md)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/anchoring-assets/anchor-platform",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
@@ -308,7 +308,13 @@
         "Structural re-form (snapshot-date): removed the snapshot-date literal and split the compound fact; the SEP-38 clause was corrected, see program-log.md E1.",
         "Live re-check 2026-08-27: sep-0006.md, sep-0024.md, sep-0031.md preambles read Status: Active; sep-0038.md reads Status: Draft.",
         "Sibling sweep 2026-08-27: grep SEP-38|SEP-0038 → 12 cases incl. q-sep-38-quotes (states Status Draft), q-sep-31-cross-border, q-anchor-platform-what; only this case asserted SEP-38 Active",
-        "Structural re-form (symmetric-caution): Added a narrow caution for the missing SEP-6 interactive-component deprecation; read improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md on 2026-08-27; no live re-check needed; sibling sweep grep SEP-6|SEP-24|interactive components → q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction; golden truth unchanged."
+        "Structural re-form (symmetric-caution): Added a narrow caution for the missing SEP-6 interactive-component deprecation; read improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md on 2026-08-27; no live re-check needed; sibling sweep grep SEP-6|SEP-24|interactive components → q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction; golden truth unchanged.",
+        "Structural re-form (compound-predicate): made the five existing SEP distinctions atomic and concise; no claim changed.",
+        "Live re-check 2026-08-27: SEP-0006 and SEP-0024 confirm programmatic versus anchor-hosted interactive deposit/withdrawal.",
+        "Live re-check 2026-08-27: SEP-0006 and SEP-0024 confirm only the legacy SEP-6 interactive flow is deprecated in favor of SEP-24.",
+        "Live re-check 2026-08-27: SEP-0031 confirms Sending-to-Receiving Anchor calls under an established bilateral or commercial relationship.",
+        "Live re-check 2026-08-27: SEP-0001 confirms TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, and DIRECT_PAYMENT_SERVER endpoint keys.",
+        "Sibling sweep 2026-08-27: q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep-31-cross-border, q-sep-38-quotes, and q-anchor-platform-what introduce no contradiction."
       ],
       "rootCause": [
         "freshness-drift",
@@ -317,7 +323,8 @@
         "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
         "Eval-side authoring overreach: the keyFact grouped SEP-38 with the Active SEPs although golden.answer never claimed it.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "kaan sep24-vs-sep31-vs-sep6"

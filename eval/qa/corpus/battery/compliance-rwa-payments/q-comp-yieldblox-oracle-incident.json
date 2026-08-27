@@ -7,10 +7,11 @@
   "golden": {
     "answer": "On **February 22, 2026**, after setup beginning late February 21, an attacker manipulated the thin USTRY/USDC Stellar DEX market from roughly $1.06 to about $106. Reflector Pulse's five-minute volume-weighted market feed published the manipulated value in two fresh rounds, which passed the YieldBlox pool's adjacent-round max_dev=10 check. The community-managed YieldBlox Blend V2 pool then accepted the value as collateral. No compromise of Reflector contracts, Blend core, Etherfuse's issuer contract, Stellar consensus, or Stellar core was established; the failure chain was market quality, feed methodology, and pool/oracle-consumer configuration and exposure.\n\nThe two exploit transactions transferred **61,249,278.3064502 XLM** and **1,000,196.7040837 USDC**. A decoded pre-transaction state shows an existing roughly 14,000 USDC liability; the reviewed live sources did not establish that amount as a separate exploit borrow, so do not add it to the exploit transfer as a single **1,014,196.7040837 USDC** gross-borrow claim. Do not turn the token quantities into a settled dollar loss: the PoC values them at about **$10.86M** at incident-time prices, while Blockaid, BlockSec and other reports use different dated valuations and definitions. The prior claim that Script3 later estimated about **$10.5M net loss** could not be confirmed from accessible primary material and is not retained as verified.\n\nAbout **48M XLM** was quarantined through coordinated validator transaction filtering; Blockaid attributes 48,069,094 XLM. Quarantine means identified accounts could not originate accepted transactions—it is not repayment, a rollback, or recovered funds. Script3's remediation repository and dated notices show direct supplier remediation on **February 27** and backstop remediation on **March 20**, with small-value/nonexistent-account handling and liquidated-user exclusions. The reviewed evidence does not prove attacker-held funds were returned.\n\nDesign lessons are layered: timestamp checks remain necessary but were not causal here because the poisoned values were fresh; require independent value/NAV bounds, market-depth and active-trader minimums, robust multi-window aggregation, longer clean baselines, per-asset supply/borrow/value caps, isolation and circuit breakers, pool-ice and migration paths, and first-anomaly monitoring. A TWAP/VWAP may be one layer, but the incident does not prove that TWAP alone would have prevented the drain.",
     "keyFacts": [
-      "Dates the completed drain to 2026-02-22 and identifies the YieldBlox community Blend V2 pool, manipulated USTRY SDEX market, Reflector five-minute VWAP, and pool-consumer boundary.",
-      "States the two exploit transfers as 61,249,278.3064502 XLM plus 1,000,196.7040837 USDC, distinguishes an existing roughly 14,000 USDC liability, and keeps loss/valuation figures source-specific.",
-      "Distinguishes about 48M XLM validator quarantine from recovery and records February 27 supplier and March 20 backstop remediation with exclusions.",
-      "Explains that fresh poisoned values passed; staleness was not causal and TWAP alone is not a proven cure."
+      "Dates the YieldBlox Blend V2 USTRY-SDEX/Reflector 5-minute-VWAP drain to 2026-02-22.",
+      "Reports 61,249,278.3064502 XLM and 1,000,196.7040837 USDC as exploit transfers.",
+      "Treats the 14,000 USDC liability as pre-existing and all valuations as source-specific.",
+      "Records 48M XLM quarantine and 2026-02-27/2026-03-20 remediation with exclusions.",
+      "Identifies fresh poisoned values as the values that passed the pool checks."
     ],
     "avoid": [
       "Do NOT average gross borrow, dated valuation, net loss, defaults, quarantine, compensation, and recovery into one range.",
@@ -215,8 +216,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "Todo 1248 Lane C — security/incident/disputed re-verification",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Production scout.searchResearch(source=\"incident\", query=\"YieldBlox Reflector oracle manipulation\") returned a current incident synthesis anchored to Blockaid; direct Blockaid and BlockSec reports independently confirmed the event date, mechanism and rounded transfers.",
         "The PoC's decoded transaction calls give 1,000,196.7040837 USDC and 61,249,278.3064502 XLM; its pre-state separately shows the roughly 14,000 USDC liability.",
@@ -224,11 +225,20 @@
         "improvements/stellar-light-scout/sls-022-yieldblox-incident-fact-model.md",
         "improvements/lumenloop/ll-011-yieldblox-incident-unit-status-errors.md",
         "solo://proj/49/todo/2026-07-28-reconcile-lane-c--1251",
-        "24h-commit adversarial review (todo 1254, 2026-07-28): golden.notes still asserted 'Script3 to compensate depositors' as settled while the verified answer treats depositor compensation and recovery as unverified; the note now records Script3's announced remediation/backstop process with compensation and recovery explicitly unverified. Internal-consistency repair only — no new external source consulted."
+        "24h-commit adversarial review (todo 1254, 2026-07-28): golden.notes still asserted 'Script3 to compensate depositors' as settled while the verified answer treats depositor compensation and recovery as unverified; the note now records Script3's announced remediation/backstop process with compensation and recovery explicitly unverified. Internal-consistency repair only — no new external source consulted.",
+        "Structural re-form (negative-predicate): split four compound facts into five atomic facts and left recovery, staleness, and TWAP traps in golden.avoid; truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the PoC still identifies the YieldBlox USTRY-SDEX/Reflector manipulation path.",
+        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the PoC still reports 61,249,278.31 XLM and 1,000,196.70 USDC transfers.",
+        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the decoded pre-state still labels roughly 14,000 USDC as an existing liability and uses a source-specific valuation.",
+        "Live re-check 2026-08-27: https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — Blockaid still reports 48,069,094 XLM as quarantined.",
+        "Live re-check 2026-08-27: https://github.com/script3/yieldblox-incident-remediation — the repository still contains the supplier and backstop remediation records with exclusions.",
+        "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — the decoded flow still shows the manipulated price passing the pool health check.",
+        "Sibling sweep 2026-08-27: grep YieldBlox|48M XLM|61,249,278|14,000 USDC → q-hist-yieldblox-v2-2026-exploit, q-soroban-oracle-defensive-consumption, q-defi-etherfuse-stablebonds; no contradiction"
       ],
       "rootCause": [
         "Eval-authoring flaw: the prior golden added a pre-existing liability to the exploit call amount and promoted an inaccessible operator net-loss attribution to verified fact; todo 1251 tracks the cross-case repair.",
-        "Different reports still use different incident-time valuations, quarantine and remediation labels, so the case remains mixed rather than forcing one loss/recovery number."
+        "Different reports still use different incident-time valuations, quarantine and remediation labels, so the case remains mixed rather than forcing one loss/recovery number.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-comp-yieldblox-oracle-incident"

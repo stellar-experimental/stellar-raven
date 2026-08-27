@@ -10,9 +10,9 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nCurrent SDP is an open-source bulk-disbursement stack whose **Core implements native SEP-10 and SEP-24** and publishes its own stellar.toml endpoints; it does not require an external Anchor Platform. Dashboard/Admin APIs manage tenants and disbursements, Core queues/coordinates payments, and TSS builds, submits, and monitors Stellar transactions.\n\nKeep recipient models distinct:\n\n- an external/classic wallet can register through SEP-24 and authenticate through SEP-10;\n- the direct-payment API can pay an onboarded/recorded **G or C address** outside the batch-disbursement workflow;\n- SDP can create an embedded passkey-controlled **C-address wallet**, using SEP-45 during SEP-24 and fee sponsorship for relevant transactions.\n\nCurrent public recipient/direct validators accept encoded G or C addresses and reject encoded M-address strings. A G address plus ID memo may support pooled/custodial routing, but that is not the same as accepting M encoding. Sponsorship is a transaction/fee property, not another address type. Do not promise undocumented arbitrary pooled-ledger semantics.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Uses dated source observations for changeable claims.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Distinguishes external wallet, direct G/C payment, and embedded passkey C-wallet models."
+      "Treats external wallets, direct G/C payments, and embedded passkey C wallets as distinct."
     ],
     "avoid": [
       "Do NOT say current SDP sits on or requires Anchor Platform, SEP-12, or SEP-31.",
@@ -106,19 +106,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-10 primary/blind SDP matrices",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form 2026-08-27: rewrote two long or negative key facts as positive atomic forms; truth unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform — current provider documentation supports dated SDP observations.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture — external, direct, and embedded passkey C-wallet models remain distinct.",
+        "Sibling sweep 2026-08-27: grep Stellar Disbursement Platform|external wallet|passkey C across the QA battery; no contradiction found."
       ],
       "rootCause": [
         "Product architecture drift after native SEP-10/24 and embedded wallets.",
         "Address encoding, recipient flow, and sponsorship were collapsed into one account-type question.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-crp-sdp-operation"

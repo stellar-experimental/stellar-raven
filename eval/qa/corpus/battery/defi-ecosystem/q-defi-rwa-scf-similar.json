@@ -10,10 +10,11 @@
   "golden": {
     "answer": "A grounded answer consults current official SCF submission pages, directly answers the question with source-supported content, and dates any status or amount. **Yes:** Stellar has funded RWA/tokenization work, but semantic matches, directory flags, `award_type`, proposed budgets, and reconstructed totals are discovery evidence only. Report each submission's official URL and distinguish **Awarded**, requested budget, and `totalPaid`.\n\nAs observed **2026-08-04**, the official pages marked Talwex SCF #43, Lend SCF #43, and TERWA SCF #43 **Awarded**, superseding their earlier workflow labels. For example, Lend showed a requested budget of **$120,560** and `totalPaid` of **$72,336**; those are different fields and neither should be silently presented as the other. Historical examples such as 0xAuth SCF #27 remain historical awards; a current status claim requires a current official page.\n\nNo exact BENJI/FOBXX, CRDT, or USDY match on a dated official search is only a source-relative result, not proof that no SCF relationship ever existed.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Uses current or dated sources for specific changeable claims.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Uses official submission status and URL to identify representative Awarded RWA/tokenization work.",
-      "Separates official status from award_type, directory status, semantic similarity, and reconstructed totals."
+      "Uses official URLs and statuses for representative Awarded RWA/tokenization work.",
+      "Treats official status, award_type, and directory status as distinct fields.",
+      "Treats semantic similarity and reconstructed totals as distinct from official status."
     ],
     "avoid": [
       "Do NOT treat award_type=Build, a proposed amount, or a semantic match as proof the submission is Awarded.",
@@ -116,7 +117,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
         "Current official Talwex and TERWA SCF43 submission pages observed 2026-08-04.",
@@ -127,7 +128,14 @@
         "Structural re-form (symmetric-caution): Added a claim-specific caution for Lumenloop and cached Scout SCF status fields; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/lumenloop/ll-013-scf-submission-award-fields.md — disputed whether bare budget and award_type establish Awarded or paid status.",
         "Finding read 2026-08-27: improvements/resolved.json entry sls-026 — fixed Scout's status-collapsed SCF aggregate on 2026-07-14.",
-        "Sibling sweep 2026-08-27: grep award_type|totalPaid|RWA → q-scf-skill-submission-radar, q-defi-rwa-treasury-funding-live, q-rwa-projects-tokenizing-stellar; no contradiction"
+        "Sibling sweep 2026-08-27: grep award_type|totalPaid|RWA → q-scf-skill-submission-radar, q-defi-rwa-treasury-funding-live, q-rwa-projects-tokenizing-stellar; no contradiction",
+        "Structural re-form (negative-predicate): shortened three key facts and split official fields from discovery evidence; the source hierarchy is unchanged.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/projects — the current official directory remains the dated source for changeable project observations.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/submissions/recqDT4SC63de4JdX — the official submission page identifies an Awarded RWA project and its URL.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/governance — the current official workflow keeps SCF status separate from provider-specific fields.",
+        "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — directory similarity and reconstructed provider fields remain discovery evidence.",
+        "Sibling sweep 2026-08-27: grep Talwex|TERWA|lend.xyz|award_type|totalPaid → q-scf-skill-submission-radar and q-scf-history-soroswap; no contradiction.",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): removed the added qualifier \"discovery evidence\" and restored the official-status contrast; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "Semantic similarity, directory status, reconstructed totals, and award_type were collapsed into official award/current-product truth.",
@@ -136,7 +144,8 @@
         "eval-authoring",
         "Official SCF workflow labels changed; the former Talwex/Lend/TERWA counterexamples became Awarded and require requested-budget versus totalPaid separation.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-rwa-scf-similar"

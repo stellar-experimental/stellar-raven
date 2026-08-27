@@ -9,12 +9,16 @@
   "golden": {
     "answer": "Ordinary Stellar assets, SAC transfers, and SEP-41 tokens are public unless an application implements a privacy protocol. As of **2026-07-10**, Stellar Confidential Tokens is a **Testnet developer preview**, not audited/approved Mainnet default infrastructure; its stated model hides balances and amounts while addresses remain visible. BLS12-381 and BN254/Poseidon host functions are cryptographic primitives, not a turnkey privacy product.\n\nThere is no universal Stellar 'offline leaf' audit package. Evidence depends on the specific cross-chain/privacy protocol and auditor role. A verifier may need the protocol's commitment/ciphertext, authenticated chain inclusion/finality evidence, domain-separated public inputs binding chain/asset/nonce/policy, the applicable proof, and—only where the protocol defines it—a Merkle path, disclosure key, viewing key, or selective-disclosure witness. If required disclosure/witness material was never retained or published, public chain data alone may be insufficient. Do not invent a generic Merkle-leaf recipe or claim that primitives guarantee auditability.",
     "keyFacts": [
-      "Distinguishes public-by-default assets from the dated Testnet Confidential Tokens developer preview and its field-visibility boundary.",
-      "Treats ZK host functions as primitives and makes audit evidence protocol- and role-conditional rather than a standardized Stellar recipe."
+      "Ordinary Stellar assets and SAC transfers are public by default.",
+      "Confidential Tokens remain a dated Testnet developer preview.",
+      "The visibility boundary covers private balances/amounts and public addresses.",
+      "ZK host functions are cryptographic primitives.",
+      "Audit evidence depends on the protocol and auditor role."
     ],
     "avoid": [
       "Do NOT claim ordinary tokens are confidential by default or that the developer preview is approved/audited Mainnet infrastructure.",
-      "Do NOT claim missing witness/disclosure data can be recovered from chain data alone."
+      "Do NOT claim missing witness/disclosure data can be recovered from chain data alone.",
+      "Do NOT claim Stellar has a standardized audit-evidence recipe for confidential tokens."
     ],
     "notes": "Phase 3 verified CAP-0059 is Final/Protocol 22 and CAP-0074/0075 are Final/Protocol 25 in stellar-protocol on 2026-06-29. Answers should still verify the target network protocol and SDK availability before promising deployability.\nAlso good if the answer: Cites the Confidential Token Association / Stellar privacy docs and CAP or ZK docs for protocol primitives. | Warns to verify target network protocol/software version and SDK support before deploying BN254/Poseidon-dependent code.\nGolden cites: Must cite Stellar privacy/ZK docs or CAPs for confidential-token and cryptographic primitive status.\nGT-25/41 REFRESH 2026-07-10: Confidential Tokens is a Testnet developer preview. Grade protocol-conditional audit evidence; do not require the inherited Merkle/offline-leaf prescription unless the named protocol defines it."
   },
@@ -71,13 +75,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The dated preview boundary is sound, but the inherited answer presented one application-specific Merkle/witness recipe as if Stellar standardized offline-leaf audit evidence.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273 privacy sibling reconciliation."
+        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273 privacy sibling reconciliation.",
+        "Structural re-form (negative-predicate): replaced a taxonomy negation with five atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — ordinary assets remain public unless an application adds privacy",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — Confidential Tokens remains an unaudited developer preview from the Testnet preview",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — the preview hides balances and amounts while addresses stay public",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/zk — Stellar ZK host functions remain cryptographic primitives",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — audit evidence remains specific to the selected privacy protocol",
+        "Sibling sweep 2026-08-27: grep Confidential Tokens|BLS12-381|BN254 → q-scf-confidential-tokens-preview, q-edge-noinfo-stellar-native-privacy-default, q-zk-host-functions-status; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): removed the added adjective \"unaudited\" (no notes receipt), restored SEP-41 in the public-by-default fact, and moved the \"not a standardized Stellar recipe\" clause into golden.avoid; truth unchanged versus HEAD.",
+        "Owner note 2026-08-27: the reviewer's proposed keyFact naming SEP-41 trips the numeric-corroboration lint (no covering row); the HEAD fact never named SEP-41, so the worker's wording stands and no claim is dropped."
       ],
       "rootCause": [
-        "Eval-side deployment-status freshness drift."
+        "Eval-side deployment-status freshness drift.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-confidential-tokens"

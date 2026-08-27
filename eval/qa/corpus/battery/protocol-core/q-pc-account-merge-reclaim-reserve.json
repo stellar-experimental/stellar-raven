@@ -7,8 +7,10 @@
   "golden": {
     "answer": "`AccountMerge` destructively closes the source, transfers its native XLM balance to a different destination, and deletes the source ledger entry. It can reclaim the account-level minimum balance only after blocking **non-signer** subentries—trustlines, offers, data entries, and similar state—are removed and the account's sponsorship obligations are resolved. Current Core permits signer-only subentries and removes those remaining signers as part of deletion, including sponsored signers; they need not be cleared manually. The important sponsorship asymmetry is that an account providing sponsorship or responsible for future reserves cannot merge merely by being otherwise empty, while being sponsored is not the same blocker. AccountMerge does not transfer issued-asset balances. Verify destination control and conditions before this irreversible operation.",
     "keyFacts": [
-      "Explains native-XLM transfer, source deletion, and reserve reclamation after non-signer blockers are cleared.",
-      "States remaining signers are removed by current Core and distinguishes sponsoring obligations from merely sponsored entries."
+      "Explains native-XLM transfer, source deletion, and reserve reclamation.",
+      "Requires clearing non-signer blockers before merge.",
+      "States current Core removes remaining signers during merge.",
+      "Treats sponsorship provided and received as different merge conditions."
     ],
     "avoid": [
       "Do NOT say issued assets transfer through AccountMerge or ignore trustlines/offers/data.",
@@ -68,16 +70,23 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both independently found the signer-cleanup instruction false.",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for cached merge and sponsorship wording; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/resolved.json entry sd-013 — fixed signer cleanup and sponsor-versus-sponsored merge semantics on 2026-07-27.",
-        "Sibling sweep 2026-08-27: grep AccountMerge|signer-only|sponsorship → q-protocol-operation-types-list, q-raph-low-xlm-transfer-fail; no contradiction"
+        "Sibling sweep 2026-08-27: grep AccountMerge|signer-only|sponsorship → q-protocol-operation-types-list, q-raph-low-xlm-transfer-fail; no contradiction",
+        "Structural re-form (negative-predicate): Split two compound facts into four single-predicate facts; truth unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge — AccountMerge transferred native XLM and removed the source account.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge — the source needed no non-signer subentries before merge.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge — remaining signers, including sponsored signers, were removed automatically.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge — sponsorship provided by the source blocked merge, unlike sponsorship received.",
+        "Sibling sweep 2026-08-27: grep AccountMerge|signer-only|sponsorship|reserve reclamation → q-pc-sponsored-reserves, q-protocol-operation-types-list, q-raph-low-xlm-transfer-fail, and related reserve cases; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-013-account-creation-merge-sponsorship-semantics.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-pc-account-merge-reclaim-reserve"

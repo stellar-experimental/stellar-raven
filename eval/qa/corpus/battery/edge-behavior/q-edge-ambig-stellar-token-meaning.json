@@ -9,7 +9,9 @@
   "golden": {
     "answer": "\"Token on Stellar\" is **ambiguous** and the best answer disambiguates the two valid paths:\n\n- **Classic Stellar asset** — an issuing account, an asset code, and **trustlines**; recipients\n  establish a trustline and the issuer can set auth flags / clawback. No smart contract required\n  ([issue an asset](https://developers.stellar.org/docs/tokens/how-to-issue-an-asset)).\n- **Soroban token contract** — a Wasm contract implementing the token interface; any classic asset is\n  also reachable from Soroban via its **Stellar Asset Contract (SAC)** wrapper\n  ([SAC](https://developers.stellar.org/docs/tokens/stellar-asset-contract)).\n\nRaven should name this fork (or cover both) and route to the right docs. Traps: silently assuming one\npath, conflating classic assets with Soroban token contracts, or describing it as a Solidity/ERC-20\ndeployment.",
     "keyFacts": [
-      "Distinguishes (a) a classic issued asset using code+issuer/trustlines, (b) that same classic/native asset's SAC contract API, and (c) a custom Soroban contract token; does not use SAC and custom token as synonyms.",
+      "Describes a Classic issued asset with code, issuer, and trustlines.",
+      "Describes SAC as the contract API for the same Classic or native asset.",
+      "Describes a custom Soroban token as its own contract.",
       "Does NOT silently assume one path is the only way to create or expose a token on Stellar."
     ],
     "avoid": [
@@ -70,13 +72,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The answer prose mostly separated classic assets and custom contracts, but its load-bearing keyFact used 'Soroban token contract / SAC' as synonyms. A SAC is the built-in contract API for the same classic/native asset, not a custom token.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-21 blind 3261; sibling sweep of trustline/SAC/custom-token cases"
+        "Solo scratchpad 575 GT-21 blind 3261; sibling sweep of trustline/SAC/custom-token cases",
+        "Structural re-form (negative-predicate): split the three-concept taxonomy into three atomic facts; the existing avoid item already preserves the SAC/custom-token synonym trap, so no claim was dropped.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset and https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — current docs still define Classic assets by code, issuer, and trustlines.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — current docs still define SAC as the built-in contract API for the same Classic or native asset.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset and https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — current docs still describe a custom Soroban token as contract-implemented.",
+        "Sibling sweep 2026-08-27: grep Classic issued asset|Stellar Asset Contract|SAC|custom Soroban|token on Stellar → q-asset-trustline-vs-sac, q-asset-issue-asset-howto, and q-sep-41-token-interface; no contradiction"
       ],
       "rootCause": [
-        "Binary shorthand collapsed the classic-asset bridge into the custom-contract branch."
+        "Binary shorthand collapsed the classic-asset bridge into the custom-contract branch.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-edge-ambig-stellar-token-meaning"

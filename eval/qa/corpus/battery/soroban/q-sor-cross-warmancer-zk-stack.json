@@ -1,1 +1,176 @@
-{"id":"q-sor-cross-warmancer-zk-stack","question":"Warmancer's SCF proposal says it wants hidden board positions with ZK. What does Scout say the project is, and which proof/curve stack does the served ZK skill say is verifiable on Stellar today?","surface":["lumenloop.get_scf_submissions","scout.searchProjects","skills.stellar-dev.zk-proofs"],"golden":{"answer":"The SCF #33 'Warmancer: Black Friday' proposal describes a free-to-play strategy game that wants zero-knowledge proofs to conceal board positions, explicitly qualifying that plan as pending technology availability. As observed on 2026-07-11, Scout lists Warmancer as a live, SCF-funded on-chain strategy game on Stellar. As verified on 2026-08-10, the served ZK skill says Groth16 is natively verifiable over either BLS12-381—for example, Circom/snarkjs configured with `-p bls12381`, using CAP-0059 host operations from Protocol 22—or BN254, including Circom's default `bn128`, using CAP-0074 host operations from Protocol 25, provided the circuit and verifier use the same curve. CAP-0080 adds BN254 MSM, scalar-field arithmetic, and on-curve checks from Protocol 26 for stacks that need them; it is not a gate on CAP-0074's base BN254 route. That platform-capability answer does not prove which proving stack Warmancer actually deployed.","keyFacts":["Identifies Warmancer: Black Friday as the SCF #33 hidden-information strategy-game proposal and preserves its 'pending technology availability' qualification.","Uses Scout to identify Warmancer as a live SCF-funded Stellar on-chain strategy game.","States that Groth16 is natively verifiable with a matching verifier over BLS12-381 via CAP-0059 from Protocol 22 or BN254 via Final CAP-0074 from Protocol 25, while CAP-0080's additional BN254 operations are available from Protocol 26."],"avoid":["Do NOT claim the proposal proves Warmancer deployed any particular proving stack in production.","Do NOT repeat the outdated claim that Circom's default BN254 proofs remain unavailable or gated on CAP-0074.","Do NOT treat native curve operations as a complete proof system or imply CAP-0080 is required for every BN254 Groth16 verifier."],"notes":"The question composes a project/proposal lookup with the served skill's platform-capability guidance; the exact deployed Warmancer proof system remains deliberately unpinned. Grade either curve route as correct when the answer requires a matching verifier. CAP-0080 is Implemented for Protocol 26 and extends BN254 support for proof systems that need MSM/Fr operations; it does not replace CAP-0074's Protocol-25 base operations."},"tags":{"category":"soroban","service":"skills","freshness":"scheduled"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-08-10","reverifyBy":"2026-11-19","sources":[{"class":"C","ref":"http://localhost:8787/mcp — lumenloop.get_scf_submissions + scout.searchProjects, observed 2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/submissions/recsJtI0JZOmnayxP"},{"class":"B","ref":"https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md"},{"class":"A","ref":"https://developers.stellar.org/docs/build/apps/zk"},{"class":"A","ref":"https://developers.stellar.org/docs/networks/software-versions"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md"}],"corroboration":[{"claim":"Warmancer's SCF proposal is a hidden-information strategy game with ZK aspirations, and Scout lists the project as live and funded.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"lumenloop.get_scf_submissions(slug=warmancer) + scout.searchProjects(q=Warmancer)","observedAt":"2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/submissions/recsJtI0JZOmnayxP","observedAt":"2026-07-11"}]},{"claim":"The served ZK skill's Groth16 route is natively verifiable with a matching verifier over BLS12-381 from Protocol 22 or BN254 from Protocol 25; Protocol 26 adds CAP-0080 BN254 extensions without determining Warmancer's deployed stack.","verdict":"confirmed-as-of","evidence":[{"class":"B","ref":"https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md","observedAt":"2026-08-10"},{"class":"A","ref":"https://developers.stellar.org/docs/build/apps/zk","observedAt":"2026-08-10"},{"class":"A","ref":"https://developers.stellar.org/docs/networks/software-versions","observedAt":"2026-08-10"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md","observedAt":"2026-08-10"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md","observedAt":"2026-08-10"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md","observedAt":"2026-08-10"}]},{"claim":"Circom's default BN254 proofs remain unavailable on Stellar or gated on CAP-0074.","verdict":"contradicted","evidence":[{"class":"B","ref":"https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md","observedAt":"2026-08-10"},{"class":"A","ref":"https://developers.stellar.org/docs/build/apps/zk","observedAt":"2026-08-10"},{"class":"A","ref":"https://developers.stellar.org/docs/networks/software-versions","observedAt":"2026-08-10"},{"class":"B","ref":"https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md","observedAt":"2026-08-10"}]}],"verified":{"date":"2026-08-10","by":"Lane D golden-truth correction (Solo scratchpad 795)","evidence":["https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md","https://developers.stellar.org/docs/build/apps/zk","https://developers.stellar.org/docs/networks/software-versions","https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md","https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md","https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0075.md","https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md","Sibling sweep: q-zk-host-functions-status, q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick, and q-protocol-bls12-381-cap59 agree on Protocol-25 BN254 availability and Protocol-26 CAP-0080 extensions; no Warmancer deployment claim imported","solo://proj/49/scratchpad/drift-issue-19-resol--795"],"rootCause":["freshness-drift"]},"origin":"authored 2026-07 (cross-service)"}}
+{
+  "id": "q-sor-cross-warmancer-zk-stack",
+  "question": "Warmancer's SCF proposal says it wants hidden board positions with ZK. What does Scout say the project is, and which proof/curve stack does the served ZK skill say is verifiable on Stellar today?",
+  "surface": [
+    "lumenloop.get_scf_submissions",
+    "scout.searchProjects",
+    "skills.stellar-dev.zk-proofs"
+  ],
+  "golden": {
+    "answer": "The SCF #33 'Warmancer: Black Friday' proposal describes a free-to-play strategy game that wants zero-knowledge proofs to conceal board positions, explicitly qualifying that plan as pending technology availability. As observed on 2026-07-11, Scout lists Warmancer as a live, SCF-funded on-chain strategy game on Stellar. As verified on 2026-08-10, the served ZK skill says Groth16 is natively verifiable over either BLS12-381—for example, Circom/snarkjs configured with `-p bls12381`, using CAP-0059 host operations from Protocol 22—or BN254, including Circom's default `bn128`, using CAP-0074 host operations from Protocol 25, provided the circuit and verifier use the same curve. CAP-0080 adds BN254 MSM, scalar-field arithmetic, and on-curve checks from Protocol 26 for stacks that need them; it is not a gate on CAP-0074's base BN254 route. That platform-capability answer does not prove which proving stack Warmancer actually deployed.",
+    "keyFacts": [
+      "Identifies Warmancer: Black Friday as SCF #33's hidden-information strategy-game proposal.",
+      "Preserves its 'pending technology availability' qualification.",
+      "Uses Scout to identify Warmancer as a live SCF-funded Stellar on-chain strategy game.",
+      "Curve-matched native Groth16 uses BLS12-381/CAP-0059/P22 or BN254/Final CAP-0074/P25.",
+      "Reports CAP-0080's additional BN254 operations available from Protocol 26."
+    ],
+    "avoid": [
+      "Do NOT claim the proposal proves Warmancer deployed any particular proving stack in production.",
+      "Do NOT repeat the outdated claim that Circom's default BN254 proofs remain unavailable or gated on CAP-0074.",
+      "Do NOT treat native curve operations as a complete proof system or imply CAP-0080 is required for every BN254 Groth16 verifier."
+    ],
+    "notes": "The question composes a project/proposal lookup with the served skill's platform-capability guidance; the exact deployed Warmancer proof system remains deliberately unpinned. Grade either curve route as correct when the answer requires a matching verifier. CAP-0080 is Implemented for Protocol 26 and extends BN254 support for proof systems that need MSM/Fr operations; it does not replace CAP-0074's Protocol-25 base operations."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "skills",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-08-10",
+    "reverifyBy": "2026-11-19",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp — lumenloop.get_scf_submissions + scout.searchProjects, observed 2026-07-11"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/submissions/recsJtI0JZOmnayxP"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/apps/zk"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Warmancer's SCF proposal is a hidden-information strategy game with ZK aspirations, and Scout lists the project as live and funded.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "lumenloop.get_scf_submissions(slug=warmancer) + scout.searchProjects(q=Warmancer)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/submissions/recsJtI0JZOmnayxP",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "The served ZK skill's Groth16 route is natively verifiable with a matching verifier over BLS12-381 from Protocol 22 or BN254 from Protocol 25; Protocol 26 adds CAP-0080 BN254 extensions without determining Warmancer's deployed stack.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md",
+            "observedAt": "2026-08-10"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/zk",
+            "observedAt": "2026-08-10"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-08-10"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md",
+            "observedAt": "2026-08-10"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md",
+            "observedAt": "2026-08-10"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md",
+            "observedAt": "2026-08-10"
+          }
+        ]
+      },
+      {
+        "claim": "Circom's default BN254 proofs remain unavailable on Stellar or gated on CAP-0074.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md",
+            "observedAt": "2026-08-10"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/zk",
+            "observedAt": "2026-08-10"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-08-10"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md",
+            "observedAt": "2026-08-10"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "evidence": [
+        "https://github.com/stellar/stellar-dev-skill/blob/9e3d3fe0de8587205b020e0148ea67525e38e494/skills/zk-proofs/SKILL.md",
+        "https://developers.stellar.org/docs/build/apps/zk",
+        "https://developers.stellar.org/docs/networks/software-versions",
+        "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0059.md",
+        "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0074.md",
+        "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0075.md",
+        "https://github.com/stellar/stellar-protocol/blob/ae300437d15c1653eaefa1341ec829045c49a22f/core/cap-0080.md",
+        "Sibling sweep: q-zk-host-functions-status, q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick, and q-protocol-bls12-381-cap59 agree on Protocol-25 BN254 availability and Protocol-26 CAP-0080 extensions; no Warmancer deployment claim imported",
+        "solo://proj/49/scratchpad/drift-issue-19-resol--795",
+        "Structural re-form (compound-predicate): split the proposal qualification and two ZK capability clauses into five atomic facts; no claim changed.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/dashboard/submissions/recsJtI0JZOmnayxP — identified Warmancer: Black Friday as the SCF #33 hidden-information strategy-game proposal.",
+        "Live re-check 2026-08-27: https://communityfund.stellar.org/dashboard/submissions/recsJtI0JZOmnayxP — retained the 'pending technology availability' qualification.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-dev-skill/blob/main/skills/zk-proofs/SKILL.md and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md — confirmed curve-matched native Groth16 over BLS12-381/CAP-0059/P22 or BN254/Final CAP-0074/P25.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-dev-skill/blob/main/skills/zk-proofs/SKILL.md and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — confirmed CAP-0080's additional BN254 operations from Protocol 26.",
+        "Sibling sweep 2026-08-27: grep Warmancer|CAP-0059|CAP-0074|CAP-0080|BLS12-381|BN254 → q-zk-host-functions-status, q-zk-proof-systems-stellar, q-protocol-bn254-poseidon-xray, q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59; no contradiction"
+      ],
+      "rootCause": [
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+      ]
+    },
+    "origin": "authored 2026-07 (cross-service)"
+  }
+}

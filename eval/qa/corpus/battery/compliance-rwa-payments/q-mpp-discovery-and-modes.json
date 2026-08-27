@@ -8,11 +8,11 @@
   "golden": {
     "answer": "MPP is an HTTP-402 payment-negotiation protocol. On Stellar, Charge settles SAC transfers per request and Session uses a funded unidirectional channel with cumulative off-chain commitments. Publish an OpenAPI 3.1 document, commonly /openapi.json, with x-payment-info.offers, but treat discovery metadata as advisory: the runtime 402 Challenge is authoritative for current price, token, network, expiry, and terms. Optional discovery includes MPPScan registration and the mpp.dev services registry, including the read-only https://mpp.dev/mcp/services surface. MPP and x402 are distinct protocols; expose separate adapters and never relabel payloads.",
     "keyFacts": [
-      "MPP uses HTTP 402; Stellar Charge settles SAC transfers per request and Session uses cumulative off-chain channel commitments.",
+      "Defines MPP as HTTP 402 with per-request SAC Charge and cumulative off-chain Session.",
       "Publish OpenAPI 3.1, commonly at /openapi.json, with x-payment-info.offers.",
-      "Discovery metadata is advisory; the runtime 402 Challenge controls current price, token, network, expiry, and terms.",
-      "MPPScan and the mpp.dev services registry, including https://mpp.dev/mcp/services, are optional discovery surfaces.",
-      "MPP and x402 require separate adapters; their payloads must not be relabeled."
+      "Treats discovery as advisory to runtime 402 price, token, network, expiry, and terms.",
+      "Names MPPScan, mpp.dev, and https://mpp.dev/mcp/services as optional discovery.",
+      "Treats MPP and x402 as distinct protocols with non-interchangeable adapters and payloads."
     ],
     "avoid": [
       "MPP Session requires a new on-chain transfer for every API call.",
@@ -233,13 +233,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/agentic-payments/mpp",
         "https://mpp.dev/advanced/discovery",
         "https://github.com/stellar/mpp",
-        "https://github.com/interop-alliance/mpp-services"
+        "https://github.com/interop-alliance/mpp-services",
+        "Structural re-form (negative-predicate): Compressed four compound or long facts into atomic positive statements; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://mpp.dev/payment-methods/stellar/ — showed per-request Charge and cumulative off-chain channel payment modes.",
+        "Live re-check 2026-08-27: https://mpp.dev/advanced/discovery — showed advisory discovery and authoritative runtime 402 payment terms.",
+        "Live re-check 2026-08-27: https://mpp.dev/advanced/discovery — showed MPPScan, mpp.dev/services, and the read-only https://mpp.dev/mcp/services surface.",
+        "Live re-check 2026-08-27: https://mpp.dev/mpp-vs-x402 — showed distinct MPP and x402 headers, scopes, and payload models.",
+        "Sibling sweep 2026-08-27: grep MPPScan|mpp.dev/mcp/services|x-payment-info|MPP|x402 → q-agent-payment-standard-choice, q-defi-agentic-payment-standards-compare, q-defi-streaming-payments-prior-art, q-defi-x402-on-stellar-what, q-mpp-discovery-and-modes; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "kaan agentic-mpp-discovery"

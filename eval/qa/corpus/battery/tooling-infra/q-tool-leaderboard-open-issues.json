@@ -8,10 +8,11 @@
   "golden": {
     "answer": "Re-run **`scout.getLeaderboard({ sort: \"issues\", range: \"all\", limit: ... })`**, whose upstream route is **`/api/leaderboard`**, and report the response's `generatedAt`, filters/range/category, rank, project, Scout-labelled `openIssuesTotal`, `repoCount`, and `lastActivityAt`. This is an answer-time snapshot; do not reuse a stored ordering.\n\nThe returned rows are cached project rollups over Scout's included repository universe, not a timeless issue-only GitHub census. If corroborating against GitHub, map the exact included repositories and use `is:issue is:open`; repository `open_issues_count` includes pull requests. Disclose cache/scope mismatches and do not average unlike project, organization, and repository counts.\n\nOpen-issue volume is a **backlog-size signal**, not proof of current maintenance activity, code quality, popularity, or need for help. Use `lastActivityAt` or a separately defined activity metric for activity, and keep `issues`, `stars`, and `activity` as distinct leaderboard sorts.",
     "keyFacts": [
-      "Uses `/api/leaderboard`/`scout.getLeaderboard` with `sort=issues` and reports generatedAt plus filter/range/category scope.",
-      "Returns rank and Scout openIssuesTotal with repoCount/lastActivityAt while treating values as a current cached project rollup.",
-      "Frames issue volume as backlog rather than activity/quality and keeps issues, stars, and activity distinct.",
-      "Uses GitHub issue-only searches for corroboration, notes repository open_issues_count includes PRs, and discloses scope/cache disagreement."
+      "Uses `/api/leaderboard`/`scout.getLeaderboard` with `sort=issues`.",
+      "Reports generatedAt and filter/range/category scope.",
+      "Reports current cached project rank/openIssuesTotal/repoCount/lastActivityAt Scout values.",
+      "Treats issue volume as backlog, not activity/quality, with issues/stars/activity distinct.",
+      "Uses GitHub issue-only corroboration, repo open_issues_count PRs, scope/cache disclosure."
     ],
     "avoid": [
       "Do NOT route the primary request to `/api/repos/search?sort=issues`; the current route is `/api/leaderboard`.",
@@ -105,16 +106,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Post-QA Harvest freshness lane (Solo todo 1378; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 at 2026-08-05T20:45:09.140Z returned 880 project rows in scope, dataAsOf 2026-08-05T19:33:42.232Z, and rank/openIssuesTotal/repoCount/lastActivityAt fields with explicit metric definitions.",
         "A/F: GitHub issue-search semantics and a live keybase/client sample independently separated 4,046 open issues from 210 open pull requests while REST open_issues_count reported 4,257, confirming that the REST field is not issue-only.",
         "Uncertainty remains scope-bound: Scout confirms its cached included-repository rollup, not every project aggregate or a live GitHub census.",
-        "Sibling sweep: q-tool-developer-leaderboard-live and q-gap-leaderboard-project-not-builder preserve project scope and keep issue backlog distinct from activity, quality, and people directories."
+        "Sibling sweep: q-tool-developer-leaderboard-live and q-gap-leaderboard-project-not-builder preserve project scope and keep issue backlog distinct from activity, quality, and people directories.",
+        "Structural re-form (compound-predicate): Split route scope and recast three facts as single-predicate field lists; truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 — the live route still used scout.getLeaderboard semantics with sort=issues.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 — the response still carried generatedAt and filter/range/category scope.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 — current cached project values still included rank, openIssuesTotal, repoCount, and lastActivityAt.",
+        "Live re-check 2026-08-27: https://stellarlight.xyz/leaderboard — issue volume remained a backlog signal separate from issues, stars, and activity sorts.",
+        "Live re-check 2026-08-27: https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests and https://docs.github.com/en/rest/repos/repos#get-a-repository — issue-only search and open_issues_count PR inclusion still required scope/cache caveats.",
+        "Sibling sweep 2026-08-27: grep openIssuesTotal|open_issues_count|sort=issues|lastActivityAt → q-tool-leaderboard-open-issues; no contradiction"
       ],
       "rootCause": [
-        "freshness-recheck"
+        "freshness-recheck",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-leaderboard-open-issues"

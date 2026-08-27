@@ -9,8 +9,9 @@
   "golden": {
     "answer": "**Allbridge Core** is a cross-chain stablecoin bridge with Stellar/Soroban support. Its 2023 Stellar launch announcement named Ethereum, Solana, Polygon, and Celo; that is historical launch context, not a permanent route list. For current availability, query Allbridge Core's token API/UI for the exact asset, source chain, destination chain, and direction. At **2026-07-10T17:02Z**, the Core API exposed native Stellar USDC and transfer-time entries for 16 counterpart networks, including Ethereum, BNB Smart Chain, Polygon, Arbitrum, Avalanche, Optimism, Base, Celo, Sonic, Unichain, Linea, Tron, Solana, Sui, Algorand, and Stacks. Treat this as a dated snapshot.\n\n**XRPL belongs to older Allbridge Classic history**, not the audited current Core route matrix; Classic is deprecated. Allbridge is a bridge, not a DEX, lender, or oracle, and it is distinct from SDF's historical Starbridge research project.",
     "keyFacts": [
-      "Identifies Allbridge Core as a Stellar-enabled cross-chain stablecoin bridge and verifies current asset/direction coverage against the provider API/UI.",
-      "Separates the dated 2023 launch set and deprecated Classic/XRPL history from current Allbridge Core routes."
+      "Allbridge Core is a Stellar-enabled cross-chain stablecoin bridge.",
+      "Verifies current asset and direction coverage through the provider API or UI.",
+      "Treats the 2023 launch set and deprecated Classic/XRPL coverage as historical context."
     ],
     "avoid": [
       "Do NOT present a launch-era chain list as permanent current coverage or call XRPL a current Core route without current provider evidence.",
@@ -77,14 +78,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — GT-13 primary and independent blind reviews (Solo 3238/3240, 2026-07-10) found that the inherited answer promotes a four-chain July-2023 launch snapshot into a current route list and incorrectly carries XRPL history from deprecated Allbridge Classic into Allbridge Core. Current Core coverage is asset-specific and must come from the provider API/UI.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575: GT-13 primary 3238 and blind 3240",
-        "Allbridge Core token-info API snapshot 2026-07-10T17:02:32Z exposed Stellar USDC plus 16 current counterpart networks; static docs omitted two of them"
+        "Allbridge Core token-info API snapshot 2026-07-10T17:02:32Z exposed Stellar USDC plus 16 current counterpart networks; static docs omitted two of them",
+        "Structural re-form 2026-08-27: split two long or negative key facts into three positive atomic forms; truth unchanged.",
+        "Live re-check 2026-08-27: https://docs-core.allbridge.io/ — current Allbridge Core documentation identifies a stablecoin bridge with Stellar support.",
+        "Live re-check 2026-08-27: https://docs-core.allbridge.io/sdk/allbridge-core-rest-api — the provider documents an API surface for current asset and route checks.",
+        "Live re-check 2026-08-27: https://docs.allbridge.io/guides/bridging-guides — Classic and its XRPL coverage remain deprecated historical context.",
+        "Sibling sweep 2026-08-27: grep Allbridge|XRPL|Classic across the QA battery; no contradiction found."
       ],
       "rootCause": [
-        "eval-side freshness/product-generation conflation: launch announcement, current Core routes, and deprecated Classic/XRPL coverage were merged"
+        "eval-side freshness/product-generation conflation: launch announcement, current Core routes, and deprecated Classic/XRPL coverage were merged",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-allbridge-what-is"

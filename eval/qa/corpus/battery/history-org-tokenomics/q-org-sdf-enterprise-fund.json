@@ -7,9 +7,9 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-07-13, the verified sources supported this observed answer:\n\nThe **SDF Enterprise Fund** is a venture-style fund investing in companies that grow the Stellar ecosystem. As of **2026-07-13**, SDF says its **portfolio totals over $100 million**. That is SDF's portfolio wording—not a precise reconciled cumulative-cash-deployed total, fair value, or cost basis. Historical public totals do not fully reconcile, so do not manufacture a lifetime scalar. The **MoneyGram** stake was explicitly funded from SDF's cash treasury, not the Enterprise Fund; independent reporting repeated that treasury-versus-fund distinction on 2023-08-16. Cite separate dated announcements for any individual investee amount.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents sourced observations as current or dated.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates the MoneyGram cash-treasury investment from the Enterprise Fund."
+      "Treats the MoneyGram cash-treasury investment as outside the Enterprise Fund."
     ],
     "avoid": [
       "Do NOT convert 'portfolio totals over $100m' into an exact cumulative cash-invested or current fair-value number.",
@@ -73,20 +73,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Todo 972 release-closeout golden-truth reconciliation after independent Fable and Sol reviews",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://stellar.org/enterprise-fund",
         "https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international",
         "https://www.ledgerinsights.com/stellar-blockchain-invests-in-moneygram/",
         "solo://proj/49/scratchpad/stellarorg-algolia-l--609 — independent Fable and Sol metric-scope reviews",
-        "Sibling sweep: q-org-sdf-mandate-buckets and q-org-sdf-structure-mandate retain separate mandate/reserve semantics."
+        "Sibling sweep: q-org-sdf-mandate-buckets and q-org-sdf-structure-mandate retain separate mandate/reserve semantics.",
+        "Structural re-form (negative-predicate): Shortened the sourcing fact and stated the MoneyGram funding taxonomy positively; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/enterprise-fund — showed a current venture-style Enterprise Fund page with portfolio wording over $100m.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international — showed the MoneyGram investment came from SDF's cash treasury rather than the Enterprise Fund.",
+        "Sibling sweep 2026-08-27: grep Enterprise Fund|MoneyGram|cash treasury|portfolio totals → q-org-sdf-enterprise-fund, q-scf-ecosystem-listing-partner-jobs, q-scf-total-distributed, q-scf-vs-sdf-enterprise-fund; no contradiction"
       ],
       "rootCause": [
         "Eval-side portfolio-value/cost-basis/cumulative-cash metric conflation.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "solo://proj/49/todo/golden-truth-review--972"
+        "solo://proj/49/todo/golden-truth-review--972",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-org-sdf-enterprise-fund"

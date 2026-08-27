@@ -8,13 +8,16 @@
   "golden": {
     "answer": "SEP-53 is Final, Version 1.0.0, updated 2026-06-18. Prefix the exact message bytes with `Stellar Signed Message:\n` including the newline, apply one SHA-256, then Ed25519-sign the 32-byte digest. Current support includes JS/TS signMessage/verifyMessage, Python snake-case equivalents, Java, Flutter/Dart, iOS/Swift, PHP, KMP, and `stellar message sign|verify`; check the installed release. SEP-43 is a separate Draft wallet API. One key signature does not prove a current multisig threshold, M-address, or contract-account policy and has no nonce or expiry unless the message includes them.",
     "keyFacts": [
-      "SEP-53 prefixes `Stellar Signed Message:\n` including the newline, appends exact message bytes, hashes once with SHA-256, then Ed25519-signs the 32-byte digest.",
+      "Prefixes exact message bytes with `Stellar Signed Message:\n`, including the newline.",
+      "Applies one SHA-256, then Ed25519-signs the 32-byte digest.",
       "SEP-53 is Final, Version 1.0.0, updated 2026-06-18.",
-      "Current SDK/CLI support spans JS/TS, Python, Java, Flutter/Dart, iOS/Swift, PHP, KMP, and stellar CLI; users must check installed releases.",
-      "SEP-43 is a separate Draft wallet API, not SEP-53's implementation.",
-      "One key signature does not prove multisig threshold, M-address, or contract-account policy control and has no nonce/expiry unless included."
+      "Current support spans JS/TS, Python, Java, Flutter/Dart, iOS/Swift, PHP, KMP, stellar CLI.",
+      "Requires installed-release checks, with SEP-43 as a Draft wallet API."
     ],
     "avoid": [
+      "Do NOT claim SEP-43 implements SEP-53.",
+      "Do NOT claim one key signature proves a multisig threshold, M-address, or contract-account policy control.",
+      "Do NOT claim SEP-53 supplies a nonce or expiry unless the message includes it.",
       "SEP-53 message signing broadcasts the signed message as a Stellar transaction.",
       "Signing raw message bytes without SEP-53 domain separation is guaranteed cross-SDK compatible."
     ],
@@ -194,12 +197,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
         "https://github.com/stellar/stellar-cli",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md"
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+        "Structural re-form (negative-predicate): Split the algorithm fact and moved limitations into avoid; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — showed the exact prefix and exact message-byte payload.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — showed one SHA-256 followed by Ed25519 signing of its 32-byte digest.",
+        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/issues/1492, https://github.com/SCF-Public-Goods-Maintenance/scf-public-goods-maintenance.github.io/issues/43, and https://github.com/Soneso/kmp-stellar-sdk — showed the listed SDK and stellar CLI support.",
+        "Live re-check 2026-08-27: https://github.com/stellar/js-stellar-sdk/issues/1492 and https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — showed release-specific implementation and SEP-43 as a Draft wallet API.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — limited one signature to proof of one private key.",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md — defined only a prefix-plus-message payload, with no separate nonce or expiry field.",
+        "Sibling sweep 2026-08-27: SEP-53|Stellar Signed Message|SEP-43|M-address|contract-account → q-sep53-message-signing, q-sep-53-sign-verify-message, q-sep-43-web-wallet-api, q-sep-catalog-list, q-sep-45-contract-auth, q-smart-account-scoped-policy-signers, q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery, q-tool-smart-wallet-repos-discovery, q-tool-wallets-comparison, q-infra-secp256r1-passkeys, q-ti-custodial-account-generation-c-address, q-sor-contract-trustlines-c-address, q-anchor-platform-what, q-sep-12-kyc, q-raph-offramp-xlm-usdc, q-crp-sdp-operation, q-stellar-recurring-payments, q-sor-cross-socketfi-auth, q-edge-inject-ignore-instructions, q-edge-exchange-memo-lost-funds; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "kaan sep53-sign-verify-message"

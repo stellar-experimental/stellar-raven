@@ -8,7 +8,7 @@
     "answer": "A hardware wallet is designed to keep the private key in the device and require confirmation there when signing; it can reduce exposure to a compromised computer, but it cannot protect you if you reveal the recovery phrase, approve a malicious transaction, or use a fake app. Whether it is worth buying is a personal risk decision, not a balance threshold: consider the amount you could lose, your backup discipline, and how much extra signing friction you can manage. Confirm Stellar support and the wallet integration from the device and wallet vendors before purchase.",
     "keyFacts": [
       "Explains the security boundary without claiming absolute protection.",
-      "Rejects a universal investment-size threshold."
+      "Treats any investment-size threshold as non-universal."
     ],
     "avoid": [
       "Do NOT say a hardware wallet makes a recovery phrase safe to share.",
@@ -55,18 +55,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
         "scratchpad/p4/h3-raph/fable-voice-review.md",
         "scratchpad/p4/h3-raph-blind/reconciliation.md",
         "https://developers.stellar.org/docs/build/guides/freighter",
-        "https://stellar.org/blog/developers/key-management-101"
+        "https://stellar.org/blog/developers/key-management-101",
+        "Structural re-form (negative-predicate): Recast the universal-threshold rejection as the same non-universal requirement; truth unchanged",
+        "Live re-check 2026-08-27: https://stellar.org/blog/developers/key-management-101 — the current guidance described multiple key-management and recovery tradeoffs without a fixed investment-size trigger.",
+        "Sibling sweep 2026-08-27: grep hardware wallet|recovery phrase|investment-size|universal dollar → q-edge-asset-site-scam-detection, q-raph-restore-wallet, q-ti-secret-key-vs-mnemonic-derivation, q-tool-wallets-comparison; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raph hardware-wallet-key-custody-threshold"

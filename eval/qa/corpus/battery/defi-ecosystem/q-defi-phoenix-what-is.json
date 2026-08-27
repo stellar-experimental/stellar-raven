@@ -11,8 +11,10 @@
   "golden": {
     "answer": "**Phoenix DeFi Hub** is a Soroban AMM/DEX suite with constant-product and stable pools, a factory, routing/multihop swaps, LP share tokens, staking/rewards, and add/remove-liquidity flows. **PHO** is the protocol's classic Stellar asset with a SAC representation; the operator TOML identifies issuer `GAX5…SXJO`. Phoenix's **2024 initial whitepaper** describes PHO as a utility/incentive token for DEX/NFT rewards and proposed supply, buyback, and distribution mechanics. Attribute those claims to that dated initial design rather than promising they remain current; do not call PHO a governance token without current evidence.\n\nAs of 2026-08-05, Phoenix's official SCF page reports seven awarded submissions totaling $394.5K. It is a DEX/AMM, not a lender, oracle, or bridge, and no TVL number is required.",
     "keyFacts": [
-      "Identifies Phoenix as a Soroban AMM/DEX suite and explains its core pool/routing/liquidity functions.",
-      "Identifies PHO as the protocol's classic asset/SAC utility-incentive token and attributes tokenomics to the dated 2024 initial whitepaper."
+      "Identifies Phoenix as a Soroban AMM/DEX suite.",
+      "Explains Phoenix's core pool, routing, and liquidity functions.",
+      "Identifies PHO as Phoenix's classic asset/SAC utility-incentive token.",
+      "Attributes PHO tokenomics to the dated 2024 initial whitepaper."
     ],
     "avoid": [
       "Do NOT call PHO a governance token or present initial-whitepaper supply/emission/buyback plans as timeless guarantees.",
@@ -80,16 +82,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Solo Todo 1361 wave-3 verification, independently reproduced and accepted by the post-QA lead in comment 3712",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "https://communityfund.stellar.org/project/recafjXSgVbrp8svj — current primary record reports 7 Awarded Submissions and $394.5K total awarded, observed 2026-08-05.",
         "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
         "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
-        "Sibling sweep: cluster-012 project-award cases preserve Phoenix's $394.5K aggregate and distinct Hana/Soroswap award histories; no sibling asserts the stale count of four."
+        "Sibling sweep: cluster-012 project-award cases preserve Phoenix's $394.5K aggregate and distinct Hana/Soroswap award histories; no sibling asserts the stale count of four.",
+        "Structural re-form (compound-predicate): split Phoenix identity, functions, PHO identity, and whitepaper attribution into atomic facts; the truth is unchanged.",
+        "Live re-check 2026-08-27: https://github.com/Phoenix-Protocol-Group/phoenix-contracts — the current repository still identifies Phoenix as a Soroban AMM/DEX suite.",
+        "Live re-check 2026-08-27: https://github.com/Phoenix-Protocol-Group/phoenix-contracts/blob/main/docs/architecture.md — the current architecture still documents pool, routing, and liquidity functions.",
+        "Live re-check 2026-08-27: https://github.com/Phoenix-Protocol-Group/phoenix-contracts — the current source still identifies PHO asset and SAC integration with the protocol.",
+        "Live re-check 2026-08-27: https://raw.githubusercontent.com/Phoenix-Protocol-Group/docs/main/Initial%20Phoenix%20Whitepaper.pdf — the current operator-linked initial whitepaper remains the dated PHO tokenomics source.",
+        "Sibling sweep 2026-08-27: grep Phoenix|PHO|AMM|utility-incentive → q-eco-dex-saturation, q-eco-defi-projects-discovery, q-defi-provide-liquidity-impermanent-loss, q-defi-soroswap-what-is; no contradiction"
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-phoenix-what-is"

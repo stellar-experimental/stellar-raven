@@ -10,7 +10,9 @@
     "answer": "Prefer generated clients or `contract.Spec` conversion; Rust uses `IntoVal`/`FromVal`. Preserve wide integers as `bigint` or decimal strings—an unsafe JS Number cannot be repaired after rounding. In current JS SDK 16, `new Contract(C...).contractId()` returns the C StrKey; use `StrKey.decodeContract`/`encodeContract` for the 32 raw bytes. A `BytesN<32>` is 32 raw bytes, not ASCII C-address/hex text. Generic `nativeToScVal(Buffer)` creates `scvBytes` but cannot enforce the contract's declared BytesN length; spec-driven conversion/generated bindings do. UDT enum/union objects must match the embedded spec's tag/arm shape, not EVM ABI tuples. Token amounts are integer smallest/base units and `decimals()` controls display; “stroop” is specifically the conventional XLM/classic 10^-7 unit.",
     "keyFacts": [
       "Uses spec-driven conversion and exact integer/StrKey/raw-byte boundaries.",
-      "Distinguishes generic scvBytes from BytesN validation, UDT shape, and base-unit display scaling."
+      "Generic `scvBytes` and `BytesN` validation are different conversion boundaries.",
+      "UDT shape follows the embedded contract spec.",
+      "Base-unit values require token-specific display scaling."
     ],
     "avoid": [
       "Do NOT pass unsafe JS numbers, ASCII/hex in place of raw bytes, guess union shapes, or call every token base unit a stroop."
@@ -71,13 +73,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The core conversion advice was correct but current SDK behavior, BytesN enforcement, union shapes, and generic-token unit terminology needed precision.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-43 processes 3311/3320."
+        "Solo scratchpad 575 GT-43 processes 3311/3320.",
+        "Structural re-form (negative-predicate): replaced the taxonomy negation with three atomic positive facts; truth is unchanged",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/types/fully-typed-contracts — contract specs still drive typed conversion and exact value boundaries",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0048.md — BytesN still requires an exact-length SCV_BYTES value",
+        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0048.md — UDT values still follow the embedded contract specification",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/token-interface — token integer values still use token-specific decimals for display scaling",
+        "Sibling sweep 2026-08-27: grep ScVal|BytesN|contract spec|base unit → q-sor-deploy-invoke-from-js-sdk, q-sor-stale-spec-after-upgrade, q-soroban-sdk-macros; no contradiction"
       ],
       "rootCause": [
-        "Eval-side current-SDK and unit terminology drift."
+        "Eval-side current-SDK and unit terminology drift.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-sor-scval-conversion"

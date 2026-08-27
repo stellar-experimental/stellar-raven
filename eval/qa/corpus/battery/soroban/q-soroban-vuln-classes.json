@@ -7,8 +7,10 @@
   "golden": {
     "answer": "Treat this as a non-exhaustive Soroban review checklist: missing/wrong authorization (including initialization and Wasm updates); unsafe storage/TTL/archival assumptions; unchecked external token/contract results or arbitrary counterparties; arithmetic/precision/input-validation errors; panic/unwrap and unbounded-work denial of service; and application-specific economic/state-transition mistakes. Under P23+ archived Persistent/Instance data can auto-restore with correct transaction metadata, so do not present generic 'restore front-running' or irreversible-brick slogans as universal current behavior. Over-limit writes fail atomically, though growth-dependent application paths can still become unavailable.",
     "keyFacts": [
-      "Names the major current authorization, storage, external-call, arithmetic/input, DoS, and economic/state-transition families.",
-      "Scopes storage/TTL issues to current P23+ restoration and atomic failure semantics."
+      "Names major current authorization, storage, external-call, and arithmetic/input families.",
+      "Names major current DoS / economic-state-transition families.",
+      "Scopes storage/TTL issues to current P23+ restoration semantics.",
+      "Scopes storage/TTL issues to atomic failure semantics."
     ],
     "avoid": [
       "Do NOT claim one checklist is exhaustive or import EVM-only vulnerabilities unchanged.",
@@ -70,13 +72,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited vulnerability list repeated obsolete/generalized TTL-front-running and permanent-brick language. Current P23+ auto-restore and atomic limit failure require narrower storage/availability guidance.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-46/48 primary and blind reviews; GT-48 independently confirmed the list but required TTL wording correction."
+        "Solo scratchpad 575 GT-46/48 primary and blind reviews; GT-48 independently confirmed the list but required TTL wording correction.",
+        "Structural re-form (compound-predicate): Split two compound facts into four atomic facts; every vulnerability family and both current storage caveats are unchanged.",
+        "Live re-check 2026-08-27: https://www.certora.com/blog/roadmap-to-a-soroban-security-audit — current Soroban audit guidance still covers authorization, storage, external calls, and arithmetic/input errors.",
+        "Live re-check 2026-08-27: https://www.certora.com/blog/roadmap-to-a-soroban-security-audit — current guidance still covers resource DoS and application invariants/state transitions.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — P23+ Persistent/Instance restoration semantics remain current.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — resource-limit failures remain atomic transaction failures.",
+        "Sibling sweep 2026-08-27: grep vulnerability|authorization.*storage|P23+|atomic failure → q-sor-evm-to-soroban-porting, q-soroban-auth-recursion-dos-audit, q-soroban-fuzz-testing, q-soroban-instance-storage-dos, q-soroban-storage-types, q-soroban-vuln-classes, q-tool-soroban-auth-audit-live; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part2.md): restored the storage/TTL subject of the atomic-failure scope (removed the new noun \"over-limit writes\"); truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "Plain protocol drift from pre-P23 restoration semantics and unsupported irreversible-brick shorthand."
+        "Plain protocol drift from pre-P23 restoration semantics and unsupported irreversible-brick shorthand.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-soroban-vuln-classes"

@@ -10,10 +10,11 @@
   "golden": {
     "answer": "Add the SDF-maintained Rust contract crate **`soroban-sdk`** from **`stellar/rs-soroban-sdk`**. It is Stellar's canonical/default first-class SDK for authoring Soroban contracts that compile to Wasm; current CLI guidance targets **`wasm32v1-none`**. Keep it separate from off-chain Rust client components such as `stellar-xdr`, `stellar-strkey`, and `rs-stellar-rpc-client`.\n\nThe upstream **v27.0.0** release was observed on **2026-07-08**. Check crates.io/docs.rs, the release notes, Stellar CLI, and the target network's protocol compatibility before selecting a major version; registry/docs indexes can lag a GitHub release. Rust is canonical, not exclusive: the official contract catalog also documents community Solang/Solidity and AssemblyScript paths with different maturity and support.",
     "keyFacts": [
-      "Names crate soroban-sdk and repository stellar/rs-soroban-sdk as the SDF-maintained Rust contract path.",
-      "States the current wasm32v1-none target guidance and separates off-chain Rust client crates.",
-      "Dates v27.0.0 to 2026-07-08 and requires release/network compatibility checks.",
-      "Calls Rust canonical/default rather than denying documented community contract alternatives."
+      "Names soroban-sdk/stellar/rs-soroban-sdk as the SDF-maintained Rust contract path.",
+      "States current wasm32v1-none target guidance.",
+      "Treats off-chain Rust client crates as separate.",
+      "Dates v27.0.0 to 2026-07-08 with required release/network compatibility checks.",
+      "Calls Rust canonical/default while retaining documented community contract alternatives."
     ],
     "avoid": [
       "Do NOT name stellar-sdk or an off-chain client crate as the Rust contract SDK.",
@@ -106,14 +107,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited crate and client-versus-contract distinction were correct, but its absolute Rust-not-Solidity trap denied officially documented community contract paths and it lacked current release/protocol compatibility guidance.",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-56 primary process 3394 and sealed blind process 3398 independently retained the crate identity while correcting exclusivity and dating v27.0.0.",
-        "Sibling sweep checked q-tool-official-sdks-list, q-tool-which-sdk-comparison, q-soroban-current-sdk-cli-version, q-soroban-wasm-language, q-sor-build-target-wasm32v1, and q-sor-evm-to-soroban-porting."
+        "Sibling sweep checked q-tool-official-sdks-list, q-tool-which-sdk-comparison, q-soroban-current-sdk-cli-version, q-soroban-wasm-language, q-sor-build-target-wasm32v1, and q-sor-evm-to-soroban-porting.",
+        "Structural re-form (compound-predicate): Split target guidance from client-crate separation and recast three facts; truth is unchanged.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/sdks/contract-sdks — official docs still named soroban-sdk and stellar/rs-soroban-sdk as the SDF-maintained Rust contract path.",
+        "Live re-check 2026-08-27: https://docs.rs/soroban-sdk/latest/soroban_sdk/ — current SDK documentation still required the wasm32v1-none target.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/sdks/contract-sdks — the contract SDK remained separate from off-chain Rust client crates.",
+        "Live re-check 2026-08-27: https://github.com/stellar/rs-soroban-sdk/releases/tag/v27.0.0 — release history retained v27.0.0 on 2026-07-08, with release and network compatibility still requiring checks.",
+        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/sdks/contract-sdks — Rust remained the canonical/default SDF path alongside documented community Solidity and AssemblyScript alternatives.",
+        "Sibling sweep 2026-08-27: grep soroban-sdk|rs-soroban-sdk|wasm32v1-none|Solang|AssemblyScript → q-sor-build-target-wasm32v1, q-sor-evm-to-soroban-porting, q-soroban-wasm-language, q-tool-rust-soroban-sdk, q-tool-which-sdk-comparison; no contradiction"
       ],
       "rootCause": [
-        "Eval-side canonical-versus-exclusive wording error plus package-release freshness omission."
+        "Eval-side canonical-versus-exclusive wording error plus package-release freshness omission.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "raven-next q-tool-rust-soroban-sdk"

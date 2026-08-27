@@ -7,13 +7,15 @@
   "golden": {
     "answer": "They are different product layers. **Soroswap** develops Soroban AMM and aggregation contracts plus API/SDK/frontend components; its API/service can quote across a wider venue set than the on-chain aggregator contract itself. **StellarX**, currently operated by Ultra Stellar, is a non-custodial trading interface for classic Stellar DEX order books and protocol-level classic liquidity pools. AMM access does not prove StellarX owns a proprietary Soroban AMM or aggregator. Date current availability rather than asserting a timeless shutdown/non-shutdown state.",
     "keyFacts": [
-      "Distinguishes Soroswap's owned Soroban contracts/API from StellarX's non-custodial classic-liquidity UI role.",
-      "Keeps API routing, on-chain aggregation, and UI access as separate layers.",
-      "Identifies StellarX as an Ultra Stellar non-custodial classic-liquidity trading UI, not an SDF-built product."
+      "Treats Soroswap-owned Soroban contracts/API and the StellarX UI as different roles.",
+      "Treats API routing, on-chain aggregation, and UI access as three layers.",
+      "Names Ultra Stellar as StellarX's builder.",
+      "Describes StellarX as a non-custodial Classic-liquidity trading UI."
     ],
     "avoid": [
       "Do NOT call the products the same type or infer a StellarX Soroban router/AMM from AMM access.",
-      "Do NOT make an unsupported permanent shutdown or availability claim."
+      "Do NOT make an unsupported permanent shutdown or availability claim.",
+      "Do NOT claim StellarX is an SDF-built product."
     ],
     "notes": "Confusable-project trap encoded directly. Comparison across two project records. Grounded on Scout: Soroswap = first DEX + DEX AGGREGATOR on Soroban routing across AMMs + SDEX with a Route API (PaltaLabs). StellarX = a decentralized TRADING PLATFORM/UI on Stellar (with AMM access), built by Ultra Stellar (same team as LOBSTR/StellarTerm) — NOT an aggregator, NOT SDF.\nAlso good if the answer: Notes they are different categories: aggregation/routing vs a trading UI over Classic + AMM.\nGolden cites: Sources distinguishing Soroswap (aggregator) from StellarX (trading UI).\nGT-18 CORRECTION 2026-07-10: preserve product-layer boundaries and remove the inherited shutdown absolute."
   },
@@ -106,8 +108,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 Lane R absorb triage",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
         "Sibling sweep: q-defi-soroswap-what-is and q-defi-stellarx-what-is",
@@ -116,10 +118,18 @@
         "https://www.stellarx.com/amm/liquidity",
         "https://www.stellarx.com/legal/terms",
         "https://ultrastellar.com/",
-        "Sibling sweep: Ultra Stellar/LOBSTR/StellarTerm family cases"
+        "Sibling sweep: Ultra Stellar/LOBSTR/StellarTerm family cases",
+        "Structural re-form (negative-predicate): split the three compound facts into four atomic positive facts; all product roles, layers, and ownership claims are unchanged.",
+        "Live re-check 2026-08-27: https://github.com/soroswap/docs and https://www.stellarx.com/ — Soroswap still documents its Soroban contracts/API stack, while StellarX remains a trading UI.",
+        "Live re-check 2026-08-27: https://github.com/soroswap/docs — current operator documentation still presents AMM, aggregator, API, and interface as different product layers.",
+        "Live re-check 2026-08-27: https://ultrastellar.com/ — Ultra Stellar still lists StellarX among its products.",
+        "Live re-check 2026-08-27: https://www.stellarx.com/legal/terms — StellarX still describes an interface for Classic Stellar liquidity without asset custody.",
+        "Sibling sweep 2026-08-27: grep Soroswap|StellarX|Ultra Stellar|API routing → q-defi-soroswap-what-is, q-eco-dex-saturation, and q-edge-factcheck-soroswap-first-amm; no contradiction",
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): restored the \"not an SDF-built product\" negation as a golden.avoid trap; truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-defi-soroswap-vs-stellarx"

@@ -7,12 +7,13 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nYes. As of **2026-07-10**, SDF Academic Research Grants fund scientific, technological, economic, or legal research advancing SDF goals, with a proposal cap of **$150,000** and a published historical average around **$75,000**. The eligible applicant/recipient is a **degree-granting research or higher-education institution**, led by a PI-authorized researcher; students and individuals do not apply or receive the award directly, though a grant commonly supports one graduate student or postdoc for about 12 months plus reasonable expenses. Apply through SDF Research by **Mar 31, Jun 30, Sep 30, or Dec 31**, with at most two proposals per calendar year. This is not the SCF Build application path, although an applicant ineligible for this academic program may separately consider SCF if the project fits its rules.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Correctly identifies the institution/PI applicant.",
-      "Distinguishes supported students from eligible recipients."
+      "Names institutions as recipients, with students as supported researchers."
     ],
     "avoid": [
+      "Do NOT substitute an unsupported memory claim for source-supported content.",
       "Do NOT say students or individuals apply for or directly receive the academic grant.",
       "Do NOT replace the $150K ceiling with the separately labeled ~$75K historical average or categorically claim SCF can never be separately relevant.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
@@ -61,18 +62,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-36 primary 3290 and blind 3291; independently checked 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory-claim trap to avoid, and restated the student/recipient roles; truth unchanged.",
+        "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed current program content for a dated, source-supported observation.",
+        "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed the current deadlines, proposal limit, and budget for visible as-of dating.",
+        "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed the degree-granting institution and PI-status applicant rules.",
+        "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed awards paid to institutions and support for a graduate student or post-doc.",
+        "Sibling sweep 2026-08-27: grep Academic Research Grant|degree-granting|PI status → q-scf-academic-research-grant only; no contradiction."
       ],
       "rootCause": [
         "Eval-side beneficiary/applicant conflation and overbroad route/amount traps.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]
     },
     "origin": "raven-next q-scf-academic-research-grant"

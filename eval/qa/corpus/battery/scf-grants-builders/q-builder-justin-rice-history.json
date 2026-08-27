@@ -9,11 +9,11 @@
   "golden": {
     "answer": "Justin Rice is a documented Stellar Development Foundation ecosystem leader. As observed on 2026-07-13, SDF's live but undated leadership page listed him as **VP of Ecosystem**; that is a dated page observation, not a title inferred from old material. Historical first-party pages called him **Head of Ecosystem** for a 2021-02-16 AMA and **VP of Ecosystem** by the 2021-04-20 GBBC University Dialogues event. CoinDesk independently interviewed him as Stellar's “head of ecosystem” in an article published 2021-11-03; treat that wording as contemporary corroboration, not proof of a later demotion. Rice is also the named author of SDF's **“Introducing Automated Market Makers on Stellar”** (2021-07-01) and **“Soroban Is Feature Complete”** (2023-08-22). The reviewed sources establish a dated role and work history but not an exact SDF joining or promotion date. Broad semantic results are discovery leads—verify the exact full name, source, and date before attribution.",
     "keyFacts": [
-      "Identifies Justin Rice as a historically documented SDF ecosystem leader using exact-name, dated first-party sources.",
+      "Exact-name, dated SDF sources identify Justin Rice as a historical ecosystem leader.",
       "Dates the live SDF team-page title to an observation date.",
       "Keeps the 2021–2024 role references historically dated.",
       "Mentions at least one dated, exact-name SDF publication or event contribution.",
-      "Treats semantic matches as candidates and validates exact identity, source, and date before attribution."
+      "Semantic-match candidates require exact identity/source/date checks before attribution."
     ],
     "avoid": [
       "Do NOT infer a 2026 current role from 2020–2024 material or from the live team page without an observation date.",
@@ -145,7 +145,7 @@
     ],
     "verified": {
       "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
       "evidence": [
         "First-party Stellar event and blog pages plus https://www.coindesk.com/business/2021/11/03/stellar-validators-vote-in-amm-integration-that-could-boost-liquidity and https://theorg.com/org/stellar-org/org-chart/justin-rice.",
         "Production and localhost retrieval probes demonstrating narrow miss and broad exact-name recovery.",
@@ -157,7 +157,11 @@
         "Structural re-form (symmetric-caution): Added a narrow caution for Justin Rice semantic matches without exact-name provenance; read improvements/lumenloop/ll-017-semantic-person-match-provenance.md on 2026-08-27; no live re-check needed; sibling sweep grep Justin Rice|exact-name → q-builder-content-by-person, q-builder-justin-rice-history, q-edge-lumenloop-person-entity-empty; no contradiction; golden truth unchanged.",
         "Structural re-form (presentation-avoid): rewrote the observation-date avoid item as an equivalent answer-visible sourcing guard; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep Justin Rice|VP of Ecosystem|observation date → q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback; no contradiction"
+        "Sibling sweep 2026-08-27: grep Justin Rice|VP of Ecosystem|observation date → q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback; no contradiction",
+        "Structural re-form (compound-predicate): Tightened two long key facts and reduced one compound predicate; every identity, provenance, dating, candidate-status, and validation claim remains unchanged.",
+        "Live re-check 2026-08-27: https://stellar.org/events/community/ama-with-justin-rice — showed exact-name, dated first-party evidence for Justin Rice's SDF ecosystem leadership.",
+        "Live re-check 2026-08-27: https://stellar.org/blog/developers/introducing-automated-market-makers-on-stellar — showed exact author, first-party source, and publication-date metadata for attribution checks.",
+        "Sibling sweep 2026-08-27: grep Justin Rice|semantic matches|exact identity → q-builder-content-by-person, q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback, q-edge-strupey-ambiguous-stellar-history; no contradiction"
       ],
       "rootCause": [
         "Broad semantic capability existed but the interaction stopped after narrow evidence-poor calls.",
@@ -165,7 +169,8 @@
         "improvements/lumenloop/ll-017-semantic-person-match-provenance.md",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "authored 2026-07-13 from production miss and independent truth verification"

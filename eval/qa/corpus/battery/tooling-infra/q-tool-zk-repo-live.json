@@ -10,7 +10,9 @@
     "keyFacts": [
       "Filters for Stellar relevance and explicitly sorts checked rows by repoScore.",
       "Paginates before a global claim or scopes it to the checked page.",
-      "Keeps hackathonWinner index-relative without exact event evidence, treats codeVerified as scan—not audit—evidence, and treats the repoScore sort as ranking/navigation, never as evidence of correctness, security, or production readiness."
+      "Keeps hackathonWinner index-relative without exact event evidence.",
+      "Treats codeVerified as scan evidence, not audit evidence.",
+      "Uses repoScore as ranking/navigation, not correctness/security/production-readiness proof."
     ],
     "avoid": [
       "Treats X-Ray Games or any other archived result as an eternal winner.",
@@ -77,19 +79,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-28",
-      "by": "P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420) + todo 1256 corpus lane (F5) consistency alignment 2026-07-28",
+      "date": "2026-08-27",
+      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
       "evidence": [
         "solo://proj/49/process/3414",
         "solo://proj/49/process/3420",
         "catalog/manifest.json#scout.searchRepos",
         "Todo 1256 corpus lane (2026-07-28, F5): the golden told the grader to sort by repoScore and pick the “strongest” ZK reference repositories without saying what that ordering is evidence of, while cluster-131's members forbid inferring correctness, security, audit scope, maintenance, or production readiness from repoScore. The wording now states that the repoScore ordering is the index's answer-time navigation/ranking signal and scopes the superlative to it. Internal-consistency repair — no new external source consulted; the case now joins cluster-131.",
-        "Upstream schema evidence (inventory/stellar-light.json, searchRepos repoScore description; ADV-1 reconciliation 2026-07-28): repoScore is Scout's own composite 'Quality grade (0-100) = freshness + traction + hackathon/SCF/builder authority — Lead with high-score repos'. Its formula contains no correctness, security-audit, maintenance, or production-readiness input, so the golden's boundary — order candidates by it, never infer those attributes from it — restates the served contract's scope rather than contradicting the schema's quality-grade label."
+        "Upstream schema evidence (inventory/stellar-light.json, searchRepos repoScore description; ADV-1 reconciliation 2026-07-28): repoScore is Scout's own composite 'Quality grade (0-100) = freshness + traction + hackathon/SCF/builder authority — Lead with high-score repos'. Its formula contains no correctness, security-audit, maintenance, or production-readiness input, so the golden's boundary — order candidates by it, never infer those attributes from it — restates the served contract's scope rather than contradicting the schema's quality-grade label.",
+        "Structural re-form (compound-predicate): Split one compound fact into hackathonWinner, codeVerified, and repoScore facts; truth unchanged.",
+        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — scout.searchRepos still exposes hackathonWinner as a Boolean result field.",
+        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — scout.searchRepos still defines codeVerified from a repository source-code scan.",
+        "Live re-check 2026-08-27: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — scout.searchRepos still defines repoScore from freshness, traction, and authority inputs.",
+        "Sibling sweep 2026-08-27: grep hackathonWinner|codeVerified|repoScore|zero-knowledge → q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery, q-tool-oracle-repo-live, q-tool-passkey-repo-live, q-tool-indexer-repos-discovery; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
         "The golden's repoScore comparison instruction did not say what the ordering does and does not establish, leaving open a reading where 'strongest = highest repoScore' counts as proof of correctness, security, or production readiness — attributes outside the score's freshness/traction/authority formula.",
-        "Tracked at solo://proj/49/todo/corpus-follow-ups-fr--1256 (todo 1256, F5) with the adversarial-review reconciliation in the same todo's comments."
+        "Tracked at solo://proj/49/todo/corpus-follow-ups-fr--1256 (todo 1256, F5) with the adversarial-review reconciliation in the same todo's comments.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]
     },
     "origin": "boxy sl-code-zk-xray-games-top"
