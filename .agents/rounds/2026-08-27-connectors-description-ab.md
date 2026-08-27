@@ -6,23 +6,28 @@ Measure the held response-guidance candidate against the merged control.
 Do not trim startup tool descriptions or server instructions.
 Reject the candidate after any verified treatment regression.
 
-## Current status — rebuilt qualification passed
+## Current status — first raw pair blocked
 
 The historical replacement qualification remains spent and non-comparable.
 Do not run the historical qualification command below.
 The user authorized one new treatment qualification on 2026-08-27.
 It permitted one answering call, no judge call, and a `$1.75` per-call cap.
 The user's broader spend tolerance does not remove the method-specific cap.
-No A1, B1, judging, retry, or method rerun is authorized yet.
+The user authorized A1 and B1 on 2026-08-27 after the qualification passed.
+That authorization permitted `16` answering calls and no judge calls.
+Each answering call has a `$1.75` cap, and the stage has a `$28.00` cap.
+No retry, judging, replication, or method rerun is authorized.
 
 Both v5 arms now include the postflight fix from PR `#72`.
 The control stays at `7389e24880125ccf8fe0657a1435ca753dae52e6`.
 The treatment reapplies the held change as `3966a59e77f2034726088e16be902270753211ae`.
-The server and runner use the same treatment worktree and commit.
-The v5 method does not pair a runner from one commit with a server from another commit.
+Each arm uses its matching worktree and commit for both the server and runner.
+The v5 method never pairs a runner from one commit with another server commit.
 The independent pre-spend review returned `LAUNCH-OK`.
 The replacement qualification then passed every machine and manual gate.
-No paid method remains authorized.
+The first pair ran treatment A1 and then control B1.
+Manual review found verified treatment regressions, so the candidate is rejected.
+No replication, judging, retry, or other paid method is authorized.
 
 ## Authorized v5 qualification
 
@@ -38,7 +43,7 @@ No paid method remains authorized.
 - Treatment surface SHA-256: `1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e`.
 - Control surface report SHA-256: `991fe0d7df55803be1339d3b32e121e0985e971e775c1369a78c7e5802a703bb`.
 - Treatment surface report SHA-256: `8b50c2fc88a29d1a19a5ae36f23fc77e431b153ca54fbec2a9fd16cd47c728a4`.
-- The treatment server runs alone on port `8792` in owned pane `w3:p1Q`.
+- The treatment server runs alone on port `8792` during treatment collection.
 - The historical server on port `8791` remains outside this method.
 
 The wrapper, real Claude binary, model, environment rules, qualification case,
@@ -89,7 +94,7 @@ The maximum task spend after this call is `$1.9886646`.
 - Answering cost: `$0.1098888`.
 - Judge calls and judge cost: `0`.
 - Total counted task spend: `$0.3485534`.
-- Remaining authorized paid methods: `0`.
+- Remaining authorized paid methods at that checkpoint: `0`.
 - `raven` MCP status: `connected`.
 - Wrapper path and SHA-256 matched their pins.
 - Runner and server revisions both matched
@@ -124,7 +129,171 @@ The maximum task spend after this call is `$1.9886646`.
 - The reviewer found no blocking issue.
 - The review made no paid call and does not authorize the next stage.
 
-### V5 replacement qualification command — authorized once
+### V5 first-pair authorization — spent
+
+- Authorization date: `2026-08-27`.
+- Order: treatment A1, then control B1.
+- Fixed membership: the eight case IDs under `Fixed cases`.
+- Answer model: `claude-sonnet-5`.
+- Judge calls: `0`.
+- Answer calls: `8` per arm and `16` total.
+- Per-call cap: `$1.75`.
+- Stage cap: `$28.00`.
+- Maximum counted task spend after this stage: `$28.3485534`.
+- Both arms use the pinned wrapper and an unset `QA_AGENT_PROMPT_APPEND`.
+- Each arm uses one clean worktree for both its server and runner.
+- Port `8792` serves only one arm at a time.
+- Stop and record after A1 before starting B1.
+- Stop after any incomplete row, missing cost, MCP failure, or comparability failure.
+- Do not retry a failed arm under this authorization.
+- Do not run a judge, replication pair, or method rerun under this authorization.
+
+### V5 first-pair delta review
+
+- Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed ledger commit: `8d9cfb3cd7b14f68a3eea12af127707b129a86f2`.
+- Report: `/tmp/connectors-v5-first-pair-launch-review.md`.
+- Report SHA-256: `81b7650bd64f87086bad501c27b8228eca943591c60ed39f2533b7d218d5fb1c`.
+- Verdict: `FIRST-PAIR-LAUNCH-OK`.
+- Reconciliation commit: `5a5824fcd2078a84fd43f9124bb9622d51413c8f`.
+- The stale ledger wording and missing wrapper checks are corrected below.
+- No paid call occurred during this review.
+
+Treatment A1 runs from `sr-wt-connectors-v5-product`:
+
+```sh
+export PATH="/tmp/connectors-contract-eval-bin:$PATH"
+unset QA_AGENT_PROMPT_APPEND
+unset RAVEN_CLAUDE_ANSWER_MAX_BUDGET_USD
+unset RAVEN_CLAUDE_JUDGE_MAX_BUDGET_USD
+hash -r
+test "$(command -v claude)" = /tmp/connectors-contract-eval-bin/claude
+test "$(shasum -a 256 /tmp/connectors-contract-eval-bin/claude | awk '{print $1}')" = a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+node eval/qa/run-qa.mjs --variant A \
+  --ids q-comp-cross-moneygram-partnership-sep24,q-edge-closed-world-builder-directory-miss,q-edge-partner-detail-soft-empty,q-edge-strupey-ambiguous-stellar-history,q-infra-simulate-transaction-howto,q-sor-build-target-wasm32v1,q-soroban-greenfield-escrow-prior-art-preflight,q-tool-greenfield-indexer-prior-art-preflight \
+  --no-judge --port 8792 --model claude-sonnet-5 \
+  --server-revision 3966a59e77f2034726088e16be902270753211ae \
+  --expect-sha256 1327f7cd332b5c205b9aa236af2c50522fdc3c11f14c7eec200ae8a15f1ee31e \
+  --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+```
+
+Control B1 runs from `sr-wt-connectors-v5-control`:
+
+```sh
+export PATH="/tmp/connectors-contract-eval-bin:$PATH"
+unset QA_AGENT_PROMPT_APPEND
+unset RAVEN_CLAUDE_ANSWER_MAX_BUDGET_USD
+unset RAVEN_CLAUDE_JUDGE_MAX_BUDGET_USD
+hash -r
+test "$(command -v claude)" = /tmp/connectors-contract-eval-bin/claude
+test "$(shasum -a 256 /tmp/connectors-contract-eval-bin/claude | awk '{print $1}')" = a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+node eval/qa/run-qa.mjs --variant A \
+  --ids q-comp-cross-moneygram-partnership-sep24,q-edge-closed-world-builder-directory-miss,q-edge-partner-detail-soft-empty,q-edge-strupey-ambiguous-stellar-history,q-infra-simulate-transaction-howto,q-sor-build-target-wasm32v1,q-soroban-greenfield-escrow-prior-art-preflight,q-tool-greenfield-indexer-prior-art-preflight \
+  --no-judge --port 8792 --model claude-sonnet-5 \
+  --server-revision 7389e24880125ccf8fe0657a1435ca753dae52e6 \
+  --expect-sha256 594578b995351e1abee1ec297e03662b51c1bfc4014daac4e39b4d8fa26611f3 \
+  --expect-agent-binary-sha256 a8b9ec4b7c77b2538a5e299e8d900c3793f69d7101c0661cfd1146b76406c297
+```
+
+### V5 treatment A1 checkpoint
+
+- Artifact: `eval/qa/results/2026-08-27T18-50-04-variantA.json` in
+  `sr-wt-connectors-v5-product`.
+- Artifact SHA-256: `fc2cc5424a45a35c43f96ee7a76349970eb068876f18fe6904e82654cd233665`.
+- Preflight surface report: `/tmp/raven-connectors-v5-a1-preflight-surface.json`.
+- Preflight report SHA-256: `ba0477d8f5b42b2c3efa3bcb89e1bc07dc7baa65814171840bb8d3ca7eac9418`.
+- Rows: `8` expected and `8` collected.
+- Agent failures: `0`.
+- Reported answering costs: `8` expected and `8` collected.
+- A1 answering cost: `$2.2461662`.
+- Judge calls and judge cost: `0`.
+- Counted task spend after A1: `$2.5947196`.
+- Remaining authorized calls: the eight B1 answering calls only.
+- Remaining first-pair cap: `$25.7538338`.
+- All eight rows reported the `raven` MCP server as `connected`.
+- The wrapper, eight-case hashes, runner, server, and treatment surface matched their pins.
+- Preflight and postflight source revisions and surfaces matched.
+- The source identity and server process guards matched.
+- The runner remained clean.
+- The artifact is complete and comparable.
+- `comparabilityReasons` is empty, and `postflightError` is null.
+- No A1 retry or judge call occurred.
+- Machine checkpoint verdict: `PASS`.
+- Manual paired review remains pending until B1 exists.
+
+### V5 control B1 checkpoint
+
+- Artifact: `eval/qa/results/2026-08-27T18-59-44-variantA.json` in
+  `sr-wt-connectors-v5-control`.
+- Artifact SHA-256: `78170de4d3879d3a54d248309337500be58b40bb79b4e2bf58238a0c5cf2a295`.
+- Preflight surface report: `/tmp/raven-connectors-v5-b1-preflight-surface.json`.
+- Preflight report SHA-256: `99506b9bebdeb74a6e2a3cd9318b51f8824495dc934b38ebbbfee1c79d93f3b6`.
+- Rows: `8` expected and `8` collected.
+- Agent failures: `0`.
+- Reported answering costs: `8` expected and `8` collected.
+- B1 answering cost: `$2.3726368`.
+- Judge calls and judge cost: `0`.
+- First-pair answering cost: `$4.6188030`.
+- Counted task spend after B1: `$4.9673564`.
+- Remaining authorized paid methods: `0`.
+- All eight rows reported the `raven` MCP server as `connected`.
+- Both arms have identical eight-case and environment hashes.
+- The wrapper, runner, server, and control surface matched their pins.
+- Preflight and postflight source revisions and surfaces matched.
+- The source identity and server process guards matched.
+- The runner remained clean.
+- The artifact is complete and comparable.
+- `comparabilityReasons` is empty, and `postflightError` is null.
+- No B1 retry or judge call occurred.
+- Machine checkpoint verdict: `PASS`.
+- Manual paired review is now required before any next paid method.
+- The owned control server stopped, and port `8792` is free.
+
+### V5 first-pair manual review
+
+- Independent reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed ledger commit: `177c6042397409754f1bf9c98ab196bbabe98dcd`.
+- Report: `/tmp/connectors-v5-first-pair-review.md`.
+- Report SHA-256: `244f545c64b18e26a1c8f6e3dc8b964e77f42b61bc68a38be2bcf5488a5c50de`.
+- Verdict: `FIRST-PAIR-BLOCK`.
+- The reviewer joined all `16` rows to their goldens.
+- The reviewer inspected every search projection, execute call, result, error, plan, and answer.
+- Treatment lost the required Stellar Docs source on the MoneyGram case.
+- Treatment skipped Scout prior-art discovery on the indexer greenfield case.
+- Treatment escrow code leaves global state `Disputed` after a partial dispute resolution.
+- That state blocks every remaining milestone from delivery, approval, automatic release, or dispute.
+- Treatment also called the undefined `service.scout` namespace before repairing the call.
+- The closed-world Strupey, partner soft-empty, simulation, and Wasm cases passed in both arms.
+- Both arms incorrectly promoted `Stroopy.AI` into the open-world `Strupey` answer.
+- Both arms saw Scout label `Stroopy.AI` as a strict match for `q=Strupey`.
+- New verified upstream finding: `sls-076`.
+- First-pair decision: reject the treatment candidate.
+- Do not run B2, A2, judging, retry, replication, or a method rerun.
+- Remaining authorized paid methods: `0`.
+
+| Case | Treatment A1 | Control B1 | Pair result |
+| --- | --- | --- | --- |
+| MoneyGram partnership and SEP-24 | Missing Docs execute | All three source families | Treatment regression |
+| Closed-world Strupey directory | Scout-only scoped miss | Scout-only scoped miss | Shared pass |
+| Partner detail soft-empty | Correct 404 soft-empty | Correct 404 soft-empty | Shared pass |
+| Open-world Strupey history | Promoted `Stroopy.AI` | Promoted `Stroopy.AI` | Shared failure; `sls-076` |
+| Simulate transaction | Official RPC evidence | Official RPC evidence | Shared pass |
+| `wasm32v1-none` build target | Current Docs, no detour | Current Docs, no detour | Shared pass |
+| Escrow greenfield design | Prior art, but frozen dispute lifecycle | Prior art, no global freeze | Treatment regression |
+| Indexer greenfield design | No Scout prior-art execute | Scout prior-art execute | Treatment regression |
+
+### V5 first-pair closeout review
+
+- Reviewer: Grok 4.6, high effort, in owned pane `w3:p1R`.
+- Reviewed commit: `c9d7e8657262c1e3c7e7c4d8e0f86588c8aadb4f`.
+- Report: `/tmp/connectors-v5-first-pair-closeout-review.md`.
+- Report SHA-256: `6bace3c29f676813d34597e7fba20862f73cd1bf6ec804eb917deb1d0c68e1fb`.
+- Verdict: `CLOSEOUT-OK`.
+- The reviewer confirmed the ledger, finding ID, evidence, owner, and recommendation.
+- The reviewer approved standard filing after the finding reaches `main`.
+- The review made no paid call.
+
+### V5 replacement qualification command — spent once
 
 ```sh
 export PATH="/tmp/connectors-contract-eval-bin:$PATH"
@@ -224,10 +393,12 @@ self-test GREEN
 - The answering harness must report the explicit `raven` MCP server as connected.
 - The answering environment must match across arms.
 
-## Historical order — stopped
+## Method order
 
-Steps 1 and 2 ran.
-Steps 3 through 10 did not run.
+Steps 1 and 2 completed.
+Steps 3 and 4 completed once.
+Steps 5 and 6 completed and blocked the candidate.
+Steps 7 through 10 remain unauthorized.
 
 1. Run one replacement qualification against the treatment without judging.
 2. Review its MCP connection, transcript, row count, costs, and comparison stamps.
@@ -240,7 +411,7 @@ Steps 3 through 10 did not run.
 9. Judge only after both raw pairs pass.
 10. Run the offline plan grader and composition analyzer for all four artifacts.
 
-No retry, repair, rejudge, or method rerun is authorized in this round.
+No retry, repair, rejudge, replication, or method rerun is authorized.
 
 ## Mechanism gates
 
@@ -261,7 +432,7 @@ No retry, repair, rejudge, or method rerun is authorized in this round.
 Aggregate scores are diagnostic.
 A verified fact or mechanism regression overrides an aggregate gain.
 
-## Historical cost limits — spent
+## Historical v4 cost limits — superseded
 
 These limits governed the stopped attempt.
 
@@ -277,8 +448,8 @@ These limits governed the stopped attempt.
 - The wrapper enforces each call limit.
 - Every method rerun needs a new authorization.
 - The seven-call self-test and the replacement qualification count toward task spend.
-- Counted task spend is `$0.2386646`.
-- Remaining authorized paid methods: `0`.
+- Counted task spend at the stopped v4 checkpoint was `$0.2386646`.
+- That historical authorization has no remaining paid method.
 
 ## Stop rules
 
@@ -287,7 +458,7 @@ These limits governed the stopped attempt.
 - Stop if either worktree is dirty or lacks an immutable commit.
 - Stop if the treatment diff includes an unplanned file.
 - Stop if any case, revision, surface, model, wrapper, or environment pin differs.
-- Stop if another Wrangler process conflicts with port `8791`.
+- Stop if another Wrangler process conflicts with port `8792`.
 - Stop after a missing row, agent failure, missing cost, or wrapper limit.
 - Stop after any first-pair mechanism regression.
 - Stop after a judge error or comparability failure.
@@ -355,7 +526,7 @@ The author, orchestrator, and closeout reviewer must differ.
 - The whole treatment commit is the attribution unit.
 - `/demo` behavior is outside this QA comparison.
 
-## Outcome
+## Historical v4 outcome
 
 The replacement qualification ran once and then stopped on the comparability rule.
 
@@ -400,5 +571,5 @@ Its final report SHA-256 is
 It reported no missing requirement, scope issue, or incorrect behavior on `01b0a3d`.
 These verdicts and hashes preserve the local review results in this ledger.
 
-No product A/B call ran.
-The paid comparison remains blocked until a new bounded rerun is authorized.
+No product A/B call ran under the stopped v4 method.
+The v5 first pair now has the separate bounded authorization recorded above.
