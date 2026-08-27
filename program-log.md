@@ -136,3 +136,32 @@ errors), typecheck, npm test, build, secrets scan — all green
 (`/tmp/raven-qadeep/gt2/gate-compound-predicate-*.txt`, re-run after the stamp as `gate-cp2-*`).
 The unreviewed stray edit to q-soroban-publish-events stays out of the commit
 (`/tmp/raven-qadeep/gt2/stray/`).
+
+### Session 2 close (2026-08-27, 15:30)
+
+Batches landed: `daaa829` (negative-predicate, 127 cases), `c321f5d` (compound-predicate, 102
+cases). Final `node eval/qa/lint-corpus.mjs`: 0 errors, 475 warnings (baseline 1,212).
+
+| class | session-2 baseline | now |
+|---|---|---|
+| key-fact: negative predicate object absent | 131 | 0 |
+| key-fact: multiple predicates | 188 | 0 |
+| key-fact: exceeds 90 characters | 790 | 372 (204 cases) |
+| avoid: sourcing-guard/judge-blind (out of scope) | 47 | 47 |
+| corroboration (out of scope) | 56 | 56 |
+
+Stop rule from the brief met: negative class closed and compound class closed. The long class was
+not opened as its own batch; its count fell as a side effect of the one-pass-per-case method.
+
+Escalations: none. No golden was found factually wrong in this session; every reviewer FAIL was a
+form defect (a dropped claim, an added qualifier, or a must-state claim demoted to an avoid trap)
+and was repaired with the reviewer's text or an owner rewrite that keeps every HEAD claim.
+
+Crew panes (all created by the owner from w12:p1): w12:p2 gt2-sol-a, w12:p3 gt2-sol-b, w12:p4
+gt2-sol-c (Codex gpt-5.6-sol high), w12:p5 gt2-grok-rev (Grok 4.6). Left idle at session end.
+
+Next session: long keyFacts (372 warnings, 204 cases, all long-only now). Reuse
+`/tmp/raven-qadeep/gt2/rules.md` and the batch-5 brief's fix patterns; the reviewer must keep the
+claim-by-claim check — 33 of 233 reviewed cases in this session dropped or added a claim while
+tightening. The unreviewed stray edit to q-soroban-publish-events is at
+`/tmp/raven-qadeep/gt2/stray/` and may be used as a draft.
