@@ -33,10 +33,12 @@ import {
 } from "./types.ts";
 import { lastIdSegment, VALID_IDENT } from "./id.ts";
 import {
+  STOPWORDS,
   scoreEntryWeighted,
   scoreEntryWeightedUngated,
   diversifyByService
 } from "./scoring.ts";
+import { tokenize } from "./vendor/search-scoring.ts";
 import {
   jsonSchemaToType,
   sanitizeToolName,
@@ -112,6 +114,29 @@ export type WiderCandidate = {
   outputItemKeys?: Record<string, string[]>;
 };
 
+export type ServiceFilterExcludedSkillAdvisory = {
+  id: string;
+  service: "skills";
+  kind: "skill";
+  score: number;
+  tier: SearchHit["tier"];
+  basis: "service-filter-excluded-skill";
+  description: string;
+  availableSections?: string[];
+};
+
+export type SearchConfidence = {
+  /** Number of ranked hits returned on this page. */
+  hitCount: number;
+  /** Absolute score gap between the first two hits; null with fewer than two hits. */
+  topScoreGap: number | null;
+};
+
+export type SearchRecoveryMetadata = {
+  /** Matching skills omitted only because a non-skills service filter was active. */
+  serviceFilterExcludedSkills: ServiceFilterExcludedSkillAdvisory[];
+};
+
 export type SearchOptions = {
   query: string;
   kind?: CatalogKind;
@@ -142,6 +167,10 @@ export type SearchPage = {
    * pages. Separate from ranked hits: never counted, scored, or paginated.
    */
   widerCandidates: WiderCandidate[];
+  /** Lightweight ranking facts for caller-controlled broaden-or-abstain decisions. */
+  confidence: SearchConfidence;
+  /** Advisory matches kept separate from ranked hits and exact-ID recovery. */
+  recoveryMetadata: SearchRecoveryMetadata;
 };
 
 export const DEFAULT_SEARCH_LIMIT = 10;
@@ -286,12 +315,60 @@ const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
  * failure is a build bug, not a runtime condition to soften.
  */
 export function loadManifest(json: unknown): Catalog {
-  return refinedCatalogSchema.parse(json);
+  const aliasProjection = z
+    .object({
+      entries: z.array(
+        z
+          .object({
+            id: z.string().min(1),
+            knownAliases: z.array(z.string().trim().min(1)).min(2).optional(),
+            knownAliasTriggers: z.array(z.string().trim().min(1)).min(1).optional()
+          })
+          .passthrough()
+      )
+    })
+    .passthrough()
+    .parse(json);
+  const catalog = refinedCatalogSchema.parse(json);
+  const aliasesById = new Map(
+    aliasProjection.entries
+      .filter((entry) => entry.knownAliases !== undefined)
+      .map((entry) => [entry.id, entry.knownAliases!] as const)
+  );
+  const aliasTriggersById = new Map(
+    aliasProjection.entries
+      .filter((entry) => entry.knownAliasTriggers !== undefined)
+      .map((entry) => [entry.id, entry.knownAliasTriggers!] as const)
+  );
+  return {
+    ...catalog,
+    entries: catalog.entries.map((entry) => {
+      const knownAliases = aliasesById.get(entry.id);
+      const knownAliasTriggers = aliasTriggersById.get(entry.id);
+      return knownAliases ? { ...entry, knownAliases, knownAliasTriggers } : entry;
+    })
+  } as Catalog;
 }
 
 /** Last id segment (after the final "."), used as the high-weight name field. */
 function entryName(entry: CatalogEntry): string {
   return lastIdSegment(entry.id);
+}
+
+type AliasCatalogEntry = CatalogEntry & {
+  knownAliases?: readonly string[];
+  knownAliasTriggers?: readonly string[];
+};
+
+function entryScoringName(entry: CatalogEntry, query: string): string {
+  const aliasEntry = entry as AliasCatalogEntry;
+  const queryTokens = new Set(tokenize(query));
+  const triggered = aliasEntry.knownAliasTriggers?.some((trigger) =>
+    tokenize(trigger).some((token) => queryTokens.has(token))
+  );
+  return triggered && aliasEntry.knownAliases?.length
+    ? `${entryName(entry)} ${aliasEntry.knownAliases.flatMap(tokenize).filter((token) => !STOPWORDS.has(token)).join(" ")}`
+    : entryName(entry);
 }
 
 function outputKeysOf(entry: CatalogEntry): string[] {
@@ -469,7 +546,7 @@ function scoreCandidates(
     const score = scoreFn(
       {
         id: entry.id,
-        name: entryName(entry),
+        name: entryScoringName(entry, opts.query),
         service: entry.service,
         kind: entry.kind,
         description: entry.description,
@@ -621,13 +698,52 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
     return hit;
   });
 
+  const recoveryMetadata: SearchRecoveryMetadata = {
+    serviceFilterExcludedSkills: deriveServiceFilterExcludedSkillAdvisories(catalog, opts)
+  };
   return {
     hits,
     total,
     truncated: total > hits.length,
     effectiveLimit: limit,
-    widerCandidates: deriveWiderCandidates(catalog, hits, opts)
+    widerCandidates: deriveWiderCandidates(catalog, hits, opts),
+    confidence: {
+      hitCount: hits.length,
+      topScoreGap: hits.length >= 2 ? hits[0]!.score - hits[1]!.score : null
+    },
+    recoveryMetadata
   };
+}
+
+function deriveServiceFilterExcludedSkillAdvisories(
+  catalog: Catalog,
+  opts: SearchOptions,
+  limit = 3
+): ServiceFilterExcludedSkillAdvisory[] {
+  if (
+    limit <= 0 ||
+    opts.service === undefined ||
+    opts.service === "skills" ||
+    opts.kind === "operation"
+  ) {
+    return [];
+  }
+  const skillsPage = searchCatalogPage(catalog, {
+    query: opts.query,
+    kind: "skill",
+    service: "skills",
+    limit
+  });
+  return skillsPage.hits.map((hit) => ({
+    id: hit.id,
+    service: "skills",
+    kind: "skill",
+    score: hit.score,
+    tier: hit.tier,
+    basis: "service-filter-excluded-skill",
+    description: hit.description,
+    ...(hit.availableSections ? { availableSections: hit.availableSections } : {})
+  }));
 }
 
 function widerCandidateOf(

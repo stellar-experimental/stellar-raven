@@ -66,7 +66,9 @@ describe("searchEventFields", () => {
         total: 7,
         truncated: true,
         effectiveLimit: 5,
-        widerCandidates: []
+        widerCandidates: [],
+        confidence: { hitCount: 2, topScoreGap: 5 },
+        recoveryMetadata: { serviceFilterExcludedSkills: [] }
       },
       summary: {
         hits: [{ id: "a" }, { id: "b" }, { id: "c" }, { id: "d" }],

@@ -8,6 +8,10 @@ export function assertSideEffectingOpsExcluded(
   openapi: unknown,
   excluded?: ReadonlySet<string>
 ): void;
+export function attachKnownAliases(
+  entries: readonly Record<string, unknown>[],
+  packs?: readonly Record<string, unknown>[]
+): Array<Record<string, unknown>>;
 export function attachRetrievalProfiles(
   entries: readonly Record<string, unknown>[],
   profiles?: Record<string, unknown>

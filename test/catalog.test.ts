@@ -15,6 +15,7 @@ import { RUNNERS } from "../src/skills/runners/index.ts";
 import {
   assertNoNonExposedRefs,
   assertSideEffectingOpsExcluded,
+  attachKnownAliases,
   attachRetrievalProfiles
 } from "../scripts/build-catalog.mjs";
 import { EXCLUDED_SCOUT_OPS } from "../scripts/exposure.mjs";
@@ -68,6 +69,44 @@ describe("build-catalog.mjs", () => {
   it("has globally unique ids", () => {
     const ids = catalog.entries.map((e) => e.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("attaches only the receipt-backed WisdomTree entity alias pack", () => {
+    const aliased = catalog.entries.filter(
+      (entry) => (entry as typeof entry & { knownAliases?: string[] }).knownAliases
+    );
+    expect(aliased.map((entry) => entry.id)).toEqual([
+      "lumenloop.find_content_by_entity"
+    ]);
+    for (const entry of aliased) {
+      expect((entry as typeof entry & { knownAliases: string[] }).knownAliases).toEqual([
+        "CRDT",
+        "CRDYX",
+        "WisdomTree Private Credit and Alternative Income Digital Fund",
+        "WisdomTree Private Credit"
+      ]);
+      expect((entry as typeof entry & { knownAliasTriggers: string[] }).knownAliasTriggers).toEqual([
+        "CRDT",
+        "CRDYX",
+        "WisdomTree"
+      ]);
+    }
+  });
+
+  it("fails loud on unproven or orphaned alias packs", () => {
+    const entries = catalog.entries;
+    expect(() => attachKnownAliases(entries, [{
+      provenance: [],
+      aliases: ["one", "two"],
+      triggers: ["one"],
+      entryIds: ["lumenloop.search_directory"]
+    }])).toThrow(/no receipt provenance/);
+    expect(() => attachKnownAliases(entries, [{
+      provenance: ["research/receipt.txt"],
+      aliases: ["one", "two"],
+      triggers: ["one"],
+      entryIds: ["lumenloop.not_exposed"]
+    }])).toThrow(/non-exposed catalog entry/);
   });
 
   it("attaches only exact, exposed operation recovery edges", () => {
