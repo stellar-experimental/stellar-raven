@@ -129,3 +129,32 @@ sourcing guards now match the allowed form). Register: reopened clusters closed 
 reSwept events; two entries that carried hashes but no verdict at HEAD were stamped `consistent`
 with a dated reason; the ten pre-existing `reopen` clusters remain untouched. Gates: compile, lint
 --since fadedf6 --stale (0 errors), typecheck, npm test (1270 passed), build, secrets — all green.
+
+## Session close (2026-08-27)
+
+Three class batches landed: `b0179e9` (snapshot-date), `be470bf` (symmetric-caution), `4f7d024`
+(presentation-avoid). Final `node eval/qa/lint-corpus.mjs`: 0 errors, 1,212 warnings.
+
+| class | baseline | now |
+|---|---|---|
+| snapshot-date | 12 | 0 |
+| symmetric-caution | 70 | 0 |
+| avoid: presentation/omission | 81 | 0 |
+| key-fact: negative predicate object absent | 131 | 131 |
+| key-fact: multiple predicates | 192 | 188 |
+| key-fact: exceeds 90 characters | 801 | 790 |
+| avoid: sourcing-guard/judge-blind phrase (out of scope) | 47 | 47 |
+| corroboration (out of scope) | 56 | 56 |
+
+Escalations: E1 (SEP-38 status) — resolved in batch 1 with owner second source and reviewer
+co-sign. No golden was found factually wrong beyond E1. No `.agents/TODO.md` candidates were left
+open by the workers.
+
+Crew panes (all created by the owner from wQ:p1): wQ:p2 gt-sol-a, wQ:p3 gt-sol-b, wQ:p5 gt-sol-c
+(Codex gpt-5.6-sol high), wQ:p4 gt-grok-rev (Grok 4.6 high). Left idle at session end.
+
+Next session: negative-predicate class (131) — most are "Rejects/Distinguishes X ..." keyFacts whose
+object is not in the question; the structural fix is to move the rejection into golden.avoid as a
+concrete false claim and keep the positive half as a keyFact. Then compound predicates (188) and
+long keyFacts (790); the 1–5 keyFacts compile bound (and the exactly-six migration exceptions)
+makes splits expensive, so many long facts will need tightening rather than splitting.
