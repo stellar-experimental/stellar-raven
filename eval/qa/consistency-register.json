@@ -139,7 +139,7 @@
           "q-soroban-constructor-lifecycle",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
@@ -149,13 +149,13 @@
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "0c7f2cf1a6afb878e347f69066c7963342f49803711387bd6a0eaa8c3667c25e",
-          "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
+          "q-edge-fresh-latest-protocol-version": "f69c7fa73d60786f2e0cc1a872521f2d8c59248c90fe2ce3cfa6eb9f5ee1a110",
           "q-hist-soroban-launch-protocol20": "d977d6967bd289b48e07f13a04eafd5a5ba61a0cd5801ee656b222f8788bc8e9",
           "q-infra-secp256r1-passkeys": "e85c401cbdff452f215571bafa30aff797275dcb940d947f493c7f88c566aa3f",
-          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
+          "q-pc-protocol-upgrade-timing": "c30baf3cf2943a9bc689b60f31f2822a1a70916937435ac658fec18c62df2103",
           "q-protocol-23-whisk-caps": "8f327b228c8dbe1fde7cc67bc73ecbe809568a7da73aab1ba1d3d4e9ab35fe9d",
           "q-protocol-24-whisk-incident": "27ff0cfcb75fda4c4342f674ccb7dd61e6f296fb0b4a6931b4f1518df8e7aba6",
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-amm-cap-0038": "43fb785cf05f8436cd71f9287dad88d0ec3b7eeefc56febb7f306e104c88a78e",
           "q-protocol-bls12-381-cap59": "d4bc4977e5484b4f97ca70b3485fb903688ca9818762b366c6995e22dbfed8e6",
           "q-protocol-bn254-poseidon-xray": "df7ae3f7c688cd5d36678153c0ee91552f57323023961fbaa877fb3848ea11bf",
@@ -164,6 +164,10 @@
           "q-soroban-auth-delegation-p27": "bbf8eae2926235a71df12295b6d52e8ddc78dccc977205349ef101273d9e90c0",
           "q-soroban-constructor-lifecycle": "93f786a9e51fd8ceac58b997005c45e1d7cd933180d6ab0118b3975fe4a35582",
           "q-tool-rust-soroban-sdk": "9201e468a3c8656e3733ab86a4ac71490fd6de1e39c9d68a2fcef1e9359a07c1"
+        },
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -199,7 +203,7 @@
           "q-edge-factcheck-soroswap-first-amm": "1797db7d23c617d41a28ee94d9337c25237d31da679a4501f53de81b4870ada5",
           "q-infra-secp256r1-passkeys": "e85c401cbdff452f215571bafa30aff797275dcb940d947f493c7f88c566aa3f",
           "q-protocol-23-whisk-caps": "8f327b228c8dbe1fde7cc67bc73ecbe809568a7da73aab1ba1d3d4e9ab35fe9d",
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-bls12-381-cap59": "d4bc4977e5484b4f97ca70b3485fb903688ca9818762b366c6995e22dbfed8e6",
           "q-protocol-bn254-poseidon-xray": "df7ae3f7c688cd5d36678153c0ee91552f57323023961fbaa877fb3848ea11bf",
           "q-sep-41-token-interface": "fd653e16d746539eae5064717ba28b9fb705dc4b1627c198da6e08e249a9337c",
@@ -210,7 +214,7 @@
           "q-ti-rpc-gettransactions-pagination-xdr": "dc73ea30b960958ac5379feedff110b60b616f92096699945dd52f2f5f5a4ff5"
         },
         "reopened": {
-          "date": "2026-08-27",
+          "date": "2026-08-28",
           "reason": "member-content-changed"
         }
       },
@@ -727,19 +731,23 @@
           "q-protocol-version-history-list",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
           "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-tool-rust-soroban-sdk changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
-        "note": "grader caution + improvements/stellar-docs/sd-008 Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+        "note": "grader caution + improvements/resolved.json entry sd-008 Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-pc-protocol-upgrade-timing": "c30baf3cf2943a9bc689b60f31f2822a1a70916937435ac658fec18c62df2103",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-tool-rust-soroban-sdk": "9201e468a3c8656e3733ab86a4ac71490fd6de1e39c9d68a2fcef1e9359a07c1"
+        },
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -754,7 +762,7 @@
           "q-soroban-auth-delegation-p27",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
@@ -763,13 +771,17 @@
         },
         "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z; CAP-0071 provides authentication delegation/address-bound credentials; stellar-core, soroban-sdk, and stellar-cli have stable v27 releases. The edge latest-version case remains behavior-gated rather than number-gated, and the stellar-core identity case never carried an activation claim. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
-          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-edge-fresh-latest-protocol-version": "f69c7fa73d60786f2e0cc1a872521f2d8c59248c90fe2ce3cfa6eb9f5ee1a110",
+          "q-pc-protocol-upgrade-timing": "c30baf3cf2943a9bc689b60f31f2822a1a70916937435ac658fec18c62df2103",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-scp-consensus-algorithm": "b0abcca6dd8fd672dba5a6accbd1c04cf999b9b9af135bb27bac4f1e74eed12b",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-soroban-auth-delegation-p27": "bbf8eae2926235a71df12295b6d52e8ddc78dccc977205349ef101273d9e90c0",
           "q-tool-rust-soroban-sdk": "9201e468a3c8656e3733ab86a4ac71490fd6de1e39c9d68a2fcef1e9359a07c1"
+        },
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -913,7 +925,7 @@
           "q-soroban-auth-delegation-p27",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
@@ -922,10 +934,14 @@
         },
         "note": "P27/Zipper is active from ledger 63386819 at 2026-07-08T17:00:10Z; the earlier pending note is historical and explicitly superseded. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-soroban-auth-delegation-p27": "bbf8eae2926235a71df12295b6d52e8ddc78dccc977205349ef101273d9e90c0",
           "q-tool-rust-soroban-sdk": "9201e468a3c8656e3733ab86a4ac71490fd6de1e39c9d68a2fcef1e9359a07c1"
+        },
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2526,7 +2542,7 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
@@ -2535,9 +2551,13 @@
         },
         "note": "P27 live from ledger 63386819 and first-class CAP-0071 delegation. Legacy P20 custom-account delegation remains a distinct true statement. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-soroban-auth-delegation-p27": "bbf8eae2926235a71df12295b6d52e8ddc78dccc977205349ef101273d9e90c0"
+        },
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2699,7 +2719,7 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
@@ -2708,10 +2728,14 @@
         },
         "note": "stale spans replaced; delegation/V2 mechanics and CAP Accepted-versus-network-live distinction retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-pc-protocol-upgrade-timing": "c30baf3cf2943a9bc689b60f31f2822a1a70916937435ac658fec18c62df2103",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-soroban-auth-delegation-p27": "bbf8eae2926235a71df12295b6d52e8ddc78dccc977205349ef101273d9e90c0"
+        },
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2847,7 +2871,7 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
@@ -2856,9 +2880,13 @@
         },
         "note": "Address-with-delegates chains and address-bound V2 credentials are P27/CAP-0071; Pubnet activated at ledger 63386819, and the current registry lists CAP-0071 Final. Reverified 2026-08-05.",
         "memberContentSha256": {
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-soroban-auth-delegation-p27": "bbf8eae2926235a71df12295b6d52e8ddc78dccc977205349ef101273d9e90c0"
+        },
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -2872,7 +2900,7 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-08-27",
         "reSwept": {
           "date": "2026-08-27",
@@ -2881,12 +2909,16 @@
         },
         "note": "P27 is current on Mainnet from ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features. P28/AddressV2 remains a future recheck, not current activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
+          "q-edge-fresh-latest-protocol-version": "f69c7fa73d60786f2e0cc1a872521f2d8c59248c90fe2ce3cfa6eb9f5ee1a110",
           "q-pc-protocol-27-zipper": "c91928b99361988b9fcb7434d7034acc9a0999c6b0816b22d6e018714d010129",
-          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-pc-protocol-upgrade-timing": "c30baf3cf2943a9bc689b60f31f2822a1a70916937435ac658fec18c62df2103",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25",
           "q-soroban-auth-delegation-p27": "bbf8eae2926235a71df12295b6d52e8ddc78dccc977205349ef101273d9e90c0"
+        },
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -3405,19 +3437,23 @@
           "q-soroban-auth-delegation-p27"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
+          "q-edge-fresh-latest-protocol-version": "f69c7fa73d60786f2e0cc1a872521f2d8c59248c90fe2ce3cfa6eb9f5ee1a110",
           "q-pc-protocol-27-zipper": "c91928b99361988b9fcb7434d7034acc9a0999c6b0816b22d6e018714d010129",
-          "q-pc-protocol-upgrade-timing": "841849769681c1c8779f4cec3ed5208f4d959777a991308d629f04972e367785",
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-pc-protocol-upgrade-timing": "c30baf3cf2943a9bc689b60f31f2822a1a70916937435ac658fec18c62df2103",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-soroban-auth-delegation-p27": "bbf8eae2926235a71df12295b6d52e8ddc78dccc977205349ef101273d9e90c0"
         },
-        "verdict": "consistent",
+        "verdict": "reopen",
         "reSwept": {
           "date": "2026-08-27",
           "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-pc-protocol-27-zipper, q-soroban-auth-delegation-p27 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-27"
+        "lastChecked": "2026-08-27",
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
+        }
       },
       {
         "label": "SCF #43 official total",
@@ -3671,18 +3707,22 @@
           "q-protocol-version-history-list"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "20cfa56074661d7fb1c85fb6b3bf1a299ca40100a33b829601bf7513a8b58aed",
+          "q-edge-fresh-latest-protocol-version": "f69c7fa73d60786f2e0cc1a872521f2d8c59248c90fe2ce3cfa6eb9f5ee1a110",
           "q-pc-protocol-27-zipper": "c91928b99361988b9fcb7434d7034acc9a0999c6b0816b22d6e018714d010129",
-          "q-protocol-27-cap-0071": "cca68b97879969115183f6b2339ffa641dcab6f5aebdf4c5d669074f9bc2ba63",
+          "q-protocol-27-cap-0071": "5eacea3c3531a2ed27d9cecd3f997ba23d71ad5ff07882b0e119936962d21376",
           "q-protocol-version-history-list": "1c80548ee50a6536adfb646f82a6e95f3f7927bcdebca2c22328b31c32664f25"
         },
-        "verdict": "consistent",
+        "verdict": "reopen",
         "reSwept": {
           "date": "2026-08-27",
           "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-pc-protocol-27-zipper changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-27"
+        "lastChecked": "2026-08-27",
+        "reopened": {
+          "date": "2026-08-28",
+          "reason": "member-content-changed"
+        }
       },
       {
         "triggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",

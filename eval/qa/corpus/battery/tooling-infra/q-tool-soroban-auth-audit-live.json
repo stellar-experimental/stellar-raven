@@ -6,20 +6,20 @@
     "scout.listAudits"
   ],
   "golden": {
-    "answer": "Search the live audit index, then cite the versioned Veridise primary report. V2 labels the investigated authorization-recursion item **V-SOR-VUL-002** with severity Critical, but its valid-vulnerability summary counts zero Critical issues. V2 already judges the item invalid inline because error propagation makes work linear in trackers and constructing many trackers is costly. V2.1 relocates the same write-up to Appendix A.2.2 as **V-SOR-APP-VUL-003**. Do not present it as an active confirmed vulnerability or as generic EVM reentrancy. Scout currently exact-misses the real V2.1 appendix identifier, so verify that identifier against the primary report instead of treating the miss as real-world absence.",
+    "answer": "Search the live audit index, then cite the versioned Veridise primary report. V2 labels the investigated authorization-recursion item **V-SOR-VUL-002** with severity Critical, but its valid-vulnerability summary counts zero Critical issues. V2 already judges the item invalid inline because error propagation makes work linear in trackers and constructing many trackers is costly. V2.1 relocates the same write-up to Appendix A.2.2 as **V-SOR-APP-VUL-003**. Do not present it as an active confirmed vulnerability or as generic EVM reentrancy. Scout now returns the Veridise row for the real V2.1 appendix identifier without `meta.exactMiss`. Truly absent identifiers still return `meta.exactMiss` with a warning not to report the identifier as found.",
     "keyFacts": [
       "Uses searchResearch with the audit filter and cites the versioned Veridise primary audit.",
       "Names the historical Critical label and the zero valid-Critical count as distinct.",
       "States that V2 already judged the item invalid and V2.1 relocated it to the appendix.",
-      "Attributes Scout's current V-SOR-APP-VUL-003 exact miss to retrieval defect sls-074."
+      "States that Scout now retrieves V-SOR-APP-VUL-003 without `meta.exactMiss`."
     ],
     "avoid": [
       "Calls it a confirmed active critical bug while omitting the invalid disposition or zero valid-Critical count.",
       "Claims it remains unfixed merely because no fix hash is listed.",
       "Reframes it as generic EVM reentrancy instead of the audited Soroban authorization-recursion issue.",
-      "Uses Scout's exact miss for V-SOR-APP-VUL-003 as proof that the identifier does not exist."
+      "Uses an exact-miss control for an absent identifier as proof that V-SOR-APP-VUL-003 does not exist."
     ],
-    "notes": "Accurately quoting the canonical Scout source on `V-SOR-APP-VUL-003` as absent from its indexed corpus is not a wrong claim while sls-074 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Live verification on 2026-08-28 found the Veridise row first for `V-SOR-APP-VUL-003`, with no `meta.exactMiss`. The absent control `V-SOR-APP-VUL-999` still returns `meta.exactMiss` and a do-not-report warning. Accurately quoting a cached copy of the canonical Scout source from before the 2026-08-25 fix is not a wrong claim. Grade caps at partial for that historical quote unless the answer presents the miss as current."
   },
   "tags": {
     "category": "tooling-infra",
@@ -46,6 +46,10 @@
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/api/research?q=authorization%20recursion&source=audit"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4"
       }
     ],
     "corroboration": [
@@ -74,45 +78,49 @@
         ]
       },
       {
-        "claim": "Scout currently reports the real V-SOR-APP-VUL-003 identifier as an exact miss.",
+        "claim": "Scout retrieves V-SOR-APP-VUL-003 without an exact miss and preserves exact-miss warnings for absent identifiers.",
         "verdict": "confirmed",
         "evidence": [
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2",
-            "observedAt": "2026-08-25",
-            "note": "Live response returns the identifier in meta.exactMiss; sls-074 tracks this retrieval defect."
+            "observedAt": "2026-08-28",
+            "note": "Live response returns the Veridise row first and does not include meta.exactMiss."
           },
           {
-            "class": "A",
-            "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
-            "observedAt": "2026-08-25",
-            "note": "Primary report proves that the exact identifier exists in Appendix A.2.2."
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2",
+            "observedAt": "2026-08-28",
+            "note": "The absent control returns meta.exactMiss with a do-not-report warning."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4",
+            "observedAt": "2026-08-28",
+            "note": "The upstream ingest fix promotes Veridise appendix finding identifiers into the search index."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-28",
+      "by": "Lane D golden-truth refresh with Lane C independent retirement review",
       "evidence": [
         "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
         "https://stellarsecurityportal.com/api/v1/reports/28",
         "https://stellarsecurityportal.com/api/v1/reports/42",
         "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2",
         "Sibling sweep: q-soroban-auth-recursion-dos-audit was updated and confirmed consistent on 2026-08-25.",
-        "Structural re-form (symmetric-caution): added a Scout-source grading caution for sls-074; the audit findings and disposition are unchanged.",
-        "No live recheck was required for this pure symmetric-caution re-form.",
-        "Improvements review 2026-08-27: improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md remains reported upstream; the disputed claim is Scout's exact miss for the real V-SOR-APP-VUL-003 identifier.",
-        "Sibling sweep 2026-08-27: grep sls-074|V-SOR-APP-VUL-003|authorization recursion → q-soroban-auth-recursion-dos-audit; no contradiction",
-        "Structural re-form (negative-predicate): rewrote the Critical-count taxonomy positively and moved the real-world-absence trap to its existing avoid item; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf — confirmed zero valid Critical issues, V2.1 Appendix A.2.2, V-SOR-APP-VUL-003, and the invalid disposition.",
-        "Live re-check 2026-08-27: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 — retained the dated Scout exact-miss source boundary tracked by sls-074.",
-        "Sibling sweep 2026-08-27: grep V-SOR-APP-VUL-003|valid-Critical|sls-074 → q-soroban-auth-recursion-dos-audit; no contradiction"
+        "Live re-check 2026-08-28: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 returned the Veridise row first with no meta.exactMiss.",
+        "Live control 2026-08-28: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2 returned meta.exactMiss with its do-not-report warning.",
+        "Source review 2026-08-28: https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4 promotes Veridise appendix identifiers into the index.",
+        "Independent review 2026-08-28: hyg-retire-report.md re-ran the trigger and control, checked the deployed commit, and approved sls-074 retirement.",
+        "Sibling sweep 2026-08-28: grep sls-074|V-SOR-APP-VUL-003|authorization recursion found q-soroban-auth-recursion-dos-audit; both cases now describe the fixed live behavior.",
+        "Resolution provenance: improvements/resolved.json entry sls-074 preserves the deleted finding's audit chain."
       ],
       "rootCause": [
         "eval-authoring",
-        "improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md",
+        "improvements/resolved.json entry sls-074",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
       ]

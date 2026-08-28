@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "bf62fa0db6ca3d382d814fbafe0d8acdd021eb5491af297c7af6cda5d28b131a",
+  "corpusContentSha256": "22d74a66df5035f6192603dddd92d72d7c84b3140da0006c7948029293a9787f",
   "counts": {
     "total": 499,
     "byCategory": {
@@ -13830,14 +13830,14 @@
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
-            "Reviewed improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md — fixed 2026-08-18; older documentation can still show Protocol 26 as Mainnet-current.",
+            "Reviewed improvements/resolved.json entry sd-008 — fixed 2026-08-18; older documentation can still show Protocol 26 as Mainnet-current.",
             "Sibling sweep 2026-08-27: grep Protocol 27|63386819|P26|P27 → q-edge-fresh-latest-protocol-version, q-edge-fresh-most-recent-news, q-hist-quantum-preparedness-plan, q-pc-memos-reference, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-cap-process, q-protocol-ledger-entry-types, q-protocol-ledger-header-fields, q-protocol-version-history-list, q-raph-xlm-staking, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction",
             "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory."
           ],
           "rootCause": [
             "eval-side date-contingent example expired while the durable behavior gate remained valid",
             "solo://proj/49/todo/date-contingent-trap--831",
-            "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
+            "improvements/resolved.json entry sd-008",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
@@ -24643,7 +24643,7 @@
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-008; the completed Protocol 27 activation facts are unchanged.",
-            "Improvements review 2026-08-27: improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md records the 2026-08-18 upstream fix; the disputed claim is the older Software Versions page showing Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current.",
+            "Improvements review 2026-08-27: improvements/resolved.json entry sd-008 records the 2026-08-18 upstream fix; the disputed claim is the older Software Versions page showing Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current.",
             "Sibling sweep 2026-08-27: grep sd-008|Protocol 27|63386819|Zipper → q-edge-fresh-latest-protocol-version, q-pc-protocol-27-zipper, q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction",
             "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory.",
             "Structural re-form (presentation-avoid): rewrote the presentational Protocol 27 clause as the same concrete false-content claim; the trap target is unchanged.",
@@ -24653,7 +24653,7 @@
           "rootCause": [
             "eval-side freshness drift: a forward-looking schedule aged past its vote date",
             "solo://proj/49/todo/date-contingent-trap--831",
-            "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
+            "improvements/resolved.json entry sd-008",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
@@ -25795,14 +25795,14 @@
             "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-008; the Protocol 27 and CAP-0071 facts are unchanged.",
-            "Improvements review 2026-08-27: improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md records the 2026-08-18 upstream fix; the disputed claim is the older Software Versions page showing Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current.",
+            "Improvements review 2026-08-27: improvements/resolved.json entry sd-008 records the 2026-08-18 upstream fix; the disputed claim is the older Software Versions page showing Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current.",
             "Sibling sweep 2026-08-27: grep sd-008|Protocol 27|63386819|CAP-0071 → q-edge-fresh-latest-protocol-version, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction",
             "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory."
           ],
           "rootCause": [
             "eval-side date-contingent status trap expired after the scheduled Mainnet vote and survived as contradictory inherited judge prose",
             "solo://proj/49/todo/date-contingent-trap--831",
-            "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
+            "improvements/resolved.json entry sd-008",
             "eval-authoring",
             "CAP-0071 advanced from Accepted to Final after the earlier snapshot.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
@@ -39288,7 +39288,7 @@
         "avoid": [
           "Do NOT cite an unversioned finding ID, convert hypothetical impact into a live exploit, or call it reentrancy."
         ],
-        "notes": "Added from theboycoder/StellarLight data-layer intake. Primary-source recheck on 2026-08-25 confirmed the versioned identifier history and the counted-versus-labeled distinction. V2 already contains the invalid-disposition analysis. V2.1 relocates that analysis to Appendix A.2.2. Both reports label the investigated item Critical, while their valid-vulnerability summaries count zero Critical issues. Scout currently exact-misses the real V-SOR-APP-VUL-003 identifier; treat that result as retrieval defect sls-074, not real-world absence.\nAlso good if the answer connects the finding to Soroban's contract-auth model instead of generic EVM reentrancy.\nGT-44 independently reconciled the V2/V2.1 renumbering.\nAccurately quoting the canonical Scout source on `V-SOR-APP-VUL-003` as absent from its indexed corpus is not a wrong claim while sls-074 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+        "notes": "Added from theboycoder/StellarLight data-layer intake. Primary-source recheck on 2026-08-25 confirmed the versioned identifier history and the counted-versus-labeled distinction. V2 already contains the invalid-disposition analysis. V2.1 relocates that analysis to Appendix A.2.2. Both reports label the investigated item Critical, while their valid-vulnerability summaries count zero Critical issues. Scout now retrieves the real V-SOR-APP-VUL-003 identifier without `meta.exactMiss`. The absent control V-SOR-APP-VUL-999 still returns an exact-miss warning.\nAlso good if the answer connects the finding to Soroban's contract-auth model instead of generic EVM reentrancy.\nGT-44 independently reconciled the V2/V2.1 renumbering.\nAccurately quoting a cached copy of the canonical Scout source from before the 2026-08-25 fix is not a wrong claim. Grade caps at partial for that historical quote unless the answer presents the miss as current."
       },
       "tags": {
         "category": "soroban",
@@ -39367,21 +39367,24 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+          "date": "2026-08-28",
+          "by": "Lane D golden-truth refresh with Lane C independent retirement review",
           "evidence": [
             "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
             "https://stellarsecurityportal.com/api/v1/reports/28",
             "https://stellarsecurityportal.com/api/v1/reports/42",
             "Two independent reviewers confirmed the version history, labels, disposition, and valid-vulnerability counts.",
             "Sibling sweep: q-tool-soroban-auth-audit-live was updated and confirmed consistent on 2026-08-25.",
-            "Structural re-form (symmetric-caution): Added a dispute-scoped grading caution; the answer and facts are unchanged.",
-            "Reviewed improvement 2026-08-27: improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md — Scout exact-misses V-SOR-APP-VUL-003 despite its presence in the V2.1 appendix.",
-            "Sibling sweep 2026-08-27: grep V-SOR-APP-VUL-003|V-SOR-VUL-002 → q-soroban-auth-recursion-dos-audit, q-tool-soroban-auth-audit-live; no contradiction"
+            "Live re-check 2026-08-28: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 returned the Veridise row first with no meta.exactMiss.",
+            "Live control 2026-08-28: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2 returned meta.exactMiss with its do-not-report warning.",
+            "Source review 2026-08-28: https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4 promotes Veridise appendix identifiers into the index.",
+            "Independent review 2026-08-28: hyg-retire-report.md re-ran the trigger and control, checked the deployed commit, and approved sls-074 retirement.",
+            "Sibling sweep 2026-08-28: grep V-SOR-APP-VUL-003|V-SOR-VUL-002 found q-soroban-auth-recursion-dos-audit and q-tool-soroban-auth-audit-live; both cases now describe the fixed live behavior.",
+            "Resolution provenance: improvements/resolved.json entry sls-074 preserves the deleted finding's audit chain."
           ],
           "rootCause": [
             "eval-authoring",
-            "improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md",
+            "improvements/resolved.json entry sls-074",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
           ]
         },
@@ -43528,7 +43531,7 @@
             "Sibling sweep checked q-tool-cli-install, q-tool-cli-init-build-deploy, and q-sor-build-target-wasm32v1; sk-006 already owns the missing error-keyed upstream coverage.",
             "Structural re-form (symmetric-caution): added a cached-skill grading caution for sk-006; the CLI and Windows troubleshooting facts are unchanged.",
             "No live recheck was required for this pure symmetric-caution re-form.",
-            "Improvements review 2026-08-27: improvements/skills/sk-006-error-keyed-troubleshooting-gap.md records the 2026-08-14 upstream fix; the disputed claim is whether older skill copies contain error-keyed rows for missing WASM, link.exe, identity or alias collisions, and funding.",
+            "Improvements review 2026-08-27: improvements/resolved.json entry sk-006 records the 2026-08-14 upstream fix; the disputed claim is whether older skill copies contain error-keyed rows for missing WASM, link.exe, identity or alias collisions, and funding.",
             "Sibling sweep 2026-08-27: grep sk-006|link.exe|No such file or directory wasm|Unable to fund account|alias already exists → no other topical case; no contradiction",
             "Structural re-form (compound-predicate): Reworded six pinned long or compound facts in place; the obsolete target and duplicate-alias tails remain concrete avoid claims.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — current contract setup still requires Rust 1.84+ and wasm32v1-none.",
@@ -43541,7 +43544,7 @@
             "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part2.md): restored the Windows Rust/rustup + MSVC-or-WSL install requirement as a keyFact; truth unchanged versus HEAD."
           ],
           "rootCause": [
-            "improvements/skills/sk-006-error-keyed-troubleshooting-gap.md",
+            "improvements/resolved.json entry sk-006",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
           ]
@@ -50001,20 +50004,20 @@
         "scout.listAudits"
       ],
       "golden": {
-        "answer": "Search the live audit index, then cite the versioned Veridise primary report. V2 labels the investigated authorization-recursion item **V-SOR-VUL-002** with severity Critical, but its valid-vulnerability summary counts zero Critical issues. V2 already judges the item invalid inline because error propagation makes work linear in trackers and constructing many trackers is costly. V2.1 relocates the same write-up to Appendix A.2.2 as **V-SOR-APP-VUL-003**. Do not present it as an active confirmed vulnerability or as generic EVM reentrancy. Scout currently exact-misses the real V2.1 appendix identifier, so verify that identifier against the primary report instead of treating the miss as real-world absence.",
+        "answer": "Search the live audit index, then cite the versioned Veridise primary report. V2 labels the investigated authorization-recursion item **V-SOR-VUL-002** with severity Critical, but its valid-vulnerability summary counts zero Critical issues. V2 already judges the item invalid inline because error propagation makes work linear in trackers and constructing many trackers is costly. V2.1 relocates the same write-up to Appendix A.2.2 as **V-SOR-APP-VUL-003**. Do not present it as an active confirmed vulnerability or as generic EVM reentrancy. Scout now returns the Veridise row for the real V2.1 appendix identifier without `meta.exactMiss`. Truly absent identifiers still return `meta.exactMiss` with a warning not to report the identifier as found.",
         "keyFacts": [
           "Uses searchResearch with the audit filter and cites the versioned Veridise primary audit.",
           "Names the historical Critical label and the zero valid-Critical count as distinct.",
           "States that V2 already judged the item invalid and V2.1 relocated it to the appendix.",
-          "Attributes Scout's current V-SOR-APP-VUL-003 exact miss to retrieval defect sls-074."
+          "States that Scout now retrieves V-SOR-APP-VUL-003 without `meta.exactMiss`."
         ],
         "avoid": [
           "Calls it a confirmed active critical bug while omitting the invalid disposition or zero valid-Critical count.",
           "Claims it remains unfixed merely because no fix hash is listed.",
           "Reframes it as generic EVM reentrancy instead of the audited Soroban authorization-recursion issue.",
-          "Uses Scout's exact miss for V-SOR-APP-VUL-003 as proof that the identifier does not exist."
+          "Uses an exact-miss control for an absent identifier as proof that V-SOR-APP-VUL-003 does not exist."
         ],
-        "notes": "Accurately quoting the canonical Scout source on `V-SOR-APP-VUL-003` as absent from its indexed corpus is not a wrong claim while sls-074 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "Live verification on 2026-08-28 found the Veridise row first for `V-SOR-APP-VUL-003`, with no `meta.exactMiss`. The absent control `V-SOR-APP-VUL-999` still returns `meta.exactMiss` and a do-not-report warning. Accurately quoting a cached copy of the canonical Scout source from before the 2026-08-25 fix is not a wrong claim. Grade caps at partial for that historical quote unless the answer presents the miss as current."
       },
       "tags": {
         "category": "tooling-infra",
@@ -50041,6 +50044,10 @@
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/research?q=authorization%20recursion&source=audit"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4"
           }
         ],
         "corroboration": [
@@ -50069,45 +50076,49 @@
             ]
           },
           {
-            "claim": "Scout currently reports the real V-SOR-APP-VUL-003 identifier as an exact miss.",
+            "claim": "Scout retrieves V-SOR-APP-VUL-003 without an exact miss and preserves exact-miss warnings for absent identifiers.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "C",
                 "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2",
-                "observedAt": "2026-08-25",
-                "note": "Live response returns the identifier in meta.exactMiss; sls-074 tracks this retrieval defect."
+                "observedAt": "2026-08-28",
+                "note": "Live response returns the Veridise row first and does not include meta.exactMiss."
               },
               {
-                "class": "A",
-                "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
-                "observedAt": "2026-08-25",
-                "note": "Primary report proves that the exact identifier exists in Appendix A.2.2."
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2",
+                "observedAt": "2026-08-28",
+                "note": "The absent control returns meta.exactMiss with a do-not-report warning."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4",
+                "observedAt": "2026-08-28",
+                "note": "The upstream ingest fix promotes Veridise appendix finding identifiers into the search index."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-08-28",
+          "by": "Lane D golden-truth refresh with Lane C independent retirement review",
           "evidence": [
             "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
             "https://stellarsecurityportal.com/api/v1/reports/28",
             "https://stellarsecurityportal.com/api/v1/reports/42",
             "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2",
             "Sibling sweep: q-soroban-auth-recursion-dos-audit was updated and confirmed consistent on 2026-08-25.",
-            "Structural re-form (symmetric-caution): added a Scout-source grading caution for sls-074; the audit findings and disposition are unchanged.",
-            "No live recheck was required for this pure symmetric-caution re-form.",
-            "Improvements review 2026-08-27: improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md remains reported upstream; the disputed claim is Scout's exact miss for the real V-SOR-APP-VUL-003 identifier.",
-            "Sibling sweep 2026-08-27: grep sls-074|V-SOR-APP-VUL-003|authorization recursion → q-soroban-auth-recursion-dos-audit; no contradiction",
-            "Structural re-form (negative-predicate): rewrote the Critical-count taxonomy positively and moved the real-world-absence trap to its existing avoid item; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf — confirmed zero valid Critical issues, V2.1 Appendix A.2.2, V-SOR-APP-VUL-003, and the invalid disposition.",
-            "Live re-check 2026-08-27: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 — retained the dated Scout exact-miss source boundary tracked by sls-074.",
-            "Sibling sweep 2026-08-27: grep V-SOR-APP-VUL-003|valid-Critical|sls-074 → q-soroban-auth-recursion-dos-audit; no contradiction"
+            "Live re-check 2026-08-28: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 returned the Veridise row first with no meta.exactMiss.",
+            "Live control 2026-08-28: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2 returned meta.exactMiss with its do-not-report warning.",
+            "Source review 2026-08-28: https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4 promotes Veridise appendix identifiers into the index.",
+            "Independent review 2026-08-28: hyg-retire-report.md re-ran the trigger and control, checked the deployed commit, and approved sls-074 retirement.",
+            "Sibling sweep 2026-08-28: grep sls-074|V-SOR-APP-VUL-003|authorization recursion found q-soroban-auth-recursion-dos-audit; both cases now describe the fixed live behavior.",
+            "Resolution provenance: improvements/resolved.json entry sls-074 preserves the deleted finding's audit chain."
           ],
           "rootCause": [
             "eval-authoring",
-            "improvements/stellar-light-scout/sls-074-appendix-audit-identifiers-exact-miss.md",
+            "improvements/resolved.json entry sls-074",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
           ]

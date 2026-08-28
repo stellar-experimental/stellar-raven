@@ -1,13 +1,14 @@
 ---
 id: sls-078
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-27
 upstreamTitle: Narrow quality-report routing to source-calibration questions
 evidence:
   - 2026-08-28T13:38:25Z live OpenAPI 1.9.1 lists broad getQualityReport x-routing keywords, including trust, confidence in the data, coverage, source-calibration terms, health, and limitations
   - routing evaluation: the operation entered 56 of 338 legacy and 26 of 122 extended top-five results; unrelated top-one captures occurred in both sets
   - routing evaluation: excluding the operation changed extended strict routing from 88/109/116 to 90/109/117 and removed unrelated top-one captures
+  - upstream issue filed 2026-08-28: https://github.com/Stellar-Light/stellarlight/issues/1087
 recurrences:
   - date: 2026-08-28
     evidence: OpenAPI 1.9.1 changes only the quality-report response schema and keeps the broad x-routing contract byte-identical to 1.8.110

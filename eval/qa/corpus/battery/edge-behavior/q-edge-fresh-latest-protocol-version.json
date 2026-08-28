@@ -78,14 +78,14 @@
         "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
-        "Reviewed improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md — fixed 2026-08-18; older documentation can still show Protocol 26 as Mainnet-current.",
+        "Reviewed improvements/resolved.json entry sd-008 — fixed 2026-08-18; older documentation can still show Protocol 26 as Mainnet-current.",
         "Sibling sweep 2026-08-27: grep Protocol 27|63386819|P26|P27 → q-edge-fresh-latest-protocol-version, q-edge-fresh-most-recent-news, q-hist-quantum-preparedness-plan, q-pc-memos-reference, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-cap-process, q-protocol-ledger-entry-types, q-protocol-ledger-header-fields, q-protocol-version-history-list, q-raph-xlm-staking, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction",
         "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory."
       ],
       "rootCause": [
         "eval-side date-contingent example expired while the durable behavior gate remained valid",
         "solo://proj/49/todo/date-contingent-trap--831",
-        "improvements/stellar-docs/sd-008-protocol-27-mainnet-status-lag.md",
+        "improvements/resolved.json entry sd-008",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"

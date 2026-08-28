@@ -100,6 +100,24 @@ issue #86 drift round.
   `improvements lint ok (71 findings)`; `tsc --noEmit` exit 0; `Test Files  90 passed (90)`,
   `Tests  1375 passed (1375)`; `npm run build` `Total Upload: 7036.53 KiB`; secrets clean;
   `git diff --check` clean; both filing dry-runs exit 0. Force-pushed with lease.
+- `2026-08-28T14:20Z` — Owner authorized merge, filing, and retirement. PR #87 squash-merged as
+  `5e23340`. `npm run improvements:file` posted `sls-077` as
+  https://github.com/Stellar-Light/stellarlight/issues/1086 and `sls-078` as
+  https://github.com/Stellar-Light/stellarlight/issues/1087; both moved to `reported-upstream`.
+- `2026-08-28` — Lane D (Codex `gpt-5.6-sol` high, pane `w17:p6`, brief `hyg-resolve-brief.md`)
+  started for the golden refresh, seven resolution comments, and `improvements:resolve`.
+- `2026-08-28T16:27Z` — Lane D posted and read back all seven authorized resolution comments:
+  [`sk-006`](https://github.com/stellar/stellar-dev-skill/issues/53#issuecomment-5455029603),
+  [`sk-009`](https://github.com/Stellar-Light/stellar-scout/issues/11#issuecomment-5455029882),
+  [`sd-008`](https://github.com/stellar/stellar-docs/issues/2574#issuecomment-5455030136),
+  [`sd-025`](https://github.com/stellar/stellar-docs/issues/2699#issuecomment-5455030350),
+  [`sls-074`](https://github.com/Stellar-Light/stellarlight/issues/1031#issuecomment-5455030587),
+  [`sls-075`](https://github.com/Stellar-Light/stellarlight/issues/1030#issuecomment-5455030797),
+  and [`sls-076`](https://github.com/Stellar-Light/stellarlight/issues/1055#issuecomment-5455031036).
+  Every comment links the HTTP-200 snapshot at commit `5e23340`. Issue 1031 remained open at review.
+- `2026-08-28T16:28Z` — Lane D ran every resolver first with `--dry-run`, then live with the
+  reviewed evidence and resolving refs. The resolver retired all seven files, removed three intake
+  overrides, appended seven `improvements/resolved.json` receipts, and regenerated `INDEX.md`.
 
 ## Outcome
 
@@ -117,7 +135,9 @@ issue #86 drift round.
   `sls-076`; three of the seven re-run independently by Grok. Sequencing: refresh the two
   `sls-074` goldens first, repoint `rootCause` for `sk-006` and `sd-008` through `golden-truth`,
   post the seven resolution comments, then `npm run improvements:resolve`.
-- Independent review: Grok 4.6 high, two repair rounds, final verdict PASS on the repaired files.
-- Awaiting owner authorization (outward actions): file `sls-077` and `sls-078`; post seven
-  resolution comments; delete the seven retired files. None of these ran in this round.
-
+- Independent review: Grok 4.6 high. First pass CHANGES-REQUESTED (three findings, applied);
+  re-verification CHANGES-REQUESTED (`sls-078` keyword list, applied, then filed as #1087);
+  Lane D review CHANGES-REQUESTED (receipt comment URLs, queue text, this line), all applied
+  by the orchestrator before the retirement PR.
+- Owner-authorized outward actions completed. Issues `sls-077` and `sls-078` were filed, and the
+  seven reviewed findings were commented and retired.
