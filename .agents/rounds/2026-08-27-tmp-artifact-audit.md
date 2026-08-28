@@ -114,3 +114,9 @@ recounted all temporary corpus paths and rechecked issues #67 and #39, including
 
 The documentation and review repairs are ready to merge. GitHub thread resolution and local branch
 cleanup follow the merge.
+
+## Final lane status — 2026-08-28
+
+The Lanes table records the reconciliation lane before final verification. That lane completed in
+PR #84, merged as `6fec2fb75b0e5dd8efa2e9d972fa9a37b7fdcf6f`. All three lanes are complete,
+and this round is closed.

@@ -417,3 +417,10 @@ The earlier `Historical wrapper path` label is imprecise. The preserved wrapper 
 `eval/qa/reviewed/2026-08-26-connectors-item8/claude-wrapper.sh`. Inside that wrapper, the real
 Claude binary path is `/Users/kalepail/.local/bin/claude`, equivalent to the original
 `$HOME/.local/bin/claude` record on that host.
+
+## Canonical wrapper and binary labels — 2026-08-28
+
+For current reading, the wrapper source is
+`eval/qa/reviewed/2026-08-26-connectors-item8/claude-wrapper.sh`. The real Claude binary used by
+that wrapper is `/Users/kalepail/.local/bin/claude`. The earlier `Historical wrapper path` label is
+retained only because this ledger is append-only; it names the binary, not the wrapper.
