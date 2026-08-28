@@ -1,16 +1,16 @@
 {
-  "changelogEntryCount": 201,
+  "changelogEntryCount": 203,
   "changelogLatest": {
-    "date": "2026-08-24",
-    "detail": "New wrappers: getStablecoins, vetIdea, scfPitch, hackathonBrief, searchHackathonBuilds, listAudits, listContracts, getRepoTrust, resolveProject, getPeople, getPartner(slug), getChanges, getFeedbackSchema, matchPartners, partnerAssistant, partnerOnboard, submitPartnerListing. getChanges takes a REQUIRED `since`. All GET operations live-verified against production; README method table now lists all 35 ops.",
-    "summary": "api-client reaches full spec coverage: 17 missing operations added (was 18 of 35).",
+    "date": "2026-08-28",
+    "detail": "The census denominators divided every repo metric by all 12,938 rows including the ~10k ec-taxonomy tail that is scanned opportunistically by design, making the rates meaningless; repoQuality.coverage now reports curatedIndex (project-link + builder-owned), tail (no target attached), knowledgeNotes against the actual curation pool (curated rows with repoScore >= 60), and mainnetJoin against deployable-contract rows only. Also fixed: the mainnet join was read via the search API's serialized field name (codeInUse.contracts) against raw collection rows, undercounting 76 joined repos as 2. Whole-census withCodeDepth/withNotes/withMainnet remain for continuity.",
+    "summary": "getQualityReport repoQuality.coverage: rates against the population each metric targets; mainnet join read the wrong field (2 -> 76).",
     "surfaces": [
-      "api-client"
+      "api"
     ],
-    "type": "added",
-    "version": "api-client@1.9.0"
+    "type": "fixed",
+    "version": "spec@1.9.1"
   },
-  "fetchedAt": "2026-08-28T02:48:38.136Z",
+  "fetchedAt": "2026-08-28T12:50:57.417Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -3123,7 +3123,7 @@
       },
       "summary": "Agent-native data layer for the Stellar ecosystem — projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.8.110"
+      "version": "1.9.1"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -6975,6 +6975,112 @@
                 "application/json": {
                   "schema": {
                     "properties": {
+                      "consumerFindings": {
+                        "description": "Defects filed against this service by its largest agent consumer (stellar-raven), from THEIR evaluation battery. counts is their answer key; ourResponse is our own linked-issue state and is fenced off deliberately, a score computed from a variable we control is not an external grade.",
+                        "properties": {
+                          "consumer": {
+                            "type": "string"
+                          },
+                          "counts": {
+                            "additionalProperties": {
+                              "type": "integer"
+                            },
+                            "description": "THEIR status vocabulary -> count, verbatim from their records.",
+                            "type": "object"
+                          },
+                          "definition": {
+                            "type": "string"
+                          },
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "ourResponse": {
+                            "properties": {
+                              "declined": {
+                                "type": "integer"
+                              },
+                              "distinctIssuesClosed": {
+                                "type": "integer"
+                              },
+                              "fixApplicable": {
+                                "type": "integer"
+                              },
+                              "fixShipped": {
+                                "type": "integer"
+                              },
+                              "fixShippedIds": {
+                                "items": {
+                                  "type": "string"
+                                },
+                                "type": "array"
+                              },
+                              "note": {
+                                "type": "string"
+                              },
+                              "scoredBy": {
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "records": {
+                            "items": {
+                              "properties": {
+                                "discovered": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "disposition": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "ourIssue": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "ourResponse": {
+                                  "nullable": true,
+                                  "properties": {
+                                    "closedAt": {
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "issue": {
+                                      "type": "integer"
+                                    },
+                                    "state": {
+                                      "type": "string"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "sourceUrl": {
+                                  "type": "string"
+                                },
+                                "status": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "total": {
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
                       "findings": {
                         "properties": {
                           "byFailureMode": {
@@ -6991,6 +7097,9 @@
                                 },
                                 "surface": {
                                   "type": "string"
+                                },
+                                "verified": {
+                                  "type": "integer"
                                 }
                               },
                               "type": "object"
@@ -7040,8 +7149,67 @@
                             },
                             "type": "array"
                           },
+                          "states": {
+                            "description": "The partition rule: open + cleared + verified = total, disjoint.",
+                            "type": "string"
+                          },
+                          "total": {
+                            "type": "integer"
+                          },
                           "verifiedClosed": {
                             "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "flow": {
+                        "description": "Findings as a node/link graph: detector -> surface -> outcome, whole-ledger counts (not a sample). nodes carry a column index (0 detector, 1 surface, 2 outcome) and a throughput value; links carry source/target node indexes and the count flowing between them.",
+                        "properties": {
+                          "definition": {
+                            "type": "string"
+                          },
+                          "links": {
+                            "items": {
+                              "properties": {
+                                "source": {
+                                  "type": "integer"
+                                },
+                                "sourceId": {
+                                  "type": "string"
+                                },
+                                "target": {
+                                  "type": "integer"
+                                },
+                                "targetId": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "nodes": {
+                            "items": {
+                              "properties": {
+                                "column": {
+                                  "type": "integer"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
                           }
                         },
                         "type": "object"
@@ -7065,6 +7233,18 @@
                                   ],
                                   "type": "string"
                                 },
+                                "exampleCap": {
+                                  "type": "integer"
+                                },
+                                "examplePoolSize": {
+                                  "type": "integer"
+                                },
+                                "exampleSource": {
+                                  "type": "string"
+                                },
+                                "exampleTruncated": {
+                                  "type": "boolean"
+                                },
                                 "examples": {
                                   "items": {
                                     "type": "string"
@@ -7080,6 +7260,9 @@
                                 "of": {
                                   "type": "integer"
                                 },
+                                "share": {
+                                  "type": "number"
+                                },
                                 "whyItMatters": {
                                   "type": "string"
                                 }
@@ -7092,13 +7275,34 @@
                         "type": "object"
                       },
                       "guards": {
+                        "description": "Every guard with its promise and THREE-state verdict: holding (measured and passing on fresh evidence), breached (measured and failing), stale (evidence older than the guard's own freshness window; neither passing nor failing). holding is true ONLY in the holding state, so a stale guard is never green.",
                         "items": {
                           "properties": {
+                            "ageDays": {
+                              "type": "integer"
+                            },
                             "asOf": {
                               "type": "string"
                             },
+                            "cadence": {
+                              "enum": [
+                                "weekly",
+                                "on-deploy",
+                                "baseline"
+                              ],
+                              "type": "string"
+                            },
+                            "details": {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
                             "evidence": {
                               "type": "string"
+                            },
+                            "freshnessDays": {
+                              "type": "integer"
                             },
                             "holding": {
                               "type": "boolean"
@@ -7106,7 +7310,39 @@
                             "key": {
                               "type": "string"
                             },
+                            "measure": {
+                              "description": "The headline as numbers, so a consumer never parses prose. of is null for rates and bare counts.",
+                              "properties": {
+                                "of": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "unit": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "number"
+                                }
+                              },
+                              "type": "object"
+                            },
                             "promise": {
+                              "type": "string"
+                            },
+                            "severity": {
+                              "enum": [
+                                "high",
+                                "medium",
+                                "low"
+                              ],
+                              "type": "string"
+                            },
+                            "state": {
+                              "enum": [
+                                "holding",
+                                "breached",
+                                "stale"
+                              ],
                               "type": "string"
                             },
                             "title": {
@@ -7215,6 +7451,10 @@
                           "apiVersion": {
                             "type": "string"
                           },
+                          "cachePolicy": {
+                            "description": "How stale this response may legitimately be (cache + stale-while-revalidate). Read measuredAt, not the clock.",
+                            "type": "string"
+                          },
                           "generatedAt": {
                             "format": "date-time",
                             "type": "string"
@@ -7244,14 +7484,38 @@
                           },
                           "population": {
                             "properties": {
+                              "coveragePct": {
+                                "type": "integer"
+                              },
                               "note": {
                                 "type": "string"
                               },
                               "openRecallMisses": {
                                 "type": "integer"
                               },
+                              "replayableOpenRecallMisses": {
+                                "type": "integer"
+                              },
                               "sampled": {
                                 "type": "integer"
+                              },
+                              "unclassified": {
+                                "description": "Open recall findings whose probe shape this funnel cannot replay. Real findings the funnel is blind to, not cleared ones.",
+                                "type": "integer"
+                              },
+                              "unclassifiedExamples": {
+                                "items": {
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "probe": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "type": "array"
                               }
                             },
                             "type": "object"
@@ -7298,6 +7562,175 @@
                         },
                         "type": "object"
                       },
+                      "northStar": {
+                        "description": "The one number the engine system optimizes (full-surface audit ok-rate), served WITH its age. warning is non-null whenever it should not be read as current (stale, below target, or a series measured over changing probe counts).",
+                        "properties": {
+                          "ageDays": {
+                            "type": "integer"
+                          },
+                          "belowTarget": {
+                            "type": "boolean"
+                          },
+                          "comparableSeries": {
+                            "type": "boolean"
+                          },
+                          "latest": {
+                            "properties": {
+                              "date": {
+                                "type": "string"
+                              },
+                              "evidence": {
+                                "type": "string"
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "ok": {
+                                "nullable": true,
+                                "type": "integer"
+                              },
+                              "okRate": {
+                                "type": "integer"
+                              },
+                              "probes": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "series": {
+                            "items": {
+                              "properties": {
+                                "date": {
+                                  "type": "string"
+                                },
+                                "evidence": {
+                                  "type": "string"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "ok": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "okRate": {
+                                  "type": "integer"
+                                },
+                                "probes": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "stale": {
+                            "type": "boolean"
+                          },
+                          "target": {
+                            "type": "integer"
+                          },
+                          "warning": {
+                            "nullable": true,
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "perOperation": {
+                        "description": "Per-OPERATION contract quality, keyed by the operationId a caller invokes. contractProbe: clean (probe reached it, no violations) / violations (reached, listed) / skipped (could not check, reason given) / unmeasured (never reached). An unmeasured operation is NOT a passing one.",
+                        "properties": {
+                          "counts": {
+                            "properties": {
+                              "clean": {
+                                "type": "integer"
+                              },
+                              "skipped": {
+                                "type": "integer"
+                              },
+                              "unmeasured": {
+                                "type": "integer"
+                              },
+                              "violations": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "definition": {
+                            "type": "string"
+                          },
+                          "operations": {
+                            "items": {
+                              "properties": {
+                                "contractProbe": {
+                                  "enum": [
+                                    "clean",
+                                    "violations",
+                                    "skipped",
+                                    "unmeasured"
+                                  ],
+                                  "type": "string"
+                                },
+                                "fieldDrift": {
+                                  "items": {
+                                    "properties": {
+                                      "field": {
+                                        "type": "string"
+                                      },
+                                      "kind": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "type": "object"
+                                  },
+                                  "type": "array"
+                                },
+                                "method": {
+                                  "type": "string"
+                                },
+                                "operationId": {
+                                  "type": "string"
+                                },
+                                "path": {
+                                  "type": "string"
+                                },
+                                "probedAt": {
+                                  "type": "string"
+                                },
+                                "skipReason": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "violations": {
+                                  "items": {
+                                    "properties": {
+                                      "evidence": {
+                                        "type": "string"
+                                      },
+                                      "kind": {
+                                        "type": "string"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "type": "object"
+                                  },
+                                  "type": "array"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "probedAt": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
                       "progress": {
                         "description": "Where this service stands against its own published quality plan (QUALITY.md). A phase cannot show done here without being done there, and remaining work is served with the same weight as finished work.",
                         "items": {
@@ -7336,7 +7769,88 @@
                       },
                       "repoQuality": {
                         "properties": {
+                          "coverage": {
+                            "description": "Coverage rates against the population each metric TARGETS. Two populations with different intent: the curated index (project-link + builder-owned rows a directory record claims) and the ec-taxonomy tail (indexed for completeness, scanned opportunistically, low coverage there is intended). Whole-census withCodeDepth/withNotes/withMainnet remain for continuity but carry no intent.",
+                            "properties": {
+                              "curatedIndex": {
+                                "properties": {
+                                  "depthPct": {
+                                    "type": "integer"
+                                  },
+                                  "means": {
+                                    "type": "string"
+                                  },
+                                  "repos": {
+                                    "type": "integer"
+                                  },
+                                  "withCodeDepth": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "knowledgeNotes": {
+                                "properties": {
+                                  "pool": {
+                                    "type": "integer"
+                                  },
+                                  "poolMeans": {
+                                    "type": "string"
+                                  },
+                                  "withNotes": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "mainnetJoin": {
+                                "properties": {
+                                  "joined": {
+                                    "type": "integer"
+                                  },
+                                  "pool": {
+                                    "type": "integer"
+                                  },
+                                  "poolMeans": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "tail": {
+                                "properties": {
+                                  "means": {
+                                    "type": "string"
+                                  },
+                                  "repos": {
+                                    "type": "integer"
+                                  },
+                                  "withCodeDepth": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "type": "object"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "duplicateNote": {
+                            "type": "string"
+                          },
+                          "duplicateRows": {
+                            "description": "Rows whose fullName duplicates another row. Storage debt, tracked here until zero; all counts are over DISTINCT repos.",
+                            "type": "integer"
+                          },
+                          "frame": {
+                            "type": "string"
+                          },
                           "joinedToMainnetContract": {
+                            "type": "integer"
+                          },
+                          "population": {
+                            "type": "integer"
+                          },
+                          "read": {
                             "type": "integer"
                           },
                           "sampled": {
@@ -7344,31 +7858,6 @@
                           },
                           "thinnestEvidence": {
                             "description": "Indexed but thinly evidenced — the repo work queue.",
-                            "items": {
-                              "properties": {
-                                "codeDepth": {
-                                  "nullable": true,
-                                  "type": "integer"
-                                },
-                                "fullName": {
-                                  "type": "string"
-                                },
-                                "mainnetContracts": {
-                                  "type": "integer"
-                                },
-                                "notes": {
-                                  "type": "integer"
-                                },
-                                "repoScore": {
-                                  "nullable": true,
-                                  "type": "integer"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "type": "array"
-                          },
-                          "topGraded": {
                             "items": {
                               "properties": {
                                 "activity": {
@@ -7379,26 +7868,82 @@
                                   "nullable": true,
                                   "type": "integer"
                                 },
-                                "evidence": {
-                                  "nullable": true,
-                                  "type": "string"
+                                "deployable": {
+                                  "description": "the scanner marked this row a deployable contract",
+                                  "type": "boolean"
                                 },
                                 "fullName": {
                                   "type": "string"
                                 },
-                                "label": {
+                                "language": {
                                   "nullable": true,
                                   "type": "string"
                                 },
-                                "mainnetContracts": {
-                                  "type": "integer"
+                                "mainnetJoined": {
+                                  "description": "a verified mainnet contract is attributed to this repo (raw field mainnetContractId)",
+                                  "type": "boolean"
                                 },
                                 "notes": {
                                   "type": "integer"
                                 },
+                                "projectSlug": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
                                 "repoScore": {
                                   "nullable": true,
                                   "type": "integer"
+                                },
+                                "tier": {
+                                  "nullable": true,
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "topGraded": {
+                            "items": {
+                              "properties": {
+                                "activity": {
+                                  "description": "Derived from lastCommitAt: active (<=90d) / slowing (<=365d) / dormant / archived. null = no commit date held; unknown is not dormant.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "codeDepth": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "deployable": {
+                                  "description": "the scanner marked this row a deployable contract",
+                                  "type": "boolean"
+                                },
+                                "fullName": {
+                                  "type": "string"
+                                },
+                                "language": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "mainnetJoined": {
+                                  "description": "a verified mainnet contract is attributed to this repo (raw field mainnetContractId)",
+                                  "type": "boolean"
+                                },
+                                "notes": {
+                                  "type": "integer"
+                                },
+                                "projectSlug": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "repoScore": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "source": {
+                                  "nullable": true,
+                                  "type": "string"
                                 },
                                 "tier": {
                                   "nullable": true,
@@ -7423,6 +7968,12 @@
                           "basisStrength": {
                             "type": "string"
                           },
+                          "coveragePct": {
+                            "type": "integer"
+                          },
+                          "frame": {
+                            "type": "string"
+                          },
                           "meanScore": {
                             "type": "integer"
                           },
@@ -7439,6 +7990,13 @@
                               "type": "object"
                             },
                             "type": "array"
+                          },
+                          "population": {
+                            "description": "Total rows in the collection. read should equal it; the counts here are a census, not a sample.",
+                            "type": "integer"
+                          },
+                          "read": {
+                            "type": "integer"
                           },
                           "sampled": {
                             "type": "integer"
@@ -7460,10 +8018,22 @@
                             },
                             "type": "array"
                           },
+                          "strongBases": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
                           "weakestRows": {
                             "description": "The curation queue: each row's slug, evidence score, and exactly which facts are missing.",
                             "items": {
                               "properties": {
+                                "factsPresent": {
+                                  "type": "integer"
+                                },
+                                "factsTotal": {
+                                  "type": "integer"
+                                },
                                 "missing": {
                                   "items": {
                                     "type": "string"
@@ -7494,6 +8064,12 @@
                               "type": "object"
                             },
                             "type": "array"
+                          },
+                          "weakestTotal": {
+                            "type": "integer"
+                          },
+                          "weakestTruncated": {
+                            "type": "boolean"
                           }
                         },
                         "type": "object"
@@ -7513,6 +8089,9 @@
                             },
                             "surface": {
                               "type": "string"
+                            },
+                            "verifiedFindings": {
+                              "type": "integer"
                             }
                           },
                           "type": "object"
@@ -7523,6 +8102,11 @@
                         "description": "Committed daily history; a null metric means it was not measured that day, never zero.",
                         "items": {
                           "properties": {
+                            "batteryErrors": {
+                              "description": "Battery slices that CRASHED that day. A crashed slice is not a pass and not a fail; without this counter a crashed run rendered as a perfect green day.",
+                              "nullable": true,
+                              "type": "integer"
+                            },
                             "batteryFail": {
                               "nullable": true,
                               "type": "integer"
@@ -7558,6 +8142,10 @@
                               "nullable": true,
                               "type": "integer"
                             },
+                            "population": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
                             "sampled": {
                               "nullable": true,
                               "type": "integer"
@@ -7566,6 +8154,45 @@
                           "type": "object"
                         },
                         "type": "array"
+                      },
+                      "verdict": {
+                        "description": "READ FIRST. Derived from guard states, never authored: counts of guards holding / breached / stale, the one definition of open used everywhere in this document, and two sentence lists, safeToRelyOn and doNotRelyOn.",
+                        "properties": {
+                          "doNotRelyOn": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "guardsBreached": {
+                            "type": "integer"
+                          },
+                          "guardsHolding": {
+                            "type": "integer"
+                          },
+                          "guardsStale": {
+                            "type": "integer"
+                          },
+                          "meanRowEvidence": {
+                            "type": "integer"
+                          },
+                          "openDefinition": {
+                            "type": "string"
+                          },
+                          "openFindings": {
+                            "type": "integer"
+                          },
+                          "projectRows": {
+                            "type": "integer"
+                          },
+                          "safeToRelyOn": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
                       }
                     },
                     "type": "object"
@@ -10076,7 +10703,7 @@
       }
     ]
   },
-  "openapiVersion": "1.8.110",
+  "openapiVersion": "1.9.1",
   "operationCount": 37,
   "service": "stellar-light",
   "source": {
@@ -10088,10 +10715,12 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.8.110",
+    "apiVersion": "1.9.1",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",
+      "/api/quality",
+      "/api/verify",
       "/api/audits",
       "/api/changelog",
       "/api/changes",

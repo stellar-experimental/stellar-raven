@@ -12,11 +12,11 @@ export const EXCLUDED_SCOUT_OPS = new Set([
   "POST /api/partners/submit-listing",
   "POST /api/partners/assistant",
   "POST /api/partners/onboard",
-  // OpenAPI 1.8.109 gives this self-report broad confidence, coverage, and
+  // OpenAPI 1.9.1 still gives this self-report broad confidence, coverage, and
   // source vocabulary. It captures unrelated queries throughout the routing
   // corpus. Expose it after the routing contract becomes selective.
   "GET /api/quality",
-  // OpenAPI 1.8.109 accepts and returns claim.type "issued", but the 200
+  // OpenAPI 1.9.1 still accepts and returns claim.type "issued", but the 200
   // response schema omits it from the claim.type enum. Expose the operation
   // after one shared claim-type contract covers both request and response.
   "GET /api/verify"

@@ -205,3 +205,19 @@ resolver contract and adds a `q` free-text filter to the skills-catalog descript
 Both changes stay within their skill's topic. They add no credential, behavior-hijack instruction,
 retired skill, or non-exposed Raven operation reference. The catalog diff for this re-pin is
 provenance only: commits, blob hashes, content digests, and timestamps.
+
+### 2026-08-28 — stellar-light re-pin (drift issue #86)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-light` | `d25b9f6bd842159b5a33aa6125ecb62373c2d8b5` | `sel:56a2798fd09a` | complete old-to-new body diff read |
+
+The other three sources did not change their served selections.
+
+One API reference file changed. It adds exact guidance for the `corrected`, `semantic`, and `all`
+project-search match modes. It also adds sections for `GET /api/quality` and `GET /api/verify`.
+
+The changes stay within the Scout skill's topic. They add no credential, behavior-hijack
+instruction, or retired skill. Raven still excludes both new sections through the shared Scout
+operation and skill-body exposure filter. The build and skill-scrub guards verify that the served
+skill cannot advertise either excluded path.

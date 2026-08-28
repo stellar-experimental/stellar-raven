@@ -10,6 +10,9 @@ evidence:
   - OpenAPI 1.8.109 omits issued from the 200 response claim.type enum
   - An independent live OpenAPI 1.8.110 recheck still omits issued from the 200 response claim.type enum
   - Raven keeps GET /api/verify unexposed until the model-facing response contract includes every live claim type
+recurrences:
+  - date: 2026-08-28
+    evidence: OpenAPI 1.9.1 still accepts issued in the request enum and omits it from the 200 response enum; a live issued EURC request returned claim.type issued and verdict supported at 2026-08-28T12:55:15.187Z
 ---
 
 ## Finding

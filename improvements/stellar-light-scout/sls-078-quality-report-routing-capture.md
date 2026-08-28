@@ -12,6 +12,9 @@ evidence:
   - excluding the operation changed extended strict routing from 88/109/116 to 90/109/117 and removed unrelated top-one captures
   - An independent live OpenAPI 1.8.110 recheck kept the same broad x-routing keywords
   - Raven keeps GET /api/quality unexposed until its routing contract becomes selective
+recurrences:
+  - date: 2026-08-28
+    evidence: OpenAPI 1.9.1 changes only the quality-report response schema and keeps the broad x-routing contract byte-identical to 1.8.110
 ---
 
 ## Finding

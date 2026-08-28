@@ -6,7 +6,7 @@
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "3427da83dc04973cc2a5c021eb54c254421fb3c81924439a0ba69c8f2da52976"
+        "sha256": "4945c3117d464d7155fe6bc2bd2f2f42638ef83159435ae48a90bab046dc6789"
       },
       {
         "path": "eval/routing-cases.json",
@@ -49,7 +49,7 @@
         "passed": 21
       }
     },
-    "localTrace": "routing-2026-08-28T02-49-08-451Z.json"
+    "localTrace": "routing-2026-08-28T13-09-30-016Z.json"
   },
   "note": "2026-08-27 issue #67 drift: Scout 1.8.110 adds getQualityReport and verifyClaim, fully types resolveProject, and adds Oracle routing to searchProjects; Stellar Docs titles move 646 to 649. Raven exposes resolveProject, withholds verifyClaim for the live issued response-enum mismatch (sls-077), and withholds getQualityReport after an A/B showed broad unrelated captures (sls-078). Legacy strict moves 209/279/311 to 208/279/311. The accepted trade is q-defi-reflector-resolve: resolveProject reaches rank one, while the strict corpus label remains Lumenloop and expected_any includes Scout. Card@5 remains 95/182. Extended strict improves 89/109/117 to 90/109/117 because the Oracle routing moves q-defi-oracles-chainlink-band to searchProjects at rank one. Skills remain 16/23/23. Holdout remains 10/22/25 with 11 forbidden captures. No scorer, corpus, floor, band, or runner operation changed. Decision record: .agents/rounds/2026-08-27-live-drift-67.md.",
   "legacy": {
