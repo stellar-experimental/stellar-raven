@@ -36,13 +36,15 @@ retirements landed in the follow-up PR from branch `lane/improvements-retire-202
 
 Skill: `run-evals`.
 
-- Same-100 rerun at current `main`. Compare against
+- DONE 2026-08-28: same-100 rerun stored as `eval/qa/results/2026-08-28T19-27-08-variantA.json`
+  and recorded in `eval/qa/README.md` (41 of 100 ids comparable). Was: compare against
   `eval/qa/results/2026-08-27T00-02-11-variantA.json` (48/35/13/4, half-credit 65.5,
   strict 48.0, core-answer 91.7%). This run also reconciles the seven dated consistency reopens.
-- Confirm `meta.judgeTierUsed` is on every verdict, then run `node eval/qa/judge-stability.mjs`.
-- Add three owned QA cases under `eval/qa/corpus/` for the new Scout ops: `verifyClaim`
-  ("Is Blend audited?"), `getQualityReport` ("How reliable is Scout status data?"), and
-  `resolveProject` (a renamed project). The drift audit asked for these.
+- DONE 2026-08-28: `meta.judgeTierUsed` on 100/100 verdicts; register regenerated. Follow-ups
+  live in `.agents/TODO.md` "Eval instruments".
+- Owned QA coverage for `scout.resolveProject` landed 2026-08-28
+  (`q-scf-resolve-passport-superseded-slug`). No cases for `verifyClaim` or `getQualityReport`:
+  both stay excluded under ADR-0003, and a case must never reference a non-exposed operation.
 - `DEMO_GROK_CONTROL_MODEL` and the gauntlet default list now pin `grok-4.6` (done 2026-08-28).
 
 ### 3. Golden-truth session 3 (largest block)
