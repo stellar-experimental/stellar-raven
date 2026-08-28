@@ -37,6 +37,12 @@ describe("upstreamTitle contract (unit)", () => {
     expect(upstreamTitleError({ status: "verified", upstreamTitle: "   ", evidence: [] })).toMatch(/required/);
   });
 
+  test("does not throw when evidence is malformed (not an array)", () => {
+    // The lint's own list check reports `evidence: foo`; the title rule must still return a value.
+    expect(upstreamTitleError({ status: "verified", evidence: "foo" })).toMatch(/required/);
+    expect(upstreamTitleError({ status: "verified", upstreamTitle: "x".repeat(30), evidence: "foo" })).toBeNull();
+  });
+
   test("grandfathers post-proposal records whose evidence cites a filed ref", () => {
     const evidence = ["filed upstream: https://github.com/stellar/stellar-docs/issues/1234"];
     for (const status of ["reported-upstream", "declined-upstream", "fixed-upstream"]) {

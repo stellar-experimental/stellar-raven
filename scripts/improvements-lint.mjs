@@ -73,7 +73,8 @@ for (const file of listFindingFiles()) {
   if (fm.service && fm.id && !fm.id.startsWith(prefixForService(fm.service))) {
     errors.push(`${label}: id '${fm.id}' does not match service '${fm.service}'`);
   }
-  if (fm.evidence?.some((entry) => GITHUB_EVIDENCE_REF_RE.test(entry)) && statusRank[fm.status] < statusRank["reported-upstream"]) {
+  const evidenceList = Array.isArray(fm.evidence) ? fm.evidence : [];
+  if (evidenceList.some((entry) => GITHUB_EVIDENCE_REF_RE.test(String(entry))) && statusRank[fm.status] < statusRank["reported-upstream"]) {
     errors.push(`${label}: evidence contains a GitHub issue/PR URL but status is '${fm.status}'`);
   }
   // Same grandfathering predicate as the rule above: a cited GitHub ref is the mechanical marker
@@ -81,7 +82,7 @@ for (const file of listFindingFiles()) {
   const titleError = upstreamTitleError(fm);
   if (titleError) errors.push(`${label}: ${titleError}`);
   if (fm.status === "declined-upstream") {
-    if (!fm.evidence?.some((entry) => GITHUB_EVIDENCE_REF_RE.test(entry))) {
+    if (!evidenceList.some((entry) => GITHUB_EVIDENCE_REF_RE.test(String(entry)))) {
       errors.push(`${label}: declined-upstream requires the durable upstream decline ref in evidence`);
     }
     if (!String(fm.disposition ?? "").trim()) {

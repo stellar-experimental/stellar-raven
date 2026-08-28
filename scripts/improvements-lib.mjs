@@ -250,7 +250,9 @@ export function upstreamTitleError(fm) {
   if (!["verified", "reported-upstream", "declined-upstream", "fixed-upstream"].includes(fm.status)) {
     return null;
   }
-  const filed = (fm.evidence ?? []).some((entry) => GITHUB_EVIDENCE_REF_RE.test(String(entry)));
+  // Malformed frontmatter (`evidence: foo`) is reported by the lint's own list check; do not throw here.
+  const evidence = Array.isArray(fm.evidence) ? fm.evidence : [];
+  const filed = evidence.some((entry) => GITHUB_EVIDENCE_REF_RE.test(String(entry)));
   if (filed) return null;
   return `upstreamTitle is required at status '${fm.status}' (reader-first issue title, ${UPSTREAM_TITLE_MIN}-${UPSTREAM_TITLE_MAX} characters)`;
 }
