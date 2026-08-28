@@ -7,21 +7,6 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-## Gates
-
-### `improvements:lint` does not enforce the filer's own contract
-
-`scripts/improvements-lint.mjs` never checks `upstreamTitle`. The 20–120 character cap lives only in
-`issueTitle` in `scripts/improvements-file-issue.mjs`, which runs at filing time. So a finding can
-pass lint, pass CI, and merge, and still be impossible to file.
-
-Found 2026-08-25: sls-073 merged with a 124-character title and `improvements:file` refused it.
-Three reviews had passed the record because none of them tried to send it.
-
-Done when: lint enforces the cap, and requires an `upstreamTitle` on any finding at `verified`
-(records predating the field stay grandfathered). An improvements PR should also run
-`improvements:file --dry-run` as a check — it posts nothing.
-
 ## Golden corpus
 
 ### Golden authoring lint warnings burn-down
@@ -97,17 +82,6 @@ the guard exists for. Affects `/demo/chat` only.
 
 Done when: a test stubs the model rather than the module, so the real tool loop runs.
 
-## Legal
-
-### Set the Terms effective date after counsel approves it
-
-`TERMS_EFFECTIVE_DATE` in `src/site.ts` remains `August 5, 2026`. PR #59 retained that date because
-the Terms include a 2026-08-25 counsel edit and were not in force on the approved document's
-`July 30, 2026` date.
-
-Done when: counsel approves the effective date, `TERMS_EFFECTIVE_DATE` matches it, and the `/terms`
-route tests pass.
-
 ## Routing
 
 ### `search` does not surface the research lane for protocol-history questions
@@ -133,24 +107,6 @@ as unshipped.
 
 Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
 our ranking.
-
-## Verification owed
-
-### Re-check the Algolia extractor change after a full crawl
-
-The 2026-08-25 crawler fix (`sd-001`) was applied, then only the affected URL was recrawled. Every
-other page still carries records from the previous extractor until the daily 00:00 crawl settles.
-The no-regression evidence so far is a sample of about twenty queries and twelve page-level
-extractor comparisons, not a corpus-wide proof.
-
-Done when: a full crawl has completed, the regression and collateral checks are repeated against
-the settled index, and the result is recorded on `sd-001`. Rollback source is in
-`research/services/stellar-docs-algolia.md`.
-
-### sd-001 cannot retire yet
-
-The independent recheck returned DO-NOT-RETIRE on 2026-08-25. See that finding for the three
-reasons and the conditions for retirement.
 
 ## Staleness
 
@@ -228,38 +184,7 @@ Done when: golden-edit rounds record the affected case-id list in the round
 ledger or consistency register, so a later rerun reads the list instead of
 reconstructing it.
 
-## QA quality round — tracked follow-ups (2026-08-27)
+## Owner decisions
 
-Source: `research/qa-improvement-plan-2026-08-25.md` and round ledger
-`.agents/rounds/2026-08-25-qa-quality-deep-dive.md`.
-
-- [ ] Decide whether to include the two out-of-scope lint classes (47
-  sourcing-guard avoid warnings, 56 corroboration warnings). Owner call made
-  when: included in a session brief or explicitly declined in the ledger.
-- [ ] Lane 3 (source delivery): answer the 12 owner questions in
-  `ideas/source-delivery-ranked-references.md` §8 (pin freshness, agents
-  without fetch tools, index cost/budget, line ranges, attribution,
-  docs-vs-source neutrality, query ownership, index availability, CPU/latency
-  limits, conflict grouping, skill sourceRoles metadata, and allowlist
-  governance). Done when: each has a recorded owner decision. The phase-zero
-  spike remains unapproved until the owner approves it separately.
-- [x] Done 2026-08-28: `meta.judgeTierUsed` on 100/100 verdicts of
-  `eval/qa/results/2026-08-28T19-27-08-variantA.json`; register regenerated. Was: regenerate after every collection run
-  (`node eval/qa/judge-stability.mjs`); verify escalation tiers appear in
-  result metadata. Done when: the first judged current-`main` collection
-  records `meta.judgeTierUsed` on every verdict.
-- [x] Done 2026-08-28: same-100 rerun stored and compared in `eval/qa/README.md` (41 of 100
-  comparable; no evidence of a quality change). Was: same-100 rerun at
-  current main; compare against `eval/qa/results/2026-08-27T00-02-11-variantA.json`
-  (48/35/13/4, half 65.5, strict 48.0, core-answer 91.7%). Done when: a comparable
-  current-`main` same-100 run is stored and compared against that result.
-- [ ] Three synthesizer questions from `research/qa-deep-dive-2026-08-25/fable-max.md` §7
-  have no recorded decision. Q2: docs-vs-source disputes — does the battery grade truth
-  per Core/source or per the tested surface (the same question as Lane 3 §8 item 6)?
-  Q6: should `search` or the server instructions steer "how do I do X in tool Y"
-  questions to repo-level operations such as `scout.explainRepo` when the docs family
-  returns adjacent-only hits? Q8: exclude provider-safeguard refusals (for example
-  `q-n3-ssrf-metadata-endpoint`) from the score denominator? Done when: each has an
-  owner decision recorded here or in `eval/qa/README.md`. Found 2026-08-27 while
-  reviewing the round ledgers; the other five questions were answered by the plan
-  (A1, A2, A3, R8) or by the 2026-08-27 same-100 run.
+Owner decisions that block agent work are listed once, in `NEXT.md` under "Owner decisions".
+Record each answer there or in `eval/qa/README.md`, then delete the question.
