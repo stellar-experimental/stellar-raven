@@ -5,7 +5,7 @@
     "scout.resolveProject"
   ],
   "golden": {
-    "answer": "Use `scout.resolveProject` with the old slug or URL and cite the response's `generatedAt`. As observed on 2026-08-28, the query `passport` matched on slug. The matched record is `Stellar Passport` (slug `passport`) with status Inactive, and `superseded` is true. The `current` record is slug `stellar-passport`, name `Stellar Passport`, status Live, at https://stellarlight.xyz/project/stellar-passport. The evidence block dates the Live status to `statusAsOf` 2026-08-17, with basis `site-liveness` and source https://demo.stellarpassport.xyz/, and `unsourced` is false. Both records carry the same name, so the old slug is a superseded duplicate directory record, not a real-world rename; the project site https://stellarpassport.xyz/ is live under the same name. Site-liveness means only that a page answered, so do not present it as proof of product activity. Scout lists Stellar Passport as an SCF-funded passkey-secured onboarding and identity platform.",
+    "answer": "Use `scout.resolveProject` with the old slug or URL and cite the response's `meta.generatedAt` as the as-of date (observed value `2026-08-28T17:11:33.764Z`). As observed on 2026-08-28, the query `passport` matched on slug. The matched record is `Stellar Passport` (slug `passport`) with status Inactive, and `superseded` is true. The `current` record is slug `stellar-passport`, name `Stellar Passport`, status Live, at https://stellarlight.xyz/project/stellar-passport. The evidence block dates the Live status to `statusAsOf` 2026-08-17, with basis `site-liveness` and source https://demo.stellarpassport.xyz/, and `unsourced` is false. Both records carry the same name, so the old slug is a superseded duplicate directory record, not a real-world rename; the project site https://stellarpassport.xyz/ is live under the same name. Site-liveness means only that a page answered, so do not present it as proof of product activity. Scout lists Stellar Passport as an SCF-funded passkey-secured onboarding and identity platform.",
     "keyFacts": [
       "Resolves `passport` as a superseded record whose current slug is `stellar-passport`.",
       "Reports the current record as Stellar Passport with status Live, dated to its statusAsOf.",
@@ -17,7 +17,7 @@
       "Do NOT claim the project was renamed from Passport to a different name.",
       "Do NOT report the superseded record's Inactive status as the project's current status."
     ],
-    "notes": "Grade the resolver semantics: matched record, superseded flag, current record, and dated evidence. The Live status and the observation dates can change; do not penalize a later dated status if the answer cites its as-of date."
+    "notes": "Grade the resolver semantics: matched record, superseded flag, current record, and dated evidence. The Live status and the observation dates can change; do not penalize a later dated status if the answer cites its as-of date. The observed generatedAt value is an example; a later run must cite its own response's value, not this one."
   },
   "tags": {
     "category": "scf-grants-builders",

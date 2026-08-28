@@ -8,7 +8,7 @@ Total findings: 66
 
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
-| sk-004 | Two lumenloop-skills playbooks teach that findavpassages yields verbatim, quotable transcript passages: stellar-project-dossier labels it…  | reported-upstream | 2026-07-03 | 1           |
+| sk-004 | Two lumenloop-skills playbooks teach that find_av_passages yields verbatim, quotable transcript passages: stellar-project-dossier labels…   | reported-upstream | 2026-07-03 | 1           |
 | sk-005 | The Lumenloop skill corpus lacks machine-readable audience and transport metadata                                                           | reported-upstream | 2026-07-03 | 3           |
 | sk-007 | The ecosystem-digest skill hard-codes a stale 2026-06-08 recency window                                                                     | reported-upstream | 2026-07-03 | 3           |
 | sk-014 | develop-secure-contracts says it supports Stellar. Its trigger list names only Solidity components. It omits the Stellar terms that its…    | reported-upstream | 2026-08-11 | 1           |
@@ -48,7 +48,7 @@ Total findings: 66
 | sd-036 | > Fixed 2026-08-28. The source recheck closed the CAP-0075 interface contradiction. Everything below describes the defect before the fix    | fixed-upstream    | 2026-07-11 | 2           |
 | sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 2           |
 | sd-039 | The current Tools documentation presents "OpenZeppelin Relayer" and the managed Stellar Channels service as the same product. Both…         | reported-upstream | 2026-07-27 | 3           |
-| sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::fromxdr(&env, &bytes).unwrap()                               | reported-upstream | 2026-08-11 | 0           |
+| sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::from_xdr(&env, &bytes).unwrap()                              | reported-upstream | 2026-08-11 | 0           |
 | sd-041 | The pooled-accounts guide opens with a past-tense statement about memos. The same page later tells the reader to keep supporting memos      | reported-upstream | 2026-08-14 | 0           |
 | sd-042 | Stellar Docs publish two incompatible lifecycle labels for Horizon                                                                          | reported-upstream | 2026-08-14 | 0           |
 | sd-043 | The sponsored-reserves guide states this minimum-balance formula under "Effect on minimum balance":                                         | reported-upstream | 2026-08-14 | 0           |
@@ -63,15 +63,15 @@ Total findings: 66
 | ll-002 | The Messari "State of Stellar Q1 2026" AV/research item carries only ~702 chars of extracted content. A load-bearing source is…             | reported-upstream | 2026-07-03 | 1           |
 | ll-003 | Region vocabulary is free-text rather than a controlled list. The live-lane eval case q-live-ll-regions-vocab currently passes on…          | reported-upstream | 2026-07-03 | 3           |
 | ll-004 | The 2026-07-14 partner-listing regression stopped reproducing later that day and remained absent on 2026-07-27: authenticated /v1/tools…    | reported-upstream | 2026-07-03 | 2           |
-| ll-005 | findcontentbyentity advertises entitytype: "person" in its input schema enum, but the external lane returns success: true with all-empty…   | reported-upstream | 2026-07-03 | 5           |
-| ll-006 | searchcontentsemantic over articles has no freshness weighting, so "recent report"-shaped queries surface years-stale editions of…          | reported-upstream | 2026-07-03 | 1           |
-| ll-007 | Event summary prose can contradict the structured startat field. The Bhopal and Jabalpur "Build On Stellar" workshop rows say "July 27" in… | reported-upstream | 2026-07-03 | 3           |
+| ll-005 | find_content_by_entity advertises entity_type: "person" in its input schema enum, but the external lane returns success: true with…         | reported-upstream | 2026-07-03 | 5           |
+| ll-006 | search_content_semantic over articles has no freshness weighting, so "recent report"-shaped queries surface years-stale editions of…        | reported-upstream | 2026-07-03 | 1           |
+| ll-007 | Event summary prose can contradict the structured start_at field. The Bhopal and Jabalpur "Build On Stellar" workshop rows say "July 27"…   | reported-upstream | 2026-07-03 | 3           |
 | ll-008 | Directory records carry misleading region/coverage values, two live instances:                                                              | reported-upstream | 2026-07-03 | 1           |
 | ll-009 | Lumenloop's editorial content misattributes two headline statistics to "Messari's State of Stellar Q1 2026 report":                         | reported-upstream | 2026-07-03 | 1           |
 | ll-010 | Lumenloop weekly-roundup research items state headline Stellar RWA totals with no data source and no measurement scope. The Jun 19, 2026…   | reported-upstream | 2026-07-06 | 1           |
 | ll-011 | Lumenloop's YieldBlox incident summaries repeat material unit, identity, and status errors. The current research document 66 calls it a…    | reported-upstream | 2026-07-10 | 3           |
 | ll-012 | Broad Lumenloop RWA discovery mixes planned and live product states and has weak recall for major currently live Stellar products. A live…  | reported-upstream | 2026-07-10 | 2           |
-| ll-013 | lumenloop.getscfsubmissions({slug:"blend"}) links the correct Blend Capital submission and returns round, awardtype, and budget: "50000",…  | reported-upstream | 2026-07-10 | 5           |
+| ll-013 | lumenloop.get_scf_submissions({slug:"blend"}) links the correct Blend Capital submission and returns round, award_type, and budget:…        | reported-upstream | 2026-07-10 | 5           |
 | ll-014 | Project-content and similarity retrieval do not expose enough match provenance or confidence for a consumer to distinguish exact Soroswap…  | reported-upstream | 2026-07-10 | 1           |
 | ll-015 | Lumenloop's stellar-weekly-roundup-week-jul-3-2026 repeatedly dates Protocol 27 Mainnet activation as July 9. The roundup's own linked…     | reported-upstream | 2026-07-10 | 1           |
 | ll-016 | Historical retrieval can collapse disputed causal narratives into one factual summary. For Stellar's 2014 fork and 2015 SCP rewrite, SDF…   | reported-upstream | 2026-07-10 | 1           |
@@ -85,9 +85,9 @@ Total findings: 66
 | ll-025 | Lumenloop roadmap summaries do not reliably distinguish planned capabilities from shipped ones. The June 9 post describes ML-DSA host…      | reported-upstream | 2026-07-11 | 1           |
 | ll-026 | Lumenloop event summaries risk collapsing a product announcement, effective date, and first-trade date into one event timestamp. For the…   | reported-upstream | 2026-07-11 | 1           |
 | ll-027 | Lumenloop's RedStone summary gives an unqualified nine-asset count that cannot be reconciled with Scout's ten-feed wording. Without labels… | reported-upstream | 2026-07-11 | 1           |
-| ll-028 | listdocuments accepts an unknown sort value. The call returns ok with a full result page. It returns no error and no warning                | reported-upstream | 2026-08-14 | 0           |
+| ll-028 | list_documents accepts an unknown sort value. The call returns ok with a full result page. It returns no error and no warning               | reported-upstream | 2026-08-14 | 0           |
 | ll-029 | Five public Lumenloop tools declare an output object with optional results and text fields. The live payload for each tool uses a…          | reported-upstream | 2026-08-18 | 0           |
-| ll-030 | lumenloop.getproject returns a record for wisdomtree that counts the issuer's tokenized funds without naming any of them. The record…       | proposed          | 2026-08-28 | 0           |
+| ll-030 | lumenloop.get_project returns a record for wisdomtree that counts the issuer's tokenized funds without naming any of them. The record…      | proposed          | 2026-08-28 | 0           |
 
 ## workers-ai-provider
 
