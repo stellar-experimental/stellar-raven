@@ -124,10 +124,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "Docs content gap."
     },
-    "sd-008": {
-      "repo": "stellar/stellar-docs",
-      "reason": "Official Software Versions content lags live Mainnet activation and stable release feeds."
-    },
     "sd-009": {
       "repo": "stellar/stellar-docs",
       "reason": "Developer docs omit the canonical SEP-6 interactive-component deprecation status."
@@ -135,10 +131,6 @@
     "sd-014": {
       "repo": "stellar/stellar-docs",
       "reason": "Ledger, transaction-set, result, archive, and SCP documentation lacks one explicit transaction-inclusion verification recipe and trust-boundary explanation."
-    },
-    "sd-025": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The Horizon-to-RPC migration guide still describes CAP-67 unified asset events as near-future despite Protocol 23 finality and live Protocol 27."
     },
     "sd-027": {
       "repo": "stellar/stellar-docs",
@@ -202,15 +194,8 @@
     "sk-005": {
       "repo": "lumenloop/lumenloop-skills"
     },
-    "sk-006": {
-      "repo": "stellar/stellar-dev-skill"
-    },
     "sk-007": {
       "repo": "lumenloop/lumenloop-skills"
-    },
-    "sk-009": {
-      "repo": "Stellar-Light/stellar-scout",
-      "reason": "The finding concerns the upstream Scout skill API reference, not the live service implementation."
     },
     "sk-014": {
       "repo": "OpenZeppelin/openzeppelin-skills",

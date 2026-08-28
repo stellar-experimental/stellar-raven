@@ -1025,7 +1025,7 @@ The evidence trace is `routing-2026-08-19T20-26-07-408Z.json`.
 Scout 1.8.87 has 34 paths and 35 operations. It adds the read-only
 `GET /api/projects/resolve` operation. Raven withholds that operation because
 OpenAPI leaves its `subject`, `current`, and `evidence` objects opaque and omits
-the live `meta` envelope. Finding `sls-075` tracks the upstream contract gap.
+the live `meta` envelope. Resolved ledger entry `sls-075` tracks the upstream contract gap.
 
 The refresh changes routing text for `scout.getPartners` and
 `scout.searchProjects`. The Stellar Docs title vocabulary grows from 636 to
@@ -1049,7 +1049,7 @@ historical project resolver and adds Oracle vocabulary to `searchProjects`.
 The Stellar Docs title vocabulary grows from 646 to 649 titles.
 
 Raven exposes `scout.resolveProject` because its identity, status evidence,
-and provenance fields now match the live response. Finding `sls-075` records
+and provenance fields now match the live response. Resolved ledger entry `sls-075` records
 the upstream fix. Raven withholds `scout.verifyClaim` because its live
 `claim.type: "issued"` response is absent from the published response enum.
 Finding `sls-077` records that contract gap.

@@ -106,7 +106,7 @@
         "Sibling sweep checked q-tool-cli-install, q-tool-cli-init-build-deploy, and q-sor-build-target-wasm32v1; sk-006 already owns the missing error-keyed upstream coverage.",
         "Structural re-form (symmetric-caution): added a cached-skill grading caution for sk-006; the CLI and Windows troubleshooting facts are unchanged.",
         "No live recheck was required for this pure symmetric-caution re-form.",
-        "Improvements review 2026-08-27: improvements/skills/sk-006-error-keyed-troubleshooting-gap.md records the 2026-08-14 upstream fix; the disputed claim is whether older skill copies contain error-keyed rows for missing WASM, link.exe, identity or alias collisions, and funding.",
+        "Improvements review 2026-08-27: improvements/resolved.json entry sk-006 records the 2026-08-14 upstream fix; the disputed claim is whether older skill copies contain error-keyed rows for missing WASM, link.exe, identity or alias collisions, and funding.",
         "Sibling sweep 2026-08-27: grep sk-006|link.exe|No such file or directory wasm|Unable to fund account|alias already exists → no other topical case; no contradiction",
         "Structural re-form (compound-predicate): Reworded six pinned long or compound facts in place; the obsolete target and duplicate-alias tails remain concrete avoid claims.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — current contract setup still requires Rust 1.84+ and wasm32v1-none.",
@@ -119,7 +119,7 @@
         "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part2.md): restored the Windows Rust/rustup + MSVC-or-WSL install requirement as a keyFact; truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "improvements/skills/sk-006-error-keyed-troubleshooting-gap.md",
+        "improvements/resolved.json entry sk-006",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
       ]

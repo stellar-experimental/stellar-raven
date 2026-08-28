@@ -546,7 +546,7 @@ all remaining milestones after one disputed milestone resolved. Both arms also p
 `Stroopy.AI` for the `Strupey` query because Scout labeled the spelling neighbor as a strict match.
 
 The `FIRST-PAIR-BLOCK` verdict rejected the candidate before replication or judging. No aggregate
-score is available from these raw, unjudged rows. The shared Scout defect became `sls-076` and
+score is available from these raw, unjudged rows. The shared Scout defect became resolved ledger entry `sls-076` and
 [Stellar-Light/stellarlight#1055](https://github.com/Stellar-Light/stellarlight/issues/1055).
 The full case review and method record are in
 [`2026-08-27-connectors-description-ab.md`](../../.agents/rounds/2026-08-27-connectors-description-ab.md).

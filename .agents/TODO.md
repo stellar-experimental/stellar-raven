@@ -49,20 +49,13 @@ remain a separate owner decision below.
 
 ## Improvements backlog
 
-### Five findings are stale against their upstream issue
+### Watch Stellar-Light/stellarlight#1031 for the maintainer close
 
-Each is `reported-upstream` while its GitHub issue is closed. Our rule is that closure is not proof,
-so each needs a live re-check before it can move to `fixed-upstream`.
+`sls-074` was retired on 2026-08-28 after a live verification comment
+(https://github.com/Stellar-Light/stellarlight/issues/1031#issuecomment-5455030587). The issue was
+still open at retirement. Untouched open issues stay quiet; do not post reminders.
 
-`sd-036`, `sls-023`, `sls-024`, `sls-029`, `sls-033`.
-
-Done when: each carries a dated live re-check and the correct status. Use `improvements-pipeline`.
-
-### Four findings are deletion candidates
-
-`sk-006`, `sk-009`, `sd-008`, `sd-025` are `fixed-upstream` and still in the active queue.
-`improvements/README.md` calls that state short-lived and requires a distinct reviewer to re-run the
-original trigger before the file is retired.
+Done when: the next improvements round records the issue state. No action if it is closed.
 
 ## Goldens
 

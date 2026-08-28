@@ -17,18 +17,20 @@ sequences. Delete or rewrite this file when the block below is done.
 
 ## Ranked blocks
 
-### 1. Improvements hygiene sweep
+### 1. Improvements hygiene sweep — DONE 2026-08-28
 
-One agent, no paid calls. Skill: `improvements-pipeline`.
+PR #87 landed the lint contract, the re-checks, and the filing-ready findings. The seven
+retirements landed in the follow-up PR from branch `lane/improvements-retire-20260828`. Ledger:
+`.agents/rounds/2026-08-28-improvements-hygiene.md`.
 
-- Make `scripts/improvements-lint.mjs` enforce the 20–120 character `upstreamTitle` cap and
-  require the field at `verified`.
-- File `sls-077` and `sls-078` upstream.
-- Live re-check the five stale `reported-upstream` findings whose issues are closed:
-  `sd-036`, `sls-023`, `sls-024`, `sls-029`, `sls-033`.
-- Retire the `fixed-upstream` queue with a distinct reviewer: `sk-006`, `sk-009`, `sd-008`,
-  `sd-025`, `sls-074`, `sls-075`, and `sls-076`.
-- Re-check `sd-001` against the settled Algolia index; the daily crawl has run twice since the fix.
+- `improvements:lint` enforces the `upstreamTitle` contract.
+- `sls-077` and `sls-078` filed as Stellar-Light/stellarlight#1086 and #1087.
+- `sd-036` -> `fixed-upstream`; `sls-023`, `sls-024`, `sls-029`, `sls-033` still reproduce.
+- The seven reviewed `fixed-upstream` findings were retired; 64 findings remain active.
+- `sd-001` stays `fixed-upstream`: the crawl settled, but repo cleanup and three ranking
+  residuals (`what is in Protocol 23`, `Protocol 27`, `Poseidon Rust SDK`) remain.
+- Open upstream follow-up: Stellar-Light/stellarlight#1031 (`sls-074`) still open after the
+  verification comment; the maintainer owns the close.
 
 ### 2. Eval measurement block (paid — ask before spend)
 
@@ -111,5 +113,5 @@ then decide whether the phase-zero spike (one or two repos) gets a brief.
 
 ## Suggested sequence
 
-Day 1: block 1. Day 2 onward: block 2 after authorization, then block 3 with block 4 folded in.
+Block 1 is done. Next: block 2 after spend authorization, then block 3 with block 4 folded in.
 Blocks 5 and 6 fit any idle lane.
