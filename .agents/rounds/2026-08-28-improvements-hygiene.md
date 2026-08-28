@@ -91,6 +91,15 @@ issue #86 drift round.
   `Test Files  90 passed (90)`, `Tests  1374 passed (1374)` (run before the one-line `sls-078`
   edit; the two improvements suites re-ran after it: `Tests  23 passed (23)`);
   `npm run secrets:scan -- --tree` -> `secret-scan: clean (+ gitleaks)`; `git diff --check` clean.
+- `2026-08-28T13:55Z` — PR #87 opened. Copilot flagged unguarded `.some()` on a non-array
+  `evidence`; fixed with one test (`Tests  34 passed (34)` across the three improvements suites).
+- `2026-08-28T14:05Z` — `main` moved under the lane (issue #86 drift round: `d08212f`,
+  `0133653`, `c9b99f7`). `git rebase origin/main` conflicted only on `improvements/INDEX.md`,
+  `sls-077`, and `sls-078` frontmatter. Resolution: keep the reviewed evidence lists, keep the
+  drift round's `recurrences` blocks, regenerate `INDEX.md`. Gates on the rebased tree:
+  `improvements lint ok (71 findings)`; `tsc --noEmit` exit 0; `Test Files  90 passed (90)`,
+  `Tests  1375 passed (1375)`; `npm run build` `Total Upload: 7036.53 KiB`; secrets clean;
+  `git diff --check` clean; both filing dry-runs exit 0. Force-pushed with lease.
 
 ## Outcome
 
