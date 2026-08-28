@@ -154,14 +154,6 @@ reasons and the conditions for retirement.
 
 ## Staleness
 
-### `DEMO_GROK_CONTROL_MODEL` is a retired model
-
-`src/demo/model-config.ts:14` pins `xai/grok-4.5`. The current default is `grok-4.6`. This is the
-control model for gauntlets, never production. One-line fix whenever a gauntlet next runs.
-
-Done when: the next gauntlet updates the pin to its current control model and the relevant model
-configuration tests pass.
-
 ### Decide the two hackathon cases' consistency-cluster membership
 
 The consistency-register comment now states the current 499-case battery. The remaining question

@@ -88,7 +88,7 @@ export const DEFAULT_MODELS = [
   "anthropic/claude-fable-5",
   "anthropic/claude-opus-5",
   "anthropic/claude-sonnet-5",
-  "xai/grok-4.5",
+  "xai/grok-4.6",
   "moonshotai/kimi-k3"
 ];
 

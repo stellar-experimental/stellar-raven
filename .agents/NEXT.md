@@ -43,8 +43,7 @@ Skill: `run-evals`.
 - Add three owned QA cases under `eval/qa/corpus/` for the new Scout ops: `verifyClaim`
   ("Is Blend audited?"), `getQualityReport` ("How reliable is Scout status data?"), and
   `resolveProject` (a renamed project). The drift audit asked for these.
-- Update `DEMO_GROK_CONTROL_MODEL` in `src/demo/model-config.ts` from `grok-4.5` to the current
-  control model.
+- `DEMO_GROK_CONTROL_MODEL` and the gauntlet default list now pin `grok-4.6` (done 2026-08-28).
 
 ### 3. Golden-truth session 3 (largest block)
 
