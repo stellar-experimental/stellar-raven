@@ -399,6 +399,33 @@ This design must not:
 12. **Allowlist governance.** Same reviewers and evidence bar as a skill pin, plus the role
     justification and license fields?
 
+### Non-binding recommendations from the 2026-08-27 review
+
+The temporary owner package proposed the defaults below. These are recommendations, not owner
+decisions. They do not authorize implementation, provisioning, deployment, or a spike.
+
+1. Re-pin monthly only when every indexed blob hash is unchanged. Review every changed blob,
+   path, or extractor output.
+2. Return a pointer and `verificationUrl` to agents without fetch tools. Do not return fallback
+   answers or receipts.
+3. Limit the serialized index to 5 MiB and parsed memory to 32 MiB. Limit cold parsing to 25 ms
+   and lookup CPU to 5 ms.
+4. Ship `file`, `symbol`, and `heading` locators only. Defer line ranges.
+5. Store SPDX identifiers and notice URLs. Return each repository attribution once per response.
+6. Stay neutral between documentation and source. Return every matching authority role with the
+   roles-matched note.
+7. Require explicit queries. Attach pointers only after `sources.locate({ q })`.
+8. Degrade cleanly without fallback pointers. Add an hourly Worker-side index canary when locate
+   ships.
+9. Limit attachments to 5 ms of added CPU and 20 ms of added p95 wall time. Disable attachments
+   if either limit is exceeded.
+10. Keep pointers flat with `authorityRole`. Do not create entity or conflict groups.
+11. Do not add skill `sourceRoles` initially. Add it only after measured attachment errors.
+12. Apply the skill-pin review bar to allowlist changes. Require a pin, role reason, license data,
+    extractor rule, descriptor update, and drift checks.
+
+The phase-zero spike remains unapproved. It needs separate owner approval after all 12 decisions.
+
 ## 9. Sizing and sequence
 
 **Program size: Large** until the phase-zero spike reports. The prior S/M sizing omitted storage,

@@ -289,3 +289,12 @@ The engineering prerequisites are complete or verified in production.
 The submission round remains active.
 The portal, account, Inspector, Claude, artifact, and prompt checks remain incomplete.
 No deployment, credential, paid test, or submission occurred during this migration.
+
+## Restart addendum — 2026-08-27
+
+The submission still requires external owner action. Work resumes only after the owner supplies
+portal-access and reviewer-account direction. Re-run the live Directory check when work resumes;
+the temporary `/tmp/stellar-raven-directory-check.json` extract has expired.
+
+No own-repository TODO duplicates this external submission work. No deployment, credential, paid
+test, or submission has new authorization.

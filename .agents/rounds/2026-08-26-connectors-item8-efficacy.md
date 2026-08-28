@@ -256,7 +256,7 @@ Cost and call limits:
 - The runner has no working aggregate budget flag.
 - Wrapper source: `eval/qa/reviewed/2026-08-26-connectors-item8/claude-wrapper.sh`.
 - Wrapper SHA-256: `6ff1e1663ba1f672723d75385be9d1f375d2d15757957f23847529e0c50b4ce5`.
-- Real Claude path: `$HOME/.local/bin/claude`.
+- Historical wrapper path: `/Users/kalepail/.local/bin/claude`.
 - Claude version: `2.1.246`.
 - Claude SHA-256: `7b09f01cb76a38e0e3a7c47c5d698d382162a5ff26538fc778683770caf9218b`.
 
@@ -401,3 +401,19 @@ Reject candidate `1f961ab1116bb23f97c32b14502401ccb2441be7` under the preregiste
 - Do not deploy, merge, or submit this candidate to the Directory.
 - The later `2026-08-27-connectors-description-ab.md` round superseded the design follow-ups.
 - That round fixed the harness, tested a redesigned candidate, and rejected the candidate.
+
+## Late review-comment closeout — 2026-08-27
+
+Three review comments arrived after PR #82 merged. The preserved evidence README now uses
+`Connectors Directory` and warns that historical plan sidecars contain absolute paths. This ledger
+now records the exact historical wrapper path and points to the preserved wrapper.
+
+These documentation fixes do not change the evidence, verdict, or hashes. The three review threads
+can close after this repair merges.
+
+## Binary-path correction — 2026-08-27
+
+The earlier `Historical wrapper path` label is imprecise. The preserved wrapper file is
+`eval/qa/reviewed/2026-08-26-connectors-item8/claude-wrapper.sh`. Inside that wrapper, the real
+Claude binary path is `/Users/kalepail/.local/bin/claude`, equivalent to the original
+`$HOME/.local/bin/claude` record on that host.

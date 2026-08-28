@@ -48,7 +48,7 @@ from author and owner); Opus high fallback. Panes recorded per batch below; the 
 
 ### Batches
 
-#### Batch 4 — negative-predicate class (127 cases; one pass per case) — in progress
+#### Batch 4 — negative-predicate class (127 cases; one pass per case) — complete
 
 Crew: gt2-sol-a (pane w12:p2), gt2-sol-b (w12:p3), gt2-sol-c (w12:p4), Codex gpt-5.6-sol high,
 four cases per prompt (32 chunks, `/tmp/raven-qadeep/gt2/negchunk-NN`); reviewer gt2-grok-rev
@@ -101,7 +101,7 @@ rule); the ids were reordered. The `YieldBlox borrowed XLM USDC totals` numeric 
 hashes but no verdict at `37dc50d` and was stamped `consistent` with a dated reason. The generated
 `eval/qa/cases.json` is committed with the batch, as in session 1.
 
-#### Batch 5 — compound-predicate class (102 cases not in batch 4; one pass per case) — in progress
+#### Batch 5 — compound-predicate class (102 cases not in batch 4; one pass per case) — complete
 
 Chunks `/tmp/raven-qadeep/gt2/cmpchunk-NN` (26). Brief: `/tmp/raven-qadeep/gt2/batch5-compound.md`
 (includes the batch-4 reviewer feedback). Part 1 review (32 cases, chunks 00–03, 09–10, 18–19):
@@ -160,13 +160,21 @@ and was repaired with the reviewer's text or an owner rewrite that keeps every H
 Crew panes (all created by the owner from w12:p1): w12:p2 gt2-sol-a, w12:p3 gt2-sol-b, w12:p4
 gt2-sol-c (Codex gpt-5.6-sol high), w12:p5 gt2-grok-rev (Grok 4.6). Left idle at session end.
 
-Next session: long keyFacts (372 warnings, 204 cases, all long-only now). Reuse
-`/tmp/raven-qadeep/gt2/rules.md` and the batch-5 brief's fix patterns; the reviewer must keep the
-claim-by-claim check — 33 of 233 reviewed cases in this session dropped or added a claim while
-tightening. The unreviewed stray edit to q-soroban-publish-events is at
-`/tmp/raven-qadeep/gt2/stray/` and may be used as a draft.
+Next session: long keyFacts (372 warnings, 204 cases, all long-only now). Follow the current
+session-3 handoff in `.agents/TODO.md`. The reviewer must keep the claim-by-claim check. In this
+session, 33 of 233 reviewed cases dropped or added a claim while tightening. The temporary helper
+files and the unreviewed `q-soroban-publish-events` draft have expired.
 
 ## Session 2 ledger receipt (added by orchestrator at collection)
 
 Round ledger entry appended in the PR for this branch; report archived from
 /tmp/raven-qadeep/golden-truth-owner2.md.
+
+## Temporary asset status (2026-08-27)
+
+The session-2 files under `/tmp/raven-qadeep/gt2/` expired after the host restart. This log remains
+the durable record of the completed method, review results, fixes, and gate results.
+
+The session-3 handoff now lives in `.agents/TODO.md`. A new session must rebuild its helper files
+from current `main`. The lost `q-soroban-publish-events` draft was unreviewed and must not be used
+as evidence.

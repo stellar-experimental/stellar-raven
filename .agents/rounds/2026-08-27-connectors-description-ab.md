@@ -1,5 +1,8 @@
 # Connector description A/B — 2026-08-27
 
+Temporary report paths below are historical receipts. This ledger preserves their material
+verdicts and reconciliations. A missing temporary report does not reopen the rejected candidate.
+
 ## Objective
 
 Measure the held response-guidance candidate against the merged control.
@@ -619,3 +622,8 @@ comparable rows per arm. No judge, retry, replication, or method rerun occurred.
 Every failure was triaged. The rejected treatment needs no own-repository follow-up.
 The shared Scout defect was verified, committed, filed, and read back.
 The relevant checks and improvements lints passed. The owned evaluation server stopped cleanly.
+
+## Audit-note correction — 2026-08-27
+
+The temporary-artifact audit added the opening note after this round completed. The original round
+began at `Objective`. The final rejection and follow-up state remain in this ledger's Outcome.

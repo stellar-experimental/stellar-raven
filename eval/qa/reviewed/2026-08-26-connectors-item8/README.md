@@ -1,4 +1,4 @@
-# Connector Directory item 8 paid evidence
+# Connectors Directory item 8 paid evidence
 
 This directory preserves the paid first-pair evidence from the 2026-08-26 item 8 round.
 
@@ -22,6 +22,10 @@ This directory preserves the paid first-pair evidence from the 2026-08-26 item 8
 | `claude-wrapper.sh` | `6ff1e1663ba1f672723d75385be9d1f375d2d15757957f23847529e0c50b4ce5` |
 
 The two result files contain the answer rows. The companion files preserve plan and composition analysis.
+
+The plan sidecars contain historical absolute paths from the original machines and worktrees. They
+are evidence, not portable replay inputs. Generate new plan sidecars from the current checkout for
+any replay.
 
 The original B1-1 file has SHA-256 `3d40f8768a019175d6c0eabf20dba10f4e5e46250c46785adf7b2f59b42a1c9e`.
 The reviewed copy replaces one Stellar secret seed with `[REDACTED_STELLAR_SECRET_SEED]`.

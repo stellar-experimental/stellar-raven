@@ -7,6 +7,15 @@ author may share publicly. A viewer can read a shared session without signing in
 signs in and asks a follow-up, Raven creates a private fork owned by the viewer and continues there;
 the shared source never becomes collaborative or writable by another user.
 
+## Issue #40 status
+
+Issue #40 requested a copy action, a larger 4,000-character paste limit, and cross-session history.
+PR #70 shipped the copy action. The paste-limit change remains undecided. The durable-session
+design below remains an unapproved product idea, not an approved history implementation.
+
+The current playground is a short evaluation surface. Owner approval is required before either
+remaining issue item becomes implementation work.
+
 ## Product decision
 
 Build this as durable, asynchronous conversation sharing, not live collaboration.
@@ -455,4 +464,3 @@ composer, and atomic private fork on first non-author send.
 - [`src/demo/page.ts`](../src/demo/page.ts) — in-memory client history, composer, and trace UI.
 - [`src/demo/frames.ts`](../src/demo/frames.ts) — visible SSE frame contract.
 - [`src/demo/budget.ts`](../src/demo/budget.ts) — replay and per-turn limits that remain in force.
-
