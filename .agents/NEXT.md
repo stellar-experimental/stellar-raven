@@ -12,8 +12,8 @@ below is done.
   the maintainer owns the close.
 - Corpus lint: 0 errors, 475 warnings (372 long-fact across 204 cases, 47 sourcing-guard,
   56 corroboration).
-- Same-100 baseline for the next comparison: `eval/qa/results/2026-08-28T19-27-08-variantA.json`
-  (see `eval/qa/README.md`). Judge stability: 57 of 100 same-100 cases sit below 0.75.
+- Same-100 baseline for the next comparison: `eval/qa/results/2026-08-28T19-27-08-variantA.json`.
+  Result artifacts are gitignored and local-only; `eval/qa/README.md` holds the committed record. Judge stability: 57 of 100 same-100 cases sit below 0.75.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
 - Ledgers for the finished blocks: `.agents/rounds/2026-08-28-improvements-hygiene.md` and
   `.agents/rounds/2026-08-28-eval-block2.md`.
@@ -84,5 +84,5 @@ routing eval, not one case. A fix that helps only this case is unshipped.
 
 ## Suggested sequence
 
-Block 1 with block 2 folded in. Block 3 fits between golden sessions. Blocks 4 and 5 fit any
+Start block 1 with block 2 folded in. Block 3 fits between golden sessions. Blocks 4 and 5 fit any
 idle lane. Owner decisions can land at any time.
