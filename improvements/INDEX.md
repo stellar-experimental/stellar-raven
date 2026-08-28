@@ -22,23 +22,23 @@ Total findings: 71
 
 | id      | title                                                                                                                                       | status            | discovered | recurrences |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
-| sls-023 | Scout's broad RWA discovery does not separate entity/project status from the deployment status of a particular product on Stellar. A live…  | reported-upstream | 2026-07-10 | 3           |
-| sls-024 | Scout lifecycle labels lack populated provenance and deployment qualifiers. The schema exposes statusAsOf, statusBasis, statusSourceUrl,…   | reported-upstream | 2026-07-10 | 5           |
-| sls-029 | Oracle discovery collapses provider identity, product family, network, and evidence tier into a project-level status. This makes…           | reported-upstream | 2026-07-10 | 3           |
-| sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 5           |
+| sls-023 | Scout's broad RWA discovery does not separate entity/project status from the deployment status of a particular product on Stellar. A live…  | reported-upstream | 2026-07-10 | 4           |
+| sls-024 | Scout lifecycle labels lack populated provenance and deployment qualifiers. The schema exposes statusAsOf, statusBasis, statusSourceUrl,…   | reported-upstream | 2026-07-10 | 6           |
+| sls-029 | Oracle discovery collapses provider identity, product family, network, and evidence tier into a project-level status. This makes…           | reported-upstream | 2026-07-10 | 4           |
+| sls-033 | Scout does not offer a first-class exact-type wallet enumeration with canonical deduplication and availability semantics. A keyword wallet… | reported-upstream | 2026-07-10 | 6           |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 0           |
 | sls-073 | The Stellar Light vet-idea endpoint returns an empty report.competitors.projects array for records that the directory does hold             | reported-upstream | 2026-08-21 | 0           |
 | sls-074 | Scout reports V-SOR-APP-VUL-003 as an exact miss. The Veridise V2.1 report contains that exact identifier in Appendix A.2.2 for Denial of…  | fixed-upstream    | 2026-08-25 | 0           |
 | sls-075 | Scout OpenAPI 1.8.87 adds GET /api/projects/resolve, but its core nested response objects are opaque. subject, current, and evidence…       | fixed-upstream    | 2026-08-25 | 0           |
 | sls-076 | scout.searchProjects({ q: "Strupey" }) returns Stroopy.AI as a strict keyword match. The response says that all keywords matched            | fixed-upstream    | 2026-08-27 | 0           |
-| sls-077 | Scout OpenAPI 1.8.109 accepts issued in the type query parameter. The live operation also returns claim.type: "issued" for a supported…     | verified          | 2026-08-27 | 1           |
-| sls-078 | Scout OpenAPI 1.8.109 gives getQualityReport broad routing words such as trust, confidence, coverage, source, health, and limitations.…     | verified          | 2026-08-27 | 1           |
+| sls-077 | Scout OpenAPI 1.9.1 omits issued from the 200 response claim.type enum. The same endpoint accepts issued in the type query parameter. The…  | verified          | 2026-08-27 | 1           |
+| sls-078 | Scout OpenAPI 1.9.1 gives getQualityReport broad x-routing keywords. The live list includes trust, confidence in the data, coverage,…       | verified          | 2026-08-27 | 1           |
 
 ## stellar-docs
 
 | id     | title                                                                                                                                       | status            | discovered | recurrences |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
-| sd-001 | The Stellar Docs crawler dropped /docs/networks/software-versions because its 1,319 extracted records exceeded the 750-record page cap      | fixed-upstream    | 2026-07-03 | 7           |
+| sd-001 | The Stellar Docs crawler dropped /docs/networks/software-versions because its 1,319 extracted records exceeded the 750-record page cap      | fixed-upstream    | 2026-07-03 | 8           |
 | sd-003 | The Algolia docs index excludes the auto-generated RPC-method and Horizon-endpoint API-reference pages, so authoritative per-method limits… | reported-upstream | 2026-07-03 | 5           |
 | sd-004 | The RPC method reference pages describe pagination limits as "hardcoded in Stellar-RPC for performance reasons" (getTransactions and…       | declined-upstream | 2026-07-03 | 2           |
 | sd-005 | The docs' agentic-payments coverage documents x402 and MPP mechanics in depth but contains zero positioning against the wider…              | reported-upstream | 2026-07-06 | 4           |
@@ -51,7 +51,7 @@ Total findings: 71
 | sd-032 | The current Flutter Wallet SDK tutorial pins this pair:                                                                                     | reported-upstream | 2026-07-11 | 1           |
 | sd-034 | The current Stellar smart-wallet guide routes a greenfield reader to Passkey Kit without presenting the separate Smart Account Kit…         | reported-upstream | 2026-07-11 | 4           |
 | sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial installs…                  | reported-upstream | 2026-07-11 | 1           |
-| sd-036 | The current Final CAP-0075 source retains one reproducible interface contradiction. The former Protocol-24 availability contradiction no…   | reported-upstream | 2026-07-11 | 1           |
+| sd-036 | > Fixed 2026-08-28. The source recheck closed the CAP-0075 interface contradiction. Everything below describes the defect before the fix    | fixed-upstream    | 2026-07-11 | 2           |
 | sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 2           |
 | sd-039 | The current Tools documentation presents "OpenZeppelin Relayer" and the managed Stellar Channels service as the same product. Both…         | reported-upstream | 2026-07-27 | 3           |
 | sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::fromxdr(&env, &bytes).unwrap()                               | reported-upstream | 2026-08-11 | 0           |

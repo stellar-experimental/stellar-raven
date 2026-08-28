@@ -23,6 +23,14 @@ export const ALLOWED_STATUSES = new Set([
   "fixed-upstream",
 ]);
 export const GITHUB_REPO_RE = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
+export const UPSTREAM_TITLE_MIN = 20;
+export const UPSTREAM_TITLE_MAX = 120;
+
+// Containment detection of a GitHub issue/PR URL inside an evidence entry. This answers "was this
+// record filed?", not "which exact ref is cited?" — the filer keeps a stricter whole-ref extractor
+// (GITHUB_REF_RE in improvements-file-issue.mjs) for exact-match successor checks, and the two
+// must not be merged.
+export const GITHUB_EVIDENCE_REF_RE = /https:\/\/github\.com\/[^/\s)]+\/[^/\s)]+\/(?:issues|pull)\/\d+/i;
 
 export function listFindingFiles() {
   const files = [];
@@ -213,6 +221,38 @@ export function oneLineTitle(finding) {
   const truncated = title.slice(0, 139);
   const boundary = truncated.lastIndexOf(" ");
   return `${boundary === -1 ? "" : truncated.slice(0, boundary)}…`;
+}
+
+/**
+ * The upstreamTitle contract for one finding's frontmatter. Returns the error message (without a
+ * file label), or null when the record complies.
+ *
+ * 1. A present, non-blank upstreamTitle must be UPSTREAM_TITLE_MIN-UPSTREAM_TITLE_MAX characters
+ *    after trimming — the same cap the filer enforces at filing time (issueTitle in
+ *    improvements-file-issue.mjs; both read the constants above, so the numbers exist once).
+ *    Linting it here catches an out-of-cap title when the record lands, not only when someone
+ *    runs the filer.
+ * 2. A record past `proposed` (verified, reported-upstream, declined-upstream, fixed-upstream)
+ *    must carry a non-blank upstreamTitle. Grandfather clause: a record whose evidence already
+ *    cites a GitHub issue/PR URL predates the field — it was filed before upstreamTitle existed
+ *    and cannot retroactively name the issue it opened — so it is exempt. A verified record with
+ *    no filed ref has not been filed yet, so it must carry the title it will file with.
+ *    (`proposed` is pre-filing and stays exempt.)
+ */
+export function upstreamTitleError(fm) {
+  const title = String(fm.upstreamTitle ?? "").trim();
+  if (title) {
+    if (title.length < UPSTREAM_TITLE_MIN || title.length > UPSTREAM_TITLE_MAX) {
+      return `upstreamTitle must be ${UPSTREAM_TITLE_MIN}-${UPSTREAM_TITLE_MAX} characters (got ${title.length})`;
+    }
+    return null;
+  }
+  if (!["verified", "reported-upstream", "declined-upstream", "fixed-upstream"].includes(fm.status)) {
+    return null;
+  }
+  const filed = (fm.evidence ?? []).some((entry) => GITHUB_EVIDENCE_REF_RE.test(String(entry)));
+  if (filed) return null;
+  return `upstreamTitle is required at status '${fm.status}' (reader-first issue title, ${UPSTREAM_TITLE_MIN}-${UPSTREAM_TITLE_MAX} characters)`;
 }
 
 export function writeFindingFrontmatter(finding, updates) {

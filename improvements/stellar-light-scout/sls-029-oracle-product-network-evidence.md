@@ -21,6 +21,8 @@ recurrences:
   - consolidated successor issue filed 2026-07-27 carrying this residual on an open thread: https://github.com/Stellar-Light/stellarlight/issues/742
   - date: 2026-08-11
     evidence: Production API 1.8.41 serves project-level status provenance for Band, DIA, RedStone, and Lightecho, but has no oracleDeployments, deployments, or products data; closed #514 remains unfixed and open #742 records the unmodelled product/network dimension
+  - date: 2026-08-28
+    evidence: Production API 1.9.1 gives Band, DIA, RedStone Finance, and Lightecho dated project-level provenance. All four still have null oracleDeployments and deployments. Lightecho alone has one product record without a contract ID. Closed issue #514 did not deliver the per-product/per-network evidence model; open #742 remains the residual tracker.
 ---
 
 ## Finding

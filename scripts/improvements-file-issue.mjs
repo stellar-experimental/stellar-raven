@@ -11,6 +11,8 @@ import {
   readIntake,
   resolveIntake,
   section,
+  UPSTREAM_TITLE_MAX,
+  UPSTREAM_TITLE_MIN,
   writeFindingFrontmatter,
   writeIndex,
 } from "./improvements-lib.mjs";
@@ -318,15 +320,17 @@ function latestMatchingSourceCommit(finding) {
 function issueTitle(finding) {
   const explicit = String(finding.frontmatter.upstreamTitle ?? "").trim();
   if (explicit) {
-    if (explicit.length < 20 || explicit.length > 120) {
-      console.error(`${finding.frontmatter.id}: upstreamTitle must be 20-120 characters`);
+    // Same cap constants the lint enforces when the record lands (upstreamTitleError in
+    // improvements-lib.mjs); duplicating the numbers here would let the two drift.
+    if (explicit.length < UPSTREAM_TITLE_MIN || explicit.length > UPSTREAM_TITLE_MAX) {
+      console.error(`${finding.frontmatter.id}: upstreamTitle must be ${UPSTREAM_TITLE_MIN}-${UPSTREAM_TITLE_MAX} characters`);
       process.exit(2);
     }
     return explicit;
   }
   if (["proposed", "verified"].includes(finding.frontmatter.status)) {
     console.error(
-      `${finding.frontmatter.id}: add a reader-first upstreamTitle (20-120 characters) before filing`,
+      `${finding.frontmatter.id}: add a reader-first upstreamTitle (${UPSTREAM_TITLE_MIN}-${UPSTREAM_TITLE_MAX} characters) before filing`,
     );
     process.exit(2);
   }

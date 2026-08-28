@@ -19,6 +19,8 @@ recurrences:
     evidence: Scout 1.7.26 keeps DTCC at Development with dated provenance, but products, deployments, assets, and productKind remain null and supportedNetworks remains empty
   - date: 2026-08-11
     evidence: Production API 1.8.41 returns DTCC as Development with operator-announcement provenance, but products, deployments, assets, and productKind remain null and supportedNetworks is empty; the product-level deployment gap still reproduces
+  - date: 2026-08-28
+    evidence: Production API 1.9.1 returns DTCC as Development with a dated announced mainnet product record and H1 2027 note, but `GET /api/projects/search?q=real%20world%20asset&limit=100` returns 61 rows with only 1 nonempty products value and zero deployments or assets values. Issue #494 closed as completed without a full product-model fix, so the finding still reproduces.
 ---
 
 ## Finding

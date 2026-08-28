@@ -1,7 +1,7 @@
 ---
 id: sd-036
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-11
 upstreamTitle: Fix CAP-0075 protocol-version and field-selector contradictions
 evidence:
@@ -10,12 +10,17 @@ evidence:
   - research/audits/2026-07-11-gt31-protocol-caps-reserves.md
   - Solo scratchpad 575 GT-31 primary process 3280, blind process 3282, and queued author process 3403
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-protocol/issues/1980
+  - 2026-08-28 live source recheck: merged PR https://github.com/stellar/stellar-protocol/pull/1996 (merge commit d186cf3187722ebcdbd647e782449e543f9d0ef3) changes both CAP-0075 interface blocks to `field: Symbol`, documents `BLS12_381` and `BN254`, and keeps `min_supported_protocol` at 25
 recurrences:
   - date: 2026-08-11
     evidence: live source recheck shows the former Protocol-24 availability contradiction no longer appears, but CAP-0075 still specifies field as U32Val with 0/1 while current rs-soroban-env specifies Symbol with BLS12_381/BN254 at Protocol 25. Issue #1980 remains open; its only recorded comment is leighmcculloch's 2026-07-15 author notification.
+  - date: 2026-08-28
+    evidence: `gh api repos/stellar/stellar-protocol/contents/core/cap-0075.md -H 'Accept: application/vnd.github.raw+json' | rg -n -C 3 'Protocol 24|Protocol 25|U32Val|BLS12_381|BN254|"field"'` confirmed the deployed CAP source matches the shipped Symbol ABI. Issue #1980 closed as completed with PR #1996 on 2026-08-20.
 ---
 
 ## Finding
+
+> **Fixed 2026-08-28.** The source recheck closed the CAP-0075 interface contradiction. Everything below describes the defect before the fix.
 
 The current Final CAP-0075 source retains one reproducible interface
 contradiction. The former Protocol-24 availability contradiction no longer

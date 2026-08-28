@@ -25,6 +25,8 @@ recurrences:
     evidence: Production API 1.8.73 returns OrbitCDP as Inactive with statusAsOf 2026-03-10T15:16:46.523Z and statusBasis unverified, but statusSourceUrl remains null, supportedNetworks and products remain empty, and deployments and oracleDeployments remain null; this is a partial improvement, not resolution
   - date: 2026-08-25
     evidence: Production API 1.8.87 fixed the nightly restamp and populated statusAsOf, statusBasis, and statusConfidence across all 583 rows reachable through the five documented status filters; however, 86 rows still lacked statusSourceUrl, 241 lacked supportedNetworks/networksBasis, and 582 lacked product deployment records, while /api/status reported 1025 total projects, so provenance coverage and testnet/mainnet product scope remain incomplete
+  - date: 2026-08-28
+    evidence: Production API 1.9.1 gives Slender, Laina, K2 Lend, and OrbitCDP dated status, statusBasis, and statusSourceUrl. K2 Lend still has null supportedNetworks, and all four have null products and deployments. Issue stellar-scout#9 and service-owner issue #494 are closed as completed, but the deployment-qualifier part of the finding still reproduces.
 ---
 
 ## Finding
