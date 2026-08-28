@@ -8,7 +8,7 @@ evidence:
   - eval/qa/results/2026-08-28T19-27-08-variantA.json: wrong verdicts on q-defi-perps-whitespace and q-eco-defi-market-map; 2 of 100 cases in one collection
   - live re-execution 2026-08-28 scout.searchProjects matchMode strict generatedAt 2026-08-28T19:29:47.704Z returns Stellars Finance Live, Zenex Pre-Release, Noether Pre-Release
   - the perps vertical holds 28 strict matches and at least one is mislabelled
-  - the Stellars Finance testnet/pre-mainnet self-description comes from the QA corpus record q-defi-perps-whitespace, not a fresh operator-site fetch
+  - operator bundle https://stellars.finance/assets/index-3HEaNhUX.js fetched 2026-08-28: testnet contract addresses populated, mainnet addresses empty (address "", startLedger 0)
 ---
 
 ## Finding
@@ -48,8 +48,8 @@ with `matchMode: "strict"` and `generatedAt 2026-08-28T19:29:47.704Z` returned
 Prevalence: 2 of 100 cases in one collection. The perps vertical holds 28
 strict matches, and at least one is mislabelled.
 
-The Stellars Finance self-description is taken from the QA corpus record for
-`q-defi-perps-whitespace`. The operator site was not re-fetched.
+The operator bundle at `https://stellars.finance/assets/index-3HEaNhUX.js` (fetched
+2026-08-28) defines `{local, testnet, mainnet}` with populated testnet contracts and empty mainnet addresses.
 
 ## Recommendation
 
