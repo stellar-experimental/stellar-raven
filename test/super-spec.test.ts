@@ -106,7 +106,7 @@ describe("shape and counts", () => {
     // Exactly the manifest operations: excluded ops (paid research, account
     // surface, scout writes) never reach the spec.
     expect(counts.lumenloop).toBe(18);
-    expect(counts.scout).toBe(29);
+    expect(counts.scout).toBe(30);
     expect(counts.stellarDocs).toBe(12);
     expect(counts.skills).toBe(4); // list, read, ranked search, run_skill (design §5)
   });
@@ -156,7 +156,7 @@ describe("consistency with the catalog (single source of truth)", () => {
   it("every cataloged operation id appears as an operationId (spec = manifest)", () => {
     const byOperationId = new Map(allOps().map(([, , op]) => [op.operationId, op]));
     const catalogOps = manifest.entries.filter((e) => e.kind === "operation");
-    expect(catalogOps.length).toBe(18 + 29 + 12);
+    expect(catalogOps.length).toBe(18 + 30 + 12);
     for (const entry of catalogOps) {
       expect(
         byOperationId.get(entry.id),

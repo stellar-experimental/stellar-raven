@@ -1,7 +1,7 @@
 ---
 id: sls-075
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-25
 upstreamTitle: Type the project resolver identity, evidence, and meta response fields
 evidence:
@@ -11,6 +11,9 @@ evidence:
   - pin 2e4e412f0ae71a81424b02354d4bcff3835c80ff adds repo to the Stellar Scout API reference matchedOn values and closes that reference gap
   - Raven keeps GET /api/projects/resolve unexposed until the model-facing contract names the fields a caller must project
   - upstream issue filed 2026-08-25: https://github.com/Stellar-Light/stellarlight/issues/1030
+  - upstream commit dd2dfdb74ae2e285f1555b47aa24af870b9a5f90 declares the resolver identity, evidence, and meta fields
+  - 2026-08-28T02:16:55.527Z live GET https://stellarlight.xyz/api/projects/resolve?q=StellarX returned subject, current, evidence, and meta fields matching OpenAPI 1.8.109
+  - upstream issue 1030 was closed as completed on 2026-08-25
 ---
 
 ## Finding

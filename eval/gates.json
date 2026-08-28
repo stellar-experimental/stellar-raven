@@ -1,12 +1,12 @@
 {
-  "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in Solo (EVALS.md rule 1). Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
+  "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in the round ledger. Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-08-27T16:40:00.000Z",
+  "baselinedAt": "2026-08-28T02:49:08.451Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "9549a6f5ee06b7b4ea807a12f93fd4512235a803d4533e648b773ada5e8c415d"
+        "sha256": "3427da83dc04973cc2a5c021eb54c254421fb3c81924439a0ba69c8f2da52976"
       },
       {
         "path": "eval/routing-cases.json",
@@ -24,7 +24,7 @@
     "acceptedTotals": {
       "legacy": {
         "n": 338,
-        "top1": 209,
+        "top1": 208,
         "top3": 279,
         "top5": 311,
         "cardN": 182,
@@ -49,12 +49,12 @@
         "passed": 21
       }
     },
-    "localTrace": "routing-2026-08-27T16-32-13-620Z.json"
+    "localTrace": "routing-2026-08-28T02-49-08-451Z.json"
   },
-  "note": "2026-08-27 round-two integration: receipt-backed known-alias packs (WisdomTree CRDT family), broaden-or-abstain search affordances (service-filter-excluded skill advisories + confidence block, now exposed end-to-end), tiered judging with a stability register, and the golden-truth burn-down batches (snapshot-date, symmetric-caution, presentation-avoid classes to zero). Legacy strict top-5 moves 312 to 311 and card@5 94 to 95: the accepted trade is q-hist-wisdomtree-rwa where the CRDT entity card enters the top five and displaces scout.getRfps, while q-defi-wisdomtree-crdt gains its entity route at top-1. All other lanes unchanged (extended 89/109/117, skills 16/23/23, holdout 10/22/25 with 11 forbidden captures). Threshold floors and bands unchanged. Decision record: qa-quality-deep-dive round ledger plus two independent reviews.",
+  "note": "2026-08-27 issue #67 drift: Scout 1.8.110 adds getQualityReport and verifyClaim, fully types resolveProject, and adds Oracle routing to searchProjects; Stellar Docs titles move 646 to 649. Raven exposes resolveProject, withholds verifyClaim for the live issued response-enum mismatch (sls-077), and withholds getQualityReport after an A/B showed broad unrelated captures (sls-078). Legacy strict moves 209/279/311 to 208/279/311. The accepted trade is q-defi-reflector-resolve: resolveProject reaches rank one, while the strict corpus label remains Lumenloop and expected_any includes Scout. Card@5 remains 95/182. Extended strict improves 89/109/117 to 90/109/117 because the Oracle routing moves q-defi-oracles-chainlink-band to searchProjects at rank one. Skills remain 16/23/23. Holdout remains 10/22/25 with 11 forbidden captures. No scorer, corpus, floor, band, or runner operation changed. Decision record: .agents/rounds/2026-08-27-live-drift-67.md.",
   "legacy": {
     "n": 338,
-    "top1": 209,
+    "top1": 208,
     "top3": 279,
     "top5": 311,
     "bandPct": 1

@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-25T19:04:44.375Z",
+  "fetchedAt": "2026-08-28T02:13:45.854Z",
   "index": "crawler_Stellar Docs - Docusaurus",
   "service": "stellar-docs",
   "source": {
@@ -1564,6 +1564,10 @@
       "title": "Stellar Core and Soroban Host Environment"
     },
     {
+      "path": "/docs/networks/audits/stellar-rpc",
+      "title": "Stellar RPC"
+    },
+    {
       "path": "/docs/networks/resource-limits-fees",
       "title": "Resource Limits &amp; Fees"
     },
@@ -1748,6 +1752,10 @@
       "title": "User Interface"
     },
     {
+      "path": "/docs/platforms/stellar-disbursement-platform/admin-guide/user-interface/account-picker",
+      "title": "Account Picker"
+    },
+    {
       "path": "/docs/platforms/stellar-disbursement-platform/admin-guide/user-interface/analytics",
       "title": "Analytics"
     },
@@ -1764,16 +1772,16 @@
       "title": "Disbursements"
     },
     {
+      "path": "/docs/platforms/stellar-disbursement-platform/admin-guide/user-interface/distribution-accounts",
+      "title": "Distribution Accounts"
+    },
+    {
       "path": "/docs/platforms/stellar-disbursement-platform/admin-guide/user-interface/payments",
       "title": "Payments"
     },
     {
       "path": "/docs/platforms/stellar-disbursement-platform/admin-guide/user-interface/receivers",
       "title": "Receivers"
-    },
-    {
-      "path": "/docs/platforms/stellar-disbursement-platform/admin-guide/user-interface/wallets",
-      "title": "Wallets"
     },
     {
       "path": "/docs/tokens",
@@ -1910,6 +1918,10 @@
     {
       "path": "/docs/tools/cli/plugins-list",
       "title": "Plugins List"
+    },
+    {
+      "path": "/docs/tools/cli/stellar-cli",
+      "title": "Stellar CLI Manual"
     },
     {
       "path": "/docs/tools/developer-tools",
@@ -2596,5 +2608,5 @@
       "title": "11 posts tagged with \"protocol\""
     }
   ],
-  "total": 646
+  "total": 649
 }

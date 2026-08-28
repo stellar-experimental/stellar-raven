@@ -12,10 +12,14 @@ export const EXCLUDED_SCOUT_OPS = new Set([
   "POST /api/partners/submit-listing",
   "POST /api/partners/assistant",
   "POST /api/partners/onboard",
-  // The 1.8.87 response leaves subject/current/evidence as opaque objects and
-  // omits the live meta envelope. Expose it after the upstream contract names
-  // the identity and provenance fields a model must project.
-  "GET /api/projects/resolve"
+  // OpenAPI 1.8.109 gives this self-report broad confidence, coverage, and
+  // source vocabulary. It captures unrelated queries throughout the routing
+  // corpus. Expose it after the routing contract becomes selective.
+  "GET /api/quality",
+  // OpenAPI 1.8.109 accepts and returns claim.type "issued", but the 200
+  // response schema omits it from the claim.type enum. Expose the operation
+  // after one shared claim-type contract covers both request and response.
+  "GET /api/verify"
 ]);
 
 export const EXCLUDED_SCOUT_PATHS = new Set(

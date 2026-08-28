@@ -589,6 +589,7 @@
       "scout.HackathonDetailResponse": {
         "properties": {
           "hackathon": {
+            "additionalProperties": true,
             "type": "object"
           },
           "meta": {
@@ -596,12 +597,14 @@
           },
           "submissions": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array"
           },
           "tracks": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array"
@@ -724,6 +727,17 @@
                       }
                     },
                     "type": "object"
+                  },
+                  "matchMode": {
+                    "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                    "enum": [
+                      "all",
+                      "filtered"
+                    ],
+                    "type": "string"
+                  },
+                  "matchModeLabel": {
+                    "type": "string"
                   }
                 },
                 "type": "object"
@@ -899,6 +913,7 @@
           "caseStudies": {
             "description": "Curated case studies. NULL = none recorded for this partner (UNKNOWN, never 'has no case studies') — currently null for every partner, as none have been curated yet.",
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "nullable": true,
@@ -2559,6 +2574,7 @@
             "type": "integer"
           },
           "confidence": {
+            "additionalProperties": true,
             "description": "0-1 trust signal: score, label (high/medium/low), relevance, freshness, authority, ageDays",
             "type": "object"
           },
@@ -3024,7 +3040,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Algolia-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-08-25T21:02:07Z"
+    "x-generatedAt": "2026-08-28T02:48:38.136Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -4758,6 +4774,70 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "Side-by-side hackathon comparison (previously opaque).",
+                  "properties": {
+                    "deltas": {
+                      "description": "What differs across the compared events.",
+                      "properties": {
+                        "notes": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "hackathons": {
+                      "items": {
+                        "properties": {
+                          "endDate": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "externalUrl": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "meta": {
+                      "properties": {
+                        "counts": {
+                          "additionalProperties": true,
+                          "description": "How many of the requested slugs resolved.",
+                          "type": "object"
+                        },
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
                   "type": "object"
                 }
               }
@@ -4875,6 +4955,7 @@
                         },
                         "protocolCaps": {
                           "items": {
+                            "additionalProperties": true,
                             "type": "object"
                           },
                           "type": "array"
@@ -5092,6 +5173,17 @@
                             "matchBasis": {
                               "description": "What a skill match IS: free-text hits over profile + project prose = candidate discovery, NOT verified experience/seniority/availability. Read each row's `match` for where the query hit, and `codeEvidence` for repository-backed facts.",
                               "type": "string"
+                            },
+                            "matchMode": {
+                              "description": "How rows matched q: expanded = matched via synonym/stem expansion of the query terms (verify relevance for niche terms); all = no text query.",
+                              "enum": [
+                                "all",
+                                "expanded"
+                              ],
+                              "type": "string"
+                            },
+                            "matchModeLabel": {
+                              "type": "string"
                             }
                           },
                           "type": "object"
@@ -5199,6 +5291,7 @@
                       "type": "string"
                     },
                     "meta": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "ok": {
@@ -5701,7 +5794,8 @@
                   "RPC",
                   "Faucet",
                   "Card Issuing",
-                  "Exchange"
+                  "Exchange",
+                  "Oracle"
                 ],
                 "type": "string"
               },
@@ -5855,6 +5949,204 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "One partner's full profile (previously an opaque object).",
+                  "properties": {
+                    "meta": {
+                      "properties": {
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "partner": {
+                      "description": "The full partner profile — every field the live response serves. An earlier declaration covered 9 of these; Raven's drift check prompted a field-complete pass so an agent can see contact, coverage and verification exist without probing.",
+                      "properties": {
+                        "acceptingClients": {
+                          "type": "boolean"
+                        },
+                        "assets": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "caseStudies": {
+                          "items": {
+                            "additionalProperties": true,
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "contactChannel": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "contactEmail": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "country": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "description": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "docsUrl": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "foundedYear": {
+                          "nullable": true,
+                          "type": "integer"
+                        },
+                        "freshness": {
+                          "description": "Row-currency signals used by matching.",
+                          "properties": {
+                            "excludeFromMatching": {
+                              "type": "boolean"
+                            },
+                            "isCurrent": {
+                              "type": "boolean"
+                            },
+                            "lastPartnerUpdateAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "status": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "githubOrg": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "leadTime": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "logoUrl": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "partnerType": {
+                          "type": "string"
+                        },
+                        "pricingModel": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "pricingNotes": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "rampTypes": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "regions": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "responseSla": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "sectors": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "seps": {
+                          "description": "SEP standards the partner implements.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "services": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "slug": {
+                          "type": "string"
+                        },
+                        "tagline": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "tomlFetchedAt": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "tomlSourceUrl": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "typicalEngagement": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "url": {
+                          "description": "Canonical stellarlight.xyz profile URL.",
+                          "type": "string"
+                        },
+                        "verified": {
+                          "description": "Automated verification signals. Null members mean not yet probed — absence of evidence, not a failing grade.",
+                          "properties": {
+                            "githubCommits90d": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "githubLastCommitAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "lastAutoVerifyAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "onchainActive": {
+                              "nullable": true,
+                              "type": "boolean"
+                            },
+                            "onchainNote": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "scfInvolvement": {
+                              "nullable": true,
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "websiteUrl": {
+                          "nullable": true,
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
                   "type": "object"
                 }
               }
@@ -6053,6 +6345,17 @@
                               "description": "This is an org/people reference index, NOT a builder/contributor index — roster facts, not verified availability.",
                               "type": "string"
                             },
+                            "matchMode": {
+                              "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                              "enum": [
+                                "all",
+                                "filtered"
+                              ],
+                              "type": "string"
+                            },
+                            "matchModeLabel": {
+                              "type": "string"
+                            },
                             "observedAt": {
                               "description": "Date the roster was last observed from the source (YYYY-MM-DD).",
                               "type": "string"
@@ -6125,6 +6428,7 @@
                 "schema": {
                   "properties": {
                     "meta": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "report": {
@@ -6146,6 +6450,7 @@
                           "type": "object"
                         },
                         "audits": {
+                          "additionalProperties": true,
                           "nullable": true,
                           "type": "object"
                         },
@@ -6274,6 +6579,7 @@
                           "type": "object"
                         },
                         "usage": {
+                          "additionalProperties": true,
                           "nullable": true,
                           "type": "object"
                         }
@@ -6557,6 +6863,80 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "One skill's full record, including SKILL.md content for sources that ship one (metadata-only otherwise).",
+                  "properties": {
+                    "meta": {
+                      "properties": {
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "operator": {
+                          "description": "Who runs this skill's upstream.",
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "skill": {
+                      "properties": {
+                        "compatibility": {
+                          "description": "Agent hosts known to run it.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "content": {
+                          "description": "Full SKILL.md text; null when the source ships no file — absence of content is not absence of the skill.",
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "description": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "docs": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "featured": {
+                          "type": "boolean"
+                        },
+                        "homepage": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "install": {
+                          "description": "The command to install it.",
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "installAlt": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "skill-md | mcp-server | sdk | cli | agent-kit | tool",
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "repository": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
                   "type": "object"
                 }
               }
@@ -6701,6 +7081,27 @@
                             "methodology": {
                               "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price at the asset's peg), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars. Also states what `basis` means per row and that peg deviation is not measured.",
                               "type": "string"
+                            },
+                            "multiIssuerTickers": {
+                              "description": "Tickers issued on Stellar by MULTIPLE distinct companies (computed over the whole inventory, unaffected by peg/limit). A ticker listed here is not an identity — attribute by issuer account, never by ticker alone (the Circle-vs-MyKobo EURC class).",
+                              "items": {
+                                "properties": {
+                                  "companies": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  },
+                                  "ticker": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
                             }
                           },
                           "type": "object"
@@ -6797,6 +7198,7 @@
                 "schema": {
                   "properties": {
                     "meta": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "report": {
@@ -6839,14 +7241,17 @@
                           "properties": {
                             "fundedPeers": {
                               "items": {
+                                "additionalProperties": true,
                                 "type": "object"
                               },
                               "type": "array"
                             },
                             "fundingBar": {
+                              "additionalProperties": true,
                               "type": "object"
                             },
                             "round": {
+                              "additionalProperties": true,
                               "description": "Live SCF round state — never asserts a negative on fetch failure (source: 'unavailable').",
                               "type": "object"
                             }
@@ -6863,6 +7268,7 @@
                             },
                             "contracts": {
                               "items": {
+                                "additionalProperties": true,
                                 "type": "object"
                               },
                               "type": "array"
@@ -6881,6 +7287,7 @@
                         "startFrom": {
                           "description": "Top non-archived competitor repos (≤2) with a trust SUMMARY each: repo, project, codeTruth (without the full contractInterface — interfaceSize is kept), usage, audits {count, latest}, auditDrift, succession, signals (closed vocabulary of facts, NOT a score), fullReport (link to /api/repos/trust). A competitor is a starting point to READ, not necessarily a template.",
                           "items": {
+                            "additionalProperties": true,
                             "type": "object"
                           },
                           "type": "array"
@@ -6891,6 +7298,7 @@
                           "type": "string"
                         },
                         "vet": {
+                          "additionalProperties": true,
                           "description": "Same computation as /api/vet-idea: competitors, maturity, priorArt, gap.",
                           "type": "object"
                         },
@@ -7007,7 +7415,27 @@
                       "type": "array"
                     },
                     "meta": {
-                      "$ref": "#/components/schemas/scout.Meta"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/scout.Meta"
+                        },
+                        {
+                          "properties": {
+                            "matchMode": {
+                              "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                              "enum": [
+                                "all",
+                                "filtered"
+                              ],
+                              "type": "string"
+                            },
+                            "matchModeLabel": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      ]
                     }
                   },
                   "type": "object"
@@ -7020,6 +7448,133 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "The structured audit registry — one row per published report, so an agent can enumerate and filter audits instead of hoping vector retrieval surfaces the right chunk.",
+                  "properties": {
+                    "audits": {
+                      "items": {
+                        "properties": {
+                          "auditor": {
+                            "type": "string"
+                          },
+                          "dateBasis": {
+                            "description": "Where the date came from; absent means we do not know it.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "engagementId": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "findingsTotal": {
+                            "description": "Null means findings were not extractable from this report, NOT that it found nothing.",
+                            "nullable": true,
+                            "type": "integer"
+                          },
+                          "linkBasis": {
+                            "description": "How the project link was established — provenance, not a guess.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "observedAt": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "projectName": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "projectSlug": {
+                            "description": "Directory project this report is linked to, when the link is hand-verified.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "protocol": {
+                            "type": "string"
+                          },
+                          "publishedAt": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "reportId": {
+                            "type": "integer"
+                          },
+                          "reportUrl": {
+                            "type": "string"
+                          },
+                          "severityCounts": {
+                            "additionalProperties": {
+                              "type": "integer"
+                            },
+                            "description": "Per-severity counts when extraction succeeded. An absent severity means zero of that severity were reported.",
+                            "type": "object"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "meta": {
+                      "properties": {
+                        "counts": {
+                          "description": "matched is the denominator behind returned; total is the whole registry.",
+                          "properties": {
+                            "matched": {
+                              "type": "integer"
+                            },
+                            "returned": {
+                              "type": "integer"
+                            },
+                            "total": {
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "filters": {
+                          "description": "The filters actually applied — echoed so a caller can tell a narrow query from an empty corpus.",
+                          "properties": {
+                            "auditor": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "limit": {
+                              "type": "integer"
+                            },
+                            "offset": {
+                              "type": "integer"
+                            },
+                            "project": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "q": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "since": {
+                              "nullable": true,
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "note": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
                   "type": "object"
                 }
               }
@@ -7099,6 +7654,7 @@
                       "items": {
                         "properties": {
                           "audits": {
+                            "additionalProperties": true,
                             "description": "Per-project audit rollup: count + latest auditor/date. Null = none on record at our source, NOT 'unaudited'.",
                             "nullable": true,
                             "type": "object"
@@ -7114,6 +7670,7 @@
                             "type": "array"
                           },
                           "codeInUse": {
+                            "additionalProperties": true,
                             "description": "Live on-chain usage attributed to this repo's contract(s) — the strongest evidence tier.",
                             "nullable": true,
                             "type": "object"
@@ -7175,6 +7732,20 @@
                       "type": "array"
                     },
                     "meta": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "matchMode": {
+                          "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                          "enum": [
+                            "all",
+                            "filtered"
+                          ],
+                          "type": "string"
+                        },
+                        "matchModeLabel": {
+                          "type": "string"
+                        }
+                      },
                       "type": "object"
                     }
                   },
@@ -7203,6 +7774,14 @@
         "description": "Catalog of installable Stellar AI skills/tools — SDF's official skills.stellar.org set merged with curated and community entries. Each entry carries an install command, kind (skill-md | mcp-server | sdk | cli | agent-kit | tool), and repo/docs links; filter by source/kind. Answers 'what Stellar AI skills / MCP servers can I install'. Not for ONE named skill's full content → use getSkill.\n\nCatalog note: this is the live ecosystem DIRECTORY — skills plus MCP servers, SDKs, and CLIs — for discovering what exists and fetching install metadata; most entries are not mirrored skills.",
         "operationId": "scout.listSkills",
         "parameters": [
+          {
+            "description": "Free-text filter over skill name, tagline, description and tags (all terms must match). Omit to list everything. Previously accepted and ignored — a query returned the full catalog.",
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "description": "Filter by source",
             "in": "query",
@@ -7248,6 +7827,17 @@
                         },
                         {
                           "properties": {
+                            "matchMode": {
+                              "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                              "enum": [
+                                "all",
+                                "filtered"
+                              ],
+                              "type": "string"
+                            },
+                            "matchModeLabel": {
+                              "type": "string"
+                            },
                             "validKinds": {
                               "description": "Every value the kind filter accepts (unknown values 400 with this list).",
                               "items": {
@@ -7322,6 +7912,59 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "AI partner matches for a stated need (previously opaque).",
+                  "properties": {
+                    "matches": {
+                      "items": {
+                        "properties": {
+                          "partner": {
+                            "additionalProperties": true,
+                            "description": "The matched partner row.",
+                            "type": "object"
+                          },
+                          "reason": {
+                            "description": "Why it matched — safe to surface.",
+                            "type": "string"
+                          },
+                          "score": {
+                            "description": "Relevance of this partner to the need.",
+                            "type": "number"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "meta": {
+                      "properties": {
+                        "candidatesConsidered": {
+                          "description": "The denominator behind the matches.",
+                          "type": "integer"
+                        },
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "model": {
+                          "type": "string"
+                        },
+                        "note": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "need": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "nullable": true,
+                      "type": "string"
+                    }
+                  },
                   "type": "object"
                 }
               }
@@ -7335,6 +7978,17 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "The AI path is not configured or is unavailable; the caller falls back to the manual form rather than erroring.",
+                  "properties": {
+                    "error": {
+                      "description": "Human-readable reason, safe to show.",
+                      "type": "string"
+                    },
+                    "unavailable": {
+                      "description": "Always true here — the feature is off, not the request wrong.",
+                      "type": "boolean"
+                    }
+                  },
                   "type": "object"
                 }
               }
@@ -7352,6 +8006,176 @@
         "x-upstream": {
           "method": "POST",
           "path": "/api/partners/match"
+        }
+      }
+    },
+    "/scout/resolveProject": {
+      "get": {
+        "description": "Reconciles a name found in an old post, changelog, README or repo against the current directory: returns the record it names, where to look NOW if that record was superseded, and the evidence behind any inactive status. Use when: you hit a project name that matches nothing current and need to know whether it was renamed, replaced, or is simply untracked. Not for: searching for projects by topic (→ searchProjects). A miss means NOT TRACKED HERE — never that the name never existed, never that it is defunct.",
+        "operationId": "scout.resolveProject",
+        "parameters": [
+          {
+            "description": "The name, slug, or stellarlight project URL encountered. Matched against slugs, then aliases, then normalized names.",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current": {
+                      "description": "Where to look now. Identical to subject when nothing moved.",
+                      "nullable": true,
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "description": "Canonical project page for the CURRENT record.",
+                          "format": "uri",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "evidence": {
+                      "description": "Dated basis for the status. `unsourced: true` means we assert it with no citable source — our unverified record, not an established fact about a named company.",
+                      "nullable": true,
+                      "properties": {
+                        "statusAsOf": {
+                          "description": "When the status was OBSERVED, not when the record changed.",
+                          "format": "date-time",
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "statusBasis": {
+                          "description": "How the status was established (e.g. human-verified, site-liveness, source-inherited). site-liveness means only that a page answered.",
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "statusSourceUrl": {
+                          "description": "Citable source for the status, when one exists.",
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "unsourced": {
+                          "description": "true = asserted with NO citable source. Do not report it as an established fact about a named company.",
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "found": {
+                      "description": "false = the name is not tracked in this directory. NOT a claim it never existed or is defunct.",
+                      "type": "boolean"
+                    },
+                    "matchedOn": {
+                      "description": "How the query matched. An exact slug is a stronger identification than a normalized name.",
+                      "enum": [
+                        "slug",
+                        "canonical-slug",
+                        "alias",
+                        "name",
+                        "repo"
+                      ],
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "meta": {
+                      "description": "Response provenance. Present on every 200; previously served but undeclared, so a generated type could not project it.",
+                      "properties": {
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "methodology": {
+                          "description": "Match order and what a miss does and does not claim. Safe to surface to a user.",
+                          "type": "string"
+                        },
+                        "searched": {
+                          "description": "How many project records were searched — the denominator behind a miss.",
+                          "type": "integer"
+                        },
+                        "source": {
+                          "format": "uri",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "note": {
+                      "description": "Plain-words statement of what was resolved and what it does not claim.",
+                      "type": "string"
+                    },
+                    "query": {
+                      "type": "string"
+                    },
+                    "subject": {
+                      "description": "The record the query names, which may itself be superseded.",
+                      "nullable": true,
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "description": "Lifecycle label at statusAsOf. Weigh it with evidence.statusBasis — a label alone is not proof.",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "superseded": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "found",
+                    "query",
+                    "note"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Resolution, including an explicit miss"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/scout.ErrorResponse"
+                }
+              }
+            },
+            "description": "Missing or unknown query param"
+          }
+        },
+        "summary": "Resolve a historical project name to what it is now",
+        "tags": [
+          "scout",
+          "Discovery"
+        ],
+        "x-execute": "await scout.resolveProject(args)",
+        "x-service": "scout",
+        "x-upstream": {
+          "method": "GET",
+          "path": "/api/projects/resolve"
         }
       }
     },
@@ -7379,6 +8203,7 @@
                 "schema": {
                   "properties": {
                     "meta": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "report": {
@@ -7392,11 +8217,13 @@
                         },
                         "fundedPeers": {
                           "items": {
+                            "additionalProperties": true,
                             "type": "object"
                           },
                           "type": "array"
                         },
                         "fundingBar": {
+                          "additionalProperties": true,
                           "type": "object"
                         },
                         "idea": {
@@ -7409,6 +8236,7 @@
                             },
                             "open": {
                               "items": {
+                                "additionalProperties": true,
                                 "type": "object"
                               },
                               "type": "array"
@@ -7428,6 +8256,7 @@
                           "type": "string"
                         },
                         "vet": {
+                          "additionalProperties": true,
                           "type": "object"
                         }
                       },
@@ -7516,6 +8345,113 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "Hackathon build submissions (previously opaque).",
+                  "properties": {
+                    "builds": {
+                      "items": {
+                        "properties": {
+                          "award": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "demoUrl": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "description": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "endedAt": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "githubUrl": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "hackathon": {
+                            "type": "string"
+                          },
+                          "hackathonSlug": {
+                            "type": "string"
+                          },
+                          "isWinner": {
+                            "description": "Placed in the event; absence of a win is not a quality judgement.",
+                            "type": "boolean"
+                          },
+                          "matchedTerms": {
+                            "description": "Which query terms this build matched — the evidence behind its inclusion.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "placement": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "track": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "url": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "votes": {
+                            "nullable": true,
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "meta": {
+                      "properties": {
+                        "counts": {
+                          "additionalProperties": true,
+                          "description": "returned vs total — how much the filters narrowed.",
+                          "type": "object"
+                        },
+                        "filters": {
+                          "additionalProperties": true,
+                          "description": "The filters as applied — an echo, so a caller can see what was honoured.",
+                          "type": "object"
+                        },
+                        "generatedAt": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "matchMode": {
+                          "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                          "enum": [
+                            "all",
+                            "filtered"
+                          ],
+                          "type": "string"
+                        },
+                        "matchModeLabel": {
+                          "type": "string"
+                        },
+                        "note": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        },
+                        "upstream": {
+                          "description": "Where the raw builds came from (DoraHacks).",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
                   "type": "object"
                 }
               }
@@ -7589,7 +8525,8 @@
                 "RPC",
                 "Faucet",
                 "Card Issuing",
-                "Exchange"
+                "Exchange",
+                "Oracle"
               ],
               "type": "string"
             }
@@ -7838,6 +8775,17 @@
                         },
                         {
                           "properties": {
+                            "matchMode": {
+                              "description": "vector = similarity ranking over embeddings (conceptual, not literal keyword truth); keyword = vector search unavailable, coarse keyword match over title and content.",
+                              "enum": [
+                                "vector",
+                                "keyword"
+                              ],
+                              "type": "string"
+                            },
+                            "matchModeLabel": {
+                              "type": "string"
+                            },
                             "mode": {
                               "description": "How this page was retrieved: 'vector' = semantic similarity over embeddings (the normal path); 'keyword' = literal-match fallback when embeddings are unavailable. Scores are not comparable across modes.",
                               "enum": [
@@ -7915,20 +8863,35 @@
                 "schema": {
                   "properties": {
                     "meta": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "report": {
                       "properties": {
                         "competitors": {
                           "properties": {
+                            "matchMode": {
+                              "description": "How relevance was established. vertical = typed members of the idea's vertical; scored = the idea's own (non-generic) terms matched; weak = only generic words matched — the rows are nearest NEIGHBOURS, not evidence a competitor exists. Weigh a weak block as 'we found nothing close', never as a competitive landscape.",
+                              "enum": [
+                                "vertical",
+                                "scored",
+                                "weak"
+                              ],
+                              "type": "string"
+                            },
+                            "matchModeLabel": {
+                              "type": "string"
+                            },
                             "projects": {
                               "items": {
+                                "additionalProperties": true,
                                 "type": "object"
                               },
                               "type": "array"
                             },
                             "repos": {
                               "items": {
+                                "additionalProperties": true,
                                 "type": "object"
                               },
                               "type": "array"
@@ -7937,10 +8900,12 @@
                           "type": "object"
                         },
                         "funding": {
+                          "additionalProperties": true,
                           "nullable": true,
                           "type": "object"
                         },
                         "gap": {
+                          "additionalProperties": true,
                           "description": "Supply-side coverage of the detected vertical (same computation as analyze?dimension=gaps).",
                           "nullable": true,
                           "type": "object"
@@ -7969,6 +8934,7 @@
                             },
                             "repos": {
                               "items": {
+                                "additionalProperties": true,
                                 "type": "object"
                               },
                               "type": "array"
@@ -9709,8 +10675,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 251,
-    "generatedAt": "2026-08-25T21:02:07Z"
+    "catalogEntries": 252,
+    "generatedAt": "2026-08-28T02:48:38.136Z"
   },
   "x-services": {
     "lumenloop": {
@@ -9722,7 +10688,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-08-25T19:04:44.715Z",
+      "fetchedAt": "2026-08-28T02:48:38.136Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },

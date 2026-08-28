@@ -299,21 +299,25 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter((e) => e.service === "lumenloop" && e.kind === "skill-section")
     ).toHaveLength(0);
 
-    // Scout: 29 exposed of 35 upstream OpenAPI operations — the 4 write/
+    // Scout: 30 exposed of 37 upstream OpenAPI operations — the 4 write/
     // side-effecting endpoints (submitFeedback, submitPartnerListing,
     // partnerAssistant, partnerOnboard) are excluded at build time, plus getFeedbackSchema:
     // read-only, but a dead end whose only purpose is to shape the excluded
     // feedback submission (its upstream description names the non-exposed
     // scout.submitFeedback). The read-only hackathonBrief and matchPartners
     // operations stay exposed. Their OpenAPI contracts describe no persistence.
-    // resolveProject stays hidden until its nested response objects are typed.
-    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(29);
+    // resolveProject is read-only and fully typed. getQualityReport stays
+    // hidden until its routing contract is selective. verifyClaim stays hidden
+    // until its issued response enum is complete.
+    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(30);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);
     expect(count((e) => e.id === "scout.submitPartnerListing")).toBe(0);
     expect(count((e) => e.id === "scout.partnerAssistant")).toBe(0);
     expect(count((e) => e.id === "scout.partnerOnboard")).toBe(0);
-    expect(count((e) => e.id === "scout.resolveProject")).toBe(0);
+    expect(count((e) => e.id === "scout.getQualityReport")).toBe(0);
+    expect(count((e) => e.id === "scout.verifyClaim")).toBe(0);
+    expect(count((e) => e.id === "scout.resolveProject")).toBe(1);
     expect(count((e) => e.id === "scout.hackathonBrief")).toBe(1);
     expect(count((e) => e.id === "scout.matchPartners")).toBe(1);
     for (const id of [
@@ -352,8 +356,8 @@ describe("build-catalog.mjs", () => {
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
-    // Grand total: 59 operations + 19 whole skills + 173 skill sections.
-    expect(catalog.entries).toHaveLength(251);
+    // Grand total: 60 operations + 19 whole skills + 173 skill sections.
+    expect(catalog.entries).toHaveLength(252);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {
@@ -511,8 +515,8 @@ describe("build-catalog.mjs", () => {
 describe("x-routing ingestion — routingKeywords field", () => {
   it("attaches routingKeywords to exactly the exposed scout ops that publish x-routing", () => {
     const withField = catalog.entries.filter((e) => (e.routingKeywords ?? []).length > 0);
-    // 27 upstream ops carry x-routing; partnerAssistant and resolveProject are build-excluded.
-    expect(withField).toHaveLength(25);
+    // 29 upstream ops carry x-routing; partnerAssistant, getQualityReport, and verifyClaim are excluded.
+    expect(withField).toHaveLength(26);
     for (const entry of withField) {
       expect(entry.service, entry.id).toBe("scout");
       expect(entry.kind, entry.id).toBe("operation");

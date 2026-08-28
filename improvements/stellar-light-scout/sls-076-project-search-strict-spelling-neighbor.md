@@ -1,7 +1,7 @@
 ---
 id: sls-076
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-27
 upstreamTitle: Do not label spelling neighbors as strict project matches
 evidence:
@@ -15,6 +15,10 @@ evidence:
   - eval/qa/results/2026-08-27T18-59-44-variantA.json in the control worktree
   - .agents/rounds/2026-08-27-connectors-description-ab.md
   - upstream issue filed 2026-08-27: https://github.com/Stellar-Light/stellarlight/issues/1055
+  - upstream PR https://github.com/Stellar-Light/stellarlight/pull/1056 merged on 2026-08-27
+  - maintainer verification: https://github.com/Stellar-Light/stellarlight/issues/1055#issuecomment-5445031727
+  - 2026-08-28 live GET https://stellarlight.xyz/api/projects/search?q=Strupey&limit=10 returned matchMode corrected with an identity-warning label instead of strict
+  - 2026-08-28 live control q=Stroopy still returned matchMode strict
 ---
 
 ## Finding

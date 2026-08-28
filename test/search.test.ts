@@ -773,7 +773,7 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     );
     // total counts searchable candidates only — 210 sections left search at
     // the 2026-07-13 A/B, so the candidate pool shrank from 272.
-    expect(page.total).toBe(78);
+    expect(page.total).toBe(79);
     expect(page.truncated).toBe(true);
   });
 
@@ -1038,7 +1038,8 @@ describe("search-hit signature compaction", () => {
     // carried exactly ONE more op over the line — scout.getPeople, 1099 -> 3196 — so its
     // output type is now stubbed in search hits and reaching the full shape costs a
     // codemode.describe("scout.getPeople") round-trip. Scout 1.8.87 expands getChanges over
-    // the same threshold. Every other member was already over.
+    // the same threshold. Scout 1.8.109 expands getPartner, hackathonBrief, and
+    // resolveProject over the threshold. Every other member was already over.
     expect(compacted.sort()).toEqual([
       "scout.analyzeEcosystem",
       "scout.explainRepo",
@@ -1048,12 +1049,15 @@ describe("search-hit signature compaction", () => {
       "scout.getHackathon",
       "scout.getHackathons",
       "scout.getLeaderboard",
+      "scout.getPartner",
       "scout.getPartners",
       "scout.getPeople",
       "scout.getRfps",
       "scout.getStablecoins",
+      "scout.hackathonBrief",
       "scout.listAudits",
       "scout.listSkills",
+      "scout.resolveProject",
       "scout.searchProjects",
       "scout.searchRepos",
       "scout.searchResearch"

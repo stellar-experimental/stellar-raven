@@ -83,6 +83,8 @@ const OP_OVERRIDES = {
   // vocab/enum/schema discovery → meta
   "scout.getStatus": "meta",
   "scout.getChangelog": "meta",
+  // one resolved identity → detail
+  "scout.resolveProject": "detail",
   "lumenloop.get_categories": "meta",
   "lumenloop.get_regions": "meta",
   "lumenloop.get_tags_vocabulary": "meta",

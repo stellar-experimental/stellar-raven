@@ -1,5 +1,5 @@
 {
-  "changelogEntryCount": 178,
+  "changelogEntryCount": 201,
   "changelogLatest": {
     "date": "2026-08-24",
     "detail": "New wrappers: getStablecoins, vetIdea, scfPitch, hackathonBrief, searchHackathonBuilds, listAudits, listContracts, getRepoTrust, resolveProject, getPeople, getPartner(slug), getChanges, getFeedbackSchema, matchPartners, partnerAssistant, partnerOnboard, submitPartnerListing. getChanges takes a REQUIRED `since`. All GET operations live-verified against production; README method table now lists all 35 ops.",
@@ -10,7 +10,7 @@
     "type": "added",
     "version": "api-client@1.9.0"
   },
-  "fetchedAt": "2026-08-25T19:04:44.715Z",
+  "fetchedAt": "2026-08-28T02:48:38.136Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -663,6 +663,7 @@
         "HackathonDetailResponse": {
           "properties": {
             "hackathon": {
+              "additionalProperties": true,
               "type": "object"
             },
             "meta": {
@@ -670,12 +671,14 @@
             },
             "submissions": {
               "items": {
+                "additionalProperties": true,
                 "type": "object"
               },
               "type": "array"
             },
             "tracks": {
               "items": {
+                "additionalProperties": true,
                 "type": "object"
               },
               "type": "array"
@@ -798,6 +801,17 @@
                         }
                       },
                       "type": "object"
+                    },
+                    "matchMode": {
+                      "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                      "enum": [
+                        "all",
+                        "filtered"
+                      ],
+                      "type": "string"
+                    },
+                    "matchModeLabel": {
+                      "type": "string"
                     }
                   },
                   "type": "object"
@@ -973,6 +987,7 @@
             "caseStudies": {
               "description": "Curated case studies. NULL = none recorded for this partner (UNKNOWN, never 'has no case studies') — currently null for every partner, as none have been curated yet.",
               "items": {
+                "additionalProperties": true,
                 "type": "object"
               },
               "nullable": true,
@@ -2633,6 +2648,7 @@
               "type": "integer"
             },
             "confidence": {
+              "additionalProperties": true,
               "description": "0-1 trust signal: score, label (high/medium/low), relevance, freshness, authority, ageDays",
               "type": "object"
             },
@@ -3100,14 +3116,14 @@
         "name": "Stellar Light",
         "url": "https://stellarlight.xyz/scout"
       },
-      "description": "Read-only public API powering Stellar Scout. Aggregators, autonomous agents, and AI tools can call these endpoints directly without auth.\n\nAll endpoints are edge-cached. The same data is available via the @stellar-light/scout-mcp Model Context Protocol server (for human-driven clients) and via the @stellar-light/api-client TypeScript SDK (for autonomous aggregators).\n\nData sources merged behind these endpoints: the Stellarlight directory of curated Stellar projects + an indexed-and-scored GitHub repo index, Stellar Passport builder profiles, Electric Capital developer activity, Soroban audit corpus, SDF skills.stellar.org skill catalog, lumenloop ecosystem data, and primary research (SEPs, papers, dev docs, SCF Handbook). Live collection sizes are in GET /api/status (sources[]) — counts are intentionally not hardcoded here to avoid drift.\n\n## Routing metadata (description vs x-routing)\nOperation `description` fields are deliberately terse purpose statements: the operation's distinctive job plus its single sharpest disambiguation, nothing else. The machine-routing vocabulary that previously lived in description prose — category/product enumerations, synonym chains, example question phrasings — lives in each operation's `x-routing` extension: `{purpose, keywords[], useWhen[], notFor[], exampleQuestions[]}`. Lexical and embedding routers should score `x-routing` as separately-weighted fields rather than concatenating it into the description (broad prose descriptions were lexically capturing question families other operations answer); `notFor` entries name the operation to prefer, as '<question shape> -> <operationId>'.\n\n## Versioning\nEvery response carries an `X-API-Version` header (currently `1`). The number bumps only on a breaking response-shape change; additive fields don't bump it. Pin to a version by asserting the header. Breaking changes are announced before they ship.\n\n## Rate limits\nNone enforced today — the API is public and unauthenticated. When limits are introduced they will be advertised via `X-RateLimit-*` and `Retry-After` headers and documented here BEFORE enforcement, so autonomous consumers can adopt back-off ahead of time. Be courteous: cache where `Cache-Control` allows, and prefer `offset` pagination over hammering.\n\n## Pagination\nList endpoints (`/api/projects/search`, `/api/builders`, `/api/rfps`) accept `limit` + `offset`. EVERY list response carries `meta.counts` with `returned` (this page) and `total`/`matched` (all rows matching the filter, pre-slice) — compare the two to tell a complete read from a truncated one, and page until `offset + returned >= total`. Two documented exceptions, both explicit rather than silent: `searchResearch` serves `total: null` with a `totalBasis` because similarity ranking has no crisp matching set, and `/api/changelog` additionally serves `returned`/`total` flat on `meta` for backward compatibility — those flat fields are DEPRECATED, read `meta.counts`.\n\n## Ordering & relevance\n`/api/projects/search` sorts by descending keyword `score` (token-overlap count) and exposes `meta.matchMode` (`strict` → `loose-1` → `majority` → `semantic`) so you know how much the query was relaxed. `semantic` means no keyword tier matched at all — the rows are vector-similarity guesses (`via: \"semantic\"`, confidence capped at medium), not keyword-confirmed answers. `/api/research` sorts by descending vector-similarity `score` (0–1 cosine). Use these for cross-source ranking when merging with other aggregators.",
+      "description": "Read-only public API powering Stellar Scout. Aggregators, autonomous agents, and AI tools can call these endpoints directly without auth.\n\nAll endpoints are edge-cached. The same data is available via the @stellar-light/scout-mcp Model Context Protocol server (for human-driven clients) and via the @stellar-light/api-client TypeScript SDK (for autonomous aggregators).\n\nData sources merged behind these endpoints: the Stellarlight directory of curated Stellar projects + an indexed-and-scored GitHub repo index, Stellar Passport builder profiles, Electric Capital developer activity, Soroban audit corpus, SDF skills.stellar.org skill catalog, lumenloop ecosystem data, and primary research (SEPs, papers, dev docs, SCF Handbook). Live collection sizes are in GET /api/status (sources[]) — counts are intentionally not hardcoded here to avoid drift.\n\n## Routing metadata (description vs x-routing)\nOperation `description` fields are deliberately terse purpose statements: the operation's distinctive job plus its single sharpest disambiguation, nothing else. The machine-routing vocabulary that previously lived in description prose — category/product enumerations, synonym chains, example question phrasings — lives in each operation's `x-routing` extension: `{purpose, keywords[], useWhen[], notFor[], exampleQuestions[]}`. Lexical and embedding routers should score `x-routing` as separately-weighted fields rather than concatenating it into the description (broad prose descriptions were lexically capturing question families other operations answer); `notFor` entries name the operation to prefer, as '<question shape> -> <operationId>'.\n\n## Versioning\nEvery response carries an `X-API-Version` header (currently `1`). The number bumps only on a breaking response-shape change; additive fields don't bump it. Pin to a version by asserting the header. Breaking changes are announced before they ship.\n\n## Rate limits\nNone enforced today — the API is public and unauthenticated. When limits are introduced they will be advertised via `X-RateLimit-*` and `Retry-After` headers and documented here BEFORE enforcement, so autonomous consumers can adopt back-off ahead of time. Be courteous: cache where `Cache-Control` allows, and prefer `offset` pagination over hammering.\n\n## Pagination\nList endpoints (`/api/projects/search`, `/api/builders`, `/api/rfps`) accept `limit` + `offset`. EVERY list response carries `meta.counts` with `returned` (this page) and `total`/`matched` (all rows matching the filter, pre-slice) — compare the two to tell a complete read from a truncated one, and page until `offset + returned >= total`. Two documented exceptions, both explicit rather than silent: `searchResearch` serves `total: null` with a `totalBasis` because similarity ranking has no crisp matching set, and `/api/changelog` additionally serves `returned`/`total` flat on `meta` for backward compatibility — those flat fields are DEPRECATED, read `meta.counts`.\n\n## Ordering & relevance\n`/api/projects/search` sorts by descending keyword `score` (token-overlap count) and exposes `meta.matchMode` (`strict` → `loose-1` → `majority` → `semantic`) so you know how much the query was relaxed. `semantic` means no keyword tier matched at all — the rows are vector-similarity guesses (`via: \"semantic\"`, confidence capped at medium), not keyword-confirmed answers. When `?type=` is present, TYPE DEFINES MEMBERSHIP (the full typed set, limit-independent) and q only ranks within it — matchMode reports `all` with an explicit label, because a tier would falsely claim q gated the set (sls-033). `corrected` means the rows matched ONLY through a known spelling correction (e.g. strupey → stroopy): the query token does not occur in the rows, so verify the identity before treating them as evidence about the queried name. `/api/research` sorts by descending vector-similarity `score` (0–1 cosine). Use these for cross-source ranking when merging with other aggregators.",
       "license": {
         "identifier": "MIT",
         "name": "MIT"
       },
       "summary": "Agent-native data layer for the Stellar ecosystem — projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.8.87"
+      "version": "1.8.110"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -3486,7 +3502,27 @@
                         "type": "array"
                       },
                       "meta": {
-                        "$ref": "#/components/schemas/Meta"
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Meta"
+                          },
+                          {
+                            "properties": {
+                              "matchMode": {
+                                "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                                "enum": [
+                                  "all",
+                                  "filtered"
+                                ],
+                                "type": "string"
+                              },
+                              "matchModeLabel": {
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        ]
                       }
                     },
                     "type": "object"
@@ -3499,6 +3535,133 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "The structured audit registry — one row per published report, so an agent can enumerate and filter audits instead of hoping vector retrieval surfaces the right chunk.",
+                    "properties": {
+                      "audits": {
+                        "items": {
+                          "properties": {
+                            "auditor": {
+                              "type": "string"
+                            },
+                            "dateBasis": {
+                              "description": "Where the date came from; absent means we do not know it.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "engagementId": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "findingsTotal": {
+                              "description": "Null means findings were not extractable from this report, NOT that it found nothing.",
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "linkBasis": {
+                              "description": "How the project link was established — provenance, not a guess.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "observedAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "projectName": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "projectSlug": {
+                              "description": "Directory project this report is linked to, when the link is hand-verified.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "protocol": {
+                              "type": "string"
+                            },
+                            "publishedAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "reportId": {
+                              "type": "integer"
+                            },
+                            "reportUrl": {
+                              "type": "string"
+                            },
+                            "severityCounts": {
+                              "additionalProperties": {
+                                "type": "integer"
+                              },
+                              "description": "Per-severity counts when extraction succeeded. An absent severity means zero of that severity were reported.",
+                              "type": "object"
+                            },
+                            "title": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "properties": {
+                          "counts": {
+                            "description": "matched is the denominator behind returned; total is the whole registry.",
+                            "properties": {
+                              "matched": {
+                                "type": "integer"
+                              },
+                              "returned": {
+                                "type": "integer"
+                              },
+                              "total": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "filters": {
+                            "description": "The filters actually applied — echoed so a caller can tell a narrow query from an empty corpus.",
+                            "properties": {
+                              "auditor": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "limit": {
+                                "type": "integer"
+                              },
+                              "offset": {
+                                "type": "integer"
+                              },
+                              "project": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "q": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "since": {
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "note": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -3604,6 +3767,17 @@
                             "properties": {
                               "matchBasis": {
                                 "description": "What a skill match IS: free-text hits over profile + project prose = candidate discovery, NOT verified experience/seniority/availability. Read each row's `match` for where the query hit, and `codeEvidence` for repository-backed facts.",
+                                "type": "string"
+                              },
+                              "matchMode": {
+                                "description": "How rows matched q: expanded = matched via synonym/stem expansion of the query terms (verify relevance for niche terms); all = no text query.",
+                                "enum": [
+                                  "all",
+                                  "expanded"
+                                ],
+                                "type": "string"
+                              },
+                              "matchModeLabel": {
                                 "type": "string"
                               }
                             },
@@ -3766,6 +3940,7 @@
                         "type": "string"
                       },
                       "meta": {
+                        "additionalProperties": true,
                         "type": "object"
                       },
                       "ok": {
@@ -4147,6 +4322,7 @@
                         "items": {
                           "properties": {
                             "audits": {
+                              "additionalProperties": true,
                               "description": "Per-project audit rollup: count + latest auditor/date. Null = none on record at our source, NOT 'unaudited'.",
                               "nullable": true,
                               "type": "object"
@@ -4162,6 +4338,7 @@
                               "type": "array"
                             },
                             "codeInUse": {
+                              "additionalProperties": true,
                               "description": "Live on-chain usage attributed to this repo's contract(s) — the strongest evidence tier.",
                               "nullable": true,
                               "type": "object"
@@ -4223,6 +4400,20 @@
                         "type": "array"
                       },
                       "meta": {
+                        "additionalProperties": true,
+                        "properties": {
+                          "matchMode": {
+                            "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                            "enum": [
+                              "all",
+                              "filtered"
+                            ],
+                            "type": "string"
+                          },
+                          "matchModeLabel": {
+                            "type": "string"
+                          }
+                        },
                         "type": "object"
                       }
                     },
@@ -4270,6 +4461,51 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "Self-describing contract for POST /api/feedback — GET it to learn the body shape rather than guessing.",
+                    "properties": {
+                      "meta": {
+                        "properties": {
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "schema": {
+                        "properties": {
+                          "body": {
+                            "additionalProperties": true,
+                            "description": "Field-by-field description of the POST body, including the allowed kind values.",
+                            "type": "object"
+                          },
+                          "contentType": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "additionalProperties": true,
+                            "description": "A ready-to-send example body.",
+                            "type": "object"
+                          },
+                          "method": {
+                            "type": "string"
+                          },
+                          "rateLimit": {
+                            "description": "The limit in words, so a caller can pace itself.",
+                            "type": "string"
+                          },
+                          "voteExample": {
+                            "additionalProperties": true,
+                            "description": "An example of the vote-shaped variant.",
+                            "type": "object"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -4373,6 +4609,7 @@
                   "schema": {
                     "properties": {
                       "meta": {
+                        "additionalProperties": true,
                         "type": "object"
                       },
                       "report": {
@@ -4415,14 +4652,17 @@
                             "properties": {
                               "fundedPeers": {
                                 "items": {
+                                  "additionalProperties": true,
                                   "type": "object"
                                 },
                                 "type": "array"
                               },
                               "fundingBar": {
+                                "additionalProperties": true,
                                 "type": "object"
                               },
                               "round": {
+                                "additionalProperties": true,
                                 "description": "Live SCF round state — never asserts a negative on fetch failure (source: 'unavailable').",
                                 "type": "object"
                               }
@@ -4439,6 +4679,7 @@
                               },
                               "contracts": {
                                 "items": {
+                                  "additionalProperties": true,
                                   "type": "object"
                                 },
                                 "type": "array"
@@ -4457,6 +4698,7 @@
                           "startFrom": {
                             "description": "Top non-archived competitor repos (≤2) with a trust SUMMARY each: repo, project, codeTruth (without the full contractInterface — interfaceSize is kept), usage, audits {count, latest}, auditDrift, succession, signals (closed vocabulary of facts, NOT a score), fullReport (link to /api/repos/trust). A competitor is a starting point to READ, not necessarily a template.",
                             "items": {
+                              "additionalProperties": true,
                               "type": "object"
                             },
                             "type": "array"
@@ -4467,6 +4709,7 @@
                             "type": "string"
                           },
                           "vet": {
+                            "additionalProperties": true,
                             "description": "Same computation as /api/vet-idea: competitors, maturity, priorArt, gap.",
                             "type": "object"
                           },
@@ -4689,6 +4932,113 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "Hackathon build submissions (previously opaque).",
+                    "properties": {
+                      "builds": {
+                        "items": {
+                          "properties": {
+                            "award": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "demoUrl": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "description": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "endedAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "githubUrl": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "hackathon": {
+                              "type": "string"
+                            },
+                            "hackathonSlug": {
+                              "type": "string"
+                            },
+                            "isWinner": {
+                              "description": "Placed in the event; absence of a win is not a quality judgement.",
+                              "type": "boolean"
+                            },
+                            "matchedTerms": {
+                              "description": "Which query terms this build matched — the evidence behind its inclusion.",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "placement": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "track": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "url": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "votes": {
+                              "nullable": true,
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "properties": {
+                          "counts": {
+                            "additionalProperties": true,
+                            "description": "returned vs total — how much the filters narrowed.",
+                            "type": "object"
+                          },
+                          "filters": {
+                            "additionalProperties": true,
+                            "description": "The filters as applied — an echo, so a caller can see what was honoured.",
+                            "type": "object"
+                          },
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "matchMode": {
+                            "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                            "enum": [
+                              "all",
+                              "filtered"
+                            ],
+                            "type": "string"
+                          },
+                          "matchModeLabel": {
+                            "type": "string"
+                          },
+                          "note": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "upstream": {
+                            "description": "Where the raw builds came from (DoraHacks).",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -4762,6 +5112,70 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "Side-by-side hackathon comparison (previously opaque).",
+                    "properties": {
+                      "deltas": {
+                        "description": "What differs across the compared events.",
+                        "properties": {
+                          "notes": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "hackathons": {
+                        "items": {
+                          "properties": {
+                            "endDate": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "externalUrl": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "slug": {
+                              "type": "string"
+                            },
+                            "source": {
+                              "type": "string"
+                            },
+                            "startDate": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "status": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "properties": {
+                          "counts": {
+                            "additionalProperties": true,
+                            "description": "How many of the requested slugs resolved.",
+                            "type": "object"
+                          },
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -4965,7 +5379,8 @@
                     "RPC",
                     "Faucet",
                     "Card Issuing",
-                    "Exchange"
+                    "Exchange",
+                    "Oracle"
                   ],
                   "type": "string"
                 },
@@ -5358,6 +5773,31 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "One assistant turn, plus any partners it grounded the answer in.",
+                    "properties": {
+                      "canList": {
+                        "description": "Whether the caller is eligible to submit a listing from here.",
+                        "type": "boolean"
+                      },
+                      "intent": {
+                        "description": "What the assistant judged the caller is trying to do.",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "matches": {
+                        "description": "Partners referenced in the reply — present only when the turn actually grounded on directory rows.",
+                        "items": {
+                          "additionalProperties": true,
+                          "description": "A public partner record.",
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "reply": {
+                        "description": "The assistant's next message, plain text.",
+                        "type": "string"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -5371,6 +5811,17 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "The AI path is not configured or is unavailable; the caller falls back to the manual form rather than erroring.",
+                    "properties": {
+                      "error": {
+                        "description": "Human-readable reason, safe to show.",
+                        "type": "string"
+                      },
+                      "unavailable": {
+                        "description": "Always true here — the feature is off, not the request wrong.",
+                        "type": "boolean"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -5436,6 +5887,59 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "AI partner matches for a stated need (previously opaque).",
+                    "properties": {
+                      "matches": {
+                        "items": {
+                          "properties": {
+                            "partner": {
+                              "additionalProperties": true,
+                              "description": "The matched partner row.",
+                              "type": "object"
+                            },
+                            "reason": {
+                              "description": "Why it matched — safe to surface.",
+                              "type": "string"
+                            },
+                            "score": {
+                              "description": "Relevance of this partner to the need.",
+                              "type": "number"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "properties": {
+                          "candidatesConsidered": {
+                            "description": "The denominator behind the matches.",
+                            "type": "integer"
+                          },
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "model": {
+                            "type": "string"
+                          },
+                          "note": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "need": {
+                        "type": "string"
+                      },
+                      "summary": {
+                        "nullable": true,
+                        "type": "string"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -5449,6 +5953,17 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "The AI path is not configured or is unavailable; the caller falls back to the manual form rather than erroring.",
+                    "properties": {
+                      "error": {
+                        "description": "Human-readable reason, safe to show.",
+                        "type": "string"
+                      },
+                      "unavailable": {
+                        "description": "Always true here — the feature is off, not the request wrong.",
+                        "type": "boolean"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -5516,6 +6031,20 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "mode=chat returns the next assistant turn; mode=extract returns structured partner-owned profile fields. The extract schema contains ONLY partner-owned manual fields — a verified/auto field can never be emitted here, and nothing is written by this endpoint.",
+                    "properties": {
+                      "profile": {
+                        "additionalProperties": true,
+                        "description": "mode=extract: partner-owned fields only. A null value means the partner did not say it — never a fabricated specific.",
+                        "nullable": true,
+                        "type": "object"
+                      },
+                      "reply": {
+                        "description": "mode=chat: the next assistant turn.",
+                        "nullable": true,
+                        "type": "string"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -5529,6 +6058,17 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "The AI path is not configured or is unavailable; the caller falls back to the manual form rather than erroring.",
+                    "properties": {
+                      "error": {
+                        "description": "Human-readable reason, safe to show.",
+                        "type": "string"
+                      },
+                      "unavailable": {
+                        "description": "Always true here — the feature is off, not the request wrong.",
+                        "type": "boolean"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -5558,6 +6098,7 @@
                       "type": "string"
                     },
                     "fields": {
+                      "additionalProperties": true,
                       "description": "Profile fields (typically the /api/partners/onboard extract output)",
                       "type": "object"
                     },
@@ -5582,6 +6123,20 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "Submission accepted for review. Admin review is the only gate to publication, so a submission never surfaces publicly on its own.",
+                    "properties": {
+                      "mode": {
+                        "description": "draft = a new listing; claim = claiming an existing one.",
+                        "enum": [
+                          "draft",
+                          "claim"
+                        ],
+                        "type": "string"
+                      },
+                      "ok": {
+                        "type": "boolean"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -5629,6 +6184,204 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "One partner's full profile (previously an opaque object).",
+                    "properties": {
+                      "meta": {
+                        "properties": {
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "partner": {
+                        "description": "The full partner profile — every field the live response serves. An earlier declaration covered 9 of these; Raven's drift check prompted a field-complete pass so an agent can see contact, coverage and verification exist without probing.",
+                        "properties": {
+                          "acceptingClients": {
+                            "type": "boolean"
+                          },
+                          "assets": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "caseStudies": {
+                            "items": {
+                              "additionalProperties": true,
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "contactChannel": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "contactEmail": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "country": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "description": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "docsUrl": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "foundedYear": {
+                            "nullable": true,
+                            "type": "integer"
+                          },
+                          "freshness": {
+                            "description": "Row-currency signals used by matching.",
+                            "properties": {
+                              "excludeFromMatching": {
+                                "type": "boolean"
+                              },
+                              "isCurrent": {
+                                "type": "boolean"
+                              },
+                              "lastPartnerUpdateAt": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "githubOrg": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "leadTime": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "logoUrl": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "partnerType": {
+                            "type": "string"
+                          },
+                          "pricingModel": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "pricingNotes": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "rampTypes": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "regions": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "responseSla": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "sectors": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "seps": {
+                            "description": "SEP standards the partner implements.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "services": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "tagline": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "tomlFetchedAt": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "tomlSourceUrl": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "typicalEngagement": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "url": {
+                            "description": "Canonical stellarlight.xyz profile URL.",
+                            "type": "string"
+                          },
+                          "verified": {
+                            "description": "Automated verification signals. Null members mean not yet probed — absence of evidence, not a failing grade.",
+                            "properties": {
+                              "githubCommits90d": {
+                                "nullable": true,
+                                "type": "integer"
+                              },
+                              "githubLastCommitAt": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "lastAutoVerifyAt": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "onchainActive": {
+                                "nullable": true,
+                                "type": "boolean"
+                              },
+                              "onchainNote": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "scfInvolvement": {
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "websiteUrl": {
+                            "nullable": true,
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -5711,6 +6464,17 @@
                               },
                               "matchBasis": {
                                 "description": "This is an org/people reference index, NOT a builder/contributor index — roster facts, not verified availability.",
+                                "type": "string"
+                              },
+                              "matchMode": {
+                                "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                                "enum": [
+                                  "all",
+                                  "filtered"
+                                ],
+                                "type": "string"
+                              },
+                              "matchModeLabel": {
                                 "type": "string"
                               },
                               "observedAt": {
@@ -5823,11 +6587,49 @@
                       "current": {
                         "description": "Where to look now. Identical to subject when nothing moved.",
                         "nullable": true,
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "description": "Canonical project page for the CURRENT record.",
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
                         "type": "object"
                       },
                       "evidence": {
                         "description": "Dated basis for the status. `unsourced: true` means we assert it with no citable source — our unverified record, not an established fact about a named company.",
                         "nullable": true,
+                        "properties": {
+                          "statusAsOf": {
+                            "description": "When the status was OBSERVED, not when the record changed.",
+                            "format": "date-time",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "statusBasis": {
+                            "description": "How the status was established (e.g. human-verified, site-liveness, source-inherited). site-liveness means only that a page answered.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "statusSourceUrl": {
+                            "description": "Citable source for the status, when one exists.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "unsourced": {
+                            "description": "true = asserted with NO citable source. Do not report it as an established fact about a named company.",
+                            "type": "boolean"
+                          }
+                        },
                         "type": "object"
                       },
                       "found": {
@@ -5846,6 +6648,28 @@
                         "nullable": true,
                         "type": "string"
                       },
+                      "meta": {
+                        "description": "Response provenance. Present on every 200; previously served but undeclared, so a generated type could not project it.",
+                        "properties": {
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "methodology": {
+                            "description": "Match order and what a miss does and does not claim. Safe to surface to a user.",
+                            "type": "string"
+                          },
+                          "searched": {
+                            "description": "How many project records were searched — the denominator behind a miss.",
+                            "type": "integer"
+                          },
+                          "source": {
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
                       "note": {
                         "description": "Plain-words statement of what was resolved and what it does not claim.",
                         "type": "string"
@@ -5856,6 +6680,18 @@
                       "subject": {
                         "description": "The record the query names, which may itself be superseded.",
                         "nullable": true,
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "description": "Lifecycle label at statusAsOf. Weigh it with evidence.statusBasis — a label alone is not proof.",
+                            "type": "string"
+                          }
+                        },
                         "type": "object"
                       },
                       "superseded": {
@@ -5967,7 +6803,8 @@
                   "RPC",
                   "Faucet",
                   "Card Issuing",
-                  "Exchange"
+                  "Exchange",
+                  "Oracle"
                 ],
                 "type": "string"
               }
@@ -6050,6 +6887,8 @@
               "indexers",
               "custody providers",
               "lending protocols",
+              "oracle",
+              "price feeds",
               "centralized exchanges",
               "CEX",
               "which exchanges list XLM",
@@ -6122,6 +6961,651 @@
               "is there a mature X I could integrate / who is building Y / projects operating as anchors",
               "list/enumerate/compare from the curated directory: which wallets exist and how they differ, main DeFi projects, perpetuals/derivatives DEXes, AMM/liquidity protocols and their yields",
               "ACCOUNTABILITY / DILIGENCE by composing structured filters — which SCF-funded projects went inactive (`?scfAwarded=1&status=Inactive`), which Live projects a category has (`?type=Wallet&status=Live`); the natural-language words 'inactive/defunct/abandoned/dead' do NOT route from `q`, they must be passed as `status=Inactive`. `meta.counts.total` answers the 'how many' form."
+            ]
+          }
+        }
+      },
+      "/api/quality": {
+        "get": {
+          "description": "A SELF-REPORT for calibrating trust before relying on an answer. knownLimitations is DERIVED from our measurements and says what to do INSTEAD — read it first. gapMatrix names what is missing WHERE with real slugs; missFunnel replays open recall findings to say at which STAGE each dies (and how many no longer reproduce). Also: per-surface open findings, the row-score definition, status-basis mix (site-liveness = a page answered), repo coverage, every guard with its promise and whether it holds, and the trend. Counts are samples with denominators. No parameters.",
+          "operationId": "getQualityReport",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "findings": {
+                        "properties": {
+                          "byFailureMode": {
+                            "items": {
+                              "properties": {
+                                "cleared": {
+                                  "type": "integer"
+                                },
+                                "mode": {
+                                  "type": "string"
+                                },
+                                "open": {
+                                  "type": "integer"
+                                },
+                                "surface": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "cleared": {
+                            "type": "integer"
+                          },
+                          "note": {
+                            "type": "string"
+                          },
+                          "open": {
+                            "type": "integer"
+                          },
+                          "openByAge": {
+                            "items": {
+                              "properties": {
+                                "bucket": {
+                                  "type": "string"
+                                },
+                                "count": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "recentlyCleared": {
+                            "items": {
+                              "properties": {
+                                "clearedAt": {
+                                  "type": "string"
+                                },
+                                "failureMode": {
+                                  "type": "string"
+                                },
+                                "probe": {
+                                  "type": "string"
+                                },
+                                "surface": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "verifiedClosed": {
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "gapMatrix": {
+                        "description": "Entity x missing-field map with REAL identifiers — the actionable half of this report. Each row: what is missing, the count and denominator (a sample, never a census), why it matters to a caller, what closes it, and example slugs/repos so the gap can be worked or independently checked.",
+                        "properties": {
+                          "definition": {
+                            "type": "string"
+                          },
+                          "rows": {
+                            "items": {
+                              "properties": {
+                                "closedBy": {
+                                  "type": "string"
+                                },
+                                "entity": {
+                                  "enum": [
+                                    "project",
+                                    "repo"
+                                  ],
+                                  "type": "string"
+                                },
+                                "examples": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "field": {
+                                  "type": "string"
+                                },
+                                "missing": {
+                                  "type": "integer"
+                                },
+                                "of": {
+                                  "type": "integer"
+                                },
+                                "whyItMatters": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "guards": {
+                        "items": {
+                          "properties": {
+                            "asOf": {
+                              "type": "string"
+                            },
+                            "evidence": {
+                              "type": "string"
+                            },
+                            "holding": {
+                              "type": "boolean"
+                            },
+                            "key": {
+                              "type": "string"
+                            },
+                            "promise": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "knownLimitations": {
+                        "description": "Read first. Each entry is derived from a measurement, not authored: what the limit IS, the number behind it, and what to do instead.",
+                        "items": {
+                          "properties": {
+                            "area": {
+                              "type": "string"
+                            },
+                            "instead": {
+                              "type": "string"
+                            },
+                            "limit": {
+                              "type": "string"
+                            },
+                            "measurement": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "library": {
+                        "description": "The written record behind the numbers — lesson write-ups per defect class, committed fetch receipts for human-verified corrections, and audit reports. Paths are repo-relative.",
+                        "properties": {
+                          "audits": {
+                            "items": {
+                              "properties": {
+                                "file": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "lessons": {
+                            "items": {
+                              "properties": {
+                                "bytes": {
+                                  "type": "integer"
+                                },
+                                "date": {
+                                  "type": "string"
+                                },
+                                "file": {
+                                  "type": "string"
+                                },
+                                "lessonCount": {
+                                  "type": "integer"
+                                },
+                                "title": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "receipts": {
+                            "items": {
+                              "properties": {
+                                "fetchedAt": {
+                                  "type": "string"
+                                },
+                                "file": {
+                                  "type": "string"
+                                },
+                                "markers": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "slug": {
+                                  "type": "string"
+                                },
+                                "url": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "meta": {
+                        "properties": {
+                          "apiVersion": {
+                            "type": "string"
+                          },
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "humanPage": {
+                            "type": "string"
+                          },
+                          "measuredAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "methodology": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "missFunnel": {
+                        "description": "Where known-item misses die. Every open recall finding is replayed live and classified at the FIRST failing stage — passing (no longer reproduces) / ranking (returned but below top-3) / admission (not returned for the query) / identity (own exact name does not return it) / corpus (not in the directory at all). Stages are mutually exclusive and each names its owning area. A high 'passing' share means the open finding count is carrying STALE entries rather than real debt.",
+                        "properties": {
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "population": {
+                            "properties": {
+                              "note": {
+                                "type": "string"
+                              },
+                              "openRecallMisses": {
+                                "type": "integer"
+                              },
+                              "sampled": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "stages": {
+                            "items": {
+                              "properties": {
+                                "count": {
+                                  "type": "integer"
+                                },
+                                "examples": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "note": {
+                                  "type": "string"
+                                },
+                                "owner": {
+                                  "type": "string"
+                                },
+                                "share": {
+                                  "type": "integer"
+                                },
+                                "stage": {
+                                  "enum": [
+                                    "passing",
+                                    "ranking",
+                                    "admission",
+                                    "identity",
+                                    "corpus"
+                                  ],
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "progress": {
+                        "description": "Where this service stands against its own published quality plan (QUALITY.md). A phase cannot show done here without being done there, and remaining work is served with the same weight as finished work.",
+                        "items": {
+                          "properties": {
+                            "evidence": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "string"
+                            },
+                            "remaining": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "shippedSoFar": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "state": {
+                              "enum": [
+                                "done",
+                                "in-progress",
+                                "not-started",
+                                "unknown"
+                              ],
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "repoQuality": {
+                        "properties": {
+                          "joinedToMainnetContract": {
+                            "type": "integer"
+                          },
+                          "sampled": {
+                            "type": "integer"
+                          },
+                          "thinnestEvidence": {
+                            "description": "Indexed but thinly evidenced — the repo work queue.",
+                            "items": {
+                              "properties": {
+                                "codeDepth": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "fullName": {
+                                  "type": "string"
+                                },
+                                "mainnetContracts": {
+                                  "type": "integer"
+                                },
+                                "notes": {
+                                  "type": "integer"
+                                },
+                                "repoScore": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "topGraded": {
+                            "items": {
+                              "properties": {
+                                "activity": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "codeDepth": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "evidence": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "fullName": {
+                                  "type": "string"
+                                },
+                                "label": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "mainnetContracts": {
+                                  "type": "integer"
+                                },
+                                "notes": {
+                                  "type": "integer"
+                                },
+                                "repoScore": {
+                                  "nullable": true,
+                                  "type": "integer"
+                                },
+                                "tier": {
+                                  "nullable": true,
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "withCodeDepth": {
+                            "type": "integer"
+                          },
+                          "withKnowledgeNotes": {
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "rowQuality": {
+                        "properties": {
+                          "basisStrength": {
+                            "type": "string"
+                          },
+                          "meanScore": {
+                            "type": "integer"
+                          },
+                          "missingByField": {
+                            "items": {
+                              "properties": {
+                                "count": {
+                                  "type": "integer"
+                                },
+                                "field": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "sampled": {
+                            "type": "integer"
+                          },
+                          "scoreDefinition": {
+                            "type": "string"
+                          },
+                          "statusBasisMix": {
+                            "items": {
+                              "properties": {
+                                "basis": {
+                                  "type": "string"
+                                },
+                                "count": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "weakestRows": {
+                            "description": "The curation queue: each row's slug, evidence score, and exactly which facts are missing.",
+                            "items": {
+                              "properties": {
+                                "missing": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "prominence": {
+                                  "type": "integer"
+                                },
+                                "score": {
+                                  "type": "integer"
+                                },
+                                "slug": {
+                                  "type": "string"
+                                },
+                                "status": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "statusBasis": {
+                                  "nullable": true,
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "surfaces": {
+                        "items": {
+                          "properties": {
+                            "clearedFindings": {
+                              "type": "integer"
+                            },
+                            "means": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "openFindings": {
+                              "type": "integer"
+                            },
+                            "surface": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "trend": {
+                        "description": "Committed daily history; a null metric means it was not measured that day, never zero.",
+                        "items": {
+                          "properties": {
+                            "batteryFail": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "batteryPass": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "date": {
+                              "type": "string"
+                            },
+                            "honestyDebt": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "humanVerified": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "liveNoSource": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "liveRows": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "openMaps": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "parityPass": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "sampled": {
+                              "nullable": true,
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "The quality self-report"
+            }
+          },
+          "summary": "This service's own quality report — known limitations, per-surface health, guard state",
+          "tags": [
+            "Verification"
+          ],
+          "x-routing": {
+            "exampleQuestions": [
+              "How reliable is this directory's status data?",
+              "What are the known limitations of this source?"
+            ],
+            "keywords": [
+              "data quality",
+              "how reliable",
+              "limitations",
+              "known issues",
+              "trust",
+              "confidence in the data",
+              "coverage",
+              "provenance",
+              "self report",
+              "health"
+            ],
+            "notFor": [
+              "verifying ONE specific claim -> verifyClaim",
+              "the freshness/changelog of the API contract -> getChangelog",
+              "per-row confidence on a search result (already served inline)"
+            ],
+            "purpose": "Let an agent weigh how much to trust this service's answers, and see what it is measurably weak at.",
+            "useWhen": [
+              "deciding how much weight to give a result from this service",
+              "a user asks how good or complete this data is",
+              "explaining why an answer is uncertain or a row is thin"
             ]
           }
         }
@@ -6223,6 +7707,7 @@
                           },
                           "protocolCaps": {
                             "items": {
+                              "additionalProperties": true,
                               "type": "object"
                             },
                             "type": "array"
@@ -6561,6 +8046,7 @@
                   "schema": {
                     "properties": {
                       "meta": {
+                        "additionalProperties": true,
                         "type": "object"
                       },
                       "report": {
@@ -6582,6 +8068,7 @@
                             "type": "object"
                           },
                           "audits": {
+                            "additionalProperties": true,
                             "nullable": true,
                             "type": "object"
                           },
@@ -6710,6 +8197,7 @@
                             "type": "object"
                           },
                           "usage": {
+                            "additionalProperties": true,
                             "nullable": true,
                             "type": "object"
                           }
@@ -6870,6 +8358,17 @@
                           },
                           {
                             "properties": {
+                              "matchMode": {
+                                "description": "vector = similarity ranking over embeddings (conceptual, not literal keyword truth); keyword = vector search unavailable, coarse keyword match over title and content.",
+                                "enum": [
+                                  "vector",
+                                  "keyword"
+                                ],
+                                "type": "string"
+                              },
+                              "matchModeLabel": {
+                                "type": "string"
+                              },
                               "mode": {
                                 "description": "How this page was retrieved: 'vector' = semantic similarity over embeddings (the normal path); 'keyword' = literal-match fallback when embeddings are unavailable. Scores are not comparable across modes.",
                                 "enum": [
@@ -7321,6 +8820,7 @@
                   "schema": {
                     "properties": {
                       "meta": {
+                        "additionalProperties": true,
                         "type": "object"
                       },
                       "report": {
@@ -7334,11 +8834,13 @@
                           },
                           "fundedPeers": {
                             "items": {
+                              "additionalProperties": true,
                               "type": "object"
                             },
                             "type": "array"
                           },
                           "fundingBar": {
+                            "additionalProperties": true,
                             "type": "object"
                           },
                           "idea": {
@@ -7351,6 +8853,7 @@
                               },
                               "open": {
                                 "items": {
+                                  "additionalProperties": true,
                                   "type": "object"
                                 },
                                 "type": "array"
@@ -7370,6 +8873,7 @@
                             "type": "string"
                           },
                           "vet": {
+                            "additionalProperties": true,
                             "type": "object"
                           }
                         },
@@ -7421,6 +8925,14 @@
           "operationId": "listSkills",
           "parameters": [
             {
+              "description": "Free-text filter over skill name, tagline, description and tags (all terms must match). Omit to list everything. Previously accepted and ignored — a query returned the full catalog.",
+              "in": "query",
+              "name": "q",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
               "description": "Filter by source",
               "in": "query",
               "name": "source",
@@ -7465,6 +8977,17 @@
                           },
                           {
                             "properties": {
+                              "matchMode": {
+                                "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                                "enum": [
+                                  "all",
+                                  "filtered"
+                                ],
+                                "type": "string"
+                              },
+                              "matchModeLabel": {
+                                "type": "string"
+                              },
                               "validKinds": {
                                 "description": "Every value the kind filter accepts (unknown values 400 with this list).",
                                 "items": {
@@ -7559,6 +9082,80 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "description": "One skill's full record, including SKILL.md content for sources that ship one (metadata-only otherwise).",
+                    "properties": {
+                      "meta": {
+                        "properties": {
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "operator": {
+                            "description": "Who runs this skill's upstream.",
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "skill": {
+                        "properties": {
+                          "compatibility": {
+                            "description": "Agent hosts known to run it.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "content": {
+                            "description": "Full SKILL.md text; null when the source ships no file — absence of content is not absence of the skill.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "description": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "docs": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "featured": {
+                            "type": "boolean"
+                          },
+                          "homepage": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "install": {
+                            "description": "The command to install it.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "installAlt": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "kind": {
+                            "description": "skill-md | mcp-server | sdk | cli | agent-kit | tool",
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "repository": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
                     "type": "object"
                   }
                 }
@@ -7719,6 +9316,27 @@
                               "methodology": {
                                 "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price at the asset's peg), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars. Also states what `basis` means per row and that peg deviation is not measured.",
                                 "type": "string"
+                              },
+                              "multiIssuerTickers": {
+                                "description": "Tickers issued on Stellar by MULTIPLE distinct companies (computed over the whole inventory, unaffected by peg/limit). A ticker listed here is not an identity — attribute by issuer account, never by ticker alone (the Circle-vs-MyKobo EURC class).",
+                                "items": {
+                                  "properties": {
+                                    "companies": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    },
+                                    "note": {
+                                      "type": "string"
+                                    },
+                                    "ticker": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "type": "array"
                               }
                             },
                             "type": "object"
@@ -7852,6 +9470,402 @@
           }
         }
       },
+      "/api/verify": {
+        "get": {
+          "description": "Claim in → verdict out, dated evidence attached. Types: audited (audit registry), live (the status record + provenance tier — Pre-Release CONTRADICTS a live claim, source attached), maintained (indexed code activity + curated knowledgeNotes), issued ('is EURC issued by Circle' — the stablecoin registry; a multi-issuer ticker names EVERY issuer, so attribution is checkable, never conflated). Verdicts assert OUR corpus, never the world: supported / contradicted / unsupported (statement carries the denominator) / unresolved. Answers carry the full subject card.",
+          "operationId": "verifyClaim",
+          "parameters": [
+            {
+              "description": "Natural-language audit claim in the closed grammar: 'is <project> audited', 'was <project> audited by <firm>'. Anything else 400s with the supported forms — refusal over guessing.",
+              "in": "query",
+              "name": "claim",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "description": "Structured alternative to claim.",
+              "in": "query",
+              "name": "type",
+              "schema": {
+                "enum": [
+                  "audited",
+                  "live",
+                  "maintained",
+                  "issued"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "description": "Project name, slug, alias, or former name (required with type=).",
+              "in": "query",
+              "name": "subject",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "description": "Restrict to reports by this firm (case/spacing-insensitive substring). A filtered miss names who DID audit in auditorsOnRecord.",
+              "in": "query",
+              "name": "auditor",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "description": "Only reports with engagement/publication on or after this date (YYYY-MM or YYYY-MM-DD).",
+              "in": "query",
+              "name": "since",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "auditorsOnRecord": {
+                        "description": "On an auditor-filtered miss: who DID audit the subject.",
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "claim": {
+                        "description": "The parsed claim as understood.",
+                        "properties": {
+                          "auditor": {
+                            "type": "string"
+                          },
+                          "since": {
+                            "type": "string"
+                          },
+                          "subject": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "enum": [
+                              "audited",
+                              "live",
+                              "maintained"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "confidence": {
+                        "description": "factConfidence over the newest evidence (basis × freshness). null when there is no evidence to score.",
+                        "nullable": true,
+                        "properties": {
+                          "ageDays": {
+                            "nullable": true,
+                            "type": "integer"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "score": {
+                            "type": "number"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "currencyNote": {
+                        "description": "Present when the newest report predates the subject's latest code activity by >90 days.",
+                        "type": "string"
+                      },
+                      "evidence": {
+                        "description": "Typed evidence rows — discriminate on kind. audit-report = the audit registry; status-record = the lifecycle status with its provenance trio; code-activity = per-repo activity with the existing quality label; curated-note = a repo knowledgeNote (dated fact with source).",
+                        "items": {
+                          "properties": {
+                            "activityState": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "asOf": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "auditor": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "dateBasis": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "engagementEnd": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "findingsTotal": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "isArchived": {
+                              "type": "boolean"
+                            },
+                            "kind": {
+                              "enum": [
+                                "audit-report",
+                                "status-record",
+                                "code-activity",
+                                "curated-note"
+                              ],
+                              "type": "string"
+                            },
+                            "lastCommitAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "note": {
+                              "type": "string"
+                            },
+                            "observedAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "publishedAt": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "repo": {
+                              "type": "string"
+                            },
+                            "repoScoreLabel": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "reportUrl": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "source": {
+                              "type": "string"
+                            },
+                            "stars": {
+                              "nullable": true,
+                              "type": "integer"
+                            },
+                            "status": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "statusAsOf": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "statusBasis": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "statusSourceUrl": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "title": {
+                              "nullable": true,
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "meta": {
+                        "properties": {
+                          "generatedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "methodology": {
+                            "description": "What each verdict asserts — quote it rather than paraphrasing.",
+                            "type": "string"
+                          },
+                          "searched": {
+                            "description": "The denominators behind the verdict.",
+                            "properties": {
+                              "audits": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "source": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "resolution": {
+                        "description": "Only when verdict=unresolved: the resolver's own note.",
+                        "properties": {
+                          "note": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "statement": {
+                        "description": "One-sentence verdict with dates and denominators, safe to relay verbatim.",
+                        "type": "string"
+                      },
+                      "subject": {
+                        "description": "The full subject card (absent when verdict=unresolved): identity, links, types, status with provenance, prominence — the same labeled data the directory serves.",
+                        "properties": {
+                          "asked": {
+                            "type": "string"
+                          },
+                          "links": {
+                            "properties": {
+                              "docs": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "github": {
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "website": {
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "matchedOn": {
+                            "enum": [
+                              "slug",
+                              "canonical-slug",
+                              "alias",
+                              "name",
+                              "repo"
+                            ],
+                            "type": "string"
+                          },
+                          "prominence": {
+                            "nullable": true,
+                            "type": "integer"
+                          },
+                          "resolvedName": {
+                            "type": "string"
+                          },
+                          "resolvedSlug": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "statusAsOf": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "statusBasis": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "statusSourceUrl": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "supportedNetworks": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "types": {
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "verificationLevel": {
+                            "nullable": true,
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "verdict": {
+                        "description": "supported = evidence on record; contradicted = we hold a dated record saying otherwise (Pre-Release vs a live claim; every repo archived vs maintained); unsupported = nothing in OUR corpus either way (never 'false' — see statement); unresolved = unknown subject.",
+                        "enum": [
+                          "supported",
+                          "contradicted",
+                          "unsupported",
+                          "unresolved"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Verdict with evidence (also served for unresolved subjects)"
+            },
+            "400": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "supportedClaims": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Unparseable claim or unsupported claim type"
+            }
+          },
+          "summary": "Verify a claim (audited / live / maintained / issued) against indexed evidence — verdict + evidence + confidence",
+          "tags": [
+            "Verification"
+          ],
+          "x-routing": {
+            "exampleQuestions": [
+              "Is Blend audited?",
+              "Was Soroswap audited by OtterSec?"
+            ],
+            "keywords": [
+              "verify",
+              "verification",
+              "fact check",
+              "is it audited",
+              "audit claim",
+              "audited by",
+              "security audit status",
+              "claim",
+              "evidence"
+            ],
+            "notFor": [
+              "browsing or reading the audit reports themselves -> listAudits",
+              "liveness/status questions ('is X live') -> searchProjects or resolveProject",
+              "code quality or maintenance signals -> getRepoTrust"
+            ],
+            "purpose": "Fact-check an audit claim about a project with dated evidence, instead of inferring from search results.",
+            "useWhen": [
+              "is <project> audited / was it audited by <firm>",
+              "verifying an audit claim found in a pitch, README, or post",
+              "needs a verdict with evidence and dates, not search rows"
+            ]
+          }
+        }
+      },
       "/api/vet-idea": {
         "get": {
           "description": "The 'I want to build X on Stellar' composite: competitor repos (full search stack) + active directory projects in the detected vertical, their maturity from verified evidence (audit registry, live on-chain usage), hackathon prior art from our index (dead prior art is a signal), the vertical's supply-side gap verdict (same computation as analyze?dimension=gaps), and SCF funding presence. Every block carries its basis; no verdict synthesis. vertical=null means the idea doesn't map onto the measurable vertical axis, not that no market exists. Unknown params 400.",
@@ -7876,20 +9890,35 @@
                   "schema": {
                     "properties": {
                       "meta": {
+                        "additionalProperties": true,
                         "type": "object"
                       },
                       "report": {
                         "properties": {
                           "competitors": {
                             "properties": {
+                              "matchMode": {
+                                "description": "How relevance was established. vertical = typed members of the idea's vertical; scored = the idea's own (non-generic) terms matched; weak = only generic words matched — the rows are nearest NEIGHBOURS, not evidence a competitor exists. Weigh a weak block as 'we found nothing close', never as a competitive landscape.",
+                                "enum": [
+                                  "vertical",
+                                  "scored",
+                                  "weak"
+                                ],
+                                "type": "string"
+                              },
+                              "matchModeLabel": {
+                                "type": "string"
+                              },
                               "projects": {
                                 "items": {
+                                  "additionalProperties": true,
                                   "type": "object"
                                 },
                                 "type": "array"
                               },
                               "repos": {
                                 "items": {
+                                  "additionalProperties": true,
                                   "type": "object"
                                 },
                                 "type": "array"
@@ -7898,10 +9927,12 @@
                             "type": "object"
                           },
                           "funding": {
+                            "additionalProperties": true,
                             "nullable": true,
                             "type": "object"
                           },
                           "gap": {
+                            "additionalProperties": true,
                             "description": "Supply-side coverage of the detected vertical (same computation as analyze?dimension=gaps).",
                             "nullable": true,
                             "type": "object"
@@ -7930,6 +9961,7 @@
                               },
                               "repos": {
                                 "items": {
+                                  "additionalProperties": true,
                                   "type": "object"
                                 },
                                 "type": "array"
@@ -8044,8 +10076,8 @@
       }
     ]
   },
-  "openapiVersion": "1.8.87",
-  "operationCount": 35,
+  "openapiVersion": "1.8.110",
+  "operationCount": 37,
   "service": "stellar-light",
   "source": {
     "auth": "none (keyless, read-only)",
@@ -8056,7 +10088,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.8.87",
+    "apiVersion": "1.8.110",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",

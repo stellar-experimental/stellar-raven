@@ -1877,8 +1877,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -1994,13 +1994,84 @@
         ],
         "type": "object"
       },
+      "keywords": [
+        "notes",
+        "end",
+        "date",
+        "external",
+        "start"
+      ],
       "kind": "operation",
       "outputSchema": {
+        "description": "Side-by-side hackathon comparison (previously opaque).",
+        "properties": {
+          "deltas": {
+            "description": "What differs across the compared events.",
+            "properties": {
+              "notes": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "hackathons": {
+            "items": {
+              "properties": {
+                "endDate": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "externalUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "slug": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "startDate": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "properties": {
+              "counts": {
+                "additionalProperties": true,
+                "description": "How many of the requested slugs resolved.",
+                "type": "object"
+              },
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -2058,7 +2129,6 @@
         "confidence",
         "age",
         "days",
-        "label",
         "high",
         "medium",
         "low",
@@ -2074,6 +2144,7 @@
         "ref",
         "capabilities",
         "soroban",
+        "version",
         "deps",
         "proof",
         "symbols",
@@ -2155,6 +2226,7 @@
               },
               "protocolCaps": {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -2291,8 +2363,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -2376,7 +2448,6 @@
         "github",
         "username",
         "featured",
-        "match",
         "profile",
         "text",
         "owner",
@@ -2388,6 +2459,7 @@
         "commits12m",
         "contributes",
         "languages",
+        "count",
         "top",
         "repos",
         "via",
@@ -2397,7 +2469,8 @@
         "title",
         "twitter",
         "handle",
-        "website"
+        "website",
+        "expanded"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -2723,6 +2796,17 @@
                   "matchBasis": {
                     "description": "What a skill match IS: free-text hits over profile + project prose = candidate discovery, NOT verified experience/seniority/availability. Read each row's `match` for where the query hit, and `codeEvidence` for repository-backed facts.",
                     "type": "string"
+                  },
+                  "matchMode": {
+                    "description": "How rows matched q: expanded = matched via synonym/stem expansion of the query terms (verify relevance for niche terms); all = no text query.",
+                    "enum": [
+                      "all",
+                      "expanded"
+                    ],
+                    "type": "string"
+                  },
+                  "matchModeLabel": {
+                    "type": "string"
                   }
                 },
                 "type": "object"
@@ -2733,8 +2817,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -2910,6 +2994,7 @@
             "type": "string"
           },
           "meta": {
+            "additionalProperties": true,
             "type": "object"
           },
           "ok": {
@@ -2925,8 +3010,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -3100,8 +3185,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -3137,6 +3222,7 @@
       "keywords": [
         "min",
         "winner",
+        "count",
         "key",
         "awarded",
         "short",
@@ -3341,8 +3427,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -3400,12 +3486,14 @@
         "github",
         "video",
         "vote",
+        "count",
         "ranked"
       ],
       "kind": "operation",
       "outputSchema": {
         "properties": {
           "hackathon": {
+            "additionalProperties": true,
             "type": "object"
           },
           "meta": {
@@ -3465,12 +3553,14 @@
           },
           "submissions": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array"
           },
           "tracks": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array"
@@ -3553,8 +3643,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -3651,9 +3741,11 @@
       "keywords": [
         "date",
         "external",
+        "count",
         "usd",
         "start",
-        "summary"
+        "summary",
+        "filtered"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -3829,6 +3921,17 @@
                       }
                     },
                     "type": "object"
+                  },
+                  "matchMode": {
+                    "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                    "enum": [
+                      "all",
+                      "filtered"
+                    ],
+                    "type": "string"
+                  },
+                  "matchModeLabel": {
+                    "type": "string"
                   }
                 },
                 "type": "object"
@@ -3839,8 +3942,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -3970,7 +4073,8 @@
                 "RPC",
                 "Faucet",
                 "Card Issuing",
-                "Exchange"
+                "Exchange",
+                "Oracle"
               ],
               "type": "string"
             },
@@ -4005,6 +4109,7 @@
         "card",
         "issuing",
         "exchange",
+        "oracle",
         "json",
         "devs28d",
         "one",
@@ -4199,8 +4304,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -4307,13 +4412,254 @@
         ],
         "type": "object"
       },
+      "keywords": [
+        "accepting",
+        "clients",
+        "assets",
+        "case",
+        "studies",
+        "channel",
+        "email",
+        "country",
+        "founded",
+        "year",
+        "exclude",
+        "matching",
+        "current",
+        "update",
+        "github",
+        "org",
+        "lead",
+        "time",
+        "logo",
+        "pricing",
+        "model",
+        "notes",
+        "ramp",
+        "types",
+        "response",
+        "sla",
+        "seps",
+        "tagline",
+        "toml",
+        "fetched",
+        "typical",
+        "engagement",
+        "commits90d",
+        "commit",
+        "auto",
+        "verify",
+        "onchain",
+        "active",
+        "scf",
+        "involvement",
+        "website"
+      ],
       "kind": "operation",
       "outputSchema": {
+        "description": "One partner's full profile (previously an opaque object).",
+        "properties": {
+          "meta": {
+            "properties": {
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "partner": {
+            "description": "The full partner profile — every field the live response serves. An earlier declaration covered 9 of these; Raven's drift check prompted a field-complete pass so an agent can see contact, coverage and verification exist without probing.",
+            "properties": {
+              "acceptingClients": {
+                "type": "boolean"
+              },
+              "assets": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "caseStudies": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "contactChannel": {
+                "nullable": true,
+                "type": "string"
+              },
+              "contactEmail": {
+                "nullable": true,
+                "type": "string"
+              },
+              "country": {
+                "nullable": true,
+                "type": "string"
+              },
+              "description": {
+                "nullable": true,
+                "type": "string"
+              },
+              "docsUrl": {
+                "nullable": true,
+                "type": "string"
+              },
+              "foundedYear": {
+                "nullable": true,
+                "type": "integer"
+              },
+              "freshness": {
+                "description": "Row-currency signals used by matching.",
+                "properties": {
+                  "excludeFromMatching": {
+                    "type": "boolean"
+                  },
+                  "isCurrent": {
+                    "type": "boolean"
+                  },
+                  "lastPartnerUpdateAt": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "githubOrg": {
+                "nullable": true,
+                "type": "string"
+              },
+              "leadTime": {
+                "nullable": true,
+                "type": "string"
+              },
+              "logoUrl": {
+                "nullable": true,
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "partnerType": {
+                "type": "string"
+              },
+              "pricingModel": {
+                "nullable": true,
+                "type": "string"
+              },
+              "pricingNotes": {
+                "nullable": true,
+                "type": "string"
+              },
+              "rampTypes": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "regions": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "responseSla": {
+                "nullable": true,
+                "type": "string"
+              },
+              "sectors": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "seps": {
+                "description": "SEP standards the partner implements.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "services": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "slug": {
+                "type": "string"
+              },
+              "tagline": {
+                "nullable": true,
+                "type": "string"
+              },
+              "tomlFetchedAt": {
+                "nullable": true,
+                "type": "string"
+              },
+              "tomlSourceUrl": {
+                "nullable": true,
+                "type": "string"
+              },
+              "typicalEngagement": {
+                "nullable": true,
+                "type": "string"
+              },
+              "url": {
+                "description": "Canonical stellarlight.xyz profile URL.",
+                "type": "string"
+              },
+              "verified": {
+                "description": "Automated verification signals. Null members mean not yet probed — absence of evidence, not a failing grade.",
+                "properties": {
+                  "githubCommits90d": {
+                    "nullable": true,
+                    "type": "integer"
+                  },
+                  "githubLastCommitAt": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "lastAutoVerifyAt": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "onchainActive": {
+                    "nullable": true,
+                    "type": "boolean"
+                  },
+                  "onchainNote": {
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "scfInvolvement": {
+                    "nullable": true,
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "websiteUrl": {
+                "nullable": true,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -4390,13 +4736,9 @@
       },
       "keywords": [
         "other",
-        "all",
         "fields",
-        "match",
-        "mode",
         "scored",
         "weak",
-        "label",
         "valid",
         "types",
         "assets",
@@ -4565,6 +4907,7 @@
                 "caseStudies": {
                   "description": "Curated case studies. NULL = none recorded for this partner (UNKNOWN, never 'has no case studies') — currently null for every partner, as none have been curated yet.",
                   "items": {
+                    "additionalProperties": true,
                     "type": "object"
                   },
                   "nullable": true,
@@ -4811,8 +5154,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -4917,7 +5260,8 @@
         "guide",
         "article",
         "data",
-        "match",
+        "version",
+        "filtered",
         "observed",
         "sections"
       ],
@@ -5003,6 +5347,17 @@
                     "description": "This is an org/people reference index, NOT a builder/contributor index — roster facts, not verified availability.",
                     "type": "string"
                   },
+                  "matchMode": {
+                    "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                    "enum": [
+                      "all",
+                      "filtered"
+                    ],
+                    "type": "string"
+                  },
+                  "matchModeLabel": {
+                    "type": "string"
+                  },
                   "observedAt": {
                     "description": "Date the roster was last observed from the source (YYYY-MM-DD).",
                     "type": "string"
@@ -5058,8 +5413,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -5175,6 +5530,7 @@
       "outputSchema": {
         "properties": {
           "meta": {
+            "additionalProperties": true,
             "type": "object"
           },
           "report": {
@@ -5196,6 +5552,7 @@
                 "type": "object"
               },
               "audits": {
+                "additionalProperties": true,
                 "nullable": true,
                 "type": "object"
               },
@@ -5324,6 +5681,7 @@
                 "type": "object"
               },
               "usage": {
+                "additionalProperties": true,
                 "nullable": true,
                 "type": "object"
               }
@@ -5334,8 +5692,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -5449,8 +5807,8 @@
       "keywords": [
         "category",
         "offset",
-        "label",
         "categories",
+        "count",
         "matched",
         "synthetic",
         "quarters",
@@ -5699,8 +6057,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -5776,13 +6134,97 @@
         ],
         "type": "object"
       },
+      "keywords": [
+        "operator",
+        "compatibility",
+        "docs",
+        "featured",
+        "homepage",
+        "alt",
+        "kind",
+        "repository"
+      ],
       "kind": "operation",
       "outputSchema": {
+        "description": "One skill's full record, including SKILL.md content for sources that ship one (metadata-only otherwise).",
+        "properties": {
+          "meta": {
+            "properties": {
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "operator": {
+                "description": "Who runs this skill's upstream.",
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "skill": {
+            "properties": {
+              "compatibility": {
+                "description": "Agent hosts known to run it.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "content": {
+                "description": "Full SKILL.md text; null when the source ships no file — absence of content is not absence of the skill.",
+                "nullable": true,
+                "type": "string"
+              },
+              "description": {
+                "nullable": true,
+                "type": "string"
+              },
+              "docs": {
+                "nullable": true,
+                "type": "string"
+              },
+              "featured": {
+                "type": "boolean"
+              },
+              "homepage": {
+                "nullable": true,
+                "type": "string"
+              },
+              "install": {
+                "description": "The command to install it.",
+                "nullable": true,
+                "type": "string"
+              },
+              "installAlt": {
+                "nullable": true,
+                "type": "string"
+              },
+              "kind": {
+                "description": "skill-md | mcp-server | sdk | cli | agent-kit | tool",
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "repository": {
+                "nullable": true,
+                "type": "string"
+              },
+              "slug": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -5838,12 +6280,15 @@
         "registry",
         "data",
         "methodology",
+        "multi",
+        "tickers",
+        "companies",
+        "ticker",
         "type",
         "company",
         "country",
         "domain",
         "change7d",
-        "ticker",
         "updated",
         "verified",
         "volume24h",
@@ -5973,6 +6418,27 @@
                   "methodology": {
                     "description": "How rows are ranked: USD MARKET CAP (unit supply × USD price at the asset's peg), never raw unit counts — a yen- or peso-denominated supply must not be read as dollars. Also states what `basis` means per row and that peg deviation is not measured.",
                     "type": "string"
+                  },
+                  "multiIssuerTickers": {
+                    "description": "Tickers issued on Stellar by MULTIPLE distinct companies (computed over the whole inventory, unaffected by peg/limit). A ticker listed here is not an identity — attribute by issuer account, never by ticker alone (the Circle-vs-MyKobo EURC class).",
+                    "items": {
+                      "properties": {
+                        "companies": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "note": {
+                          "type": "string"
+                        },
+                        "ticker": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
@@ -6091,8 +6557,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -6281,8 +6747,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -6348,6 +6814,7 @@
       "outputSchema": {
         "properties": {
           "meta": {
+            "additionalProperties": true,
             "type": "object"
           },
           "report": {
@@ -6390,14 +6857,17 @@
                 "properties": {
                   "fundedPeers": {
                     "items": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "type": "array"
                   },
                   "fundingBar": {
+                    "additionalProperties": true,
                     "type": "object"
                   },
                   "round": {
+                    "additionalProperties": true,
                     "description": "Live SCF round state — never asserts a negative on fetch failure (source: 'unavailable').",
                     "type": "object"
                   }
@@ -6414,6 +6884,7 @@
                   },
                   "contracts": {
                     "items": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "type": "array"
@@ -6432,6 +6903,7 @@
               "startFrom": {
                 "description": "Top non-archived competitor repos (≤2) with a trust SUMMARY each: repo, project, codeTruth (without the full contractInterface — interfaceSize is kept), usage, audits {count, latest}, auditDrift, succession, signals (closed vocabulary of facts, NOT a score), fullReport (link to /api/repos/trust). A competitor is a starting point to READ, not necessarily a template.",
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -6442,6 +6914,7 @@
                 "type": "string"
               },
               "vet": {
+                "additionalProperties": true,
                 "description": "Same computation as /api/vet-idea: competitors, maturity, priorArt, gap.",
                 "type": "object"
               },
@@ -6459,8 +6932,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -6552,8 +7025,10 @@
         "observed",
         "protocol",
         "published",
+        "version",
         "superseded",
-        "title"
+        "title",
+        "filtered"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -6690,66 +7165,86 @@
             "type": "array"
           },
           "meta": {
-            "description": "Standard meta block included on every list response",
-            "properties": {
-              "counts": {
+            "allOf": [
+              {
+                "description": "Standard meta block included on every list response",
                 "properties": {
-                  "returned": {
-                    "description": "Rows in this page (post limit/offset slice)",
-                    "minimum": 0,
-                    "type": "integer"
+                  "counts": {
+                    "properties": {
+                      "returned": {
+                        "description": "Rows in this page (post limit/offset slice)",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "semantic": {
+                        "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "total": {
+                        "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
+                        "minimum": 0,
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "totalBasis": {
+                        "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
                   },
-                  "semantic": {
-                    "description": "projects/search only: rows in this page served by the vector-similarity fallback rather than a keyword match (each tagged via:\"semantic\"; included in returned/total). Lets a consumer separate keyword truth from similarity guesses.",
-                    "minimum": 0,
-                    "type": "integer"
+                  "filters": {
+                    "additionalProperties": true,
+                    "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
+                    "type": "object"
                   },
-                  "total": {
-                    "description": "Rows matching the filter before slicing (paginated endpoints). Page until offset + returned >= total. NULL means the total is unknowable by construction, not zero and not omitted — searchResearch ranks a bounded candidate pool by similarity, so there is no crisp matching set to count; `totalBasis` names why. Never read a null total as 'no more rows'. Where an endpoint applies no limit, total equals returned and is stated explicitly so a complete read is verifiable rather than inferred.",
-                    "minimum": 0,
-                    "nullable": true,
-                    "type": "integer"
-                  },
-                  "totalBasis": {
-                    "description": "Present only when `total` is null: names why no total exists (e.g. 'unbounded-similarity-ranking'). Disambiguates the null so it is never read as zero or as a missing field.",
+                  "generatedAt": {
+                    "format": "date-time",
                     "type": "string"
+                  },
+                  "note": {
+                    "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
+                    "type": "string"
+                  },
+                  "source": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "warnings": {
+                    "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "type": "object"
               },
-              "filters": {
-                "additionalProperties": true,
-                "description": "Echo of the filter values this response was computed under (null = filter not applied). Read it to confirm the server saw the filters you sent.",
-                "type": "object"
-              },
-              "generatedAt": {
-                "format": "date-time",
-                "type": "string"
-              },
-              "note": {
-                "description": "Optional endpoint-specific reading note — semantics a consumer needs to interpret the rows correctly (counting basis, absence semantics, handoff pointers). Present only where the endpoint has something non-obvious to say.",
-                "type": "string"
-              },
-              "source": {
-                "format": "uri",
-                "type": "string"
-              },
-              "warnings": {
-                "description": "Present only when the request carried query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure — the request still succeeds; endpoints that shipped strict from day one return 400 instead.",
-                "items": {
-                  "type": "string"
+              {
+                "properties": {
+                  "matchMode": {
+                    "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                    "enum": [
+                      "all",
+                      "filtered"
+                    ],
+                    "type": "string"
+                  },
+                  "matchModeLabel": {
+                    "type": "string"
+                  }
                 },
-                "type": "array"
+                "type": "object"
               }
-            },
-            "type": "object"
+            ]
           }
         },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -6874,7 +7369,8 @@
         "size",
         "full",
         "scanned",
-        "successor"
+        "successor",
+        "filtered"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -6883,6 +7379,7 @@
             "items": {
               "properties": {
                 "audits": {
+                  "additionalProperties": true,
                   "description": "Per-project audit rollup: count + latest auditor/date. Null = none on record at our source, NOT 'unaudited'.",
                   "nullable": true,
                   "type": "object"
@@ -6898,6 +7395,7 @@
                   "type": "array"
                 },
                 "codeInUse": {
+                  "additionalProperties": true,
                   "description": "Live on-chain usage attributed to this repo's contract(s) — the strongest evidence tier.",
                   "nullable": true,
                   "type": "object"
@@ -6959,14 +7457,28 @@
             "type": "array"
           },
           "meta": {
+            "additionalProperties": true,
+            "properties": {
+              "matchMode": {
+                "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                "enum": [
+                  "all",
+                  "filtered"
+                ],
+                "type": "string"
+              },
+              "matchModeLabel": {
+                "type": "string"
+              }
+            },
             "type": "object"
           }
         },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -7044,6 +7556,10 @@
             ],
             "type": "string"
           },
+          "q": {
+            "description": "Free-text filter over skill name, tagline, description and tags (all terms must match). Omit to list everything. Previously accepted and ignored — a query returned the full catalog.",
+            "type": "string"
+          },
           "source": {
             "description": "Filter by source",
             "enum": [
@@ -7062,6 +7578,7 @@
         "stellarlight",
         "lumenloop",
         "external",
+        "filtered",
         "valid",
         "kinds",
         "sources",
@@ -7071,7 +7588,6 @@
         "featured",
         "homepage",
         "alt",
-        "label",
         "raw",
         "repository",
         "tagline",
@@ -7142,6 +7658,17 @@
               },
               {
                 "properties": {
+                  "matchMode": {
+                    "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                    "enum": [
+                      "all",
+                      "filtered"
+                    ],
+                    "type": "string"
+                  },
+                  "matchModeLabel": {
+                    "type": "string"
+                  },
                   "validKinds": {
                     "description": "Every value the kind filter accepts (unknown values 400 with this list).",
                     "items": {
@@ -7275,8 +7802,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -7315,13 +7842,75 @@
         ],
         "type": "object"
       },
+      "keywords": [
+        "matches",
+        "partner",
+        "score",
+        "candidates",
+        "considered",
+        "model",
+        "summary"
+      ],
       "kind": "operation",
       "outputSchema": {
+        "description": "AI partner matches for a stated need (previously opaque).",
+        "properties": {
+          "matches": {
+            "items": {
+              "properties": {
+                "partner": {
+                  "additionalProperties": true,
+                  "description": "The matched partner row.",
+                  "type": "object"
+                },
+                "reason": {
+                  "description": "Why it matched — safe to surface.",
+                  "type": "string"
+                },
+                "score": {
+                  "description": "Relevance of this partner to the need.",
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "properties": {
+              "candidatesConsidered": {
+                "description": "The denominator behind the matches.",
+                "type": "integer"
+              },
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "model": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "need": {
+            "type": "string"
+          },
+          "summary": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "service": "scout",
@@ -7329,6 +7918,198 @@
         "base": "https://stellarlight.xyz",
         "method": "POST",
         "path": "/api/partners/match",
+        "type": "http"
+      }
+    },
+    {
+      "description": "Resolve a historical project name to what it is now. Reconciles a name found in an old post, changelog, README or repo against the current directory: returns the record it names, where to look NOW if that record was superseded, and the evidence behind any inactive status. Use when: you hit a project name that matches nothing current and need to know whether it was renamed, replaced, or is simply untracked. Not for: searching for projects by topic (→ searchProjects). A miss means NOT TRACKED HERE — never that the name never existed, never that it is defunct.",
+      "id": "scout.resolveProject",
+      "inputSchema": {
+        "properties": {
+          "q": {
+            "description": "The name, slug, or stellarlight project URL encountered. Matched against slugs, then aliases, then normalized names.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "q"
+        ],
+        "type": "object"
+      },
+      "keywords": [
+        "unsourced",
+        "matched",
+        "canonical",
+        "alias",
+        "methodology",
+        "searched",
+        "query",
+        "subject"
+      ],
+      "kind": "operation",
+      "outputSchema": {
+        "properties": {
+          "current": {
+            "description": "Where to look now. Identical to subject when nothing moved.",
+            "nullable": true,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "slug": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "url": {
+                "description": "Canonical project page for the CURRENT record.",
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "evidence": {
+            "description": "Dated basis for the status. `unsourced: true` means we assert it with no citable source — our unverified record, not an established fact about a named company.",
+            "nullable": true,
+            "properties": {
+              "statusAsOf": {
+                "description": "When the status was OBSERVED, not when the record changed.",
+                "format": "date-time",
+                "nullable": true,
+                "type": "string"
+              },
+              "statusBasis": {
+                "description": "How the status was established (e.g. human-verified, site-liveness, source-inherited). site-liveness means only that a page answered.",
+                "nullable": true,
+                "type": "string"
+              },
+              "statusSourceUrl": {
+                "description": "Citable source for the status, when one exists.",
+                "nullable": true,
+                "type": "string"
+              },
+              "unsourced": {
+                "description": "true = asserted with NO citable source. Do not report it as an established fact about a named company.",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "found": {
+            "description": "false = the name is not tracked in this directory. NOT a claim it never existed or is defunct.",
+            "type": "boolean"
+          },
+          "matchedOn": {
+            "description": "How the query matched. An exact slug is a stronger identification than a normalized name.",
+            "enum": [
+              "slug",
+              "canonical-slug",
+              "alias",
+              "name",
+              "repo"
+            ],
+            "nullable": true,
+            "type": "string"
+          },
+          "meta": {
+            "description": "Response provenance. Present on every 200; previously served but undeclared, so a generated type could not project it.",
+            "properties": {
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "methodology": {
+                "description": "Match order and what a miss does and does not claim. Safe to surface to a user.",
+                "type": "string"
+              },
+              "searched": {
+                "description": "How many project records were searched — the denominator behind a miss.",
+                "type": "integer"
+              },
+              "source": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "note": {
+            "description": "Plain-words statement of what was resolved and what it does not claim.",
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "subject": {
+            "description": "The record the query names, which may itself be superseded.",
+            "nullable": true,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "slug": {
+                "type": "string"
+              },
+              "status": {
+                "description": "Lifecycle label at statusAsOf. Weigh it with evidence.statusBasis — a label alone is not proof.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "superseded": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "found",
+          "query",
+          "note"
+        ],
+        "type": "object"
+      },
+      "provenance": {
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
+        "source": "https://stellarlight.xyz/api/openapi.json"
+      },
+      "routingKeywords": [
+        "successor",
+        "happened",
+        "turn",
+        "stale",
+        "unfamiliar",
+        "identity",
+        "article",
+        "deciding",
+        "actually",
+        "wound",
+        "down",
+        "reconciling",
+        "outdated",
+        "reference",
+        "before",
+        "citing",
+        "passport",
+        "stellar",
+        "still",
+        "around",
+        "blog",
+        "mentions",
+        "cannot",
+        "find",
+        "longer",
+        "exists",
+        "dead",
+        "former"
+      ],
+      "service": "scout",
+      "transport": {
+        "base": "https://stellarlight.xyz",
+        "method": "GET",
+        "path": "/api/projects/resolve",
         "type": "http"
       }
     },
@@ -7358,6 +8139,7 @@
       "outputSchema": {
         "properties": {
           "meta": {
+            "additionalProperties": true,
             "type": "object"
           },
           "report": {
@@ -7371,11 +8153,13 @@
               },
               "fundedPeers": {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
               },
               "fundingBar": {
+                "additionalProperties": true,
                 "type": "object"
               },
               "idea": {
@@ -7388,6 +8172,7 @@
                   },
                   "open": {
                     "items": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "type": "array"
@@ -7407,6 +8192,7 @@
                 "type": "string"
               },
               "vet": {
+                "additionalProperties": true,
                 "type": "object"
               }
             },
@@ -7416,8 +8202,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -7523,15 +8309,129 @@
         "true",
         "yes",
         "false",
-        "off"
+        "off",
+        "ended",
+        "github",
+        "winner",
+        "matched",
+        "terms",
+        "filtered",
+        "upstream"
       ],
       "kind": "operation",
       "outputSchema": {
+        "description": "Hackathon build submissions (previously opaque).",
+        "properties": {
+          "builds": {
+            "items": {
+              "properties": {
+                "award": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "demoUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "description": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "endedAt": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "githubUrl": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "hackathon": {
+                  "type": "string"
+                },
+                "hackathonSlug": {
+                  "type": "string"
+                },
+                "isWinner": {
+                  "description": "Placed in the event; absence of a win is not a quality judgement.",
+                  "type": "boolean"
+                },
+                "matchedTerms": {
+                  "description": "Which query terms this build matched — the evidence behind its inclusion.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "placement": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "track": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "url": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "votes": {
+                  "nullable": true,
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "properties": {
+              "counts": {
+                "additionalProperties": true,
+                "description": "returned vs total — how much the filters narrowed.",
+                "type": "object"
+              },
+              "filters": {
+                "additionalProperties": true,
+                "description": "The filters as applied — an echo, so a caller can see what was honoured.",
+                "type": "object"
+              },
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "matchMode": {
+                "description": "How rows matched q: filtered = rows contain the query terms literally; all = no text query (structured filters only).",
+                "enum": [
+                  "all",
+                  "filtered"
+                ],
+                "type": "string"
+              },
+              "matchModeLabel": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "upstream": {
+                "description": "Where the raw builds came from (DoraHacks).",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -7675,7 +8575,8 @@
               "RPC",
               "Faucet",
               "Card Issuing",
-              "Exchange"
+              "Exchange",
+              "Oracle"
             ],
             "type": "string"
           }
@@ -7729,7 +8630,6 @@
         "confidence",
         "age",
         "days",
-        "label",
         "high",
         "medium",
         "low",
@@ -7746,6 +8646,7 @@
         "ref",
         "capabilities",
         "soroban",
+        "version",
         "deps"
       ],
       "kind": "operation",
@@ -9427,8 +10328,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -9562,6 +10463,9 @@
         "amms",
         "indexers",
         "custody",
+        "oracle",
+        "price",
+        "feeds",
         "centralized",
         "cex",
         "xlm",
@@ -9662,14 +10566,10 @@
         "offset",
         "fields",
         "canonical",
-        "match",
-        "mode",
         "strict",
         "partial",
         "weak",
-        "all",
         "none",
-        "label",
         "signals",
         "commits90d",
         "prs",
@@ -9716,7 +10616,11 @@
         "winner",
         "homepage",
         "judge",
-        "judged"
+        "judged",
+        "notes",
+        "commit",
+        "issues",
+        "owner"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -10224,8 +11128,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -10431,10 +11335,10 @@
         "low",
         "informational",
         "fields",
-        "mode",
         "model",
         "score",
         "results",
+        "version",
         "chunk",
         "content",
         "doc",
@@ -10508,6 +11412,17 @@
               },
               {
                 "properties": {
+                  "matchMode": {
+                    "description": "vector = similarity ranking over embeddings (conceptual, not literal keyword truth); keyword = vector search unavailable, coarse keyword match over title and content.",
+                    "enum": [
+                      "vector",
+                      "keyword"
+                    ],
+                    "type": "string"
+                  },
+                  "matchModeLabel": {
+                    "type": "string"
+                  },
                   "mode": {
                     "description": "How this page was retrieved: 'vector' = semantic similarity over embeddings (the normal path); 'keyword' = literal-match fallback when embeddings are unavailable. Scores are not comparable across modes.",
                     "enum": [
@@ -10559,6 +11474,7 @@
                   "type": "integer"
                 },
                 "confidence": {
+                  "additionalProperties": true,
                   "description": "0-1 trust signal: score, label (high/medium/low), relevance, freshness, authority, ageDays",
                   "type": "object"
                 },
@@ -10647,8 +11563,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -10890,6 +11806,8 @@
       },
       "keywords": [
         "report",
+        "scored",
+        "weak",
         "audited",
         "mainnet"
       ],
@@ -10897,20 +11815,35 @@
       "outputSchema": {
         "properties": {
           "meta": {
+            "additionalProperties": true,
             "type": "object"
           },
           "report": {
             "properties": {
               "competitors": {
                 "properties": {
+                  "matchMode": {
+                    "description": "How relevance was established. vertical = typed members of the idea's vertical; scored = the idea's own (non-generic) terms matched; weak = only generic words matched — the rows are nearest NEIGHBOURS, not evidence a competitor exists. Weigh a weak block as 'we found nothing close', never as a competitive landscape.",
+                    "enum": [
+                      "vertical",
+                      "scored",
+                      "weak"
+                    ],
+                    "type": "string"
+                  },
+                  "matchModeLabel": {
+                    "type": "string"
+                  },
                   "projects": {
                     "items": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "type": "array"
                   },
                   "repos": {
                     "items": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "type": "array"
@@ -10919,10 +11852,12 @@
                 "type": "object"
               },
               "funding": {
+                "additionalProperties": true,
                 "nullable": true,
                 "type": "object"
               },
               "gap": {
+                "additionalProperties": true,
                 "description": "Supply-side coverage of the detected vertical (same computation as analyze?dimension=gaps).",
                 "nullable": true,
                 "type": "object"
@@ -10951,6 +11886,7 @@
                   },
                   "repos": {
                     "items": {
+                      "additionalProperties": true,
                       "type": "object"
                     },
                     "type": "array"
@@ -10970,8 +11906,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-08-25T19:04:44.715Z",
-        "openapiVersion": "1.8.87",
+        "fetchedAt": "2026-08-28T02:48:38.136Z",
+        "openapiVersion": "1.8.110",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -15505,10 +16441,12 @@
         "monitoring",
         "security",
         "troubleshooting",
+        "picker",
         "analytics",
         "circle",
         "dashboard",
         "home",
+        "distribution",
         "receivers"
       ],
       "kind": "operation",
@@ -16849,6 +17787,7 @@
         "upload",
         "smart",
         "plugins",
+        "manual",
         "more",
         "analytics",
         "platforms",
@@ -17107,7 +18046,6 @@
         "sign",
         "js",
         "xdrs",
-        "rpc",
         "key",
         "parameters",
         "symbol",
@@ -17190,7 +18128,8 @@
         "balance",
         "op",
         "upload",
-        "plugins"
+        "plugins",
+        "manual"
       ],
       "kind": "operation",
       "outputSchema": null,
@@ -17488,6 +18427,6 @@
       }
     }
   ],
-  "generatedAt": "2026-08-25T21:02:07Z",
+  "generatedAt": "2026-08-28T02:48:38.136Z",
   "version": 1
 }

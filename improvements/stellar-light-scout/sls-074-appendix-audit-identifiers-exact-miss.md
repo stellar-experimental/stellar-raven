@@ -1,7 +1,7 @@
 ---
 id: sls-074
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-25
 upstreamTitle: Include appendix audit identifiers in exact-match indexing
 evidence:
@@ -12,6 +12,9 @@ evidence:
   - successor to sls-071 because the exact-miss mechanism shipped, but its verbatim identifier index excludes this real appendix identifier
   - 2026-08-25 consumer-side truth guards updated in eval/qa/corpus/battery/soroban/q-soroban-auth-recursion-dos-audit.json and eval/qa/corpus/battery/tooling-infra/q-tool-soroban-auth-audit-live.json
   - upstream issue filed 2026-08-25: https://github.com/Stellar-Light/stellarlight/issues/1031
+  - upstream commit b170d0d78583f95bd6aa86d8ede0125cda4089e4 fixed appendix-identifier promotion
+  - 2026-08-28T02:16:54.982Z live GET https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 returned the Veridise record first with section V-SOR-APP-VUL-003 and no meta.exactMiss
+  - 2026-08-28 live absent control V-SOR-APP-VUL-999 still returned meta.exactMiss
 ---
 
 ## Finding

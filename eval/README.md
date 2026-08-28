@@ -1040,3 +1040,36 @@ operation set does not intersect the upstream operation changes.
 
 Independent Herdr review checked exposure, generated artifacts, routing,
 runner impact, documentation, and the complete skill-body diff.
+
+## Re-baseline (2026-08-27, issue #67): Scout 1.8.110 exposure review
+
+Scout 1.8.110 has 36 paths and 37 operations. It includes the read-only
+`GET /api/quality` and `GET /api/verify` operations. It also fully types the
+historical project resolver and adds Oracle vocabulary to `searchProjects`.
+The Stellar Docs title vocabulary grows from 646 to 649 titles.
+
+Raven exposes `scout.resolveProject` because its identity, status evidence,
+and provenance fields now match the live response. Finding `sls-075` records
+the upstream fix. Raven withholds `scout.verifyClaim` because its live
+`claim.type: "issued"` response is absent from the published response enum.
+Finding `sls-077` records that contract gap.
+
+Raven also withholds `scout.getQualityReport`. An A/B run showed that its broad
+routing vocabulary entered 56 of 338 legacy top-five results and 26 of 122
+extended top-five results. It ranked first for unrelated protocol and research
+questions. Excluding it improved extended strict routing from **88/109/116** to
+**90/109/117**. Finding `sls-078` records the upstream routing boundary.
+
+Against the prior baseline, legacy strict routing moves from **209/279/311** to
+**208/279/311**. The one strict change is `q-defi-reflector-resolve`.
+`scout.resolveProject` reaches rank one, while the strict corpus label remains
+Lumenloop and `expected_any` includes Scout. This is an accepted labeling
+trade, not a strict routing win. Card@5 remains **95/182**. Extended strict
+improves from **89/109/117** to
+**90/109/117** because the Oracle routing moves
+`q-defi-oracles-chainlink-band` to `scout.searchProjects` at rank one.
+
+Skills remain **16/23/23**. The frozen holdout remains **10/22/25**, with 11
+forbidden captures. No scorer, routing corpus, floor, band, or runner operation
+changed. The final passing evidence trace is
+`routing-2026-08-28T02-49-08-451Z.json`.
