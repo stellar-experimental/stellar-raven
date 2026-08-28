@@ -31,8 +31,8 @@ Total findings: 71
 | sls-074 | Scout reports V-SOR-APP-VUL-003 as an exact miss. The Veridise V2.1 report contains that exact identifier in Appendix A.2.2 for Denial of…  | fixed-upstream    | 2026-08-25 | 0           |
 | sls-075 | Scout OpenAPI 1.8.87 adds GET /api/projects/resolve, but its core nested response objects are opaque. subject, current, and evidence…       | fixed-upstream    | 2026-08-25 | 0           |
 | sls-076 | scout.searchProjects({ q: "Strupey" }) returns Stroopy.AI as a strict keyword match. The response says that all keywords matched            | fixed-upstream    | 2026-08-27 | 0           |
-| sls-077 | Scout OpenAPI 1.9.1 omits issued from the 200 response claim.type enum. The same endpoint accepts issued in the type query parameter. The…  | verified          | 2026-08-27 | 1           |
-| sls-078 | Scout OpenAPI 1.9.1 gives getQualityReport broad x-routing keywords. The live list includes trust, confidence in the data, coverage,…       | verified          | 2026-08-27 | 1           |
+| sls-077 | Scout OpenAPI 1.9.1 omits issued from the 200 response claim.type enum. The same endpoint accepts issued in the type query parameter. The…  | reported-upstream | 2026-08-27 | 1           |
+| sls-078 | Scout OpenAPI 1.9.1 gives getQualityReport broad x-routing keywords. The live list includes trust, confidence in the data, coverage,…       | reported-upstream | 2026-08-27 | 1           |
 
 ## stellar-docs
 

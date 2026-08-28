@@ -100,6 +100,12 @@ issue #86 drift round.
   `improvements lint ok (71 findings)`; `tsc --noEmit` exit 0; `Test Files  90 passed (90)`,
   `Tests  1375 passed (1375)`; `npm run build` `Total Upload: 7036.53 KiB`; secrets clean;
   `git diff --check` clean; both filing dry-runs exit 0. Force-pushed with lease.
+- `2026-08-28T14:20Z` — Owner authorized merge, filing, and retirement. PR #87 squash-merged as
+  `5e23340`. `npm run improvements:file` posted `sls-077` as
+  https://github.com/Stellar-Light/stellarlight/issues/1086 and `sls-078` as
+  https://github.com/Stellar-Light/stellarlight/issues/1087; both moved to `reported-upstream`.
+- `2026-08-28` — Lane D (Codex `gpt-5.6-sol` high, pane `w17:p6`, brief `hyg-resolve-brief.md`)
+  started for the golden refresh, seven resolution comments, and `improvements:resolve`.
 
 ## Outcome
 

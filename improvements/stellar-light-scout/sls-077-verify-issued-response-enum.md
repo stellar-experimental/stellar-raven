@@ -1,12 +1,13 @@
 ---
 id: sls-077
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-27
 upstreamTitle: Declare issued in the verify response claim type enum
 evidence:
   - 2026-08-28T13:38:25Z live GET https://stellarlight.xyz/api/verify?type=issued&subject=EURC&auditor=Circle returned claim.type issued and verdict supported
   - 2026-08-28T13:38:25Z live OpenAPI 1.9.1 accepts issued in the type query parameter enum but omits it from the 200 response claim.type enum
+  - upstream issue filed 2026-08-28: https://github.com/Stellar-Light/stellarlight/issues/1086
 recurrences:
   - date: 2026-08-28
     evidence: OpenAPI 1.9.1 still accepts issued in the request enum and omits it from the 200 response enum; a live issued EURC request returned claim.type issued and verdict supported at 2026-08-28T12:55:15.187Z
