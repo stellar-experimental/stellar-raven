@@ -3076,10 +3076,10 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-builder-justin-rice-history, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-gap-semantic-directory-fallback changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Issue #86 CI repair: q-edge-strupey-ambiguous-stellar-history now names scout.resolveProject as a covered surface. Live resolveProject(q=Strupey) returned found=false with the source-scoped NOT TRACKED HERE qualification. The answer and truth claims did not change. All members were re-read, and the prior consistent verdict stands.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
@@ -3089,7 +3089,7 @@
           "q-edge-closed-world-builder-directory-miss": "dfbfb41a8d5128bc8697c7a9e2549178e32d57bab617c55c1c34554f5ebee95b",
           "q-edge-lumenloop-person-entity-empty": "8fd57c5a935d1c21d49da72dcbe3d72e5b395f1ce52ea935c97dc799ebc41251",
           "q-edge-open-world-recovery-after-narrow-miss": "a9a151978640527818c04d6ddbd1e3b93a39fc7f7d1a5ec3850bc2fa66f6170f",
-          "q-edge-strupey-ambiguous-stellar-history": "b2cd989a1d383973e7bf0a0566e5f24eef5416e4241902bb8bfde1b725413da2",
+          "q-edge-strupey-ambiguous-stellar-history": "4b35c8076141cb50269e7570b68dd1dc79f6e2e31e0a8d0918bdd858864b22c4",
           "q-gap-semantic-directory-fallback": "cab40fe729e70434bcbedd431bacc67c8e77cae9fa5be282d767152a35147d15"
         }
       },

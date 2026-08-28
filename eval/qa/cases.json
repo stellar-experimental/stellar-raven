@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "1d6716af02b558430a663098121542760d371552db00febc974500eb5404b252",
+  "corpusContentSha256": "bf62fa0db6ca3d382d814fbafe0d8acdd021eb5491af297c7af6cda5d28b131a",
   "counts": {
     "total": 499,
     "byCategory": {
@@ -15358,6 +15358,7 @@
         "lumenloop.search_content_semantic",
         "scout.searchResearch",
         "scout.searchProjects",
+        "scout.resolveProject",
         "scout.getBuilders",
         "stellarDocs.search_docs"
       ],
@@ -31072,7 +31073,8 @@
       "question": "Match Reflector's SCF submission history to its current Scout record: what did the submissions fund, who does Scout credit as builder, and what live code reference does Scout surface?",
       "surface": [
         "lumenloop.get_scf_submissions",
-        "scout.searchProjects"
+        "scout.searchProjects",
+        "scout.resolveProject"
       ],
       "golden": {
         "answer": "Lumenloop returns four Reflector awards: the original SCF #15 decentralized price-feed oracle grid, SCF #20 expansion, SCF #26 CEX price feeds, and SCF #29 Reflector DAO with public feeds and customizable subscriptions. As observed on 2026-07-11, Scout lists Reflector as a live decentralized price-oracle/data-feed network, credits Stellar Expert as the builder, and surfaces `reflector-network/reflector-contract` as a Rust code reference (alongside DAO and subscription contracts). The historical submission sequence comes from Lumenloop; the current builder/status/repository facts come from Scout, so neither service alone completes the match.",
