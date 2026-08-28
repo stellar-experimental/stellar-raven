@@ -1,18 +1,18 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "22d74a66df5035f6192603dddd92d72d7c84b3140da0006c7948029293a9787f",
+  "corpusContentSha256": "fda6d08244776ed6bff1f28b903111dc560092c1cfa3b318b0b26a7f036219ac",
   "counts": {
     "total": 30,
     "byCategory": {
       "assets-anchors-seps": 4,
-      "compliance-rwa-payments": 5,
+      "compliance-rwa-payments": 4,
       "defi-ecosystem": 4,
       "edge-behavior": 2,
       "history-org-tokenomics": 1,
       "protocol-core": 2,
       "retail-consumer": 3,
-      "scf-grants-builders": 3,
+      "scf-grants-builders": 4,
       "soroban": 3,
       "tooling-infra": 3
     },
@@ -24,9 +24,9 @@
       "stellarDocs": 14
     },
     "byFreshness": {
-      "live": 12,
+      "live": 13,
       "scheduled": 5,
-      "stable": 13
+      "stable": 12
     },
     "traps": {
       "scam-check": 2
@@ -1961,236 +1961,150 @@
       }
     },
     {
-      "id": "q-rwa-projects-tokenizing-stellar",
-      "question": "Which projects or institutions are tokenizing real-world assets on Stellar?",
+      "id": "q-scf-academic-research-grant",
+      "question": "Does Stellar fund academic research, and how would a university researcher apply?",
       "surface": [
-        "scout.searchProjects"
+        "scout.searchResearch"
       ],
       "golden": {
-        "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live RWA-tokenization project search returned 15 matches, including WisdomTree, Spydra, and Metafyed.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nYes. As of **2026-07-10**, SDF Academic Research Grants fund scientific, technological, economic, or legal research advancing SDF goals, with a proposal cap of **$150,000** and a published historical average around **$75,000**. The eligible applicant/recipient is a **degree-granting research or higher-education institution**, led by a PI-authorized researcher; students and individuals do not apply or receive the award directly, though a grant commonly supports one graduate student or postdoc for about 12 months plus reasonable expenses. Apply through SDF Research by **Mar 31, Jun 30, Sep 30, or Dec 31**, with at most two proposals per calendar year. This is not the SCF Build application path, although an applicant ineligible for this academic program may separately consider SCF if the project fits its rules.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "keyFacts": [
+          "Presents specific source-supported content as a current or dated observation.",
+          "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+          "Correctly identifies the institution/PI applicant.",
+          "Names institutions as recipients, with students as supported researchers."
+        ],
+        "avoid": [
+          "Do NOT substitute an unsupported memory claim for source-supported content.",
+          "Do NOT say students or individuals apply for or directly receive the academic grant.",
+          "Do NOT replace the $150K ceiling with the separately labeled ~$75K historical average or categorically claim SCF can never be separately relevant.",
+          "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+        ],
+        "notes": "GT-36 CORRECTION 2026-07-10: grade institution/PI eligibility, $150K ceiling, quarterly dates, two-per-year limit, and academic-path distinction. A supported student is not the applicant; the official ~$75K average may be mentioned separately; SCF is not categorically forbidden as a separate program.\nGT-36 independently confirmed by processes 3290/3291."
+      },
+      "tags": {
+        "category": "scf-grants-builders",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-07-10",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://research.stellar.org/research-grants",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/grants-and-funding",
+            "note": "class inferred at migration"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Academic Research Grants are institution/PI-led awards capped at $150K with quarterly deadlines and at most two proposals per year",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "A: current SDF Research grant page",
+                "observedAt": "2026-07-11",
+                "note": "verbatim legacy evidence descriptor imported at migration"
+              },
+              {
+                "class": "D",
+                "ref": "D: independent program summary corroborating institution/PI and support structure",
+                "observedAt": "2026-07-11",
+                "note": "verbatim legacy evidence descriptor imported at migration"
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-08-27",
+          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "evidence": [
+            "Solo scratchpad 575 GT-36 primary 3290 and blind 3291; independently checked 2026-07-10.",
+            "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
+            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory-claim trap to avoid, and restated the student/recipient roles; truth unchanged.",
+            "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed current program content for a dated, source-supported observation.",
+            "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed the current deadlines, proposal limit, and budget for visible as-of dating.",
+            "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed the degree-granting institution and PI-status applicant rules.",
+            "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed awards paid to institutions and support for a graduate student or post-doc.",
+            "Sibling sweep 2026-08-27: grep Academic Research Grant|degree-granting|PI status → q-scf-academic-research-grant only; no contradiction."
+          ],
+          "rootCause": [
+            "Eval-side beneficiary/applicant conflation and overbroad route/amount traps.",
+            "eval-authoring",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+          ]
+        },
+        "origin": "raven-next q-scf-academic-research-grant"
+      }
+    },
+    {
+      "id": "q-scf-hummingbot-kelp-closed-rfp",
+      "question": "Was there an SCF RFP about replacing Kelp or market-making bots on Stellar, and can I still apply to it?",
+      "surface": [
+        "scout.getRfps",
+        "scout.searchResearch"
+      ],
+      "golden": {
+        "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-06-25, the verified sources supported this observed answer:\n\nYes. The RFP was **Hummingbot Integration (Trading Engine)**. In the June 25, 2026 live RFP feed it is\n`status: closed`, `quarter: q1-2026`, category `defi`, so it is **not currently fundable / not open\nfor application**. [1]\n\nThe brief is explicitly framed around **Kelp's deprecation leaving a liquidity gap**. It asked for a\nStellar orderbook connector for the official Hummingbot repository so builders could run automated\nmarket-making and arbitrage strategies; optional future scope included Stellar AMMs and intra-Soroban\nAMM arbitrage. [1]\n\nIf the user wants something fundable now, Raven should point them to the current open RFP feed rather\nthan pretending this closed Q1 brief is still open.\n\nSource: [1] Stellar Light RFP record for Hummingbot Integration (Trading Engine).\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-          "Separates primary-confirmed live Stellar products from announced or planned products."
+          "Names the RFP as Hummingbot Integration (Trading Engine).",
+          "Explains the Kelp-deprecation/liquidity-gap framing: Stellar wanted a Hummingbot connector for automated market-making and arbitrage."
         ],
         "avoid": [
-          "Do NOT treat directory presence or entity Live status as proof of a live Stellar-issued product.",
-          "Do NOT put planned DTCC Stellar work in the live bucket.",
-          "Do NOT claim all RWA products use SEP-8 or one identical legal/control model.",
-          "Do NOT freeze volatile AUM or roster counts without dated primary evidence.",
+          "Do NOT claim the Hummingbot/Kelp RFP is currently open or fundable if the live feed marks it closed.",
+          "Do NOT invent a different RFP title or claim no such brief existed.",
           "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "2026-06-29 re-verified dated claims and freshness-gated. Franklin Templeton (BENJI/FOBXX, ~$654M AUM on Stellar) and WisdomTree (Prime funds + gold) confirmed; Figure YLDS = SEC-registered face-amount certificate, live on Stellar May 5, 2026 (stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network) — consistent with q-rwa-dtcc-tokenization which keeps DTCC's DTC service PLANNED for H1 2027 (not live). Ondo Finance also active. Landscape evolving/freshness-sensitive (quarterly). Trap: inventing projects or presenting DTCC's forward-dated plan as live.\nAlso good if the answer: Mentions other RWA/tokenization participants (e.g. DTCC's planned DTC tokenization service) and treats the landscape as evolving. | Notes these use Stellar's regulated-asset model (SEP-8 + flags).\nGolden cites: Scout/Lumenloop project directory entries and/or dated issuer sources.\nCORRECTION 2026-07-10: grade dated product-level deployment and legal/mechanism scope. DTCC is planned H1 2027 on Stellar. GOLD is the live WisdomTree code. No roster-wide SEP-8 gate."
+        "notes": "Added from theboycoder/StellarLight data-layer intake. Verified 2026-06-25 against /api/rfps: Hummingbot Integration (Trading Engine), category defi, author Rahim, quarter q1-2026, status closed; description explicitly says Kelp deprecation left a liquidity gap.\nAlso good if the answer: Mentions that Q2 2026 open RFPs are a different current set, so the user should check the live feed for fundable briefs.\nGolden cites: The live Scout/Stellar Light RFP feed or the Hummingbot Integration RFP page."
       },
       "tags": {
-        "category": "compliance-rwa-payments",
+        "category": "scf-grants-builders",
         "service": "scout",
         "freshness": "live"
       },
       "truth": {
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
+        "asOf": "2026-06-25",
         "sources": [
           {
-            "class": "D",
-            "ref": "https://www.franklintempleton.com/.well-known/stellar.toml",
+            "class": "C",
+            "ref": "https://stellarlight.xyz/ideas/hummingbot-integration",
             "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://stellar.wisdomtree.com/.well-known/stellar.toml",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://ondo.finance/blog/usdy-is-now-live-on-stellar",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "A",
-            "ref": "https://stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://etherfuse.com/products/stablebonds",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://int.media.amundi.com/article/spiko-and-amundi-introduce-safo",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
-            "note": "class inferred at migration"
-          }
-        ],
-        "corroboration": [
-          {
-            "claim": "Primary-confirmed live Stellar RWA products include BENJI/FOBXX, WisdomTree funds/GOLD, USDY, YLDS, Etherfuse Stablebonds, and Spiko/Amundi SAFO",
-            "verdict": "confirmed",
-            "evidence": [
-              {
-                "class": "A",
-                "ref": "A: issuer/operator releases, product pages, filings, and stellar.toml records",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "F",
-                "ref": "F: exact Horizon code+issuer probes",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "D: independent current corroboration",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              }
-            ]
-          },
-          {
-            "claim": "DTCC's DTC tokenization connection is live on Stellar",
-            "verdict": "contradicted",
-            "evidence": [
-              {
-                "class": "A",
-                "ref": "A: DTCC 2026-05-27 says expected H1 2027",
-                "observedAt": "2026-05-27",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "D: independent coverage confirms the Stellar-specific target",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              }
-            ]
-          },
-          {
-            "claim": "All listed products use SEP-8 plus authorization flags",
-            "verdict": "contradicted",
-            "evidence": [
-              {
-                "class": "B",
-                "ref": "B: SEP-8 requires discovery fields and Required+Revocable",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "A",
-                "ref": "A/F: operator TOMLs/Horizon show heterogeneous flags and no blanket SEP-8 discovery; USDY auth_required=false",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "F",
-                "ref": "A/F: operator TOMLs/Horizon show heterogeneous flags and no blanket SEP-8 discovery; USDY auth_required=false",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              }
-            ]
-          }
-        ],
-        "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
-          "evidence": [
-            "Solo scratchpad 575 GT-11 live/planned and mechanism matrices",
-            "improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md",
-            "improvements/lumenloop/ll-012-rwa-live-planned-recall.md",
-            "2026-07-11 localhost:8787 search→execute probe observed: a live RWA-tokenization project search returned 15 matches, including WisdomTree, Spydra, and Metafyed.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
-            "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-            "Sibling sweep 2026-08-27: grep WisdomTree|DTCC|RWA products → q-asset-rwa-tokenized-freshness, q-crp-dtcc-stellar-connection-plan, q-rwa-projects-tokenizing-stellar; no contradiction"
-          ],
-          "rootCause": [
-            "Entity status and directory presence were treated as product deployment proof.",
-            "Different legal instruments/control models were collapsed into one SEP-8 implementation.",
-            "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
-          ]
-        },
-        "origin": "raven-next q-rwa-projects-tokenizing-stellar"
-      }
-    },
-    {
-      "id": "q-scf-how-to-apply",
-      "question": "How do I apply for an SCF Build Award — what is the step-by-step application process?",
-      "surface": [
-        "scout.searchResearch"
-      ],
-      "golden": {
-        "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP**. Open is for experienced teams pursuing novel or brand-new Stellar use cases, with existing traction or deep Stellar/domain knowledge; Integration and RFP are panel-only. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects typically run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review** (the Open Track Delegate Panel or a Category Delegate Panel), and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)",
-        "keyFacts": [
-          "Applicants start by submitting an interest form on communityfund.stellar.org.",
-          "Eligible applicants are invited to submit a full proposal to a specific track (Open/Integration/RFP).",
-          "Awardees must complete KYC/KYB before receiving (tranche) payments."
-        ],
-        "avoid": [
-          "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real).",
-          "Do NOT claim stellar.org/enterprise-fund or its application form is the SCF Build application path, and do not attach SCF Build mechanics — the $150K XLM cap, milestone tranches, KYC-before-payment, delegate-panel review, or Open-Track community vote — to the separate Enterprise Fund. The Enterprise Fund's own application is live; the conflation is wrong."
-        ],
-        "notes": "Dossier §2.5. Trap: confusing the SCF Build application flow with the separate Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org."
-      },
-      "tags": {
-        "category": "scf-grants-builders",
-        "service": "scout",
-        "freshness": "stable"
-      },
-      "truth": {
-        "domain": "mixed",
-        "status": "confirmed",
-        "sources": [
-          {
-            "class": "A",
-            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "A",
-            "ref": "https://communityfund.stellar.org/awards",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "A",
-            "ref": "https://stellar.org/enterprise-fund/apply",
-            "note": "Current Enterprise application surface; re-fetched 2026-08-05."
           }
         ],
         "verified": {
           "date": "2026-08-27",
           "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
           "evidence": [
-            "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award and its Open/Integration track pages, observed 2026-08-05T23:41–23:42Z, confirm the interest-form flow, three tracks, current panel names, typical 3–6 month timeline, $150K XLM cap, tranches, KYC/KYB gate, and Open-only community vote.",
-            "https://stellar.org/enterprise-fund and https://stellar.org/enterprise-fund/apply — current primary pages expose Apply Now / Submit your application, observed 2026-08-05.",
-            "solo://proj/49/todo/consistency-wave-3-s--1361 — comment 3708 evidence matrix and independent lead acceptance comment 3712.",
-            "solo://proj/49/scratchpad/post-qa-evidence-har--764 — revision 7 accepted repair set.",
-            "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap.",
+            "solo://proj/49/scratchpad/truth-maintenance-20--575",
+            "Preserved main's 2026-06-25 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
+            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
             "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-            "Sibling sweep 2026-08-27: grep Enterprise Fund|SCF Build application|interest form → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund; no contradiction"
+            "Sibling sweep 2026-08-27: grep Hummingbot|Kelp|closed RFP → q-scf-open-rfps, q-scf-rfp-tooling; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current",
-            "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name",
+            "eval-authoring",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
           ]
         },
-        "origin": "raven-next q-scf-how-to-apply"
+        "origin": "raven-next q-scf-hummingbot-kelp-closed-rfp"
       }
     },
     {

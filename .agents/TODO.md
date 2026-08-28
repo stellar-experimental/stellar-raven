@@ -154,14 +154,6 @@ reasons and the conditions for retirement.
 
 ## Staleness
 
-### `DEMO_GROK_CONTROL_MODEL` is a retired model
-
-`src/demo/model-config.ts:14` pins `xai/grok-4.5`. The current default is `grok-4.6`. This is the
-control model for gauntlets, never production. One-line fix whenever a gauntlet next runs.
-
-Done when: the next gauntlet updates the pin to its current control model and the relevant model
-configuration tests pass.
-
 ### Decide the two hackathon cases' consistency-cluster membership
 
 The consistency-register comment now states the current 499-case battery. The remaining question
@@ -174,6 +166,67 @@ amount basis), and `cluster-091` (v7 program menu). All four are SCF program fac
 the `scout.hackathonBrief` operation. Whether the new cases join a cluster is a content decision.
 
 Done when: `golden-truth` records whether each case belongs in an existing or new cluster.
+
+## Eval instruments
+
+### The verdict-consistency engine converts two judge-prompt contradictions into 4% errors
+
+Four rows became `error` on the 2026-08-28 same-100 run
+(`eval/qa/results/2026-08-28T19-27-08-variantA.json`); three did on the
+2026-08-27 baseline. All came from two repeatable judge-prompt contradictions,
+and none was an agent failure (`agent.failure: null` on all four):
+
+- `successful-trap-refusal-not-correct`: the judge scores a correctly refused
+  trap as `partial` for a missing key fact. The trap rubric says grade the
+  behaviour, so a missing non-behavioural fact should not lower the score.
+- `fired-avoid-not-wrong`: the judge marks an avoid item and still scores
+  `partial`.
+
+The engine is right to reject both pairs as self-contradictory. The defect sits
+upstream of it, in the judge prompt. Either make the prompt unable to produce
+these pairs, or let the trap path ignore non-behavioural key facts. A rubric
+bump is required either way.
+
+Done when: a full run produces zero `error` rows from these two rule pairs.
+
+### `--max-panel-cases 10` is too small for 100-case runs
+
+31 rows met a boundary condition on the 2026-08-28 same-100 run
+(`eval/qa/results/2026-08-28T19-27-08-variantA.json`). The cap admitted 10 and
+denied panels to 21 via `panelEscalationSkipped: "max-panel-cases"`. The run
+summary line does not print the skipped count, so an operator sees it only by
+opening the artifact. `single` in such an artifact means "not escalated", not
+"not borderline".
+
+Done when: the cap scales with the denominator (or a documented larger default
+for 100-case runs), and the run summary prints the skipped-panel count.
+
+### Judge stability on the same-100 set is degrading
+
+57 of the same-100 cases now sit below the 0.75 stability threshold, up from 47
+before the 2026-08-28 run. Eleven crossed into unstable and one crossed out
+when the run added one sample per case. The register decides paid escalations,
+so this number governs future spend as well as verdict quality.
+
+Found: register regenerated 2026-08-28 after
+`eval/qa/results/2026-08-28T19-27-08-variantA.json` — 538 cases from 195
+artifacts (161 collection, 34 rejudge, 0 skipped).
+
+Done when: the next post-collection register refresh reports a stable or
+falling unstable-count trend, or the escalation policy accounts for the drift.
+
+### Golden-edit rounds must record the affected id list
+
+One golden-truth burn-down left only 41 of the same-100 ids per-id comparable
+to their own baseline; 59 changed judge-facing gospel. The 2026-08-28 rerun lane
+(`eval/qa/results/2026-08-28T19-27-08-variantA.json` and its preflight) had to
+reconstruct the affected id list with per-id `git show` comparisons. Same-100
+reruns stay comparable only if the round that edits goldens records the
+affected id list when it lands.
+
+Done when: golden-edit rounds record the affected case-id list in the round
+ledger or consistency register, so a later rerun reads the list instead of
+reconstructing it.
 
 ## QA quality round — tracked follow-ups (2026-08-27)
 
@@ -190,11 +243,13 @@ Source: `research/qa-improvement-plan-2026-08-25.md` and round ledger
   limits, conflict grouping, skill sourceRoles metadata, and allowlist
   governance). Done when: each has a recorded owner decision. The phase-zero
   spike remains unapproved until the owner approves it separately.
-- [ ] Judge stability register: regenerate after every collection run
+- [x] Done 2026-08-28: `meta.judgeTierUsed` on 100/100 verdicts of
+  `eval/qa/results/2026-08-28T19-27-08-variantA.json`; register regenerated. Was: regenerate after every collection run
   (`node eval/qa/judge-stability.mjs`); verify escalation tiers appear in
   result metadata. Done when: the first judged current-`main` collection
   records `meta.judgeTierUsed` on every verdict.
-- [ ] Benchmarks to re-measure after the corpus burn-down: same-100 rerun at
+- [x] Done 2026-08-28: same-100 rerun stored and compared in `eval/qa/README.md` (41 of 100
+  comparable; no evidence of a quality change). Was: same-100 rerun at
   current main; compare against `eval/qa/results/2026-08-27T00-02-11-variantA.json`
   (48/35/13/4, half 65.5, strict 48.0, core-answer 91.7%). Done when: a comparable
   current-`main` same-100 run is stored and compared against that result.

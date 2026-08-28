@@ -214,7 +214,9 @@ export function oneLineTitle(finding) {
     .map((paragraph) => paragraph.trim())
     .find(Boolean) ?? "";
   const title = first
-    .replace(/[`*_]/g, "")
+    // Strip code and bold markers only. Underscores are identifier characters here
+    // (`lumenloop.get_project`), never emphasis, so they must survive into the index.
+    .replace(/[`*]/g, "")
     .replace(/\s+/g, " ")
     .replace(/\.$/, "");
   if (title.length <= 140) return title;

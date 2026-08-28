@@ -139,11 +139,11 @@
           "q-soroban-constructor-lifecycle",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-protocol-24-whisk-incident, q-soroban-auth-delegation-p27, q-tool-rust-soroban-sdk changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across ten members, and q-protocol-27-cap-0071 moved the CAP registry status from Accepted to Final as observed 2026-08-04. Every member already separates registry status from network activation, and no member still asserts Accepted as current, so the P27/CAP mappings remain consistent.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -189,11 +189,11 @@
           "q-soroban-constructor-lifecycle",
           "q-ti-rpc-gettransactions-pagination-xdr"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-05",
+        "verdict": "tension",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF/Soroswap truth refresh; the documented protocol or lifecycle tension remains intentional.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28 (one of the seven 2026-08-26 reopens): the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across eleven members. Three dated re-observations landed: q-protocol-27-cap-0071 to Final (2026-08-04), q-sep-41-token-interface named v0.5.0 (2026-08-04), and the q-edge-factcheck-soroswap-first-amm DefiLlama probe moved 2026-07-28 to 2026-08-05 with unchanged values. No CAP-status or protocol-number mapping changed. The documented protocol/lifecycle tension remains intentional.",
           "verdict": "tension"
         },
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Implemented/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
@@ -444,11 +444,11 @@
           "q-token-circle-usdc-on-stellar",
           "q-tool-cctp-stellar-integration"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-19",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-19",
-          "reason": "Re-read all members after Scout added Circle USDC and explicit curated-registry semantics. Circle issuer facts, dated launches, product classes, and source-relative absence rules remain consistent.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28 (one of the seven 2026-08-26 reopens): the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across six members, plus the q-defi-wisdomtree-crdt issuer and SAC repair (the prior strkeys failed CRC16 and were never valid; corrected to GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 and CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P, as-of 2026-08-26). A corpus-wide grep confirms no sibling still carries the old strkeys. Dated launches, product classes, and source-relative absence rules are unchanged.",
           "verdict": "consistent"
         },
         "note": "CRDT=WisdomTree Sep 12 2025, USDY=Ondo Sep 17 2025, and PYUSD=PayPal-branded/Paxos-issued Sep 18 2025; Templar is another verified Nov 5 2025 launch. The set is illustrative, not exhaustive, and the old Meridian 'inflection point' narrative is not a truth gate. Announced, approved, technically integrated, listed, and publicly live remain distinct states. Circle recorded CCTP Stellar mainnet support on 2026-05-18 and SDF/Circle publicly announced live on 2026-05-19; the prior 2026-02-24 launch attribution is unverified. EURC=Circle 2023-09-26; BENJI=Franklin Templeton since 2021; Figure YLDS live 2026-05-05; DTCC DTC service planned H1 2027 NOT live. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration now carry the two-milestone CCTP wording instead of the collapsed 2026-05-19 slogan. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
@@ -557,11 +557,11 @@
           "q-ti-rpc-gettransactions-pagination-xdr",
           "q-ti-self-host-retention-backfill"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-24",
+        "verdict": "tension",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-24",
-          "reason": "2026-08-24 re-sweep against current member content: the only change since the 2026-08-21 sweep is q-infra-rpc-provider-archive-tier truth metadata (asOf moved to 2026-08-24 with the 2026-08-18 official-table change re-observed on both sides), and no member claim changed. Re-read all twelve members: archive reach stays getLedgers-only (q-infra-rpc-methods-list and q-infra-rpc-provider-archive-tier agree), and no member pins the archive-provider count. The documented tensions persist and are still intentional: the source-conflicted Horizon lifecycle wording (q-infra-horizon-vs-rpc disputed; q-ti-compute-token-lp-market-data keeps the endpoint-by-endpoint boundary) and the getEvents/retention wording conflict (q-ti-self-host-retention-backfill positive-only retention with no source-enforced seven-day maximum; q-ti-rpc-gettransactions-pagination-xdr disputed). No new contradiction.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28 (one of the seven 2026-08-26 reopens): the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across ten members. The only fact change is q-infra-rpc-provider-archive-tier, which replaced the fixed seven-row archive roster with a dated roster that admits the eighth row (Validation Cloud) after the 2026-08-18 official table change. No member pins an archive-provider count, so that widening creates no contradiction. Archive reach stays getLedgers-only. The source-conflicted Horizon lifecycle wording and the getEvents retention wording conflict persist and are still intentional.",
           "verdict": "tension"
         },
         "note": "Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose still conflicts with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. Archive/data-lake integration extends getLedgers only; older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
@@ -671,11 +671,11 @@
           "q-tool-passkeykit-smart-wallet",
           "q-tool-smart-wallet-repos-discovery"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-05",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "2026-08-05 final golden closeout: re-read the changed member and registered siblings after the SCF, Soroswap, skills, security, and smart-wallet refreshes; claims remain mutually consistent.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across six members, plus the repository move repair in q-tool-smart-wallet-repos-discovery: kalepail/smart-account-kit and kalepail/passkey-kit became stellar/smart-account-kit and stellar/passkey-kit, with the former pair labelled archived move pointers. A corpus-wide grep confirms every remaining kalepail reference is framed as archived or is a dated evidence URL. Operator-brand, custody, and authorization-model distinctions are unchanged.",
           "verdict": "consistent"
         },
         "note": "Freighter = SDF-maintained; LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed and its SCF totals disputed. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/unaudited-demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
@@ -731,11 +731,11 @@
           "q-protocol-version-history-list",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-tool-rust-soroban-sdk changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across three members, and q-protocol-27-cap-0071 moved to Final (2026-08-04). The grader-caution note and the sd-008 pointer still hold; no substantive claim changed.",
           "verdict": "consistent"
         },
         "note": "grader caution + improvements/resolved.json entry sd-008 Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -762,11 +762,11 @@
           "q-soroban-auth-delegation-p27",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-soroban-auth-delegation-p27, q-tool-rust-soroban-sdk changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across five members, and q-protocol-27-cap-0071 moved to Final (2026-08-04). P27/Zipper activation at ledger 63386819 on 2026-07-08T17:00:10Z, CAP-0071 delegation, and the behaviour-gated latest-version case are unchanged.",
           "verdict": "consistent"
         },
         "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z; CAP-0071 provides authentication delegation/address-bound credentials; stellar-core, soroban-sdk, and stellar-cli have stable v27 releases. The edge latest-version case remains behavior-gated rather than number-gated, and the stellar-core identity case never carried an activation claim. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -925,11 +925,11 @@
           "q-soroban-auth-delegation-p27",
           "q-tool-rust-soroban-sdk"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-soroban-auth-delegation-p27, q-tool-rust-soroban-sdk changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across three members, and q-protocol-27-cap-0071 moved to Final (2026-08-04). The historical pending note stays explicitly superseded; no substantive claim changed.",
           "verdict": "consistent"
         },
         "note": "P27/Zipper is active from ledger 63386819 at 2026-07-08T17:00:10Z; the earlier pending note is historical and explicitly superseded. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -1192,11 +1192,11 @@
           "q-hist-soroban-launch-protocol20",
           "q-hist-unhcr-stellar-aid-assist"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-07-13",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-07-13",
-          "reason": "Release closeout removed single-source anniversary metrics from judge-facing gospel and rechecked the independently corroborated launch flow against historical deployment siblings.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28 (one of the seven 2026-08-26 reopens): the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across four members, plus two fact changes. q-defi-wisdomtree-crdt took the corrected issuer/SAC strkeys, and q-hist-unhcr-stellar-aid-assist removed the single-source $1.1M / 1,500-individuals figures from judge-facing gospel and now requires later issuer snapshots to stay separately attributed. Both changes strengthen this cluster's own rule that announcements, capabilities, historic routes, and current deployment stay distinct and source-scoped.",
           "verdict": "consistent"
         },
         "note": "Announcements, capabilities, historic routes, phased activation, GA, and current deployment are distinct. Aid individuals/households/countries/windows and RWA chain/suite/fund values remain source-scoped. Current rosters and chain support never overwrite dated launch history or imply sole-chain deployment.",
@@ -1599,11 +1599,11 @@
           "q-infra-horizon-vs-rpc",
           "q-pc-practical-fee-setting"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-07-11",
+        "verdict": "tension",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-07-11",
-          "reason": "P4 member absorbed or replaced; survivor claims rechecked",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28 (one of the seven 2026-08-26 reopens): the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates re-formed both members. No fee, endpoint, or lifecycle claim changed: the 100-stroop dated floor, live RPC getFeeStats versus Horizon fee_stats, and Hubble as historical analytics all stand. The encoded Horizon-lifecycle dispute (sd-017) remains intentional.",
           "verdict": "tension"
         },
         "note": "encode dispute; sd-017",
@@ -1643,11 +1643,11 @@
           "q-infra-horizon-vs-rpc",
           "q-pc-practical-fee-setting"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-07-11",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-07-11",
-          "reason": "P4 member absorbed or replaced; survivor claims rechecked",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28 (one of the seven 2026-08-26 reopens): the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates re-formed both members. The dated 100-stroop floor, the forward-estimation versus historical-analytics split, and the explicitly disputed official Horizon lifecycle polarity are all unchanged.",
           "verdict": "consistent"
         },
         "note": "100 stroops is a dated current floor. RPC getFeeStats is forward live estimation; Horizon /fee_stats remains available; Hubble is historical analytics. Official Horizon lifecycle polarity is disputed.",
@@ -1867,11 +1867,11 @@
           "q-defi-ondo-usdy",
           "q-defi-wisdomtree-crdt"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-05",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-05",
-          "reason": "Archived-pointer repair added the current stellar/passkey-kit continuation without changing the dated person-content claim or any project/entity sibling fact.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28 (one of the seven 2026-08-26 reopens): the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across three members, plus the q-defi-wisdomtree-crdt issuer/SAC repair. The dated person-lane emptiness claim and the working project/org/token entity lanes are unchanged, and no sibling entity fact moved.",
           "verdict": "consistent"
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
@@ -2542,11 +2542,11 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-soroban-auth-delegation-p27 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across two members, and q-protocol-27-cap-0071 moved to Final (2026-08-04). P27 activation from ledger 63386819 and the distinct legacy P20 custom-account delegation statement are unchanged.",
           "verdict": "consistent"
         },
         "note": "P27 live from ledger 63386819 and first-class CAP-0071 delegation. Legacy P20 custom-account delegation remains a distinct true statement. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -2719,11 +2719,11 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-soroban-auth-delegation-p27 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across three members, and q-protocol-27-cap-0071 moved to Final (2026-08-04). Delegation and V2 mechanics, and the CAP-status versus network-live distinction, are unchanged.",
           "verdict": "consistent"
         },
         "note": "stale spans replaced; delegation/V2 mechanics and CAP Accepted-versus-network-live distinction retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -2871,11 +2871,11 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-soroban-auth-delegation-p27 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across two members, and q-protocol-27-cap-0071 moved to Final (2026-08-04). That change confirms this entry's existing note, which already recorded the registry listing CAP-0071 Final.",
           "verdict": "consistent"
         },
         "note": "Address-with-delegates chains and address-bound V2 credentials are P27/CAP-0071; Pubnet activated at ledger 63386819, and the current registry lists CAP-0071 Final. Reverified 2026-08-05.",
@@ -2900,11 +2900,11 @@
           "q-protocol-version-history-list",
           "q-soroban-auth-delegation-p27"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-pc-protocol-27-zipper, q-soroban-auth-delegation-p27 changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across five members, and q-protocol-27-cap-0071 moved to Final (2026-08-04). P27 current on Mainnet from ledger 63386819, CAP-0071 features, and P28/AddressV2 as a future recheck are unchanged.",
           "verdict": "consistent"
         },
         "note": "P27 is current on Mainnet from ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features. P28/AddressV2 remains a future recheck, not current activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -3032,12 +3032,12 @@
           "q-soroban-x402-auth-entry-signing",
           "q-x402-payment-verification"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-08-27",
+        "verdict": "tension",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (snapshot-date batch 1): members q-x402-payment-verification changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"reopen\" stands.",
-          "verdict": "reopen"
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across all four members; no member fact changed. Adjudicated after two sweeps left this entry open: the four cases are mutually consistent. The 2026-03-10 announcement, the not-a-SEP status, the auth-entry versus facilitator-submission split, and the dated facilitator options agree across members. The wallet-roster conflict is a conflict between upstream sources, and only q-soroban-x402-auth-entry-signing touches it, where it is explicitly marked disputed and the Freighter/Albedo evidence conflict is named. No sibling asserts the roster as settled. This is a documented, intentional tension, not an unreconciled reopen.",
+          "verdict": "tension"
         },
         "note": "The 2026-03-10 announcement is historical; current facilitator, wallet, sponsorship, and verification capabilities are separately dated and do not make x402 a SEP. The official roster lists Freighter Browser, Albedo, Hana, HOT, Klever, and OneKey and excludes Freighter Mobile, while Freighter owner docs expose extension signAuthEntry and mobile stellar_signAuthEntry and Stellar Wallets Kit explicitly throws for Albedo. Raw auth-entry capability is not tested end-to-end x402 compatibility. Wallet-owner proof of current end-to-end x402 compatibility remains unverified for Hana, HOT, Klever, and OneKey; Hana owner docs recommend Wallets Kit but do not establish that stronger claim.",
         "memberContentSha256": {
@@ -3133,11 +3133,11 @@
           "q-soroban-greenfield-escrow-prior-art-preflight",
           "q-tool-greenfield-indexer-prior-art-preflight"
         ],
-        "verdict": "reopen",
-        "lastChecked": "2026-07-13",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-28",
         "reSwept": {
-          "date": "2026-07-13",
-          "reason": "Release closeout rechecked both design-stage cases and the narrow build/debug control after aligning current-target provenance and mechanism/unit versus behavioral coverage wording.",
+          "date": "2026-08-28",
+          "reason": "Same-100 rerun round 2026-08-28: the 2026-08-27 golden-truth burn-down re-formed member key facts and avoid items into atomic, positive predicates across three members. q-soroban-greenfield-escrow-prior-art-preflight dropped its negative \"do NOT skip the prior-art pass\" avoid item, which survives as a positive key fact, and re-dated its illustrative roster to 2026-08-11 with the Trustless Work audit provenance re-attributed to a dated Runtime Verification public report. The scoped control q-sor-build-target-wasm32v1 gained the symmetric no-detour caution. The design-stage versus scoped build/debug distinction is preserved and sharpened on both sides.",
           "verdict": "consistent"
         },
         "note": "Substantial greenfield architecture requests make one bounded repos/projects pass alongside authoritative skills/docs, label candidate roles, and leave unsupported license/audit/deployment/compatibility claims unknown. A scoped build/debug question stays on current official mechanics without an ecosystem landscape detour.",

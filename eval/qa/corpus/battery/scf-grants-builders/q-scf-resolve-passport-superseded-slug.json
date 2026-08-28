@@ -1,0 +1,118 @@
+{
+  "id": "q-scf-resolve-passport-superseded-slug",
+  "question": "An old post links https://stellarlight.xyz/project/passport. What is that project now, and is it still active?",
+  "surface": [
+    "scout.resolveProject"
+  ],
+  "golden": {
+    "answer": "Use `scout.resolveProject` with the old slug or URL and cite the response's `meta.generatedAt` as the as-of date (observed value `2026-08-28T17:11:33.764Z`). As observed on 2026-08-28, the query `passport` matched on slug. The matched record is `Stellar Passport` (slug `passport`) with status Inactive, and `superseded` is true. The `current` record is slug `stellar-passport`, name `Stellar Passport`, status Live, at https://stellarlight.xyz/project/stellar-passport. The evidence block dates the Live status to `statusAsOf` 2026-08-17, with basis `site-liveness` and source https://demo.stellarpassport.xyz/, and `unsourced` is false. Both records carry the same name, so the old slug is a superseded duplicate directory record, not a real-world rename; the project site https://stellarpassport.xyz/ is live under the same name. Site-liveness means only that a page answered, so do not present it as proof of product activity. Scout lists Stellar Passport as an SCF-funded passkey-secured onboarding and identity platform.",
+    "keyFacts": [
+      "Resolves `passport` as a superseded record whose current slug is `stellar-passport`.",
+      "Reports the current record as Stellar Passport with status Live, dated to its statusAsOf.",
+      "States the old slug is a superseded directory record, not a real-world rename.",
+      "Treats site-liveness as page-answered evidence, not proof of product activity."
+    ],
+    "avoid": [
+      "Do NOT claim Stellar Passport shut down or is defunct; the current record is Live.",
+      "Do NOT claim the project was renamed from Passport to a different name.",
+      "Do NOT report the superseded record's Inactive status as the project's current status."
+    ],
+    "notes": "Grade the resolver semantics: matched record, superseded flag, current record, and dated evidence. The Live status and the observation dates can change; do not penalize a later dated status if the answer cites its as-of date. The observed generatedAt value is an example; a later run must cite its own response's value, not this one."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-08-28",
+    "reverifyBy": "2026-12-03",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/resolve?q=Passport",
+        "note": "generatedAt 2026-08-28T17:11:33.764Z, searched 1025; subject passport/Inactive, current stellar-passport/Live, superseded true, evidence statusAsOf 2026-08-17T03:02:29.060Z, statusBasis site-liveness, statusSourceUrl https://demo.stellarpassport.xyz/, unsourced false."
+      },
+      {
+        "class": "C",
+        "ref": "https://raven.stellar.org/mcp — execute scout.resolveProject({q:\"Passport\"}) and ({q:\"stellar-passport\"}), observed 2026-08-28",
+        "note": "Same payload through the exposed operation; the stellar-passport query returns superseded false and note \"stellar-passport is current\"."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellarpassport.xyz/",
+        "note": "Project site live on 2026-08-28 under the name Stellar Passport (onboarding and activation platform; stamps, smart wallets)."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellarlight.xyz/project/stellar-passport",
+        "note": "Current Scout page: Live, Verified (Community), SCF round 40, $150,000; /project/passport answers 307 to this page."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/Tellus-Cooperative",
+        "note": "GitHub org linked from the Scout record; 10 public repos, no rename signal."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Scout's resolver returns the passport record as superseded with stellar-passport as the current Live record.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=Passport",
+            "observedAt": "2026-08-28",
+            "note": "superseded true; current.slug stellar-passport; current.status Live; statusAsOf 2026-08-17."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/project/passport",
+            "observedAt": "2026-08-28",
+            "note": "HTTP 307 to /project/stellar-passport; the rendered page shows Live."
+          }
+        ]
+      },
+      {
+        "claim": "The old slug is a duplicate directory record, not a real-world rename; the project is live under the same name.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellarpassport.xyz/",
+            "observedAt": "2026-08-28",
+            "note": "Site answers with the name Stellar Passport."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Tellus-Cooperative",
+            "observedAt": "2026-08-28",
+            "note": "Linked GitHub org is active; no rename announcement or successor repo."
+          },
+          {
+            "class": "C",
+            "ref": "improvements/stellar-light-scout/sls-033-wallet-type-enumeration-availability.md",
+            "observedAt": "2026-07-13",
+            "note": "Prior finding recorded duplicate Stellar Passport rows under different slugs and statuses."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-28",
+      "by": "eval block 2 lane F (Claude Fable 5, high) — .agents/rounds/2026-08-28-eval-block2.md",
+      "evidence": [
+        "GET https://stellarlight.xyz/api/projects/resolve?q=Passport on 2026-08-28: generatedAt 2026-08-28T17:11:33.764Z, searched 1025, matchedOn slug, superseded true, current stellar-passport Live, evidence statusAsOf 2026-08-17T03:02:29.060Z site-liveness https://demo.stellarpassport.xyz/ unsourced false.",
+        "raven.stellar.org execute scout.resolveProject on 2026-08-28 returned the same payload; scout.searchProjects(q=Stellar Passport) returned one stellar-passport row (Live, scfTotalAwardedUSD 150000).",
+        "https://stellarpassport.xyz/ and https://github.com/Tellus-Cooperative checked 2026-08-28; the project is live under the same name and no rename exists.",
+        "Sibling sweep 2026-08-28: grep -i passport across eval/qa/corpus/battery returned no other case; q-scf-cross-reflector-rounds-current and q-edge-strupey-ambiguous-stellar-history list scout.resolveProject only as an optional surface and do not test a superseded record."
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-08-28-eval-block2.md — scout.resolveProject had no dedicated superseded-record case after the 2026-08-27 Scout 1.9.1 exposure (CI coverage floor)"
+      ]
+    },
+    "origin": "authored 2026-08 (coverage)"
+  }
+}

@@ -79,7 +79,7 @@ describe("demo model config", () => {
   it("uses the gauntlet winner with a fast fallback, conservative sampling, and configured default reasoning", () => {
     expect(DEMO_PRIMARY_MODEL).toBe("openai/gpt-5.6-terra");
     expect(DEMO_FALLBACK_MODEL).toBe("openai/gpt-5.6-luna");
-    expect(DEMO_GROK_CONTROL_MODEL).toBe("xai/grok-4.5");
+    expect(DEMO_GROK_CONTROL_MODEL).toBe("xai/grok-4.6");
     expect(DEMO_KIMI_CONTROL_MODEL).toBe("@cf/moonshotai/kimi-k2.7-code");
     expect(DEMO_MODEL).toBe(DEMO_PRIMARY_MODEL);
     expect(DEMO_MODELS).toEqual([
@@ -129,7 +129,7 @@ describe("demo model config", () => {
       }
     });
     expect(demoOpenAiProviderOptions("openai/gpt-5.4", undefined)).toEqual({});
-    expect(demoOpenAiProviderOptions("xai/grok-4.5", "medium")).toEqual({
+    expect(demoOpenAiProviderOptions("xai/grok-4.6", "medium")).toEqual({
       providerOptions: {
         openai: {
           reasoningEffort: "medium"
@@ -166,13 +166,13 @@ describe("demo model config", () => {
   });
 
   it("pins provider models to the gateway transport so request-scoped privacy controls reach the wire", () => {
-    expect(demoGatewayTransportSettings("xai/grok-4.5")).toEqual({
+    expect(demoGatewayTransportSettings("xai/grok-4.6")).toEqual({
       transport: "gateway",
       byokAlias: "default",
       resume: false,
       collectLog: false
     });
-    expect(demoGatewayTransportSettings("grok/grok-4.5")).toEqual({
+    expect(demoGatewayTransportSettings("grok/grok-4.6")).toEqual({
       transport: "gateway",
       byokAlias: "default",
       resume: false,
@@ -216,7 +216,7 @@ describe("demo model config", () => {
 
   it("uses the same effective API-mode rule for the configured fallback tuple", () => {
     expect(demoEffectiveOpenAiApiMode(DEMO_MODELS, "responses")).toBe("responses");
-    expect(demoEffectiveOpenAiApiMode([{ model: "openai/gpt-5.4" }, { model: "xai/grok-4.5" }], "responses")).toBe(
+    expect(demoEffectiveOpenAiApiMode([{ model: "openai/gpt-5.4" }, { model: "xai/grok-4.6" }], "responses")).toBe(
       "chat"
     );
     expect(demoEffectiveOpenAiApiMode(DEMO_MODELS, "chat")).toBe("chat");
