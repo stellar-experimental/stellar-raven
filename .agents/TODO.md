@@ -143,17 +143,6 @@ our ranking.
 
 ## Verification owed
 
-### Verify the production card-services result for issue #39
-
-[Issue #67](https://github.com/stellar-experimental/stellar-raven/issues/67) is resolved. Commit
-`e8dbf99` refreshed Scout 1.8.110 and the Docs titles. Production runs Worker Version ID
-`6e1d34c2-ba35-4f45-a357-edc4e8116bf7`.
-
-Issue #39 records upstream Stellar Light `openapi@1.8.83` fixes for its exact card-services query.
-Repeat that query. Close issue #39 only when its production result is recorded and correct.
-
-Done when: the production answer leads with the supported card services and marks Kulipa inactive.
-
 ### Re-check the Algolia extractor change after a full crawl
 
 The 2026-08-25 crawler fix (`sd-001`) was applied, then only the affected URL was recrawled. Every
