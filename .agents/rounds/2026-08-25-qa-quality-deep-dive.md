@@ -19,10 +19,10 @@ orchestrator synthesizes into two research documents.
 
 | lane | agent (model, effort) | report |
 | --- | --- | --- |
-| golden-truth legitimacy + judge audit | Claude Fable (`fable`, effort max) | `/tmp/raven-qadeep/fable-max.md` |
-| pipeline failure forensics | Codex (`gpt-5.6-sol`, max) | `/tmp/raven-qadeep/sol-max.md` |
-| assumption attack + alternatives | Grok (`grok-4.6`, xhigh) | `/tmp/raven-qadeep/grok-xhigh.md` |
-| service coverage gap map | Codex (`gpt-5.6-terra`, max) | `/tmp/raven-qadeep/terra-max.md` |
+| golden-truth legitimacy + judge audit | Claude Fable (`fable`, effort max) | `research/qa-deep-dive-2026-08-25/fable-max.md` |
+| pipeline failure forensics | Codex (`gpt-5.6-sol`, max) | `research/qa-deep-dive-2026-08-25/sol-max.md` |
+| assumption attack + alternatives | Grok (`grok-4.6`, xhigh) | `research/qa-deep-dive-2026-08-25/grok-xhigh.md` |
+| service coverage gap map | Codex (`gpt-5.6-terra`, max) | `research/qa-deep-dive-2026-08-25/terra-max.md` |
 | SOTA survey + fresh-eyes spot audit | OpenCode (`moonshotai/kimi-k3`) | `research/qa-deep-dive-2026-08-25/kimi-k3.md` |
 
 All lanes read-only against the repository except their own report file.
@@ -209,3 +209,26 @@ All lanes read-only against the repository except their own report file.
   merged branches deleted locally; remote holds only `main`. Stashes: zero
   everywhere. The connectors program's twelve worktrees and branches are
   NOT mine and remain untouched. Follow-ups tracked in `.agents/TODO.md`.
+
+## Outcome
+
+The round completed through merged PRs #68, #73, #75, #81, and #83. Later cleanup removed every
+round-owned worktree and branch. The connector worktrees noted above were also reconciled by their
+separate round and no longer exist.
+
+The durable research reports replace the temporary report paths in the lane table. The 2026-08-27
+temporary-artifact audit reviewed every surviving report and routed all remaining work to
+`.agents/TODO.md` or `ideas/`. The golden-truth session-3 handoff is now self-contained there.
+
+The Lane 3 package supplied 12 recommendations, not owner decisions. The source-delivery idea now
+records those recommendations and keeps its phase-zero spike unapproved. No other surviving
+temporary report contains untracked work for this round.
+
+## Historical-path correction — 2026-08-27
+
+The four durable `research/qa-deep-dive-2026-08-25/` paths in the Lanes table are archive
+locations. The original lanes wrote `/tmp/raven-qadeep/fable-max.md`, `sol-max.md`, `grok-xhigh.md`,
+and `terra-max.md`. The later archive step copied those reports into the repository.
+
+The durable audit record is
+[`2026-08-27-tmp-artifact-audit.md`](./2026-08-27-tmp-artifact-audit.md).

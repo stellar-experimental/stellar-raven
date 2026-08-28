@@ -26,19 +26,26 @@ Done when: lint enforces the cap, and requires an `upstreamTitle` on any finding
 
 ### Golden authoring lint warnings burn-down
 
-`npm run eval:qa:lint` reported 0 errors and 1,390 warnings on 2026-08-27 (merge of the QA
-deep-dive round). Six warning classes: keyFacts over 90 characters, compound predicates,
-negative predicates whose object is absent from the question, presentation/omission avoid items,
-keyFacts that demand the golden's own snapshot date, and improvements-rooted cases with no
-symmetric canonical-source caution. Each is an authoring-form defect: the golden gates the judge
-on shape, not on truth.
+The 2026-08-27 deep-dive merge created a historical baseline of 1,390 warnings. Two reviewed
+burn-down sessions reduced that baseline to 475 warnings. The current total contains 372 long-fact
+warnings across 204 cases, 47 sourcing-guard warnings, and 56 corroboration warnings.
 
-Found 2026-08-27: the lint classes landed in the corpus-goldens lane and the backlog was never
-burned down. Fixes are structural (split, move to avoid, date the behavior, add the caution) and
-must not change facts without two independent live sources.
+The session-2 helper pack under `/tmp/raven-qadeep/gt2/` expired after the host restart. Build a
+fresh pack from current `main`; do not claim that it reproduces the expired files. Use about 50
+worker prompts, with four cases per prompt and three review parts. Use three Sol high workers and
+one independent Grok high reviewer.
 
-Done when: all six classes report zero warnings, every touched case carries a refreshed
-`truth.verified` naming this entry, and each batch is committed with its lint delta.
+Each case report must state `Claims kept`, `moved to avoid`, or `none dropped`. The reviewer must
+check every claim. New numbers, versions, dates, abbreviations, and taxonomy distinctions require
+special review. The lost `q-soroban-publish-events` stray draft was unreviewed and is not evidence.
+
+Run this gate sequence for each commit: compile, register, reconcile, lint with `--since`,
+typecheck, test, build, secrets scan, then commit. `program-log.md` contains the durable session-2
+method and failure history.
+
+Done when: long-fact warnings are zero, all changed facts have required source verification, every
+review finding is reconciled, and all gates pass. The 47 sourcing and 56 corroboration warnings
+remain a separate owner decision below.
 
 ## Improvements backlog
 
@@ -67,6 +74,24 @@ Both identifiers failed CRC16 validation, so the error was a transcription defec
 Found 2026-08-26 during the independent review of `lane/corpus-goldens-20260825`.
 
 Done when: golden authoring validates exact Stellar strkeys before import, with positive and negative tests for account and contract keys.
+
+### Replace expired temporary evidence in golden truth metadata
+
+Active corpus evidence contains 97 temporary-path references across 94 files. Twenty-seven files
+cite the session-2 Grok reviews under `/tmp/raven-qadeep/gt2/`; `program-log.md` preserves their
+finding summaries. Sixty-nine files cite the deleted Fable report `conversions-copy-review.md`,
+whose full report is not recoverable. Three files belong to both groups.
+
+One additional file cites `/tmp/raven-qadeep/review-judge.md`. Its durable counterpart is
+`research/qa-deep-dive-2026-08-25/review-judge.md`.
+
+Do not replace these paths with an unreviewed bulk edit. Reverify the 69 Fable-reviewed facts with
+the `golden-truth` workflow. Migrate the 27 session-2 references through a dedicated metadata-only
+review, or during the next verified touch of each case.
+
+Done when: no active corpus evidence names a temporary path, every replacement is re-walkable from
+the repository or a live primary source, the consistency register is reconciled, and all
+golden-truth gates pass.
 
 ## Tests
 
@@ -118,6 +143,23 @@ our ranking.
 
 ## Verification owed
 
+### Await owner authorization for live service drift issue #67
+
+[Issue #67](https://github.com/stellar-experimental/stellar-raven/issues/67) reports Scout schema
+drift. Its 2026-08-27 CI comment also reports a Docs title change from 646 to 649. The issue
+appeared after the 2026-08-25 open-issue pass.
+
+This documentation audit does not authorize drift resolution or deployment. The GitHub assignee
+owns the issue until the owner separately authorizes repository work. An authorized pass must use
+`.agents/skills/live-drift-resolution/SKILL.md` and must treat the Docs title change as
+routing-relevant until the routing gate proves otherwise.
+
+Issue #39 records upstream Stellar Light `openapi@1.8.83` fixes for its exact card-services query.
+After an authorized production update, repeat that query. Close issue #39 only when its production
+result is recorded and correct.
+
+Done when: the owner either authorizes a separate drift-resolution round or explicitly defers it.
+
 ### Re-check the Scout appendix index and project resolver contracts
 
 Raven filed `sls-074` as [Stellar-Light/stellarlight#1031](https://github.com/Stellar-Light/stellarlight/issues/1031).
@@ -151,10 +193,13 @@ reasons and the conditions for retirement.
 `src/demo/model-config.ts:14` pins `xai/grok-4.5`. The current default is `grok-4.6`. This is the
 control model for gauntlets, never production. One-line fix whenever a gauntlet next runs.
 
-### The QA consistency register still says 497
+Done when: the next gauntlet updates the pin to its current control model and the relevant model
+configuration tests pass.
 
-`eval/qa/consistency-register.json:2` reads `Current 497-case ... as of 2026-08-18`. The battery is
-499 as of 2026-08-19. The comment is hand-written, not generated, so nothing lints it.
+### Decide the two hackathon cases' consistency-cluster membership
+
+The consistency-register comment now states the current 499-case battery. The remaining question
+concerns the two added `scout.hackathonBrief` cases.
 
 This is not a number bump. Neither added `scout.hackathonBrief` case appears in any of the 135
 clusters. The only hackathon id in the register is `q-scf-hackathons-active`, and it sits in four
@@ -162,31 +207,28 @@ clusters — `cluster-011` (SCF program mechanics), `cluster-074` and `cluster-0
 amount basis), and `cluster-091` (v7 program menu). All four are SCF program facts; none concerns
 the `scout.hackathonBrief` operation. Whether the new cases join a cluster is a content decision.
 
-Done when: `golden-truth` settles cluster membership and the comment matches the corpus.
+Done when: `golden-truth` records whether each case belongs in an existing or new cluster.
 
 ## QA quality round — tracked follow-ups (2026-08-27)
 
 Source: `research/qa-improvement-plan-2026-08-25.md` and round ledger
 `.agents/rounds/2026-08-25-qa-quality-deep-dive.md`.
 
-- [ ] Golden-truth session 3: close the last 372 long-keyFact warnings on 204
-  cases. Full hand-off plan in session 2's owner report; assets under
-  `/tmp/raven-qadeep/gt2/` (rules, dispatch/gates scripts, reconcile helper).
-  Copy assets into the repo or a fresh namespace before they expire.
-  Done when: `eval:qa:lint` reports 0 long-fact warnings; gates green.
 - [ ] Decide whether to include the two out-of-scope lint classes (47
   sourcing-guard avoid warnings, 56 corroboration warnings). Owner call made
   when: included in a session brief or explicitly declined in the ledger.
-- [ ] Lane 3 (source delivery): answer the 11 owner questions in
+- [ ] Lane 3 (source delivery): answer the 12 owner questions in
   `ideas/source-delivery-ranked-references.md` §8 (pin freshness, agents
   without fetch tools, index cost/budget, line ranges, attribution,
   docs-vs-source neutrality, query ownership, index availability, CPU/latency
-  limits, conflict grouping, skill sourceRoles metadata). Done when: each has
-  a recorded decision; then a phase-zero spike brief (1-2 repos,
-  `sources.locate` only) can be written.
+  limits, conflict grouping, skill sourceRoles metadata, and allowlist
+  governance). Done when: each has a recorded owner decision. The phase-zero
+  spike remains unapproved until the owner approves it separately.
 - [ ] Judge stability register: regenerate after every collection run
   (`node eval/qa/judge-stability.mjs`); verify escalation tiers appear in
-  result metadata. Done when: a run records judgeTierUsed on every verdict.
+  result metadata. Done when: the first judged current-`main` collection
+  records `meta.judgeTierUsed` on every verdict.
 - [ ] Benchmarks to re-measure after the corpus burn-down: same-100 rerun at
   current main; compare against `eval/qa/results/2026-08-27T00-02-11-variantA.json`
-  (48/35/13/4, half 65.5, strict 48.0, core-answer 91.7%).
+  (48/35/13/4, half 65.5, strict 48.0, core-answer 91.7%). Done when: a comparable
+  current-`main` same-100 run is stored and compared against that result.

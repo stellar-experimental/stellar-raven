@@ -76,3 +76,9 @@ Do not change issues #39 or #40. Issue #1 was already closed as not planned.
 
 The requested issue pass is complete. The reviewed change is merged and deployed.
 Only the user-excluded issues #39 and #40 remain open.
+
+## Later issue addendum — 2026-08-27
+
+Issue #67 opened after this pass and reports new live-service drift. The original outcome remains
+correct for its stated scope. `.agents/TODO.md` now tracks issue #67 and the dependent production
+verification for issue #39.
