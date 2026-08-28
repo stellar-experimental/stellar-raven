@@ -27,6 +27,8 @@ recurrences:
     evidence: live Stellar Docs recheck — bare `Protocol 24` returned eight SEP-24 docs hits, while `Protocol 24 Whisk state archival` with meetings included returned the 2025-10-16 Whisk/state-archival meeting at rank #1.
   - date: 2026-07-09
     evidence: the controlled Algolia harness now requires the exact `/meetings/2025/10/16` record plus `state`, `archival`, and `Whisk`; bare `Protocol 24` misses that semantic target across the tested strategies. The former any-`/meetings/` target could falsely pass an unrelated meeting hit and has been retired.
+  - date: 2026-08-28
+    evidence: settled primary and agent-replica indexes each contain 14,759 records, updated 2026-08-28T12:04:24.323Z. The original retrieval checks hold: Protocol 22, Protocol 23, Protocol 24, Protocol 24 release, and software versions rank the software-versions page or anchor first in both indexes. The primary index keeps all four collateral controls at rank 1. On docs_replica_agent, `stellar cli install command` ranks `/docs/build/smart-contracts/example-contracts/deployer#run-the-contract` first, and `/docs/tools/cli/install-cli#stellar-cli` is not in its top 10; the other three controls rank first. `Protocol 24 Whisk state archival` now returns the 2025-10-16 meeting at rank 1, while natural-language Protocol 23 and Protocol 27 ranking residuals remain.
 ---
 
 ## Finding
