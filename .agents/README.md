@@ -1,11 +1,12 @@
 # `.agents/` — agent instructions and durable working state
 
-Three things live here. Keep them separate.
+Four things live here. Keep them separate.
 
 | path | holds | lifetime |
 |---|---|---|
 | `skills/` | repeatable task workflows (`<name>/SKILL.md`) | durable |
 | `TODO.md` | the own-repo work queue | until each item is done |
+| `NEXT.md` | the ranked handoff for the next work block | until that block is done |
 | `rounds/` | one dated ledger per multi-lane round | durable record |
 
 `.claude/skills` is a committed symlink to `skills/`. Codex scans `skills/` repo-scoped.

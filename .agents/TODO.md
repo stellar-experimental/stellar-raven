@@ -143,32 +143,16 @@ our ranking.
 
 ## Verification owed
 
-### Await owner authorization for live service drift issue #67
+### Verify the production card-services result for issue #39
 
-[Issue #67](https://github.com/stellar-experimental/stellar-raven/issues/67) reports Scout schema
-drift. Its 2026-08-27 CI comment also reports a Docs title change from 646 to 649. The issue
-appeared after the 2026-08-25 open-issue pass.
-
-This documentation audit does not authorize drift resolution or deployment. The GitHub assignee
-owns the issue until the owner separately authorizes repository work. An authorized pass must use
-`.agents/skills/live-drift-resolution/SKILL.md` and must treat the Docs title change as
-routing-relevant until the routing gate proves otherwise.
+[Issue #67](https://github.com/stellar-experimental/stellar-raven/issues/67) is resolved. Commit
+`e8dbf99` refreshed Scout 1.8.110 and the Docs titles. Production runs Worker Version ID
+`6e1d34c2-ba35-4f45-a357-edc4e8116bf7`.
 
 Issue #39 records upstream Stellar Light `openapi@1.8.83` fixes for its exact card-services query.
-After an authorized production update, repeat that query. Close issue #39 only when its production
-result is recorded and correct.
+Repeat that query. Close issue #39 only when its production result is recorded and correct.
 
-Done when: the owner either authorizes a separate drift-resolution round or explicitly defers it.
-
-### Re-check the Scout appendix index and project resolver contracts
-
-Raven filed `sls-074` as [Stellar-Light/stellarlight#1031](https://github.com/Stellar-Light/stellarlight/issues/1031).
-Raven filed `sls-075` as [Stellar-Light/stellarlight#1030](https://github.com/Stellar-Light/stellarlight/issues/1030).
-The source round is `.agents/rounds/2026-08-25-open-issues.md`.
-
-Done when: `V-SOR-APP-VUL-003` resolves to the V2.1 appendix item, while an absent control still
-returns `meta.exactMiss`. The resolver OpenAPI must type `subject`, `current`, `evidence`, and
-`meta`. Its `matchedOn` vocabulary must agree with the pinned Scout API reference.
+Done when: the production answer leads with the supported card services and marks Kulipa inactive.
 
 ### Re-check the Algolia extractor change after a full crawl
 
@@ -232,3 +216,13 @@ Source: `research/qa-improvement-plan-2026-08-25.md` and round ledger
   current main; compare against `eval/qa/results/2026-08-27T00-02-11-variantA.json`
   (48/35/13/4, half 65.5, strict 48.0, core-answer 91.7%). Done when: a comparable
   current-`main` same-100 run is stored and compared against that result.
+- [ ] Three synthesizer questions from `research/qa-deep-dive-2026-08-25/fable-max.md` §7
+  have no recorded decision. Q2: docs-vs-source disputes — does the battery grade truth
+  per Core/source or per the tested surface (the same question as Lane 3 §8 item 6)?
+  Q6: should `search` or the server instructions steer "how do I do X in tool Y"
+  questions to repo-level operations such as `scout.explainRepo` when the docs family
+  returns adjacent-only hits? Q8: exclude provider-safeguard refusals (for example
+  `q-n3-ssrf-metadata-endpoint`) from the score denominator? Done when: each has an
+  owner decision recorded here or in `eval/qa/README.md`. Found 2026-08-27 while
+  reviewing the round ledgers; the other five questions were answered by the plan
+  (A1, A2, A3, R8) or by the 2026-08-27 same-100 run.
