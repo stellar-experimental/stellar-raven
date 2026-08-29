@@ -13,6 +13,10 @@
     "freshness": "stable"
   },
   "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
     "domain": "real-world",
     "status": "confirmed",
     "sources": [{ "class": "A", "ref": "https://developers.stellar.org/fixture" }],

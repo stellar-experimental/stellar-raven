@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "3d889653fa116fe6e2ca3f4922b509fd502eba05ae5c408e6e8fdebc5617f37d",
+  "corpusContentSha256": "1d2ba3d0dda48b7ec397ec5c1ede344ca7f238139d253a8a6dec7237e0b61c63",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -30,6 +30,12 @@
     },
     "traps": {
       "scam-check": 2
+    },
+    "byLifecycleState": {
+      "active": 30
+    },
+    "byReviewState": {
+      "none": 30
     }
   },
   "cases": [
@@ -63,6 +69,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -186,6 +196,10 @@
         "freshness": "scheduled"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-06-29",
@@ -289,6 +303,10 @@
         "freshness": "scheduled"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-11",
@@ -432,6 +450,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-11",
@@ -533,6 +555,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -605,6 +631,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-07-11",
@@ -670,6 +700,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-07-11",
@@ -774,6 +808,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "disputed",
         "asOf": "2026-07-10",
@@ -872,6 +910,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-10",
@@ -971,6 +1013,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-10",
@@ -1142,6 +1188,10 @@
         "trap": "scam-check"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -1233,6 +1283,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-07-11",
@@ -1292,6 +1346,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "corpus-grounded",
         "status": "confirmed",
         "asOf": "2026-07-11",
@@ -1368,6 +1426,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "corpus-grounded",
         "status": "confirmed",
         "asOf": "2026-08-18",
@@ -1467,6 +1529,10 @@
         "freshness": "scheduled"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-11",
@@ -1585,6 +1651,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "disputed",
         "asOf": "2026-08-14",
@@ -1755,6 +1825,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -1842,6 +1916,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -1920,6 +1998,10 @@
         "trap": "scam-check"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "mixed",
         "status": "confirmed",
         "sources": [
@@ -2024,6 +2106,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -2105,6 +2191,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-10",
@@ -2194,6 +2284,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-06-25",
@@ -2282,6 +2376,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-07-10",
@@ -2380,6 +2478,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -2473,6 +2575,10 @@
         "freshness": "scheduled"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "asOf": "2026-07-11",
@@ -2567,6 +2673,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "corpus-grounded",
         "status": "confirmed",
         "sources": [
@@ -2630,6 +2740,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -2723,6 +2837,10 @@
         "freshness": "stable"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "real-world",
         "status": "confirmed",
         "sources": [
@@ -2864,6 +2982,10 @@
         "freshness": "live"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "corpus-grounded",
         "status": "confirmed",
         "asOf": "2026-08-18",
@@ -2978,6 +3100,10 @@
         "freshness": "scheduled"
       },
       "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
         "domain": "mixed",
         "status": "confirmed",
         "asOf": "2026-07-11",

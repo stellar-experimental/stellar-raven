@@ -348,14 +348,11 @@ Each contradiction also remains a T4 consistency error.
 
 ## Lifecycle reporting contract
 
-If lifecycle fields are unavailable, keep corpus membership unchanged and record lifecycle
-proposals in the round ledger. Never remove a suspect case through an untracked filter.
-
 Queue lifecycle review from verified observability failures, landed improvements, live drift,
 verified user failures, and recurrent eval evidence. Judge noise without golden-ambiguity evidence
 queues review while trusted truth remains active. A trigger changes no golden by itself.
 
-With lifecycle fields available, sample the full active-plus-quarantined compiled pool first. Then
+Sample the full active-plus-quarantined compiled pool first. Then
 partition the selected IDs. Never re-pick, replace, or append IDs. Active IDs form the performance
 set; quarantined IDs remain diagnostic and stay outside T1 and T3. Print the active denominator as
 `k of N` and list every excluded quarantined ID. Apply the same partition to explicit `--ids` lists.

@@ -91,9 +91,9 @@ function answeredRow(kase, answer, verdict = null) {
 
 /** Build a temp dir holding a battery file + a --no-judge results file whose
  *  snapshot hashes genuinely reproduce, mirroring run-qa's collection output. */
-function writeFixture(root, { rows: rowOverrides } = {}) {
+function writeFixture(root, { rows: rowOverrides, cases = CASES } = {}) {
   const casesPath = join(root, "cases.json");
-  writeFileSync(casesPath, JSON.stringify({ cases: CASES }, null, 2));
+  writeFileSync(casesPath, JSON.stringify({ cases }, null, 2));
   const rows = rowOverrides ?? [
     {
       id: "q-fixture-answered",
@@ -153,7 +153,7 @@ function writeFixture(root, { rows: rowOverrides } = {}) {
       durationMs: 500
     }
   ];
-  const selectedCases = rows.map((row) => CASES.find((c) => c.id === row.id));
+  const selectedCases = rows.map((row) => cases.find((c) => c.id === row.id));
   const results = {
     meta: {
       variant: "A",
@@ -212,6 +212,47 @@ function stubJudge(calls = []) {
 }
 
 describe("run-qa --judge-stored", () => {
+  it("uses the active lifecycle denominator for stored panel limits", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-lifecycle-"));
+    try {
+      const cases = CASES.slice(0, 2).map((kase, index) => ({
+        ...kase,
+        truth: {
+          lifecycle: {
+            state: index === 0 ? "active" : "quarantined",
+            reviewState: index === 0 ? "none" : "queued"
+          }
+        }
+      }));
+      const rows = cases.map((kase) => ({
+        ...answeredRow(kase, `answer for ${kase.id}`),
+        truth: { status: "verified", lifecycle: kase.truth.lifecycle }
+      }));
+      const { resultsPath } = writeFixture(root, { rows, cases });
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.meta.judgeTiering = {
+        selectedCaseCount: 1,
+        maxPanelCases: 1,
+        maxPanelCasesSource: "bounded-scaled-default"
+      };
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+
+      await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: stubJudge(),
+        log: () => {}
+      });
+
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.judgeTiering.selectedCaseCount).toBe(1);
+      expect(written.meta.lifecycle).toMatchObject({ activeCount: 1, selectedCount: 2 });
+      expect(written.meta.tracks.t1.firstAttemptRows.denominator).toBe(1);
+      expect(written.meta.tracks.t4.judging.attempted.denominator).toBe(2);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("allows regenerated-register refreshes but never upgrades saved verdicts to a pin", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {

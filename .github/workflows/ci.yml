@@ -139,7 +139,7 @@ jobs:
           node eval/compile-routing.mjs
           node eval/qa/compile-qa.mjs
           node eval/plan/build-op-classes.mjs
-          if ! git diff --exit-code --stat -- catalog specs src/mcp/micro-map.ts src/demo/globe.ts src/consent-globe.ts ecosystem-skills/INDEX.md eval/corpus/raven-next/research/golden/compiled/golden.json eval/routing-cases.json eval/qa/cases.json eval/qa/sample.json eval/plan/op-classes.json; then
+          if ! git diff --exit-code --stat -- catalog specs src/mcp/micro-map.ts src/demo/globe.ts src/consent-globe.ts ecosystem-skills/INDEX.md eval/corpus/raven-next/research/golden/compiled/golden.json eval/routing-cases.json eval/qa/cases.json eval/qa/sample.json eval/qa/lifecycle-registry.json eval/plan/op-classes.json; then
             echo "::error::generated artifacts out of sync — run the build scripts locally and commit the result"
             exit 1
           fi

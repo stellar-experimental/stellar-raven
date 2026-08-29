@@ -156,11 +156,15 @@ export function buildFiveTrackSummary({
   unjudgedSelectedIds = null
 }) {
   const rowById = new Map(rows.map((row) => [row.id, row]));
+  const selectedRows = selectedIds.map((id) => rowById.get(id)).filter(Boolean);
+  const allFirstAttemptRowIds = selectedRows.filter((row) => firstAgentAttempt(row)).map((row) => row.id);
   const activeRows = activeSelectedIds.map((id) => rowById.get(id)).filter(Boolean);
   const firstAttemptRowIds = activeRows.filter((row) => firstAgentAttempt(row)).map((row) => row.id);
-  const answeredRows = activeRows.filter((row) => agentAttemptAnswered(firstAgentAttempt(row)));
-  const answeredIds = answeredRows.map((row) => row.id);
-  const validGradeRows = answeredRows.filter((row) => firstPassGrade(row));
+  const selectedAnsweredRows = selectedRows.filter((row) => agentAttemptAnswered(firstAgentAttempt(row)));
+  const selectedAnsweredIds = selectedAnsweredRows.map((row) => row.id);
+  const activeAnsweredRows = activeRows.filter((row) => agentAttemptAnswered(firstAgentAttempt(row)));
+  const activeAnsweredIds = activeAnsweredRows.map((row) => row.id);
+  const validGradeRows = activeAnsweredRows.filter((row) => firstPassGrade(row));
   const validGradeIds = validGradeRows.map((row) => row.id);
   const gradeIds = Object.fromEntries(
     ["correct", "partial", "wrong"].map((grade) => [
@@ -170,7 +174,7 @@ export function buildFiveTrackSummary({
   );
   const agentLimitIds = idsFrom(activeRows, (row) => rowOutcomeClass(row) === "agent-limit");
 
-  const retryEligibleRows = activeRows.filter(
+  const retryEligibleRows = selectedRows.filter(
     (row) => failureOfAgentAttempt(firstAgentAttempt(row))?.class === "transport"
   );
   const recoveredIds = [];
@@ -195,7 +199,7 @@ export function buildFiveTrackSummary({
     .filter((row) => Boolean(row.tags?.trap))
     .map((row) => row.id);
   const activeTrapIds = activeSelectedIds.filter((id) => knownTrapIds.includes(id));
-  const answeredTrapRows = answeredRows.filter((row) => Boolean(row.tags?.trap));
+  const answeredTrapRows = activeAnsweredRows.filter((row) => Boolean(row.tags?.trap));
   const answeredTrapIds = answeredTrapRows.map((row) => row.id);
   const safetyPassIds = [];
   const safetyFailIds = [];
@@ -219,8 +223,8 @@ export function buildFiveTrackSummary({
     }
   }
 
-  const allJudgeAttempts = rows.flatMap((row) => judgeAttempts(row).map((attempt) => ({ id: row.id, attempt })));
-  const allJudgeCalls = rows.flatMap((row) => judgeAttempts(row)
+  const allJudgeAttempts = selectedRows.flatMap((row) => judgeAttempts(row).map((attempt) => ({ id: row.id, attempt })));
+  const allJudgeCalls = selectedRows.flatMap((row) => judgeAttempts(row)
     .flatMap((attempt) => judgeCalls(attempt).map((call) => ({ id: row.id, attempt: call }))));
   const cliOrParseFailureIds = unique(allJudgeCalls
     .filter(({ attempt }) => ["cli", "parse"].includes(judgeFailureClass(attempt)))
@@ -234,16 +238,16 @@ export function buildFiveTrackSummary({
   const consistencyRows = [...allJudgeAttempts, ...allJudgeCalls]
     .filter(({ attempt }) => consistencyViolations(attempt).length > 0);
   const consistencyIds = unique(consistencyRows.map(({ id }) => id));
-  const judgeCompletedIds = answeredRows
+  const judgeCompletedIds = selectedAnsweredRows
     .filter((row) => firstJudgeAttempt(row))
     .map((row) => row.id);
-  const spawnIds = idsFrom(activeRows, (row) => failureOfAgentAttempt(firstAgentAttempt(row))?.class === "spawn");
-  const protocolIds = idsFrom(activeRows, (row) => failureOfAgentAttempt(firstAgentAttempt(row))?.class === "protocol");
+  const spawnIds = idsFrom(selectedRows, (row) => failureOfAgentAttempt(firstAgentAttempt(row))?.class === "spawn");
+  const protocolIds = idsFrom(selectedRows, (row) => failureOfAgentAttempt(firstAgentAttempt(row))?.class === "protocol");
   const panelAttempts = allJudgeAttempts.filter(
     ({ attempt }) => Number.isInteger(attempt.verdict?.meta?.panelSize) && attempt.verdict.meta.panelSize > 1
   );
 
-  const allAgentAttempts = rows.flatMap((row) => agentAttempts(row).map((attempt) => ({ id: row.id, attempt })));
+  const allAgentAttempts = selectedRows.flatMap((row) => agentAttempts(row).map((attempt) => ({ id: row.id, attempt })));
   const agentProviderSafeguardIds = unique(allAgentAttempts
     .filter(({ attempt }) => failureOfAgentAttempt(attempt)?.class === "provider-safeguard")
     .map(({ id }) => id));
@@ -257,10 +261,10 @@ export function buildFiveTrackSummary({
   const transportIds = agentTransportIds;
   const timeoutIds = unique([...agentTimeoutIds, ...judgeTimeoutIds]);
   const missingSelectedIds = selectedIds.filter((id) => !rowById.has(id));
-  const judgingUnattemptedIds = (unjudgedSelectedIds ?? answeredRows
+  const judgingUnattemptedIds = (unjudgedSelectedIds ?? selectedAnsweredRows
     .filter((row) => judgeAttempts(row).length === 0)
     .map((row) => row.id))
-    .filter((id) => activeSelectedIds.includes(id) && answeredIds.includes(id));
+    .filter((id) => selectedIds.includes(id) && selectedAnsweredIds.includes(id));
 
   return {
     schema: QA_TRACK_SCHEMA,
@@ -270,8 +274,8 @@ export function buildFiveTrackSummary({
     t1: {
       name: "first-pass-answer-quality",
       firstAttemptRows: coverage(firstAttemptRowIds, activeSelectedIds),
-      answeredFirstAttempts: coverage(answeredIds, activeSelectedIds),
-      validGradesOverAnswered: coverage(validGradeIds, answeredIds),
+      answeredFirstAttempts: coverage(activeAnsweredIds, activeSelectedIds),
+      validGradesOverAnswered: coverage(validGradeIds, activeAnsweredIds),
       validGradesOverSelected: coverage(validGradeIds, activeSelectedIds),
       conditionalQuality: {
         denominator: validGradeIds.length,
@@ -283,7 +287,7 @@ export function buildFiveTrackSummary({
     },
     t2: {
       name: "retry-recovery",
-      eligibleFirstPassTransportFailures: coverage(retryEligibleIds, activeSelectedIds),
+      eligibleFirstPassTransportFailures: coverage(retryEligibleIds, selectedIds),
       recovered: coverage(recoveredIds, retryEligibleIds),
       repeatedFailure: coverage(repeatedFailureIds, retryEligibleIds),
       unattempted: coverage(unattemptedRetryIds, retryEligibleIds),
@@ -301,21 +305,21 @@ export function buildFiveTrackSummary({
       name: "harness-and-judge-health",
       collection: {
         selected: selectedIds.length,
-        firstAttemptRows: firstAttemptRowIds.length,
+        firstAttemptRows: allFirstAttemptRowIds.length,
         unattemptedIds: missingSelectedIds
       },
-      spawnFailures: coverage(spawnIds, activeSelectedIds),
-      protocolFailures: coverage(protocolIds, activeSelectedIds),
+      spawnFailures: coverage(spawnIds, selectedIds),
+      protocolFailures: coverage(protocolIds, selectedIds),
       judging: {
-        attempted: coverage(judgeCompletedIds, answeredIds),
-        unattempted: coverage(judgingUnattemptedIds, answeredIds)
+        attempted: coverage(judgeCompletedIds, selectedAnsweredIds),
+        unattempted: coverage(judgingUnattemptedIds, selectedAnsweredIds)
       },
-      cliOrParseFailures: coverage(cliOrParseFailureIds, answeredIds),
-      judgeTimeouts: coverage(judgeTimeoutIds, answeredIds),
-      judgeProviderSafeguards: coverage(judgeSafeguardIds, answeredIds),
+      cliOrParseFailures: coverage(cliOrParseFailureIds, selectedAnsweredIds),
+      judgeTimeouts: coverage(judgeTimeoutIds, selectedAnsweredIds),
+      judgeProviderSafeguards: coverage(judgeSafeguardIds, selectedAnsweredIds),
       consistencyContradictions: {
         count: consistencyIds.length,
-        denominator: answeredIds.length,
+        denominator: selectedAnsweredIds.length,
         ids: consistencyIds,
         byId: Object.fromEntries(consistencyIds.map((id) => [
           id,
@@ -325,25 +329,25 @@ export function buildFiveTrackSummary({
         ]))
       },
       judgeRetries: {
-        count: rows.reduce((sum, row) => sum + Math.max(0, judgeAttempts(row).length - 1), 0),
+        count: selectedRows.reduce((sum, row) => sum + Math.max(0, judgeAttempts(row).length - 1), 0),
         denominator: allJudgeAttempts.length,
-        ids: idsFrom(rows, (row) => judgeAttempts(row).length > 1)
+        ids: idsFrom(selectedRows, (row) => judgeAttempts(row).length > 1)
       },
       panelBehavior: {
         panelAttempts: panelAttempts.length,
         denominator: allJudgeAttempts.length,
         ids: unique(panelAttempts.map(({ id }) => id))
       },
-      costCompleteness: costCompleteness(rows),
+      costCompleteness: costCompleteness(selectedRows),
       invalidTests: coverage(invalidTestIds, selectedIds),
       quarantinedDiagnostics: coverage(quarantinedIds, selectedIds),
       retryInputHashMismatches: coverage(retryInputMismatchIds, retryEligibleIds)
     },
     t5: {
       name: "provider-availability",
-      providerSafeguards: coverage(providerSafeguardIds, activeSelectedIds),
-      transport: coverage(transportIds, activeSelectedIds),
-      timeouts: coverage(timeoutIds, activeSelectedIds),
+      providerSafeguards: coverage(providerSafeguardIds, selectedIds),
+      transport: coverage(transportIds, selectedIds),
+      timeouts: coverage(timeoutIds, selectedIds),
       byMethod: {
         agent: {
           providerSafeguards: countWithIds(agentProviderSafeguardIds),
@@ -371,6 +375,7 @@ function coverageText(value) {
 export function formatFiveTrackSummary(summary) {
   return [
     `track schema: ${summary.schema}`,
+    `performance set: ${summary.activeSelectedIds.length} of ${summary.selectedIds.length} active · excluded quarantined IDs: ${idText(summary.quarantinedIds)}`,
     "T1 first-pass answer quality",
     `  first-attempt rows ${coverageText(summary.t1.firstAttemptRows)}`,
     `  answered first attempts ${coverageText(summary.t1.answeredFirstAttempts)}`,

@@ -28,6 +28,10 @@
     "freshness": "stable"
   },
   "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
     "domain": "mixed",
     "status": "mixed",
     "asOf": "2026-07-10",

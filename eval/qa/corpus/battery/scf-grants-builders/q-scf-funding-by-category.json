@@ -25,6 +25,10 @@
     "freshness": "live"
   },
   "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
     "domain": "corpus-grounded",
     "status": "mixed",
     "asOf": "2026-07-10",

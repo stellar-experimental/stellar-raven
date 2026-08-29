@@ -1,6 +1,6 @@
 # ADR-0008: Human-review follow-up separates truth, measurement, recovery, and Playground scope
 
-- Status: accepted by the owner (2026-08-28); implementation remains queued
+- Status: accepted by the owner (2026-08-28); golden lifecycle implemented 2026-08-29
 - Driver: the 21-item human-review grill recorded in
   `.agents/rounds/2026-08-28-human-review-grill.md`
 - Decision-shape review: Claude Fable 5 xhigh and GPT-5.6-Sol xhigh reached acceptance before

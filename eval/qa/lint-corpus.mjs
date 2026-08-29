@@ -15,6 +15,13 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { assertNoNonExposedRefs } from "../../scripts/build-catalog.mjs";
 import { QA_CATEGORIES, QA_SERVICES } from "./lib.mjs";
+import {
+  COMPILED_LIFECYCLE_STATES,
+  LIFECYCLE_REGISTRY_SCHEMA,
+  contentSha256,
+  lifecyclePolicyProblems,
+  lifecycleProblems
+} from "./lifecycle.mjs";
 
 const ROOT = process.env.QA_REPO_ROOT
   ? realpathSync(process.env.QA_REPO_ROOT)
@@ -23,7 +30,9 @@ const DEFAULTS = {
   corpusDir: path.join(ROOT, "eval/qa/corpus/battery"),
   manifestPath: path.join(ROOT, "catalog/manifest.json"),
   registerPath: path.join(ROOT, "eval/qa/consistency-register.json"),
-  ledgerPath: path.join(ROOT, "eval/qa/corpus/migration-ledger.json")
+  ledgerPath: path.join(ROOT, "eval/qa/corpus/migration-ledger.json"),
+  lifecycleRegistryPath: path.join(ROOT, "eval/qa/lifecycle-registry.json"),
+  lifecyclePolicyPath: path.join(ROOT, "eval/qa/corpus/lifecycle-policy.json")
 };
 
 const CATEGORY_FLOORS = {
@@ -145,6 +154,63 @@ function walkJsonFiles(dir) {
 
 export function loadCases(corpusDir) {
   return walkJsonFiles(corpusDir).map((file) => ({ ...json(file), __file: file }));
+}
+
+export function lintLifecycle(cases, lifecycleRegistry, lifecyclePolicy, today) {
+  const findings = [];
+  const ids = new Set();
+  for (const kase of cases) {
+    if (ids.has(kase.id)) findings.push(finding("error", "lifecycle", kase.id, "duplicate compiled case id"));
+    ids.add(kase.id);
+    for (const problem of lifecycleProblems(kase, { allowedStates: COMPILED_LIFECYCLE_STATES, today })) {
+      findings.push(finding("error", "lifecycle", kase.id, problem));
+    }
+  }
+  if (!lifecycleRegistry) {
+    findings.push(finding("error", "lifecycle-registry", "-", "lifecycle registry is missing"));
+  } else {
+    if (lifecycleRegistry.schema !== LIFECYCLE_REGISTRY_SCHEMA) {
+      findings.push(finding("error", "lifecycle-registry", "-", `schema must be ${LIFECYCLE_REGISTRY_SCHEMA}`));
+    }
+    const entries = Array.isArray(lifecycleRegistry.entries) ? lifecycleRegistry.entries : [];
+    const entryById = new Map();
+    for (const entry of entries) {
+      if (entryById.has(entry.id)) findings.push(finding("error", "lifecycle-registry", entry.id, "duplicate reserved id"));
+      entryById.set(entry.id, entry);
+    }
+    const reservedIds = Array.isArray(lifecycleRegistry.reservedIds) ? lifecycleRegistry.reservedIds : [];
+    if (
+      new Set(reservedIds).size !== reservedIds.length ||
+      reservedIds.some((id) => !entryById.has(id)) ||
+      entries.some((entry) => !reservedIds.includes(entry.id))
+    ) {
+      findings.push(finding("error", "lifecycle-registry", "-", "reservedIds must contain every entry id exactly once"));
+    }
+    for (const kase of cases) {
+      const entry = entryById.get(kase.id);
+      if (!entry) {
+        findings.push(finding("error", "lifecycle-registry", kase.id, "compiled case id is not permanently reserved"));
+      } else {
+        if (entry.state !== kase.truth?.lifecycle?.state) {
+          findings.push(finding("error", "lifecycle-registry", kase.id, "registry state does not match the case file"));
+        }
+        if (entry.reviewState !== kase.truth?.lifecycle?.reviewState) {
+          findings.push(finding("error", "lifecycle-registry", kase.id, "registry reviewState does not match the case file"));
+        }
+        const { __file, ...caseValue } = kase;
+        if (entry.caseContentSha256 !== contentSha256(caseValue)) {
+          findings.push(finding("error", "lifecycle-registry", kase.id, "registry caseContentSha256 is stale"));
+        }
+      }
+    }
+  }
+  if (!lifecyclePolicy) {
+    findings.push(finding("error", "mass-review", "-", "lifecycle policy is missing"));
+  } else {
+    const { problems } = lifecyclePolicyProblems(cases, lifecyclePolicy, today);
+    for (const problem of problems) findings.push(finding("error", "mass-review", "-", problem));
+  }
+  return findings;
 }
 
 export function lintSurface(cases, manifest) {
@@ -691,9 +757,13 @@ function parseArgs(argv) {
     if (arg === "--coverage") options.coverage = true;
     else if (arg === "--enforce-floors") { options.coverage = true; options.enforceFloors = true; }
     else if (arg === "--stale") options.stale = true;
-    else if (["--since", "--corpus", "--manifest", "--register", "--ledger", "--today", "--live-contract"].includes(arg)) {
+    else if (["--since", "--corpus", "--manifest", "--register", "--ledger", "--today", "--live-contract", "--lifecycle-registry", "--lifecycle-policy"].includes(arg)) {
       if (!argv[index + 1]) throw new Error(`${arg} requires a value`);
-      const option = arg === "--live-contract" ? "liveContract" : arg.slice(2);
+      const option = {
+        "--live-contract": "liveContract",
+        "--lifecycle-registry": "lifecycleRegistry",
+        "--lifecycle-policy": "lifecyclePolicy"
+      }[arg] ?? arg.slice(2);
       options[option] = argv[++index];
     } else throw new Error(`unknown argument: ${arg}`);
   }
@@ -769,8 +839,9 @@ function printFindings(findings) {
   return errors;
 }
 
-export function runLint({ cases, manifest, register = {}, ledger, previousCases, coverage = false, enforceFloors = false, stale = false, today }) {
+export function runLint({ cases, manifest, register = {}, ledger, lifecycleRegistry, lifecyclePolicy, previousCases, coverage = false, enforceFloors = false, stale = false, today }) {
   const findings = [
+    ...lintLifecycle(cases, lifecycleRegistry, lifecyclePolicy, today),
     ...lintSurface(cases, manifest),
     ...lintNumericInvariants(cases, register),
     ...lintDateContingentTraps(cases, register),
@@ -799,6 +870,8 @@ function main() {
   const manifestPath = path.resolve(options.manifest ?? DEFAULTS.manifestPath);
   const registerPath = path.resolve(options.register ?? DEFAULTS.registerPath);
   const ledgerPath = path.resolve(options.ledger ?? DEFAULTS.ledgerPath);
+  const lifecycleRegistryPath = path.resolve(options.lifecycleRegistry ?? DEFAULTS.lifecycleRegistryPath);
+  const lifecyclePolicyPath = path.resolve(options.lifecyclePolicy ?? DEFAULTS.lifecyclePolicyPath);
   if (isPullRequestCI(process.env) && !since) {
     // Fail closed for PRs only: the gospel lane is a required PR gate, so an
     // unresolvable base ref there is an error, never a silent skip. Push events
@@ -825,6 +898,8 @@ function main() {
     manifest: json(manifestPath),
     register: existsSync(registerPath) ? json(registerPath) : {},
     ledger: existsSync(ledgerPath) ? json(ledgerPath) : undefined,
+    lifecycleRegistry: existsSync(lifecycleRegistryPath) ? json(lifecycleRegistryPath) : undefined,
+    lifecyclePolicy: existsSync(lifecyclePolicyPath) ? json(lifecyclePolicyPath) : undefined,
     previousCases,
     coverage: options.coverage,
     enforceFloors: options.enforceFloors,

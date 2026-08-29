@@ -17,4 +17,4 @@ commands, and the CI contract are documented in `eval/qa/README.md`.
   non-authored case must be a ledger destination and its `truth.origin` must name the source.
 
 `npm run eval:qa:compile` compiles `battery/` into the generated, CI-byte-pinned
-`eval/qa/cases.json` + `eval/qa/sample.json`. Never hand-edit those.
+`eval/qa/cases.json`, `eval/qa/sample.json`, and `eval/qa/lifecycle-registry.json`. Never hand-edit those.

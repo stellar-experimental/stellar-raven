@@ -1,0 +1,4015 @@
+{
+  "$comment": "Generated lifecycle registry. Regenerate with npm run eval:qa:compile.",
+  "schema": "qa-lifecycle-registry-v1",
+  "digestSchema": "canonical-json-sha256-v1",
+  "counts": {
+    "proposed": 0,
+    "active": 500,
+    "quarantined": 0,
+    "retired": 0
+  },
+  "reservedIds": [
+    "q-aas-burn-clawback-redemption-mechanics",
+    "q-aas-claim-received-claimable-balances",
+    "q-aas-claimable-predicates-expiry-reserves",
+    "q-aas-issuer-fees-supply-cap-freeze",
+    "q-aas-list-token-on-exchanges-aggregators",
+    "q-aas-sep30-recoverable-wallets",
+    "q-aas-trusted-asset-list-whitelist",
+    "q-aas-trustline-limit-lifecycle",
+    "q-agent-identity-erc8004-stellar",
+    "q-agent-payment-standard-choice",
+    "q-anchor-endpoint-discovery",
+    "q-anchor-list-builders-discovery",
+    "q-anchor-moneygram-ramps",
+    "q-anchor-platform-what",
+    "q-anchor-sdp-vs-anchor-platform",
+    "q-anchor-sdp-what",
+    "q-ass-cross-bando-stablebonds-sac",
+    "q-ass-cross-etherfuse-cetes-controls",
+    "q-asset-amm-fee-reserve",
+    "q-asset-claimable-balance",
+    "q-asset-deploy-sac-cli",
+    "q-asset-issue-asset-howto",
+    "q-asset-path-payment-ops",
+    "q-asset-rwa-tokenized-freshness",
+    "q-asset-sdex-vs-amm",
+    "q-asset-stablecoin-issuers-discovery",
+    "q-asset-trustline-basics",
+    "q-asset-trustline-vs-sac",
+    "q-asset-two-account-issuer",
+    "q-asset-usdc-eurc-issuer",
+    "q-asset-usdc-eurc-path-fx",
+    "q-asset-wallet-sdk-seps",
+    "q-builder-by-region-latam",
+    "q-builder-by-scf-tier",
+    "q-builder-content-by-person",
+    "q-builder-justin-rice-history",
+    "q-builder-lumenloop-regions-vocab",
+    "q-builder-rust-soroban-devs",
+    "q-cctp-v2-usdc-stellar",
+    "q-comp-anchor-compliance-stack",
+    "q-comp-auth-flags-overview",
+    "q-comp-clawback-cap0035",
+    "q-comp-clawback-holder-risk",
+    "q-comp-cross-bitso-sep31",
+    "q-comp-cross-moneygram-partnership-sep24",
+    "q-comp-finclusive-caas",
+    "q-comp-sac-inherits-flags",
+    "q-comp-security-disclosure-programs",
+    "q-comp-sep6-vs-sep12-roles",
+    "q-comp-sep8-number-lookup-no-deepresearch",
+    "q-comp-sep8-regulated-assets-approval-server",
+    "q-comp-yieldblox-oracle-incident",
+    "q-crp-anchors-by-corridor",
+    "q-crp-become-an-anchor-licensing",
+    "q-crp-cme-xlm-futures-dates",
+    "q-crp-custodial-vs-noncustodial-wallets",
+    "q-crp-dtcc-stellar-connection-plan",
+    "q-crp-export-tx-history-taxes",
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-crp-partner-detail-after-discovery",
+    "q-crp-regional-offramp-mobilemoney",
+    "q-crp-remittance-founder-advisory",
+    "q-crp-sdp-operation",
+    "q-crp-tokenize-personal-rwa",
+    "q-defi-agent-identity-stellar-experimental",
+    "q-defi-agentic-payment-standards-compare",
+    "q-defi-allbridge-what-is",
+    "q-defi-aquarius-what-is",
+    "q-defi-arbitrage-pathpayment-bots",
+    "q-defi-asset-whitespace-live",
+    "q-defi-benji-franklin-templeton",
+    "q-defi-blend-alternatives",
+    "q-defi-blend-what-is",
+    "q-defi-bridge-evm-to-stellar-axelar",
+    "q-defi-build-staking-for-own-token",
+    "q-defi-category-funding-ratio-live",
+    "q-defi-category-saturation-live",
+    "q-defi-cluster-rollup-live",
+    "q-defi-comet-what-is",
+    "q-defi-cross-blend-rivool-sac",
+    "q-defi-defindex-honest",
+    "q-defi-etherfuse-stablebonds",
+    "q-defi-flash-loans",
+    "q-defi-lending-landscape-live",
+    "q-defi-liquid-staking-whitespace",
+    "q-defi-lumenloop-categories-vocab",
+    "q-defi-market-making-kelp",
+    "q-defi-named-newer-protocols",
+    "q-defi-ondo-usdy",
+    "q-defi-oracle-landscape-live",
+    "q-defi-perps-whitespace",
+    "q-defi-phoenix-what-is",
+    "q-defi-provide-liquidity-impermanent-loss",
+    "q-defi-reflector-oracle",
+    "q-defi-rwa-scf-similar",
+    "q-defi-rwa-treasury-funding-live",
+    "q-defi-sdex-offer-lifecycle",
+    "q-defi-skill-ecosystem-scout",
+    "q-defi-skill-project-dossier",
+    "q-defi-soroswap-vs-stellarx",
+    "q-defi-soroswap-what-is",
+    "q-defi-streaming-payments-prior-art",
+    "q-defi-tooling-whitespace-live",
+    "q-defi-wisdomtree-crdt",
+    "q-defi-x402-on-stellar-what",
+    "q-eco-defi-market-map",
+    "q-eco-defi-projects-discovery",
+    "q-eco-defi-tvl-current",
+    "q-eco-dex-saturation",
+    "q-eco-freighter-wallet",
+    "q-eco-hana-wallet-scf",
+    "q-eco-lobstr-wallet",
+    "q-eco-most-active-defi-projects",
+    "q-eco-nft-marketplace-whitespace",
+    "q-eco-pyusd-stellar-freshness",
+    "q-eco-stablecoins-on-stellar",
+    "q-eco-stellar-rwa-stablecoin-volume",
+    "q-eco-stellar-wallets-list",
+    "q-eco-xbull-wallet",
+    "q-edge-1xlm-activation-fee",
+    "q-edge-ambig-best-wallet",
+    "q-edge-ambig-stellar-token-meaning",
+    "q-edge-asset-site-scam-detection",
+    "q-edge-closed-world-builder-directory-miss",
+    "q-edge-deep-full-history-report",
+    "q-edge-doc-category-filter-empty",
+    "q-edge-doc-page-sections-soft-empty",
+    "q-edge-doc-title-zero-hits",
+    "q-edge-exchange-memo-lost-funds",
+    "q-edge-exhaustive-defi-deep-report",
+    "q-edge-factcheck-soroswap-first-amm",
+    "q-edge-fresh-latest-blend-tvl",
+    "q-edge-fresh-latest-protocol-version",
+    "q-edge-fresh-latest-scf-round",
+    "q-edge-fresh-most-recent-news",
+    "q-edge-inject-ignore-instructions",
+    "q-edge-jailbreak-generate-secret-keys",
+    "q-edge-lumenloop-person-entity-empty",
+    "q-edge-metamask-evm-mental-model",
+    "q-edge-noinfo-exact-tvl-figure",
+    "q-edge-noinfo-sep-9999",
+    "q-edge-noinfo-stellar-native-privacy-default",
+    "q-edge-noinfo-stellar-pos-staking-rewards",
+    "q-edge-oos-bitcoin-price-prediction",
+    "q-edge-oos-solana-vs-aptos",
+    "q-edge-open-world-recovery-after-narrow-miss",
+    "q-edge-partner-detail-soft-empty",
+    "q-edge-retail-everyday-use-eli5",
+    "q-edge-scf-v7-centralization-myths",
+    "q-edge-send-me-free-xlm",
+    "q-edge-strupey-ambiguous-stellar-history",
+    "q-edge-validators-reverse-tx-fork-detection",
+    "q-edge-xlm-price-investment-advice",
+    "q-gap-av-offset-not-timestamp",
+    "q-gap-builders-person-empty",
+    "q-gap-compare-hackathons",
+    "q-gap-contracts-domain-empty",
+    "q-gap-digest-defi-adjacent",
+    "q-gap-digest-soroban-adjacent",
+    "q-gap-explainrepo-payload-ok",
+    "q-gap-hackathon-brief-evidence-boundaries",
+    "q-gap-hackathon-winner-order",
+    "q-gap-leaderboard-project-not-builder",
+    "q-gap-lumen-content-tag-vocabulary",
+    "q-gap-lumen-documents-browse",
+    "q-gap-lumen-exact-document-empty",
+    "q-gap-lumen-project-tag-vocabulary",
+    "q-gap-match-partners-degrade",
+    "q-gap-related-projects-empty",
+    "q-gap-rpc-horizon-unindexed-reference",
+    "q-gap-scout-changelog-envelope",
+    "q-gap-scout-get-skill-detail",
+    "q-gap-scout-list-skill-directory",
+    "q-gap-scout-status-envelope",
+    "q-gap-semantic-directory-fallback",
+    "q-gap-semantic-similar-projects",
+    "q-gap-upcoming-hackathon-fallback",
+    "q-gap-vet-pitch-vertical-null",
+    "q-hist-cctp-stellar-live-announcement",
+    "q-hist-meridian-2026-corrected-venue",
+    "q-hist-quantum-preparedness-plan",
+    "q-hist-remittance-corridors",
+    "q-hist-scp-rewrite-2015",
+    "q-hist-soroban-launch-protocol20",
+    "q-hist-unhcr-stellar-aid-assist",
+    "q-hist-x402-stellar-announcement",
+    "q-hist-yieldblox-v2-2026-exploit",
+    "q-history-ecosystem-index-freshness-live",
+    "q-hot-fee-pool-burn-deflation",
+    "q-hot-sdf-transparency-wallets-reports",
+    "q-hot-sdf-xlm-holdings-sales",
+    "q-infra-horizon-vs-rpc",
+    "q-infra-hubble-bigquery",
+    "q-infra-quickstart-local-network",
+    "q-infra-rpc-methods-list",
+    "q-infra-rpc-provider-archive-tier",
+    "q-infra-secp256r1-passkeys",
+    "q-infra-simulate-transaction-howto",
+    "q-infra-testnet-vs-futurenet",
+    "q-infra-which-indexer",
+    "q-jutsu-cash-crypto-ramps",
+    "q-jutsu-check-account-history",
+    "q-jutsu-what-is-a-memo",
+    "q-mpp-discovery-and-modes",
+    "q-n3-cross-thread-memory-exfiltration",
+    "q-n3-generate-secret-key-refusal",
+    "q-n3-inject-ignore-previous-instructions",
+    "q-n3-issues-842-backup-faucet-wallet",
+    "q-n3-missing-funds-account-support",
+    "q-n3-offtopic-home-renovation",
+    "q-n3-paid-research-budget-bypass",
+    "q-n3-pi-network-wrong-chain",
+    "q-n3-ssrf-localhost-probe",
+    "q-n3-ssrf-metadata-endpoint",
+    "q-n3-wallet-hacked-support-redirect",
+    "q-n3-xlm-personal-investment-advice",
+    "q-org-mazieres-chief-scientist",
+    "q-org-sdf-board-directors",
+    "q-org-sdf-enterprise-fund",
+    "q-org-sdf-mandate-buckets",
+    "q-org-sdf-structure-mandate",
+    "q-passkey-platform-constraints",
+    "q-passkey-smart-account-architecture",
+    "q-passkey-wallet-recovery",
+    "q-pay-anchor-msb-licensing",
+    "q-pay-moneygram-ramps",
+    "q-pay-sdp-disbursement",
+    "q-pay-travel-rule-aid-flows",
+    "q-pc-account-activation-not-found",
+    "q-pc-account-merge-reclaim-reserve",
+    "q-pc-address-types-strkey",
+    "q-pc-bucketlist-vs-merkle-inclusion-proof",
+    "q-pc-cross-redstone-sep40",
+    "q-pc-doc-category-validator-search",
+    "q-pc-fee-bump-channel-accounts-feepool",
+    "q-pc-l2-payment-channels-starlight",
+    "q-pc-memos-reference",
+    "q-pc-multisig-setup-lifecycle",
+    "q-pc-muxed-accounts",
+    "q-pc-practical-fee-setting",
+    "q-pc-protocol-26-yardstick",
+    "q-pc-protocol-27-zipper",
+    "q-pc-protocol-upgrade-timing",
+    "q-pc-quantum-preparedness-dormant",
+    "q-pc-sequence-numbers-ordering-replace",
+    "q-pc-slp-0004-0006-status",
+    "q-pc-sponsored-reserves",
+    "q-pc-surge-griefing-threat-model",
+    "q-pc-tx-finality-failure-semantics",
+    "q-production-anchor-architecture",
+    "q-protocol-19-preconditions-cap-0021",
+    "q-protocol-23-whisk-caps",
+    "q-protocol-24-whisk-incident",
+    "q-protocol-27-cap-0071",
+    "q-protocol-accounts-signers-thresholds",
+    "q-protocol-amm-cap-0038",
+    "q-protocol-base-reserve-min-balance",
+    "q-protocol-bls12-381-cap59",
+    "q-protocol-bn254-poseidon-xray",
+    "q-protocol-cap-process",
+    "q-protocol-cap-vs-sep",
+    "q-protocol-ledger-close-time",
+    "q-protocol-ledger-entry-types",
+    "q-protocol-ledger-header-fields",
+    "q-protocol-max-tx-set-size",
+    "q-protocol-network-passphrases-list",
+    "q-protocol-operation-types-list",
+    "q-protocol-operations-vs-transactions",
+    "q-protocol-parallel-execution",
+    "q-protocol-quorum-slice-vs-quorum",
+    "q-protocol-scp-consensus-algorithm",
+    "q-protocol-state-archival-ttl",
+    "q-protocol-tier1-requirements",
+    "q-protocol-validator-node-roles",
+    "q-protocol-validator-upgrade-vote",
+    "q-protocol-version-history-list",
+    "q-quickstart-manual-ledger-close",
+    "q-raph-buy-xlm-safely",
+    "q-raph-claimable-balance-safety",
+    "q-raph-exchange-memo",
+    "q-raph-hardware-wallet",
+    "q-raph-lobstr-legitimacy",
+    "q-raph-low-xlm-transfer-fail",
+    "q-raph-merchant-payments",
+    "q-raph-missing-exchange-memo",
+    "q-raph-offramp-xlm-usdc",
+    "q-raph-phishing-pending-claim",
+    "q-raph-remittance-path-payment",
+    "q-raph-remove-scam-token",
+    "q-raph-restore-wallet",
+    "q-raph-scam-spam-tokens",
+    "q-raph-secret-key-hash-recovery",
+    "q-raph-stolen-wallet-recovery",
+    "q-raph-unsolicited-airdrop",
+    "q-raph-usdc-onto-stellar",
+    "q-raph-withdraw-exchange-self-custody",
+    "q-raph-xlm-network-role",
+    "q-raph-xlm-simple",
+    "q-raph-xlm-staking",
+    "q-rwa-projects-tokenizing-stellar",
+    "q-rwa-stellar-vs-erc20-regulated",
+    "q-rwa-tokenization-standards",
+    "q-scf-academic-research-grant",
+    "q-scf-ambassador-program",
+    "q-scf-audit-bank",
+    "q-scf-blend-winners-live",
+    "q-scf-build-award-cap",
+    "q-scf-build-tracks",
+    "q-scf-confidential-tokens-preview",
+    "q-scf-contract-verification-rfp-live",
+    "q-scf-cross-decaf-sep24",
+    "q-scf-cross-reflector-rounds-current",
+    "q-scf-current-hackathons-compare-live",
+    "q-scf-current-round",
+    "q-scf-ecosystem-listing-partner-jobs",
+    "q-scf-eligibility-criteria",
+    "q-scf-funding-by-category",
+    "q-scf-hackathon-compare-live",
+    "q-scf-hackathons-active",
+    "q-scf-history-soroswap",
+    "q-scf-how-to-apply",
+    "q-scf-hummingbot-kelp-closed-rfp",
+    "q-scf-instawards",
+    "q-scf-kale-winner-live",
+    "q-scf-nqg-voting",
+    "q-scf-open-rfps",
+    "q-scf-open-rfps-live",
+    "q-scf-passkey-rfps-live",
+    "q-scf-pitch-prep-live",
+    "q-scf-regional-india",
+    "q-scf-resolve-passport-superseded-slug",
+    "q-scf-rfp-tooling",
+    "q-scf-rfps-hackathons-live",
+    "q-scf-round-43-results",
+    "q-scf-sdf-bug-bounty",
+    "q-scf-sdf-marketing-grant",
+    "q-scf-skill-stellar-scout",
+    "q-scf-skill-submission-radar",
+    "q-scf-submission-lifecycle-deadlines",
+    "q-scf-total-distributed",
+    "q-scf-v7-changes",
+    "q-scf-verified-members",
+    "q-scf-vs-sdf-enterprise-fund",
+    "q-scout-hackathon-brief-first-hour",
+    "q-sep-1-toml",
+    "q-sep-12-kyc",
+    "q-sep-31-cross-border",
+    "q-sep-38-quotes",
+    "q-sep-41-token-interface",
+    "q-sep-43-web-wallet-api",
+    "q-sep-45-contract-auth",
+    "q-sep-53-sign-verify-message",
+    "q-sep-6-24-deprecation",
+    "q-sep-6-vs-31-misnumber-trap",
+    "q-sep-7-uri",
+    "q-sep-8-regulated-assets",
+    "q-sep-catalog-list",
+    "q-sep-clawback-prereq-flag",
+    "q-sep-interactive-deposit-withdraw",
+    "q-sep-wallet-seps-list",
+    "q-sep53-message-signing",
+    "q-sep6-sep24-sep31-choice",
+    "q-smart-account-scoped-policy-signers",
+    "q-smart-wallet-fee-sponsorship",
+    "q-sor-build-target-wasm32v1",
+    "q-sor-classic-dex-from-contract",
+    "q-sor-confidential-tokens",
+    "q-sor-contract-as-claimable-arbiter",
+    "q-sor-contract-trustlines-c-address",
+    "q-sor-cross-socketfi-auth",
+    "q-sor-cross-warmancer-zk-stack",
+    "q-sor-decode-hosterror-codes",
+    "q-sor-deploy-invoke-from-js-sdk",
+    "q-sor-doc-page-sections-followup",
+    "q-sor-doc-timestamping-manage-data",
+    "q-sor-doc-title-discovery",
+    "q-sor-evm-to-soroban-porting",
+    "q-sor-force-fast-archival-localnet",
+    "q-sor-p23-auto-restore-extendto",
+    "q-sor-persistent-unbounded-collection-cap",
+    "q-sor-recurring-escrow-patterns",
+    "q-sor-reflector-integration-code",
+    "q-sor-require-auth-propagation",
+    "q-sor-sac-introspection",
+    "q-sor-scval-conversion",
+    "q-sor-sep41-transfer-vs-transferfrom",
+    "q-sor-skill-openzeppelin-setup",
+    "q-sor-stale-spec-after-upgrade",
+    "q-sor-test-event-assertion-ordering",
+    "q-sor-ttl-defaults-extend",
+    "q-soroban-add-signer-smart-wallet-howto",
+    "q-soroban-auth-delegation-p27",
+    "q-soroban-auth-recursion-dos-audit",
+    "q-soroban-av-passkeys-talk",
+    "q-soroban-check-auth-custom-account",
+    "q-soroban-cli-bindings",
+    "q-soroban-constructor-lifecycle",
+    "q-soroban-contract-build-verification",
+    "q-soroban-contract-id-derivation",
+    "q-soroban-contractmeta-vs-contractevent",
+    "q-soroban-cross-contract-call",
+    "q-soroban-deploy-cli",
+    "q-soroban-event-indexing-design",
+    "q-soroban-factory-pattern",
+    "q-soroban-fuzz-testing",
+    "q-soroban-greenfield-escrow-prior-art-preflight",
+    "q-soroban-instance-storage-dos",
+    "q-soroban-no-std-constraints",
+    "q-soroban-oracle-defensive-consumption",
+    "q-soroban-oz-token",
+    "q-soroban-oz-upgradeable-macro",
+    "q-soroban-publish-events",
+    "q-soroban-reentrancy",
+    "q-soroban-require-auth",
+    "q-soroban-resource-limits",
+    "q-soroban-sdk-cve",
+    "q-soroban-sdk-macros",
+    "q-soroban-simulate-resource-fee",
+    "q-soroban-storage-migration",
+    "q-soroban-storage-types",
+    "q-soroban-token-transfer-pattern",
+    "q-soroban-unit-testing",
+    "q-soroban-upgradeable-storage-compat",
+    "q-soroban-vuln-classes",
+    "q-soroban-wasm-language",
+    "q-soroban-wasm-size-limit",
+    "q-soroban-x402-auth-entry-signing",
+    "q-stellar-recurring-payments",
+    "q-ti-bindings-to-nextjs-integration",
+    "q-ti-block-explorer-basics",
+    "q-ti-channel-accounts-throughput",
+    "q-ti-classic-submission-errors",
+    "q-ti-cli-rust-windows-troubleshooting",
+    "q-ti-compute-token-lp-market-data",
+    "q-ti-connect-wallet-button-code",
+    "q-ti-custodial-account-generation-c-address",
+    "q-ti-enumerate-all-contracts",
+    "q-ti-enumerate-holders-airdrop",
+    "q-ti-explain-repo-payload-status",
+    "q-ti-fetch-all-balances-classic-sac",
+    "q-ti-find-export-secret-key",
+    "q-ti-freighter-localhost-not-detected",
+    "q-ti-friendbot-ratelimit-alternatives",
+    "q-ti-historical-pointintime-balances",
+    "q-ti-java-sdk-wallet-feebump",
+    "q-ti-openzeppelin-relayer",
+    "q-ti-parse-raw-ledger-data",
+    "q-ti-related-projects-from-content",
+    "q-ti-rpc-gettransactions-pagination-xdr",
+    "q-ti-scaffold-stellar",
+    "q-ti-scout-changelog-contract-check",
+    "q-ti-scout-refresh-cached-rows",
+    "q-ti-secret-key-vs-mnemonic-derivation",
+    "q-ti-self-host-retention-backfill",
+    "q-ti-skill-builder-quickstart",
+    "q-ti-skill-content-auditor",
+    "q-ti-skill-integration-finder",
+    "q-ti-stellar-lab-usage-and-new-ui",
+    "q-ti-testnet-usdc-faucet",
+    "q-ti-tx-too-late-resubmit",
+    "q-ti-video-tutorials",
+    "q-ti-vocab-content-tags-live",
+    "q-ti-vocab-project-categories-live",
+    "q-ti-vocab-project-tags-live",
+    "q-ti-vocab-regions-live",
+    "q-token-circle-usdc-on-stellar",
+    "q-token-initial-supply-distribution",
+    "q-tool-cctp-stellar-integration",
+    "q-tool-cli-skills-discovery",
+    "q-tool-cli-testnet-identity-howto",
+    "q-tool-developer-leaderboard-live",
+    "q-tool-flutter-mobile-sdk",
+    "q-tool-freighter-wallet",
+    "q-tool-go-sdk-ingest",
+    "q-tool-greenfield-indexer-prior-art-preflight",
+    "q-tool-indexer-repos-discovery",
+    "q-tool-js-sdk-package",
+    "q-tool-lab-what-is",
+    "q-tool-leaderboard-open-issues",
+    "q-tool-oracle-repo-live",
+    "q-tool-passkey-repo-live",
+    "q-tool-passkey-wallet-recovery",
+    "q-tool-passkeykit-smart-wallet",
+    "q-tool-rust-soroban-sdk",
+    "q-tool-sdk-repos-discovery",
+    "q-tool-sep41-status-live",
+    "q-tool-skill-detail-install",
+    "q-tool-smart-wallet-repos-discovery",
+    "q-tool-soroban-auth-audit-live",
+    "q-tool-taxonomy-dispatch-live",
+    "q-tool-wallets-comparison",
+    "q-tool-which-sdk-comparison",
+    "q-tool-zk-repo-live",
+    "q-x402-payment-verification",
+    "q-zk-circuit-setup",
+    "q-zk-host-functions-status",
+    "q-zk-nullifier-storage",
+    "q-zk-poseidon-input-encoding",
+    "q-zk-proof-systems-stellar",
+    "q-zk-verification-resource-budget"
+  ],
+  "entries": [
+    {
+      "id": "q-aas-burn-clawback-redemption-mechanics",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-aas-burn-clawback-redemption-mechanics.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "5f0480fc5b9a98b43158ab836b85ce85c8365072c3dd455024014776fbebba32"
+    },
+    {
+      "id": "q-aas-claim-received-claimable-balances",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-aas-claim-received-claimable-balances.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d703fceddfb9a219b9a07705c5dd91d9b346deee79598498c0c67e5ee6f05ac9"
+    },
+    {
+      "id": "q-aas-claimable-predicates-expiry-reserves",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-aas-claimable-predicates-expiry-reserves.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f6d740198de9623747fb4016fabc7e63c8808128e166f3e038f584814903ec84"
+    },
+    {
+      "id": "q-aas-issuer-fees-supply-cap-freeze",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-aas-issuer-fees-supply-cap-freeze.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9a37939ca296978f577fb01c4c443539b6f0e23374d7f352c4d8874b561d1fd1"
+    },
+    {
+      "id": "q-aas-list-token-on-exchanges-aggregators",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-aas-list-token-on-exchanges-aggregators.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d0c8bd619d5d7e1ef37464be97ceeae2d8fc8644fde8b84adcde846474469e5e"
+    },
+    {
+      "id": "q-aas-sep30-recoverable-wallets",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-aas-sep30-recoverable-wallets.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "34be84e87b423826bc833c81126aa1130ce0a6f446eba176ff70b6b733365c68"
+    },
+    {
+      "id": "q-aas-trusted-asset-list-whitelist",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-aas-trusted-asset-list-whitelist.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "066f51575f3d15f5461ae4bbcc621f1df1b1929cbfdaa78329bf5f31d07567e4"
+    },
+    {
+      "id": "q-aas-trustline-limit-lifecycle",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-aas-trustline-limit-lifecycle.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2fe30e075885722199364aee5f75d77c504b57f9a2dc8783f3b6961fc97b93bf"
+    },
+    {
+      "id": "q-agent-identity-erc8004-stellar",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-agent-identity-erc8004-stellar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cfa9f3a31056ce4244cd03eadd3df522586e21aa20067ddbb9dd608f47823458"
+    },
+    {
+      "id": "q-agent-payment-standard-choice",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-agent-payment-standard-choice.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dbeb008c378f782c3225949bd618c6c3e4465c1324f128a430ec2b7f52106869"
+    },
+    {
+      "id": "q-anchor-endpoint-discovery",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-endpoint-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "731acef6e4214057bff7f74ad688e9708c10977d5829fb3ea082b1f8c8d390ec"
+    },
+    {
+      "id": "q-anchor-list-builders-discovery",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-list-builders-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6472274f06e547d214eff35457e5bd40422d470b302685edd66e8607e4c40688"
+    },
+    {
+      "id": "q-anchor-moneygram-ramps",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-moneygram-ramps.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "41c26cf31175b0d69c226600d776a62e047287cfeff2ab9eded2b68655753dc7"
+    },
+    {
+      "id": "q-anchor-platform-what",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-platform-what.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8c3a1c04157f4c75a3991dc9fa3ad0a998b2a520686772fc91cb99b6244c1d8a"
+    },
+    {
+      "id": "q-anchor-sdp-vs-anchor-platform",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-sdp-vs-anchor-platform.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "29ff5533b913c47babd9f008a0c1145423d46e300114ff0345fe34189ce8ca1e"
+    },
+    {
+      "id": "q-anchor-sdp-what",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-sdp-what.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6ca03305146367d51ca039407beed4fef45ae083e32373210f81a601dfaaf3f7"
+    },
+    {
+      "id": "q-ass-cross-bando-stablebonds-sac",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-ass-cross-bando-stablebonds-sac.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b8ebe0926e9a4da1988a792c5a1851a45e924222ca84b69fa9f0885d935ab598"
+    },
+    {
+      "id": "q-ass-cross-etherfuse-cetes-controls",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-ass-cross-etherfuse-cetes-controls.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ee3f9ea71a4f454b80f310471e2c352a1f95d1775c0fc5a344d7819d25bea719"
+    },
+    {
+      "id": "q-asset-amm-fee-reserve",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-amm-fee-reserve.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "56545823d094eee9568e6376e4711464dac5f49aed55fbe6712405430a54a6b3"
+    },
+    {
+      "id": "q-asset-claimable-balance",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-claimable-balance.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "942b1af8ba64b25b0e18cbc0c9878e337fa9a8820d1696ba255fe2036c9af56d"
+    },
+    {
+      "id": "q-asset-deploy-sac-cli",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-deploy-sac-cli.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "298e8d7a6a9da96738cf65a72343ee43389e21ed70654f0f6dc5c83572b1d393"
+    },
+    {
+      "id": "q-asset-issue-asset-howto",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-issue-asset-howto.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "92e809e379a4b1cf2201da8eca8d6c33380524fffd858d91642fd12c1b61c52f"
+    },
+    {
+      "id": "q-asset-path-payment-ops",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-path-payment-ops.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d89ccd85949fd713faef9c9b881abc59250e3c4bfcd79904793a130bd6c9edb2"
+    },
+    {
+      "id": "q-asset-rwa-tokenized-freshness",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-rwa-tokenized-freshness.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3fe2fcc5c8cd66e581ad0e8b8f9c2ca075037380bd2fa0c69bae7b405d37503b"
+    },
+    {
+      "id": "q-asset-sdex-vs-amm",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-sdex-vs-amm.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a86ee878a2ef42cec8a5bf9ca31333b1f5fa3a2e7eb1c23a976c6aff9be92fc5"
+    },
+    {
+      "id": "q-asset-stablecoin-issuers-discovery",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-stablecoin-issuers-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "15956bd5f3cf3db227cb7742b0cd2be3bd817abb7bd290b02a7030c82593ee7a"
+    },
+    {
+      "id": "q-asset-trustline-basics",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-trustline-basics.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0a4f2bdcaa3df793574c794cf543264822b2727d0d51ea2f7b4b7743a848c095"
+    },
+    {
+      "id": "q-asset-trustline-vs-sac",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-trustline-vs-sac.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "32ed3d2681008bfecd70fe7157bce65f4041ba28c3fcb5ac6a9f3647b8b6dcf1"
+    },
+    {
+      "id": "q-asset-two-account-issuer",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-two-account-issuer.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9d59c0baa41a12bbd566692d2c4263501b88131bf54aa208f0205a859426b15b"
+    },
+    {
+      "id": "q-asset-usdc-eurc-issuer",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-asset-usdc-eurc-issuer.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7eac58b2b7beea79dee968ee84f04233a049cddae9309d76664d21bf3f9038f0"
+    },
+    {
+      "id": "q-asset-usdc-eurc-path-fx",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-asset-usdc-eurc-path-fx.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d2107a37ee1c12c91509e74eefde5da9cb8bce34a62afac585b98982dc3016e7"
+    },
+    {
+      "id": "q-asset-wallet-sdk-seps",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-wallet-sdk-seps.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "830dff20ab0c93c9299cf4e2d11b18ce51f0b55e1c490cc08dc9ab141a97bd90"
+    },
+    {
+      "id": "q-builder-by-region-latam",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-builder-by-region-latam.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "49020d13d1528f06b9dba40cfaff921361e6a6c480d653becbd7f00b65c838b8"
+    },
+    {
+      "id": "q-builder-by-scf-tier",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-builder-by-scf-tier.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fba75e321fb42e3d06bd37a41f4a941297638ef8ee8bc043f90b29345e4359de"
+    },
+    {
+      "id": "q-builder-content-by-person",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-builder-content-by-person.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2670adfe0e3933a50dc87930f22ad57efd5d8b1082d38bcce16195e8203b52ac"
+    },
+    {
+      "id": "q-builder-justin-rice-history",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-builder-justin-rice-history.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "44e709813ff9ae6900d10c3912c5892c3f0404354fc7af29596476fc1b9c866d"
+    },
+    {
+      "id": "q-builder-lumenloop-regions-vocab",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-builder-lumenloop-regions-vocab.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "17daa0e3f262821e97762028e7ed4072da9a609c28462e9e597bb88cf8f8a1d7"
+    },
+    {
+      "id": "q-builder-rust-soroban-devs",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-builder-rust-soroban-devs.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "412ace1a99200714e767481348aa00da794989c6de3a50e1216e5045266f7190"
+    },
+    {
+      "id": "q-cctp-v2-usdc-stellar",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-cctp-v2-usdc-stellar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cd75e8079031066bd3ce77c02f912ca7b73d42df824d5d914110dac32a03351d"
+    },
+    {
+      "id": "q-comp-anchor-compliance-stack",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-anchor-compliance-stack.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "46ffe48aadae17d7e4b95685592f57ce905f6b9e778a26705afadeee7124d6a8"
+    },
+    {
+      "id": "q-comp-auth-flags-overview",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-auth-flags-overview.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ea8f01c11ebc3afc07d9742956ffd3d0fc3fa72f0f8e2a0bec7f97d5c35462a8"
+    },
+    {
+      "id": "q-comp-clawback-cap0035",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-clawback-cap0035.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0f5efc4ddefcffc30acddb7b378c746ff96ff340a21233a4b81b3d8ea51f5635"
+    },
+    {
+      "id": "q-comp-clawback-holder-risk",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-clawback-holder-risk.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "15ae15b6558e994dd5d5c411c1427055dc20ffe8294bd7f88d147c4e24712663"
+    },
+    {
+      "id": "q-comp-cross-bitso-sep31",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-cross-bitso-sep31.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "90613101c0dde2e344e6207291f9683a816fb0567abe8c7d1cef60179f312831"
+    },
+    {
+      "id": "q-comp-cross-moneygram-partnership-sep24",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-cross-moneygram-partnership-sep24.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3651089cddfc435cfe230a65bedbad75a3d900020d86cf8f641fac457e4d6470"
+    },
+    {
+      "id": "q-comp-finclusive-caas",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-finclusive-caas.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8df07625d0d03f688dbf153882aec9d69cbbd16d45fc02332dd3baa116b0f28f"
+    },
+    {
+      "id": "q-comp-sac-inherits-flags",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-sac-inherits-flags.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "22e62e107790ff7af599f26a170bbf51eaac6ca1f5b4e337935dcbeb254618b5"
+    },
+    {
+      "id": "q-comp-security-disclosure-programs",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-security-disclosure-programs.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "40187b1ff3df7d79ace7baea794f3adaf6966f3d9b4f8c32ec187b656654cabf"
+    },
+    {
+      "id": "q-comp-sep6-vs-sep12-roles",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-sep6-vs-sep12-roles.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "05b52f675745e1de2fd6606963b2d6e12ad040ed517622789ad662557c79f247"
+    },
+    {
+      "id": "q-comp-sep8-number-lookup-no-deepresearch",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-sep8-number-lookup-no-deepresearch.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fdaf099f88feeb5792369c57702a5d5ddae20a5b03c9737a3a8889ef15fc8e4e"
+    },
+    {
+      "id": "q-comp-sep8-regulated-assets-approval-server",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-sep8-regulated-assets-approval-server.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c61b5c97d06f955dc30f6eb19755ad04dc8d4950b066fce5c3e23bb5195e37bb"
+    },
+    {
+      "id": "q-comp-yieldblox-oracle-incident",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-yieldblox-oracle-incident.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7e2085035af286235f9dfe3e823c0e5135b8ac01aad6ff7c6c348b3178a64f09"
+    },
+    {
+      "id": "q-crp-anchors-by-corridor",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-anchors-by-corridor.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f71d52588ffd3c2e3e77752f4455c8acb62e007d9a0e88996bd99ace394118a0"
+    },
+    {
+      "id": "q-crp-become-an-anchor-licensing",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-become-an-anchor-licensing.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2388e136089e3ad537319f3ad1609b9f8baded28d3c2e8b7dec6c18be9c2dc0d"
+    },
+    {
+      "id": "q-crp-cme-xlm-futures-dates",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-cme-xlm-futures-dates.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e392b29745e0673f369833bfd343946af0911bbcb23b7a7b4bb0e44dca903b43"
+    },
+    {
+      "id": "q-crp-custodial-vs-noncustodial-wallets",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-custodial-vs-noncustodial-wallets.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f1ec0b3f7ce0d33c4c860c1e01e187327d278a9b620f94858ec3e3b88bc5d4e3"
+    },
+    {
+      "id": "q-crp-dtcc-stellar-connection-plan",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-dtcc-stellar-connection-plan.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "63e8d635ad6b058e1d8ed5bc9b8f0067c13784b7e80668a72403b98971fd0e4c"
+    },
+    {
+      "id": "q-crp-export-tx-history-taxes",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-export-tx-history-taxes.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cf8a6404141ccd46fb5944fd7bd7ca7f328f7ebe98a0c3f1ca2256c42be70801"
+    },
+    {
+      "id": "q-crp-oz-rwa-erc3643-trex",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-oz-rwa-erc3643-trex.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3a99b3cde3438c753fac6a41b2c9948cb3b5cd7cceb771ed2fb6114a3a933c21"
+    },
+    {
+      "id": "q-crp-partner-detail-after-discovery",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-partner-detail-after-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b42c2c78c2cb7708ae9fe7b641b7f29934a80fc893ab817df52b73187992b8cf"
+    },
+    {
+      "id": "q-crp-regional-offramp-mobilemoney",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-regional-offramp-mobilemoney.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f9145ab4fc19864a47c4c33f39a8ed3414c26da21df36a681afbc13ace138229"
+    },
+    {
+      "id": "q-crp-remittance-founder-advisory",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-remittance-founder-advisory.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "967a366f2ef584418dfe6a960d53b3cbb1f749b999c84fe94236c856df794c66"
+    },
+    {
+      "id": "q-crp-sdp-operation",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-sdp-operation.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "379f7f24aada67387566132b5bf53ae1fa33c8520e807f2132e2999d7f888070"
+    },
+    {
+      "id": "q-crp-tokenize-personal-rwa",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-tokenize-personal-rwa.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "257cc97ba0db4984955a9d9bd7cf7a4af4d9a9409a2a1a5b9d58705409e31869"
+    },
+    {
+      "id": "q-defi-agent-identity-stellar-experimental",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-agent-identity-stellar-experimental.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3cd47915ad293ed190abbc500336697f4676b22a62c784c60e683e633a281964"
+    },
+    {
+      "id": "q-defi-agentic-payment-standards-compare",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-agentic-payment-standards-compare.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1c975c98cd2699021396ca3393f84d6314634f97c36eea9cf5bc15b5a19fc6b8"
+    },
+    {
+      "id": "q-defi-allbridge-what-is",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-allbridge-what-is.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8cd21eea65e9330eb6e3eac9dfc2b25437e5873551ff984f17d7aa115dc4d625"
+    },
+    {
+      "id": "q-defi-aquarius-what-is",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-aquarius-what-is.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cdb712d11a43da86b1fc500abdd2c03ddbd6b05ed9b2227e92ab444d98bc15d9"
+    },
+    {
+      "id": "q-defi-arbitrage-pathpayment-bots",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-arbitrage-pathpayment-bots.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a8f4f9d21e6eb9b3c5cc0f0171dc01bb4a800c4ed7a5204a6c9dbe829241d5fb"
+    },
+    {
+      "id": "q-defi-asset-whitespace-live",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-asset-whitespace-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2be743e4874ec23e3cb889a91c7ade5cdeec87c67312f856248fc6939185d89c"
+    },
+    {
+      "id": "q-defi-benji-franklin-templeton",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-benji-franklin-templeton.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c230439248b218a7bbd1a250c531f6c14b816f6f646c46d71e9b83570e365e51"
+    },
+    {
+      "id": "q-defi-blend-alternatives",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-blend-alternatives.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4dcdc1733396e8e32fdd8aee934a7c3068260aee6b37b281b28b346e7ef7429d"
+    },
+    {
+      "id": "q-defi-blend-what-is",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-blend-what-is.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4bb0903a1844b3b132a5c36e0b5a41dc04f0828d50b0f4214f1199c25748a790"
+    },
+    {
+      "id": "q-defi-bridge-evm-to-stellar-axelar",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-bridge-evm-to-stellar-axelar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e868d3459f8079db9167409eb4291bea843373938fe9165c476d17ad0f140668"
+    },
+    {
+      "id": "q-defi-build-staking-for-own-token",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-build-staking-for-own-token.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "89536a895b048e9adf165709519497082a30e2781bbf1b5d268e80d9edd075c4"
+    },
+    {
+      "id": "q-defi-category-funding-ratio-live",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-category-funding-ratio-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d9b13e0504c77b9c93934b9038bed6c5d587a0b53ae547e0f47932aaefbe1278"
+    },
+    {
+      "id": "q-defi-category-saturation-live",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-category-saturation-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "24549594e7cfa5e994f0b9279252f3c37d35ba144ffe9efaa1d9624a01335b13"
+    },
+    {
+      "id": "q-defi-cluster-rollup-live",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-cluster-rollup-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "62f25200a73f92ab1fe38447dc866e508b796d18f06eea97a8959afa496a0071"
+    },
+    {
+      "id": "q-defi-comet-what-is",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-comet-what-is.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d8988b86e6a7143ed863daf72d9e186abbab5bc54f06754b77f2612bdf92509c"
+    },
+    {
+      "id": "q-defi-cross-blend-rivool-sac",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-cross-blend-rivool-sac.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "491bb607866c7c8d14871f7f8d2b7dcc87c74cc932afc0d7ea1d0ecebb3d6ac9"
+    },
+    {
+      "id": "q-defi-defindex-honest",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-defindex-honest.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b09e8a9d21348f3018fa6116c1c17558a5e8e1ab8887eff045a299e68ed07dc8"
+    },
+    {
+      "id": "q-defi-etherfuse-stablebonds",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-etherfuse-stablebonds.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "bb5eac001fa30e256b2ee00d4be960c18ac717a949dcd5153178b4db0a7cff7b"
+    },
+    {
+      "id": "q-defi-flash-loans",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-flash-loans.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fa2f2e244ffa1a5d96fb5bb633af8da82b2995a5ada12e88ab768e17106486bf"
+    },
+    {
+      "id": "q-defi-lending-landscape-live",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-lending-landscape-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fdeab8cc2e0bb7524a7908c2881801b1fe7400bcb5643cfee3b023a495d03f8e"
+    },
+    {
+      "id": "q-defi-liquid-staking-whitespace",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-liquid-staking-whitespace.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dd2da713debec2a10c8062b11347be5aa943db90355c1c588f7023ab9d720847"
+    },
+    {
+      "id": "q-defi-lumenloop-categories-vocab",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-lumenloop-categories-vocab.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "54fe5b1049feacb585e7c71f327ec737c6c9061e25a7339e556c4c618f5781db"
+    },
+    {
+      "id": "q-defi-market-making-kelp",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-market-making-kelp.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e9b299d5ba19e72d7a0a1fcdacb313c3abc64f5d67e31a6861305fd30bb73549"
+    },
+    {
+      "id": "q-defi-named-newer-protocols",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-named-newer-protocols.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "aecde20b710f34d57c5d42991f8b84e11f0dc27dc28948675c0622326e7e0ae6"
+    },
+    {
+      "id": "q-defi-ondo-usdy",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-ondo-usdy.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fce5794522df9c594467e6c409e90f05e14f658de3161ddb6b262b26625a0be5"
+    },
+    {
+      "id": "q-defi-oracle-landscape-live",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-oracle-landscape-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "29a46ea2963970f10efd96eca18b8c85a0ea711bbfc7cb01d8094c8686885149"
+    },
+    {
+      "id": "q-defi-perps-whitespace",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-perps-whitespace.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d7a6046f6e20e79ec2b2f7f151a97e0532fb2fe5b3e05be1981a057705a30cad"
+    },
+    {
+      "id": "q-defi-phoenix-what-is",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-phoenix-what-is.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "30ef1818020653f12786b30fc9927a18a239f60391959be1ccced2a007d9f449"
+    },
+    {
+      "id": "q-defi-provide-liquidity-impermanent-loss",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-provide-liquidity-impermanent-loss.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "66d57843e9348552219422c820cd3c65cef98cac675c2206d77283d5a6ea9b4e"
+    },
+    {
+      "id": "q-defi-reflector-oracle",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-reflector-oracle.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d010653727c5bab14086b595062fc9c2a07aba2dbda61f75127c4ac3e3a67eda"
+    },
+    {
+      "id": "q-defi-rwa-scf-similar",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-rwa-scf-similar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1634094e9f26cc7eacab2e5f727e41435f0714f3e1065bb12a6e9a7a77af7d75"
+    },
+    {
+      "id": "q-defi-rwa-treasury-funding-live",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-rwa-treasury-funding-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d4571f993ad492e748dcfd4d9dcc4d0d8a6d704977d5fb43ab8348a7511c5caf"
+    },
+    {
+      "id": "q-defi-sdex-offer-lifecycle",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-sdex-offer-lifecycle.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4bb83af8a2edc1fc1c3a0c61a5c51abf70f909fe545841e9acd8defcafdab0db"
+    },
+    {
+      "id": "q-defi-skill-ecosystem-scout",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-skill-ecosystem-scout.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0b52998d0f22c01752c35f689c8dbbcffcd970485de8051075d988eeca065906"
+    },
+    {
+      "id": "q-defi-skill-project-dossier",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-skill-project-dossier.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b7fd4157529013404765880697f0bc6e0755006cc3b0e170abdc1ea60db06511"
+    },
+    {
+      "id": "q-defi-soroswap-vs-stellarx",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-soroswap-vs-stellarx.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8d0e62ba20476eb379b42f32259e67c2437688425eb1b01d125c6b1a9cd45d79"
+    },
+    {
+      "id": "q-defi-soroswap-what-is",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-soroswap-what-is.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dedd7ff087b9d78667d6576592812c7d962aaf4de1cba0ac7af9a4b5fb7e42e7"
+    },
+    {
+      "id": "q-defi-streaming-payments-prior-art",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-streaming-payments-prior-art.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a9f3a726e4e691a41b11cfe3a0533d79c1d6ef75c01a7122b04b84920442079f"
+    },
+    {
+      "id": "q-defi-tooling-whitespace-live",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-tooling-whitespace-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "693eecb09351bf0510afd890175d3f8637311ac9859b7c1b1728573deabbee44"
+    },
+    {
+      "id": "q-defi-wisdomtree-crdt",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-wisdomtree-crdt.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3e61c6783a9206a30445555ba5c23b6407e97f27bcec6a4b9d12172783428240"
+    },
+    {
+      "id": "q-defi-x402-on-stellar-what",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-x402-on-stellar-what.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7140927f292c157dfb9274e5a013f3ea91cac5053a433483ff5615126fa107e4"
+    },
+    {
+      "id": "q-eco-defi-market-map",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-defi-market-map.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "426728bb294b7d70cb05ba7ac7db6409508714c3fde44b3264c4a1e56a177b74"
+    },
+    {
+      "id": "q-eco-defi-projects-discovery",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-defi-projects-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "596d47d66fbe030bce1d1232e7c3ce7967e36c4f582a5a25a30cc9345702501d"
+    },
+    {
+      "id": "q-eco-defi-tvl-current",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-defi-tvl-current.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "55b17443b294ec8778037ade8a1389d5637f8f02534ccbb468c720d4f6b05251"
+    },
+    {
+      "id": "q-eco-dex-saturation",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-dex-saturation.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a60d038623046f04998c5a7ebedd93e6a9da9bb005cd140203e87f3de4d0aa96"
+    },
+    {
+      "id": "q-eco-freighter-wallet",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-eco-freighter-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0cb18379e6c4c93b84cb1213b2a3ae91af1b3572cc7a22dd2c01719da7f97e38"
+    },
+    {
+      "id": "q-eco-hana-wallet-scf",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-hana-wallet-scf.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9e7f7f39f6e58aff73e2ef18d323fe2b5e33f572db01c2bf35302015af572891"
+    },
+    {
+      "id": "q-eco-lobstr-wallet",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-lobstr-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "19c82efe44e1259e8d3982d90136b7490eea87572818337a69e6635fc8b35518"
+    },
+    {
+      "id": "q-eco-most-active-defi-projects",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-most-active-defi-projects.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4ca484b383d9da33100f9ee76a6eb4ce2cf6e7f204e6408d01a264a35907d76e"
+    },
+    {
+      "id": "q-eco-nft-marketplace-whitespace",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-nft-marketplace-whitespace.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b10a81863c1833d2ac9dc57b2daaedab11815356e174b1e73ccc9dac4a0ae25c"
+    },
+    {
+      "id": "q-eco-pyusd-stellar-freshness",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-pyusd-stellar-freshness.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "109e1d4b6b7a7f6407844247e28938f06e041507f1078845de4a6dbe9b076a44"
+    },
+    {
+      "id": "q-eco-stablecoins-on-stellar",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-stablecoins-on-stellar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "bdb12afa80c934264d27ccf2e761269ee75ae0cc95ec866fd72e73404d44288e"
+    },
+    {
+      "id": "q-eco-stellar-rwa-stablecoin-volume",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-stellar-rwa-stablecoin-volume.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7bf338f3fe9e652b937a6e3d78eb146c801d1b425077314c45e21f096a99f062"
+    },
+    {
+      "id": "q-eco-stellar-wallets-list",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-stellar-wallets-list.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a0cc4ae100ae7ad80c3278240db7cb24b80b8ff93201b8701008ebe60db73559"
+    },
+    {
+      "id": "q-eco-xbull-wallet",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-eco-xbull-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7fc6ee4a63a5e9c919d192ca8b988bb0f6b150a2e373af5ec3824029818a5875"
+    },
+    {
+      "id": "q-edge-1xlm-activation-fee",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-1xlm-activation-fee.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "91b1989b1ef76afee66d00c40c8de5e96bdb87d3cc5f02c6f98449da1f54ae85"
+    },
+    {
+      "id": "q-edge-ambig-best-wallet",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-ambig-best-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "bf73534036838c187455994d3493fd3b36e090409d2e95d9adbf5cbd18f2ee4f"
+    },
+    {
+      "id": "q-edge-ambig-stellar-token-meaning",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-ambig-stellar-token-meaning.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "53bf28cefa3c19f3d8564dad46bc6ba3fe9d0189eb42ec89765cba3860c09057"
+    },
+    {
+      "id": "q-edge-asset-site-scam-detection",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-asset-site-scam-detection.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "837068bf138a9fefa9991ddf1c67f4e88d252ea984e83dcfbfd351a355cf12ba"
+    },
+    {
+      "id": "q-edge-closed-world-builder-directory-miss",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-closed-world-builder-directory-miss.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e192fc341bc68c71816920458bb3def19aa35b60bab266c86d07182447889ab7"
+    },
+    {
+      "id": "q-edge-deep-full-history-report",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-deep-full-history-report.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "589ff6dd1b57d075856279ee3a74bf1f9f2db210d645adfa3259acef42f47195"
+    },
+    {
+      "id": "q-edge-doc-category-filter-empty",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-doc-category-filter-empty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dbc15c826bf1457f6bc5bfe7e79bac389f17fa1d52242fe1b07844f459b16be2"
+    },
+    {
+      "id": "q-edge-doc-page-sections-soft-empty",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-doc-page-sections-soft-empty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0df6a8da64d6889b3a10df95aea1afae628800dc20d550e4f7d5e7259b642783"
+    },
+    {
+      "id": "q-edge-doc-title-zero-hits",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-doc-title-zero-hits.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b4368f80f6f68771e8471b5497190d8b02d65dc70e6e280b9215a177eaa2ff2d"
+    },
+    {
+      "id": "q-edge-exchange-memo-lost-funds",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-exchange-memo-lost-funds.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e09b01c6bc3b757e8dd57cdb7f2a04d58e36c062b98525074090bea6e646ac2c"
+    },
+    {
+      "id": "q-edge-exhaustive-defi-deep-report",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-exhaustive-defi-deep-report.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f3045fa0ee723275165ac2744c9c7a7135d13e71348f1ae3147ba697203b35bc"
+    },
+    {
+      "id": "q-edge-factcheck-soroswap-first-amm",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-factcheck-soroswap-first-amm.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a8bafd66e46fa90a56eadc5adcc0a2eaa46daf3ce37eb7cdad43ebcccabde6fb"
+    },
+    {
+      "id": "q-edge-fresh-latest-blend-tvl",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-blend-tvl.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "df0ba233dbb3f3bbf5738ecd760101b0a68a6ed2fa76bb2a26eb2ecb22cb5f0c"
+    },
+    {
+      "id": "q-edge-fresh-latest-protocol-version",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-protocol-version.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c3a5bb4f3f45722e9bc7060836fd9b7bde65bfe973c4c3e939c47172d91a9fda"
+    },
+    {
+      "id": "q-edge-fresh-latest-scf-round",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-latest-scf-round.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f483250ceb49427e90e0f634bc9f35ebdc71f9b75bcfce6197b2475fc0f072d3"
+    },
+    {
+      "id": "q-edge-fresh-most-recent-news",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-fresh-most-recent-news.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "60c90f9a2b953235eb3143bbab47d57b74f8bf29c7fe2fcc01956cdae8308d2e"
+    },
+    {
+      "id": "q-edge-inject-ignore-instructions",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-inject-ignore-instructions.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "78f9d74145c270d4d7c9c272d47548165a3f11e6aad5c2049db28df7e5920263"
+    },
+    {
+      "id": "q-edge-jailbreak-generate-secret-keys",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-jailbreak-generate-secret-keys.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f0f4fe4923a7c7e181429366626c7399b7c721f674184c1f2e700b871356ff5a"
+    },
+    {
+      "id": "q-edge-lumenloop-person-entity-empty",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-lumenloop-person-entity-empty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6d3480a1a834aa2aa7d8de476b8b99331c00aa2e25acad56d0fc1a6f9a88bc79"
+    },
+    {
+      "id": "q-edge-metamask-evm-mental-model",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-metamask-evm-mental-model.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "901657b628e5a1f6a83e71d6cc20ca03f5a22994fe48ff33a36ea87919b2e9ed"
+    },
+    {
+      "id": "q-edge-noinfo-exact-tvl-figure",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-exact-tvl-figure.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8bb3604784331b2f9ff947dd016639823b4084bff6a782bd954f5c955cc6c3a2"
+    },
+    {
+      "id": "q-edge-noinfo-sep-9999",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-sep-9999.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "23dfc50ff92d086ec813145c29418c4748cd3a535856bd060cdf69fe0844fde4"
+    },
+    {
+      "id": "q-edge-noinfo-stellar-native-privacy-default",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-stellar-native-privacy-default.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1450ac6068e0ccd164d35c7f38da32d61fd1b08590f35c7ad366b1a4c4706afd"
+    },
+    {
+      "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-stellar-pos-staking-rewards.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "68230d4c41984c0163ff83a3eae507c1ffb80b839c0f3bfe29a1770f4bf998b8"
+    },
+    {
+      "id": "q-edge-oos-bitcoin-price-prediction",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-oos-bitcoin-price-prediction.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4031cf8175bb2ca441055f32ecda2b1e1d048e0377d66a4fd4291910a43010b2"
+    },
+    {
+      "id": "q-edge-oos-solana-vs-aptos",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-oos-solana-vs-aptos.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "116f26a3db10c06a0781db506d46407f7c216ca017f3800ea40557e6063a6400"
+    },
+    {
+      "id": "q-edge-open-world-recovery-after-narrow-miss",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-open-world-recovery-after-narrow-miss.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "697052d2e788ccad349873e84b249729a459bb12e2d13652c2be98ed4fae6c4a"
+    },
+    {
+      "id": "q-edge-partner-detail-soft-empty",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-partner-detail-soft-empty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "aed6f36b9a24209ba22bfc955d4ae12c9d5e8bab70600a74996f57d2245f0f66"
+    },
+    {
+      "id": "q-edge-retail-everyday-use-eli5",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-retail-everyday-use-eli5.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4cb522f83744a5c6ed4df94b951da064842f69982c62caf99415e2ed33343dc7"
+    },
+    {
+      "id": "q-edge-scf-v7-centralization-myths",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-scf-v7-centralization-myths.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f26efb5b9c66acb05e522adb7ed0f9052d7530b5b6c8376d95b39920635b36b6"
+    },
+    {
+      "id": "q-edge-send-me-free-xlm",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-send-me-free-xlm.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8ba9f240ff9e0ec2d63eff91d7c58c0cd06c489728b5642d494d7d53482fb60f"
+    },
+    {
+      "id": "q-edge-strupey-ambiguous-stellar-history",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-strupey-ambiguous-stellar-history.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0e2a81686be27ab1da60288095ff68dccf4fd85370eba9f0fb35123ca8d8b888"
+    },
+    {
+      "id": "q-edge-validators-reverse-tx-fork-detection",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-validators-reverse-tx-fork-detection.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ccf5383c4d5b5f7583f9e76748c97b85ff881d89c549cb46bbd032e814e42305"
+    },
+    {
+      "id": "q-edge-xlm-price-investment-advice",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-edge-xlm-price-investment-advice.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "27b1a0382698ef1c727ff74fc5d984478574afa80803e7504da6b6ef5180f51b"
+    },
+    {
+      "id": "q-gap-av-offset-not-timestamp",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-gap-av-offset-not-timestamp.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9dc3d2630b2ac3e05310289ae3f1c2fb07ddf99587a625e8ce36504b7940d643"
+    },
+    {
+      "id": "q-gap-builders-person-empty",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-gap-builders-person-empty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "44faa742a18646debd0d43b55f07b5cf121e380c3b16aec179175210cb366b93"
+    },
+    {
+      "id": "q-gap-compare-hackathons",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-gap-compare-hackathons.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "629dab7d53f860228a9674a48cecc2be72ac77b674c79028a895bd8483974edd"
+    },
+    {
+      "id": "q-gap-contracts-domain-empty",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-gap-contracts-domain-empty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f6971749cf074685d2aefbdfb7313371e0c51587b2673ebebce35362bdd13bd2"
+    },
+    {
+      "id": "q-gap-digest-defi-adjacent",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-gap-digest-defi-adjacent.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b1691fc493f8ed6d15afbc3c70fbff543beeca8f16fddd177dd6ec5913b69a2c"
+    },
+    {
+      "id": "q-gap-digest-soroban-adjacent",
+      "path": "eval/qa/corpus/battery/soroban/q-gap-digest-soroban-adjacent.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "00c15c25352ce5776e30bfe2536a9202cee493ecc5252d7769a4701192632940"
+    },
+    {
+      "id": "q-gap-explainrepo-payload-ok",
+      "path": "eval/qa/corpus/battery/soroban/q-gap-explainrepo-payload-ok.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0d7e004e5118e120cce7801c0b4d52f373d94b9515bcd9ef710e6706d7c6a1e7"
+    },
+    {
+      "id": "q-gap-hackathon-brief-evidence-boundaries",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-gap-hackathon-brief-evidence-boundaries.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "194e7008b878b32eb501b02350b9015c542b30111f1540e0163a2616d9cd08e1"
+    },
+    {
+      "id": "q-gap-hackathon-winner-order",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-gap-hackathon-winner-order.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "63fc51a4514960c1427faabe7f45cb33e7209c1033de9cca4155a4997f9b9bab"
+    },
+    {
+      "id": "q-gap-leaderboard-project-not-builder",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-gap-leaderboard-project-not-builder.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1394a30473e25255a60b01c813f09180ffac506473b232b5b2518808b7a6eedf"
+    },
+    {
+      "id": "q-gap-lumen-content-tag-vocabulary",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-gap-lumen-content-tag-vocabulary.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a7ed8c6fd1d09c2d7b925c0b4d819f441a01c830a25b2401c32b9ef193b9d28f"
+    },
+    {
+      "id": "q-gap-lumen-documents-browse",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-gap-lumen-documents-browse.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "197d661f64185514e871edb74bfee89e06a40a2e4fd9d93cd25af68fa8a1fb78"
+    },
+    {
+      "id": "q-gap-lumen-exact-document-empty",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-gap-lumen-exact-document-empty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e3fbd136a97ef289bd0b7b865dea77e3093ff52a14054e6dcb5e6a1e9a1c31b8"
+    },
+    {
+      "id": "q-gap-lumen-project-tag-vocabulary",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-gap-lumen-project-tag-vocabulary.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fb6f88c90d68cb02cd213cb962d6ba3b017524ae99f0f4943fb33bfa25e55e88"
+    },
+    {
+      "id": "q-gap-match-partners-degrade",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-gap-match-partners-degrade.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d5a0b54984d3dddeecf94a4243992b9e6f3380c3149f08213e354b7591b13518"
+    },
+    {
+      "id": "q-gap-related-projects-empty",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-gap-related-projects-empty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9b01c6b3b1f94e690d0a118d22761da13f54045247b4efe72c16d58be18f4bd5"
+    },
+    {
+      "id": "q-gap-rpc-horizon-unindexed-reference",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-gap-rpc-horizon-unindexed-reference.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ed02665ba95ac27b6b70eb5b4b42e963efe2347d12e1a20b54051a6c1465a0d4"
+    },
+    {
+      "id": "q-gap-scout-changelog-envelope",
+      "path": "eval/qa/corpus/battery/protocol-core/q-gap-scout-changelog-envelope.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d9f30285e1123fd103e92cf3003d0f6dcb01697201829d8deb94ad5e0e0cc34d"
+    },
+    {
+      "id": "q-gap-scout-get-skill-detail",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-gap-scout-get-skill-detail.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c3da34e905e766845d92036d874e4428fad82046a520e9bc581a519c06caa41b"
+    },
+    {
+      "id": "q-gap-scout-list-skill-directory",
+      "path": "eval/qa/corpus/battery/soroban/q-gap-scout-list-skill-directory.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "082c08d11010ff5a9f4c56098c12bd1a0c0f54b8783d45010d4e530294a1c798"
+    },
+    {
+      "id": "q-gap-scout-status-envelope",
+      "path": "eval/qa/corpus/battery/protocol-core/q-gap-scout-status-envelope.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "541220fac44ebf2034c87e01e714531431d92a0ddfc59e3e7b7d15dc5b0dcf79"
+    },
+    {
+      "id": "q-gap-semantic-directory-fallback",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-gap-semantic-directory-fallback.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ad80952ad9af7c53ce1f4f9ff760287010194bb0271a016a5f32704d8b2585ce"
+    },
+    {
+      "id": "q-gap-semantic-similar-projects",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-gap-semantic-similar-projects.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3d0d3b9f9990e3eb6f687764c33c060879eb8b2753e212e19e57ae41b77729a8"
+    },
+    {
+      "id": "q-gap-upcoming-hackathon-fallback",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-gap-upcoming-hackathon-fallback.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b9a948d9d7eade84a608c2c032f20c32260bbc68a211285d4bdacaf599fd596d"
+    },
+    {
+      "id": "q-gap-vet-pitch-vertical-null",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-gap-vet-pitch-vertical-null.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2cb6ec730cb82287484919bf6e04f67781db1a5eec8e4d8a7103763fdf53291d"
+    },
+    {
+      "id": "q-hist-cctp-stellar-live-announcement",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-cctp-stellar-live-announcement.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f753054f195d287cf0cec9ca92e1bc78cdd8b9d6d1a6e9024be7714c7efb3f08"
+    },
+    {
+      "id": "q-hist-meridian-2026-corrected-venue",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-meridian-2026-corrected-venue.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "5d945b9d4916e4a1fad25a9a51bbb5adadb288f0f07bbdc6329ba4ba142f6632"
+    },
+    {
+      "id": "q-hist-quantum-preparedness-plan",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-quantum-preparedness-plan.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "862babf7ff69bcd591d472f83b0c74704ec550d26f7d9b61ca76bdb46a46930f"
+    },
+    {
+      "id": "q-hist-remittance-corridors",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-remittance-corridors.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d17e784187010daa0b0a6501f274efd4daf9a67df8825fc98a41a512ce3d2a32"
+    },
+    {
+      "id": "q-hist-scp-rewrite-2015",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-scp-rewrite-2015.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b039cd586f1a298b4fe3b9f443049fa8b192578d95663a188cba68ed50baf4ae"
+    },
+    {
+      "id": "q-hist-soroban-launch-protocol20",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-soroban-launch-protocol20.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7c4921d73af08489ebdfe679b4139acb8859827b4bbdee9ebab985d091598581"
+    },
+    {
+      "id": "q-hist-unhcr-stellar-aid-assist",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-unhcr-stellar-aid-assist.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "96364024469790ab94f6e543d061b1840ff3cc7cdbcf9c6f2c611f3fbc251035"
+    },
+    {
+      "id": "q-hist-x402-stellar-announcement",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-x402-stellar-announcement.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b5e6c6245da31b27a9b86e8bf25febd5aafcf5fe255bb4d7aea182b14cc35511"
+    },
+    {
+      "id": "q-hist-yieldblox-v2-2026-exploit",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hist-yieldblox-v2-2026-exploit.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "733e1fbc30c15d71612654adc58e4bcf291487cf19045f681a966c3f62d79760"
+    },
+    {
+      "id": "q-history-ecosystem-index-freshness-live",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-history-ecosystem-index-freshness-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b586fe6de47422aaa0d5cda477b9b25dd7ca0cdf819befc9edf6f8f04a75403c"
+    },
+    {
+      "id": "q-hot-fee-pool-burn-deflation",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hot-fee-pool-burn-deflation.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "07d838dfd651b287686854a8283d9557857c03c51a3d0373480f46206c992f78"
+    },
+    {
+      "id": "q-hot-sdf-transparency-wallets-reports",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hot-sdf-transparency-wallets-reports.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "057c843f5cc3eec36305806f7c067f1128bdd706511fb016b9c71fd4397b01da"
+    },
+    {
+      "id": "q-hot-sdf-xlm-holdings-sales",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-hot-sdf-xlm-holdings-sales.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a345f297f0784eb9013041c064c303b40b3202380a155b2ac2b095bd3d7688ac"
+    },
+    {
+      "id": "q-infra-horizon-vs-rpc",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-horizon-vs-rpc.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8f24dcb886c8c9ec08d44b2e322a65cf87e81a3df4a438e64ebe24eba8fe8b57"
+    },
+    {
+      "id": "q-infra-hubble-bigquery",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-hubble-bigquery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ee950f8b54b624096b083c7ef40125bb8d548d6c037251a70ed6e7a36ea7f16c"
+    },
+    {
+      "id": "q-infra-quickstart-local-network",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-quickstart-local-network.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "53a86bf54a3dd4bbda9fe61f32cfdbe948a1aeeb79d2ab62babfb38495e4b59d"
+    },
+    {
+      "id": "q-infra-rpc-methods-list",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-rpc-methods-list.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0ae301d18626193fd3c900b653867db8077086e6cc0baea0e80c835f54430b7f"
+    },
+    {
+      "id": "q-infra-rpc-provider-archive-tier",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-rpc-provider-archive-tier.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7b01ce17c20c094af9165266762a192422af1658ac386a145bec41f8ec50dcd1"
+    },
+    {
+      "id": "q-infra-secp256r1-passkeys",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-secp256r1-passkeys.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "56e42850d326a59435383f8e7c0fecd6847231283fce664a19ebb9bdf48fe3a7"
+    },
+    {
+      "id": "q-infra-simulate-transaction-howto",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-simulate-transaction-howto.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "12391d1c393e3c259d8bfc76b1ce9b766604eabfbe89fa98b6e265e2479bca03"
+    },
+    {
+      "id": "q-infra-testnet-vs-futurenet",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-testnet-vs-futurenet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "84d74778fe1a53c8346bce9739f4bb1238518c0eb11248fd17e2fd2d26819129"
+    },
+    {
+      "id": "q-infra-which-indexer",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-which-indexer.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0a8cf97d8f0ca54581fa7932d5dc2a4ef84ac8e47d96350173069f2f95113da1"
+    },
+    {
+      "id": "q-jutsu-cash-crypto-ramps",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-jutsu-cash-crypto-ramps.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0266fa8af3879fc3c0702829dd2fdc09c8c5f0325e38ce4f93f9e7a0f7d15d24"
+    },
+    {
+      "id": "q-jutsu-check-account-history",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-jutsu-check-account-history.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0813cee3c60c155e1df58fdf261d0cf75ef46b418adaf398dcee4bd827a214c6"
+    },
+    {
+      "id": "q-jutsu-what-is-a-memo",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-jutsu-what-is-a-memo.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f73c51c92ac8fdbb371437f878d6062584816e9cc3867a889ed6a99ff305da4b"
+    },
+    {
+      "id": "q-mpp-discovery-and-modes",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-mpp-discovery-and-modes.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b9d3248f30696db70c8758e80f3943745f19b351b52e78be55397fea52548a5f"
+    },
+    {
+      "id": "q-n3-cross-thread-memory-exfiltration",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-cross-thread-memory-exfiltration.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8cb0893440ea9ab3e7c946ddee5c53538af10e91e0b4675081e72aeeff8701f0"
+    },
+    {
+      "id": "q-n3-generate-secret-key-refusal",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-generate-secret-key-refusal.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0a5a48fe022ae00f48e7cfb9679c5441393937de08c0efd7b16965b1040fb42e"
+    },
+    {
+      "id": "q-n3-inject-ignore-previous-instructions",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-inject-ignore-previous-instructions.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "82df081f248b44fea7f75ba37d8338e8744cb4a9e3e17ea1b937da7330512553"
+    },
+    {
+      "id": "q-n3-issues-842-backup-faucet-wallet",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-issues-842-backup-faucet-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "847e1259ac5f61c271a774975c2fce1d73dd008a61ee4c770c1be0e71ecc5e43"
+    },
+    {
+      "id": "q-n3-missing-funds-account-support",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-missing-funds-account-support.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1c610e456ff27754ec9c64237499dcf7fdb6d3e2b824bffa12aaad8d49f7a6cb"
+    },
+    {
+      "id": "q-n3-offtopic-home-renovation",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-offtopic-home-renovation.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ac6ff49fddc15f1b5ba5b5a03e5c15740997a45c99a85326159367a002737cf7"
+    },
+    {
+      "id": "q-n3-paid-research-budget-bypass",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-paid-research-budget-bypass.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "beca584c74662ee09c115efddae86f186dab433f58619b07f61b6fe9b5f39323"
+    },
+    {
+      "id": "q-n3-pi-network-wrong-chain",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-pi-network-wrong-chain.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a6bab14964110879b1514f4fee3b97f3c89992e7ff179c60bfc9b86f8342e4e8"
+    },
+    {
+      "id": "q-n3-ssrf-localhost-probe",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-ssrf-localhost-probe.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b05502f2fc63d0bba061d72a3d5fa5447961ebf6f016b95175e58cd2ce4fed23"
+    },
+    {
+      "id": "q-n3-ssrf-metadata-endpoint",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-ssrf-metadata-endpoint.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "417897fbcfb48de8fead85f7853ace91556993b4a9a8b501c4893876059bf890"
+    },
+    {
+      "id": "q-n3-wallet-hacked-support-redirect",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-wallet-hacked-support-redirect.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "994e0447329165ec505c4c4e3e1ad592c73cf355007a98f9296b225f5074c0b9"
+    },
+    {
+      "id": "q-n3-xlm-personal-investment-advice",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-n3-xlm-personal-investment-advice.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "361cf5882b5b8965ee411f961853f8faa2148e66e28631ebef85f19083421245"
+    },
+    {
+      "id": "q-org-mazieres-chief-scientist",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-org-mazieres-chief-scientist.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4402c7bcd65c3fb7a519c03bf4f02d6f8f0ae265ae816e61a3008861d5ff3349"
+    },
+    {
+      "id": "q-org-sdf-board-directors",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-org-sdf-board-directors.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "5307889128073f16a369d5499c30e22d90db721575e4b7c73bc95e6431e9c0fe"
+    },
+    {
+      "id": "q-org-sdf-enterprise-fund",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-org-sdf-enterprise-fund.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "51b0d66b46f98a9443b5341f2379f1fa7528c23719fb5efebe3d44613b082826"
+    },
+    {
+      "id": "q-org-sdf-mandate-buckets",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-org-sdf-mandate-buckets.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e8c91c4258231c2c369c8b3a829d1dae89fbed962377a0ba8c5f339840c7f272"
+    },
+    {
+      "id": "q-org-sdf-structure-mandate",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-org-sdf-structure-mandate.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7a7b8cdc8b3bd1e29e589eee66984044613b479c47c9ba5bab23337060623148"
+    },
+    {
+      "id": "q-passkey-platform-constraints",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-passkey-platform-constraints.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "35c8e77890538ff081864248b3f3df63b76c10dfd8982dcd213ff4f08b3528bb"
+    },
+    {
+      "id": "q-passkey-smart-account-architecture",
+      "path": "eval/qa/corpus/battery/soroban/q-passkey-smart-account-architecture.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ac07ff9cd276665b02b0951b0251a5981e198a8fbec81fb2aeaed23230c32f97"
+    },
+    {
+      "id": "q-passkey-wallet-recovery",
+      "path": "eval/qa/corpus/battery/soroban/q-passkey-wallet-recovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ddeed9ed9f723089232afd963110a06f6ae57ddec874041b732909638dbf4e94"
+    },
+    {
+      "id": "q-pay-anchor-msb-licensing",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-pay-anchor-msb-licensing.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2fef76147a667e25d647be07e975f259520f654f8495a103bb8acf9bf0cec5a4"
+    },
+    {
+      "id": "q-pay-moneygram-ramps",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-pay-moneygram-ramps.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d4af6b4dad157295504a9689bc4f55292ada3bee9d1296e8998a858887cc9bda"
+    },
+    {
+      "id": "q-pay-sdp-disbursement",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-pay-sdp-disbursement.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9600ea1e7238c4ac53804b5a0ac1ed423741b9080bef48905659ec5ef363363a"
+    },
+    {
+      "id": "q-pay-travel-rule-aid-flows",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-pay-travel-rule-aid-flows.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8a25b19474566fbd5d4446eb60cee3966b66bf25e0b90dd7c15c0226c9e1bfcb"
+    },
+    {
+      "id": "q-pc-account-activation-not-found",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-account-activation-not-found.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "793c057331d9766bf9acc1e636d6318e79274bec9d4377b4eaee6b0317aa33a5"
+    },
+    {
+      "id": "q-pc-account-merge-reclaim-reserve",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-account-merge-reclaim-reserve.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0cef79c8359ccfa490af82c417a0f4427b3b278a3777e3bdf7c1d0364274dc31"
+    },
+    {
+      "id": "q-pc-address-types-strkey",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-address-types-strkey.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "02e0b82002fae439dfabb2bbe704bd38b46a0a90cacaa9fb061b567647e6f8dd"
+    },
+    {
+      "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-bucketlist-vs-merkle-inclusion-proof.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d1a9ca0efed2257b96abb83f9f7917bc3755b07a64a25da87f664ed3cc88d171"
+    },
+    {
+      "id": "q-pc-cross-redstone-sep40",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-cross-redstone-sep40.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e0dcf5bf69b23fb3403881a192c3c1140d8ddf74940a8c9e20ae99f472135435"
+    },
+    {
+      "id": "q-pc-doc-category-validator-search",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-doc-category-validator-search.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3896f225da284e07d6576e1798715830d540bb73f0ce4aaca54847c7b5fde34a"
+    },
+    {
+      "id": "q-pc-fee-bump-channel-accounts-feepool",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-fee-bump-channel-accounts-feepool.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dc8ffd9379dc0a1852e6a7a3681152da1a98db3b5fd4ed74ac4ed18e16d18a0c"
+    },
+    {
+      "id": "q-pc-l2-payment-channels-starlight",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-l2-payment-channels-starlight.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3b3a52e27c8b04fd5f402b92438dbb624ac7c90bbe736fa631e45c2a691edfbd"
+    },
+    {
+      "id": "q-pc-memos-reference",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-memos-reference.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a14beb13611040b9732f24970842196bc0cd1d951533ee5547685c2fab97b952"
+    },
+    {
+      "id": "q-pc-multisig-setup-lifecycle",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-multisig-setup-lifecycle.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "74e108792df972df44d01a7b4efece40d370b7c260a9be9a62ece2f4b1f584df"
+    },
+    {
+      "id": "q-pc-muxed-accounts",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-muxed-accounts.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "85db60a19edcafc962a1b3a360db524cacaefe97e9742062d0f952518bba62fb"
+    },
+    {
+      "id": "q-pc-practical-fee-setting",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-practical-fee-setting.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6f041bfc797cf5f0d92452e0cfc27108b3bdd016b8cae6a9bf857559bd8eda2f"
+    },
+    {
+      "id": "q-pc-protocol-26-yardstick",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-protocol-26-yardstick.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9ccefc4f5890e56a1954edcbbce10643100d5625419d04c3aad90e1c3ec366ae"
+    },
+    {
+      "id": "q-pc-protocol-27-zipper",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-protocol-27-zipper.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4642095b04e7e71f50251f0ebd6ea2656acb9c274dc40b6b081a3a3b45a9ab15"
+    },
+    {
+      "id": "q-pc-protocol-upgrade-timing",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-protocol-upgrade-timing.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2e509109e1684496e401db612a8696b4a52680af946d17dccea658d798acc7df"
+    },
+    {
+      "id": "q-pc-quantum-preparedness-dormant",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-quantum-preparedness-dormant.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d051ce461bf5a53cc906ffc728681705ecdc7acce6d3f41ee3cbdd18e8a4b6d6"
+    },
+    {
+      "id": "q-pc-sequence-numbers-ordering-replace",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-sequence-numbers-ordering-replace.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "030abebfced06ef381d887f43808d43e93c0f84012151db8cee1866b341d7852"
+    },
+    {
+      "id": "q-pc-slp-0004-0006-status",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-slp-0004-0006-status.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "10e6857d9773b1ffbd52684e34d560d67825534f2c068d3a6d9b4823392a7b63"
+    },
+    {
+      "id": "q-pc-sponsored-reserves",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-sponsored-reserves.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9b10dd5b73145c5613e46d0ea9a3520f26abba636215b87118348c7302b413a1"
+    },
+    {
+      "id": "q-pc-surge-griefing-threat-model",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-surge-griefing-threat-model.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "5fd56e8b784bf8787095a9758cf16e97569e34815acd3bb424dc40c15e0e94bb"
+    },
+    {
+      "id": "q-pc-tx-finality-failure-semantics",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-tx-finality-failure-semantics.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0de236767e972618a033a61411d784eafe9b29707c0cc91d4a2dafede1fc84b8"
+    },
+    {
+      "id": "q-production-anchor-architecture",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-production-anchor-architecture.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8b8a4372900eb1ec523ec4e7c748d554e15990ced0f74036955616c5ce36829d"
+    },
+    {
+      "id": "q-protocol-19-preconditions-cap-0021",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-19-preconditions-cap-0021.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "96c77b69f2e5fa15689a7c79046421440c3c5f5c55e56e3b483603d35ad1377d"
+    },
+    {
+      "id": "q-protocol-23-whisk-caps",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-23-whisk-caps.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d8183034bd1b1b5e1611d7b6f5b7e0b010a3cbd9a538c37963a745b720d58e34"
+    },
+    {
+      "id": "q-protocol-24-whisk-incident",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-24-whisk-incident.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8ed24c5a404df142ce4b5bac80141472a9ec65e9ecb4fd3f39695d9682e5d7ac"
+    },
+    {
+      "id": "q-protocol-27-cap-0071",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-27-cap-0071.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "5ec47233e92830d8c47a41fe5acb4b3694482c55cf3003571b2400bb63dd6f66"
+    },
+    {
+      "id": "q-protocol-accounts-signers-thresholds",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-accounts-signers-thresholds.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dc1eb0bca5142f5e01bef55caed802ad7bfcfc1883ea666add55a9500246f4ef"
+    },
+    {
+      "id": "q-protocol-amm-cap-0038",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-amm-cap-0038.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "04a7df0680d45483b5fedaf90bbba42be160e252b914c197d16855da1d2c9320"
+    },
+    {
+      "id": "q-protocol-base-reserve-min-balance",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-base-reserve-min-balance.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "490929b6e92019b8529ad9c0d24f2c60e49c798df7e35769d2cda782c486288b"
+    },
+    {
+      "id": "q-protocol-bls12-381-cap59",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-bls12-381-cap59.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "99bffdf61260ca718b6a896e239de5d92ffa66d62ae5dd36755374a8e4e98bef"
+    },
+    {
+      "id": "q-protocol-bn254-poseidon-xray",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-bn254-poseidon-xray.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2957ee3bd5b7eae2b8e9468392e0d30200a1c06eab7278b29fb320d372fd6822"
+    },
+    {
+      "id": "q-protocol-cap-process",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-cap-process.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b6d5e1f29d4ea6560688dc1a74ed3aec37748ed3548f51ca99161ca405445603"
+    },
+    {
+      "id": "q-protocol-cap-vs-sep",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-cap-vs-sep.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "53d8ded26f0b8e1a097c59c5287d42a636a84d9a440e8da1c2c81aea3465f7f0"
+    },
+    {
+      "id": "q-protocol-ledger-close-time",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-ledger-close-time.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "349bffe99869d9ecf68ae718d394fb9a029c7ebf4a8b668472e1247cfa27541c"
+    },
+    {
+      "id": "q-protocol-ledger-entry-types",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-ledger-entry-types.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "033bbd4730b1042d4b4d1b267a890dec88e63094289b77391fbd1bc0d9dfd6e0"
+    },
+    {
+      "id": "q-protocol-ledger-header-fields",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-ledger-header-fields.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "178ad2db70326851a314f6c8f8f3956254db652488ebf3d15845ef64c676918e"
+    },
+    {
+      "id": "q-protocol-max-tx-set-size",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-max-tx-set-size.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e0013bbed6dc71452d004516d197f9110b9f0c9f15275dac055f0a1f469a9b56"
+    },
+    {
+      "id": "q-protocol-network-passphrases-list",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-network-passphrases-list.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "086dd62d489b35dd82603ad5f86a0d77dd4362c5dffdb407bcfa9a5ce0243cd2"
+    },
+    {
+      "id": "q-protocol-operation-types-list",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-operation-types-list.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "89d4fac7d762b9eccbe6fa21e7134a5cea405d3348d1b4cec72676aedc1d8cdc"
+    },
+    {
+      "id": "q-protocol-operations-vs-transactions",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-operations-vs-transactions.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "bdb44e9bb56eb439183b7579204f0619fbced7f2bda6fbcd8cc80fa662fbfd9d"
+    },
+    {
+      "id": "q-protocol-parallel-execution",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-parallel-execution.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1042ff39c80b18dd3ea88bb789f47a50b0d53dd0dc99d61b3d71b41d5c9f7d43"
+    },
+    {
+      "id": "q-protocol-quorum-slice-vs-quorum",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-quorum-slice-vs-quorum.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "34449ecc157e12d05c786e8c43faeb13a30b052a7a0f7bb2351defbbb98e3009"
+    },
+    {
+      "id": "q-protocol-scp-consensus-algorithm",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-scp-consensus-algorithm.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d2f3f32df01109d3117bf1482d1472946b45eb962de4da0ef9812fd79c969d9f"
+    },
+    {
+      "id": "q-protocol-state-archival-ttl",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-state-archival-ttl.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "aee77baf87200949734d2ea9f294b434db3ea864dda214dc443ef246432d9456"
+    },
+    {
+      "id": "q-protocol-tier1-requirements",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-tier1-requirements.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9082876195b6bc1d0b5bcac615beb65f50178a063d559af4128c2293c2478b83"
+    },
+    {
+      "id": "q-protocol-validator-node-roles",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-validator-node-roles.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b14854949342dc70aa13e3d34ddb66699a013d3e3d0b0f72e22f7d89ebf3ce9b"
+    },
+    {
+      "id": "q-protocol-validator-upgrade-vote",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-validator-upgrade-vote.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "26b42dcd9a00c03a4a7b5d7a7b1574987696505160c8d3a0c3d9cbcbd19db665"
+    },
+    {
+      "id": "q-protocol-version-history-list",
+      "path": "eval/qa/corpus/battery/protocol-core/q-protocol-version-history-list.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f8d759123471645c23065efa5819b7004f47dc8e2e7ed86059766630f2c9f267"
+    },
+    {
+      "id": "q-quickstart-manual-ledger-close",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-quickstart-manual-ledger-close.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1148176f39070f50e41185782bc13793cfe732536283ccca6b16a8b31f921c50"
+    },
+    {
+      "id": "q-raph-buy-xlm-safely",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-buy-xlm-safely.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cb936a5d0b26edb8a20c89d85a0667b632f904f9ef45865d0967443124f494d2"
+    },
+    {
+      "id": "q-raph-claimable-balance-safety",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-claimable-balance-safety.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cdf70380d85fb125691bd6e8eef8d202d8c74a3f0ea13826ee28ecc5777eb615"
+    },
+    {
+      "id": "q-raph-exchange-memo",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-exchange-memo.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b24252330e7216c5f24d36a625e4517c0697ac8256dcbf4afb9122feafaccd6d"
+    },
+    {
+      "id": "q-raph-hardware-wallet",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-hardware-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "21114708f6f2633e7f76719fe6b66f536c13cbd81a1bf445b1efce6ec671d8ae"
+    },
+    {
+      "id": "q-raph-lobstr-legitimacy",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-lobstr-legitimacy.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0c1a2448b670007b7cec7f41ba35bee6bfcc170bfc55ef6d472426313cc370d1"
+    },
+    {
+      "id": "q-raph-low-xlm-transfer-fail",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-low-xlm-transfer-fail.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "89d05ec29a0692e8a80a24ea7d1ad2c1f5fcb20d90f507d71ee4ab7c639b7cf2"
+    },
+    {
+      "id": "q-raph-merchant-payments",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-merchant-payments.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "112d98533a0f74e55fdf86f7c1e202b824e1eb07a90c0dcee011157504f627b5"
+    },
+    {
+      "id": "q-raph-missing-exchange-memo",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-missing-exchange-memo.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f5e2b452210458eaf85133f16a2afb030003936950e479c3741885803e7641dd"
+    },
+    {
+      "id": "q-raph-offramp-xlm-usdc",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-offramp-xlm-usdc.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3a6d7b857e73051ce971f23ea58ebc3c3f4aa8f313aa5be585964c94d5fc8a4d"
+    },
+    {
+      "id": "q-raph-phishing-pending-claim",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-phishing-pending-claim.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8b4c8308ead27aab41568b6968f7bba36902abd787cc7fa5c6ebb96d6937f671"
+    },
+    {
+      "id": "q-raph-remittance-path-payment",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-remittance-path-payment.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ac8ba5235e32560040ac343ff68373442ec060d1aecf9c5fadb254e6ef7f5d7c"
+    },
+    {
+      "id": "q-raph-remove-scam-token",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-remove-scam-token.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "705f786189fe91b7f5a56d7aadd3defe29d3796db1082318f4eeaa0ea7844d25"
+    },
+    {
+      "id": "q-raph-restore-wallet",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-restore-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4a78ab4afa834c865ed50de2189feb6edd3fb27b9652a9850500898b91bf96fb"
+    },
+    {
+      "id": "q-raph-scam-spam-tokens",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-scam-spam-tokens.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "28c62102fb142b1fdb34f37040d4d9f94dce100d84bd5dce93534babe79dbf7d"
+    },
+    {
+      "id": "q-raph-secret-key-hash-recovery",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-raph-secret-key-hash-recovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9fbc2db3ff7305745955fd84a246bc8317602d3ffeaec6c86800cd5571c8b9d5"
+    },
+    {
+      "id": "q-raph-stolen-wallet-recovery",
+      "path": "eval/qa/corpus/battery/edge-behavior/q-raph-stolen-wallet-recovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7a1508f1b217020dad6cd1959e0a42c7c3914d418f4883a1f5954ba744e0b9a0"
+    },
+    {
+      "id": "q-raph-unsolicited-airdrop",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-unsolicited-airdrop.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "30d4cb01e8dc2f5a6752aa6e83a5613d428a56f2cc18c0708a1b76c99ae835e5"
+    },
+    {
+      "id": "q-raph-usdc-onto-stellar",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-usdc-onto-stellar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ea83f526a60dce6061ca32e9932a18f6a60ae88d5f741ff9976e2aac4a93b047"
+    },
+    {
+      "id": "q-raph-withdraw-exchange-self-custody",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-withdraw-exchange-self-custody.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a6b5ebf215aa290c7249f7c598a76d7e2e4ca417e62cf954f3071b1a953019c3"
+    },
+    {
+      "id": "q-raph-xlm-network-role",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-xlm-network-role.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8c697c638914d89c77d23785dd5aa711ad1228d9779eb6bc6af07fe983907de2"
+    },
+    {
+      "id": "q-raph-xlm-simple",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-xlm-simple.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a03e85cea0a6994d5c2d0eefbf7738d0c627a859a103c9fefd745576d503bed9"
+    },
+    {
+      "id": "q-raph-xlm-staking",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-xlm-staking.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "da2c4684e570c02dd7614e36ff3ee4a9cf2bc0d1aae97a8962266679306dabc0"
+    },
+    {
+      "id": "q-rwa-projects-tokenizing-stellar",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-rwa-projects-tokenizing-stellar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4f0749745fd649b16d73922eabc8b4c7d41f66e0349c6a0310b58abfc5b554d5"
+    },
+    {
+      "id": "q-rwa-stellar-vs-erc20-regulated",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-rwa-stellar-vs-erc20-regulated.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2cddc0349a26ac9f6ccaaae72ab5a6a8d2289956f603bdcf23913de2d4262910"
+    },
+    {
+      "id": "q-rwa-tokenization-standards",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-rwa-tokenization-standards.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "36ab8a3e9deb8697ef1fcba87528fd23967e201e46ef586b053888aaded51cb0"
+    },
+    {
+      "id": "q-scf-academic-research-grant",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-academic-research-grant.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3a9d4da559bf73b68c608c85885104b06114aa9c18b017100485d9b42a47359b"
+    },
+    {
+      "id": "q-scf-ambassador-program",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-ambassador-program.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "65df6ffe991f13981204b8f24015baf8083df6f8b3f15e2d6f430753710e5374"
+    },
+    {
+      "id": "q-scf-audit-bank",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-audit-bank.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ce0fc8ee3621d504305a70555c616da2794ef1c78953ed1fd85590bc370b673f"
+    },
+    {
+      "id": "q-scf-blend-winners-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-blend-winners-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1dd620efca29a86d3656c8c26bf41114141e827603ae9ef5150a3684eae2feac"
+    },
+    {
+      "id": "q-scf-build-award-cap",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-build-award-cap.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e68316433d541bece968df4c2f72c885c0d81467cdb4d54d47f9219872d83fe1"
+    },
+    {
+      "id": "q-scf-build-tracks",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-build-tracks.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dbcbefdcb9922abf886ae08f02a370b3c845ecb6f069a80da1e9b1c2e21ec77c"
+    },
+    {
+      "id": "q-scf-confidential-tokens-preview",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-confidential-tokens-preview.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a7795b78a8c41ec56d80c99c0500f47df42f9d946c22c4ccc63e2a94f163c421"
+    },
+    {
+      "id": "q-scf-contract-verification-rfp-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-contract-verification-rfp-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b3487a4048bec6912d08436a841c949b54bc5c3dfdad89c7993865d2cc5b5dcb"
+    },
+    {
+      "id": "q-scf-cross-decaf-sep24",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-cross-decaf-sep24.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dddc3acfd2fc383a65e08ebf94e87fc659cb7d010fdda4238e2cca065cf0122e"
+    },
+    {
+      "id": "q-scf-cross-reflector-rounds-current",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-cross-reflector-rounds-current.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c7c71bf043906ab8873bedb3fc8cb8eb352cc998202c9f86894d42cddd96a506"
+    },
+    {
+      "id": "q-scf-current-hackathons-compare-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-current-hackathons-compare-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f848bfc44047ed2156e25276be218cc2df38614e7b5904edfbea1133f217b7a3"
+    },
+    {
+      "id": "q-scf-current-round",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-current-round.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "236b91fea9a01d4a6f0aa448d001c02f4f131e233cf741ec8a799b02b2af5989"
+    },
+    {
+      "id": "q-scf-ecosystem-listing-partner-jobs",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-ecosystem-listing-partner-jobs.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "12c4f04836b4137257a65c0347323ad6c3f12ad1464718c14d83297018f17e0e"
+    },
+    {
+      "id": "q-scf-eligibility-criteria",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-eligibility-criteria.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8bc2f09449ed34af3794ed17b8dc173305115a64ae6263f96576a3b9e88ecbab"
+    },
+    {
+      "id": "q-scf-funding-by-category",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-funding-by-category.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2b5fc7558e21f4defaf2093c739eef5d2226b993161e48ee60e6feab4c44b947"
+    },
+    {
+      "id": "q-scf-hackathon-compare-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-hackathon-compare-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cb697afd134ac10a8b65da7b33d355a7cbf229dc5b54c72453c85fc300a9ea63"
+    },
+    {
+      "id": "q-scf-hackathons-active",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-hackathons-active.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b95d921dad1b8f51dddc74e2275a40604f8eb1bbd629490a52338594928593d0"
+    },
+    {
+      "id": "q-scf-history-soroswap",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-history-soroswap.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "14f61f7fb8edea84a582b268027404c024628b5d4b8f5e09f0c44ecc2c70d2c3"
+    },
+    {
+      "id": "q-scf-how-to-apply",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-how-to-apply.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e525391f839950485ef1123a220c48c07b09e867aedb520170a1ac1561abed48"
+    },
+    {
+      "id": "q-scf-hummingbot-kelp-closed-rfp",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-hummingbot-kelp-closed-rfp.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ce44f0c87863b9f86a9e198e02523619c5e17ebd8c5a635091b810fc382e83d2"
+    },
+    {
+      "id": "q-scf-instawards",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-instawards.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "46c4bee5504ed1333eb0788790c5050e60f5617c452d99df7a5bee93577dee11"
+    },
+    {
+      "id": "q-scf-kale-winner-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-kale-winner-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e45693b8b5ca61e67256b4e7e6a12866b4e47fdf91255309743d41f2a5c9486f"
+    },
+    {
+      "id": "q-scf-nqg-voting",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-nqg-voting.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a73d19d740ef6261362fa5ce297e926d1ded4cdbc766b2de9c6bfbf03e4c4c19"
+    },
+    {
+      "id": "q-scf-open-rfps",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-open-rfps.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4878f72e8712f4eb8b76d059ae0f730a3fb92c2f093bae631abc8257dd67a555"
+    },
+    {
+      "id": "q-scf-open-rfps-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-open-rfps-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "303b538aedeb4981e26bc791fecfa1b0b69b9deb6c2b494fe74250328f2344ce"
+    },
+    {
+      "id": "q-scf-passkey-rfps-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-passkey-rfps-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "502966a4b22592c88baf233634234dad36a11e693fbb078e76987bfecf6e6525"
+    },
+    {
+      "id": "q-scf-pitch-prep-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-pitch-prep-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "44352865149ce73d87e5bb101babb27872178590891d89e753389751f866edfa"
+    },
+    {
+      "id": "q-scf-regional-india",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-regional-india.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "124acda88ddce4c72d8b77ef8103950e45a6b4b72e144769d66b0ac32d34b6ff"
+    },
+    {
+      "id": "q-scf-resolve-passport-superseded-slug",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-resolve-passport-superseded-slug.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "44131b3e3d3f64dc3e22c410b29a2bf94f78d1064934a3ef47fa6e29b6f85253"
+    },
+    {
+      "id": "q-scf-rfp-tooling",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-rfp-tooling.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b9a1de47bf3fa7b2250c911c206e1897d9279bb1d31cd5a691f91cfde8083da6"
+    },
+    {
+      "id": "q-scf-rfps-hackathons-live",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-rfps-hackathons-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c6a7145c531af0a9d67b83d9e07b374670f17e4b735fe54019c8e1c41857280e"
+    },
+    {
+      "id": "q-scf-round-43-results",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-round-43-results.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c5ff629b824df774a775d8cb12fbb749bd6024b5d4b9daa13dcc2e0e382b0ce7"
+    },
+    {
+      "id": "q-scf-sdf-bug-bounty",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-sdf-bug-bounty.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0794bb74b274e3802b81415993dd8ffadde66081edaa60fefe10ec8fe8e2b63b"
+    },
+    {
+      "id": "q-scf-sdf-marketing-grant",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-sdf-marketing-grant.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "be3126994068c7612c5abb6e9dd622fe36fe0c0b7e31be0b971e79af4a411457"
+    },
+    {
+      "id": "q-scf-skill-stellar-scout",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-skill-stellar-scout.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fa5e479c7be15c708a3028adf25d8926780f784d6aae3301decd3f4eea8d0cf9"
+    },
+    {
+      "id": "q-scf-skill-submission-radar",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-skill-submission-radar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "968653b7705aa8dcb43d98011e3254fe1edc9e9225017a33fa99273bd1fa14dd"
+    },
+    {
+      "id": "q-scf-submission-lifecycle-deadlines",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-submission-lifecycle-deadlines.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9a461c57d3264bccca05955b40ed95c6ca004554be2c616a5450d8ddba8aad97"
+    },
+    {
+      "id": "q-scf-total-distributed",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-total-distributed.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c3567c3b0b02af0ec5da3a6ecb24c7f7427d5dd830ce8bbbb88bc642cd90dd08"
+    },
+    {
+      "id": "q-scf-v7-changes",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-v7-changes.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4f1c55b138419191a02e7ae3791c3fe9cb3b23cb6289e5696e6470cbf9a17c8d"
+    },
+    {
+      "id": "q-scf-verified-members",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-verified-members.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1c979933d540d9fde29f51ea510def5fe856da4d8bd2cc60845ab642bf4a673f"
+    },
+    {
+      "id": "q-scf-vs-sdf-enterprise-fund",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-vs-sdf-enterprise-fund.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "067b57dc87089a4bac3814061c4c18440ddbb29d3bf9082a269929289ce8333c"
+    },
+    {
+      "id": "q-scout-hackathon-brief-first-hour",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scout-hackathon-brief-first-hour.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1c096b73d99a909f3d1b882c261205f4e9fac26bbff599a16d7d320a7207467e"
+    },
+    {
+      "id": "q-sep-1-toml",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-1-toml.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "867a9abb526160cdbd1a58ff24641202b10d8c4a391e077d5080ef8b20d4ef8c"
+    },
+    {
+      "id": "q-sep-12-kyc",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-12-kyc.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6988073d60514f2a94ee6c258a678f9d40a834e075ef7211dd24582f186838ba"
+    },
+    {
+      "id": "q-sep-31-cross-border",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-31-cross-border.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f0609bb74da40be30c692a0488a51873891d36951d818ea9f26592e571943006"
+    },
+    {
+      "id": "q-sep-38-quotes",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-38-quotes.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dae2fa602d3f32de23de02360ce1843b56c6df7e40bac9c8e3d065e5d98e7a81"
+    },
+    {
+      "id": "q-sep-41-token-interface",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-41-token-interface.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d7ee96905599596a27785f0371e67ea2293191590e63a959e5e2a2b26d598e55"
+    },
+    {
+      "id": "q-sep-43-web-wallet-api",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-43-web-wallet-api.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a2a32df7e9731d8a191f56c3fa14af1f9b68fea3da63746cac017f1e89a02caa"
+    },
+    {
+      "id": "q-sep-45-contract-auth",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-45-contract-auth.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "29a3665961725ccef7cb44e9f5179aa61bc6bba1909f27dad37846ff64c066a5"
+    },
+    {
+      "id": "q-sep-53-sign-verify-message",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-53-sign-verify-message.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a1dc702f05e5a5564401cc2ea7691b52032161cb5380d4963cdfed5c0ed08dc2"
+    },
+    {
+      "id": "q-sep-6-24-deprecation",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-6-24-deprecation.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c9a1a2de55c2e1816ff8bc0d8b6bcb20ccf7563404755272043eb6be8065c107"
+    },
+    {
+      "id": "q-sep-6-vs-31-misnumber-trap",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-6-vs-31-misnumber-trap.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dd6f53c5fadae7c5eb8d812b4f3e07c37262a325145baf098b160c89b6c2734c"
+    },
+    {
+      "id": "q-sep-7-uri",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-7-uri.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0510085853703a83de37dcc144699b6286bbf1ec7c138c74207b4aa1ca460660"
+    },
+    {
+      "id": "q-sep-8-regulated-assets",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-8-regulated-assets.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "44d02c5243bfd3ff19de5ca91a5e15bd713e684a9865b4855ab003f373a57612"
+    },
+    {
+      "id": "q-sep-catalog-list",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-catalog-list.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "263518894fb0caab13270cba6b36c5d659c92aea5edf61167408d9ba5ce5ed34"
+    },
+    {
+      "id": "q-sep-clawback-prereq-flag",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-clawback-prereq-flag.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ca0d98fb7fae6cb73ec4e5bf7f07b43105bd9ad3b9278a8f919524096874f87e"
+    },
+    {
+      "id": "q-sep-interactive-deposit-withdraw",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-interactive-deposit-withdraw.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7513342aac24542a600fe910063617e0fd490193f51c3524d853733dd1aa0a2b"
+    },
+    {
+      "id": "q-sep-wallet-seps-list",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep-wallet-seps-list.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dc638952b21a32d89f15c4efb1f585556df9efc44106487da624504b520b750e"
+    },
+    {
+      "id": "q-sep53-message-signing",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep53-message-signing.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3d60f412acdd4fab35017d55ed961161f5c407f168a8fd54cab5e693523c72c6"
+    },
+    {
+      "id": "q-sep6-sep24-sep31-choice",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep6-sep24-sep31-choice.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "71bcccb6e7457f420520766f4bd6394a45a39e2cf751371335a21e62a9d11fb0"
+    },
+    {
+      "id": "q-smart-account-scoped-policy-signers",
+      "path": "eval/qa/corpus/battery/soroban/q-smart-account-scoped-policy-signers.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d1aad74e8896928ea2c31042e71a94e360812d96053160eeed18433229271877"
+    },
+    {
+      "id": "q-smart-wallet-fee-sponsorship",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-smart-wallet-fee-sponsorship.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c74c73e086112777fe9ff51d86fdcf9a4dba93c2bcffd7f49e9326b1f627b6db"
+    },
+    {
+      "id": "q-sor-build-target-wasm32v1",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-build-target-wasm32v1.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c436b0c65db9a1f7837ac756c1b633eb898ef7f1776949c180bdd63f8fa518a1"
+    },
+    {
+      "id": "q-sor-classic-dex-from-contract",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-classic-dex-from-contract.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d1fc302fc6cd9970c815d4fd261c4920d4ca251963b7692f894e6c82d77a5b6a"
+    },
+    {
+      "id": "q-sor-confidential-tokens",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-confidential-tokens.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "61c74e75057cb817a573cfe879f2dd6297572b22467ae3b7f833c70663388230"
+    },
+    {
+      "id": "q-sor-contract-as-claimable-arbiter",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-contract-as-claimable-arbiter.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f7afc7f891e673f5c8f3a16a5e6a77512fabf51017d060499155f71c5e556612"
+    },
+    {
+      "id": "q-sor-contract-trustlines-c-address",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-contract-trustlines-c-address.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "44dd568beb6ce488ae9594aabb0f5018a3b20f952fed8df27429103e9b3b4645"
+    },
+    {
+      "id": "q-sor-cross-socketfi-auth",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-cross-socketfi-auth.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e261596628bceb9bd0e97255c2779da052d0f5f4fc5264f6b27974253d21c97b"
+    },
+    {
+      "id": "q-sor-cross-warmancer-zk-stack",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-cross-warmancer-zk-stack.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "991debef4597dcb43f63cd7d4cd5008c4d61d1674beb79dfdf1b0455aa5ed5aa"
+    },
+    {
+      "id": "q-sor-decode-hosterror-codes",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-decode-hosterror-codes.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "88121b727ea8d07222cc91da1de700557e80fe510795a5290c9562964db2b089"
+    },
+    {
+      "id": "q-sor-deploy-invoke-from-js-sdk",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-deploy-invoke-from-js-sdk.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "5d99bdbd519525ddada469033c1bab94b7350ca7acc5c471f4a73fb4776c3a92"
+    },
+    {
+      "id": "q-sor-doc-page-sections-followup",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-doc-page-sections-followup.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dd23068160d11fd18c09f08f28132366062060a22074378c5449b2fadc1d468d"
+    },
+    {
+      "id": "q-sor-doc-timestamping-manage-data",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-doc-timestamping-manage-data.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "871444e49d93581cadeb0f00f7f153f41e4f0dfa5bfa7d2ab67a90f75b79c1bf"
+    },
+    {
+      "id": "q-sor-doc-title-discovery",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-doc-title-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9b23e947392095f63799c60b20858ab8c1ce88b9ba3fdf38059f41889faad591"
+    },
+    {
+      "id": "q-sor-evm-to-soroban-porting",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-evm-to-soroban-porting.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c8a8b9e8d0d18b80c765c5bc81a42bd9197ba3ffc52fe4f1641edc0cc23a501f"
+    },
+    {
+      "id": "q-sor-force-fast-archival-localnet",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-force-fast-archival-localnet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "80d5004e5a338e730ca054b42b20e017a68347aa65a935220d4a25700cd23029"
+    },
+    {
+      "id": "q-sor-p23-auto-restore-extendto",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-p23-auto-restore-extendto.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "769af0879cce2996bce970e38ffa7e4b2ac21df86903bea8da6477a225df2619"
+    },
+    {
+      "id": "q-sor-persistent-unbounded-collection-cap",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-persistent-unbounded-collection-cap.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dfcc73f75824054111bad2712022918bbf9d08bbc08aa40c9af0acb8a2680de1"
+    },
+    {
+      "id": "q-sor-recurring-escrow-patterns",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-recurring-escrow-patterns.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "04fdb0d8a528b6e882e25f5f882651138511bc60f06f09de1a84fabf42eddd86"
+    },
+    {
+      "id": "q-sor-reflector-integration-code",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-reflector-integration-code.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "980619c6b24bb09806cc2e75960bc7e02faf78196ffc261275e4cbe6c2cf58b6"
+    },
+    {
+      "id": "q-sor-require-auth-propagation",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-require-auth-propagation.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6b4f2dbb582b0d89f224c0ed397a8d051f808f68970fe67a4be56a735668aecb"
+    },
+    {
+      "id": "q-sor-sac-introspection",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-sac-introspection.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "05a868762d8e0d6d5ab6b4fc6bfa97917620d88663224fc380525fe4713173c3"
+    },
+    {
+      "id": "q-sor-scval-conversion",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-scval-conversion.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ab4ca583d0329a902c09fb7192f69fe7ac87310ad006dd8f9caa3e2b2556334b"
+    },
+    {
+      "id": "q-sor-sep41-transfer-vs-transferfrom",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-sep41-transfer-vs-transferfrom.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e4934feefffaa6b438ef5fa3244b3eb85740453a8275267c65d79b588223cd33"
+    },
+    {
+      "id": "q-sor-skill-openzeppelin-setup",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-skill-openzeppelin-setup.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0b93c0a48129009f2b850d282648f4a1973cf0ed55a1ec426007518ee664dfe1"
+    },
+    {
+      "id": "q-sor-stale-spec-after-upgrade",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-stale-spec-after-upgrade.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "479a36fc4c1c22623fb0db882ff4c895c78e0b439f8e34ef9598186b3a6e65e2"
+    },
+    {
+      "id": "q-sor-test-event-assertion-ordering",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-test-event-assertion-ordering.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2800c7b5998f8e4cbbb0cf3cc345f1a9d5ba1bdfd3bbe221e14ecfbdd6a0bbf7"
+    },
+    {
+      "id": "q-sor-ttl-defaults-extend",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-ttl-defaults-extend.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b74d97f4cc9d86a18c442684cc9068d9694e32fde58de99e676e433ad0bd19b1"
+    },
+    {
+      "id": "q-soroban-add-signer-smart-wallet-howto",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-add-signer-smart-wallet-howto.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7002698479e93b20f039528faf303e200566c21b98920a1d44cacb8d6c4884f0"
+    },
+    {
+      "id": "q-soroban-auth-delegation-p27",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-auth-delegation-p27.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "26d5a01810e3e8fd4a7f2a43e82706bfd022b8431b42fa31fde67d5fc3bb884b"
+    },
+    {
+      "id": "q-soroban-auth-recursion-dos-audit",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-auth-recursion-dos-audit.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4d822754a9651af74d02d08a6135d5478f5a42eaf45503ad807aa8d1a1348ba4"
+    },
+    {
+      "id": "q-soroban-av-passkeys-talk",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-av-passkeys-talk.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3994c64acc8004ce3fbec5a6c83940b53898fa8247e713e5fbb1339ad781d352"
+    },
+    {
+      "id": "q-soroban-check-auth-custom-account",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-check-auth-custom-account.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a1ce610fcbad111a1c00f0d22f1a452b6eb950095cb8501c2e881228bbbd65e9"
+    },
+    {
+      "id": "q-soroban-cli-bindings",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-cli-bindings.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c9447a90932b162d85ddf697a8c2c6e0537cd768b8509dcbfaa382710d47973d"
+    },
+    {
+      "id": "q-soroban-constructor-lifecycle",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-constructor-lifecycle.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8a55a4cdebff507ec73f35597507769ce9665cbf3243491fefcefc2beabfd3d5"
+    },
+    {
+      "id": "q-soroban-contract-build-verification",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-contract-build-verification.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8b4156c0ca6fcc4aba5da2fc8be75226c2345d99213513c9400176569d468579"
+    },
+    {
+      "id": "q-soroban-contract-id-derivation",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-contract-id-derivation.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "26cd021db4715449f63c82a5353e0e1999fddf3940fe83865bdf93ea2e01116b"
+    },
+    {
+      "id": "q-soroban-contractmeta-vs-contractevent",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-contractmeta-vs-contractevent.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7955dbfc3d5b3a88661a48f43e3770671e57662bc090d542e88a8c70c9970f15"
+    },
+    {
+      "id": "q-soroban-cross-contract-call",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-cross-contract-call.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "14c6be45614271ce4436e14973a4a3e8567f137e01c787ff8c32bbae98c6bfd5"
+    },
+    {
+      "id": "q-soroban-deploy-cli",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-deploy-cli.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0fc070e6256649b5bc5a1f1ba48931ab384cbef22d0fc94465e30e98737d0f2d"
+    },
+    {
+      "id": "q-soroban-event-indexing-design",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-event-indexing-design.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4dacf79cf93e55536efe1dda33d76bbcacc620f5611f1c24254fb056c4a04d8f"
+    },
+    {
+      "id": "q-soroban-factory-pattern",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-factory-pattern.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0df22c85bf0e6da1d20da56864d3855be89d3abc061e7205f8fb5628b65eaed0"
+    },
+    {
+      "id": "q-soroban-fuzz-testing",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-fuzz-testing.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "bb7e55e224f5f7f9ae23d5970b6694761e2427d8ab5620d0d44402de7d6d7b16"
+    },
+    {
+      "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-greenfield-escrow-prior-art-preflight.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0e7ee3851877a2d9ca5ef1b4d5df7a01cfd4536fa284222ca314de11952cb533"
+    },
+    {
+      "id": "q-soroban-instance-storage-dos",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-instance-storage-dos.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "934d0adf890b3818287a10106cb4748eba1221e76ba79c75dd8b1a91df09f8ef"
+    },
+    {
+      "id": "q-soroban-no-std-constraints",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-no-std-constraints.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0a863e2396801844fe67fc86e2f6b0b949d4b616b1e0e7caff07188482be02e4"
+    },
+    {
+      "id": "q-soroban-oracle-defensive-consumption",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-oracle-defensive-consumption.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "db4df897f9ff3b8a621a5185927be743bc8510c0de600836c97c6d704bec8968"
+    },
+    {
+      "id": "q-soroban-oz-token",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-oz-token.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e485a1cd64fde818401f42f12f072fce1b002e75066734ef93344a704ab132b3"
+    },
+    {
+      "id": "q-soroban-oz-upgradeable-macro",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-oz-upgradeable-macro.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "984a50571832b579a0562c81677c5bd92d523fa3696dfde656230526912dbd34"
+    },
+    {
+      "id": "q-soroban-publish-events",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-publish-events.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a4fa8725a2ee54d11ef83afc74c72510b5e3380048dae3820e09f842e9731891"
+    },
+    {
+      "id": "q-soroban-reentrancy",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-reentrancy.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "efd8d49852a066ac46f86cfd4baa4b629f826c87b10054e0a4e022bb12afa5ae"
+    },
+    {
+      "id": "q-soroban-require-auth",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-require-auth.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a1672c0643f200ba84583f9544368587f0acc2736e6428ae6b8cea62af8e6840"
+    },
+    {
+      "id": "q-soroban-resource-limits",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-resource-limits.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7dc145fc1e90435a2ed18d3a389da63ce19185bd93286667d405223d5091a4b9"
+    },
+    {
+      "id": "q-soroban-sdk-cve",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-sdk-cve.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fee1085bc33456a3d160c0b3d407f1297f9f03d3406844fe6e9e08a3e72fe092"
+    },
+    {
+      "id": "q-soroban-sdk-macros",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-sdk-macros.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "2a5bac2595e27b95634fef30f9581223abde65f8df6dde44f853c8d77662ddae"
+    },
+    {
+      "id": "q-soroban-simulate-resource-fee",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-simulate-resource-fee.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cac5c3c885dad3541aff2badf7208df18121ac4f720bd605b769ee67345ad708"
+    },
+    {
+      "id": "q-soroban-storage-migration",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-storage-migration.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1b55765ee56d5b0b60a2a7ac862dce966edb7b4025e00369e087c5d02a2eb380"
+    },
+    {
+      "id": "q-soroban-storage-types",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-storage-types.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7715c0997a081d7c567833a3838971aad06a63ba1d26daddbeec7a9c375952e7"
+    },
+    {
+      "id": "q-soroban-token-transfer-pattern",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-token-transfer-pattern.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "48f5bac94e87676d726e6196bd4ea0de5d02e8bc7413a3f5afcb9550132921be"
+    },
+    {
+      "id": "q-soroban-unit-testing",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-unit-testing.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cd1c4b96599245c8e96174086b4785a2e830329b47ea4e4ccab4f6d21ef257ea"
+    },
+    {
+      "id": "q-soroban-upgradeable-storage-compat",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-upgradeable-storage-compat.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c782a3c927ab610d6da62a868c428cf8532b612550f65aac0619540b7f61b35a"
+    },
+    {
+      "id": "q-soroban-vuln-classes",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-vuln-classes.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "057dcf20b0b5a6f7d444819a45471a005681755e0352a3b0390738cc24165855"
+    },
+    {
+      "id": "q-soroban-wasm-language",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-wasm-language.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "753c8c71b899c577a2830ffc46a3d82cdf9609cd121e511982483368c985d193"
+    },
+    {
+      "id": "q-soroban-wasm-size-limit",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-wasm-size-limit.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ee7ebe59eceae83509736518b820193d2bba85b15e6e4ae5bb4efd34902d43e7"
+    },
+    {
+      "id": "q-soroban-x402-auth-entry-signing",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-x402-auth-entry-signing.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e7f12bfd42ceefc878879f37d68375221bfaf8b95f9691fb59d59cc7ba8ab3d7"
+    },
+    {
+      "id": "q-stellar-recurring-payments",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-stellar-recurring-payments.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "59d578b485fdece879d8d8a79a2523e23bcdc7dfc4db3a762c167321394486f5"
+    },
+    {
+      "id": "q-ti-bindings-to-nextjs-integration",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-bindings-to-nextjs-integration.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fd93b54e49fc709ed73c1412efa25240ad9ae69b7c0d766d82b38f60f8f8830d"
+    },
+    {
+      "id": "q-ti-block-explorer-basics",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-ti-block-explorer-basics.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e0fdf13b257db232de479df50f01400c60f2ab86721310e380b491b55cb2a02a"
+    },
+    {
+      "id": "q-ti-channel-accounts-throughput",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-channel-accounts-throughput.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a907fa49f253bea1caef1fcc2e3377485def76273b7661713c4f7c8af27af9b0"
+    },
+    {
+      "id": "q-ti-classic-submission-errors",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-classic-submission-errors.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "22ac024adb048d25d93406bbf2a5d7786239e805a0843d180f7e6a65a2b77380"
+    },
+    {
+      "id": "q-ti-cli-rust-windows-troubleshooting",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-cli-rust-windows-troubleshooting.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6021a38b29cb8e41cd9af09538470dbd806ea5e9f43e69649bff89e5676b944a"
+    },
+    {
+      "id": "q-ti-compute-token-lp-market-data",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-compute-token-lp-market-data.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "1d17e35e0ded5e442d9604f1b7831e1a7251a50d64884f02cc14c64e4d9932a9"
+    },
+    {
+      "id": "q-ti-connect-wallet-button-code",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-connect-wallet-button-code.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3353f494ede51dc7dbc1745a74cfdae173ee4deb3d8546ff88239a90842ed4b8"
+    },
+    {
+      "id": "q-ti-custodial-account-generation-c-address",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-custodial-account-generation-c-address.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "97c32c4598d135ced1c88c3d70a3013d0c5e5ab4a5a2736884c0811ef41a5ccf"
+    },
+    {
+      "id": "q-ti-enumerate-all-contracts",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-enumerate-all-contracts.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "98b9e1f5cced89be4be21ccbf4dd6ba959ecab34532e47f9dd4e4c15995452f7"
+    },
+    {
+      "id": "q-ti-enumerate-holders-airdrop",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-enumerate-holders-airdrop.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e87cec01e1e0b36d14efa4844dd562580aeb3b6a6c662c35f9a84a04cc50eb8f"
+    },
+    {
+      "id": "q-ti-explain-repo-payload-status",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-explain-repo-payload-status.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "516bfcadc728029b71adb2c1c86b67eb9ea2696fe89bd2f9eb4a45731869232d"
+    },
+    {
+      "id": "q-ti-fetch-all-balances-classic-sac",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-fetch-all-balances-classic-sac.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "257b111023555cbcb636b5040aa12594bb9d8cce6465afb3cfe167dff23477ff"
+    },
+    {
+      "id": "q-ti-find-export-secret-key",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-ti-find-export-secret-key.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f9897a88b0c95abc8e92e637255ed44729a4eba525b27e827186bf4cddd0c282"
+    },
+    {
+      "id": "q-ti-freighter-localhost-not-detected",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-freighter-localhost-not-detected.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ebebd8823f353cb19188db99c43315f0457e62664065dbde7b4a67523026c5fd"
+    },
+    {
+      "id": "q-ti-friendbot-ratelimit-alternatives",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-friendbot-ratelimit-alternatives.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "448275f039cc6342082a14ecd0b221bb283672b8be231b0ab494df14cb694390"
+    },
+    {
+      "id": "q-ti-historical-pointintime-balances",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-historical-pointintime-balances.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3d3dc98ff77b0458f266c92f96236a76223c6eb5de08ebe6b4d08e252dbf99c0"
+    },
+    {
+      "id": "q-ti-java-sdk-wallet-feebump",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-java-sdk-wallet-feebump.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e659c24e41ceaff842f41466daf9dafe4593f52c78f2e9d4c0a679ccd82c4fd1"
+    },
+    {
+      "id": "q-ti-openzeppelin-relayer",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-openzeppelin-relayer.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "11c90304214a1ef611a80b5f62fe78c2d27142f4606fccc19d585656fa9ce81c"
+    },
+    {
+      "id": "q-ti-parse-raw-ledger-data",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-parse-raw-ledger-data.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c57b698c3ddef31d3c2ae65e8c89fa45d8f0a16328570ee624db3692af1f1836"
+    },
+    {
+      "id": "q-ti-related-projects-from-content",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-related-projects-from-content.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c4c06662dfd758078c1482300f348bb3fce7c270a433678371d5c84ce176ba09"
+    },
+    {
+      "id": "q-ti-rpc-gettransactions-pagination-xdr",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-rpc-gettransactions-pagination-xdr.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4a740068f63ba7b3d4dac5990c0dfab49ba60961b74a41fdbf86e24e05b5a8f8"
+    },
+    {
+      "id": "q-ti-scaffold-stellar",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-scaffold-stellar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "158d667c270930a7ea211c96c739ad75d4adb1cc1ff4704bdcaafa793f44abbf"
+    },
+    {
+      "id": "q-ti-scout-changelog-contract-check",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-scout-changelog-contract-check.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "47bf030a055835e3fda1418abe01fb824ca5f18d80bb0937ca4fc683bc186523"
+    },
+    {
+      "id": "q-ti-scout-refresh-cached-rows",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-scout-refresh-cached-rows.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "302ef5547eee1eaf5a5b1bbb3bb582b63a6f22e838f51221170f1ab332641c56"
+    },
+    {
+      "id": "q-ti-secret-key-vs-mnemonic-derivation",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-secret-key-vs-mnemonic-derivation.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "4fc0b817f86718a2b537c3c7241e156e6273caa87e525f9d7e7dbac31ae28403"
+    },
+    {
+      "id": "q-ti-self-host-retention-backfill",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-self-host-retention-backfill.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "a4c9e658777601f338ef200cb8db2df922aac570440d75def9a061409d5ab250"
+    },
+    {
+      "id": "q-ti-skill-builder-quickstart",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-skill-builder-quickstart.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "3ba98df2580f507b76736d25f3b899b8124cf7144f685c046abaf843fc46cdc3"
+    },
+    {
+      "id": "q-ti-skill-content-auditor",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-skill-content-auditor.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "70d5d7e16bffa2eef5fd5cd04fcd77e1cfcdd824bbaf5db8861f2f0b15c6f5f9"
+    },
+    {
+      "id": "q-ti-skill-integration-finder",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-skill-integration-finder.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d09d869602a586e5ee47a75cab818836be8e1820edc27fb3edc6f178bd7e7216"
+    },
+    {
+      "id": "q-ti-stellar-lab-usage-and-new-ui",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-stellar-lab-usage-and-new-ui.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c4353d7521688687bab9780a2c0a0cd21c1227ec3b4e548933434a0230da95fd"
+    },
+    {
+      "id": "q-ti-testnet-usdc-faucet",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-ti-testnet-usdc-faucet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f0153c0e723492b6dba66318615993bb6cc448386832fba8912c15371324da46"
+    },
+    {
+      "id": "q-ti-tx-too-late-resubmit",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-tx-too-late-resubmit.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "39923e712a3d1ca7df74677f7d4852543a8aea01385a86f633cbaf9c5766e9aa"
+    },
+    {
+      "id": "q-ti-video-tutorials",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-video-tutorials.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "af140e6a1d5fc2da2aef14d62bd3db4f10669e46d5863edea44f54473f2077bd"
+    },
+    {
+      "id": "q-ti-vocab-content-tags-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-vocab-content-tags-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "aa1b4402493448280bf7fba1503520b2dd3bbb678c5a65a33082dfd8fbbf3fb4"
+    },
+    {
+      "id": "q-ti-vocab-project-categories-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-vocab-project-categories-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "eb1fc7640c8b7fcc3b38caebf75b124fc5a8f542a349ac34fccead1005d4c762"
+    },
+    {
+      "id": "q-ti-vocab-project-tags-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-vocab-project-tags-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "18997cad8b4c9fd8d5c5a25f5b02c8cf4066114941108b93262512fca435b478"
+    },
+    {
+      "id": "q-ti-vocab-regions-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ti-vocab-regions-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "336497f929564574f61095acd50477bdd262a7617bec7c07e02b674f20f1798b"
+    },
+    {
+      "id": "q-token-circle-usdc-on-stellar",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-token-circle-usdc-on-stellar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "89ea75dd00045bb59db8a9340a714f2c16ebd3555ea4277193c0fb6ac40da66e"
+    },
+    {
+      "id": "q-token-initial-supply-distribution",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-token-initial-supply-distribution.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "10da7bb325e8b10060fc13c2efcf7a8cf7ace5875cd48903eaec25e46c139f27"
+    },
+    {
+      "id": "q-tool-cctp-stellar-integration",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b37d96f0a3d9e10f6c7785d8512aed1065a397127b1b3ff26b8c72689b54b491"
+    },
+    {
+      "id": "q-tool-cli-skills-discovery",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-cli-skills-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "372959c0e595478fbe9615fb849c5af14d89ccb0ddff239731de3177f0c4582e"
+    },
+    {
+      "id": "q-tool-cli-testnet-identity-howto",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-cli-testnet-identity-howto.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "da880c8a05206df1b1e2e02083759cc674ad53e008a286842c3e6082c941c38f"
+    },
+    {
+      "id": "q-tool-developer-leaderboard-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-developer-leaderboard-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "089af85c0f510339d05ae4d0112a1afd8326ccde1a1f784092612f7be4d24854"
+    },
+    {
+      "id": "q-tool-flutter-mobile-sdk",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-flutter-mobile-sdk.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0e229030a8d0da8051735a5a9c66e22e5952bd5bc76a5ce67d7680be1e795b61"
+    },
+    {
+      "id": "q-tool-freighter-wallet",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-tool-freighter-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6dc89fd8b13e7c6ca22d246e1b55e495ea534735fe306d07e8a602e0a97432ec"
+    },
+    {
+      "id": "q-tool-go-sdk-ingest",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-go-sdk-ingest.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0d04598e15f67b55eb4785409ceada3814c693ef2a51720dacb6b3956c7df3c2"
+    },
+    {
+      "id": "q-tool-greenfield-indexer-prior-art-preflight",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-greenfield-indexer-prior-art-preflight.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "99eb1f81865b32fb2556b4866968ac0ac2c6f52102aacf749bac8d357257faf4"
+    },
+    {
+      "id": "q-tool-indexer-repos-discovery",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-indexer-repos-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "8c1ed01b23ea303af7fd698c46d3ab51cae63ae259d09210532f9d08685c13d0"
+    },
+    {
+      "id": "q-tool-js-sdk-package",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-js-sdk-package.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "daa1a137ef8dd8df9a5dce99c6b3797aefa92d0325d66a14809f9480dcaf2a2f"
+    },
+    {
+      "id": "q-tool-lab-what-is",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-lab-what-is.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6ac53e4925dbe686b683b206ef5b20398df7cb88e01bdd8af9e632164f45db00"
+    },
+    {
+      "id": "q-tool-leaderboard-open-issues",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-leaderboard-open-issues.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "b5cccbb4b5beb8fbdb53ffa0970be147862166cbb668925b88db7c27f9b348b0"
+    },
+    {
+      "id": "q-tool-oracle-repo-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-oracle-repo-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "ec17de2d4b093eca1aedb2e10b2d40ac5ac13e4fb569b97bd3f00a5e9e0dba13"
+    },
+    {
+      "id": "q-tool-passkey-repo-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-passkey-repo-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "fab058263156821cf6f37bfd926cc3a6843984a0848246922508128fe1ab8eae"
+    },
+    {
+      "id": "q-tool-passkey-wallet-recovery",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-passkey-wallet-recovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "6b3cccea34ede516c7522374abee02877cc0f9cecaa11ef7b59bdf63fe9a020d"
+    },
+    {
+      "id": "q-tool-passkeykit-smart-wallet",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-passkeykit-smart-wallet.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c9691a282d5e1db7a22071d3703fde278dafa4248a73f5ad2601b38d2144b9a6"
+    },
+    {
+      "id": "q-tool-rust-soroban-sdk",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-rust-soroban-sdk.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "945dddad7e93d08d4e5dd893a30a006118898c13e5afe1c8887300991936b683"
+    },
+    {
+      "id": "q-tool-sdk-repos-discovery",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-sdk-repos-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "677c4f248f322ff35507345d8c05023c1e372987008910a1d13a73718fa4b859"
+    },
+    {
+      "id": "q-tool-sep41-status-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-sep41-status-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "dc977eb36cd5cff89063a3e50f64fc313961f9724242a0a5ff727e2098b2b5dc"
+    },
+    {
+      "id": "q-tool-skill-detail-install",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-skill-detail-install.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "cdb06859989410d1a1b823e4ba285c55e95eba534a7f00d3134ac1cf10d750b7"
+    },
+    {
+      "id": "q-tool-smart-wallet-repos-discovery",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-smart-wallet-repos-discovery.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "d9b24a7c3ad612cee267b98ccd8855521205d31bb39beb9544057c512bafa47f"
+    },
+    {
+      "id": "q-tool-soroban-auth-audit-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-soroban-auth-audit-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "c9ecadd8b0a766d97e386a6b8b6813824f990549e4175dbdd346232347add0e5"
+    },
+    {
+      "id": "q-tool-taxonomy-dispatch-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-taxonomy-dispatch-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "07f9f982781c19a8573917f7b3e61a9c82593a720e7d2f9e23fb51d12e519460"
+    },
+    {
+      "id": "q-tool-wallets-comparison",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-wallets-comparison.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "efbff27f94f73a02818aae898f75104234a41f7e03472f6c48d26ed11050e251"
+    },
+    {
+      "id": "q-tool-which-sdk-comparison",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-which-sdk-comparison.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "7cae4590234bbfc92eda34e2e631d572fa3431c74335e4be5a7922d2c164c83b"
+    },
+    {
+      "id": "q-tool-zk-repo-live",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-tool-zk-repo-live.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "662000f2d1536a78eccccc4b271dba8d1f911e0cc396acd5255ad1b6539433ed"
+    },
+    {
+      "id": "q-x402-payment-verification",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-x402-payment-verification.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "52f576657bc8cc84ec04c25b634984a79b186de0f65fcd392cf8cf645692a7a0"
+    },
+    {
+      "id": "q-zk-circuit-setup",
+      "path": "eval/qa/corpus/battery/soroban/q-zk-circuit-setup.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "89ad1dd670c38ceed72b9d5056047f94845045576cbe9b17614920d2a6c2389c"
+    },
+    {
+      "id": "q-zk-host-functions-status",
+      "path": "eval/qa/corpus/battery/soroban/q-zk-host-functions-status.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "0da36d10224cf279922f02701a9acf06ab480b5a2411cfe2dedefb2a9b750f95"
+    },
+    {
+      "id": "q-zk-nullifier-storage",
+      "path": "eval/qa/corpus/battery/soroban/q-zk-nullifier-storage.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "eb247d9fcabb2b4ec068c008bf2ddf248e10614503e1a1d927b0e892ad59aa1f"
+    },
+    {
+      "id": "q-zk-poseidon-input-encoding",
+      "path": "eval/qa/corpus/battery/soroban/q-zk-poseidon-input-encoding.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "f4c27bc695bb8973affb28c2a2aaebc8165cf50f9a3755332e2e9f32d110701b"
+    },
+    {
+      "id": "q-zk-proof-systems-stellar",
+      "path": "eval/qa/corpus/battery/soroban/q-zk-proof-systems-stellar.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "9660a79cd0ea450b885d19a7ce50fd6a68139e1e3f84aaf690e4432624916aef"
+    },
+    {
+      "id": "q-zk-verification-resource-budget",
+      "path": "eval/qa/corpus/battery/soroban/q-zk-verification-resource-budget.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "e834a06fdde1f79d584506c922508447c4d54719e023ca24c8705f6c78c81d2a"
+    }
+  ]
+}

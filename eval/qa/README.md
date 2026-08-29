@@ -19,10 +19,14 @@ migration proof is [`reviewed/2026-07-super-corpus-migration.md`](./reviewed/202
 eval/qa/
   corpus/
     battery/<category>/<id>.json    # THE corpus — one hand-owned JSON per case, 10 category dirs
+    proposed/<category>/<id>.json   # verified proposals; never compiled before activation
+    retired/<id>.json               # permanent retirement tombstones; never compiled
+    lifecycle-policy.json           # mass-review cadence and frozen-review state
     live/live-cases.json            # frozen contract live-data-canonical-v3 (15 cases)
     live/live-digest-supplement-cases.json  # frozen contract live-digest-supplement-v2 (2 cases)
     migration-ledger.json           # permanent losslessness ledger (dispositions per source id)
-  cases.json  sample.json           # GENERATED battery + stratified sample-30 (CI byte-pinned)
+  cases.json  sample.json           # GENERATED active + quarantined battery and sample-30
+  lifecycle-registry.json           # GENERATED permanent ID and canonical-digest registry
   consistency-register.json         # cross-question contradiction register + numericInvariants
   compile-qa.mjs  judge.mjs  evidence-pack.mjs  run-qa.mjs  lint-corpus.mjs  register-helper.mjs  lib.mjs
   agent-result.mjs                  # pure spawn → structured outcome parser (failure class, usage, artifacts)
@@ -68,6 +72,10 @@ whole-file contracts — `eval/self-test.mjs` asserts contract name, ordered mem
   },
   "truth": {
     // judge-blind provenance, first-class
+    "lifecycle": {
+      "state": "active", // proposed | active | quarantined | retired
+      "reviewState": "none" // none | queued | in-review | resolved
+    },
     "domain": "real-world", // real-world | corpus-grounded | mixed
     "status": "confirmed", // confirmed | disputed | unverifiable | mixed
     "asOf": "2026-07-11", // required when freshness != stable OR status != confirmed
@@ -105,7 +113,7 @@ Who consumes what (condensed):
 | `surface`                                             | lint (ids must be manifest-exposed), coverage floors — never rendered to judge or agent                                                                        |
 | `tags.service`                                        | deterministic sampler strata, per-service reporting                                                                                                            |
 | `tags.freshness`                                      | judge leniency block and evidence-pack gate (both test `!== "stable"`); `scheduled` requires `truth.asOf` + `truth.reverifyBy`; `live` means behavioral golden |
-| `truth.*`                                             | judge-blind: gospel-change lint, corroboration lint, stale gate, ledger cross-checks, triage signals copied into result rows (`truth.status`/`asOf`)           |
+| `truth.*`                                             | judge-blind: gospel-change lint, lifecycle, corroboration lint, stale gate, ledger cross-checks, and triage signals copied into result rows                    |
 
 Corroboration **required-when** (lint-enforced): `truth.status ∈ {disputed, unverifiable}` ⇒
 rows required; a case named by a register `numericInvariants` entry ⇒ a row covering that
@@ -114,7 +122,8 @@ authored cases, warn for migration-carried debt). `contradicted` is legal only f
 mirrored in `golden.avoid`. Negative-claim detection is heuristic (warn); the hard bar for
 negative claims is the golden-truth skill and review gates.
 
-The compile enforces: filename == id, directory == category, unique ids, closed enums, keyFacts
+The compile enforces: filename == id, directory == category, unique and permanently reserved ids,
+closed enums, lifecycle lane membership, canonical content digests, keyFacts
 1–5 (pinned migration exceptions aside), non-empty class-labeled sources, `asOf`/`reverifyBy`
 required-when rules, ledger and register cross-checks. Trap enum: `out-of-scope | injection |
 paid-bait | fabrication-bait | scam-check | speculation | cant-do | ambiguous` (one legacy
@@ -127,7 +136,7 @@ Every gospel change (question, `golden.*`, judge-facing tags) goes through the
 ## Commands
 
 ```sh
-# Compile the battery → cases.json + sample.json (deterministic, byte-identical re-runs; no flags)
+# Compile the battery → cases.json + sample.json + lifecycle-registry.json
 npm run eval:qa:compile
 
 # Paid judge behavior self-test: seven judge calls; reports call count and total cost; no MCP server
@@ -341,9 +350,10 @@ Every outcome category lists its IDs.
   safeguards and timeouts, including panel votes. Judge transport is not a class. Judge CLI and
   parse failures stay in T4.
 
-The current corpus has no lifecycle partition. Therefore, every selected ID is active, and the
-invalid-test and quarantined-diagnostic lists are empty. The later lifecycle lane will supply those
-lists without changing this track contract.
+Sampling always uses the complete active-plus-quarantined compiled pool. Reporting partitions the
+selected IDs afterward. The console prints `k of N` active cases and every excluded quarantined ID.
+Quarantined rows stay in T4 diagnostics and stay outside T1 and T3. Explicit `--ids` selections use
+the same partition. The runner never replaces, re-picks, or appends an ID after partitioning.
 
 `summary.overall`, service rows, and category rows are raw first-attempt judge-score diagnostics.
 They are not T1 quality or T3 safety. The console labels them and omits the old raw trap table.
@@ -399,7 +409,7 @@ instrument that under-claims is repairable where one that invents evidence is no
 Every push/PR (`.github/workflows/ci.yml`):
 
 - **Byte-pins**: the generated-artifacts step recompiles and byte-diffs `eval/qa/cases.json`
-  AND `eval/qa/sample.json`. Never hand-edit them.
+  `eval/qa/sample.json`, AND `eval/qa/lifecycle-registry.json`. Never hand-edit them.
 - **`eval:qa:lint -- --stale`**: all deterministic lint lanes; any past-due `truth.reverifyBy`
   fails. In CI the **gospel-change guard** is automatically diff-aware against the merge base:
   a change to `question`, `golden.*`, `tags.freshness`, or `tags.trap` fails unless
@@ -449,6 +459,49 @@ pinned a version or protocol literal; three are Protocol-N facts that are defens
 Horizon v27.0.0) at 2027-03-18 — about eight months after its 2026-07-11 `asOf`. Recorded rather
 than special-cased: re-shuffling the cohort for one case would trade a reproducible rule for a
 hand-tuned one. Pull it forward at the next verification pass if it matters.
+
+## Golden lifecycle
+
+The case file owns `truth.lifecycle.state` and `truth.lifecycle.reviewState`. Only `active` and
+`quarantined` files belong under `corpus/battery/`, and only those states compile. A `proposed`
+file belongs under `corpus/proposed/<category>/` until verification and activation. A `retired`
+tombstone belongs under `corpus/retired/`. Proposed files and tombstones never enter `cases.json`,
+`sample.json`, T1, or T3.
+
+Activation requires the complete `golden-truth` verification, duplicate and boundary checks, and
+an independent reviewer. A proposal that moves into the battery records
+`truth.lifecycle.activation` with its date, author, reviewer, evidence, and round ledger. The
+reviewer must differ from the author. Activation never follows from a favorable score.
+
+A credible truth or case-validity conflict can quarantine a case. The case records a
+score-independent cause, author, independent reviewer, evidence, round ledger, start date, and
+`reviewBy`. `reviewBy` must be within 30 days. A quarantine review corrects the case, retires it,
+or renews the quarantine. Each renewal records a new independent review, evidence, ledger, and
+another decision date within 30 days. Reactivation always needs an explicit reviewed decision.
+
+Judge noise does not justify quarantine. It sets `reviewState: "queued"` while verified truth stays
+active. Verified observability failures, landed improvements, live drift, verified user failures,
+and recurrent eval evidence can also queue review. A trigger changes no golden by itself. The
+review block records the trigger date and evidence. `in-review` and `resolved` states also record
+their reviewer, ledger, and decision dates.
+
+The closed trigger values are `verified-observability-failure`, `landed-improvement`, `live-drift`,
+`verified-user-failure`, `recurrent-eval-evidence`, `judge-noise`, and
+`proposal-verification`.
+
+Retirement needs a score-independent reason such as duplication, obsolete scope, unanswerable
+wording, or lost product relevance. The tombstone records the retirement date, author, independent
+reviewer, evidence, round ledger, the final case content digest, and replacement IDs. The generated
+`lifecycle-registry.json` permanently reserves every observed ID. The compiler rejects a missing
+reserved ID, a duplicate across lifecycle lanes, a retired-ID resurrection, and a tombstone whose
+final digest does not match the prior registry.
+
+Mass review starts at the earliest of three triggers: 25 queued active cases, five percent of
+active cases queued, or three calendar months after the cadence anchor. A completed mass review
+updates that anchor. The lint calculation uses a ceiling for the five-percent case count. An open
+mass review records its start date,
+ledger, frozen active-ID digest, and frozen rule digest in `corpus/lifecycle-policy.json`. Reviewers
+stay blind to desired score movement. Corpus-health results remain separate from system results.
 
 ## Judging rubric and score comparability
 

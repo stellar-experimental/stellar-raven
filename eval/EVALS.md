@@ -100,7 +100,7 @@ replaced two; the same README rule applies across that boundary.
    committed. `eval:selftest` pins both named QA contracts' names, ordered membership, and
    case-content digests. Any live-contract question/golden/tag/note change requires an explicit
    contract-version bump, provenance note, and digest update. Generated files
-   (`routing-cases.json`, `qa/cases.json`, `qa/sample.json`) are never hand-edited — CI
+   (`routing-cases.json`, `qa/cases.json`, `qa/sample.json`, `qa/lifecycle-registry.json`) are never hand-edited — CI
    byte-pins them.
 7. **Results are local-only evidence** (`eval/**/results/`, gitignored). `eval/gates.json`
    carries the routing gate's committed fingerprints and accepted totals. READMEs carry historical

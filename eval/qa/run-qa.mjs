@@ -79,7 +79,7 @@ import { existsSync, mkdtempSync, readFileSync, readdirSync, writeFileSync, mkdi
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { QA_DIR, loadCases, stratifiedSample, summarize, formatSummaryTable } from "./lib.mjs";
+import { QA_DIR, loadCases, partitionLifecycleCases, stratifiedSample, summarize, formatSummaryTable } from "./lib.mjs";
 import {
   buildAgentErrorVerdict,
   buildTranscriptEvidence,
@@ -882,10 +882,12 @@ export function isRetryableAgentFailure(failure) {
 
 /** Build the production five-track report from the immutable selected cases. */
 export function buildRunnerTracks({ selectedCases, rows, unjudgedSelectedIds = null }) {
-  const selectedIds = selectedCases.map((kase) => kase.id);
+  const partition = partitionLifecycleCases(selectedCases);
   return buildFiveTrackSummary({
-    selectedIds,
-    selectedTrapIds: selectedCases.filter((kase) => Boolean(kase.tags?.trap)).map((kase) => kase.id),
+    selectedIds: partition.selected.map((kase) => kase.id),
+    activeSelectedIds: partition.activeIds,
+    quarantinedIds: partition.quarantinedIds,
+    selectedTrapIds: partition.active.filter((kase) => Boolean(kase.tags?.trap)).map((kase) => kase.id),
     rows,
     unjudgedSelectedIds
   });
@@ -1012,8 +1014,11 @@ export async function judgeStoredResults(
     row.outcomeClass = rowOutcomeClass(row);
   }
   const spendLedger = resumeSpendLedger(maxBudgetUsd, meta.budget ?? null);
+  const activeStoredCaseCount = results.rows.filter(
+    (row) => row.truth?.lifecycle?.state !== "quarantined"
+  ).length;
   const panelLimit = resolveStoredPanelCaseLimit({
-    selectedCaseCount: results.rows.length,
+    selectedCaseCount: activeStoredCaseCount,
     storedJudgeTiering: meta.judgeTiering,
     maxPanelCasesOverride: maxPanelCases,
     overrideSource: maxPanelCasesSource
@@ -1065,6 +1070,11 @@ export async function judgeStoredResults(
     );
   }
   const identity = verifySourceCases(results, resultsPath);
+  const storedSelectedCases = (meta.selectedIds ?? results.rows.map((row) => row.id))
+    .map((id) => identity.caseById.get(id));
+  const storedLifecyclePartition = partitionLifecycleCases(storedSelectedCases);
+  const storedActiveIds = new Set(storedLifecyclePartition.activeIds);
+  const storedActiveRows = () => results.rows.filter((row) => storedActiveIds.has(row.id));
   if (!identity.guard.matches) {
     throw new Error(
       `--judge-stored: case input snapshot differs (expected ${identity.guard.expectedCasesSha256}, got ${identity.guard.actualCasesSha256}; missing ids: ${identity.guard.missingCaseIds.join(", ") || "none"}) — the golden corpus moved since collection; re-collect`
@@ -1126,13 +1136,19 @@ export async function judgeStoredResults(
     meta.judgingCompleteness = completeness;
     const aggregatesAllowed = collectionAggregatesAllowed && completeness.aggregatesAllowed;
     meta.aggregatesSuppressed = !aggregatesAllowed;
-    const measurementMetrics = qaMeasurementMetrics(results.rows, identity.caseById);
+    const measurementMetrics = qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active);
     for (const key of Object.keys(measurementMetrics)) delete meta[key];
     if (aggregatesAllowed) Object.assign(meta, measurementMetrics);
     if (judgeBinary) meta.judgeBinary = judgeBinary;
     if (judgeEnvironment) meta.judgeEnvironment = judgeEnvironment;
     meta.trackSchema = QA_TRACK_SCHEMA;
     meta.selectedIds ??= results.rows.map((row) => row.id);
+    meta.lifecycle = {
+      activeCount: storedLifecyclePartition.active.length,
+      selectedCount: storedSelectedCases.length,
+      activeIds: storedLifecyclePartition.activeIds,
+      excludedQuarantinedIds: storedLifecyclePartition.quarantinedIds
+    };
     meta.unattemptedIds = meta.selectedIds.filter(
       (id) => !results.rows.some((row) => row.id === id)
     );
@@ -1163,7 +1179,7 @@ export async function judgeStoredResults(
     };
     results.meta = meta;
     if (withSummary) {
-      results.summary = aggregatesAllowed ? summarize(results.rows) : null;
+      results.summary = aggregatesAllowed ? summarize(storedActiveRows()) : null;
       if (!aggregatesAllowed) {
         log(formatCompletenessNotice(completeness, { label: "judge-stored" }));
       }
@@ -1189,7 +1205,7 @@ export async function judgeStoredResults(
       summary: results.summary,
       metrics: meta.aggregatesSuppressed
         ? null
-        : qaMeasurementMetrics(results.rows, identity.caseById),
+        : qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active),
       judgeTiering: meta.judgeTiering,
       outPath: resultsPath
     };
@@ -1295,7 +1311,7 @@ export async function judgeStoredResults(
     summary: results.summary,
     metrics: meta.aggregatesSuppressed
       ? null
-      : qaMeasurementMetrics(results.rows, identity.caseById),
+      : qaMeasurementMetrics(storedActiveRows(), storedLifecyclePartition.active),
     judgeTiering: meta.judgeTiering,
     outPath: resultsPath
   };
@@ -1318,10 +1334,13 @@ export function collectionAggregates(rows, cases, { judging }) {
   if (!completeness.aggregatesAllowed) {
     return { completeness, summary: null, metrics: null };
   }
+  const partition = partitionLifecycleCases(cases);
+  const activeIds = new Set(partition.activeIds);
+  const activeRows = rows.filter((row) => activeIds.has(row.id));
   return {
     completeness,
-    summary: judging ? summarize(rows) : null,
-    metrics: qaMeasurementMetrics(judging ? rows : [], cases)
+    summary: judging ? summarize(activeRows) : null,
+    metrics: qaMeasurementMetrics(judging ? activeRows : [], partition.active)
   };
 }
 
@@ -1413,11 +1432,12 @@ async function main() {
   }
   const sampleN = argVal("--sample") ? Number(argVal("--sample")) : undefined;
   if (sampleN) cases = stratifiedSample(cases, sampleN);
+  const lifecyclePartition = partitionLifecycleCases(cases);
   // Pre-spend: an empty selection spawns nothing, and a duplicated id pays
   // twice for one case and then collapses on every per-id join.
   assertRunPlan(cases.map((c) => c.id), { label: "run-qa" });
   const panelLimit = resolvePanelCaseLimit(
-    cases.length,
+    lifecyclePartition.active.length,
     maxPanelCasesOverride,
     maxPanelCasesSource
   );
@@ -1440,7 +1460,7 @@ async function main() {
   });
   const serverProcess = boundServerIdentity(port, serverRevision);
   console.log(
-    `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${cases.length} cases · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`}`
+    `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${lifecyclePartition.active.length} of ${cases.length} active cases · excluded quarantined IDs: ${lifecyclePartition.quarantinedIds.join(", ") || "none"} · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`}`
   );
 
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "qa-mcp-"));
@@ -1569,7 +1589,8 @@ async function main() {
         tags: c.tags,
         truth: {
           status: c.truth.status,
-          ...(c.truth.asOf ? { asOf: c.truth.asOf } : {})
+          ...(c.truth.asOf ? { asOf: c.truth.asOf } : {}),
+          lifecycle: c.truth.lifecycle ?? { state: "active", reviewState: "none" }
         },
         answer: firstAttempt.answer,
         transcript: firstAttempt.transcript,
@@ -1709,6 +1730,12 @@ async function main() {
           finishedAt: new Date().toISOString(),
           caseCount: rows.length,
           selectedIds,
+          lifecycle: {
+            activeCount: lifecyclePartition.active.length,
+            selectedCount: cases.length,
+            activeIds: lifecyclePartition.activeIds,
+            excludedQuarantinedIds: lifecyclePartition.quarantinedIds
+          },
           unattemptedIds,
           incompleteIds: [...incompleteIds],
           // Prompt-append experiments (QA_AGENT_PROMPT_APPEND) are invisible on

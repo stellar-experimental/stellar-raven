@@ -215,10 +215,7 @@ correction is recorded so it can't silently resurrect.
 
 ## Lifecycle verdicts
 
-When lifecycle fields are unavailable, record proposals in the round ledger and keep compiled
-membership unchanged. Do not add unsupported fields or exclude cases ad hoc.
-
-With lifecycle fields available, use `truth.lifecycle.state` for `proposed | active | quarantined |
+Use `truth.lifecycle.state` for `proposed | active | quarantined |
 retired` and the orthogonal `truth.lifecycle.reviewState` for `none | queued | in-review |
 resolved`. Proposed files stay outside the battery until this workflow verifies and activates them.
 Retired tombstones stay outside the battery. The generated registry records digests, permanently
@@ -235,8 +232,10 @@ evidence sets review state `queued` and keeps trusted truth active.
 
 Queue review from verified observability failures, landed improvements, live drift, verified user
 failures, and recurrent eval evidence. A trigger changes no gospel by itself. Every quarantine
-needs a ledger entry and a 30-day decision to correct, retire, or independently renew. Reactivation
-is never automatic. Score direction never establishes a lifecycle verdict.
+records its author, independent reviewer, evidence, ledger, start date, and a decision date within
+30 days. That decision corrects, retires, or independently renews the case. Each renewal records
+its own evidence, ledger, reviewer, and new 30-day decision date. Reactivation is never automatic.
+Score direction never establishes a lifecycle verdict.
 
 Start a frozen mass review when 25 active cases are queued, five percent of active cases are queued,
 or one quarter passes. Use the earliest trigger. Keep reviewers blind to desired score movement,

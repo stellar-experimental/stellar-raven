@@ -16,7 +16,7 @@ artifact. Delete one only after proving it has no package, workflow, documentati
 | `npm run site:fonts` | `src/fonts.ts` | release/operator generated; source fonts are local-only |
 | `npm run site:og` | `src/og.ts` | release/operator generated; requires ImageMagick and local fonts |
 | `node eval/compile-routing.mjs` | `eval/routing-cases.json` | yes |
-| `node eval/qa/compile-qa.mjs` | `eval/qa/cases.json` | yes |
+| `node eval/qa/compile-qa.mjs` | `eval/qa/cases.json`, `eval/qa/sample.json`, `eval/qa/lifecycle-registry.json` | yes |
 | `node eval/plan/build-op-classes.mjs` | `eval/plan/op-classes.json` | yes |
 | `node ecosystem-skills/build-index.mjs` | `ecosystem-skills/INDEX.md` from the pin manifest, directory catalog, and groups | yes |
 | `npm run improvements:index` | `improvements/INDEX.md` | yes (`npm run improvements:lint`) |

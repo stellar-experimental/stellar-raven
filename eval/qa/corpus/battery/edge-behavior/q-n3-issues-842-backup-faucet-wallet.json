@@ -22,6 +22,10 @@
     "trap": "scam-check"
   },
   "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
     "domain": "mixed",
     "status": "confirmed",
     "sources": [
