@@ -1,10 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { judgeCasePanel } from "../eval/qa/judge.mjs";
 import {
+  formatPanelSummary,
   formatMeasurementMetrics,
+  judgeTieringMetadata,
+  panelCaseCounts,
   parseMaxPanelCases,
+  parsePanelCaseOverride,
   parseJudgePanel,
-  qaMeasurementMetrics
+  qaMeasurementMetrics,
+  resolvePanelCaseLimit
 } from "../eval/qa/run-qa.mjs";
 
 function verdict(score, missingFacts = [], costUsd = 0.1) {
@@ -133,8 +138,134 @@ describe("QA measurement metrics", () => {
     expect(parseJudgePanel(undefined)).toBe(1);
     expect(() => parseJudgePanel("1")).toThrow(/2 or 3/);
     expect(() => parseJudgePanel("4")).toThrow(/2 or 3/);
-    expect(parseMaxPanelCases(undefined)).toBe(10);
+    expect(parseMaxPanelCases(undefined)).toBeNull();
     expect(parseMaxPanelCases("0")).toBe(0);
-    expect(() => parseMaxPanelCases("-1")).toThrow(/non-negative integer/);
+    expect(parseMaxPanelCases("10")).toBe(10);
+    expect(parseMaxPanelCases(" 10 ")).toBe(10);
+    for (const invalid of ["", " ", "-1", "+1", "0x10", "1e1", "1.0"]) {
+      expect(() => parseMaxPanelCases(invalid)).toThrow(/only decimal digits/);
+    }
+  });
+
+  it("parses the CLI override before the environment override", () => {
+    expect(parsePanelCaseOverride({ cliValue: " 10 ", environmentValue: "7" })).toEqual({
+      maxPanelCases: 10,
+      maxPanelCasesSource: "cli-override"
+    });
+    expect(parsePanelCaseOverride({ environmentValue: "0" })).toEqual({
+      maxPanelCases: 0,
+      maxPanelCasesSource: "environment-override"
+    });
+    expect(parsePanelCaseOverride({})).toEqual({
+      maxPanelCases: null,
+      maxPanelCasesSource: "bounded-scaled-default"
+    });
+    expect(() => parsePanelCaseOverride({ cliPresent: true })).toThrow(/requires decimal digits/);
+    expect(() => parsePanelCaseOverride({ environmentValue: " " })).toThrow(/decimal digits/);
+  });
+});
+
+describe("QA denominator-scaled panel limit", () => {
+  it.each([
+    [0, 10],
+    [1, 10],
+    [2, 10],
+    [15, 10],
+    [30, 10]
+  ])("keeps the frozen small denominator %i at %i", (selectedCaseCount, maxPanelCases) => {
+    expect(resolvePanelCaseLimit(selectedCaseCount)).toEqual({
+      selectedCaseCount,
+      maxPanelCases,
+      maxPanelCasesSource: "bounded-scaled-default"
+    });
+  });
+
+  it("preserves the 10-panel default for a 30-case denominator", () => {
+    expect(resolvePanelCaseLimit(30)).toMatchObject({ maxPanelCases: 10 });
+  });
+
+  it("raises the default to 34 for a 100-case denominator", () => {
+    expect(resolvePanelCaseLimit(100)).toMatchObject({ maxPanelCases: 34 });
+  });
+
+  it.each([
+    [31, 11],
+    [99, 33],
+    [499, 34],
+    [500, 34]
+  ])("interpolates and caps denominator %i at %i", (selectedCaseCount, maxPanelCases) => {
+    expect(resolvePanelCaseLimit(selectedCaseCount)).toMatchObject({ maxPanelCases });
+  });
+
+  it("uses an explicit override without scaling it", () => {
+    expect(resolvePanelCaseLimit(100, parseMaxPanelCases("10"), "cli-override")).toEqual({
+      selectedCaseCount: 100,
+      maxPanelCases: 10,
+      maxPanelCasesSource: "cli-override"
+    });
+    expect(resolvePanelCaseLimit(30, parseMaxPanelCases("0"), "environment-override")).toEqual({
+      selectedCaseCount: 30,
+      maxPanelCases: 0,
+      maxPanelCasesSource: "environment-override"
+    });
+  });
+
+  it("stamps eligible, used, and skipped counts and formats the summary", () => {
+    const rows = [
+      {
+        verdict: {
+          meta: { judgeTierUsed: "panel", escalationReason: "boundary-partial" }
+        }
+      },
+      {
+        verdict: {
+          meta: {
+            judgeTierUsed: "single",
+            escalationReason: "boundary-wrong-claim",
+            panelEscalationSkipped: "max-panel-cases"
+          }
+        }
+      },
+      {
+        verdict: {
+          meta: { judgeTierUsed: "panel", escalationReason: "unstable-register" }
+        }
+      },
+      { verdict: { meta: { judgeTierUsed: "single", escalationReason: null } } }
+    ];
+    expect(panelCaseCounts(rows)).toEqual({
+      boundaryEligibleCases: 2,
+      panelUsedCases: 2,
+      panelSkippedCases: 1,
+      boundaryPanelCases: 1
+    });
+
+    const artifactFields = judgeTieringMetadata({
+      judgePanel: 1,
+      stabilityRegister: { status: "absent", cases: {} },
+      panelLimit: resolvePanelCaseLimit(100),
+      rows
+    });
+    expect(artifactFields).toMatchObject({
+      selectedCaseCount: 100,
+      maxPanelCases: 34,
+      maxPanelCasesSource: "bounded-scaled-default",
+      defaultPanelPolicy: {
+        kind: "clamped-one-third",
+        numerator: 1,
+        denominator: 3,
+        rounding: "ceil",
+        floor: 10,
+        ceiling: 34
+      },
+      boundaryEligibleCases: 2,
+      panelUsedCases: 2,
+      panelSkippedCases: 1,
+      boundaryPanelCases: 1
+    });
+    expect(formatPanelSummary(artifactFields, "after")).toBe(
+      "judge panels after: cap 34 · source bounded-scaled-default · selected 100 · " +
+      "boundary-eligible 2 · used 2 · skipped 1"
+    );
   });
 });

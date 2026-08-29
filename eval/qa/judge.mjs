@@ -46,7 +46,9 @@ import {
 import { JUDGE_STABILITY_THRESHOLD } from "./judge-stability.mjs";
 
 export const JUDGE_MODEL = "claude-sonnet-5";
-export const DEFAULT_MAX_PANEL_CASES = 10;
+export const DEFAULT_PANEL_CASE_DIVISOR = 3;
+export const DEFAULT_PANEL_CASE_FLOOR = 10;
+export const DEFAULT_PANEL_CASE_CEILING = 34;
 const PANEL_SCORES_WORST_FIRST = ["error", "wrong", "partial", "correct"];
 
 /**
@@ -241,11 +243,25 @@ export async function judgeCasePanel(
   };
 }
 
-export function createPanelCaseBudget(maxPanelCases = DEFAULT_MAX_PANEL_CASES) {
+/** Default limit: clamped one-third of the selected denominator, rounded up. */
+export function defaultMaxPanelCases(selectedCaseCount) {
+  if (!Number.isInteger(selectedCaseCount) || selectedCaseCount < 0) {
+    throw new Error(`selected case count must be a non-negative integer, got ${selectedCaseCount}`);
+  }
+  return Math.min(
+    DEFAULT_PANEL_CASE_CEILING,
+    Math.max(DEFAULT_PANEL_CASE_FLOOR, Math.ceil(selectedCaseCount / DEFAULT_PANEL_CASE_DIVISOR))
+  );
+}
+
+export function createPanelCaseBudget(maxPanelCases, boundaryPanelCases = 0) {
   if (!Number.isInteger(maxPanelCases) || maxPanelCases < 0) {
     throw new Error(`max panel cases must be a non-negative integer, got ${maxPanelCases}`);
   }
-  return { maxPanelCases, boundaryPanelCases: 0 };
+  if (!Number.isInteger(boundaryPanelCases) || boundaryPanelCases < 0) {
+    throw new Error(`boundary panel cases must be a non-negative integer, got ${boundaryPanelCases}`);
+  }
+  return { maxPanelCases, boundaryPanelCases };
 }
 
 function boundaryEscalationReason(verdict, tags) {
@@ -265,8 +281,9 @@ export function selectJudgeTier({
   verdict,
   tags,
   stabilityRegister = { status: "absent", cases: {} },
-  panelBudget = createPanelCaseBudget()
+  panelBudget
 }) {
+  if (!panelBudget) throw new Error("panel budget is required for tiered judge selection");
   const entry = stabilityRegister.status === "available"
     ? stabilityRegister.cases?.[caseId]
     : undefined;
@@ -328,13 +345,14 @@ export async function judgeCaseTiered(
     adapters,
     judgePanel = 1,
     stabilityRegister = { status: "absent", cases: {} },
-    panelBudget = createPanelCaseBudget(),
+    panelBudget,
     ...judgeOptions
   } = {}
 ) {
   if (![1, 2, 3].includes(judgePanel)) {
     throw new Error(`judge panel size must be 1, 2, or 3, got ${judgePanel}`);
   }
+  if (!panelBudget) throw new Error("panel budget is required for tiered judging");
   const judgeAdapters = resolveJudgeAdapters(adapters, judge);
   const firstVerdict = await judgeAdapters[0].vote(input, judgeOptions);
   const selection = judgePanel > 1
