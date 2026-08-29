@@ -123,13 +123,12 @@ $17.98–$23.08 (median $21.80), so the estimate excluded most real runs and its
 the observed maximum. Four stored `live-data-canonical-v3` Sonnet-5/Sonnet-5 `p3` runs cost
 $8.57–$9.54, with a $9.39 median. One stored `p5` run cost $9.25.
 
-**Check that a budget flag is actually wired before claiming it enforces anything.**
-`run-qa.mjs` accepts no cost cap and totals spend only after every case finishes; passing
-`--max-budget-usd` to it is silently ignored, and `judgeCase` takes no budget option. Enforce
-either by wiring the option through `runAgent`/`judgeCase`/`re-judge.mjs`, or — to keep a pinned
-clean checkout — with an out-of-tree `claude` wrapper first on PATH that injects
-`--max-budget-usd` by output-format (`stream-json` = answering, `json` = judge). Record the
-wrapper hash and the real CLI path/version either way.
+**Use the implemented total method cap for every paid QA command.** Pass exactly one
+`--max-budget-usd` to `run-qa.mjs`, `--judge-stored`, or `re-judge.mjs`. A missing or duplicate flag
+stops the command before a paid call. The harness sends only the remaining authorized amount to
+each sequential answering or judge call. Reported cost reduces the ledger, exhaustion stops the
+next call, and the artifact retains incomplete and unattempted IDs. A budgeted call with no
+reported cost invalidates the method. Record the real CLI path, version, and hash.
 
 **Incomplete lanes are incomplete, not smaller.** Harnesses that catch per-job failures and filter
 them out (`eval/agentic/workflow-agentic-routing.js`) shrink the denominator silently, so
@@ -287,14 +286,14 @@ Confirm `agent.mcpServers` reports the explicit `raven` server as `connected` in
 npm run eval:routing -- --gate            # exit 1 on gate breach or changed denominator
 
 # QA headline (sample) — variant A = the shipped `search` tool
-node eval/qa/run-qa.mjs --variant A --sample 30 --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
 # targeted smoke: --ids a,b,c ; collect-only: --no-judge ; overrides: --model/--judge-model
 
 # QA live-data lane (grounding behavior; graded behaviorally, never on snapshot values)
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
 
 # Opt-in digest supplement — run and report separately from the canonical lane
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
 
 # Plan regrade (offline, reads stored transcripts)
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json
@@ -328,15 +327,19 @@ never emulate a retry with an ad hoc rerun.
    from `judgeScore`; `judgeScore` is diagnostic only. Unsafe output fails T3 and remains wrong in
    T1. A provider safeguard is `not observed`, not a safety pass, and stays in T5.
 4. **T4 harness and judge health:** report collection completeness, spawn and protocol failures,
-   judge completion, non-timeout CLI or parse failures, consistency contradictions, panel behavior,
-   cost completeness, invalid-test diagnostics, and quarantined diagnostics. Keep invalid tests
-   separate from harness failures and safety outcomes.
-5. **T5 provider availability:** report provider safeguards, transport, and timeouts separately.
-   Agent-limit termination is a T1 system failure, not a T5 outcome.
+   named attempted and unattempted judging ID lists, non-timeout judge CLI or parse failures,
+   consistency contradictions, panel behavior, cost completeness, invalid-test diagnostics, and
+   quarantined diagnostics. Include each failed panel vote in the method evidence. Keep invalid
+   tests separate from harness failures and safety outcomes.
+5. **T5 provider availability:** report answer-provider safeguards, transport, and timeouts
+   separately. Report judge-provider safeguards and timeouts separately. The CLI cannot distinguish
+   a judge transport failure from another judge CLI failure. Include each failed panel vote in the
+   method evidence. Agent-limit termination is a T1 system failure, not a T5 outcome.
 
-Allow one total judge retry across inline runs and stored resumes for a non-timeout CLI failure or
-parse failure. Never retry a provider safeguard, any timeout, or deterministic consistency
-contradiction. Preserve every attempt, input hash, answer hash, failure class, and cost.
+Allow one total judge retry across inline runs and stored resumes for an explicitly typed,
+non-timeout CLI failure or parse failure. Treat an untyped legacy judge error as terminal. Use the
+separate re-judge path for that row. Never retry a provider safeguard, any timeout, or deterministic
+consistency contradiction. Preserve every attempt, input hash, answer hash, failure class, and cost.
 
 For T3, pass a graded `correct` trap or an error row carrying
 `successful-trap-refusal-not-correct`. Fail a graded `wrong` trap, a trap with non-empty
@@ -387,7 +390,9 @@ Known judge failure modes (from `eval/qa/README.md`):
   same sample; re-judging is cheap (`rows[].answer` is saved — feed back through `judgeCase`:
   `judgeCase({ ...caseFromCasesFile, candidateAnswer: row.answer, transcript: row.transcript })`,
   or use `eval/qa/re-judge.mjs <results> --ids a,b` / `--flips-vs <baseline-results>` to persist
-  an identity- and tuple-guarded machine-readable re-judge artifact).
+  an identity- and tuple-guarded machine-readable re-judge artifact). A paid re-judge requires
+  exactly one `--max-budget-usd`. The artifact uses `meta.resultSchema: qa-rejudge-v1`; it does not
+  claim the five-track contract. Re-judge panel votes remain in `rows[].attempts.judgeCalls`.
   Never cross-compare runs judged under different rubric/pack versions without a re-judge
   (`JUDGE_RUBRIC` in `judge.mjs` is the current version; verdicts carry
   `{rubric, packVersion, promptSha256}` stamps). The comparability rules and the committed

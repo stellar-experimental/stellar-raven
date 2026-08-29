@@ -85,6 +85,7 @@ import {
   buildTranscriptEvidence,
   hasSuccessfulAnswer,
   isRetryableJudgeError,
+  judgeInputSha256,
   judgeCase,
   judgeCaseTiered,
   createPanelCaseBudget,
@@ -141,6 +142,28 @@ import {
   loadPlainOperationSurface,
   operationIdFromPlainTool
 } from "./plain-operation-harness.mjs";
+import {
+  QA_TRACK_SCHEMA,
+  agentAttempts,
+  buildFiveTrackSummary,
+  costCompleteness,
+  formatFiveTrackSummary,
+  judgeAttempts,
+  rowOutcomeClass,
+  sha256Text
+} from "./five-track.mjs";
+import {
+  BudgetAuthorizationExceededError,
+  BudgetExhaustedError,
+  MissingReportedCostError,
+  authorizeSpend,
+  createSpendLedger,
+  formatBudgetUsd,
+  parseMaxBudgetUsd,
+  recordSpend,
+  resumeSpendLedger,
+  spendLedgerRecord
+} from "./spend-budget.mjs";
 
 // Variant→tool mapping post-ADR-0001: A (host-side ranked query) shipped as
 // `search` (the `search_ranked` A/B alias retired with the decision). B
@@ -172,16 +195,6 @@ function reportedCosts(rows, pick) {
   return rows.map(pick).filter((cost) => Number.isFinite(cost));
 }
 
-function verdictCallCount(verdict) {
-  return Number.isInteger(verdict?.meta?.panelSize) ? verdict.meta.panelSize : 1;
-}
-
-function verdictReportedCostCount(verdict) {
-  return Number.isInteger(verdict?.meta?.panelReportedCostCount)
-    ? verdict.meta.panelReportedCostCount
-    : Number.isFinite(verdict?.costUsd) ? 1 : 0;
-}
-
 /**
  * Spend provenance for one artifact. `judgeCase` can return a verdict with NO
  * costUsd when the provider omits cost data (eval/qa/judge.mjs), and the old
@@ -192,33 +205,6 @@ function verdictReportedCostCount(verdict) {
  * Expected judge calls counts rows that actually reached a judge (answerable AND
  * verdicted), so an unjudged row reads as unjudged rather than as a lost cost.
  */
-function costAccounting(rows, judgeAttempts = null) {
-  const judged = rows.filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure) && row.verdict != null);
-  const expectedJudgeCalls = Array.isArray(judgeAttempts)
-    ? judgeAttempts.reduce((sum, attempt) => sum + (Number.isInteger(attempt.callCount) ? attempt.callCount : 1), 0)
-    : judged.reduce((sum, row) => sum + verdictCallCount(row.verdict), 0);
-  const reportedJudgeCalls = Array.isArray(judgeAttempts)
-    ? judgeAttempts.reduce(
-        (sum, attempt) => sum + (Number.isInteger(attempt.reportedCostCount)
-          ? attempt.reportedCostCount
-          : Number.isFinite(attempt.costUsd) ? 1 : 0),
-        0
-      )
-    : judged.reduce((sum, row) => sum + verdictReportedCostCount(row.verdict), 0);
-  const judgeCosts = Array.isArray(judgeAttempts)
-    ? reportedCosts(judgeAttempts, (attempt) => attempt.costUsd)
-    : reportedCosts(judged, (row) => row.verdict?.costUsd);
-  const agentCosts = reportedCosts(rows, (row) => row.agent?.costUsd);
-  return {
-    expectedJudgeCalls,
-    reportedJudgeCalls,
-    missingJudgeCosts: expectedJudgeCalls - reportedJudgeCalls,
-    expectedAgentRuns: rows.length,
-    reportedAgentCosts: agentCosts.length,
-    missingAgentCosts: rows.length - agentCosts.length
-  };
-}
-
 export function parseJudgePanel(value) {
   if (value === undefined) return 1;
   const panelSize = Number(value);
@@ -226,6 +212,19 @@ export function parseJudgePanel(value) {
     throw new Error(`--judge-panel must be 2 or 3, got ${value}`);
   }
   return panelSize;
+}
+
+export function parseRequiredBudgetFlag(args, { label = "run-qa" } = {}) {
+  const indexes = args
+    .map((arg, index) => arg === "--max-budget-usd" ? index : -1)
+    .filter((index) => index !== -1);
+  if (indexes.length === 0) throw new Error(`${label} requires --max-budget-usd for every paid run`);
+  if (indexes.length > 1) throw new Error(`${label} accepts --max-budget-usd exactly once`);
+  const value = args[indexes[0] + 1];
+  if (value === undefined || value.startsWith("--")) {
+    throw new Error("--max-budget-usd requires a value");
+  }
+  return parseMaxBudgetUsd(value);
 }
 
 export function parseMaxPanelCases(value) {
@@ -466,16 +465,18 @@ export function formatMeasurementMetrics(metrics) {
 }
 
 /** Totals over REPORTED costs only, plus the counts that qualify them. */
-function costTotals(rows, judgeAttempts = null) {
-  const agentCosts = reportedCosts(rows, (row) => row.agent?.costUsd);
-  const judgeCosts = Array.isArray(judgeAttempts)
-    ? reportedCosts(judgeAttempts, (attempt) => attempt.costUsd)
+function costTotals(rows) {
+  const answerAttempts = rows.flatMap((row) => agentAttempts(row));
+  const storedJudgeAttempts = rows.flatMap((row) => judgeAttempts(row));
+  const agentCosts = reportedCosts(answerAttempts, (attempt) => attempt.costUsd);
+  const judgeCosts = storedJudgeAttempts.length
+    ? reportedCosts(storedJudgeAttempts, (attempt) => attempt.costUsd)
     : reportedCosts(rows, (row) => row.verdict?.costUsd);
   return {
     totalAgentCostUsd: sumReported(agentCosts),
     totalJudgeCostUsd: sumReported(judgeCosts),
     totalCostUsd: sumReported([...agentCosts, ...judgeCosts]),
-    costAccounting: costAccounting(rows, judgeAttempts)
+    costAccounting: costCompleteness(rows)
   };
 }
 
@@ -622,7 +623,8 @@ export function buildAgentSpawn({
   model,
   cwd,
   command = "claude",
-  environment = process.env
+  environment = process.env,
+  maxBudgetUsd = null
 }) {
   assertNeutralAgentCwd(cwd, { repoRoot: REPO_ROOT, label: "run-qa answering agent" });
   return {
@@ -637,6 +639,7 @@ export function buildAgentSpawn({
       "--mcp-config",
       mcpConfigPath,
       "--strict-mcp-config",
+      ...(maxBudgetUsd === null ? [] : ["--max-budget-usd", formatBudgetUsd(maxBudgetUsd)]),
       ...answeringAgentIsolationArgs(environment),
       "--allowedTools",
       allowedTools.join(","),
@@ -656,12 +659,19 @@ export function buildAgentSpawn({
 }
 
 /**
- * Run one answering agent ONCE and hand the raw spawn to the pure parser
- * (eval/qa/agent-result.mjs). There is deliberately no retry here: only a
- * `transport` failure is even eligible, and a provider safeguard must never be
- * re-issued in any form.
+ * Run one answering agent once and hand the raw spawn to the pure parser.
+ * The caller owns the transport-only retry and its total budget ledger.
  */
-function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, model, agentCwd, agentCommand }) {
+export function runAgent(question, {
+  surface,
+  searchTool,
+  allowedTools,
+  mcpConfigPath,
+  model,
+  agentCwd,
+  agentCommand,
+  maxBudgetUsd = null
+}) {
   const prompt = agentPrompt(question, { surface, searchTool });
   const spawn = buildAgentSpawn({
     prompt,
@@ -669,7 +679,8 @@ function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, 
     mcpConfigPath,
     model,
     cwd: agentCwd,
-    command: agentCommand
+    command: agentCommand,
+    maxBudgetUsd
   });
   const res = spawnSync(spawn.command, spawn.args, spawn.options);
   const searchToolNames =
@@ -677,7 +688,7 @@ function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, 
   const isSearchTool = (tool) => searchToolNames.includes(String(tool));
   const keepWholeResult = (tool) =>
     tool.endsWith("execute") || operationIdFromPlainTool(String(tool).replace(/^mcp__[^_]+__/, "")) !== null;
-  return parseAgentResult(
+  const parsed = parseAgentResult(
     {
       stdout: res.stdout ?? "",
       stderr: res.stderr ?? "",
@@ -702,6 +713,160 @@ function runAgent(question, { surface, searchTool, allowedTools, mcpConfigPath, 
       requiredMcpServerName: REQUIRED_MCP_SERVER_NAME
     }
   );
+  return {
+    ...parsed,
+    inputSha256: sha256(prompt),
+    answerSha256: sha256Text(parsed.answer)
+  };
+}
+
+function agentAttemptRecord(run, number, durationMs) {
+  return {
+    number,
+    inputSha256: run.inputSha256,
+    answerSha256: run.answerSha256,
+    failureClass: run.failure?.class ?? null,
+    costUsd: Number.isFinite(run.costUsd) ? run.costUsd : null,
+    answer: run.answer,
+    transcript: run.transcript,
+    agent: {
+      turns: run.turns,
+      costUsd: run.costUsd,
+      usage: run.usage,
+      mcpServers: run.mcpServers,
+      promptChars: run.promptChars,
+      stderr: run.stderr,
+      failure: run.failure
+    },
+    artifacts: run.artifacts,
+    durationMs
+  };
+}
+
+function budgetFailureVerdict(error, calls) {
+  return {
+    score: "error",
+    coreAnswer: null,
+    missingFacts: [],
+    wrongClaims: [],
+    avoidMatches: [],
+    consistencyViolations: [],
+    rationale: error.message,
+    failureClass: error instanceof BudgetExhaustedError ? "budget-exhausted" : "budget-cost",
+    rubric: JUDGE_RUBRIC,
+    packVersion: PACK_VERSION,
+    promptSha256: calls[0]?.inputSha256 ?? null
+  };
+}
+
+/** One judge method attempt. Its calls retain panel-call costs separately. */
+export async function runJudgeAttempt(
+  input,
+  {
+    number,
+    kind,
+    judgeModel,
+    judgePanel,
+    judge,
+    stabilityRegister,
+    panelBudget,
+    spendLedger
+  }
+) {
+  const calls = [];
+  const inputSha256 = judgeInputSha256(input);
+  const budgetedJudge = async (judgeInput, judgeOptions) => {
+    const callNumber = calls.length + 1;
+    const authorization = authorizeSpend(spendLedger, {
+      method: "judge",
+      id: input.id,
+      attempt: `${number}.${callNumber}`
+    });
+    const verdict = await judge(judgeInput, {
+      ...judgeOptions,
+      maxBudgetUsd: authorization.maxBudgetUsd
+    });
+    const call = {
+      number: callNumber,
+      inputSha256: verdict?.promptSha256 ?? inputSha256,
+      answerSha256: sha256Text(input.candidateAnswer),
+      failureClass: verdict?.failureClass ?? null,
+      costUsd: Number.isFinite(verdict?.costUsd) ? verdict.costUsd : null,
+      verdict
+    };
+    calls.push(call);
+    try {
+      recordSpend(spendLedger, authorization, verdict?.costUsd);
+    } catch (error) {
+      error.judgeCall = call;
+      throw error;
+    }
+    return verdict;
+  };
+  let verdict;
+  try {
+    verdict = await judgeCaseTiered(input, {
+      model: judgeModel,
+      judgePanel,
+      judge: budgetedJudge,
+      stabilityRegister,
+      panelBudget
+    });
+  } catch (error) {
+    if (calls.length === 0) throw error;
+    const attempt = {
+      number,
+      kind,
+      inputSha256,
+      answerSha256: sha256Text(input.candidateAnswer),
+      failureClass:
+        error instanceof BudgetExhaustedError ? "budget-exhausted" :
+          error instanceof MissingReportedCostError || error.code === "budget-cost" ? "budget-cost" : "harness",
+      costUsd: calls.some((call) => Number.isFinite(call.costUsd))
+        ? sumReported(calls.filter((call) => Number.isFinite(call.costUsd)).map((call) => call.costUsd))
+        : null,
+      verdict: budgetFailureVerdict(error, calls),
+      calls
+    };
+    error.judgeAttempt = attempt;
+    throw error;
+  }
+  return {
+    number,
+    kind,
+    inputSha256: verdict.promptSha256 ?? inputSha256,
+    answerSha256: sha256Text(input.candidateAnswer),
+    failureClass: verdict.failureClass ?? null,
+    costUsd: Number.isFinite(verdict.costUsd) ? verdict.costUsd : null,
+    verdict,
+    calls
+  };
+}
+
+/** Enforce one total eligible retry across inline and stored judging. */
+export async function judgeRowWithRetry(input, options, existingAttempts = []) {
+  const attempts = existingAttempts;
+  const onAttempt = options.onAttempt ?? (() => {});
+  const first = attempts[0] ?? null;
+  if (!first) {
+    const attempt = await runJudgeAttempt(input, {
+      ...options,
+      number: 1,
+      kind: "initial"
+    });
+    attempts.push(attempt);
+    await onAttempt(attempts);
+  }
+  if (attempts.length === 1 && isRetryableJudgeError(attempts[0].verdict)) {
+    const retry = await runJudgeAttempt(input, {
+      ...options,
+      number: 2,
+      kind: "retry"
+    });
+    attempts.push(retry);
+    await onAttempt(attempts);
+  }
+  return attempts;
 }
 
 function isRequiredMcpServerFailure(failure) {
@@ -709,6 +874,29 @@ function isRequiredMcpServerFailure(failure) {
     failure?.class === "protocol" &&
     String(failure.reason ?? "").startsWith(`required MCP server ${REQUIRED_MCP_SERVER_NAME}`)
   );
+}
+
+export function isRetryableAgentFailure(failure) {
+  return failure?.class === "transport" && failure.retryable === true;
+}
+
+/** Build the production five-track report from the immutable selected cases. */
+export function buildRunnerTracks({ selectedCases, rows, unjudgedSelectedIds = null }) {
+  const selectedIds = selectedCases.map((kase) => kase.id);
+  return buildFiveTrackSummary({
+    selectedIds,
+    selectedTrapIds: selectedCases.filter((kase) => Boolean(kase.tags?.trap)).map((kase) => kase.id),
+    rows,
+    unjudgedSelectedIds
+  });
+}
+
+/** Raw judge-score diagnostics are not the T1 quality or T3 safety report. */
+export function formatRawFirstAttemptDiagnostics(summary) {
+  return [
+    "raw first-attempt judge-score diagnostics (not T1 quality or T3 safety)",
+    formatSummaryTable(summary, { includeTraps: false })
+  ].join("\n");
 }
 
 export async function probeLiveSurface(port, { surface, searchTool, plainSurface }) {
@@ -793,6 +981,7 @@ export async function judgeStoredResults(
     maxPanelCases = null,
     maxPanelCasesSource = "explicit-override",
     stabilityRegister = loadJudgeStabilityRegister(),
+    maxBudgetUsd = null,
     log = console.log
   } = {}
 ) {
@@ -807,6 +996,22 @@ export async function judgeStoredResults(
     throw new Error("--judge-stored: results file has no rows[]");
   }
   const meta = results.meta ?? {};
+  for (const row of results.rows) {
+    const persistedAgentAttempts = agentAttempts(row);
+    const persistedJudgeAttempts = judgeAttempts(row);
+    row.attempts = {
+      agent: persistedAgentAttempts,
+      judge: persistedJudgeAttempts
+    };
+    row.firstAttempt ??= {
+      agent: persistedAgentAttempts.length ? 1 : null,
+      judge: persistedJudgeAttempts.length ? 1 : null,
+      inputSha256: persistedAgentAttempts[0]?.inputSha256 ?? null,
+      answerSha256: persistedAgentAttempts[0]?.answerSha256 ?? null
+    };
+    row.outcomeClass = rowOutcomeClass(row);
+  }
+  const spendLedger = resumeSpendLedger(maxBudgetUsd, meta.budget ?? null);
   const panelLimit = resolveStoredPanelCaseLimit({
     selectedCaseCount: results.rows.length,
     storedJudgeTiering: meta.judgeTiering,
@@ -866,15 +1071,17 @@ export async function judgeStoredResults(
     );
   }
 
-  // Judge-side CLI and parse errors on answered rows remain retryable — a
-  // failed call can still grade on the next attempt. Deterministic consistency
-  // errors are terminal (isRetryableJudgeError), and empty-answer error
-  // verdicts are collection facts that stay.
-  const unjudged = results.rows.filter(
-    (row) =>
-      typeof row.verdict?.score !== "string" ||
-      (isRetryableJudgeError(row.verdict) && hasSuccessfulAnswer(row.answer, row.agent?.failure))
-  );
+  // Explicit judge CLI and parse classes on answered rows remain retryable.
+  // Untyped legacy errors are terminal because their timeout and safeguard
+  // status cannot be reconstructed safely. Send those rows through re-judge.
+  const unjudged = results.rows.filter((row) => {
+    const attempts = row.attempts.judge;
+    if (!hasSuccessfulAnswer(row.answer, row.agent?.failure)) {
+      return typeof row.verdict?.score !== "string";
+    }
+    if (attempts.length === 0) return true;
+    return attempts.length === 1 && isRetryableJudgeError(attempts[0].verdict);
+  });
 
   // Every persisted state must be internally consistent, so finalize stamps
   // costs + summary and writes atomically. A resume that finds nothing left to
@@ -882,29 +1089,9 @@ export async function judgeStoredResults(
   // end-of-run write used to leave summary:null with stale costs and no way
   // back (re-running threw "nothing to judge").
   const priorJudgeStored = meta.judgeStored ?? {};
-  const judgeAttempts = Array.isArray(priorJudgeStored.attempts)
-    ? priorJudgeStored.attempts
-    : results.rows
-      .filter(
-        (row) =>
-          hasSuccessfulAnswer(row.answer, row.agent?.failure) &&
-          typeof row.verdict?.score === "string"
-      )
-      .map((row) => ({
-        id: row.id,
-        startedAt: null,
-        completedAt: null,
-        outcome: row.verdict.score,
-        costUsd: Number.isFinite(row.verdict.costUsd) ? row.verdict.costUsd : null,
-        ...(verdictCallCount(row.verdict) > 1
-          ? {
-              callCount: verdictCallCount(row.verdict),
-              reportedCostCount: verdictReportedCostCount(row.verdict)
-            }
-          : {}),
-        provenance: "recorded-before-judge-stored-v2"
-      }));
+  const incompleteJudgeIds = new Set(priorJudgeStored.incompleteIds ?? []);
   const paidIds = [];
+  let processedCount = 0;
   const existingPanelCounts = panelCaseCounts(results.rows);
   const panelBudget = createPanelCaseBudget(
     panelLimit.maxPanelCases,
@@ -913,9 +1100,9 @@ export async function judgeStoredResults(
   const sourceResultsSha256 = priorJudgeStored.sourceResultsSha256 ?? sha256(sourceText);
   const collectionAggregatesAllowed =
     meta.comparable !== false && meta.completeness?.aggregatesAllowed === true;
-  const initiallyJudgedIds = judgeAttempts
-    .filter((attempt) => attempt.outcome !== null)
-    .map((attempt) => attempt.id);
+  const initiallyJudgedIds = results.rows
+    .filter((row) => row.attempts.judge.length > 0)
+    .map((row) => row.id);
   const writeState = ({ withSummary }) => {
     meta.judgeModel = judgeModel;
     meta.judgeRubric = JUDGE_RUBRIC;
@@ -926,7 +1113,8 @@ export async function judgeStoredResults(
       panelLimit,
       rows: results.rows
     });
-    Object.assign(meta, costTotals(results.rows, judgeAttempts));
+    const totals = costTotals(results.rows);
+    Object.assign(meta, totals);
     // P4 for the two-phase path: the case snapshot is already guarded by
     // verifySourceCases, so what stays checkable here is the judged
     // denominator — a summary must never describe partly judged rows.
@@ -943,6 +1131,20 @@ export async function judgeStoredResults(
     if (aggregatesAllowed) Object.assign(meta, measurementMetrics);
     if (judgeBinary) meta.judgeBinary = judgeBinary;
     if (judgeEnvironment) meta.judgeEnvironment = judgeEnvironment;
+    meta.trackSchema = QA_TRACK_SCHEMA;
+    meta.selectedIds ??= results.rows.map((row) => row.id);
+    meta.unattemptedIds = meta.selectedIds.filter(
+      (id) => !results.rows.some((row) => row.id === id)
+    );
+    const unjudgedSelectedIds = results.rows
+      .filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure) && row.attempts.judge.length === 0)
+      .map((row) => row.id);
+    meta.tracks = buildRunnerTracks({
+      selectedCases: meta.selectedIds.map((id) => identity.caseById.get(id)),
+      rows: results.rows,
+      unjudgedSelectedIds
+    });
+    meta.budget = spendLedgerRecord(spendLedger);
     meta.judgeStored = {
       judgedAt: new Date().toISOString(),
       // Keep the ORIGINAL collection-time hash across resumes; re-hashing the
@@ -952,8 +1154,12 @@ export async function judgeStoredResults(
       judgedIds: [
         ...new Set([...(priorJudgeStored.judgedIds ?? []), ...initiallyJudgedIds, ...paidIds])
       ],
-      attempts: judgeAttempts,
-      toolVersion: "run-qa/judge-stored-v2"
+      unattemptedIds: unjudgedSelectedIds,
+      incompleteIds: [...incompleteJudgeIds],
+      attempts: results.rows.flatMap((row) =>
+        row.attempts.judge.map((attempt) => ({ id: row.id, ...attempt }))
+      ),
+      toolVersion: "run-qa/judge-stored-v3"
     };
     results.meta = meta;
     if (withSummary) {
@@ -977,6 +1183,7 @@ export async function judgeStoredResults(
     // leaving a paid file stuck with a null summary.
     writeState({ withSummary: true });
     log(`judge-stored: ${resultsPath} · nothing left to judge · finalized stamps + summary`);
+    log(formatFiveTrackSummary(meta.tracks));
     return {
       judgedCount: 0,
       summary: results.summary,
@@ -1028,33 +1235,44 @@ export async function judgeStoredResults(
           `--judge-stored: row ${row.id} evidence pack no longer reproduces its collection-time hash (recorded ${row.evidencePack?.sha256 ?? "absent"}, rebuilt ${packSha ?? "null"}) — the pack builder changed since collection; re-collect`
         );
       }
-      const attempt = {
-        id: row.id,
-        startedAt: new Date().toISOString(),
-        completedAt: null,
-        outcome: null,
-        costUsd: null,
-        ...(judgePanel > 1 ? { callCount: judgePanel, reportedCostCount: 0 } : {})
-      };
-      judgeAttempts.push(attempt);
-      // The attempt and judge tuple must reach durable storage before spend.
-      writeState({ withSummary: false });
-      row.verdict = await judgeCaseTiered(
-        { ...kase, candidateAnswer: row.answer, transcript: row.transcript, transcriptEvidence },
-        {
-          model: judgeModel,
-          judgePanel,
-          judge,
-          stabilityRegister,
-          panelBudget
-        }
-      );
-      attempt.completedAt = new Date().toISOString();
-      attempt.outcome = row.verdict.score ?? "error";
-      attempt.costUsd = Number.isFinite(row.verdict.costUsd) ? row.verdict.costUsd : null;
-      attempt.callCount = verdictCallCount(row.verdict);
-      attempt.reportedCostCount = verdictReportedCostCount(row.verdict);
+      try {
+        await judgeRowWithRetry(
+          { ...kase, candidateAnswer: row.answer, transcript: row.transcript, transcriptEvidence },
+          {
+            judgeModel,
+            judgePanel,
+            judge,
+            stabilityRegister,
+            panelBudget,
+            spendLedger,
+            onAttempt: () => {
+              row.verdict ??= row.attempts.judge[0]?.verdict ?? null;
+              row.firstAttempt.judge = row.attempts.judge.length ? 1 : null;
+              row.outcomeClass = rowOutcomeClass(row);
+              writeState({ withSummary: false });
+            }
+          },
+          row.attempts.judge
+        );
+      } catch (error) {
+        if (error.judgeAttempt) row.attempts.judge.push(error.judgeAttempt);
+        if (
+          error instanceof MissingReportedCostError ||
+          error instanceof BudgetAuthorizationExceededError ||
+          (error instanceof BudgetExhaustedError && error.judgeAttempt)
+        ) incompleteJudgeIds.add(row.id);
+        row.verdict ??= row.attempts.judge[0]?.verdict ?? null;
+        row.firstAttempt.judge = row.attempts.judge.length ? 1 : null;
+        row.outcomeClass = rowOutcomeClass(row);
+        writeState({ withSummary: true });
+        if (error instanceof BudgetExhaustedError) break;
+        throw error;
+      }
+      row.verdict ??= row.attempts.judge[0]?.verdict ?? null;
+      row.firstAttempt.judge = row.attempts.judge.length ? 1 : null;
+      row.outcomeClass = rowOutcomeClass(row);
       paidIds.push(row.id);
+      processedCount += 1;
       // Persist after every judged row: a crash on row N keeps rows 1..N-1's
       // paid verdicts on disk (the run resumes as judge-all-unjudged).
       writeState({ withSummary: true });
@@ -1065,12 +1283,15 @@ export async function judgeStoredResults(
     } else {
       // Mirror the inline no-answer verdict exactly.
       row.verdict = buildAgentErrorVerdict(row.agent?.failure);
+      row.outcomeClass = rowOutcomeClass(row);
+      processedCount += 1;
     }
   }
 
   writeState({ withSummary: true });
+  log(formatFiveTrackSummary(meta.tracks));
   return {
-    judgedCount: unjudged.length,
+    judgedCount: processedCount,
     summary: results.summary,
     metrics: meta.aggregatesSuppressed
       ? null
@@ -1138,6 +1359,7 @@ async function main() {
       ? path.resolve(process.cwd(), stabilityRegisterArgument)
       : null
   });
+  const maxBudgetUsd = parseRequiredBudgetFlag(args);
   const judgeStoredPath = argVal("--judge-stored");
   if (judgeStoredPath) {
     if (args.includes("--no-judge")) throw new Error("--judge-stored and --no-judge are contradictory");
@@ -1150,9 +1372,10 @@ async function main() {
       judgeEnvironment: inheritedAgentEnvironment,
       maxPanelCases: maxPanelCasesOverride,
       maxPanelCasesSource,
-      stabilityRegister
+      stabilityRegister,
+      maxBudgetUsd
     });
-    console.log("\n" + formatSummaryTable(summary));
+    if (summary) console.log("\n" + formatRawFirstAttemptDiagnostics(summary));
     if (metrics) console.log(formatMeasurementMetrics(metrics));
     console.log(formatPanelSummary(judgeTiering, "after"));
     return;
@@ -1173,6 +1396,7 @@ async function main() {
   const judgePanel = parseJudgePanel(argVal("--judge-panel"));
   const stabilityRegister = prepareStabilityRegister();
   const noJudge = args.includes("--no-judge");
+  const spendLedger = createSpendLedger(maxBudgetUsd);
   const serverRevision = assertPinnedServerRevision(argVal("--server-revision"));
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
   const casesPath = argVal("--cases") ?? path.join(QA_DIR, "cases.json");
@@ -1244,6 +1468,7 @@ async function main() {
       : [`mcp__raven__${searchTool}`, "mcp__raven__execute"];
 
   const rows = [];
+  const incompleteIds = new Set();
   const startedAt = new Date().toISOString();
   let collectionError = null;
   let postflightResult;
@@ -1256,36 +1481,87 @@ async function main() {
     for (const [i, c] of cases.entries()) {
       const t0 = Date.now();
       process.stdout.write(`[${i + 1}/${cases.length}] ${c.id} … `);
-      const run = runAgent(c.question, {
-        surface,
-        searchTool,
-        allowedTools,
-        mcpConfigPath,
-        model,
-        agentCwd,
-        agentCommand: agentBinary.resolvedPath
-      });
-      const successfulAnswer = hasSuccessfulAnswer(run.answer, run.failure);
+      const answerAttempts = [];
+      const rowJudgeAttempts = [];
+      let stopError = null;
+      for (let attemptNumber = 1; attemptNumber <= 2; attemptNumber++) {
+        let authorization;
+        try {
+          authorization = authorizeSpend(spendLedger, {
+            method: "agent",
+            id: c.id,
+            attempt: attemptNumber
+          });
+        } catch (error) {
+          stopError = error;
+          break;
+        }
+        const attemptStartedAt = Date.now();
+        const run = runAgent(c.question, {
+          surface,
+          searchTool,
+          allowedTools,
+          mcpConfigPath,
+          model,
+          agentCwd,
+          agentCommand: agentBinary.resolvedPath,
+          maxBudgetUsd: authorization.maxBudgetUsd
+        });
+        const attempt = agentAttemptRecord(run, attemptNumber, Date.now() - attemptStartedAt);
+        answerAttempts.push(attempt);
+        try {
+          recordSpend(spendLedger, authorization, run.costUsd);
+        } catch (error) {
+          stopError = error;
+          break;
+        }
+        if (attemptNumber === 1 && isRetryableAgentFailure(run.failure)) {
+          continue;
+        }
+        break;
+      }
+      if (answerAttempts.length === 0) throw stopError;
+      const firstAttempt = answerAttempts[0];
+      const successfulAnswer = hasSuccessfulAnswer(firstAttempt.answer, firstAttempt.agent?.failure);
       const transcriptEvidence = successfulAnswer
-        ? buildTranscriptEvidence({ ...c, candidateAnswer: run.answer, transcript: run.transcript })
+        ? buildTranscriptEvidence({
+            ...c,
+            candidateAnswer: firstAttempt.answer,
+            transcript: firstAttempt.transcript
+          })
         : "";
       let verdict = null;
       if (!noJudge) {
-        verdict = successfulAnswer
-          ? await judgeCaseTiered(
-              { ...c, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
+        if (successfulAnswer && !stopError) {
+          try {
+            await judgeRowWithRetry(
               {
-                model: judgeModel,
+                ...c,
+                candidateAnswer: firstAttempt.answer,
+                transcript: firstAttempt.transcript,
+                transcriptEvidence
+              },
+              {
+                judgeModel,
                 judgePanel,
                 judge: safeJudge,
                 stabilityRegister,
-                panelBudget
-              }
-            )
-          : buildAgentErrorVerdict(run.failure);
+                panelBudget,
+                spendLedger
+              },
+              rowJudgeAttempts
+            );
+          } catch (error) {
+            if (error.judgeAttempt) rowJudgeAttempts.push(error.judgeAttempt);
+            stopError = error;
+          }
+          verdict = rowJudgeAttempts[0]?.verdict ?? null;
+        } else if (!successfulAnswer) {
+          verdict = buildAgentErrorVerdict(firstAttempt.agent?.failure);
+        }
       }
       const durationMs = Date.now() - t0;
-      rows.push({
+      const row = {
         id: c.id,
         question: c.question,
         caseInput: caseInputPayload(c),
@@ -1295,39 +1571,57 @@ async function main() {
           status: c.truth.status,
           ...(c.truth.asOf ? { asOf: c.truth.asOf } : {})
         },
-        answer: run.answer,
-        transcript: run.transcript,
+        answer: firstAttempt.answer,
+        transcript: firstAttempt.transcript,
         agent: {
           model,
-          turns: run.turns,
-          costUsd: run.costUsd,
-          usage: run.usage,
-          mcpServers: run.mcpServers,
-          promptChars: run.promptChars,
-          stderr: run.stderr,
+          ...firstAttempt.agent,
+          inputSha256: firstAttempt.inputSha256,
+          answerSha256: firstAttempt.answerSha256,
           // ONE failure field. A row is failed iff this is non-null.
-          failure: run.failure
+          failure: firstAttempt.agent?.failure ?? null
         },
         // Derived artifact-continuation outcomes (handles, info/read calls,
         // read failures by host reason, bounded final projection). Model-facing
         // MCP results are unaffected — this is eval-side evidence only.
-        artifacts: run.artifacts,
+        artifacts: firstAttempt.artifacts,
         verdict,
         evidencePack: {
           packVersion: PACK_VERSION,
           chars: transcriptEvidence.length,
           sha256: transcriptEvidence ? sha256(transcriptEvidence) : null
         },
-        durationMs
-      });
+        durationMs,
+        attempts: {
+          agent: answerAttempts,
+          judge: rowJudgeAttempts
+        },
+        firstAttempt: {
+          agent: 1,
+          judge: rowJudgeAttempts.length ? 1 : null,
+          inputSha256: firstAttempt.inputSha256,
+          answerSha256: firstAttempt.answerSha256
+        }
+      };
+      row.outcomeClass = rowOutcomeClass(row);
+      if (
+        answerAttempts.length > 0 && (
+          stopError instanceof BudgetExhaustedError ||
+          stopError instanceof MissingReportedCostError ||
+          stopError instanceof BudgetAuthorizationExceededError
+        )
+      ) incompleteIds.add(c.id);
+      rows.push(row);
       console.log(
         `${verdict ? verdict.score : "answered"}` +
         `${verdict?.meta?.judgeTierUsed ? ` [${verdict.meta.judgeTierUsed}${verdict.meta.escalationReason ? `:${verdict.meta.escalationReason}` : ""}]` : ""} ` +
-        `(${run.transcript.length} tool calls, ${Math.round(durationMs / 1000)}s)`
+        `(${firstAttempt.transcript.length} tool calls, ${answerAttempts.length} agent attempt(s), ` +
+        `${rowJudgeAttempts.length} judge attempt(s), ${Math.round(durationMs / 1000)}s)`
       );
-      if (isRequiredMcpServerFailure(run.failure)) {
-        throw new Error(`answering harness failed: ${run.failure.reason}`);
+      if (isRequiredMcpServerFailure(firstAttempt.agent?.failure)) {
+        throw new Error(`answering harness failed: ${firstAttempt.agent.failure.reason}`);
       }
+      if (stopError) throw stopError;
     }
   } catch (error) {
     collectionError = error;
@@ -1370,6 +1664,11 @@ async function main() {
       };
   const summary = comparable ? aggregates.summary : null;
   const metrics = comparable ? aggregates.metrics : null;
+  const selectedIds = cases.map((c) => c.id);
+  const unattemptedIds = selectedIds.filter((id) => !rows.some((row) => row.id === id));
+  const totals = costTotals(rows);
+  const tracks = buildRunnerTracks({ selectedCases: cases, rows });
+  const budget = spendLedgerRecord(spendLedger);
   const stampSuffix = surface === "per-operation" ? "perOperation" : `variant${variant}`;
   const stamp = `${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}-${stampSuffix}`;
   const resultsDir = path.join(QA_DIR, "results");
@@ -1380,6 +1679,7 @@ async function main() {
     JSON.stringify(
       {
         meta: {
+          trackSchema: QA_TRACK_SCHEMA,
           variant: surface === "search-execute" ? variant : null,
           surface,
           searchTool: surface === "search-execute" ? searchTool : null,
@@ -1408,6 +1708,9 @@ async function main() {
           startedAt,
           finishedAt: new Date().toISOString(),
           caseCount: rows.length,
+          selectedIds,
+          unattemptedIds,
+          incompleteIds: [...incompleteIds],
           // Prompt-append experiments (QA_AGENT_PROMPT_APPEND) are invisible on
           // the wire without this: stamp exactly what the answering prompt
           // carried so arms are auditable from the artifact alone.
@@ -1454,8 +1757,10 @@ async function main() {
             isolation: answeringAgentIsolationRecord(),
             inherited: inheritedAgentEnvironment
           },
+          tracks,
+          budget,
           ...(metrics ?? {}),
-          ...costTotals(rows)
+          ...totals
         },
         summary,
         rows
@@ -1464,16 +1769,12 @@ async function main() {
       2
     ) + "\n"
   );
-  if (!comparable) {
-    throw new Error(
-      `QA collection is non-comparable; saved evidence at ${outPath}: ${comparabilityReasons.join("; ")}`
-    );
-  }
   console.log(`\nwrote ${outPath}`);
+  console.log("\n" + formatFiveTrackSummary(tracks));
   if (!completeness.aggregatesAllowed) {
     console.log("\n" + formatCompletenessNotice(completeness, { label: "run-qa collection" }));
   } else if (summary) {
-    console.log("\n" + formatSummaryTable(summary));
+    console.log("\n" + formatRawFirstAttemptDiagnostics(summary));
     console.log(formatMeasurementMetrics(metrics));
   }
   if (!noJudge) {
@@ -1483,6 +1784,11 @@ async function main() {
       panelLimit,
       rows
     }), "after"));
+  }
+  if (!comparable) {
+    throw new Error(
+      `QA collection is non-comparable; saved evidence at ${outPath}: ${comparabilityReasons.join("; ")}`
+    );
   }
 }
 

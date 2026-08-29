@@ -50,6 +50,10 @@ export const DEFAULT_PANEL_CASE_DIVISOR = 3;
 export const DEFAULT_PANEL_CASE_FLOOR = 10;
 export const DEFAULT_PANEL_CASE_CEILING = 34;
 const PANEL_SCORES_WORST_FIRST = ["error", "wrong", "partial", "correct"];
+const PROVIDER_SAFEGUARD_MARKERS = [
+  "safeguards flagged this message",
+  "real-time-cyber-safeguards-on-claude"
+];
 
 /**
  * Rubric version, stamped into every verdict. Bump whenever the judge prompt
@@ -85,13 +89,11 @@ export const JUDGE_RUBRIC = "v2.9";
  * call itself failed, so re-issuing it can still produce a grade. A
  * consistency error is the opposite. The judge answered, and the answer
  * contradicted itself under a deterministic rule, so the same prompt stays
- * terminal. Re-issuing it would spend again on every resume and the row would
- * never leave the unjudged set. The raw grade kept as `judgeScore` is present
- * on exactly that path, so it is the marker; the CLI-failure and
- * unparseable-verdict paths never set it.
+ * terminal. The explicit failure class also keeps provider safeguards and
+ * timeouts terminal.
  */
 export function isRetryableJudgeError(verdict) {
-  return verdict?.score === "error" && typeof verdict.judgeScore !== "string";
+  return verdict?.score === "error" && ["cli", "parse"].includes(verdict.failureClass);
 }
 
 /** A row is judgeable only when collection produced an answer without a failure. */
@@ -490,6 +492,14 @@ Output ONLY this JSON object, with the fields in exactly this order, nothing els
 {"rationale": "${rationaleSchema}", "coreAnswer": "correct|incorrect", "missingFacts": ["${missingFactsSchema}"], "wrongClaims": ["candidate claims that are wrong/fabricated"], "avoidMatches": [1], "score": "correct|partial|wrong"}`;
 }
 
+export function judgeInputSha256(input) {
+  const transcriptEvidence =
+    typeof input.transcriptEvidence === "string"
+      ? input.transcriptEvidence
+      : buildTranscriptEvidence(input);
+  return sha256(buildJudgePrompt({ ...input, transcriptEvidence }));
+}
+
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
@@ -540,6 +550,11 @@ function buildCliFailure(res, envelope) {
   };
 }
 
+function isProviderSafeguardEvidence(...values) {
+  const text = values.map((value) => decodeCliEvidenceText(value ?? "")).join("\n").toLowerCase();
+  return PROVIDER_SAFEGUARD_MARKERS.some((marker) => text.includes(marker));
+}
+
 /**
  * Grade one candidate answer. Synchronous under the hood (spawnSync) but
  * exported async so callers can swap in a parallel implementation later.
@@ -551,7 +566,8 @@ export async function judgeCase(
     timeoutMs = 180_000,
     maxBuffer = 32 * 1024 * 1024,
     command = "claude",
-    safeMode = true
+    safeMode = true,
+    maxBudgetUsd = null
   } = {}
 ) {
   const transcriptEvidence =
@@ -562,7 +578,7 @@ export async function judgeCase(
   const promptSha256 = sha256(prompt);
   const res = spawnSync(
     command,
-    buildJudgeArgs({ model, safeMode }),
+    buildJudgeArgs({ model, safeMode, maxBudgetUsd }),
     { input: prompt, timeout: timeoutMs, maxBuffer }
   );
   if (res.error || res.status !== 0) {
@@ -570,6 +586,11 @@ export async function judgeCase(
     const stderrEnvelope = parseJsonStream(res.stderr);
     const cliFailure = buildCliFailure(res, stdoutEnvelope);
     const failureCostUsd = resolveFailureCost(stdoutEnvelope, stderrEnvelope);
+    const failureClass = cliFailure.kind === "timeout"
+      ? "timeout"
+      : isProviderSafeguardEvidence(res.stdout, res.stderr)
+        ? "provider-safeguard"
+        : "cli";
     return {
       score: "error",
       coreAnswer: null,
@@ -579,6 +600,7 @@ export async function judgeCase(
       consistencyViolations: [],
       rationale: cliFailure.message,
       ...(failureCostUsd === undefined ? {} : { costUsd: failureCostUsd }),
+      failureClass,
       cliFailure,
       rubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
@@ -608,6 +630,7 @@ export async function judgeCase(
       consistencyViolations: [],
       rationale: sanitizeBoundedText(`judge returned unparseable verdict: ${String(resultText)}`, 512),
       ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
+      failureClass: isProviderSafeguardEvidence(resultText) ? "provider-safeguard" : "parse",
       rubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,
       promptSha256
@@ -647,6 +670,7 @@ export async function judgeCase(
         // the contradicted coreAnswer has no such meaning and is not kept.
         coreAnswer: null,
         score: "error",
+        failureClass: "consistency",
         judgeScore: normalizedVerdict.score,
         consistencyViolations: consistency.violations
       };
@@ -660,7 +684,10 @@ export async function judgeCase(
 }
 
 /** Exact Claude arguments for a judge, which never needs MCP access. */
-export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true } = {}) {
+export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true, maxBudgetUsd = null } = {}) {
+  if (maxBudgetUsd !== null && (!Number.isFinite(maxBudgetUsd) || maxBudgetUsd < 0)) {
+    throw new Error(`maxBudgetUsd must be null or a finite non-negative number, got ${maxBudgetUsd}`);
+  }
   return [
     "-p",
     "--model",
@@ -668,6 +695,7 @@ export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true } = {}) {
     "--output-format",
     "json",
     "--strict-mcp-config",
+    ...(maxBudgetUsd === null ? [] : ["--max-budget-usd", String(maxBudgetUsd)]),
     ...(safeMode ? ["--safe-mode"] : [])
   ];
 }

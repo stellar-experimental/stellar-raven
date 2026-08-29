@@ -27,6 +27,7 @@ import {
   buildAgentErrorVerdict,
   buildTranscriptEvidence,
   hasSuccessfulAnswer,
+  judgeInputSha256,
   judgeCase,
   judgeCasePanel,
   JUDGE_MODEL,
@@ -38,10 +39,22 @@ import {
   assertNotPlaygroundQuarantine,
   assertPlaygroundArtifactMeta
 } from "../playground/artifact-contract.mjs";
+import { sha256Text } from "./five-track.mjs";
+import {
+  BudgetAuthorizationExceededError,
+  BudgetExhaustedError,
+  MissingReportedCostError,
+  authorizeSpend,
+  createSpendLedger,
+  parseMaxBudgetUsd,
+  recordSpend,
+  spendLedgerRecord
+} from "./spend-budget.mjs";
 
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
-const TOOL_VERSION = "re-judge/v4";
+const TOOL_VERSION = "re-judge/v5";
+export const REJUDGE_RESULT_SCHEMA = "qa-rejudge-v1";
 const GIT_MAX_BUFFER = 32 * 1024 * 1024;
 
 function sha256(value) {
@@ -104,7 +117,7 @@ export function verdictAgreement(original, next) {
   return before === after;
 }
 
-function parseArgs(argv) {
+export function parseArgs(argv) {
   const positional = [];
   let ids;
   let flipsVs;
@@ -115,6 +128,8 @@ function parseArgs(argv) {
   let allowGoldenDrift = false;
   let allowEmpty = false;
   let dryRun = false;
+  let maxBudgetUsd = null;
+  let maxBudgetFlags = 0;
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -147,8 +162,14 @@ function parseArgs(argv) {
       allowEmpty = true;
     } else if (arg === "--dry-run") {
       dryRun = true;
+    } else if (arg === "--max-budget-usd") {
+      maxBudgetFlags += 1;
+      if (maxBudgetFlags > 1) fail("--max-budget-usd must appear exactly once");
+      const value = argv[++i];
+      if (value === undefined || value.startsWith("--")) fail("--max-budget-usd requires a value");
+      maxBudgetUsd = parseMaxBudgetUsd(value);
     } else if (arg === "--help" || arg === "-h") {
-      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
+      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--max-budget-usd <usd>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
       process.exit(0);
     } else if (arg.startsWith("--")) {
       fail(`unknown flag ${arg}`);
@@ -161,6 +182,9 @@ function parseArgs(argv) {
   if ((ids !== undefined) === (flipsVs !== undefined)) {
     fail("provide exactly one of --ids or --flips-vs <baseline-results.json>");
   }
+  if (!dryRun && maxBudgetFlags === 0) {
+    fail("re-judge requires --max-budget-usd for every paid run");
+  }
   return {
     resultsPath: positional[0],
     ids,
@@ -171,7 +195,8 @@ function parseArgs(argv) {
     allowNonIdentical,
     allowGoldenDrift,
     allowEmpty,
-    dryRun
+    dryRun,
+    maxBudgetUsd
   };
 }
 
@@ -443,18 +468,56 @@ export function baselineRefusalReasons(guard) {
   return reasons;
 }
 export function judgeCostAccounting(rows, expectedJudgeCalls) {
-  const reportedCosts = rows.map((row) => row.new?.costUsd).filter((cost) => Number.isFinite(cost));
-  const reportedJudgeCalls = rows.reduce(
-    (sum, row) => sum + (Number.isInteger(row.new?.meta?.panelReportedCostCount)
-      ? row.new.meta.panelReportedCostCount
-      : Number.isFinite(row.new?.costUsd) ? 1 : 0),
+  const calls = rows.flatMap((row) => Array.isArray(row.attempts?.judgeCalls) ? row.attempts.judgeCalls : []);
+  const reportedCosts = calls.length
+    ? calls.map((call) => call.costUsd).filter((cost) => Number.isFinite(cost))
+    : rows.map((row) => row.new?.costUsd).filter((cost) => Number.isFinite(cost));
+  const reportedJudgeCosts = calls.length
+    ? reportedCosts.length
+    : rows.reduce(
+        (sum, row) => sum + (Number.isInteger(row.new?.meta?.panelReportedCostCount)
+          ? row.new.meta.panelReportedCostCount
+          : Number.isFinite(row.new?.costUsd) ? 1 : 0),
+        0
+      );
+  return {
+    expectedAgentCalls: 0,
+    reportedAgentCosts: 0,
+    missingAgentCosts: 0,
+    expectedJudgeCalls,
+    reportedJudgeCosts,
+    missingJudgeCosts: expectedJudgeCalls - reportedJudgeCosts,
+    complete: expectedJudgeCalls === reportedJudgeCosts
+  };
+}
+
+function totalRejudgeCostUsd(rows) {
+  const calls = rows.flatMap((row) => Array.isArray(row.attempts?.judgeCalls) ? row.attempts.judgeCalls : []);
+  const costs = calls.length
+    ? calls.map((call) => call.costUsd).filter((cost) => Number.isFinite(cost))
+    : rows.map((row) => row.new?.costUsd).filter((cost) => Number.isFinite(cost));
+  return Number(costs.reduce((sum, cost) => sum + cost, 0).toFixed(12));
+}
+
+export function buildRejudgeArtifact({ baseMeta, rows, spendLedger, runState, finishedAt = null }) {
+  const actualJudgeCalls = rows.reduce(
+    (sum, row) => sum + (Array.isArray(row.attempts?.judgeCalls) ? row.attempts.judgeCalls.length : 0),
     0
   );
   return {
-    expectedJudgeCalls,
-    reportedJudgeCalls,
-    missingJudgeCosts: expectedJudgeCalls - reportedJudgeCalls,
-    totalJudgeCostUsd: Number(reportedCosts.reduce((sum, cost) => sum + cost, 0).toFixed(12))
+    meta: {
+      ...baseMeta,
+      resultSchema: REJUDGE_RESULT_SCHEMA,
+      completedIds: rows.map((row) => row.id),
+      promptSha256ById: Object.fromEntries(rows.map((row) => [row.id, row.new.promptSha256 ?? null])),
+      costAccounting: judgeCostAccounting(rows, actualJudgeCalls),
+      totalJudgeCostUsd: totalRejudgeCostUsd(rows),
+      budget: spendLedgerRecord(spendLedger),
+      incompleteIds: runState.incompleteIds,
+      unattemptedIds: runState.unattemptedIds,
+      finishedAt
+    },
+    rows
   };
 }
 
@@ -521,7 +584,9 @@ export async function rejudgeRows({
   judgePanel = 1,
   judge = judgeCase,
   checkpoint,
-  log = console.log
+  log = console.log,
+  spendLedger = createSpendLedger(),
+  runState = {}
 }) {
   const rows = [];
   for (const [index, row] of selectedRows.entries()) {
@@ -546,10 +611,79 @@ export async function rejudgeRows({
       continue;
     }
     if (!Array.isArray(row.transcript)) fail(`source results row ${row.id} has no saved transcript array`);
-    const verdict = await judgeCasePanel(
-      { ...kase, candidateAnswer: row.answer, transcript: row.transcript },
-      { model: judgeModel, panelSize: judgePanel, judge }
-    );
+    const calls = [];
+    const inputSha256 = judgeInputSha256({
+      ...kase,
+      candidateAnswer: row.answer,
+      transcript: row.transcript
+    });
+    const budgetedJudge = async (input, options) => {
+      const authorization = authorizeSpend(spendLedger, {
+        method: "re-judge",
+        id: row.id,
+        attempt: calls.length + 1
+      });
+      const verdict = await judge(input, {
+        ...options,
+        maxBudgetUsd: authorization.maxBudgetUsd
+      });
+      const call = {
+        number: calls.length + 1,
+        inputSha256: verdict?.promptSha256 ?? inputSha256,
+        answerSha256: sha256Text(row.answer),
+        failureClass: verdict?.failureClass ?? null,
+        costUsd: Number.isFinite(verdict?.costUsd) ? verdict.costUsd : null,
+        verdict
+      };
+      calls.push(call);
+      try {
+        recordSpend(spendLedger, authorization, verdict?.costUsd);
+      } catch (error) {
+        error.rejudgeCall = call;
+        throw error;
+      }
+      return verdict;
+    };
+    let verdict;
+    try {
+      verdict = await judgeCasePanel(
+        { ...kase, candidateAnswer: row.answer, transcript: row.transcript },
+        { model: judgeModel, panelSize: judgePanel, judge: budgetedJudge }
+      );
+    } catch (error) {
+      const budgetEnforcementError =
+        error instanceof BudgetExhaustedError ||
+        error instanceof MissingReportedCostError ||
+        error instanceof BudgetAuthorizationExceededError;
+      if (error instanceof BudgetExhaustedError && calls.length === 0) {
+        runState.stopError = error;
+        runState.unattemptedIds = selectedRows.slice(index).map((item) => item.id);
+        break;
+      }
+      if (calls.length > 0) {
+        if (budgetEnforcementError) {
+          runState.stopError = error;
+          runState.incompleteIds = [row.id];
+          runState.unattemptedIds = selectedRows.slice(index + 1).map((item) => item.id);
+        }
+        const preserved = {
+          score: "error",
+          failureClass: error.code ?? "budget-cost",
+          rationale: error.message
+        };
+        rows.push({
+          id: row.id,
+          original: row.verdict,
+          new: preserved,
+          agreement: verdictAgreement(row.verdict, preserved),
+          attempts: { judgeCalls: calls },
+          evidencePack: { packVersion: PACK_VERSION, chars: 0, sha256: null }
+        });
+        await checkpoint(rows);
+      }
+      if (error instanceof BudgetExhaustedError) break;
+      throw error;
+    }
     const transcriptEvidence = buildTranscriptEvidence({
       ...kase,
       candidateAnswer: row.answer,
@@ -560,6 +694,7 @@ export async function rejudgeRows({
       original: row.verdict,
       new: verdict,
       agreement: verdictAgreement(row.verdict, verdict),
+      attempts: { judgeCalls: calls },
       evidencePack: {
         packVersion: PACK_VERSION,
         chars: transcriptEvidence.length,
@@ -651,6 +786,8 @@ async function main() {
   }
 
   const startedAt = new Date().toISOString();
+  const spendLedger = createSpendLedger(options.maxBudgetUsd);
+  const runState = { stopError: null, incompleteIds: [], unattemptedIds: [] };
   const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
   const resultsDir = path.join(QA_DIR, "results");
   const outPath = path.join(resultsDir, `${stamp}-rejudge.json`);
@@ -689,19 +826,7 @@ async function main() {
   };
   mkdirSync(resultsDir, { recursive: true });
   const writeCheckpoint = (rows, finishedAt = null) => {
-    const artifact = {
-      meta: {
-        ...baseMeta,
-        completedIds: rows.map((row) => row.id),
-        promptSha256ById: Object.fromEntries(rows.map((row) => [row.id, row.new.promptSha256 ?? null])),
-        costs: judgeCostAccounting(
-          rows,
-          selection.rows.filter((row) => !isUngradeableSavedRow(row)).length * options.judgePanel
-        ),
-        finishedAt
-      },
-      rows
-    };
+    const artifact = buildRejudgeArtifact({ baseMeta, rows, spendLedger, runState, finishedAt });
     const tmpPath = `${outPath}.tmp`;
     writeFileSync(tmpPath, JSON.stringify(artifact, null, 2) + "\n");
     renameSync(tmpPath, outPath);
@@ -713,7 +838,9 @@ async function main() {
     judgeModel: options.judgeModel,
     judgePanel: options.judgePanel,
     checkpoint: (completedRows) => writeCheckpoint(completedRows),
-    log: (message) => console.log(message)
+    log: (message) => console.log(message),
+    spendLedger,
+    runState
   });
   writeCheckpoint(rows, new Date().toISOString());
   console.log(`wrote ${outPath}`);

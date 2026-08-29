@@ -262,9 +262,11 @@ describe("QA verdict consistency", () => {
   // judge's own answer contradicting itself under a deterministic rule, so the
   // same prompt produces the same error and the row is terminal.
   it.each([
-    ["cli failure", { score: "error", rationale: "judge CLI failed: exit 1" }, true],
-    ["unparseable verdict", { score: "error", rationale: "judge returned unparseable verdict:" }, true],
-    ["consistency error", { score: "error", judgeScore: "wrong", consistencyViolations: ["omission-only-wrong"] }, false],
+    ["cli failure", { score: "error", failureClass: "cli" }, true],
+    ["unparseable verdict", { score: "error", failureClass: "parse" }, true],
+    ["timeout", { score: "error", failureClass: "timeout" }, false],
+    ["provider safeguard", { score: "error", failureClass: "provider-safeguard" }, false],
+    ["consistency error", { score: "error", failureClass: "consistency", judgeScore: "wrong" }, false],
     ["graded verdict", { score: "wrong" }, false],
     ["unjudged row", undefined, false]
   ])("classifies judge-error retryability (%s)", (_label, verdict, expected) => {
@@ -731,7 +733,7 @@ describe("QA verdict consistency", () => {
   it("preserves a valid cost when the result text is unparseable", async () => {
     const verdict = await judgeWithFakeClaude("not json at all", { costUsd: 0.4 });
 
-    expect(verdict).toMatchObject({ score: "error", costUsd: 0.4 });
+    expect(verdict).toMatchObject({ score: "error", failureClass: "parse", costUsd: 0.4 });
     expect(verdict.rationale).toContain("unparseable verdict");
   });
 

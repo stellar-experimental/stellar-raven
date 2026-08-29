@@ -123,7 +123,7 @@ export function summarize(rows) {
   return { overall, byCategory, byService, traps };
 }
 
-export function formatSummaryTable(summary) {
+export function formatSummaryTable(summary, { includeTraps = true } = {}) {
   const line = (label, b) =>
     `${label.padEnd(26)} ${String(b.correct).padStart(3)} correct  ${String(b.partial).padStart(3)} partial  ${String(b.wrong).padStart(3)} wrong  ${String(b.error).padStart(2)} error  / ${b.total}`;
   const out = [line("OVERALL", summary.overall)];
@@ -131,7 +131,7 @@ export function formatSummaryTable(summary) {
   for (const [k, b] of Object.entries(summary.byService).sort()) out.push(line(k, b));
   out.push("-- by category --");
   for (const [k, b] of Object.entries(summary.byCategory).sort()) out.push(line(k, b));
-  if (summary.traps.total > 0) {
+  if (includeTraps && summary.traps.total > 0) {
     out.push("-- trap handling --");
     out.push(line("traps (all kinds)", summary.traps));
   }

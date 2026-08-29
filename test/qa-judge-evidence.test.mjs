@@ -33,6 +33,7 @@ describe("QA judge CLI evidence", () => {
 
     expect(verdict).toMatchObject({
       score: "error",
+      failureClass: "cli",
       coreAnswer: null,
       missingFacts: [],
       wrongClaims: [],
@@ -78,6 +79,15 @@ describe("QA judge CLI evidence", () => {
     expect(verdict.cliFailure.stdout.excerpt).toBe(stdout);
     expect(verdict.cliFailure.stderr).toMatchObject({ excerpt: "", totalBytes: 0, truncated: false });
     expect(verdict.cliFailure.parsedEnvelope.excerpt).toBe(stdout);
+  });
+
+  it("classifies a provider safeguard as terminal judge evidence", async () => {
+    const verdict = await judgeFailureWithFakeClaude({
+      stdout: "API Error: safeguards flagged this message. real-time-cyber-safeguards-on-claude",
+      stderr: ""
+    });
+
+    expect(verdict).toMatchObject({ score: "error", failureClass: "provider-safeguard" });
   });
 
   it("preserves non-JSON stdout without parsed envelope evidence", async () => {
@@ -127,6 +137,7 @@ describe("QA judge CLI evidence", () => {
 
     expect(verdict).toMatchObject({
       score: "error",
+      failureClass: "cli",
       cliFailure: {
         kind: "spawn-error",
         exitStatus: null,
@@ -145,6 +156,7 @@ describe("QA judge CLI evidence", () => {
 
     expect(verdict).toMatchObject({
       score: "error",
+      failureClass: "cli",
       cliFailure: {
         kind: "signal",
         exitStatus: null,
@@ -158,6 +170,7 @@ describe("QA judge CLI evidence", () => {
 
     expect(verdict).toMatchObject({
       score: "error",
+      failureClass: "timeout",
       cliFailure: {
         kind: "timeout",
         exitStatus: null,
