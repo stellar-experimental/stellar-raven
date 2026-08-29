@@ -32,5 +32,7 @@ The round history is in `.agents/rounds/2026-08-28-human-review-grill.md`.
 
 Both files preserve their initial `CHANGES-REQUESTED` findings and the final reconciliation.
 
-Temporary `/tmp/raven-*` reports were working evidence. These final reports supersede them as the
-durable review record.
+Temporary `/tmp/raven-*` reports were working evidence. The later
+[`2026-08-29` reconciliation](../2026-08-29-temp-artifact-reconciliation/README.md) audits the full
+temporary artifact set. It preserves residual evidence and future-work destinations without
+reopening owner decisions.

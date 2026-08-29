@@ -18,7 +18,7 @@ issue #86 drift round.
 
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
-| Orchestration | Claude Fable 5 (this session) | `w16:p4` | this ledger, `improvements/INDEX.md`, commits | in progress |
+| Orchestration | Claude Fable 5 (this session) | `w16:p4` | this ledger, `improvements/INDEX.md`, commits | completed |
 | A — lint contract | OpenCode, `@cf/zai-org/glm-5.3-flash` (owner-requested trial of the new model) | `w17:p2` | `scripts/improvements-lint.mjs`, `scripts/improvements-lib.mjs`, `scripts/improvements-file-issue.mjs` (shared constant), `test/improvements-lint.test.ts` | completed |
 | B — live re-checks and filing dry-runs | Codex, `gpt-5.6-terra` high (bounded verification) | `w17:p3` | eight finding files named in scope | completed |
 | C — retirement review | OpenCode, `@cf/zai-org/glm-5.3-flash` (read-only reviewer, distinct from every author) | `w17:p4` | none (report only) | completed |
@@ -130,11 +130,9 @@ issue #86 drift round.
   recheck). `sls-023`, `sls-024`, `sls-029`, `sls-033` stay `reported-upstream` with dated
   recurrences against API 1.9.1. `sd-001` stays `fixed-upstream`; the one-URL reason is gone,
   repo cleanup and the `what is in Protocol 23` / `Protocol 27` / `Poseidon Rust SDK` residuals
-  remain. `sls-077` and `sls-078` are filing-ready (dry-run exit 0, owner-facing text reviewed).
-- Lane C: RETIRE recommended for `sk-006`, `sk-009`, `sd-008`, `sd-025`, `sls-074`, `sls-075`,
-  `sls-076`; three of the seven re-run independently by Grok. Sequencing: refresh the two
-  `sls-074` goldens first, repoint `rootCause` for `sk-006` and `sd-008` through `golden-truth`,
-  post the seven resolution comments, then `npm run improvements:resolve`.
+  remain. `sls-077` and `sls-078` were filed as issues #1086 and #1087.
+- Lane C: all seven reviewed findings were commented and retired. Grok independently re-ran three
+  of them before retirement.
 - Independent review: Grok 4.6 high. First pass CHANGES-REQUESTED (three findings, applied);
   re-verification CHANGES-REQUESTED (`sls-078` keyword list, applied, then filed as #1087);
   Lane D review CHANGES-REQUESTED (receipt comment URLs, queue text, this line), all applied

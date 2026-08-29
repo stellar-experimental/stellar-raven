@@ -47,10 +47,12 @@ session-2 Grok reviews and can migrate through a metadata-only review. One cites
 
 ### 3. Eval instruments
 
-Skill: `run-evals`. Four items under `TODO.md` "Eval instruments":
+Skill: `run-evals`. Seven items under `TODO.md` "Eval instruments":
 
 - Two judge-prompt contradictions produce `error` rows (4% of the last run). Fix the prompt or
-  the trap path; a rubric bump is required.
+  the trap path; a rubric bump and behavior-class fixtures are required.
+- Design and validate a three-outcome paired comparison verdict before another comparable rerun.
+  Define its margin, power, exclusions, and repeat rule before collection.
 - `--max-panel-cases 10` denied panels to 21 of 31 boundary rows. Scale the cap with the
   denominator and print the skipped count in the run summary.
 - Judge stability is degrading (47 → 57 unstable). Watch the trend at the next register refresh.

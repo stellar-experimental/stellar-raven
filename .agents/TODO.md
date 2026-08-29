@@ -50,6 +50,20 @@ any gospel edit passes `golden-truth`, no truth check is weakened, and the full 
 
 ## Improvements backlog
 
+### Remove a blockquote marker from generated improvement titles
+
+`oneLineTitle` preserves a leading `>` from the first Markdown paragraph. The generated
+`improvements/INDEX.md` title for `sd-036` therefore starts with `>`. This is a presentation defect,
+not a finding-state defect.
+
+Add a regression test to `test/improvements-resolve.test.ts`, fix the shared title helper, and
+regenerate the index. Do not replace `scripts/improvements-resolve.mjs`'s global GitHub-reference
+matcher with the non-global `GITHUB_EVIDENCE_REF_RE`. A later refactor needs a shared extraction
+helper if it removes that private matcher.
+
+Done when: generated titles remove a leading blockquote marker, the resolver tests pass, and the
+index comes only from `npm run improvements:index`.
+
 ### Watch Stellar-Light/stellarlight#1031 for the maintainer close
 
 `sls-074` was retired on 2026-08-28 after a live verification comment
@@ -107,6 +121,20 @@ Encode the rule in per-case notes, not the global judge prompt.
 
 Done when: `golden-truth` verifies every changed claim, all caution expiry rules are explicit, the
 round records affected IDs, sibling cases are reconciled, and all golden gates pass.
+
+### Recheck two dated source-metadata conflicts
+
+The 2026-08-29 temporary-artifact audit found two current conflicts that need `golden-truth` review.
+
+- `q-tool-soroban-auth-audit-live` has `truth.asOf: 2026-08-25`, while its verification date is
+  `2026-08-28`. Confirm the intended claim date before changing the metadata.
+- `q-protocol-ledger-close-time` cites official wording for a 5–7-second range. Verify the current
+  wording across every cited official page. Preserve the dated 199-ledger observation, but verify
+  its attribution separately. Add a symmetric caution or file a Stellar Docs finding only if a
+  live conflict remains after direct confirmation.
+
+Done when: `golden-truth` records both dispositions, any changed fact keeps primary-source
+provenance, the round records the affected IDs, and all golden gates pass.
 
 ## Playground
 
@@ -283,7 +311,28 @@ upstream of it, in the judge prompt. Either make the prompt unable to produce
 these pairs, or let the trap path ignore non-behavioural key facts. A rubric
 bump is required either way.
 
-Done when: a full run produces zero `error` rows from these two rule pairs.
+Whichever fix lands must reject a generic refusal when the case requires useful behavior. Add
+fixtures for a legitimate answer, a clarifying question, a boundary, a named alternative, and a
+scam warning. Test the required behavior directly instead of relying on key-fact position. Keep
+ADR-0008's T3 rule and every T4 contradiction unchanged.
+
+Done when: each behavior class has positive and negative tests, a bare refusal cannot pass the
+wrong class, and a full run produces zero `error` rows from these two rule pairs.
+
+### Design and validate a paired comparison verdict
+
+Same-100 reruns need a durable verdict when only part of the sample remains comparable. The
+2026-08-28 record described the aggregate change as diagnostic, but it had no predeclared method
+for `PASS`, `FAIL`, or `INDETERMINATE`.
+
+Design the method before the next comparable rerun. Preserve `correct`, `partial`, and `wrong`
+instead of flattening them without evidence. Define the estimand, a practical non-inferiority
+margin, power, fixed T4/T5 exclusions, and a fixed repeat rule. Use simulations or repeated-judge
+backtests to measure false pass and false fail rates. Do not adopt the temporary addendum's exact
+thresholds until this validation supports them.
+
+Done when: `eval/qa/README.md` and `run-evals` name the validated procedure, tests cover its
+boundary cases, and the next comparable rerun prints one verdict with its denominator and reasons.
 
 ### `--max-panel-cases 10` is too small for 100-case runs
 
