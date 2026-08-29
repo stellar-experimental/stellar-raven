@@ -39,7 +39,7 @@ describe("QA judge CLI evidence", () => {
       avoidMatches: [],
       consistencyViolations: [],
       costUsd: 0.375,
-      rubric: "v2.8",
+      rubric: "v2.9",
       packVersion: "p5",
       cliFailure: {
         kind: "nonzero-exit",
@@ -1837,7 +1837,7 @@ describe("QA judge CLI evidence", () => {
       avoidMatches: [],
       rationale: "The candidate gives the required answer.",
       costUsd: 0.25,
-      rubric: "v2.8",
+      rubric: "v2.9",
       packVersion: "p5",
       promptSha256: verdict.promptSha256
     });
