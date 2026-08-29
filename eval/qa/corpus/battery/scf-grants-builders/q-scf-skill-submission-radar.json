@@ -1,1 +1,86 @@
-{"id":"q-scf-skill-submission-radar","question":"I have an SCF idea and want a repeatable positioning brief against prior submissions, funding outcomes, and live competitors. What workflow should I use?","surface":["skills.lumenloop.scf-submission-radar"],"golden":{"answer":"Use the SCF Submission Radar playbook. Search similar submissions by natural-language idea, inspect award_type separately from mere submission, profile linked projects and team history, expand from a close submission, reality-check live competitors, confirm the live category vocabulary, then synthesize a positioning brief. It researches and positions; it does not submit an application.","keyFacts":["Searches prior SCF submissions and distinguishes funded outcomes from proposals that were not awarded.","Combines submission history, project profiles, live competitors, and category fit into a positioning brief."],"avoid":["Do NOT describe every prior submission as funded.","Do NOT claim the read-only workflow submits an SCF application."],"notes":"Best-source case for the served SCF Submission Radar skill."},"tags":{"category":"scf-grants-builders","service":"skills","freshness":"stable"},"truth":{"domain":"corpus-grounded","status":"confirmed","sources":[{"class":"B","ref":"skills.lumenloop.scf-submission-radar","note":"Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow."},{"class":"C","ref":"http://localhost:8787/mcp","note":"Live localhost search→execute probe."}],"verified":{"date":"2026-07-30","by":"drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh","evidence":["2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.","2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.","skills.lumenloop.scf-submission-radar exists and supports the behavioral golden.","Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.lumenloop.scf-submission-radar'). Same bytes, re-verified by digest; only the pointer notation changed.","Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.","solo://proj/49/scratchpad/super-corpus-rebuild--585"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (coverage)"}}
+{
+  "id": "q-scf-skill-submission-radar",
+  "question": "I have an SCF idea and want a repeatable positioning brief against prior submissions, funding outcomes, and live competitors. What workflow should I use?",
+  "surface": [
+    "skills.lumenloop.scf-submission-radar"
+  ],
+  "golden": {
+    "answer": "Use the SCF Submission Radar playbook. Search similar submissions by natural-language idea, inspect award_type separately from mere submission, profile linked projects and team history, expand from a close submission, reality-check live competitors, confirm the live category vocabulary, then synthesize a positioning brief. It researches and positions; it does not submit an application.",
+    "keyFacts": [
+      "Searches prior SCF submissions by natural-language idea.",
+      "Distinguishes funded outcomes from proposals that were not awarded.",
+      "Combines SCF history, project profiles, live competitors, and category fit in a brief."
+    ],
+    "avoid": [
+      "Do NOT describe every prior submission as funded.",
+      "Do NOT claim the read-only workflow submits an SCF application."
+    ],
+    "notes": "Best-source case for the served SCF Submission Radar skill."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "skills",
+    "freshness": "stable"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "skills.lumenloop.scf-submission-radar",
+        "note": "Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow."
+      },
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp",
+        "note": "Live localhost search→execute probe."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "It researches and positions; it does not submit an application.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md",
+            "note": "Exact quote: ‘This is research and positioning only — it does not submit anything to SCF.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=SCF+Submission+Radar+submit+application+LumenLoop",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘SCF Submission Radar submit application LumenLoop’. Top owner results: https://lumenloop.com/ai and https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md. Exact observed text: ‘Check an idea against prior Stellar Community Fund submissions before you apply’; ‘This is research and positioning only — it does not submit anything to SCF.’ No result contradicted the claim."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
+      "evidence": [
+        "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
+        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.",
+        "skills.lumenloop.scf-submission-radar exists and supports the behavioral golden.",
+        "Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.lumenloop.scf-submission-radar'). Same bytes, re-verified by digest; only the pointer notation changed.",
+        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Split the prior-submission fact and shortened the positioning inputs; truth unchanged.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md — the pinned recipe starts with a natural-language query for prior submissions.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md — the pinned recipe separates funded rows from proposed-but-not-awarded rows.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/lumenloop/lumenloop-skills/d92c56bda17ab702d3202335cfe814d64e70e191/skills/scf-submission-radar/SKILL.md — the pinned workflow combines SCF history, project profiles, competitors, category fit, and a positioning brief.",
+        "Sibling sweep 2026-08-29: grep scf-submission-radar|Submission Radar|award_type → q-defi-rwa-scf-similar, q-scf-history-soroswap, q-scf-skill-submission-radar; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for Submission Radar side-effect boundary; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
+      ]
+    },
+    "origin": "authored 2026-07 (coverage)"
+  }
+}

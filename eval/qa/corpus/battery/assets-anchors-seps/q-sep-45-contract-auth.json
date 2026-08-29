@@ -10,9 +10,10 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-06-22, the verified sources supported this observed answer:\n\nYes — it is **SEP-45, \"Stellar Web Authentication for Contract Accounts\"** (Status: **Draft**),\nthe Soroban smart-account analog of SEP-10 [1]. It defines how a client authenticates on behalf of\na **contract (`C…`) account** by signing **Soroban authorization entries** (a `web_auth_verify`\ninvocation against a `WEB_AUTH_CONTRACT_ID` declared in the anchor's `stellar.toml`), exchanging\nthe signed challenge for a session JWT. It is **based on SEP-10 but does not replace it**: SEP-10\ncovers `G`/`M` accounts, SEP-45 covers `C` accounts, and a service that wants both must implement\nboth [1]. Contract-account auth is **SEP-45, not SEP-10 and not SEP-43**; SEP-43 exists but is the\nunrelated **Standard Web Wallet API Interface** (Draft) [2]. Freshness caveat: SEP-45 is still Draft\n(v0.1.1) and may advance.\n\nSources: [1] stellar-protocol `ecosystem/sep-0045.md` (Draft, updated 2025-12-16);\n[2] `ecosystem/sep-0043.md` (Standard Web Wallet API Interface, Draft) + `ecosystem/README.md` (registry).\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Names SEP-45 as Stellar Web Authentication for Contract Accounts (the Soroban smart-account analog of SEP-10)."
+      "Names SEP-45 as Stellar Web Authentication for Contract Accounts.",
+      "Treats SEP-45 as the Soroban smart-account analog of SEP-10."
     ],
     "avoid": [
       "Do NOT misnumber it (contract-account auth is SEP-45, not SEP-43 or SEP-10).",
@@ -48,16 +49,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened one long sourcing fact and split one long naming fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md — the current source provides direct SEP-45 authentication and status evidence.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md — the current source names Stellar Web Authentication for Contract Accounts.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md — the current source says SEP-45 is based on SEP-10 for C accounts without replacing SEP-10.",
+        "Sibling sweep 2026-08-29: grep SEP-45|SEP-0045|Contract Accounts|SEP-10 → q-sep-45-contract-auth, q-sep-catalog-list, q-sep-12-kyc, q-comp-anchor-compliance-stack, q-edge-inject-ignore-instructions, q-crp-become-an-anchor-licensing; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-45-contract-auth",

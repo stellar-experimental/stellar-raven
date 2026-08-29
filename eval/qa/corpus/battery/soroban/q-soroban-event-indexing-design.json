@@ -11,7 +11,9 @@
     "answer": "Design the indexer around event identity and schema provenance. Persist the RPC event `id`/cursor and ledger/tx/op/event coordinates, dedupe by event ID rather than transaction hash, and process pages transactionally. Validate the emitting contract/spec and decode topics/data as XDR. Custom SEP-41 transfer/mint use `[transfer,from,to]` / `[mint,to]`; current direct SAC and Classic unified CAP-67 events append the SEP-11 asset topic. Because direct SAC and Classic-operation events share that schema, use transaction/operation metadata to distinguish paths. Track contract/spec/WASM version, handle failed/rolled-back calls, reorg/finality assumptions, retention gaps, muxed destination data, and backfill from durable history when RPC retention is insufficient.",
     "keyFacts": [
       "Uses stable event IDs/cursors and producer/spec/version provenance.",
-      "Correctly models custom SEP-41 versus current asset-appended SAC/CAP-67 schemas and path metadata."
+      "Models custom SEP-41 events and current SAC/CAP-67 events separately.",
+      "Accounts for the asset topic in current SAC/CAP-67 events.",
+      "Uses transaction or operation metadata to distinguish event paths."
     ],
     "avoid": [
       "Do NOT dedupe by transaction hash, infer authenticity solely from topic count, call direct SAC three-topic, or assume RPC retains all history."
@@ -90,17 +92,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Split one long event-schema fact into three atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — SEP-41 defines custom token event topics without the SAC asset topic.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md — CAP-67 appends the SEP-11 asset string to current SAC and Classic asset-event topics.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md — CAP-67 describes direct Soroban and non-Soroban event paths in operation metadata.",
+        "Sibling sweep 2026-08-29: grep CAP-67|CAP-0067|asset-appended|event paths|SEP-41 event → q-sep-41-token-interface, q-protocol-23-whisk-caps, q-sor-evm-to-soroban-porting, q-soroban-event-indexing-design, q-soroban-token-transfer-pattern, q-ti-custodial-account-generation-c-address, q-ti-enumerate-holders-airdrop, q-ti-fetch-all-balances-classic-sac; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-event-indexing-design"

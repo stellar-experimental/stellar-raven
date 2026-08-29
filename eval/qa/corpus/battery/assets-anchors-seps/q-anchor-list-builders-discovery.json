@@ -10,9 +10,9 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, the live partner directory returned 27 anchor profiles; the first page included Etherfuse, Transparent Network, and APS Money.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Surfaces named anchor / on-off-ramp projects from the ecosystem directory rather than generic prose."
+      "Uses named anchor or on/off-ramp directory projects instead of generic prose."
     ],
     "avoid": [
       "Do NOT fabricate anchor names that are not in the corpus/directory.",
@@ -42,20 +42,26 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "2026-07-11 localhost:8787 search→execute probe observed: the live partner directory returned 27 anchor profiles; the first page included Etherfuse, Transparent Network, and APS Money.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep anchor roster|anchor profiles|complete or permanent roster → q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery, q-crp-regional-offramp-mobilemoney; no contradiction"
+        "Sibling sweep 2026-08-27: grep anchor roster|anchor profiles|complete or permanent roster → q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery, q-crp-regional-offramp-mobilemoney; no contradiction",
+        "Structural re-form (long-fact): Shortened the source-and-date and named-project authoring facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the live Stellar page links the Anchor Directory as the source for existing anchors.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the page defines anchors as on/off ramps and names MoneyGram Ramps and Anchor Platform.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — for unchanged keyFacts[1], the live page presents existing anchors through a current directory, supporting dated roster treatment.",
+        "Sibling sweep 2026-08-29: grep 27 anchor profiles|Etherfuse, Transparent Network, and APS Money → q-anchor-list-builders-discovery; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-anchor-list-builders-discovery"

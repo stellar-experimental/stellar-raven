@@ -7,9 +7,10 @@
   "golden": {
     "answer": "A Soroban upgrade **replaces the Wasm but keeps all existing storage** (and the same contract address).\nSo the new code must remain compatible with the data already on the ledger: [sdf]\n\n- **Keep the same storage keys and value types/layout** for existing entries. The host deserializes\n  stored values using the **new** code's type definitions, so renaming a key or changing a value's type\n  without migration leaves old data **stranded or mis-decoded (a trap)**. [oz]\n- **Migrate explicitly** when the schema changes. OZ documents three patterns: eager `migrate()` for\n  bounded instance data (guarded by a stored **schema-version** flag), **lazy/versioned** conversion on\n  read for unbounded persistent data, and a **plan-ahead enum wrapper**. Run migration atomically with\n  the upgrade via an **`Upgrader`** contract (the new impl only takes effect after the current call).\n  [oz]\n- The **contract address is preserved**, so external callers/integrations keep working. [sdf]\n\nTraps: claiming the upgrade wipes storage / starts state fresh; or importing the EVM proxy\n**storage-slot-collision** model — Soroban addresses storage by **named keys**, not slot indices.",
     "keyFacts": [
-      "Because storage survives an upgrade, the new code must keep the same storage keys and value types/layout for existing entries (or migrate them explicitly).",
-      "Changing a storage key's name/type without migration leaves the old data stranded / mis-decoded.",
-      "Soroban supports in-place Wasm replacement: upload the new Wasm, then have the contract call `env.deployer().update_current_contract_wasm(new_wasm_hash)` to swap its code while keeping the same address and storage."
+      "New code needs compatible storage keys and value layouts or explicit migration.",
+      "Unmigrated key or type changes can strand or mis-decode stored data.",
+      "`env.deployer().update_current_contract_wasm(new_wasm_hash)` installs uploaded Wasm.",
+      "The replacement keeps the contract address and storage."
     ],
     "avoid": [
       "Do NOT claim upgrading wipes storage / starts state fresh.",
@@ -38,8 +39,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 Lane R absorb triage",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-soroban-upgrade-wasm",
@@ -47,10 +48,17 @@
         "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/deploy.rs",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0049.md",
         "https://github.com/stellar/soroban-examples/tree/main/upgradeable_contract",
-        "Solo scratchpad 575 GT-48 primary 3333 and blind 3342; blind verified the two compiled sources returned 404 and current replacements were reachable."
+        "Solo scratchpad 575 GT-48 primary 3333 and blind 3342; blind verified the two compiled sources returned 404 and current replacements were reachable.",
+        "Structural re-form (long-fact): Shortened the storage compatibility and decoding facts, then split the update call from retained state; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage — the current guide says old ledger data remains after code changes and requires compatible decoding or migration.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage — the current guide says naive decoding after structural changes traps and documents version-aware migration.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts — the current guide requires uploaded Wasm and uses the exact update call with new_wasm_hash.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts — the current guide confirms that an upgrade preserves the contract address, while the migration guide confirms retained storage.",
+        "Sibling sweep 2026-08-29: grep update_current_contract_wasm|storage survives|stranded|mis-decoded → q-soroban-storage-migration, q-soroban-oz-upgradeable-macro; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-upgradeable-storage-compat",

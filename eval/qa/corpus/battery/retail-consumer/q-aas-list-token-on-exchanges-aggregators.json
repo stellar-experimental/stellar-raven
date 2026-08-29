@@ -9,9 +9,10 @@
   "golden": {
     "answer": "Issuing a Stellar asset makes it technically valid, not automatically visible, trusted, liquid, or listed. The durable prerequisites are: issue the asset from the correct issuer account, make trustlines possible for holders, set the issuer account's `home_domain`, and publish a valid SEP-1 `https://DOMAIN/.well-known/stellar.toml` with `[[CURRENCIES]]` metadata for the exact code and issuer. SEP-1 says clients and exchanges can use that information to decide whether a token should be listed.\n\nTradability requires markets. On Stellar that can mean SDEX offers, liquidity pools, or integrations/listings in wallets, explorers, exchanges, and aggregators. Visibility and pricing usually require enough real liquidity, supply/issuer metadata, and a venue-specific policy review. SEP-42/Stellar Asset Lists define a community asset-list format and catalog that apps may use, but the catalog itself warns that inclusion in a list is not an endorsement or recommendation.\n\nThe practical answer is therefore a checklist, not a guarantee: publish correct SEP-1 metadata; keep issuer/domain/logo/contact/reserve information consistent; create real markets; apply to each target venue using its current listing process; and keep dated evidence for any verification, market-cap, or safety claim.",
     "keyFacts": [
-      "Explains technical prerequisites: issued asset, trustlines, home domain, valid SEP-1 stellar.toml metadata, and accessible logo/issuer information.",
-      "Explains tradability requires market infrastructure such as SDEX offers, AMM pools, or listings/integrations with wallets/exchanges/aggregators.",
-      "States each exchange, wallet, explorer, and aggregator applies its own listing/verification/liquidity policies."
+      "Requires asset issuance and trustlines.",
+      "Requires a home domain, valid SEP-1 metadata, logo, and issuer details.",
+      "Tradability needs SDEX offers, AMM pools, or wallet/exchange/aggregator listings.",
+      "These services set their own listing, verification, and liquidity policies."
     ],
     "avoid": [
       "Do NOT guarantee listing, verification, price, or market-cap display just because a Stellar asset exists.",
@@ -52,19 +53,28 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep1",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep universal Stellar whitelist|exchange/aggregator|asset list → q-aas-list-token-on-exchanges-aggregators, q-aas-trusted-asset-list-whitelist; no contradiction"
+        "Sibling sweep 2026-08-27: grep universal Stellar whitelist|exchange/aggregator|asset list → q-aas-list-token-on-exchanges-aggregators, q-aas-trusted-asset-list-whitelist; no contradiction",
+        "Structural re-form (long-fact): Split the prerequisite and market-infrastructure lists and shortened the venue-policy fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the official tutorial confirms asset issuance and required receiving-account trustlines.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 defines home-domain stellar.toml metadata, issuer fields, and image fields.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the official liquidity guide confirms SDEX offers and AMM pools as trading infrastructure.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 states that clients and exchanges use published metadata for listing decisions.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 leaves listing and verification decisions to clients and exchanges and links them to liquidity and reserve information.",
+        "Sibling sweep 2026-08-29: grep SDEX offers|listing/verification/liquidity → q-asset-usdc-eurc-path-fx, q-aas-list-token-on-exchanges-aggregators, q-defi-sdex-offer-lifecycle; no contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): restored the disjunctive tradability claim (SDEX offers, AMM pools, or listings) that two 'Requires' facts had made conjunctive; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-aas-list-token-on-exchanges-aggregators",

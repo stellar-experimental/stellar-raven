@@ -7,9 +7,9 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live wallet search returned 164 matches; Lobstr, xBull, and Freighter appeared on the first page.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates directory lifecycle from product availability and handles duplicates/canonical records."
+      "Handles duplicate and canonical wallet records."
     ],
     "avoid": [
       "Do NOT call a small hand-picked roster exhaustive or hard-code 59/60 as permanent.",
@@ -72,19 +72,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-20 primary 3256 and blind 3257",
         "Sibling sweep: q-eco-wallets-overview/similar, q-eco-freighter-wallet, q-eco-lobstr-wallet, q-eco-hana-wallet-scf, and wallet tooling cases",
         "2026-07-11 localhost:8787 search→execute probe observed: a live wallet search returned 164 matches; Lobstr, xBull, and Freighter appeared on the first page.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
         "Reviewed improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed claim: wallet Live labels prove current app availability.",
         "Sibling sweep 2026-08-27: grep Wallet-typed|exact Wallet|directory lifecycle|app availability → q-defi-blend-alternatives, q-eco-stablecoins-on-stellar, q-eco-stellar-wallets-list; no contradiction",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; all symmetric-caution provenance is unchanged.",
-        "Sibling sweep 2026-08-27: grep wallet roster|wallet search|complete or permanent roster|Wallet-typed → q-eco-stellar-wallets-list, q-tool-wallets-comparison; no contradiction"
+        "Sibling sweep 2026-08-27: grep wallet roster|wallet search|complete or permanent roster|Wallet-typed → q-eco-stellar-wallets-list, q-tool-wallets-comparison; no contradiction",
+        "Structural re-form (long-fact): shortened the source rule and kept lifecycle versus availability in golden.avoid; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0 returned generatedAt, total 183, and wallet records; offset 0 and 100 pages had three overlapping slugs, and identity aliases supplied canonical names.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/developer-tools/wallets lists Freighter, Lobstr, xBull, and other current wallet integration options.",
+        "Sibling sweep 2026-08-29: grep wallet roster|wallet search|directory lifecycle|canonical wallet|duplicate.*wallet|Wallet-typed → wallet, tooling, and SEP cases; no contradiction."
       ],
       "rootCause": [
         "A small directory snapshot was presented as exhaustive and semantic/keyword routing was confused with exact type and availability.",
@@ -92,7 +96,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-eco-stellar-wallets-list"

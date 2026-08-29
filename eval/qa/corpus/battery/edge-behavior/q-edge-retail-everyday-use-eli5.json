@@ -7,9 +7,9 @@
   "golden": {
     "answer": "In everyday terms, Stellar is payment infrastructure: a person may use apps built on Stellar to send low-cost transfers, hold or receive stablecoins/assets, cash in or cash out through supported ramps, or use wallet-based services where available. XLM is the native network asset used for fees and minimum balances; it is not a promise of profit and should not be framed as investment advice.\n\nA good answer should stay practical and bounded: availability depends on the user's country, wallet/exchange/anchor support, compliance requirements, and the specific asset. It should avoid hype such as universal merchant acceptance, guaranteed earnings, mining, staking yield, or fee-free use everywhere.",
     "keyFacts": [
-      "Gives concrete everyday use cases such as low-cost transfers, stablecoin payments/remittances, on/off ramps, and wallet-based asset holding.",
+      "Gives low-cost transfers, stablecoin payments, remittances, ramps, and wallet holding.",
       "Distinguishes using Stellar rails from speculative XLM investment advice.",
-      "Explains XLM role plainly as native network asset for fees/minimum balances while avoiding hype."
+      "Explains XLM plainly as the native network asset for fees and minimum balances."
     ],
     "avoid": [
       "Do NOT promise guaranteed profit, universal merchant acceptance, or fee-free use everywhere.",
@@ -48,10 +48,16 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-26-out-of-scope-retail-scf-free-xlm-investment accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Live re-check (class A, 2026-08-29): https://stellar.org/use-cases/payments covers low-cost transfers, remittances, wallets, stable assets, and cash-to-crypto ramps.",
+        "Live re-check (class A, 2026-08-29): https://developers.stellar.org/docs/learn/fundamentals/lumens defines XLM as the native asset used for fees and minimum balances.",
+        "Sibling sweep (2026-08-29): everyday-use, low-cost-transfer, minimum-balance, and wallet-holding cases showed no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-retail-everyday-use-eli5"

@@ -7,11 +7,11 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n**As of 2026-07-10**, Starlight is historical SDF payment-channel research/protocol work and its `stellar-deprecated/starlight` reference repository is archived. It pursued Lightning-like repeated off-chain updates with on-chain settlement, but used Stellar accounts/transactions rather than Bitcoin's unchanged UTXO/HTLC stack. CAP-0021 generalized preconditions and CAP-0040 signed-payload signers are Final/active protocol primitives; they do not prove Starlight is maintained production infrastructure. Current alternatives remain project-specific: Perun has an active SCF-backed Stellar payment-channel codebase whose public instructions establish local/standalone use but not Mainnet deployment; Scout's Centaurus Live+Unverified row conflicts with stale repositories and is not deployment proof. Treat payment channels, commit-chains, and rollups as separate architectures and require dated contracts, operator endpoints, or other primary deployment evidence before calling any live.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Dates Starlight's archived experimental status.",
       "Explains its Lightning-like goal/Stellar-specific construction.",
-      "Separates CAP primitives, active code development, directory labels, and verified Mainnet deployment."
+      "Treats CAP primitives, active code, directory labels, and Mainnet deployment separately."
     ],
     "avoid": [
       "Do NOT call Starlight maintained/live production Mainnet infrastructure or say Stellar uses Bitcoin Lightning unchanged.",
@@ -84,24 +84,29 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both confirmed archived/source-relative status. GT-29 recurrence appended to sls-024 for Centaurus lifecycle ambiguity.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for Starlight and Centaurus lifecycle labels; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/resolved.json entry sd-015 — fixed present-tense Starlight lifecycle wording on 2026-07-27.",
         "Finding read 2026-08-27: improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed Centaurus's unqualified Live label without deployment provenance.",
-        "Sibling sweep 2026-08-27: grep Starlight|CAP-0021|CAP-0040|Centaurus|Perun → q-protocol-19-preconditions-cap-0021, q-stellar-recurring-payments; no contradiction"
+        "Sibling sweep 2026-08-27: grep Starlight|CAP-0021|CAP-0040|Centaurus|Perun → q-protocol-19-preconditions-cap-0021, q-stellar-recurring-payments; no contradiction",
+        "Structural re-form (long-fact): Shortened two long facts without changing their evidence distinctions; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar-deprecated/starlight and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md — the current repositories provide dated, source-supported Starlight and CAP status.",
+        "Live re-check 2026-08-29: https://github.com/stellar-deprecated/starlight, https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md, and https://github.com/perun-network/perun-stellar-backend/ — the current repositories separate experimental code, a Final CAP primitive, and local or standalone Perun code from Mainnet deployment proof.",
+        "Sibling sweep 2026-08-29: grep Starlight|CAP-0021|CAP-0040|Centaurus|Perun → q-pc-l2-payment-channels-starlight, q-pc-sequence-numbers-ordering-replace, q-protocol-19-preconditions-cap-0021, q-protocol-accounts-signers-thresholds; no contradiction."
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-015-starlight-lifecycle-status.md",
         "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-pc-l2-payment-channels-starlight"

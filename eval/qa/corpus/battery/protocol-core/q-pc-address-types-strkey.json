@@ -44,9 +44,47 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "StrKey is not base58 or raw hex: SEP-0023 defines it as a version byte whose top 5 bits pick the type, followed by the binary payload, a CRC16 checksum, and RFC4648 base32 without padding.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
+          "note": "Exact source: each StrKey encodes its type in the version byte, uses base-32, appends a CRC16 checksum, and assigns `STRKEY_CONTRACT` the first character `C`.",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "F",
+          "ref": "https://github.com/stellar/stellar-cli",
+          "observedAt": "2026-08-29",
+          "note": "Observed with `stellar 27.1.0`: `stellar strkey zero contract` returned `CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4`; decoding returned a 32-byte zero contract value, no `=` padding appeared, and a one-character mutation failed as `the strkey is invalid`."
+        }
+        ]
+      },
+      {
+        "claim": "C-addresses are Stellar contract addresses, not EVM `0x` addresses.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
+          "note": "Exact source: each StrKey encodes its type in the version byte, uses base-32, appends a CRC16 checksum, and assigns `STRKEY_CONTRACT` the first character `C`.",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "F",
+          "ref": "https://github.com/stellar/stellar-cli",
+          "observedAt": "2026-08-29",
+          "note": "Observed with `stellar 27.1.0`: the contract StrKey zero value was `CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4`, and `stellar strkey decode` returned JSON under the `contract` key rather than an EVM `0x` address."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (compound-predicate): Shortened the address and encoding facts, then split public-key decoding from secret-material handling; the truth is unchanged.",
@@ -54,10 +92,13 @@
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — StrKey still uses a version byte, payload, CRC16 checksum, and unpadded RFC4648 base32.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — decoding still reverses StrKey to its binary key payload.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md — SEP-0023 still classifies S as an Ed25519 private key or seed.",
-        "Sibling sweep 2026-08-27: grep StrKey|G-address|muxed account|SEP-0023 → q-pc-muxed-accounts, q-sor-contract-trustlines-c-address, q-ti-secret-key-vs-mnemonic-derivation; no contradiction"
+        "Sibling sweep 2026-08-27: grep StrKey|G-address|muxed account|SEP-0023 → q-pc-muxed-accounts, q-sor-contract-trustlines-c-address, q-ti-secret-key-vs-mnemonic-derivation; no contradiction",
+      "Corroboration audit 2026-08-29: added 2 row(s) for StrKey and contract-address encoding contrasts; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-pc-address-types-strkey"

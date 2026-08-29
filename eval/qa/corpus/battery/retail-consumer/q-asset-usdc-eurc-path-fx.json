@@ -10,8 +10,9 @@
   "golden": {
     "answer": "- Use a **path payment** — `PathPaymentStrictReceiveOp` (or `PathPaymentStrictSendOp`) — with **source asset USDC** and **destination asset EURC** [1].\n- The network **finds a path** through SDEX offers and/or AMM pools (e.g. USDC→XLM→EURC) and delivers EURC **atomically in one transaction**; the wallet never has to hold XLM or the intermediate hop asset [1].\n- The **recipient must hold a trustline to the asset they receive (EURC)** for the payment to land; trustlines are required for non-native assets [1].\n- Strict-receive bounds the EURC delivered while capping USDC spent via **`sendMax`** (strict-send instead fixes the USDC sent and sets a `destMin`). Settles in seconds for a low network fee [1].",
     "keyFacts": [
-      "Uses a path payment (PathPaymentStrictReceive/StrictSend) with source asset USDC and destination asset EURC.",
-      "The network finds a path through SDEX offers and/or AMM pools and delivers EURC atomically in one transaction."
+      "Uses PathPaymentStrictReceive or PathPaymentStrictSend from USDC to EURC.",
+      "The network finds a path through SDEX offers, AMM pools, or both.",
+      "The network delivers EURC atomically in one transaction."
     ],
     "avoid": [
       "Do NOT recommend an off-chain FX bridge or centralized swap as the canonical Stellar mechanism.",
@@ -34,11 +35,42 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "The wallet never has to hold XLM or the intermediate hop asset.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+          "note": "Exact quotes: ‘path payments cross through the SDEX and/or liquidity pools.’ ‘Balances are settled at the very end of the operation.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/80a3e8547d2b93824525b4542f3bb2c951e08a05/core/cap-0038.md",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: CAP-0038 says strict-send and strict-receive path-payment operations exchange assets through the order book and liquidity pools; these are operation-internal routing surfaces, not wallet-held intermediate balances."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-04-sac-stablecoins-issuance-fx accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Shortened the operation fact and split pathfinding from atomic delivery; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#path-payment-strict-receive — the operation page confirms strict-send and strict-receive use distinct send and destination assets.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/path-payments — the guide says path payments cross the SDEX, liquidity pools, or both.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/path-payments — the guide shows one path-payment operation in a transaction and says balances settle at the operation's end.",
+        "Sibling sweep 2026-08-29: grep PathPaymentStrictReceive/StrictSend|USDC.*EURC → q-asset-path-payment-ops, q-asset-usdc-eurc-issuer, q-asset-stablecoin-issuers-discovery, q-ti-testnet-usdc-faucet, q-eco-stablecoins-on-stellar, q-asset-usdc-eurc-path-fx, q-defi-cross-blend-rivool-sac, q-defi-sdex-offer-lifecycle, q-defi-arbitrage-pathpayment-bots, q-crp-remittance-founder-advisory; no contradiction",
+      "Corroboration audit 2026-08-29: added 1 row(s) for intermediate-asset holding boundary; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-asset-usdc-eurc-path-fx"

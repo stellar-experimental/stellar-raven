@@ -12,7 +12,9 @@
     "keyFacts": [
       "Maps ERC-20/1404/1410/3643 with explicit Draft SEP-57 and custom-policy boundaries.",
       "Makes explicit Address authorization the primary footgun and gives safe null-state design.",
-      "Explains simulation/finality, multidimensional resources, TTL/rent, and current Solang pre-alpha status."
+      "Explains temporary simulation and submitted-transaction finality.",
+      "Covers multidimensional resources and storage TTL/rent.",
+      "Treats current Solang support as pre-alpha."
     ],
     "avoid": [
       "Do NOT map msg.sender, address(0), approvals, gas, storage, or EVM inheritance one-to-one.",
@@ -85,13 +87,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — The inherited answer omitted explicit ERC-1404/1410 mappings, SEP-57 Draft status, safe null-state design, multidimensional resources/TTL, and Solang's current pre-alpha boundary.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-41 processes 3302/3305; Solang 0.3.5 and SEP-57 v0.3.0 checked 2026-07-10."
+        "Solo scratchpad 575 GT-41 processes 3302/3305; Solang 0.3.5 and SEP-57 v0.3.0 checked 2026-07-10.",
+        "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation — the current official guide says simulation uses a temporary snapshot, discards effects, and precedes real submission.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the current official guide defines multidimensional resources plus TTL-related ledger-space rent.",
+        "Live re-check 2026-08-29: https://github.com/hyperledger/solang/blob/main/docs/targets/soroban.rst — the current target documentation calls Soroban support pre-alpha and experimental.",
+        "Sibling sweep 2026-08-29: grep Solang|multidimensional resources|TTL/rent|simulation/finality|SEP-57 → q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-protocol-state-archival-ttl, q-sor-evm-to-soroban-porting, q-tool-rust-soroban-sdk, q-tool-which-sdk-comparison; no contradiction."
       ],
       "rootCause": [
-        "Eval-side requested-clause omissions and release-status drift."
+        "Eval-side requested-clause omissions and release-status drift.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sor-evm-to-soroban-porting"

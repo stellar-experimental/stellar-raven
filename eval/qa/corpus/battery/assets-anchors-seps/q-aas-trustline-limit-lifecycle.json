@@ -11,8 +11,10 @@
     "answer": "A trustline is the ledger entry that lets an account hold a non-native Stellar asset. Its `limit` is the maximum balance that account is willing/able to hold for that asset; changing the limit is done with `ChangeTrust`.\n\n`op_invalid_limit` / `CHANGE_TRUST_INVALID_LIMIT` means the requested new limit is not sufficient to hold the current balance and buying liabilities. The operation docs explicitly call out the common removal case: trying to remove a trustline while it still has a nonzero asset balance. Other lifecycle constraints can also matter, such as missing issuer, low reserve, deauthorization, or liquidity-pool references.\n\nTo remove a trustline safely, first reduce the asset balance to zero through payment, trade, redemption/burn to issuer, or another valid disposition. Cancel or settle relevant offers/liabilities. Then submit `ChangeTrust` with limit `0`. When the trustline closes, the associated base reserve becomes available again; until then, the trustline increases the account's minimum XLM balance.",
     "keyFacts": [
       "Explains a trustline limit caps the maximum balance the account can hold for that asset.",
-      "Explains `op_invalid_limit` occurs when the new limit is invalid, commonly below the current balance or otherwise outside protocol constraints.",
-      "Explains removing a trustline requires reducing the asset balance to zero and setting the trustline limit to zero."
+      "Defines `op_invalid_limit` as a new trustline limit outside protocol constraints.",
+      "Names a below-balance limit as a common `op_invalid_limit` cause.",
+      "Requires a zero asset balance before trustline removal.",
+      "Removes a trustline by setting its limit to zero."
     ],
     "avoid": [
       "Do NOT tell users to remove a trustline while it still has a nonzero balance.",
@@ -51,10 +53,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-01-asset-lifecycle-safety-metadata accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Split two compound facts into four short single-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust — the result-code page confirms that `op_invalid_limit` means the limit cannot hold the balance and buying liabilities.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust — the page confirms that a below-balance limit causes `op_invalid_limit`.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#change-trust — the operation table confirms that a nonzero balance prevents trustline removal.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/example-application-tutorial/manage-trust — the live example removes a trustline by submitting `changeTrust` with limit `0`.",
+        "Sibling sweep 2026-08-29: grep op_invalid_limit|CHANGE_TRUST_INVALID_LIMIT|trustline limit → q-aas-claim-received-claimable-balances, q-aas-trustline-limit-lifecycle; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-aas-trustline-limit-lifecycle"

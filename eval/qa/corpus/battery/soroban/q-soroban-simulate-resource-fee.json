@@ -9,10 +9,11 @@
   "golden": {
     "answer": "Use RPC `simulateTransaction` (or the SDK prepare/assemble helper or `stellar tx simulate`) before signing. Apply the returned Soroban transaction data/footprint and resource fee, include required authorization, handle any `restorePreamble`, and add the transaction's inclusion bid separately from the minimum resource fee. Simulation is not submission or a final-success guarantee: state can change, so re-simulate stale transactions. Where supported, use `instructionLeeway` rather than inventing an arbitrary blanket margin.",
     "keyFacts": [
-      "Copies simulation-produced transaction data/resources and accounts for resource fee plus inclusion fee.",
+      "Applies simulated transaction data/resources plus resource and inclusion fees.",
       "Handles auth/restorePreamble, supported instruction leeway, and stale-state re-simulation.",
-      "Every storage entry read/written across the whole call chain must be declared in the transaction footprint; a missing entry causes a runtime HostError.",
-      "The footprint is normally computed by simulating the transaction (RPC `simulateTransaction` / `stellar tx simulate`), which discovers the entries the inner calls touch."
+      "Each storage entry used across the call chain must appear in the transaction footprint.",
+      "A missing footprint entry causes a runtime `HostError`.",
+      "Simulation normally computes the footprint entries touched by inner calls."
     ],
     "avoid": [
       "Do NOT hand-pick a footprint or claim simulation submits/guarantees success.",
@@ -106,17 +107,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 Lane R absorb triage",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-47 primary 3327 and blind 3334; blind rejected unsupported generic-margin wording.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-soroban-cross-contract-footprint",
         "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation",
         "https://developers.stellar.org/docs/build/guides/conventions/cross-contract",
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Shortened the fee fact, split the missing-footprint error, and shortened the simulation-discovery fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — the current API returns transaction data and minimum resource fee above the inclusion fee.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation — the current guide requires one footprint for all transitively invoked contract reads and writes.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — the current guide identifies out-of-footprint access as a runtime HostError.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation — the current guide says simulation records the footprint for deep contract calls.",
+        "Sibling sweep 2026-08-29: grep simulateTransaction|transaction footprint|resource fee|inclusion fee|HostError → q-infra-simulate-transaction-howto, q-soroban-resource-limits; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-simulate-resource-fee"

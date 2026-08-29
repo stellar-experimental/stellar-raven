@@ -10,8 +10,10 @@
   "golden": {
     "answer": "Operations are the unit of action inside a transaction (a tx bundles 1+ operations) [1]. The classic\noperation types are [1]:\n\n- **Payment / asset:** CreateAccount, Payment, PathPaymentStrictSend, PathPaymentStrictReceive\n- **DEX / trustline:** ManageBuyOffer, ManageSellOffer, CreatePassiveSellOffer, ChangeTrust,\n  SetTrustLineFlags (and legacy AllowTrust)\n- **Account / admin:** SetOptions, AccountMerge, ManageData, BumpSequence\n- **Claimable balances:** CreateClaimableBalance, ClaimClaimableBalance\n- **Liquidity pools:** LiquidityPoolDeposit, LiquidityPoolWithdraw\n- **Clawback:** Clawback, ClawbackClaimableBalance\n- **Sponsorship:** BeginSponsoringFutureReserves, EndSponsoringFutureReserves, RevokeSponsorship\n- **Soroban:** InvokeHostFunction, ExtendFootprintTTL, RestoreFootprint\n\nThere are **no** ERC-style `Transfer`/`Mint`/`Burn` classic operations [1].\n\n- [1] developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
     "keyFacts": [
-      "Enumerates core payment/asset operations: Payment, CreateAccount, PathPaymentStrictSend/Receive.",
-      "Enumerates DEX/trustline operations: ManageBuyOffer/ManageSellOffer, ChangeTrust, SetTrustLineFlags.",
+      "Payment and CreateAccount are core payment/asset operations.",
+      "PathPaymentStrictSend and PathPaymentStrictReceive are core payment/asset operations.",
+      "DEX operations include ManageBuyOffer and ManageSellOffer.",
+      "Trustline operations include ChangeTrust and SetTrustLineFlags.",
       "Enumerates account/admin operations: SetOptions, AccountMerge, ManageData, BumpSequence."
     ],
     "avoid": [
@@ -35,11 +37,43 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Per the official complete operation list as of 2026-08-29, classic Stellar has no ERC-style Transfer, Mint, or Burn operations.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+            "note": "Exact page heading: ‘List of Operations’. Exact description: ‘Explore the full list of Stellar operations’; that list contains no ERC-style `Transfer`, `Mint`, or `Burn` classic operation.",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=site%3Adevelopers.stellar.org+full+list+Stellar+operations+Transfer+Mint+Burn",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘site:developers.stellar.org full list Stellar operations Transfer Mint Burn’. Top primary results: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations and https://github.com/orgs/stellar/discussions/1553. Exact observed text: ‘Explore the full list of Stellar operations’; CAP-67 describes Transfer, Mint, Burn, and Clawback as emitted events for Classic operations. The exhaustive primary list contains no classic operations with those ERC-style names, and no primary result contradicted that absence."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-33-passphrases-operations-parallel-passkeys-consensus accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): split the payment, DEX, and trustline operation lists; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — the current list defines Payment and CreateAccount.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — the current list defines both strict path-payment operations.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — the current list defines ManageBuyOffer and ManageSellOffer.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — the current list defines ChangeTrust and SetTrustLineFlags.",
+        "Sibling sweep 2026-08-29: grep PathPaymentStrictSend|SetTrustLineFlags|ManageBuyOffer → q-asset-path-payment-ops, q-asset-sdex-vs-amm, q-sep-clawback-prereq-flag, q-defi-arbitrage-pathpayment-bots, q-asset-usdc-eurc-path-fx, and q-protocol-operation-types-list; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for absence of ERC-style classic operation names; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-operation-types-list"

@@ -9,9 +9,9 @@
   "golden": {
     "answer": "- **`AUTH_REQUIRED`** — the issuer must **approve a trustline** before an account can hold/receive the\n  asset [1].\n- **`AUTH_REVOCABLE`** — the issuer can **revoke/freeze** an existing trustline's authorization (downgrade\n  to limited or remove it) [1].\n- **`AUTH_CLAWBACK_ENABLED`** — every subsequent trustline is clawback-enabled, letting the issuer **claw\n  back / burn** the asset from any holder; the docs state this flag **requires `AUTH_REVOCABLE` to also be\n  set** [1][2].\n- **`AUTH_IMMUTABLE`** — **locks** the authorization flags (and blocks account merge) once set; finalizes\n  the asset's governance posture [1].\n- Flags are managed via the **`set_options`** operation (account-level) and **`set_trust_line_flags`**\n  (per-trustline) [1].\n\nSources: [1] developers.stellar.org control-asset-access; [2] clawbacks guide.",
     "keyFacts": [
-      "Lists AUTH_REQUIRED (issuer must approve a trustline before a holder can receive/hold the asset).",
+      "AUTH_REQUIRED needs issuer approval before a holder's trustline receives or holds assets.",
       "Lists AUTH_REVOCABLE (issuer can revoke/freeze an existing trustline's authorization).",
-      "Lists AUTH_CLAWBACK_ENABLED (issuer can claw back / burn the asset from any holder's balance).",
+      "AUTH_CLAWBACK_ENABLED lets the issuer claw back or burn any holder's asset balance.",
       "Lists AUTH_IMMUTABLE (locks the authorization flags / prevents further changes once set)."
     ],
     "avoid": [
@@ -41,10 +41,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-07-regulated-controls-anchor-security accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): shortened the AUTH_REQUIRED and AUTH_CLAWBACK_ENABLED descriptions; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx — the official source requires issuer approval before an account can hold the asset.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx — the official source lets the issuer claw back and burn asset amounts from recipient balances.",
+        "Sibling sweep 2026-08-29: grep AUTH_REQUIRED|AUTH_CLAWBACK_ENABLED → q-aas-issuer-fees-supply-cap-freeze, q-asset-issue-asset-howto, q-comp-anchor-compliance-stack, q-comp-auth-flags-overview, q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-comp-sep8-regulated-assets-approval-server, q-sep-8-regulated-assets, q-sep-clawback-prereq-flag; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-comp-auth-flags-overview"

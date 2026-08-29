@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-07-11, the live SCF Handbook result stated an award size of up to $150,000 worth of XLM, paid through milestone-based tranches.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "States that the SCF Build single-award cap is $150,000 worth of XLM.",
       "States that Build funding is paid through milestone-based tranches."
@@ -61,18 +61,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-36 primary 3290 and blind 3291.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live SCF Handbook result stated an award size of up to $150,000 worth of XLM, paid through milestone-based tranches.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened one long fact into one one-predicate fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current official Build Award page confirms the cap and milestone-tranche payment model.",
+        "Sibling sweep 2026-08-29: grep Build Award|$150,000|milestone-based tranches → q-scf-ambassador-program, q-scf-build-award-cap, q-scf-build-tracks, q-scf-how-to-apply, q-scf-vs-sdf-enterprise-fund; no contradiction."
       ],
       "rootCause": [
         "Eval answer accreted stale sibling program details around a stable narrow fact.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-build-award-cap"

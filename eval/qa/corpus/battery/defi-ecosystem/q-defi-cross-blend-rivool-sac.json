@@ -1,1 +1,108 @@
-{"id":"q-defi-cross-blend-rivool-sac","question":"A June 2026 ecosystem item says Rivool integrated a lending protocol for advisor-managed yield. Which live Scout project is it, who built it, and what standard asset interface should a Soroban integration use for classic USDC?","surface":["lumenloop.search_directory","lumenloop.find_content_about_project","scout.searchProjects","skills.stellar-dev.assets"],"golden":{"answer":"The 2026-06-12 item is the Blend & Rivool case study: Rivool integrated Blend to put on-chain lending yield behind managed, risk-profiled strategies for financial advisers and clients. As observed on 2026-07-11, Scout lists Blend as a live Stellar/Soroban lending-and-borrowing protocol built by Script3, with permissionless isolated pools for assets such as USDC, XLM, and EURC. For classic USDC, a Soroban integration should use USDC's Stellar Asset Contract (SAC), which exposes the SEP-41 token interface; a token client can call standard functions such as `balance`, `transfer`, `approve`, and `allowance`. The interface fact comes from the asset skill and is not supplied by the project directory alone.","keyFacts":["Connects the Rivool advisor-managed-yield item to Blend's lending protocol.","Uses Scout to identify Blend as live, built by Script3, and based on permissionless isolated lending pools.","Explains that classic USDC is used in Soroban through its SAC implementing the SEP-41 token interface."],"avoid":["Do NOT identify Aquarius or DeFindex as the protocol in the Rivool case-study item.","Do NOT treat classic USDC as a bespoke Blend-only contract token."],"notes":"Both the live ecosystem correlation and the asset-interface implementation fact are required."},"tags":{"category":"defi-ecosystem","service":"scout","freshness":"scheduled"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","reverifyBy":"2026-11-19","sources":[{"class":"C","ref":"http://localhost:8787/mcp — Lumenloop + Scout live probes, observed 2026-07-11"},{"class":"A","ref":"https://blend.capital/"},{"class":"B","ref":"https://github.com/blend-capital/blend-contracts"},{"class":"B","ref":"skills.stellar-dev.assets#stellar-asset-contract-sac"}],"corroboration":[{"claim":"The Rivool case study concerns Blend, which Scout lists as a live Script3-built lending protocol.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"lumenloop.find_content_about_project(slug=blend) + scout.searchProjects(q=Blend)","observedAt":"2026-07-11"},{"class":"A","ref":"https://blend.capital/","observedAt":"2026-07-11"},{"class":"B","ref":"https://github.com/blend-capital/blend-contracts","observedAt":"2026-07-11"}]},{"claim":"Classic USDC is exposed to Soroban through a SAC implementing SEP-41.","verdict":"confirmed","evidence":[{"class":"B","ref":"skills.stellar-dev.assets#stellar-asset-contract-sac","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/docs/tokens/stellar-asset-contract","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 Lane X cross-service live composition probe","evidence":["http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md","Sibling sweep: Blend, Rivool, SAC, and USDC mentions reviewed; no contradictory durable claim found"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (cross-service)"}}
+{
+  "id": "q-defi-cross-blend-rivool-sac",
+  "question": "A June 2026 ecosystem item says Rivool integrated a lending protocol for advisor-managed yield. Which live Scout project is it, who built it, and what standard asset interface should a Soroban integration use for classic USDC?",
+  "surface": [
+    "lumenloop.search_directory",
+    "lumenloop.find_content_about_project",
+    "scout.searchProjects",
+    "skills.stellar-dev.assets"
+  ],
+  "golden": {
+    "answer": "The 2026-06-12 item is the Blend & Rivool case study: Rivool integrated Blend to put on-chain lending yield behind managed, risk-profiled strategies for financial advisers and clients. As observed on 2026-07-11, Scout lists Blend as a live Stellar/Soroban lending-and-borrowing protocol built by Script3, with permissionless isolated pools for assets such as USDC, XLM, and EURC. For classic USDC, a Soroban integration should use USDC's Stellar Asset Contract (SAC), which exposes the SEP-41 token interface; a token client can call standard functions such as `balance`, `transfer`, `approve`, and `allowance`. The interface fact comes from the asset skill and is not supplied by the project directory alone.",
+    "keyFacts": [
+      "Connects the Rivool advisor-managed-yield item to Blend's lending protocol.",
+      "Uses Scout for live, Script3-built Blend with permissionless isolated lending pools.",
+      "Uses classic USDC in Soroban through its SAC with the SEP-41 token interface."
+    ],
+    "avoid": [
+      "Do NOT identify Aquarius or DeFindex as the protocol in the Rivool case-study item.",
+      "Do NOT treat classic USDC as a bespoke Blend-only contract token."
+    ],
+    "notes": "Both the live ecosystem correlation and the asset-interface implementation fact are required."
+  },
+  "tags": {
+    "category": "defi-ecosystem",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "reverifyBy": "2026-11-19",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp — Lumenloop + Scout live probes, observed 2026-07-11"
+      },
+      {
+        "class": "A",
+        "ref": "https://blend.capital/"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/blend-capital/blend-contracts"
+      },
+      {
+        "class": "B",
+        "ref": "skills.stellar-dev.assets#stellar-asset-contract-sac"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The Rivool case study concerns Blend, which Scout lists as a live Script3-built lending protocol.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "lumenloop.find_content_about_project(slug=blend) + scout.searchProjects(q=Blend)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://blend.capital/",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/blend-capital/blend-contracts",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "Classic USDC is exposed to Soroban through a SAC implementing SEP-41.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "skills.stellar-dev.assets#stellar-asset-contract-sac",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "evidence": [
+        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
+        "Sibling sweep: Blend, Rivool, SAC, and USDC mentions reviewed; no contradictory durable claim found",
+        "Structural re-form (long-fact): Shortened the Blend identity and classic-USDC interface facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=Blend&limit=5 — the live result identifies Blend as Live, built by Script3, with permissionless isolated lending pools.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — official docs say the SAC exposes Stellar assets to contracts and implements SEP-41.",
+        "Sibling sweep 2026-08-29: grep Rivool|Script3|permissionless isolated|SEP-41|classic USDC|SAC → q-defi-blend-what-is, q-ass-cross-bando-stablebonds-sac, q-asset-trustline-vs-sac, q-ti-testnet-usdc-faucet, q-sor-sep41-transfer-vs-transferfrom, q-tool-cctp-stellar-integration, q-defi-cross-blend-rivool-sac; no contradiction"
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (cross-service)"
+  }
+}

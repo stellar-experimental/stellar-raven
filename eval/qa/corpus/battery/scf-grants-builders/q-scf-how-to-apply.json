@@ -8,7 +8,7 @@
     "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP**. Open is for experienced teams pursuing novel or brand-new Stellar use cases, with existing traction or deep Stellar/domain knowledge; Integration and RFP are panel-only. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects typically run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review** (the Open Track Delegate Panel or a Category Delegate Panel), and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)",
     "keyFacts": [
       "Applicants start by submitting an interest form on communityfund.stellar.org.",
-      "Eligible applicants are invited to submit a full proposal to a specific track (Open/Integration/RFP).",
+      "SCF invites eligible applicants to submit a full Open, Integration, or RFP proposal.",
       "Awardees must complete KYC/KYB before receiving (tranche) payments."
     ],
     "avoid": [
@@ -43,8 +43,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award and its Open/Integration track pages, observed 2026-08-05T23:41–23:42Z, confirm the interest-form flow, three tracks, current panel names, typical 3–6 month timeline, $150K XLM cap, tranches, KYC/KYB gate, and Open-only community vote.",
         "https://stellar.org/enterprise-fund and https://stellar.org/enterprise-fund/apply — current primary pages expose Apply Now / Submit your application, observed 2026-08-05.",
@@ -53,12 +53,16 @@
         "Sibling sweep: q-scf-vs-sdf-enterprise-fund and q-org-sdf-enterprise-fund remain consistent; the former already routes users to the current Enterprise form while preserving the separate SCF Build flow and $150K cap.",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep Enterprise Fund|SCF Build application|interest form → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund; no contradiction"
+        "Sibling sweep 2026-08-27: grep Enterprise Fund|SCF Build application|interest form → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund; no contradiction",
+        "Structural re-form (long-fact): Shortened the Build-track invitation fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current handbook says qualified interest-form applicants receive an invitation to an open Build round and select a track.",
+        "Sibling sweep 2026-08-29: grep interest form|Open Integration RFP|SCF Build application → q-scf-build-tracks, q-scf-vs-sdf-enterprise-fund; no contradiction"
       ],
       "rootCause": [
         "eval-authoring: a categorical Enterprise no-application trap survived after the official application surface became current",
         "eval-authoring: the Build summary collapsed the Open Track to brand-new projects and retained an obsolete generic panel name",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-how-to-apply"

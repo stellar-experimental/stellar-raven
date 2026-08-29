@@ -10,8 +10,9 @@
     "answer": "Treat the returned `ok: true` envelope with empty articles, AV, events, proposals, and SCF submissions as a data-shaped empty result, not a transport failure and not a `soft-empty` error envelope. For a closed-world question, it supports only the scoped statement that this exact LumenLoop person lookup linked no content. For an open-world identity, history, or publication question, that is insufficient: make one wider pass with broad ecosystem content/research surfaces such as `lumenloop.search_content_semantic` and `scout.searchResearch` (and A/V search when spoken material matters). Treat semantic rows as candidates, and attribute them only after exact-name or canonical-identity validation plus source and date. If that broader pass still provides no verified evidence, say the identity or history remains unverified and ask for spelling, project, handle, or timeframe rather than claiming the person has no footprint.",
     "keyFacts": [
       "Distinguishes an `ok: true` data-shaped empty response from a `soft-empty` error envelope.",
-      "Scopes a closed-world conclusion to no content linked by the exact LumenLoop person lookup.",
-      "For an open-world identity/history question, performs one wider semantic/research pass and validates identity, source, and date before attribution."
+      "Scopes a closed-world no-content result to the exact LumenLoop person lookup.",
+      "Runs one wider semantic/research pass for an open-world identity or history.",
+      "Validates identity, source, and date before attribution."
     ],
     "avoid": [
       "Do NOT claim the person does not exist or has no public work.",
@@ -62,20 +63,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Evidence-poor retrieval recovery correction (Solo scratchpad 611)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "2026-07-11 localhost:8787 probe observed: find_content_by_entity for an unknown person returned envelope ok=true with empty articles, av, events, proposals, and scf_submissions arrays.",
         "2026-07-13 production trace: narrow Justin Rice operations returned empty or adjacent ok data, while a later broad LumenLoop semantic query returned exact-name historical event rows.",
         "2026-07-13 localhost Strupey probe: broad families returned no exact-token row, demonstrating why semantic-neighbor output still needs identity validation.",
         "catalog/manifest.json exists and supports the behavioral golden.",
         "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): shortened the closed-world scope and split the open-world recovery rule; truth unchanged.",
+        "Live re-check 2026-08-29: catalog/manifest.json#lumenloop.find_content_by_entity — the current operation contract scopes an all-empty person result to no content linked by that exact lookup.",
+        "Live re-check 2026-08-29: src/mcp/tools.ts#evidence-sufficiency — the current executable instructions require one broader semantic/research pass for an evidence-poor open-world identity or history question.",
+        "Live re-check 2026-08-29: catalog/manifest.json#lumenloop.search_content_semantic — the current operation contract requires exact identity plus source and date before attribution.",
+        "Sibling sweep 2026-08-29: grep data-shaped empty|exact LumenLoop person|open-world identity → q-edge-lumenloop-person-entity-empty, q-gap-semantic-directory-fallback; no contradiction."
       ],
       "rootCause": [
         "A data-shaped empty was mislabeled as soft-empty and treated as enough for an open-world conclusion.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/evidence-poor-retrie--611"
+        "solo://proj/49/scratchpad/evidence-poor-retrie--611",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

@@ -8,7 +8,7 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Scout response and official SCF pages. As of 2026-08-18, the Q3 roster contains two published open RFP briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response reports `syntheticRounds=0`. SCF #45 is in Initial Review, so the open briefs do not establish that #45 still accepts full proposals.\n\nThe dated example is illustrative: a later grounded answer should report the roster and round state supported at its own observation time.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Reports the currently-open RFP briefs.",
       "States that the live response has no synthetic round row.",
@@ -88,8 +88,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
@@ -97,11 +97,15 @@
         "Sibling sweep covered q-scf-rfp-tooling, q-scf-current-round, q-edge-fresh-latest-scf-round, the three live RFP cases, q-scf-hummingbot-kelp-closed-rfp, and q-edge-scf-v7-centralization-myths; no contradictory current-round or roster claim remains.",
         "Structural re-form (presentation-avoid): rewrote two presentational avoid items as the same concrete false-content claims; both trap targets are unchanged.",
         "No live re-check was required because the avoid rewrites do not change the forbidden claims.",
-        "Sibling sweep 2026-08-27: grep syntheticRounds|LayerZero DVN|x402 Facilitator with Bazaar → q-scf-rfp-tooling, q-scf-open-rfps-live; no contradiction"
+        "Sibling sweep 2026-08-27: grep syntheticRounds|LayerZero DVN|x402 Facilitator with Bazaar → q-scf-rfp-tooling, q-scf-open-rfps-live; no contradiction",
+        "Structural re-form (long-fact): Shortened one long sourcing fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track — the current official RFP page supplies source-supported roster content with dated publication context.",
+        "Sibling sweep 2026-08-29: grep open RFP briefs|syntheticRounds|currently-open RFP|Current Open RFPs → q-scf-open-rfps-live, q-scf-open-rfps, q-scf-rfp-tooling; no contradiction."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-open-rfps"

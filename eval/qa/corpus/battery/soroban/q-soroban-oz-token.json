@@ -8,7 +8,8 @@
     "answer": "Yes. OpenZeppelin maintains the Rust `OpenZeppelin/stellar-contracts` suite for Stellar smart contracts, separate from its Solidity packages. Its current token package provides a SEP-41 fungible base and token extensions such as burnable, capped, allowlist, blocklist, and votes. Pausing, upgrading, ownership/roles, accounts, and governance are separate suite modules that can be composed as needed; do not present every module as an intrinsic SEP-41 token extension. Reuse can reduce custom-code risk, but audit coverage is version/release scoped and does not make an application automatically audited or safe.",
     "keyFacts": [
       "Identifies the current Rust OpenZeppelin Stellar Contracts suite and SEP-41 fungible base.",
-      "Separates current token extensions from pausing/upgrading/access modules and scopes audit claims to releases."
+      "The suite includes token extensions, pausing, upgrading, and access modules.",
+      "Audit claims are scoped to releases."
     ],
     "avoid": [
       "Do NOT cite the Solidity ERC-20 library as the Stellar package.",
@@ -76,13 +77,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer proved the library exists but froze an inaccurate current extension taxonomy and implied an unconditional audit reduction. Current OZ modules and audit scope are release-specific.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 blind 3329 independently rejected the primary retain decision and enumerated current modules; primary 3326 established the package tree."
+        "Solo scratchpad 575 GT-46 blind 3329 independently rejected the primary retain decision and enumerated current modules; primary 3326 established the package tree.",
+        "Structural re-form (long-fact): Split the module taxonomy from the audit scope; truth unchanged.",
+        "Live re-check 2026-08-29: https://docs.openzeppelin.com/stellar-contracts — the current OpenZeppelin owner docs list tokens, access control, and pausable/upgradeable utilities as separate suite areas.",
+        "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/tree/main/audits — the current primary audit directory names reports by exact library release.",
+        "Sibling sweep 2026-08-29: grep OpenZeppelin stellar-contracts|SEP-41 fungible|burnable|Upgradeable → q-crp-oz-rwa-erc3643-trex, q-sor-skill-openzeppelin-setup, q-soroban-oz-upgradeable-macro, q-tool-passkeykit-smart-wallet, and q-soroban-oz-token; no contradiction"
       ],
       "rootCause": [
-        "Eval-side extension list mixed historical/current token traits with separate suite utilities and generalized an audit claim beyond a pinned release."
+        "Eval-side extension list mixed historical/current token traits with separate suite utilities and generalized an audit claim beyond a pinned release.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-oz-token"

@@ -8,8 +8,8 @@
   "golden": {
     "answer": "Yes, but only the **interactive components**. As of 2026-07-13, **SEP-6's interactive (anchor-hosted UI) flow is\ndeprecated in favor of SEP-24** for hosted/interactive deposit & withdrawal [1][2]. SEP-6 itself is\n**not** removed — it remains **Active**, and its **non-interactive (programmatic) API** is still the\nright choice for fully API-driven anchors that want no hosted webview [1]. So an anchor that wants a\n**hosted UI / KYC webview** should implement **SEP-24**, not the SEP-6 interactive flow; an anchor\nthat wants a pure programmatic API (wallet collects data itself, e.g. via SEP-12) stays on SEP-6.\nThe replacement for interactive flows is **SEP-24 only** — not SEP-31 (cross-border) or SEP-12\n(KYC).\n\nSources: [1] stellar-protocol `ecosystem/sep-0006.md` (Deposit and Withdrawal API, Active —\ninteractive components deprecated); [2] `ecosystem/sep-0024.md` (Hosted Deposit and Withdrawal,\nActive).",
     "keyFacts": [
-      "Yes — SEP-6's interactive components are deprecated in favor of SEP-24 for hosted/interactive deposit & withdrawal.",
-      "SEP-6's non-interactive (programmatic) API portion remains useful for fully API-driven anchors."
+      "SEP-6's interactive deposit and withdrawal components are deprecated in favor of SEP-24.",
+      "SEP-6's programmatic API remains useful for fully API-driven anchors."
     ],
     "avoid": [
       "Do NOT claim all of SEP-6 is deprecated/removed (only the interactive components are).",
@@ -40,8 +40,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/anchors",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
@@ -54,13 +54,18 @@
         "Structural re-form (symmetric-caution): Added a narrow caution for the missing SEP-6 interactive-component deprecation; golden truth unchanged.",
         "Improvement finding read 2026-08-27: improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md; disputed claim: official Docs omit SEP-6's interactive-component deprecation in favor of SEP-24.",
         "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-        "Sibling sweep 2026-08-27: grep SEP-6|SEP-24|interactive components → q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction"
+        "Sibling sweep 2026-08-27: grep SEP-6|SEP-24|interactive components → q-sep-6-24-deprecation, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice; no contradiction",
+        "Structural re-form (long-fact): Shortened both SEP-6 lifecycle facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP-6 preamble says its interactive components are deprecated in favor of SEP-24.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current Active SEP defines the programmatic Deposit and Withdrawal API.",
+        "Sibling sweep 2026-08-29: grep SEP-6|SEP-24|SEP-31|hosted UI → q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-vs-31-misnumber-trap, q-sep-31-cross-border, and related anchor cases; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
         "eval-authoring",
         "improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-6-24-deprecation",

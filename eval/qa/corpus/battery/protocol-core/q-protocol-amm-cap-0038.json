@@ -9,7 +9,7 @@
   "golden": {
     "answer": "- Native AMM / liquidity-pool functionality launched with **Protocol 18 (activated ~2021-11-03) via CAP-0038** [1][2].\n- AMMs hold two assets in a **constant-product pool** and add cross-currency payment paths alongside the existing order-book DEX [1].\n- Liquidity pools are a new **ledger entry type** introduced by this change [1].\n- This is a **native protocol-level** AMM primitive — distinct from Soroban-contract AMMs (e.g. Soroswap); it is **not** a smart contract [1].",
     "keyFacts": [
-      "States native AMM / liquidity-pool functionality launched with Protocol 18 (activated ~2021-11-03) via CAP-0038."
+      "Native AMM pools launched through CAP-0038 with Protocol 18 around 2021-11-03."
     ],
     "avoid": [
       "Do NOT attribute native AMMs to the wrong protocol (e.g. Protocol 20/Soroban) or wrong CAP (e.g. CAP-0046).",
@@ -37,11 +37,40 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "It is not a smart contract.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+            "note": "Exact quotes: ‘LiquidityPoolEntry is introduced as a new type of LedgerEntry.’ ‘New operations ... are introduced.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar",
+            "observedAt": "2026-08-29",
+            "note": "Exact quotes: `Protocol native AMM functionality launches on Stellar`; `Liquidity pools can be created on Stellar without requiring smart contracts`."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-31-p23-p27-caps-amm-curves accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Shortened the native AMM launch fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/protocol-upgrades — the official history dates Protocol 18 to 2021-11-03 and assigns AMM liquidity to CAP-0038.",
+        "Sibling sweep 2026-08-29: grep Protocol 18|CAP-0038|native AMM|liquidity pool → q-asset-sdex-vs-amm, q-asset-amm-fee-reserve, q-edge-factcheck-soroswap-first-amm; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for native AMM ledger implementation; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-amm-cap-0038"

@@ -7,8 +7,10 @@
   "golden": {
     "answer": "For ordinary public contract calls, Soroban prevents invoking a contract that is already executing on the call stack, so classic Ethereum-style same-contract reentrancy is structurally blocked and a Solidity-style ReentrancyGuard is not the primary defense. The host has narrow internal/self-allowed modes and a special custom-account `__check_auth` path; those are not general public reentry and should not be used to claim the host has no exceptions internally. Continue to reason about cross-contract ordering, authorization, state assumptions, and rollback semantics.",
     "keyFacts": [
-      "Ordinary public calls cannot re-enter an executing contract, blocking classic same-contract reentrancy.",
-      "Scopes the statement around internal auth/custom-account modes and preserves composition risk."
+      "Ordinary public calls cannot re-enter an executing contract.",
+      "Classic same-contract reentrancy is structurally blocked.",
+      "Internal auth and custom-account modes qualify the public-call rule.",
+      "Cross-contract composition still needs risk analysis."
     ],
     "avoid": [
       "Do NOT prescribe Solidity nonReentrant as the primary Soroban defense.",
@@ -64,13 +66,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited conclusion was broadly right for ordinary public calls but used an unqualified 'host disallows' absolute that omitted internal auth-only modes and the special custom-account authentication path.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 blind 3329 narrowed the primary retain decision after reviewing current host internal modes."
+        "Solo scratchpad 575 GT-46 blind 3329 narrowed the primary retain decision after reviewing current host internal modes.",
+        "Structural re-form (long-fact): Split the public-call rule, classic reentrancy result, internal modes, and composition risk; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/host/frame.rs — the current host uses prohibited re-entry mode for ordinary calls.",
+        "Live re-check 2026-08-29: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/host/frame.rs — the current host rejects re-entry under prohibited mode.",
+        "Live re-check 2026-08-29: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/host/frame.rs — the current source retains narrow self-allowed and fully allowed internal modes beside the prohibited default.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/conventions/cross-contract — the current guide identifies cross-contract dependencies and security considerations that need continued review.",
+        "Sibling sweep 2026-08-29: grep reentrancy|re-entry|internal auth|composition risk → q-soroban-vuln-classes, q-soroban-auth-recursion-dos-audit; no contradiction."
       ],
       "rootCause": [
-        "Eval-side simplification promoted normal public-call behavior to an exceptionless internal-host claim."
+        "Eval-side simplification promoted normal public-call behavior to an exceptionless internal-host claim.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-reentrancy"

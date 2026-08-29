@@ -10,7 +10,7 @@
     "answer": "Updating a contract's Wasm keeps the contract address and storage; it does not rewrite stored values into a new schema. Version stored records and use either lazy migration on read/write or a controlled migration entrypoint that converts bounded batches. Keep old and new decoding paths only for the migration window, make the operation idempotent, test against production-shaped state, and retain rollback or pause controls. Large migrations should be batched to stay within transaction resources.",
     "keyFacts": [
       "A Wasm upgrade does not automatically transform existing contract storage.",
-      "Versioned records can be migrated lazily or through a controlled explicit migration entrypoint.",
+      "Versioned records support lazy migration or a controlled explicit entrypoint.",
       "Large migrations should be idempotent and batched to fit transaction resource limits."
     ],
     "avoid": [
@@ -119,11 +119,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage",
-        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/contract-utils/src/upgradeable"
+        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/contract-utils/src/upgradeable",
+        "Structural re-form (long-fact): Shortened the versioned-record migration fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage — the current guide documents versioned records, lazy migration, and an explicit admin function for eager migration.",
+        "Sibling sweep 2026-08-29: grep lazy migration|eager migration|versioned records|migration entrypoint → q-soroban-upgradeable-storage-compat, q-soroban-oz-upgradeable-macro; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan soroban-storage-migration-upgrade"

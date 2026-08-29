@@ -8,10 +8,11 @@
   "golden": {
     "answer": "A grounded answer consults the current LumenLoop corpus, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live submission lookup returned four Soroswap awards, including records for rounds 15, 17, and 21.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Resolves Soroswap (the Stellar/Soroban DEX/AMM) and returns its SCF submission history.",
-      "Answers whether it was SCF-funded and the shape of the history — 3 numbered rounds (15, 17, 21) and/or 4 awarded submissions including the '24 Q1 Liquidity Award — grounded in the submissions record."
+      "Confirms Soroswap received SCF funding.",
+      "Reports rounds 15, 17, and 21 plus the '24 Q1 Liquidity Award."
     ],
     "avoid": [
       "Do NOT state per-round dollar figures without sourcing them to the submissions record or communityfund.stellar.org (unsourced figures that contradict the record's 57,600 / 139,150 / 100,000 / 50,000 are wrong).",
@@ -92,19 +93,26 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Live production execute 2026-07-07: lumenloop.get_scf_submissions({slug:'soroswap'}) -> 4 submissions with award_type + budget exactly as quoted; scout soroswap record scfTotalAwardedUSD 346750 'disclosed', rounds [15,17,21]",
         "Class-A verification 2026-07-06: communityfund.stellar.org/project/soroswapfinance-yax (canonical page; /projects/soroswap 404s) — full corroboration matrix in Solo todo 853 close + the verification agent transcript",
         "Judge artifact demonstrated: eval/qa/results/2026-07-07T02-28-31-variantA.json scored WRONG for 'fabricated' labels/amounts/4th submission, every one verbatim in the live record",
         "Sibling-consistency sweep 2026-07-07: q-defi-soroswap-scf ('roughly $346,750' source-relative) and q-defi-soroswap-resolve ('~$346,750') both consistent; no golden contradicts the 4-submission structure",
         "2026-07-11 localhost:8787 search→execute probe observed: the live submission lookup returned four Soroswap awards, including records for rounds 15, 17, and 21.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): reworded an eval-side root cause that falsely triggered the improvements-file lint; the Soroswap funding truth is unchanged.",
         "Root-cause review 2026-08-27: no upstream finding exists for the richer Soroswap submissions record; reworded the entry to say no upstream finding was warranted.",
-        "Sibling sweep 2026-08-27: grep Soroswap SCF|346750|rounds 15 → q-defi-phoenix-what-is, q-defi-soroswap-what-is, q-eco-lobstr-wallet; no contradiction"
+        "Sibling sweep 2026-08-27: grep Soroswap SCF|346750|rounds 15 → q-defi-phoenix-what-is, q-defi-soroswap-what-is, q-eco-lobstr-wallet; no contradiction",
+        "Structural re-form (long-fact): Shortened the sourcing fact and split the Soroswap history fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/project/soroswapfinance-yax — the official SCF project record supports a dated observation of Soroswap's funding history.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/project/soroswapfinance-yax — the current record supports a visible observation date for its changeable interface data.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/project/soroswapfinance-yax — the official page identifies Soroswap as an AMM protocol and lists its SCF submissions.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/project/soroswapfinance-yax — the official page shows four awarded submissions.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/project/soroswapfinance-yax — the official page lists SCF #15, #17, #21, and Liquidity Award - '24 Q1.",
+        "Sibling sweep 2026-08-29: grep Soroswap|346750|Liquidity Award '24 Q1|SCF #15 → q-defi-soroswap-what-is, q-edge-factcheck-soroswap-first-amm, q-scf-cross-reflector-rounds-current; no contradiction"
       ],
       "rootCause": [
         "solo://proj/49/todo/golden-gap-q-scf-his--853",
@@ -112,7 +120,8 @@
         "Transcript-blind judge class (third occurrence this week) — rubric-note decision deferred to a measured rubric round, recorded in todo 853 close",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-history-soroswap"

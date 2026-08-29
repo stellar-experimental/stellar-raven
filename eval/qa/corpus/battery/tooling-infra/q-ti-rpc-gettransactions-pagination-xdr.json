@@ -25,7 +25,7 @@
       "Do NOT hard-code Horizon's 200 limit as the RPC getEvents limit.",
       "Do NOT expect *Xdr names in xdrFormat=json or double-decode SDK-parsed XDR values."
     ],
-    "notes": "GT-53 CORRECTION 2026-07-11: getTransactions has stock 50/default and 200/max options, but providers may configure them. First-page startLedger is inclusive; continuation uses cursor without startLedger. The old Horizon-only premise is false.\nAlso good if the answer: Mentions that RPC/Horizon are not perfect substitutes and some Horizon endpoints/effects require XDR decoding or an indexer. | Recommends idempotent processing keyed by transaction hash/ledger/index to survive retries.\nGolden cites: Primary RPC pagination docs and Horizon-to-RPC migration/XDR docs.\nPreserve the 2026-07-03 sd-003/sd-004 correction: docs/search missed the RPC method page and docs call configurable defaults hardcoded. GT-53 adds exact cursor exclusivity and XDR/JSON types. Do not penalize provider-configurability precision or a dated live limit that differs from stock defaults. Per stellar-docs#2567, grade either the documented effective stock 50/200 cap or a dated source-level configurable-default qualifier as correct, provided the answer does not call the cap compile-time immutable or recommend raising it.\nAccurately quoting the canonical source page is not a wrong claim while the filed upstream defect stands; grade caps at partial for that dispute unless the answer contradicts the golden fact independently of the quoted page."
+    "notes": "GT-53 CORRECTION 2026-07-11: getTransactions has stock 50/default and 200/max options, but providers may configure them. First-page startLedger is inclusive; continuation uses cursor without startLedger. The old Horizon-only premise is false.\nAlso good if the answer: Mentions that RPC/Horizon are not perfect substitutes and some Horizon endpoints/effects require XDR decoding or an indexer. | Recommends idempotent processing keyed by transaction hash/ledger/index to survive retries.\nGolden cites: Primary RPC pagination docs and Horizon-to-RPC migration/XDR docs.\nPreserve the 2026-07-03 sd-003/sd-004 correction: docs/search missed the RPC method page and docs call configurable defaults hardcoded. GT-53 adds exact cursor exclusivity and XDR/JSON types. Do not penalize provider-configurability precision or a dated live limit that differs from stock defaults. Per stellar-docs#2567, grade either the documented effective stock 50/200 cap or a dated source-level configurable-default qualifier as correct, provided the answer does not call the cap compile-time immutable or recommend raising it.\nCanonical-page caution: The official getTransactions page calls the cap hardcoded. An attributed quote is not a wrong claim; grade caps at partial. This does not accept universal immutability. improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md is declined-upstream, so this durable caution has no expiry date and remains until a later owner decision."
   },
   "tags": {
     "category": "tooling-infra",
@@ -157,8 +157,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
       "evidence": [
         "eval/qa/results/2026-07-03T16-06-45-variantA.json (q-ti-rpc-gettransactions-pagination-xdr)",
         "Live 2026-07-03: developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — limit 'can range from 1 to 200 — an upper limit that is hardcoded in Stellar-RPC for performance reasons', default 50",
@@ -178,14 +178,19 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — results still covered retained history, failed transactions, optional diagnostics, and cursor continuation.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/data-format — base64 *Xdr fields, JSON *Json fields, and SDK parsing remained distinct response forms.",
         "Sibling sweep 2026-08-27: grep getTransactions|resultMetaXdr|xdrFormat → q-crp-export-tx-history-taxes, q-infra-rpc-methods-list, q-ti-parse-raw-ledger-data, q-ti-rpc-gettransactions-pagination-xdr; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part3.md): restored the fall-behind behavior claim; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27: program-log.md § Session 2 › Batch 5 › Part 3 review (gt2-grok-rev) restored the fall-behind behavior claim; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — the official page calls 200 a hardcoded upper limit and gives default 50.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/config/options.go — source exposes max-transactions-limit and default-transactions-limit with stock defaults 200 and 50.",
+        "Sibling sweep 2026-08-29: grep getTransactions|hardcoded|max-transactions-limit → q-ti-rpc-gettransactions-pagination-xdr and q-ti-parse-raw-ledger-data; no contradiction.",
+        "Independent blind re-derivation 2026-08-29: review-canonical-rederivation-grok.md confirmed the Docs/source conflict and rejected universal immutability."
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-003 (verified, awaiting upstream) — RPC method reference pages unindexed in Algolia; the upstream fix that would have prevented both the agent's and the golden author's error. When sd-003 is fixed-upstream, this override's facts should be re-verified against the then-indexed page but the correction itself remains valid.",
         "improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md",
         "solo://proj/49/todo/golden-fixes-q-scf-r--827",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
       ]
     },
     "origin": "raven-next q-ti-rpc-gettransactions-pagination-xdr"

@@ -10,8 +10,9 @@
     "answer": "Start with HTTP status and Horizon `extras.result_codes.transaction` plus `operations`. `tx_bad_seq` is a source-sequence mismatch; `tx_failed` means an operation failed and the transaction stayed atomic, so inspect the operation array. Underfunded means **spendable** balance after minimum reserve, subentries, offers, and selling liabilities—not merely the displayed nominal balance.\n\nUse the exact operation family and namespace. Payment mappings include `PAYMENT_NO_DESTINATION` and `PAYMENT_SRC_NO_TRUST`; SetOptions documents `op_bad_signer` paired with `SET_OPTIONS_BAD_SIGNER`; generic operation authorization is `op_bad_auth`. These labels are not interchangeable. Treat deterministic 400/result-code failures differently from 429/5xx/timeouts: back off for transport/admission uncertainty and query the known hash before rebuilding, preserving idempotency and bounds.",
     "keyFacts": [
       "Reads transaction and operation result codes and preserves transaction atomicity.",
-      "Explains spendable-balance effects from reserves, subentries, offers, liabilities, and trustlines.",
-      "Correctly scopes PAYMENT_NO_DESTINATION/PAYMENT_SRC_NO_TRUST, SetOptions op_bad_signer/SET_OPTIONS_BAD_SIGNER, and generic op_bad_auth.",
+      "Explains spendable balance from reserves, subentries, offers, liabilities, and trustlines.",
+      "Scopes Payment codes to PAYMENT_NO_DESTINATION and PAYMENT_SRC_NO_TRUST.",
+      "Scopes SetOptions to op_bad_signer and SET_OPTIONS_BAD_SIGNER.",
       "Uses hash-first/idempotent handling for 429/5xx/timeouts instead of retrying every 400."
     ],
     "avoid": [
@@ -90,14 +91,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited taxonomy mixed generic and operation-specific result-code namespaces, omitted named Payment/SetOptions mappings, and did not make transport uncertainty versus deterministic rejection sufficiently explicit.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary/blind matrices independently required the taxonomy repair; blind corrected the primary's overbroad treatment of `op_bad_signer`.",
-        "Sibling sweep checked q-ti-tx-too-late-resubmit and channel-account/fee-bump cases."
+        "Sibling sweep checked q-ti-tx-too-late-resubmit and channel-account/fee-bump cases.",
+        "Structural re-form (long-fact): Shortened one balance fact and split one result-code fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — the official account guide connects reserves, subentries, offers, trustlines, and liabilities to available balances.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/payment — the official Payment table defines PAYMENT_NO_DESTINATION and PAYMENT_SRC_NO_TRUST.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/set-options — the official SetOptions table pairs op_bad_signer with SET_OPTIONS_BAD_SIGNER.",
+        "Sibling sweep 2026-08-29: grep PAYMENT_NO_DESTINATION|PAYMENT_SRC_NO_TRUST|SET_OPTIONS_BAD_SIGNER|op_bad_signer|spendable balance → q-ti-classic-submission-errors, q-pc-account-activation-not-found; no contradiction."
       ],
       "rootCause": [
-        "Eval-side namespace conflation: generic operation, Payment, and SetOptions labels were authored as interchangeable."
+        "Eval-side namespace conflation: generic operation, Payment, and SetOptions labels were authored as interchangeable.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-ti-classic-submission-errors"

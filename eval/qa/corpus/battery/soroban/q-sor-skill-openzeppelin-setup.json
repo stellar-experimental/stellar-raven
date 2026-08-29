@@ -1,1 +1,62 @@
-{"id":"q-sor-skill-openzeppelin-setup","question":"What is the best skill workflow for setting up a Soroban contract project with OpenZeppelin Contracts for Stellar?","surface":["skills.openzeppelin-stellar.setup-stellar-contracts"],"golden":{"answer":"Use the OpenZeppelin setup-stellar-contracts playbook. Follow its toolchain checks, initialize a Soroban project, add the documented OpenZeppelin Stellar dependencies to Cargo.toml, and use the Stellar/Soroban import and contract patterns it specifies. Validate the scaffold with the playbook's build/test steps before adding application logic.","keyFacts":["Uses the OpenZeppelin Stellar setup playbook for toolchain, project initialization, dependencies, and imports.","Builds or tests the scaffold before application-specific changes."],"avoid":["Do NOT substitute EVM Solidity setup instructions for the Soroban Rust workflow.","Do NOT guess dependency names or import paths outside the playbook."],"notes":"Best-source case for the served OpenZeppelin setup skill."},"tags":{"category":"soroban","service":"skills","freshness":"stable"},"truth":{"domain":"corpus-grounded","status":"confirmed","sources":[{"class":"B","ref":"skills.openzeppelin-stellar.setup-stellar-contracts","note":"Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow."},{"class":"C","ref":"http://localhost:8787/mcp","note":"Live localhost search→execute probe."}],"verified":{"date":"2026-07-30","by":"drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh","evidence":["2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.","2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.","skills.openzeppelin-stellar.setup-stellar-contracts exists and supports the behavioral golden.","Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.openzeppelin-stellar.setup-stellar-contracts'). Same bytes, re-verified by digest; only the pointer notation changed.","Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.","solo://proj/49/scratchpad/super-corpus-rebuild--585"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (coverage)"}}
+{
+  "id": "q-sor-skill-openzeppelin-setup",
+  "question": "What is the best skill workflow for setting up a Soroban contract project with OpenZeppelin Contracts for Stellar?",
+  "surface": [
+    "skills.openzeppelin-stellar.setup-stellar-contracts"
+  ],
+  "golden": {
+    "answer": "Use the OpenZeppelin setup-stellar-contracts playbook. Follow its toolchain checks, initialize a Soroban project, add the documented OpenZeppelin Stellar dependencies to Cargo.toml, and use the Stellar/Soroban import and contract patterns it specifies. Validate the scaffold with the playbook's build/test steps before adding application logic.",
+    "keyFacts": [
+      "Uses the OpenZeppelin Stellar setup playbook for toolchain and project initialization.",
+      "Uses its documented dependencies and imports.",
+      "Builds or tests the scaffold before application-specific changes."
+    ],
+    "avoid": [
+      "Do NOT substitute EVM Solidity setup instructions for the Soroban Rust workflow.",
+      "Do NOT guess dependency names or import paths outside the playbook."
+    ],
+    "notes": "Best-source case for the served OpenZeppelin setup skill."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "skills",
+    "freshness": "stable"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "skills.openzeppelin-stellar.setup-stellar-contracts",
+        "note": "Served skill body (pinned upstream commit, hash-verified) defines the exercised contract/workflow."
+      },
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp",
+        "note": "Live localhost search→execute probe."
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "evidence": [
+        "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
+        "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.",
+        "skills.openzeppelin-stellar.setup-stellar-contracts exists and supports the behavioral golden.",
+        "Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.openzeppelin-stellar.setup-stellar-contracts'). Same bytes, re-verified by digest; only the pointer notation changed.",
+        "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Split the setup playbook coverage into two facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/setup-stellar-contracts/SKILL.md — the pinned primary playbook covers the Stellar toolchain and project initialization.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/setup-stellar-contracts/SKILL.md — the pinned primary playbook specifies OpenZeppelin dependencies and import conventions.",
+        "Sibling sweep 2026-08-29: grep setup-stellar-contracts|OpenZeppelin Stellar setup → q-sor-skill-openzeppelin-setup; no contradiction"
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (coverage)"
+  }
+}

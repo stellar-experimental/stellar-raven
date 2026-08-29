@@ -7,9 +7,11 @@
   "golden": {
     "answer": "- The **Anchor Platform** is **SDF's (Java) toolset/backend** for building and running a SEP-compliant anchor (on/off-ramp) service — the fastest way to go live without re-implementing the SEP endpoints [1][2].\n- It implements the anchor SEP set: **SEP-1, SEP-6, SEP-10, SEP-12, SEP-24, SEP-31, SEP-38** (and SEP-45 for contract-account auth) [1].\n- It is **anchor-operator backend infrastructure**, not a consumer app — distinct from the (TypeScript) **Wallet SDK**, which is the wallet-side client counterpart [1].",
     "keyFacts": [
-      "The Anchor Platform is SDF's (Java) backend/toolset for deploying a SEP-compliant anchor (on/off-ramp) service.",
-      "It implements the anchor SEP set: SEP-1, SEP-6, SEP-10, SEP-12, SEP-24, SEP-31, and SEP-38 (plus SEP-45).",
-      "Surfaces the canonical SDF repos: stellar/anchor-platform, stellar/typescript-wallet-sdk, and stellar/stellar-disbursement-platform-backend."
+      "SDF's Java Anchor Platform is a backend/toolset for anchor operators.",
+      "It deploys a SEP-compliant on/off-ramp service.",
+      "It implements SEP-1/6/10/12/24/31/38, plus SEP-45.",
+      "Canonical repos include stellar/anchor-platform and stellar/typescript-wallet-sdk.",
+      "They also include stellar/stellar-disbursement-platform-backend."
     ],
     "avoid": [
       "Do NOT misnumber the SEPs the Anchor Platform implements.",
@@ -38,16 +40,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 Lane R absorb triage",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-anchor-platform-repo-discovery",
         "https://github.com/stellar/anchor-platform",
-        "https://github.com/stellar/stellar-disbursement-platform-backend"
+        "https://github.com/stellar/stellar-disbursement-platform-backend",
+        "Structural re-form (long-fact): split the platform role, SEP list, and repository list into five short facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/anchor-platform — the official repo identifies the project as a Java SDK and documents backend APIs for anchors.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the official page describes tools and APIs for building on/off-ramp services.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the supported list names SEP-1/6/10/12/24/31/38/45.",
+        "Live re-check 2026-08-29: https://github.com/stellar/anchor-platform and https://github.com/stellar/typescript-wallet-sdk — both official Stellar repos exist and identify the named projects.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-disbursement-platform-backend — the official Stellar repo exists and identifies the named project.",
+        "Sibling sweep 2026-08-29: grep Anchor Platform|SEP-45|stellar/typescript-wallet-sdk|stellar/stellar-disbursement-platform-backend → q-anchor-list-builders-discovery, q-anchor-platform-what, q-anchor-sdp-vs-anchor-platform, q-anchor-sdp-what, q-asset-wallet-sdk-seps, q-production-anchor-architecture, q-sep-12-kyc, q-sep-38-quotes, q-sep-45-contract-auth, q-sep-catalog-list, q-sep6-sep24-sep31-choice, q-comp-anchor-compliance-stack, q-comp-sep6-vs-sep12-roles, q-crp-anchors-by-corridor, q-crp-become-an-anchor-licensing, q-crp-sdp-operation, q-pay-sdp-disbursement, q-edge-inject-ignore-instructions, q-raph-merchant-payments, and q-tool-wallets-comparison; no contradiction with the rewritten claims."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-anchor-platform-what",

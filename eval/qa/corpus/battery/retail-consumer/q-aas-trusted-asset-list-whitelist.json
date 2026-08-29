@@ -8,9 +8,11 @@
   "golden": {
     "answer": "There is no protocol-level official whitelist that makes a Stellar asset trusted across all wallets and apps. A Stellar asset can be valid on-chain while still being hidden, warned, unverified, or blocked by a particular wallet/explorer policy.\n\nThere is, however, a standards-based allowlist mechanism. SEP-42 defines Stellar Asset Lists: curated lists of Stellar asset metadata that applications can choose to trust. The community-managed `stellar-asset-lists/index` catalog and StellarExpert asset-list page let apps discover lists, and the `@stellar-asset-lists/sdk` package can fetch and parse them. The catalog explicitly says inclusion in a list should not be treated as endorsement or recommendation.\n\nA wallet whitelist should combine sources and policy: exact asset code + issuer, issuer account and `home_domain`, SEP-1 TOML metadata and organization docs, known project/issuer sources, liquidity/market behavior, user reports or denylist evidence, and dated reviews of asset-list providers. SDK helpers can read metadata or SAL lists; they cannot certify that an asset is safe by themselves.",
     "keyFacts": [
-      "States there is no single protocol-level official whitelist that makes an asset trusted across all Stellar wallets and apps.",
-      "Explains wallets should evaluate issuer account, home domain, SEP-1 metadata, known issuer/project sources, liquidity, and user risk signals.",
-      "Distinguishes protocol validity of an asset from wallet/explorer trust, verification, or display policy."
+      "No protocol-level whitelist makes an asset trusted across all Stellar wallets and apps.",
+      "Wallets should evaluate issuer accounts, home domains, and SEP-1 metadata.",
+      "Wallets should evaluate known issuer or project sources and user risk signals.",
+      "Wallets should evaluate asset liquidity.",
+      "Protocol validity differs from wallet or explorer trust, verification, and display policy."
     ],
     "avoid": [
       "Do NOT claim Stellar or SDF maintains a universal official trusted-token whitelist for every wallet.",
@@ -51,16 +53,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep1",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0042.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened the whitelist and policy facts and split the wallet evaluation list; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0042.md — SEP-42 permits any organization to publish a list, leaves provider choice to applications, and says inclusion is not endorsement.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 defines issuer and home-domain stellar.toml metadata for wallet and exchange decisions.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0042.md — SEP-42 directs applications to trusted providers and supports feedback about bad actors.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the official guide defines liquidity as conversion ease and cost.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0042.md — SEP-42 separates on-chain asset identity from application-selected trust providers and display choices.",
+        "Sibling sweep 2026-08-29: grep universal Stellar whitelist|protocol-level official whitelist|universal official trusted-token whitelist → q-aas-list-token-on-exchanges-aggregators, q-aas-trusted-asset-list-whitelist; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-aas-trusted-asset-list-whitelist",

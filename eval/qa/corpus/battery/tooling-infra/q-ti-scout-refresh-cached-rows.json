@@ -7,9 +7,10 @@
   "golden": {
     "answer": "Call `scout.getChanges` with the cache timestamp in `since` and the needed `surfaces`. Read `meta.counts` per surface, because `limit` applies separately to each surface. Check every `meta.truncated` flag; raise the limit and query a surface separately when needed, and state when the feed still does not cover every changed row. For each returned row, use `facets` to select the fact family to refresh, then re-read that entity through its search endpoint. A `\"row\"` facet means the change is not localized, so re-read the full row. An empty surface with `truncated: false` means unchanged since the supplied timestamp; it does not mean the entity class does not exist.",
     "keyFacts": [
-      "Uses `since`, optional surface selection, per-surface counts, and every per-surface truncation flag.",
+      "Uses `since` with optional surface filters.",
+      "Checks each surface's count and truncation flag.",
       "Uses facets to choose the refresh scope and re-reads the full entity for a `row` facet.",
-      "Treats an untruncated empty result as unchanged since the supplied timestamp, not as an existence claim."
+      "An untruncated empty result means nothing changed after `since`."
     ],
     "avoid": [
       "Do NOT read `meta.counts` as the number of rows returned in the limited payload.",
@@ -83,16 +84,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1664 coverage-golden implementation",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Read-only getChanges probes covered truncated multi-surface data and an untruncated empty surface on 2026-08-18.",
         "catalog/manifest.json#scout.getChanges defines the pagination, facet, and re-read boundaries.",
         "Sibling sweep: q-gap-scout-changelog-envelope keeps row changes distinct from API contract changes.",
-        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+        "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
+        "Structural re-form (long-fact): split request filters from response metadata and shortened the untruncated-empty rule; avoid retains the existence boundary.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/changes?since=2026-08-29&surfaces=partners&limit=5 — the response echoes the `since` value and selected surface.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/changes?since=2026-08-28&limit=3 — the response includes separate counts and truncation flags for every surface.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/changes?since=2026-08-29&surfaces=partners&limit=5 — the response is empty with `truncated.partners: false`.",
+        "Sibling sweep 2026-08-29: grep getChanges|getChangelog|change history → q-gap-scout-changelog-envelope, q-ti-scout-changelog-contract-check; no contradiction."
       ],
       "rootCause": [
-        "solo://proj/80/todo/author-five-new-cove--1664"
+        "solo://proj/80/todo/author-five-new-cove--1664",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

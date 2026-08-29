@@ -9,7 +9,8 @@
   "golden": {
     "answer": "Yes—Stellar now applies non-conflicting smart-contract transactions in bounded parallel clusters. **Protocol 23/Whisk** introduced CAP-0063 scheduling support on 2025-09-03, but initialized `ledgerMaxDependentTxClusters` to **1** (no multi-cluster parallel execution). A separate settings vote activated **2** clusters on **2026-01-29 at 17:00 UTC**; three independent Mainnet RPC reads on 2026-07-10 still decoded setting 2, last modified at ledger 60993066 (17:00:09Z). The scheduler groups disjoint read/write footprints within bounded budgets. This is parallel scheduling, not sharding or a claim that all transactions run concurrently.",
     "keyFacts": [
-      "Maps parallel smart-contract scheduling to CAP-0063/P23 while distinguishing initial configuration from later activation.",
+      "CAP-0063/P23 introduced parallel smart-contract scheduling.",
+      "Initial configuration preceded later activation.",
       "Explains non-conflicting/disjoint footprints and current bounded setting."
     ],
     "avoid": [
@@ -64,13 +65,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The scheduling mechanics are correct, but the inherited answer equated P23 capability introduction with immediate activation despite CAP-0063's initial one-cluster setting.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273 sibling reconciliation."
+        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273 sibling reconciliation.",
+        "Structural re-form (long-fact): split capability introduction from later activation; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md — the Final CAP maps parallel smart-contract scheduling to Protocol 23.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md and https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — the initial one-cluster configuration preceded the separate later settings change.",
+        "Sibling sweep 2026-08-29: grep CAP-0063|ledgerMaxDependentTxClusters|parallel smart contract → q-protocol-23-whisk-caps, q-protocol-bls12-381-cap59, q-protocol-version-history-list, and q-protocol-parallel-execution; no contradiction"
       ],
       "rootCause": [
-        "Eval-side introduction-versus-current-activation conflation."
+        "Eval-side introduction-versus-current-activation conflation.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-protocol-parallel-execution"

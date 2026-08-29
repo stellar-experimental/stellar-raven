@@ -50,9 +50,89 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Expiry is not automatic deletion.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0023.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: ‘A ClaimableBalanceEntry can only be deleted by the ClaimClaimableBalanceOp operation.’"
+          }
+        ]
+      },
+      {
+        "claim": "If you list yourself (the sender/creator) as a claimant, that does NOT give you an at-will reclaim right: you can only claim when your own predicate evaluates true, and listing yourself never overrides another claimant's predicate.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0023.md",
+            "observedAt": "2026-08-29",
+            "note": "Observed condition: `claimants[i].destination = sourceAccount` and `claimants[i].predicate` must both match before a claim succeeds."
+          }
+        ]
+      },
+      {
+        "claim": "A claimable balance is not a custodial balance the creator can pull back at will, and the predicate set — not an issuer clawback flag — is the control surface.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0023.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact schema comment: `ClaimPredicate predicate; // Claimable if predicate is true`; the creator has no separate pull-right field."
+          }
+        ]
+      },
+      {
+        "claim": "Issuer clawback under CAP-35 is a separate regulated-asset feature, not the creator's ordinary reclaim mechanism.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0035.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: clawback operations ‘only apply to assets issued by the source account.’"
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (presentation-avoid): Deleted a required-content avoid item already enforced by a key fact; the truth is unchanged.",
@@ -61,11 +141,14 @@
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — paired each claimant with a claim predicate.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — required a matching claimant with a satisfied predicate.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — showed absolute and relative time predicates for expiry/reclaim windows.",
-        "Sibling sweep 2026-08-27: grep claimable balance|ClaimPredicate|base reserve|reclaim window → q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-raph-claimable-balance-safety, q-protocol-base-reserve-min-balance; no contradiction"
+        "Sibling sweep 2026-08-27: grep claimable balance|ClaimPredicate|base reserve|reclaim window → q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-raph-claimable-balance-safety, q-protocol-base-reserve-min-balance; no contradiction",
+        "Corroboration audit 2026-08-29: added 4 row(s) for expiry, reclaim, predicate, and clawback boundaries; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 4 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-aas-claimable-predicates-expiry-reserves"

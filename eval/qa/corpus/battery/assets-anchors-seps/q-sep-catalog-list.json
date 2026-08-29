@@ -12,7 +12,8 @@
     "keyFacts": [
       "SEP-1 = stellar.toml info/discovery file.",
       "SEP-10 = Stellar Web Authentication.",
-      "SEP-12 = KYC API; SEP-24 = hosted/interactive deposit & withdrawal; SEP-6 = programmatic deposit & withdrawal.",
+      "Maps SEP-12 to the KYC API and SEP-24 to hosted interactive deposit and withdrawal.",
+      "Maps SEP-6 to programmatic deposit and withdrawal.",
       "SEP-31 = cross-border payments API; SEP-38 = Anchor RFQ/quotes API."
     ],
     "avoid": [
@@ -151,16 +152,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Split the SEP-12, SEP-24, and SEP-6 mappings; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — the current official catalog maps SEP-12 to KYC and SEP-24 to hosted deposit and withdrawal.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — the current official catalog maps SEP-6 to API-based deposit and withdrawal.",
+        "Sibling sweep 2026-08-29: grep SEP-1|SEP-10|SEP-12|SEP-24|SEP-6|SEP-31|SEP-38 → q-sep-1-toml, q-sep-12-kyc, q-sep-interactive-deposit-withdraw, q-sep-31-cross-border, q-sep-38-quotes, q-sep-wallet-seps-list, q-sep6-sep24-sep31-choice, and related anchor cases; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-catalog-list"

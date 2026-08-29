@@ -8,7 +8,9 @@
     "answer": "- BLS12-381 host functions landed in **Protocol 22 via CAP-0059** [1][2].\n- These are **host functions usable from Soroban contracts** (pairing / curve operations enabling BLS signatures and Groth16-style verification) [2].\n- Protocol 22 activated on Mainnet around **2024-12-05** [1].\n- Distinct from the later **BN254/Poseidon** additions (Protocol 25 \"X-Ray\", CAP-0074/CAP-0075) [1].\n- BLS12-381 enables ZK-verifier / Groth16 use cases on Soroban [2].",
     "keyFacts": [
       "States BLS12-381 host functions landed in Protocol 22 via CAP-0059.",
-      "Notes these are host functions usable from Soroban contracts (e.g. pairing / curve operations enabling BLS signatures and Groth16-style verification)."
+      "Covers Soroban-contract use of the host functions.",
+      "Identifies pairing and curve operations.",
+      "Connects those operations to BLS signatures and Groth16-style verification."
     ],
     "avoid": [
       "Do NOT attribute BLS12-381 to the wrong CAP number (e.g. CAP-0046, CAP-0051, CAP-0063) or wrong protocol (P20, P21, P25).",
@@ -37,10 +39,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-31-p23-p27-caps-amm-curves accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — CAP-0059 confirms that the host functions expose BLS12-381 operations inside the Soroban host for smart contracts.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — CAP-0059 defines curve, field, and multi-pairing operations.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — CAP-0059 links pairing comparison to BLS-signature and zk-SNARK verification uses.",
+        "Sibling sweep 2026-08-29: grep BLS12-381|CAP-0059|Groth16 → q-edge-noinfo-stellar-native-privacy-default, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-cross-warmancer-zk-stack, q-zk-circuit-setup, q-zk-host-functions-status, q-zk-proof-systems-stellar; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-protocol-bls12-381-cap59"

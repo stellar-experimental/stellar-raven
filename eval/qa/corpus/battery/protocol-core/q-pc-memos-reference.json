@@ -8,7 +8,8 @@
     "answer": "A Stellar memo is optional **transaction-level** metadata; a classic transaction carries at most one. Types are `MEMO_TEXT` (UTF-8, up to 28 bytes), `MEMO_ID` (uint64), `MEMO_HASH` (32 bytes), and `MEMO_RETURN` (32-byte refund-reference hash). Exchanges/anchors/custodians use it to map deposits to customers sharing one pooled G-account; copy the service's value exactly because matching/case policy is application-defined. Ordinary classic transactions may carry the memo. A fee-bump outer envelope has no second memo—the memo, if any, is inside the inner transaction. On current Protocol 27, an `InvokeHostFunction` Soroban transaction must use `MEMO_NONE`; do not assume every transaction form accepts a memo.",
     "keyFacts": [
       "Names memo types/limits, one-per-transaction placement, and pooled-custody purpose.",
-      "Explains fee-bump inner placement and the current InvokeHostFunction MEMO_NONE restriction."
+      "Places the memo inside a fee-bump transaction's inner transaction.",
+      "States the current InvokeHostFunction MEMO_NONE restriction."
     ],
     "avoid": [
       "Do NOT claim multiple memos, treat a memo as an account/operation field, or assume Soroban InvokeHostFunction accepts one.",
@@ -68,13 +69,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The memo types and pooled-account rationale are correct, but the question explicitly asks transaction support and the inherited answer omitted fee-bump placement plus the current InvokeHostFunction MEMO_NONE restriction.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 blind 3278; primary 3276 independently confirmed all base memo mechanics."
+        "Solo scratchpad 575 GT-29 blind 3278; primary 3276 independently confirmed all base memo mechanics.",
+        "Structural re-form (long-fact): Split one long fact into two one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#memo and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md — the current transaction and fee-bump structures place the memo only in the inner transaction.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp — current Core validation requires MEMO_NONE for an InvokeHostFunction transaction.",
+        "Sibling sweep 2026-08-29: grep MEMO_NONE|fee-bump inner|memo types|pooled account → q-crp-custodial-vs-noncustodial-wallets, q-edge-exchange-memo-lost-funds, q-edge-validators-reverse-tx-fork-detection, q-jutsu-what-is-a-memo, q-pc-address-types-strkey, q-pc-memos-reference, q-pc-muxed-accounts, q-raph-buy-xlm-safely, q-raph-exchange-memo, q-raph-missing-exchange-memo, q-raph-withdraw-exchange-self-custody, q-ti-tx-too-late-resubmit; no contradiction."
       ],
       "rootCause": [
-        "Eval-side answer-completeness miss despite explicit question clause."
+        "Eval-side answer-completeness miss despite explicit question clause.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-pc-memos-reference"

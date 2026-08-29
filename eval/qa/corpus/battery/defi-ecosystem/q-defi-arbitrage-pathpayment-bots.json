@@ -6,7 +6,7 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nStellar supports path payments through `PathPaymentStrictSend` and `PathPaymentStrictReceive`; path payments can traverse orderbook liquidity, but the protocol does not make arbitrage or market making profitable. A strict-send quote fixes the source amount and estimates destination output, then the submitted transaction should protect the user with `destination_min`; a strict-receive quote fixes destination amount and protects the sender with `send_max`. If liquidity moves before inclusion, the operation can fail with path-payment result codes such as `UNDER_DESTMIN`, `OVER_SENDMAX`, or no usable path / too-few-offers. Sources: Stellar path-payment guide and Horizon operation-specific result-code docs.\n\nFor a small-capital bot, the defensible answer is \"possible to build, not reliably profitable.\" Expected costs and risks include spreads, slippage, base fees and surge pricing, failed transactions, stale quotes, minimum reserves/trustlines, path disappearance, competition, latency, inventory imbalance, and thin pools. Backtesting and testnet/paper trading are required before risking funds; Raven should not recommend a strategy as a guaranteed return.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nStellar supports path payments through `PathPaymentStrictSend` and `PathPaymentStrictReceive`. Path payments can traverse orderbook and pool liquidity. The protocol provides execution mechanics and a 0.3% AMM fee to liquidity providers, but it does not guarantee arbitrage or market-making profit. Profitability depends on live prices, liquidity, slippage, transaction fees, latency, competition, and capital. A strict-send quote fixes the source amount and estimates destination output, then the submitted transaction should protect the user with `destination_min`; a strict-receive quote fixes destination amount and protects the sender with `send_max`. If liquidity moves before inclusion, the operation can fail with path-payment result codes such as `UNDER_DESTMIN`, `OVER_SENDMAX`, or no usable path / too-few-offers. Sources: Stellar path-payment guide and Horizon operation-specific result-code docs.\n\nFor a small-capital bot, the defensible answer is \"possible to build, not reliably profitable.\" Expected costs and risks include spreads, slippage, base fees and surge pricing, failed transactions, stale quotes, minimum reserves/trustlines, path disappearance, competition, latency, inventory imbalance, and thin pools. Backtesting and testnet/paper trading are required before risking funds; Raven should not recommend a strategy as a guaranteed return.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Specific sourced observations visibly date changing roster/status/version/measurement.",
       "Stellar supports path payments/pathfinding via strict-send/strict-receive.",
@@ -20,7 +20,7 @@
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
       "Do NOT claim unsupported memory is a source-supported current observation."
     ],
-    "notes": "Profitability is intentionally not gated on a current numeric estimate; Phase 3 should attack any answer that turns pathfinding mechanics into financial advice.\nAlso good if the answer: Mentions circular/same-asset arbitrage and batching should be tested carefully because paths can disappear or execute differently by submission time. | Mentions result-code traps such as under-destination-min or no-path when quoting and submitting.\nGolden cites: Stellar docs for path payments/pathfinding and dated market/liquidity sources for current profitability claims."
+    "notes": "Profitability is intentionally not gated on a current numeric estimate; Phase 3 should attack any answer that turns pathfinding mechanics into financial advice.\nAlso good if the answer: Mentions circular/same-asset arbitrage and batching should be tested carefully because paths can disappear or execute differently by submission time. | Mentions result-code traps such as under-destination-min or no-path when quoting and submitting.\nGrade a no-guarantee statement, not an absence-of-incentives claim. CAP-0038 includes liquidity-provider fees and expressly discusses profit-driven liquidity allocation.\nGolden cites: Stellar docs for path payments/pathfinding and dated market/liquidity sources for current profitability claims."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -53,13 +53,33 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Stellar path payments can use orderbook and pool liquidity; AMMs pay a 0.3% trade fee to liquidity providers without guaranteeing bot profit.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+            "observedAt": "2026-08-29",
+            "note": "The official guide says AMMs charge 30 bps on every trade and distribute the fee to liquidity providers."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+            "observedAt": "2026-08-29",
+            "note": "CAP-0038 fixes the constant-product market-maker fee at 0.3% and discusses profit-driven liquidity allocation."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-c)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (compound-predicate): Recast five long or compound key facts as five atomic facts and moved the unsupported-memory contrast to avoid; every dating, pathfinding, profitability-risk, small-account, simulation, and guard claim remains unchanged.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/path-payments — provided current source-backed path-payment observations with dated page metadata.",
@@ -67,12 +87,18 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — showed liquidity, spreads, fees, slippage, and price-risk inputs to profitability.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — showed transaction costs and congestion; the existing truth retains failure, competition, capital, and small-account risks.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths — showed path estimates and strict-send destination constraints; the strict-receive endpoint showed send-max constraints.",
-        "Sibling sweep 2026-08-27: grep path payment|strict-send|strict-receive|arbitrage → q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, q-defi-sdex-offer-lifecycle, q-asset-sdex-vs-amm, q-scf-hummingbot-kelp-closed-rfp, q-protocol-operation-types-list; no contradiction"
+        "Sibling sweep 2026-08-27: grep path payment|strict-send|strict-receive|arbitrage → q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, q-defi-sdex-offer-lifecycle, q-asset-sdex-vs-amm, q-scf-hummingbot-kelp-closed-rfp, q-protocol-operation-types-list; no contradiction",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the guide states that AMMs charge 30 bps and distribute the fee to liquidity providers.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — CAP-0038 sets the fee at \"0.3%\" and discusses profit-driven liquidity allocation.",
+        "Sibling sweep 2026-08-29: grep PathPaymentStrictSend|PathPaymentStrictReceive|0.3%|30 bps|arbitrage → q-asset-amm-fee-reserve, q-asset-path-payment-ops, q-asset-sdex-vs-amm, q-defi-market-making-kelp, q-defi-sdex-offer-lifecycle, q-protocol-operation-types-list, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, and q-scf-hummingbot-kelp-closed-rfp; no contradiction.",
+        "Corroboration audit 2026-08-29: replaced an absence-of-profit implication with the true AMM fee and no-guarantee boundary; Sol+Grok class agreement, targeted probe decided disposition"
       ],
       "rootCause": [
         "eval-authoring",
+        "eval-authoring overgeneralization",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-defi-arbitrage-pathpayment-bots"

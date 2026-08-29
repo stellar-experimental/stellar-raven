@@ -8,7 +8,7 @@
     "answer": "Call get_regions and inspect the returned strings before filtering. Treat them as the live distinct values drawn from directory records, not automatically as a normalized controlled enum: variants in case or geographic granularity may coexist. Match deliberately and report normalization assumptions.",
     "keyFacts": [
       "Uses get_regions for live region VOCAB discovery.",
-      "Treats returned regions as variant-prone values rather than assuming a clean canonical enum."
+      "Returned regions are variant-prone rather than a clean canonical enum."
     ],
     "avoid": [
       "Do NOT invent a fixed region enum from memory.",
@@ -38,16 +38,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; get_regions returned envelope ok=true with live region strings including case variants, demonstrating a variant-prone discovery list.",
         "catalog/manifest.json exists and supports the behavioral golden.",
         "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): shortened the region-value characterization; all claims remain in the fact set and answer.",
+        "Live re-check 2026-08-29: catalog/manifest.json#lumenloop.get_regions and https://api.lumenloop.com/v1/tools/get_regions (the mcp.lumenloop.com root returns 400; corrected in the owner fix below) — the B-class manifest defines raw distinct directory values, and the live result shows case and geographic-granularity variants.",
+        "Sibling sweep 2026-08-29: grep get_regions|region VOCAB|canonical enum|region values → q-builder-lumenloop-regions-vocab, q-defi-lumenloop-categories-vocab, q-eco-lobstr-wallet, and q-ti-vocab-regions-live; no contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-3.md): the worker's live URL https://mcp.lumenloop.com returns 400 and shows no region values; https://api.lumenloop.com/v1/tools/get_regions (the catalog/manifest.json path for lumenloop.get_regions) returned 200 on 2026-08-29 with the tool description 'Get all distinct region values (based_in + operating_region) currently used in the directory', which confirms the raw distinct-values contract behind the variant-prone claim; the class-B manifest line stays, and the variant-prone observation itself rests on the earlier dated evidence in this block."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

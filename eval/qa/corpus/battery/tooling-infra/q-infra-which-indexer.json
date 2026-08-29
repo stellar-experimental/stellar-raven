@@ -9,9 +9,9 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-08-04, the verified sources supported this observed answer:\n\nYou need an **indexer** rather than RPC alone for historical cross-account filtering: RPC event history is bounded and Horizon does not provide arbitrary cross-account filtered indexes ([Indexers Overview](https://developers.stellar.org/docs/data/indexers)).\n\nEstablished Stellar choices include **SubQuery**, **OBSRVR**, **Goldsky Mirrors/Pipelines**, **OnFinality**, **Mercury**, and **The Graph via Substreams only** (not Stellar Subgraphs or Token API). For deep historical SQL, **Hubble/BigQuery** is another fit.\n\nThe official Stellar Indexers Overview and Alchemy's provider documentation both describe Alchemy's indexed Stellar Data API as live. Its address-centric APIs cover transfer history, account/token balances, and NFT holdings across native, Classic, and Soroban assets.\n\nSelection: use **OBSRVR** for a Stellar-native stream-to-warehouse workflow, **SubQuery** for its multi-chain indexing stack, **Goldsky** if it matches an existing EVM data platform, **Alchemy** if its address-centric indexed APIs cover the needed query, or **Hubble/BigQuery** for SQL-oriented deep history. Verify retention, data model, and current network coverage before committing.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Preserves The Graph's actual boundary: Stellar support is via Substreams, not full Stellar Subgraph or Token API support."
+      "The Graph supports Stellar through Substreams, not Subgraphs or Token API."
     ],
     "avoid": [
       "Do NOT state that Alchemy's Stellar indexed Data API is still merely targeted for H1 2026; current official Docs describe it as live.",
@@ -133,22 +133,28 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA current Docs recheck; accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Independent re-derivation by Solo process 3158 recorded under scratchpad 569 Lane B (901): exact Alchemy announcement/docs excerpts, live Stellar docs excerpt, and read-only PR #2573 state/patch.",
         "Sibling sweep 2026-07-09: q-infra-rpc-providers-list names Alchemy as hosted RPC only and remains compatible; routing cases carry no status fact; the vendored corpus repeats the stale roadmap wording and remains read-only.",
         "Solo scratchpad 575 GT-50 primary process 3349 and blind process 3361 independently rechecked the live provider claim, stale Indexers page, and open PR #2573 on 2026-07-11.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened the sourcing fact and The Graph boundary; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/indexers — the official page supplies current provider names and dated status details.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/indexers — the official page contains changeable provider status and launch observations that require dates.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/indexers — the official page limits The Graph's Stellar support to Substreams and excludes Subgraphs and Token API.",
+        "Sibling sweep 2026-08-29: grep The Graph|Substreams|Subgraph|Token API|indexer → q-infra-hubble-bigquery, q-tool-indexer-repos-discovery, q-infra-horizon-vs-rpc, q-infra-which-indexer; no contradiction."
       ],
       "rootCause": [
         "Plain freshness drift plus single-surface authoring: the 2026-06-29 review copied a roadmap date from the official Indexers Overview and pinned it instead of gating on a dated provider-status check.",
         "The former Docs/provider disagreement resolved when the official Indexers Overview was updated to describe Alchemy as live.",
         "solo://proj/49/todo/golden-corpus-health--901",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-infra-which-indexer"

@@ -7,8 +7,9 @@
   "golden": {
     "answer": "Call `scout.scfPitch` with the concrete idea and cite the response's `generatedAt`. Use `report.round` for current timing only after checking `round.source`. A `live` source permits reporting the returned open-round rows; an `unavailable` source means the round state is unknown and must be checked on the official SCF awards page. Use funded peers, the funding bar, competitor maturity, prior art, and each deterministic angle as dated corpus evidence for differentiation. State each block's basis, and do not treat the composite as a funding decision or a complete market study.",
     "keyFacts": [
-      "Checks `round.source` before describing current SCF timing and routes an unavailable result to the official awards page.",
-      "Uses funded peers, funding-bar basis, competitor maturity, prior art, and deterministic angles as dated pitch evidence.",
+      "Checks `round.source` before describing current SCF timing.",
+      "An unavailable round result routes to the official SCF awards page.",
+      "Dates funded peers, funding-bar basis, competitor maturity, prior art, and pitch angles.",
       "Reports `generatedAt`, corpus scope, and each block's evidence limits."
     ],
     "avoid": [
@@ -83,8 +84,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Read-only scfPitch probe for a streaming-payments idea on 2026-08-18.",
         "https://communityfund.stellar.org/awards inspected directly on 2026-08-18.",
@@ -92,11 +93,17 @@
         "Sibling sweep: current-round cases remain outside this case; this case pins no round number, phase, count, or amount.",
         "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep scfPitch|deterministic angles|funding decision → q-scf-pitch-prep-live, q-gap-vet-pitch-vertical-null; no contradiction"
+        "Sibling sweep 2026-08-27: grep scfPitch|deterministic angles|funding decision → q-scf-pitch-prep-live, q-gap-vet-pitch-vertical-null; no contradiction",
+        "Structural re-form (long-fact): Split the round-source fallback and shortened the pitch-evidence list; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts — the current source defines `round.source` as `live` or `unavailable`.",
+        "Live re-check 2026-08-29: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts — the unavailable branch directs users to verify the round on communityfund.stellar.org.",
+        "Live re-check 2026-08-29: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts — the composite returns funded peers, funding basis, competitor maturity, prior art, and deterministic angles.",
+        "Sibling sweep 2026-08-29: grep scfPitch|round.source|deterministic angles → q-gap-vet-pitch-vertical-null, q-scf-pitch-prep-live; no contradiction"
       ],
       "rootCause": [
         "solo://proj/80/todo/author-five-new-cove--1664",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

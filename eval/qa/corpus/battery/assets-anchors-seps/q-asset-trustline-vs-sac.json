@@ -35,9 +35,65 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "They are two views of the same asset, not two different tokens.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "note": "Exact quotes: ‘No bridging is required and no intermediary tokens are needed.’ ‘Anyone can initiate the deploy and the Stellar asset issuer does not need to be involved.’ ‘The asset issuer becomes the initial administrator once the contract has been deployed.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0046-06.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source describes ‘a contract that allows interacting with Stellar classic assets’ and puts the same `Asset` in its contract-ID preimage."
+          }
+        ]
+      },
+      {
+        "claim": "There is no separate \"USDC-on-Soroban\" to migrate to.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "note": "Exact quotes: ‘No bridging is required and no intermediary tokens are needed.’ ‘Anyone can initiate the deploy and the Stellar asset issuer does not need to be involved.’ ‘The asset issuer becomes the initial administrator once the contract has been deployed.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0046-06.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: ‘the contractID for any specific Stellar asset is deterministic’ because its preimage contains only that `Asset`."
+          }
+        ]
+      },
+      {
+        "claim": "You never redeploy, bridge, or wrap the asset to use it in Soroban.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "note": "Exact quotes: ‘No bridging is required and no intermediary tokens are needed.’ ‘Anyone can initiate the deploy and the Stellar asset issuer does not need to be involved.’ ‘The asset issuer becomes the initial administrator once the contract has been deployed.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0046-06.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: ‘We are only adding a contract to handle Classic stellar assets’; only Soroban-only assets need deployed Wasm."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (compound-predicate): Split two compound key facts into five atomic facts; the existing avoid clauses retain the separate-token negation, and the truth is unchanged.",
@@ -46,10 +102,13 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed classic account balances in trustline ledger entries.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed Soroban contract access through the asset's contract ID.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — showed contract balances in contract data entries.",
-        "Sibling sweep 2026-08-27: q-comp-sac-inherits-flags, q-sor-contract-trustlines-c-address, and q-sor-sac-introspection; no contradiction."
+        "Sibling sweep 2026-08-27: q-comp-sac-inherits-flags, q-sor-contract-trustlines-c-address, and q-sor-sac-introspection; no contradiction.",
+        "Corroboration audit 2026-08-29: added 3 row(s) for single-asset trustline and SAC model; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 3 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-asset-trustline-vs-sac"

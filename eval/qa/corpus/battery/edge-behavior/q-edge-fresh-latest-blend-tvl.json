@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-07-11, the live research corpus returned several different dated Stellar DeFi TVL observations, including $170M in an April 2026 developer meeting.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Reports a current Blend TVL observation with its provider and timestamp."
     ],
@@ -88,17 +88,22 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-23 primary 3264 and blind 3267; direct DefiLlama probe 2026-07-10T19:23Z.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live research corpus returned several different dated Stellar DeFi TVL observations, including $170M in an April 2026 developer meeting.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added one caution covering a fixed provenance gap and a provider-hosted history boundary; truth is unchanged.",
         "Reviewed improvements/resolved.json entry sls-031 — fixed 2026-07-14; older Scout copies can omit TVL provider, time, and methodology fields.",
         "Reviewed improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md — disputed claim: a Scout point value alone answers Blend's quarter trend.",
-        "Sibling sweep 2026-08-27: grep Blend TVL|DefiLlama|tvlMethodUrl|quarter trend → q-defi-liquid-staking-whitespace, q-eco-defi-tvl-current, q-edge-factcheck-soroswap-first-amm, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure; no contradiction"
+        "Sibling sweep 2026-08-27: grep Blend TVL|DefiLlama|tvlMethodUrl|quarter trend → q-defi-liquid-staking-whitespace, q-eco-defi-tvl-current, q-edge-factcheck-soroswap-first-amm, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure; no contradiction",
+        "Structural re-form (long-fact): Shortened the dated-observation fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://api.llama.fi/protocol/blend — the live provider API supplies current and historical source-supported Blend TVL observations.",
+        "Live re-check 2026-08-29: https://api.llama.fi/protocol/blend — the live series attaches dates to its changeable TVL observations.",
+        "Live re-check 2026-08-29: https://api.llama.fi/protocol/blend — the provider endpoint identifies Blend and supplies dated TVL series values.",
+        "Sibling sweep 2026-08-29: grep Blend TVL|quarter trend|same-provider|tvlMethodUrl → q-eco-defi-tvl-current, q-edge-noinfo-exact-tvl-figure, q-defi-blend-what-is, q-edge-fresh-latest-blend-tvl; no contradiction"
       ],
       "rootCause": [
         "A generic freshness row lagged newer provider/window/methodology siblings and under-answered the explicit trend request.",
@@ -106,7 +111,8 @@
         "improvements/stellar-light-scout/sls-039-project-tvl-history-capability.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-fresh-latest-blend-tvl"

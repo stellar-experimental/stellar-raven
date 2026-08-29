@@ -1,1 +1,72 @@
-{"id":"q-gap-rpc-horizon-unindexed-reference","question":"Why might a search for one exact RPC or Horizon endpoint miss the reference page?","surface":["stellarDocs.search_rpc_horizon_data_docs","skills.stellar-dev.data"],"golden":{"answer":"Use the RPC/Horizon docs search for structure, migration, error, admin, and method-guide material, then follow official page links or the data skill for procedure. The exposed catalog explicitly says auto-generated per-method RPC and per-endpoint Horizon references are not in this search index; a zero search hit is not evidence that the API does not exist.","keyFacts":["Treats the docs-search index as intentionally incomplete for generated per-method/per-endpoint references.","Does not infer API absence from an unindexed search result."],"avoid":["Do NOT say an RPC or Horizon API is nonexistent solely because this search operation did not return it."],"notes":"N1 live contract probe 2026-07-11: Catalog note is the stable contract; live probe context was established through the local MCP execute surface."},"tags":{"category":"tooling-infra","service":"stellarDocs","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"A","ref":"catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs","note":"Exposed operation contract and catalog notes."},{"class":"B","ref":"inventory/stellar-docs.json","note":"Committed inventory snapshot for the service family."}],"corroboration":[{"claim":"Treats the docs-search index as intentionally incomplete for generated per-method/per-endpoint references.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","observedAt":"2026-07-11","note":"Catalog note is the stable contract; live probe context was established through the local MCP execute surface."}]}],"verified":{"date":"2026-07-11","by":"P4 Lane N1 gap-ops authoring","evidence":["http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs","inventory/stellar-docs.json"],"rootCause":["solo://project/49/scratchpad/p4/n1-gapops"]},"origin":"authored 2026-07 (gap-ops)"}}
+{
+  "id": "q-gap-rpc-horizon-unindexed-reference",
+  "question": "Why might a search for one exact RPC or Horizon endpoint miss the reference page?",
+  "surface": [
+    "stellarDocs.search_rpc_horizon_data_docs",
+    "skills.stellar-dev.data"
+  ],
+  "golden": {
+    "answer": "Use the RPC/Horizon docs search for structure, migration, error, admin, and method-guide material, then follow official page links or the data skill for procedure. The exposed catalog explicitly says auto-generated per-method RPC and per-endpoint Horizon references are not in this search index; a zero search hit is not evidence that the API does not exist.",
+    "keyFacts": [
+      "Marks generated RPC-method and Horizon-endpoint references outside the search index.",
+      "Does not infer API absence from an unindexed search result."
+    ],
+    "avoid": [
+      "Do NOT say an RPC or Horizon API is nonexistent solely because this search operation did not return it."
+    ],
+    "notes": "N1 live contract probe 2026-07-11: Catalog note is the stable contract; live probe context was established through the local MCP execute surface."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "stellarDocs",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs",
+        "note": "Exposed operation contract and catalog notes."
+      },
+      {
+        "class": "B",
+        "ref": "inventory/stellar-docs.json",
+        "note": "Committed inventory snapshot for the service family."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Treats the docs-search index as intentionally incomplete for generated per-method/per-endpoint references.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+            "observedAt": "2026-07-11",
+            "note": "Catalog note is the stable contract; live probe context was established through the local MCP execute surface."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "evidence": [
+        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+        "catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs",
+        "inventory/stellar-docs.json",
+        "Structural re-form (long-fact): shortened the documented search-index exclusion without changing its scope; truth unchanged.",
+        "Live re-check 2026-08-29: catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs — the current operation contract says auto-generated RPC-method and Horizon-endpoint reference pages are not in the search index.",
+        "Sibling sweep 2026-08-29: grep per-method/per-endpoint|unindexed search result → q-gap-rpc-horizon-unindexed-reference only; no contradiction."
+      ],
+      "rootCause": [
+        "solo://project/49/scratchpad/p4/n1-gapops",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (gap-ops)"
+  }
+}

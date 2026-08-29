@@ -16,7 +16,7 @@
     ],
     "avoid": [
       "Do NOT cite or import `github.com/stellar/go/ingest` as the current SDK path.",
-      "Do NOT claim Go lacks ingestion support, require Horizon polling for ledger streaming, or confuse Horizon/API streaming with raw ledger ingestion.",
+      "Do NOT claim the official Go SDK has no ingest package, require Horizon polling for ledger streaming, or confuse Horizon/API streaming with raw ledger ingestion.",
       "Do NOT promise one backend has unbounded history or pin a release without a date."
     ],
     "notes": "GT-55 CORRECTION 2026-07-11: current module/import root is github.com/stellar/go-stellar-sdk; ingestion packages are /ingest and /ingest/ledgerbackend. The former stellar/go SDK path is deprecated/archived and must not be taught as current."
@@ -109,8 +109,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, sourcing-guard audit, worker gt3-sol-b)",
       "evidence": [
         "GT-55 primary 3392 and sealed blind 3393 independently agreed on the module/repository correction and ingestion package paths.",
         "Current official docs import `github.com/stellar/go-stellar-sdk/ingest` and `github.com/stellar/go-stellar-sdk/ingest/ledgerbackend`.",
@@ -119,11 +119,16 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/ingest-sdk/overview and https://github.com/stellar/go-stellar-sdk/tree/main/ingest — github.com/stellar/go-stellar-sdk/ingest remains the raw-ledger parser",
         "Live re-check 2026-08-27: https://github.com/stellar/go-stellar-sdk/tree/main/ingest/ledgerbackend — .../ingest/ledgerbackend remains the source-backend package",
         "Live re-check 2026-08-27: https://github.com/stellar/go-stellar-sdk — raw ingestion and Horizon polling remain distinct workflows",
-        "Sibling sweep 2026-08-27: grep go-stellar-sdk/ingest|ledgerbackend|Horizon polling|github.com/stellar/go/ingest → q-tool-indexer-repos-discovery, q-pc-bucketlist-vs-merkle-inclusion-proof; no contradiction"
+        "Sibling sweep 2026-08-27: grep go-stellar-sdk/ingest|ledgerbackend|Horizon polling|github.com/stellar/go/ingest → q-tool-indexer-repos-discovery, q-pc-bucketlist-vs-merkle-inclusion-proof; no contradiction",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/ingest-sdk/overview — exact quote: `github.com/stellar/go-stellar-sdk/ingest` provides parsing functionality over the network ledger metadata.",
+        "Live re-check 2026-08-29: https://api.github.com/repos/stellar/go-stellar-sdk/contents/ingest — exact source entries include \"path\": \"ingest/README.md\" and \"path\": \"ingest/ledgerbackend\".",
+        "Sibling sweep 2026-08-29: rg go-stellar-sdk/ingest|Horizon polling → q-tool-go-sdk-ingest, q-tool-indexer-repos-discovery; no contradiction.",
+        "Sourcing-guard audit 2026-08-29: reworded one avoid item (demonstrated cruft: \"lacks support\" baited the lint regex despite concrete false claims); Grok audit + orchestrator decision"
       ],
       "rootCause": [
         "Eval-side repository/module provenance drift after the October 2025 Go SDK split; upstream docs and repository are already current.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-tool-go-sdk-ingest"

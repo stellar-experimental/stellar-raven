@@ -10,8 +10,8 @@
   "golden": {
     "answer": "**SEP-24** (\"Hosted Deposit and Withdrawal\") is the **interactive** standard: the anchor serves a\nhosted UI/webview that the wallet opens, and the anchor collects any KYC and drives the\ndeposit/withdraw flow. **SEP-6** (\"Deposit and Withdrawal API\") is the **programmatic** counterpart:\na pure API with no anchor-hosted UI, so the wallet itself collects customer data (typically via\n**SEP-12** KYC). Both authenticate the user with **SEP-10**, and the wallet discovers the anchor's\nendpoints via **SEP-1** (`stellar.toml`). Distinct from **SEP-31** (cross-border, anchor-to-anchor\n\"send\") and **SEP-38** (quotes).",
     "keyFacts": [
-      "Names SEP-24 as the interactive (anchor-hosted UI / webview) deposit & withdrawal standard.",
-      "Contrasts SEP-6 as the programmatic (API-driven, no hosted UI) deposit/withdrawal counterpart."
+      "SEP-24 standardizes interactive deposits and withdrawals through an anchor-hosted UI.",
+      "SEP-6 standardizes programmatic deposits and withdrawals without a hosted UI."
     ],
     "avoid": [
       "Do NOT misnumber the standard (e.g. call interactive deposit/withdraw SEP-31 or SEP-12 or SEP-0024-as-SEP-6).",
@@ -45,17 +45,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/anchors",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened two SEP deposit and withdrawal facts; webview and API-driven detail remain in the answer; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current SEP defines the interactive deposit and withdrawal flow with an anchor-hosted web app.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP defines programmatic wallet-to-anchor deposit and withdrawal API interactions.",
+        "Sibling sweep 2026-08-29: grep SEP-24|SEP-6|hosted UI|programmatic → q-comp-cross-moneygram-partnership-sep24, q-production-anchor-architecture, q-sep-wallet-seps-list; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-interactive-deposit-withdraw",

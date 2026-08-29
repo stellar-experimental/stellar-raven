@@ -9,8 +9,10 @@
   "golden": {
     "answer": "**BENJI** is the **share token of Franklin Templeton's Franklin OnChain U.S. Government Money Fund\n(FOBXX)** on Stellar [1]. FOBXX was the **first US-registered mutual fund to use a public blockchain\n(Stellar) as its official system of record** for recording share ownership and processing\ntransactions; it has been **live on Stellar since 2021** [1]. The fund holds **at least ~99.5% of\nassets in US government securities** (cash and repos fully collateralized by US gov securities) [2], and\nBENJI is notable for **intraday yield and peer-to-peer (P2P) transferability of shares** [1]. Franklin\nalso marked the **5-year BENJI milestone (Apr 30, 2026)** and shipped the first Luxembourg UCITS (2024)\nand first Singapore retail tokenized fund (2025) on Stellar [1].\n\nSources: [1] stellar.org BENJI 5-year press release; [2] Franklin Templeton FOBXX product page.",
     "keyFacts": [
-      "BENJI is the share token of Franklin Templeton's Franklin OnChain U.S. Government Money Fund (FOBXX) on Stellar.",
-      "FOBXX was the first US-registered mutual fund to use a public blockchain (Stellar) as its official system of record; live on Stellar since 2021."
+      "BENJI is Franklin Templeton's tokenized fund share on Stellar.",
+      "It represents the Franklin OnChain U.S. Government Money Fund (FOBXX).",
+      "FOBXX was the first U.S.-registered mutual fund to use a public blockchain.",
+      "Stellar has been its official system of record since 2021."
     ],
     "avoid": [
       "Do NOT describe BENJI as an algorithmic stablecoin or as a yieldcoin like USDY — it is a tokenized US government money-market mutual fund share.",
@@ -39,10 +41,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-14-benji-blend-content-funding accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): split and shortened the facts without changing the required claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/press/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u-s-registered-tokenized-money-market-fund — the official release identifies BENJI as Franklin Templeton's tokenized fund share on Stellar.",
+        "Live re-check 2026-08-29: https://stellar.org/press/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u-s-registered-tokenized-money-market-fund — the release gives the Franklin OnChain U.S. Government Money Fund name and FOBXX symbol.",
+        "Live re-check 2026-08-29: https://stellar.org/press/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u-s-registered-tokenized-money-market-fund — the release identifies FOBXX as the first U.S.-registered mutual fund to use a public blockchain.",
+        "Live re-check 2026-08-29: https://stellar.org/press/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u-s-registered-tokenized-money-market-fund — the release says Stellar has been the official system of record since the 2021 launch.",
+        "Sibling sweep 2026-08-29: grep BENJI|FOBXX → q-asset-rwa-tokenized-freshness, q-crp-tokenize-personal-rwa, q-defi-benji-franklin-templeton, q-defi-ondo-usdy, q-defi-rwa-scf-similar, q-eco-defi-market-map, q-eco-stablecoins-on-stellar, q-rwa-projects-tokenizing-stellar; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-defi-benji-franklin-templeton"

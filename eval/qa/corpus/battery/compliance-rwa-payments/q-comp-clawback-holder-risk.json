@@ -9,8 +9,10 @@
   "golden": {
     "answer": "- Clawback is an **intentional, issuer-only feature** of clawback-enabled assets — a **regulatory tool,\n  not a protocol bug/exploit** [1].\n- It exposes holders to **issuer-side counterparty risk**: the issuer can **burn the asset from a holder's\n  balance** (e.g. after fraud, error, or a sanctions/regulatory action) [1].\n- It applies **only** to assets explicitly issued with **`AUTH_REVOCABLE` + `AUTH_CLAWBACK_ENABLED`**;\n  **XLM and ordinary assets without the flag are not clawbackable**, and **no arbitrary account** can claw\n  back another's funds — only that asset's issuer [1][2].\n- Holders can **inspect an asset's flags** before trusting it.\n\nSources: [1] developers.stellar.org clawbacks; [2] control-asset-access.",
     "keyFacts": [
-      "Clawback is an intentional, issuer-only feature for clawback-enabled assets (a regulatory tool), not a protocol bug/vulnerability.",
-      "It exposes holders to issuer-side counterparty risk: the issuer can burn the asset from a holder's balance (e.g. after fraud, error, or regulatory/sanctions action)."
+      "Clawback is intentional and issuer-only for clawback-enabled assets.",
+      "It is a regulatory tool, not a protocol bug or vulnerability.",
+      "Clawback creates issuer-side counterparty risk for holders.",
+      "The issuer can burn an asset from a holder's balance."
     ],
     "avoid": [
       "Do NOT claim clawback is a hack/exploit or that any account can claw back another's funds.",
@@ -38,17 +40,71 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Clawback is an intentional, issuer-only feature of clawback-enabled assets — a regulatory tool, not a protocol bug/exploit.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0035.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source requires `AUTH_CLAWBACK_ENABLED_FLAG` on the issuing account and an issuer-submitted `ClawbackOp`."
+          }
+        ]
+      },
+      {
+        "claim": "XLM and ordinary assets without the flag are not clawbackable, and no arbitrary account can claw back another's funds — only that asset's issuer.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "note": "Exact quotes: ‘No bridging is required and no intermediary tokens are needed.’ ‘Anyone can initiate the deploy and the Stellar asset issuer does not need to be involved.’ ‘The asset issuer becomes the initial administrator once the contract has been deployed.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0035.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: clawback operations ‘only apply to assets issued by the source account’; XLM has no issuer account."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (presentation-avoid): Reworded the clawback framing trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep clawback|AUTH_CLAWBACK_ENABLED|hack/exploit → q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-sep-clawback-prereq-flag; no contradiction"
+        "Sibling sweep 2026-08-27: grep clawback|AUTH_CLAWBACK_ENABLED|hack/exploit → q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-sep-clawback-prereq-flag; no contradiction",
+        "Structural re-form (long-fact): split the clawback framing, regulatory purpose, holder risk, and issuer-burn claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — CAP-0035 defines intentional issuer-only operations for clawback-enabled assets.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — the official guide presents clawback as a regulatory feature, not a protocol defect.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — CAP-0035 makes the holder risk visible through explicit flags and issuer control.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — the official guide confirms that the issuer burns assets from a recipient's balance.",
+        "Sibling sweep 2026-08-29: grep issuer-side counterparty risk|protocol vulnerability → q-comp-clawback-holder-risk, q-scf-sdf-bug-bounty; no contradiction.",
+        "Corroboration audit 2026-08-29: added 2 row(s) for clawback scope and issuer-only authority; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-comp-clawback-holder-risk"

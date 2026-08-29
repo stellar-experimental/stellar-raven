@@ -37,11 +37,78 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Clawback enablement does not stick on its own.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+clawback+AUTH_REVOCABLE+existing+trustlines+XLM",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar clawback AUTH_REVOCABLE existing trustlines XLM’. Top primary results: https://developers.stellar.org/docs/build/guides/transactions/clawbacks, https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md, and https://developers.stellar.org/docs/tokens/stellar-asset-contract. Exact observed text: ‘If an issuer wishes to set AUTH_CLAWBACK_ENABLED_FLAG, it must also have AUTH_REVOCABLE_FLAG set’; ‘you cannot retroactively enable clawback on existing trustlines’; the native token ‘doesn’t have an admin and cannot be minted. It also cannot be burned.’ No primary result contradicted the claims."
+          }
+        ]
+      },
+      {
+        "claim": "Existing trustlines are not made clawback-able retroactively.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+clawback+AUTH_REVOCABLE+existing+trustlines+XLM",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar clawback AUTH_REVOCABLE existing trustlines XLM’. Top primary results: https://developers.stellar.org/docs/build/guides/transactions/clawbacks, https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md, and https://developers.stellar.org/docs/tokens/stellar-asset-contract. Exact observed text: ‘If an issuer wishes to set AUTH_CLAWBACK_ENABLED_FLAG, it must also have AUTH_REVOCABLE_FLAG set’; ‘you cannot retroactively enable clawback on existing trustlines’; the native token ‘doesn’t have an admin and cannot be minted. It also cannot be burned.’ No primary result contradicted the claims."
+          }
+        ]
+      },
+      {
+        "claim": "XLM/native balances are never clawback-able.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "note": "Exact quotes: ‘No bridging is required and no intermediary tokens are needed.’ ‘Anyone can initiate the deploy and the Stellar asset issuer does not need to be involved.’ ‘The asset issuer becomes the initial administrator once the contract has been deployed.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+clawback+AUTH_REVOCABLE+existing+trustlines+XLM",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar clawback AUTH_REVOCABLE existing trustlines XLM’. Top primary results: https://developers.stellar.org/docs/build/guides/transactions/clawbacks, https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md, and https://developers.stellar.org/docs/tokens/stellar-asset-contract. Exact observed text: ‘If an issuer wishes to set AUTH_CLAWBACK_ENABLED_FLAG, it must also have AUTH_REVOCABLE_FLAG set’; ‘you cannot retroactively enable clawback on existing trustlines’; the native token ‘doesn’t have an admin and cannot be minted. It also cannot be burned.’ No primary result contradicted the claims."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-06-sep-deposit-regulation-catalog-clawback accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Corroboration audit 2026-08-29: added 3 row(s) for clawback prerequisite, retroactivity, and XLM boundaries; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 3 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-sep-clawback-prereq-flag"

@@ -7,10 +7,11 @@
   "golden": {
     "answer": "You verify a deployed Soroban contract's WASM against published source via **reproducible/attested\nbuilds** — there are **two complementary, Draft standards**:\n\n- **SEP-55 \"Contract Build Verification\" (Draft)** — *attestation-based*. A CI workflow (e.g. the\n  stellar-expert **`soroban-build-workflow`** GitHub Action) builds the WASM and produces **GitHub\n  Attestations**; the WASM embeds a **`contractmetav0`** `source_repo=github:<org>/<repo>` (and\n  optional `home_domain`) entry. A verifier fetches the attestation by the WASM's SHA-256 hash and\n  confirms it was built from that repo.\n- **SEP-58 \"Contract Build Reproducibility for Verification\" (Draft)** — *rebuild-based*. It defines a\n  vocabulary (`bldimg` digest-pinned build image, `bldopt` flags, `source_sha256`/`source_uri`) so an\n  independent party can **rebuild the WASM and compare bytes** without trusting a CI. It is explicitly\n  **complementary to SEP-55**; a contract can carry both.\n\nThese are surfaced by tooling (e.g. **Stellar Lab / explorers Build Info**, `stellar contract info\nmeta`).\n\nImportant nuances: \"**build verified**\" attests **how** the WASM was built (the workflow/source), **not**\nthat the source is safe or audited. And Stellar does **not** store contract source code on-chain — only\nmetadata + attestations pointing to it.",
     "keyFacts": [
-      "Verification works by building the WASM in CI and producing GitHub Attestations (SEP-55, e.g. the soroban-build-workflow) and/or by reproducibly rebuilding it and comparing bytes (SEP-58).",
-      "The WASM carries contractmetav0 metadata (e.g. a source_repo / source_sha256 entry) linking it to the source.",
-      "Build/verification info is surfaced in tooling such as Stellar Lab / explorers (Build Info) or `stellar contract info meta`.",
-      "The relevant standards are SEP-55 (Contract Build Verification, Draft) and SEP-58 (Contract Build Reproducibility for Verification, Draft)."
+      "SEP-55 verifies CI-built WASM through GitHub Attestations.",
+      "SEP-58 verifies reproducible WASM rebuilds through byte comparison.",
+      "The WASM carries `contractmetav0` metadata linking it to the source.",
+      "`Build Info` and `stellar contract info meta` show build information.",
+      "SEP-55 and SEP-58 are Draft contract build verification standards."
     ],
     "avoid": [
       "Do NOT call contract build verification SEP-49 (SEP-49 is Upgradeable Contracts).",
@@ -41,17 +42,25 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Split the two verification methods and shortened the metadata, tooling, and standard facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md — the current Draft SEP defines CI build verification through GitHub Attestations.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md — the current Draft SEP defines reproducible rebuilds and byte comparison.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md — the current SEP embeds source-linking metadata in the WASM contractmetav0 section.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/lab/smart-contracts/contract-explorer and https://developers.stellar.org/docs/tools/cli/cookbook/contract-build-meta — the current official pages document Lab Build Info and stellar contract info meta.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md and https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md — the current proposal preambles retain both titles and Draft statuses.",
+        "Sibling sweep 2026-08-29: grep SEP-55|SEP-58|contractmetav0|Build Info|soroban-build-workflow → q-soroban-contractmeta-vs-contractevent; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-contract-build-verification",

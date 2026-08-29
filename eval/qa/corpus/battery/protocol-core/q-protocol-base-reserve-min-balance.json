@@ -20,7 +20,7 @@
       "Do NOT claim every trustline costs one reserve or that a sponsored account can remain under-reserved after sponsorship ends.",
       "Do NOT claim 0.5 XLM is timeless or that classic account reserves apply to Soroban contract storage."
     ],
-    "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve."
+    "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve.\nCanonical-page caution: The official Sponsored Reserves page states a liabilities term. An attributed quote is not a wrong claim; grade caps at partial. This caution tracks improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md and expires when sd-043 reaches fixed-upstream and the live page no longer carries that wording."
   },
   "tags": {
     "category": "protocol-core",
@@ -37,6 +37,11 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-core/blob/c16a6d17c6519505f7d1190fa6594cbdd68bce0c/src/transactions/TransactionUtils.cpp",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+        "note": "The official page includes liabilities.selling in its attributed minimum-balance formula."
       },
       {
         "class": "B",
@@ -104,8 +109,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the full sponsorship formula, liabilities boundary, zero-start and reserve-shift semantics, two-reserve pool shares, dated live value, and contract-rent distinction.",
         "2026-07-11 author re-check against stellar-core c16a6d17 TransactionUtils.cpp and live Horizon.",
@@ -114,12 +119,18 @@
         "Structural re-form (compound-predicate): Kept the dated base reserve as a modifier of the pool-share cost and made contract rent an atomic fact; truth is unchanged.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools confirms a pool-share trustline requires two base reserves.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens confirms the current 0.5 XLM base reserve and separate smart-contract rent model.",
-        "Sibling sweep 2026-08-27: grep baseReserve|minimumBalance|0.5 XLM|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics; no contradiction"
+        "Sibling sweep 2026-08-27: grep baseReserve|minimumBalance|0.5 XLM|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics; no contradiction",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance — the official page states the reserve product plus liabilities.selling.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp — getMinBalance returns the reserve product, while getAvailableBalance subtracts selling liabilities separately.",
+        "Sibling sweep 2026-08-29: grep liabilities.selling|numSponsoring|numSponsored|getMinBalance → q-pc-sponsored-reserves; it encodes the same Docs/Core distinction.",
+        "Independent blind re-derivation 2026-08-29: review-canonical-rederivation-grok.md confirmed the Docs/Core conflict and the source-specific caution boundary."
       ],
       "rootCause": [
         "Eval-side pre-P14 formula shorthand and classic-account-versus-contract-storage collapse; current sibling corrections in GT-29/GT-32 were preserved.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
+        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
       ]
     },
     "origin": "raven-next q-protocol-base-reserve-min-balance"

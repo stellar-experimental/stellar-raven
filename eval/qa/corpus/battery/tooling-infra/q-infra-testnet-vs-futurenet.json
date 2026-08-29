@@ -8,7 +8,7 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-08-04, the verified sources supported this observed answer:\n\n**Testnet** and **Futurenet** are separate public test networks with fake XLM and no real-value assets. Use Testnet for stable, near-production integration testing; use Futurenet to exercise the next/pre-release protocol and features. They have different passphrases, endpoints, ledgers, accounts, assets, and contract IDs, and neither promises production availability or permanent state. Testnet resets on a planned cadence; Futurenet resets as needed and is more volatile.\n\nFriendbot can fund both **G-account and C-contract addresses** on the applicable test network. Provider coverage and live protocol versions change, so consult the current Networks/Providers pages and date any exact snapshot rather than using it to define the networks forever.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Testnet is the stable integration network.",
       "Futurenet previews upcoming protocol/features.",
@@ -82,19 +82,27 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA primary-source correction; accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-50 primary/blind matrices independently confirmed the durable roles and freshness correction.",
         "Sibling sweep checked q-protocol-futurenet-vs-testnet, q-protocol-network-passphrases, q-ti-testnet-mainnet-migration, and q-tool-cli-testnet-identity-howto.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page dates changeable network values and tells readers to check current values.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page makes dated values visible for changeable limits and software details.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page recommends Testnet for stable development and production-like testing.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page assigns Futurenet to testing unreleased features.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks — the official page distinguishes passphrases, identifiers, reset state, and fake XLM.",
+        "Sibling sweep 2026-08-29: grep Testnet|Futurenet|network passphrase|fake XLM → q-protocol-network-passphrases-list, q-ti-friendbot-ratelimit-alternatives, q-tool-cli-testnet-identity-howto, q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet; no contradiction."
       ],
       "rootCause": [
         "Plain freshness drift plus eval-side wording error: Friendbot was incorrectly restricted to G-account funding although current docs accept G-account and C-contract addresses.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-infra-testnet-vs-futurenet"

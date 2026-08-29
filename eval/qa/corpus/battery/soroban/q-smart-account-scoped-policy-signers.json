@@ -9,9 +9,9 @@
   "golden": {
     "answer": "Put the rules in the contract account's __check_auth policy: bind authorization to the invocation tree and enforce allowed contracts/functions, asset and amount caps, expiry windows, and threshold or guardian requirements. Use delegated or session credentials with narrow scope rather than sharing a master key. For many partners, route approvals through policy or verifier contracts instead of adding every participant as an unrestricted signer. Include revocation, pause, replay protection, and auditable policy updates.",
     "keyFacts": [
-      "Contract-account authorization can bind a credential to specific calls, amounts, assets, and time windows.",
-      "Delegated or session credentials should be narrowly scoped instead of exposing a full-control key.",
-      "Policy or verifier contracts can express partner co-signing without turning every partner into an unrestricted signer."
+      "Contract-account credentials can bind calls, amounts, assets, and time windows.",
+      "Delegated or session credentials use narrow scope instead of a full-control key.",
+      "Policy or verifier contracts support partner co-signing without unrestricted signers."
     ],
     "avoid": [
       "Classic account thresholds are the only way to implement scoped authorization on Stellar.",
@@ -119,11 +119,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
-        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts"
+        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts",
+        "Structural re-form (long-fact): Shortened three scoped contract-account authorization facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the current guide defines call, spend, time, signer-policy, and session-key limits.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the current guide limits session keys by function, amount, expiry, and allowed scope.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the current guide supports policy signers and external policy contracts for restricted approvals.",
+        "Sibling sweep 2026-08-29: grep session credentials|policy signer|full-control key|__check_auth → q-passkey-wallet-recovery, q-smart-account-limits-recovery, q-smart-account-what; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan policy-signers-scoped-auth"

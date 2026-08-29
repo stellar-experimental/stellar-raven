@@ -11,8 +11,9 @@
     "answer": "The official JS/TS SDK is **`@stellar/stellar-sdk`**, **maintained by SDF**. Install via a package\nmanager: **`npm install @stellar/stellar-sdk`** (or `pnpm add` / `yarn add` equivalent). It talks to\nboth **Horizon (REST)** and **Stellar RPC (JSON-RPC)**, and handles transaction building/signing and XDR\nencode/decode. It exposes classes like **`Horizon`, `rpc`, `Keypair`, `TransactionBuilder`** and network\nselectors for mainnet/testnet/futurenet/local. **As of v16, the former `@stellar/stellar-base` package\nwas folded into `@stellar/stellar-sdk`** — no separate base install is needed.",
     "keyFacts": [
       "The official JS/TS SDK is `@stellar/stellar-sdk`, maintained by SDF.",
-      "Installed via a package manager, e.g. `npm install @stellar/stellar-sdk` (or pnpm/yarn equivalent).",
-      "It talks to both Horizon (REST) and Stellar RPC (JSON-RPC) and handles transaction building/signing + XDR."
+      "Installs with `npm install @stellar/stellar-sdk` or a pnpm/yarn equivalent.",
+      "Supports Horizon REST and Stellar RPC JSON-RPC.",
+      "Handles transaction building, signing, and XDR encoding and decoding."
     ],
     "avoid": [
       "Do NOT name `stellar-sdk` (unscoped/legacy), `stellar-base` alone, or web3.js/ethers as the official current package.",
@@ -40,11 +41,42 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "As of v16, the former `@stellar/stellar-base` package was folded into `@stellar/stellar-sdk` — no separate base install is needed.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/js-stellar-sdk",
+          "note": "Exact quote: ‘@stellar/stellar-base is now folded into @stellar/stellar-sdk.’ The README says the fold-in landed in v16.0.0 and the SDK is the only package needed.",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "C",
+          "ref": "https://registry.npmjs.org/@stellar/stellar-base/latest",
+          "observedAt": "2026-08-29",
+          "note": "Live npm registry response: `name` was `@stellar/stellar-base`, `version` was `15.0.0`, and `deprecated` was `This package is now rolled into @stellar/stellar-sdk. Please use @stellar/stellar-sdk to continue receiving updates and support.`"
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-55-cctp-cli-skill-discovery-sdks-lab-leaderboards accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Shortened one install fact and split one SDK-capability fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/js-stellar-sdk/blob/master/README.md — the current official repository lists npm, pnpm, and yarn installation commands for the scoped package.",
+        "Live re-check 2026-08-29: https://github.com/stellar/js-stellar-sdk/blob/master/README.md — the current official repository defines Horizon REST and Stellar RPC JSON-RPC networking layers.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks/client-sdks — the official SDK guide confirms transaction building, signing, and XDR support.",
+        "Sibling sweep 2026-08-29: grep @stellar/stellar-sdk|js-stellar-sdk → q-tool-js-sdk-package, q-tool-sdk-repos-discovery, q-tool-which-sdk-comparison, q-sor-deploy-invoke-from-js-sdk, q-ti-bindings-to-nextjs-integration, q-ti-rpc-gettransactions-pagination-xdr; no contradiction.",
+      "Corroboration audit 2026-08-29: added 1 row(s) for v16 package consolidation; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-tool-js-sdk-package"

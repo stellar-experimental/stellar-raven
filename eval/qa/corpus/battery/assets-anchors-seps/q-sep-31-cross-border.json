@@ -8,8 +8,11 @@
   "golden": {
     "answer": "**SEP-31** is the **Cross-Border Payments API** (Status: Active): an **anchor-to-anchor** rail. A\n**sending anchor** (which has already KYC'd the sender) pushes a payment to a **receiving anchor**\nthat pays out to the end recipient — there is **no end-user-facing hosted UI**; the sending anchor\nsupplies sender KYC and receiver details programmatically [1]. **SEP-24** (\"Hosted Deposit and\nWithdrawal\", Active) is fundamentally different: it is a **wallet ↔ anchor interactive** flow where\nthe anchor serves a hosted **webview** that the end user drives to deposit/withdraw and complete\nKYC [2]. So SEP-31 = business-to-business remittance corridors; SEP-24 = consumer on/off-ramp.\nBoth typically use **SEP-10** for auth and **SEP-38** for quotes; SEP-31 underpins remittance and\ndisbursement corridors (e.g. via the Stellar Disbursement Platform).\n\nSources: [1] stellar-protocol `ecosystem/sep-0031.md` (Cross-Border Payments API, Active);\n[2] `ecosystem/sep-0024.md` (Hosted Deposit and Withdrawal, Active).",
     "keyFacts": [
-      "Names SEP-31 as the Cross-Border Payments API — a sending anchor to a receiving anchor (anchor-to-anchor) flow.",
-      "Contrasts SEP-24 as wallet↔anchor interactive (hosted) deposit/withdrawal for an end user, not anchor-to-anchor."
+      "Names SEP-31 as the Cross-Border Payments API.",
+      "Defines its flow from a sending anchor to a receiving anchor.",
+      "Describes SEP-24 as an interactive wallet-to-anchor deposit/withdrawal flow.",
+      "Uses an anchor-hosted interface for the end user.",
+      "Excludes anchor-to-anchor use from SEP-24."
     ],
     "avoid": [
       "Do NOT call SEP-31 the wallet/anchor interactive deposit-withdraw standard (that is SEP-24).",
@@ -38,17 +41,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/anchors",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Split two long facts into five one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — the current proposal names SEP-31 Cross-Border Payments API.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — the current proposal defines sending-anchor to receiving-anchor payments.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current proposal defines an interactive wallet-to-anchor deposit/withdrawal flow.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current proposal defines an anchor-hosted interface for the end user.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current proposal scopes SEP-24 to wallet/client and anchor interaction, not anchor-to-anchor payments.",
+        "Sibling sweep 2026-08-29: grep SEP-31|SEP-0031|Cross-Border Payments API|SEP-24 → q-sep-31-cross-border, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-vs-31-misnumber-trap, q-sep-catalog-list, q-comp-cross-bitso-sep31; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-31-cross-border",

@@ -8,8 +8,10 @@
   "golden": {
     "answer": "As of **2026-07-11**, the official Providers table marks seven hosted rows for **RPC Archive**: **Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network/Quasar, Exaion, and GetBlock**. Recheck the live table because the roster and access plans are volatile.\n\nArchive means data-lake-backed **deep/full ledger history through `getLedgers`**. Ordinary RPC instances can still expose `getLedgers` within local retention; the differentiator is historical reach, not method existence. Archive does not extend `getEvents`, `getTransaction(s)`, or `getLedgerEntries`. Choose by network, documented historical coverage, authentication/plan, SLA/rate limits, and current operational health rather than an unsupported universal ranking.",
     "keyFacts": [
-      "Names a dated archive-marked roster: either the seven-row subset as of 2026-07-11 (Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock), or an attributed, dated current roster that may include the eighth row (Validation Cloud) after the 2026-08-18 official table change.",
-      "Defines archive as extended historical reach for getLedgers only; ordinary getLedgers may be retention-bounded.",
+      "Names the dated seven-provider archive roster or an attributed eighth-row roster.",
+      "Allows a dated, attributed roster after the official 2026-08-18 table change.",
+      "Validation Cloud may be its eighth row.",
+      "Defines archive by getLedgers-only history beyond ordinary provider retention.",
       "Keeps provider plans, SLAs, and live health freshness-sensitive."
     ],
     "avoid": [
@@ -132,8 +134,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-24",
-      "by": "Golden-truth review 2026-08-24 (branch codex/qa-golden-truth-corrections asOf repair) — original verification Solo todo 1741 comments 5000 and 5003; independent GPT review Solo todo 1936.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and stellar-docs commits 7fa36531734baa72d0477a5f9a4b3da3d356a0e0 and 15f14808ffd5f640f5461af827c1f4d39db3c418 preserve the dated seven-row roster through 2026-07-29.",
         "A/B: https://developers.stellar.org/docs/data/apis/rpc/providers and https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00 show the eighth official table row from 2026-08-18.",
@@ -141,11 +143,19 @@
         "A: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers confirms that ordinary getLedgers remains bounded by provider retention.",
         "A: both disputed sources re-observed 2026-08-24 — https://developers.stellar.org/docs/data/apis/rpc/providers still marks eight RPC Archive rows (Validation Cloud plus the seven-row 2026-07-11 subset) and https://docs.validationcloud.io/v1/stellar/overview still limits archive access to Horizon; the dispute is unresolved, so truth.asOf moves to 2026-08-24 to cover the 2026-08-18 official table change while the golden keeps its 2026-07-11 question basis.",
         "Key-fact review 2026-08-21 (GPT todo 1936): the alternative-aware keyFact admits either the dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change, so neither side of the Validation Cloud dispute is pinned and the grader caution matches the disputed corroboration row.",
-        "Sibling review 2026-08-21 (todo 1936): every member of consistency clusters cluster-018 and cluster-046 stays consistent with the alternative-aware roster keyFact (a dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change) and with mixed-truth status for the disputed Validation Cloud row; no sibling pins the archive-provider count or conflicts with the getLedgers-only boundary."
+        "Sibling review 2026-08-21 (todo 1936): every member of consistency clusters cluster-018 and cluster-046 stays consistent with the alternative-aware roster keyFact (a dated seven-row roster as of 2026-07-11 or an attributed, dated eight-row roster after the 2026-08-18 official table change) and with mixed-truth status for the disputed Validation Cloud row; no sibling pins the archive-provider count or conflicts with the getLedgers-only boundary.",
+        "Structural re-form (long-fact): split the alternative-aware roster and shortened the getLedgers boundary; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/providers still contains all seven providers named in the dated answer.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/providers and https://github.com/stellar/stellar-docs/commit/785c991bee0c157ba4485b33150678513439fa00 retain the official later roster and dated table change.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/providers includes Validation Cloud, while https://docs.validationcloud.io/v1/stellar/overview still conflicts with that eighth-row marking.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/providers and https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers keep archive as getLedgers-only historical reach beyond ordinary retention.",
+        "Sibling sweep 2026-08-29: grep RPC Archive|Validation Cloud|getLedgers.*retention|archive.*getLedgers|seven-row|eight-row → q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, and related RPC-history cases; no contradiction.",
+        "Owner fix 2026-08-29 (gate: npm test pins this case's wording): test/qa-corpus-lint.test.mjs requires one archive-roster fact to name both the dated seven-row subset and the attributed eighth-row roster; merged the split facts [0] and the eighth-row allowance into one 81-char fact; facts [1]-[2] keep the 2026-08-18 table-change date and Validation Cloud; claims unchanged."
       ],
       "rootCause": [
         "freshness-drift",
-        "The official provider table and provider-owned documentation disagree about Validation Cloud RPC Archive support."
+        "The official provider table and provider-owned documentation disagree about Validation Cloud RPC Archive support.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-infra-rpc-provider-archive-tier"

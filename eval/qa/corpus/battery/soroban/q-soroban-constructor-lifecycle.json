@@ -10,7 +10,8 @@
   "golden": {
     "answer": "Yes — Soroban supports a **constructor** since **Protocol 22 (CAP-0058, status Final;** mainnet vote\nDec 5, 2024**)**. [cap0058][p22]\n\n- **Define it** as a reserved function named **`__constructor`** inside the `#[contractimpl]` block. A\n  Wasm that exports `__constructor` is treated as having a constructor. [cap0058]\n- **Runs exactly once, atomically, at contract creation** — the host calls it immediately after\n  creating the instance entry; if it traps or returns a non-`Void` value, contract creation **fails\n  and rolls back**. It cannot be re-invoked afterward (and is NOT re-run on a Wasm code upgrade).\n  [cap0058]\n- **Arguments** are passed at create/deploy time via the `HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2`\n  host function (CLI `stellar contract deploy ... -- <args>` / SDK deployer). It may take 0..N args.\n  [cap0058]\n- **Before P22** the standard pattern was a separately-called `initialize`/`init` function guarded\n  against re-initialization; constructors remove that round-trip and reduce front-running risk on\n  init. [p22]\n\nTraps: claiming Soroban has no constructor at all (stale, pre-P22); or describing a Solidity\n`constructor` keyword / `selfdestruct` semantics.",
     "keyFacts": [
-      "Soroban supports a constructor: a `__constructor` function in the `#[contractimpl]` that the host runs exactly once at instantiation/deploy time.",
+      "Soroban defines constructors as `__constructor` functions in `#[contractimpl]`.",
+      "The host runs `__constructor` exactly once at instantiation or deploy time.",
       "Constructor support was added at the protocol level via CAP-0058 (Protocol 22)."
     ],
     "avoid": [
@@ -42,16 +43,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://stellar.org/blog/developers/announcing-protocol-22",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Split the constructor definition from its exactly-once lifecycle; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md — the Final CAP defines Soroban constructors through the __constructor export.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md — the Final CAP makes the host call __constructor during contract creation and never on code update.",
+        "Sibling sweep 2026-08-29: grep __constructor|CAP-0058|Protocol 22 → q-soroban-factory-pattern; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-constructor-lifecycle",

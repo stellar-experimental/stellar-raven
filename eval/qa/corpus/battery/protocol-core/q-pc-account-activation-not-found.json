@@ -8,7 +8,7 @@
   "golden": {
     "answer": "A Stellar keypair is only cryptographic identity until a successful **CreateAccount** operation creates its ledger entry. A normal Payment to a nonexistent G-address fails with `PAYMENT_NO_DESTINATION`; Payment is not account creation. For the ordinary **unsponsored** path, an empty account needs two base reserves—**1 XLM as of 2026-07-10** with a 0.5 XLM base reserve. CAP-0033 also permits **sponsored account creation with `startingBalance=0`**, shifting those reserves to the sponsor when the sponsorship sandwich and authorizations are correct. On Testnet, Friendbot can create/fund test accounts; on Mainnet use CreateAccount directly or through a real sponsoring/funding service. Re-read current reserve configuration before quoting the numeric minimum.",
     "keyFacts": [
-      "Explains that CreateAccount—not key generation or ordinary Payment—creates the ledger account.",
+      "CreateAccount, not key generation or Payment, creates the ledger account.",
       "Distinguishes the dated unsponsored minimum from CAP-0033 sponsored zero-balance creation."
     ],
     "avoid": [
@@ -87,16 +87,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/guides/transactions/create-account",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened the account-creation fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/create-account — the official guide separates key generation from account creation and states that a keypair alone creates no account.",
+        "Sibling sweep 2026-08-29: grep CreateAccount|PAYMENT_NO_DESTINATION|account activation|brand-new address → q-edge-1xlm-activation-fee, q-ti-classic-submission-errors, q-pc-account-activation-not-found; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-pc-account-activation-not-found"

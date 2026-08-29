@@ -9,7 +9,7 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no single safe public scalar for SCF 'distributed.' Report a dated basis matrix and say whether each value is reconstructed, awarded, or paid. As of **2026-07-10/11**, Scout funding-v2 reconstructed **$39,851,645.13 across 391 distinct awarded project records**; this is not an official payment ledger. The official embedded round ledger instead summed **868 awarded submission memberships, about $63.62M awarded and $53.91M paid**. A separate public project-record pass summed roughly **$50.85M awarded and $41.72M paid**, while public banners still showed incompatible 42M/656 and 504 figures with unclear cutoffs. These populations are not interchangeable: projects differ from submission memberships, awarded differs from paid/distributed, and USD-valued budgets differ from XLM quantities. Use current source, timestamp, currency, denominator, and amount semantics; round machine totals rather than pinning floating-point tails. SCF totals are also distinct from SDF treasury, XLM supply, and Enterprise Fund investment.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "States whether its count means distinct funded projects or awarded submissions.",
       "States whether its amount is denominated in USD or XLM."
@@ -70,17 +70,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Skeptic sweep 2026-07-03 (scratchpad 521): live execute probe + communityfund.stellar.org fetches + SDF demo transcript, all asOf 2026-07-03",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a narrow caution for pre-fix Scout funding totals; golden truth unchanged.",
         "Improvement finding read 2026-08-27: improvements/resolved.json entry sls-013; disputed claim: pre-fix funding totals lacked computedAt, methodologyVersion, countBasis, and byRound data.",
         "No live re-check needed: pure symmetric-caution addition; truth unchanged.",
-        "Sibling sweep 2026-08-27: grep funding-v2|countBasis|SCF.{0,20}distributed → q-scf-funding-by-category, q-scf-total-distributed; no contradiction"
+        "Sibling sweep 2026-08-27: grep funding-v2|countBasis|SCF.{0,20}distributed → q-scf-funding-by-category, q-scf-total-distributed; no contradiction",
+        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/awards — the current official awards surface supplies changeable round and submission observations.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/analyze?dimension=funding — the response exposes `generatedAt`, `computedAt`, and `snapshotAsOf` for its live measurements.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/analyze?dimension=funding — `countBasis` distinguishes awarded projects from awarded submissions.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/awards — the official page labels its award cap in XLM and its submission counter by submissions.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/analyze?dimension=funding — the current reconstructed amount is explicitly a USD total.",
+        "Sibling sweep 2026-08-29: grep funding-v2|countBasis|Previously Awarded Submissions → q-scf-funding-by-category, q-defi-category-funding-ratio-live; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-013 — fixed upstream: funding-v2 now exposes computedAt, methodologyVersion, countBasis, populated byRound data, and an explicit funnel scope; the golden remains behavior-gated because totals are volatile reconstructed snapshots",
@@ -88,7 +95,8 @@
         "solo://proj/49/todo/corpus-health-instru--829",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-total-distributed"

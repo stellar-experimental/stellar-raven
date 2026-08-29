@@ -9,9 +9,10 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n**ERC-8004 ('Trustless Agents')** is an external **Ethereum Draft** for agent identity, reputation, and validation; payments are explicitly separate and can compose with protocols such as x402. As of **2026-07-10**, the pinned official Stellar SEP registry contains no corresponding ratified agent-identity SEP. `SRC-8004` and `SEP-8004` labels seen in project material are not official Stellar registry entries.\n\nStellar nevertheless has real community Soroban adaptations. **trionlabs/stellar-8004** provides three registries plus SDK/CLI/explorer/test material and verifiable pubnet deployments; **progax01/stellar8004** independently deploys an agent registry. That makes them available and substantial early implementations—not merely hackathon-stage—but deployment does **not** prove a ratified standard, independent audit, mature adoption, or production reliability.\n\nThe exact January-2026 Ethereum deployment date is not established by the primary ERC record and is not a correctness gate.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Identifies ERC-8004 as an external Ethereum Draft for identity/reputation/validation with payments kept separate."
+      "Defines ERC-8004 as an Ethereum Draft for identity, reputation, and validation.",
+      "Keeps payments outside ERC-8004's scope."
     ],
     "avoid": [
       "Do NOT promote ERC-8004, SRC-8004, or SEP-8004 into a ratified Stellar standard.",
@@ -110,20 +111,27 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575: GT-12 primary process 3237 and independent blind process 3241",
         "Pinned official SEP registry, both implementation repositories, official Stellar meeting context, and four empirical pubnet contract fetches asOf 2026-07-10",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened the dated-observation fact and split the ERC-8004 scope fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://eips.ethereum.org/EIPS/eip-8004 — the official EIP supplies current, source-supported ERC-8004 observations.",
+        "Live re-check 2026-08-29: https://eips.ethereum.org/EIPS/eip-8004 — the live EIP shows a changeable Draft status that needs an as-of date.",
+        "Live re-check 2026-08-29: https://eips.ethereum.org/EIPS/eip-8004 — the EIP defines identity, reputation, and validation registries and labels itself Draft.",
+        "Live re-check 2026-08-29: https://eips.ethereum.org/EIPS/eip-8004 — the EIP states that payments are orthogonal and outside its scope.",
+        "Sibling sweep 2026-08-29: grep ERC-8004|stellar-8004|stellar8004|reputation registry → q-agent-identity-erc8004-stellar, q-defi-agent-identity-stellar-experimental; no contradiction"
       ],
       "rootCause": [
         "eval-side authoring collapsed absence of standards ratification into absence/immaturity of implementation and relied on stale repository metadata",
         "solo://proj/49/todo/golden-corpus-health--901 — the earlier exact-date correction remained valid but incomplete",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-defi-agent-identity-stellar-experimental"

@@ -8,9 +8,9 @@
   "golden": {
     "answer": "As of July 11, 2026, the current official Meridian site schedules Meridian 2026 for October 28–29 at Convento do Beato in Lisbon, Portugal; HackMeridian is scheduled for October 25–26. Older sources saying October 21–22 at Yas Marina in Abu Dhabi reflect the original announcement, not the current schedule. SDF publicly announced the move to Lisbon and new dates on April 1, 2026. Because the event is still upcoming, answers should cite the current official site and an as-of date.",
     "keyFacts": [
-      "As of July 11, 2026, Meridian 2026 is scheduled for October 28–29 at Convento do Beato in Lisbon.",
+      "As of July 11, 2026, Meridian 2026 is set for October 28–29 at Convento do Beato, Lisbon.",
       "HackMeridian is scheduled for October 25–26, 2026.",
-      "Abu Dhabi October 21–22 was the superseded schedule; SDF announced the Lisbon change on April 1, 2026."
+      "SDF announced Lisbon and October 28–29 on April 1, 2026."
     ],
     "avoid": [
       "Do NOT claim Abu Dhabi/Yas Marina on October 21–22 is the current Meridian 2026 schedule.",
@@ -85,8 +85,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
@@ -96,11 +96,16 @@
         "https://x.com/StellarOrg/status/2039405316803031315",
         "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no sibling contradiction"
+        "Sibling sweep 2026-08-27: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no sibling contradiction",
+        "Structural re-form (long-fact): shortened the current schedule and announcement facts while keeping the superseded schedule in the answer and avoid; truth unchanged.",
+        "Live re-check 2026-08-29: https://meridian.stellar.org/event-details — the current official FAQ schedules Meridian 2026 for October 28–29 at Convento do Beato in Lisbon.",
+        "Live re-check 2026-08-29: https://x.com/StellarOrg/status/2039405316803031315 — SDF's official post announces Lisbon and October 28–29 at 6:11 PM on April 1, 2026.",
+        "Sibling sweep 2026-08-29: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no contradiction."
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

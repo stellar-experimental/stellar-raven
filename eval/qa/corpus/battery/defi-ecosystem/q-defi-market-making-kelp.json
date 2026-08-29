@@ -7,14 +7,14 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-06-29, the verified sources supported this observed answer:\n\nKelp exists, but its current status must be described from repository evidence: `stellar-deprecated/kelp` is archived, the latest release is v1.12.0 from 2021-11-05, and the repository describes it as a Stellar DEX / centralized-exchange trading bot. That makes it useful prior art, not something Raven should casually call actively maintained.\n\nAutomated market making on Stellar can mean different things: classic SDEX offer management, liquidity provision to classic/Soroban AMM pools, DEX aggregator routing, or protocol incentives such as Aquarius rewards. A classic bot keeps offers near a target price by reading internal/external price signals, managing spread and inventory, canceling/updating offers, and handling partial fills and failed transactions. It should be dry-run/testnet tested and never sold as guaranteed profit.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Explains automated market making on Stellar can involve SDEX offer management, AMM pool liquidity, or protocol-specific liquidity incentives.",
+      "Stellar market making includes SDEX offers, AMM pools, and protocol liquidity incentives.",
       "These are different mechanisms.",
-      "Explains offer-repositioning bots cancel/update/manage buy/sell offers based on external/internal price signals, spread, inventory, and risk controls."
+      "Manages buy/sell offers by internal/external prices, spread, inventory, and risk controls."
     ],
     "avoid": [
-      "Do NOT claim Kelp is actively maintained or abandoned without dated repository/source evidence.",
+      "Do NOT claim stellar-deprecated/kelp is actively maintained.",
       "Do NOT promise market-making profitability.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
@@ -51,18 +51,52 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "stellar-deprecated/kelp is archived (as of 2026-08-29)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar-deprecated/kelp",
+            "observedAt": "2026-08-29",
+            "note": "GitHub returned \"archived\": true and \"pushed_at\": \"2023-11-03T05:46:15Z\"."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/kelp-why-we-built-it-the-liquidity-problem",
+            "observedAt": "2026-08-29",
+            "note": "SDF identifies Kelp as its open-source Stellar DEX market-making and trading bot; this historical page does not assert current maintenance."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, sourcing-guard audit, worker gt3-sol-b)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Preserved main's 2026-06-29 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened the dated-observation, market-making mechanism, and offer-management facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar-deprecated/kelp — the current repository supplies source-supported Kelp and market-making observations.",
+        "Live re-check 2026-08-29: https://api.github.com/repos/stellar-deprecated/kelp — the live repository metadata shows changeable archive, update, and push fields that need an as-of date.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the official docs distinguish SDEX offers from AMM pools.",
+        "Live re-check 2026-08-29: https://docs.aqua.network/voting-and-rewards/sdex-rewards — the official protocol docs confirm SDEX and AMM liquidity incentives.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the official docs describe SDEX orders and AMM pools as different mechanisms.",
+        "Live re-check 2026-08-29: https://github.com/stellar-deprecated/kelp — Kelp documents buy/sell offers, reference prices, price feeds, spread, inventory risk, and offer deletion.",
+        "Sibling sweep 2026-08-29: grep Kelp|offer lifecycle|market making|price signals → q-defi-sdex-offer-lifecycle, q-defi-arbitrage-pathpayment-bots, q-scf-hummingbot-kelp-closed-rfp, q-defi-market-making-kelp; no contradiction",
+        "Live re-check 2026-08-29: https://api.github.com/repos/stellar-deprecated/kelp — exact fields: \"archived\": true and \"pushed_at\": \"2023-11-03T05:46:15Z\".",
+        "Live re-check 2026-08-29: https://stellar.org/blog/developers/kelp-why-we-built-it-the-liquidity-problem — exact quote: \"we developed Kelp, a 100% open-source market-making and trading bot\".",
+        "Sibling sweep 2026-08-29: rg stellar-deprecated/kelp|Kelp → q-defi-market-making-kelp, q-scf-hummingbot-kelp-closed-rfp; both describe Kelp as deprecated or archived, with no contradiction.",
+        "Sourcing-guard audit 2026-08-29: reworded one avoid item (demonstrated cruft: the retired \"abandoned\" half punished a true archived-status claim); Grok audit + orchestrator decision"
       ],
       "rootCause": [
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-defi-market-making-kelp"

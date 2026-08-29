@@ -7,9 +7,9 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no protocol-defined, universally exact Stellar DeFi TVL **as of this moment**. A provider snapshot may be quoted, but it must carry the provider and endpoint/dashboard, retrieval time, provider data-as-of time if supplied, tracked-protocol inclusion rule, and pricing methodology. On 2026-07-10, DefiLlama's API, page, and completed daily series exposed different values in the same broad observation window; the API's many decimal places represented its current calculation, not objective to-the-dollar truth. Re-query before answering, label the result as provider-scoped, and do not silently sum overlapping protocol, RWA, and asset rows. An approximate range is optional, not mandatory, when a properly scoped live snapshot is available.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Requires provider, endpoint, retrieval/as-of time, inclusion basis, and pricing methodology."
+      "Requires provider, endpoint, retrieval/as-of times, inclusion basis, and pricing method."
     ],
     "avoid": [
       "Do NOT claim any provider value is an exact objective chain fact.",
@@ -67,19 +67,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; both independently observed DefiLlama /v2/chains value 229093918.7739924 at separate times.",
         "Existing improvements/stellar-light-scout/sls-031 and sls-038 cover provenance and ecosystem-rollup contract gaps.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sls-031 and sls-038; the provider-scoped TVL facts are unchanged.",
         "Improvements review 2026-08-27: improvements/resolved.json entries sls-031 and sls-038 record 2026-07-14 fixes; the disputed claims are missing TVL methodology fields and the absent analyze.totalTvlUSD rollup in older Scout copies.",
         "Sibling sweep 2026-08-27: grep sls-031|sls-038|totalTvlUSD|tvlMethodUrl → q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl; no contradiction",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; all symmetric-caution provenance is unchanged.",
-        "Sibling sweep 2026-08-27: grep exact objective chain fact|provider value|TVL methodology|totalTvlUSD → q-edge-noinfo-exact-tvl-figure, q-eco-defi-tvl-current; no contradiction"
+        "Sibling sweep 2026-08-27: grep exact objective chain fact|provider value|TVL methodology|totalTvlUSD → q-edge-noinfo-exact-tvl-figure, q-eco-defi-tvl-current; no contradiction",
+        "Structural re-form (long-fact): shortened the source and TVL-method requirements; truth unchanged.",
+        "Live re-check 2026-08-29: https://api.llama.fi/v2/chains and https://github.com/DefiLlama/DefiLlama-Adapters show a live provider value and current source-backed TVL computation.",
+        "Live re-check 2026-08-29: https://api.llama.fi/v2/historicalChainTvl/Stellar exposes dated Stellar TVL points for visible as-of handling.",
+        "Live re-check 2026-08-29: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/stellar-amm/index.js and https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/skills/adapter-author/references/adapter-patterns.md expose the endpoint, latest-day selection, inclusion methodology, and pricing behavior.",
+        "Sibling sweep 2026-08-29: grep TVL methodology|exact objective chain fact|provider.*endpoint|retrieval.*as-of|DefiLlama → q-eco-defi-tvl-current, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure, and related TVL cases; no contradiction."
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-031-tvl-methodology-provenance.md",
@@ -88,7 +93,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-noinfo-exact-tvl-figure"

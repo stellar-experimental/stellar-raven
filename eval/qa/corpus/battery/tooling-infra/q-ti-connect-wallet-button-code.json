@@ -8,8 +8,9 @@
     "answer": "Put the control in a **`\"use client\"`** component/hook and track installed, pending, address, network, and error state. On a user click, call `isConnected()` and inspect its `.isConnected` result only to detect the extension; then call **`requestAccess()`** for the current one-call permission/public-address flow and inspect its returned address/error. `getAddress()` is useful for a silent already-authorized read. Validate `getNetwork()`/`getNetworkDetails()` against the expected passphrase before enabling signing, disable duplicate clicks, surface install/reject/switch-network states, and never auto-prompt on mount or handle a seed.\n\n`setAllowed` remains a valid authorization API but is not the only or best one-call connect example. Compile against the installed package types; a missing export means version skew, not permission to invent an API. For multi-wallet UX, use Stellar Wallets Kit through documented public modules/configuration or build a custom picker over its public API—do not couple to private modal DOM/CSS.",
     "keyFacts": [
       "Treats isConnected's structured result as installation detection, not authorization.",
-      "Uses requestAccess for explicit user-click permission/address and getAddress only for silent authorized reads.",
-      "Validates network/passphrase, handles pending/rejection/errors, and keeps secrets out of React.",
+      "Uses `requestAccess` on user click and `getAddress` for silent authorized reads.",
+      "Validates the network and passphrase.",
+      "Handles pending states, rejections, and errors.",
       "Uses public Wallets Kit customization APIs or a custom picker, not DOM hacks."
     ],
     "avoid": [
@@ -101,18 +102,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary/blind matrices independently required the current-API repair; both preserve setAllowed as valid but not the sole recommended flow.",
         "Sibling sweep checked q-ti-freighter-localhost-not-detected, q-tool-freighter-wallet, and q-tool-wallets-kit.",
         "Structural re-form (presentation-avoid): Reworded the setAllowed presentation clause as a concrete false claim and preserved the remaining wallet-flow traps; truth is unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; all trap targets are unchanged.",
-        "Sibling sweep 2026-08-27: grep requestAccess|setAllowed|Wallets Kit → q-ti-connect-wallet-button-code, q-ti-freighter-localhost-not-detected, q-tool-freighter-wallet; no contradiction"
+        "Sibling sweep 2026-08-27: grep requestAccess|setAllowed|Wallets Kit → q-ti-connect-wallet-button-code, q-ti-freighter-localhost-not-detected, q-tool-freighter-wallet; no contradiction",
+        "Structural re-form (long-fact): Shortened one wallet-access fact and split one state-handling fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://docs.freighter.app/extension-freighter-api/connecting — the official Freighter guide makes requestAccess the prompted one-call flow and getAddress an authorized read.",
+        "Live re-check 2026-08-29: https://docs.freighter.app/extension-freighter-api/reading-data — the official Freighter guide returns the selected network and network passphrase.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/dapps/frontend-guide — the official frontend guide handles pending transaction state and API errors.",
+        "Sibling sweep 2026-08-29: grep requestAccess|getAddress|networkPassphrase|Wallets Kit → q-sep-43-web-wallet-api, q-eco-xbull-wallet, q-tool-freighter-wallet, q-sor-sac-introspection, q-soroban-x402-auth-entry-signing, q-ti-connect-wallet-button-code, q-ti-freighter-localhost-not-detected, q-tool-wallets-comparison; no contradiction."
       ],
       "rootCause": [
         "Eval-side wallet API drift; the possible upstream frontend-guide mismatch is recorded as a research candidate rather than filed from one direct defect lane.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-ti-connect-wallet-button-code"

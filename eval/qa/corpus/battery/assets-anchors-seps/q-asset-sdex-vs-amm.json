@@ -36,9 +36,35 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Both live in-ledger (no off-chain matching engine), and a single path payment can route across both offers and pools in one atomic transaction.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+            "note": "Exact quotes: ‘path payments cross through the SDEX and/or liquidity pools.’ ‘Balances are settled at the very end of the operation.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+            "note": "Exact quote: ‘Stellar uses order books to operate its decentralized exchange.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+            "note": "Exact quotes: ‘LiquidityPoolEntry is introduced as a new type of LedgerEntry.’ ‘New operations ... are introduced.’",
+            "observedAt": "2026-08-29"
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (negative-predicate): split two compound facts into five atomic facts and replaced 'separate from' with positive fee wording; truth is unchanged.",
@@ -48,10 +74,12 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — AMM trade fees remain completely separate from network fees.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — an orderbook maker specifies each offer price.",
         "Sibling sweep 2026-08-27: grep SDEX|constant-product|30 basis points|network fee → q-protocol-amm-cap-0038, q-asset-amm-fee-reserve, q-edge-factcheck-soroswap-first-amm, q-defi-provide-liquidity-impermanent-loss; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored the central-limit orderbook claim; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored the central-limit orderbook claim; truth unchanged versus HEAD.",
+        "Corroboration audit 2026-08-29: added 1 row(s) for in-ledger SDEX and AMM routing; class agreement Sol+Grok"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-asset-sdex-vs-amm"

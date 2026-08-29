@@ -10,7 +10,8 @@
     "answer": "A smart wallet is a contract account: its signer set lives in contract storage, so add a signer by invoking the **deployed contract's** signer-management method and authorizing the mutation through an existing valid signer. Inspect the live contract spec and use the SDK/release that matches that account; exact methods and signer schemas are implementation-specific.\n\nFor new work, **Passkey Kit** and **Smart Account Kit** are maintained siblings: neither is a legacy path nor a universal successor. Passkey Kit uses its own flat multi-signer `Signatures` model; Smart Account Kit targets OpenZeppelin smart-account contracts with context rules, auth digests, signers, and policies. They are not drop-in compatible, so choose by the application's authorization/account model rather than treating either as the default. P-256/WebAuthn passkeys are one signer type, not a universal schema. This is not classic `SetOptions`, and an unauthenticated caller must never mutate signers.",
     "keyFacts": [
       "Treats signer mutation as contract-specific state authorized by an existing signer.",
-      "Presents Passkey Kit and Smart Account Kit as maintained, non-drop-in siblings and chooses between them by the deployed authorization/account model."
+      "Passkey Kit and Smart Account Kit are maintained, non-drop-in siblings.",
+      "The deployed authorization and account model determines the kit choice."
     ],
     "avoid": [
       "Do NOT use classic SetOptions on a C-address, assume one universal signer ABI, or permit unauthenticated mutation.",
@@ -99,8 +100,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Bounded smart-wallet truth repair from Solo Todo 1355 comment 3687",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-44 primary 3316 and blind 3324; historical 2026-07-11 observedAt text remains preserved.",
         "https://github.com/kalepail/passkey-kit and https://github.com/kalepail/smart-account-kit — archived move pages.",
@@ -108,10 +109,15 @@
         "https://github.com/stellar/smart-account-kit",
         "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
         "Sibling sweep: q-tool-passkeykit-smart-wallet already states the maintained non-drop-in relationship and no universal default.",
-        "solo://proj/49/todo/reconcile-bounded-tr--1355"
+        "solo://proj/49/todo/reconcile-bounded-tr--1355",
+        "Structural re-form (long-fact): Split the kit relationship from the model-based choice; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/passkey-kit — the current canonical README calls Smart Account Kit a sibling SDK and says the kits are not drop-in compatible.",
+        "Live re-check 2026-08-29: https://github.com/stellar/passkey-kit — the current canonical README says the kits use different on-chain authorization models and directs users to choose the fitting model.",
+        "Sibling sweep 2026-08-29: grep Passkey Kit|Smart Account Kit|non-drop-in → q-passkey-smart-account-architecture, q-tool-passkey-wallet-recovery, q-tool-passkeykit-smart-wallet, q-tool-smart-wallet-repos-discovery, q-tool-wallets-comparison, q-builder-content-by-person, and q-soroban-add-signer-smart-wallet-howto; no contradiction"
       ],
       "rootCause": [
-        "Eval-side vendor/tooling freshness drift."
+        "Eval-side vendor/tooling freshness drift.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-add-signer-smart-wallet-howto"

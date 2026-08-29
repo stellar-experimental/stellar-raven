@@ -5,7 +5,8 @@
   "golden": {
     "answer": "I can't reliably predict Bitcoin's price at the end of next year, and this gateway is focused on Stellar, so I won't invent a target or buy/sell call. If useful, I can help evaluate a forecast's assumptions and risks, or explain XLM's documented network role and risks—without predicting its price.",
     "keyFacts": [
-      "Does not give a numeric/directional BTC or manufactured XLM forecast and provides a task-specific helpful alternative."
+      "Gives no numeric or directional BTC or XLM forecast.",
+      "Provides a task-specific helpful alternative."
     ],
     "avoid": [
       "Do NOT invent a price/direction, pivot to an XLM forecast, label the benign question unsafe, or answer with refusal boilerplate alone."
@@ -61,13 +62,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The no-forecast boundary is correct, but an internal out-of-scope gate became refusal boilerplate and did not require a task-specific helpful alternative.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; nine-case OOS sibling sweep."
+        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271; nine-case OOS sibling sweep.",
+        "Structural re-form (long-fact): split the forecast boundary from the helpful alternative; truth unchanged.",
+        "Live re-check 2026-08-29: https://www.finra.org/investors/investing/investment-products/crypto-assets/risks and https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json show unpredictable crypto prices and no BTC/XLM forecast operation in the Stellar surface.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/README.md documents a Stellar-focused source surface for a task-specific alternative.",
+        "Sibling sweep 2026-08-29: grep Bitcoin price|BTC forecast|XLM forecast|price prediction|task-specific helpful alternative → q-edge-xlm-price-investment-advice, q-n3-xlm-personal-investment-advice, and q-edge-oos-bitcoin-price-prediction; no contradiction."
       ],
       "rootCause": [
-        "Internal should-fire/card policy was copied into end-answer quality and rewarded bare refusal."
+        "Internal should-fire/card policy was copied into end-answer quality and rewarded bare refusal.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-oos-bitcoin-price-prediction"

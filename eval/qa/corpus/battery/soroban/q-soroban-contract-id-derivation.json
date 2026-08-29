@@ -8,8 +8,10 @@
   "golden": {
     "answer": "A Soroban contract address (the `C...` strkey) is **deterministic**: it is the **SHA-256 of a\n`ContractIDPreimage` together with the network identifier** (as a `HashIDPreimage`). [tx]\n\n- The common deploy path uses **`CONTRACT_ID_PREIMAGE_FROM_ADDRESS`** = **deployer/source address +\n  salt** (and requires that address's authorization). Same deployer + same salt ⇒ **same address**;\n  varying the salt ⇒ distinct addresses. (A second variant, `..._FROM_ASSET`, derives the SAC address\n  from the asset.) [tx]\n- The address is **NOT** derived from the **Wasm hash**. **Upload** (`UPLOAD_CONTRACT_WASM`, keyed by\n  the SHA-256 of the Wasm) and **create/deploy** (`CREATE_CONTRACT`, the instance) are **separate\n  steps**. [tx]\n- Therefore **upgrading the Wasm does not change the contract address** — the instance address is\n  preserved; only the executable behind it changes. This enables counterfactual/pre-computed addresses\n  for factory patterns.\n\nTraps: claiming it is Ethereum-style `keccak(sender, nonce)` / CREATE2 of the bytecode; or claiming the\ncontract id changes when you upgrade the Wasm.",
     "keyFacts": [
-      "The contract address (a `C...` strkey) is a deterministic hash derived from the deployer/source plus a salt (the ContractIDPreimage).",
-      "The same deployer + same salt yields the same contract address; varying the salt yields distinct addresses."
+      "A contract address derives from a `ContractIDPreimage` and the network ID.",
+      "An address preimage can combine a deployer address with a salt.",
+      "The same deployer and salt produce the same contract address.",
+      "A different salt produces a different contract address."
     ],
     "avoid": [
       "Do NOT claim the address is the Ethereum-style `keccak(sender, nonce)` / CREATE2 of the bytecode.",
@@ -32,11 +34,61 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "The address is NOT derived from the Wasm hash.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+          "note": "Exact quote: ‘contract identifier is based on contractIDPreimage value and the network identifier.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/rs-soroban-sdk/blob/3c5c3e09f76746cf1ab1afabd47a86d4b559b56b/soroban-sdk/src/deploy.rs",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: `The address of the deployed contract is defined by the deployer address and provided salt`; `deployed_address` calls `get_contract_id` with only `self.address` and `self.salt`."
+        }
+        ]
+      },
+      {
+        "claim": "Therefore upgrading the Wasm does not change the contract address — the instance address is preserved; only the executable behind it changes.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+          "note": "Exact quote: ‘contract identifier is based on contractIDPreimage value and the network identifier.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/rs-soroban-sdk/blob/3c5c3e09f76746cf1ab1afabd47a86d4b559b56b/soroban-sdk/src/deploy.rs",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: `update_current_contract_wasm` `Replaces the executable of the current contract with the provided Wasm`; `The contract executable will only be updated after the invocation has successfully finished`."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-45-constructor-verification-ids-events-cross-contract-versions accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Split two long derivation facts into four atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction — the official guide says the contract identifier uses the ContractIDPreimage and network identifier.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction — the official guide defines the from-address preimage with an address and salt.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction — the deterministic SHA-256 construction confirms identical preimage inputs produce one identifier.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction — the salt is part of the hashed preimage, so changing it changes the derived identifier.",
+        "Sibling sweep 2026-08-29: grep ContractIDPreimage|contract address|same deployer|same salt → q-comp-sac-inherits-flags, q-defi-x402-on-stellar-what, q-edge-metamask-evm-mental-model, q-pc-address-types-strkey, q-passkey-wallet-recovery, q-sor-contract-as-claimable-arbiter, q-sor-cross-socketfi-auth, q-sor-sac-introspection, q-soroban-contract-id-derivation, q-soroban-cross-contract-call, q-soroban-oz-upgradeable-macro, q-soroban-require-auth, q-soroban-storage-migration, q-soroban-token-transfer-pattern, q-soroban-upgradeable-storage-compat, q-infra-testnet-vs-futurenet; no contradiction.",
+      "Corroboration audit 2026-08-29: added 2 row(s) for contract address derivation and upgrade identity; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-soroban-contract-id-derivation"

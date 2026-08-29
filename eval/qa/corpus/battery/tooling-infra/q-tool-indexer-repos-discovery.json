@@ -7,9 +7,10 @@
   "golden": {
     "answer": "Treat this as **answer-time repository discovery**. Query `scout.searchRepos` with several role-specific and alias variations, inspect the raw rows, then open each returned repository before including it. Return a table with the exact GitHub URL, verified role, source of discovery, last activity/release, archive status, maturity/deployment caveats, and why it fits contract-event or ledger indexing.\n\nKeep roles separate: a turnkey/narrow indexer, a Galexie-style ledger-data exporter, the Go Ingest library, an ETL/export pipeline, a hosted-service client SDK, and community prior art are not interchangeable. The 2026-07-11 verification used current official examples such as `stellar-ledger-data-indexer`, `stellar-galexie`, `go-stellar-sdk/ingest`, and `stellar-etl` to establish those roles, but **no named roster is a permanent requirement**. Supplemental repositories found outside the current Scout result are allowed only when directly verified and labeled as external to that result.\n\nDo not infer correctness, security, maintenance quality, or product completeness from `repoScore`, stars, or semantic rank. Exact alias recall can fail (sls-025), and broad queries can return irrelevant Soroban contracts. For recent RPC `getEvents` polling, disclose the selected provider's retention and the need to persist events for durable history rather than calling RPC a full historical indexer.",
     "keyFacts": [
-      "Returns a fresh, directly verified, role-labeled repository table with URLs, activity/maturity, and source provenance.",
-      "Keeps indexer, exporter/data lake, ingest library, ETL pipeline, hosted client, and community prior art roles distinct.",
-      "Uses repoScore/stars only as navigation metadata, never as quality/correctness proof, and permits no frozen required roster.",
+      "Returns a fresh, directly verified, role-labeled repository table.",
+      "Includes URLs, activity, maturity, and source provenance.",
+      "Keeps indexers, exporters, ingest libraries, ETL, hosted clients, and prior art distinct.",
+      "Uses repoScore and stars only for navigation, not quality or correctness proof.",
       "Labels direct external supplements separately when Scout exact-alias recall misses them."
     ],
     "avoid": [
@@ -124,16 +125,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Post-QA Harvest freshness lane (Solo todo 1378; solo://proj/49/scratchpad/post-qa-harvest-2026--766).",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "C: live https://stellarlight.xyz/api/repos/search probes at 2026-08-05T20:45-20:46Z returned current stellar/stellar-ledger-data-indexer, stellar/stellar-galexie, stellar/go-stellar-sdk, stellar/stellar-etl, and subquery/stellar-subql-starter rows with answer-time activity metadata.",
         "A/B: https://developers.stellar.org/docs/data/indexers, https://developers.stellar.org/docs/build/guides/events/ingest, and the four direct stellar/* repositories independently confirmed distinct indexer, exporter/data-lake, ingest-library, and ETL roles plus the seven-day getEvents retention ceiling.",
         "Uncertainty remains source-bounded: Scout rows and timestamps do not prove global repository coverage, deployment, security, or quality.",
-        "Sibling sweep: q-tool-sdk-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight, q-tool-go-sdk-ingest, and q-ti-parse-raw-ledger-data preserve the same fresh-row, direct-verification, and role-separation boundaries."
+        "Sibling sweep: q-tool-sdk-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight, q-tool-go-sdk-ingest, and q-ti-parse-raw-ledger-data preserve the same fresh-row, direct-verification, and role-separation boundaries.",
+        "Structural re-form (long-fact): Split one long repository-table fact and shortened two role and ranking facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-ledger-data-indexer — live repository metadata confirms a directly verifiable current indexer repository.",
+        "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-ledger-data-indexer — live metadata provides the exact URL, activity timestamp, archive state, and repository provenance.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/indexers — the official guide separates indexers, Galexie data-lake export, ingest, ETL, and hosted-provider roles.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live searchRepos contract defines repoScore and stars as discovery metadata without correctness proof.",
+        "Sibling sweep 2026-08-29: grep stellar-ledger-data-indexer|Galexie|role-labeled|repoScore → q-tool-indexer-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight, q-tool-go-sdk-ingest, q-tool-sdk-repos-discovery, q-tool-passkey-repo-live, q-tool-oracle-repo-live, q-tool-zk-repo-live, q-tool-smart-wallet-repos-discovery; no contradiction."
       ],
       "rootCause": [
-        "freshness-recheck"
+        "freshness-recheck",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-tool-indexer-repos-discovery"

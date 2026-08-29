@@ -1,1 +1,105 @@
-{"id":"q-defi-category-funding-ratio-live","question":"Which current Stellar category has the highest SCF-funded share in the served index?","surface":["scout.getClusters","scout.analyzeEcosystem"],"golden":{"answer":"Use scout.getClusters({dimension:\"category\"}) as the primary ranking population, compute fundedCount/size only across comparable current rows, preserve ties, and show each numerator and denominator with generatedAt and scope. If analyzeEcosystem is also shown, report it as a separate population and disclose disagreement; never mix numerators and denominators across views.","keyFacts":["Ranks the current getClusters category population using fundedCount/size and preserves ties.","States scope, generatedAt, and small-denominator distortion; never mixes cluster and aggregate denominators.","Keeps historical index share distinct from absolute funding and from future grant probability."],"avoid":["Names a category as permanently best-funded without showing current numerator and denominator."],"notes":"Historical index share is not a prediction of future grant probability."},"tags":{"category":"defi-ecosystem","service":"scout","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/clusters?dimension=category"},{"class":"C","ref":"https://stellarlight.xyz/api/analyze?dimension=categories"},{"class":"B","ref":"catalog/manifest.json#scout.analyzeEcosystem"}],"corroboration":[{"claim":"A funded-share ranking is a dated calculation from comparable current numerator/denominator rows.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/clusters?dimension=category","observedAt":"2026-07-11"},{"class":"C","ref":"https://stellarlight.xyz/api/analyze?dimension=categories","observedAt":"2026-07-11"},{"class":"B","ref":"catalog/manifest.json#scout.analyzeEcosystem","observedAt":"2026-07-11"}]},{"claim":"The archived highest-ratio category is permanently best-funded.","verdict":"contradicted","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/analyze?dimension=categories","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","catalog/manifest.json#scout.analyzeEcosystem"],"rootCause":["freshness-drift"]},"origin":"boxy sl-ecosystem-highest-scf-funded-ratio-category"}}
+{
+  "id": "q-defi-category-funding-ratio-live",
+  "question": "Which current Stellar category has the highest SCF-funded share in the served index?",
+  "surface": [
+    "scout.getClusters",
+    "scout.analyzeEcosystem"
+  ],
+  "golden": {
+    "answer": "Use scout.getClusters({dimension:\"category\"}) as the primary ranking population, compute scfFundedCount/size only across comparable current rows, preserve ties, and show each numerator and denominator with generatedAt and scope. If analyzeEcosystem is also shown, report it as a separate population and disclose disagreement; never mix numerators and denominators across views.",
+    "keyFacts": [
+      "Ranks getClusters categories by scfFundedCount/size and preserves ties.",
+      "States the scope, generatedAt, and small-denominator distortion.",
+      "Keeps historical index share apart from funding amount and future grant probability."
+    ],
+    "avoid": [
+      "Names a category as permanently best-funded without showing current numerator and denominator."
+    ],
+    "notes": "Historical index share is not a prediction of future grant probability."
+  },
+  "tags": {
+    "category": "defi-ecosystem",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-08-29",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/clusters?dimension=category"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/analyze?dimension=categories"
+      },
+      {
+        "class": "B",
+        "ref": "catalog/manifest.json#scout.getClusters"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A category funded-share ranking uses each current row's scfFundedCount/size fields and preserves ties.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+            "observedAt": "2026-08-29",
+            "note": "Exact live fields: `\"size\": 148` and `\"scfFundedCount\": 90` on the first returned category row."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+            "observedAt": "2026-08-29",
+            "note": "This separate live population retains its own numerator and denominator fields."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getClusters",
+            "observedAt": "2026-08-29",
+            "note": "Exact schema field: `scfFundedCount`; exact description: ‘Cluster projects with an SCF award.’"
+          }
+        ]
+      },
+      {
+        "claim": "The archived highest-ratio category is permanently best-funded.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/analyze?dimension=categories",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
+      "evidence": [
+        "solo://proj/49/process/3414",
+        "solo://proj/49/process/3420",
+        "catalog/manifest.json#scout.analyzeEcosystem",
+        "Structural re-form (long-fact): Shortened the scope and historical-share facts; the existing answer retains denominator separation; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/clusters?dimension=category — the live rows expose scope-relevant sizes, including a one-project category, and response metadata.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/clusters?dimension=category and https://stellarlight.xyz/api/analyze?dimension=categories — each view exposes its own numerator and denominator fields.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/analyze?dimension=categories — the live index exposes separate project counts, funded counts, and funding totals without a future-grant probability.",
+        "Historical conflict detected 2026-08-29: https://stellarlight.xyz/api/clusters?dimension=category and catalog/manifest.json#scout.getClusters expose scfFundedCount/size, not fundedCount/size; resolved by the later conflict-resolution lines.",
+        "Sibling sweep 2026-08-29: grep fundedCount/size|scfFundedCount|small-denominator|future grant probability → q-defi-category-funding-ratio-live; no sibling contradiction",
+        "Conflict resolution 2026-08-29: https://stellarlight.xyz/api/clusters?dimension=category returned `size` and `scfFundedCount` on every category row.",
+        "Conflict resolution 2026-08-29: catalog/manifest.json#scout.getClusters defines `scfFundedCount` as ‘Cluster projects with an SCF award.’",
+        "Sibling sweep 2026-08-29: grep fundedCount|scfFundedCount → q-defi-category-funding-ratio-live only; no sibling contradiction."
+      ],
+      "rootCause": [
+        "freshness-drift",
+        "eval-authoring transcription",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "boxy sl-ecosystem-highest-scf-funded-ratio-category"
+  }
+}

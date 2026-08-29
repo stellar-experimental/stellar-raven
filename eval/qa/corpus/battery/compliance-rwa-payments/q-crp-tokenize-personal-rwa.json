@@ -8,10 +8,10 @@
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nMinting a Stellar asset or contract token does **not** by itself create ownership, priority, redemption, or enforcement rights in a house, bond, receivable, commodity, carbon unit, or other off-chain asset. First classify the asset and jurisdiction, then map the legal rights.\n\nDocument the underlying owner/custodian; governing contract, prospectus, title or registry; official master ownership record; holder entitlement and bankruptcy priority/remoteness; servicing, insurance, defaults, transfers, redemptions, and enforcement. The structure might use an issuer entity, SPV, trust, fund, title/warehouse registry, custodian entitlement, contractual/synthetic claim, or another model—none is universal. The token may be the authoritative issuer-sponsored record, a notification that updates an off-chain master record, a custodial entitlement token, or may convey no underlying right.\n\nStellar controls such as Authorization Required/Revocable, clawback, SEP-8 approval, SAC, or OpenZeppelin/SEP-57 contracts can enforce a policy already defined by the legal structure. They do not create title, legal compliance, or bankruptcy protection. Use current primary law and issuer documents, disclose the exact rights and risks, and obtain counsel. Institutional examples such as BENJI illustrate one transfer-agent/system-of-record model, not a copyable template.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates token mechanics from off-chain legal rights and the authoritative ownership record.",
-      "Requires asset/jurisdiction classification plus governing instrument, custody/title, priority, servicing, transfer, redemption, and enforcement mapping.",
+      "Lists legal rights and the official ownership record apart from token mechanics.",
+      "Requires a complete legal-rights and lifecycle map for the asset and jurisdiction.",
       "Treats SPV/trust/entity structures as possibilities rather than universal requirements.",
-      "Explains that Stellar controls enforce a defined policy but do not create legal compliance."
+      "Limits Stellar controls to policy enforcement, not legal compliance."
     ],
     "avoid": [
       "Do NOT say token minting itself creates ownership of an off-chain asset.",
@@ -98,18 +98,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-10 primary/blind RWA-rights matrices",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened the legal-record, lifecycle-map, and control-limit facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — the dated SEC statement shows that tokenization models and holder rights are changeable legal observations.",
+        "Live re-check 2026-08-29: https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — the SEC distinguishes tokens from the master ownership record and notes that some tokens convey no security rights.",
+        "Live re-check 2026-08-29: https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — the SEC confirms that structures and holder rights vary across issuer, custodial, entitlement, and synthetic models.",
+        "Live re-check 2026-08-29: https://www.sec.gov/newsroom/speeches-statements/corp-fin-statement-tokenized-securities-012826-statement-tokenized-securities — the SEC describes several structures instead of one universal wrapper.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the official docs limit SAC controls to asset administration, authorization, revocation, and clawback mechanics.",
+        "Sibling sweep 2026-08-29: grep tokenized RWA|master securityholder file|ownership record|SPV/trust → q-asset-rwa-tokenized-freshness, q-rwa-tokenization-standards, q-crp-tokenize-personal-rwa; no contradiction"
       ],
       "rootCause": [
         "A directionally safe warning named wrappers/controls without tracing the authoritative legal record and rights pathway.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-crp-tokenize-personal-rwa"

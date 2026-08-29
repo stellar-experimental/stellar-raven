@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A grounded answer consults the current LumenLoop corpus, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n**PayPal USD (PYUSD) is live on Stellar.** It launched on **September 18, 2025**. PYUSD is PayPal-branded and **issued by Paxos**. The 2025 SDF launch release and Paxos Stellar metadata name **Paxos Trust Company, LLC**; Paxos's current product page names **Paxos Trust Company, N.A.** Treat this as a dated source/time-slice disagreement—not evidence of a corporate transition unless corporate or regulatory proof establishes one.\n\nThe mainnet issuer is `GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5`; do not confuse it with PayPal's documented testnet issuer. Current supply/circulation is volatile, so cite a ledger/date for any amount and distinguish brand, legal issuer, testnet, mainnet, and SAC identities.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "States that PYUSD launched on Stellar on September 18, 2025.",
       "Attributes the PYUSD product to PayPal.",
@@ -79,20 +79,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 569 Batches D and G and stablecoin sibling sweep, 2026-07-09.",
         "Solo scratchpad 575 GT-20 primary 3256 and blind 3257; provider TOML/Horizon evidence asOf 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): shortened the source-and-date requirement; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar remains dated 2025-09-18 and states that PYUSD is live on Stellar and issued by Paxos Trust Company, LLC.",
+        "Live re-check 2026-08-29: https://developer.paypal.com/community/blog/pyusd-on-stellar/ and https://www.paxos.com/pyusd/ identify PYUSD as a PayPal product that Paxos issues.",
+        "Live re-check 2026-08-29: https://token-metadata.paxos.com/.well-known/stellar.toml identifies Paxos Trust Company and the Stellar PYUSD issuer.",
+        "Sibling sweep 2026-08-29: grep PYUSD|PayPal USD|Paxos → q-eco-pyusd-stellar-freshness, q-eco-stablecoins-on-stellar, and q-asset-usdc-eurc-issuer; no new contradiction."
       ],
       "rootCause": [
         "Eval-side brand-versus-issuer shorthand in inherited notes.",
         "solo://proj/49/todo/golden-corpus-health--901",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-eco-pyusd-stellar-freshness"

@@ -7,7 +7,8 @@
   "golden": {
     "answer": "Use explainRepo with the deep code question and optionally pin the authoritative repo. Check both the host envelope and the upstream payload's data.ok. Treat the routed repository and repo URL as provenance; the generated explanation can degrade to routing metadata when no answer is available and should be verified against code for safety-critical conclusions.",
     "keyFacts": [
-      "Uses explainRepo for a deep implementation question, optionally with an explicit owner/repo.",
+      "Uses `explainRepo` for a deep implementation question.",
+      "Accepts an explicit owner/repo when provided.",
       "Checks data.ok separately from the host envelope and preserves routed-repo provenance."
     ],
     "avoid": [
@@ -38,8 +39,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; explainRepo returned envelope ok=true and payload data.ok=true with an explicitly routed stellar/stellar-core answer and repo sources.",
         "catalog/manifest.json exists and supports the behavioral golden.",
@@ -47,11 +48,16 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded the repo-explanation presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep explainRepo|data.ok|repo explanation → q-gap-explainrepo-payload-ok, q-gap-scout-status-envelope, q-ti-explain-repo-payload-status; no contradiction"
+        "Sibling sweep 2026-08-27: grep explainRepo|data.ok|repo explanation → q-gap-explainrepo-payload-ok, q-gap-scout-status-envelope, q-ti-explain-repo-payload-status; no contradiction",
+        "Structural re-form (long-fact): Split one long explainRepo fact into two atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live manifest defines explainRepo for a deep code question.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live manifest defines an optional owner/name repo input.",
+        "Sibling sweep 2026-08-29: grep explainRepo|data.ok|routed repository|owner/repo → q-gap-scout-status-envelope, q-gap-explainrepo-payload-ok, q-soroban-deploy-cli, q-ti-explain-repo-payload-status, q-ti-rpc-gettransactions-pagination-xdr, q-ti-scaffold-stellar, q-tool-cli-testnet-identity-howto; no contradiction."
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

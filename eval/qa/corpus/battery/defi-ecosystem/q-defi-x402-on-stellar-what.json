@@ -7,9 +7,9 @@
   "golden": {
     "answer": "A grounded answer consults the current source data named by the case, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nx402 is a general HTTP 402 payment protocol created by Coinbase Developer Platform and contributed to the Linux Foundation. On Stellar, the canonical scheme is **x402 v2 exact** on `stellar:testnet`/`stellar:pubnet`. The client builds a SEP-41 token `transfer(from,to,amount)` invocation, simulates it, and signs Soroban authorization entries; a classic asset participates through its SAC contract interface. USDC is the default, not the only token.\n\nThe resource server sets price and payee. A facilitator verifies structure, recipient, amount, authorization, expiration, and safety; settlement must reverify, rebuild with the facilitator source, sponsor fees, sign, and submit. The facilitator is not the seller and does not set the price. Current exact-v2 Stellar settlement is fee-sponsored. Coinbase-hosted Stellar support is documented testnet-only; OpenZeppelin documents testnet and mainnet hosted endpoints.\n\nx402 can remove a buyer's traditional API subscription/account prerequisite, but hosted facilitator setup can still require service credentials: unauthenticated OpenZeppelin `/supported` probes returned 401 on **2026-07-10**, and official docs describe key issuance. x402 is distinct from MPP Charge/Session. As of 2026-07-10 the x402 Foundation listed membership tiers and SDF as Premier, while the Linux Foundation page still said the Governing Board was not seated; call organizations members, not seated governors.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents source-supported content as a current or dated observation, not a memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Explains HTTP 402, Stellar v2 exact, SEP-41/SAC authorization-entry payments, and facilitator-sponsored settlement roles.",
+      "Covers HTTP 402, Stellar v2 exact, SEP-41/SAC authorization, and facilitator settlement.",
       "Qualifies protocol UX versus hosted facilitator API keys.",
       "Distinguishes x402 from MPP."
     ],
@@ -108,24 +108,32 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-18 primary 3249 and blind 3252",
         "Sibling sweep: q-soroban-x402-auth-entry-signing, q-ti-openzeppelin-relayer, q-defi-agentic-payment-standards-compare",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for Stellar Docs' x402 ownership attribution; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/stellar-docs/sd-005-agentic-payments-no-landscape-positioning.md — disputed the docs' stale current x402 ownership attribution to Coinbase.",
-        "Sibling sweep 2026-08-27: grep x402 Foundation|Coinbase Developer Platform|Linux Foundation → q-defi-agentic-payment-standards-compare, q-soroban-x402-auth-entry-signing, q-x402-payment-verification; no contradiction"
+        "Sibling sweep 2026-08-27: grep x402 Foundation|Coinbase Developer Platform|Linux Foundation → q-defi-agentic-payment-standards-compare, q-soroban-x402-auth-entry-signing, q-x402-payment-verification; no contradiction",
+        "Structural re-form (long-fact): shortened two facts while keeping the detailed authorization-entry and fee-sponsorship claims in the answer; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments/x402 — the current official page provides dated source support for x402's HTTP and Stellar mechanics.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments/x402 — the official page shows changeable v2, provider, network, and credential details that require an as-of date.",
+        "Live re-check 2026-08-29: https://github.com/x402-foundation/x402/blob/main/specs/schemes/exact/scheme_exact_stellar.md — the normative scheme confirms HTTP 402 context, Stellar exact v2, SEP-41 authorization entries, and facilitator-sponsored settlement.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments/x402 — the official page distinguishes protocol per-request payments from API keys required by the hosted OpenZeppelin facilitator.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments — the official index documents x402 and MPP as distinct payment protocols.",
+        "Sibling sweep 2026-08-29: grep HTTP 402|v2 exact|facilitator-sponsored|x402 from MPP → q-agent-payment-standard-choice, q-defi-x402-on-stellar-what, q-hist-x402-stellar-announcement, q-mpp-discovery-and-modes, q-soroban-x402-auth-entry-signing; no contradiction."
       ],
       "rootCause": [
         "Protocol-level no-subscription UX was conflated with hosted facilitator service authentication.",
         "improvements/stellar-docs/sd-005-agentic-payments-no-landscape-positioning.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-defi-x402-on-stellar-what"

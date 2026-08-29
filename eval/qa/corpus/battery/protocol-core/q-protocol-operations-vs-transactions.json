@@ -34,9 +34,29 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "The containment is operations ⊂ transaction — operations are not independently signed/submitted units.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+            "note": "Exact quote: ‘compose operations, bundle them into a transaction, and then sign and submit the transaction.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/0e4b09985791e4b0e3f4cb04783e0873f4b3e101/Stellar-transaction.x",
+            "observedAt": "2026-08-29",
+            "note": "Exact source comment: `a transaction is a container for a set of operations`; `Transaction` contains `Operation operations<MAX_OPS_PER_TX>`, while envelope types carry the transaction and `DecoratedSignature signatures<20>`."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (compound-predicate): Split the operation definition, examples, transaction bundle, and signed-submission unit into atomic facts; truth is unchanged.",
@@ -44,10 +64,13 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions lists payment, create account, invoke contract, and manage offer operations.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions confirms a transaction bundles one or more operations.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions confirms the transaction is the signed unit submitted to the network.",
-        "Sibling sweep 2026-08-27: grep operations and transactions|invoke contract|manage offer → q-protocol-operation-types-list, q-pc-sequence-numbers-ordering-replace, q-protocol-accounts-signers-thresholds; no contradiction"
+        "Sibling sweep 2026-08-27: grep operations and transactions|invoke contract|manage offer → q-protocol-operation-types-list, q-pc-sequence-numbers-ordering-replace, q-protocol-accounts-signers-thresholds; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for transaction containment and submission unit; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-operations-vs-transactions"

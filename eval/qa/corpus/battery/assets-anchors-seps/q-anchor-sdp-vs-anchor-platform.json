@@ -7,15 +7,17 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "All three are **SDF-maintained**, each for a different role [1][2][3]:\n\n- **Anchor Platform** — the **anchor operator's** backend (Java) that implements anchor SEP endpoints (**SEP-1/6/10/12/24/31/38**). Run it to *be* an anchor [1].\n- **Stellar Disbursement Platform (SDP)** — the **disbursement organization's** bulk-payment application. Current SDP Core implements native **SEP-10/24**, publishes its own `stellar.toml`, and does not require an external Anchor Platform. A receiver wallet or cash-out route may use an anchor downstream, but that is optional deployment behavior rather than SDP's universal architecture [2].\n- **Wallet SDK** — a **wallet developer's** TypeScript client library wrapping client-side SEP flows (**SEP-10/12/24/31/38**) [3].\n\nSo: Anchor Platform = anchor backend; SDP = bulk-payout application; Wallet SDK = wallet client library.",
+    "answer": "All three are **SDF-maintained**, each for a different role [1][2][3]:\n\n- **Anchor Platform** — the **anchor operator's** backend (Java) that implements anchor SEP endpoints (**SEP-1/6/10/12/24/31/38**). Run it to *be* an anchor [1].\n- **Stellar Disbursement Platform (SDP)** — the **disbursement organization's** bulk-payment application. Current SDP Core implements native **SEP-10/24**, publishes its own `stellar.toml`, and does not require an external Anchor Platform. A receiver wallet or cash-out route may use an anchor downstream, but that is optional deployment behavior rather than SDP's universal architecture [2].\n- **Wallet SDK** — a **wallet developer's** TypeScript client library wrapping client-side SEP flows (**SEP-10/12/24/38**) [3].\n\nSo: Anchor Platform = anchor backend; SDP = bulk-payout application; Wallet SDK = wallet client library.",
     "keyFacts": [
-      "Anchor Platform = anchor-operator backend (Java) implementing the anchor SEP endpoints (SEP-6/10/12/24/31/38).",
-      "SDP = disbursement-org bulk-payment application whose current Core implements native SEP-10/24; downstream anchor rails are optional rather than universal.",
-      "Wallet SDK = wallet-developer (TypeScript) library wrapping client-side SEP flows (SEP-10/12/24/31/38)."
+      "Anchor Platform is a Java anchor-operator backend with SEP-6/10/12/24/31/38 endpoints.",
+      "SDP is a bulk-payment application for disbursement organizations.",
+      "SDP Core implements native SEP-10/24 with optional downstream anchor rails.",
+      "Wallet SDK is a TypeScript library wrapping client-side SEP-10/12/24/38, not SEP-31."
     ],
     "avoid": [
       "Do NOT claim SDP and the Anchor Platform are the same product, or swap their roles.",
-      "Do NOT misnumber the SEPs each component covers or present the product page's dated 10,000-payment advertisement as a hard SDP invariant."
+      "Do NOT misnumber the SEPs each component covers or present the product page's dated 10,000-payment advertisement as a hard SDP invariant.",
+      "Do NOT claim the Wallet SDK wraps SEP-31."
     ],
     "notes": "Three-way comparison reverified 2026-08-05. The declared Docs surfaces support the role and current-architecture comparison, not the stellar.org product page's numeric advertisement. As of 2026-08-05 that page advertises up to 10,000 payments per batch; treat it as dated product positioning, not a hard implementation ceiling, and do not require it here."
   },
@@ -103,22 +105,69 @@
             "note": "A bounded source search did not establish a corresponding hard cap; absence is not asserted."
           }
         ]
+      },
+      {
+        "claim": "The TypeScript Wallet SDK wraps client-side SEP-10/12/24/38 flows, not SEP-31.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+            "observedAt": "2026-08-29",
+            "note": "Exact quote: ‘Below you can find all the SEPs the anchor class currently supports:’ The list names SEP-1, SEP-10, SEP-24, SEP-6, SEP-12, and SEP-38; it does not name SEP-31."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts",
+            "observedAt": "2026-08-29",
+            "note": "Exact source signatures include `sep10(): Promise<Sep10>`, `sep12(authToken: AuthToken): Promise<Sep12>`, `sep24(): Sep24`, and `sep38(authToken?: AuthToken): Sep38`; no `sep31` client exists."
+          }
+        ]
+      },
+      {
+        "claim": "The TypeScript Wallet SDK wraps SEP-31.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+            "observedAt": "2026-08-29",
+            "note": "Exact quote: ‘Below you can find all the SEPs the anchor class currently supports:’ The complete list omits SEP-31."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts",
+            "observedAt": "2026-08-29",
+            "note": "The current Anchor class has no `sep31` method or SEP-31 client implementation."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Bounded truth repair from Solo Todo 1355 comment 3687",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/todo/reconcile-bounded-tr--1355",
         "2026-08-05 exact-phrase lumenloop.search_content_semantic probe for 'up to 10,000 payments' returned 20 candidates and no exact matching row or primary-linked SDF evidence; the numeric requirement was therefore removed from the declared Docs-only comparison.",
         "https://developers.stellar.org/docs/platforms/anchor-platform",
         "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
         "https://github.com/stellar/stellar-disbursement-platform-backend",
-        "Sibling sweep: q-anchor-sdp-what, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails."
+        "Sibling sweep: q-anchor-sdp-what, q-crp-sdp-operation, and q-pay-sdp-disbursement agree on native SEP-10/24 and optional downstream rails.",
+        "Structural re-form (long-fact): shortened the Anchor Platform fact and split the SDP fact; the conflicting Wallet SDK fact remains unchanged; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the official page confirms the Anchor Platform role and SEP-6/10/12/24/31/38 support.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform — the official page defines SDP as a bulk-payment tool for organizations.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-disbursement-platform-backend — the current implementation serves native SEP-10/24 without external Anchor Platform integration.",
+        "Historical conflict detected 2026-08-29: Wallet SDK wraps SEP-31 vs https://developers.stellar.org/docs/build/apps/wallet/intro — the current supported-SEP list omits SEP-31; resolved by the later conflict-resolution lines.",
+        "Sibling sweep 2026-08-29: grep Anchor Platform|SDP Core|Wallet SDK|SEP-31 → q-anchor-platform-what, q-anchor-sdp-what, q-asset-wallet-sdk-seps, q-crp-sdp-operation, q-pay-sdp-disbursement, q-sep-wallet-seps-list, and related SEP cases; q-asset-wallet-sdk-seps repeats the same current SEP-31 conflict.",
+        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/build/apps/wallet/intro says ‘Below you can find all the SEPs the anchor class currently supports’ and lists SEP-1/6/10/12/24/38, not SEP-31.",
+        "Conflict resolution 2026-08-29: https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts exposes SEP-1/6/10/12/24/38 methods and no SEP-31 client.",
+        "Sibling sweep 2026-08-29: grep Wallet SDK|SEP-31 → q-anchor-sdp-vs-anchor-platform, q-asset-wallet-sdk-seps, q-sep-wallet-seps-list, q-anchor-platform-what, and related SEP cases; all false Wallet SDK wrap claims are corrected in this lane."
       ],
       "rootCause": [
         "freshness-drift",
-        "solo://proj/49/todo/reconcile-bounded-tr--1355"
+        "eval-authoring transcription",
+        "solo://proj/49/todo/reconcile-bounded-tr--1355",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-anchor-sdp-vs-anchor-platform"

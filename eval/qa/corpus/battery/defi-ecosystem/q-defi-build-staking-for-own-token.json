@@ -10,8 +10,10 @@
     "answer": "XLM does not have native protocol staking rewards. Stellar reaches consensus with SCP/FBA rather than proof-of-stake, and official docs state validators do not receive monetary rewards. A \"staking\" product for a Soroban token is therefore an application/protocol feature: the contract must define the deposited token, reward source, lock/accounting rules, emission schedule, withdrawal/claim flow, admin controls, and failure behavior.\n\nThe building blocks can include SEP-41 custom contract tokens, Stellar assets exposed through the Stellar Asset Contract, AMM liquidity incentives, vault/reward-distributor contracts, or lending/yield protocols such as Blend. The answer must distinguish staking-language from lending, liquidity mining, fixed yield, and points/rewards. It should name sustainability, securities/compliance, smart-contract, oracle/pricing, and disclosure risks, and require audits plus staged testnet/mainnet launch for user funds.",
     "keyFacts": [
       "States XLM does not have native protocol staking rewards like proof-of-stake chains.",
-      "Explains a custom token staking/yield feature must be implemented at the application/contract/protocol layer, with explicit reward source, lock/accounting rules, and withdrawal logic.",
-      "Mentions existing primitives may include Soroban token contracts, SAC tokens, Blend/lending markets, AMMs, vaults, or reward distributors depending on design, each with risk."
+      "Implements custom-token staking or yield at the application, contract, or protocol layer.",
+      "Defines the reward source, lock and accounting rules, and withdrawal logic.",
+      "Names Soroban tokens, SAC tokens, Blend/lending, AMMs, vaults, or reward distributors.",
+      "Matches each primitive and its risks to the design."
     ],
     "avoid": [
       "Do NOT imply users can earn native XLM staking rewards from the Stellar protocol.",
@@ -49,11 +51,62 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "XLM does not have native protocol staking rewards.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+            "note": "Exact quotes: ‘no central authority dictates whose vote is required for consensus.’ ‘There are no monetary rewards for being a validator on the Stellar network.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+SCP+proof+of+agreement+validator+rewards+staking",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar SCP proof of agreement validator rewards staking’. Top primary results: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol, https://stellar.org/blog/ecosystem/becoming-a-stellar-validator, and https://stellar.org/blog/ecosystem/the-hidden-risks-of-proof-of-stake. Exact observed text: SCP is ‘a proof of agreement protocol’; validators ‘will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees’; ‘The Stellar network provides no monetary rewards for validators.’ No primary result contradicted the claims."
+          }
+        ]
+      },
+      {
+        "claim": "Stellar reaches consensus with SCP/FBA rather than proof-of-stake, and official docs state validators do not receive monetary rewards.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+            "note": "Exact quotes: ‘no central authority dictates whose vote is required for consensus.’ ‘There are no monetary rewards for being a validator on the Stellar network.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+SCP+proof+of+agreement+validator+rewards+staking",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar SCP proof of agreement validator rewards staking’. Top primary results: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol, https://stellar.org/blog/ecosystem/becoming-a-stellar-validator, and https://stellar.org/blog/ecosystem/the-hidden-risks-of-proof-of-stake. Exact observed text: SCP is ‘a proof of agreement protocol’; validators ‘will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees’; ‘The Stellar network provides no monetary rewards for validators.’ No primary result contradicted the claims."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-15-bridges-yield-comet-flashloans-lending accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): split and shortened the facts without changing the required claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — the official protocol page confirms Stellar uses SCP rather than proof-of-stake.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/overview — the official guide supports implementation of custom application and protocol behavior in Soroban contracts.",
+        "Live re-check 2026-08-29: https://github.com/benelabs/pulsar/blob/main/STAKING_CONTRACT.md — the project contract specification defines the reward source, reward accounting, stake and unstake behavior, and reward claims.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset, https://github.com/blend-capital, https://github.com/Soroswap/core, https://github.com/defindex-io/stellar-contracts, and https://github.com/benelabs/pulsar/blob/main/STAKING_CONTRACT.md — the primary sources cover Soroban tokens, SAC tokens, lending, AMMs, vaults, and reward distributors.",
+        "Live re-check 2026-08-29: https://github.com/benelabs/pulsar/blob/main/STAKING_CONTRACT.md — the contract specification documents security controls and design-specific failure cases for the staking primitive.",
+        "Sibling sweep 2026-08-29: grep staking/yield|reward distributors|Blend/lending → q-defi-build-staking-for-own-token only; no contradiction.",
+        "Corroboration audit 2026-08-29: added 2 row(s) for absence of native XLM staking rewards; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-defi-build-staking-for-own-token"

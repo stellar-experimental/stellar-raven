@@ -7,14 +7,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- Recommended structure is **two accounts**: a separate **issuing account** and a **distribution account** [1].\n- The **issuing account** mints supply (by sending the asset) and manages authorization flags; it should be **locked down / cold storage** and used rarely. The **distribution account** is the public-facing account that sends the asset to users and holds a working float [1].\n- Rationale is **blast-radius / segregation of duties**: if the hot distribution account is compromised, only the **float** is at risk, not the total supply, and the issuer retains flag/clawback control [1].\n- Assets are defined by the **`(asset_code, issuer)`** pair, and holders need a **trustline**; a single-account setup is acceptable only for testing [1].",
+    "answer": "- Recommended structure is **two accounts**: a separate **issuing account** and a **distribution account** [1].\n- The **issuing account** mints supply by sending the asset, but it cannot hold a balance of its own asset. It manages authorization flags, should be **locked down / cold storage**, and should be used rarely. The **distribution account** is the public-facing account that sends the asset to users and holds a working float [1].\n- Rationale is **blast-radius / segregation of duties**: if the hot distribution account is compromised, only the **float** is at risk, not the total supply, and the issuer retains flag/clawback control [1].\n- Assets are defined by the **`(asset_code, issuer)`** pair, and holders need a **trustline**; a single-account setup is acceptable only for testing [1].",
     "keyFacts": [
       "Recommends two accounts: a separate issuing account and a distribution account.",
-      "The issuing account holds/creates supply and manages auth flags; the distribution account is public-facing and sends to users."
+      "The issuing account creates supply and manages authorization flags.",
+      "The distribution account is public-facing and sends assets to users."
     ],
     "avoid": [
       "Do NOT claim a single account is the recommended/canonical issuing pattern for production assets.",
-      "Do NOT claim Stellar assets are deployed as ERC-20 / Solidity contracts."
+      "Do NOT claim Stellar assets are deployed as ERC-20 / Solidity contracts.",
+      "Do NOT claim the issuing account holds a balance of its own asset."
     ],
     "notes": "Classic asset model basics. Dossier §1.1, §1.6. 'Best practice is to create two accounts when issuing an asset' (control-asset-access).\nAlso good if the answer: Rationale is blast-radius / security: a compromised distribution (hot) account only risks the float, not total supply. | Issuing account should be kept locked down / cold storage.\nGolden cites: An asset-issuance / control-asset-access page on developers.stellar.org."
   },
@@ -31,13 +33,64 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp",
+        "note": "Canonical protocol implementation rejects an issuer trustline to its own asset."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The issuer creates supply and manages authorization flags; the distribution account holds and sends the working float.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-08-29",
+            "note": "Exact quotes: ‘The issuing account creates (or mints) the asset on the network by executing a payment operation.’ ‘The distribution account is the first recipient of the issued asset and handles all other transactions.’"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp",
+            "observedAt": "2026-08-29",
+            "note": "Exact source comment: ‘since version 3 it is not allowed to use CHANGE_TRUST on self’; the issuer branch returns `CHANGE_TRUST_SELF_NOT_ALLOWED`."
+          }
+        ]
+      },
+      {
+        "claim": "An issuing account can hold a balance of its own issued asset.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-08-29",
+            "note": "Exact quote: ‘an issuing account can’t actually hold a balance of its own asset.’"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp",
+            "observedAt": "2026-08-29",
+            "note": "The implementation rejects self trust with `CHANGE_TRUST_SELF_NOT_ALLOWED`."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-04-sac-stablecoins-issuance-fx accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "CONFLICT: The issuing account holds supply vs https://developers.stellar.org/docs/tokens/control-asset-access — the page says the issuer creates or mints the asset but cannot hold a balance of its own asset.",
+        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/tokens/control-asset-access says the issuer creates supply but ‘can’t actually hold a balance of its own asset.’",
+        "Conflict resolution 2026-08-29: https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp rejects issuer self trust with `CHANGE_TRUST_SELF_NOT_ALLOWED`.",
+        "Sibling sweep 2026-08-29: grep issuing account|distribution account|own asset → q-aas-burn-clawback-redemption-mechanics, q-asset-issue-asset-howto, q-asset-stablecoin-issuers-discovery, q-asset-trustline-basics, q-asset-two-account-issuer, q-edge-ambig-stellar-token-meaning, q-sep-clawback-prereq-flag, q-ti-enumerate-holders-airdrop; no contradiction after correction."
+      ],
+      "rootCause": [
+        "eval-authoring transcription",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-asset-two-account-issuer"

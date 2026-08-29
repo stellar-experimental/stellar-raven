@@ -54,9 +54,59 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "As of 2026-08-29, classic Stellar Assets have no built-in per-transfer issuer-fee hook; transfer-fee logic requires a contract token.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+            "observedAt": "2026-08-29",
+            "note": "The official comparison says contract tokens provide transfer fees that are not available in Stellar Assets."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+            "observedAt": "2026-08-29",
+            "note": "The full classic operation list has payment, path-payment, offer, set-options, trustline, and clawback operations, with no issuer-fee operation."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x",
+            "observedAt": "2026-08-29",
+            "note": "AccountEntry and TrustLineEntry expose balances, limits, authorization flags, and extensions, but no per-transfer issuer-fee field."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-08-29, classic Stellar Assets have no immutable max-supply field; issuers limit supply by locking issuance authority.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access#limiting-the-supply-of-an-asset",
+            "observedAt": "2026-08-29",
+            "note": "The official guide limits supply by setting the issuing account's master weight to zero after issuance."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x",
+            "observedAt": "2026-08-29",
+            "note": "AccountEntry and TrustLineEntry have no max-supply or total-supply member."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-06.md",
+            "observedAt": "2026-08-29",
+            "note": "The SAC design rationale says total supply is unavailable because Stellar Classic does not support it."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-c)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (compound-predicate): Split fee, cap, issuer-control, authorization, and clawback claims; moved two false tails to avoid; the truth is unchanged.",
@@ -66,7 +116,12 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed authorization and deauthorization of trustlines.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — showed clawback under the required issuer and trustline flags.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — showed supply limiting through account controls rather than an immutable max-supply field.",
-        "Sibling sweep 2026-08-27: grep per-transfer|supply cap|max supply|AUTH_REVOCABLE_FLAG|AUTH_CLAWBACK_ENABLED_FLAG → q-aas-burn-clawback-redemption-mechanics, q-sep-clawback-prereq-flag, q-comp-auth-flags-overview, q-comp-clawback-holder-risk; no contradiction"
+        "Sibling sweep 2026-08-27: grep per-transfer|supply cap|max supply|AUTH_REVOCABLE_FLAG|AUTH_CLAWBACK_ENABLED_FLAG → q-aas-burn-clawback-redemption-mechanics, q-sep-clawback-prereq-flag, q-comp-auth-flags-overview, q-comp-clawback-holder-risk; no contradiction",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — the page states, \"The following scenarios are not possible using the SAC, but can be implemented with a contract token,\" then lists transfer fees.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/control-asset-access#limiting-the-supply-of-an-asset — the guide limits supply by setting the issuing account's master weight to zero.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger-entries.x — AccountEntry and TrustLineEntry contain no issuer-fee or max-supply field.",
+        "Sibling sweep 2026-08-29: grep per-transfer issuer fee|max-supply|AUTH_CLAWBACK_ENABLED_FLAG → q-aas-burn-clawback-redemption-mechanics, q-aas-issuer-fees-supply-cap-freeze, and q-sep-clawback-prereq-flag; no contradiction.",
+        "Corroboration audit 2026-08-29: added dated class A and class B support for the fee-hook and max-supply boundaries; Sol+Grok class agreement, targeted probe decided disposition"
       ],
       "rootCause": [
         ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"

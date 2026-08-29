@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "fda6d08244776ed6bff1f28b903111dc560092c1cfa3b318b0b26a7f036219ac",
+  "corpusContentSha256": "3d889653fa116fe6e2ca3f4922b509fd502eba05ae5c408e6e8fdebc5617f37d",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -87,19 +87,72 @@
             "note": "class inferred at migration"
           }
         ],
+        "corroboration": [
+          {
+            "claim": "For a classic issued asset, the issuer account is the asset's authority, not a normal holder of its own credit.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets",
+                "note": "Exact quotes: ‘There is no dedicated operation to create an asset on Stellar.’ ‘To delete, or ‘burn’, an asset, you must send it back to the account that issued it.’",
+                "observedAt": "2026-08-29"
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+                "note": "Exact quote: ‘an issuing account can’t actually hold a balance of its own asset.’",
+                "observedAt": "2026-08-29"
+              },
+              {
+                "class": "D",
+                "ref": "https://www.google.com/search?q=Stellar+classic+asset+issuer+balance+burn+create+asset",
+                "observedAt": "2026-08-29",
+                "note": "Dated web sweep query: ‘Stellar classic asset issuer balance burn create asset’. Top primary results: https://developers.stellar.org/docs/tokens/control-asset-access, https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets, https://developers.stellar.org/docs/tokens/how-to-issue-an-asset, and https://github.com/stellar/stellar-protocol/discussions/1598. Exact observed text: ‘an issuing account can’t actually hold a balance of its own asset’; ‘Sending an asset back to its issuing account is equivalent to burning it’; ‘There is no dedicated operation to create an asset on Stellar.’ No primary result contradicted the claims."
+              }
+            ]
+          },
+          {
+            "claim": "It is not a normal user payment, does not require the affected holder's signature, and does not create a spendable issuer balance.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+                "note": "Exact quote: ‘an issuing account can’t actually hold a balance of its own asset.’",
+                "observedAt": "2026-08-29"
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+                "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+                "observedAt": "2026-08-29"
+              },
+              {
+                "class": "D",
+                "ref": "https://www.google.com/search?q=Stellar+classic+asset+issuer+balance+burn+create+asset",
+                "observedAt": "2026-08-29",
+                "note": "Dated web sweep query: ‘Stellar classic asset issuer balance burn create asset’. Top primary results: https://developers.stellar.org/docs/tokens/control-asset-access, https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets, https://developers.stellar.org/docs/tokens/how-to-issue-an-asset, and https://github.com/stellar/stellar-protocol/discussions/1598. Exact observed text: ‘an issuing account can’t actually hold a balance of its own asset’; ‘Sending an asset back to its issuing account is equivalent to burning it’; ‘There is no dedicated operation to create an asset on Stellar.’ No primary result contradicted the claims."
+              }
+            ]
+          }
+        ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
           "evidence": [
             "solo://proj/49/scratchpad/truth-maintenance-20--575",
             "Structural re-form (compound-predicate): Split supply and return mechanics, shortened clawback, and moved the issuer-balance trap to avoid; the truth is unchanged.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed issued classic balances outside the issuer.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed that returning an asset to its issuer burns it.",
             "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — showed holder-balance removal under clawback-enabled issuer controls.",
-            "Sibling sweep 2026-08-27: grep burn|redemption|clawback|issuer balance → q-aas-issuer-fees-supply-cap-freeze, q-sep-clawback-prereq-flag, q-comp-clawback-cap0035, q-comp-clawback-holder-risk; no contradiction"
+            "Sibling sweep 2026-08-27: grep burn|redemption|clawback|issuer balance → q-aas-issuer-fees-supply-cap-freeze, q-sep-clawback-prereq-flag, q-comp-clawback-cap0035, q-comp-clawback-holder-risk; no contradiction",
+            "Corroboration audit 2026-08-29: added 2 row(s) for issuer accounting and clawback balance effects; class agreement Sol+Grok",
+            "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
           ],
           "rootCause": [
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
           ]
         },
         "origin": "raven-next q-aas-burn-clawback-redemption-mechanics"
@@ -116,9 +169,10 @@
       "golden": {
         "answer": "Issuing a Stellar asset makes it technically valid, not automatically visible, trusted, liquid, or listed. The durable prerequisites are: issue the asset from the correct issuer account, make trustlines possible for holders, set the issuer account's `home_domain`, and publish a valid SEP-1 `https://DOMAIN/.well-known/stellar.toml` with `[[CURRENCIES]]` metadata for the exact code and issuer. SEP-1 says clients and exchanges can use that information to decide whether a token should be listed.\n\nTradability requires markets. On Stellar that can mean SDEX offers, liquidity pools, or integrations/listings in wallets, explorers, exchanges, and aggregators. Visibility and pricing usually require enough real liquidity, supply/issuer metadata, and a venue-specific policy review. SEP-42/Stellar Asset Lists define a community asset-list format and catalog that apps may use, but the catalog itself warns that inclusion in a list is not an endorsement or recommendation.\n\nThe practical answer is therefore a checklist, not a guarantee: publish correct SEP-1 metadata; keep issuer/domain/logo/contact/reserve information consistent; create real markets; apply to each target venue using its current listing process; and keep dated evidence for any verification, market-cap, or safety claim.",
         "keyFacts": [
-          "Explains technical prerequisites: issued asset, trustlines, home domain, valid SEP-1 stellar.toml metadata, and accessible logo/issuer information.",
-          "Explains tradability requires market infrastructure such as SDEX offers, AMM pools, or listings/integrations with wallets/exchanges/aggregators.",
-          "States each exchange, wallet, explorer, and aggregator applies its own listing/verification/liquidity policies."
+          "Requires asset issuance and trustlines.",
+          "Requires a home domain, valid SEP-1 metadata, logo, and issuer details.",
+          "Tradability needs SDEX offers, AMM pools, or wallet/exchange/aggregator listings.",
+          "These services set their own listing, verification, and liquidity policies."
         ],
         "avoid": [
           "Do NOT guarantee listing, verification, price, or market-cap display just because a Stellar asset exists.",
@@ -159,19 +213,28 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
           "evidence": [
             "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep1",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
             "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-            "Sibling sweep 2026-08-27: grep universal Stellar whitelist|exchange/aggregator|asset list → q-aas-list-token-on-exchanges-aggregators, q-aas-trusted-asset-list-whitelist; no contradiction"
+            "Sibling sweep 2026-08-27: grep universal Stellar whitelist|exchange/aggregator|asset list → q-aas-list-token-on-exchanges-aggregators, q-aas-trusted-asset-list-whitelist; no contradiction",
+            "Structural re-form (long-fact): Split the prerequisite and market-infrastructure lists and shortened the venue-policy fact; truth unchanged.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the official tutorial confirms asset issuance and required receiving-account trustlines.",
+            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 defines home-domain stellar.toml metadata, issuer fields, and image fields.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the official liquidity guide confirms SDEX offers and AMM pools as trading infrastructure.",
+            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 states that clients and exchanges use published metadata for listing decisions.",
+            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — SEP-1 leaves listing and verification decisions to clients and exchanges and links them to liquidity and reserve information.",
+            "Sibling sweep 2026-08-29: grep SDEX offers|listing/verification/liquidity → q-asset-usdc-eurc-path-fx, q-aas-list-token-on-exchanges-aggregators, q-defi-sdex-offer-lifecycle; no contradiction.",
+            "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): restored the disjunctive tradability claim (SDEX offers, AMM pools, or listings) that two 'Requires' facts had made conjunctive; truth unchanged versus HEAD."
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "raven-next q-aas-list-token-on-exchanges-aggregators",
@@ -351,7 +414,7 @@
       "golden": {
         "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-07-11, the live research corpus returned a June 2026 Messari interview reporting about $2.8B of tokenized RWAs, while older dated results carried smaller figures.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+          "Presents source-supported content as a current or dated observation, not a memory claim.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Reports a current tokenized-RWA value with a dated source.",
           "States the measurement scope for the reported RWA value."
@@ -417,19 +480,26 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 conversions rework after independent Fable copy/quality review",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
           "evidence": [
             "eval/qa/consistency-register.json sweep 2026-07-03 (the contradiction record); deep-verification quotes/URLs in Solo scratchpad 521",
             "2026-07-11 localhost:8787 search→execute probe observed: the live research corpus returned a June 2026 Messari interview reporting about $2.8B of tokenized RWAs, while older dated results carried smaller figures.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (long-fact): shortened the source-supported observation rule; truth unchanged.",
+            "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the dated report supports its observation with a publication date and measured values.",
+            "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report dates its $1.52B value to Q1-end and its $2B threshold to April 11.",
+            "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report provides a dated tokenized-RWA value.",
+            "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report states that its RWA market-cap measure excludes stablecoins.",
+            "Sibling sweep 2026-08-29: grep 2.8B|1.52B|tokenized-RWA → q-asset-rwa-tokenized-freshness only; no sibling contradiction."
           ],
           "rootCause": [
             "eval-side authoring: the '$1.2-1.5B' range came from a third-party paraphrase, not the report; single-source-class verification",
             "solo://proj/49/todo/corpus-health-instru--829 (contradiction-scan instrument, first sweep) — sibling sweep 2026-07-03: grep for 2.8B/2.84/1.52/Messari/rwa.xyz hits exactly the three RWA cases, all corrected in this pass",
             "eval-authoring",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "raven-next q-asset-rwa-tokenized-freshness"
@@ -446,9 +516,10 @@
       "golden": {
         "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve (0.5 XLM)** — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves (1.0 XLM)**.\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
         "keyFacts": [
-          "A trustline is an explicit opt-in (via ChangeTrust) for an account to hold a specific non-native asset from an issuer.",
+          "Defines a trustline as an account's explicit opt-in to hold a non-native asset.",
+          "Creates the trustline through ChangeTrust for a specific asset and issuer.",
           "Without a trustline, payments of that asset fail/bounce.",
-          "States the account must keep enough XLM for the extra base reserve each trustline requires."
+          "Requires the account to keep enough XLM for each trustline's extra base reserve."
         ],
         "avoid": [
           "Do NOT claim assets can be received without any trustline (like ERC-20 on Ethereum).",
@@ -477,15 +548,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 Lane R absorb triage",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
           "evidence": [
             "solo://proj/49/scratchpad/truth-maintenance-20--575",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-asset-establish-trustline-howto",
-            "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines"
+            "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines",
+            "Structural re-form (long-fact): Split the trustline definition and shortened the reserve requirement; truth unchanged.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines — the page defines a trustline as an account's explicit opt-in to hold a particular asset.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines — the page requires ChangeTrust with the issuing account for a specific asset.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/lumens — the page says each trustline subentry adds a base reserve to the account's XLM minimum balance.",
+            "Sibling sweep 2026-08-29: grep explicit opt-in|extra base reserve → q-asset-trustline-basics; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "raven-next q-asset-trustline-basics",
@@ -571,7 +648,7 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nStellar supports path payments through `PathPaymentStrictSend` and `PathPaymentStrictReceive`; path payments can traverse orderbook liquidity, but the protocol does not make arbitrage or market making profitable. A strict-send quote fixes the source amount and estimates destination output, then the submitted transaction should protect the user with `destination_min`; a strict-receive quote fixes destination amount and protects the sender with `send_max`. If liquidity moves before inclusion, the operation can fail with path-payment result codes such as `UNDER_DESTMIN`, `OVER_SENDMAX`, or no usable path / too-few-offers. Sources: Stellar path-payment guide and Horizon operation-specific result-code docs.\n\nFor a small-capital bot, the defensible answer is \"possible to build, not reliably profitable.\" Expected costs and risks include spreads, slippage, base fees and surge pricing, failed transactions, stale quotes, minimum reserves/trustlines, path disappearance, competition, latency, inventory imbalance, and thin pools. Backtesting and testnet/paper trading are required before risking funds; Raven should not recommend a strategy as a guaranteed return.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+        "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nStellar supports path payments through `PathPaymentStrictSend` and `PathPaymentStrictReceive`. Path payments can traverse orderbook and pool liquidity. The protocol provides execution mechanics and a 0.3% AMM fee to liquidity providers, but it does not guarantee arbitrage or market-making profit. Profitability depends on live prices, liquidity, slippage, transaction fees, latency, competition, and capital. A strict-send quote fixes the source amount and estimates destination output, then the submitted transaction should protect the user with `destination_min`; a strict-receive quote fixes destination amount and protects the sender with `send_max`. If liquidity moves before inclusion, the operation can fail with path-payment result codes such as `UNDER_DESTMIN`, `OVER_SENDMAX`, or no usable path / too-few-offers. Sources: Stellar path-payment guide and Horizon operation-specific result-code docs.\n\nFor a small-capital bot, the defensible answer is \"possible to build, not reliably profitable.\" Expected costs and risks include spreads, slippage, base fees and surge pricing, failed transactions, stale quotes, minimum reserves/trustlines, path disappearance, competition, latency, inventory imbalance, and thin pools. Backtesting and testnet/paper trading are required before risking funds; Raven should not recommend a strategy as a guaranteed return.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
           "Specific sourced observations visibly date changing roster/status/version/measurement.",
           "Stellar supports path payments/pathfinding via strict-send/strict-receive.",
@@ -585,7 +662,7 @@
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
           "Do NOT claim unsupported memory is a source-supported current observation."
         ],
-        "notes": "Profitability is intentionally not gated on a current numeric estimate; Phase 3 should attack any answer that turns pathfinding mechanics into financial advice.\nAlso good if the answer: Mentions circular/same-asset arbitrage and batching should be tested carefully because paths can disappear or execute differently by submission time. | Mentions result-code traps such as under-destination-min or no-path when quoting and submitting.\nGolden cites: Stellar docs for path payments/pathfinding and dated market/liquidity sources for current profitability claims."
+        "notes": "Profitability is intentionally not gated on a current numeric estimate; Phase 3 should attack any answer that turns pathfinding mechanics into financial advice.\nAlso good if the answer: Mentions circular/same-asset arbitrage and batching should be tested carefully because paths can disappear or execute differently by submission time. | Mentions result-code traps such as under-destination-min or no-path when quoting and submitting.\nGrade a no-guarantee statement, not an absence-of-incentives claim. CAP-0038 includes liquidity-provider fees and expressly discusses profit-driven liquidity allocation.\nGolden cites: Stellar docs for path payments/pathfinding and dated market/liquidity sources for current profitability claims."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -618,13 +695,33 @@
             "note": "class inferred at migration"
           }
         ],
+        "corroboration": [
+          {
+            "claim": "Stellar path payments can use orderbook and pool liquidity; AMMs pay a 0.3% trade fee to liquidity providers without guaranteeing bot profit.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+                "observedAt": "2026-08-29",
+                "note": "The official guide says AMMs charge 30 bps on every trade and distribute the fee to liquidity providers."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+                "observedAt": "2026-08-29",
+                "note": "CAP-0038 fixes the constant-product market-maker fee at 0.3% and discusses profit-driven liquidity allocation."
+              }
+            ]
+          }
+        ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-c)",
           "evidence": [
             "solo://proj/49/scratchpad/truth-maintenance-20--575",
             "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (compound-predicate): Recast five long or compound key facts as five atomic facts and moved the unsupported-memory contrast to avoid; every dating, pathfinding, profitability-risk, small-account, simulation, and guard claim remains unchanged.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/path-payments — provided current source-backed path-payment observations with dated page metadata.",
@@ -632,12 +729,18 @@
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — showed liquidity, spreads, fees, slippage, and price-risk inputs to profitability.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — showed transaction costs and congestion; the existing truth retains failure, competition, capital, and small-account risks.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths — showed path estimates and strict-send destination constraints; the strict-receive endpoint showed send-max constraints.",
-            "Sibling sweep 2026-08-27: grep path payment|strict-send|strict-receive|arbitrage → q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, q-defi-sdex-offer-lifecycle, q-asset-sdex-vs-amm, q-scf-hummingbot-kelp-closed-rfp, q-protocol-operation-types-list; no contradiction"
+            "Sibling sweep 2026-08-27: grep path payment|strict-send|strict-receive|arbitrage → q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, q-defi-sdex-offer-lifecycle, q-asset-sdex-vs-amm, q-scf-hummingbot-kelp-closed-rfp, q-protocol-operation-types-list; no contradiction",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the guide states that AMMs charge 30 bps and distribute the fee to liquidity providers.",
+            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — CAP-0038 sets the fee at \"0.3%\" and discusses profit-driven liquidity allocation.",
+            "Sibling sweep 2026-08-29: grep PathPaymentStrictSend|PathPaymentStrictReceive|0.3%|30 bps|arbitrage → q-asset-amm-fee-reserve, q-asset-path-payment-ops, q-asset-sdex-vs-amm, q-defi-market-making-kelp, q-defi-sdex-offer-lifecycle, q-protocol-operation-types-list, q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment, and q-scf-hummingbot-kelp-closed-rfp; no contradiction.",
+            "Corroboration audit 2026-08-29: replaced an absence-of-profit implication with the true AMM fee and no-guarantee boundary; Sol+Grok class agreement, targeted probe decided disposition"
           ],
           "rootCause": [
             "eval-authoring",
+            "eval-authoring overgeneralization",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
           ]
         },
         "origin": "raven-next q-defi-arbitrage-pathpayment-bots"
@@ -656,8 +759,8 @@
       "golden": {
         "answer": "**DeFindex** is noncustodial multi-token vault/yield infrastructure on Soroban, with vault and strategy contracts, a factory/GUI, REST API, TypeScript and Flutter SDKs, dfToken vault shares, partner fees, sponsored transactions, and integration/zapper support. Its operator strategy endpoint exposed seven BlendStrategy adapters on 2026-07-10; those are adapters, not seven distinct end-user products.\n\nCurrent TVL is available but source-relative: operator site **$16.57M**, DeFiLlama about **$16.49M**, Scout **$16.386M as of 2026-07-09**, and Dune's week-of-2026-07-06 series about **$16.255M**. Describe this as an approximate dated $16.26M-$16.57M range unless methodologies are reconciled. Do not select one as timeless truth or repeat the operator's older undated $1.1M headline.",
         "keyFacts": [
-          "Describes DeFindex's current noncustodial vault/API/SDK/dfToken surface from operator sources.",
-          "Reports dated TVL sources and methodology disagreement rather than claiming no figure exists or freezing one number."
+          "Uses current operator sources for DeFindex's noncustodial vault, API, SDK, and dfToken.",
+          "Reports dated TVL sources and methodology disagreement without freezing one figure."
         ],
         "avoid": [
           "Do NOT say current TVL is unavailable, repeat an undated $1.1M value, or turn one snapshot into permanent truth.",
@@ -723,14 +826,19 @@
           }
         ],
         "verified": {
-          "date": "2026-07-09",
-          "by": "Golden-truth sweep import — GT-15 lanes found the inherited 'current TVL is not surfaced' answer stale. Multiple current sources and an operator strategy API now exist, with a modest source/methodology range that must be disclosed rather than denied or collapsed.",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
           "evidence": [
             "Operator $16.57M; DeFiLlama ~$16.49M; Scout $16.386M asOf 2026-07-09; Dune weekly $16.255M",
-            "Solo scratchpad 575 GT-15 processes 3243/3246"
+            "Solo scratchpad 575 GT-15 processes 3243/3246",
+            "Structural re-form (long-fact): Shortened the operator-surface and methodology-aware TVL facts; the existing answer and avoid item retain the unavailable-figure guard; truth unchanged.",
+            "Live re-check 2026-08-29: https://www.defindex.io/ and https://docs.defindex.io/llms.txt — operator sources expose noncustodial vaults, an API, an SDK, and dfToken guidance.",
+            "Live re-check 2026-08-29: https://www.defindex.io/api/strategies and https://api.llama.fi/tvl/defindex — live sources expose current but source-specific TVL data, so dated methodology-aware reporting remains required.",
+            "Sibling sweep 2026-08-29: grep DeFindex.*dfToken|dfToken|methodology disagreement|undated $1.1M → q-defi-defindex-honest; no sibling contradiction"
           ],
           "rootCause": [
-            "eval-side no-information snapshot outlived new live API/TVL evidence"
+            "eval-side no-information snapshot outlived new live API/TVL evidence",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "raven-next q-defi-defindex-honest"
@@ -1170,7 +1278,7 @@
       "golden": {
         "answer": "Use the RPC/Horizon docs search for structure, migration, error, admin, and method-guide material, then follow official page links or the data skill for procedure. The exposed catalog explicitly says auto-generated per-method RPC and per-endpoint Horizon references are not in this search index; a zero search hit is not evidence that the API does not exist.",
         "keyFacts": [
-          "Treats the docs-search index as intentionally incomplete for generated per-method/per-endpoint references.",
+          "Marks generated RPC-method and Horizon-endpoint references outside the search index.",
           "Does not infer API absence from an unindexed search result."
         ],
         "avoid": [
@@ -1214,15 +1322,19 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 Lane N1 gap-ops authoring",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
           "evidence": [
             "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
             "catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs",
-            "inventory/stellar-docs.json"
+            "inventory/stellar-docs.json",
+            "Structural re-form (long-fact): shortened the documented search-index exclusion without changing its scope; truth unchanged.",
+            "Live re-check 2026-08-29: catalog/manifest.json#stellarDocs.search_rpc_horizon_data_docs — the current operation contract says auto-generated RPC-method and Horizon-endpoint reference pages are not in the search index.",
+            "Sibling sweep 2026-08-29: grep per-method/per-endpoint|unindexed search result → q-gap-rpc-horizon-unindexed-reference only; no contradiction."
           ],
           "rootCause": [
-            "solo://project/49/scratchpad/p4/n1-gapops"
+            "solo://project/49/scratchpad/p4/n1-gapops",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "authored 2026-07 (gap-ops)"
@@ -1339,9 +1451,9 @@
       "golden": {
         "answer": "As of July 11, 2026, the current official Meridian site schedules Meridian 2026 for October 28–29 at Convento do Beato in Lisbon, Portugal; HackMeridian is scheduled for October 25–26. Older sources saying October 21–22 at Yas Marina in Abu Dhabi reflect the original announcement, not the current schedule. SDF publicly announced the move to Lisbon and new dates on April 1, 2026. Because the event is still upcoming, answers should cite the current official site and an as-of date.",
         "keyFacts": [
-          "As of July 11, 2026, Meridian 2026 is scheduled for October 28–29 at Convento do Beato in Lisbon.",
+          "As of July 11, 2026, Meridian 2026 is set for October 28–29 at Convento do Beato, Lisbon.",
           "HackMeridian is scheduled for October 25–26, 2026.",
-          "Abu Dhabi October 21–22 was the superseded schedule; SDF announced the Lisbon change on April 1, 2026."
+          "SDF announced Lisbon and October 28–29 on April 1, 2026."
         ],
         "avoid": [
           "Do NOT claim Abu Dhabi/Yas Marina on October 21–22 is the current Meridian 2026 schedule.",
@@ -1416,8 +1528,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
@@ -1427,11 +1539,16 @@
             "https://x.com/StellarOrg/status/2039405316803031315",
             "https://www.coindesk.com/sponsored-content/what-you-missed-at-the-stellar-meridian-conference",
             "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-            "Sibling sweep 2026-08-27: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no sibling contradiction"
+            "Sibling sweep 2026-08-27: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no sibling contradiction",
+            "Structural re-form (long-fact): shortened the current schedule and announcement facts while keeping the superseded schedule in the answer and avoid; truth unchanged.",
+            "Live re-check 2026-08-29: https://meridian.stellar.org/event-details — the current official FAQ schedules Meridian 2026 for October 28–29 at Convento do Beato in Lisbon.",
+            "Live re-check 2026-08-29: https://x.com/StellarOrg/status/2039405316803031315 — SDF's official post announces Lisbon and October 28–29 at 6:11 PM on April 1, 2026.",
+            "Sibling sweep 2026-08-29: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no contradiction."
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -2058,10 +2175,11 @@
       "golden": {
         "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-06-25, the verified sources supported this observed answer:\n\nYes. The RFP was **Hummingbot Integration (Trading Engine)**. In the June 25, 2026 live RFP feed it is\n`status: closed`, `quarter: q1-2026`, category `defi`, so it is **not currently fundable / not open\nfor application**. [1]\n\nThe brief is explicitly framed around **Kelp's deprecation leaving a liquidity gap**. It asked for a\nStellar orderbook connector for the official Hummingbot repository so builders could run automated\nmarket-making and arbitrage strategies; optional future scope included Stellar AMMs and intra-Soroban\nAMM arbitrage. [1]\n\nIf the user wants something fundable now, Raven should point them to the current open RFP feed rather\nthan pretending this closed Q1 brief is still open.\n\nSource: [1] Stellar Light RFP record for Hummingbot Integration (Trading Engine).\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
         "keyFacts": [
-          "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+          "Presents specific source-supported content as a current or dated observation.",
           "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
           "Names the RFP as Hummingbot Integration (Trading Engine).",
-          "Explains the Kelp-deprecation/liquidity-gap framing: Stellar wanted a Hummingbot connector for automated market-making and arbitrage."
+          "Links Kelp's deprecation to a Stellar liquidity gap.",
+          "Describes a Hummingbot connector for automated market-making and arbitrage."
         ],
         "avoid": [
           "Do NOT claim the Hummingbot/Kelp RFP is currently open or fundable if the live feed marks it closed.",
@@ -2086,22 +2204,52 @@
             "note": "class inferred at migration"
           }
         ],
+        "corroboration": [
+          {
+            "claim": "As of 2026-08-29, the live Scout RFP feed returned Hummingbot Integration (Trading Engine) as closed for Q1 2026 in the DeFi category.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/rfps",
+                "observedAt": "2026-08-29",
+                "note": "The unfiltered response generated at 2026-08-29T14:00:41.071Z returned the Hummingbot row with status closed, quarter q1-2026, category defi, and rowType rfp."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/NibrasD/stellar-hummingbot-connector",
+                "observedAt": "2026-08-29",
+                "note": "The source repository independently confirms the Hummingbot connector and the Kelp-deprecation gap; the dated closed status remains explicitly feed-relative."
+              }
+            ]
+          }
+        ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-c)",
           "evidence": [
             "solo://proj/49/scratchpad/truth-maintenance-20--575",
             "Preserved main's 2026-06-25 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
             "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-            "Sibling sweep 2026-08-27: grep Hummingbot|Kelp|closed RFP → q-scf-open-rfps, q-scf-rfp-tooling; no contradiction"
+            "Sibling sweep 2026-08-27: grep Hummingbot|Kelp|closed RFP → q-scf-open-rfps, q-scf-rfp-tooling; no contradiction",
+            "Structural re-form (long-fact): Shortened one long sourcing fact and split one long RFP fact into two; truth unchanged.",
+            "Live re-check 2026-08-29: https://github.com/NibrasD/stellar-hummingbot-connector — the current source repository directly supports the connector, Kelp-gap, and strategy observations.",
+            "Live re-check 2026-08-29: https://github.com/NibrasD/stellar-hummingbot-connector — the repository says the connector fills the gap left by Kelp's deprecation.",
+            "Live re-check 2026-08-29: https://github.com/NibrasD/stellar-hummingbot-connector — the repository describes a Stellar Hummingbot connector for market-making and arbitrage.",
+            "Sibling sweep 2026-08-29: grep Hummingbot|Kelp|liquidity gap → q-defi-market-making-kelp, q-scf-hummingbot-kelp-closed-rfp; no contradiction.",
+            "Live re-check 2026-08-29: https://stellarlight.xyz/api/rfps — the generated response returned the Hummingbot RFP with \"status: closed\", \"quarter: q1-2026\", and \"category: defi\".",
+            "Live re-check 2026-08-29: https://github.com/NibrasD/stellar-hummingbot-connector — the repository confirms the connector and the gap left by Kelp's deprecation.",
+            "Sibling sweep 2026-08-29: grep Hummingbot|Kelp|liquidity gap → q-defi-market-making-kelp, q-scf-hummingbot-kelp-closed-rfp, q-scf-open-rfps-live, q-scf-open-rfps, and q-scf-rfp-tooling; no contradiction.",
+            "Corroboration audit 2026-08-29: added a dated feed-relative row without changing the answer's June 25 wording; Sol+Grok class agreement, targeted probe decided disposition"
           ],
           "rootCause": [
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "raven-next q-scf-hummingbot-kelp-closed-rfp"
@@ -2217,8 +2365,8 @@
       "golden": {
         "answer": "**SEP-24** (\"Hosted Deposit and Withdrawal\") is the **interactive** standard: the anchor serves a\nhosted UI/webview that the wallet opens, and the anchor collects any KYC and drives the\ndeposit/withdraw flow. **SEP-6** (\"Deposit and Withdrawal API\") is the **programmatic** counterpart:\na pure API with no anchor-hosted UI, so the wallet itself collects customer data (typically via\n**SEP-12** KYC). Both authenticate the user with **SEP-10**, and the wallet discovers the anchor's\nendpoints via **SEP-1** (`stellar.toml`). Distinct from **SEP-31** (cross-border, anchor-to-anchor\n\"send\") and **SEP-38** (quotes).",
         "keyFacts": [
-          "Names SEP-24 as the interactive (anchor-hosted UI / webview) deposit & withdrawal standard.",
-          "Contrasts SEP-6 as the programmatic (API-driven, no hosted UI) deposit/withdrawal counterpart."
+          "SEP-24 standardizes interactive deposits and withdrawals through an anchor-hosted UI.",
+          "SEP-6 standardizes programmatic deposits and withdrawals without a hosted UI."
         ],
         "avoid": [
           "Do NOT misnumber the standard (e.g. call interactive deposit/withdraw SEP-31 or SEP-12 or SEP-0024-as-SEP-6).",
@@ -2252,17 +2400,22 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 5B numeric corroboration backfill",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
           "evidence": [
             "https://developers.stellar.org/docs/learn/fundamentals/anchors",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+            "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+            "Structural re-form (long-fact): Shortened two SEP deposit and withdrawal facts; webview and API-driven detail remain in the answer; truth unchanged.",
+            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current SEP defines the interactive deposit and withdrawal flow with an anchor-hosted web app.",
+            "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP defines programmatic wallet-to-anchor deposit and withdrawal API interactions.",
+            "Sibling sweep 2026-08-29: grep SEP-24|SEP-6|hosted UI|programmatic → q-comp-cross-moneygram-partnership-sep24, q-production-anchor-architecture, q-sep-wallet-seps-list; no contradiction."
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "raven-next q-sep-interactive-deposit-withdraw",
@@ -2398,7 +2551,8 @@
       "golden": {
         "answer": "Use the OpenZeppelin setup-stellar-contracts playbook. Follow its toolchain checks, initialize a Soroban project, add the documented OpenZeppelin Stellar dependencies to Cargo.toml, and use the Stellar/Soroban import and contract patterns it specifies. Validate the scaffold with the playbook's build/test steps before adding application logic.",
         "keyFacts": [
-          "Uses the OpenZeppelin Stellar setup playbook for toolchain, project initialization, dependencies, and imports.",
+          "Uses the OpenZeppelin Stellar setup playbook for toolchain and project initialization.",
+          "Uses its documented dependencies and imports.",
           "Builds or tests the scaffold before application-specific changes."
         ],
         "avoid": [
@@ -2428,18 +2582,23 @@
           }
         ],
         "verified": {
-          "date": "2026-07-30",
-          "by": "drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
           "evidence": [
             "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
             "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; codemode.skill.read returned envelope ok=true for the exact skill id and requested sections.",
             "skills.openzeppelin-stellar.setup-stellar-contracts exists and supports the behavioral golden.",
             "Amendment 2026-07-30: the line above was recorded when skill bodies were vendored at ecosystem-skills/skills/... ; bodies now live upstream at the commit pinned in ecosystem-skills/MANIFEST.json and are read via codemode.skill.read('skills.openzeppelin-stellar.setup-stellar-contracts'). Same bytes, re-verified by digest; only the pointer notation changed.",
             "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-            "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+            "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+            "Structural re-form (long-fact): Split the setup playbook coverage into two facts; truth unchanged.",
+            "Live re-check 2026-08-29: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/setup-stellar-contracts/SKILL.md — the pinned primary playbook covers the Stellar toolchain and project initialization.",
+            "Live re-check 2026-08-29: https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-skills/6f215af60eb60017ab1a933ce9d22a479cd42b26/skills/setup-stellar-contracts/SKILL.md — the pinned primary playbook specifies OpenZeppelin dependencies and import conventions.",
+            "Sibling sweep 2026-08-29: grep setup-stellar-contracts|OpenZeppelin Stellar setup → q-sor-skill-openzeppelin-setup; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "authored 2026-07 (coverage)"
@@ -2547,9 +2706,11 @@
       "golden": {
         "answer": "Stellar does not execute a merchant's future charge merely because a prior payment occurred. Implement recurrence in an application or contract-account policy. A user can authorize a narrowly scoped session or delegated signer that permits only a named contract, asset, maximum amount, cadence, and expiry; an off-chain scheduler then submits each authorized charge. Provide revocation, pause, idempotency, receipts, failed-payment handling, and a clear distinction between a pull authorization and custody.",
         "keyFacts": [
-          "Recurring billing requires application scheduling and/or contract-account policy; one payment does not create an automatic standing order.",
+          "Recurring billing uses application scheduling or a contract-account policy.",
+          "A single payment does not create an automatic standing order.",
           "A delegated credential should restrict merchant, asset, amount, cadence, and expiry.",
-          "Users need revocation and pause controls, while the billing service needs idempotency and failed-payment handling."
+          "Users need revocation and pause controls.",
+          "Billing services need idempotency and failed-payment handling."
         ],
         "avoid": [
           "Stellar automatically repeats any payment operation at a specified monthly interval.",
@@ -2657,11 +2818,20 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H2 primary+blind (Solo 3411/3412)",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
           "evidence": [
             "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
-            "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts"
+            "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts",
+            "Structural re-form (long-fact): Split two long recurring-payment facts into four atomic facts; truth unchanged.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the official guide defines policy signers, time rules, and scoped session keys for delegated actions.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — the official lifecycle treats each transaction as a separately created and submitted command.",
+            "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/smart_account/mod.rs — current source exposes context-rule expiry updates and removal controls.",
+            "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — the official guide requires status polling and safe retry handling for duplicate, failed, and uncertain submissions.",
+            "Sibling sweep 2026-08-29: grep recurring billing|standing order|contract-account policy|idempotency|revocation → q-stellar-recurring-payments, q-smart-account-scoped-policy-signers, q-agent-payment-standard-choice, q-defi-agentic-payment-standards-compare, q-defi-streaming-payments-prior-art, q-ti-classic-submission-errors, q-ti-tx-too-late-resubmit; no contradiction."
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "kaan recurring-subscriptions-stellar"
@@ -2676,9 +2846,10 @@
       "golden": {
         "answer": "Call `scout.getChanges` with the cache timestamp in `since` and the needed `surfaces`. Read `meta.counts` per surface, because `limit` applies separately to each surface. Check every `meta.truncated` flag; raise the limit and query a surface separately when needed, and state when the feed still does not cover every changed row. For each returned row, use `facets` to select the fact family to refresh, then re-read that entity through its search endpoint. A `\"row\"` facet means the change is not localized, so re-read the full row. An empty surface with `truncated: false` means unchanged since the supplied timestamp; it does not mean the entity class does not exist.",
         "keyFacts": [
-          "Uses `since`, optional surface selection, per-surface counts, and every per-surface truncation flag.",
+          "Uses `since` with optional surface filters.",
+          "Checks each surface's count and truncation flag.",
           "Uses facets to choose the refresh scope and re-reads the full entity for a `row` facet.",
-          "Treats an untruncated empty result as unchanged since the supplied timestamp, not as an existence claim."
+          "An untruncated empty result means nothing changed after `since`."
         ],
         "avoid": [
           "Do NOT read `meta.counts` as the number of rows returned in the limited payload.",
@@ -2752,16 +2923,22 @@
           }
         ],
         "verified": {
-          "date": "2026-08-18",
-          "by": "Todo 1664 coverage-golden implementation",
+          "date": "2026-08-29",
+          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
           "evidence": [
             "Read-only getChanges probes covered truncated multi-surface data and an untruncated empty surface on 2026-08-18.",
             "catalog/manifest.json#scout.getChanges defines the pagination, facet, and re-read boundaries.",
             "Sibling sweep: q-gap-scout-changelog-envelope keeps row changes distinct from API contract changes.",
-            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict"
+            "solo://proj/80/scratchpad/retrieval-system-aud--816#coverage-golden-design-verdict",
+            "Structural re-form (long-fact): split request filters from response metadata and shortened the untruncated-empty rule; avoid retains the existence boundary.",
+            "Live re-check 2026-08-29: https://stellarlight.xyz/api/changes?since=2026-08-29&surfaces=partners&limit=5 — the response echoes the `since` value and selected surface.",
+            "Live re-check 2026-08-29: https://stellarlight.xyz/api/changes?since=2026-08-28&limit=3 — the response includes separate counts and truncation flags for every surface.",
+            "Live re-check 2026-08-29: https://stellarlight.xyz/api/changes?since=2026-08-29&surfaces=partners&limit=5 — the response is empty with `truncated.partners: false`.",
+            "Sibling sweep 2026-08-29: grep getChanges|getChangelog|change history → q-gap-scout-changelog-envelope, q-ti-scout-changelog-contract-check; no contradiction."
           ],
           "rootCause": [
-            "solo://proj/80/todo/author-five-new-cove--1664"
+            "solo://proj/80/todo/author-five-new-cove--1664",
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
           ]
         },
         "origin": "authored 2026-08 (coverage)"

@@ -12,8 +12,9 @@
     "keyFacts": [
       "Uses Horizon for G-account native/Classic balances and forbids counting a second SAC copy.",
       "Uses token/SAC contract state for C-address or known-token balances.",
-      "States that all-token discovery requires an indexed token universe/events and current validation.",
-      "Does not assume arbitrary SEP-41 storage; reports identity, decimals, source, network, and snapshot."
+      "All-token discovery requires indexed token events.",
+      "Current balance validation follows token discovery.",
+      "Arbitrary SEP-41 storage layouts are not standardized."
     ],
     "avoid": [
       "Do NOT promise all token balances from one RPC/Horizon call or double-count a G trustline as a SAC copy.",
@@ -98,14 +99,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited storage split was correct but omitted the no-double-count rule for a G account's Classic asset through SAC, the candidate-token discovery boundary, arbitrary SEP-41 storage limits, and balance provenance/units.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-52 primary/blind matrices independently confirmed the storage split; blind required the no-double-count, discovery, decimals, and arbitrary-storage precision.",
-        "Sibling sweep checked q-asset-trustline-vs-sac, q-sor-contract-trustlines-c-address, q-soroban-sac-balance-storage, and q-ti-enumerate-holders-airdrop."
+        "Sibling sweep checked q-asset-trustline-vs-sac, q-sor-contract-trustlines-c-address, q-soroban-sac-balance-storage, and q-ti-enumerate-holders-airdrop.",
+        "Structural re-form (long-fact): split discovery, validation, and storage boundaries into atomic facts; answer and avoid retain the provenance fields.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — the current Hubble guide exposes indexed historical contract events.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the current SEP-41 interface defines the balance getter used after discovery.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the interface standard defines calls and events, not a universal token storage layout.",
+        "Sibling sweep 2026-08-29: grep trustline vs SAC|C-address balances|enumerate holders → q-asset-trustline-vs-sac, q-sor-contract-trustlines-c-address, q-ti-enumerate-holders-airdrop; no contradiction."
       ],
       "rootCause": [
-        "Eval-side accounting/discovery incompleteness; unified portfolio-discovery guidance is recorded as a research candidate."
+        "Eval-side accounting/discovery incompleteness; unified portfolio-discovery guidance is recorded as a research candidate.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-ti-fetch-all-balances-classic-sac"

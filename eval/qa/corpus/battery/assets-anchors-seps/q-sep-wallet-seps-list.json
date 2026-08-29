@@ -6,15 +6,17 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "A Stellar wallet supporting anchors/interoperability typically implements [1][2]:\n\n- **SEP-1** — Stellar Info File (`stellar.toml`): discover an anchor's endpoints, currencies, keys.\n- **SEP-10** — Stellar (Web) Authentication: sign a challenge tx to get a JWT and authenticate with the anchor.\n- **SEP-24** — Hosted (interactive) Deposit & Withdrawal, and/or **SEP-6** — programmatic Deposit & Withdrawal.\n- **SEP-12** — KYC API: submit customer info to the anchor.\n- **SEP-38** — Anchor RFQ/quotes: price an exchange before deposit/withdraw/send.\n- **SEP-7** — URI scheme (`web+stellar:`) for deep-link/payment-signing requests (optional).\n- **SEP-31** — Cross-Border Payments API (relevant to remittance-style wallets).\n\nSDF's TypeScript **Wallet SDK** wraps SEP-10/12/24/31/38 client-side.",
+    "answer": "A Stellar wallet supporting anchors/interoperability typically implements [1][2]:\n\n- **SEP-1** — Stellar Info File (`stellar.toml`): discover an anchor's endpoints, currencies, keys.\n- **SEP-10** — Stellar (Web) Authentication: sign a challenge tx to get a JWT and authenticate with the anchor.\n- **SEP-24** — Hosted (interactive) Deposit & Withdrawal, and/or **SEP-6** — programmatic Deposit & Withdrawal.\n- **SEP-12** — KYC API: submit customer info to the anchor.\n- **SEP-38** — Anchor RFQ/quotes: price an exchange before deposit/withdraw/send.\n- **SEP-7** — URI scheme (`web+stellar:`) for deep-link/payment-signing requests (optional).\n- **SEP-31** — Cross-Border Payments API (relevant to remittance-style wallets).\n\nSDF's TypeScript **Wallet SDK** wraps SEP-1/6/10/12/24/38 client-side.",
     "keyFacts": [
       "Names SEP-1 (stellar.toml — anchor/asset discovery metadata).",
-      "Names SEP-10 (web authentication — challenge/response to authenticate an account with an anchor).",
-      "Names SEP-24 (interactive/hosted deposit & withdrawal) and/or SEP-6 (programmatic deposit & withdrawal)."
+      "SEP-10 authenticates an account to an anchor through a web challenge-response.",
+      "SEP-24 covers interactive, hosted deposits and withdrawals.",
+      "SEP-6 covers programmatic deposits and withdrawals."
     ],
     "avoid": [
       "Do NOT misnumber the SEPs (e.g. call web auth SEP-12 or KYC SEP-10).",
-      "Do NOT invent a non-existent SEP number as a canonical wallet requirement."
+      "Do NOT invent a non-existent SEP number as a canonical wallet requirement.",
+      "Do NOT claim the TypeScript Wallet SDK wraps SEP-31."
     ],
     "notes": "Axis-C list rebalance. Enumeration of the wallet-relevant SEPs → stellar_docs_mcp. Trap = misnumbering SEP-10/12/24. All numbers verified against the ecosystem README.\nAlso good if the answer: Names SEP-12 (KYC/customer info) and SEP-38 (anchor quotes) as commonly paired with deposit/withdraw flows. | May name SEP-7 (URI request scheme) for deep-link/payment requests.\nGolden cites: A SEP overview / wallet-guide page on developers.stellar.org or the stellar-protocol SEP repo."
   },
@@ -36,19 +38,39 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+        "note": "Current official supported-SEP list for the TypeScript Wallet SDK."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts",
+        "note": "Current Wallet SDK Anchor API source."
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened the SEP-10 fact and split the SEP-24 and SEP-6 fact; the and/or combination remains in the answer; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0010.md — the current SEP defines challenge-response web sessions for account holders.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current SEP defines the interactive hosted deposit and withdrawal flow.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP defines the programmatic deposit and withdrawal API.",
+        "Sibling sweep 2026-08-29: grep SEP-10|SEP-24|SEP-6|challenge-response → q-edge-inject-ignore-instructions, q-production-anchor-architecture, q-sep-interactive-deposit-withdraw; no contradiction.",
+        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/build/apps/wallet/intro lists all current anchor-class SEPs as SEP-1/6/10/12/24/38 and omits SEP-31.",
+        "Conflict resolution 2026-08-29: https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts exposes no SEP-31 client.",
+        "Sibling sweep 2026-08-29: grep Wallet SDK|SEP-31 → q-anchor-sdp-vs-anchor-platform, q-asset-wallet-sdk-seps, q-sep-wallet-seps-list, q-anchor-platform-what, and related SEP cases; this case retains SEP-31 only as a general remittance-wallet option."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        "eval-authoring transcription",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-wallet-seps-list",
@@ -68,6 +90,42 @@
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
             "observedAt": "2026-07-11",
             "note": "Fetched ecosystem registry corroborates SEP-1, SEP-6, SEP-10, and SEP-24 mappings."
+          }
+        ]
+      },
+      {
+        "claim": "The TypeScript Wallet SDK wraps client-side SEP-1/6/10/12/24/38 flows.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+            "observedAt": "2026-08-29",
+            "note": "Exact quote: ‘Below you can find all the SEPs the anchor class currently supports:’ The list names SEP-1, SEP-10, SEP-24, SEP-6, SEP-12, and SEP-38."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts",
+            "observedAt": "2026-08-29",
+            "note": "Exact source signatures expose `sep1`, `sep6`, `sep10`, `sep12`, `sep24`, and `sep38`."
+          }
+        ]
+      },
+      {
+        "claim": "The TypeScript Wallet SDK wraps SEP-31.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro",
+            "observedAt": "2026-08-29",
+            "note": "The exact current supported-SEP list omits SEP-31."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/typescript-wallet-sdk/blob/main/@stellar/typescript-wallet-sdk/src/walletSdk/Anchor/index.ts",
+            "observedAt": "2026-08-29",
+            "note": "The current Anchor class has no `sep31` method or SEP-31 client."
           }
         ]
       }

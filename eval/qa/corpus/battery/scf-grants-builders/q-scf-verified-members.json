@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n'Verified Members' is an umbrella with four current tiers. **Verified** is the basic identity/account-verified tier with view/discussion access; it does not by itself grant an active project vote. **Pathfinder** demonstrates expertise and may participate through delegation. **Navigator** may vote actively on Build Open projects. **Pilot** may vote actively, may serve as a delegate, and has higher governance/proposal authority. Roles and thresholds can change, so cite the current access table. Build project voting is Open-only; Public Goods has its own Pilot/current rules. Governance verification is separate from the KYC/KYB required for award payouts.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Accurately states the Verified/Pathfinder/Navigator/Pilot permissions.",
       "Separates Open voting, other program governance, and payout KYC/KYB."
@@ -67,18 +67,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-39/40, 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/governance/verified-members/how-to-become-verified — the current handbook supplies source-supported tier and permission observations.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/governance/verified-members/how-to-become-verified — current tier thresholds and permissions remain changeable governance rules that need an as-of date.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/governance/verified-members/how-to-become-verified — the page confirms Verified, Pathfinder, Navigator, and Pilot permissions.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — Open has community voting, while award payout requires a separate KYC/KYB process.",
+        "Sibling sweep 2026-08-29: grep Verified|Pathfinder|Navigator|Pilot|payout KYC → q-scf-nqg-voting, q-builder-by-scf-tier; no contradiction"
       ],
       "rootCause": [
         "Eval-side governance tier collapse.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-verified-members"

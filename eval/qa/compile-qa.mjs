@@ -3,6 +3,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { writeFileAtomic } from "../../scripts/lib/shared.mjs";
 import {
   CASES_PATH,
@@ -12,6 +13,7 @@ import {
   SAMPLE_PATH,
   stratifiedSample
 } from "./lib.mjs";
+import { strkeyFindings } from "./strkey.mjs";
 
 const CORPUS_DIR = path.join(QA_DIR, "corpus/battery");
 const LEDGER_PATH = path.join(QA_DIR, "corpus/migration-ledger.json");
@@ -86,6 +88,10 @@ function validateEvidence(file, evidence, field) {
 
 function validateCase(file, kase) {
   if (!kase || typeof kase !== "object" || Array.isArray(kase)) fail(file, "case must be an object");
+  const [strkeyFinding] = strkeyFindings(kase);
+  if (strkeyFinding) {
+    fail(file, `invalid strkey at ${strkeyFinding.path}: ${strkeyFinding.token} (${strkeyFinding.reason})`);
+  }
   if (!nonEmptyString(kase.id) || !/^q-[a-z0-9-]+$/.test(kase.id)) fail(file, "id must be a q-* kebab id");
   if (path.basename(file) !== `${kase.id}.json`) fail(file, "filename must equal id + .json");
   const category = path.basename(path.dirname(file));
@@ -130,6 +136,10 @@ function validateCase(file, kase) {
     validateEvidence(file, row.evidence, `truth.corroboration[${index}].evidence`);
   }
   return kase;
+}
+
+export function validateCaseFile(file) {
+  return validateCase(file, json(file));
 }
 
 function validateRegister(register) {
@@ -223,4 +233,4 @@ function main() {
   console.log(`wrote ${SAMPLE_PATH} (${sample.length} cases)`);
 }
 
-main();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

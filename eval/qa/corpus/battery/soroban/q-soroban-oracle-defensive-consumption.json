@@ -8,9 +8,10 @@
     "answer": "A lending protocol should treat oracle consumption as an economic risk system, not a single timestamp check:\n\n1. **Freshness and validity:** enforce the SEP-40 timestamp, reject future/old/missing data, and fail closed. YieldBlox's poisoned values were fresh, so freshness is necessary but not sufficient.\n2. **Independent value anchors:** require genuinely independent sources or a fundamental/NAV/redemption bound. Several feeds derived from one thin market are not independent.\n3. **Robust aggregation:** use medians or multi-window logic, minimum observations, longer clean baselines, and deviation checks against more than the immediately previous round. A TWAP/VWAP is one layer, not a guarantee.\n4. **Market-quality gates:** require minimum depth, volume, active traders/makers, healthy pairs, and bounded price impact before enabling collateral.\n5. **Exposure containment:** use conservative collateral factors, per-asset supply/borrow/value caps, isolation and rate limits so one bad price cannot drain total liquidity.\n6. **Response and recovery:** circuit breakers or pool ice, first-anomaly monitoring, clear governance/migration paths, and adversarial economic simulations. Oracle selection and recovery planning are deployment-critical when the pool's oracle address is immutable.\n\nThe YieldBlox incident used a five-minute VWAP and two fresh poisoned rounds that passed a local deviation check. Do not claim staleness caused it or that TWAP alone would have prevented it.",
     "keyFacts": [
       "Checks timestamp freshness but states that fresh poisoned data can still pass.",
-      "Requires genuinely independent value/NAV anchors, robust multi-window aggregation, and longer clean baselines.",
-      "Requires market-depth/volume/trader gates and deviation checks beyond the immediately previous round.",
-      "Limits exposure through caps, isolation, rate limits, circuit breakers, monitoring, and recovery planning."
+      "Requires independent sources and robust multi-window aggregation.",
+      "Requires liquidity gates and multi-round deviation checks.",
+      "Exposure controls include caps.",
+      "Response controls include circuit breakers and recovery planning."
     ],
     "avoid": [
       "Do NOT claim oracles are trustless or freshness alone is sufficient.",
@@ -110,18 +111,25 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-09 primary/blind defensive-control matrices",
         "Structural re-form (presentation-avoid): deleted the omission avoid item because an existing key fact already requires exposure containment and response controls; the trap target remains enforced.",
         "No live re-check was required because the avoid deletion does not change the required content.",
-        "Sibling sweep 2026-08-27: grep YieldBlox|fresh poisoned|exposure caps|circuit breakers → q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit; no contradiction"
+        "Sibling sweep 2026-08-27: grep YieldBlox|fresh poisoned|exposure caps|circuit breakers → q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit; no contradiction",
+        "Structural re-form (long-fact): Shortened the oracle-control facts and split exposure from response; truth unchanged.",
+        "Live re-check 2026-08-29: https://docs.blend.capital/pool-creators/selecting-an-oracle — the current Blend owner docs recommend multi-source aggregation and time-windowed feeds.",
+        "Live re-check 2026-08-29: https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — the incident report documents near-zero liquidity and the failed adjacent-window deviation check.",
+        "Live re-check 2026-08-29: https://docs.blend.capital/pool-creators/adding-assets/risk-parameters.md — the current Blend owner docs define utilization and supply caps to limit oracle-attack exposure.",
+        "Live re-check 2026-08-29: https://docs.blend.capital/pool-creators/pool-management.md — the current Blend owner docs define On-Ice/Frozen response states and pool migration.",
+        "Sibling sweep 2026-08-29: grep YieldBlox|market-depth|clean baseline|circuit breaker|recovery planning → q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, q-defi-etherfuse-stablebonds, q-pc-slp-0004-0006-status, and q-soroban-oracle-defensive-consumption; no contradiction"
       ],
       "rootCause": [
         "Generic oracle checklist omitted economic and operational containment.",
         "Incident motivation was misread as a stale/single-spot failure.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-oracle-defensive-consumption"

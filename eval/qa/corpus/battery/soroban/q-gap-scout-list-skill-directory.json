@@ -8,7 +8,7 @@
     "answer": "Use `scout.listSkills` to browse the live installable directory, optionally filtering by source or kind. The observed SDF-filtered result (a dated 2026-07-11 probe) returned seven entries with slug, install command, source, kind, homepage/raw URL, and compatibility; treat the count and slugs as an observation with its date. Then use `getSkill` for one named entry.",
     "keyFacts": [
       "Uses `listSkills` for discovery and `getSkill` for one known skill.",
-      "Treats the directory as live metadata, not proof that every entry is a skill this gateway serves."
+      "Limits gateway-served skills to a subset of the live directory metadata."
     ],
     "avoid": [
       "Do NOT use `listSkills` as though it returns the full instructions for every skill."
@@ -51,18 +51,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-30",
-      "by": "drift-surface audit (solo://proj/49/todo/1285), independent review gpt-5.6-sol xhigh",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "2026-07-30 de-vendoring wording sweep: this case described Raven's own surface as \"bundled\"/\"mirrored\", which the same block's earlier amendment already contradicted — skill bodies are served from their pinned upstream commit and hash-verified, never stored here. Wording only; the exercised contract, the skill id, and every graded claim are unchanged. Sibling sweep: all 10 skill-surface battery cases carrying the stale wording were corrected in the same commit, so no sibling still asserts the old shape.",
         "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
         "catalog/manifest.json#scout.listSkills",
         "inventory/stellar-light.json",
-        "Todo 1253 Lane B review (2026-07-28, F3): the notes named the retired 'soroban' slug as an undated roster fact; date-scoped to the 2026-07-11 probe with the 2026-07-28 'smart-contracts' retirement recorded. Internal-consistency repair — the underlying probe observation is unchanged."
+        "Todo 1253 Lane B review (2026-07-28, F3): the notes named the retired 'soroban' slug as an undated roster fact; date-scoped to the 2026-07-11 probe with the 2026-07-28 'smart-contracts' retirement recorded. Internal-consistency repair — the underlying probe observation is unchanged.",
+        "Structural re-form (long-fact): shortened the live-directory and gateway-subset distinction; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/skills and catalog/manifest.json#scout.listSkills — the live API returns skills, MCP servers, SDKs, CLIs, agent kits, and tools, while the current operation contract says most entries are not mirrored skills.",
+        "Sibling sweep 2026-08-29: grep listSkills|most entries are not mirrored skills → q-gap-scout-get-skill-detail, q-gap-scout-list-skill-directory, q-tool-cli-skills-discovery, q-tool-skill-detail-install; no contradiction."
       ],
       "rootCause": [
         "solo://project/49/scratchpad/p4/n1-gapops",
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07 (gap-ops)"

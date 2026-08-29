@@ -9,9 +9,11 @@
   "golden": {
     "answer": "Start with the legal claim, issuer/custodian, mint-and-burn controls, reserve attestations, transfer eligibility, and redemption process; the token does not make the off-chain asset trustworthy. A classic Stellar asset can use authorization-required, authorization-revocable, and clawback controls, while a Soroban token can encode richer compliance policies. SEP-41 is the common contract-token interface. SEP-56 is a Draft tokenized-vault interface for deposits, shares, and withdrawals—not a universal RWA attestation standard. Match SEP-6/24/31 only when fiat-ramp or cross-border anchor flows are part of the product.",
     "keyFacts": [
-      "The legal claim, custody or reserve model, eligibility controls, and redemption process are core parts of an RWA design.",
-      "Classic asset authorization and clawback controls or Soroban compliance logic can restrict regulated transfers.",
-      "SEP-41 is a token interface, while SEP-56 remains Draft and standardizes tokenized vault behavior rather than real-world attestation."
+      "Core RWA design covers legal claims, custody/reserve models, eligibility, and redemption.",
+      "Classic authorization/clawback or Soroban compliance can restrict regulated transfers.",
+      "Defines SEP-41 as a token interface.",
+      "Marks SEP-56 as a Draft tokenized-vault standard.",
+      "Excludes real-world attestation from SEP-56's scope."
     ],
     "avoid": [
       "SEP-56 proves that an off-chain asset exists and is fully reserved.",
@@ -122,11 +124,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://stellar.org/use-cases/tokenization",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md"
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+        "Structural re-form (long-fact): Split three long facts into five one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — the current official guide confirms legal, custody/reserve, eligibility, and redemption considerations for tokenized assets.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/control-asset-access and https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — the official guides confirm classic authorization/clawback and custom Soroban compliance controls for regulated transfers.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the current proposal defines SEP-41 as the Soroban token interface.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md — the current proposal marks SEP-56 Draft and defines a tokenized-vault standard.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md — SEP-56 covers vault deposits, shares, and withdrawals, not real-world attestation.",
+        "Sibling sweep 2026-08-29: grep SEP-0056|SEP-56|SEP-41|tokenized vault|custody.*reserve|regulated transfers → q-rwa-tokenization-standards, q-rwa-stellar-vs-erc20-regulated, q-sep-41-token-interface, q-sep-catalog-list, q-soroban-oz-token, q-tool-sep41-status-live; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan rwa-tokenization-stellar"

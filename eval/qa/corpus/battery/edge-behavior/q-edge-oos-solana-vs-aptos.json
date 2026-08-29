@@ -5,7 +5,8 @@
   "golden": {
     "answer": "I can't give a reliable current Solana-versus-Aptos recommendation from this Stellar-focused service. Compare current primary evidence for execution model, finality, fees, tooling, liquidity, security record, validator structure, and your protocol requirements. I can answer a separate Stellar/Soroban question if useful, but I won't insert Stellar as the answer unless asked.",
     "keyFacts": [
-      "Avoids an unsupported verdict, supplies a practical current-evidence comparison framework, and keeps any Stellar redirect separate."
+      "Avoids an unsupported Solana-versus-Aptos verdict.",
+      "Supplies a practical current-evidence comparison framework."
     ],
     "avoid": [
       "Do NOT give a confident Solana/Aptos verdict, inject Stellar as a third-option resolution, or provide only refusal boilerplate."
@@ -55,13 +56,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The coverage limit is correct, but a bare decline was sufficient and no useful comparison framework was required.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271."
+        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271.",
+        "Live re-check (class A, 2026-08-29): https://solana.com/docs/core/fees/fee-structure documents Solana-specific fees and transaction priorities.",
+        "Live re-check (class A, 2026-08-29): https://aptos.dev/build/guides/application-integration documents Aptos-specific finality, SDK, transaction, and account behavior.",
+        "Live re-check (class B, 2026-08-29): README.md limits the current repository scope to Stellar ecosystem services and skills.",
+        "Sibling sweep (2026-08-29): Solana, Aptos, unsupported-verdict, and comparison-framework cases showed no contradiction."
       ],
       "rootCause": [
-        "Strict none-route scoring optimized tool non-use rather than end-answer usefulness."
+        "Strict none-route scoring optimized tool non-use rather than end-answer usefulness.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-oos-solana-vs-aptos"

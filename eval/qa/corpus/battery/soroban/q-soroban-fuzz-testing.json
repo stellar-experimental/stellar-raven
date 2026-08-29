@@ -7,8 +7,9 @@
   "golden": {
     "answer": "Test Soroban contracts against the SDK's in-process `Env` with Rust property/fuzz tooling: `proptest` for invariants and randomized sequences, and `cargo-fuzz`/libFuzzer with `arbitrary` or SDK `SorobanArbitrary` support for structured inputs. Useful targets include boundary values, authorization sequences, storage/TTL behavior, arithmetic, and growing collections. These are testing targets, not claims that a named vendor always uses a particular tool or that a defect class is universally prevalent. Echidna/Foundry invariant tooling is EVM-focused and is not the native Soroban Rust/Wasm path.",
     "keyFacts": [
-      "Names proptest and cargo-fuzz/libFuzzer with arbitrary/SorobanArbitrary against the in-process Env.",
-      "Frames candidate invariants and edge cases as recommendations rather than unsupported prevalence claims."
+      "Uses `proptest` with the in-process `Env`.",
+      "Uses cargo-fuzz/libFuzzer with `arbitrary` or `SorobanArbitrary`.",
+      "Presents invariants and edge cases as test recommendations."
     ],
     "avoid": [
       "Do NOT prescribe EVM-only tooling as the native Soroban workflow.",
@@ -63,13 +64,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer's core Rust fuzzing guidance was sound, but it presented auditor/vendor and prevalence claims as established by sources that only support the tooling and example workflow.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329; blind narrowed unsupported auditor/prevalence wording while retaining the tooling."
+        "Solo scratchpad 575 GT-46 primary 3326 and blind 3329; blind narrowed unsupported auditor/prevalence wording while retaining the tooling.",
+        "Structural re-form (long-fact): Split two long fuzz-testing facts into four atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the official example adapts fuzz tests into reusable property tests with proptest and constructs an Env.",
+        "Live re-check 2026-08-29: https://github.com/stellar/rs-soroban-sdk/blob/v27.0.0/soroban-sdk/src/testutils/arbitrary.rs — SDK source documents cargo-fuzz, Arbitrary, SorobanArbitrary, and Env conversion.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the official example presents state assertions across generated calls as a testing strategy.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/fuzzing — the source establishes an example workflow, not vendor practice or defect prevalence.",
+        "Sibling sweep 2026-08-29: grep SorobanArbitrary|cargo-fuzz|libFuzzer|proptest|fuzz testing → q-soroban-fuzz-testing; no contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-3.md): deleted the presentation-shaped fact 'Avoids unsupported claims about tool use or defect prevalence'; the existing avoid item already carries that trap; truth unchanged versus HEAD."
       ],
       "rootCause": [
-        "Eval-side source overreach from a testing recommendation to vendor practice and finding-frequency claims."
+        "Eval-side source overreach from a testing recommendation to vendor practice and finding-frequency claims.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-fuzz-testing"

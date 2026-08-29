@@ -8,7 +8,8 @@
     "answer": "You cannot earn a native protocol XLM staking APY: Stellar uses **SCP/FBA**, not proof of stake, and official docs state validators receive **no monetary rewards**. There is no native stake/delegation position or validator-reward schedule to quote. The historical 1% inflation mechanism ended on 2019-10-28 and was not PoS staking. Products marketed as XLM staking or yield must disclose their actual source: issuer/anchor interest (such as yXLM), lending, AMM/LP emissions, vault rewards, token locks, RWA yield, or external-asset staking wrappers are not native validator staking. As of the 2026-07-10 audited source sweep, no live native-XLM liquid-staking protocol was identified; keep that negative dated and source-bounded.",
     "keyFacts": [
       "States SCP/FBA is not PoS and validators receive no native monetary/staking rewards.",
-      "Classifies third-party yield by reward source and keeps the no-native-XLM-LST finding dated and bounded."
+      "Classifies third-party XLM yield by its reward source.",
+      "Keeps the no-native-XLM-LST finding dated and source-bounded."
     ],
     "avoid": [
       "Do NOT invent a protocol APY, delegation position, or validator reward schedule.",
@@ -65,13 +66,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The SCP/no-validator-rewards correction is right, but the inherited liquid-staking example implied a verified native-XLM LST and conflicted with the independently corrected ecosystem sweep.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; synchronized with q-defi-liquid-staking-whitespace."
+        "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; synchronized with q-defi-liquid-staking-whitespace.",
+        "Structural re-form (long-fact): split reward-source classification from the dated LST finding; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol states that SCP is FBA rather than proof of stake and validators receive no monetary rewards.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol current accepted and proposed CAP files contain no liquid-staking, native-staking, or validator-reward proposal.",
+        "Sibling sweep 2026-08-29: grep native-XLM|liquid staking|validator rewards|third-party yield|SCP/FBA → q-defi-liquid-staking-whitespace, q-raph-xlm-staking, q-edge-noinfo-stellar-pos-staking-rewards, and related staking cases; no contradiction."
       ],
       "rootCause": [
-        "Eval-side reward-source taxonomy error; no upstream discoverability defect."
+        "Eval-side reward-source taxonomy error; no upstream discoverability defect.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-noinfo-stellar-pos-staking-rewards"

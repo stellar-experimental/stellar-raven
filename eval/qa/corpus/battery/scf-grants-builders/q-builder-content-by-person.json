@@ -7,7 +7,8 @@
   "golden": {
     "answer": "A grounded answer consults the current LumenLoop corpus, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-13, verified exact-name sources included the official Developer Docs author index (seven posts), the **2024-06-13 developer meeting** covering Super Peach, Passkey Kit, and Launchtube, **Practical Path Payments** (2020-04-10), the **Turing Complete Contract Proposal for Stellar** event page (which renders July 10, 2020 while its body says June 19, so disclose the conflict), and the **SDF Developer Advocates AMA** (2023-05-04). Current repository context is also dated: on 2026-07-13, `kalepail/passkey-kit` described a v1 Stellar smart-wallet SDK and called Smart Account Kit a sibling with a different, non-drop-in authorization model; `stellar/launchtube` remained a directly inspectable source repository. LumenLoop semantic results are candidate discovery only and require exact-name, source, and date validation; an empty exact-person lane is a service limitation, not evidence that nothing has been published.\n\nThe roster is illustrative rather than exhaustive: a later grounded answer should re-query and report what the same source basis supports at its own observation time.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific, source-supported content.",
+      "Frames that content as current or dated, not as unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Treats empty person-lane results and semantic matches according to their evidence limits."
     ],
@@ -103,8 +104,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-35 primary 3287 and blind 3289; exact-person probes and official-source roster.",
         "2026-07-13 recheck of https://developers.stellar.org/meetings/authors/kalepail, https://developers.stellar.org/meetings/2024/06/13, and https://github.com/kalepail/passkey-kit corrected the stale repository-status wording.",
@@ -116,7 +117,11 @@
         "solo://proj/49/todo/reconcile-bounded-tr--1355",
         "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-005 and ll-017; the verified Tyler roster and retrieval limits are unchanged.",
         "Improvements review 2026-08-27: improvements/lumenloop/ll-005-person-entity-empty-lane.md and improvements/lumenloop/ll-017-semantic-person-match-provenance.md remain reported upstream; the disputed claims are Tyler's empty exact-person lane and unverified semantic person matches.",
-        "Sibling sweep 2026-08-27: grep ll-005|ll-017|Tyler van der Hoeven → q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-org-mazieres-chief-scientist, q-builder-justin-rice-history; no contradiction"
+        "Sibling sweep 2026-08-27: grep ll-005|ll-017|Tyler van der Hoeven → q-gap-semantic-directory-fallback, q-edge-open-world-recovery-after-narrow-miss, q-edge-strupey-ambiguous-stellar-history, q-org-mazieres-chief-scientist, q-builder-justin-rice-history; no contradiction",
+        "Structural re-form (long-fact): split the source-supported and observation-framing requirements into two short facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/meetings/authors/kalepail — the official exact-name author page supplies specific Tyler van der Hoeven content.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/meetings/2024/06/13 — the official dated meeting page confirms the content can be framed as a dated observation.",
+        "Sibling sweep 2026-08-29: grep Tyler van der Hoeven|person-lane|semantic matches → q-builder-content-by-person, q-builder-justin-rice-history, q-defi-rwa-scf-similar, q-eco-stellar-wallets-list, q-tool-indexer-repos-discovery; no contradiction."
       ],
       "rootCause": [
         "Route recipe was treated as truth and an empty data-shaped response was mistaken for absence.",
@@ -125,7 +130,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "truth-metadata maintenance",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-builder-content-by-person"

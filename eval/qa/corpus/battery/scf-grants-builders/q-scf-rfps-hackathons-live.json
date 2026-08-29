@@ -1,1 +1,107 @@
-{"id":"q-scf-rfps-hackathons-live","question":"What SCF RFPs and Stellar hackathons are open, active, or upcoming right now?","surface":["scout.getRfps","scout.getHackathons"],"golden":{"answer":"Query RFPs and hackathons independently, including separate getHackathons({status:\"active\"}) and getHackathons({status:\"upcoming\"}) calls. Date and cite both lanes. Only an ok empty data response supports scoped “none returned”; soft-empty or error is inconclusive.","keyFacts":["Queries RFP and hackathon lanes independently with current status filters.","Cites source URLs and reports generatedAt/asOf for both.","Handles empty results with scoped language and returned fallback channels.","Preserves ok-empty versus soft-empty/error distinctions; only ok-empty supports a scoped absence statement."],"avoid":["Concludes no opportunity exists worldwide from a zero-row served response."]},"tags":{"category":"scf-grants-builders","service":"scout","freshness":"live"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open"},{"class":"C","ref":"https://stellarlight.xyz/api/hackathons?status=active"},{"class":"A","ref":"https://communityfund.stellar.org/awards"},{"class":"C","ref":"https://stellarlight.xyz/api/hackathons?status=upcoming"}],"corroboration":[{"claim":"The two opportunity lanes require independent current filters, citations, timestamps, and scoped empty handling.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/rfps?status=open","observedAt":"2026-07-11"},{"class":"C","ref":"https://stellarlight.xyz/api/hackathons?status=active","observedAt":"2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/awards","observedAt":"2026-07-11"},{"class":"C","ref":"https://stellarlight.xyz/api/hackathons?status=upcoming","observedAt":"2026-07-11"}]},{"claim":"A zero-row response proves no opportunity exists anywhere.","verdict":"contradicted","evidence":[{"class":"B","ref":"catalog/manifest.json#scout.getHackathons","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","https://communityfund.stellar.org/awards","catalog/manifest.json#scout.getHackathons"],"rootCause":["eval-authoring"]},"origin":"core-35 rfps-and-hackathons"}}
+{
+  "id": "q-scf-rfps-hackathons-live",
+  "question": "What SCF RFPs and Stellar hackathons are open, active, or upcoming right now?",
+  "surface": [
+    "scout.getRfps",
+    "scout.getHackathons"
+  ],
+  "golden": {
+    "answer": "Query RFPs and hackathons independently, including separate getHackathons({status:\"active\"}) and getHackathons({status:\"upcoming\"}) calls. Date and cite both lanes. Only an ok empty data response supports scoped “none returned”; soft-empty or error is inconclusive.",
+    "keyFacts": [
+      "Queries RFP and hackathon lanes independently with current status filters.",
+      "Cites source URLs and reports generatedAt/asOf for both.",
+      "Handles empty results with scoped language and returned fallback channels.",
+      "Response states include ok-empty, soft-empty, and error.",
+      "Only ok-empty supports a scoped absence statement."
+    ],
+    "avoid": [
+      "Concludes no opportunity exists worldwide from a zero-row served response."
+    ]
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/rfps?status=open"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons?status=active"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/awards"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/hackathons?status=upcoming"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The two opportunity lanes require independent current filters, citations, timestamps, and scoped empty handling.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons?status=active",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons?status=upcoming",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "A zero-row response proves no opportunity exists anywhere.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getHackathons",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "evidence": [
+        "solo://proj/49/process/3414",
+        "solo://proj/49/process/3420",
+        "https://communityfund.stellar.org/awards",
+        "catalog/manifest.json#scout.getHackathons",
+        "Structural re-form (long-fact): Split the response-state distinction from its scoped-absence consequence; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — the current result-envelope contract distinguishes successful data, soft-empty, and error responses.",
+        "Live re-check 2026-08-29: https://github.com/kalepail/stellar-raven/blob/main/src/mcp/tools.ts — the current instructions permit exact empty reporting only at a named closed-world source's scope.",
+        "Sibling sweep 2026-08-29: grep getHackathons|ok-empty|soft-empty|fallbackChannels → q-gap-upcoming-hackathon-fallback, q-scf-hackathons-active, q-scf-current-hackathons-compare-live, q-scf-open-rfps, q-scf-rfps-hackathons-live; no contradiction"
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "core-35 rfps-and-hackathons"
+  }
+}

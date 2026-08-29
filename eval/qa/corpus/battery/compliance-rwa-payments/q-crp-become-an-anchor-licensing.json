@@ -9,10 +9,10 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nBecoming an anchor has separate technical, operating, and legal workstreams. Technically, publish SEP-1 discovery and implement only the services you offer: SEP-6 or SEP-24 for ramps, SEP-10 for G/M authentication and SEP-45 for C accounts where applicable, SEP-12 when client-driven customer data is required, SEP-31 for receiving cross-border payments, and SEP-38 for quotes. Anchor Platform can supply plumbing but does not confer permission or licensing.\n\nFor the legal perimeter, identify each legal entity, country/customer nexus, asset and legal issuer, and who accepts/transmits/exchanges/issues/redeems/custodies value. Then assess the applicable federal registration, state money-transmitter, bank/payment/e-money/CASP, agent/exemption, sanctions, consumer, privacy, and safeguarding rules. In the US, federal MSB registration and state licensing are distinct; in the EU, EMT issuance, crypto-asset services, and payment/money-remittance services are separate classifications. The answer depends on facts and jurisdiction—obtain local counsel.\n\nOperationally, demonstrate banking/payout access, liquidity and settlement capacity, reconciliation, support, security, KYC/sanctions processes, and incident handling. Settlement capacity may be own prefunding, payout-partner credit, JIT liquidity, or another documented arrangement; do not hard-code one model.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Separates conditional SEP capabilities from operating and legal workstreams.",
-      "Classifies actual entities, activities, custody, routes, assets, and jurisdictions rather than assuming one anchor license.",
+      "Uses entity, activity, custody, route, asset, and jurisdiction licensing analysis.",
       "Requires demonstrable settlement/liquidity capacity without making prefunding universal."
     ],
     "avoid": [
@@ -20,7 +20,8 @@
       "Do NOT prescribe one universal SEP or licensing stack.",
       "Do NOT give jurisdiction-specific legal advice without primary law and local counsel.",
       "Do NOT claim every model requires the operator's own prefunded float.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+      "Do NOT assume one anchor license covers every entity, activity, custody, route, asset, and jurisdiction."
     ],
     "notes": "2026-06-29: Re-weighted toward anchor operations/economics — promoted liquidity/float, treasury/reconciliation, and on/off-ramp float profiles to must_have; demoted the 'Anchor Platform != license' point to should_have/weight-3 must_avoid (that misconception is owned by q-comp-anchor-platform and q-pay-anchor-msb-licensing). Legal/licensing stays jurisdiction-specific; reward bounded compliance framing, not definitive legal advice.\nAlso good if the answer: Distinguishes on-ramp-only, off-ramp, and cross-border anchor roles by their float/liquidity profiles (e.g. on-ramp may collect fiat before issuing, while off-ramp/cross-border generally need prefunded liquidity or payout-partner credit). | Mentions Anchor Platform can implement much of the technical SEP surface but is not a license and does not remove business, banking, and operational requirements.\nGolden cites: Stellar Anchor Platform or anchor docs plus dated jurisdiction/regulatory sources for legal claims.\nCORRECTION 2026-07-10: require an entity/activity/custody/route/jurisdiction classification method. Technical anchor status is not a legal classification; settlement capacity is durable, prefunding is one example."
   },
@@ -112,19 +113,28 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-10 legal matrices",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened the source-evidence and licensing-analysis facts without changing their claims.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the current page defines anchor roles and services.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the page shows its Aug 26, 2026 update date.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the platform implements technical SEPs and leaves core business logic to the operator.",
+        "Live re-check 2026-08-29: https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering — FinCEN classifies actual persons and activities, not product labels.",
+        "Live re-check 2026-08-29: https://stellar.org/case-studies/arf — the live case study documents credit-line settlement without universal prefunding.",
+        "Sibling sweep 2026-08-29: grep one anchor license|entity.*activity.*custody|settlement.*liquidity|prefunding → q-crp-become-an-anchor-licensing, q-crp-remittance-founder-advisory, q-pay-anchor-msb-licensing; no contradiction",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): restored the dropped 'rather than assuming one anchor license' tail as a golden.avoid trap (the reviewer's proposed keyFact would have dropped custody/route/asset/jurisdiction); truth unchanged versus HEAD."
       ],
       "rootCause": [
         "Product taxonomy substituted for legal entity/activity analysis.",
         "A common settlement model became a universal requirement.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-crp-become-an-anchor-licensing"

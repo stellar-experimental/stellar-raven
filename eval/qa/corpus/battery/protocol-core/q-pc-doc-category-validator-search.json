@@ -37,17 +37,40 @@
         "note": "Live localhost search→execute probe."
       }
     ],
+    "corroboration": [
+      {
+        "claim": "As of 2026-08-29, the upstream docs hierarchy field is not a reliable category facet, so category restriction occurs adapter-side.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar-experimental/stellar-raven/main/specs/stellar-docs.json",
+            "note": "Exact source: ‘facetFilters on hierarchy.lvl0 silently return nbHits: 0 (no error). Category restriction must happen adapter-side by url_without_anchor prefix.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "F",
+            "ref": "https://github.com/stellar-experimental/stellar-raven/blob/b933ddc412ab92e31d9c8af9f4ec8a543c1beaee/test/adapters.test.ts",
+            "observedAt": "2026-08-29",
+            "note": "Executed `npx vitest run test/adapters.test.ts -t 'applies the URL-prefix client filter with overfetch for category ops'`; observed `1 passed`, with `clientFiltered` asserted true."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; a validators/quorum query returned envelope ok=true and validator-prefixed hits.",
         "specs/stellar-docs.json exists and supports the behavioral golden.",
         "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Corroboration audit 2026-08-29: added 1 row(s) for adapter-side category restriction; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

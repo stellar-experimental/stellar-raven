@@ -8,7 +8,7 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nUse Stellar Light's **`/api/analyze?dimension=categories`** for a corpus-relative aggregate, not per-project history or the currently truncated clusters endpoint. Label output per the Scout corpus with `generatedAt`, taxonomy, project/status scope, and methodology. As of **2026-07-10**, the active-project basis had 841 projects and 391 funded projects totaling a reconstructed **$39,851,645.13**. **User-Facing App** led total projects (337), funded projects (167), and reconstructed dollars (**$16.904M / 42.42%**). Dollar order was User-Facing App > Infrastructure ($7.809M) > Protocol/Contract ($7.693M) > Tooling ($6.249M). **Protocol/Contract** separately had the highest funded rate, 68/129 = 52.71%. These are dated Scout-service metrics, not official SCF category accounting; re-query rather than freezing them.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Reports category funding using an explicit category and amount basis."
     ],
@@ -74,20 +74,25 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 569 Batch D, 2026-07-09; GT-37 primary 3296 and blind 3298 re-derived the full 2026-07-10 basis.",
         "Sibling sweep covered q-scf-category-funded-ratio and q-scf-total-distributed; GT-36 proved /api/clusters is truncated and not interchangeable.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): added a cached-source grading caution for sls-013; the dated category-funding basis is unchanged.",
         "Improvements review 2026-08-27: improvements/resolved.json entry sls-013 records the 2026-07-14 provenance fix; the disputed claim is whether older Scout funding analytics expose computedAt, methodologyVersion, and countBasis.",
         "Sibling sweep 2026-08-27: grep sls-013|funding category|countBasis|methodologyVersion → q-defi-category-funding-ratio-live, q-scf-total-distributed; no contradiction",
         "Structural re-form (presentation-avoid): rewrote two presentational avoid items as the same concrete false-content claims; both trap targets are unchanged.",
         "No live re-check was required because the avoid rewrites do not change the forbidden claims.",
-        "Sibling sweep 2026-08-27: grep category funding|official SCF totals|complete or permanent roster → q-defi-category-funding-ratio-live, q-scf-total-distributed; no contradiction"
+        "Sibling sweep 2026-08-27: grep category funding|official SCF totals|complete or permanent roster → q-defi-category-funding-ratio-live, q-scf-total-distributed; no contradiction",
+        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/projects — the current official project surface provides category and round records for dated observations.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/analyze?dimension=categories — the live aggregate has changed since the dated answer, confirming the need for a visible as-of date.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/analyze?dimension=categories — the live distribution exposes category names, project counts, funded counts, and `scfTotalUSD` amounts.",
+        "Sibling sweep 2026-08-29: grep category funding|scfTotalUSD|funded rate → q-defi-category-funding-ratio-live, q-scf-total-distributed; no contradiction"
       ],
       "rootCause": [
         "Corpus-only analytics were too easy to read as world-grounded exact gospel despite a dated Scout label.",
@@ -96,7 +101,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-funding-by-category"

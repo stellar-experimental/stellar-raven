@@ -1,1 +1,95 @@
-{"id":"q-defi-tooling-whitespace-live","question":"Does the current Stellar index make developer tooling look crowded or like whitespace, and what projects illustrate the result?","surface":["scout.getClusters","scout.searchProjects"],"golden":{"answer":"Use the exact Tooling category row as the primary current comparison, reporting raw size/funded evidence, examples, generatedAt, and scope. Any SDK/Indexer/Explorer type clusters must be separately labeled finer overlapping views. Corroborate existence claims with primary links for sampled returned projects and keep whitespace index-relative.","keyFacts":["Uses the exact Tooling category row as the primary answer.","Labels type-cluster detail separately and reports raw counts, examples, generatedAt, and scope.","Uses sampled returned-project primary links for existence claims and does not infer real-world absence."],"avoid":["Claims developer tooling has no existing projects based on an index-relative whitespace label."]},"tags":{"category":"defi-ecosystem","service":"scout","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"C","ref":"https://stellarlight.xyz/api/clusters?dimension=category"},{"class":"C","ref":"https://stellarlight.xyz/api/projects/search?q=developer%20tooling"},{"class":"A","ref":"https://reflector.network/"}],"corroboration":[{"claim":"Tooling whitespace is a dated index-relative conclusion supported by cluster metrics and example projects.","verdict":"confirmed","evidence":[{"class":"C","ref":"https://stellarlight.xyz/api/clusters?dimension=category","observedAt":"2026-07-11"},{"class":"C","ref":"https://stellarlight.xyz/api/projects/search?q=developer%20tooling","observedAt":"2026-07-11"},{"class":"A","ref":"https://reflector.network/","observedAt":"2026-07-11"}]},{"claim":"Index-relative whitespace means no tooling projects exist.","verdict":"contradicted","evidence":[{"class":"A","ref":"https://reflector.network/","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 H1 primary (Solo 3414) + blind reconciliation (Solo 3420)","evidence":["solo://proj/49/process/3414","solo://proj/49/process/3420","https://reflector.network/"],"rootCause":["eval-authoring"]},"origin":"core-35 ecosystem-category-whitespace"}}
+{
+  "id": "q-defi-tooling-whitespace-live",
+  "question": "Does the current Stellar index make developer tooling look crowded or like whitespace, and what projects illustrate the result?",
+  "surface": [
+    "scout.getClusters",
+    "scout.searchProjects"
+  ],
+  "golden": {
+    "answer": "Use the exact Tooling category row as the primary current comparison, reporting raw size/funded evidence, examples, generatedAt, and scope. Any SDK/Indexer/Explorer type clusters must be separately labeled finer overlapping views. Corroborate existence claims with primary links for sampled returned projects and keep whitespace index-relative.",
+    "keyFacts": [
+      "Uses the exact Tooling category row as the primary answer.",
+      "Presents type clusters separately with raw counts, examples, generatedAt, and scope.",
+      "Uses sampled returned-project primary links only for existence claims."
+    ],
+    "avoid": [
+      "Claims developer tooling has no existing projects based on an index-relative whitespace label."
+    ]
+  },
+  "tags": {
+    "category": "defi-ecosystem",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/clusters?dimension=category"
+      },
+      {
+        "class": "C",
+        "ref": "https://stellarlight.xyz/api/projects/search?q=developer%20tooling"
+      },
+      {
+        "class": "A",
+        "ref": "https://reflector.network/"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Tooling whitespace is a dated index-relative conclusion supported by cluster metrics and example projects.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=developer%20tooling",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://reflector.network/",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "Index-relative whitespace means no tooling projects exist.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://reflector.network/",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "evidence": [
+        "solo://proj/49/process/3414",
+        "solo://proj/49/process/3420",
+        "https://reflector.network/",
+        "Structural re-form (long-fact): Shortened the type-cluster and existence-evidence facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/clusters?dimension=category — the live response provides dimension, raw counts, sample projects, generatedAt, and population scope.",
+        "Live re-check 2026-08-29: https://reflector.network/ — the current primary project page confirms project existence without proving real-world market completeness.",
+        "Sibling sweep 2026-08-29: grep Tooling category|type clusters|generatedAt|index-relative whitespace → q-defi-category-saturation-live, q-defi-asset-whitespace-live, q-defi-cluster-rollup-live, q-defi-tooling-whitespace-live; no contradiction"
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "core-35 ecosystem-category-whitespace"
+  }
+}

@@ -1,1 +1,112 @@
-{"id":"q-scf-cross-decaf-sep24","question":"Decaf Pay's SCF #17 submission named a specific MoneyGram integration. What does Scout say Decaf is today, and which official docs explain the SEP in the proposal?","surface":["lumenloop.get_scf_submissions","scout.searchProjects","stellarDocs.search_anchor_sep_docs"],"golden":{"answer":"Decaf Pay's SCF #17 application says its international-payment product had built a MoneyGram integration using SEP-24 and planned to reuse that integration pattern with other anchors. As observed on 2026-07-11, Scout describes Decaf as a live, non-custodial wallet on Stellar and Solana for cross-border money movement, using MoneyGram and partner ramps to move between fiat and USDC and cash out without a bank account. Official Stellar docs define SEP-24 as the hosted, interactive deposit-and-withdrawal flow: the wallet opens the anchor's experience and the anchor collects the information/KYC needed to complete the transaction. SEP-24 is therefore the bridge between the historical proposal detail and today's wallet/ramp record.","keyFacts":["States that Decaf Pay's SCF #17 application names a MoneyGram integration built with SEP-24.","Uses Scout to identify Decaf today as a live non-custodial cross-border wallet using fiat/USDC ramps including MoneyGram.","Uses official docs to explain SEP-24 as the anchor-hosted interactive deposit/withdrawal flow, including anchor-collected user information/KYC."],"avoid":["Do NOT misidentify SEP-31 as the MoneyGram wallet-hosted deposit/withdrawal flow in the proposal.","Do NOT describe Decaf as a custodial bank account or as a MoneyGram-owned wallet."],"notes":"Grant application, current directory record, and SEP semantics must all appear."},"tags":{"category":"scf-grants-builders","service":"lumenloop","freshness":"scheduled"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","reverifyBy":"2026-12-03","sources":[{"class":"C","ref":"http://localhost:8787/mcp — Lumenloop + Scout + Stellar Docs probes, observed 2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/submissions/recp4q5jA9dXq7to6"},{"class":"A","ref":"https://decaf.so/"},{"class":"A","ref":"https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal"}],"corroboration":[{"claim":"Decaf's SCF #17 application names a MoneyGram SEP-24 integration, and Scout lists Decaf as a live cross-border wallet using MoneyGram ramps.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"lumenloop.get_scf_submissions(slug=decaf) + scout.searchProjects(q=Decaf)","observedAt":"2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/submissions/recp4q5jA9dXq7to6","observedAt":"2026-07-11"},{"class":"A","ref":"https://decaf.so/","observedAt":"2026-07-11"}]},{"claim":"SEP-24 is the hosted interactive deposit-and-withdrawal flow in which the anchor gathers required user information.","verdict":"confirmed","evidence":[{"class":"E","ref":"stellarDocs.search_anchor_sep_docs(query=SEP-24 hosted deposit withdrawal interactive)","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 Lane X cross-service live composition probe","evidence":["http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md","Sibling sweep: Decaf, MoneyGram, and SEP-24 battery cases reviewed; no SEP-number contradiction found"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (cross-service)"}}
+{
+  "id": "q-scf-cross-decaf-sep24",
+  "question": "Decaf Pay's SCF #17 submission named a specific MoneyGram integration. What does Scout say Decaf is today, and which official docs explain the SEP in the proposal?",
+  "surface": [
+    "lumenloop.get_scf_submissions",
+    "scout.searchProjects",
+    "stellarDocs.search_anchor_sep_docs"
+  ],
+  "golden": {
+    "answer": "Decaf Pay's SCF #17 application says its international-payment product had built a MoneyGram integration using SEP-24 and planned to reuse that integration pattern with other anchors. As observed on 2026-07-11, Scout describes Decaf as a live, non-custodial wallet on Stellar and Solana for cross-border money movement, using MoneyGram and partner ramps to move between fiat and USDC and cash out without a bank account. Official Stellar docs define SEP-24 as the hosted, interactive deposit-and-withdrawal flow: the wallet opens the anchor's experience and the anchor collects the information/KYC needed to complete the transaction. SEP-24 is therefore the bridge between the historical proposal detail and today's wallet/ramp record.",
+    "keyFacts": [
+      "Decaf Pay's SCF #17 application names a MoneyGram integration using SEP-24.",
+      "Scout lists Decaf as a live non-custodial cross-border wallet.",
+      "Scout lists MoneyGram and partner ramps for moving between fiat and USDC.",
+      "SEP-24 is an anchor-hosted interactive deposit and withdrawal flow.",
+      "The anchor collects the user's required information and KYC."
+    ],
+    "avoid": [
+      "Do NOT misidentify SEP-31 as the MoneyGram wallet-hosted deposit/withdrawal flow in the proposal.",
+      "Do NOT describe Decaf as a custodial bank account or as a MoneyGram-owned wallet."
+    ],
+    "notes": "Grant application, current directory record, and SEP semantics must all appear."
+  },
+  "tags": {
+    "category": "scf-grants-builders",
+    "service": "lumenloop",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "reverifyBy": "2026-12-03",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp — Lumenloop + Scout + Stellar Docs probes, observed 2026-07-11"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/submissions/recp4q5jA9dXq7to6"
+      },
+      {
+        "class": "A",
+        "ref": "https://decaf.so/"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Decaf's SCF #17 application names a MoneyGram SEP-24 integration, and Scout lists Decaf as a live cross-border wallet using MoneyGram ramps.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "lumenloop.get_scf_submissions(slug=decaf) + scout.searchProjects(q=Decaf)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/submissions/recp4q5jA9dXq7to6",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://decaf.so/",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "SEP-24 is the hosted interactive deposit-and-withdrawal flow in which the anchor gathers required user information.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_anchor_sep_docs(query=SEP-24 hosted deposit withdrawal interactive)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "evidence": [
+        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
+        "Sibling sweep: Decaf, MoneyGram, and SEP-24 battery cases reviewed; no SEP-number contradiction found",
+        "Structural re-form (long-fact): Split the Decaf, ramp, and SEP-24 descriptions into atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/submissions/recp4q5jA9dXq7to6 — the official SCF #17 application says Decaf built a MoneyGram SEP-24 integration.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/project/decaf — the live Scout page lists Decaf as a non-custodial cross-border wallet.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/project/decaf — the live Scout page lists MoneyGram and partner ramps between fiat and USDC.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal — current official docs define SEP-24 as anchor-hosted interactive deposit and withdrawal.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal — current official docs say the anchor collects the user's required information and KYC.",
+        "Sibling sweep 2026-08-29: grep Decaf|MoneyGram|SEP-24 → q-anchor-moneygram-ramps, q-comp-cross-moneygram-partnership-sep24, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, and q-scf-cross-decaf-sep24; no contradiction"
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (cross-service)"
+  }
+}

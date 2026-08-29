@@ -8,7 +8,7 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, a live DeFi directory query returned 39 matches; DeFindex, HedgePay, and HiYield appeared on the first page.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names specific currently-live newer Stellar DeFi protocols.",
       "Describes what each named protocol does."
@@ -84,23 +84,33 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-16 primary 3244 and blind 3245",
         "2026-07-11 localhost:8787 search→execute probe observed: a live DeFi directory query returned 39 matches; DeFindex, HedgePay, and HiYield appeared on the first page.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a source-specific grading caution; truth is unchanged.",
         "Reviewed improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md — disputed claim: OrbitCDP's Scout lifecycle label proves deployment status.",
-        "Sibling sweep 2026-08-27: grep OrbitCDP|FxDAO|Zenex|zenex|JST → q-defi-blend-alternatives, q-defi-etherfuse-stablebonds, q-defi-named-newer-protocols, q-defi-perps-whitespace, q-defi-rwa-scf-similar, q-eco-defi-market-map; no contradiction"
+        "Sibling sweep 2026-08-27: grep OrbitCDP|FxDAO|Zenex|zenex|JST → q-defi-blend-alternatives, q-defi-etherfuse-stablebonds, q-defi-named-newer-protocols, q-defi-perps-whitespace, q-defi-rwa-scf-similar, q-eco-defi-market-map; no contradiction",
+        "Structural re-form (long-fact): Shortened the dated-observation fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://fxdao.io/ — the operator page supplies current, source-supported FxDAO identity and status observations.",
+        "Live re-check 2026-08-29: https://docs.zenex.trade/faq — the operator FAQ labels the current Zenex deployment as testnet, confirming status needs an as-of date.",
+        "Live re-check 2026-08-29: https://orbitcdp.finance/ — the operator page identifies OrbitCDP as live on Stellar while the case preserves the source conflict.",
+        "Live re-check 2026-08-29: https://www.defindex.io/ — the operator page confirms a current named newer Stellar DeFi protocol.",
+        "Live re-check 2026-08-29: https://fxdao.io/ — the operator page describes FxDAO as a Stellar stablecoin protocol in development.",
+        "Live re-check 2026-08-29: https://orbitcdp.finance/ — the operator page describes OrbitCDP's collateralized debt protocol.",
+        "Live re-check 2026-08-29: https://docs.zenex.trade/faq — the operator FAQ describes Zenex as a Stellar Soroban perpetual futures exchange on testnet.",
+        "Sibling sweep 2026-08-29: grep FxDAO|OrbitCDP|Zenex|JST|DeFindex → q-defi-defindex-honest, q-defi-perps-whitespace, q-defi-blend-alternatives, q-eco-defi-market-map, q-defi-named-newer-protocols; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-024 — lifecycle labels conflict with operator deployment language",
         "eval-side entity resolution promoted one directory status and treated a failed exact search as nonexistence",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-defi-named-newer-protocols"

@@ -40,9 +40,89 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Soroban contracts can deploy other contracts, no off-chain CLI step required.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+            "note": "Exact quotes: the example ‘demonstrates how to deploy contracts using a contract’; ‘Deploy the contract using the uploaded Wasm with given hash.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/soroban-examples/blob/13b9f51d184aabde23dec820e44eed056cf9690f/deployer/deployer/src/lib.rs",
+            "observedAt": "2026-08-29",
+            "note": "Exact source says the example deploys contracts ‘via `env.deployer()`’ and calls `.deploy_v2(...)` inside the contract."
+          }
+        ]
+      },
+      {
+        "claim": "The factory references the child by hash, not by re-embedding bytecode each deploy.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+            "note": "Exact quotes: the example ‘demonstrates how to deploy contracts using a contract’; ‘Deploy the contract using the uploaded Wasm with given hash.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/soroban-examples/blob/13b9f51d184aabde23dec820e44eed056cf9690f/deployer/deployer/src/lib.rs",
+            "observedAt": "2026-08-29",
+            "note": "Observed source passes the uploaded `wasm_hash` and `salt` to `.deploy_v2(wasm_hash, constructor_args)`; it does not embed bytecode."
+          }
+        ]
+      },
+      {
+        "claim": "The Wasm hash selects the executable code used for the deployment; it is not part of the contract ID/address derivation.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+            "note": "Exact quote: ‘contract identifier is based on contractIDPreimage value and the network identifier.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+            "note": "Exact quotes: the example ‘demonstrates how to deploy contracts using a contract’; ‘Deploy the contract using the uploaded Wasm with given hash.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-transaction.x",
+            "observedAt": "2026-08-29",
+            "note": "Exact XDR puts `SCAddress address` and `uint256 salt` in `ContractIDPreimage`; `ContractExecutable executable` is a separate CreateContractArgs field."
+          }
+        ]
+      },
+      {
+        "claim": "This is not Solidity `new Contract()` / `CREATE2` — it is the native `env.deployer()` mechanism.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer",
+            "note": "Exact quotes: the example ‘demonstrates how to deploy contracts using a contract’; ‘Deploy the contract using the uploaded Wasm with given hash.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/soroban-examples/blob/13b9f51d184aabde23dec820e44eed056cf9690f/deployer/deployer/src/lib.rs",
+            "observedAt": "2026-08-29",
+            "note": "Exact native mechanism: `env.deployer().with_address(env.current_contract_address(), salt).deploy_v2(wasm_hash, constructor_args)`."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (compound-predicate): Split two compound facts into five atomic facts; the existing avoid retains the Wasm-hash derivation trap.",
@@ -51,10 +131,13 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — deployment still takes an uploaded Wasm hash and salt.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — the child address remains deterministic from the deployer address and salt; the network ID remains part of the address preimage.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/deployer — the Wasm hash still selects the deployed implementation.",
-        "Sibling sweep 2026-08-27: grep env.deployer|deploy_v2|with_current_contract|with_address|Wasm hash → q-passkey-smart-account-architecture, q-sor-stale-spec-after-upgrade, q-soroban-contract-id-derivation, q-soroban-factory-pattern, q-soroban-oz-upgradeable-macro, q-soroban-upgradeable-storage-compat, q-ti-enumerate-all-contracts; no contradiction"
+        "Sibling sweep 2026-08-27: grep env.deployer|deploy_v2|with_current_contract|with_address|Wasm hash → q-passkey-smart-account-architecture, q-sor-stale-spec-after-upgrade, q-soroban-contract-id-derivation, q-soroban-factory-pattern, q-soroban-oz-upgradeable-macro, q-soroban-upgradeable-storage-compat, q-ti-enumerate-all-contracts; no contradiction",
+        "Corroboration audit 2026-08-29: added 4 row(s) for on-chain factory deployment and address derivation; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 4 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-soroban-factory-pattern"

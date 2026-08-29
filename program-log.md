@@ -178,3 +178,22 @@ the durable record of the completed method, review results, fixes, and gate resu
 The session-3 handoff now lives in `.agents/TODO.md`. A new session must rebuild its helper files
 from current `main`. The lost `q-soroban-publish-events` draft was unreviewed and must not be used
 as evidence.
+
+## Session 3 (2026-08-29) — long facts, warning audits, canonical-page cautions
+
+Branch `codex/golden-truth-session-3`, base `b933ddc`. Owner: Claude Fable 5 (`gt3-orch`, pane
+`w1B:p1`). Crew: Codex `gpt-5.6-sol` high ×3 (`gt3-sol-a/b/c`, panes `w1B:p2–p4`), Grok 4.6 high
+reviewer (`gt3-grok-rev`, `w1B:p5`). The durable record is the round ledger
+`.agents/rounds/2026-08-29-golden-truth-session-3.md` with its directory (matrices, review parts,
+final review, affected ids). Result: long-fact warnings 372 → 0 across 204 cases (51 chunks of
+four, one bounded prompt each), three claim-by-claim review parts (194 PASS / 10 FAIL, all
+reconciled), strkey CRC16 validation on golden import, 20-case sourcing-guard audit (17 keep,
+3 rewords, class stays advisory), 56 corroboration warnings classified by two models (56/56
+agreement; 34 row additions, 4 targeted probes), five canonical-page cases repaired, nine
+conflict gospel changes with two-class evidence, dead provenance repaired on every touched case
+(94 → 47 files remaining). Final lint: 0 errors, 60 warnings.
+
+Method notes carried forward: the Codex workspace-write sandbox returns EPERM under `.agents/`,
+so worker matrices live in the session scratchpad and are mirrored into the round directory
+before commit; a `CONFLICT` on one fact must not block the other facts of a case; reviewer URL
+"404" findings need an orchestrator `curl -L` re-check before any evidence line is replaced.

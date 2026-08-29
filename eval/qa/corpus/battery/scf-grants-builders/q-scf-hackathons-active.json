@@ -8,7 +8,7 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live hackathon feed returned 10 recent events; its newest result was `Stellar Hacks: Real-World ZK`, which ended 2026-07-03.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Identifies specific current or recently-completed hackathons from dated event records."
     ],
@@ -72,22 +72,28 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-38 primary 3297 and blind 3299.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live hackathon feed returned 10 recent events; its newest result was `Stellar Hacks: Real-World ZK`, which ended 2026-07-03.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Real-World ZK|hackathon → q-gap-upcoming-hackathon-fallback, q-scf-current-hackathons-compare-live, q-scf-hackathons-active; no contradiction"
+        "Sibling sweep 2026-08-27: grep Real-World ZK|hackathon → q-gap-upcoming-hackathon-fallback, q-scf-current-hackathons-compare-live, q-scf-hackathons-active; no contradiction",
+        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://dorahacks.io/hackathon/stellar-hacks-zk/detail — the official event record gives dated submission and extended-deadline observations.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/hackathons — the current page now shows an upcoming HackMeridian event, confirming the roster needs a visible as-of date.",
+        "Live re-check 2026-08-29: https://dorahacks.io/hackathon/stellar-hacks-zk/detail — the dated record identifies Real-World ZK and its completed submission period.",
+        "Sibling sweep 2026-08-29: grep Real-World ZK|HackMeridian|active or upcoming → q-hist-meridian-2026-corrected-venue; no contradiction"
       ],
       "rootCause": [
         "Normal weekly event-status drift plus an eval-side global-absence risk.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-hackathons-active"

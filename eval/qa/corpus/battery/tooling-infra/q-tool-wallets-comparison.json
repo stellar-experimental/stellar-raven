@@ -8,10 +8,10 @@
   "golden": {
     "answer": "Compare by **role** before comparing names.\n\n- An **end-user wallet product** controls or connects signing keys and has product-specific custody, platforms, recovery, network/asset, and signing support. Freighter is an SDF-provided noncustodial product; independent products must be verified with their own current sources.\n- A **wallet-building SDK** is code used to build wallet experiences—for example SDF's TypeScript Wallet SDK for classic-account/anchor flows or community language-specific wallet SDKs such as Soneso's Flutter wallet layer. It is not an installed wallet.\n- **Creit-Tech Stellar Wallets Kit** is a community multi-wallet dapp adapter over configured external wallet modules; it neither custodies keys nor becomes those wallets.\n- **Smart Account Kit/OpenZeppelin account tooling** builds programmable passkey/C-account wallets with separate authorization, fee-submission, and recovery design.\n- **Ledger and Trezor are hardware wallet products**. **WalletConnect is a connectivity protocol/module**, not an end-user wallet application.\n\nFor every current option, verify custody/key control, browser/mobile/hardware environment, transaction and Soroban auth-entry support, network/asset scope, connection requirements, recovery process, maintenance, and the exact module/version. A directory or kit module list is not a certified, exhaustive, or timeless wallet roster.",
     "keyFacts": [
-      "Separates end-user wallet products, wallet-building SDKs, Stellar Wallets Kit, and smart-account tooling.",
-      "Correctly classifies Ledger/Trezor as hardware wallet products and WalletConnect as a connectivity protocol/module.",
-      "Compares custody, platform, signing/Soroban, network/asset, recovery, configuration, and maintenance per exact product/module.",
-      "Treats wallet/module rosters as current and non-exhaustive rather than certified or frozen."
+      "Classifies end-user wallets, SDKs, Wallets Kit, and smart-account tooling by role.",
+      "Classifies Ledger and Trezor as hardware wallets and WalletConnect as connectivity.",
+      "Compares each product's custody, platform, signing, assets, recovery, and maintenance.",
+      "Treats wallet rosters as current, non-exhaustive, and uncertified."
     ],
     "avoid": [
       "Do NOT classify Ledger or Trezor as mere connectors, or WalletConnect as a wallet app.",
@@ -108,8 +108,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-56 primary process 3394 and sealed blind process 3398 independently rejected the shared Ledger/Trezor/WalletConnect taxonomy and required role- and product-specific comparison.",
         "Sibling sweep checked q-tool-freighter-wallet, q-asset-wallet-sdk-seps, q-anchor-sdp-vs-anchor-platform, q-tool-wallets-kit, q-ti-connect-wallet-button-code, q-eco-wallets-overview, and q-eco-stellar-wallets-list.",
@@ -120,13 +120,20 @@
         "Sibling sweep 2026-08-27: grep sls-033|WalletConnect|type=Wallet|productKind → q-ti-connect-wallet-button-code, q-eco-stellar-wallets-list, q-raph-hardware-wallet; no contradiction",
         "Structural re-form (presentation-avoid): Reworded the presentation demand as a concrete false-content claim; the answer and facts are unchanged.",
         "No live re-check needed: the avoid edit preserves the existing wallet-roster trap.",
-        "Sibling sweep 2026-08-27: grep representative list|WalletConnect|productKind|SDF-maintained → q-tool-wallets-comparison, q-anchor-platform-what, q-anchor-sdp-vs-anchor-platform, q-tool-rust-soroban-sdk, q-tool-which-sdk-comparison, q-tool-flutter-mobile-sdk, q-tool-js-sdk-package, q-eco-freighter-wallet, q-soroban-x402-auth-entry-signing; no contradiction"
+        "Sibling sweep 2026-08-27: grep representative list|WalletConnect|productKind|SDF-maintained → q-tool-wallets-comparison, q-anchor-platform-what, q-anchor-sdp-vs-anchor-platform, q-tool-rust-soroban-sdk, q-tool-which-sdk-comparison, q-tool-flutter-mobile-sdk, q-tool-js-sdk-package, q-eco-freighter-wallet, q-soroban-x402-auth-entry-signing; no contradiction",
+        "Structural re-form (long-fact): shortened the role taxonomy, product comparison, and roster boundaries; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/wallet/overview — the current guide defines Wallet SDK as a wallet-building tool and separates smart-contract work.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/developer-tools/wallets — the current tool page labels Ledger and Trezor as hardware wallets and lists WalletConnect separately.",
+        "Live re-check 2026-08-29: https://github.com/Creit-Tech/Stellar-Wallets-Kit — the current kit source describes connection, configuration, and signing as module-specific integration work.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/developer-tools/wallets — the current page presents a changing suite of wallet tools rather than a certification.",
+        "Sibling sweep 2026-08-29: grep Wallets Kit|hardware wallet|WalletConnect|wallet roster → q-ti-connect-wallet-button-code, q-raph-hardware-wallet, q-eco-stellar-wallets-list, q-tool-freighter-wallet; no contradiction."
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-033-wallet-type-enumeration-availability.md",
         "Eval-side product taxonomy collapse: wallet product, hardware wallet, connectivity protocol, SDK, integration kit, and smart-account framework were treated as one roster.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-tool-wallets-comparison"

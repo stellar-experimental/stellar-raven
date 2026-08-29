@@ -7,10 +7,10 @@
   "golden": {
     "answer": "A grounded answer derives current tier permissions from the official SCF governance pages and dates them. NQG is SCF's reputation/delegation governance system, combining Neural Governance with Quorum Delegation; it is not XLM/token voting and not Stellar Consensus Protocol. **Verified** has identity/account verification and view/discussion access; **Pathfinder** may participate by delegating weight; **Navigator** and **Pilot** may vote actively on Build Open projects; **Pilot** may also serve as a delegate and act on governance proposals. Build project-level community voting applies to the **Open Track only**. Integration and RFP awards are panel-led. Public Goods has a separate governance/process and must not be assigned the Build Open electorate without its own current source.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Gives the Verified/Pathfinder/Navigator/Pilot permission matrix.",
-      "Separates Build Open voting from Integration/RFP decisions and does not invent Public Goods eligibility.",
+      "Applies community voting only to Build Open projects.",
       "Explains NQG as reputation/delegation governance, not token voting or SCP."
     ],
     "avoid": [
@@ -73,22 +73,27 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-39 processes 3300/3303 and GT-40 process 3304, 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep NQG|Pathfinder|Navigator|Open Track vote → q-scf-build-tracks, q-scf-verified-members; no contradiction"
+        "Sibling sweep 2026-08-27: grep NQG|Pathfinder|Navigator|Open Track vote → q-scf-build-tracks, q-scf-verified-members; no contradiction",
+        "Structural re-form (long-fact): Shortened two long facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/governance/neural-quorum-governance — the current official handbook supplies source-supported NQG and voting observations.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/quarterly-governance-process — the current review table assigns community voting only to Open projects and panel-only review to Integration/RFP awards.",
+        "Sibling sweep 2026-08-29: grep NQG|Neural Quorum|Build Open|Public Goods|Integration/RFP → q-scf-ambassador-program, q-scf-build-tracks, q-scf-how-to-apply, q-scf-instawards, q-scf-nqg-voting, q-scf-open-rfps, q-scf-submission-lifecycle-deadlines, q-scf-verified-members; no contradiction."
       ],
       "rootCause": [
         "Eval-side governance-role and vote-object collapse; the prior golden implied Public Goods electorate details not established by the cited Build Open sources.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-nqg-voting"

@@ -8,7 +8,8 @@
   "golden": {
     "answer": "**Litemint** is a live Stellar-native NFT marketplace and is the clearest currently verified integration candidate, but validate its current API/contract integration path before committing. The broader category remains thin only as a dated, criteria-dependent judgment. **Rarible has real Stellar association**—an SCF #30 award and a STELLAR reference enum—but its current official supported-chain table, help/UI surfaces, and live directory network fields did not verify public production Stellar support on **2026-07-10**. Describe that as awarded/partially implemented or unverified current deployment, not as either live support or no relationship.",
     "keyFacts": [
-      "Surfaces live Litemint and represents Rarible's award/schema evidence separately from unverified current API/UI production availability."
+      "Identifies Litemint as a live Stellar NFT marketplace.",
+      "Treats Rarible award/schema evidence separately from unverified current API/UI support."
     ],
     "avoid": [
       "Do NOT claim Rarible currently supports Stellar in production without a working dated API/UI path, or deny all Rarible-Stellar association.",
@@ -86,13 +87,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — Litemint is verifiably live, but the inherited rubric promoted Rarible award/schema/directory evidence into current public Stellar marketplace support and used an undefined OpenSea-scale negative.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; sibling sweep included NFT standards and project-discovery cases."
+        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; sibling sweep included NFT standards and project-discovery cases.",
+        "Structural re-form (long-fact): split the Litemint and Rarible claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://litemint.com/ identifies its live NFT marketplace on Stellar; https://communityfund.stellar.org/submissions/recRfE25wZkOThcrq remains an awarded SCF #30 Rarible Stellar integration.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=rarible&limit=10 retains the award/schema relationship separately from verified EVM deployment; https://docs.rarible.org/docs/supported-chains does not list Stellar.",
+        "Sibling sweep 2026-08-29: grep Litemint|Rarible|NFT marketplace|Stellar NFT → q-eco-defi-market-map and q-eco-nft-marketplace-whitespace; no new contradiction."
       ],
       "rootCause": [
-        "Award, enum, repo, and directory presence were collapsed into production availability; an undefined scale comparison became a negative fact."
+        "Award, enum, repo, and directory presence were collapsed into production availability; an undefined scale comparison became a negative fact.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-eco-nft-marketplace-whitespace"

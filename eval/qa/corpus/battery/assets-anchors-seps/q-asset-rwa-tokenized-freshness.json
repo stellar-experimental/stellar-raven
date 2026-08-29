@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the current LumenLoop corpus, states the measurement basis, and makes the observation date visible. As of 2026-07-11, the live research corpus returned a June 2026 Messari interview reporting about $2.8B of tokenized RWAs, while older dated results carried smaller figures.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents source-supported content as a current or dated observation, not a memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Reports a current tokenized-RWA value with a dated source.",
       "States the measurement scope for the reported RWA value."
@@ -73,19 +73,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "eval/qa/consistency-register.json sweep 2026-07-03 (the contradiction record); deep-verification quotes/URLs in Solo scratchpad 521",
         "2026-07-11 localhost:8787 search→execute probe observed: the live research corpus returned a June 2026 Messari interview reporting about $2.8B of tokenized RWAs, while older dated results carried smaller figures.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): shortened the source-supported observation rule; truth unchanged.",
+        "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the dated report supports its observation with a publication date and measured values.",
+        "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report dates its $1.52B value to Q1-end and its $2B threshold to April 11.",
+        "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report provides a dated tokenized-RWA value.",
+        "Live re-check 2026-08-29: https://messari.io/report/state-of-stellar-q1-2026 — the report states that its RWA market-cap measure excludes stablecoins.",
+        "Sibling sweep 2026-08-29: grep 2.8B|1.52B|tokenized-RWA → q-asset-rwa-tokenized-freshness only; no sibling contradiction."
       ],
       "rootCause": [
         "eval-side authoring: the '$1.2-1.5B' range came from a third-party paraphrase, not the report; single-source-class verification",
         "solo://proj/49/todo/corpus-health-instru--829 (contradiction-scan instrument, first sweep) — sibling sweep 2026-07-03: grep for 2.8B/2.84/1.52/Messari/rwa.xyz hits exactly the three RWA cases, all corrected in this pass",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-asset-rwa-tokenized-freshness"

@@ -7,9 +7,9 @@
   "golden": {
     "answer": "No exact `Strupey` builder record was returned by Scout's builder directory when checked on 2026-07-13. That answers this closed-world directory-membership question at Scout's scope; it does not establish that the name has no history or footprint elsewhere. A broader ecosystem search is unnecessary unless the user expands the question beyond this directory.",
     "keyFacts": [
-      "Directly answers the exact Scout builder-directory membership question from the directory result.",
+      "Directly answers exact Scout builder-directory membership from its result.",
       "Scopes the negative to Scout's builder directory and the observation date.",
-      "Does not automatically broaden into semantic, research, A/V, or docs searches for this closed-world request."
+      "Avoids semantic, research, A/V, and docs searches for this closed-world request."
     ],
     "avoid": [
       "Do NOT turn the directory miss into an absolute claim that Strupey does not exist or has no Stellar history.",
@@ -56,15 +56,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-13",
-      "by": "Coordinator from live Scout directory probe",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "2026-07-13 localhost Scout getBuilders exact-query projection.",
-        "Paired open-world Strupey truth matrices in Solo scratchpad 611."
+        "Paired open-world Strupey truth matrices in Solo scratchpad 611.",
+        "Structural re-form (long-fact): Shortened the exact-membership and closed-world search-scope facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/builders?q=Strupey — the live exact query returns zero builder rows with generatedAt and directory scope.",
+        "Live re-check 2026-08-29: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the operation contract defines a bounded directory surface and reserves broad recovery for open-world questions.",
+        "Sibling sweep 2026-08-29: grep Strupey|closed-world|builder directory|open-world → q-edge-strupey-ambiguous-stellar-history, q-edge-open-world-recovery-after-narrow-miss, q-gap-semantic-directory-fallback, q-edge-closed-world-builder-directory-miss; no contradiction"
       ],
       "rootCause": [
         "A broad-recovery policy needs a paired closed-world control so it does not over-search every exact directory miss.",
-        "solo://proj/49/scratchpad/evidence-poor-retrie--611"
+        "solo://proj/49/scratchpad/evidence-poor-retrie--611",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07-13 as the closed-world over-recovery control"

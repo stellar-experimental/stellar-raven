@@ -8,8 +8,9 @@
   "golden": {
     "answer": "- **Watcher**: reads the network but does **not** vote in consensus [1].\n- **Validator**: votes on / signs ledgers [1]. The key Basic-vs-Full distinction: a **Full Validator additionally publishes a public history archive**; a **Basic Validator does not** [1].\n- The history archive lets other nodes **catch up** on history and supports network **resilience** [1].\n- **Non-consensus roles**: a **Stellar RPC node** (state queries / tx simulation) and a **Galexie node** (bulk ledger data for analytics) [1].\n- Running even a single Basic or Full Validator is a meaningful **decentralization contribution** before attempting Tier 1. There is **no staking and no block rewards** — Basic vs Full is not a stake-size difference [1].",
     "keyFacts": [
-      "Distinguishes a Watcher (reads the network, does not vote) from a Validator (votes on / signs ledgers).",
-      "States the key difference: a Full Validator additionally publishes a public history archive, whereas a Basic Validator does not."
+      "Watcher nodes remain passive outside consensus.",
+      "Validators sign ledger changes through consensus voting.",
+      "Only Full Validators publish a public history archive."
     ],
     "avoid": [
       "Do NOT claim Basic and Full Validators differ by staking amount or that validators earn block rewards.",
@@ -32,11 +33,84 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Watcher: reads the network but does not vote in consensus.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/admin-guide/configuring",
+            "note": "Exact quotes: ‘If you don't intend for your node to participate in consensus votes’; without validator configuration, a node ‘will still watch SCP ... but it will not send validation messages.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/docs/stellar-core_example.cfg",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: ‘Only nodes that want to participate in SCP should set NODE_IS_VALIDATOR=true’; observer mode uses false."
+          }
+        ]
+      },
+      {
+        "claim": "The key Basic-vs-Full distinction: a Full Validator additionally publishes a public history archive; a Basic Validator does not.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators",
+            "note": "Exact quote: ‘a Basic Validator does not publish a history archive; a Full Validator does.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/docs/stellar-core_example.cfg",
+            "observedAt": "2026-08-29",
+            "note": "Observed source separates `NODE_IS_VALIDATOR` from `[HISTORY.*]`; an archive publisher configures `put`, while archive consumers can configure `get`."
+          }
+        ]
+      },
+      {
+        "claim": "There is no staking and no block rewards — Basic vs Full is not a stake-size difference.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+            "note": "Exact quotes: ‘no central authority dictates whose vote is required for consensus.’ ‘There are no monetary rewards for being a validator on the Stellar network.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators",
+            "note": "Exact quote: ‘a Basic Validator does not publish a history archive; a Full Validator does.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.stakingrewards.com/asset/stellar",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query `Stellar validator watcher history archive no rewards staking`; the top official SCP result and this independent result state that Stellar has no staking mechanism and no validator monetary rewards. No primary result contradicted the claim."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-34-soroban-launch-archival-core-tier1-validators-history accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Split two validator-role facts into three atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-core/blob/master/docs/stellar-core_example.cfg — current Core configuration marks a watcher as passive and outside consensus.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators — current docs say validators participate in consensus by voting on and signing ledger changes.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators — current docs say Full Validators publish history archives and Basic Validators do not.",
+        "Sibling sweep 2026-08-29: grep Watcher|Basic Validator|Full Validator|history archive → q-protocol-tier1-requirements, q-edge-validators-reverse-tx-fork-detection, q-ti-historical-pointintime-balances; no contradiction",
+        "Corroboration audit 2026-08-29: added 3 row(s) for watcher, archive, and reward boundaries; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 3 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-validator-node-roles"

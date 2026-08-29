@@ -7,7 +7,7 @@
   "golden": {
     "answer": "I can provide a **bounded, dated history**, but not honestly claim that one response leaves nothing out. Define the period and source universe, cite primary archives, identify gaps, and offer staged eras or a narrower follow-up. The July 31, 2014 SDF launch article describes development led by Jed McCaleb and the foundation led by Joyce Kim; use that narrower contemporaneous wording unless a primary source supports a stronger founder formulation. Thorough free research is allowed—the requirement is honest scope and provenance, not refusal triggered by the phrase 'deep research.'",
     "keyFacts": [
-      "Provides useful sourced history with explicit scope/as-of limits and offers staged or narrower coverage.",
+      "Provides sourced history with scope/as-of limits and staged or narrower coverage.",
       "Does not claim exhaustiveness or overstate the 2014 primary record."
     ],
     "avoid": [
@@ -63,13 +63,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited case correctly rejected false exhaustiveness but incorrectly banned deep research, required hidden-tool non-use, and pinned an imprecisely sourced founder sentence.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-22 primary 3262 and blind 3265; SDF/history sibling sweep."
+        "Solo scratchpad 575 GT-22 primary 3262 and blind 3265; SDF/history sibling sweep.",
+        "Structural re-form (long-fact): Shortened the bounded-history fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/introducing-stellar — the dated primary article supplies bounded contemporaneous history and specific leadership roles.",
+        "Sibling sweep 2026-08-29: grep complete history|Introducing Stellar|Joyce Kim|Jed McCaleb|bounded history → q-org-sdf-board-directors, q-edge-open-world-recovery-after-narrow-miss, q-edge-deep-full-history-report; no contradiction"
       ],
       "rootCause": [
-        "Scope honesty was conflated with a blanket research ban, and a convenient founder formulation exceeded its cited primary source."
+        "Scope honesty was conflated with a blanket research ban, and a convenient founder formulation exceeded its cited primary source.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-deep-full-history-report"
