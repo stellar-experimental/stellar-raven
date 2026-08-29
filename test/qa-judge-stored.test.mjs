@@ -51,8 +51,43 @@ const CASES = [
       notes: ""
     },
     tags: { category: "seps", service: "stellarDocs", freshness: "stable" }
+  },
+  {
+    id: "q-fixture-third",
+    question: "What is SEP-41?",
+    golden: {
+      answer: "SEP-41 defines a standard token interface.",
+      keyFacts: ["SEP-41 defines a token interface."],
+      avoid: [],
+      sources: [],
+      notes: ""
+    },
+    tags: { category: "seps", service: "stellarDocs", freshness: "stable" }
   }
 ];
+
+function answeredRow(kase, answer, verdict = null) {
+  return {
+    id: kase.id,
+    question: kase.question,
+    tags: kase.tags,
+    truth: { status: "verified" },
+    answer,
+    transcript: [],
+    agent: {
+      model: "claude-sonnet-5",
+      turns: 1,
+      costUsd: 0.1,
+      usage: { final: null, perTurn: [], perTurnAvailable: false },
+      promptChars: 90,
+      stderr: null,
+      failure: null
+    },
+    verdict,
+    evidencePack: { packVersion: PACK_VERSION, chars: 0, sha256: null },
+    durationMs: 500
+  };
+}
 
 /** Build a temp dir holding a battery file + a --no-judge results file whose
  *  snapshot hashes genuinely reproduce, mirroring run-qa's collection output. */
@@ -177,6 +212,130 @@ function stubJudge(calls = []) {
 }
 
 describe("run-qa --judge-stored", () => {
+  it("preserves the stored cap and resumes with existing panels and skips", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const existingPanel = {
+        ...stubVerdict,
+        score: "partial",
+        missingFacts: ["one detail"],
+        costUsd: 0.75,
+        meta: {
+          judgeTierUsed: "panel",
+          escalationReason: "boundary-partial",
+          panelSize: 3,
+          panelReportedCostCount: 3
+        }
+      };
+      const existingSkip = {
+        ...stubVerdict,
+        score: "partial",
+        missingFacts: ["one detail"],
+        meta: {
+          judgeTierUsed: "single",
+          escalationReason: "boundary-partial",
+          panelEscalationSkipped: "max-panel-cases"
+        }
+      };
+      const rows = [
+        answeredRow(CASES[0], "Run `stellar contract build`.", existingPanel),
+        answeredRow(CASES[1], "SEP-10 is web authentication.", existingSkip),
+        answeredRow(CASES[2], "SEP-41 defines a token interface.")
+      ];
+      const { resultsPath } = writeFixture(root, { rows });
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.meta.judgeModel = "stub-judge";
+      seeded.meta.judgeRubric = JUDGE_RUBRIC;
+      seeded.meta.judgeTiering = {
+        selectedCaseCount: 3,
+        maxPanelCases: 1,
+        maxPanelCasesSource: "cli-override"
+      };
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+
+      const calls = [];
+      const logs = [];
+      const partialJudge = async (input) => {
+        calls.push(input.id);
+        return {
+          ...stubVerdict,
+          score: "partial",
+          missingFacts: ["one detail"],
+          rationale: "partial"
+        };
+      };
+      const out = await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: partialJudge,
+        log: (line) => logs.push(line)
+      });
+
+      expect(calls).toEqual(["q-fixture-third"]);
+      expect(logs).toContain(
+        "judge panels before: cap 1 · source cli-override · selected 3 · " +
+        "boundary-eligible 2 · used 1 · skipped 1"
+      );
+      expect(out.judgeTiering).toMatchObject({
+        selectedCaseCount: 3,
+        maxPanelCases: 1,
+        maxPanelCasesSource: "cli-override",
+        boundaryEligibleCases: 3,
+        panelUsedCases: 1,
+        panelSkippedCases: 2,
+        boundaryPanelCases: 1
+      });
+      const final = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(final.rows[2].verdict.meta).toMatchObject({
+        judgeTierUsed: "single",
+        escalationReason: "boundary-partial",
+        panelEscalationSkipped: "max-panel-cases"
+      });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("refuses a changed cap before a crash resume", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const rows = [
+        answeredRow(CASES[0], "Run `stellar contract build`.", {
+          ...stubVerdict,
+          meta: {
+            judgeTierUsed: "panel",
+            escalationReason: "boundary-partial",
+            panelSize: 3
+          }
+        }),
+        answeredRow(CASES[1], "SEP-10 is web authentication.")
+      ];
+      const { resultsPath } = writeFixture(root, { rows });
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.meta.judgeModel = "stub-judge";
+      seeded.meta.judgeRubric = JUDGE_RUBRIC;
+      seeded.meta.judgeTiering = {
+        selectedCaseCount: 2,
+        maxPanelCases: 1,
+        maxPanelCasesSource: "cli-override"
+      };
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+      const calls = [];
+
+      await expect(
+        judgeStoredResults(resultsPath, {
+          judgeModel: "stub-judge",
+          maxPanelCases: 2,
+          maxPanelCasesSource: "cli-override",
+          judge: stubJudge(calls),
+          log: () => {}
+        })
+      ).rejects.toThrow(/stored panel cap 1; refusing to mix in 2/);
+      expect(calls).toEqual([]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("refuses to judge a collection that a final guard marked non-comparable", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {
@@ -305,7 +464,22 @@ describe("run-qa --judge-stored", () => {
         stabilityRegisterSha256: "a".repeat(64),
         stabilityRegisterGeneratedAt: "2026-08-27T00:00:00.000Z",
         stabilityRegisterSourceArtifactCount: 4,
-        stabilityRegisterCaseCount: 2
+        stabilityRegisterCaseCount: 2,
+        selectedCaseCount: 2,
+        maxPanelCases: 10,
+        maxPanelCasesSource: "bounded-scaled-default",
+        defaultPanelPolicy: {
+          kind: "clamped-one-third",
+          numerator: 1,
+          denominator: 3,
+          rounding: "ceil",
+          floor: 10,
+          ceiling: 34
+        },
+        boundaryEligibleCases: 0,
+        panelUsedCases: 0,
+        panelSkippedCases: 0,
+        boundaryPanelCases: 0
       });
       expect(written.meta.totalJudgeCostUsd).toBeCloseTo(0.25);
       expect(written.meta.totalCostUsd).toBeCloseTo(0.6 + 0.25);

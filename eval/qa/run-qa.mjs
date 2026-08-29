@@ -42,9 +42,11 @@
  *   --judge-model name judge model (default judge.mjs JUDGE_MODEL)
  *   --judge-panel N    force a 2- or 3-call judge panel. The default tier
  *                      starts with one call and can escalate to three.
- *   --max-panel-cases N cap boundary-triggered panels (default 10, or
- *                      QA_MAX_PANEL_CASES). Stability-triggered panels do
- *                      not consume this cap.
+ *   --max-panel-cases N cap boundary-triggered panels. The default is one-
+ *                      third of the selected denominator, rounded up, with
+ *                      a floor of 10 and a ceiling of 34. This flag or
+ *                      QA_MAX_PANEL_CASES overrides that default.
+ *                      Stability-triggered panels do not consume this cap.
  *   --surface name     search-execute (default) | per-operation. The latter
  *                      starts the isolated stdio proxy harness for the
  *                      manifest's 60 operations and still uses the existing
@@ -81,7 +83,10 @@ import {
   judgeCase,
   judgeCaseTiered,
   createPanelCaseBudget,
-  DEFAULT_MAX_PANEL_CASES,
+  DEFAULT_PANEL_CASE_CEILING,
+  DEFAULT_PANEL_CASE_DIVISOR,
+  DEFAULT_PANEL_CASE_FLOOR,
+  defaultMaxPanelCases,
   JUDGE_MODEL,
   JUDGE_RUBRIC
 } from "./judge.mjs";
@@ -214,12 +219,129 @@ export function parseJudgePanel(value) {
 }
 
 export function parseMaxPanelCases(value) {
-  if (value === undefined || value === "") return DEFAULT_MAX_PANEL_CASES;
-  const maxPanelCases = Number(value);
-  if (!Number.isInteger(maxPanelCases) || maxPanelCases < 0) {
-    throw new Error(`--max-panel-cases must be a non-negative integer, got ${value}`);
+  if (value === undefined) return null;
+  const trimmed = String(value).trim();
+  if (!/^\d+$/.test(trimmed)) {
+    throw new Error(`--max-panel-cases must contain only decimal digits, got ${value}`);
+  }
+  const maxPanelCases = Number(trimmed);
+  if (!Number.isSafeInteger(maxPanelCases)) {
+    throw new Error(`--max-panel-cases exceeds the safe integer range, got ${value}`);
   }
   return maxPanelCases;
+}
+
+export function parsePanelCaseOverride({
+  cliValue,
+  cliPresent = cliValue !== undefined,
+  environmentValue
+}) {
+  if (cliPresent) {
+    if (cliValue === undefined) {
+      throw new Error("--max-panel-cases requires decimal digits");
+    }
+    return {
+      maxPanelCases: parseMaxPanelCases(cliValue),
+      maxPanelCasesSource: "cli-override"
+    };
+  }
+  if (environmentValue !== undefined) {
+    return {
+      maxPanelCases: parseMaxPanelCases(environmentValue),
+      maxPanelCasesSource: "environment-override"
+    };
+  }
+  return { maxPanelCases: null, maxPanelCasesSource: "bounded-scaled-default" };
+}
+
+export function resolvePanelCaseLimit(
+  selectedCaseCount,
+  maxPanelCasesOverride = null,
+  overrideSource = "explicit-override"
+) {
+  const scaled = defaultMaxPanelCases(selectedCaseCount);
+  if (maxPanelCasesOverride == null) {
+    return {
+      selectedCaseCount,
+      maxPanelCases: scaled,
+      maxPanelCasesSource: "bounded-scaled-default"
+    };
+  }
+  if (!Number.isInteger(maxPanelCasesOverride) || maxPanelCasesOverride < 0) {
+    throw new Error(
+      `max panel cases override must be a non-negative integer, got ${maxPanelCasesOverride}`
+    );
+  }
+  return {
+    selectedCaseCount,
+    maxPanelCases: maxPanelCasesOverride,
+    maxPanelCasesSource: overrideSource
+  };
+}
+
+export function resolveStoredPanelCaseLimit({
+  selectedCaseCount,
+  storedJudgeTiering,
+  maxPanelCasesOverride = null,
+  overrideSource = "explicit-override"
+}) {
+  const storedMaxPanelCases = storedJudgeTiering?.maxPanelCases;
+  if (storedMaxPanelCases === undefined) {
+    return resolvePanelCaseLimit(selectedCaseCount, maxPanelCasesOverride, overrideSource);
+  }
+  if (!Number.isInteger(storedMaxPanelCases) || storedMaxPanelCases < 0) {
+    throw new Error(`--judge-stored: stored panel cap is invalid: ${storedMaxPanelCases}`);
+  }
+  const storedSelectedCaseCount = storedJudgeTiering?.selectedCaseCount;
+  if (
+    storedSelectedCaseCount !== undefined &&
+    storedSelectedCaseCount !== selectedCaseCount
+  ) {
+    throw new Error(
+      `--judge-stored: stored selected denominator ${storedSelectedCaseCount}; ` +
+      `current artifact has ${selectedCaseCount}`
+    );
+  }
+  if (maxPanelCasesOverride !== null && maxPanelCasesOverride !== storedMaxPanelCases) {
+    throw new Error(
+      `--judge-stored: stored panel cap ${storedMaxPanelCases}; ` +
+      `refusing to mix in ${maxPanelCasesOverride}`
+    );
+  }
+  return {
+    selectedCaseCount,
+    maxPanelCases: storedMaxPanelCases,
+    maxPanelCasesSource: storedJudgeTiering.maxPanelCasesSource ?? "stored-artifact"
+  };
+}
+
+export function panelCaseCounts(rows) {
+  let boundaryEligibleCases = 0;
+  let panelUsedCases = 0;
+  let panelSkippedCases = 0;
+  let boundaryPanelCases = 0;
+  for (const row of rows ?? []) {
+    const tier = row.verdict?.meta;
+    const used = tier?.judgeTierUsed === "panel";
+    const skipped = tier?.panelEscalationSkipped === "max-panel-cases";
+    const boundaryEligible = String(tier?.escalationReason ?? "").startsWith("boundary-");
+    if (boundaryEligible) boundaryEligibleCases += 1;
+    if (used) panelUsedCases += 1;
+    if (skipped) panelSkippedCases += 1;
+    if (used && boundaryEligible) {
+      boundaryPanelCases += 1;
+    }
+  }
+  return { boundaryEligibleCases, panelUsedCases, panelSkippedCases, boundaryPanelCases };
+}
+
+export function formatPanelSummary(judgeTiering, phase = "after") {
+  return (
+    `judge panels ${phase}: cap ${judgeTiering.maxPanelCases} · ` +
+    `source ${judgeTiering.maxPanelCasesSource} · selected ${judgeTiering.selectedCaseCount} · ` +
+    `boundary-eligible ${judgeTiering.boundaryEligibleCases} · ` +
+    `used ${judgeTiering.panelUsedCases} · skipped ${judgeTiering.panelSkippedCases}`
+  );
 }
 
 export function prepareJudgeStabilityRegister({
@@ -248,9 +370,10 @@ export function prepareJudgeStabilityRegister({
 export function judgeTieringMetadata({
   judgePanel,
   stabilityRegister,
-  maxPanelCases,
-  boundaryPanelCases
+  panelLimit,
+  rows
 }) {
+  const counts = panelCaseCounts(rows);
   return {
     policy: judgePanel > 1 ? "forced-panel" : "stability-boundary-v1",
     stabilityThreshold: JUDGE_STABILITY_THRESHOLD,
@@ -260,8 +383,18 @@ export function judgeTieringMetadata({
     stabilityRegisterGeneratedAt: stabilityRegister.generatedAt ?? null,
     stabilityRegisterSourceArtifactCount: stabilityRegister.sourceArtifactCount ?? null,
     stabilityRegisterCaseCount: stabilityRegister.caseCount ?? 0,
-    maxPanelCases,
-    boundaryPanelCases
+    selectedCaseCount: panelLimit.selectedCaseCount,
+    maxPanelCases: panelLimit.maxPanelCases,
+    maxPanelCasesSource: panelLimit.maxPanelCasesSource,
+    defaultPanelPolicy: {
+      kind: "clamped-one-third",
+      numerator: 1,
+      denominator: DEFAULT_PANEL_CASE_DIVISOR,
+      rounding: "ceil",
+      floor: DEFAULT_PANEL_CASE_FLOOR,
+      ceiling: DEFAULT_PANEL_CASE_CEILING
+    },
+    ...counts
   };
 }
 
@@ -628,7 +761,8 @@ export async function judgeStoredResults(
     judge = judgeCase,
     judgeBinary = null,
     judgeEnvironment = null,
-    maxPanelCases = DEFAULT_MAX_PANEL_CASES,
+    maxPanelCases = null,
+    maxPanelCasesSource = "explicit-override",
     stabilityRegister = loadJudgeStabilityRegister(),
     log = console.log
   } = {}
@@ -644,6 +778,12 @@ export async function judgeStoredResults(
     throw new Error("--judge-stored: results file has no rows[]");
   }
   const meta = results.meta ?? {};
+  const panelLimit = resolveStoredPanelCaseLimit({
+    selectedCaseCount: results.rows.length,
+    storedJudgeTiering: meta.judgeTiering,
+    maxPanelCasesOverride: maxPanelCases,
+    overrideSource: maxPanelCasesSource
+  });
   if (meta.packVersion !== PACK_VERSION) {
     throw new Error(
       `--judge-stored: results were collected with evidence pack ${meta.packVersion}, current is ${PACK_VERSION} — re-collect, or re-judge.mjs --allow-non-identical for a side artifact`
@@ -717,7 +857,11 @@ export async function judgeStoredResults(
         provenance: "recorded-before-judge-stored-v2"
       }));
   const paidIds = [];
-  const panelBudget = createPanelCaseBudget(maxPanelCases);
+  const existingPanelCounts = panelCaseCounts(results.rows);
+  const panelBudget = createPanelCaseBudget(
+    panelLimit.maxPanelCases,
+    existingPanelCounts.boundaryPanelCases
+  );
   const sourceResultsSha256 = priorJudgeStored.sourceResultsSha256 ?? sha256(sourceText);
   const collectionAggregatesAllowed =
     meta.comparable !== false && meta.completeness?.aggregatesAllowed === true;
@@ -731,8 +875,8 @@ export async function judgeStoredResults(
     meta.judgeTiering = judgeTieringMetadata({
       judgePanel,
       stabilityRegister,
-      maxPanelCases,
-      boundaryPanelCases: panelBudget.boundaryPanelCases
+      panelLimit,
+      rows: results.rows
     });
     Object.assign(meta, costTotals(results.rows, judgeAttempts));
     // P4 for the two-phase path: the case snapshot is already guarded by
@@ -791,6 +935,7 @@ export async function judgeStoredResults(
       metrics: meta.aggregatesSuppressed
         ? null
         : qaMeasurementMetrics(results.rows, identity.caseById),
+      judgeTiering: meta.judgeTiering,
       outPath: resultsPath
     };
   }
@@ -798,6 +943,12 @@ export async function judgeStoredResults(
     `judge-stored: ${resultsPath} · ${unjudged.length}/${results.rows.length} unjudged row(s) · ` +
     `judge ${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`
   );
+  log(formatPanelSummary(judgeTieringMetadata({
+    judgePanel,
+    stabilityRegister,
+    panelLimit,
+    rows: results.rows
+  }), "before"));
 
   // Stamp the judge tuple BEFORE the first paid call so a crash-resume with a
   // different model trips the mixing guard instead of silently mixing tuples.
@@ -875,6 +1026,7 @@ export async function judgeStoredResults(
     metrics: meta.aggregatesSuppressed
       ? null
       : qaMeasurementMetrics(results.rows, identity.caseById),
+    judgeTiering: meta.judgeTiering,
     outPath: resultsPath
   };
 }
@@ -917,23 +1069,31 @@ async function main() {
   const inheritedAgentEnvironment = agentEnvironmentIdentity();
   const safeJudge = (input, options) =>
     judgeCase(input, { ...options, command: agentBinary.resolvedPath, safeMode: true });
+  const {
+    maxPanelCases: maxPanelCasesOverride,
+    maxPanelCasesSource
+  } = parsePanelCaseOverride({
+    cliValue: argVal("--max-panel-cases"),
+    cliPresent: args.includes("--max-panel-cases"),
+    environmentValue: process.env.QA_MAX_PANEL_CASES
+  });
   const judgeStoredPath = argVal("--judge-stored");
   if (judgeStoredPath) {
     if (args.includes("--no-judge")) throw new Error("--judge-stored and --no-judge are contradictory");
     const stabilityRegister = prepareJudgeStabilityRegister();
-    const { summary, metrics } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
+    const { summary, metrics, judgeTiering } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
       judgeModel: argVal("--judge-model") ?? JUDGE_MODEL,
       judgePanel: parseJudgePanel(argVal("--judge-panel")),
       judge: safeJudge,
       judgeBinary: agentBinary,
       judgeEnvironment: inheritedAgentEnvironment,
-      maxPanelCases: parseMaxPanelCases(
-        argVal("--max-panel-cases") ?? process.env.QA_MAX_PANEL_CASES
-      ),
+      maxPanelCases: maxPanelCasesOverride,
+      maxPanelCasesSource,
       stabilityRegister
     });
     console.log("\n" + formatSummaryTable(summary));
     if (metrics) console.log(formatMeasurementMetrics(metrics));
+    console.log(formatPanelSummary(judgeTiering, "after"));
     return;
   }
   const variant = (argVal("--variant") ?? "A").toUpperCase();
@@ -950,11 +1110,7 @@ async function main() {
   const model = argVal("--model") ?? AGENT_MODEL;
   const judgeModel = argVal("--judge-model") ?? JUDGE_MODEL;
   const judgePanel = parseJudgePanel(argVal("--judge-panel"));
-  const maxPanelCases = parseMaxPanelCases(
-    argVal("--max-panel-cases") ?? process.env.QA_MAX_PANEL_CASES
-  );
   const stabilityRegister = prepareJudgeStabilityRegister();
-  const panelBudget = createPanelCaseBudget(maxPanelCases);
   const noJudge = args.includes("--no-judge");
   const serverRevision = assertPinnedServerRevision(argVal("--server-revision"));
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
@@ -975,6 +1131,20 @@ async function main() {
   // Pre-spend: an empty selection spawns nothing, and a duplicated id pays
   // twice for one case and then collapses on every per-id join.
   assertRunPlan(cases.map((c) => c.id), { label: "run-qa" });
+  const panelLimit = resolvePanelCaseLimit(
+    cases.length,
+    maxPanelCasesOverride,
+    maxPanelCasesSource
+  );
+  const panelBudget = createPanelCaseBudget(panelLimit.maxPanelCases);
+  if (!noJudge) {
+    console.log(formatPanelSummary(judgeTieringMetadata({
+      judgePanel,
+      stabilityRegister,
+      panelLimit,
+      rows: []
+    }), "before"));
+  }
 
   const preflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
   const surfacePin = assertExpectedSurface(preflightResult.metrics, argVal("--expect-sha256"), {
@@ -1160,8 +1330,8 @@ async function main() {
                 judgeTiering: judgeTieringMetadata({
                   judgePanel,
                   stabilityRegister,
-                  maxPanelCases,
-                  boundaryPanelCases: panelBudget.boundaryPanelCases
+                  panelLimit,
+                  rows
                 })
               }
             : {}),
@@ -1241,6 +1411,14 @@ async function main() {
   } else if (summary) {
     console.log("\n" + formatSummaryTable(summary));
     console.log(formatMeasurementMetrics(metrics));
+  }
+  if (!noJudge) {
+    console.log(formatPanelSummary(judgeTieringMetadata({
+      judgePanel,
+      stabilityRegister,
+      panelLimit,
+      rows
+    }), "after"));
   }
 }
 

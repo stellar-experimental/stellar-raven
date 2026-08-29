@@ -261,18 +261,6 @@ thresholds until this validation supports them.
 Done when: `eval/qa/README.md` and `run-evals` name the validated procedure, tests cover its
 boundary cases, and the next comparable rerun prints one verdict with its denominator and reasons.
 
-### `--max-panel-cases 10` is too small for 100-case runs
-
-31 rows met a boundary condition on the 2026-08-28 same-100 run
-(`eval/qa/results/2026-08-28T19-27-08-variantA.json`). The cap admitted 10 and
-denied panels to 21 via `panelEscalationSkipped: "max-panel-cases"`. The run
-summary line does not print the skipped count, so an operator sees it only by
-opening the artifact. `single` in such an artifact means "not escalated", not
-"not borderline".
-
-Done when: the cap scales with the denominator (or a documented larger default
-for 100-case runs), and the run summary prints the skipped-panel count.
-
 ### Judge stability on the same-100 set is degrading
 
 57 of the same-100 cases now sit below the 0.75 stability threshold, up from 47

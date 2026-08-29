@@ -17,7 +17,8 @@ import {
 } from "../eval/qa/judge.mjs";
 import {
   judgeTieringMetadata,
-  prepareJudgeStabilityRegister
+  prepareJudgeStabilityRegister,
+  resolvePanelCaseLimit
 } from "../eval/qa/run-qa.mjs";
 
 const correct = (extra = {}) => ({
@@ -400,14 +401,31 @@ describe("tiered QA judge selection", () => {
           sourceArtifactCount: 187,
           caseCount: 538
         },
-        maxPanelCases: 10,
-        boundaryPanelCases: 2
+        panelLimit: resolvePanelCaseLimit(30),
+        rows: [
+          {
+            verdict: {
+              meta: { judgeTierUsed: "panel", escalationReason: "boundary-partial" }
+            }
+          },
+          {
+            verdict: {
+              meta: { judgeTierUsed: "panel", escalationReason: "boundary-wrong-claim" }
+            }
+          }
+        ]
       })
     ).toMatchObject({
       stabilityRegisterSha256: "a".repeat(64),
       stabilityRegisterGeneratedAt: "2026-08-27T00:00:00.000Z",
       stabilityRegisterSourceArtifactCount: 187,
-      stabilityRegisterCaseCount: 538
+      stabilityRegisterCaseCount: 538,
+      selectedCaseCount: 30,
+      maxPanelCases: 10,
+      boundaryEligibleCases: 2,
+      panelUsedCases: 2,
+      panelSkippedCases: 0,
+      boundaryPanelCases: 2
     });
   });
 });

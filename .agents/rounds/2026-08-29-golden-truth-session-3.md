@@ -778,3 +778,5 @@ Route cards:
   PR https://github.com/stellar-experimental/stellar-raven/pull/92 opened against `main`. The
   second commit attempt hit one more false positive (this ledger quoting the flagged pattern);
   reworded; staged scan "no leaks found". Worker panes `w1B:p2–p5` left idle, not closed.
+- `2026-08-29T16:08Z` — PR #92 merged into `main` as `35c90ec`. This entry records the merge
+  provenance requested by the Fable orchestrator.

@@ -544,9 +544,13 @@ Two escalation paths exist, and only one can fire per row:
   threshold stays `single` and never reaches the boundary path.
 - **Boundary verdicts**, used only when the case has no usable history: a `partial` with at most
   one missing fact, exactly one wrong claim, or a non-correct trap verdict. These escalations
-  consume `--max-panel-cases` (default **10**, or `QA_MAX_PANEL_CASES`). Past the cap a row
-  records its `escalationReason` plus `panelEscalationSkipped: "max-panel-cases"` and stays
-  `single`.
+  consume `--max-panel-cases`. The default is one-third of the selected denominator, rounded up.
+  A floor of 10 preserves all frozen small-lane limits. A ceiling of 34 prevents extrapolation
+  beyond the same-100 evidence. Thus, denominators 2, 15, and 30 use 10. A denominator of 100
+  uses 34. Denominators 499 and 500 also use 34. `--max-panel-cases` or
+  `QA_MAX_PANEL_CASES` supplies an exact override, including zero. The parser trims the value and
+  accepts decimal digits only. Past the cap, a row records its `escalationReason`. It also records
+  `panelEscalationSkipped: "max-panel-cases"` and stays `single`.
 
 A judge `error` never escalates: an error is not a candidate grade, so neither path may spend a
 paid call on it. `--judge-panel 2|3` forces a fixed panel and bypasses selection entirely.
@@ -555,13 +559,23 @@ paid call on it. `--judge-panel 2|3` forces a fixed panel and bypasses selection
 The register is derived local data and is never a hard dependency. `run-qa.mjs` regenerates it at
 launch when `eval/qa/results/` exists, and a missing, unreadable, or source-drifted register
 reports its status and grades every row on the boundary path instead. `meta.judgeTiering` records
-the policy, the threshold, the register status and hash, the cap, and the boundary panels actually
-spent, so a reader can reconstruct the contract from the artifact alone.
+the policy, the threshold, the register status and hash, the selected denominator, the cap, its
+source, the clamp, and the panel counts. `boundaryEligibleCases` counts verdicts whose
+`escalationReason` starts with `boundary-`. `panelUsedCases` includes stability, boundary, and
+forced panels. `panelSkippedCases` counts cap skips. `boundaryPanelCases` counts used boundary
+panels. The runner prints the resolved cap before judging. It prints the cap and final counts
+after judging. Each line includes the source, selected denominator, boundary-eligible count, used
+count, and skipped count. A stored resume preserves its first stamped cap and source. A different
+explicit resume cap causes a refusal before another judge call.
 
-**Read the cap before reading the tier counts.** The default 10 is small relative to a 100-case
-run. In the 2026-08-28 run below, 31 rows met a boundary condition, the cap admitted 10, and the
-remaining 21 were graded on a single call — so `single` there means "not escalated", which is not
-the same as "not borderline".
+The 2026-08-28 same-100 artifact provides the ceiling evidence. Its 31 boundary rows used 10
+panels and skipped 21. Its mean panel cost was `$0.180`. Its mean single-call cost was `$0.069`.
+Covering all 31 boundary rows adds about `$2.40` of judge cost. No stored evidence supports
+scaling that absolute panel allowance above 34 for a larger denominator.
+
+**Read the cap before reading historical tier counts.** The 2026-08-28 run below used an explicit
+cap of 10. Its 31 boundary rows produced 10 panels and 21 skips. Therefore, `single` in that
+artifact can mean "not escalated", which is not the same as "not borderline".
 
 ## 2026-08-28 same-100 rerun on current main (checkpoint, not a re-baseline)
 
