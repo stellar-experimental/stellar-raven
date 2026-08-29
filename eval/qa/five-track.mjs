@@ -375,7 +375,7 @@ function coverageText(value) {
 export function formatFiveTrackSummary(summary) {
   return [
     `track schema: ${summary.schema}`,
-    `performance set: ${summary.activeSelectedIds.length} of ${summary.selectedIds.length} active · excluded quarantined IDs: ${idText(summary.quarantinedIds)}`,
+    `performance set: active ${summary.activeSelectedIds.length} of ${summary.selectedIds.length} selected · excluded quarantined IDs: ${idText(summary.quarantinedIds)}`,
     "T1 first-pass answer quality",
     `  first-attempt rows ${coverageText(summary.t1.firstAttemptRows)}`,
     `  answered first attempts ${coverageText(summary.t1.answeredFirstAttempts)}`,

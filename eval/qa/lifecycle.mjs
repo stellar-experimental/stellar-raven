@@ -20,7 +20,7 @@ export const MASS_REVIEW_SHARE_THRESHOLD = 0.05;
 export const QUARANTINE_REVIEW_DAYS = 30;
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-const SCORE_CAUSE_RE = /\b(?:score|scoring|verdict|judge noise|pass rate)\b/i;
+const SCORE_CAUSE_RE = /\b(?:score|scoring|verdict|judge[- ]noise|rates?|pass[- ]rate|correct(?:ness)?[- ]rate|accuracy|aggregates?|headline|tracks?|t[1-5]|desired[- ]movement)\b/i;
 
 function nonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
@@ -41,6 +41,17 @@ export function canonicalJson(value) {
 export function contentSha256(value) {
   return createHash("sha256").update(canonicalJson(value)).digest("hex");
 }
+
+export const MASS_REVIEW_RULES_NAME = "qa-mass-review-rules-v1";
+export const MASS_REVIEW_RULES = Object.freeze({
+  name: MASS_REVIEW_RULES_NAME,
+  activeQueuedCountThreshold: MASS_REVIEW_COUNT_THRESHOLD,
+  activeQueuedShareThreshold: MASS_REVIEW_SHARE_THRESHOLD,
+  activeQueuedShareRounding: "ceiling",
+  cadenceMonths: 3,
+  frozenPopulation: "active-case-ids"
+});
+export const MASS_REVIEW_RULES_SHA256 = contentSha256(MASS_REVIEW_RULES);
 
 function parseDate(value) {
   if (!DATE_RE.test(value ?? "")) return null;
@@ -124,6 +135,9 @@ export function lifecycleProblems(kase, { allowedStates = LIFECYCLE_STATES, toda
       if (!parseDate(quarantine.startedOn)) problems.push("truth.lifecycle.quarantine.startedOn must be YYYY-MM-DD");
       if (!parseDate(quarantine.reviewBy)) problems.push("truth.lifecycle.quarantine.reviewBy must be YYYY-MM-DD");
       if (parseDate(quarantine.startedOn) && parseDate(quarantine.reviewBy)) {
+        if (quarantine.reviewBy < quarantine.startedOn) {
+          problems.push("truth.lifecycle.quarantine.reviewBy must not precede startedOn");
+        }
         const latest = addUtcDays(quarantine.startedOn, QUARANTINE_REVIEW_DAYS);
         if (quarantine.reviewBy > latest) problems.push(`truth.lifecycle.quarantine.reviewBy must be within ${QUARANTINE_REVIEW_DAYS} days`);
       }
@@ -134,6 +148,9 @@ export function lifecycleProblems(kase, { allowedStates = LIFECYCLE_STATES, toda
       else if (SCORE_CAUSE_RE.test(quarantine.cause)) problems.push("truth.lifecycle.quarantine.cause must be score-independent");
       if (!nonEmptyString(quarantine.ledger)) problems.push("truth.lifecycle.quarantine.ledger is required");
       requireEvidence(problems, quarantine.evidence, "truth.lifecycle.quarantine.evidence");
+      if (lifecycle.review?.trigger === "judge-noise") {
+        problems.push("judge-noise review evidence cannot quarantine a case");
+      }
       if (quarantine.renewals !== undefined && !Array.isArray(quarantine.renewals)) {
         problems.push("truth.lifecycle.quarantine.renewals must be an array");
       }
@@ -143,6 +160,9 @@ export function lifecycleProblems(kase, { allowedStates = LIFECYCLE_STATES, toda
         if (!parseDate(renewal?.reviewBy)) problems.push(`${prefix}.reviewBy must be YYYY-MM-DD`);
         if (parseDate(renewal?.date) && parseDate(renewal?.reviewBy) && renewal.reviewBy > addUtcDays(renewal.date, QUARANTINE_REVIEW_DAYS)) {
           problems.push(`${prefix}.reviewBy must be within ${QUARANTINE_REVIEW_DAYS} days`);
+        }
+        if (parseDate(renewal?.date) && parseDate(renewal?.reviewBy) && renewal.reviewBy < renewal.date) {
+          problems.push(`${prefix}.reviewBy must not precede date`);
         }
         if (!nonEmptyString(renewal?.author)) problems.push(`${prefix}.author is required`);
         if (!nonEmptyString(renewal?.reviewer)) problems.push(`${prefix}.reviewer is required`);
@@ -225,7 +245,14 @@ function registryPath(root, file) {
   return path.relative(root, file).split(path.sep).join("/");
 }
 
-export function buildLifecycleRegistry({ root, batteryRecords, proposedRecords, tombstoneRecords, previousRegistry = null }) {
+export function buildLifecycleRegistry({
+  root,
+  batteryRecords,
+  proposedRecords,
+  tombstoneRecords,
+  previousRegistry = null,
+  genesis = previousRegistry === null
+}) {
   const entries = [];
   const byId = new Map();
   const add = (record, lane) => {
@@ -265,6 +292,13 @@ export function buildLifecycleRegistry({ root, batteryRecords, proposedRecords, 
     }
   }
   const previousById = new Map(previousEntries.map((entry) => [entry.id, entry]));
+  if (!genesis) {
+    for (const entry of entries) {
+      if (!previousById.has(entry.id) && entry.state !== "proposed") {
+        throw new Error(`new lifecycle id ${entry.id} must first be committed as proposed`);
+      }
+    }
+  }
   for (const [id, previous] of previousById) {
     const current = byId.get(id);
     if (!current) throw new Error(`reserved lifecycle id ${id} is missing; add or retain its retired tombstone`);
@@ -345,6 +379,9 @@ export function massReviewStatus(cases, policy, today = new Date().toISOString()
 export function lifecyclePolicyProblems(cases, policy, today, { enforceTriggers = true } = {}) {
   const problems = [];
   if (policy?.schema !== LIFECYCLE_POLICY_SCHEMA) problems.push(`policy schema must be ${LIFECYCLE_POLICY_SCHEMA}`);
+  if (policy?.massReview?.rules !== MASS_REVIEW_RULES_NAME) {
+    problems.push(`massReview.rules must be ${MASS_REVIEW_RULES_NAME}`);
+  }
   if (!parseDate(policy?.massReview?.cadenceAnchorOn)) problems.push("massReview.cadenceAnchorOn must be YYYY-MM-DD");
   if (!["none", "in-review"].includes(policy?.massReview?.state)) problems.push("massReview.state must be none or in-review");
   const status = massReviewStatus(cases, policy, today);
@@ -365,7 +402,11 @@ export function lifecyclePolicyProblems(cases, policy, today, { enforceTriggers 
         problems.push("massReview.frozenActiveIdsSha256 does not match the active case set");
       }
     }
-    if (!/^[a-f0-9]{64}$/.test(policy.massReview.rulesSha256 ?? "")) problems.push("massReview.rulesSha256 must be a SHA-256 digest");
+    if (!/^[a-f0-9]{64}$/.test(policy.massReview.rulesSha256 ?? "")) {
+      problems.push("massReview.rulesSha256 must be a SHA-256 digest");
+    } else if (policy.massReview.rulesSha256 !== MASS_REVIEW_RULES_SHA256) {
+      problems.push(`massReview.rulesSha256 must match ${MASS_REVIEW_RULES_NAME}`);
+    }
   }
   return { problems, status };
 }

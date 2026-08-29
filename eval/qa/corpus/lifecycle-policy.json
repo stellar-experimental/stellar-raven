@@ -1,6 +1,7 @@
 {
   "schema": "qa-lifecycle-policy-v1",
   "massReview": {
+    "rules": "qa-mass-review-rules-v1",
     "cadenceAnchorOn": "2026-08-29",
     "state": "none"
   }

@@ -4,6 +4,7 @@
  * Kept dependency-free (plain Node ≥ 18). Everything deterministic lives here
  * so compile-qa.mjs and run-qa.mjs sample identically.
  */
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -60,6 +61,17 @@ export function partitionLifecycleCases(cases) {
     activeIds: active.map((kase) => kase.id),
     quarantinedIds: quarantined.map((kase) => kase.id)
   };
+}
+
+export function lifecycleSnapshot(cases) {
+  return cases.map((kase) => ({
+    id: kase.id,
+    lifecycle: kase.truth?.lifecycle ?? { state: "active", reviewState: "none" }
+  }));
+}
+
+export function lifecycleSnapshotSha256(snapshot) {
+  return createHash("sha256").update(JSON.stringify(snapshot)).digest("hex");
 }
 
 /**

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /** Compile the owned one-file-per-case QA battery into deterministic artifacts. */
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,6 +28,7 @@ import { strkeyFindings } from "./strkey.mjs";
 const CORPUS_DIR = path.join(QA_DIR, "corpus/battery");
 const PROPOSED_DIR = path.join(QA_DIR, "corpus/proposed");
 const RETIRED_DIR = path.join(QA_DIR, "corpus/retired");
+const REPO_ROOT = path.resolve(QA_DIR, "../..");
 const LEDGER_PATH = path.join(QA_DIR, "corpus/migration-ledger.json");
 const REGISTER_PATH = path.join(QA_DIR, "consistency-register.json");
 const SAMPLE_SIZE = 30;
@@ -152,22 +154,89 @@ function validateCase(file, kase, { allowedLifecycleStates = COMPILED_LIFECYCLE_
   return kase;
 }
 
-export function validateCaseFile(file) {
-  return validateCase(file, json(file));
+export function validateCaseFile(file, options = {}) {
+  return validateCase(file, json(file), options);
 }
 
 function recordsFrom(dir, options) {
   return walkJsonFiles(dir).map((file) => ({ file, value: validateCase(file, json(file), options) }));
 }
 
+export function validateTombstoneFile(file) {
+  const value = json(file);
+  const [problem] = tombstoneProblems(value);
+  if (problem) fail(file, problem);
+  if (path.basename(file) !== `${value.id}.json`) fail(file, "filename must equal id + .json");
+  return value;
+}
+
 function tombstoneRecordsFrom(dir) {
   return walkJsonFiles(dir).map((file) => {
-    const value = json(file);
-    const [problem] = tombstoneProblems(value);
-    if (problem) fail(file, problem);
-    if (path.basename(file) !== `${value.id}.json`) fail(file, "filename must equal id + .json");
-    return { file, value };
+    return { file, value: validateTombstoneFile(file) };
   });
+}
+
+function defaultLifecycleBaseRef() {
+  if (!process.env.CI) return "HEAD";
+  if (process.env.GITHUB_EVENT_NAME === "pull_request" && process.env.GITHUB_EVENT_PATH) {
+    try {
+      const headSha = json(process.env.GITHUB_EVENT_PATH)?.pull_request?.head?.sha;
+      if (/^[a-f0-9]{40}$/.test(headSha ?? "")) return `${headSha}^`;
+    } catch {
+      // The normal CI fallback below still refuses genesis when HEAD has history.
+    }
+  }
+  return "HEAD^";
+}
+
+export function loadGitAnchoredLifecycleRegistry({
+  root = REPO_ROOT,
+  registryPath = LIFECYCLE_REGISTRY_PATH,
+  baseRef = process.env.QA_LIFECYCLE_BASE_REF ?? defaultLifecycleBaseRef()
+} = {}) {
+  let commits;
+  try {
+    commits = execFileSync("git", ["rev-list", "--first-parent", baseRef], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    }).trim().split("\n").filter(Boolean);
+  } catch {
+    try {
+      const head = execFileSync("git", ["rev-list", "--parents", "-n", "1", "HEAD"], {
+        cwd: root,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"]
+      }).trim().split(/\s+/).filter(Boolean);
+      if (baseRef === "HEAD^" && head.length === 1) {
+        return { registry: null, commit: null, genesis: true, baseRef };
+      }
+      throw new Error(`cannot resolve lifecycle registry base ${baseRef}; refusing genesis`);
+    } catch (error) {
+      if (error.message?.includes("refusing genesis")) throw error;
+      return { registry: null, commit: null, genesis: true, baseRef };
+    }
+  }
+  const relativeRegistryPath = path.relative(root, registryPath).split(path.sep).join("/");
+  for (const commit of commits) {
+    let source;
+    try {
+      source = execFileSync("git", ["show", `--no-textconv`, `${commit}:${relativeRegistryPath}`], {
+        cwd: root,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"]
+      });
+    } catch {
+      // The registry can be absent from newer commits. Continue to the nearest ancestor.
+      continue;
+    }
+    try {
+      return { registry: JSON.parse(source), commit, genesis: false, baseRef };
+    } catch (error) {
+      throw new Error(`committed lifecycle registry at ${commit} is invalid JSON: ${error.message}`);
+    }
+  }
+  return { registry: null, commit: null, genesis: true, baseRef };
 }
 
 function validateRegister(register) {
@@ -262,13 +331,14 @@ function main() {
     enforceTriggers: false
   });
   if (policyResult.problems.length) throw new Error(`corpus/lifecycle-policy.json: ${policyResult.problems[0]}`);
-  const previousRegistry = existsSync(LIFECYCLE_REGISTRY_PATH) ? json(LIFECYCLE_REGISTRY_PATH) : null;
+  const registryAnchor = loadGitAnchoredLifecycleRegistry();
   const lifecycleRegistry = buildLifecycleRegistry({
-    root: path.resolve(QA_DIR, "../.."),
+    root: REPO_ROOT,
     batteryRecords,
     proposedRecords,
     tombstoneRecords,
-    previousRegistry
+    previousRegistry: registryAnchor.registry,
+    genesis: registryAnchor.genesis
   });
   const corpusContentSha256 = sha256(JSON.stringify(cases));
   const sample = stratifiedSample(cases, SAMPLE_SIZE);

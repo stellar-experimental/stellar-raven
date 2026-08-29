@@ -354,8 +354,10 @@ queues review while trusted truth remains active. A trigger changes no golden by
 
 Sample the full active-plus-quarantined compiled pool first. Then
 partition the selected IDs. Never re-pick, replace, or append IDs. Active IDs form the performance
-set; quarantined IDs remain diagnostic and stay outside T1 and T3. Print the active denominator as
-`k of N` and list every excluded quarantined ID. Apply the same partition to explicit `--ids` lists.
+set; quarantined IDs remain diagnostic and stay outside T1 and T3. Print the denominator as
+`active k of N selected`. List every excluded quarantined ID. Apply the same partition to explicit
+`--ids` lists. Stored judging uses the collection lifecycle snapshot for panels and tracks. It
+fails closed when the current lifecycle differs.
 
 Keep the corpus-health report separate from T1 through T5. A corpus change is not a system gain.
 Use unchanged IDs for comparisons after small edits. Require a pre-spend baseline decision when

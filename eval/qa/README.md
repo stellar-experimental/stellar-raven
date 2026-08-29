@@ -351,9 +351,9 @@ Every outcome category lists its IDs.
   parse failures stay in T4.
 
 Sampling always uses the complete active-plus-quarantined compiled pool. Reporting partitions the
-selected IDs afterward. The console prints `k of N` active cases and every excluded quarantined ID.
-Quarantined rows stay in T4 diagnostics and stay outside T1 and T3. Explicit `--ids` selections use
-the same partition. The runner never replaces, re-picks, or appends an ID after partitioning.
+selected IDs afterward. The console prints `active k of N selected` and every excluded
+quarantined ID. Quarantined rows stay in T4 diagnostics and stay outside T1 and T3. Explicit
+`--ids` selections use the same partition. The runner never replaces, re-picks, or appends an ID.
 
 `summary.overall`, service rows, and category rows are raw first-attempt judge-score diagnostics.
 They are not T1 quality or T3 safety. The console labels them and omits the old raw trap table.
@@ -469,15 +469,17 @@ tombstone belongs under `corpus/retired/`. Proposed files and tombstones never e
 `sample.json`, T1, or T3.
 
 Activation requires the complete `golden-truth` verification, duplicate and boundary checks, and
-an independent reviewer. A proposal that moves into the battery records
+an independent reviewer. After registry genesis, each new ID first lands as a proposal in one
+commit. A later commit can move it into the battery. That activation records
 `truth.lifecycle.activation` with its date, author, reviewer, evidence, and round ledger. The
 reviewer must differ from the author. Activation never follows from a favorable score.
 
 A credible truth or case-validity conflict can quarantine a case. The case records a
 score-independent cause, author, independent reviewer, evidence, round ledger, start date, and
-`reviewBy`. `reviewBy` must be within 30 days. A quarantine review corrects the case, retires it,
-or renews the quarantine. Each renewal records a new independent review, evidence, ledger, and
-another decision date within 30 days. Reactivation always needs an explicit reviewed decision.
+`reviewBy`. `reviewBy` must start on or after `startedOn` and remain within 30 days. A quarantine
+review corrects the case, retires it, or renews the quarantine. Each renewal records a new
+independent review, evidence, ledger, and a decision date within 30 days after the renewal date.
+The decision date cannot precede the renewal date. Reactivation needs an explicit reviewed decision.
 
 Judge noise does not justify quarantine. It sets `reviewState: "queued"` while verified truth stays
 active. Verified observability failures, landed improvements, live drift, verified user failures,
@@ -492,16 +494,18 @@ The closed trigger values are `verified-observability-failure`, `landed-improvem
 Retirement needs a score-independent reason such as duplication, obsolete scope, unanswerable
 wording, or lost product relevance. The tombstone records the retirement date, author, independent
 reviewer, evidence, round ledger, the final case content digest, and replacement IDs. The generated
-`lifecycle-registry.json` permanently reserves every observed ID. The compiler rejects a missing
-reserved ID, a duplicate across lifecycle lanes, a retired-ID resurrection, and a tombstone whose
-final digest does not match the prior registry.
+`lifecycle-registry.json` permanently reserves every observed ID. The compiler reads the prior
+registry from Git history. It rejects false genesis, a missing reserved ID, a direct battery
+addition, a duplicate across lifecycle lanes, a retired-ID resurrection, and a tombstone whose
+final digest does not match the prior registry. Lint validates every lane and every reservation.
 
 Mass review starts at the earliest of three triggers: 25 queued active cases, five percent of
 active cases queued, or three calendar months after the cadence anchor. A completed mass review
 updates that anchor. The lint calculation uses a ceiling for the five-percent case count. An open
-mass review records its start date,
-ledger, frozen active-ID digest, and frozen rule digest in `corpus/lifecycle-policy.json`. Reviewers
-stay blind to desired score movement. Corpus-health results remain separate from system results.
+mass review records its start date, ledger, frozen active-ID digest, and the named
+`qa-mass-review-rules-v1` digest in `corpus/lifecycle-policy.json`. The canonical rules object is
+`MASS_REVIEW_RULES` in `lifecycle.mjs`. `rulesSha256` must equal its canonical content digest.
+Reviewers stay blind to desired score movement. Corpus-health results stay separate from system results.
 
 ## Judging rubric and score comparability
 

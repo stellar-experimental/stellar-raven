@@ -97,16 +97,18 @@ orthogonal `truth.lifecycle.reviewState` values `none`, `queued`, `in-review`, a
 Active and quarantined case files own lifecycle truth. Proposed files stay outside the battery
 until `golden-truth` verification activates them. Retired tombstones also stay outside the battery.
 A generated canonical registry records case and tombstone digests, reserves proposed and retired
-IDs permanently, and rejects every ID reuse.
+IDs permanently, and rejects every ID reuse. After registry genesis, every new ID first lands in
+the proposed lane. A later commit can activate it only with activation evidence. The compiler
+anchors the prior registry in Git history and refuses a false genesis.
 
 Sampling continues over the complete compiled active-plus-quarantined pool. Reporting partitions
 the selected IDs afterward. Never re-pick, replace, or append selected IDs. Quarantined rows remain
-diagnostic and stay outside T1 and T3. Print the active denominator as `k of N` and list every
-excluded quarantined ID. Apply the same partition to explicit `--ids` lists.
+diagnostic and stay outside T1 and T3. Print `active k of N selected` and list every excluded
+quarantined ID. Apply the same partition to explicit `--ids` lists.
 
 Every quarantine needs a score-independent cause, an independent reviewer, a ledger record, and a
-30-day review. That review corrects, retires, or renews the quarantine. It never reactivates a case
-automatically.
+30-day review. Its deadline cannot precede its start date. The same rule applies to renewals. That
+review corrects, retires, or renews the quarantine. It never reactivates a case automatically.
 
 A credible truth or validity conflict triggers quarantine before the next aggregate is published,
 after the independent review bar is met. Judge noise without golden-ambiguity evidence sets
@@ -117,10 +119,10 @@ verified user failures, and recurrent eval evidence. Each trigger queues review;
 golden by itself.
 
 Start mass review when 25 active cases are queued, five percent of active cases are queued, or one
-quarter passes. Freeze cases and rules before review. Keep corpus-health reports separate from
-system-performance reports. Compare unchanged IDs after small corpus edits. A new paid baseline
-requires pre-spend review when sample membership changes or at least five percent of active cases
-change.
+quarter passes. Freeze cases and the named `qa-mass-review-rules-v1` digest before review. Keep
+corpus-health reports separate from system-performance reports. Compare unchanged IDs after small
+corpus edits. A new paid baseline requires pre-spend review when sample membership changes or at
+least five percent of active cases change.
 
 ### Playground and external work
 
@@ -140,4 +142,5 @@ new authorization.
 - Recovery experiments remain separate from existing frozen lanes.
 - Retry recovery cannot hide first-pass failures or provider behavior.
 - The current Playground stays small and stateless while accepting larger intentional prompts.
-- Implementation work remains queued in `.agents/TODO.md`; this ADR does not claim it has shipped.
+- The five-track and golden lifecycle contracts shipped on 2026-08-29.
+- Repository recovery and Playground work remain queued in `.agents/TODO.md`.

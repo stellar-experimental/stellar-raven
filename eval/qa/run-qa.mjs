@@ -79,7 +79,16 @@ import { existsSync, mkdtempSync, readFileSync, readdirSync, writeFileSync, mkdi
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { QA_DIR, loadCases, partitionLifecycleCases, stratifiedSample, summarize, formatSummaryTable } from "./lib.mjs";
+import {
+  QA_DIR,
+  formatSummaryTable,
+  lifecycleSnapshot,
+  lifecycleSnapshotSha256,
+  loadCases,
+  partitionLifecycleCases,
+  stratifiedSample,
+  summarize
+} from "./lib.mjs";
 import {
   buildAgentErrorVerdict,
   buildTranscriptEvidence,
@@ -881,8 +890,8 @@ export function isRetryableAgentFailure(failure) {
 }
 
 /** Build the production five-track report from the immutable selected cases. */
-export function buildRunnerTracks({ selectedCases, rows, unjudgedSelectedIds = null }) {
-  const partition = partitionLifecycleCases(selectedCases);
+export function buildRunnerTracks({ selectedCases, rows, unjudgedSelectedIds = null, lifecyclePartition = null }) {
+  const partition = lifecyclePartition ?? partitionLifecycleCases(selectedCases);
   return buildFiveTrackSummary({
     selectedIds: partition.selected.map((kase) => kase.id),
     activeSelectedIds: partition.activeIds,
@@ -891,6 +900,38 @@ export function buildRunnerTracks({ selectedCases, rows, unjudgedSelectedIds = n
     rows,
     unjudgedSelectedIds
   });
+}
+
+export function verifyStoredLifecycleSnapshot(results, currentSelectedCases) {
+  const snapshot = results.meta?.inputSnapshot?.lifecycle;
+  const expectedSha256 = results.meta?.inputSnapshot?.lifecycleSha256;
+  if (!Array.isArray(snapshot) || !/^[a-f0-9]{64}$/.test(expectedSha256 ?? "")) {
+    throw new Error("--judge-stored: a valid collection-time lifecycle snapshot is required; re-collect");
+  }
+  if (lifecycleSnapshotSha256(snapshot) !== expectedSha256) {
+    throw new Error("--judge-stored: the collection-time lifecycle snapshot digest is invalid; re-collect");
+  }
+  const rowIds = results.rows.map((row) => row.id);
+  const snapshotIds = snapshot.map((entry) => entry?.id);
+  if (JSON.stringify(snapshotIds) !== JSON.stringify(rowIds)) {
+    throw new Error("--judge-stored: the collection-time lifecycle snapshot does not match the stored row order; re-collect");
+  }
+  if (results.meta?.selectedIds && JSON.stringify(snapshotIds) !== JSON.stringify(results.meta.selectedIds)) {
+    throw new Error("--judge-stored: the collection-time lifecycle snapshot does not match selectedIds; re-collect");
+  }
+  const rowSnapshot = results.rows.map((row) => ({ id: row.id, lifecycle: row.truth?.lifecycle }));
+  if (JSON.stringify(rowSnapshot) !== JSON.stringify(snapshot)) {
+    throw new Error("--judge-stored: stored row lifecycle differs from the collection snapshot; re-collect");
+  }
+  const currentSnapshot = lifecycleSnapshot(currentSelectedCases);
+  if (JSON.stringify(currentSnapshot) !== JSON.stringify(snapshot)) {
+    throw new Error("--judge-stored: current lifecycle differs from the collection snapshot; re-collect");
+  }
+  const selectedCases = currentSelectedCases.map((kase, index) => ({
+    ...kase,
+    truth: { ...kase.truth, lifecycle: snapshot[index].lifecycle }
+  }));
+  return { snapshot, selectedCases, partition: partitionLifecycleCases(selectedCases) };
 }
 
 /** Raw judge-score diagnostics are not the T1 quality or T3 safety report. */
@@ -1014,15 +1055,6 @@ export async function judgeStoredResults(
     row.outcomeClass = rowOutcomeClass(row);
   }
   const spendLedger = resumeSpendLedger(maxBudgetUsd, meta.budget ?? null);
-  const activeStoredCaseCount = results.rows.filter(
-    (row) => row.truth?.lifecycle?.state !== "quarantined"
-  ).length;
-  const panelLimit = resolveStoredPanelCaseLimit({
-    selectedCaseCount: activeStoredCaseCount,
-    storedJudgeTiering: meta.judgeTiering,
-    maxPanelCasesOverride: maxPanelCases,
-    overrideSource: maxPanelCasesSource
-  });
   if (meta.packVersion !== PACK_VERSION) {
     throw new Error(
       `--judge-stored: results were collected with evidence pack ${meta.packVersion}, current is ${PACK_VERSION} — re-collect, or re-judge.mjs --allow-non-identical for a side artifact`
@@ -1070,9 +1102,9 @@ export async function judgeStoredResults(
     );
   }
   const identity = verifySourceCases(results, resultsPath);
-  const storedSelectedCases = (meta.selectedIds ?? results.rows.map((row) => row.id))
-    .map((id) => identity.caseById.get(id));
-  const storedLifecyclePartition = partitionLifecycleCases(storedSelectedCases);
+  const lifecycleGuard = verifyStoredLifecycleSnapshot(results, identity.selectedCases);
+  const storedSelectedCases = lifecycleGuard.selectedCases;
+  const storedLifecyclePartition = lifecycleGuard.partition;
   const storedActiveIds = new Set(storedLifecyclePartition.activeIds);
   const storedActiveRows = () => results.rows.filter((row) => storedActiveIds.has(row.id));
   if (!identity.guard.matches) {
@@ -1080,6 +1112,12 @@ export async function judgeStoredResults(
       `--judge-stored: case input snapshot differs (expected ${identity.guard.expectedCasesSha256}, got ${identity.guard.actualCasesSha256}; missing ids: ${identity.guard.missingCaseIds.join(", ") || "none"}) — the golden corpus moved since collection; re-collect`
     );
   }
+  const panelLimit = resolveStoredPanelCaseLimit({
+    selectedCaseCount: storedLifecyclePartition.active.length,
+    storedJudgeTiering: meta.judgeTiering,
+    maxPanelCasesOverride: maxPanelCases,
+    overrideSource: maxPanelCasesSource
+  });
 
   // Explicit judge CLI and parse classes on answered rows remain retryable.
   // Untyped legacy errors are terminal because their timeout and safeguard
@@ -1156,9 +1194,10 @@ export async function judgeStoredResults(
       .filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure) && row.attempts.judge.length === 0)
       .map((row) => row.id);
     meta.tracks = buildRunnerTracks({
-      selectedCases: meta.selectedIds.map((id) => identity.caseById.get(id)),
+      selectedCases: storedSelectedCases,
       rows: results.rows,
-      unjudgedSelectedIds
+      unjudgedSelectedIds,
+      lifecyclePartition: storedLifecyclePartition
     });
     meta.budget = spendLedgerRecord(spendLedger);
     meta.judgeStored = {
@@ -1433,6 +1472,7 @@ async function main() {
   const sampleN = argVal("--sample") ? Number(argVal("--sample")) : undefined;
   if (sampleN) cases = stratifiedSample(cases, sampleN);
   const lifecyclePartition = partitionLifecycleCases(cases);
+  const collectionLifecycleSnapshot = lifecycleSnapshot(cases);
   // Pre-spend: an empty selection spawns nothing, and a duplicated id pays
   // twice for one case and then collapses on every per-id join.
   assertRunPlan(cases.map((c) => c.id), { label: "run-qa" });
@@ -1460,7 +1500,7 @@ async function main() {
   });
   const serverProcess = boundServerIdentity(port, serverRevision);
   console.log(
-    `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}${lifecyclePartition.active.length} of ${cases.length} active cases · excluded quarantined IDs: ${lifecyclePartition.quarantinedIds.join(", ") || "none"} · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`}`
+    `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}active ${lifecyclePartition.active.length} of ${cases.length} selected cases · excluded quarantined IDs: ${lifecyclePartition.quarantinedIds.join(", ") || "none"} · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`}`
   );
 
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "qa-mcp-"));
@@ -1688,7 +1728,7 @@ async function main() {
   const selectedIds = cases.map((c) => c.id);
   const unattemptedIds = selectedIds.filter((id) => !rows.some((row) => row.id === id));
   const totals = costTotals(rows);
-  const tracks = buildRunnerTracks({ selectedCases: cases, rows });
+  const tracks = buildRunnerTracks({ selectedCases: cases, rows, lifecyclePartition });
   const budget = spendLedgerRecord(spendLedger);
   const stampSuffix = surface === "per-operation" ? "perOperation" : `variant${variant}`;
   const stamp = `${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}-${stampSuffix}`;
@@ -1750,6 +1790,8 @@ async function main() {
           inputSnapshot: {
             casesSha256: sha256(JSON.stringify(cases)),
             caseIdsSha256: sha256(JSON.stringify(cases.map((c) => c.id))),
+            lifecycle: collectionLifecycleSnapshot,
+            lifecycleSha256: lifecycleSnapshotSha256(collectionLifecycleSnapshot),
             manifestGeneratedAt: plainSurface.metrics.manifestGeneratedAt,
             operationIdsSha256: plainSurface.metrics.operationIdsSha256,
             operationEntriesSha256: plainSurface.metrics.operationEntriesSha256
