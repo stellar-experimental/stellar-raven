@@ -114,3 +114,56 @@ The reviewer also confirmed both deterministic T4 violations still fire.
 The focused recheck passed 2 files and 152 tests.
 
 Final Grok verdict: **PASS**.
+
+## Paid judge self-test authorization
+
+The user authorized one `npm run eval:qa:selftest` method run.
+The authorization permits exactly seven `claude-sonnet-5` judge calls and no retry.
+Each JSON judge call receives `--max-budget-usd 0.40`.
+The method has a hard total limit of `$0.80`.
+
+The independent Grok review covered the seven candidates and the paid summary fields.
+The final Grok verdict was `PASS` before this spend.
+
+| Launch field | Value |
+| --- | --- |
+| Real Claude path | `/Users/kalepail/.local/bin/claude` |
+| Real Claude version | `2.1.251 (Claude Code)` |
+| Wrapper path | `/tmp/judge-selftest-wrapper.QOkrXw/claude` |
+| Wrapper SHA-256 | `1f06cd9c1c7b5662288f0314b3ad4688a92926f2514ceff1bb7c2fda64da062e` |
+| Wrapper shell | `/bin/zsh` |
+| Per-call cap | `$0.40` |
+| Method cap | `$0.80` |
+| Expected calls | `7` |
+| Retry authority | None |
+
+The wrapper is first on `PATH` only for the authorized method process.
+It prints no arguments or environment values.
+
+## Paid judge self-test result
+
+The authorized method ran exactly once with `/bin/zsh`.
+The wrapper injected `--max-budget-usd 0.40` into each JSON judge call.
+The method used `claude-sonnet-5` with rubric `v2.9`.
+
+| Result field | Value |
+| --- | --- |
+| Method runs | `1` |
+| Expected calls | `7` |
+| Actual calls | `7` |
+| Reported costs | `7` |
+| Missing costs | `0` |
+| Total cost | `$0.2465634` |
+| Hard total limit | `$0.80` |
+| Retry count | `0` |
+| Prompt hashes | `15/15` pass |
+| Expected behaviors | `7/7` pass |
+| Process result | `self-test GREEN`, exit `0` |
+
+Every stop condition remained false.
+The actual call count matched seven.
+All costs were present.
+Every expected behavior passed.
+The total cost stayed `$0.5534366` below the hard limit.
+
+Paid gate verdict: **PASS**.
