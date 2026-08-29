@@ -37,7 +37,10 @@ export const FAKE_JUDGE_INPUT = {
  * `isolatePath` drops the inherited PATH entirely, which is how the
  * missing-CLI case is produced. Remaining options go straight to judgeCase.
  */
-export async function judgeWithFakeCli(script, { prefix, isolatePath = false, ...judgeOptions } = {}) {
+export async function judgeWithFakeCli(
+  script,
+  { prefix, isolatePath = false, input = FAKE_JUDGE_INPUT, ...judgeOptions } = {}
+) {
   const directory = mkdtempSync(join(tmpdir(), prefix));
   if (script !== null) {
     const executable = join(directory, "claude");
@@ -47,7 +50,7 @@ export async function judgeWithFakeCli(script, { prefix, isolatePath = false, ..
   const originalPath = process.env.PATH;
   process.env.PATH = isolatePath ? directory : `${directory}:${originalPath}`;
   try {
-    return await judgeCase(FAKE_JUDGE_INPUT, judgeOptions);
+    return await judgeCase(input, judgeOptions);
   } finally {
     process.env.PATH = originalPath;
     rmSync(directory, { recursive: true, force: true });
@@ -55,7 +58,10 @@ export async function judgeWithFakeCli(script, { prefix, isolatePath = false, ..
 }
 
 /** A CLI that returns `modelVerdict` in a normal envelope and exits 0. */
-export function judgeWithFakeClaude(modelVerdict, { costUsd = 0.125, promptIncludes = [] } = {}) {
+export function judgeWithFakeClaude(
+  modelVerdict,
+  { costUsd = 0.125, promptIncludes = [], input = FAKE_JUDGE_INPUT } = {}
+) {
   const envelope = JSON.stringify({ result: JSON.stringify(modelVerdict), total_cost_usd: costUsd });
   return judgeWithFakeCli(
     `#!/usr/bin/env node\n` +
@@ -63,7 +69,7 @@ export function judgeWithFakeClaude(modelVerdict, { costUsd = 0.125, promptInclu
       `const required = ${JSON.stringify(promptIncludes)};\n` +
       `if (required.some((text) => !prompt.includes(text))) process.exit(23);\n` +
       `process.stdout.write(${JSON.stringify(envelope)});\n`,
-    { prefix: "qa-fake-claude-" }
+    { prefix: "qa-fake-claude-", input }
   );
 }
 
