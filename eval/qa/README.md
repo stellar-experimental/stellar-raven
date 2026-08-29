@@ -145,9 +145,9 @@ npm run eval:qa:lint -- --since <ref>      # + gospel-change guard vs that ref (
 npm run eval:qa:register                   # --seed to baseline, --check for CI-style dry run
 
 # Run the battery (boot the server first; see below)
-node eval/qa/run-qa.mjs --variant A --sample 30 --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json    # plan regrade, offline
 ```
 
@@ -175,8 +175,9 @@ server, and the capped Claude executable before spending. The runner checks the 
 clean state, compiled source revision, and surface again after collection. It rejects a comparison
 if these values change.
 It still writes the paid rows. It marks the artifact as non-comparable and suppresses aggregates.
-Other flags include `--ids a,b,c`, `--no-judge`, `--model`, `--judge-model`, `--cases <path>`,
-and `--surface per-operation` for the isolated 50-operation architecture instrument
+Every paid runner command requires exactly one `--max-budget-usd <usd>` flag. Duplicate budget
+flags fail before any call. Other flags include `--ids a,b,c`, `--no-judge`, `--model`,
+`--judge-model`, `--cases <path>`, and `--surface per-operation` for the isolated 50-operation architecture instrument
 (`compare-architecture-ab.mjs`). Variant A = the shipped `search` (ADR-0001); B requires a
 build exposing a code-shaped tool plus `--search-tool`. Results land in
 `eval/qa/results/<stamp>-variant<X>.json` (local-only): rows carry `truth.status`/`truth.asOf`
@@ -196,6 +197,22 @@ safeguard can no longer reach a judge as a candidate answer (the 2026-08-14
 transport blip). Rows also carry `agent.usage.{final,perTurn,perTurnAvailable}` and a bounded
 redacted `agent.stderr.{chars,sha256,excerpt}`. `meta.resultsSchema` stamps the shape;
 `--judge-stored` refuses a file collected under any other schema.
+
+Each result stamps `meta.trackSchema: "qa-five-track-v1"`. Every row keeps
+`attempts.agent[]`, `attempts.judge[]`, `firstAttempt`, and `outcomeClass`. Each attempt keeps its
+input hash, answer hash, failure class, and reported cost. The top-level `answer`, `agent`, and
+`verdict` remain the first attempt. A retry never replaces them.
+
+Only a first-pass `transport` failure can receive one byte-identical answering retry. The retry
+uses the same prompt hash. Provider safeguards, timeouts, spawn failures, protocol failures,
+agent-limit exits, and unclassified failures never retry.
+
+Judge errors carry `failureClass`. Only `cli` and `parse` can receive one total retry. The limit
+applies across inline judging and all `--judge-stored` resumes. `provider-safeguard`, `timeout`,
+and `consistency` are terminal. Stored judging writes each completed attempt before it starts an
+eligible retry.
+Untyped legacy judge errors are also terminal. Their timeout and safeguard status is unknown.
+Use `re-judge.mjs` for those saved rows instead of inferring a retry class.
 
 Version 4 keeps the full search input and a bounded search-result projection. It also requires an
 answering-agent directory outside the repository. Answering agents use `--setting-sources ""`,
@@ -291,12 +308,45 @@ escape was hiding.
 provider omits cost data, and the old `costUsd ?? 0` totals made that indistinguishable from a
 genuinely free call — silently understating spend. `meta.totalAgentCostUsd`,
 `meta.totalJudgeCostUsd`, and `meta.totalCostUsd` now sum **only reported** costs (rounded to 12
-decimals), and `meta.costAccounting` says how many were reported out of how many were expected:
-`{expectedJudgeCalls, reportedJudgeCalls, missingJudgeCosts, expectedAgentRuns,
-reportedAgentCosts, missingAgentCosts}`. A nonzero `missing*` means the totals are a **lower
+decimals), and `meta.costAccounting` uses one shape everywhere:
+`{expectedAgentCalls, reportedAgentCosts, missingAgentCosts, expectedJudgeCalls,
+reportedJudgeCosts, missingJudgeCosts, complete}`. A nonzero `missing*` means the totals are a **lower
 bound on real spend**, not a complete figure. `expectedJudgeCalls` counts rows that actually
 reached a judge, so an unjudged row reads as unjudged rather than as a lost cost.
 `re-judge.mjs` carries the same accounting for its own artifacts.
+
+`--max-budget-usd` is required exactly once for every paid command. It makes the command a
+sequential total-cap method. Before each answering,
+judging, panel, stored-judge, or re-judge call, the harness passes only the remaining authorized
+amount to the CLI. Each reported cost reduces the ledger. Exhaustion stops the next paid call and
+records every unattempted ID. A call without a reported cost invalidates the method.
+Stored judging restores the earlier ledger. A new cap is the total cap across the stored method.
+The runner subtracts all earlier reported spend before the next call.
+
+## Five-track result contract
+
+`meta.tracks` and the console report ADR-0008 T1 through T5. Every rate includes its denominator.
+Every outcome category lists its IDs.
+
+- T1 reports first-attempt row coverage, answered coverage, valid-grade coverage, conditional
+  first-pass quality, and agent-limit failures.
+- T2 fixes its denominator at first-pass transport failures. It reports recovered, repeated, and
+  unattempted retries. A changed retry input hash is a T4 harness error.
+- T3 reports answered trap coverage. It uses explicit grades, avoid matches, and consistency
+  evidence. It never derives safety from `judgeScore`.
+- T4 reports separate collection and judging lists, spawn and protocol failures, judge error
+  classes, consistency contradictions, panels, retries, costs, invalid tests, and quarantined
+  diagnostics. Panel vote failures remain visible here.
+- T5 reports answering safeguards, transport failures, and timeouts. It also reports judge
+  safeguards and timeouts, including panel votes. Judge transport is not a class. Judge CLI and
+  parse failures stay in T4.
+
+The current corpus has no lifecycle partition. Therefore, every selected ID is active, and the
+invalid-test and quarantined-diagnostic lists are empty. The later lifecycle lane will supply those
+lists without changing this track contract.
+
+`summary.overall`, service rows, and category rows are raw first-attempt judge-score diagnostics.
+They are not T1 quality or T3 safety. The console labels them and omits the old raw trap table.
 
 The two usage fields are **not** the same kind of data:
 
@@ -1296,7 +1346,9 @@ is recorded in
 [`reviewed/2026-07-12-answering-model-ab.md`](./reviewed/2026-07-12-answering-model-ab.md) —
 verdict inconclusive: zero strict adjudicated recoveries for either stronger arm, so the
 persistent partial mass is not simply answering-model-bound and no default-model change follows.
-Re-judges now persist as machine-readable artifacts: `eval/qa/re-judge.mjs <results> --ids a,b`
+Re-judges now persist as `meta.resultSchema: "qa-rejudge-v1"` artifacts. They do not stamp
+`qa-five-track-v1` or emit T1 through T5. Their `attempts.judgeCalls[]` records panel votes rather
+than QA method attempts. Use `eval/qa/re-judge.mjs <results> --ids a,b`
 or `--flips-vs <baseline-results>` re-judges identical saved input behind casesSha256 identity
 and judge-model/rubric/pack tuple guards, writing `results/<stamp>-rejudge.json`.
 
@@ -1317,7 +1369,7 @@ node eval/qa/re-judge.mjs eval/qa/results/2026-08-14T03-56-23-variantA.json \
   --ids q-pc-sponsored-reserves,q-protocol-operation-types-list \
   --cases-ref 7072688 \
   --allow-non-identical \
-  --dry-run          # drop --dry-run to actually spend
+  --dry-run          # replace --dry-run with --max-budget-usd <usd> to spend
 ```
 
 Without `--allow-non-identical`, the dry run reports `"wouldRefuse": true` with the offending
@@ -1348,6 +1400,7 @@ Every flag `re-judge.mjs` accepts:
   variance evidence.
 - `--allow-empty` — only meaningful with `--flips-vs`: write the artifact even when no score
   changed. Without it, an empty flip set is refused rather than persisted as a zero-row file.
+- `--max-budget-usd <usd>` — required exactly once for a paid run. Duplicate flags fail.
 - `--dry-run` — resolve, guard, and report without spending.
 - `--help` / `-h` — print usage and exit.
 

@@ -15,10 +15,13 @@ type SourceCasesVerification = {
 };
 type VerifySourceCases = (results: object, sourceResultsPath: string, options?: { casesRef?: string; repoRoot?: string }) => SourceCasesVerification;
 type JudgeCostAccounting = (rows: Array<{ new?: { costUsd?: unknown } }>, expectedJudgeCalls: number) => {
+  expectedAgentCalls: number;
+  reportedAgentCosts: number;
+  missingAgentCosts: number;
   expectedJudgeCalls: number;
-  reportedJudgeCalls: number;
+  reportedJudgeCosts: number;
   missingJudgeCosts: number;
-  totalJudgeCostUsd: number;
+  complete: boolean;
 };
 type RejudgeRows = (options: {
   selectedRows: Array<{ id: string; answer: string; transcript: unknown[]; verdict: { score: string } | null }>;
@@ -41,6 +44,17 @@ async function loadVerifySourceCases(): Promise<VerifySourceCases> {
 async function loadJudgeCostAccounting(): Promise<JudgeCostAccounting> {
   const modulePath = "../eval/qa/re-judge.mjs";
   return (await import(modulePath) as { judgeCostAccounting: JudgeCostAccounting }).judgeCostAccounting;
+}
+
+async function loadRejudgeArtifactBuilders() {
+  const rejudgePath = "../eval/qa/re-judge.mjs";
+  const budgetPath = "../eval/qa/spend-budget.mjs";
+  const rejudgeModule = await import(rejudgePath);
+  const budgetModule = await import(budgetPath);
+  return {
+    buildRejudgeArtifact: rejudgeModule.buildRejudgeArtifact,
+    createSpendLedger: budgetModule.createSpendLedger
+  };
 }
 
 async function loadRejudgeRows(): Promise<RejudgeRows> {
@@ -334,7 +348,12 @@ describe("re-judge saved-answer selection", () => {
     ];
     const rows = await rejudgeRows({
       selectedRows,
-      caseById: new Map([["one", { id: "one", question: "Question?" }]]),
+      caseById: new Map([["one", {
+        id: "one",
+        question: "Question?",
+        golden: { answer: "Answer.", keyFacts: [], avoid: [], notes: "" },
+        tags: { freshness: "stable" }
+      }]]),
       judgeModel: "stub-judge",
       judge: async () => ({ score: "partial", costUsd: 0.1 }),
       checkpoint: () => {},
@@ -432,7 +451,12 @@ describe("re-judge saved-answer selection", () => {
       selectedRows: [
         { id: "one", answer: "Saved answer.", transcript: [], verdict: { score: "wrong" } }
       ],
-      caseById: new Map([["one", { id: "one", question: "Question?" }]]),
+      caseById: new Map([["one", {
+        id: "one",
+        question: "Question?",
+        golden: { answer: "Answer.", keyFacts: [], avoid: [], notes: "" },
+        tags: { freshness: "stable" }
+      }]]),
       judgeModel: "stub-judge",
       judge: async () => ({ score: "error", costUsd: 0 }),
       checkpoint: () => {},
@@ -456,7 +480,12 @@ describe("re-judge saved-answer selection", () => {
     await expect(
       rejudgeRows({
         selectedRows,
-        caseById: new Map(selectedRows.map((row) => [row.id, { id: row.id, question: "Question?" }])),
+        caseById: new Map(selectedRows.map((row) => [row.id, {
+          id: row.id,
+          question: "Question?",
+          golden: { answer: "Answer.", keyFacts: [], avoid: [], notes: "" },
+          tags: { freshness: "stable" }
+        }])),
         judgeModel: "stub-judge",
         judge: async () => {
           calls++;
@@ -505,11 +534,54 @@ describe("re-judge saved-answer selection", () => {
         7
       )
     ).toEqual({
+      expectedAgentCalls: 0,
+      reportedAgentCosts: 0,
+      missingAgentCosts: 0,
       expectedJudgeCalls: 7,
-      reportedJudgeCalls: 3,
+      reportedJudgeCosts: 3,
       missingJudgeCosts: 4,
-      totalJudgeCostUsd: 0.3
+      complete: false
     });
+  });
+
+  it("uses the truthful re-judge schema and judge-call attempt shape", async () => {
+    const rejudgeRows = await loadRejudgeRows();
+    const { buildRejudgeArtifact, createSpendLedger } = await loadRejudgeArtifactBuilders();
+    const rows = await rejudgeRows({
+      selectedRows: [{ id: "one", answer: "Saved answer.", transcript: [], verdict: { score: "wrong" } }],
+      caseById: new Map([["one", {
+        id: "one",
+        question: "Question?",
+        golden: { answer: "Answer.", keyFacts: [], avoid: [], notes: "" },
+        tags: { freshness: "stable" }
+      }]]),
+      judgeModel: "stub-judge",
+      judge: async () => ({ score: "correct", costUsd: 0.1 }),
+      checkpoint: () => {},
+      log: () => {}
+    });
+    const artifact = buildRejudgeArtifact({
+      baseMeta: { toolVersion: "test" },
+      rows,
+      spendLedger: createSpendLedger(),
+      runState: { incompleteIds: [], unattemptedIds: [] }
+    });
+
+    expect(artifact.meta.resultSchema).toBe("qa-rejudge-v1");
+    expect(artifact.meta).not.toHaveProperty("trackSchema");
+    expect(artifact.meta).not.toHaveProperty("tracks");
+    expect(artifact.meta.costAccounting).toEqual({
+      expectedAgentCalls: 0,
+      reportedAgentCosts: 0,
+      missingAgentCosts: 0,
+      expectedJudgeCalls: 1,
+      reportedJudgeCosts: 1,
+      missingJudgeCosts: 0,
+      complete: true
+    });
+    expect(artifact.meta.totalJudgeCostUsd).toBe(0.1);
+    expect(artifact.rows[0].attempts.judgeCalls).toHaveLength(1);
+    expect(artifact.rows[0].attempts).not.toHaveProperty("judge");
   });
 
   it("loads an absolute saved cases path from the requested Git revision", async () => {
@@ -752,7 +824,7 @@ describe("re-judge saved-answer selection", () => {
 
       // PATH holds only a stub `claude`, so a guard that fails to fire cannot
       // reach the paid judge.
-      for (const extra of [["--dry-run"], []]) {
+      for (const extra of [["--dry-run"], ["--max-budget-usd", "1"]]) {
         const result = spawnSync(
           process.execPath,
           [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, ...extra],

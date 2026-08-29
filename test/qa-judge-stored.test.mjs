@@ -488,11 +488,12 @@ describe("run-qa --judge-stored", () => {
         sourceArtifactCount: 4,
         caseCount: 2
       };
+      const logs = [];
       const out = await judgeStoredResults(resultsPath, {
         judgeModel: "stub-judge",
         judge: stubJudge(calls),
         stabilityRegister,
-        log: () => {}
+        log: (line) => logs.push(line)
       });
 
       // Only the answered row hits the judge; the empty answer gets the
@@ -555,9 +556,21 @@ describe("run-qa --judge-stored", () => {
       // judge belong in it. The empty-answer row is stamped without a call.
       expect(written.meta.judgeStored).toMatchObject({
         judgedIds: ["q-fixture-answered"],
-        toolVersion: "run-qa/judge-stored-v2"
+        toolVersion: "run-qa/judge-stored-v3"
       });
       expect(typeof written.meta.judgeStored.sourceResultsSha256).toBe("string");
+      expect(written.meta.costAccounting).toEqual({
+        expectedAgentCalls: 2,
+        reportedAgentCosts: 2,
+        missingAgentCosts: 0,
+        expectedJudgeCalls: 1,
+        reportedJudgeCosts: 1,
+        missingJudgeCosts: 0,
+        complete: true
+      });
+      expect(logs.some((line) => line.includes("answer costs 2/2"))).toBe(true);
+      expect(logs.some((line) => line.includes("judge costs 1/1"))).toBe(true);
+      expect(logs.some((line) => line.includes("cost completeness complete"))).toBe(true);
 
       // Fully judged file → nothing to do, loudly.
       await expect(
@@ -665,7 +678,7 @@ describe("run-qa --judge-stored", () => {
       // failed (score error despite an answer) — must be re-attemptable.
       results.meta.judgeModel = "stub-judge";
       results.meta.judgeRubric = JUDGE_RUBRIC;
-      results.rows[0].verdict = { score: "error", missingFacts: [], wrongClaims: [], rationale: "judge CLI failed: exit 1", costUsd: 0.4, rubric: JUDGE_RUBRIC, packVersion: PACK_VERSION, promptSha256: null };
+      results.rows[0].verdict = { score: "error", failureClass: "cli", missingFacts: [], wrongClaims: [], rationale: "judge CLI failed: exit 1", costUsd: 0.4, rubric: JUDGE_RUBRIC, packVersion: PACK_VERSION, promptSha256: null };
       results.rows[1].verdict = { score: "error", missingFacts: [], wrongClaims: [], rationale: "timeout: agent process exceeded its wall-clock budget", rubric: JUDGE_RUBRIC, packVersion: PACK_VERSION, promptSha256: null };
       writeFileSync(resultsPath, JSON.stringify(results, null, 2));
 
@@ -676,15 +689,47 @@ describe("run-qa --judge-stored", () => {
       expect(calls.map((c) => c.id)).toEqual(["q-fixture-answered"]);
       expect(out.judgedCount).toBe(1);
       const written = JSON.parse(readFileSync(resultsPath, "utf8"));
-      expect(written.rows[0].verdict.score).toBe("correct");
+      expect(written.rows[0].verdict.score).toBe("error");
+      expect(written.rows[0].attempts.judge).toHaveLength(2);
+      expect(written.rows[0].attempts.judge[1].verdict.score).toBe("correct");
       expect(written.rows[1].verdict.rationale).toBe("timeout: agent process exceeded its wall-clock budget");
       expect(written.meta.totalJudgeCostUsd).toBeCloseTo(0.65);
       expect(written.meta.costAccounting).toMatchObject({
         expectedJudgeCalls: 2,
-        reportedJudgeCalls: 2,
+        reportedJudgeCosts: 2,
         missingJudgeCosts: 0
       });
       expect(written.meta.judgeStored.attempts).toHaveLength(2);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("keeps an untyped legacy judge error terminal on the stored runner path", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-legacy-error-"));
+    try {
+      const legacy = answeredRow(CASES[0], "Run `stellar contract build`.", {
+        score: "error",
+        rationale: "judge CLI failed: exit 1",
+        costUsd: 0.25,
+        rubric: JUDGE_RUBRIC,
+        packVersion: PACK_VERSION,
+        promptSha256: "2".repeat(64)
+      });
+      const { resultsPath } = writeFixture(root, { rows: [legacy] });
+      const calls = [];
+      await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        maxBudgetUsd: 1,
+        judge: stubJudge(calls),
+        log: () => {}
+      });
+
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(calls).toEqual([]);
+      expect(written.rows[0].attempts.judge).toHaveLength(1);
+      expect(written.rows[0].attempts.judge[0].failureClass).toBeNull();
+      expect(written.rows[0].verdict.rationale).toContain("judge CLI failed");
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
@@ -709,20 +754,22 @@ describe("run-qa --judge-stored", () => {
         if (call === 2) delete verdict.costUsd;
         return verdict;
       };
-      await judgeStoredResults(resultsPath, {
+      await expect(judgeStoredResults(resultsPath, {
         judgeModel: "stub-judge",
+        maxBudgetUsd: 1,
         judge: partialCostJudge,
         log: () => {}
-      });
+      })).rejects.toThrow(/did not report costUsd/);
 
       const written = JSON.parse(readFileSync(resultsPath, "utf8"));
       expect(written.meta.costAccounting).toEqual({
-        expectedJudgeCalls: 2,
-        reportedJudgeCalls: 1,
-        missingJudgeCosts: 1,
-        expectedAgentRuns: 2,
+        expectedAgentCalls: 2,
         reportedAgentCosts: 2,
-        missingAgentCosts: 0
+        missingAgentCosts: 0,
+        expectedJudgeCalls: 2,
+        reportedJudgeCosts: 1,
+        missingJudgeCosts: 1,
+        complete: false
       });
       // The totals cover only what was actually reported, and say so.
       expect(written.meta.totalJudgeCostUsd).toBe(0.25);
@@ -1004,8 +1051,8 @@ describe("run-qa --judge-stored", () => {
         judgeModel: "stub-judge",
         judgeRubric: JUDGE_RUBRIC,
         judgeStored: {
-          toolVersion: "run-qa/judge-stored-v2",
-          attempts: [{ id: "q-fixture-answered", outcome: null }]
+          toolVersion: "run-qa/judge-stored-v3",
+          attempts: []
         }
       });
       expect(observed.judgeStored.sourceResultsSha256).toHaveLength(64);
@@ -1035,7 +1082,7 @@ describe("run-qa --judge-stored", () => {
       expect(out.judgedCount).toBe(0);
       const final = JSON.parse(readFileSync(resultsPath, "utf8"));
       expect(final.summary.overall.total).toBe(2);
-      expect(final.meta.judgeStored.toolVersion).toBe("run-qa/judge-stored-v2");
+      expect(final.meta.judgeStored.toolVersion).toBe("run-qa/judge-stored-v3");
 
       // Now that it IS finalized, a further call refuses.
       await expect(
@@ -1066,6 +1113,164 @@ describe("run-qa --judge-stored", () => {
       judgeFileSha256: sha256(readFileSync("eval/qa/judge.mjs", "utf8")),
       qaImplementationSha256: sha256(qaImplementationRecords)
     });
+  });
+
+  it("stops stored judging at the total cap and preserves unattempted IDs", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-budget-"));
+    try {
+      const rows = [
+        answeredRow(CASES[0], "Run `stellar contract build`.", null),
+        answeredRow(CASES[1], "SEP-10 is web authentication.", null)
+      ];
+      const { resultsPath } = writeFixture(root, { rows });
+      const calls = [];
+      const logs = [];
+      const out = await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        maxBudgetUsd: 0.25,
+        judge: async (input, options) => {
+          calls.push({ id: input.id, maxBudgetUsd: options.maxBudgetUsd });
+          return { ...stubVerdict, costUsd: 0.25 };
+        },
+        log: (line) => logs.push(line)
+      });
+
+      expect(out.judgedCount).toBe(1);
+      expect(calls).toEqual([{ id: "q-fixture-answered", maxBudgetUsd: 0.25 }]);
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.budget).toMatchObject({
+        claimed: true,
+        reportedSpendUsd: 0.25,
+        remainingUsd: 0,
+        exhausted: true,
+        stoppedBefore: { method: "judge", id: "q-fixture-empty" }
+      });
+      expect(written.meta.judgeStored.unattemptedIds).toEqual(["q-fixture-empty"]);
+      expect(written.rows[0].attempts.judge).toHaveLength(1);
+      expect(written.rows[1].attempts.judge).toHaveLength(0);
+      expect(written.summary).toBeNull();
+      expect(written.meta.tracks.t4.judging.attempted).toMatchObject({ count: 1, denominator: 2 });
+      expect(written.meta.tracks.t4.judging.unattempted).toMatchObject({
+        count: 1,
+        denominator: 2,
+        ids: ["q-fixture-empty"]
+      });
+      expect(logs.some((line) => line.includes(
+        "judging unattempted 1/2 IDs: q-fixture-empty"
+      ))).toBe(true);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("keeps earlier spend when a stored resume raises the total cap", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-budget-resume-"));
+    try {
+      const rows = [
+        answeredRow(CASES[0], "Run `stellar contract build`.", null),
+        answeredRow(CASES[1], "SEP-10 is web authentication.", null)
+      ];
+      const { resultsPath } = writeFixture(root, { rows });
+      await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        maxBudgetUsd: 0.25,
+        judge: async () => ({ ...stubVerdict, costUsd: 0.25 }),
+        log: () => {}
+      });
+
+      const resumedCalls = [];
+      await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        maxBudgetUsd: 0.5,
+        judge: async (input, options) => {
+          resumedCalls.push({ id: input.id, maxBudgetUsd: options.maxBudgetUsd });
+          return { ...stubVerdict, costUsd: 0.25 };
+        },
+        log: () => {}
+      });
+
+      expect(resumedCalls).toEqual([{ id: "q-fixture-empty", maxBudgetUsd: 0.25 }]);
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.budget).toMatchObject({
+        authorizedUsd: 0.5,
+        reportedSpendUsd: 0.5,
+        remainingUsd: 0,
+        expectedCalls: 2,
+        reportedCalls: 2
+      });
+      expect(written.meta.judgeStored.unattemptedIds).toEqual([]);
+      expect(written.rows.map((row) => row.attempts.judge.length)).toEqual([1, 1]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects a missing stored-judge cost when a budget is claimed", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-budget-cost-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.rows[1].answer = "SEP-10 is web authentication.";
+      seeded.rows[1].agent.failure = null;
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+      await expect(
+        judgeStoredResults(resultsPath, {
+          judgeModel: "stub-judge",
+          maxBudgetUsd: 1,
+          judge: async () => {
+            const verdict = { ...stubVerdict };
+            delete verdict.costUsd;
+            return verdict;
+          },
+          log: () => {}
+        })
+      ).rejects.toThrow(/did not report costUsd/);
+
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.rows[0].attempts.judge[0]).toMatchObject({
+        failureClass: "budget-cost",
+        costUsd: null
+      });
+      expect(written.meta.budget).toMatchObject({
+        claimed: true,
+        expectedCalls: 1,
+        reportedCalls: 0,
+        missingCosts: 1
+      });
+      expect(written.meta.judgeStored.incompleteIds).toEqual(["q-fixture-answered"]);
+      expect(written.meta.judgeStored.unattemptedIds).toEqual(["q-fixture-empty"]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("checkpoints a stored-judge authorization overspend before later IDs", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-budget-overspend-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.rows[1].answer = "SEP-10 is web authentication.";
+      seeded.rows[1].agent.failure = null;
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+
+      await expect(judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        maxBudgetUsd: 1,
+        judge: async () => ({ ...stubVerdict, costUsd: 2 }),
+        log: () => {}
+      })).rejects.toThrow(/above its \$1 authorization/);
+
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.rows[0].attempts.judge[0]).toMatchObject({
+        failureClass: "budget-cost",
+        costUsd: 2
+      });
+      expect(written.meta.judgeStored.incompleteIds).toEqual(["q-fixture-answered"]);
+      expect(written.meta.judgeStored.unattemptedIds).toEqual(["q-fixture-empty"]);
+      expect(written.meta.budget).toMatchObject({ reportedSpendUsd: 2, remainingUsd: 0 });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 
   it("refuses when a row's evidence pack no longer reproduces its recorded hash", async () => {
