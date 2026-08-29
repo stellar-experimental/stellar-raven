@@ -774,3 +774,7 @@ Route cards:
   regenerated (compile sha256 `3d889653fa11…`; register up to date, 0 reopened); lint
   `--since origin/main --stale` → 0 errors, 60 warnings; staged scan → "no leaks found";
   `npm test` re-run on the final tree.
+- `2026-08-29T12:55Z` — Committed `30085bf` (263 files) on `codex/golden-truth-session-3`, pushed,
+  PR https://github.com/stellar-experimental/stellar-raven/pull/92 opened against `main`. The
+  second commit attempt hit one more false positive (this ledger quoting the flagged pattern);
+  reworded; staged scan "no leaks found". Worker panes `w1B:p2–p5` left idle, not closed.
