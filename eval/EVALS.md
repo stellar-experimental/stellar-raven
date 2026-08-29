@@ -26,6 +26,9 @@ the headline wins.
 | — opt-in digest contract `live-digest-supplement-v2` (`--cases eval/qa/corpus/live/live-digest-supplement-cases.json`, 2 Lumenloop) | `execute` recency-digest grounding | ~$0.44–1.34 full at the same per-case estimate — only for digest/skill-run questions | Diagnostic supplement; report separately from the canonical live-data lane and main battery |
 | `eval/plan/grade-plan.mjs` | which services `execute` actually touched | free (regrades stored QA transcripts) | Diagnostic (coverage; progression informational only) |
 
+`npm run eval:qa:paired` is an experimental stored-run printer. It requires 100 eligible IDs
+after exclusions, so it does not apply to the sample-30 headline lane.
+
 Corpus provenance: the QA battery is **owned** at `eval/qa/corpus/battery/` (one hand-authored
 file per case; `eval/qa/README.md`); `eval/corpus/` is the **archival** vendored snapshot and
 the routing eval's committed label source (`eval/corpus/PROVENANCE.md`) — the raven sibling

@@ -47,6 +47,11 @@
  *                      a floor of 10 and a ceiling of 34. This flag or
  *                      QA_MAX_PANEL_CASES overrides that default.
  *                      Stability-triggered panels do not consume this cap.
+ *   --stability-register path
+ *                      use one frozen judge-stability register without
+ *                      regenerating it. Paired runs must share this pin.
+ *                      A pinned --judge-stored resume must reuse this path.
+ *                      Unpinned resumes can refresh and cannot enter pairing.
  *   --surface name     search-execute (default) | per-operation. The latter
  *                      starts the isolated stdio proxy harness for the
  *                      manifest's 60 operations and still uses the existing
@@ -100,7 +105,11 @@ import {
 import { verifySourceCases } from "./re-judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
-import { CASE_INPUT_IDENTITY, caseInputSha256 } from "./paired-verdict.mjs";
+import {
+  CASE_INPUT_IDENTITY,
+  caseInputPayload,
+  caseInputSha256
+} from "./paired-verdict.mjs";
 import { makeSearchResultProjector } from "./search-projection.mjs";
 import {
   MCP_PROTOCOL_VERSION,
@@ -348,12 +357,24 @@ export function formatPanelSummary(judgeTiering, phase = "after") {
 export function prepareJudgeStabilityRegister({
   resultsDir = DEFAULT_STABILITY_RESULTS_DIR,
   registerPath = DEFAULT_STABILITY_REGISTER_PATH,
+  pinnedPath = null,
   log = console.log,
   warn = console.warn
 } = {}) {
+  const selectedPath = path.resolve(pinnedPath ?? registerPath);
+  if (pinnedPath) {
+    const loaded = loadJudgeStabilityRegister(selectedPath, { verifySources: false });
+    if (loaded.status !== "available") {
+      throw new Error(
+        `--stability-register is not an available register: ${loaded.reason ?? loaded.status}`
+      );
+    }
+    log(`judge-stability pin: ${selectedPath} · sha256 ${loaded.sha256}`);
+    return { ...loaded, source: "pinned", path: selectedPath };
+  }
   if (existsSync(resultsDir)) {
     try {
-      const generated = generateStabilityRegister({ resultsDir, outPath: registerPath });
+      const generated = generateStabilityRegister({ resultsDir, outPath: selectedPath });
       log(
         `judge-stability refresh: ${generated.caseCount} case(s) from ` +
         `${generated.sourceArtifactCount} artifact(s)`
@@ -365,7 +386,11 @@ export function prepareJudgeStabilityRegister({
       );
     }
   }
-  return loadJudgeStabilityRegister(registerPath);
+  return {
+    ...loadJudgeStabilityRegister(selectedPath),
+    source: "regenerated",
+    path: selectedPath
+  };
 }
 
 export function judgeTieringMetadata({
@@ -377,8 +402,11 @@ export function judgeTieringMetadata({
   const counts = panelCaseCounts(rows);
   return {
     policy: judgePanel > 1 ? "forced-panel" : "stability-boundary-v1",
+    judgePanel,
     stabilityThreshold: JUDGE_STABILITY_THRESHOLD,
     stabilityRegisterStatus: stabilityRegister.status,
+    stabilityRegisterSource: stabilityRegister.source ?? "regenerated",
+    stabilityRegisterPath: stabilityRegister.path ?? null,
     stabilityRegisterReason: stabilityRegister.reason ?? null,
     stabilityRegisterSha256: stabilityRegister.sha256 ?? null,
     stabilityRegisterGeneratedAt: stabilityRegister.generatedAt ?? null,
@@ -812,6 +840,25 @@ export async function judgeStoredResults(
       `--judge-stored: file already carries judge panel size ${recordedJudgePanel}; refusing to mix in ${judgePanel}`
     );
   }
+  const recordedRegisterSource = meta.judgeTiering?.stabilityRegisterSource;
+  const recordedRegisterSha256 = meta.judgeTiering?.stabilityRegisterSha256;
+  const currentRegisterSource = stabilityRegister.source ?? "regenerated";
+  const currentRegisterSha256 = stabilityRegister.sha256 ?? null;
+  const resumeUsesPin =
+    recordedRegisterSource === "pinned" || currentRegisterSource === "pinned";
+  if (
+    hasSavedVerdicts &&
+    recordedRegisterSource != null &&
+    resumeUsesPin &&
+    (
+      recordedRegisterSource !== currentRegisterSource ||
+      recordedRegisterSha256 !== currentRegisterSha256
+    )
+  ) {
+    throw new Error(
+      "--judge-stored: file already carries a different stability-register contract"
+    );
+  }
   const identity = verifySourceCases(results, resultsPath);
   if (!identity.guard.matches) {
     throw new Error(
@@ -872,7 +919,7 @@ export async function judgeStoredResults(
   const writeState = ({ withSummary }) => {
     meta.judgeModel = judgeModel;
     meta.judgeRubric = JUDGE_RUBRIC;
-    if (judgePanel > 1) meta.judgePanel = judgePanel;
+    meta.judgePanel = judgePanel;
     meta.judgeTiering = judgeTieringMetadata({
       judgePanel,
       stabilityRegister,
@@ -955,6 +1002,7 @@ export async function judgeStoredResults(
   // different model trips the mixing guard instead of silently mixing tuples.
   meta.judgeModel = judgeModel;
   meta.judgeRubric = JUDGE_RUBRIC;
+  meta.judgePanel = judgePanel;
   results.meta = meta;
   writeState({ withSummary: false });
 
@@ -1078,10 +1126,22 @@ async function main() {
     cliPresent: args.includes("--max-panel-cases"),
     environmentValue: process.env.QA_MAX_PANEL_CASES
   });
+  const stabilityRegisterArgument = argVal("--stability-register");
+  if (
+    args.includes("--stability-register") &&
+    (!stabilityRegisterArgument || stabilityRegisterArgument.startsWith("--"))
+  ) {
+    throw new Error("--stability-register requires a path");
+  }
+  const prepareStabilityRegister = () => prepareJudgeStabilityRegister({
+    pinnedPath: stabilityRegisterArgument
+      ? path.resolve(process.cwd(), stabilityRegisterArgument)
+      : null
+  });
   const judgeStoredPath = argVal("--judge-stored");
   if (judgeStoredPath) {
     if (args.includes("--no-judge")) throw new Error("--judge-stored and --no-judge are contradictory");
-    const stabilityRegister = prepareJudgeStabilityRegister();
+    const stabilityRegister = prepareStabilityRegister();
     const { summary, metrics, judgeTiering } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
       judgeModel: argVal("--judge-model") ?? JUDGE_MODEL,
       judgePanel: parseJudgePanel(argVal("--judge-panel")),
@@ -1111,7 +1171,7 @@ async function main() {
   const model = argVal("--model") ?? AGENT_MODEL;
   const judgeModel = argVal("--judge-model") ?? JUDGE_MODEL;
   const judgePanel = parseJudgePanel(argVal("--judge-panel"));
-  const stabilityRegister = prepareJudgeStabilityRegister();
+  const stabilityRegister = prepareStabilityRegister();
   const noJudge = args.includes("--no-judge");
   const serverRevision = assertPinnedServerRevision(argVal("--server-revision"));
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
@@ -1228,6 +1288,7 @@ async function main() {
       rows.push({
         id: c.id,
         question: c.question,
+        caseInput: caseInputPayload(c),
         caseInputSha256: caseInputSha256(c),
         tags: c.tags,
         truth: {
@@ -1326,7 +1387,7 @@ async function main() {
           model,
           judgeModel: noJudge ? null : judgeModel,
           judgeRubric: noJudge ? null : JUDGE_RUBRIC,
-          ...(judgePanel > 1 && !noJudge ? { judgePanel } : {}),
+          ...(!noJudge ? { judgePanel } : {}),
           ...(!noJudge
             ? {
                 judgeTiering: judgeTieringMetadata({

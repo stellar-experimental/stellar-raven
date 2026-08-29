@@ -237,6 +237,54 @@ describe("QA judge stability register", () => {
       rmSync(root, { recursive: true, force: true });
     }
   });
+
+  it("loads a pinned register without regenerating it from changed results", () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-stability-pin-"));
+    try {
+      const resultsDir = join(root, "results");
+      const registerPath = join(root, "judge-stability.json");
+      mkdirSync(resultsDir);
+      writeFileSync(
+        join(resultsDir, "one-variantA.json"),
+        JSON.stringify({ rows: [{ id: "case-a", verdict: correct() }] })
+      );
+      generateStabilityRegister({ resultsDir, outPath: registerPath });
+      const original = readFileSync(registerPath, "utf8");
+      writeFileSync(
+        join(resultsDir, "two-variantA.json"),
+        JSON.stringify({ rows: [{ id: "case-b", verdict: partial() }] })
+      );
+
+      const pinned = prepareJudgeStabilityRegister({
+        resultsDir,
+        registerPath,
+        pinnedPath: registerPath,
+        log: () => {}
+      });
+
+      expect(pinned).toMatchObject({
+        status: "available",
+        source: "pinned",
+        path: registerPath,
+        caseCount: 1
+      });
+      expect(pinned.sha256).toMatch(/^[a-f0-9]{64}$/);
+      expect(readFileSync(registerPath, "utf8")).toBe(original);
+      expect(judgeTieringMetadata({
+        judgePanel: 1,
+        stabilityRegister: pinned,
+        panelLimit: resolvePanelCaseLimit(100),
+        rows: []
+      })).toMatchObject({
+        judgePanel: 1,
+        stabilityRegisterSource: "pinned",
+        stabilityRegisterPath: registerPath,
+        stabilityRegisterSha256: pinned.sha256
+      });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
 });
 
 describe("tiered QA judge selection", () => {
@@ -416,6 +464,9 @@ describe("tiered QA judge selection", () => {
         ]
       })
     ).toMatchObject({
+      judgePanel: 1,
+      stabilityRegisterSource: "regenerated",
+      stabilityRegisterPath: null,
       stabilityRegisterSha256: "a".repeat(64),
       stabilityRegisterGeneratedAt: "2026-08-27T00:00:00.000Z",
       stabilityRegisterSourceArtifactCount: 187,
