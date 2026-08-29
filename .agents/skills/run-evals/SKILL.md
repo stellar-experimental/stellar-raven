@@ -418,6 +418,65 @@ Known judge failure modes (from `eval/qa/README.md`):
   retrieval despite the addendum. Treat any `wrong` verdict whose rationale cites an avoid
   item phrased in terms of corpus/evidence support as a suspect artifact until live-verified.
 
+### Paired stored-run verdict
+
+Use `npm run eval:qa:paired -- <baseline.json> <candidate.json> --json` for the experimental
+same-ID printer. It reads stored results only and never spends. It is not a ship gate.
+
+The `qa-paired-ordinal-ni-v1` estimand has two paired cumulative-grade components:
+`P(correct)` difference and `P(correct or partial)` difference. It keeps `correct`, `partial`, and
+`wrong` without a half-credit weight. `FAIL` means that a loss is demonstrated because either
+upper bound is below zero. Otherwise, `PASS` requires both lower bounds above the negative
+experimental margin. Every other result is `INDETERMINATE`.
+
+Here, `P` samples one eligible ID uniformly and one collection and judge realization under the
+fixed contract. Do not generalize the result to another corpus or measurement contract.
+
+Require 100 eligible IDs after exclusions. This method does not apply to sample-30. Below 100,
+record `INDETERMINATE` with `denominator-below-powered-n` and do not repeat.
+
+The default `0.08` margin is only `NO_CHANGE_CONFIDENCE_RADIUS`. It is not an accepted product
+tolerance. A default `PASS` must retain the experimental no-change-radius label. The owner margin
+question and the 0.05, 0.08, and 0.10 tables live in `.agents/NEXT.md`.
+
+Require identical ordered IDs and canonical recomputable `caseInputSha256` values under
+`qa-judge-case-v2`. Require one answering model and one judge model/rubric/pack tuple. Also require
+identical result, prompt, agent, QA-implementation, and tiering contracts. Both artifacts must be
+complete and comparable.
+
+Generate one stability register before collection. Pass its path to every arm and repeat with
+`--stability-register <path>`. Default sequential launches regenerate the register and cannot
+share the required panel contract. The load-bearing tier fields are policy, threshold,
+`judgePanel`, pinned register source/hash, effective `maxPanelCases`, its source, and the scaled
+default policy.
+
+Exclude the union of fixed T4 and T5 rows. T4 contains judge/verdict errors and spawn, protocol,
+unclassified, or unknown harness failures. T5 contains provider safeguards, transport, and
+timeouts. Count an `agent` termination as T1 `wrong`. Candidate-only means candidate T4/T5 against
+baseline T1. It forces `INDETERMINATE`. A T4-to-T5 swap is only a union exclusion.
+
+The fixed repeat rule permits one extra paired collection only after statistical uncertainty.
+Stop after an initial `PASS` or `FAIL`. Do not repeat a guard failure, a denominator below 100, or
+a candidate-only T4/T5 loss. Supply the one repeat with `--baseline-repeat` and
+`--candidate-repeat`; the command averages repeats within each ID and then stops. There is no
+third look.
+
+Record the `--json` form in the round ledger. It includes `verdict`, the adjacent warning in
+`verdictLabel`, look, denominator, exclusions, estimates, bounds, tuple, and reasons.
+`transitions.perLook` records each look's T1/T1 attempts before union exclusion.
+`transitions.perId` records the first look for final eligible IDs.
+
+Run `npm run eval:qa:paired:validate` after any method change. The simulator reports look-1 and
+two-look tables at n=90 and n=100. It reports 0, 5, 8, 10, 12, and 16-point losses. Its gates
+require no-change `FAIL` at most 5%, two-look no-change `PASS` at least 80%, 12-point-loss `FAIL`
+at least 80%, and false `PASS` at an 8-point loss at most 5%. Reduced deterministic gates also run
+under `npm test`.
+
+The current 10% and 8% discordance inputs come from mixed judge-tier contracts. Label every
+operating characteristic `(mixed-tuple calibration)`. After one same-tuple pinned pair exists, run
+`npm run eval:qa:paired:validate -- --recalibrate <baseline.json> <candidate.json>`. Promotion
+still needs that recalibration and the owner margin decision.
+
 Fan out sub-agents for this review when the run is big: one per `wrong`/`partial` case, each
 re-executing the disputed claims live (production or dev `execute`) and returning a verdict
 + evidence. Collect into the round ledger.
@@ -427,9 +486,8 @@ checks all rows involving docs-index freshness, another checks Scout/Lumenloop c
 and another checks plan transcripts. Keep the write sets disjoint: reviewers append to the ledger;
 the coordinator edits repo files.
 
-Results rows do NOT carry the `golden` field (`{id, question, tags, answer, transcript,
-verdict, ...}` only) — reviewers working from rows alone can't see `golden.keyFacts`/`avoid`.
-When extracting per-case review files, JOIN the golden from `eval/qa/cases.json` on id, e.g.:
+New rows store the canonical judge input in `caseInput` under `qa-judge-case-v2`. This payload
+includes `golden`. Legacy rows can lack it. Join legacy rows with `eval/qa/cases.json` on `id`:
 
 ```js
 const golden = Object.fromEntries(cases.cases.map(c => [c.id, c.golden]))

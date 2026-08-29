@@ -82,9 +82,21 @@ Playground stateless; durable session history remains a deferred idea.
 
 ## Owner decisions
 
-The 2026-08-28 human-review grill resolved every open owner question. The authoritative package is
-ADR-0008, and `.agents/rounds/2026-08-28-human-review-grill.md` preserves the 21-item mapping.
-No owner question is open.
+The 2026-08-28 human-review grill resolved its 21 questions. One later eval-method question is open.
+
+### Choose a product-loss margin for the paired QA method
+
+The current `0.08` value is only the no-change confidence radius. It is not an accepted quality-loss
+tolerance. The table uses the mixed-tuple 2026-08-27 and 2026-08-28 discordance upper bound.
+
+| Candidate margin | Look-1 no-change `PASS` | Two-look no-change `PASS` | Two-look false `PASS` at a true 5-point loss | Second collection under no change |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.05 | 6.992% | 25.963% | 0.051% | 91.812% |
+| 0.08 | 36.350% | 80.925% | 3.899% | 62.454% |
+| 0.10 | 66.208% | 95.657% | 18.357% | 32.596% |
+
+Choose the largest acceptable product loss from product impact. Do not choose it from power alone.
+Promotion also needs one same-tuple pinned pair for recalibration.
 
 ## Suggested sequence
 

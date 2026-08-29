@@ -212,6 +212,65 @@ function stubJudge(calls = []) {
 }
 
 describe("run-qa --judge-stored", () => {
+  it("allows regenerated-register refreshes but never upgrades saved verdicts to a pin", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
+    try {
+      const rows = [
+        answeredRow(CASES[0], "Run `stellar contract build`.", stubVerdict),
+        answeredRow(CASES[1], "SEP-10 is web authentication.")
+      ];
+      const { resultsPath } = writeFixture(root, { rows });
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.meta.judgeModel = "stub-judge";
+      seeded.meta.judgeRubric = JUDGE_RUBRIC;
+      seeded.meta.judgePanel = 1;
+      seeded.meta.judgeTiering = {
+        policy: "stability-boundary-v1",
+        judgePanel: 1,
+        stabilityRegisterSource: "regenerated",
+        stabilityRegisterSha256: "a".repeat(64),
+        selectedCaseCount: 2,
+        maxPanelCases: 10,
+        maxPanelCasesSource: "bounded-scaled-default"
+      };
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+
+      const refreshed = {
+        status: "available",
+        source: "regenerated",
+        sha256: "b".repeat(64),
+        cases: {},
+        generatedAt: "2026-08-29T00:00:00.000Z",
+        sourceArtifactCount: 1,
+        caseCount: 0
+      };
+      await expect(
+        judgeStoredResults(resultsPath, {
+          judgeModel: "stub-judge",
+          judge: stubJudge(),
+          stabilityRegister: { ...refreshed, source: "pinned" },
+          log: () => {}
+        })
+      ).rejects.toThrow(/different stability-register contract/);
+
+      const output = await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: stubJudge(),
+        stabilityRegister: refreshed,
+        log: () => {}
+      });
+
+      expect(output.judgedCount).toBe(1);
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.judgeTiering).toMatchObject({
+        stabilityRegisterSource: "regenerated",
+        stabilityRegisterSha256: "b".repeat(64)
+      });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("preserves the stored cap and resumes with existing panels and skips", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {
@@ -418,20 +477,21 @@ describe("run-qa --judge-stored", () => {
     try {
       const { resultsPath } = writeFixture(root);
       const calls = [];
+      const stabilityRegister = {
+        status: "available",
+        reason: null,
+        cases: {
+          "q-fixture-answered": { stabilityScore: 0.8, comparisonCount: 2 }
+        },
+        sha256: "a".repeat(64),
+        generatedAt: "2026-08-27T00:00:00.000Z",
+        sourceArtifactCount: 4,
+        caseCount: 2
+      };
       const out = await judgeStoredResults(resultsPath, {
         judgeModel: "stub-judge",
         judge: stubJudge(calls),
-        stabilityRegister: {
-          status: "available",
-          reason: null,
-          cases: {
-            "q-fixture-answered": { stabilityScore: 0.8, comparisonCount: 2 }
-          },
-          sha256: "a".repeat(64),
-          generatedAt: "2026-08-27T00:00:00.000Z",
-          sourceArtifactCount: 4,
-          caseCount: 2
-        },
+        stabilityRegister,
         log: () => {}
       });
 
@@ -501,7 +561,12 @@ describe("run-qa --judge-stored", () => {
 
       // Fully judged file → nothing to do, loudly.
       await expect(
-        judgeStoredResults(resultsPath, { judgeModel: "stub-judge", judge: stubJudge(), log: () => {} })
+        judgeStoredResults(resultsPath, {
+          judgeModel: "stub-judge",
+          judge: stubJudge(),
+          stabilityRegister,
+          log: () => {}
+        })
       ).rejects.toThrow(/nothing to judge/);
     } finally {
       rmSync(root, { recursive: true, force: true });

@@ -252,14 +252,13 @@ Same-100 reruns need a durable verdict when only part of the sample remains comp
 2026-08-28 record described the aggregate change as diagnostic, but it had no predeclared method
 for `PASS`, `FAIL`, or `INDETERMINATE`.
 
-Design the method before the next comparable rerun. Preserve `correct`, `partial`, and `wrong`
-instead of flattening them without evidence. Define the estimand, a practical non-inferiority
-margin, power, fixed T4/T5 exclusions, and a fixed repeat rule. Use simulations or repeated-judge
-backtests to measure false pass and false fail rates. Do not adopt the temporary addendum's exact
-thresholds until this validation supports them.
+The experimental method must preserve `correct`, `partial`, and `wrong`. It must define the
+estimand, powered denominator, fixed T4/T5 exclusions, and repeat rule. It must measure false
+`PASS` and false `FAIL` behavior. No accepted product-loss margin exists yet.
 
-Done when: `eval/qa/README.md` and `run-evals` name the validated procedure, tests cover its
-boundary cases, and the next comparable rerun prints one verdict with its denominator and reasons.
+Done when: README and `run-evals` name the experimental procedure; the validator gates run under
+`npm test`; the next same-tuple pinned pair prints one verdict with denominator, look, and reasons;
+promotion to a gate needs the owner margin decision and a same-tuple recalibration.
 
 ### Judge stability on the same-100 set is degrading
 

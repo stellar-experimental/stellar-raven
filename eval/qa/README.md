@@ -537,6 +537,130 @@ finalizes, and no resume spends a second paid call on it.
   `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Use a common-id set for comparisons
   across this boundary, or disclose the sample change.
 
+### Paired `PASS` / `FAIL` / `INDETERMINATE` verdict
+
+`qa-paired-ordinal-ni-v1` is an experimental, `INDETERMINATE`-first stored-run printer. It is not a
+ship gate. The command reads no live service or current corpus file:
+
+```sh
+npm run eval:qa:paired -- <baseline.json> <candidate.json> --json
+
+# Only after an initial statistical INDETERMINATE:
+npm run eval:qa:paired -- <baseline.json> <candidate.json> \
+  --baseline-repeat <baseline-repeat.json> \
+  --candidate-repeat <candidate-repeat.json> --json
+
+# An explicit experimental margin override:
+npm run eval:qa:paired -- <baseline.json> <candidate.json> --margin 0.05 --json
+
+# Deterministic operating-characteristic validation:
+npm run eval:qa:paired:validate
+
+# Recalibrate after one same-tuple pinned pair exists:
+npm run eval:qa:paired:validate -- --recalibrate <baseline.json> <candidate.json>
+```
+
+The recorded form is `--json`. It contains estimates, bounds, exclusion IDs, reasons, and both
+transition views. It keeps the machine token in `verdict` and the warning in `verdictLabel`.
+The default form stays one line. It contains both estimates and bounds, counts, look, and reasons.
+
+Each new row stores a canonical `caseInput` payload and its `caseInputSha256`. The payload contains
+`question`, `golden`, `tags.freshness`, and `tags.trap`. Recursive key sorting makes the digest
+independent of object key order. The result stamps `meta.caseIdentitySchema: "qa-judge-case-v2"`.
+The denominator keeps only IDs with one recomputable identical hash across every artifact.
+
+The estimand is the two-component cumulative-grade difference over eligible IDs. Its components
+are `P(candidate=correct) - P(baseline=correct)` and
+`P(candidate∈{correct,partial}) - P(baseline∈{correct,partial})`. This preserves the ordered
+`correct`, `partial`, and `wrong` outcomes without assigning partial an arbitrary numeric weight.
+`transitions.perLook` contains one labeled T1/T1 attempt-count matrix per look. Each look records
+its T1/T1 attempts before the union exclusion. `transitions.perId` contains one first-look matrix
+for the final eligible IDs.
+
+Here, `P` samples one eligible ID uniformly. It also samples one collection and judge realization
+under the fixed measurement contract. The estimand therefore describes the stored case set and
+contract. It does not estimate a different corpus, model, rubric, pack, or tier policy.
+
+No accepted product-loss margin exists. The default `0.08` value is
+`NO_CHANGE_CONFIDENCE_RADIUS`. It is the rounded no-change Wald radius at powered `n=100` under the
+current discordance input. It is not a practical allowance or accepted product tolerance. A
+printed `PASS` therefore carries this label:
+
+```text
+PASS (experimental margin 0.08 = no-change radius; not a product tolerance)
+```
+
+For each component, the method computes the paired mean and standard error across IDs. A repeat
+averages its two deltas within each ID, so every ID keeps one unit of weight. Each look uses a
+one-sided `alpha=0.007143` normal bound. Code derives `z=2.4499904614` from that alpha.
+
+- `FAIL`: either upper bound is less than zero. This means that a loss is demonstrated.
+- `PASS`: after the `FAIL` check, both lower bounds exceed the experimental negative margin.
+- `INDETERMINATE`: every other result, fewer than 100 eligible IDs, or a failed guard.
+
+The method requires **100 eligible IDs after all exclusions**. It does not apply to the sample-30
+headline lane. A same-100 run with one excluded ID is below powered `n` and stays
+`INDETERMINATE`.
+
+The fixed T4 exclusions are judge/verdict errors and `spawn`, `protocol`, `unclassified`, or
+unknown harness failures. The fixed T5 exclusions are `provider-safeguard`, `transport`, and
+`timeout`. The method removes an ID when either arm has a T4 or T5 outcome. An `agent` termination
+is a T1 system failure and counts as `wrong`; it is not an exclusion. Candidate-only means the
+candidate is T4 or T5 while the baseline is T1. Such a loss forces `INDETERMINATE`. A T4-to-T5 or
+T5-to-T4 swap is only a union exclusion.
+
+The artifacts must share one answering model and one judge model/rubric/pack tuple. They must also
+share the result schema, prompt append, agent binary, agent environment, QA implementation, and
+judge-tier contract. The load-bearing tier fields are policy, threshold, `judgePanel`, pinned
+register source and hash, effective `maxPanelCases`, its source, and the scaled default policy.
+Both artifacts must be complete and stamp `meta.comparable: true`.
+
+Paired collection requires a frozen stability register. Generate it once, then pass the same file
+to every arm and repeat:
+
+```sh
+node eval/qa/judge-stability.mjs --out /tmp/qa-paired-stability.json
+node eval/qa/run-qa.mjs <other fixed collection flags> \
+  --stability-register /tmp/qa-paired-stability.json
+```
+
+The runner skips regeneration for this option. It stamps
+`stabilityRegisterSource: "pinned"`, the absolute path, and the SHA-256. A pinned
+`--judge-stored` resume must reuse the same path. Unpinned resumes can refresh the register.
+Artifacts from those unpinned resumes cannot enter the paired comparison.
+
+The repeat rule is fixed. Stop after an initial `PASS` or `FAIL`. After an initial statistical
+`INDETERMINATE`, run exactly one complete repeat of both arms with the same pins and IDs. Combine
+the two pairs by ID and stop. Do not repeat a guard failure, a denominator below 100, or a
+candidate-only T4/T5 loss. There is no third look.
+
+The 2026-08-27 and 2026-08-28 artifacts have one `claude-sonnet-5` / `v2.8` / `p5` rubric tuple.
+They do not share a judge-tier contract. Their rounded 10% and 8% discordance rates are therefore a
+**mixed-tuple upper bound**, not same-tuple operating noise. Every table below carries that label.
+
+The deterministic validator uses 100,000 trials and seed `1592594996`:
+
+| Eligible IDs | Look-1 `PASS` at no change | Two-look `PASS` | Look-1 `FAIL` | Two-look `FAIL` | Second collection | Calibration |
+| ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 90 | 0% | 0% | 0% | 0% | 0% | mixed-tuple calibration |
+| 100 | 36.350% | 80.925% | 1.196% | 2.254% | 62.454% | mixed-tuple calibration |
+
+| True loss on both cutpoints | Look-1 `FAIL` | Two-look `FAIL` | Two-look `PASS` | Calibration |
+| ---: | ---: | ---: | ---: | --- |
+| 0 points | 1.196% | 2.254% | 80.925% | mixed-tuple calibration |
+| 5 points | 36.629% | 76.532% | 3.899% | mixed-tuple calibration |
+| 8 points | 93.030% | 99.937% | 0.060% | mixed-tuple calibration |
+| 10 points | 99.759% | 99.998% | 0.002% | mixed-tuple calibration |
+| 12 points | 99.989% | 100% | 0% | mixed-tuple calibration |
+| 16 points | 100% | 100% | 0% | mixed-tuple calibration |
+
+The validator also draws a 3% T4/T5 rate, including a 1% candidate-only rate. It draws a separate
+1% diagnostic content-exclusion rate. At a selected 100 IDs, 99.356% of no-change trials were
+`INDETERMINATE`. This result shows why eligible `n`, not selected `n`, controls the method.
+
+The validator runs reduced deterministic gates under `npm test`. Promotion remains blocked until
+the owner selects a product margin and one same-tuple pinned pair recalibrates discordance.
+
 ## Judge-tier contract
 
 Tiering is part of the grading contract, so it belongs beside the model / rubric / pack tuple.
