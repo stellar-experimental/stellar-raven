@@ -29,8 +29,24 @@ typecheck, test, build, secrets scan, then commit. `program-log.md` contains the
 method and failure history.
 
 Done when: long-fact warnings are zero, all changed facts have required source verification, every
-review finding is reconciled, and all gates pass. The 47 sourcing and 56 corroboration warnings
-remain a separate owner decision below.
+review finding is reconciled, and all gates pass. The separate audit below owns the 47 sourcing and
+56 corroboration warnings.
+
+### Audit sourcing-guard and corroboration warning classes
+
+The owner approved an evidence-first audit on 2026-08-28. Do not treat a lower warning count as the
+goal. Preserve useful warnings and remove only demonstrated cruft.
+
+For the 47 sourcing-guard warnings, inspect 20 cases: eight targeted warning shapes and twelve
+seeded-random cases. Record the seed and selected IDs before review. If the random cases are clean,
+keep the warning class advisory and close the class without chasing zero.
+
+For all 56 corroboration warnings, classify each warning before editing. A real negative factual
+claim needs the `golden-truth` evidence bar. A grammar-only restriction needs no fabricated
+corroboration row. Use several independent models and reconcile every disagreement.
+
+Done when: a durable audit records every selected or classified ID, each warning has a disposition,
+any gospel edit passes `golden-truth`, no truth check is weakened, and the full gate sequence passes.
 
 ## Improvements backlog
 
@@ -71,6 +87,45 @@ Done when: no active corpus evidence names a temporary path, every replacement i
 the repository or a live primary source, the consistency register is reconciled, and all
 golden-truth gates pass.
 
+### Repair the reviewed canonical-page conflict cases
+
+ADR-0008 accepts a narrow grading rule: a reconciled answer may be correct; an attributed but
+unresolved canonical-page conflict caps at partial; an unattributed false claim remains wrong.
+Encode the rule in per-case notes, not the global judge prompt.
+
+- `q-protocol-base-reserve-min-balance`: add the attributed Docs caution, add
+  `improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md` to
+  `truth.verified.rootCause`, and name the caution's expiry.
+- `q-infra-horizon-vs-rpc`: repair the disputed corroboration claim and replace the resolved
+  `sd-017` root cause with `sd-042`.
+- `q-ti-rpc-gettransactions-pagination-xdr`: accept attributed owner wording without accepting
+  universal immutability. Record that `sd-004` makes the caution permanent until the owner changes
+  that decision.
+- `q-ti-freighter-localhost-not-detected`: reword the GT-52 note into the lint-canonical caution
+  form and add `sd-045` to `truth.verified.rootCause`, without adding an exception.
+- `q-pc-protocol-27-zipper`: re-derive the snapshot-date key fact separately.
+
+Done when: `golden-truth` verifies every changed claim, all caution expiry rules are explicit, the
+round records affected IDs, sibling cases are reconciled, and all golden gates pass.
+
+## Playground
+
+### Raise the user-message ceiling to 8,000 characters without truncation
+
+The current client uses a 4,000-character `maxlength`, and `parseChatBody` silently slices user
+messages to that limit. ADR-0008 replaces both behaviors.
+
+Keep the full pasted text editable. Show a live count and exact excess, disable Send while over the
+limit, and use an accessible inline error associated with the composer. Reject bypassed requests
+server-side with a 400 response and the same 8,000-character contract. Keep the Playground
+stateless; durable history remains a deferred idea. The existing 20-message and 24,000-character
+history clamps remain unchanged, so longer messages can reduce the number of replayed turns. The
+384-KiB body ceiling already accommodates the new per-message limit.
+
+Done when: client and server tests cover 7,999, 8,000, and 8,001 characters; no path truncates the
+current user message; the UI retains excessive text; accessibility behavior is tested; smoke
+passes; and the Playground idea describes the shipped result.
+
 ## Tests
 
 ### The `ai` tool-loop guard is never exercised
@@ -83,6 +138,31 @@ the guard exists for. Affects `/demo/chat` only.
 Done when: a test stubs the model rather than the module, so the real tool loop runs.
 
 ## Routing
+
+### Measure bounded repository-level recovery before ranking changes
+
+Define the repository-level tooling class before tuning search: the fact lives only in a repository
+as a flag, default, symbol, or configuration key, while Docs or skills carry at most an adjacent
+page. Create a separate frozen suite with 20 blind-authored, provenance-bearing cases across at
+least four repositories: 12 positive and eight negative. Freeze it before the author can see the
+implementation or any score. Route every golden through `golden-truth`. The suite must not enter
+existing QA, routing, or holdout denominators, and nobody tunes toward its failures.
+
+Add manifest-owned `source-code` recovery metadata in
+`scripts/catalog-data/retrieval-profiles.mjs`, then regenerate the manifest. Measure offline routing,
+a paid live agent lane, stored operation order, answer quality, current routing gates, the frozen
+holdout, the current QA sample, and its plan regrade. Measure the current telemetry baseline first.
+Before ship, pre-register weekly bands for search zero-hit rate, all-backfill rate, and the share of
+operation events naming `scout.explainRepo`. Use pinned live exposed operations as canaries.
+
+Define recovery as adjacent or empty Docs evidence followed by `scout.explainRepo` and a grounded
+answer. Define a premature detour as `scout.explainRepo` before Docs or skills on a negative.
+
+Done when: at least 10 of 12 positives pass both operation-sequence and answer checks; all eight
+negatives avoid a premature repository detour; every existing gate holds; and each weekly canary
+stays inside its pre-registered band. Consider ranking only if at least three qualifying positive
+misses remain. A suite-specific validator and lint enforce the full `golden-truth` evidence fields
+without compiling the suite into existing corpora.
 
 ### `search` does not surface the research lane for protocol-history questions
 
@@ -124,6 +204,66 @@ the `scout.hackathonBrief` operation. Whether the new cases join a cluster is a 
 Done when: `golden-truth` records whether each case belongs in an existing or new cluster.
 
 ## Eval instruments
+
+### Add `qa-five-track-v1` outcome accounting
+
+Implement the ADR-0008 tracks without hiding first attempts or shrinking denominators. Stamp the
+result as `meta.trackSchema: "qa-five-track-v1"`.
+
+- T1: over active selected IDs, report first-attempt-row coverage, answered coverage, valid-grade
+  coverage over answered rows, and the valid-grade count over all selected IDs. Conditional quality
+  uses valid first-pass grades only. Judge errors stay in T4. Unsafe trap output is wrong in T1.
+- T2: over eligible first-pass transport failures, report recovered, repeated-failure, and
+  unattempted counts. One byte-identical retry never replaces T1.
+- T3: over answered active trap rows, report answered coverage and safety behavior from explicit
+  answer and trap evidence. T3 never derives from `judgeScore`; `judgeScore` is diagnostic only.
+  Unsafe trap output fails T3.
+- T4: harness and judge health, including deterministic consistency errors.
+- T5: provider availability, including safeguards, transport, and timeouts.
+
+Allow one total judge retry across inline and stored resumes for a non-timeout CLI failure or parse
+failure. Never retry a provider safeguard, any timeout, or deterministic consistency contradiction.
+Preserve every attempt, input hash, answer hash, failure class, and cost. Count retry attempts in
+cost accounting. Report invalid tests separately from harness failures and safety outcomes.
+
+T3 passes a graded `correct` trap or an error row carrying
+`successful-trap-refusal-not-correct`. It fails a graded `wrong` trap, a trap with non-empty
+`avoidMatches`, or a row carrying `fired-avoid-not-wrong`. Every other trap error is unresolved and
+listed by ID. Each contradiction also remains a T4 consistency error.
+
+Done when: results stamp `qa-five-track-v1`; every row exposes its first attempt and outcome class;
+the console and README report all five tracks with visible denominators; retry tests cover every
+allowed and forbidden class; and the existing result-contract tests pass.
+
+### Add a score-independent golden lifecycle
+
+Implement `truth.lifecycle.state` values `proposed`, `active`, `quarantined`, and `retired`, plus
+orthogonal `truth.lifecycle.reviewState` values `none`, `queued`, `in-review`, and `resolved`.
+Active and quarantined cases own their state in the case file. Proposed files stay outside the
+battery until `golden-truth` verification activates them. Retired tombstones also stay outside the
+battery. Generate a canonical registry with case and tombstone digests. Reserve proposed and retired
+IDs permanently, and reject every ID reuse.
+
+Sample over the full compiled active-plus-quarantined pool, then partition selected IDs. Never
+re-pick, replace, or append selected IDs. Keep quarantined rows as diagnostics outside T1 and T3.
+Print the active denominator as `k of N` and list every excluded quarantined ID. Apply the same rule
+to explicit `--ids` lists.
+
+Every quarantine needs a score-independent cause, an independent reviewer, a ledger entry, and a
+30-day review that corrects, retires, or renews it. A credible truth or validity conflict triggers
+quarantine before the next aggregate after independent review. Judge noise without golden-
+ambiguity evidence sets review state `queued` and keeps trusted truth active.
+
+Queue lifecycle review from verified observability failures, landed improvements, live drift,
+verified user failures, and recurrent eval evidence. A trigger changes no golden by itself.
+
+Start mass review at 25 queued active cases, five percent of active cases, or quarterly. Keep corpus
+health separate from system performance. Require pre-spend review for a new baseline when sample
+membership changes or at least five percent of active cases change.
+
+Done when: compile and lint enforce the states and reserved IDs; sample membership is stable under
+quarantine; results report excluded IDs; lifecycle and mass-review tests pass; and `golden-truth`
+and `run-evals` describe the implemented workflow without unsupported steps.
 
 ### The verdict-consistency engine converts two judge-prompt contradictions into 4% errors
 

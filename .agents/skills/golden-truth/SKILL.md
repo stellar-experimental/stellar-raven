@@ -30,6 +30,10 @@ with non-empty `evidence` + `rootCause` — that lint is the successor to the re
 override-file enforcement, and it moves the check from compile-time bookkeeping to the moment
 of change.
 
+The same evidence bar applies to a separately frozen provenance-bearing suite when its contract
+invokes this skill. Keep that suite in its contract-owned file. Do not compile it into the battery
+or existing routing lanes. Evaluation lanes never merge.
+
 ## Step 1 — classify the truth domain (this picks the verification standard)
 
 | Domain | What gospel means | Examples |
@@ -50,6 +54,22 @@ An upstream maintainer's decline is evidence about placement, scope, or editoria
 that the declined fact is false. Preserve independently corroborated truth, and add a symmetric
 grader caution when needed so an answer is not penalized either for accurately stating the canonical
 fact or for using the owner's accurate operational phrasing without claiming a stronger invariant.
+
+### Canonical-page conflict grading
+
+When a canonical page conflicts with stronger applicable authority, verify both claims and keep the
+truth domain explicit. A reconciled answer may receive `correct`. An attributed but unresolved
+canonical-page claim may receive at most `partial`. The same false claim without attribution remains
+`wrong`. Put the caution in the affected case's `golden.notes`; do not create a global judge
+exception.
+
+Every caution names the conflicting page, its finding or root cause, and its expiry. Remove it
+through this workflow when the finding reaches `fixed-upstream` and the live page no longer carries
+the wording. A `declined-upstream` finding makes the caution durable until a later owner decision.
+Use the lint-canonical form: name the canonical, official, or upstream page or source; state that an
+attributed quote is not a wrong claim; and state the partial cap or grade. ADR-0008 fixes the
+accepted boundary at three cases. Expansion needs this evidence bar, independent review, and a
+later owner decision.
 
 ## Step 2 — know your source classes (independence is between CLASSES)
 
@@ -189,8 +209,38 @@ correction is recorded so it can't silently resurrect.
   (`judgeCase` on `rows[].answer`) and record the flip direction in the round record —
   a fix that only ever flips verdicts toward "correct" is a smell (see the score-laundering
   note below).
-- Ledger: record the corroboration matrices in the round ledger; close the `.agents/TODO.md` item
-  with commit refs.
+- Ledger: record the corroboration matrices and every affected case ID in the round ledger; close
+  the `.agents/TODO.md` item with commit refs. A later comparison must read this list instead of
+  reconstructing it from git history.
+
+## Lifecycle verdicts
+
+When lifecycle fields are unavailable, record proposals in the round ledger and keep compiled
+membership unchanged. Do not add unsupported fields or exclude cases ad hoc.
+
+With lifecycle fields available, use `truth.lifecycle.state` for `proposed | active | quarantined |
+retired` and the orthogonal `truth.lifecycle.reviewState` for `none | queued | in-review |
+resolved`. Proposed files stay outside the battery until this workflow verifies and activates them.
+Retired tombstones stay outside the battery. The generated registry records digests, permanently
+reserves proposed and retired IDs, and rejects ID reuse.
+
+Activate a proposal only after source verification, duplicate and boundary checks, and an
+independent reviewer. Retire only for a score-independent reason such as duplication, obsolete
+scope, unanswerable wording, or lost product relevance. The tombstone records evidence, reviewer,
+date, last digest, and any replacement IDs.
+
+A credible truth or validity conflict triggers quarantine before the next aggregate, after an
+independent reviewer confirms a score-independent cause. Judge noise without golden-ambiguity
+evidence sets review state `queued` and keeps trusted truth active.
+
+Queue review from verified observability failures, landed improvements, live drift, verified user
+failures, and recurrent eval evidence. A trigger changes no gospel by itself. Every quarantine
+needs a ledger entry and a 30-day decision to correct, retire, or independently renew. Reactivation
+is never automatic. Score direction never establishes a lifecycle verdict.
+
+Start a frozen mass review when 25 active cases are queued, five percent of active cases are queued,
+or one quarter passes. Use the earliest trigger. Keep reviewers blind to desired score movement,
+record every affected ID, and report corpus health separately from system performance.
 
 **Score laundering is the failure mode all of this guards against** — "correcting" a golden
 until the agent's answer grades right. The live-evidence bar plus the root-cause pointer keep

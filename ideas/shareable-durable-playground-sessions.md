@@ -1,6 +1,6 @@
 # Shareable durable `/playground` sessions
 
-Status: product idea only. No implementation commitment.
+Status: deferred product idea only. The Playground remains stateless.
 
 Recorded: 2026-07-15 from product discussion about durable private playground sessions that an
 author may share publicly. A viewer can read a shared session without signing in. If that viewer
@@ -9,16 +9,23 @@ the shared source never becomes collaborative or writable by another user.
 
 ## Issue #40 status
 
-Issue #40 requested a copy action, a larger 4,000-character paste limit, and cross-session history.
-PR #70 shipped the copy action. The paste-limit change remains undecided. The durable-session
-design below remains an unapproved product idea, not an approved history implementation.
+Issue #40 requested a copy action, a larger paste limit, and cross-session history. PR #70 shipped
+the copy action. The owner approved an 8,000-character user-message ceiling on 2026-08-28. The
+owner kept cross-session history deferred and the shipped Playground stateless.
 
-The current playground is a short evaluation surface. Owner approval is required before either
-remaining issue item becomes implementation work.
+The input-limit change is queued in `.agents/TODO.md`. The durable-session design below remains an
+unapproved idea and requires a new owner decision before implementation.
 
-## Product decision
+## Input-limit decision
 
-Build this as durable, asynchronous conversation sharing, not live collaboration.
+The client keeps the complete pasted text visible. It shows a live count and the exact excess,
+disables Send, and presents an accessible inline error. The server rejects a bypassed request with
+the same 8,000-character contract. Neither layer truncates user input. A modal is unnecessary.
+
+## Deferred design shape
+
+If the owner reactivates durable sessions, use asynchronous conversation sharing rather than live
+collaboration.
 
 - Every new session is private and owned by the signed-in user.
 - Owners can reopen private sessions after a browser, login, or Worker restart.

@@ -1,6 +1,7 @@
 # Source delivery: scored, verifiable source pointers instead of content reading
 
-Status: draft for review, 2026-08-27, revised the same day after one independent review
+Status: deferred, 2026-08-28. The phase-zero spike is not approved. The measured reopen rule in §8
+controls when discovery may resume. This note was revised after one independent review
 (`CHANGES-REQUESTED`, nine findings, all addressed below). No committed work. This note reframes
 Track C item 1 of
 [`research/qa-improvement-plan-2026-08-25.md`](../research/qa-improvement-plan-2026-08-25.md)
@@ -360,7 +361,28 @@ This design must not:
 - tune scoring, the allowlist, or extraction rules against failed cases of the frozen evaluation;
 - report a battery delta as the ship reason.
 
-## 8. Open questions for the owner
+## 8. Reopen rule and deferred design questions
+
+The owner deferred this program on 2026-08-28. The twelve questions below are not current owner
+questions. Ask them only after the following trigger opens a phase-zero study.
+
+A verified incident must meet every condition:
+
+1. The missing fact exists at a pinned ref in an allowlist-candidate repository, with a nameable
+   file, symbol, or heading locator.
+2. Docs, skills, one drift refresh, and one pinned `scout.explainRepo` rephrase return no quotable
+   support.
+3. The repository-recovery steering from ADR-0008 was live when the failure occurred.
+4. Triage identifies source coverage, not routing, answer craft, judge error, or golden error.
+
+One independently reproduced high-impact user block can open the study. Two unrelated reproduced
+incidents can also open it. A high-impact block means no exposed operation let the user complete
+the task. Each incident needs the question and transcript; add a Ray ID and date when available.
+
+Evaluation-only evidence needs three verified cases across two repositories and two fact classes.
+One case must be outside the current golden family. No trigger authorizes implementation.
+
+Deferred questions:
 
 1. **Pin freshness policy.** Skills never auto-advance because bodies are prompt input. Pointers
    are not prompt input. Is a monthly automatic re-pin acceptable when the blob hash at the new
@@ -424,7 +446,8 @@ decisions. They do not authorize implementation, provisioning, deployment, or a 
 12. Apply the skill-pin review bar to allowlist changes. Require a pin, role reason, license data,
     extractor rule, descriptor update, and drift checks.
 
-The phase-zero spike remains unapproved. It needs separate owner approval after all 12 decisions.
+The phase-zero spike remains unapproved. The reopen trigger must fire before these decisions return
+to the owner.
 
 ## 9. Sizing and sequence
 

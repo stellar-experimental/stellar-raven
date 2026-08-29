@@ -298,3 +298,12 @@ the temporary `/tmp/stellar-raven-directory-check.json` extract has expired.
 
 No own-repository TODO duplicates this external submission work. No deployment, credential, paid
 test, or submission has new authorization.
+
+## Owner disposition — 2026-08-28
+
+Current Connectors Directory work happens outside this repository in Slack and Google Docs. Treat
+the portal, reviewer account, wording, contact, credential, submission, and SDF scope questions as
+blocked externally. They are not current repo owner questions.
+
+This repository may record later status. It must not perform portal, account, credential, contact,
+submission, or SDF follow-up work without new authorization.

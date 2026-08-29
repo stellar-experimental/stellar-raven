@@ -20,11 +20,11 @@ Research notes and possible future work that are not committed product plans.
 - [ChatGPT Subscription Login for `/playground`](./playground-chatgpt-subscription-login.md) —
   optional user-funded playground inference via ChatGPT/Codex OAuth, with hosted-token custody,
   consistency, budget, and upstream-support gates recorded before any spike.
-- [Shareable Durable `/playground` Sessions](./shareable-durable-playground-sessions.md) — private
-  durable sessions, opt-in public read links, login-gated follow-ups, and atomic private forks on a
-  non-author's first send.
-- [Source Delivery: Ranked References](./source-delivery-ranked-references.md) — a draft
-  `sources.locate` surface that returns scored, pinned source pointers without fetching content.
+- [Shareable Durable `/playground` Sessions](./shareable-durable-playground-sessions.md) — deferred
+  durable-session design; the shipped Playground stays stateless while the separate 8,000-character
+  input change proceeds.
+- [Source Delivery: Ranked References](./source-delivery-ranked-references.md) — a deferred
+  `sources.locate` surface whose measured reopen trigger follows repository-recovery work.
 - [Skill Discovery: What Is Still Open After De-vendoring](./skill-discovery-without-bundling.md) —
   the content-ownership question is CLOSED (bodies are served from pinned upstream, never stored).
   Two measurable questions survive: whether the `skills.*` read surface earns its place at all
