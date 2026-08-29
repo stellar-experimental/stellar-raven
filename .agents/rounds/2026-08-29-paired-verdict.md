@@ -8,8 +8,12 @@
 | Worktree | `/Users/kalepail/.herdr/worktrees/stellar-raven-codemode/codex-paired-verdict` |
 | Original base | `35c90ecfcb303d2cc843b55a58636a39f8152e4a` |
 | Local checkpoint | `5dc4c28` (`checkpoint: add paired QA verdict`) |
-| Rebase target | `cf8af54d7e14e12e652c24872f2b655c38294f2c` (`origin/main`, merged PR-B) |
-| Rebased checkpoint | `0b517432b661ac0d243e31c22965824cadade9fd` |
+| PR-B rebase target | `cf8af54d7e14e12e652c24872f2b655c38294f2c` |
+| First rebased checkpoint | `0b517432b661ac0d243e31c22965824cadade9fd` |
+| Reviewed correction commit before integration | `5103f64` (`eval: correct paired QA verdict contract`) |
+| Integration base | `2a36842659a9f3d3e2ed46657ba5304da8372c73` (`origin/main`, judge rubric `v2.9`) |
+| Integrated checkpoint | `29ed7c5` (`checkpoint: add paired QA verdict`) |
+| Integrated correction | `308dc3624cccd792442fc1cb0c8e8b9dc1f4b85d` (`eval: correct paired QA verdict contract`) |
 | Operator | Codex, paired-verdict lane |
 | Skill | `.agents/skills/run-evals/SKILL.md` |
 | Decision brief | `/tmp/paired-verdict-fable-decision.md` |
@@ -23,8 +27,11 @@ The rebase conflict affected `.agents/TODO.md` only. The resolution kept the pai
 It kept PR-B's completed panel-cap TODO removed. The rebased runner preserves PR-B's scaled cap,
 cap-source stamps, boundary counts, summaries, and stored-judge behavior.
 
-The rebased checkpoint has `cf8af54d7e14e12e652c24872f2b655c38294f2c` as its direct parent.
-The correction work remains uncommitted after that required local checkpoint.
+The integration rebase completed without conflicts. Commit `29ed7c5` has `2a36842` as its direct
+parent. Commit `308dc36` contains the reviewed correction. The branch keeps judge rubric `v2.9`.
+
+The integration keeps the judge full-run TODO open. It also keeps the paired TODO and owner margin
+question open. The three-dot diff does not modify `eval/qa/judge.mjs`.
 
 ## Status and estimand
 
@@ -191,7 +198,7 @@ All six validator gates passed:
 
 | Gate | Result |
 | --- | --- |
-| Focused paired, stability, measurement, and stored-judge tests | PASS — 4 files, 84 tests |
+| Focused paired, judge, panel, register, and stored-resume tests | PASS — 6 files, 145 tests |
 | Deterministic validation | PASS — 100,000 trials, seed `1592594996`, six of six gates |
 | `npm run eval:selftest` | PASS — all checks |
 | `npm run eval:compile` | PASS — 338 legacy and 122 extended cases |
@@ -201,18 +208,23 @@ All six validator gates passed:
 | `npm run eval:routing -- --gate` | PASS — legacy, skills, and holdout gates |
 | Stored-result plan regrade | PASS — 92/100 required facts, mean ratio 0.95 |
 | `npm run typecheck` | PASS |
-| `npm test` | PASS — 92 files, 1,421 tests |
+| `npm test` | PASS — 92 files, 1,436 tests |
 | `npm run build` | PASS — Wrangler dry run |
 | `npm run secrets:scan -- --tree` | PASS — clean |
 | `git diff --check` | PASS |
-| Grok 4.6 high re-review | PASS — no findings after four repairs |
+| Grok 4.6 high correction review | PASS — no findings after five repairs |
+| Grok 4.6 high integration review | PASS — one Low route-card finding repaired; final delta had no findings |
 
 ## Outcome
 
 Implementation verdict: `PASS`. The paired method remains experimental and is not a ship gate.
 Promotion still needs one same-tuple pinned pair and the owner margin decision.
 
-The independent Grok review first found one medium and four low defects. All five repairs passed
-the same reviewer's delta check. The final report is `/tmp/paired-verdict-grok-rereview.md`.
+The independent correction review found one medium and four low defects. All five repairs passed
+the same reviewer's delta check. Its report is `/tmp/paired-verdict-grok-rereview.md`.
+
+The integration review found one Low stale-ledger issue and no Spec finding. This route card now
+records the integration base and commits. The same reviewer returned final `PASS` with no remaining
+finding. The integration report is `/tmp/paired-verdict-grok-integration-review.md`.
 
 No paid command ran. No push or pull request occurred. The primary worktree remained read-only.
