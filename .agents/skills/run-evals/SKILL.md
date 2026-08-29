@@ -418,6 +418,42 @@ Known judge failure modes (from `eval/qa/README.md`):
   retrieval despite the addendum. Treat any `wrong` verdict whose rationale cites an avoid
   item phrased in terms of corpus/evidence support as a suspect artifact until live-verified.
 
+### Paired stored-run verdict
+
+Use `npm run eval:qa:paired -- <baseline.json> <candidate.json>` when a same-ID comparison needs
+one terminal word. This is an offline command. It reads stored results only and never spends.
+
+The `qa-paired-ordinal-ni-v1` estimand has two paired cumulative-grade components:
+`P(correct)` difference and `P(correct or partial)` difference. It keeps `correct`, `partial`, and
+`wrong` without a half-credit weight. The non-inferiority margin is 8 percentage points on both
+components. `PASS` requires both one-sided lower bounds above the margin. `FAIL` requires either
+one-sided upper bound below it. Every other result is `INDETERMINATE`.
+
+Here, `P` samples one eligible ID uniformly and one collection and judge realization under the
+fixed contract. Do not generalize the result to another corpus or measurement contract.
+
+Require at least 50 eligible IDs. Require identical ordered IDs, per-row `caseInputSha256`, one
+answering model, and one judge model/rubric/pack tuple. Also require identical result, prompt,
+agent, QA-implementation, and tiering contracts. Both artifacts must be complete and comparable.
+Never use old rows without `meta.caseIdentitySchema: "qa-judge-case-v1"`.
+
+Exclude the union of fixed T4 and T5 rows. T4 contains judge/verdict errors and spawn, protocol,
+unclassified, or unknown harness failures. T5 contains provider safeguards, transport, and
+timeouts. Count an `agent` termination as T1 `wrong`. A candidate-only T4 or T5 row forces
+`INDETERMINATE`; report every excluded ID.
+
+The fixed repeat rule permits one extra paired collection only after statistical uncertainty.
+Stop after an initial `PASS` or `FAIL`. Do not repeat a guard failure, a denominator below 50, or
+a candidate-only T4/T5 loss. Supply the one repeat with `--baseline-repeat` and
+`--candidate-repeat`; the command averages repeats within each ID and then stops. There is no
+third look.
+
+Record the printed verdict, eligible denominator, exclusion counts and IDs, two estimates and
+bounds, full transition matrix, tuple, and reasons in the round ledger. Run
+`npm run eval:qa:paired:validate` after any method change. Its fixed simulation must keep false
+`PASS` and false `FAIL` at or below 5%, no-change `PASS` power at or above 80%, and 16-point-loss
+`FAIL` power at or above 90%.
+
 Fan out sub-agents for this review when the run is big: one per `wrong`/`partial` case, each
 re-executing the disputed claims live (production or dev `execute`) and returning a verdict
 + evidence. Collect into the round ledger.

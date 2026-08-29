@@ -537,6 +537,77 @@ finalizes, and no resume spends a second paid call on it.
   `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Use a common-id set for comparisons
   across this boundary, or disclose the sample change.
 
+### Paired `PASS` / `FAIL` / `INDETERMINATE` verdict
+
+Use `qa-paired-ordinal-ni-v1` only for two stored runs over the same ordered IDs. The command reads
+no live service or current corpus file:
+
+```sh
+npm run eval:qa:paired -- <baseline.json> <candidate.json>
+
+# Only after an initial statistical INDETERMINATE:
+npm run eval:qa:paired -- <baseline.json> <candidate.json> \
+  --baseline-repeat <baseline-repeat.json> \
+  --candidate-repeat <candidate-repeat.json>
+
+# Deterministic operating-characteristic validation:
+npm run eval:qa:paired:validate
+```
+
+Each new result row stamps `caseInputSha256` over its `question`, `golden`, and `tags`. The result
+stamps `meta.caseIdentitySchema: "qa-judge-case-v1"`. The comparison denominator contains only IDs
+whose hash is identical across every supplied artifact. Old artifacts without these stamps cannot
+receive a paired verdict.
+
+The estimand is the two-component cumulative-grade difference over eligible IDs. Its components
+are `P(candidate=correct) - P(baseline=correct)` and
+`P(candidate∈{correct,partial}) - P(baseline∈{correct,partial})`. This preserves the ordered
+`correct`, `partial`, and `wrong` outcomes without assigning partial an arbitrary numeric weight.
+The report also prints the complete 3×3 transition matrix in JSON mode.
+
+Here, `P` samples one eligible ID uniformly. It also samples one collection and judge realization
+under the fixed measurement contract. The estimand therefore describes the stored case set and
+contract. It does not estimate a different corpus, model, rubric, pack, or tier policy.
+
+The practical non-inferiority margin is **8 percentage points on each component**. This is the
+smallest tested half-point margin that reached at least 80% no-change power after the fixed repeat
+under the stored `v2.8` / `p5` discordance calibration. The calibration used 38 eligible IDs from
+the byte-identical 2026-08-27 and 2026-08-28 same-100 slice: strict-correct discordance was 4/38
+(10.5%), and non-wrong discordance was 3/38 (7.9%). The validator rounds these to 10% and 8%.
+
+For each component, the method computes the paired mean and standard error across IDs. A repeat
+averages its two deltas within each ID, so every ID keeps one unit of weight. Each look uses a
+one-sided `alpha=0.007143` normal bound (`z=2.45`). The two-look, two-component rule reserves
+enough error budget for both components and both looks.
+
+- `PASS`: both lower bounds are greater than `-0.08`.
+- `FAIL`: either upper bound is less than `-0.08`.
+- `INDETERMINATE`: every other statistical result, fewer than 50 eligible IDs, or a failed guard.
+
+The fixed T4 exclusions are judge/verdict errors and `spawn`, `protocol`, `unclassified`, or
+unknown harness failures. The fixed T5 exclusions are `provider-safeguard`, `transport`, and
+`timeout`. The method removes an ID when either arm has a T4 or T5 outcome. An `agent` termination
+is a T1 system failure and counts as `wrong`; it is not an exclusion. Any candidate-only T4 or T5
+outcome forces `INDETERMINATE`, so an availability loss cannot create a quality `PASS` by shrinking
+the denominator.
+
+The artifacts must share one answering model and one judge model/rubric/pack tuple. They must also
+share the result schema, prompt append, agent binary, agent environment, QA implementation, and
+judge-tier contract. The tier contract includes the policy, threshold, register status and hash,
+and panel cap. Both artifacts must be complete and stamp `meta.comparable: true`.
+
+The repeat rule is fixed. Stop after an initial `PASS` or `FAIL`. After an initial statistical
+`INDETERMINATE`, run exactly one complete repeat of both arms with the same pins and IDs. Combine
+the two pairs by ID and stop. Do not repeat a guard failure, a denominator below 50, or a
+candidate-only T4/T5 loss. There is no third look.
+
+The deterministic 100,000-trial validation uses seed `1592594996` and the stored 10%/8%
+discordance calibration. It measured 2.561% false `PASS` at one margin-boundary component, 0.755%
+false `FAIL` with both components at the boundary, 81.241% `PASS` power at no change, and 96.415%
+`FAIL` power at a 16-point loss on both components. A separate 20,000-trial grid varied
+discordance from 8% through 40%. Its worst false `PASS` was 3.465%, and its worst false `FAIL` was
+2.725%. These figures include the fixed repeat rule.
+
 ## Judge-tier contract
 
 Tiering is part of the grading contract, so it belongs beside the model / rubric / pack tuple.

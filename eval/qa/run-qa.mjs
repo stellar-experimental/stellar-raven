@@ -100,6 +100,7 @@ import {
 import { verifySourceCases } from "./re-judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
+import { CASE_INPUT_IDENTITY, caseInputSha256 } from "./paired-verdict.mjs";
 import { makeSearchResultProjector } from "./search-projection.mjs";
 import {
   MCP_PROTOCOL_VERSION,
@@ -1227,6 +1228,7 @@ async function main() {
       rows.push({
         id: c.id,
         question: c.question,
+        caseInputSha256: caseInputSha256(c),
         tags: c.tags,
         truth: {
           status: c.truth.status,
@@ -1337,6 +1339,7 @@ async function main() {
             : {}),
           packVersion: PACK_VERSION,
           resultsSchema: AGENT_RESULT_SCHEMA,
+          caseIdentitySchema: CASE_INPUT_IDENTITY,
           casesPath,
           caseContract: battery.contract ?? null,
           sampleN: sampleN ?? null,
