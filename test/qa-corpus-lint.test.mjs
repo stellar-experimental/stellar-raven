@@ -15,6 +15,7 @@ import {
   lintSurface
 } from "../eval/qa/lint-corpus.mjs";
 import { updateRegister } from "../eval/qa/register-helper.mjs";
+import { contentSha256 } from "../eval/qa/lifecycle.mjs";
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), "fixtures", "qa-corpus");
 const LINT_CLI = join(dirname(fileURLToPath(import.meta.url)), "..", "eval", "qa", "lint-corpus.mjs");
@@ -299,6 +300,23 @@ describe("QA corpus lint lanes", () => {
 
       kase.question = "How is persistent contract storage described?";
       writeFileSync(join(corpusDir, "case.json"), `${JSON.stringify(kase, null, 2)}\n`);
+      writeFileSync(join(repo, "eval", "qa", "lifecycle-registry.json"), `${JSON.stringify({
+        schema: "qa-lifecycle-registry-v1",
+        digestSchema: "canonical-json-sha256-v1",
+        counts: { proposed: 0, active: 1, quarantined: 0, retired: 0 },
+        reservedIds: [kase.id],
+        entries: [{
+          id: kase.id,
+          path: "eval/qa/corpus/battery/case.json",
+          state: "active",
+          reviewState: "none",
+          caseContentSha256: contentSha256(kase)
+        }]
+      }, null, 2)}\n`);
+      writeFileSync(join(repo, "eval", "qa", "corpus", "lifecycle-policy.json"), `${JSON.stringify({
+        schema: "qa-lifecycle-policy-v1",
+        massReview: { rules: "qa-mass-review-rules-v1", cadenceAnchorOn: "2026-08-29", state: "none" }
+      }, null, 2)}\n`);
       const args = [
         LINT_CLI,
         "--corpus", "eval/qa/corpus/battery",

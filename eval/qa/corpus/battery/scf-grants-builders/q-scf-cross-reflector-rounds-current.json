@@ -27,6 +27,10 @@
     "freshness": "scheduled"
   },
   "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
     "domain": "corpus-grounded",
     "status": "confirmed",
     "asOf": "2026-07-11",

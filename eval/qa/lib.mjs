@@ -4,6 +4,7 @@
  * Kept dependency-free (plain Node ≥ 18). Everything deterministic lives here
  * so compile-qa.mjs and run-qa.mjs sample identically.
  */
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -11,6 +12,8 @@ import path from "node:path";
 export const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 export const CASES_PATH = path.join(QA_DIR, "cases.json");
 export const SAMPLE_PATH = path.join(QA_DIR, "sample.json");
+export const LIFECYCLE_REGISTRY_PATH = path.join(QA_DIR, "lifecycle-registry.json");
+export const LIFECYCLE_POLICY_PATH = path.join(QA_DIR, "corpus/lifecycle-policy.json");
 
 export const QA_CATEGORIES = new Set([
   "protocol-core",
@@ -39,6 +42,36 @@ export function loadCases(casesPath = CASES_PATH) {
   const parsed = JSON.parse(readFileSync(casesPath, "utf8"));
   if (!Array.isArray(parsed.cases)) throw new Error(`${casesPath}: missing cases[]`);
   return parsed;
+}
+
+/** Partition only after selection. Frozen live contracts without lifecycle fields remain active. */
+export function partitionLifecycleCases(cases) {
+  const active = [];
+  const quarantined = [];
+  for (const kase of cases) {
+    const state = kase.truth?.lifecycle?.state ?? "active";
+    if (state === "active") active.push(kase);
+    else if (state === "quarantined") quarantined.push(kase);
+    else throw new Error(`selected case ${kase.id} has non-compiled lifecycle state ${state}`);
+  }
+  return {
+    selected: cases,
+    active,
+    quarantined,
+    activeIds: active.map((kase) => kase.id),
+    quarantinedIds: quarantined.map((kase) => kase.id)
+  };
+}
+
+export function lifecycleSnapshot(cases) {
+  return cases.map((kase) => ({
+    id: kase.id,
+    lifecycle: kase.truth?.lifecycle ?? { state: "active", reviewState: "none" }
+  }));
+}
+
+export function lifecycleSnapshotSha256(snapshot) {
+  return createHash("sha256").update(JSON.stringify(snapshot)).digest("hex");
 }
 
 /**

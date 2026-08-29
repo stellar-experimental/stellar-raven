@@ -29,6 +29,10 @@
     "freshness": "stable"
   },
   "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
     "domain": "real-world",
     "status": "confirmed",
     "sources": [

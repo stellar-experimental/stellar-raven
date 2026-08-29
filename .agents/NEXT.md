@@ -43,14 +43,14 @@ Record the affected case-id list in the round ledger, as session 3 did.
 
 ### 2. Eval instruments
 
-Skill: `run-evals`. Five items under `TODO.md` "Eval instruments":
+Skill: `run-evals`. Three open items remain under `TODO.md` "Eval instruments":
 
 - The judge-prompt implementation and seven-call self-test passed under rubric `v2.9`.
   The full QA confirmation remains pending, so the related TODO stays open.
 - Design and validate a three-outcome paired comparison verdict before another comparable rerun.
 - Judge stability is degrading (47 → 57 unstable). Watch the trend at the next register refresh.
-- Implement the `qa-five-track-v1` contract from ADR-0008.
-- Implement the score-independent golden lifecycle after the five-track denominator contract.
+
+The `qa-five-track-v1` and score-independent golden lifecycle contracts are implemented.
 
 ### 3. Routing: `scout.searchResearch` for protocol-history questions
 

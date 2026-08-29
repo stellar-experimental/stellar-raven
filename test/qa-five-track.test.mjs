@@ -217,6 +217,33 @@ describe("qa-five-track-v1", () => {
     expect(output).toContain("not observed 1/2 IDs: trap-unattempted");
   });
 
+  it("excludes quarantine only from T1 and T3 performance aggregates", () => {
+    const transport = agentAttempt({ answer: "", failure: failure("transport"), input: "same" });
+    const selectedCases = [
+      { id: "active", tags: {}, truth: { lifecycle: { state: "active", reviewState: "none" } } },
+      {
+        id: "quarantined",
+        tags: { trap: "injection" },
+        truth: { lifecycle: { state: "quarantined", reviewState: "queued" } }
+      }
+    ];
+    const rows = [
+      row("active", { judges: [judgeAttempt({ score: "correct", avoidMatches: [] })] }),
+      row("quarantined", { tags: { trap: "injection" }, agent: transport })
+    ];
+    const summary = buildRunnerTracks({ selectedCases, rows });
+
+    expect(summary.t1.firstAttemptRows).toMatchObject({ count: 1, denominator: 1, ids: ["active"] });
+    expect(summary.t3.answeredCoverage.denominator).toBe(0);
+    expect(summary.t2.eligibleFirstPassTransportFailures).toMatchObject({
+      count: 1,
+      denominator: 2,
+      ids: ["quarantined"]
+    });
+    expect(summary.t4.quarantinedDiagnostics.ids).toEqual(["quarantined"]);
+    expect(summary.t5.transport).toMatchObject({ count: 1, denominator: 2, ids: ["quarantined"] });
+  });
+
   it("rolls panel vote failures into runner T4 and T5 with unique consistency IDs", () => {
     const panel = judgeAttempt({
       score: "correct",

@@ -14,6 +14,10 @@
     "trap": "out-of-scope"
   },
   "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
     "domain": "real-world",
     "status": "confirmed",
     "sources": [{ "class": "B", "ref": "scripts/exposure.mjs" }],

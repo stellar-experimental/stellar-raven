@@ -38,7 +38,8 @@ const CASES = [
       sources: ["https://developers.stellar.org"],
       notes: ""
     },
-    tags: { category: "soroban", service: "stellarDocs", freshness: "stable" }
+    tags: { category: "soroban", service: "stellarDocs", freshness: "stable" },
+    truth: { lifecycle: { state: "active", reviewState: "none" } }
   },
   {
     id: "q-fixture-empty",
@@ -50,7 +51,8 @@ const CASES = [
       sources: [],
       notes: ""
     },
-    tags: { category: "seps", service: "stellarDocs", freshness: "stable" }
+    tags: { category: "seps", service: "stellarDocs", freshness: "stable" },
+    truth: { lifecycle: { state: "active", reviewState: "none" } }
   },
   {
     id: "q-fixture-third",
@@ -62,7 +64,8 @@ const CASES = [
       sources: [],
       notes: ""
     },
-    tags: { category: "seps", service: "stellarDocs", freshness: "stable" }
+    tags: { category: "seps", service: "stellarDocs", freshness: "stable" },
+    truth: { lifecycle: { state: "active", reviewState: "none" } }
   }
 ];
 
@@ -71,7 +74,7 @@ function answeredRow(kase, answer, verdict = null) {
     id: kase.id,
     question: kase.question,
     tags: kase.tags,
-    truth: { status: "verified" },
+    truth: { status: "verified", lifecycle: kase.truth.lifecycle },
     answer,
     transcript: [],
     agent: {
@@ -91,9 +94,9 @@ function answeredRow(kase, answer, verdict = null) {
 
 /** Build a temp dir holding a battery file + a --no-judge results file whose
  *  snapshot hashes genuinely reproduce, mirroring run-qa's collection output. */
-function writeFixture(root, { rows: rowOverrides } = {}) {
+function writeFixture(root, { rows: rowOverrides, cases = CASES } = {}) {
   const casesPath = join(root, "cases.json");
-  writeFileSync(casesPath, JSON.stringify({ cases: CASES }, null, 2));
+  writeFileSync(casesPath, JSON.stringify({ cases }, null, 2));
   const rows = rowOverrides ?? [
     {
       id: "q-fixture-answered",
@@ -153,7 +156,11 @@ function writeFixture(root, { rows: rowOverrides } = {}) {
       durationMs: 500
     }
   ];
-  const selectedCases = rows.map((row) => CASES.find((c) => c.id === row.id));
+  const selectedCases = rows.map((row) => cases.find((c) => c.id === row.id));
+  for (const [index, row] of rows.entries()) {
+    row.truth = { ...row.truth, lifecycle: selectedCases[index].truth.lifecycle };
+  }
+  const lifecycle = selectedCases.map((kase) => ({ id: kase.id, lifecycle: kase.truth.lifecycle }));
   const results = {
     meta: {
       variant: "A",
@@ -168,7 +175,9 @@ function writeFixture(root, { rows: rowOverrides } = {}) {
       caseCount: rows.length,
       inputSnapshot: {
         casesSha256: sha256(JSON.stringify(selectedCases)),
-        caseIdsSha256: sha256(JSON.stringify(rows.map((row) => row.id)))
+        caseIdsSha256: sha256(JSON.stringify(rows.map((row) => row.id))),
+        lifecycle,
+        lifecycleSha256: sha256(JSON.stringify(lifecycle))
       },
       comparable: true,
       completeness: {
@@ -212,6 +221,99 @@ function stubJudge(calls = []) {
 }
 
 describe("run-qa --judge-stored", () => {
+  it("uses the active lifecycle denominator for stored panel limits", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-lifecycle-"));
+    try {
+      const cases = CASES.slice(0, 2).map((kase, index) => ({
+        ...kase,
+        truth: {
+          lifecycle: {
+            state: index === 0 ? "active" : "quarantined",
+            reviewState: index === 0 ? "none" : "queued"
+          }
+        }
+      }));
+      const rows = cases.map((kase) => ({
+        ...answeredRow(kase, `answer for ${kase.id}`),
+        truth: { status: "verified", lifecycle: kase.truth.lifecycle }
+      }));
+      const { resultsPath } = writeFixture(root, { rows, cases });
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.meta.judgeTiering = {
+        selectedCaseCount: 1,
+        maxPanelCases: 1,
+        maxPanelCasesSource: "bounded-scaled-default"
+      };
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+
+      await judgeStoredResults(resultsPath, {
+        judgeModel: "stub-judge",
+        judge: stubJudge(),
+        log: () => {}
+      });
+
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.judgeTiering.selectedCaseCount).toBe(1);
+      expect(written.meta.lifecycle).toMatchObject({ activeCount: 1, selectedCount: 2 });
+      expect(written.meta.tracks.t1.firstAttemptRows.denominator).toBe(1);
+      expect(written.meta.tracks.t4.judging.attempted.denominator).toBe(2);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("fails closed when current lifecycle differs from the collection snapshot", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-lifecycle-drift-"));
+    try {
+      const { casesPath, resultsPath } = writeFixture(root, {
+        rows: [answeredRow(CASES[0], "Run `stellar contract build`.")],
+        cases: [CASES[0]]
+      });
+      const current = JSON.parse(readFileSync(casesPath, "utf8"));
+      current.cases[0].truth.lifecycle = { state: "quarantined", reviewState: "queued" };
+      writeFileSync(casesPath, JSON.stringify(current, null, 2));
+      await expect(
+        judgeStoredResults(resultsPath, { judge: stubJudge(), log: () => {} })
+      ).rejects.toThrow(/current lifecycle differs from the collection snapshot/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects a false lifecycle digest and row lifecycle tampering", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-lifecycle-tamper-"));
+    try {
+      const first = writeFixture(root, {
+        rows: [answeredRow(CASES[0], "Run `stellar contract build`.")],
+        cases: [CASES[0]]
+      });
+      const falseDigest = JSON.parse(readFileSync(first.resultsPath, "utf8"));
+      falseDigest.meta.inputSnapshot.lifecycleSha256 = "a".repeat(64);
+      writeFileSync(first.resultsPath, JSON.stringify(falseDigest, null, 2));
+      await expect(
+        judgeStoredResults(first.resultsPath, { judge: stubJudge(), log: () => {} })
+      ).rejects.toThrow(/lifecycle snapshot digest is invalid/);
+
+      const secondRoot = mkdtempSync(join(tmpdir(), "qa-judge-stored-lifecycle-row-"));
+      try {
+        const second = writeFixture(secondRoot, {
+          rows: [answeredRow(CASES[0], "Run `stellar contract build`.")],
+          cases: [CASES[0]]
+        });
+        const rowTamper = JSON.parse(readFileSync(second.resultsPath, "utf8"));
+        rowTamper.rows[0].truth.lifecycle = { state: "quarantined", reviewState: "queued" };
+        writeFileSync(second.resultsPath, JSON.stringify(rowTamper, null, 2));
+        await expect(
+          judgeStoredResults(second.resultsPath, { judge: stubJudge(), log: () => {} })
+        ).rejects.toThrow(/stored row lifecycle differs from the collection snapshot/);
+      } finally {
+        rmSync(secondRoot, { recursive: true, force: true });
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("allows regenerated-register refreshes but never upgrades saved verdicts to a pin", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {

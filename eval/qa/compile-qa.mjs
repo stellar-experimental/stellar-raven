@@ -1,21 +1,34 @@
 #!/usr/bin/env node
 /** Compile the owned one-file-per-case QA battery into deterministic artifacts. */
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeFileAtomic } from "../../scripts/lib/shared.mjs";
 import {
   CASES_PATH,
+  LIFECYCLE_POLICY_PATH,
+  LIFECYCLE_REGISTRY_PATH,
   QA_CATEGORIES,
   QA_DIR,
   QA_SERVICES,
   SAMPLE_PATH,
   stratifiedSample
 } from "./lib.mjs";
+import {
+  COMPILED_LIFECYCLE_STATES,
+  buildLifecycleRegistry,
+  lifecyclePolicyProblems,
+  lifecycleProblems,
+  tombstoneProblems
+} from "./lifecycle.mjs";
 import { strkeyFindings } from "./strkey.mjs";
 
 const CORPUS_DIR = path.join(QA_DIR, "corpus/battery");
+const PROPOSED_DIR = path.join(QA_DIR, "corpus/proposed");
+const RETIRED_DIR = path.join(QA_DIR, "corpus/retired");
+const REPO_ROOT = path.resolve(QA_DIR, "../..");
 const LEDGER_PATH = path.join(QA_DIR, "corpus/migration-ledger.json");
 const REGISTER_PATH = path.join(QA_DIR, "consistency-register.json");
 const SAMPLE_SIZE = 30;
@@ -54,6 +67,7 @@ function json(file) {
 }
 
 function walkJsonFiles(dir) {
+  if (!existsSync(dir)) return [];
   const files = [];
   for (const entry of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
     const full = path.join(dir, entry.name);
@@ -86,7 +100,7 @@ function validateEvidence(file, evidence, field) {
   }
 }
 
-function validateCase(file, kase) {
+function validateCase(file, kase, { allowedLifecycleStates = COMPILED_LIFECYCLE_STATES } = {}) {
   if (!kase || typeof kase !== "object" || Array.isArray(kase)) fail(file, "case must be an object");
   const [strkeyFinding] = strkeyFindings(kase);
   if (strkeyFinding) {
@@ -116,6 +130,8 @@ function validateCase(file, kase) {
   if (kase.tags.trap !== undefined && !TRAPS.has(kase.tags.trap)) fail(file, `unknown trap ${kase.tags.trap}`);
   if (!TRUTH_DOMAINS.has(kase.truth?.domain)) fail(file, `unknown truth.domain ${kase.truth?.domain}`);
   if (!TRUTH_STATUSES.has(kase.truth?.status)) fail(file, `unknown truth.status ${kase.truth?.status}`);
+  const [lifecycleProblem] = lifecycleProblems(kase, { allowedStates: allowedLifecycleStates });
+  if (lifecycleProblem) fail(file, lifecycleProblem);
   const needsAsOf = kase.tags.freshness !== "stable" || kase.truth.status !== "confirmed";
   if (needsAsOf && !DATE_RE.test(kase.truth.asOf ?? "")) fail(file, "truth.asOf is required as YYYY-MM-DD");
   if (kase.truth.asOf !== undefined && !DATE_RE.test(kase.truth.asOf)) fail(file, "truth.asOf must be YYYY-MM-DD");
@@ -138,8 +154,89 @@ function validateCase(file, kase) {
   return kase;
 }
 
-export function validateCaseFile(file) {
-  return validateCase(file, json(file));
+export function validateCaseFile(file, options = {}) {
+  return validateCase(file, json(file), options);
+}
+
+function recordsFrom(dir, options) {
+  return walkJsonFiles(dir).map((file) => ({ file, value: validateCase(file, json(file), options) }));
+}
+
+export function validateTombstoneFile(file) {
+  const value = json(file);
+  const [problem] = tombstoneProblems(value);
+  if (problem) fail(file, problem);
+  if (path.basename(file) !== `${value.id}.json`) fail(file, "filename must equal id + .json");
+  return value;
+}
+
+function tombstoneRecordsFrom(dir) {
+  return walkJsonFiles(dir).map((file) => {
+    return { file, value: validateTombstoneFile(file) };
+  });
+}
+
+function defaultLifecycleBaseRef() {
+  if (!process.env.CI) return "HEAD";
+  if (process.env.GITHUB_EVENT_NAME === "pull_request" && process.env.GITHUB_EVENT_PATH) {
+    try {
+      const headSha = json(process.env.GITHUB_EVENT_PATH)?.pull_request?.head?.sha;
+      if (/^[a-f0-9]{40}$/.test(headSha ?? "")) return `${headSha}^`;
+    } catch {
+      // The normal CI fallback below still refuses genesis when HEAD has history.
+    }
+  }
+  return "HEAD^";
+}
+
+export function loadGitAnchoredLifecycleRegistry({
+  root = REPO_ROOT,
+  registryPath = LIFECYCLE_REGISTRY_PATH,
+  baseRef = defaultLifecycleBaseRef()
+} = {}) {
+  let commits;
+  try {
+    commits = execFileSync("git", ["rev-list", "--first-parent", baseRef], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    }).trim().split("\n").filter(Boolean);
+  } catch {
+    try {
+      const head = execFileSync("git", ["rev-list", "--parents", "-n", "1", "HEAD"], {
+        cwd: root,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"]
+      }).trim().split(/\s+/).filter(Boolean);
+      if (baseRef === "HEAD^" && head.length === 1) {
+        return { registry: null, commit: null, genesis: true, baseRef };
+      }
+      throw new Error(`cannot resolve lifecycle registry base ${baseRef}; refusing genesis`);
+    } catch (error) {
+      if (error.message?.includes("refusing genesis")) throw error;
+      return { registry: null, commit: null, genesis: true, baseRef };
+    }
+  }
+  const relativeRegistryPath = path.relative(root, registryPath).split(path.sep).join("/");
+  for (const commit of commits) {
+    let source;
+    try {
+      source = execFileSync("git", ["show", `--no-textconv`, `${commit}:${relativeRegistryPath}`], {
+        cwd: root,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"]
+      });
+    } catch {
+      // The registry can be absent from newer commits. Continue to the nearest ancestor.
+      continue;
+    }
+    try {
+      return { registry: JSON.parse(source), commit, genesis: false, baseRef };
+    } catch (error) {
+      throw new Error(`committed lifecycle registry at ${commit} is invalid JSON: ${error.message}`);
+    }
+  }
+  return { registry: null, commit: null, genesis: true, baseRef };
 }
 
 function validateRegister(register) {
@@ -205,7 +302,9 @@ function counts(cases) {
     byCategory: countBy(cases, (kase) => kase.tags.category),
     byService: countBy(cases, (kase) => kase.tags.service),
     byFreshness: countBy(cases, (kase) => kase.tags.freshness),
-    traps: countBy(cases.filter((kase) => kase.tags.trap), (kase) => kase.tags.trap)
+    traps: countBy(cases.filter((kase) => kase.tags.trap), (kase) => kase.tags.trap),
+    byLifecycleState: countBy(cases, (kase) => kase.truth.lifecycle.state),
+    byReviewState: countBy(cases, (kase) => kase.truth.lifecycle.reviewState)
   };
 }
 
@@ -214,10 +313,12 @@ function wrapper(cases, corpusContentSha256, comment) {
 }
 
 function main() {
-  if (process.argv.length > 2) throw new Error("compile-qa.mjs takes no arguments; it always emits cases.json and sample.json");
+  if (process.argv.length > 2) throw new Error("compile-qa.mjs takes no arguments; it always emits cases.json, sample.json, and lifecycle-registry.json");
   const seen = new Set();
-  const cases = walkJsonFiles(CORPUS_DIR).map((file) => {
-    const kase = validateCase(file, json(file));
+  const batteryRecords = recordsFrom(CORPUS_DIR, { allowedLifecycleStates: COMPILED_LIFECYCLE_STATES });
+  const proposedRecords = recordsFrom(PROPOSED_DIR, { allowedLifecycleStates: new Set(["proposed"]) });
+  const tombstoneRecords = tombstoneRecordsFrom(RETIRED_DIR);
+  const cases = batteryRecords.map(({ file, value: kase }) => {
     if (seen.has(kase.id)) fail(file, `duplicate id ${kase.id}`);
     seen.add(kase.id);
     return kase;
@@ -225,12 +326,28 @@ function main() {
   if (!existsSync(LEDGER_PATH) || !existsSync(REGISTER_PATH)) throw new Error("migration ledger and consistency register are required");
   validateLedger(json(LEDGER_PATH), cases);
   validateRegister(json(REGISTER_PATH));
+  if (!existsSync(LIFECYCLE_POLICY_PATH)) throw new Error("corpus/lifecycle-policy.json is required");
+  const policyResult = lifecyclePolicyProblems(cases, json(LIFECYCLE_POLICY_PATH), undefined, {
+    enforceTriggers: false
+  });
+  if (policyResult.problems.length) throw new Error(`corpus/lifecycle-policy.json: ${policyResult.problems[0]}`);
+  const registryAnchor = loadGitAnchoredLifecycleRegistry();
+  const lifecycleRegistry = buildLifecycleRegistry({
+    root: REPO_ROOT,
+    batteryRecords,
+    proposedRecords,
+    tombstoneRecords,
+    previousRegistry: registryAnchor.registry,
+    genesis: registryAnchor.genesis
+  });
   const corpusContentSha256 = sha256(JSON.stringify(cases));
   const sample = stratifiedSample(cases, SAMPLE_SIZE);
   writeFileAtomic(CASES_PATH, `${JSON.stringify(wrapper(cases, corpusContentSha256, "Generated owned QA battery. Regenerate with npm run eval:qa:compile."), null, 2)}\n`);
   writeFileAtomic(SAMPLE_PATH, `${JSON.stringify(wrapper(sample, corpusContentSha256, `Deterministic stratified sample (N=${SAMPLE_SIZE}, by service) of the owned QA battery.`), null, 2)}\n`);
+  writeFileAtomic(LIFECYCLE_REGISTRY_PATH, `${JSON.stringify(lifecycleRegistry, null, 2)}\n`);
   console.log(`wrote ${CASES_PATH} (${cases.length} cases; sha256 ${corpusContentSha256})`);
   console.log(`wrote ${SAMPLE_PATH} (${sample.length} cases)`);
+  console.log(`wrote ${LIFECYCLE_REGISTRY_PATH} (${lifecycleRegistry.reservedIds.length} reserved ids)`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

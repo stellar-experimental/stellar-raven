@@ -28,6 +28,10 @@
     "freshness": "scheduled"
   },
   "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none"
+    },
     "domain": "mixed",
     "status": "confirmed",
     "asOf": "2026-08-05",

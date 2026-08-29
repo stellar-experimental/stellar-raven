@@ -14,16 +14,29 @@ import { existsSync, readdirSync, readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { assertNoNonExposedRefs } from "../../scripts/build-catalog.mjs";
+import { validateCaseFile, validateTombstoneFile } from "./compile-qa.mjs";
 import { QA_CATEGORIES, QA_SERVICES } from "./lib.mjs";
+import {
+  COMPILED_LIFECYCLE_STATES,
+  LIFECYCLE_REGISTRY_SCHEMA,
+  contentSha256,
+  lifecyclePolicyProblems,
+  lifecycleProblems,
+  tombstoneProblems
+} from "./lifecycle.mjs";
 
 const ROOT = process.env.QA_REPO_ROOT
   ? realpathSync(process.env.QA_REPO_ROOT)
   : path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const DEFAULTS = {
   corpusDir: path.join(ROOT, "eval/qa/corpus/battery"),
+  proposedDir: path.join(ROOT, "eval/qa/corpus/proposed"),
+  retiredDir: path.join(ROOT, "eval/qa/corpus/retired"),
   manifestPath: path.join(ROOT, "catalog/manifest.json"),
   registerPath: path.join(ROOT, "eval/qa/consistency-register.json"),
-  ledgerPath: path.join(ROOT, "eval/qa/corpus/migration-ledger.json")
+  ledgerPath: path.join(ROOT, "eval/qa/corpus/migration-ledger.json"),
+  lifecycleRegistryPath: path.join(ROOT, "eval/qa/lifecycle-registry.json"),
+  lifecyclePolicyPath: path.join(ROOT, "eval/qa/corpus/lifecycle-policy.json")
 };
 
 const CATEGORY_FLOORS = {
@@ -145,6 +158,142 @@ function walkJsonFiles(dir) {
 
 export function loadCases(corpusDir) {
   return walkJsonFiles(corpusDir).map((file) => ({ ...json(file), __file: file }));
+}
+
+export function loadLifecycleLane(dir, lane) {
+  const cases = [];
+  const findings = [];
+  for (const file of walkJsonFiles(dir)) {
+    try {
+      const value = lane === "retired"
+        ? validateTombstoneFile(file)
+        : validateCaseFile(file, { allowedLifecycleStates: new Set(["proposed"]) });
+      cases.push({ ...value, __file: file });
+    } catch (error) {
+      findings.push(finding("error", `lifecycle-${lane}`, path.basename(file, ".json"), error.message));
+      try { cases.push({ ...json(file), __file: file }); } catch { /* The validation error already identifies invalid JSON. */ }
+    }
+  }
+  return { cases, findings };
+}
+
+export function lintLifecycle(
+  cases,
+  lifecycleRegistry,
+  lifecyclePolicy,
+  today,
+  { proposedCases = [], tombstones = [], laneFindings = [] } = {}
+) {
+  const findings = [];
+  findings.push(...laneFindings);
+  const ids = new Set();
+  for (const kase of cases) {
+    if (ids.has(kase.id)) findings.push(finding("error", "lifecycle", kase.id, "duplicate compiled case id"));
+    ids.add(kase.id);
+    for (const problem of lifecycleProblems(kase, { allowedStates: COMPILED_LIFECYCLE_STATES, today })) {
+      findings.push(finding("error", "lifecycle", kase.id, problem));
+    }
+  }
+  for (const kase of proposedCases) {
+    if (ids.has(kase.id)) findings.push(finding("error", "lifecycle", kase.id, "id appears in more than one lifecycle lane"));
+    ids.add(kase.id);
+    for (const problem of lifecycleProblems(kase, { allowedStates: new Set(["proposed"]), today })) {
+      findings.push(finding("error", "lifecycle-proposed", kase.id, problem));
+    }
+  }
+  for (const tombstone of tombstones) {
+    if (ids.has(tombstone.id)) findings.push(finding("error", "lifecycle", tombstone.id, "id appears in more than one lifecycle lane"));
+    ids.add(tombstone.id);
+    for (const problem of tombstoneProblems(tombstone)) {
+      findings.push(finding("error", "lifecycle-retired", tombstone.id, problem));
+    }
+  }
+  if (!lifecycleRegistry) {
+    findings.push(finding("error", "lifecycle-registry", "-", "lifecycle registry is missing"));
+  } else {
+    if (lifecycleRegistry.schema !== LIFECYCLE_REGISTRY_SCHEMA) {
+      findings.push(finding("error", "lifecycle-registry", "-", `schema must be ${LIFECYCLE_REGISTRY_SCHEMA}`));
+    }
+    if (lifecycleRegistry.digestSchema !== "canonical-json-sha256-v1") {
+      findings.push(finding("error", "lifecycle-registry", "-", "digestSchema must be canonical-json-sha256-v1"));
+    }
+    const entries = Array.isArray(lifecycleRegistry.entries) ? lifecycleRegistry.entries : [];
+    const entryById = new Map();
+    for (const entry of entries) {
+      if (entryById.has(entry.id)) findings.push(finding("error", "lifecycle-registry", entry.id, "duplicate reserved id"));
+      entryById.set(entry.id, entry);
+    }
+    const reservedIds = Array.isArray(lifecycleRegistry.reservedIds) ? lifecycleRegistry.reservedIds : [];
+    if (
+      new Set(reservedIds).size !== reservedIds.length ||
+      reservedIds.some((id) => !entryById.has(id)) ||
+      entries.some((entry) => !reservedIds.includes(entry.id))
+    ) {
+      findings.push(finding("error", "lifecycle-registry", "-", "reservedIds must contain every entry id exactly once"));
+    }
+    const expectedRecords = [
+      ...cases.map((value) => ({ id: value.id, value, lane: "battery" })),
+      ...proposedCases.map((value) => ({ id: value.id, value, lane: "proposed" })),
+      ...tombstones.map((value) => ({ id: value.id, value, lane: "retired" }))
+    ];
+    for (const record of expectedRecords) {
+      const entry = entryById.get(record.id);
+      if (!entry) {
+        findings.push(finding("error", "lifecycle-registry", record.id, `${record.lane} id is not permanently reserved`));
+      } else {
+        const { __file, ...value } = record.value;
+        if (path.isAbsolute(__file ?? "")) {
+          const expectedPath = path.relative(ROOT, __file).split(path.sep).join("/");
+          if (!expectedPath.startsWith("../") && entry.path !== expectedPath) {
+            findings.push(finding("error", "lifecycle-registry", record.id, "registry path does not match the lifecycle lane file"));
+          }
+        }
+        if (record.lane === "retired") {
+          if (entry.state !== "retired" || entry.reviewState !== "resolved") {
+            findings.push(finding("error", "lifecycle-registry", record.id, "registry lifecycle does not match the retired tombstone"));
+          }
+          if (entry.tombstoneContentSha256 !== contentSha256(value)) {
+            findings.push(finding("error", "lifecycle-registry", record.id, "registry tombstoneContentSha256 is stale"));
+          }
+          if (entry.lastCaseContentSha256 !== value.retired?.lastCaseContentSha256) {
+            findings.push(finding("error", "lifecycle-registry", record.id, "registry lastCaseContentSha256 is stale"));
+          }
+          if (!same(entry.replacementIds, [...(value.retired?.replacementIds ?? [])].sort())) {
+            findings.push(finding("error", "lifecycle-registry", record.id, "registry replacementIds are stale"));
+          }
+        } else {
+          if (entry.state !== value.truth?.lifecycle?.state) {
+            findings.push(finding("error", "lifecycle-registry", record.id, "registry state does not match the case file"));
+          }
+          if (entry.reviewState !== value.truth?.lifecycle?.reviewState) {
+            findings.push(finding("error", "lifecycle-registry", record.id, "registry reviewState does not match the case file"));
+          }
+          if (entry.caseContentSha256 !== contentSha256(value)) {
+            findings.push(finding("error", "lifecycle-registry", record.id, "registry caseContentSha256 is stale"));
+          }
+        }
+      }
+    }
+    for (const entry of entries) {
+      if (!expectedRecords.some((record) => record.id === entry.id)) {
+        findings.push(finding("error", "lifecycle-registry", entry.id, "reserved id has no battery, proposal, or retired file"));
+      }
+    }
+    const expectedCounts = Object.fromEntries(["proposed", "active", "quarantined", "retired"].map((state) => [
+      state,
+      entries.filter((entry) => entry.state === state).length
+    ]));
+    if (!same(lifecycleRegistry.counts, expectedCounts)) {
+      findings.push(finding("error", "lifecycle-registry", "-", "counts do not match registry entries"));
+    }
+  }
+  if (!lifecyclePolicy) {
+    findings.push(finding("error", "mass-review", "-", "lifecycle policy is missing"));
+  } else {
+    const { problems } = lifecyclePolicyProblems(cases, lifecyclePolicy, today);
+    for (const problem of problems) findings.push(finding("error", "mass-review", "-", problem));
+  }
+  return findings;
 }
 
 export function lintSurface(cases, manifest) {
@@ -691,9 +840,13 @@ function parseArgs(argv) {
     if (arg === "--coverage") options.coverage = true;
     else if (arg === "--enforce-floors") { options.coverage = true; options.enforceFloors = true; }
     else if (arg === "--stale") options.stale = true;
-    else if (["--since", "--corpus", "--manifest", "--register", "--ledger", "--today", "--live-contract"].includes(arg)) {
+    else if (["--since", "--corpus", "--proposed", "--retired", "--manifest", "--register", "--ledger", "--today", "--live-contract", "--lifecycle-registry", "--lifecycle-policy"].includes(arg)) {
       if (!argv[index + 1]) throw new Error(`${arg} requires a value`);
-      const option = arg === "--live-contract" ? "liveContract" : arg.slice(2);
+      const option = {
+        "--live-contract": "liveContract",
+        "--lifecycle-registry": "lifecycleRegistry",
+        "--lifecycle-policy": "lifecyclePolicy"
+      }[arg] ?? arg.slice(2);
       options[option] = argv[++index];
     } else throw new Error(`unknown argument: ${arg}`);
   }
@@ -769,8 +922,9 @@ function printFindings(findings) {
   return errors;
 }
 
-export function runLint({ cases, manifest, register = {}, ledger, previousCases, coverage = false, enforceFloors = false, stale = false, today }) {
+export function runLint({ cases, proposedCases = [], tombstones = [], laneFindings = [], manifest, register = {}, ledger, lifecycleRegistry, lifecyclePolicy, previousCases, coverage = false, enforceFloors = false, stale = false, today }) {
   const findings = [
+    ...lintLifecycle(cases, lifecycleRegistry, lifecyclePolicy, today, { proposedCases, tombstones, laneFindings }),
     ...lintSurface(cases, manifest),
     ...lintNumericInvariants(cases, register),
     ...lintDateContingentTraps(cases, register),
@@ -796,9 +950,13 @@ function main() {
     return;
   }
   const corpusDir = path.resolve(options.corpus ?? DEFAULTS.corpusDir);
+  const proposedDir = path.resolve(options.proposed ?? DEFAULTS.proposedDir);
+  const retiredDir = path.resolve(options.retired ?? DEFAULTS.retiredDir);
   const manifestPath = path.resolve(options.manifest ?? DEFAULTS.manifestPath);
   const registerPath = path.resolve(options.register ?? DEFAULTS.registerPath);
   const ledgerPath = path.resolve(options.ledger ?? DEFAULTS.ledgerPath);
+  const lifecycleRegistryPath = path.resolve(options.lifecycleRegistry ?? DEFAULTS.lifecycleRegistryPath);
+  const lifecyclePolicyPath = path.resolve(options.lifecyclePolicy ?? DEFAULTS.lifecyclePolicyPath);
   if (isPullRequestCI(process.env) && !since) {
     // Fail closed for PRs only: the gospel lane is a required PR gate, so an
     // unresolvable base ref there is an error, never a silent skip. Push events
@@ -820,11 +978,18 @@ function main() {
   } else {
     console.log("[lint-corpus] NOTE gospel lane skipped: no --since ref");
   }
+  const proposed = loadLifecycleLane(proposedDir, "proposed");
+  const retired = loadLifecycleLane(retiredDir, "retired");
   const findings = runLint({
     cases: loadCases(corpusDir),
+    proposedCases: proposed.cases,
+    tombstones: retired.cases,
+    laneFindings: [...proposed.findings, ...retired.findings],
     manifest: json(manifestPath),
     register: existsSync(registerPath) ? json(registerPath) : {},
     ledger: existsSync(ledgerPath) ? json(ledgerPath) : undefined,
+    lifecycleRegistry: existsSync(lifecycleRegistryPath) ? json(lifecycleRegistryPath) : undefined,
+    lifecyclePolicy: existsSync(lifecyclePolicyPath) ? json(lifecyclePolicyPath) : undefined,
     previousCases,
     coverage: options.coverage,
     enforceFloors: options.enforceFloors,

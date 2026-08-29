@@ -190,36 +190,6 @@ Done when: results stamp `qa-five-track-v1`; every row exposes its first attempt
 the console and README report all five tracks with visible denominators; retry tests cover every
 allowed and forbidden class; and the existing result-contract tests pass.
 
-### Add a score-independent golden lifecycle
-
-Implement `truth.lifecycle.state` values `proposed`, `active`, `quarantined`, and `retired`, plus
-orthogonal `truth.lifecycle.reviewState` values `none`, `queued`, `in-review`, and `resolved`.
-Active and quarantined cases own their state in the case file. Proposed files stay outside the
-battery until `golden-truth` verification activates them. Retired tombstones also stay outside the
-battery. Generate a canonical registry with case and tombstone digests. Reserve proposed and retired
-IDs permanently, and reject every ID reuse.
-
-Sample over the full compiled active-plus-quarantined pool, then partition selected IDs. Never
-re-pick, replace, or append selected IDs. Keep quarantined rows as diagnostics outside T1 and T3.
-Print the active denominator as `k of N` and list every excluded quarantined ID. Apply the same rule
-to explicit `--ids` lists.
-
-Every quarantine needs a score-independent cause, an independent reviewer, a ledger entry, and a
-30-day review that corrects, retires, or renews it. A credible truth or validity conflict triggers
-quarantine before the next aggregate after independent review. Judge noise without golden-
-ambiguity evidence sets review state `queued` and keeps trusted truth active.
-
-Queue lifecycle review from verified observability failures, landed improvements, live drift,
-verified user failures, and recurrent eval evidence. A trigger changes no golden by itself.
-
-Start mass review at 25 queued active cases, five percent of active cases, or quarterly. Keep corpus
-health separate from system performance. Require pre-spend review for a new baseline when sample
-membership changes or at least five percent of active cases change.
-
-Done when: compile and lint enforce the states and reserved IDs; sample membership is stable under
-quarantine; results report excluded IDs; lifecycle and mass-review tests pass; and `golden-truth`
-and `run-evals` describe the implemented workflow without unsupported steps.
-
 ### The verdict-consistency engine converts two judge-prompt contradictions into 4% errors
 
 Four rows became `error` on the 2026-08-28 same-100 run

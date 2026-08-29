@@ -215,14 +215,13 @@ correction is recorded so it can't silently resurrect.
 
 ## Lifecycle verdicts
 
-When lifecycle fields are unavailable, record proposals in the round ledger and keep compiled
-membership unchanged. Do not add unsupported fields or exclude cases ad hoc.
-
-With lifecycle fields available, use `truth.lifecycle.state` for `proposed | active | quarantined |
+Use `truth.lifecycle.state` for `proposed | active | quarantined |
 retired` and the orthogonal `truth.lifecycle.reviewState` for `none | queued | in-review |
 resolved`. Proposed files stay outside the battery until this workflow verifies and activates them.
 Retired tombstones stay outside the battery. The generated registry records digests, permanently
-reserves proposed and retired IDs, and rejects ID reuse.
+reserves proposed and retired IDs, and rejects ID reuse. After registry genesis, land each new ID
+as a proposal in one commit. Activate it in a later commit with activation evidence. The compiler
+uses the prior registry from Git history and refuses direct battery additions.
 
 Activate a proposal only after source verification, duplicate and boundary checks, and an
 independent reviewer. Retire only for a score-independent reason such as duplication, obsolete
@@ -235,12 +234,17 @@ evidence sets review state `queued` and keeps trusted truth active.
 
 Queue review from verified observability failures, landed improvements, live drift, verified user
 failures, and recurrent eval evidence. A trigger changes no gospel by itself. Every quarantine
-needs a ledger entry and a 30-day decision to correct, retire, or independently renew. Reactivation
-is never automatic. Score direction never establishes a lifecycle verdict.
+records its author, independent reviewer, evidence, ledger, start date, and a decision date within
+30 days. The deadline cannot precede the start date. That decision corrects, retires, or
+independently renews the case. Each renewal records its own evidence, ledger, reviewer, and new
+decision date. That deadline cannot precede the renewal date or exceed 30 days. Reactivation is
+never automatic.
+Score direction never establishes a lifecycle verdict.
 
 Start a frozen mass review when 25 active cases are queued, five percent of active cases are queued,
-or one quarter passes. Use the earliest trigger. Keep reviewers blind to desired score movement,
-record every affected ID, and report corpus health separately from system performance.
+or one quarter passes. Use the earliest trigger. Bind an open review to the named
+`qa-mass-review-rules-v1` digest. Keep reviewers blind to desired score movement, record every
+affected ID, and report corpus health separately from system performance.
 
 **Score laundering is the failure mode all of this guards against** — "correcting" a golden
 until the agent's answer grades right. The live-evidence bar plus the root-cause pointer keep
