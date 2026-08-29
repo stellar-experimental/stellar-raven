@@ -42,18 +42,18 @@
         "claim": "It is not a smart contract.",
         "verdict": "confirmed",
         "evidence": [
-        {
-          "class": "B",
-          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
-          "note": "Exact quotes: ‘LiquidityPoolEntry is introduced as a new type of LedgerEntry.’ ‘New operations ... are introduced.’",
-          "observedAt": "2026-08-29"
-        },
-        {
-          "class": "A",
-          "ref": "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar",
-          "observedAt": "2026-08-29",
-          "note": "Exact quotes: `Protocol native AMM functionality launches on Stellar`; `Liquidity pools can be created on Stellar without requiring smart contracts`."
-        }
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+            "note": "Exact quotes: ‘LiquidityPoolEntry is introduced as a new type of LedgerEntry.’ ‘New operations ... are introduced.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/automated-market-maker-functionality-is-live-on-stellar",
+            "observedAt": "2026-08-29",
+            "note": "Exact quotes: `Protocol native AMM functionality launches on Stellar`; `Liquidity pools can be created on Stellar without requiring smart contracts`."
+          }
         ]
       }
     ],
@@ -65,8 +65,8 @@
         "Structural re-form (long-fact): Shortened the native AMM launch fact; truth unchanged.",
         "Live re-check 2026-08-29: https://stellar.org/protocol-upgrades — the official history dates Protocol 18 to 2021-11-03 and assigns AMM liquidity to CAP-0038.",
         "Sibling sweep 2026-08-29: grep Protocol 18|CAP-0038|native AMM|liquidity pool → q-asset-sdex-vs-amm, q-asset-amm-fee-reserve, q-edge-factcheck-soroswap-first-amm; no contradiction",
-      "Corroboration audit 2026-08-29: added 1 row(s) for native AMM ledger implementation; class agreement Sol+Grok",
-      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+        "Corroboration audit 2026-08-29: added 1 row(s) for native AMM ledger implementation; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
         ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
