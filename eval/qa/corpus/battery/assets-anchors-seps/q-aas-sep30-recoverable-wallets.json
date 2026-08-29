@@ -10,8 +10,9 @@
     "answer": "SEP-30 is Stellar's account-recovery standard for wallets that want users to regain access after losing a private key without giving a third party custody of that key. The official Wallet SDK docs describe the flow as a wallet communicating with one or more recovery signer servers to register the wallet for later recovery.\n\nThe mechanism relies on Stellar account signers and thresholds. Before loss, the wallet/account must be configured so recovery signer server(s) can participate in replacing signers or helping the user regain high-threshold control according to the SEP-30 flow. The recovery server verifies authenticated requests, commonly with SEP-10 JWTs or an external identity provider depending on the endpoint, and coordinates recovery. It does not need to hold the user's master secret key.\n\nThis is not a magic reset for arbitrary accounts. If the account was never enrolled with the right signers/thresholds, SEP-30 cannot recover it after the secret key is gone. It is also distinct from newer smart-account/passkey recovery patterns; SEP-30 is a classic-account signer-server standard.",
     "keyFacts": [
       "Names SEP-30 as Stellar's account recovery standard using recovery signer servers.",
-      "Explains the recovery server is a signer or coordinates signer changes but does not need to hold the user's master secret key.",
-      "Mentions recovery depends on Stellar account signers/thresholds and a wallet-server flow, not magic key reset."
+      "Names the recovery server as a signer or signer-change coordinator.",
+      "States that the server need not hold the user's master secret key.",
+      "Grounds recovery in account signers, thresholds, and a wallet-server flow."
     ],
     "avoid": [
       "Do NOT claim SEP-30 can recover any Stellar account after the secret key is lost with no prior signer setup.",
@@ -50,16 +51,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/wallet/sep30",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Split server roles from key custody and shortened the recovery dependency; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md — SEP-30 makes recovery servers account signers and has them sign signer-change transactions.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md — SEP-30 has the server generate its own signing key, not hold the user's master secret.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md — SEP-30 requires preregistration, account signers, configured thresholds, and a client-server flow.",
+        "Sibling sweep 2026-08-29: grep SEP-30 → q-tool-passkey-wallet-recovery, q-aas-sep30-recoverable-wallets; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-aas-sep30-recoverable-wallets",

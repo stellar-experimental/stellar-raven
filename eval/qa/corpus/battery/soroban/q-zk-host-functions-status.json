@@ -7,11 +7,11 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "As of 2026-07-11, CAP-0059's BLS12-381 host functions (Protocol 22), CAP-0074's BN254 and CAP-0075's Poseidon/Poseidon2 primitives (Protocol 25), and CAP-0080's BN254 MSM, scalar-field arithmetic, inversion, and curve-membership checks (Protocol 26) are live: pubnet and testnet reported Protocol 27. These are low-level primitives, not complete proof systems. There were no documented native Goldilocks, NTT, or FRI host functions as of that date, so STARK-style verifiers need additional Wasm work or another architecture.",
+    "answer": "As of 2026-07-11, CAP-0059's BLS12-381 host functions (Protocol 22), CAP-0074's BN254 and CAP-0075's Poseidon/Poseidon2 primitives (Protocol 25), and CAP-0080's BN254 MSM, scalar-field arithmetic, inversion, and curve-membership checks (Protocol 26) are live: pubnet and testnet reported Protocol 27. CAP-0080's recorded status was **Implemented** on 2026-08-29. These are low-level primitives, not complete proof systems. There were no documented native Goldilocks, NTT, or FRI host functions as of 2026-07-11, so STARK-style verifiers need additional Wasm work or another architecture.",
     "keyFacts": [
       "CAP-0059 introduced BLS12-381 host functions with minimum supported Protocol 22.",
       "Protocol 25 added BN254 via Final CAP-0074 and Poseidon/Poseidon2 via Final CAP-0075.",
-      "Protocol 26 implemented Final CAP-0080, adding BN254 MSM, scalar-field add/subtract/multiply/power/inverse, and curve-membership checks.",
+      "Protocol 26 implemented CAP-0080 with status Implemented.",
       "Marks Protocol 22, 25, and 26 primitives live on pubnet and testnet as of a stated date.",
       "Dates the native Goldilocks/NTT/FRI host-function gap to an observation date."
     ],
@@ -145,33 +145,35 @@
         ]
       },
       {
-        "claim": "Protocol 26 implemented Final CAP-0080, adding BN254 MSM, scalar-field add/subtract/multiply/power/inverse, and curve-membership checks.",
+        "claim": "Protocol 26 implemented CAP-0080; its recorded status was Implemented on 2026-08-29, and it added BN254 MSM, scalar-field arithmetic, inversion, and curve-membership checks.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
             "ref": "https://developers.stellar.org/docs/networks/software-versions",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-08-29",
+            "note": "Exact release heading: ‘Protocol 26 (Mainnet, May 6, 2026)’. Its feature list includes ‘Host Functions for Efficient ZK BN254 Use Cases: CAP-80’."
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-08-29"
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-08-29"
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-08-29"
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
-            "observedAt": "2026-07-11"
+            "observedAt": "2026-08-29",
+            "note": "Exact header lines: `Status: Implemented` and `Protocol version: 26`. Exact summary: ‘This CAP adds host functions for BN254 MSM, BN254 modular arithmetic, and curve membership checks for BLS12-381 and BN254.’"
           },
           {
             "class": "F",
@@ -351,8 +353,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/networks/software-versions",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
@@ -368,10 +370,15 @@
         "Sibling sweep 2026-08-27: grep CAP-0059|CAP-0074|CAP-0075|CAP-0080|Goldilocks|NTT|FRI → q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-zk-proof-systems-stellar; no contradiction",
         "Owner correction 2026-08-27: the protocol-version key fact gates a dated observation, not the number 27, so a later protocol does not fail a truthful answer; Protocol 22/25/26 primitives stay a durable fact.",
         "Owner correction 2026-08-27: merged the dated protocol-version fact and the live-primitives fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
-        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged."
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged.",
+        "Conflict resolution 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md says `Status: Implemented` and `Protocol version: 26`.",
+        "Conflict resolution 2026-08-29: https://developers.stellar.org/docs/networks/software-versions lists CAP-80 under Protocol 26 for mainnet and testnet.",
+        "Sibling sweep 2026-08-29: grep CAP-0080|Final CAP-0080|Implemented CAP-0080 → q-zk-host-functions-status, q-pc-protocol-26-yardstick, q-sor-cross-warmancer-zk-stack; no sibling contradiction after correction."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan zk-host-functions-cap-roadmap"

@@ -9,7 +9,9 @@
     "answer": "Define a typed event with `#[contractevent]` and call its generated `publish(&env)` method. The older raw `env.events().publish` path is deprecated. Successful contract events are recorded in transaction meta and queried off-chain with Stellar RPC `getEvents`; this is a paginated query/cursor API, not a durable subscription. Failed invocations roll back contract events; diagnostic events have different success/failure behavior and should not be conflated. RPC query history is bounded and provider/configuration dependent—inspect the endpoint's current health/configuration and use an indexer for durable history rather than freezing a universal day count.",
     "keyFacts": [
       "Leads with #[contractevent] plus typed Event::publish and marks raw publish deprecated.",
-      "Distinguishes successful contract events, optional diagnostics, getEvents queries, and provider-configured retention."
+      "Event categories include successful contract events and optional diagnostics.",
+      "`getEvents` supplies event queries.",
+      "Event retention is provider-configured."
     ],
     "avoid": [
       "Do NOT teach raw events as the preferred current API or call getEvents a subscription.",
@@ -78,17 +80,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-46 primary 3326 and blind 3329 agreed on typed-event-first/current query semantics; blind identified a docs-versus-source/live retention conflict.",
         "Structural re-form (symmetric-caution): Added a cache-scoped grading caution; the answer and facts are unchanged.",
         "Reviewed resolved improvement 2026-08-27: improvements/resolved.json entry sd-023 — the old docs stated a 24-hour default and separate 7-day cap before the 2026-07-27 fix.",
-        "Sibling sweep 2026-08-27: grep getEvents|history-retention-window|contractevent → q-crp-export-tx-history-taxes, q-soroban-contractmeta-vs-contractevent, q-soroban-event-indexing-design, q-soroban-publish-events, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-enumerate-all-contracts, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill, q-tool-greenfield-indexer-prior-art-preflight, q-tool-indexer-repos-discovery; no contradiction"
+        "Sibling sweep 2026-08-27: grep getEvents|history-retention-window|contractevent → q-crp-export-tx-history-taxes, q-soroban-contractmeta-vs-contractevent, q-soroban-event-indexing-design, q-soroban-publish-events, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-enumerate-all-contracts, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill, q-tool-greenfield-indexer-prior-art-preflight, q-tool-indexer-repos-discovery; no contradiction",
+        "Structural re-form (long-fact): Split event categories, querying, and retention; truth unchanged.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.0/soroban-sdk/src/env.rs — the SDK source treats contract and diagnostic events as separate event types with different stability purposes.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — the current official RPC docs define `getEvents` as a filtered event query with cursors.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — the current official RPC docs state that retention uses the configured history-retention-window.",
+        "Sibling sweep 2026-08-29: grep contractevent|getEvents|history-retention-window|diagnostic events → q-soroban-contractmeta-vs-contractevent, q-soroban-event-indexing-design, q-infra-rpc-methods-list, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill, q-tool-greenfield-indexer-prior-art-preflight, and q-soroban-publish-events; no contradiction"
       ],
       "rootCause": [
         "Plain SDK API drift plus hand-maintained RPC retention prose; improvements/stellar-docs/sd-023-rpc-event-retention-config-drift.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-publish-events"

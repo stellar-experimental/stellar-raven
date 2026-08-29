@@ -10,7 +10,7 @@
     "keyFacts": [
       "SEP-1 stellar.toml on the issuer's home domain advertises anchor service endpoints.",
       "SEP-10 authentication precedes protected SEP-24 interactions.",
-      "An anchor directory is discovery metadata, not a substitute for the anchor's current stellar.toml and API responses."
+      "Uses the anchor's current stellar.toml and API responses instead of directory metadata."
     ],
     "avoid": [
       "The anchor directory itself supplies every anchor's authenticated SEP-24 API endpoint.",
@@ -118,11 +118,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md"
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+        "Structural re-form (long-fact): Shortened the directory-versus-live-anchor distinction; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — SEP-24 requires wallets to find the server through `TRANSFER_SERVER_SEP0024` in the anchor's stellar.toml and then use its APIs.",
+        "Sibling sweep 2026-08-29: grep anchor directory → q-jutsu-cash-crypto-ramps, q-anchor-endpoint-discovery, q-pay-anchor-msb-licensing, q-crp-anchors-by-corridor; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan anchor-discovery-integration"

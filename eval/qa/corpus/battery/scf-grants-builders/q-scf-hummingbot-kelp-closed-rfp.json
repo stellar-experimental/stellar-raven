@@ -8,10 +8,11 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-06-25, the verified sources supported this observed answer:\n\nYes. The RFP was **Hummingbot Integration (Trading Engine)**. In the June 25, 2026 live RFP feed it is\n`status: closed`, `quarter: q1-2026`, category `defi`, so it is **not currently fundable / not open\nfor application**. [1]\n\nThe brief is explicitly framed around **Kelp's deprecation leaving a liquidity gap**. It asked for a\nStellar orderbook connector for the official Hummingbot repository so builders could run automated\nmarket-making and arbitrage strategies; optional future scope included Stellar AMMs and intra-Soroban\nAMM arbitrage. [1]\n\nIf the user wants something fundable now, Raven should point them to the current open RFP feed rather\nthan pretending this closed Q1 brief is still open.\n\nSource: [1] Stellar Light RFP record for Hummingbot Integration (Trading Engine).\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names the RFP as Hummingbot Integration (Trading Engine).",
-      "Explains the Kelp-deprecation/liquidity-gap framing: Stellar wanted a Hummingbot connector for automated market-making and arbitrage."
+      "Links Kelp's deprecation to a Stellar liquidity gap.",
+      "Describes a Hummingbot connector for automated market-making and arbitrage."
     ],
     "avoid": [
       "Do NOT claim the Hummingbot/Kelp RFP is currently open or fundable if the live feed marks it closed.",
@@ -36,22 +37,52 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "As of 2026-08-29, the live Scout RFP feed returned Hummingbot Integration (Trading Engine) as closed for Q1 2026 in the DeFi category.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps",
+            "observedAt": "2026-08-29",
+            "note": "The unfiltered response generated at 2026-08-29T14:00:41.071Z returned the Hummingbot row with status closed, quarter q1-2026, category defi, and rowType rfp."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/NibrasD/stellar-hummingbot-connector",
+            "observedAt": "2026-08-29",
+            "note": "The source repository independently confirms the Hummingbot connector and the Kelp-deprecation gap; the dated closed status remains explicitly feed-relative."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-c)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Preserved main's 2026-06-25 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep Hummingbot|Kelp|closed RFP → q-scf-open-rfps, q-scf-rfp-tooling; no contradiction"
+        "Sibling sweep 2026-08-27: grep Hummingbot|Kelp|closed RFP → q-scf-open-rfps, q-scf-rfp-tooling; no contradiction",
+        "Structural re-form (long-fact): Shortened one long sourcing fact and split one long RFP fact into two; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/NibrasD/stellar-hummingbot-connector — the current source repository directly supports the connector, Kelp-gap, and strategy observations.",
+        "Live re-check 2026-08-29: https://github.com/NibrasD/stellar-hummingbot-connector — the repository says the connector fills the gap left by Kelp's deprecation.",
+        "Live re-check 2026-08-29: https://github.com/NibrasD/stellar-hummingbot-connector — the repository describes a Stellar Hummingbot connector for market-making and arbitrage.",
+        "Sibling sweep 2026-08-29: grep Hummingbot|Kelp|liquidity gap → q-defi-market-making-kelp, q-scf-hummingbot-kelp-closed-rfp; no contradiction.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/rfps — the generated response returned the Hummingbot RFP with \"status: closed\", \"quarter: q1-2026\", and \"category: defi\".",
+        "Live re-check 2026-08-29: https://github.com/NibrasD/stellar-hummingbot-connector — the repository confirms the connector and the gap left by Kelp's deprecation.",
+        "Sibling sweep 2026-08-29: grep Hummingbot|Kelp|liquidity gap → q-defi-market-making-kelp, q-scf-hummingbot-kelp-closed-rfp, q-scf-open-rfps-live, q-scf-open-rfps, and q-scf-rfp-tooling; no contradiction.",
+        "Corroboration audit 2026-08-29: added a dated feed-relative row without changing the answer's June 25 wording; Sol+Grok class agreement, targeted probe decided disposition"
       ],
       "rootCause": [
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-hummingbot-kelp-closed-rfp"

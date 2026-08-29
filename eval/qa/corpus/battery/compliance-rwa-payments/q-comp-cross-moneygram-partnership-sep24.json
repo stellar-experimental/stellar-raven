@@ -1,1 +1,107 @@
-{"id":"q-comp-cross-moneygram-partnership-sep24","question":"After the April 2026 MoneyGram/Stellar partnership extension indexed by Lumenloop, what does Scout list MoneyGram as on Stellar, and which official SEP defines its wallet-facing cash-in/cash-out flow?","surface":["lumenloop.find_content_by_entity","scout.searchProjects","stellarDocs.search_anchor_sep_docs"],"golden":{"answer":"Lumenloop indexes the 2026-04-22 MoneyGram/Stellar partnership-extension announcement and related coverage about expanding stablecoin-backed services beyond Colombia into El Salvador. As observed on 2026-07-11, Scout lists MoneyGram Access/Ramps as a live Stellar anchor that provides fiat cash on- and off-ramps for USDC; its anchor profile names both ramp directions and SEP-24. Official Stellar docs define SEP-24 as Hosted Deposit and Withdrawal, the interactive wallet-to-anchor flow in which the anchor presents the user experience and gathers the information/KYC needed for cash-in or cash-out. The announcement supplies the dated event, Scout supplies the current role/profile, and the docs supply the protocol semantics.","keyFacts":["Identifies the indexed April 22, 2026 MoneyGram/Stellar partnership-extension event and its expansion of stablecoin-backed services.","Uses Scout to identify MoneyGram Access/Ramps as a live Stellar anchor offering USDC fiat on- and off-ramps.","Uses official docs to identify SEP-24 as the hosted interactive wallet-to-anchor deposit/withdrawal flow."],"avoid":["Do NOT call SEP-31 the wallet-facing MoneyGram cash-in/cash-out flow.","Do NOT claim the April partnership announcement alone proves the current Scout anchor profile."],"notes":"All three service-family contributions are required; numeric location/country claims are intentionally not gated."},"tags":{"category":"compliance-rwa-payments","service":"lumenloop","freshness":"scheduled"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","reverifyBy":"2026-12-10","sources":[{"class":"C","ref":"http://localhost:8787/mcp — Lumenloop + Scout + Stellar Docs probes, observed 2026-07-11"},{"class":"A","ref":"https://stellar.org/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally"},{"class":"A","ref":"https://moneygram.com/"},{"class":"A","ref":"https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal"}],"corroboration":[{"claim":"The indexed April 2026 event is the MoneyGram/Stellar partnership extension, and Scout currently lists MoneyGram as a live USDC on/off-ramp anchor.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"lumenloop.find_content_by_entity(entity=MoneyGram, date=2026-04) + scout.searchProjects(q=MoneyGram)","observedAt":"2026-07-11"},{"class":"A","ref":"https://stellar.org/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally","observedAt":"2026-07-11"}]},{"claim":"SEP-24 defines the hosted interactive wallet-to-anchor deposit/withdrawal flow.","verdict":"confirmed","evidence":[{"class":"E","ref":"stellarDocs.search_anchor_sep_docs(query=SEP-24 hosted deposit withdrawal interactive)","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 Lane X cross-service live composition probe","evidence":["http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md","Sibling sweep: MoneyGram/SEP-24 cases reviewed; numeric footprint omitted because live records differ over time"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (cross-service)"}}
+{
+  "id": "q-comp-cross-moneygram-partnership-sep24",
+  "question": "After the April 2026 MoneyGram/Stellar partnership extension indexed by Lumenloop, what does Scout list MoneyGram as on Stellar, and which official SEP defines its wallet-facing cash-in/cash-out flow?",
+  "surface": [
+    "lumenloop.find_content_by_entity",
+    "scout.searchProjects",
+    "stellarDocs.search_anchor_sep_docs"
+  ],
+  "golden": {
+    "answer": "Lumenloop indexes the 2026-04-22 MoneyGram/Stellar partnership-extension announcement and related coverage about expanding stablecoin-backed services beyond Colombia into El Salvador. As observed on 2026-07-11, Scout lists MoneyGram Access/Ramps as a live Stellar anchor that provides fiat cash on- and off-ramps for USDC; its anchor profile names both ramp directions and SEP-24. Official Stellar docs define SEP-24 as Hosted Deposit and Withdrawal, the interactive wallet-to-anchor flow in which the anchor presents the user experience and gathers the information/KYC needed for cash-in or cash-out. The announcement supplies the dated event, Scout supplies the current role/profile, and the docs supply the protocol semantics.",
+    "keyFacts": [
+      "Identifies the indexed April 22, 2026 MoneyGram/Stellar partnership extension.",
+      "Connects the event to expanded stablecoin-backed services.",
+      "Uses Scout to identify MoneyGram Access/Ramps as a live Stellar USDC fiat on/off-ramp.",
+      "Uses official docs to define SEP-24's hosted interactive flow.",
+      "The flow supports wallet-to-anchor deposits and withdrawals."
+    ],
+    "avoid": [
+      "Do NOT call SEP-31 the wallet-facing MoneyGram cash-in/cash-out flow.",
+      "Do NOT claim the April partnership announcement alone proves the current Scout anchor profile."
+    ],
+    "notes": "All three service-family contributions are required; numeric location/country claims are intentionally not gated."
+  },
+  "tags": {
+    "category": "compliance-rwa-payments",
+    "service": "lumenloop",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "reverifyBy": "2026-12-10",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp — Lumenloop + Scout + Stellar Docs probes, observed 2026-07-11"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally"
+      },
+      {
+        "class": "A",
+        "ref": "https://moneygram.com/"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The indexed April 2026 event is the MoneyGram/Stellar partnership extension, and Scout currently lists MoneyGram as a live USDC on/off-ramp anchor.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "lumenloop.find_content_by_entity(entity=MoneyGram, date=2026-04) + scout.searchProjects(q=MoneyGram)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "SEP-24 defines the hosted interactive wallet-to-anchor deposit/withdrawal flow.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_anchor_sep_docs(query=SEP-24 hosted deposit withdrawal interactive)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "evidence": [
+        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
+        "Sibling sweep: MoneyGram/SEP-24 cases reviewed; numeric footprint omitted because live records differ over time",
+        "Structural re-form (long-fact): split the event, Scout role, and SEP-24 flow claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://corporate.moneygram.com/press-releases/ — MoneyGram's official press index dates the partnership extension to April 22, 2026.",
+        "Live re-check 2026-08-29: https://stellar.org/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally — SDF's official announcement confirms the expanded stablecoin-backed services.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/partners?q=MoneyGram&all=1&limit=20 — the live Scout source lists MoneyGram Access/Ramps as a live Stellar USDC fiat on/off-ramp.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official docs define SEP-24 as a hosted interactive flow.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official docs define the flow between wallets and anchors for deposits and withdrawals.",
+        "Sibling sweep 2026-08-29: grep MoneyGram Access|partnership-extension|April 22, 2026 → q-anchor-moneygram-ramps, q-comp-cross-moneygram-partnership-sep24, q-crp-custodial-vs-noncustodial-wallets, q-crp-remittance-founder-advisory; no contradiction."
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (cross-service)"
+  }
+}

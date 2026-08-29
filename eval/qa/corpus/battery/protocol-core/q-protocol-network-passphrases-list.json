@@ -7,7 +7,7 @@
   "golden": {
     "answer": "Exact passphrase string per network [1][2]:\n\n- **Public network**: `Public Global Stellar Network ; September 2015`\n- **Testnet**: `Test SDF Network ; September 2015`\n- **Futurenet**: `Test SDF Future Network ; October 2022`\n\nThere is no separate \"mainnet\" passphrase distinct from the public-network one. (Why the passphrase matters — network-id hashing, replay protection, signing — is covered by `q-protocol-network-passphrases`; this variant is the bare per-network enumeration.)",
     "keyFacts": [
-      "Gives the public-network passphrase exactly: 'Public Global Stellar Network ; September 2015'.",
+      "Gives the exact public passphrase: 'Public Global Stellar Network ; September 2015'.",
       "Gives the testnet passphrase exactly: 'Test SDF Network ; September 2015'."
     ],
     "avoid": [
@@ -36,11 +36,41 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "There is no separate \"mainnet\" passphrase distinct from the public-network one.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/networks",
+            "note": "Exact public-network passphrase: `Public Global Stellar Network ; September 2015`.",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/js-stellar-sdk/blob/3839fd2ee0a2d3e89e0e73638aa103479733c9d2/src/base/network.ts",
+            "observedAt": "2026-08-29",
+            "note": "Exact SDK constant: `PUBLIC = \"Public Global Stellar Network ; September 2015\"`; no separate mainnet enum exists."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-33-passphrases-operations-parallel-passkeys-consensus accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Shortened one long exact-passphrase fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/networks — the official network comparison lists `Public Global Stellar Network ; September 2015` exactly.",
+        "Sibling sweep 2026-08-29: grep Public Global Stellar Network ; September 2015|Test SDF Network ; September 2015|Test SDF Future Network ; October 2022 → q-protocol-network-passphrases-list only; no contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-2.md): reviewer saw 404 on https://developers.stellar.org/docs/learn/fundamentals/networks; it resolved 200 for the orchestrator on 2026-08-29 (curl -L), so the URL stays and https://developers.stellar.org/docs/networks is added as a second live confirmation of the exact public and testnet passphrases.",
+        "Corroboration audit 2026-08-29: added 1 row(s) for public-network mainnet naming; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-network-passphrases-list"

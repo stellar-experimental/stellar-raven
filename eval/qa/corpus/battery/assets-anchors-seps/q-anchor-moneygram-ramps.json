@@ -10,7 +10,7 @@
   "golden": {
     "answer": "- **MoneyGram Access / Ramps** is an **anchor** (built on Stellar) that lets wallet/exchange users **cash-in (deposit) and cash-out (withdraw)** physical cash at MoneyGram locations, settling in **Stellar USDC** — no bank account required [1][2].\n- Wallets integrate the **client side of SEP-24** (interactive hosted deposit/withdrawal) authenticated via **SEP-10**; MoneyGram opens a hosted webview for KYC, then the wallet sends/receives USDC with a memo [1].\n- It runs on the **Stellar Ramps** standard, so a **single integration** reaches the operator guide's dated **170+ off-ramp countries** without per-anchor custom work [2]. Recheck the direction and coverage before quoting a total.\n- The wallet never deals with the underlying bank/cash rails; MoneyGram abstracts them behind the SEP flow [2].",
     "keyFacts": [
-      "MoneyGram Ramps is an anchor implementation providing fiat on/off ramps (cash-in/cash-out) on Stellar.",
+      "Identifies MoneyGram Ramps as a Stellar anchor for fiat cash-in and cash-out.",
       "It runs on the Stellar Ramps standard so wallets get one integration to many cash points."
     ],
     "avoid": [
@@ -46,20 +46,101 @@
         "note": "Current MoneyGram Ramps operator guide."
       }
     ],
+    "corroboration": [
+      {
+        "claim": "MoneyGram Access / Ramps is an anchor (built on Stellar) that lets wallet/exchange users cash-in (deposit) and cash-out (withdraw) physical cash at MoneyGram locations, settling in Stellar USDC — no bank account required.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/moneygram?locale=en",
+            "note": "Exact quote: ‘Deposit or withdraw cash from their digital wallets via Stellar USDC without needing a bank account.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+            "note": "Exact current page description: ‘MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=MoneyGram+Ramps+Stellar+170+countries+one+integration+cash",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘MoneyGram Ramps Stellar 170 countries one integration cash’. Top primary results: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps, https://playground.xramps.moneygram.com/, and https://stellar.org/products-and-tools/moneygram. Exact observed text: ‘MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar’; ‘Integrate once to enable cash access across 170+ countries and territories on Solana and Stellar. MoneyGram manages the security, compliance and settlement’; ‘even if users don’t have a bank account.’ No primary result contradicted the claims."
+          }
+        ]
+      },
+      {
+        "claim": "It runs on the Stellar Ramps standard, so a single integration reaches the operator guide's dated 170+ off-ramp countries without per-anchor custom work.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/moneygram?locale=en",
+            "note": "Exact quote: ‘Deposit or withdraw cash from their digital wallets via Stellar USDC without needing a bank account.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+            "note": "Exact current page description: ‘MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=MoneyGram+Ramps+Stellar+170+countries+one+integration+cash",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘MoneyGram Ramps Stellar 170 countries one integration cash’. Top primary results: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps, https://playground.xramps.moneygram.com/, and https://stellar.org/products-and-tools/moneygram. Exact observed text: ‘MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar’; ‘Integrate once to enable cash access across 170+ countries and territories on Solana and Stellar. MoneyGram manages the security, compliance and settlement’; ‘even if users don’t have a bank account.’ No primary result contradicted the claims."
+          }
+        ]
+      },
+      {
+        "claim": "The wallet never deals with the underlying bank/cash rails; MoneyGram abstracts them behind the SEP flow.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/moneygram?locale=en",
+            "note": "Exact quote: ‘Deposit or withdraw cash from their digital wallets via Stellar USDC without needing a bank account.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide",
+            "note": "Exact current page description: ‘MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=MoneyGram+Ramps+Stellar+170+countries+one+integration+cash",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘MoneyGram Ramps Stellar 170 countries one integration cash’. Top primary results: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps, https://playground.xramps.moneygram.com/, and https://stellar.org/products-and-tools/moneygram. Exact observed text: ‘MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar’; ‘Integrate once to enable cash access across 170+ countries and territories on Solana and Stellar. MoneyGram manages the security, compliance and settlement’; ‘even if users don’t have a bank account.’ No primary result contradicted the claims."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-11",
-      "by": "Todo 1406 Lane C scheduled re-verification; independent Terra payments matrix",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "https://xramps.moneygram.com/ops/dev/stellar",
         "https://stellar.org/products-and-tools/moneygram",
         "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
         "https://www.prnewswire.com/news-releases/moneygram-launches-mgusd-a-stablecoin-to-power-its-own-global-network-302787799.html",
         "https://www.coindesk.com/business/2026/06/02/moneygram-launches-stablecoin-on-stellar-joining-rush-toward-digital-dollar-payments",
-        "solo://proj/49/scratchpad/truth-maintenance-20--761"
+        "solo://proj/49/scratchpad/truth-maintenance-20--761",
+        "Structural re-form (long-fact): Shortened the MoneyGram Ramps anchor-and-ramp fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — the guide calls MoneyGram an anchor and confirms Stellar USDC cash-in and cash-out.",
+        "Sibling sweep 2026-08-29: grep MoneyGram Ramps|MoneyGram Access → q-hist-remittance-corridors, q-scf-cross-decaf-sep24, q-anchor-list-builders-discovery, q-anchor-moneygram-ramps, q-crp-remittance-founder-advisory, q-crp-anchors-by-corridor, q-crp-custodial-vs-noncustodial-wallets, q-comp-cross-moneygram-partnership-sep24, q-pay-moneygram-ramps; no contradiction",
+        "Corroboration audit 2026-08-29: added 3 row(s) for MoneyGram bank-account, integration, and cash-rail boundaries; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 3 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
         "freshness-drift",
-        "Date-contingent MoneyGram token and validator traps became overbroad."
+        "Date-contingent MoneyGram token and validator traps became overbroad.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-anchor-moneygram-ramps"

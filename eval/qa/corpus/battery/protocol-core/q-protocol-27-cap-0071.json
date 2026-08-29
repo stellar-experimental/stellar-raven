@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any status claim. Protocol 27 (Zipper) has been live on Stellar Mainnet since ledger 63386819, closed 2026-07-08 at 17:00:10 UTC. **CAP-0071** adds first-class authentication delegation for custom accounts through `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` and recursive `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds the credential to its account address to prevent cross-account credential reuse. This is a Soroban authorization/credential change, not ZK, consensus, or parallel execution. As observed **2026-08-04**, the CAP registry labels CAP-0071 **Final**; normative document status remains distinct from software implementation and per-network activation.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Explains CAP-0071 delegation chains and address-bound V2 credentials.",
       "Distinguishes the CAP's Final registry status from implementation and network activation."
@@ -86,18 +86,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently retained the mechanics and required replacement of stale pending/future judge prose.",
         "2026-07-11 author re-check: Horizon P26/P27 boundary, two independent Pubnet RPCs, current CAP-0071 source, and official Zipper guide.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-008; the Protocol 27 and CAP-0071 facts are unchanged.",
         "Improvements review 2026-08-27: improvements/resolved.json entry sd-008 records the 2026-08-18 upstream fix; the disputed claim is the older Software Versions page showing Protocol 27 as Testnet-only and Protocol 26 as Mainnet-current.",
         "Sibling sweep 2026-08-27: grep sd-008|Protocol 27|63386819|CAP-0071 → q-edge-fresh-latest-protocol-version, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction",
-        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory."
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory.",
+        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks/software-versions — the current history dates Protocol 27 Mainnet activation to 2026-07-08.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks/software-versions — the current Mainnet and Testnet histories make changeable version dates visible.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide — the official guide describes nested delegation and address-bound V2 credentials.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071.md — the registry marks CAP-0071 Final for Protocol 27 while listing implementation separately.",
+        "Sibling sweep 2026-08-29: grep Protocol 27|CAP-0071|63386819|ADDRESS_V2 → q-pc-protocol-27-zipper, q-soroban-auth-delegation-p27, q-protocol-version-history-list, q-edge-fresh-latest-protocol-version; no contradiction"
       ],
       "rootCause": [
         "eval-side date-contingent status trap expired after the scheduled Mainnet vote and survived as contradictory inherited judge prose",
@@ -106,7 +112,8 @@
         "eval-authoring",
         "CAP-0071 advanced from Accepted to Final after the earlier snapshot.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-protocol-27-cap-0071"

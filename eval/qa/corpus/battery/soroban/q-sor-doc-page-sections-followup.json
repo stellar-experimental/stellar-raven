@@ -8,7 +8,7 @@
     "answer": "Pass the exact url_without_anchor path from the search hit to get_doc_page_sections. Keep includeContent enabled when reading the page, then consume the returned headings, breadcrumbs, anchors, and content in on-page order. This is a page-follow-up operation; it is not a corpus-wide search.",
     "keyFacts": [
       "Uses the exact path from a prior docs hit, without the domain or anchor.",
-      "Reads ordered section headings and content rather than treating one search snippet as the page."
+      "Reads section headings and content in page order."
     ],
     "avoid": [
       "Do NOT pass a full external URL or fragment where the operation requires a /docs or /meetings path.",
@@ -38,16 +38,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 coverage-closure lane (Solo process 3427)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "2026-07-11 localhost:8787 search→execute probe observed: HTTP 200; get_doc_page_sections returned envelope ok=true for the storing-data path with ordered headings and content.",
         "specs/stellar-docs.json exists and supports the behavioral golden.",
         "Sibling sweep: reviewed existing battery cases sharing the exercised surface; no contradictory behavioral golden found.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened one long page-reading fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/specs/stellar-docs.json — the source contract returns all page sections with headings and full content in on-page order.",
+        "Sibling sweep 2026-08-29: grep get_doc_page_sections|ordered section|one search snippet|url_without_anchor → q-edge-doc-page-sections-soft-empty, q-sor-doc-page-sections-followup, q-sor-doc-title-discovery, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-compute-token-lp-market-data, q-ti-scaffold-stellar; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07 (coverage)"

@@ -7,10 +7,10 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\n**Protocol 25 (X-Ray)** activated on Mainnet on **2026-01-22 at 17:00 UTC**. It added two low-level Soroban host surfaces for ZK systems:\n\n- **CAP-0074 / BN254:** `bn254_g1_add`, `bn254_g1_mul`, and `bn254_multi_pairing_check`. These give contracts native operations on the EVM-compatible pairing curve for verifier and interoperability designs.\n- **CAP-0075 / Poseidon and Poseidon2:** `poseidon_permutation` and `poseidon2_permutation` over BLS12-381 Fr or BN254 Fr. These are configurable **permutation primitives** from which a correctly parameterized hash construction can be built; they are not turnkey `poseidon_hash` helpers.\n\nBoth CAPs are Final and gated at Protocol 25. These primitives enable verifier, commitment, Merkle, and privacy-application components; they do not make Stellar transactions private by default. Current source has a documented interface erratum: CAP-0075 says `U32Val` field selector and contains one stray P24 sentence, while the shipped P25+ host environment uses a `Symbol` selector (`BLS12_381` or `BN254`). Follow the exact SDK/host version in use rather than inventing helper names.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Pairs CAP-0074 with the exact three P25 BN254 functions.",
-      "Pairs CAP-0075 with the exact two low-level permutation functions and does not call them turnkey hash APIs."
+      "Pairs CAP-0075 with exactly two low-level permutation functions, not turnkey hash APIs."
     ],
     "avoid": [
       "Do NOT call the CAP-0075 host functions ready-made hash helpers or invent helper names.",
@@ -96,17 +96,21 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required permutation-versus-hash precision and owner-correct erratum handling.",
         "2026-07-11 author reproduced both CAP-0075 contradictions from pinned current heads; documentation/API blurring remains separately deduped in sd-021, while the protocol-spec defects are sd-036.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): added a source-specific grading caution for sd-021 and sd-036; the Protocol 25 host-function facts are unchanged.",
         "Improvements review 2026-08-27: improvements/resolved.json entry sd-021 records the 2026-07-27 Docs fix, and improvements/stellar-docs/sd-036-cap-0075-protocol-version-field-selector-errata.md remains open; the disputed claims are CAP-0075 hash-versus-permutation wording and U32Val-versus-Symbol selector type.",
-        "Sibling sweep 2026-08-27: grep sd-021|sd-036|CAP-0075|poseidon_permutation|U32Val → q-zk-host-functions-status, q-zk-poseidon-input-encoding, q-protocol-bls12-381-cap59; no contradiction"
+        "Sibling sweep 2026-08-27: grep sd-021|sd-036|CAP-0075|poseidon_permutation|U32Val → q-zk-host-functions-status, q-zk-poseidon-input-encoding, q-protocol-bls12-381-cap59; no contradiction",
+        "Structural re-form (long-fact): Shortened two long facts while preserving their sourcing and API distinctions; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/developers/announcing-stellar-x-ray-protocol-25 — SDF's dated Protocol 25 announcement supplies current official source-supported content and a dated upgrade timeline.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md — CAP-0075 defines exactly two low-level permutation functions and explicitly distinguishes them from complete hash functions.",
+        "Sibling sweep 2026-08-29: grep CAP-0075|poseidon_permutation|turnkey hash|Protocol 25|X-Ray → q-edge-noinfo-stellar-native-privacy-default, q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-validator-upgrade-vote, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-cross-warmancer-zk-stack, q-tool-zk-repo-live, q-zk-host-functions-status, q-zk-proof-systems-stellar; no contradiction."
       ],
       "rootCause": [
         "Eval-side title-driven hash shorthand.",
@@ -114,7 +118,8 @@
         "improvements/stellar-docs/sd-036-cap-0075-protocol-version-field-selector-errata.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-protocol-bn254-poseidon-xray"

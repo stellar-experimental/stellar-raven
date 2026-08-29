@@ -8,8 +8,9 @@
   "golden": {
     "answer": "- **The premise is wrong.** SEP-31 is the **Cross-Border Payments API** — an anchor-to-anchor (sending-anchor → receiving-anchor) rail; it has **no end-user hosted UI** [1].\n- The **hosted/interactive deposit & withdrawal** standard a wallet uses for its user is **SEP-24** (anchor-hosted webview); **SEP-6** is the **programmatic (non-interactive)** deposit/withdrawal API [2]. All three are Active.\n- In SEP-31 the **sending anchor** collects sender KYC (via SEP-12) on behalf of the receiving anchor; the end user interacts with their wallet/anchor, not a SEP-31 webview [1].\n- Both flows authenticate with **SEP-10** and may price with **SEP-38** quotes [1][2].",
     "keyFacts": [
-      "Corrects the premise: SEP-31 is the Cross-Border Payments API (anchor-to-anchor), NOT a wallet's hosted-UI deposit standard.",
-      "Identifies SEP-24 as the hosted/interactive deposit & withdrawal standard for a wallet's user (with SEP-6 as the programmatic API)."
+      "SEP-31 is the anchor-to-anchor Cross-Border Payments API.",
+      "SEP-24 is the wallet's hosted interactive deposit and withdrawal standard.",
+      "SEP-6 is the programmatic deposit and withdrawal API."
     ],
     "avoid": [
       "Do NOT confirm the wrong premise that SEP-31 is the hosted-UI wallet deposit standard.",
@@ -38,18 +39,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/anchors",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Split the SEP-31, SEP-24, and SEP-6 roles; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — the current SEP defines the Cross-Border Payments API between sending and receiving anchors.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md — the current SEP defines the wallet-integrated hosted deposit and withdrawal flow.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md — the current SEP defines the programmatic Deposit and Withdrawal API.",
+        "Sibling sweep 2026-08-29: grep SEP-31|SEP-24|SEP-6|hosted UI → q-sep-31-cross-border, q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-24-deprecation, and related anchor cases; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-6-vs-31-misnumber-trap",

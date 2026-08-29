@@ -1,1 +1,71 @@
-{"id":"q-gap-explainrepo-payload-ok","question":"Can Scout explain where Stellar Core transaction result codes are handled?","surface":["scout.explainRepo"],"golden":{"answer":"Yes: call `scout.explainRepo` with a focused code question and optionally pin `stellar/stellar-core`. The observed response routed explicitly, returned `answered`, a source-grounded answer, repo metadata, and repository/DeepWiki URLs. Check the Raven envelope before using the payload's own `ok`/`answered` fields, and verify safety-critical code claims in source.","keyFacts":["Uses `explainRepo` for a routed deep-code answer, not merely a repository search.","Checks the outer envelope separately from payload status fields.","Treats returned explanatory text as source-grounded guidance that may need source verification."],"avoid":["Do NOT claim `codeVerified.isDeployableContract` means stellar-core itself is a deployable Soroban contract."],"notes":"N1 live contract probe 2026-07-11: Succeeded for an explicit stellar/stellar-core query; payload included `ok`, `answered`, routing, answer, repo metadata, and source URLs."},"tags":{"category":"soroban","service":"scout","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"A","ref":"catalog/manifest.json#scout.explainRepo","note":"Exposed operation contract and catalog notes."},{"class":"B","ref":"inventory/stellar-light.json","note":"Committed inventory snapshot for the service family."}],"corroboration":[{"claim":"Uses `explainRepo` for a routed deep-code answer, not merely a repository search.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","observedAt":"2026-07-11","note":"Succeeded for an explicit stellar/stellar-core query; payload included `ok`, `answered`, routing, answer, repo metadata, and source URLs."}]}],"verified":{"date":"2026-07-11","by":"P4 Lane N1 gap-ops authoring","evidence":["http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","catalog/manifest.json#scout.explainRepo","inventory/stellar-light.json"],"rootCause":["solo://project/49/scratchpad/p4/n1-gapops"]},"origin":"authored 2026-07 (gap-ops)"}}
+{
+  "id": "q-gap-explainrepo-payload-ok",
+  "question": "Can Scout explain where Stellar Core transaction result codes are handled?",
+  "surface": [
+    "scout.explainRepo"
+  ],
+  "golden": {
+    "answer": "Yes: call `scout.explainRepo` with a focused code question and optionally pin `stellar/stellar-core`. The observed response routed explicitly, returned `answered`, a source-grounded answer, repo metadata, and repository/DeepWiki URLs. Check the Raven envelope before using the payload's own `ok`/`answered` fields, and verify safety-critical code claims in source.",
+    "keyFacts": [
+      "Uses `explainRepo` for a routed deep-code answer, not merely a repository search.",
+      "Checks the outer envelope separately from payload status fields.",
+      "Treats returned explanations as source-grounded guidance needing source verification."
+    ],
+    "avoid": [
+      "Do NOT claim `codeVerified.isDeployableContract` means stellar-core itself is a deployable Soroban contract."
+    ],
+    "notes": "N1 live contract probe 2026-07-11: Succeeded for an explicit stellar/stellar-core query; payload included `ok`, `answered`, routing, answer, repo metadata, and source URLs."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "catalog/manifest.json#scout.explainRepo",
+        "note": "Exposed operation contract and catalog notes."
+      },
+      {
+        "class": "B",
+        "ref": "inventory/stellar-light.json",
+        "note": "Committed inventory snapshot for the service family."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Uses `explainRepo` for a routed deep-code answer, not merely a repository search.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+            "observedAt": "2026-07-11",
+            "note": "Succeeded for an explicit stellar/stellar-core query; payload included `ok`, `answered`, routing, answer, repo metadata, and source URLs."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "evidence": [
+        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+        "catalog/manifest.json#scout.explainRepo",
+        "inventory/stellar-light.json",
+        "Live re-check (class A, 2026-08-29): catalog/manifest.json#scout.explainRepo labels the answer source-grounded and allows a null answer.",
+        "Sibling sweep (2026-08-29): explainRepo, outer-envelope, payload-status, and source-grounded cases showed no contradiction."
+      ],
+      "rootCause": [
+        "solo://project/49/scratchpad/p4/n1-gapops",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (gap-ops)"
+  }
+}

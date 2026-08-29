@@ -1,0 +1,2761 @@
+[
+  {
+    "id": "q-aas-burn-clawback-redemption-mechanics",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-aas-claim-received-claimable-balances",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-aas-claimable-predicates-expiry-reserves",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-aas-issuer-fees-supply-cap-freeze",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-aas-sep30-recoverable-wallets",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-aas-trustline-limit-lifecycle",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-anchor-endpoint-discovery",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-anchor-list-builders-discovery",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-anchor-moneygram-ramps",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-anchor-platform-what",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-anchor-sdp-vs-anchor-platform",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.corroboration",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ass-cross-bando-stablebonds-sac",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-asset-claimable-balance",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-asset-deploy-sac-cli",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.sources",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-asset-issue-asset-howto",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-asset-path-payment-ops",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-asset-rwa-tokenized-freshness",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-asset-sdex-vs-amm",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-asset-stablecoin-issuers-discovery",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-asset-trustline-basics",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-asset-trustline-vs-sac",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-asset-two-account-issuer",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.sources",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-asset-wallet-sdk-seps",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.sources",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-gap-match-partners-degrade",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-production-anchor-architecture",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-1-toml",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-31-cross-border",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-41-token-interface",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-43-web-wallet-api",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-45-contract-auth",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-6-24-deprecation",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-6-vs-31-misnumber-trap",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-8-regulated-assets",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-catalog-list",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-clawback-prereq-flag",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-sep-interactive-deposit-withdraw",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sep-wallet-seps-list",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.sources",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-comp-auth-flags-overview",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-comp-clawback-cap0035",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-comp-clawback-holder-risk",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-comp-cross-bitso-sep31",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-comp-cross-moneygram-partnership-sep24",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-comp-security-disclosure-programs",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "golden.notes",
+      "tags.freshness",
+      "truth.status",
+      "truth.asOf",
+      "truth.sources",
+      "truth.corroboration",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.reverifyBy"
+    ]
+  },
+  {
+    "id": "q-crp-become-an-anchor-licensing",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-crp-custodial-vs-noncustodial-wallets",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "golden.notes",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-crp-export-tx-history-taxes",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-crp-regional-offramp-mobilemoney",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-crp-remittance-founder-advisory",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-crp-tokenize-personal-rwa",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pay-sdp-disbursement",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-rwa-projects-tokenizing-stellar",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-rwa-tokenization-standards",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-stellar-recurring-payments",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-x402-payment-verification",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-agent-identity-stellar-experimental",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-agentic-payment-standards-compare",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-arbitrage-pathpayment-bots",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.notes",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-defi-benji-franklin-templeton",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-bridge-evm-to-stellar-axelar",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-build-staking-for-own-token",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-defi-category-funding-ratio-live",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "truth.asOf",
+      "truth.sources",
+      "truth.corroboration",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-comet-what-is",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-cross-blend-rivool-sac",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-defindex-honest",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-market-making-kelp",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-defi-named-newer-protocols",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-oracle-landscape-live",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.avoid",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-skill-ecosystem-scout",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-tooling-whitespace-live",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-defi-x402-on-stellar-what",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-eco-defi-projects-discovery",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-eco-hana-wallet-scf",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-eco-most-active-defi-projects",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-eco-nft-marketplace-whitespace",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-eco-pyusd-stellar-freshness",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-eco-stablecoins-on-stellar",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-eco-stellar-wallets-list",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-closed-world-builder-directory-miss",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-deep-full-history-report",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-exhaustive-defi-deep-report",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-fresh-latest-blend-tvl",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-fresh-latest-protocol-version",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-inject-ignore-instructions",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-lumenloop-person-entity-empty",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-metamask-evm-mental-model",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-noinfo-exact-tvl-figure",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-noinfo-stellar-native-privacy-default",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-oos-bitcoin-price-prediction",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-oos-solana-vs-aptos",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-retail-everyday-use-eli5",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-edge-xlm-price-investment-advice",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-generate-secret-key-refusal",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-issues-842-backup-faucet-wallet",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-missing-funds-account-support",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-paid-research-budget-bypass",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-pi-network-wrong-chain",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-ssrf-localhost-probe",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-ssrf-metadata-endpoint",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-wallet-hacked-support-redirect",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-n3-xlm-personal-investment-advice",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-hist-meridian-2026-corrected-venue",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-hist-scp-rewrite-2015",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-hot-sdf-xlm-holdings-sales",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-token-circle-usdc-on-stellar",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-account-activation-not-found",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-address-types-strkey",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-cross-redstone-sep40",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-doc-category-validator-search",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-pc-fee-bump-channel-accounts-feepool",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-l2-payment-channels-starlight",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-memos-reference",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-protocol-26-yardstick",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-protocol-27-zipper",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "truth.sources",
+      "truth.corroboration",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-protocol-upgrade-timing",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-quantum-preparedness-dormant",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-sponsored-reserves",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-pc-surge-griefing-threat-model",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-19-preconditions-cap-0021",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-protocol-27-cap-0071",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-protocol-amm-cap-0038",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-base-reserve-min-balance",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.notes",
+      "truth.sources",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-protocol-bls12-381-cap59",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-protocol-bn254-poseidon-xray",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-protocol-max-tx-set-size",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "golden.avoid",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-protocol-network-passphrases-list",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-operation-types-list",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-operations-vs-transactions",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-parallel-execution",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-protocol-quorum-slice-vs-quorum",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-scp-consensus-algorithm",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-tier1-requirements",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-validator-node-roles",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-validator-upgrade-vote",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-protocol-version-history-list",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-aas-list-token-on-exchanges-aggregators",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-aas-trusted-asset-list-whitelist",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-asset-usdc-eurc-path-fx",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-ti-find-export-secret-key",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-builder-by-region-latam",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-builder-content-by-person",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-builder-lumenloop-regions-vocab",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-ambassador-program",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-scf-audit-bank",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-build-award-cap",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-build-tracks",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-confidential-tokens-preview",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-cross-decaf-sep24",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-cross-reflector-rounds-current",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-funding-by-category",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-hackathons-active",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-history-soroswap",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-how-to-apply",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-hummingbot-kelp-closed-rfp",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-scf-nqg-voting",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-open-rfps",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-passkey-rfps-live",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-pitch-prep-live",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-rfps-hackathons-live",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-skill-stellar-scout",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-skill-submission-radar",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-scf-total-distributed",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scf-verified-members",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-scout-hackathon-brief-first-hour",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-gap-explainrepo-payload-ok",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-gap-scout-list-skill-directory",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-passkey-smart-account-architecture",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.sources",
+      "truth.corroboration",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-smart-account-scoped-policy-signers",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sor-deploy-invoke-from-js-sdk",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sor-doc-page-sections-followup",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sor-evm-to-soroban-porting",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sor-persistent-unbounded-collection-cap",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sor-sac-introspection",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sor-sep41-transfer-vs-transferfrom",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-sor-skill-openzeppelin-setup",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-add-signer-smart-wallet-howto",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-auth-recursion-dos-audit",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-check-auth-custom-account",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-cli-bindings",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-constructor-lifecycle",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-contract-build-verification",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-contract-id-derivation",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-soroban-event-indexing-design",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-factory-pattern",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-soroban-fuzz-testing",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-no-std-constraints",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-oracle-defensive-consumption",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-oz-token",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-publish-events",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-reentrancy",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-simulate-resource-fee",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-storage-migration",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-soroban-upgradeable-storage-compat",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-zk-circuit-setup",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-zk-host-functions-status",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.answer",
+      "golden.keyFacts",
+      "truth.corroboration",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-zk-nullifier-storage",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-zk-poseidon-input-encoding",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-zk-verification-resource-budget",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-gap-rpc-horizon-unindexed-reference",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-infra-horizon-vs-rpc",
+    "status": "modified",
+    "judgeFacing": false,
+    "changed": [
+      "truth.corroboration",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-infra-rpc-provider-archive-tier",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-infra-simulate-transaction-howto",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-infra-testnet-vs-futurenet",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-infra-which-indexer",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-classic-submission-errors",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-connect-wallet-button-code",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-explain-repo-payload-status",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-fetch-all-balances-classic-sac",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-freighter-localhost-not-detected",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.notes",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-rpc-gettransactions-pagination-xdr",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.notes",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-scout-refresh-cached-rows",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-skill-builder-quickstart",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-skill-integration-finder",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-ti-vocab-regions-live",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-tool-cli-testnet-identity-howto",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-tool-go-sdk-ingest",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.avoid",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-tool-indexer-repos-discovery",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-tool-js-sdk-package",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause",
+      "truth.corroboration"
+    ]
+  },
+  {
+    "id": "q-tool-passkey-repo-live",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-tool-skill-detail-install",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-tool-wallets-comparison",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  },
+  {
+    "id": "q-tool-which-sdk-comparison",
+    "status": "modified",
+    "judgeFacing": true,
+    "changed": [
+      "golden.keyFacts",
+      "truth.verified.date",
+      "truth.verified.by",
+      "truth.verified.evidence",
+      "truth.verified.rootCause"
+    ]
+  }
+]

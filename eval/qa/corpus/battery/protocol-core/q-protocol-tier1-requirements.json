@@ -34,19 +34,48 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Tier 1 status is earned by other Tier 1 orgs including you in their quorum sets (trust / invitation) — not granted by application to SDF, and not by staking XLM or paying a fee.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+            "note": "Exact quotes: ‘no central authority dictates whose vote is required for consensus.’ ‘There are no monetary rewards for being a validator on the Stellar network.’",
+            "observedAt": "2026-08-29"
+          },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+          "note": "Exact quotes: ‘Joining is not a unilateral SDF decision’; ‘every existing Tier 1 organization independently decides whether to add you to their quorum set.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "D",
+          "ref": "https://range.org/blog/range-is-now-a-tier-1-validator-on-stellar",
+          "observedAt": "2026-08-29",
+          "note": "Dated web sweep query `Stellar Tier 1 organization quorum set invitation SDF staking fee`: Range says each validator chooses trusted peers, `Tier 1 is not a designation an organization can claim on its own`, operators coordinate with existing operators, and they run `not for financial return`. No primary result described an SDF application, stake, or fee."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (negative-predicate): Split the validator/archive fact and retained the application trap in golden.avoid; truth unchanged",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/validators/tier-1-orgs — the current requirements specified three geographically dispersed Full Validators.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/validators/tier-1-orgs — the current requirements specified a separate history archive for each validator.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/validators/tier-1-orgs — Tier 1 peers independently granted trust through quorum-set inclusion rather than an SDF application.",
-        "Sibling sweep 2026-08-27: grep Tier 1|Full Validators|quorum sets|history archive → q-edge-validators-reverse-tx-fork-detection, q-protocol-quorum-slice-vs-quorum, q-protocol-scp-consensus-algorithm, q-protocol-validator-node-roles; no contradiction"
+        "Sibling sweep 2026-08-27: grep Tier 1|Full Validators|quorum sets|history archive → q-edge-validators-reverse-tx-fork-detection, q-protocol-quorum-slice-vs-quorum, q-protocol-scp-consensus-algorithm, q-protocol-validator-node-roles; no contradiction",
+      "Corroboration audit 2026-08-29: added 1 row(s) for Tier 1 trust and admission boundaries; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-tier1-requirements"

@@ -7,10 +7,11 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nNo, a normal Stellar account should not be described as \"quantum-resistant today\" without caveat. SDF's Quantum Preparedness Plan says sufficiently powerful quantum computers would break elliptic-curve cryptography, including Stellar's Ed25519, and identifies two threat classes: validator/SCP signature integrity and account takeover. Source: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan\n\nThe QPP is a staged migration plan. Stage 1 targets post-quantum signature verification in Soroban contract accounts in 2026; Stage 2 targets first-class quantum-safe signers for classic accounts in 2027; Stage 3 would deprecate Ed25519 only when quantum threat progress and ecosystem readiness justify activation. The important Stellar-specific advantage is that account identity and signing keys are separable: an account can add/weight/remove signers without changing its G-address. Sources: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan and https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#signer\n\nFor dormant accounts, no primary Stellar source published a final mechanical \"qualifies if X\" rule as of 2026-08-24 — the QPP does not, and no CAP defines one. The QPP says a forced cutoff would disrupt a large population of dormant accounts whose holders are unreachable and would require a design choice between freezing accounts with a recovery mechanism or permanently locking them. A good answer should therefore say: check current primary QPP/CAP materials for any finalized on-chain criteria; do not invent dates, balance thresholds, or \"has never sent a transaction\" rules unless a later CAP or implementation defines them.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Explains the Quantum Preparedness Plan and dormant-account definition only as documented in primary Stellar/CAP sources.",
-      "States, as a dated and source-relative observation, that no primary Stellar source (the QPP or any CAP) specifies a final mechanical dormant-account eligibility rule, and does not invent thresholds."
+      "Uses primary Stellar or CAP sources for the Quantum Preparedness Plan.",
+      "Keeps the dormant-account finding dated and source-relative.",
+      "No QPP or CAP source defines a final mechanical dormant-account eligibility rule."
     ],
     "avoid": [
       "Do NOT claim Stellar is fully quantum-resistant today without caveat.",
@@ -106,8 +107,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-24",
-      "by": "Golden-truth review 2026-08-24 (branch codex/qa-golden-truth-corrections negative-claim sweep); prior event Solo todo 1925 independent challenge and coordinator acceptance",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
@@ -116,11 +117,19 @@
         "Sibling sweep: q-hist-quantum-preparedness-plan agrees that the QPP is a roadmap, not shipped quantum resistance; no sibling defines mechanical dormant-account eligibility.",
         "Negative-claim bar 2026-08-24 — absence from primary records plus an explicit dated web sweep: A https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan re-read; B the full https://github.com/stellar/stellar-protocol/tree/master/core CAP record through cap-0087 (Draft, created 2026-06-05) and discussion https://github.com/orgs/stellar/discussions/1915 (created 2026-04-23, ML-DSA host functions only); E the stellar-docs code search for 'dormant'; D the search sweep including https://decrypt.co/370570/quantum-clock-ticking-bitcoin-crypto-how-stellar-preparing (published 2026-06-09). No source published a mechanical eligibility rule.",
         "Uncertainty is explicit rather than resolved: the claim stays confirmed-as-of 2026-08-24, the keyFact and answer are phrased source-relative and dated, and the grader caution accepts an answer that says a later CAP could define criteria. The Stage 2 quantum-safe-signer CAP (targeted 2027) is the expected trigger to re-verify.",
-        "Sibling re-check 2026-08-24: q-hist-quantum-preparedness-plan still carries no dormant-account eligibility claim, so the dated phrasing does not contradict it."
+        "Sibling re-check 2026-08-24: q-hist-quantum-preparedness-plan still carries no dormant-account eligibility claim, so the dated phrasing does not contradict it.",
+        "Structural re-form (long-fact): shortened the source fact and split the dormant-account rule; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — the current primary plan remains dated and source-specific.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — the primary page defines the plan and describes dormant holders qualitatively.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — dormant-account treatment remains an open design choice.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/tree/master/core — the full live CAP tree through cap-0088 has no dormant-account eligibility definition.",
+        "Sibling sweep 2026-08-29: grep Quantum Preparedness|dormant account|quantum-safe signer|CAP-0087 → q-hist-quantum-preparedness-plan and q-pc-quantum-preparedness-dormant; no contradiction",
+        "Owner fix 2026-08-29 (gate: npm test pins this case's wording): test/qa-judge-qpp-dormant.test.mjs requires the negated 'final mechanical dormant-account eligibility rule' clause with QPP named; restored those exact terms in fact [4] (83 chars); claim unchanged."
       ],
       "rootCause": [
         "solo://proj/49/todo/independently-challe--1925#comment-5058",
-        "Eval-authoring: the negative claim was pinned in absolute wording and carried only primary-absence evidence, without the explicit dated web sweep the negative-claim bar requires."
+        "Eval-authoring: the negative claim was pinned in absolute wording and carried only primary-absence evidence, without the explicit dated web sweep the negative-claim bar requires.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-pc-quantum-preparedness-dormant"

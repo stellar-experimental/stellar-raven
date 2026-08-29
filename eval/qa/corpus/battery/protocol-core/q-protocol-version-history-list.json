@@ -7,11 +7,11 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the current official Stellar documentation, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\nStellar protocol history from P19 through live **Protocol 27**: P19 (2022-06-08) generalized transaction preconditions and signed-payload signers; P20/Soroban (2024-02-20) introduced Wasm smart contracts; P21 (2024-06-18) added secp256r1/passkeys and TTL extension; P22 (2024-12-05) added BLS12-381 and constructors; P23/Whisk (2025-09-03) introduced CAP-0063 parallel-scheduling support, CAP-0062 live/archival separation, and unified events—but initialized the dependent-cluster setting at one, with multi-cluster activation handled later through network settings; P24 (2025-10-22) corrected Whisk archival stability; P25/X-Ray (2026-01-22) added BN254 and Poseidon/Poseidon2; P26/Yardstick (2026-05-06) added configuration, arithmetic, TTL-v2, BN254, SAC, and strkey host changes; P27/Zipper (2026-07-08) activated CAP-0071 authentication delegation/address-bound credentials at ledger 63386819. The feature mappings are durable, but re-check the live network for the latest tail and current configuration.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Correctly maps P19-P27 headline features.",
       "Dates.",
-      "Describes P23 as capability introduction with initial one-cluster configuration, not immediate multi-cluster activation."
+      "P23 introduced the capability with one dependent cluster configured initially."
     ],
     "avoid": [
       "Do NOT mis-pair features and protocol versions.",
@@ -67,18 +67,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 567 post-P27 re-verification; Solo scratchpad 575 GT-25 blind 3273 and GT-34 primary 3286/blind 3288 sibling reconciliation.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened the sourcing and Protocol 23 facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks/software-versions — the current official history dates changeable version and feature observations.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks/software-versions — the page exposes dated Mainnet and Testnet version headings.",
+        "Live re-check 2026-08-29: https://stellar.org/protocol-upgrades — the current official history maps Protocols 19 through 27 to their headline features.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks/software-versions — the current history lists protocol dates.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md — the CAP introduces the scheduling capability and initializes `ledgerMaxDependentTxClusters` to one.",
+        "Sibling sweep 2026-08-29: grep P19-P27|Protocol 23|CAP-0063|dependent-cluster|one-cluster → q-protocol-23-whisk-caps, q-protocol-parallel-execution, q-protocol-24-whisk-incident; no contradiction"
       ],
       "rootCause": [
         "Eval-side compressed P23 headline plus duplicate JSON keys that silently replaced provenance without replacing stale grader notes.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-protocol-version-history-list"

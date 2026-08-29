@@ -5,20 +5,20 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nCustodial means the provider controls signing/key custody or maintains an internal ledger that lets it move user funds. Non-custodial means the user controls signing authority and the app cannot move funds without user authorization. On Stellar, the same remittance UX can be built either way, but the risk allocation changes: custodial designs improve recovery/support and simplify some payout operations while increasing custody, safeguarding, recordkeeping, licensing, and operational-liability burdens; non-custodial designs reduce custody risk but still do not remove KYC/AML, sanctions, travel-rule, fraud, or support obligations for regulated remittance flows.\n\nFor SEP-31/cross-border apps, choose the custody model around the anchor and payout flow: who authenticates through SEP-10, who submits KYC through SEP-12, who funds the Stellar payment, who handles memos/muxed-account bookkeeping, who can refund or remediate failed payouts, and who is responsible if the user loses keys. The MoneyGram Access guide shows this distinction explicitly by describing custodial and non-custodial authentication patterns for SEP-10/SEP-24 integration.\n\nExamples must be dated and sourced. Scout currently lists Decaf as a non-custodial wallet for cross-border money movement using Stellar/Solana and MoneyGram/partner ramps, while the official TypeScript Wallet SDK is a build tool, not a custody provider. Do not label a wallet or custody vendor by marketing category alone.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, the verified sources supported this observed answer:\n\nCustodial means the provider controls signing/key custody or maintains an internal ledger that lets it move user funds. Non-custodial means the user controls signing authority and the app cannot move funds without user authorization. On Stellar, the same remittance UX can be built either way, but the risk allocation changes: custodial designs improve recovery/support and simplify some payout operations while increasing custody, safeguarding, recordkeeping, licensing, and operational-liability burdens. A non-custodial design does not by itself determine a regulated remittance business's duties. Apply each relevant jurisdiction's rules to the activities performed. Where the business is an obliged entity, plan for applicable AML/CFT, sanctions, and travel-rule controls. Plan fraud and customer-support operations separately.\n\nFor SEP-31/cross-border apps, choose the custody model around the anchor and payout flow: who authenticates through SEP-10, who submits KYC through SEP-12, who funds the Stellar payment, who handles memos/muxed-account bookkeeping, who can refund or remediate failed payouts, and who is responsible if the user loses keys. The MoneyGram Access guide shows this distinction explicitly by describing custodial and non-custodial authentication patterns for SEP-10/SEP-24 integration.\n\nExamples must be dated and sourced. Scout currently lists Decaf as a non-custodial wallet for cross-border money movement using Stellar/Solana and MoneyGram/partner ramps, while the official TypeScript Wallet SDK is a build tool, not a custody provider. Do not label a wallet or custody vendor by marketing category alone.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Defines custodial wallets as provider-controlled/key-custody or ledger-account models where the provider can move funds, and non-custodial wallets as user-controlled signing/key models.",
-      "Explains custody choice affects user recovery, compliance/KYC, travel-rule/recordkeeping, operational risk, UX, liability, and regulatory obligations.",
-      "For remittance/SEP-31 apps, explains the model must align with anchor/user authentication, KYC, payout support, and who bears custody and support responsibilities."
+      "Defines custody by provider or user control of keys, signing, ledgers, and fund movement.",
+      "Applies compliance duties by activity and jurisdiction, not custody label.",
+      "Aligns SEP-31 custody with anchor/user auth, KYC, payout, and support ownership."
     ],
     "avoid": [
       "Do NOT label a wallet custodial or non-custodial without current evidence of its control model.",
       "Do NOT say non-custodial design eliminates KYC/compliance obligations for regulated remittance flows.",
       "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
     ],
-    "notes": "Provider labels can change; Phase 3 should re-check any named wallet/provider examples if used in grading.\nAlso good if the answer: Mentions wallet/provider examples only with current sourced evidence and distinguishes consumer wallets from custody infrastructure providers. | Notes smart accounts/passkeys can improve UX without necessarily making a wallet custodial.\nGolden cites: Current wallet/provider docs for examples and Stellar SEP docs for remittance/auth flow claims."
+    "notes": "Provider labels can change; Phase 3 should re-check any named wallet/provider examples if used in grading.\nAlso good if the answer: Mentions wallet/provider examples only with current sourced evidence and distinguishes consumer wallets from custody infrastructure providers. | Notes smart accounts/passkeys can improve UX without necessarily making a wallet custodial.\nTreat this as legal-review and operational guidance, not as a universal list of duties. FinCEN applies a facts-and-circumstances test. FATF says true user-to-user P2P transfers are not explicitly subject to its AML/CFT controls.\nGolden cites: Current wallet/provider docs for examples and Stellar SEP docs for remittance/auth flow claims."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -51,22 +51,93 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "FinCEN determines money-transmitter treatment from facts and circumstances, not a product label or technology.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
+            "observedAt": "2026-08-29",
+            "note": "FinCEN states, \"The label, however, will not determine the regulatory application,\" and applies a facts-and-circumstances test."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=site%3Afincen.gov+wallet+money+transmitter+facts+circumstances",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘site:fincen.gov wallet money transmitter facts circumstances’. Top primary results: https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering and https://www.fincen.gov/resources/statutes-regulations/guidance/application-definition-money-transmitter-brokers-and. Exact observed text: ‘whether a person is a money transmitter is a matter of facts and circumstances.’ No primary result supported a product-label-only test or contradicted the claim."
+          }
+        ]
+      },
+      {
+        "claim": "FATF does not explicitly apply its AML/CFT controls to true user-to-user P2P transfers, but a transfer involving a VASP is not P2P.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.fatf-gafi.org/content/dam/fatf/documents/recommendations/Updated-Guidance-VA-VASP.pdf",
+            "observedAt": "2026-08-29",
+            "note": "FATF states, \"P2P transactions are not explicitly subject to AML/CFT controls under the FATF Standards,\" and excludes transactions involving a VASP."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=site%3Afatf-gafi.org+P2P+transfers+unhosted+wallets+intermediary+obligations",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘site:fatf-gafi.org P2P transfers unhosted wallets intermediary obligations’. Top primary results: https://www.fatf-gafi.org/en/publications/Virtualassets/targeted-report-stablecoins-unhosted-wallets.html and https://www.fatf-gafi.org/content/dam/fatf-gafi/reports/12-Month-Review-Revised-FATF-Standards-Virtual-Assets-VASPS.pdf.coredownload.inline.pdf. Exact observed text: ‘peer-to-peer transfers of virtual assets, without the use or involvement of a VASP or financial institution, are not explicitly subject to AML/CFT obligations under the revised FATF Standards.’ No primary result contradicted the claim."
+          }
+        ]
+      },
+      {
+        "claim": "The 2026-08-29 web sweep found no primary source stating one universal duty list for every non-custodial remittance design.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "D: targeted web sweep of FinCEN and FATF non-custodial remittance guidance",
+            "observedAt": "2026-08-29",
+            "note": "No primary source found in the sweep states a universal non-custodial duty list; the sources apply activity- and jurisdiction-based rules."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering",
+            "observedAt": "2026-08-29",
+            "note": "Exact quote: ‘FinCEN’s regulations provide that whether a person is a money transmitter is a matter of facts and circumstances.’ The guidance then identifies six circumstances, which supports activity-specific analysis rather than one universal duty list."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-c)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep custodial|non-custodial|custody model → q-crp-custodial-vs-noncustodial-wallets, q-ti-custodial-account-generation-c-address, q-tool-wallets-comparison; no contradiction"
+        "Sibling sweep 2026-08-27: grep custodial|non-custodial|custody model → q-crp-custodial-vs-noncustodial-wallets, q-ti-custodial-account-generation-c-address, q-tool-wallets-comparison; no contradiction",
+        "Structural re-form (long-fact): Shortened four custody facts without changing their claims.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/overview — the current official wallet page supplies source-backed application guidance.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — the live guide makes its current custody integration observable.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide — the guide distinguishes provider and user access to private keys, pooled accounts, and individual accounts.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide and https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1010/section-1010.410 — the primary sources confirm custody-specific KYC, records, user flow, and regulatory effects.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — SEP-31 assigns authentication, KYC, payment, payout, and failure-handling duties to the anchors.",
+        "Sibling sweep 2026-08-29: grep custodial|non-custodial|private keys|SEP-31.*KYC → custody, wallet, SEP-31, MoneyGram, and anchor cases; no contradiction",
+        "Live re-check 2026-08-29: https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf — FinCEN states, \"The label, however, will not determine the regulatory application,\" and applies a facts-and-circumstances test.",
+        "Live re-check 2026-08-29: https://www.fatf-gafi.org/content/dam/fatf/documents/recommendations/Updated-Guidance-VA-VASP.pdf — FATF states, \"P2P transactions are not explicitly subject to AML/CFT controls under the FATF Standards.\"",
+        "Sibling sweep 2026-08-29: grep custodial|non-custodial|facts and circumstances|P2P transactions → custody, wallet, MoneyGram, travel-rule, and licensing cases; no contradiction after the activity-based downgrade.",
+        "Corroboration audit 2026-08-29: replaced a universal duty list with activity- and jurisdiction-based guidance; Sol+Grok class agreement, targeted probe decided disposition",
+        "Final-review fix 2026-08-29: added a second evidence class to 3 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
         "eval-authoring",
+        "eval-authoring overgeneralization",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-crp-custodial-vs-noncustodial-wallets"

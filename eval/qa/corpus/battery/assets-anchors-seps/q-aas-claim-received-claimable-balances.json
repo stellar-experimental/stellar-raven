@@ -9,8 +9,10 @@
   "golden": {
     "answer": "Discover first, then claim by balance id. On Horizon, use the claimable-balances collection and filter for the claimant account, then page through the result set until exhausted. Each record has a claimable-balance id and claimants/predicates. A single claimable balance can also be retrieved by `/claimable_balances/:claimable_balance_id`.\n\nTo claim, the claimant account submits one `ClaimClaimableBalance` operation per balance id, with the claimant account as the operation source. Multiple claim operations can be placed in one transaction if the transaction size/operation limits and account sequence handling allow it. The protocol operation adds the claimable-balance amount to the source account and deletes the claimable-balance entry on success.\n\nA listed balance is not necessarily claimable at this ledger close. The operation fails with `CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM` if no claimant matches the source account or the matched claimant's predicate is false. For non-native assets, the claiming account also needs the relevant trustline, enough remaining trustline limit, and required authorization. After the transaction confirms, query the claimant filter again and verify the claimed ids are absent and no remaining balances match.",
     "keyFacts": [
-      "Mentions using Horizon's claimable balances endpoint filtered by claimant, or equivalent ledger-entry lookup, to discover claimable balance ids.",
-      "Explains that claiming requires submitting `ClaimClaimableBalance`/claim-claimable-balance operations for specific balance ids from the claimant account.",
+      "Names Horizon's claimant filter for claimable-balance id discovery.",
+      "Names an equivalent ledger-entry lookup for balance-id discovery.",
+      "Names `ClaimClaimableBalance` or claim-claimable-balance operations.",
+      "Requires claimant-account submission for each specific balance id.",
       "Mentions predicates must be satisfied for a claim to succeed."
     ],
     "avoid": [
@@ -49,11 +51,61 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "A listed balance is not necessarily claimable at this ledger close.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+          "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: `Claimant` pairs `AccountID destination` with `ClaimPredicate predicate`, commented `Claimable if predicate is true`; CAP-0023 also says satisfiable conditions are not guaranteed."
+        }
+        ]
+      },
+      {
+        "claim": "The operation fails with `CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM` if no claimant matches the source account or the matched claimant's predicate is false.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+          "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: `ClaimClaimableBalanceOp` fails with `CLAIM_CLAIMABLE_BALANCE_CANNOT_CLAIM` when no claimant destination equals `sourceAccount` or the matched predicate is not satisfied."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-01-asset-lifecycle-safety-metadata accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Split both long facts into atomic method and operation requirements; truth unchanged.",
+        "Live re-check 2026-08-29: https://horizon.stellar.org/claimable_balances?claimant=GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ&limit=1 — the live Horizon response accepted the claimant filter and returned its filtered self link.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-23 defines a claimable balance as a ledger entry keyed by its balance id.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-23 defines `ClaimClaimableBalanceOp` and its claimable-balance operation type.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-23 requires a balance id and matches the operation source account to a claimant.",
+        "Sibling sweep 2026-08-29: grep ClaimClaimableBalance → q-protocol-operation-types-list, q-aas-claim-received-claimable-balances, q-asset-claimable-balance; no contradiction.",
+      "Corroboration audit 2026-08-29: added 2 row(s) for claimability and false-predicate failure; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-aas-claim-received-claimable-balances"

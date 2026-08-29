@@ -10,7 +10,8 @@
     "answer": "Implement reserved `CustomAccountInterface::__check_auth(signature_payload: BytesN<32>, signature: Val, auth_contexts: Vec<Context>)`. When another invocation requires that C-address, the host—not a direct user call—dispatches this function. The contract decodes/verifies its chosen signatures (Ed25519, WebAuthn/secp256r1, multisig, etc.) and applies policy over `auth_contexts`, returning success only when valid. For standard Soroban address credentials the host validates/consumes the nonce before `__check_auth`, enforces expiry/replay/invocation exhaustion, and normally makes a second contract replay nonce unnecessary; a separate application protocol may define a separate replay domain. Never call `require_auth` on the account's own address inside `__check_auth`, which recurses.",
     "keyFacts": [
       "Gives the reserved ABI and host-only dispatch.",
-      "Assigns signature/policy checks to the contract and standard nonce/expiry/replay to the host."
+      "The contract checks signatures and authorization policy.",
+      "The host handles standard nonces, expiry, and replay protection."
     ],
     "avoid": [
       "Do NOT model this as EIP-4337, direct user invocation, mandatory home-grown standard nonce, or recursive own-address require_auth."
@@ -69,13 +70,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer wrongly assigned standard Soroban replay nonce management to the custom account contract and blurred the reserved ABI.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-44 processes 3316/3324."
+        "Solo scratchpad 575 GT-44 processes 3316/3324.",
+        "Structural re-form (long-fact): Split the contract checks from the host authorization duties; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account — the current example assigns signature authentication and authorization policy to __check_auth.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md — the current CAP assigns standard nonce consumption, signature expiration, and replay prevention to the host authorization framework.",
+        "Sibling sweep 2026-08-29: grep __check_auth|standard nonce|signature expiration|replay protection → q-soroban-require-auth, q-passkey-smart-account-architecture; no contradiction."
       ],
       "rootCause": [
-        "Eval-side custom-account replay model error."
+        "Eval-side custom-account replay model error.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-check-auth-custom-account"

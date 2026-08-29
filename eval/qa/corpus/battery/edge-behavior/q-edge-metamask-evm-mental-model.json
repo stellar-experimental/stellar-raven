@@ -9,8 +9,11 @@
   "golden": {
     "answer": "Stellar is not EVM-compatible, so it cannot be added through MetaMask's ordinary custom-EVM RPC/chain-ID flow, and native XLM is not an ERC-20 at a `0x` contract address. As of **2026-07-10**, MetaMask's Snaps directory lists a **third-party Stellar interoperability Snap**; treat it as community software, review its broad permissions/security posture, and re-check availability before relying on it. A Stellar-native wallet remains the straightforward path.\n\nXLM is Stellar's native asset with no issuer or trustline, but it has a deterministic, network-specific **Stellar Asset Contract** ID exposing the same XLM through the SEP-41 contract interface; that SAC is neither ERC-20 nor wrapped XLM. Issued classic assets use code+issuer and also have SACs; standalone SEP-41 contract tokens are a third model. Use a verified Stellar wallet/service and Stellar address for native XLM. Never send native Stellar assets to an EVM `0x` address; wrapped/bridged representations on other chains are separate assets with bridge/custody risk.",
     "keyFacts": [
-      "Distinguishes ordinary MetaMask EVM-network flow from the dated third-party Stellar Snap pathway.",
-      "Distinguishes native XLM, its network-specific SAC ID, classic issued assets, standalone contract tokens, and ERC-20/wrapped representations."
+      "Describes MetaMask's ordinary EVM-network flow.",
+      "Dates the third-party Stellar Snap pathway.",
+      "Defines native XLM and its network-specific SAC ID.",
+      "Defines classic issued assets and standalone contract tokens.",
+      "Defines the ERC-20 and wrapped representation models."
     ],
     "avoid": [
       "Do NOT say MetaMask can never access Stellar, present the Snap as MetaMask endorsement/safety, deny XLM's SAC, apply code+issuer to native XLM, or give an ERC-20/wrapped address as native XLM.",
@@ -93,13 +96,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The durable non-EVM warning is correct, but the answer omitted a current third-party Stellar Snap, denied native XLM's network-specific SAC contract ID by implication, and generalized code+issuer from issued assets to XLM.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-24 primary 3263 and blind 3266; blind established the current Snap and derived native SAC IDs without moving assets."
+        "Solo scratchpad 575 GT-24 primary 3263 and blind 3266; blind established the current Snap and derived native SAC IDs without moving assets.",
+        "Structural re-form (long-fact): split the MetaMask pathway and asset-model distinctions into five short facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://support.metamask.io/configure/networks/how-to-use-non-evm-networks/ — MetaMask's official guidance distinguishes ordinary EVM network support from non-EVM access through Snaps.",
+        "Live re-check 2026-08-29: https://snaps.metamask.io/snap/npm/stellar-snap/ — the current MetaMask Snaps directory lists Stellar as a third-party Snap.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the official SAC page covers native XLM; stellar contract id asset --asset native derived different Pubnet and Testnet IDs in a 2026-08-29 class-F check.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — the official comparison distinguishes classic issued assets with SACs from standalone SEP-41 contract tokens.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/lumens and https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — the official sources distinguish native XLM and native burn/mint assets from EVM ERC-20 or wrapped representations.",
+        "Sibling sweep 2026-08-29: grep Stellar Snap|network-specific SAC|ERC-20|wrapped representations → q-asset-deploy-sac-cli, q-asset-issue-asset-howto, q-asset-trustline-basics, q-asset-two-account-issuer, q-defi-bridge-evm-to-stellar-axelar, q-edge-ambig-stellar-token-meaning, q-edge-metamask-evm-mental-model, q-raph-usdc-onto-stellar, q-rwa-stellar-vs-erc20-regulated, q-sor-evm-to-soroban-porting, q-soroban-oz-token, q-soroban-token-transfer-pattern; no contradiction."
       ],
       "rootCause": [
-        "No ordinary EVM-network support was conflated with no MetaMask pathway; ERC-20 address and SAC contract ID were conflated; code+issuer was overgeneralized to XLM."
+        "No ordinary EVM-network support was conflated with no MetaMask pathway; ERC-20 address and SAC contract ID were conflated; code+issuer was overgeneralized to XLM.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-metamask-evm-mental-model"

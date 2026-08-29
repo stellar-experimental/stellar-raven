@@ -10,7 +10,8 @@
   "golden": {
     "answer": "Current SEP-41 direct `transfer(from: Address, to: MuxedAddress, amount: i128)` requires `from` authorization. `approve(from, spender, amount, live_until_ledger)`—called `expiration_ledger` in some current SDK/SAC docs—requires owner/from authorization and records an allowance through that absolute ledger sequence. `transfer_from(spender, from, to: Address, amount)` requires spender authorization, consumes the allowance, and needs no second owner signature in that call. The allowance is valid through the boundary and treated as zero when the boundary is below current ledger; a nonzero approval cannot use a past boundary. Amounts are integer base units. `live_until_ledger`/`expiration_ledger` are one mechanism, not storage TTL or seconds. SEP-41 remains Draft, so version-qualify signatures.",
     "keyFacts": [
-      "Distinguishes direct transfer MuxedAddress/from auth from transfer_from Address/spender allowance.",
+      "Direct `transfer` uses a `MuxedAddress` and `from` authorization.",
+      "`transfer_from` uses an `Address`, spender authorization, and an allowance.",
       "Explains one absolute-ledger allowance expiry under both parameter names."
     ],
     "avoid": [
@@ -66,13 +67,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden correction verifier (Solo 4303) with lead reconciliation — refreshed the SEP preamble; the direct-transfer and allowance semantics remain current.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-43 processes 3311/3320."
+        "Solo scratchpad 575 GT-43 processes 3311/3320.",
+        "Structural re-form (long-fact): Split the direct and allowance transfer semantics; truth unchanged.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-env/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs — the current SAC source types direct `transfer` with `MuxedAddress` and calls `from.require_auth()`.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-env/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs — the current SAC source types `transfer_from` with `Address`, calls `spender.require_auth()`, and spends the allowance.",
+        "Sibling sweep 2026-08-29: grep transfer_from|MuxedAddress|live_until_ledger → q-sep-41-token-interface, q-sor-recurring-escrow-patterns, q-soroban-token-transfer-pattern, and q-sor-sep41-transfer-vs-transferfrom; no contradiction"
       ],
       "rootCause": [
-        "Eval-side draft-interface signature drift."
+        "Eval-side draft-interface signature drift.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sor-sep41-transfer-vs-transferfrom"

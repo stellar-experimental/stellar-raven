@@ -8,7 +8,7 @@
   "golden": {
     "answer": "- **SEP-1 (Active)** defines the **`stellar.toml`** (Stellar Info File): a TOML document where an organization publishes its Stellar metadata — anchor SEP endpoints, declared `[[CURRENCIES]]`, signing/account keys, validators, and org info [1].\n- It is served off-chain at **`https://<DOMAIN>/.well-known/stellar.toml`** (with CORS enabled) [1].\n- It is the **discovery layer**: wallets fetch it to find an anchor's SEP-6/10/12/24/31/38 endpoints and verify assets; it can also declare an `approval_server` (SEP-8) per currency [1].",
     "keyFacts": [
-      "SEP-1 defines the stellar.toml (Stellar Info File) used to publish an org's Stellar metadata and endpoints.",
+      "SEP-1 defines `stellar.toml` for organizational Stellar metadata and endpoints.",
       "It is served at https://<domain>/.well-known/stellar.toml."
     ],
     "avoid": [
@@ -33,16 +33,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened the SEP-1 metadata fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md — the Active SEP defines `stellar.toml` as the Stellar Info File for organizational integration data and service endpoints.",
+        "Sibling sweep 2026-08-29: grep SEP-1|stellar.toml|Stellar Info File|.well-known/stellar.toml → q-anchor-endpoint-discovery, q-sep-catalog-list; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-1-toml",

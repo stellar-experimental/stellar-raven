@@ -10,8 +10,9 @@
   "golden": {
     "answer": "Call the **Stellar RPC `simulateTransaction`** method on the built (but unsigned) contract-invocation\ntransaction. It **dry-runs the call without submitting** and returns the **resource footprint\n(read/write ledger keys), required auth entries, and the Soroban resource fees**. You then **apply those\nsimulation results to the transaction** (set the footprint/resource fees, attach auth) **before\n`sendTransaction`**. In practice the SDKs (e.g. `@stellar/stellar-sdk`'s `rpc.Server.simulateTransaction`\n/ `prepareTransaction`) and the **Stellar CLI** wrap simulation as part of building/invoking, and the\n**Stellar Lab** can simulate in the browser. Simulation is a **Stellar RPC** capability — there is no\nHorizon simulate endpoint.",
     "keyFacts": [
-      "Use the Stellar RPC `simulateTransaction` method to dry-run a contract call and obtain the footprint/resource fees before submitting.",
-      "Simulation results (footprint, auth, soroban resources) are then applied to the transaction before `sendTransaction`."
+      "Uses RPC simulateTransaction to dry-run a contract call.",
+      "Obtains the footprint and resource fees before submission.",
+      "Applies the simulated footprint, auth, and resources before sendTransaction."
     ],
     "avoid": [
       "Do NOT claim you simulate via a Horizon endpoint, or invent a non-existent RPC simulate method name.",
@@ -66,14 +67,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited core was true but stopped before the error/restoration/assembly/sign/send/poll branches needed for a safe current procedure and could be read as though simulation output alone were submission-ready.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-50 primary process 3349 confirmed the inherited facts; blind process 3361 independently supplied the restoration/assembly completeness correction.",
-        "Sibling sweep checked q-infra-rpc-methods-list and Soroban restoration/state-archival cases."
+        "Sibling sweep checked q-infra-rpc-methods-list and Soroban restoration/state-archival cases.",
+        "Structural re-form (long-fact): split the simulation method, outputs, and assembly steps; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction confirms that the RPC method simulates a contract transaction.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive confirms footprint and fee-related transaction data before submission.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive applies simulated data and auth before signing and sendTransaction.",
+        "Sibling sweep 2026-08-29: grep simulateTransaction|restorePreamble|resource footprint|sendTransaction.*poll|simulation results → q-infra-rpc-methods-list, q-soroban-simulate-resource-fee, q-sor-p23-auto-restore-extendto, q-infra-simulate-transaction-howto, and related simulation cases; no contradiction."
       ],
       "rootCause": [
-        "Eval-side procedural incompleteness: the archived how-to omitted safe branches after simulation."
+        "Eval-side procedural incompleteness: the archived how-to omitted safe branches after simulation.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-infra-simulate-transaction-howto"

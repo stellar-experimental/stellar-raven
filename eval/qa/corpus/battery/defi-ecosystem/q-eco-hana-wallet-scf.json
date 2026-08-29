@@ -13,7 +13,8 @@
   "golden": {
     "answer": "**Hana** is a non-custodial multichain wallet with Stellar support. Yes: official SCF records show **$50,000 awarded in SCF #22 plus $82,000 in SCF #25, totaling $132,000**. Do not include the unsuccessful SCF #21 submission. Use the current **hana.money** operator surface for present product/network claims and keep old application promises separate from verified current functionality.",
     "keyFacts": [
-      "Identifies Hana as non-custodial and multichain and derives $132,000 from the two official awarded rows."
+      "Identifies Hana as a non-custodial multichain wallet.",
+      "Derives Hana's $132,000 total from two official awarded rows."
     ],
     "avoid": [
       "Do NOT count the non-awarded SCF #21 submission, call Hana Stellar-only, or infer current features from an old application/legacy domain."
@@ -77,13 +78,18 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The $132,000 total is independently recoverable from two official awarded rows, but the corpus used a legacy domain and mixed old application promises with current features.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258."
+        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258.",
+        "Structural re-form (long-fact): split the wallet description from the award arithmetic; truth unchanged.",
+        "Live re-check 2026-08-29: https://www.hana.money/ — Hana's current operator page states that the wallet is non-custodial and shows support for both Stellar and Bitcoin.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/project/hana-wallet-x9e — the official SCF page reports $132,000 total and awarded rows of $50,000 in SCF #22 and $82,000 in SCF #25.",
+        "Sibling sweep 2026-08-29: grep Hana Wallet|hana.money|$132,000 → q-eco-hana-wallet-scf only; no contradiction."
       ],
       "rootCause": [
-        "Aggregator total lacked row-level provenance and legacy/application surfaces were treated as current product evidence."
+        "Aggregator total lacked row-level provenance and legacy/application surfaces were treated as current product evidence.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-eco-hana-wallet-scf"

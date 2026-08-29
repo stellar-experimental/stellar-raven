@@ -9,7 +9,7 @@
   "golden": {
     "answer": "A grounded answer obtains the requested current value or state from the current official Stellar documentation, states the measurement basis, and makes the observation date visible. As of 2026-07-10, the verified sources supported this observed answer:\n\n**Freshness-honesty case — gate the behavior, not a frozen number.** As of **2026-07-09**, Mainnet runs **Protocol 27, Zipper**; live Horizon shows the P26→P27 boundary at ledger **63386819** on **2026-07-08 17:00:10 UTC**. A correct answer should still perform a dated lookup against an authoritative live network source, state the observed version and as-of time, and warn that validator upgrade votes can make it stale. Software release tags are supporting context, not proof of network activation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents source-supported content as a current or dated observation, not a memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Gives the current protocol version from a dated authoritative live-network lookup.",
       "Warns that the observed protocol version can become stale after a validator upgrade vote."
@@ -69,18 +69,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "2026-07-09 sibling sweep and independent final diff review in Solo scratchpad 567",
         "Horizon first-P27 ledger 63386819 closed 2026-07-08T17:00:10Z",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
         "Reviewed improvements/resolved.json entry sd-008 — fixed 2026-08-18; older documentation can still show Protocol 26 as Mainnet-current.",
         "Sibling sweep 2026-08-27: grep Protocol 27|63386819|P26|P27 → q-edge-fresh-latest-protocol-version, q-edge-fresh-most-recent-news, q-hist-quantum-preparedness-plan, q-pc-memos-reference, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-cap-process, q-protocol-ledger-entry-types, q-protocol-ledger-header-fields, q-protocol-version-history-list, q-raph-xlm-staking, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction",
-        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory."
+        "Reviewer fix 2026-08-27 (gt-grok-rev, batch-2 review): caution reworded so it caps only the older-copy quote / indexed-surface omission and never excuses a false current-state claim or punishes the golden inventory.",
+        "Structural re-form (long-fact): shortened the source-support fact without changing its requirement; truth unchanged.",
+        "Live re-check 2026-08-29: https://horizon.stellar.org/ledgers?order=desc&limit=1 — the executed live-network lookup returned a source-supported protocol version with a ledger and close time.",
+        "Live re-check 2026-08-29: https://horizon.stellar.org/ledgers?order=desc&limit=1 — the current Horizon row supplies the as-of time for the changeable protocol-version observation.",
+        "Live re-check 2026-08-29: https://horizon.stellar.org/ledgers?order=desc&limit=1 — the authoritative live lookup returned Protocol 27 at ledger 64178663, closed 2026-08-29T12:34:31Z.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide — the official guide identifies the validator upgrade vote that changes the live protocol version.",
+        "Sibling sweep 2026-08-29: grep Protocol 27|63386819|validator upgrade vote → q-edge-fresh-latest-protocol-version, q-hist-quantum-preparedness-plan, q-pc-memos-reference, q-pc-protocol-27-zipper, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-ledger-entry-types, q-protocol-ledger-header-fields, q-protocol-version-history-list, q-raph-xlm-staking, q-soroban-auth-delegation-p27, q-zk-host-functions-status; no contradiction."
       ],
       "rootCause": [
         "eval-side date-contingent example expired while the durable behavior gate remained valid",
@@ -88,7 +94,8 @@
         "improvements/resolved.json entry sd-008",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-fresh-latest-protocol-version"

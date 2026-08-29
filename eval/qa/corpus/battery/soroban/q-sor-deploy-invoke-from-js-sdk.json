@@ -10,8 +10,10 @@
   "golden": {
     "answer": "For raw JS deployment, upload/install Wasm, then create the contract from `wasmHash` plus address/salt preimage and constructor args. Current `contract.Client.deploy` wraps `Operation.createCustomContract` and returns a simulated `AssembledTransaction` by default. For invocation, build the contract call transaction, simulate with RPC, fold the simulation data/resource fee/auth into it, sign, submit, and poll for final result. In current SDK 16, `assembleTransaction(tx, simulation)` returns a **builder**, so call `.build()` before signing; RPC `prepareTransaction(tx)` performs simulation and returns the **built transaction**. Check installed typings because these helpers are version-sensitive. Decode only a successful `ScVal` return with `scValToNative`; a valid but different XDR union is a typed mismatch, while an invalid discriminant can produce `Bad union switch`. Generated bindings remain safer for normal application code.",
     "keyFacts": [
-      "Explains upload/create/deploy, constructor args, simulation, signing, submission, and result polling.",
-      "States current assembleTransaction builder versus prepareTransaction built-transaction semantics.",
+      "Covers upload, contract creation, deployment, and constructor args.",
+      "Covers simulation, signing, submission, and result polling.",
+      "`assembleTransaction` returns a builder under current SDK semantics.",
+      "`prepareTransaction` returns a built transaction under current SDK semantics.",
       "Decodes only a successful expected ScVal."
     ],
     "avoid": [
@@ -74,13 +76,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-10",
-      "by": "Golden-truth sweep import — The inherited answer was directionally correct but left current SDK helper return semantics vague enough to encourage submitting a builder or decoding an error as a return value.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-41 processes 3302/3305; @stellar/stellar-sdk 16.0.1 checked 2026-07-10."
+        "Solo scratchpad 575 GT-41 processes 3302/3305; @stellar/stellar-sdk 16.0.1 checked 2026-07-10.",
+        "Structural re-form (long-fact): Split the deployment phases and the two SDK return semantics; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/install-deploy-contract-with-code — the current guide covers contract code installation, creation, deployment, and constructor arguments.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/invoke-contract-tx-sdk and https://developers.stellar.org/docs/build/guides/transactions/submit-transaction-wait-js — the current guides cover simulation, assembly, signing, submission, and result polling.",
+        "Live re-check 2026-08-29: https://github.com/stellar/js-stellar-sdk/blob/master/src/rpc/transaction.ts — the current assembleTransaction source returns TransactionBuilder.",
+        "Live re-check 2026-08-29: https://github.com/stellar/js-stellar-sdk/blob/master/src/rpc/server.ts — the current prepareTransaction source calls .build() before returning.",
+        "Sibling sweep 2026-08-29: grep assembleTransaction|prepareTransaction|createCustomContract|result polling → q-sor-full-lifecycle-cli-rpc, q-sor-simulate-auth-entries; no contradiction."
       ],
       "rootCause": [
-        "Eval-side current-API under-specification."
+        "Eval-side current-API under-specification.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sor-deploy-invoke-from-js-sdk"

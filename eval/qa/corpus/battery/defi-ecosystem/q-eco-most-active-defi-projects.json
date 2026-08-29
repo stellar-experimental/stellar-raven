@@ -12,7 +12,7 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, the live DeFi directory query returned 39 matches and showed DeFindex as live with a separately dated project TVL observation.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents source-supported content as a current or dated observation, not a memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names specific projects supported by current activity evidence.",
       "States the activity basis used to compare the projects."
@@ -61,24 +61,31 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-19 primary 3254 and blind 3258; reviewers obtained different rosters from different reasonable DeFi filters.",
         "2026-07-11 localhost:8787 search→execute probe observed: the live DeFi directory query returned 39 matches and showed DeFindex as live with a separately dated project TVL observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Todo 1256 corpus lane (2026-07-28, F6): the grader notes asserted 'Scout ranks repos by repoScore', which this case's own avoid clause forbids absent returned-schema evidence. catalog/manifest.json#scout.getLeaderboard and specs/super-spec.json state that meta.metricDefinitions defines activity as latest-commit recency (not commit volume), with issues/stars/tvl as separate sorts, and repoScore as a repo-level scout.searchRepos signal; the sentence now says that. Internal-consistency repair against the served schema — no new live probe.",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep scout_leaderboard|repoScore|metricDefinitions|sort=activity → q-tool-leaderboard-open-issues, q-tool-developer-leaderboard-live; no contradiction"
+        "Sibling sweep 2026-08-27: grep scout_leaderboard|repoScore|metricDefinitions|sort=activity → q-tool-leaderboard-open-issues, q-tool-developer-leaderboard-live; no contradiction",
+        "Structural re-form (long-fact): shortened the source-support fact without changing its requirement; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100 — the executed live response supplies the source, generated-at time, data-as-of time, filters, and dated rows.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100 — the response dates its changeable ranking, activity timestamps, and measurements.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100 and https://stellarlight.xyz/api/projects/search?q=DeFi&limit=100 — the executed responses identify Blend and Reflector with dated repository activity and DeFi-relevant lending or oracle roles.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/leaderboard?sort=activity&range=30d&limit=100 — meta.metricDefinitions.activity defines activity as latest default-branch commit recency, not commit volume.",
+        "Sibling sweep 2026-08-29: grep sort=activity|latest-commit recency|development activity → q-eco-most-active-defi-projects, q-tool-developer-leaderboard-live; no contradiction."
       ],
       "rootCause": [
         "Metric conflation and an undefined category filter turned a live leaderboard into a fixed fact.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Grader notes retained a pre-GT-19 metric-conflation sentence (repoScore as the leaderboard's activity ranking) that the case's own avoid clause forbids.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-eco-most-active-defi-projects"

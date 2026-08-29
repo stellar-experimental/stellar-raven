@@ -8,9 +8,10 @@
   "golden": {
     "answer": "Poseidon-family functions operate on field elements, not arbitrary byte strings. Both sides must use the same field, permutation parameters, width, domain-separation convention, byte order, padding, and byte-to-field conversion. For BN254, an encoded value must be a canonical scalar below the field modulus or be reduced by an explicitly shared rule. A mismatch in any of these choices—including selecting Poseidon versus Poseidon2 or a different state width—produces a different hash; do not assume a library default matches Noir.",
     "keyFacts": [
-      "Poseidon inputs are field elements, so both implementations must agree on the field and byte-to-field mapping.",
-      "Both sides must match permutation parameters, width, domain separation, byte order, and padding.",
-      "Values must be canonical for the selected field or reduced under the same explicit rule on both sides."
+      "Poseidon inputs are field elements.",
+      "Both implementations need the same field and byte-to-field mapping.",
+      "Both sides need matching parameters, width, domain separation, byte order, and padding.",
+      "Each value needs canonical field encoding or one shared explicit reduction rule."
     ],
     "avoid": [
       "Zero-padding alone guarantees identical Poseidon hashes across all libraries.",
@@ -118,11 +119,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/zk",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md"
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md",
+        "Structural re-form (long-fact): split field-input compatibility and shortened the parameter and canonical-encoding facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md — CAP-0075 defines Poseidon inputs as vectors of field elements.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md — CAP-0075 requires an explicit field selector and field-element input mapping.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md — CAP-0075 exposes configurable state width, rounds, matrices, and constants, so interoperating sides must match the construction choices.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — the shared scalar representation and explicit encoding rules require canonical conversion or a common reduction convention.",
+        "Sibling sweep 2026-08-29: grep Poseidon2|byte-to-field|domain separation|permutation parameters → q-protocol-bn254-poseidon-xray, q-sor-cross-warmancer-zk-stack, q-zk-poseidon-input-encoding, and q-zk-proof-systems-stellar; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan poseidon-input-encoding-soroban"

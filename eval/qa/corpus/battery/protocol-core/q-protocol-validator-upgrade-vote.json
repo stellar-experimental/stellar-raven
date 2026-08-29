@@ -8,8 +8,11 @@
   "golden": {
     "answer": "Each validator operator **\"arms\"** the upgrade ahead of time, scheduling a protocol-version bump for a\nfixed UTC timestamp via an `upgrades?mode=set&upgradetime=...&protocolversion=N` command [1][2]. The\nupgrade is recorded **in-band** via the ledger header's `Upgrades` field; SCP/validator agreement flips\nthe protocol version at the scheduled time [1][2]. Mainnet upgrade votes happen at a fixed scheduled\ntime (commonly **17:00 UTC** on the announced date), and a **testnet vote precedes the mainnet\nvote** [1]. Operators must run the matching stellar-core release before arming [1]. This is **not** a\ntoken-holder vote, **not** a hard-fork download, and **not** an off-chain SDF switch — the software is\ninstalled beforehand, and the version bump itself is an in-band SCP vote [1][2].\n\n- [1] stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide\n- [2] developers.stellar.org/docs/validators/admin-guide",
     "keyFacts": [
-      "States each validator operator 'arms' the upgrade ahead of time, scheduling a protocol-version bump for a fixed UTC timestamp (e.g. an upgrades?mode=set&upgradetime=...&protocolversion=N command).",
-      "States the upgrade is recorded in-band via the ledger header's Upgrades field, and SCP/validator agreement flips the protocol version at the scheduled time."
+      "Operators arm upgrades before activation.",
+      "`upgrades?mode=set` schedules a protocol-version bump at a fixed UTC timestamp.",
+      "The command sets `upgradetime=...` and `protocolversion=N`.",
+      "The ledger header records upgrades in-band.",
+      "SCP consensus changes the protocol version at the scheduled time."
     ],
     "avoid": [
       "Do NOT claim activation is via a token-holder vote, a hard fork download, or an off-chain SDF switch.",
@@ -37,11 +40,44 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "This is not a token-holder vote, not a hard-fork download, and not an off-chain SDF switch — the software is installed beforehand, and the version bump itself is an in-band SCP vote.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades",
+            "note": "Exact quote: network upgrades are ‘performed by validators voting for and agreeing to new values.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+validator+protocol+upgrade+vote+consensus",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar validator protocol upgrade vote consensus’. Top primary results: https://developers.stellar.org/docs/validators and https://stellar.org/blog/developers/protocol-24-upgrade-guide. Exact observed text: ‘Network upgrades require validator consensus, and you will need to consider casting a vote in the event of a protocol upgrade’; the primary upgrade guide calls the activation a ‘Mainnet upgrade vote.’ No primary result described a token-holder vote, an off-chain SDF switch, or a hard-fork download as the version-bump mechanism."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-34-soroban-launch-archival-core-tier1-validators-history accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): Split two upgrade-mechanics facts into five atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — current docs describe arming validator nodes before an upgrade vote.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — the `upgrades` endpoint schedules a protocol-version vote for a fixed `upgradetime`.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — the current example sets `upgradetime` and `protocolversion` through `upgrades?mode=set`.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-xdr/blob/main/Stellar-ledger.x — `LedgerHeader.scpValue` carries the in-band `upgrades` vector.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — validators vote after `upgradetime`, and normal consensus adopts the new value.",
+        "Sibling sweep 2026-08-29: grep upgrades?mode=set|upgradetime|protocolversion|validator consensus → q-pc-protocol-upgrade-timing, q-protocol-max-tx-set-size; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for in-band validator upgrade vote; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-validator-upgrade-vote"

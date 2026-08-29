@@ -8,7 +8,9 @@
   "golden": {
     "answer": "- **Protocol 19** (activated ~2022-06-08) introduced **generalized transaction preconditions via CAP-0021** — time bounds, ledger bounds, min sequence number / age / gap, and extra signers [1][2].\n- These enable patterns like **payment channels** and **time-locked / sequence-conditioned** transactions [2].\n- Protocol 19 also included **CAP-0040** (ed25519 signed-payload signer / shared signing for contracts) [1].\n- Preconditions extended the older simple timebounds concept into a richer set [2]. Protocol 19 did **not** introduce Soroban (that was Protocol 20).",
     "keyFacts": [
-      "States Protocol 19 (activated ~2022-06-08) introduced generalized transaction preconditions via CAP-0021 (time bounds, ledger bounds, min sequence number / age / gap, extra signers)."
+      "Protocol 19 activated around 2022-06-08.",
+      "Protocol 19 introduced generalized preconditions through CAP-0021.",
+      "CAP-0021 adds time/ledger bounds, minimum sequence number/age/gap, and extra signers."
     ],
     "avoid": [
       "Do NOT attribute generalized preconditions to the wrong protocol (e.g. P18 or P20) or wrong CAP (e.g. CAP-0046).",
@@ -37,16 +39,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://stellar.org/blog/developers/announcing-protocol-19",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Split the Protocol 19 fact into three single-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/protocol-upgrades — the official history dates Protocol 19 to 2022-06-08.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/developers/announcing-protocol-19 — the official announcement assigns generalized preconditions to Protocol 19 and CAP-0021.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md — the Final CAP defines time bounds, ledger bounds, minimum sequence number, age, gap, and extra signers.",
+        "Sibling sweep 2026-08-29: grep Protocol 19|CAP-0021|minSeqAge|extraSigners → q-protocol-version-history-list, q-pc-l2-payment-channels-starlight, q-pc-sequence-numbers-ordering-replace; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-protocol-19-preconditions-cap-0021",

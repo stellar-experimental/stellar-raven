@@ -1,1 +1,113 @@
-{"id":"q-comp-cross-bitso-sep31","question":"Scout lists Bitso for LATAM cross-border corridors. Which role does Scout assign it, and for an anchor-to-anchor implementation involving such a provider, how do official docs distinguish SEP-31 from SEP-24?","surface":["scout.searchProjects","stellarDocs.search_anchor_sep_docs"],"golden":{"answer":"As observed on 2026-07-11, Scout lists Bitso as a live Stellar anchor and Latin American crypto exchange providing fiat on/off-ramps between USDC and local currency in Mexico and Colombia, with banking-rail connectivity for remittance and B2B corridors. For an anchor-to-anchor cross-border implementation, official docs describe SEP-31 as the Cross-Border Payments flow between a sending anchor and a receiving anchor, including transaction-state and customer-information coordination. SEP-24 is different: it is Hosted Deposit and Withdrawal, an interactive wallet/user-to-anchor flow. Scout's Bitso profile does not enumerate implemented SEPs, so the answer must present SEP-31 as the relevant architecture for such a flow, not claim Bitso's profile proves SEP-31 support.","keyFacts":["Uses Scout to identify Bitso as a live Stellar anchor providing USDC/local-fiat ramps for LATAM corridors.","Uses official docs to explain SEP-31 as a sending-anchor to receiving-anchor cross-border payment flow.","Contrasts SEP-24 as the hosted interactive wallet/user-to-anchor deposit/withdrawal flow and avoids asserting unlisted Bitso SEP support."],"avoid":["Do NOT claim Scout's Bitso profile explicitly lists SEP-31; its observed SEP list is empty.","Do NOT describe SEP-31 as an end-user hosted deposit/withdrawal webview."],"notes":"This composition intentionally separates provider-directory role from protocol architecture."},"tags":{"category":"compliance-rwa-payments","service":"scout","freshness":"scheduled"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","reverifyBy":"2026-12-17","sources":[{"class":"C","ref":"http://localhost:8787/mcp — Scout + Stellar Docs probes, observed 2026-07-11"},{"class":"A","ref":"https://bitso.com/"},{"class":"A","ref":"https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration"},{"class":"A","ref":"https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal"}],"corroboration":[{"claim":"Scout lists Bitso as a live Stellar anchor serving USDC/local-fiat LATAM corridors, without enumerating supported SEPs.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"scout.searchProjects(q=Bitso)","observedAt":"2026-07-11","note":"category Anchor; anchorProfile.seps=[]"},{"class":"A","ref":"https://bitso.com/","observedAt":"2026-07-11"}]},{"claim":"SEP-31 is sending-anchor to receiving-anchor cross-border payments, while SEP-24 is hosted interactive deposit/withdrawal.","verdict":"confirmed","evidence":[{"class":"E","ref":"stellarDocs.search_anchor_sep_docs queries for SEP-31 and SEP-24","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 Lane X cross-service live composition probe","evidence":["http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md","Sibling sweep: Bitso, SEP-31, and SEP-24 cases reviewed; no direct Bitso SEP-31 implementation claim made"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (cross-service)"}}
+{
+  "id": "q-comp-cross-bitso-sep31",
+  "question": "Scout lists Bitso for LATAM cross-border corridors. Which role does Scout assign it, and for an anchor-to-anchor implementation involving such a provider, how do official docs distinguish SEP-31 from SEP-24?",
+  "surface": [
+    "scout.searchProjects",
+    "stellarDocs.search_anchor_sep_docs"
+  ],
+  "golden": {
+    "answer": "As observed on 2026-07-11, Scout lists Bitso as a live Stellar anchor and Latin American crypto exchange providing fiat on/off-ramps between USDC and local currency in Mexico and Colombia, with banking-rail connectivity for remittance and B2B corridors. For an anchor-to-anchor cross-border implementation, official docs describe SEP-31 as the Cross-Border Payments flow between a sending anchor and a receiving anchor, including transaction-state and customer-information coordination. SEP-24 is different: it is Hosted Deposit and Withdrawal, an interactive wallet/user-to-anchor flow. Scout's Bitso profile does not enumerate implemented SEPs, so the answer must present SEP-31 as the relevant architecture for such a flow, not claim Bitso's profile proves SEP-31 support.",
+    "keyFacts": [
+      "Uses Scout to identify Bitso as a live LATAM anchor for USDC and local-fiat ramps.",
+      "Uses official docs to define SEP-31.",
+      "SEP-31 moves cross-border payments from a sending anchor to a receiving anchor.",
+      "Defines SEP-24 as a hosted interactive wallet-to-anchor deposit or withdrawal flow."
+    ],
+    "avoid": [
+      "Do NOT claim Scout's Bitso profile explicitly lists SEP-31; its observed SEP list is empty.",
+      "Do NOT describe SEP-31 as an end-user hosted deposit/withdrawal webview.",
+      "Do NOT assert unlisted SEP support for Bitso."
+    ],
+    "notes": "This composition intentionally separates provider-directory role from protocol architecture."
+  },
+  "tags": {
+    "category": "compliance-rwa-payments",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "reverifyBy": "2026-12-17",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp — Scout + Stellar Docs probes, observed 2026-07-11"
+      },
+      {
+        "class": "A",
+        "ref": "https://bitso.com/"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Scout lists Bitso as a live Stellar anchor serving USDC/local-fiat LATAM corridors, without enumerating supported SEPs.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "scout.searchProjects(q=Bitso)",
+            "observedAt": "2026-07-11",
+            "note": "category Anchor; anchorProfile.seps=[]"
+          },
+          {
+            "class": "A",
+            "ref": "https://bitso.com/",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "SEP-31 is sending-anchor to receiving-anchor cross-border payments, while SEP-24 is hosted interactive deposit/withdrawal.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_anchor_sep_docs queries for SEP-31 and SEP-24",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors#sep-24-hosted-deposit-and-withdrawal",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "evidence": [
+        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
+        "Sibling sweep: Bitso, SEP-31, and SEP-24 cases reviewed; no direct Bitso SEP-31 implementation claim made",
+        "Structural re-form (long-fact): shortened the Bitso role and split the SEP-31 and SEP-24 distinctions; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=Bitso&limit=10 — the live Scout source lists Bitso as a live Stellar anchor with USDC/local-fiat ramps in LATAM.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration — the official docs provide the SEP-31 definition and integration flow.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration — the official guide names sending and receiving anchors in the cross-border flow.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official docs define SEP-24 as a hosted interactive wallet-to-anchor deposit/withdrawal flow.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=Bitso&limit=10 — the live Bitso record has empty SEP arrays and does not list SEP support.",
+        "Sibling sweep 2026-08-29: grep Bitso|sending anchor|receiving anchor → q-comp-cross-bitso-sep31, q-comp-finclusive-caas, q-sep-31-cross-border, q-sep-6-vs-31-misnumber-trap; no contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): moved the presentation-shaped fact 'Does not assert unlisted SEP support for Bitso' into golden.avoid as a concrete false-content trap; truth unchanged versus HEAD."
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (cross-service)"
+  }
+}

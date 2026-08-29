@@ -78,53 +78,80 @@
         ]
       },
       {
-        "claim": "Horizon lifecycle word is uncontested.",
+        "claim": "Official pages dispute Horizon's lifecycle label: the EVM migration guide calls it deprecated, while four canonical pages say it is nearing end-of-life and will eventually be deprecated.",
         "verdict": "disputed",
         "evidence": [
           {
             "class": "A",
-            "ref": "A/B: conflicting official pages and explicit correction commit",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment",
+            "observedAt": "2026-08-29",
+            "note": "The Soroban Client section calls Horizon the deprecated Horizon API."
           },
           {
-            "class": "B",
-            "ref": "A/B: conflicting official pages and explicit correction commit",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint",
+            "observedAt": "2026-08-29",
+            "note": "The warning says Horizon is nearing end-of-life and will eventually be deprecated."
           },
           {
-            "class": "F",
-            "ref": "F: live compatible v27 service",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/api-explorer",
+            "observedAt": "2026-08-29",
+            "note": "The Horizon card says Horizon is nearing end-of-life and will eventually be deprecated."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack#horizon",
+            "observedAt": "2026-08-29",
+            "note": "The Horizon warning says it is nearing end-of-life and will eventually be deprecated."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis#horizon",
+            "observedAt": "2026-08-29",
+            "note": "The Horizon warning says it is nearing end-of-life and will eventually be deprecated."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=site%3Adevelopers.stellar.org+Horizon+deprecated+nearing+end-of-life+maintained",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘site:developers.stellar.org Horizon deprecated nearing end-of-life maintained’. Top primary results: https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint, https://developers.stellar.org/docs/learn/fundamentals/stellar-stack, https://developers.stellar.org/docs/data/apis, and https://github.com/stellar/stellar-horizon. Exact observed text conflicts: ‘Horizon is considered deprecated’ versus ‘Horizon is nearing end-of-life and will eventually be deprecated’; the current owner repository remained active. The sweep confirms the disputed lifecycle labeling."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-49 primary 3335 and blind 3341; sibling q-protocol-horizon-vs-rpc already encoded the dispute.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; confirmed against improvements/stellar-docs/sd-017-horizon-lifecycle-wording-conflict.md on 2026-08-26",
+        "research/qa-deep-dive-2026-08-25/fable-max.md section 5.1 finding 4; successor occurrence confirmed against improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md on 2026-08-29",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
         "Sibling sweep 2026-08-27: grep Horizon|RPC|complete or permanent roster → q-infra-horizon-vs-rpc, q-gap-rpc-horizon-unindexed-reference, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier; no contradiction",
         "Structural re-form (negative-predicate): Shortened a sourcing fact and stated the Horizon/RPC taxonomy positively; the truth is unchanged.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — showed current REST/HAL and JSON-RPC descriptions.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — showed partial endpoint mappings and endpoints without direct replacements.",
-        "Sibling sweep 2026-08-27: grep Horizon|RPC|full parity → q-gap-rpc-horizon-unindexed-reference, q-infra-horizon-vs-rpc, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-compute-token-lp-market-data; no contradiction"
+        "Sibling sweep 2026-08-27: grep Horizon|RPC|full parity → q-gap-rpc-horizon-unindexed-reference, q-infra-horizon-vs-rpc, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-ti-compute-token-lp-market-data; no contradiction",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/migrate/evm/smart-contract-deployment — the Soroban Client section calls Horizon the deprecated Horizon API.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/lab/api-explorer/horizon-endpoint — the warning says Horizon is nearing end-of-life and will eventually be deprecated.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/lab/api-explorer — the Horizon card repeats the future-tense warning.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack#horizon — the Horizon warning repeats the future-tense label.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis#horizon — the Horizon warning repeats the future-tense label.",
+        "Sibling sweep 2026-08-29: grep Horizon|RPC|deprecated|end-of-life → q-gap-rpc-horizon-unindexed-reference, q-infra-rpc-provider-archive-tier, and related RPC cases; no contradictory lifecycle fact found.",
+        "Independent blind re-derivation 2026-08-29: a targeted recheck added the EVM migration page that the blind search missed; the four canonical warning pages remained unchanged.",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        "improvements/stellar-docs/sd-017-horizon-lifecycle-wording-conflict.md",
+        "improvements/stellar-docs/sd-042-horizon-deprecated-present-tense-regression.md",
         "Historical Soroban RPC naming persisted after scope expansion.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
       ]
     },
     "origin": "raven-next q-infra-horizon-vs-rpc"

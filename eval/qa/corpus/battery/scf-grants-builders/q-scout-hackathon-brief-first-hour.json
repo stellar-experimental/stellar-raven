@@ -9,7 +9,7 @@
     "keyFacts": [
       "Calls the hackathon brief with a concrete idea and cites its generation time.",
       "Uses each report block for its stated evidence purpose and checks its basis or source.",
-      "Keeps rails and RFP evidence outside the composite and avoids verdict or endorsement claims."
+      "Excludes rails, RFP evidence, verdicts, and endorsements from the composite."
     ],
     "avoid": [
       "Do NOT claim a returned project or repository is an endorsed template or guaranteed best choice.",
@@ -60,19 +60,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Read-only hackathonBrief probe for a concrete build idea on 2026-08-19.",
         "catalog/manifest.json#scout.hackathonBrief defines the composite and its evidence boundaries.",
         "Sibling sweep: q-defi-streaming-payments-prior-art remains prior-art-only; q-scf-pitch-prep-live remains pitch-only; q-gap-vet-pitch-vertical-null remains vet-and-pitch-only; event-catalog hackathon cases remain event queries.",
         "solo://proj/49/scratchpad/repository-issue-and--837#golden-verdict",
         "Structural re-form (presentation-avoid): Reworded a presentation trap as the same concrete false claim; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep hackathonBrief|endorsed template|first-hour brief → q-scout-hackathon-brief-first-hour, q-gap-hackathon-brief-evidence-boundaries; no contradiction"
+        "Sibling sweep 2026-08-27: grep hackathonBrief|endorsed template|first-hour brief → q-scout-hackathon-brief-first-hour, q-gap-hackathon-brief-evidence-boundaries; no contradiction",
+        "Structural re-form (long-fact): Shortened the composite-boundary fact; truth unchanged.",
+        "Live re-check 2026-08-29: catalog/manifest.json#scout.hackathonBrief — the current contract says rails and RFPs are not bundled and the brief has no verdicts.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/hackathon-brief?q=confidential%20token%20payroll — the live response states that rails and RFPs require separate APIs and returns evidence-based cautions.",
+        "Sibling sweep 2026-08-29: grep hackathonBrief|rails and RFP|first-hour brief|endorsed template → q-gap-hackathon-brief-evidence-boundaries; no contradiction"
       ],
       "rootCause": [
         "solo://proj/49/todo/add-broad-scout-hack--1797",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-08 (coverage)"

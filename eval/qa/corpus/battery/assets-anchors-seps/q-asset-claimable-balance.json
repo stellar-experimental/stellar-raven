@@ -8,7 +8,9 @@
   "golden": {
     "answer": "A **claimable balance** is a native ledger entry that **sets aside an amount of an asset for one or\nmore designated claimants to claim later**, rather than sending it directly to an account. It is\ncreated with the **`CreateClaimableBalance`** operation and redeemed with **`ClaimClaimableBalance`**\n[1]. Each claimant can carry a **claim predicate** — e.g. time bounds (claimable after/before a\ndate), or unconditional — letting you express conditional/deferred transfers and simple escrow-like\npayouts **without any smart contract / Soroban** [1].\n\nUse it instead of a direct payment when **the recipient can't accept the payment yet** — most\ncommonly when they **have not established a trustline** to a non-native asset, or for\n**predicate-gated / time-locked payouts** and airdrops where the sender wants to commit funds now\nand let the recipient claim on their own terms [1]. The entry **holds a base reserve** (sponsored\nby the creator) until claimed. Note: it is a **native protocol feature, not a Soroban escrow\ncontract**, and for a **non-native** asset the claimant must still have (or establish) a trustline\nto that asset to claim it.\n\nSource: [1] developers.stellar.org Claimable Balances docs.",
     "keyFacts": [
-      "A claimable balance is a ledger entry that holds an amount until a designated claimant claims it (conditional/deferred transfer).",
+      "A claimable balance is a ledger entry for a held amount.",
+      "A designated claimant later claims that amount.",
+      "The transfer can be conditional or deferred.",
       "Useful when the recipient has no trustline yet or for escrow/predicate-gated payouts."
     ],
     "avoid": [
@@ -32,11 +34,42 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "This is a native protocol feature, not a Soroban escrow contract.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+          "note": "Exact quotes: a ClaimPredicate ‘must evaluate to true for the claim to succeed’; ‘Once a ClaimableBalanceEntry has been claimed, it is deleted.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/4c55f7cc290c776791c0922c2afa72f6af095a62/core/cap-0023.md",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: CAP-0023 says `ClaimableBalanceEntry` is a new `LedgerEntry` type and introduces `CreateClaimableBalanceOp` and `ClaimClaimableBalanceOp` as protocol operations."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-03-classic-assets-clawback-trustlines-paths accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): split the claimable-balance definition into three short facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — official docs define each claimable balance as a ledger entry for a held asset amount.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/claimablebalances — official docs state that the designated account can claim the amount in the future.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance — official docs describe conditional and delayed claimable-balance transfers.",
+        "Sibling sweep 2026-08-29: grep claimable balance|designated claimant|conditional/deferred → q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-asset-claimable-balance, q-comp-clawback-cap0035, q-crp-export-tx-history-taxes, q-defi-aquarius-what-is, q-raph-claimable-balance-safety, q-raph-phishing-pending-claim, q-raph-remove-scam-token, q-raph-scam-spam-tokens, q-raph-unsolicited-airdrop, q-sor-classic-dex-from-contract, q-sor-contract-as-claimable-arbiter, q-infra-horizon-vs-rpc, and q-ti-enumerate-holders-airdrop; no contradiction.",
+      "Corroboration audit 2026-08-29: added 1 row(s) for native claimable-balance implementation boundary; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-asset-claimable-balance"

@@ -1,1 +1,72 @@
-{"id":"q-gap-match-partners-degrade","question":"How should I obtain a partner shortlist for a Mexico USDC SEP-24 off-ramp need, including degradation?","surface":["scout.matchPartners","scout.getPartners"],"golden":{"answer":"Use `scout.matchPartners` for a plain-language ranked shortlist. The live success probe returned ranked published partners and reasons. If the operation returns its documented 503/unavailable condition, do not invent rankings; fall back to `scout.getPartners` filters and state that AI matching was unavailable.","keyFacts":["Uses matchPartners for a ranked need-based shortlist when available.","On documented 503/unavailable, falls back to getPartners rather than fabricating a ranking."],"avoid":["Do NOT claim the 503 branch was observed in this probe or fabricate partner rankings during that fallback."],"notes":"N1 live contract probe 2026-07-11: Success branch observed: ranked published partners returned for the Mexico/USDC/SEP-24 need. The 503 fallback is a catalog-note contract, not live-observed in this healthy run."},"tags":{"category":"assets-anchors-seps","service":"scout","freshness":"live"},"truth":{"domain":"corpus-grounded","status":"confirmed","asOf":"2026-07-11","sources":[{"class":"A","ref":"catalog/manifest.json#scout.matchPartners","note":"Exposed operation contract and catalog notes."},{"class":"B","ref":"inventory/stellar-light.json","note":"Committed inventory snapshot for the service family."}],"corroboration":[{"claim":"Uses matchPartners for a ranked need-based shortlist when available.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","observedAt":"2026-07-11","note":"Success branch observed: ranked published partners returned for the Mexico/USDC/SEP-24 need. The 503 fallback is a catalog-note contract, not live-observed in this healthy run."}]}],"verified":{"date":"2026-07-11","by":"P4 Lane N1 gap-ops authoring","evidence":["http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11","catalog/manifest.json#scout.matchPartners","inventory/stellar-light.json"],"rootCause":["solo://project/49/scratchpad/p4/n1-gapops"]},"origin":"authored 2026-07 (gap-ops)"}}
+{
+  "id": "q-gap-match-partners-degrade",
+  "question": "How should I obtain a partner shortlist for a Mexico USDC SEP-24 off-ramp need, including degradation?",
+  "surface": [
+    "scout.matchPartners",
+    "scout.getPartners"
+  ],
+  "golden": {
+    "answer": "Use `scout.matchPartners` for a plain-language ranked shortlist. The live success probe returned ranked published partners and reasons. If the operation returns its documented 503/unavailable condition, do not invent rankings; fall back to `scout.getPartners` filters and state that AI matching was unavailable.",
+    "keyFacts": [
+      "Uses matchPartners for a ranked need-based shortlist when available.",
+      "On documented 503/unavailable, uses getPartners without fabricating a ranking."
+    ],
+    "avoid": [
+      "Do NOT claim the 503 branch was observed in this probe or fabricate partner rankings during that fallback."
+    ],
+    "notes": "N1 live contract probe 2026-07-11: Success branch observed: ranked published partners returned for the Mexico/USDC/SEP-24 need. The 503 fallback is a catalog-note contract, not live-observed in this healthy run."
+  },
+  "tags": {
+    "category": "assets-anchors-seps",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "domain": "corpus-grounded",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "catalog/manifest.json#scout.matchPartners",
+        "note": "Exposed operation contract and catalog notes."
+      },
+      {
+        "class": "B",
+        "ref": "inventory/stellar-light.json",
+        "note": "Committed inventory snapshot for the service family."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Uses matchPartners for a ranked need-based shortlist when available.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+            "observedAt": "2026-07-11",
+            "note": "Success branch observed: ranked published partners returned for the Mexico/USDC/SEP-24 need. The 503 fallback is a catalog-note contract, not live-observed in this healthy run."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "evidence": [
+        "http://localhost:8787/mcp JSON-RPC tools/call execute, 2026-07-11",
+        "catalog/manifest.json#scout.matchPartners",
+        "inventory/stellar-light.json",
+        "Structural re-form (long-fact): shortened the documented degradation fallback without changing its behavior; truth unchanged.",
+        "Live re-check 2026-08-29: catalog/manifest.json#scout.matchPartners — the current operation contract documents unavailable:true on 503 and directs callers to scout.getPartners filters without invented rankings.",
+        "Sibling sweep 2026-08-29: grep matchPartners|503/unavailable → q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery, q-comp-finclusive-caas, q-crp-anchors-by-corridor, q-eco-defi-projects-discovery, q-gap-match-partners-degrade, q-hist-remittance-corridors, q-scf-ecosystem-listing-partner-jobs; no contradiction."
+      ],
+      "rootCause": [
+        "solo://project/49/scratchpad/p4/n1-gapops",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (gap-ops)"
+  }
+}

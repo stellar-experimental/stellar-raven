@@ -7,7 +7,7 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live RWA-tokenization project search returned 15 matches, including WisdomTree, Spydra, and Metafyed.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Separates primary-confirmed live Stellar products from announced or planned products."
     ],
@@ -141,25 +141,31 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-11 live/planned and mechanism matrices",
         "improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md",
         "improvements/lumenloop/ll-012-rwa-live-planned-recall.md",
         "2026-07-11 localhost:8787 search→execute probe observed: a live RWA-tokenization project search returned 15 matches, including WisdomTree, Spydra, and Metafyed.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep WisdomTree|DTCC|RWA products → q-asset-rwa-tokenized-freshness, q-crp-dtcc-stellar-connection-plan, q-rwa-projects-tokenizing-stellar; no contradiction"
+        "Sibling sweep 2026-08-27: grep WisdomTree|DTCC|RWA products → q-asset-rwa-tokenized-freshness, q-crp-dtcc-stellar-connection-plan, q-rwa-projects-tokenizing-stellar; no contradiction",
+        "Structural re-form (long-fact): Shortened one sourcing fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://ondo.finance/blog/usdy-is-now-live-on-stellar — the dated issuer page confirms USDY as a live Stellar product.",
+        "Live re-check 2026-08-29: https://ondo.finance/blog/usdy-is-now-live-on-stellar — the issuer page gives a visible publication date for its live-product claim.",
+        "Live re-check 2026-08-29: https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy — DTCC still describes its Stellar connection as planned for the first half of 2027.",
+        "Sibling sweep 2026-08-29: grep WisdomTree|USDY|YLDS|DTCC|RWA-tokenization → q-asset-rwa-tokenized-freshness, q-crp-dtcc-stellar-connection-plan, q-defi-ondo-usdy, q-defi-wisdomtree-crdt; no contradiction"
       ],
       "rootCause": [
         "Entity status and directory presence were treated as product deployment proof.",
         "Different legal instruments/control models were collapsed into one SEP-8 implementation.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-rwa-projects-tokenizing-stellar"

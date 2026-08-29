@@ -7,8 +7,10 @@
   "golden": {
     "answer": "- The **Stellar Ambassador Program** supports builders and educators forming regional chapters for events, meetups, documentation, and local growth.\n- Under SCF v7, ambassadors can recommend **Instawards**, up to $15,000 in XLM per project, for early-stage builders; there is no open Instaward application.\n- Chapters may recommend or referral-route teams, and an Instaward may help an eligible project prepare for a separate SCF Build application. This is a pipeline, not automatic progression or funding.\n- Ambassadors do **not** approve the $150K SCF Build award. SDF/SCF retains approval, and the Ambassador Program remains distinct from Verified Member/NQG governance roles.",
     "keyFacts": [
-      "The Stellar Ambassador Program supports builders/educators forming regional chapters (events, meetups, docs).",
-      "Under SCF v7.0, ambassadors can recommend Instawards (up to $15K XLM per project) for early-stage builders."
+      "Supports builders and educators who form regional chapters.",
+      "Covers chapter events, meetups, and documentation.",
+      "Under SCF v7.0, ambassadors can recommend Instawards for early-stage builders.",
+      "Caps each Instaward at $15K in XLM."
     ],
     "avoid": [
       "Do NOT claim ambassadors directly approve the $150K SCF Build grant or that an Instaward guarantees progression; chapters may recommend/referral-route a separate SDF-reviewed Build application.",
@@ -48,17 +50,89 @@
         "note": "Ambassador-recommended Instawards can prepare teams for the Build pipeline; SDF retains approval."
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Under SCF v7, ambassadors can recommend Instawards, up to $15,000 in XLM per project, for early-stage builders; there is no open Instaward application.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards",
+            "note": "Exact quote: Instawards are offered through Ambassador Chapters ‘rather than a standard open application process.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/blob/4259e573ff53e52508ad9b12a5e6db9b072c477f/scf-awards/instawards/official-rules.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source says Instawards ‘don’t have a standard open application process’ and caps aggregate awards at `$15,000 paid in XLM`."
+          }
+        ]
+      },
+      {
+        "claim": "This is a pipeline, not automatic progression or funding.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards",
+            "note": "Exact quote: Instawards are offered through Ambassador Chapters ‘rather than a standard open application process.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award.md",
+            "note": "Exact quote: ‘Verified SCF community members vote on all eligible projects.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/blob/4259e573ff53e52508ad9b12a5e6db9b072c477f/scf-awards/instawards/official-rules.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: ‘Submission of any interest form, project proposal, or application does not guarantee’ funding; additional awards are ‘NOT automatic’."
+          }
+        ]
+      },
+      {
+        "claim": "Ambassadors do not approve the $150K SCF Build award.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award.md",
+            "note": "Exact quote: ‘Verified SCF community members vote on all eligible projects.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/scf-handbook/blob/4259e573ff53e52508ad9b12a5e6db9b072c477f/scf-awards/build-award/README.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source assigns evaluation to ‘A panel of SDF employees and community reviewers’ and voting to ‘Verified SCF community members’, not ambassadors."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA Ambassador pipeline verification; accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "https://stellar.org/blog/ecosystem/introducing-the-stellar-ambassador-program",
         "https://stellar.org/blog/ecosystem/introducing-scf-v7",
-        "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules"
+        "https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules",
+        "Structural re-form (long-fact): Split two long facts into four one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/ecosystem/introducing-the-stellar-ambassador-program — the current official announcement supports builders and educators through regional chapters.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/ecosystem/introducing-the-stellar-ambassador-program — the current official announcement describes chapter events, meetups, and educational work.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/ecosystem/introducing-scf-v7 — the SCF v7.0 announcement confirms ambassador-recommended Instawards for early experimentation and prototypes.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/ecosystem/introducing-scf-v7 — the SCF v7.0 announcement caps each recommended Instaward at $15K in XLM.",
+        "Sibling sweep 2026-08-29: grep Stellar Ambassador|Instaward|SCF v7.0|$15K → q-edge-scf-v7-centralization-myths, q-scf-ambassador-program, q-scf-instawards, q-scf-regional-india, q-scf-v7-changes; no contradiction.",
+        "Corroboration audit 2026-08-29: added 3 row(s) for SCF v7 Instaward and Build approval boundaries; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 3 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
         "freshness-drift",
-        "The golden collapsed direct award authority with the now-explicit referral and readiness pipeline."
+        "The golden collapsed direct award authority with the now-explicit referral and readiness pipeline.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-scf-ambassador-program"

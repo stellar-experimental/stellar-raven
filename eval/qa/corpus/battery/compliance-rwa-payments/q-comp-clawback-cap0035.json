@@ -10,9 +10,10 @@
   "golden": {
     "answer": "- Clawback lets an **asset issuer burn a specified amount of a clawback-enabled asset from any holder's\n  trustline (or claimable balance)** — without the holder's cooperation; the assets are **burned, not\n  returned** to the issuer [1].\n- Introduced by **CAP-0035 (\"Asset Clawback\") in Protocol 17** (activated ~2021-06-01) [1][2].\n- The issuer must have set **`AUTH_REVOCABLE` first, then `AUTH_CLAWBACK_ENABLED`** — only then are new\n  trustlines clawback-eligible [1].\n- It was **designed to help issuers meet securities/regulatory obligations** (revoke after fraud, error,\n  or regulatory action) [1].\n- Implemented via the **Clawback** and **Clawback Claimable Balance** operations (after enabling the flag\n  with Set Options) [1]. It needs **no Soroban contract**, and **no arbitrary account** can claw back\n  another's funds — only the issuer of that asset.\n\nSources: [1] developers.stellar.org clawbacks; [2] CAP-0035.",
     "keyFacts": [
-      "Clawback lets an asset issuer burn a specified amount of the asset from any holding account without that holder's cooperation.",
+      "An issuer can burn a specified asset amount from any holding account.",
+      "The clawback does not require the holder's cooperation.",
       "Clawback was introduced by CAP-0035 in Protocol 17.",
-      "The issuer must have AUTH_REVOCABLE set / AUTH_CLAWBACK_ENABLED on the asset for clawback to be possible."
+      "Clawback requires the issuer's AUTH_REVOCABLE and AUTH_CLAWBACK_ENABLED flags."
     ],
     "avoid": [
       "Do NOT attribute clawback to the wrong protocol/CAP (e.g. say it was Protocol 20/Soroban or a different CAP number).",
@@ -40,11 +41,60 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Clawback lets an asset issuer burn a specified amount of a clawback-enabled asset from any holder's trustline (or claimable balance) — without the holder's cooperation; the assets are burned, not returned to the issuer.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+          "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/e3af4c8c74d311a6f9ebfb5e997a07dd68e895c8/core/cap-0035.md",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: CAP-0035 says `ClawbackOp` and `ClawbackClaimableBalanceOp` remove specified issued assets from the network, and the issuer authorizes `ClawbackOp`."
+        }
+        ]
+      },
+      {
+        "claim": "It needs no Soroban contract, and no arbitrary account can claw back another's funds — only the issuer of that asset.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+          "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/e3af4c8c74d311a6f9ebfb5e997a07dd68e895c8/core/cap-0035.md",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: CAP-0035 states, `In this proposal, only the issuer may authorize the operation`; it defines native `ClawbackOp` and `ClawbackClaimableBalanceOp` operations."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-07-regulated-controls-anchor-security accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): split the issuer-burn and holder-cooperation claims and shortened the flag prerequisite; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — the official guide confirms that an issuer burns a specified asset amount from a trustline or claimable balance.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — CAP-0035 says clawback does not require the affected account's signature.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — the official guide requires AUTH_REVOCABLE before AUTH_CLAWBACK_ENABLED.",
+        "Sibling sweep 2026-08-29: grep CAP-0035|AUTH_CLAWBACK_ENABLED → q-aas-issuer-fees-supply-cap-freeze, q-comp-anchor-compliance-stack, q-comp-auth-flags-overview, q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-comp-sep8-regulated-assets-approval-server, q-sep-clawback-prereq-flag; no contradiction.",
+      "Corroboration audit 2026-08-29: added 2 row(s) for holder-independent issuer clawback; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-comp-clawback-cap0035"

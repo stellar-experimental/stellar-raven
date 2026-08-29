@@ -9,9 +9,10 @@
   "golden": {
     "answer": "Stellar uses fees partly to prevent ledger spam and to prioritize transactions when demand exceeds ledger capacity. If more transactions are submitted than validators have agreed to process in a ledger, the network enters surge pricing; transactions with higher fee bids have a better chance of inclusion. Sources: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering and https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers#maximum-number-of-transactions\n\nThe abuse model is not \"steal funds with fees\"; it is availability and operations pressure. Spam or bursts can raise effective inclusion fees, causing underpriced transactions to wait, expire, or require fee-bump/resubmission. Operational mistakes can amplify the impact: unbounded fee bidding, retry storms, shared hot accounts blocked behind one sequence stream, or hiding pending/expired status from users. Do not give a step-by-step spam playbook.\n\nDefenses are product and operations controls: read current fee stats before submission, cap maximum fee bids, use timebounds/ledger bounds, implement jittered retry/backoff, use fee-bump transactions when you intentionally cover user fees, separate throughput with channel/source accounts where appropriate, monitor `tx_insufficient_fee`/timeout patterns, and surface pending/expired status clearly. Wallet docs note that a simple retry path may not gracefully handle fee surge and that rebuilding/re-signing with updated fees is a deliberate strategy. Sources: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions and https://developers.stellar.org/docs/build/apps/wallet/stellar#submit-transaction",
     "keyFacts": [
-      "Explains surge pricing prioritizes transactions by fee bid when ledger capacity is constrained.",
-      "Identifies realistic abuse patterns such as spam-induced fee spikes, underpriced transaction delays, and fee-bump operational misuse without giving exploit steps.",
-      "Gives defensive design guidance: fee estimation, retry/backoff, timebounds, channel accounts/queueing, monitoring, and user-visible status."
+      "Surge pricing prioritizes higher fee bids when ledger capacity is constrained.",
+      "Abuse patterns include spam fee spikes, underpriced delays, and fee-bump misuse.",
+      "Defenses include fee estimates, retry backoff, timebounds, and channel accounts.",
+      "Defenses include queues, monitoring, and user-visible status."
     ],
     "avoid": [
       "Do NOT provide a step-by-step spam or griefing playbook.",
@@ -49,11 +50,61 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "The abuse model is not \"steal funds with fees\"; it is availability and operations pressure.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+            "note": "Exact quote: ‘This helps prevent spam and prioritizes transactions during traffic surges.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+fee+surge+retry+higher+fee+denial+of+service",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar fee surge retry higher fee denial of service’. Top primary results: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md and https://stellar.org/blog/developers/how-we-simplified-fees-on-the-stellar-network. Exact observed text: fees prevent ‘denial-of-service attacks’; when a fee is insufficient because of surge pricing, ‘it is possible to simply craft a new transaction with higher fee, sign it, and submit it.’ No primary result described fee surge as a way to steal another user’s funds."
+          }
+        ]
+      },
+      {
+        "claim": "Wallet docs note that a simple retry path may not gracefully handle fee surge and that rebuilding/re-signing with updated fees is a deliberate strategy.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/stellar#submit-transaction",
+            "note": "Exact quote: ‘the method above doesn't handle fee surge pricing in the network gracefully.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+fee+surge+retry+higher+fee+denial+of+service",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar fee surge retry higher fee denial of service’. Top primary results: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md and https://stellar.org/blog/developers/how-we-simplified-fees-on-the-stellar-network. Exact observed text: fees prevent ‘denial-of-service attacks’; when a fee is insufficient because of surge pricing, ‘it is possible to simply craft a new transaction with higher fee, sign it, and submit it.’ No primary result described fee surge as a way to steal another user’s funds."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-30-upgrade-quantum-scp-sequence-reserve-finality-p19 accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): split the surge abuse and defense lists; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — higher maximum fee bids receive priority during constrained capacity.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the page documents spam resistance, surge delays, and fee-bump replacement mechanisms underlying the abuse patterns.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling and https://developers.stellar.org/docs/build/guides/transactions/channel-accounts — official guidance confirms fee adjustment, retry backoff, timebounds, and channel accounts.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — official guidance distinguishes pending, expired, retry, and result-code states for monitoring and status handling.",
+        "Sibling sweep 2026-08-29: grep surge pricing|fee-bump|retry/backoff|channel accounts|tx_insufficient_fee → q-pc-fee-bump-channel-accounts-feepool, q-pc-practical-fee-setting, q-pc-sequence-numbers-ordering-replace, q-ti-channel-accounts-throughput, q-ti-classic-submission-errors, and related fee cases; no contradiction",
+        "Corroboration audit 2026-08-29: added 2 row(s) for fee-surge threat and retry boundaries; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-pc-surge-griefing-threat-model"

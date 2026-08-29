@@ -10,10 +10,11 @@
   "golden": {
     "answer": "Before committing the architecture, make one bounded prior-art pass in the same research step as the smart-contract skill and current official Docs lookup. Use it to discover requirements, failure modes, and whether an existing protocol should be integrated instead of rebuilt; do not copy a repository or treat popularity as authority. Return no more than three materially distinct candidates.\n\nAs of 2026-08-11, illustrative verified categories included: the official classic Claimable Balances \"Escrow-Style Payment\" pattern; the Apache-2.0 `stellar/soroban-examples` timelock and atomic-exchange teaching patterns (adjacent primitives, not production escrow); Trustless Work, an exact non-custodial milestone-escrow product surfaced in an SDF developer call and described by a dated Runtime Verification public report, whose contract repository did not expose an in-tree license in this verification; and DevAsign's Apache-2.0 bounty-escrow contract, for which no audit was verified in the repository or bounded sources. These names are examples, not a permanent required roster.\n\nTurn the review into a short design delta before writing code: custody/token flow, milestone and partial releases, approval roles, explicit dispute state, deadline/refund behavior, fee splits, upgrade/admin boundaries, events, and invariant-focused tests. The initial skeleton should reflect that delta with an explicit lifecycle enum, escrow/milestone records, role-authenticated fund/approve/release/dispute/resolve/refund entry points, conservation and one-way-transition checks, and events/tests for every state change. Current APIs and security procedure still come from the smart-contract skill and official Docs. Raven can report exact URLs and indexed freshness/provenance, but its repo rows do not expose license; mark license/audit/deployment/compatibility unknown unless a source-backed result establishes them, and treat the candidate as study-only until direct repository inspection clears reuse. If no close implementation appears, state the searched scope and proceed from the official playbook; do not claim the ecosystem has none.",
     "keyFacts": [
-      "Performs a bounded repos/projects prior-art pass before committing a substantial greenfield architecture, alongside the smart-contract skill and current official Docs.",
-      "Uses prior art for requirements, pitfalls, and build-vs-integrate decisions while keeping skills/docs authoritative for current APIs and security procedure.",
-      "Separates exact escrow products from official conceptual patterns and turns the review into concrete design consequences before code.",
-      "The bounded review precedes but does not replace the requested architecture, compact contract skeleton, security boundaries, and invariant-focused tests; it leaves unsupported license/audit/deployment/compatibility fields unknown."
+      "Runs a bounded prior-art search before selecting a greenfield architecture.",
+      "Uses current skills and official Docs for APIs and security procedures.",
+      "Uses prior art to inform requirements and build-versus-integrate decisions.",
+      "Distinguishes exact escrow products from adjacent conceptual patterns.",
+      "Marks unsupported license, audit, deployment, and compatibility details unknown."
     ],
     "avoid": [
       "Do NOT require Trustless Work, DevAsign, or any fixed repository roster in future answers; re-query and verify current results.",
@@ -108,8 +109,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment",
         "https://developers.stellar.org/meetings/2024/12/05",
@@ -119,11 +120,19 @@
         "solo://proj/49/scratchpad/non-ascend-solo-clos--799#lane-c-golden-reverification",
         "Structural re-form (presentation-avoid): deleted the omission avoid item because an existing key fact already requires the bounded prior-art pass; the trap target remains enforced.",
         "No live re-check was required because the avoid deletion does not change the required content.",
-        "Sibling sweep 2026-08-27: grep milestone escrow|Trustless Work|prior-art pass → q-sor-recurring-escrow-patterns, q-tool-greenfield-indexer-prior-art-preflight; no contradiction"
+        "Sibling sweep 2026-08-27: grep milestone escrow|Trustless Work|prior-art pass → q-sor-recurring-escrow-patterns, q-tool-greenfield-indexer-prior-art-preflight; no contradiction",
+        "Structural re-form (long-fact): Shortened four long prior-art facts into five atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/Trustless-Work/trustlesswork-smart-contract-stellar — the live exact-product repository remains available for a bounded pre-architecture review.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment — the current official Docs provide an escrow-style conceptual pattern.",
+        "Live re-check 2026-08-29: https://github.com/devasignhq/bounty-escrow — the live adjacent repository supplies requirements and build-versus-integrate evidence without proving production readiness.",
+        "Live re-check 2026-08-29: https://github.com/stellar/soroban-examples — the official examples repository contains adjacent teaching patterns rather than a production milestone-escrow product.",
+        "Live re-check 2026-08-29: https://api.github.com/repos/Trustless-Work/trustlesswork-smart-contract-stellar — the live repository metadata still reports no detected license, so unsupported reuse fields remain unknown.",
+        "Sibling sweep 2026-08-29: grep milestone escrow|prior-art pass|Trustless Work|DevAsign|bounty-escrow|Escrow-Style Payment → q-soroban-greenfield-escrow-prior-art-preflight, q-tool-greenfield-indexer-prior-art-preflight; no contradiction."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored prior-art build-route review 2026-07-13"

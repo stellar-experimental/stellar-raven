@@ -10,7 +10,9 @@
   "golden": {
     "answer": "Provide a **dated, illustrative directory** rather than a timeless list of the 'main' projects. State the selection rule and, for each row, give category, operator URL, and verified status. A 2026-07-10 starting set can include Blend and Templar (lending/credit); native Stellar liquidity, Aquarius, Soroswap, Phoenix, and Sushi (liquidity/DEX, with roles separated); DeFindex (vaults); Reflector (oracles); and selected RWA/DeFi products only with deployment-state caveats. YieldBlox and DeFindex should not be presented as independent base lenders when they build on other liquidity/protocol layers.",
     "keyFacts": [
-      "Labels the roster illustrative and dated and exposes the selection rule, category, operator source, status, and dependency/role distinctions."
+      "Labels the roster as an illustrative, dated selection.",
+      "States the selection rule and each project's category, operator source, and status.",
+      "Describes each project's dependencies and roles."
     ],
     "avoid": [
       "Do NOT grade against one permanent project roster or call every directory row live/main.",
@@ -59,13 +61,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The named projects are broadly real, but 'main' was undefined and a frozen roster flattened current, legacy, derivative, and underlying protocol roles.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258."
+        "Solo scratchpad 575 GT-19 primary 3254 and blind 3258.",
+        "Structural re-form (long-fact): split the directory contract into three short facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=DeFi&limit=100 — the executed live query returns generated-at metadata and explicit filters for a dated illustrative selection.",
+        "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=DeFi&limit=100 — the executed response exposes its selection filter and per-project category, operator links, and dated status.",
+        "Live re-check 2026-08-29: https://github.com/blend-capital/blend-contracts-v2 and https://github.com/defindex-io/stellar-contracts — the operator repositories distinguish Blend's lending primitive from DeFindex vaults and Blend-based strategies.",
+        "Sibling sweep 2026-08-29: grep illustrative directory|selection rule|dependency/role|main DeFi projects → q-eco-defi-projects-discovery only; no contradiction."
       ],
       "rootCause": [
-        "An illustrative directory was authored as a timeless canonical roster."
+        "An illustrative directory was authored as a timeless canonical roster.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-eco-defi-projects-discovery"

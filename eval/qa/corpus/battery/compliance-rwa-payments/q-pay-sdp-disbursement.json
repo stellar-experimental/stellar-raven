@@ -10,7 +10,7 @@
     "answer": "The Stellar Disbursement Platform is an open-source operational stack for creating, approving, submitting, and monitoring bulk payments such as aid, payroll, gig/vendor, and government distributions. Dashboard/Admin APIs manage tenants and disbursements; Core queues payments and implements native SEP-10/24 endpoints; TSS builds, submits, and monitors Stellar transactions. Current SDP publishes its own stellar.toml and does not require external Anchor Platform integration.\n\nReceivers can use documented external/registered wallets, direct Stellar accounts, or embedded passkey-controlled C-address wallets depending on the deployment. External cash-out through an anchor such as MoneyGram can be a separately verified downstream receiver choice, as in some historical deployments, but it is not SDP's native architecture or a universal custody route.\n\nSDP software is not a stablecoin issuer, DeFi protocol, or automatic legal classification. The deployment operator controls tenant/PII/distribution-account operations; custody and regulated obligations depend on the actual wallet, operator, downstream provider, route, and jurisdiction.",
     "keyFacts": [
       "Defines SDP as an open-source bulk-disbursement and monitoring stack.",
-      "States current Dashboard/Core/TSS and native SEP-10/24 architecture without external Anchor Platform.",
+      "Defines current Dashboard, Core, TSS, and native SEP-10/24 without Anchor Platform.",
       "Treats MoneyGram/anchor cash-out as optional downstream behavior, not an SDP dependency."
     ],
     "avoid": [
@@ -90,16 +90,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
         "https://github.com/stellar/stellar-disbursement-platform-backend/tree/03e44fbedceab188cb91c77a181d8c734ffbd822",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened the current SDP architecture fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md — the current source defines Dashboard, Core, TSS, and native SEP-10/24 without external Anchor Platform integration.",
+        "Sibling sweep 2026-08-29: grep Stellar Disbursement Platform|Dashboard/Core/TSS|SEP-10/24|Anchor Platform → q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, q-pay-sdp-disbursement; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-pay-sdp-disbursement"

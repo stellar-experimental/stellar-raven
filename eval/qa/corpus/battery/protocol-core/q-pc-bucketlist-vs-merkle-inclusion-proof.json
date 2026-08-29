@@ -9,7 +9,7 @@
     "answer": "The Bucket List and `bucketListHash` commit **ledger state**, not an Ethereum/Bitcoin-style compact per-transaction Merkle branch. Transaction commitments are separate: the ledger's SCP value carries `txSetHash` for the full serialized transaction set applied to the previous ledger state to produce this ledger, and `txSetResultHash` commits the full `TransactionResultSet`. To verify inclusion/outcome independently, obtain the complete transaction-set and result XDR, locate the canonical transaction/result, recompute both full-set hashes, verify the ledger-header hash chain, and establish header finality through trusted SCP envelopes/quorum assumptions or independently operated validators. Horizon, RPC, archives, and indexers are useful retrieval evidence but are not self-authenticating proofs. Do not promise a standard compact one-call transaction proof unless a named proof system and trust model are cited.",
     "keyFacts": [
       "Separates Bucket List state commitments from full transaction-set/result commitments.",
-      "Explains full-XDR hash recomputation plus header-chain/SCP finality rather than treating an API row as proof."
+      "Requires full-XDR hash recomputation, header-chain checks, and SCP finality."
     ],
     "avoid": [
       "Do NOT call BucketList a classic per-transaction Merkle proof or conflate state and transaction proofs.",
@@ -70,8 +70,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both required a concrete verification recipe. Reviewer retained official 'applied to previous ledger' semantics with clarified production relation.",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for the missing transaction-inclusion recipe; the truth is unchanged.",
@@ -79,12 +79,17 @@
         "Sibling sweep 2026-08-27: grep Bucket List|txSetHash|txSetResultHash → q-protocol-ledger-header-fields, q-protocol-24-whisk-incident; no contradiction",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid clause as the same concrete false-content claim; both trap targets are unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claims.",
-        "Sibling sweep 2026-08-27: grep self-authenticating|compact standard proof → q-sor-doc-timestamping-manage-data; no contradiction"
+        "Sibling sweep 2026-08-27: grep self-authenticating|compact standard proof → q-sor-doc-timestamping-manage-data; no contradiction",
+        "Structural re-form (long-fact): Shortened the transaction-inclusion verification fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers — the official page defines the header chain, SCP-agreed transaction-set hash, and transaction-result hash.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-core/blob/master/src/herder/TxSetFrame.cpp — the current source computes transaction-set content hashes from the previous ledger hash and transaction XDR.",
+        "Sibling sweep 2026-08-29: grep Bucket List|txSetHash|txSetResultHash|full-XDR|SCP finality → q-protocol-ledger-header-fields, q-protocol-24-whisk-incident, q-pc-bucketlist-vs-merkle-inclusion-proof; no contradiction."
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-014-transaction-inclusion-proof-boundaries.md",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-pc-bucketlist-vs-merkle-inclusion-proof"

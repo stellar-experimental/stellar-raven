@@ -6,10 +6,10 @@
     "lumenloop.search_content_semantic"
   ],
   "golden": {
-    "answer": "The Protocol 27 Zipper Mainnet upgrade vote was scheduled for July 8, 2026, and live Horizon reported protocol version 27 on July 11, confirming activation. Zipper comprises CAP-0071-01, which adds built-in authentication delegation for custom accounts, and CAP-0071-02, which adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential. The older SOROBAN_CREDENTIALS_ADDRESS remains valid in Protocol 27; CAP-0071-02 says deprecation may be considered in Protocol 28 **or later**, not that Protocol 28 definitely replaces it. A vote schedule alone is not proof of passage; use a dated live-network or post-vote source for activation.",
+    "answer": "The official software-versions page records Protocol 27 Zipper on Mainnet from July 8, 2026, the scheduled upgrade-vote date. Live Horizon independently reported protocol version 27 on July 11. Zipper comprises CAP-0071-01, which adds built-in authentication delegation for custom accounts, and CAP-0071-02, which adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential. The older SOROBAN_CREDENTIALS_ADDRESS remains valid in Protocol 27; CAP-0071-02 says deprecation may be considered in Protocol 28 **or later**, not that Protocol 28 definitely replaces it. A vote schedule alone is not proof of passage; use a dated live-network or post-vote source for activation.",
     "keyFacts": [
       "Dates the Protocol 27 Mainnet vote to July 8, 2026.",
-      "Reports Protocol 27 live when independently checked on July 11, 2026.",
+      "Gives July 8, 2026 as the official Protocol 27 Mainnet date.",
       "CAP-0071-01 adds authentication delegation for custom accounts.",
       "CAP-0071-02 adds SOROBAN_CREDENTIALS_ADDRESS_V2 with an address-bound payload."
     ],
@@ -34,6 +34,10 @@
         "ref": "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide"
       },
       {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions"
+      },
+      {
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md"
       },
@@ -48,13 +52,19 @@
     ],
     "corroboration": [
       {
-        "claim": "Protocol 27's Mainnet vote was 2026-07-08 and the protocol was active by 2026-07-11",
+        "claim": "The official software table dates Protocol 27 Mainnet to 2026-07-08, matching the scheduled vote date; Horizon independently showed version 27 on 2026-07-11.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-08-29",
+            "note": "The official heading is Protocol 27 (Mainnet, July 8, 2026); release notes identify v27.0.0 as the protocol-activation build."
+          },
+          {
+            "class": "A",
             "ref": "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide",
-            "observedAt": "2026-07-11",
+            "observedAt": "2026-08-29",
             "note": "Official guide gives the July 8 vote schedule."
           },
           {
@@ -83,8 +93,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
@@ -96,12 +106,18 @@
         "Structural re-form (compound-predicate): Split the Mainnet vote date from the dated live-network check; both historical claims are unchanged.",
         "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide — the official guide still gives July 8, 2026 as the Mainnet vote date.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks/software-versions — the historical software table now records Protocol 27 on Mainnet from July 8, 2026, consistent with the July 11 live check.",
-        "Sibling sweep 2026-08-27: grep Protocol 27|Zipper|CAP-0071 → q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27; no contradiction"
+        "Sibling sweep 2026-08-27: grep Protocol 27|Zipper|CAP-0071 → q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27; no contradiction",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks/software-versions — the official table labels Protocol 27 Mainnet as July 8, 2026 and identifies v27.0.0 as the activation build.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide — the official guide gives July 8, 2026 as the Mainnet upgrade-vote date.",
+        "Preserved observation 2026-07-11: https://horizon.stellar.org/ — the dated live check reported protocol version 27; July 11 remains an observation date, not an official activation date.",
+        "Sibling sweep 2026-08-29: grep Protocol 27|July 8|July 11|Zipper → q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, and q-protocol-version-history-list; the timing sibling records the July 8 activation boundary.",
+        "Independent blind re-derivation 2026-08-29: review-canonical-rederivation-grok.md confirmed July 11 as a check date and supported the official July 8 Mainnet date without claiming an exact first-ledger timestamp."
       ],
       "rootCause": [
         "eval-authoring",
         "The golden promoted a possible Protocol 28-or-later deprecation into a definite Protocol 28 replacement.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

@@ -8,7 +8,9 @@
     "answer": "Persistent storage changes durability, not entry layout. One key still maps to one serialized contract-data ledger entry, so a growing `Vec` or `Map` under that key grows one entry. The write fails when the serialized entry exceeds the target network's configured contract-data entry limit. Do not freeze a byte value or error string because the limit is network-controlled. Keep a one-entry collection explicitly bounded, or split an unbounded collection across distinct composite keys or bounded chunks. Fine-grained keys also avoid rewriting and contending on the whole collection.",
     "keyFacts": [
       "A Vec or Map under one Persistent key remains one serialized contract-data ledger entry.",
-      "The collection can exceed the network-configured entry limit; bound it or split it across keys or chunks."
+      "A growing collection can exceed the network-configured entry limit.",
+      "Bounds a one-entry collection.",
+      "Splits an unbounded collection across keys or chunks."
     ],
     "avoid": [
       "Do NOT claim Persistent storage automatically shards a growing value across ledger entries.",
@@ -81,14 +83,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-12",
-      "by": "2026-08 public-source verification",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/784#persistent-collection-limits",
-        "Sibling sweep: q-soroban-resource-limits covers the generic limit; q-soroban-instance-storage-dos covers Instance storage; q-zk-nullifier-storage covers nullifier safety. No sibling owns one growing Persistent value."
+        "Sibling sweep: q-soroban-resource-limits covers the generic limit; q-soroban-instance-storage-dos covers Instance storage; q-zk-nullifier-storage covers nullifier safety. No sibling owns one growing Persistent value.",
+        "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/storage-strategies — the current official guide says an unbounded Vec or Map grows toward the entry cap.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/storage-strategies — the current official guide recommends bounding one-entry collections.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/storage-strategies — the current official guide recommends per-item keys or bounded/split layouts for unbounded data.",
+        "Sibling sweep 2026-08-29: grep unbounded Vec|unbounded Map|entry limit|bounded collection|split.*keys → q-n3-missing-funds-account-support, q-sor-doc-timestamping-manage-data, q-sor-persistent-unbounded-collection-cap, q-soroban-instance-storage-dos, q-soroban-wasm-size-limit; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-08 (storage coverage closure)"

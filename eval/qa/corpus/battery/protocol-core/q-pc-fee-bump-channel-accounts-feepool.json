@@ -8,8 +8,10 @@
   "golden": {
     "answer": "A fee-bump transaction wraps an already-signed inner transaction. The outer fee source signs and pays; the inner source, sequence, operations, and signatures remain authoritative. Paying the bump does not consume the fee source's sequence number. The outer fee field is the **total maximum fee bid** for the effective operation count (inner operations + one wrapper, plus applicable Soroban resource-fee handling), and must satisfy the inner-fee validity rule. The fee source is charged once; do **not** add the visible inner and outer fee fields as separate charges. Channel accounts are different: separate transaction-source accounts consume their own sequences to provide throughput lanes while operations may use another source. Stellar fees go to the protocol fee pool, not validator rewards.",
     "keyFacts": [
-      "Explains outer fee-source authorization/payment and unchanged inner source/sequence/signatures.",
-      "Makes the outer charged fee and inner retained fee field non-additive, and distinguishes channel-account sequence lanes."
+      "Explains outer fee-source authorization and payment.",
+      "Keeps the inner source, sequence, and signatures unchanged.",
+      "Treats the outer charged fee and inner retained fee field as non-additive.",
+      "Distinguishes channel-account sequence lanes."
     ],
     "avoid": [
       "Do NOT say fee bump replaces inner authorization or consumes the fee source sequence.",
@@ -75,13 +77,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The fee-bump/channel mechanics are correct, but 'outer bid ... on top of the inner fee field' invites a false two-charges interpretation.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both independently required no-double-charge wording."
+        "Solo scratchpad 575 GT-29 primary 3276 and blind 3278; both independently required no-double-charge wording.",
+        "Structural re-form (long-fact): Split two long facts into four one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions — the current guide confirms that the outer fee account signs and pays.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions — the current guide confirms that the signed inner envelope and source sequence remain authoritative.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md — CAP-0015 defines the outer actual fee charge and retains the inner fee only for validation and bid comparison, not as a second charge.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/channel-accounts — the current guide confirms that channel accounts consume independent transaction-source sequences for throughput.",
+        "Sibling sweep 2026-08-29: grep fee-bump|fee bump|channel account|fee pool → q-hot-fee-pool-burn-deflation, q-pc-fee-bump-channel-accounts-feepool, q-pc-memos-reference, q-pc-muxed-accounts, q-pc-practical-fee-setting, q-pc-sequence-numbers-ordering-replace, q-pc-sponsored-reserves, q-pc-surge-griefing-threat-model, q-protocol-24-whisk-incident, q-smart-wallet-fee-sponsorship, q-ti-channel-accounts-throughput, q-ti-classic-submission-errors, q-ti-java-sdk-wallet-feebump, q-ti-openzeppelin-relayer, q-ti-tx-too-late-resubmit; no contradiction."
       ],
       "rootCause": [
-        "Eval-side visible-field versus assessed-fee conflation."
+        "Eval-side visible-field versus assessed-fee conflation.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-pc-fee-bump-channel-accounts-feepool"

@@ -10,10 +10,10 @@
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nFirst determine the data source's retained range. Horizon pagination can enumerate the classic transactions, operations, and effects that **that Horizon instance still retains**, but reaching the final page does not prove all-time completeness. Check history_elder_ledger/provider retention and record the export's first and last ledger.\n\nFor complete historical coverage, use an archival/indexed source such as **Hubble/BigQuery**, a Galexie-derived data lake, or another provider that explicitly documents the needed history. RPC getTransactions scans a retained **ledger range**; it is not an account-history endpoint, and ordinary getTransactions/getEvents retention is not made all-time merely because getLedgers archival export exists.\n\nExport more than payments: transactions, operations, effects/ledger-entry changes, fees, trades, claimable balances, and contract events as relevant. Decode XDR with a current SDK. Deduplicate/idempotently checkpoint by transaction/operation/event identity and reconcile classic plus contract activity.\n\nTax software is a separate, volatile provider workflow. As of 2026-07-10, CoinTracker documents CSV import for Stellar rather than direct sync; verify current format, jurisdiction, plan, and transaction limits. This is data-export guidance, not tax advice.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Checks provider retention/history_elder_ledger before treating paginated Horizon results as complete.",
+      "Checks Horizon retention/history_elder_ledger before claiming pagination is complete.",
       "Uses Hubble/BigQuery or another explicitly archival source for all-time history.",
-      "States that RPC getTransactions is ledger-range and retention-bound, not account-filtered full history.",
-      "Exports and reconciles all relevant operation/effect/event/fee data rather than payments alone."
+      "Treats RPC getTransactions as retained ledger-range data, not full account history.",
+      "Requires operations, effects, events, and fees beyond payments in a reconciled export."
     ],
     "avoid": [
       "Do NOT equate page exhaustion with network-history exhaustion.",
@@ -116,20 +116,28 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-10 primary and blind matrices",
         "Sibling sweep matched Hubble/retention goldens",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): Shortened three export-source facts without changing their claims.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon — the current official Horizon page supplies the dated API source.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring — HISTORY_RETENTION_COUNT controls the retained historical window.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/analytics/hubble — Hubble remains an explicitly complete historical BigQuery dataset.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — the method scans a provider-retained ledger range.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/analytics and https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/events — official data sources distinguish operations, events, and fee metadata beyond payments.",
+        "Sibling sweep 2026-08-29: grep history_elder_ledger|HISTORY_RETENTION_COUNT|getTransactions|Hubble|Galexie|transaction history → retention, Hubble, RPC, indexer, and account-history cases; no contradiction"
       ],
       "rootCause": [
         "Collection pagination was mistaken for datastore retention.",
         "A ledger-range RPC method was mistaken for an account-filtered export.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-crp-export-tx-history-taxes"

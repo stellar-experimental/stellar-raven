@@ -8,10 +8,11 @@
   "golden": {
     "answer": "Treat **\"soroban\" as a request topic, not a guaranteed current exact slug**. Resolve it against the live SDF skill list first; if the exact `getSkill({ name: \"soroban\" })` call is a soft-empty, say so and use the current row whose coverage explicitly includes Soroban. Once the exact current slug is known, call its single-item detail operation directly. Do not guess a slug or pretend a source-relative miss is an open-world absence.\n\nReturn the complete current detail: source and owner, exact slug/kind, version/commit or generated-at provenance, full **SKILL.md**, every referenced supporting file needed to follow it, what it covers, dependencies and embedded package/tool versions, install commands for the user's actual agent host, restart/discovery steps, license and manual-review status, and any network, write, payment, secret, or executable side effects. Use host-specific install routes; community inclusion is not SDF endorsement. Inspect before installing or executing, and verify stale embedded dependencies against their owners.",
     "keyFacts": [
-      "Resolves the topic against the live catalog when its exact current slug is unknown, then uses direct getSkill/detail lookup for the resolved exact name.",
-      "Returns full SKILL.md plus required supporting files, source/owner, version/commit, coverage, dependencies, and provenance.",
-      "Uses host-specific install/restart/discovery steps rather than a universal invented command.",
-      "Requires manual review and network/write/payment/secret/side-effect inspection, especially for community skills."
+      "Resolves an unknown exact slug against the live skill catalog.",
+      "Uses direct detail lookup for the resolved exact name.",
+      "Returns SKILL.md, required files, owner, version, coverage, dependencies, and provenance.",
+      "Uses host-specific install, restart, and discovery steps.",
+      "Requires manual review of network, write, payment, secret, and side effects."
     ],
     "avoid": [
       "Do NOT assume a topical or retired name is a current exact slug, or require a catalog call after the exact current name is known.",
@@ -97,15 +98,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Solo Todo 1390 independent early scheduled Scout skill-detail re-verification.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "C: https://stellarlight.xyz/api/skills/soroban returned a 404 soft-empty on 2026-08-05, while the source=sdf list and /api/skills/smart-contracts returned the current Smart Contracts detail whose text explicitly covers anything called Soroban and names development.md, testing.md, and security.md.",
         "B: https://github.com/stellar/stellar-dev-skill lists smart-contracts among the seven current skill directories and was pushed 2026-08-05; its source agrees with Scout.",
-        "Sibling sweep: q-gap-scout-get-skill-detail remains valid for a known exact slug; q-tool-cli-skills-discovery owns broad catalog discovery."
+        "Sibling sweep: q-gap-scout-get-skill-detail remains valid for a known exact slug; q-tool-cli-skills-discovery owns broad catalog discovery.",
+        "Structural re-form (long-fact): Split one slug-resolution fact and shortened three detail, installation, and review facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-dev-skill/tree/main/skills — the current official skill tree exposes smart-contracts as the exact Soroban-topic slug.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live getSkill contract provides direct detail lookup after exact-name resolution.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-dev-skill/tree/main/skills/smart-contracts — the current official directory contains SKILL.md and its required companion files.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/building-with-ai — the official guide gives different installation routes and directories for supported agent hosts.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-dev-skill/blob/main/README.md — the current source states that the skill remains under manual review and exposes executable install steps for inspection.",
+        "Sibling sweep 2026-08-29: grep stellar-dev-skill|scout.getSkill|skill detail|manual review → q-tool-skill-detail-install, q-gap-scout-get-skill-detail, q-tool-cli-skills-discovery, q-soroban-deploy-cli, q-sor-cross-warmancer-zk-stack; no contradiction."
       ],
       "rootCause": [
-        "scheduled freshness re-verification found no semantic drift and refreshed live slug/detail provenance"
+        "scheduled freshness re-verification found no semantic drift and refreshed live slug/detail provenance",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-tool-skill-detail-install"

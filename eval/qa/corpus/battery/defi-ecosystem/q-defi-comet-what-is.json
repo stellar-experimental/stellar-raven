@@ -13,7 +13,7 @@
     "answer": "**Comet** began as an SCF-funded Balancer-style weighted-AMM design for Soroban/Futurenet. It received **$150K in SCF #13** and **$141K in SCF #18**. Its public standalone repo/frontend are stale, and no current TVL/volume evidence establishes a major standalone DEX.\n\nComet is not merely dead prior art: its weighted-pool implementation is deployed on mainnet as Blend's **BLND:USDC 80/20 backstop**. The safe identity is therefore an SCF-funded weighted-AMM project whose code now serves embedded Blend infrastructure, not an unfunded prototype and not a dominant independent exchange.",
     "keyFacts": [
       "Identifies Comet as an SCF-funded weighted-AMM design with two awards totaling $291K.",
-      "Explains the current Blend-backstop deployment while avoiding unsupported standalone traffic/adoption claims."
+      "Identifies Comet's current deployment in the Blend backstop."
     ],
     "avoid": [
       "Do NOT say Comet was not SCF-funded or has no mainnet deployment.",
@@ -96,16 +96,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://communityfund.stellar.org/submissions/recG7Kj7ouwAFP2XY",
         "https://communityfund.stellar.org/submissions/recIRbsKDA1ayFXCF",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened the Comet deployment fact; the existing answer and avoid item retain the standalone-adoption guard; truth unchanged.",
+        "Live re-check 2026-08-29: https://docs.blend.capital/mainnet-deployments — Blend lists a mainnet Comet BLND:USDC liquidity-pool contract beside its backstop.",
+        "Sibling sweep 2026-08-29: grep Comet.*backstop|backstop.*Comet|major standalone DEX|weighted-AMM → q-defi-comet-what-is; no sibling contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-defi-comet-what-is"

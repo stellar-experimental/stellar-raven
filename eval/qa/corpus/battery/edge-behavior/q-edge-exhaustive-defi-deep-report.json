@@ -7,7 +7,7 @@
   "golden": {
     "answer": "I can produce a **bounded, dated landscape map**, not honestly promise an exhaustive multi-hour report in one response. Define the source universe and selection criteria, separate lending, liquidity/DEX roles, oracles, bridges, vaults, RWA products, and infrastructure, and attach operator/status/as-of evidence to every named project. Distinguish directory discovery from current deployment and offer staged slices or follow-ups. Use available free read-only research where useful; do not advertise hidden operations, invent completeness, or require one permanent protocol roster.",
     "keyFacts": [
-      "Provides a useful dated category map with source coverage, lifecycle/status caveats, and a staged path rather than fake exhaustiveness."
+      "Provides a useful dated map with source, lifecycle, status, and staged-scope details."
     ],
     "avoid": [
       "Do NOT invent a $10/5-minute cap, advertise route diagnostics/hidden operations, ban external verification tools as gateway capabilities, or force a frozen DeFi roster."
@@ -68,13 +68,17 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited rubric correctly rejected fake exhaustiveness but invented caps, banned general-web verification tools as Raven operations, advertised route diagnostics, and forced a frozen protocol roster.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-22 primary 3262 and blind 3265; DeFi roster/status sibling sweep."
+        "Solo scratchpad 575 GT-22 primary 3262 and blind 3265; DeFi roster/status sibling sweep.",
+        "Structural re-form (long-fact): Shortened the bounded DeFi landscape fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/ecosystem/what-the-defi-is-happening-on-stellar — the official dated landscape separates established, launched, and upcoming DeFi projects across categories.",
+        "Sibling sweep 2026-08-29: grep exhaustive DeFi|bounded landscape|staged scope|deep-dive → q-edge-deep-full-history-report, q-scf-skill-stellar-scout, q-edge-exhaustive-defi-deep-report; no contradiction"
       ],
       "rootCause": [
-        "Non-exhaustiveness discipline was encoded as a blanket research ban with obsolete internal mechanics and a static example roster."
+        "Non-exhaustiveness discipline was encoded as a blanket research ban with obsolete internal mechanics and a static example roster.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-exhaustive-defi-deep-report"

@@ -7,10 +7,11 @@
   "golden": {
     "answer": "Choose by **execution role first**, then language and operational fit.\n\n1. **On-chain contract:** use SDF-maintained Rust **`soroban-sdk`** as the canonical/default path. Consider the documented community Solang/Solidity or AssemblyScript paths only with their current maturity, compatibility, and security limits.\n2. **Off-chain client:** choose the SDK that actually covers your transactions, XDR, Horizon/RPC methods, contract bindings, ingestion, mobile runtime, wallet/SEP flows, or hardware integration. Current examples include SDF-maintained `@stellar/stellar-sdk`, `go-stellar-sdk`, and focused Rust client crates, plus officially documented community Python, Java, iOS/macOS, Flutter, Kotlin Multiplatform, PHP, .NET, and other client components.\n3. **Validate the exact choice:** required feature parity, target-network/protocol compatibility, package/runtime support, release cadence, maintainer and issue response, upgrade history, dependency/security posture, tests, deployment constraints, and application-specific review.\n\nSDF maintenance can be a reasonable default when its actual support and upgrade path fit the workload, but the catalog does not establish a universal SLA or make every community SDK consumer-only, best-effort, unsafe, or unsuitable for production. Community SDKs can be valid production choices after exact capability and risk review. Date versions and recheck before pinning.",
     "keyFacts": [
-      "Uses an execution-role-first split between on-chain contract SDKs and off-chain client/XDR/network SDKs.",
-      "Describes Rust soroban-sdk as the SDF canonical/default contract path while acknowledging documented community alternatives with maturity caveats.",
-      "Compares exact language/runtime, capability parity, release/maintainer, network compatibility, dependencies, tests, and security review.",
-      "Treats maintainer tier as evidence, not a blanket SLA, audience, quality, production, institutional, or safety ranking."
+      "Selects contract or client SDKs by execution role.",
+      "Rust `soroban-sdk` is SDF's canonical contract path.",
+      "Documented community contract SDKs need maturity checks.",
+      "Compares language, runtime, features, releases, compatibility, dependencies, and tests.",
+      "Treats maintainer tier as evidence only."
     ],
     "avoid": [
       "Do NOT conflate client SDKs with contract SDKs or assume every language has identical Horizon/RPC/contract/SEP coverage.",
@@ -111,14 +112,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited maintainer table was useful but turned SDF ownership into unsupported blanket production, institutional, SLA, quality, and safety rankings. It also omitted the official community contract alternatives and did not choose by execution role first.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-56 primary process 3394 and sealed blind process 3398 independently removed blanket SDF/community rankings and required an execution-role-first decision framework.",
-        "Sibling sweep checked q-tool-official-sdks-list, q-tool-python-sdk, q-tool-rust-soroban-sdk, q-tool-js-sdk-package, q-tool-go-sdk-ingest, q-tool-java-sdk, q-tool-flutter-mobile-sdk, and q-ti-sdk-package-rename; no sibling supplies a generic maintainer-tier SLA."
+        "Sibling sweep checked q-tool-official-sdks-list, q-tool-python-sdk, q-tool-rust-soroban-sdk, q-tool-js-sdk-package, q-tool-go-sdk-ingest, q-tool-java-sdk, q-tool-flutter-mobile-sdk, and q-ti-sdk-package-rename; no sibling supplies a generic maintainer-tier SLA.",
+        "Structural re-form (long-fact): split the contract-path fact and shortened the role, comparison, and maintainer facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks — the current SDK index separates contract SDKs from client and XDR SDKs.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks/contract-sdks — the current contract catalog identifies SDF-maintained Rust `soroban-sdk` for Stellar contracts.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks/contract-sdks — the current catalog lists community Solang and AssemblyScript contract paths.",
+        "Live re-check 2026-08-29: https://github.com/stellar/js-stellar-sdk — the current repository exposes package-specific runtime, features, releases, dependencies, and tests.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/sdks/client-sdks — the current catalog labels maintainers and capabilities without promising a blanket SLA.",
+        "Sibling sweep 2026-08-29: grep contract SDK|client SDK|maintained by SDF|community → q-tool-rust-soroban-sdk, q-tool-flutter-mobile-sdk, q-tool-js-sdk-package; no contradiction."
       ],
       "rootCause": [
-        "Eval-side unsupported decision guidance: maintainer attribution was promoted into a universal support SLA, safety, audience, and fitness ranking."
+        "Eval-side unsupported decision guidance: maintainer attribution was promoted into a universal support SLA, safety, audience, and fitness ranking.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-tool-which-sdk-comparison"

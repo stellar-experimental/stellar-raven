@@ -8,9 +8,9 @@
   "golden": {
     "answer": "In the current Stellar x402 scheme, the client signs a Soroban authorization entry for an exact SAC transfer and a facilitator or relayer submits it; this is not necessarily a classic payment operation from the user. Verify scheme/version, CAIP network, token contract, parties, amount, exact invocation/auth shape, expiration, simulation, unexpected effects, final successful settlement, and request-level idempotency/replay binding before fulfillment. A Horizon operation-list match is insufficient for an inner contract transfer: post-settlement audit must decode successful transaction meta/events and exact SAC effects. As of 2026-07-11, Built on Stellar offers a hosted facilitator and OpenZeppelin a self-hosted plugin; neither is mandatory.",
     "keyFacts": [
-      "The current Stellar x402 scheme signs a Soroban authorization entry for an exact SAC transfer that a facilitator or relayer submits.",
-      "Verification covers scheme/version, CAIP network, invocation/auth shape, expiration, simulation, unexpected effects, finality, and request-level replay/idempotency.",
-      "A Horizon operation-list match is insufficient for an inner contract transfer; audit successful transaction meta/events and exact SAC effects.",
+      "Clients sign exact SAC-transfer auth entries for facilitator or relayer submission.",
+      "Checks scheme, network, auth, expiry, simulation, effects, finality, and replay binding.",
+      "Audits inner transfers from successful transaction metadata, events, and SAC effects.",
       "Names Built on Stellar (hosted) and OpenZeppelin (self-hosted) as facilitator options.",
       "Dates facilitator availability to an observation date."
     ],
@@ -207,8 +207,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (snapshot-date batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/agentic-payments/x402",
         "https://docs.x402.org/",
@@ -220,10 +220,16 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — showed current facilitator availability.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar — described hosted use and self-hosting as implementation choices.",
         "Sibling sweep 2026-08-27: grep Built on Stellar|OpenZeppelin|x402 facilitator → q-soroban-x402-auth-entry-signing, q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction",
-        "Owner correction 2026-08-27: merged the two facilitator-name facts and dropped the new implementation-specific fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged."
+        "Owner correction 2026-08-27: merged the two facilitator-name facts and dropped the new implementation-specific fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
+        "Structural re-form (long-fact): shortened the auth-entry, verification, and settlement-audit facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/coinbase/x402/tree/main/typescript/packages/mechanisms/stellar — the current mechanism uses exact Soroban token transfers and client-signed auth entries for facilitator submission.",
+        "Live re-check 2026-08-29: https://github.com/coinbase/x402/tree/main/typescript/packages/mechanisms/stellar — the current mechanism exposes protocol, CAIP network, auth-entry expiration, verification, and settlement controls.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction — the current RPC method returns success status, result metadata, and events for transaction audit.",
+        "Sibling sweep 2026-08-29: grep x402|auth-entry|facilitator|settlement → q-soroban-x402-auth-entry-signing, q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction."
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan x402-payment-verification-stellar"

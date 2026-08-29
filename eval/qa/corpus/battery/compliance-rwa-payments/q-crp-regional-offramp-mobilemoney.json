@@ -8,11 +8,11 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the current LumenLoop corpus, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live mobile-money partner search returned 13 matches, with Zeam Money and Boss Pay among the first results.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Explains Stellar itself does not provide local bank, debit-card, M-Pesa, Wave, Orange Money, MoMo, or USSD payout rails.",
+      "Stellar lacks local-bank, debit-card, M-Pesa, Wave, Orange Money, MoMo, or USSD rails.",
       "Those come from anchors, wallets, payment processors, or local partners.",
-      "Says integration requires checking supported assets, countries, KYC, fees, limits, settlement time, and API/SEP support for each provider."
+      "Checks provider assets, countries, KYC, fees, limits, settlement times, and API/SEP fit."
     ],
     "avoid": [
       "Do NOT claim a mobile-money corridor is supported without current provider evidence.",
@@ -53,22 +53,53 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "As of 2026-08-29, official architecture docs assign local bank, card, mobile-money, and USSD payout rails to anchors and partners, not to the Stellar network itself.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+          "note": "Exact quote: anchors are ‘on and off-ramps that connect the Stellar network to traditional financial rails.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "D",
+          "ref": "https://docs.seevcash.com/docs/ramp",
+          "observedAt": "2026-08-29",
+          "note": "Dated web sweep query `Stellar mobile money off-ramp USSD partner anchor`: top primary results were Stellar Ramps (`on and off ramps provided by anchors`), Stellar cross-border payments (`local partners` provide payout), and SeevCash (`Ramp API` disburses GHS to Mobile Money). No primary result assigned a local payout rail to the network itself."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "2026-07-11 localhost:8787 search→execute probe observed: a live mobile-money partner search returned 13 matches, with Zeam Money and Boss Pay among the first results.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep mobile-money|M-Pesa|off-ramp → q-crp-anchors-by-corridor, q-crp-regional-offramp-mobilemoney, q-pay-moneygram-ramps; no contradiction"
+        "Sibling sweep 2026-08-27: grep mobile-money|M-Pesa|off-ramp → q-crp-anchors-by-corridor, q-crp-regional-offramp-mobilemoney, q-pay-moneygram-ramps; no contradiction",
+        "Structural re-form (long-fact): Shortened the dated-observation, payout-rail, and provider-check facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the current official provider page supplies dated, source-supported ramp observations.",
+        "Live re-check 2026-08-29: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the live provider page shows changeable asset and coverage information that needs an as-of date.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official docs state that anchors connect Stellar to traditional fiat and cash rails.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official docs assign deposits, redemptions, and off-chain rail access to anchors.",
+        "Live re-check 2026-08-29: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the provider guide documents USDC, country availability, KYC, limits, cash-out timing, and integration details.",
+        "Sibling sweep 2026-08-29: grep mobile-money|M-Pesa|off-ramp|payout rails → q-crp-anchors-by-corridor, q-anchor-moneygram-ramps, q-pay-moneygram-ramps, q-crp-regional-offramp-mobilemoney; no contradiction",
+      "Corroboration audit 2026-08-29: added 1 row(s) for external local-rail boundary; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-crp-regional-offramp-mobilemoney"

@@ -7,9 +7,10 @@
   "golden": {
     "answer": "Filter current passkey-relevant searchRepos rows, explicitly compare repoScore, and paginate before a global superlative or say “among the checked results.” repoScore is the index's own answer-time ranking signal: it orders candidate rows for inspection and never establishes correctness, security, audit scope, maintenance, or production readiness, so a “strongest reference” claim is scoped to that ordering over the checked rows and rests on the cited repository evidence. Cite repository URLs and keep codeVerified/deployability/version evidence distinct; none alone proves production or security quality.",
     "keyFacts": [
-      "Filters relevant current rows and explicitly compares scores rather than trusting response order.",
+      "Uses current relevant rows and explicit scores instead of response order.",
       "Paginates or scopes the superlative to checked results.",
-      "Uses repoScore only to order and navigate candidates, and does not infer correctness, security, audit scope, maintenance, or production readiness from repoScore, deployability, or codeVerified."
+      "Uses repoScore only to order and navigate candidates.",
+      "Does not infer correctness, security, audit scope, maintenance, or production readiness."
     ],
     "avoid": [
       "Declares a permanently best passkey repository from the archived corpus.",
@@ -85,8 +86,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/process/3414",
         "solo://proj/49/process/3420",
@@ -97,13 +98,19 @@
         "24h four-reviewer audit (2026-07-28, G-GT-1): the corroboration claim wording was aligned with the repoScore boundary shipped the same day — ranking/scan signals rather than the blanket word quality; the claim meaning and its evidence are unchanged.",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep passkey|repoScore|strongest reference → q-tool-smart-wallet-repos-discovery, q-tool-passkeykit-smart-wallet; no contradiction"
+        "Sibling sweep 2026-08-27: grep passkey|repoScore|strongest reference → q-tool-smart-wallet-repos-discovery, q-tool-passkeykit-smart-wallet; no contradiction",
+        "Structural re-form (long-fact): Shortened one live-row fact and split one long ranking-boundary fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live searchRepos contract exposes current query results and explicit repoScore fields.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live contract presents repoScore as a ranking field for repository discovery.",
+        "Live re-check 2026-08-29: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the live contract states that ranking and directory signals do not prove security, audit, maintenance, or production status.",
+        "Sibling sweep 2026-08-29: grep soroban-passkey|codeVerified|passkey repo|repoScore → q-tool-passkey-repo-live, q-tool-passkeykit-smart-wallet, q-tool-smart-wallet-repos-discovery, q-tool-indexer-repos-discovery, q-tool-oracle-repo-live, q-tool-zk-repo-live; no contradiction."
       ],
       "rootCause": [
         "eval-authoring",
         "The golden's repoScore comparison instruction did not say what the ordering does and does not establish, leaving open a reading where 'strongest = highest repoScore' counts as proof of correctness, security, or production readiness — attributes outside the score's freshness/traction/authority formula.",
         "Tracked at solo://proj/49/todo/corpus-follow-ups-fr--1256 (todo 1256, F5) with the adversarial-review reconciliation in the same todo's comments.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "boxy sl-code-passkey-wallet-top-repo"

@@ -42,9 +42,29 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "There is no 'create asset' operation — a classic asset is defined by its `(asset_code, issuer account)` pair and simply comes into existence the first time the issuer pays it out.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets",
+            "note": "Exact quotes: ‘There is no dedicated operation to create an asset on Stellar.’ ‘To delete, or ‘burn’, an asset, you must send it back to the account that issued it.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+classic+asset+issuer+balance+burn+create+asset",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar classic asset issuer balance burn create asset’. Top primary results: https://developers.stellar.org/docs/tokens/control-asset-access, https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets, https://developers.stellar.org/docs/tokens/how-to-issue-an-asset, and https://github.com/stellar/stellar-protocol/discussions/1598. Exact observed text: ‘an issuing account can’t actually hold a balance of its own asset’; ‘Sending an asset back to its issuing account is equivalent to burning it’; ‘There is no dedicated operation to create an asset on Stellar.’ No primary result contradicted the claims."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (negative-predicate): split two compound facts into four atomic facts and removed the redundant create-operation negation; truth is unchanged.",
@@ -52,10 +72,13 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — an issuer payment issues or mints the asset for an account with a trustline.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the distribution account establishes its trustline with ChangeTrust.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/how-to-issue-an-asset — the issuer sends the supply through a Payment to the distribution account.",
-        "Sibling sweep 2026-08-27: grep create asset|ChangeTrust|Payment → q-asset-trustline-basics, q-aas-trustline-limit-lifecycle, q-protocol-operation-types-list; no contradiction"
+        "Sibling sweep 2026-08-27: grep create asset|ChangeTrust|Payment → q-asset-trustline-basics, q-aas-trustline-limit-lifecycle, q-protocol-operation-types-list; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for absence of a classic create-asset operation; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-asset-issue-asset-howto"

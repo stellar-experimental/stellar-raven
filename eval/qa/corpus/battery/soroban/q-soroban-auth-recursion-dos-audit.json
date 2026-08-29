@@ -7,7 +7,8 @@
   "golden": {
     "answer": "The historical Veridise V2 report labeled the investigated item **V-SOR-VUL-002**, “Denial of Service During Authorization,” with severity Critical. Its valid-vulnerability summary nevertheless counted zero Critical issues. V2 already judged the item invalid inline: failed `require_auth` propagates `Err`, making work linear in trackers, while constructing enough trackers is itself costly. V2.1 relocated the same write-up to Appendix A.2.2 as **V-SOR-APP-VUL-003**. In V2.1, **V-SOR-VUL-002** instead names a different Low-severity metering item. Always state the report version and distinguish the historical Critical label from the zero valid-Critical count. This item is not a CVE, a confirmed practical exploit, or evidence of Ethereum-style reentrancy.",
     "keyFacts": [
-      "Preserves the historical Critical/Investigated label while stating that both valid-vulnerability summaries count zero Critical issues.",
+      "The historical finding kept its Critical and Investigated labels.",
+      "Both valid-vulnerability summaries count zero Critical issues.",
       "States that V2 already judged the item invalid and V2.1 relocated it to the appendix.",
       "Version-qualifies V2 versus V2.1 identifiers."
     ],
@@ -93,8 +94,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-28",
-      "by": "Lane D golden-truth refresh with Lane C independent retirement review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
         "https://stellarsecurityportal.com/api/v1/reports/28",
@@ -106,12 +107,17 @@
         "Source review 2026-08-28: https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4 promotes Veridise appendix identifiers into the index.",
         "Independent review 2026-08-28: hyg-retire-report.md re-ran the trigger and control, checked the deployed commit, and approved sls-074 retirement.",
         "Sibling sweep 2026-08-28: grep V-SOR-APP-VUL-003|V-SOR-VUL-002 found q-soroban-auth-recursion-dos-audit and q-tool-soroban-auth-audit-live; both cases now describe the fixed live behavior.",
-        "Resolution provenance: improvements/resolved.json entry sls-074 preserves the deleted finding's audit chain."
+        "Resolution provenance: improvements/resolved.json entry sls-074 preserves the deleted finding's audit chain.",
+        "Structural re-form (long-fact): Split the historical labels from the zero-Critical summaries; truth unchanged.",
+        "Live re-check 2026-08-29: https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf — the auditor-owned report keeps the authorization DoS item in its appendix with Critical severity and Investigated status.",
+        "Live re-check 2026-08-29: https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf — the auditor-owned report records the V2 and V2.1 history and a zero-Critical valid-vulnerability summary.",
+        "Sibling sweep 2026-08-29: grep V-SOR-APP-VUL-003|V-SOR-VUL-002|Authorization Recursion → q-tool-soroban-auth-audit-live and q-soroban-auth-recursion-dos-audit; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
         "improvements/resolved.json entry sls-074",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-auth-recursion-dos-audit"

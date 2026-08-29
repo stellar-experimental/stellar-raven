@@ -8,9 +8,11 @@
   "golden": {
     "answer": "The application team defines the statement or circuit and uses its chosen proving toolchain to produce proving material and the verification key consumed by the Soroban verifier. Whether a ceremony is required depends on the proof system: circuit-specific Groth16 deployments normally need a Phase 2 setup, while transparent systems avoid trusted setup and universal-setup systems may reuse a common setup. The choice is a property of the proof system, not of Stellar itself.",
     "keyFacts": [
-      "The application team authors the circuit or guest program and supplies the verification material used by the on-chain verifier.",
+      "The application team authors the circuit or guest program.",
+      "The application team supplies the verifier material.",
       "Circuit-specific Groth16 normally requires a circuit-specific Phase 2 trusted setup.",
-      "Transparent systems avoid trusted setup, while universal-setup systems need not repeat a ceremony for every circuit."
+      "Transparent proof systems avoid trusted setup.",
+      "Universal setups can serve more than one circuit."
     ],
     "avoid": [
       "Stellar automatically generates proving and verification keys for every contract.",
@@ -118,11 +120,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/zk",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md"
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
+        "Structural re-form (long-fact): split authorship from verifier material and transparent setup from universal setup; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/zk — the current official page says developers generate proofs from circuits or guest methods.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/zk — the current official page requires developers to deploy the verifier contract used by the application.",
+        "Live re-check 2026-08-29: https://eprint.iacr.org/2018/046 — the primary ZK-STARK paper defines transparent setup as requiring no trusted party.",
+        "Live re-check 2026-08-29: https://eprint.iacr.org/2019/953 — the primary PLONK paper defines an updatable universal structured reference string for general circuits.",
+        "Sibling sweep 2026-08-29: grep Groth16|transparent|universal|verifier → q-zk-proof-systems-stellar, q-protocol-bls12-381-cap59, q-sor-cross-warmancer-zk-stack; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan zk-circuit-dev-workflow"

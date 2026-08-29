@@ -9,11 +9,11 @@
   "golden": {
     "answer": "A Stellar smart wallet is a contract account whose reserved __check_auth validates credentials and policy for the Soroban authorization context. CAP-0051 added native secp256r1/P-256 verification in Protocol 21, but that primitive alone is not complete WebAuthn validation: wallet code must bind the challenge to the Soroban authorization payload and validate client/authenticator data, RP ID/origin, and required presence or verification flags. Store the P-256 public key and, when needed, credential ID plus policy/recovery state; the private key remains in the authenticator/provider. Per-user instances commonly share one Wasm hash; an external shared verifier or policy contract is optional.",
     "keyFacts": [
-      "A contract account implements __check_auth to validate credentials and authorization policy.",
-      "CAP-0051 added native secp256r1/P-256 verification in Protocol 21, but P-256 verification alone is not complete WebAuthn validation.",
-      "WebAuthn handling binds the challenge to the Soroban authorization payload and validates client/authenticator data, RP ID/origin, and required flags.",
-      "Store public credential and policy/recovery state on-chain as needed; the private passkey key remains in the authenticator/provider.",
-      "Per-user instances may share a Wasm hash; a shared external verifier/policy contract is optional, not required."
+      "__check_auth validates contract-account credentials and authorization policy.",
+      "CAP-0051 added native secp256r1/P-256 verification in Protocol 21.",
+      "WebAuthn verifies Soroban binding, client/authenticator data, RP ID, origin, and flags.",
+      "On-chain state stores public credentials and optional policy/recovery data.",
+      "Per-user wallets can use shared Wasm and optional verifier or policy contracts."
     ],
     "avoid": [
       "A raw valid P-256 signature is complete WebAuthn assertion validation.",
@@ -35,7 +35,11 @@
     "sources": [
       {
         "class": "A",
-        "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys"
+        "ref": "https://developers.stellar.org/docs/build/apps/guestbook"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md"
       },
       {
         "class": "A",
@@ -57,8 +61,8 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/apps/guestbook",
+            "observedAt": "2026-08-29"
           },
           {
             "class": "A",
@@ -83,8 +87,8 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/apps/guestbook",
+            "observedAt": "2026-08-29"
           },
           {
             "class": "A",
@@ -109,8 +113,8 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/apps/guestbook",
+            "observedAt": "2026-08-29"
           },
           {
             "class": "A",
@@ -135,8 +139,8 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/apps/guestbook",
+            "observedAt": "2026-08-29"
           },
           {
             "class": "A",
@@ -161,8 +165,8 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/apps/guestbook",
+            "observedAt": "2026-08-29"
           },
           {
             "class": "A",
@@ -187,8 +191,8 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/apps/guestbook",
+            "observedAt": "2026-08-29"
           },
           {
             "class": "A",
@@ -213,8 +217,8 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/apps/guestbook",
+            "observedAt": "2026-08-29"
           },
           {
             "class": "A",
@@ -239,8 +243,8 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
-            "observedAt": "2026-07-11"
+            "ref": "https://developers.stellar.org/docs/build/apps/guestbook",
+            "observedAt": "2026-08-29"
           },
           {
             "class": "A",
@@ -261,13 +265,30 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, conflict lane, worker gt3-sol-a)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys",
+        "https://developers.stellar.org/docs/build/apps/guestbook",
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md",
         "https://www.w3.org/TR/webauthn-3/",
         "https://docs.rs/soroban-sdk/latest/soroban_sdk/auth/trait.CustomAccountInterface.html",
-        "https://github.com/OpenZeppelin/stellar-contracts/tree/master/packages/accounts"
+        "https://github.com/OpenZeppelin/stellar-contracts/tree/master/packages/accounts",
+        "Previous verification provenance: P4 H2 primary+blind (Solo 3411/3412)",
+        "Structural reform 2026-08-29: shortened five long facts into five one-predicate facts.",
+        "Live re-check 2026-08-29: current Stellar smart-wallet guidance confirms __check_auth, Protocol 21 secp256r1, public credential state, and device/provider-held keys.",
+        "Live re-check 2026-08-29: CAP-0051 confirms native P-256, Soroban authorization challenge binding, and incomplete WebAuthn coverage.",
+        "Live re-check 2026-08-29: W3C WebAuthn Level 3 and OpenZeppelin verifier sources confirm the remaining assertion checks.",
+        "Live re-check 2026-08-29: Stellar guestbook and OpenZeppelin account sources confirm shared Wasm and optional verifier/policy contracts.",
+        "Sibling sweep 2026-08-29: passkey recovery, scoped-policy, custom-account, Passkey Kit, and infrastructure cases; no contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-2.md): the worker's live re-check lines named sources without URLs; the URLs (all 200 on 2026-08-29) are https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md (native secp256r1 in Protocol 21; Soroban authorization binding), https://developers.stellar.org/docs/build/apps/guestbook (shared wallet Wasm with per-user contract accounts; public credential state), and https://www.w3.org/TR/webauthn-3/ (client data, authenticator data, RP ID, origin, and flag checks). The matrix's 'Moved to avoid' wording was misleading: golden.avoid did not change.",
+        "Dead-source repair 2026-08-29: replaced the broken https://developers.stellar.org/docs/build/apps/smart-wallets/passkeys reference with https://developers.stellar.org/docs/build/apps/guestbook and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/guestbook says the tutorial ‘implements a passkey-powered smart wallet for user authentication.’",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md says secp256r1 enables WebAuthn implementations through Soroban's custom account interface.",
+        "Sibling sweep 2026-08-29: grep smart-wallets/passkeys|build/apps/guestbook|CAP-0051 → q-passkey-smart-account-architecture, q-infra-secp256r1-passkeys, q-protocol-accounts-signers-thresholds, q-protocol-bls12-381-cap59, q-ti-bindings-to-nextjs-integration; no gospel contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        "freshness-drift"
       ]
     },
     "origin": "kaan passkey-smart-wallet-architecture"

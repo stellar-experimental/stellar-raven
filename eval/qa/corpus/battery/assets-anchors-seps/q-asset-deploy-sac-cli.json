@@ -7,14 +7,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- You **deploy the asset's reserved built-in SAC** — you do **not** write a new token contract. Current Stellar CLI command [1]:\n  `stellar contract asset deploy --source-account <ACCT> --network <NET> --asset USDC:GCYE...` (use `--asset native` for XLM, which already exists on testnet/mainnet).\n- The SAC's contract ID is **deterministically derived from the asset** (`CONTRACT_ID_FROM_ASSET`); it represents the *same* classic asset, not a copy. Fetch it without deploying via `stellar contract id asset --asset CODE:ISSUER` [1][2].\n- Anyone can deploy it (no authorization required); after deployment the **asset's issuer is automatically the admin** (controls `mint`/`clawback`/`set_authorized`) [2].\n- Mechanically this is an **`InvokeHostFunction`** with the `CREATE_CONTRACT` host function [2].",
+    "answer": "- You **deploy the asset's reserved built-in SAC** — you do **not** write a new token contract. Current Stellar CLI command [1]:\n  `stellar contract asset deploy --source-account <ACCT> --network <NET> --asset USDC:GCYE...` (use `--asset native` for XLM, which already exists on testnet/mainnet).\n- The SAC's contract ID is **deterministically derived from the asset** with the `CONTRACT_ID_PREIMAGE_FROM_ASSET` XDR variant; it represents the *same* classic asset, not a copy. Fetch it without deploying via `stellar contract id asset --asset CODE:ISSUER` [1][2].\n- Anyone can deploy it (no authorization required); after deployment the **asset's issuer is automatically the admin** (controls `mint`/`clawback`/`set_authorized`) [2].\n- Mechanically this is an **`InvokeHostFunction`** with the `CREATE_CONTRACT` host function [2].",
     "keyFacts": [
-      "You deploy the asset's SAC via the Stellar CLI (e.g. stellar contract asset deploy) or SDK, not by writing a new token contract.",
-      "The SAC contract ID is deterministically derived from the asset (CONTRACT_ID_FROM_ASSET); it represents the same classic asset."
+      "Uses `stellar contract asset deploy` or an SDK to deploy the asset's SAC.",
+      "Does not require writing a new token contract.",
+      "The SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET.",
+      "The SAC represents the same classic asset."
     ],
     "avoid": [
       "Do NOT instruct the user to write/deploy a brand-new ERC-20-style token contract instead of deploying the asset's SAC.",
-      "Do NOT use a defunct command name (e.g. 'soroban token wrap' presented as the current canonical command without noting the current CLI)."
+      "Do NOT use a defunct command name (e.g. 'soroban token wrap' presented as the current canonical command without noting the current CLI).",
+      "Do NOT call the XDR variant CONTRACT_ID_FROM_ASSET."
     ],
     "notes": "How-to. Dossier §2.3. Verified current CLI command: `stellar contract asset deploy --asset CODE:ISSUER`; id via `stellar contract id asset`. (Legacy `soroban lab token wrap` is superseded by the `stellar` CLI.)\nAlso good if the answer: After deployment the issuer is automatically the admin (controls mint/clawback/set_authorized). | Mechanically it is an InvokeHostFunction with CREATE_CONTRACT host function.\nGolden cites: The SAC page or the 'deploy-stellar-asset-contract' CLI guide on developers.stellar.org."
   },
@@ -36,13 +39,120 @@
         "class": "A",
         "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+        "note": "Canonical XDR enum for contract ID preimages."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs",
+        "note": "Current CLI source constructs the asset contract ID preimage."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A SAC contract ID uses the CONTRACT_ID_PREIMAGE_FROM_ASSET XDR variant and represents the same classic asset.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "observedAt": "2026-08-29",
+            "note": "Exact quote: ‘a CONTRACT_ID_PREIMAGE_FROM_ASSET contract ID preimage.’ The page says the resulting token has a deterministic identifier."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+            "observedAt": "2026-08-29",
+            "note": "Exact enum member: `CONTRACT_ID_PREIMAGE_FROM_ASSET = 1`; its union arm is `Asset fromAsset`."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: `contract_id_preimage: ContractIdPreimage::Asset(asset)` and `executable: ContractExecutable::StellarAsset`."
+          }
+        ]
+      },
+      {
+        "claim": "The SAC XDR variant is named CONTRACT_ID_FROM_ASSET.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "observedAt": "2026-08-29",
+            "note": "The official page names `CONTRACT_ID_PREIMAGE_FROM_ASSET`, not `CONTRACT_ID_FROM_ASSET`."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+            "observedAt": "2026-08-29",
+            "note": "The canonical enum defines `CONTRACT_ID_PREIMAGE_FROM_ASSET = 1`."
+          }
+        ]
+      },
+      {
+        "claim": "You deploy the asset's reserved built-in SAC — you do not write a new token contract.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "note": "Exact quotes: ‘No bridging is required and no intermediary tokens are needed.’ ‘Anyone can initiate the deploy and the Stellar asset issuer does not need to be involved.’ ‘The asset issuer becomes the initial administrator once the contract has been deployed.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/blob/0cc28fcb61d2746536a92b795f270b2d5d3d506e/cmd/soroban-cli/src/commands/contract/deploy/asset.rs",
+            "observedAt": "2026-08-29",
+            "note": "Exact source constructs `ContractIdPreimage::Asset(asset)` with `ContractExecutable::StellarAsset` and `auth: VecM::default()`."
+          }
+        ]
+      },
+      {
+        "claim": "Anyone can deploy it (no authorization required); after deployment the asset's issuer is automatically the admin.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "note": "Exact quotes: ‘No bridging is required and no intermediary tokens are needed.’ ‘Anyone can initiate the deploy and the Stellar asset issuer does not need to be involved.’ ‘The asset issuer becomes the initial administrator once the contract has been deployed.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/core/cap-0046-06.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source: ‘anyone can deploy the contract for any asset’; ‘The admin is initally set to the issuer.’"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-03-classic-assets-clawback-trustlines-paths accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): split the CLI-or-SDK deployment rule from the no-new-contract rule; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract — the official guide uses `stellar contract asset deploy` for the reserved SAC.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract — the official guide says that SAC deployment does not require a new token contract.",
+        "Historical conflict detected 2026-08-29: the key fact named `CONTRACT_ID_FROM_ASSET`, but https://developers.stellar.org/docs/tokens/stellar-asset-contract names `CONTRACT_ID_PREIMAGE_FROM_ASSET`; resolved by the later conflict-resolution lines.",
+        "Sibling sweep 2026-08-29: grep CONTRACT_ID_FROM_ASSET|stellar contract asset deploy → q-asset-deploy-sac-cli only; no sibling contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): reviewer reported the CLI guide URL as 404; it resolved 200 for the orchestrator on 2026-08-29, and https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract shows `stellar contract asset deploy`; the identifier conflict was queued for this lane.",
+        "Conflict resolution 2026-08-29: https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x defines `CONTRACT_ID_PREIMAGE_FROM_ASSET = 1`.",
+        "Conflict resolution 2026-08-29: https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs uses `ContractIdPreimage::Asset(asset)`.",
+        "Sibling sweep 2026-08-29: grep CONTRACT_ID_FROM_ASSET|CONTRACT_ID_PREIMAGE_FROM_ASSET → q-asset-deploy-sac-cli, q-sor-sac-introspection; the sibling uses the correct spelling.",
+        "Corroboration audit 2026-08-29: added 2 row(s) for built-in SAC and permissionless deployment; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        "eval-authoring transcription",
+        "Live primary-source conflict in the exact SAC contract ID preimage constant name.",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-asset-deploy-sac-cli"

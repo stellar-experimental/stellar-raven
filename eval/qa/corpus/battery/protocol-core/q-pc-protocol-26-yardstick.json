@@ -10,7 +10,7 @@
     "keyFacts": [
       "Protocol 26 Yardstick went live on Mainnet on May 6, 2026.",
       "Names CAP-0073, 0077, 0078, 0079, 0080, 0081, and 0082 with materially correct roles.",
-      "Distinguishes CAP-0080's Protocol 26 extensions from the BN254/Poseidon primitives introduced in Protocol 25."
+      "Places CAP-0080 extensions in Protocol 26 and BN254/Poseidon primitives in Protocol 25."
     ],
     "avoid": [
       "Do NOT say the May 6, 2026 date was only a testnet upgrade or an uncompleted plan.",
@@ -139,8 +139,8 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 N2 primary+blind (Solo 3417/3423)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
@@ -153,10 +153,14 @@
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0079.md",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0081.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0082.md"
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0082.md",
+        "Structural re-form (long-fact): Shortened one long protocol-generation distinction; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/zk and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — the official documentation places BN254 and Poseidon/Poseidon2 primitives in Protocol 25, while CAP-0080 places its added BN254 functions in Protocol 26.",
+        "Sibling sweep 2026-08-29: grep CAP-0080|BN254|Poseidon|Protocol 26|Yardstick → q-edge-fresh-latest-protocol-version, q-edge-noinfo-stellar-native-privacy-default, q-pc-protocol-26-yardstick, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-contract-trustlines-c-address, q-sor-cross-warmancer-zk-stack, q-zk-host-functions-status, q-zk-poseidon-input-encoding, q-zk-proof-systems-stellar; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

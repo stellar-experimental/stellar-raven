@@ -8,10 +8,10 @@
     "answer": "A grounded answer derives its named examples and status claims from the current source data named by the case, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nAll four are **general/external protocols or commerce layers**; none is intrinsically a Stellar standard. Their Stellar relationship differs:\n\n- **x402:** an open HTTP-402 payment protocol created at Coinbase and now governed through the x402 Foundation/Linux Foundation ecosystem. Stellar has an available x402 scheme using signed Soroban authorization entries, a facilitator, and SEP-41 tokens such as USDC.\n- **MPP (Machine Payments Protocol):** a payment-method-agnostic Challenge–Credential–Receipt protocol. General MPP supports charge, session, and subscription intents; it is not streaming-only. The draft Stellar method supports one-time SEP-41 charge transfers and optional session/channel work.\n- **AP2 (Agent Payments Protocol):** an emerging authorization/commerce protocol built around signed mandates and moving through FIDO standardization. x402 is an optional extension/composition path, not a required AP2 settlement route.\n- **ACP (Agentic Commerce Protocol):** a beta checkout/commerce interaction protocol. It delegates payment to compatible handlers/PSPs and is not a Stellar-native settlement rail.\n- **SEP-41:** Stellar's Soroban Token Interface and the token substrate used by Stellar x402/MPP implementations. It does not turn x402 or MPP into SEPs and does not apply to AP2/ACP as whole protocols.\n\nUse dated maturity terms: available integration, beta, Draft/Internet-Draft, proposed, or emerging are not interchangeable.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Classifies x402 and MPP as general protocols with available/draft Stellar integrations that can settle SEP-41 tokens.",
-      "States that MPP includes charge as well as session/channel behavior, rather than equating MPP with streaming.",
-      "Classifies AP2 as an emerging authorization/coordination protocol with optional x402 composition and ACP as a beta commerce/checkout protocol, not settlement rails.",
-      "Keeps SEP-41's Stellar token-interface role distinct from the status and scope of all four external protocols."
+      "Classifies x402 and MPP as general protocols with Stellar methods for SEP-41 settlement.",
+      "MPP includes charge, session, and channel behavior beyond streaming.",
+      "AP2: emerging authorization/coordination with optional x402; ACP: beta non-rail checkout.",
+      "Keeps SEP-41's Stellar token role distinct from each protocol's status and scope."
     ],
     "avoid": [
       "Do NOT call x402 or MPP Stellar standards merely because Stellar implements methods for them.",
@@ -149,19 +149,26 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575: GT-12 primary process 3237 and blind process 3241",
         "Primary x402, MPP, AP2/FIDO, ACP, SEP-41, and current Stellar integration records rechecked 2026-07-10",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Independent Terra review 2026-07-14 rechecked current Stellar agentic-payments Docs/skill plus primary AP2 and ACP sources; solo://proj/49/scratchpad/docs-and-site-improv--639#golden-review",
         "SEP-41 Draft v0.5.0 / updated 2026-06-08 observed from the normative source on 2026-08-04; other protocol claims were not re-dated.",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
-        "Sibling sweep 2026-08-27: grep x402|MPP|AP2|ACP → q-agent-payment-standard-choice, q-mpp-discovery-and-modes, q-defi-x402-on-stellar-what; no contradiction"
+        "Sibling sweep 2026-08-27: grep x402|MPP|AP2|ACP → q-agent-payment-standard-choice, q-mpp-discovery-and-modes, q-defi-x402-on-stellar-what; no contradiction",
+        "Structural re-form (long-fact): split and shortened the facts without changing the required claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — the current dated normative record demonstrates why changeable status and version claims need an as-of date.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments — the official guide treats x402 and MPP as general protocols with Stellar SEP-41 settlement methods.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/agentic-payments — the official guide documents one-time MPP charge payments and high-frequency off-chain channels.",
+        "Live re-check 2026-08-29: https://github.com/google-agentic-commerce/AP2 and https://github.com/agentic-commerce-protocol/agentic-commerce-protocol — the primary repositories document AP2 mandates with optional x402 composition and ACP's beta checkout and payment-handler model.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — SEP-41 remains the Stellar Soroban token interface, separate from external protocol status and scope.",
+        "Sibling sweep 2026-08-29: grep AP2|ACP|streaming-only|Stellar token-interface role → q-agent-payment-standard-choice, q-defi-agentic-payment-standards-compare; no contradiction."
       ],
       "rootCause": [
         "freshness-drift: the pinned SEP-41 metadata lagged the normative v0.5.0 record",
@@ -169,7 +176,8 @@
         "coverage diagnostic: the exposed Stellar agentic-payments skill does not cover external AP2/ACP, which does not by itself establish a Stellar Docs content obligation",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-defi-agentic-payment-standards-compare"

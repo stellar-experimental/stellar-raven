@@ -8,9 +8,9 @@
   "golden": {
     "answer": "A production anchor publishes SEP-1 metadata, authenticates clients with SEP-10, gathers customer data under SEP-12, and implements SEP-24 and/or SEP-6 for deposits and withdrawals; SEP-31 is added for cross-border receiving flows. The on-chain service must be joined to KYC/AML and sanctions workflows, bank or mobile-money adapters, treasury and liquidity management, transaction state, reconciliation, and customer support. Harden it with segregated keys, approval controls, monitoring, idempotent webhooks, audit logs, incident runbooks, and ledger-versus-bank reconciliation. SDF's Anchor Platform is a reference implementation, not the off-chain bank itself.",
     "keyFacts": [
-      "A production anchor composes the SEPs appropriate to its flow, commonly SEP-1, SEP-10, SEP-12, and SEP-24 and/or SEP-6.",
-      "The anchor must integrate off-chain KYC/compliance, banking or mobile-money rails, treasury liquidity, and reconciliation.",
-      "Production controls include key segregation, monitoring, idempotent processing, audit logs, and incident runbooks."
+      "A production anchor combines SEP-1, SEP-10, SEP-12, and SEP-24 or SEP-6 as needed.",
+      "Requires KYC/compliance, bank/mobile-money rails, treasury liquidity, and reconciliation.",
+      "Uses segregated keys, monitoring, idempotency, audit logs, and incident runbooks."
     ],
     "avoid": [
       "Deploying Anchor Platform automatically supplies banking relationships, licenses, and fiat liquidity.",
@@ -121,11 +121,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture",
-        "https://github.com/stellar/anchor-platform"
+        "https://github.com/stellar/anchor-platform",
+        "Structural re-form (long-fact): Shortened three production-anchor facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform — the current page lists SEP-1, SEP-6, SEP-10, SEP-12, and SEP-24 support.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture — the current architecture requires business-server integration for KYC, off-chain transfers, transaction state, and internal systems.",
+        "Live re-check 2026-08-29: https://github.com/stellar/anchor-platform — the current repository retains database, queue, logging, event-processing, observer, and test infrastructure for production controls.",
+        "Sibling sweep 2026-08-29: grep production anchor|SEP-1|SEP-24|mobile-money|idempotent → q-comp-anchor-compliance-stack, q-crp-become-an-anchor-licensing, q-anchor-sdp-what, q-crp-regional-offramp-mobilemoney; no contradiction"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan production-anchor-architecture"

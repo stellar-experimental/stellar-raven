@@ -9,9 +9,11 @@
   "golden": {
     "answer": "Stellar does not execute a merchant's future charge merely because a prior payment occurred. Implement recurrence in an application or contract-account policy. A user can authorize a narrowly scoped session or delegated signer that permits only a named contract, asset, maximum amount, cadence, and expiry; an off-chain scheduler then submits each authorized charge. Provide revocation, pause, idempotency, receipts, failed-payment handling, and a clear distinction between a pull authorization and custody.",
     "keyFacts": [
-      "Recurring billing requires application scheduling and/or contract-account policy; one payment does not create an automatic standing order.",
+      "Recurring billing uses application scheduling or a contract-account policy.",
+      "A single payment does not create an automatic standing order.",
       "A delegated credential should restrict merchant, asset, amount, cadence, and expiry.",
-      "Users need revocation and pause controls, while the billing service needs idempotency and failed-payment handling."
+      "Users need revocation and pause controls.",
+      "Billing services need idempotency and failed-payment handling."
     ],
     "avoid": [
       "Stellar automatically repeats any payment operation at a specified monthly interval.",
@@ -119,11 +121,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns",
-        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts"
+        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/accounts",
+        "Structural re-form (long-fact): Split two long recurring-payment facts into four atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — the official guide defines policy signers, time rules, and scoped session keys for delegated actions.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — the official lifecycle treats each transaction as a separately created and submitted command.",
+        "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/smart_account/mod.rs — current source exposes context-rule expiry updates and removal controls.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — the official guide requires status polling and safe retry handling for duplicate, failed, and uncertain submissions.",
+        "Sibling sweep 2026-08-29: grep recurring billing|standing order|contract-account policy|idempotency|revocation → q-stellar-recurring-payments, q-smart-account-scoped-policy-signers, q-agent-payment-standard-choice, q-defi-agentic-payment-standards-compare, q-defi-streaming-payments-prior-art, q-ti-classic-submission-errors, q-ti-tx-too-late-resubmit; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan recurring-subscriptions-stellar"

@@ -7,47 +7,6 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-## Golden corpus
-
-### Golden authoring lint warnings burn-down
-
-The 2026-08-27 deep-dive merge created a historical baseline of 1,390 warnings. Two reviewed
-burn-down sessions reduced that baseline to 475 warnings. The current total contains 372 long-fact
-warnings across 204 cases, 47 sourcing-guard warnings, and 56 corroboration warnings.
-
-The session-2 helper pack under `/tmp/raven-qadeep/gt2/` expired after the host restart. Build a
-fresh pack from current `main`; do not claim that it reproduces the expired files. Use about 50
-worker prompts, with four cases per prompt and three review parts. Use three Sol high workers and
-one independent Grok high reviewer.
-
-Each case report must state `Claims kept`, `moved to avoid`, or `none dropped`. The reviewer must
-check every claim. New numbers, versions, dates, abbreviations, and taxonomy distinctions require
-special review. The lost `q-soroban-publish-events` stray draft was unreviewed and is not evidence.
-
-Run this gate sequence for each commit: compile, register, reconcile, lint with `--since`,
-typecheck, test, build, secrets scan, then commit. `program-log.md` contains the durable session-2
-method and failure history.
-
-Done when: long-fact warnings are zero, all changed facts have required source verification, every
-review finding is reconciled, and all gates pass. The separate audit below owns the 47 sourcing and
-56 corroboration warnings.
-
-### Audit sourcing-guard and corroboration warning classes
-
-The owner approved an evidence-first audit on 2026-08-28. Do not treat a lower warning count as the
-goal. Preserve useful warnings and remove only demonstrated cruft.
-
-For the 47 sourcing-guard warnings, inspect 20 cases: eight targeted warning shapes and twelve
-seeded-random cases. Record the seed and selected IDs before review. If the random cases are clean,
-keep the warning class advisory and close the class without chasing zero.
-
-For all 56 corroboration warnings, classify each warning before editing. A real negative factual
-claim needs the `golden-truth` evidence bar. A grammar-only restriction needs no fabricated
-corroboration row. Use several independent models and reconcile every disagreement.
-
-Done when: a durable audit records every selected or classified ID, each warning has a disposition,
-any gospel edit passes `golden-truth`, no truth check is weakened, and the full gate sequence passes.
-
 ## Improvements backlog
 
 ### Remove a blockquote marker from generated improvement titles
@@ -74,53 +33,21 @@ Done when: the next improvements round records the issue state. No action if it 
 
 ## Goldens
 
-### Prevent invalid Stellar strkeys in golden imports
-
-The 2026-07-11 `q-defi-wisdomtree-crdt` import contained an invalid issuer and an invalid SAC.
-Both identifiers failed CRC16 validation, so the error was a transcription defect rather than freshness drift.
-
-Found 2026-08-26 during the independent review of `lane/corpus-goldens-20260825`.
-
-Done when: golden authoring validates exact Stellar strkeys before import, with positive and negative tests for account and contract keys.
-
 ### Replace expired temporary evidence in golden truth metadata
 
-Active corpus evidence contains 97 temporary-path references across 94 files. Twenty-seven files
-cite the session-2 Grok reviews under `/tmp/raven-qadeep/gt2/`; `program-log.md` preserves their
-finding summaries. Sixty-nine files cite the deleted Fable report `conversions-copy-review.md`,
-whose full report is not recoverable. Three files belong to both groups.
+Golden-truth session 3 (2026-08-29, `.agents/rounds/2026-08-29-golden-truth-session-3.md`)
+repaired every temporary-path reference on the 224 cases it touched. Forty-seven untouched files
+still cite a temporary path: most cite the deleted Fable report `conversions-copy-review.md`,
+whose full report is not recoverable, and a few cite the session-2 Grok reviews under
+`/tmp/raven-qadeep/gt2/`, whose finding summaries live in `program-log.md`.
 
-One additional file cites `/tmp/raven-qadeep/review-judge.md`. Its durable counterpart is
-`research/qa-deep-dive-2026-08-25/review-judge.md`.
-
-Do not replace these paths with an unreviewed bulk edit. Reverify the 69 Fable-reviewed facts with
-the `golden-truth` workflow. Migrate the 27 session-2 references through a dedicated metadata-only
-review, or during the next verified touch of each case.
+Do not replace these paths with an unreviewed bulk edit. Use the session-3 rule: a Fable-report
+line is replaced only when every keyFact of the case has been re-verified live in the same edit;
+a session-2 review line migrates to the `program-log.md` pointer during the next verified touch.
 
 Done when: no active corpus evidence names a temporary path, every replacement is re-walkable from
 the repository or a live primary source, the consistency register is reconciled, and all
 golden-truth gates pass.
-
-### Repair the reviewed canonical-page conflict cases
-
-ADR-0008 accepts a narrow grading rule: a reconciled answer may be correct; an attributed but
-unresolved canonical-page conflict caps at partial; an unattributed false claim remains wrong.
-Encode the rule in per-case notes, not the global judge prompt.
-
-- `q-protocol-base-reserve-min-balance`: add the attributed Docs caution, add
-  `improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md` to
-  `truth.verified.rootCause`, and name the caution's expiry.
-- `q-infra-horizon-vs-rpc`: repair the disputed corroboration claim and replace the resolved
-  `sd-017` root cause with `sd-042`.
-- `q-ti-rpc-gettransactions-pagination-xdr`: accept attributed owner wording without accepting
-  universal immutability. Record that `sd-004` makes the caution permanent until the owner changes
-  that decision.
-- `q-ti-freighter-localhost-not-detected`: reword the GT-52 note into the lint-canonical caution
-  form and add `sd-045` to `truth.verified.rootCause`, without adding an exception.
-- `q-pc-protocol-27-zipper`: re-derive the snapshot-date key fact separately.
-
-Done when: `golden-truth` verifies every changed claim, all caution expiry rules are explicit, the
-round records affected IDs, sibling cases are reconciled, and all golden gates pass.
 
 ### Recheck two dated source-metadata conflicts
 
@@ -359,19 +286,6 @@ artifacts (161 collection, 34 rejudge, 0 skipped).
 
 Done when: the next post-collection register refresh reports a stable or
 falling unstable-count trend, or the escalation policy accounts for the drift.
-
-### Golden-edit rounds must record the affected id list
-
-One golden-truth burn-down left only 41 of the same-100 ids per-id comparable
-to their own baseline; 59 changed judge-facing gospel. The 2026-08-28 rerun lane
-(`eval/qa/results/2026-08-28T19-27-08-variantA.json` and its preflight) had to
-reconstruct the affected id list with per-id `git show` comparisons. Same-100
-reruns stay comparable only if the round that edits goldens records the
-affected id list when it lands.
-
-Done when: golden-edit rounds record the affected case-id list in the round
-ledger or consistency register, so a later rerun reads the list instead of
-reconstructing it.
 
 ## Owner decisions
 

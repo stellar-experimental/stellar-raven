@@ -7,10 +7,11 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2024-04-11, the verified sources supported this observed answer:\n\n- **SEP-43 — \"Standard Web Wallet API Interface\"** (Status: **Draft**, created 2024-04-11) defines a common JavaScript API that web wallets expose to dapps so developers integrate once instead of writing per-wallet abstractions [1].\n- The interface methods are **`getAddress`, `signTransaction`, `signAuthEntry`, `signMessage`, and `getNetwork`**, plus standardized error shapes (`message`/`code`/`ext`, with codes -1 internal, -2 external service, -3 invalid request, -4 user rejected) [1].\n- It exists as `ecosystem/sep-0043.md` in stellar/stellar-protocol — it is **not** an unassigned gap [1].\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "SEP-43 is 'Standard Web Wallet API Interface' — a standard interface (getAddress, signTransaction, signAuthEntry, signMessage, getNetwork) for web wallets so dapps integrate once.",
-      "Does NOT claim SEP-43 is unpublished/nonexistent (the sep-0043.md file exists in stellar-protocol/ecosystem)."
+      "Names SEP-43 as the Standard Web Wallet API Interface.",
+      "Lists `getAddress`, `signTransaction`, `signAuthEntry`, `signMessage`, and `getNetwork`.",
+      "Confirms `ecosystem/sep-0043.md` exists in stellar-protocol."
     ],
     "avoid": [
       "Do NOT claim SEP-43 does not exist or that the numbering skips 43 (it does exist as of 2024-04).",
@@ -36,16 +37,23 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 5B numeric corroboration backfill",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
         "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
+        "Sibling consistency sweep: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+        "Structural re-form (long-fact): Shortened two long facts and split one long interface fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — the current source provides direct SEP-43 interface and status evidence.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — the current source names the Standard Web Wallet API Interface.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — the current source defines getAddress, signTransaction, signAuthEntry, signMessage, and getNetwork.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — the current source confirms the SEP-0043 file exists in stellar-protocol.",
+        "Sibling sweep 2026-08-29: grep SEP-43|SEP-0043|Standard Web Wallet API|getAddress|signAuthEntry → q-sep-43-web-wallet-api, q-sep-45-contract-auth, q-sep-catalog-list, q-sep53-message-signing, q-soroban-x402-auth-entry-signing, q-ti-connect-wallet-button-code; no contradiction."
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sep-43-web-wallet-api",

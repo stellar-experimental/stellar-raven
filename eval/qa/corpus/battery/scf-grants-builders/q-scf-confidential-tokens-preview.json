@@ -8,9 +8,11 @@
   "golden": {
     "answer": "On June 29, 2026, SDF announced Confidential Tokens as a developer preview. The contract was live on Testnet, not approved for Mainnet, while contract and verifier audits were underway. The OpenZeppelin wrapper can add private balances and transfer amounts to a SEP-41 token; sender and recipient addresses remain visible, so 'confidential' does not mean fully anonymous. Mainnet timing was a target, not a shipped fact.",
     "keyFacts": [
-      "The June 29, 2026 release was a developer preview live on Testnet, not an approved Mainnet launch.",
-      "Audits were still underway as of the announcement.",
-      "It hides balances and transfer amounts while leaving sender and recipient addresses visible."
+      "The June 29, 2026 release was a developer preview on Testnet.",
+      "It was not an approved Mainnet launch.",
+      "Audits were underway on June 29, 2026.",
+      "It hides balances and transfer amounts.",
+      "Sender and recipient addresses remain visible."
     ],
     "avoid": [
       "Do NOT claim Confidential Tokens were production-ready or live on Mainnet on June 29, 2026.",
@@ -80,18 +82,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 N2 primary+blind (Solo 3417/3423)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
         "scratchpad/p4/n2-events-blind/reconciliation.md",
         "https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar",
         "https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential",
-        "https://github.com/NethermindEth/rs-soroban-ultrahonk"
+        "https://github.com/NethermindEth/rs-soroban-ultrahonk",
+        "Structural re-form (long-fact): Split the preview boundary and visibility boundary into atomic facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — the current primary post identifies the release as a Testnet developer preview.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — the editor's note says the preview was not approved for Mainnet.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — the editor's note says contract and verifier audits were underway.",
+        "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential — the current implementation README says balances and amounts remain private.",
+        "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential — the current implementation README says sender and recipient addresses remain visible.",
+        "Sibling sweep 2026-08-29: grep Confidential Tokens|Confidential Token → q-edge-noinfo-stellar-native-privacy-default, q-sor-confidential-tokens, q-scout-hackathon-brief-first-hour, and q-scf-confidential-tokens-preview; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

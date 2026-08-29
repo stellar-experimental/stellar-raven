@@ -10,8 +10,9 @@
     "answer": "A spent nullifier must remain enforceable for as long as its note can be accepted. For an exact set, store each domain-separated nullifier as an individually keyed persistent entry with explicit TTL and rent handling; do not put an unbounded map in one instance value or scan the full set. An authenticated root may instead live on-chain, but transition proofs must prove non-membership and insertion, and the witness/history availability model must be specified. Pruning is sound only when the protocol also makes the corresponding old notes unspendable, such as after a bounded epoch withdrawal window.",
     "keyFacts": [
       "Deleting a still-relevant spent nullifier can reopen a double-spend path.",
-      "For an exact set, use individually keyed persistent nullifiers with explicit TTL and rent handling, not an unbounded instance map.",
-      "An on-chain authenticated root requires sound non-membership/insertion transition proofs and a specified witness/history availability model.",
+      "Exact nullifier sets need individual persistent keys with explicit TTL and rent handling.",
+      "An on-chain authenticated root needs sound non-membership and insertion proofs.",
+      "The root's witness and history availability model must be specified.",
       "Pruning is sound only when the corresponding old notes are also unspendable."
     ],
     "avoid": [
@@ -258,13 +259,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/smart-contracts/getting-started/storing-data",
         "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage-state-archival",
         "https://docs.rs/soroban-sdk/latest/soroban_sdk/storage/index.html",
-        "https://zips.z.cash/protocol/protocol.pdf"
+        "https://zips.z.cash/protocol/protocol.pdf",
+        "Structural re-form (long-fact): shortened the exact-set storage fact and split the authenticated-root proof and availability claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage — persistent storage supports independent keys and TTLs, while instance storage has one limited shared entry.",
+        "Live re-check 2026-08-29: https://github.com/TONresistor/zk-resistor-contracts/blob/main/PROTOCOL.md — the source protocol requires nullifier-set non-membership and insertion proofs against a root transition.",
+        "Live re-check 2026-08-29: https://zips.z.cash/zip-0307 — the official light-client protocol requires maintained witnesses and recent tree history for root-relative proofs.",
+        "Sibling sweep 2026-08-29: grep nullifier|non-membership|witness/history|instance map → q-sor-persistent-unbounded-collection-cap, q-sor-cross-warmancer-zk-stack, q-zk-nullifier-storage, and q-zk-poseidon-input-encoding; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan privacy-pool-nullifier-storage"

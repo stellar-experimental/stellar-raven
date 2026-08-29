@@ -8,8 +8,10 @@
   "golden": {
     "answer": "A **path payment** converts one asset into another in a **single atomic transaction**, routing\nacross the **Stellar DEX orderbook and/or AMM liquidity pools** to find a path — so the sender pays\nin one asset and the recipient receives a different one, and neither party has to hold the\nintermediate asset (this is what enables on-chain FX, e.g. USDC → EURC) [1]. Two operations\nimplement it [1]:\n\n- **`PathPaymentStrictSend`** — the sender fixes the **exact source amount**; the recipient receives\n  **at least `destMin`** of the destination asset.\n- **`PathPaymentStrictReceive`** — the recipient is guaranteed an **exact destination amount**; the\n  sender pays **at most `sendMax`**.\n\nIt settles in roughly one ledger close (~5 s) at the normal low network fee — no off-chain bridge or\nthird-party DEX router is involved.\n\nSource: [1] developers.stellar.org path-payments / liquidity-on-the-Stellar-DEX docs.",
     "keyFacts": [
-      "Names PathPaymentStrictSend and PathPaymentStrictReceive as the two path-payment operations.",
-      "Explains a path payment converts one asset to another by routing across the DEX orderbook and/or AMM pools in a single atomic transaction."
+      "Names both path-payment operations: PathPaymentStrictSend and PathPaymentStrictReceive.",
+      "Converts one asset to another through a path payment.",
+      "Routes through the DEX order book, AMM pools, or both.",
+      "Executes the routed payment atomically in one transaction."
     ],
     "avoid": [
       "Do NOT invent operation names (e.g. 'PathSwapOp', 'CrossAssetPaymentOp') as the canonical ops.",
@@ -37,11 +39,44 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Per the official path-payment docs, a classic path payment uses the SDEX and/or liquidity pools, not an off-chain bridge or third-party DEX router.",
+        "verdict": "confirmed",
+        "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+          "note": "Exact quotes: ‘path payments cross through the SDEX and/or liquidity pools.’ ‘Balances are settled at the very end of the operation.’",
+          "observedAt": "2026-08-29"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/80a3e8547d2b93824525b4542f3bb2c951e08a05/core/cap-0038.md",
+          "observedAt": "2026-08-29",
+          "note": "Exact source: CAP-0038 says `PathPaymentStrictSendOp` and `PathPaymentStrictReceiveOp` are modified as an opaque interface for exchanging assets with the order book and liquidity pools."
+        }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-03-classic-assets-clawback-trustlines-paths accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): split the path-payment operation, conversion, routing, and atomicity claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — the official page names the strict-send and strict-receive operations.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — the official page says the received and sent assets differ.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments — the official page says path payments cross the SDEX and/or liquidity pools.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — the official page says transactions are atomic.",
+        "Sibling sweep 2026-08-29: grep PathPaymentStrictSend|PathPaymentStrictReceive → q-asset-path-payment-ops only; no sibling contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-1.md): removed the added abbreviation 'SDEX' and restored 'DEX order book' and 'AMM pools' from the old fact; the encyclopedia URLs resolved 200 for the orchestrator on 2026-08-29 (reviewer saw 404), so the evidence URLs stay and https://developers.stellar.org/docs/build/guides/transactions/path-payments is added as a second live confirmation of order-book and liquidity-pool routing.",
+      "Corroboration audit 2026-08-29: added 1 row(s) for on-ledger path-payment routing; class agreement Sol+Grok",
+      "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-asset-path-payment-ops"

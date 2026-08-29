@@ -8,11 +8,13 @@
   "golden": {
     "answer": "As observed **2026-08-21**, current official Docs and live Mainnet configuration report **1,000 classic operations per ledger** and **2,000 smart-contract transactions per ledger**. The v27 XDR schema defines the separate `ledgerMaxTxCount` contract-transaction setting; it does not encode either current numeric value. The classic limit counts operations, not necessarily transactions, because a classic transaction may contain multiple operations. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
     "keyFacts": [
-      "Distinguishes classic maxTxSetSize operations from separately configured Soroban transaction/resource limits.",
-      "Reports the dated current 2,000 smart-contract transaction setting without inventing a stale Docs conflict."
+      "Treats classic maxTxSetSize as an operation limit.",
+      "Treats Soroban transaction and resource limits as separately configured.",
+      "Reports the dated current 2,000 smart-contract-transactions-per-ledger setting."
     ],
     "avoid": [
-      "Do NOT equate 1,000 operations with 1,000 transactions, hard-code 100 Soroban transactions as current, or ignore resource constraints."
+      "Do NOT equate 1,000 operations with 1,000 transactions, hard-code 100 Soroban transactions as current, or ignore resource constraints.",
+      "Do NOT invent a stale Docs conflict about the 2,000 smart-contract transaction setting."
     ],
     "notes": "CORRECTION 2026-08-04: current official Docs support 1,000 classic operations and 2,000 smart-contract transactions per ledger. Preserve the operation-versus-transaction distinction, separate resource limits, and validator-controlled freshness caveat."
   },
@@ -124,8 +126,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-25",
-      "by": "Golden-truth review 2026-08-25 (branch codex/qa-golden-truth-corrections, PR 47 independent-review reconciliation); prior event Todo 1928 strict Golden Truth TDD after independent Todo 1925 challenge and coordinator acceptance",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering observed 2026-08-21 and re-observed 2026-08-25: 1,000 non-smart-contract operations and 2,000 smart contract transactions per ledger, with \"Resource limits are determined by a validator vote\".",
         "https://horizon.stellar.org/ledgers/64119318 observed 2026-08-25: max_tx_set_size 1000 at protocol 27, closed_at 2026-08-25T14:54:56Z (prior observation https://horizon.stellar.org/ledgers/64050648 on 2026-08-21).",
@@ -135,12 +137,20 @@
         "Independent-class repair 2026-08-25: the XDR-attribution corroboration row previously carried a single class-B evidence row. It now carries B (schema text), A (Docs validator-vote attribution), and C (live on-ledger ConfigSettingEntry), so the gospel claim meets the independent-source-class bar.",
         "truth.asOf moves to 2026-08-25 because that is the latest verification event. The golden answer keeps its \"As observed 2026-08-21\" basis on purpose: both dated values were re-confirmed unchanged on 2026-08-25, so the encoded observation stays true and no judge-facing text needed to change.",
         "solo://proj/49/todo/independently-challe--1925 comments 5058 and 5064",
-        "Sibling sweep 2026-08-25: cluster-065 re-read. q-protocol-ledger-close-time makes no capacity or source-attribution claim, and q-protocol-ledger-header-fields still confirms maxTxSetSize is a ledger-header field. No sibling attributes a numeric ledger limit to the XDR schema."
+        "Sibling sweep 2026-08-25: cluster-065 re-read. q-protocol-ledger-close-time makes no capacity or source-attribution claim, and q-protocol-ledger-header-fields still confirms maxTxSetSize is a ledger-header field. No sibling attributes a numeric ledger limit to the XDR schema.",
+        "Structural re-form (long-fact): Split two long facts into four one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current official Docs identify the classic ledger setting as a non-smart-contract operation limit.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current official Docs describe separate smart-contract transaction and multidimensional resource limits configured by validators.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current official Docs report 2,000 smart-contract transactions per Mainnet ledger as of July 2026.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the current official page consistently reports the 2,000 setting, with no stale conflicting value.",
+        "Sibling sweep 2026-08-29: grep maxTxSetSize|2,000 smart-contract|1,000 classic|ledgerMaxTxCount → q-protocol-ledger-header-fields, q-protocol-max-tx-set-size; no contradiction.",
+        "Owner fix after independent review 2026-08-29 (gt3-grok-rev, .agents/rounds/2026-08-29-golden-truth-session-3/review-long-part-2.md): moved the presentation-shaped fact 'Does not invent a stale Docs conflict' into golden.avoid as the reviewer's concrete trap; truth unchanged versus HEAD."
       ],
       "rootCause": [
         "solo://proj/49/todo/correct-max-transact--1928",
         "Eval-authoring: the 2026-08-21 correction recorded the XDR-attribution claim from one source class (B) only, below the independent-class bar the golden-truth skill requires for a gospel change.",
-        "The 2026-08-04 correction attributed live numeric values to the v27 XDR schema instead of the live configuration."
+        "The 2026-08-04 correction attributed live numeric values to the v27 XDR schema instead of the live configuration.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-protocol-max-tx-set-size"

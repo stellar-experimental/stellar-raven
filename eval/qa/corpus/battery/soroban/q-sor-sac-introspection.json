@@ -10,7 +10,9 @@
     "answer": "A classic asset has a deterministic, network-specific reserved SAC address derived from `ENVELOPE_TYPE_CONTRACT_ID` plus network ID and nested `CONTRACT_ID_PREIMAGE_FROM_ASSET`; use `Asset.contractId(networkPassphrase)` or `stellar contract id asset`, never an ad-hoc `code:issuer` hash. The built-in instance is created on demand, not automatically for every reserved address. To identify a deployed SAC, read its `SCContractInstance.executable` and require current `CONTRACT_EXECUTABLE_STELLAR_ASSET`; SEP-41 methods alone prove only token compatibility. After SAC identity is established, public `name()` returns `native` or SEP-11 `CODE:G...`, and `symbol()` returns native/code, providing practical asset identity. There is no generic SEP-41 `asset()`/`issuer()` method. Do not infer issuer from `admin()`: issuer is initial admin, but `set_admin` makes current administration mutable. Deployment XDR, known-asset derivation, indexers, or implementation-level AssetInfo remain provenance alternatives; a C-address hash is not reversible.",
     "keyFacts": [
       "Uses current network-bound derivation and executableStellarAsset inspection.",
-      "Distinguishes public SAC name identity, absent generic issuer method, and mutable admin from original issuer."
+      "Uses the public SAC name for asset identity.",
+      "States that the generic token interface has no issuer method.",
+      "Treats the mutable admin as distinct from the original issuer."
     ],
     "avoid": [
       "Do NOT use obsolete CONTRACT_EXECUTABLE_TOKEN/old preimage names, infer SAC from SEP-41 methods alone, claim every reserved SAC is deployed, or treat admin as immutable issuer identity."
@@ -76,17 +78,23 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-a)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-43 primary 3311 and blind 3320.",
         "Structural re-form (symmetric-caution): Added a fixed-finding caution for cached or older Stellar documentation; truth is unchanged.",
         "Reviewed improvements/resolved.json entry sd-020 — fixed 2026-07-31; older documentation can show obsolete SAC XDR names or immutable issuer/admin identity.",
-        "Sibling sweep 2026-08-27: grep CONTRACT_EXECUTABLE_STELLAR_ASSET|CONTRACT_EXECUTABLE_TOKEN|CONTRACT_ID_PREIMAGE_FROM_ASSET|set_admin → q-comp-sac-inherits-flags, q-sor-sac-introspection; no contradiction"
+        "Sibling sweep 2026-08-27: grep CONTRACT_EXECUTABLE_STELLAR_ASSET|CONTRACT_EXECUTABLE_TOKEN|CONTRACT_ID_PREIMAGE_FROM_ASSET|set_admin → q-comp-sac-inherits-flags, q-sor-sac-introspection; no contradiction",
+        "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the current official guide says a verified SAC's name and symbol report wrapped-asset identity.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the current official guide says SEP-41 has no generic asset or issuer accessor.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the current official guide says the issuer is initial admin and set_admin can transfer authority.",
+        "Sibling sweep 2026-08-29: grep CONTRACT_EXECUTABLE_STELLAR_ASSET|generic SEP-41.*issuer|set_admin|SAC name → q-comp-sac-inherits-flags, q-sor-sac-introspection; no contradiction."
       ],
       "rootCause": [
         "improvements/stellar-docs/sd-020-sac-xdr-introspection-admin-drift.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-sor-sac-introspection"

@@ -52,19 +52,72 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "For a classic issued asset, the issuer account is the asset's authority, not a normal holder of its own credit.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets",
+            "note": "Exact quotes: ‘There is no dedicated operation to create an asset on Stellar.’ ‘To delete, or ‘burn’, an asset, you must send it back to the account that issued it.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "note": "Exact quote: ‘an issuing account can’t actually hold a balance of its own asset.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+classic+asset+issuer+balance+burn+create+asset",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar classic asset issuer balance burn create asset’. Top primary results: https://developers.stellar.org/docs/tokens/control-asset-access, https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets, https://developers.stellar.org/docs/tokens/how-to-issue-an-asset, and https://github.com/stellar/stellar-protocol/discussions/1598. Exact observed text: ‘an issuing account can’t actually hold a balance of its own asset’; ‘Sending an asset back to its issuing account is equivalent to burning it’; ‘There is no dedicated operation to create an asset on Stellar.’ No primary result contradicted the claims."
+          }
+        ]
+      },
+      {
+        "claim": "It is not a normal user payment, does not require the affected holder's signature, and does not create a spendable issuer balance.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "note": "Exact quote: ‘an issuing account can’t actually hold a balance of its own asset.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "note": "Exact quotes: clawback operations ‘allow an asset issuer to burn a specific amount of a clawback-enabled asset’; every ‘subsequent trustline’ receives the clawback flag; ‘you cannot retroactively enable clawback on existing trustlines.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+classic+asset+issuer+balance+burn+create+asset",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar classic asset issuer balance burn create asset’. Top primary results: https://developers.stellar.org/docs/tokens/control-asset-access, https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets, https://developers.stellar.org/docs/tokens/how-to-issue-an-asset, and https://github.com/stellar/stellar-protocol/discussions/1598. Exact observed text: ‘an issuing account can’t actually hold a balance of its own asset’; ‘Sending an asset back to its issuing account is equivalent to burning it’; ‘There is no dedicated operation to create an asset on Stellar.’ No primary result contradicted the claims."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Structural re-form (compound-predicate): Split supply and return mechanics, shortened clawback, and moved the issuer-balance trap to avoid; the truth is unchanged.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed issued classic balances outside the issuer.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets — showed that returning an asset to its issuer burns it.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — showed holder-balance removal under clawback-enabled issuer controls.",
-        "Sibling sweep 2026-08-27: grep burn|redemption|clawback|issuer balance → q-aas-issuer-fees-supply-cap-freeze, q-sep-clawback-prereq-flag, q-comp-clawback-cap0035, q-comp-clawback-holder-risk; no contradiction"
+        "Sibling sweep 2026-08-27: grep burn|redemption|clawback|issuer balance → q-aas-issuer-fees-supply-cap-freeze, q-sep-clawback-prereq-flag, q-comp-clawback-cap0035, q-comp-clawback-holder-risk; no contradiction",
+        "Corroboration audit 2026-08-29: added 2 row(s) for issuer accounting and clawback balance effects; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 2 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-aas-burn-clawback-redemption-mechanics"

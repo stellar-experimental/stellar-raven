@@ -7,7 +7,7 @@
   "golden": {
     "answer": "Fetch the full current open set with scout.getRfps({status:\"open\"}), then locally filter titles, descriptions, and technical requirements for related passkey and smart-account concepts. A q-filtered call may supplement but not replace the exhaustive open-set scan. Cite deliverables and dated round metadata. Do not infer that a matching open brief proves an SCF full-proposal window is open.",
     "keyFacts": [
-      "Fetches the full open RFP set first, then locally filters related passkey/smart-account concepts.",
+      "Fetches the full open RFP set first for local passkey/smart-account filtering.",
       "Compares stated deliverables and cites each returned brief.",
       "Includes round as-of/verifyAt and scopes an empty result to the source.",
       "Separates brief status from the SCF round submission phase."
@@ -79,17 +79,21 @@
       }
     ],
     "verified": {
-      "date": "2026-08-18",
-      "by": "Todo 1659 accepted SCF primary research and blind Grok adversarial review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://communityfund.stellar.org/awards",
         "https://stellarlight.xyz/api/rfps?status=open",
         "catalog/manifest.json#scout.getRfps",
-        "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; exhaustive-set behavior and round-state caution remain consistent."
+        "Sibling sweep covered q-scf-open-rfps, q-scf-rfp-tooling, both dedicated current-round cases, and the other two live RFP cases; exhaustive-set behavior and round-state caution remain consistent.",
+        "Structural re-form (long-fact): Shortened one long retrieval fact; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/kalepail/stellar-raven/blob/main/catalog/manifest.json — the source contract exposes independent status and keyword filters, supporting a full status-open retrieval before local topic filtering.",
+        "Sibling sweep 2026-08-29: grep passkey.*RFP|smart-account.*RFP|full open RFP set|locally filters → q-scf-passkey-rfps-live only; no contradiction."
       ],
       "rootCause": [
-        "freshness-drift"
+        "freshness-drift",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "boxy sl-funding-smart-account-passkey-rfps"

@@ -1,1 +1,106 @@
-{"id":"q-ass-cross-bando-stablebonds-sac","question":"Which SCF-funded project proposed tokenized CETES for Mexican SMEs and, according to Scout, uses Etherfuse Stablebonds? If those are classic Stellar assets, how can a Soroban contract access them?","surface":["lumenloop.get_scf_submissions","scout.searchProjects","skills.stellar-dev.assets"],"golden":{"answer":"The project is Bando. Lumenloop's SCF record shows its SCF #42 Build submission titled 'Tokenized CETES for SMEs in Mexico,' and Scout lists Bando as a live, SCF-funded B2B treasury platform that routes Mexican-company cash into tokenized CETES through Etherfuse Stablebonds. If a given Stablebond is issued as a classic Stellar asset, Soroban reaches it through that asset's deterministic Stellar Asset Contract (SAC) address. The SAC exposes the SEP-41 token interface, so a contract can use a token client for operations such as `balance`, `transfer`, `approve`, and `allowance` after applying the required authorization. The conditional matters: this explains the classic-asset bridge and does not assert every Etherfuse product's issuance model.","keyFacts":["Identifies Bando and the SCF #42 Build submission 'Tokenized CETES for SMEs in Mexico.'","Uses Scout to state that Bando is a live SCF-funded treasury platform using Etherfuse Stablebonds for Mexican CETES exposure.","Explains that a classic Stellar asset is accessed from Soroban through its deterministic SAC address and SEP-41 token interface."],"avoid":["Do NOT identify Etherfuse itself as the SCF #42 Bando submission.","Do NOT claim every Stablebond is necessarily a classic asset; the SAC answer is conditional on that issuance form."],"notes":"The project/grant identity and the technical bridge are separate mandatory halves."},"tags":{"category":"assets-anchors-seps","service":"scout","freshness":"scheduled"},"truth":{"domain":"mixed","status":"confirmed","asOf":"2026-07-11","reverifyBy":"2026-11-12","sources":[{"class":"C","ref":"http://localhost:8787/mcp — lumenloop.get_scf_submissions + scout.searchProjects, observed 2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy"},{"class":"B","ref":"skills.stellar-dev.assets#stellar-asset-contract-sac"},{"class":"A","ref":"https://developers.stellar.org/docs/tokens/stellar-asset-contract"}],"corroboration":[{"claim":"Bando's SCF #42 submission concerns tokenized CETES for Mexican SMEs and Scout links Bando's live product to Etherfuse Stablebonds.","verdict":"confirmed-as-of","evidence":[{"class":"C","ref":"lumenloop.get_scf_submissions(slug=bando) + scout.searchProjects(q=Bando)","observedAt":"2026-07-11"},{"class":"A","ref":"https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy","observedAt":"2026-07-11"}]},{"claim":"Soroban accesses a classic Stellar asset through its deterministic SAC, which implements SEP-41.","verdict":"confirmed","evidence":[{"class":"B","ref":"skills.stellar-dev.assets#stellar-asset-contract-sac","observedAt":"2026-07-11"},{"class":"A","ref":"https://developers.stellar.org/docs/tokens/stellar-asset-contract","observedAt":"2026-07-11"}]}],"verified":{"date":"2026-07-11","by":"P4 Lane X cross-service live composition probe","evidence":["http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md","Sibling sweep: Bando/Etherfuse/SAC cases reviewed; classic-asset condition made explicit"],"rootCause":["eval-authoring"]},"origin":"authored 2026-07 (cross-service)"}}
+{
+  "id": "q-ass-cross-bando-stablebonds-sac",
+  "question": "Which SCF-funded project proposed tokenized CETES for Mexican SMEs and, according to Scout, uses Etherfuse Stablebonds? If those are classic Stellar assets, how can a Soroban contract access them?",
+  "surface": [
+    "lumenloop.get_scf_submissions",
+    "scout.searchProjects",
+    "skills.stellar-dev.assets"
+  ],
+  "golden": {
+    "answer": "The project is Bando. Lumenloop's SCF record shows its SCF #42 Build submission titled 'Tokenized CETES for SMEs in Mexico,' and Scout lists Bando as a live, SCF-funded B2B treasury platform that routes Mexican-company cash into tokenized CETES through Etherfuse Stablebonds. If a given Stablebond is issued as a classic Stellar asset, Soroban reaches it through that asset's deterministic Stellar Asset Contract (SAC) address. The SAC exposes the SEP-41 token interface, so a contract can use a token client for operations such as `balance`, `transfer`, `approve`, and `allowance` after applying the required authorization. The conditional matters: this explains the classic-asset bridge and does not assert every Etherfuse product's issuance model.",
+    "keyFacts": [
+      "Identifies Bando and the SCF #42 Build submission 'Tokenized CETES for SMEs in Mexico.'",
+      "Scout describes Bando as a live, SCF-funded treasury platform.",
+      "Scout links Bando to Etherfuse Stablebonds for Mexican CETES exposure.",
+      "Soroban accesses a classic Stellar asset through its deterministic SAC address.",
+      "The SAC exposes the SEP-41 token interface."
+    ],
+    "avoid": [
+      "Do NOT identify Etherfuse itself as the SCF #42 Bando submission.",
+      "Do NOT claim every Stablebond is necessarily a classic asset; the SAC answer is conditional on that issuance form."
+    ],
+    "notes": "The project/grant identity and the technical bridge are separate mandatory halves."
+  },
+  "tags": {
+    "category": "assets-anchors-seps",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-07-11",
+    "reverifyBy": "2026-11-12",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "http://localhost:8787/mcp — lumenloop.get_scf_submissions + scout.searchProjects, observed 2026-07-11"
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy"
+      },
+      {
+        "class": "B",
+        "ref": "skills.stellar-dev.assets#stellar-asset-contract-sac"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Bando's SCF #42 submission concerns tokenized CETES for Mexican SMEs and Scout links Bando's live product to Etherfuse Stablebonds.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "lumenloop.get_scf_submissions(slug=bando) + scout.searchProjects(q=Bando)",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      },
+      {
+        "claim": "Soroban accesses a classic Stellar asset through its deterministic SAC, which implements SEP-41.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "skills.stellar-dev.assets#stellar-asset-contract-sac",
+            "observedAt": "2026-07-11"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "observedAt": "2026-07-11"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "evidence": [
+        "http://localhost:8787/mcp search→execute transcript summarized in evidence-matrix.md",
+        "Sibling sweep: Bando/Etherfuse/SAC cases reviewed; classic-asset condition made explicit",
+        "Structural re-form (long-fact): split the Scout and SAC descriptions into four short facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://bando.cool/fintech3 and https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy — Bando's live site describes company treasury use, and the official SCF page verifies the project identity.",
+        "Live re-check 2026-08-29: https://communityfund.stellar.org/submissions/rec6A8ExCfeeCSeIy — the official submission states that Bando integrates Etherfuse on Stellar for CETES.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — official docs state that SAC has a deterministic reserved address and exposes classic assets to smart contracts.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/tokens/stellar-asset-contract — official docs state that the SAC interface includes SEP-41.",
+        "Sibling sweep 2026-08-29: grep Bando|Etherfuse|deterministic SAC|SEP-41 token interface → q-ass-cross-bando-stablebonds-sac, q-ass-cross-etherfuse-cetes-controls, q-asset-trustline-vs-sac, q-defi-cross-blend-rivool-sac, q-defi-etherfuse-stablebonds, q-ti-testnet-usdc-faucet, q-tool-cctp-stellar-integration, q-sor-sep41-transfer-vs-transferfrom, q-anchor-list-builders-discovery, q-comp-yieldblox-oracle-incident, q-crp-anchors-by-corridor, q-rwa-projects-tokenizing-stellar, and q-soroban-oracle-defensive-consumption; no contradiction."
+      ],
+      "rootCause": [
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+      ]
+    },
+    "origin": "authored 2026-07 (cross-service)"
+  }
+}

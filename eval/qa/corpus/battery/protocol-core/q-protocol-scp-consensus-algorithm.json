@@ -9,7 +9,9 @@
     "keyFacts": [
       "Names the Stellar Consensus Protocol (SCP) as Stellar's consensus mechanism.",
       "States SCP is a construction of Federated Byzantine Agreement (FBA).",
-      "Explains FBA reaches agreement via user-defined quorum sets / trusted nodes, NOT mining hashpower (PoW) or staked capital (PoS)."
+      "FBA reaches agreement through user-defined quorum sets.",
+      "PoW relies on mining hashpower, not FBA quorum sets.",
+      "PoS relies on staked capital, not FBA quorum sets."
     ],
     "avoid": [
       "Do NOT claim Stellar uses Proof-of-Work or mining.",
@@ -38,18 +40,47 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "There are no monetary or block rewards for running a Stellar validator; participation is not incentivized by staking or mining.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+            "note": "Exact quotes: ‘no central authority dictates whose vote is required for consensus.’ ‘There are no monetary rewards for being a validator on the Stellar network.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.google.com/search?q=Stellar+SCP+proof+of+agreement+validator+rewards+staking",
+            "observedAt": "2026-08-29",
+            "note": "Dated web sweep query: ‘Stellar SCP proof of agreement validator rewards staking’. Top primary results: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol, https://stellar.org/blog/ecosystem/becoming-a-stellar-validator, and https://stellar.org/blog/ecosystem/the-hidden-risks-of-proof-of-stake. Exact observed text: SCP is ‘a proof of agreement protocol’; validators ‘will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees’; ‘The Stellar network provides no monetary rewards for validators.’ No primary result contradicted the claims."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-04",
-      "by": "Full golden QA scope correction; accepted in Todo 1347 c3625/c3627",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-protocol-stellar-core-what-is",
         "https://github.com/stellar/stellar-core",
-        "https://developers.stellar.org/docs/networks/software-versions"
+        "https://developers.stellar.org/docs/networks/software-versions",
+        "Structural re-form (long-fact): split trusted-node agreement from the PoW and PoS comparisons; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — FBA relies on agreement among user-selected trusted nodes.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — Proof-of-Work relies on computational mining power instead of trusted-node agreement.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — Proof-of-Stake relies on staking power instead of trusted-node agreement.",
+        "Sibling sweep 2026-08-29: grep Federated Byzantine|Proof-of-Work|Proof-of-Stake|validator rewards → q-hist-scp-rewrite-2015, q-edge-noinfo-stellar-pos-staking-rewards, q-raph-xlm-staking, q-defi-liquid-staking-whitespace, and q-protocol-scp-consensus-algorithm; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for absence of validator monetary incentives; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
         "eval-authoring",
-        "Removed an unrelated stellar-core implementation fact that the question and golden answer did not ask for."
+        "Removed an unrelated stellar-core implementation fact that the question and golden answer did not ask for.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-scp-consensus-algorithm"

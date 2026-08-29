@@ -7,9 +7,10 @@
   "golden": {
     "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nStellar has no network-wide switch, CLI flag, or account setting that makes all payments shielded by default. Ordinary Stellar transactions and standard asset/token activity are public by default. Privacy requires an explicit application or token protocol: current official material describes privacy pools and a **Testnet Confidential Tokens developer preview**; Confidential Tokens hide balances and transfer amounts but leave sender/receiver addresses public, while Stellar Private Payments is an unaudited research prototype with different visibility boundaries. BLS12-381 (CAP-0059/P22) and BN254/Poseidon (CAP-0074/0075/P25) are cryptographic primitives, not a global privacy mode. State each product's network, audit, and field-visibility status; do not fabricate enablement steps.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Rejects a global shielded-by-default toggle and scopes transparency to ordinary/default activity."
+      "Stellar has no global shielded-by-default transaction mode.",
+      "Scopes public transparency to ordinary and default Stellar activity."
     ],
     "avoid": [
       "Do NOT invent an enablement command or claim Stellar is shielded by default.",
@@ -71,18 +72,25 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-25 primary 3268 and blind 3273; both independently confirmed product/network/audit/field-visibility boundaries.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): shortened the source rule and split the default-privacy boundary; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/privacy supplies current official privacy guidance and product states.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar makes the preview date and deployment state visible.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/privacy describes Stellar as public and privacy as optional application tooling rather than a global mode.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar states that standard activity is public by default while optional products hide selected fields.",
+        "Sibling sweep 2026-08-29: grep shielded-by-default|global privacy|ordinary.*public|Privacy on Stellar|Confidential Tokens → q-scf-confidential-tokens-preview, q-sor-confidential-tokens, and q-edge-noinfo-stellar-native-privacy-default; no contradiction."
       ],
       "rootCause": [
         "Eval-side freshness and layer-boundary drift; official docs are current and discoverable.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-edge-noinfo-stellar-native-privacy-default"

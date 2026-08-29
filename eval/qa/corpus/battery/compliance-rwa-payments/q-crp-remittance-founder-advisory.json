@@ -7,11 +7,11 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-06-29, the verified sources supported this observed answer:\n\nStellar can be a good settlement layer for a remittance business because it gives fast settlement, standardized anchor protocols, and liquid stablecoin rails, but it is not a complete remittance company by itself. A real corridor needs: source on-ramp, customer onboarding/KYC, settlement asset, FX/quote path, destination off-ramp, liquidity/float, sanctions/fraud controls, reconciliation, refunds, customer support, and legal/compliance coverage in each jurisdiction.\n\nMap rails to the job. SEP-1 lets wallets discover anchor metadata; SEP-10 authenticates account control; SEP-12 handles KYC/customer data; SEP-24/SEP-6 handle deposit and withdrawal flows; SEP-31 handles cross-border payments; SEP-38 gives price/FX quotes. MoneyGram Access is an example of a USDC cash-in/cash-out integration using SEP-10 and SEP-24, not proof that every remittance corridor is available.\n\nStablecoin choice should be corridor-specific: use issuer quality, liquidity, redemption, geography, compliance fit, and anchor support rather than defaulting universally to XLM or one stablecoin. Most founders should first integrate existing anchors/ramp partners in a narrow corridor, measure quote quality and failure handling, and only become an anchor where owning licensing, payout rails, liquidity, and support creates an advantage.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Dates each specific source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Frames Stellar as useful for fast low-cost settlement but not a complete remittance business by itself.",
-      "Explains the corridor design needs source on-ramp, Stellar settlement asset, FX/quote path, destination off-ramp, KYC/AML/sanctions, liquidity, reconciliation, and customer support (the business architecture, not just a protocol).",
-      "Drives stablecoin selection by issuer quality, liquidity, destination/geography, redemption, and regulatory fit (e.g. USDC vs EURC vs a local-currency stablecoin) rather than defaulting to XLM or one asset universally."
+      "Frames Stellar as fast, low-cost settlement, not a complete remittance business.",
+      "Requires a complete remittance corridor, not only a protocol.",
+      "Chooses stablecoins by issuer, liquidity, geography, redemption, and regulatory fit."
     ],
     "avoid": [
       "Do NOT give legal or licensing advice as definitive for all jurisdictions.",
@@ -51,22 +51,59 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Stellar can be a good settlement layer for a remittance business because it gives fast settlement, standardized anchor protocols, and liquid stablecoin rails, but it is not a complete remittance company by itself.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/overview",
+            "note": "Exact quote: ‘This documentation includes sections on how to build applications’ with the Wallet SDK.",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/anchors",
+            "note": "Exact quote: anchors are ‘on and off-ramps that connect the Stellar network to traditional financial rails.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/ecosystem/sep-0031.md",
+            "observedAt": "2026-08-29",
+            "note": "Exact source defines ‘a protocol for enabling payments between two financial accounts’ and requires separate Sending and Receiving Anchor businesses."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "Preserved main's 2026-06-29 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep remittance business|stablecoin choice|corridor → q-crp-anchors-by-corridor, q-crp-remittance-founder-advisory, q-hist-remittance-corridors, q-sep6-sep24-sep31-choice; no contradiction"
+        "Sibling sweep 2026-08-27: grep remittance business|stablecoin choice|corridor → q-crp-anchors-by-corridor, q-crp-remittance-founder-advisory, q-hist-remittance-corridors, q-sep6-sep24-sep31-choice; no contradiction",
+        "Structural re-form (long-fact): Shortened the dated-observation, settlement, corridor, and stablecoin-selection facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the official page supplies current, source-supported anchor and remittance-rail facts.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/anchors — the live page lists changeable anchor services and integration paths that need an as-of date.",
+        "Live re-check 2026-08-29: https://stellar.org/learn/what-are-stablecoins — the official page confirms Stellar's fast, low-cost settlement properties and relies on external ramps.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md — SEP-31 confirms distinct sending and receiving anchors, financial accounts, assets, fees, rates, and business relationships.",
+        "Live re-check 2026-08-29: https://www.circle.com/current/the-stablecoin-trap-issuing-a-stablecoin-without-the-infrastructure-to-run-one — the issuer page confirms liquidity, redemption, global distribution, and regulatory footprint as stablecoin factors.",
+        "Sibling sweep 2026-08-29: grep remittance business|stablecoin selection|settlement asset|corridor design → q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-sep6-sep24-sep31-choice, q-crp-remittance-founder-advisory; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for settlement-layer versus remittance-company boundary; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
       ],
       "rootCause": [
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-crp-remittance-founder-advisory"

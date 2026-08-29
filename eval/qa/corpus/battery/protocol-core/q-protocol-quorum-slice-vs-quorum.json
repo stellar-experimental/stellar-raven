@@ -8,9 +8,10 @@
   "golden": {
     "answer": "- **Quorum set**: the set of other nodes a given node chooses to trust — its configured trust list, with a **threshold** (the minimum number of those trusted nodes that must agree) [1].\n- **Quorum slice**: a threshold-sized **subset** of a node's quorum set that is sufficient to convince *that* node to agree [1].\n- **Quorum**: a set of nodes sufficient to reach **network-wide** agreement, where each node in the set has at least one of its quorum slices contained in the set [1].\n- Quorums form through nodes' **overlapping / intersecting slices**, which enables open membership — each node configures its own quorum set, with **no central authority** assigning it [1].\n- A **blocking set** is a subset of nodes that can prevent the network from reaching agreement [1].",
     "keyFacts": [
-      "Defines a quorum set as the set of other nodes a given node chooses to trust (its configured trust list).",
-      "Defines a quorum slice as a threshold-sized subset of a node's quorum set sufficient to convince that node to agree.",
-      "Defines a quorum as a set of nodes sufficient to reach network agreement, where each node has a quorum slice in the set."
+      "A quorum set is a node's configured set of trusted nodes.",
+      "A quorum slice is a sufficient threshold subset of one node's quorum set.",
+      "A quorum is a node set sufficient for network agreement.",
+      "Each quorum member has a quorum slice within that set."
     ],
     "avoid": [
       "Do NOT define a quorum slice as the global set of all validators or a fixed network-wide committee.",
@@ -34,11 +35,43 @@
         "note": "class inferred at migration"
       }
     ],
+    "corroboration": [
+      {
+        "claim": "Quorums form through nodes' overlapping / intersecting slices, which enables open membership — each node configures its own quorum set, with no central authority assigning it.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+            "note": "Exact quotes: ‘no central authority dictates whose vote is required for consensus.’ ‘There are no monetary rewards for being a validator on the Stellar network.’",
+            "observedAt": "2026-08-29"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/docs/stellar-core_example.cfg",
+            "observedAt": "2026-08-29",
+            "note": "Exact source calls `QUORUM_SET` ‘this server's quorum set’; operators select validators, nested sets, and thresholds in their own configuration."
+          }
+        ]
+      }
+    ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "GT-33-passphrases-operations-parallel-passkeys-consensus accepted in Solo scratchpad 575 rev 291",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, corroboration lane, worker gt3-sol-a)",
       "evidence": [
-        "solo://proj/49/scratchpad/truth-maintenance-20--575"
+        "solo://proj/49/scratchpad/truth-maintenance-20--575",
+        "Structural re-form (long-fact): shortened the quorum-set and slice definitions and split the quorum definition; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — each Core node chooses its trusted quorum set.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — a quorum slice is a threshold combination within one node's quorum set.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — a quorum is sufficient for network agreement.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — each quorum node belongs to a quorum slice within the set.",
+        "Sibling sweep 2026-08-29: grep quorum slice|quorum set|blocking set → q-hist-scp-rewrite-2015, q-protocol-cap-process, q-protocol-scp-consensus-algorithm, q-protocol-tier1-requirements, and q-protocol-quorum-slice-vs-quorum; no contradiction",
+        "Corroboration audit 2026-08-29: added 1 row(s) for decentralized quorum-set configuration; class agreement Sol+Grok",
+        "Final-review fix 2026-08-29: added a second evidence class to 1 corroboration row(s) (Grok final review finding 1)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Audit sourcing-guard and corroboration warning classes"
       ]
     },
     "origin": "raven-next q-protocol-quorum-slice-vs-quorum"

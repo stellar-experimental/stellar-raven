@@ -11,8 +11,8 @@
   "golden": {
     "answer": "**DeFindex** is noncustodial multi-token vault/yield infrastructure on Soroban, with vault and strategy contracts, a factory/GUI, REST API, TypeScript and Flutter SDKs, dfToken vault shares, partner fees, sponsored transactions, and integration/zapper support. Its operator strategy endpoint exposed seven BlendStrategy adapters on 2026-07-10; those are adapters, not seven distinct end-user products.\n\nCurrent TVL is available but source-relative: operator site **$16.57M**, DeFiLlama about **$16.49M**, Scout **$16.386M as of 2026-07-09**, and Dune's week-of-2026-07-06 series about **$16.255M**. Describe this as an approximate dated $16.26M-$16.57M range unless methodologies are reconciled. Do not select one as timeless truth or repeat the operator's older undated $1.1M headline.",
     "keyFacts": [
-      "Describes DeFindex's current noncustodial vault/API/SDK/dfToken surface from operator sources.",
-      "Reports dated TVL sources and methodology disagreement rather than claiming no figure exists or freezing one number."
+      "Uses current operator sources for DeFindex's noncustodial vault, API, SDK, and dfToken.",
+      "Reports dated TVL sources and methodology disagreement without freezing one figure."
     ],
     "avoid": [
       "Do NOT say current TVL is unavailable, repeat an undated $1.1M value, or turn one snapshot into permanent truth.",
@@ -78,14 +78,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-09",
-      "by": "Golden-truth sweep import — GT-15 lanes found the inherited 'current TVL is not surfaced' answer stale. Multiple current sources and an operator strategy API now exist, with a modest source/methodology range that must be disclosed rather than denied or collapsed.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Operator $16.57M; DeFiLlama ~$16.49M; Scout $16.386M asOf 2026-07-09; Dune weekly $16.255M",
-        "Solo scratchpad 575 GT-15 processes 3243/3246"
+        "Solo scratchpad 575 GT-15 processes 3243/3246",
+        "Structural re-form (long-fact): Shortened the operator-surface and methodology-aware TVL facts; the existing answer and avoid item retain the unavailable-figure guard; truth unchanged.",
+        "Live re-check 2026-08-29: https://www.defindex.io/ and https://docs.defindex.io/llms.txt — operator sources expose noncustodial vaults, an API, an SDK, and dfToken guidance.",
+        "Live re-check 2026-08-29: https://www.defindex.io/api/strategies and https://api.llama.fi/tvl/defindex — live sources expose current but source-specific TVL data, so dated methodology-aware reporting remains required.",
+        "Sibling sweep 2026-08-29: grep DeFindex.*dfToken|dfToken|methodology disagreement|undated $1.1M → q-defi-defindex-honest; no sibling contradiction"
       ],
       "rootCause": [
-        "eval-side no-information snapshot outlived new live API/TVL evidence"
+        "eval-side no-information snapshot outlived new live API/TVL evidence",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-defi-defindex-honest"

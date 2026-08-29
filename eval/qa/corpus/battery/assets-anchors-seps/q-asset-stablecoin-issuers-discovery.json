@@ -10,7 +10,7 @@
   "golden": {
     "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live stablecoin-issuer search returned 38 matches, with Circle, Glo Dollar, and Coins.ph among the first results.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents source-supported content as a current or dated observation, not a memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names Circle (USDC and EURC) as the dominant stablecoin issuer on Stellar."
     ],
@@ -65,8 +65,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-c)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Class C 2026-08-19: https://stellarlight.xyz/api/stablecoins?limit=100 returned meta.dataAsOf 2026-08-19T18:57:38.745Z, coverage.basis curated-registry, and separate live rows for Circle USDC, Circle EURC, and MyKobo EURC. The filtered USD read returned counts.total 6 and counts.returned 6 while counts.tracked stayed 20.",
         "Class A 2026-08-19: https://developers.circle.com/stablecoins/usdc-contract-addresses lists Stellar Mainnet USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
@@ -78,13 +78,17 @@
         "Sibling sweep 2026-08-27: grep sls-066|curated-registry → q-eco-stablecoins-on-stellar; no contradiction",
         "Structural re-form (presentation-avoid): rewrote two presentational avoid items as the same concrete false-content claims; both trap targets are unchanged.",
         "No live re-check was required because the avoid rewrites do not change the forbidden claims.",
-        "Sibling sweep 2026-08-27: grep curated-registry|stablecoin issuers|Circle USDC → q-eco-stablecoins-on-stellar, q-asset-usdc-eurc-issuer; no contradiction"
+        "Sibling sweep 2026-08-27: grep curated-registry|stablecoin issuers|Circle USDC → q-eco-stablecoins-on-stellar, q-asset-usdc-eurc-issuer; no contradiction",
+        "Structural re-form (long-fact): shortened the source-supported observation rule; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/products-and-tools/circle-usdc-eurc — the current official page confirms Circle's USDC and EURC examples on Stellar.",
+        "Sibling sweep 2026-08-29: grep Circle.*USDC|stablecoin issuers → q-asset-stablecoin-issuers-discovery only in this battery directory; no sibling contradiction."
       ],
       "rootCause": [
         "improvements/resolved.json entry sls-066",
         "solo://proj/49/scratchpad/truth-maintenance-an--835",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-asset-stablecoin-issuers-discovery",

@@ -8,11 +8,11 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nCurrent SCF Build has three tracks: **Open, Integration, and RFP**; Resubmission is a path, not a fourth track. **Open** is for experienced builders proposing novel Stellar protocols/apps and may include existing traction or deep demonstrated technical knowledge; its project award decision is the only one of the three that goes to community/NQG vote. **Integration** funds work on existing Stellar building blocks or teams with significant traction. Community input may help select Integration building blocks, but individual Integration awards are reviewer/panel decisions. **RFP** funds work against published ecosystem tooling/service needs and is also reviewer/panel selected. Current cap and typical duration are up to $150K in XLM value and roughly 3–6 months.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents the content as a current or dated source-supported observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
       "Names Open, Integration, and RFP.",
       "Treats Resubmission as a path.",
-      "Distinguishes Open project voting from reviewer decisions and from community input on Integration building blocks."
+      "Distinguishes Open project votes, Integration input, and reviewer award decisions."
     ],
     "avoid": [
       "Do NOT call Open brand-new-build-only or invent a fourth Build track.",
@@ -74,22 +74,30 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (presentation-avoid batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-36 primary 3290 and blind 3291.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded the live-roster presentation trap as a concrete false claim; the trap target and truth are unchanged.",
         "No live re-check needed: wording-only avoid-item re-form; the trap target is unchanged.",
-        "Sibling sweep 2026-08-27: grep Open track|Integration track|RFP track → q-scf-build-tracks, q-scf-how-to-apply, q-scf-nqg-voting, q-scf-open-rfps; no contradiction"
+        "Sibling sweep 2026-08-27: grep Open track|Integration track|RFP track → q-scf-build-tracks, q-scf-how-to-apply, q-scf-nqg-voting, q-scf-open-rfps; no contradiction",
+        "Structural re-form (long-fact): Shortened the source-presentation and voting distinctions; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current handbook supports a source-grounded observation of the Build tracks and process.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current handbook shows changeable track, process, award, and duration content that requires a visible observation date.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the handbook names Open, Integration, and RFP as the three Build tracks.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the handbook presents resubmission after non-selection rather than as a fourth track.",
+        "Live re-check 2026-08-29: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/quarterly-governance-process — the review table separates Open project voting from panel-only Integration and RFP awards; the process gives community delegates Integration-list input.",
+        "Sibling sweep 2026-08-29: grep Open Track|Integration Track|RFP Track|Resubmission → q-scf-how-to-apply, q-scf-nqg-voting, q-scf-open-rfps, q-scf-eligibility-criteria, and q-scf-build-tracks; no contradiction"
       ],
       "rootCause": [
         "Eval-side shorthand collapsed track eligibility and the object of community input.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-scf-build-tracks"

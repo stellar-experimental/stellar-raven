@@ -7,7 +7,9 @@
   "golden": {
     "answer": "In **2015**, Stellar adopted the **Stellar Consensus Protocol**, authored by **David Mazières**, using Federated Byzantine Agreement and node-chosen quorum slices rather than PoW or PoS. SDF announced the paper/code on April 8, and its upgraded SCP network was live by **November 3, 2015**.\n\nWhy it replaced the earlier Ripple-derived design is historically disputed. SDF said the 2014 fork exposed weaknesses in the inherited system and motivated a new safety/liveness model. Ripple's contemporaneous response said Stellar's modified implementation/configuration did not demonstrate a flaw in Ripple consensus. Attribute those causal accounts rather than presenting one as uncontested.",
     "keyFacts": [
-      "Gets Mazières/FBA/2015 paper-and-rollout history right and explicitly attributes the disputed fork causation."
+      "Attributes the 2015 paper to Mazières.",
+      "Identifies FBA and the 2015 rollout.",
+      "Attributes the disputed fork causation."
     ],
     "avoid": [
       "Do NOT call SCP PoW/PoS, misattribute authorship/year, or state SDF's fork explanation as uncontested fact."
@@ -73,18 +75,24 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (symmetric-caution batch, worker gt-sol-b)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "Solo scratchpad 575 GT-27 primary 3270 and blind 3272.",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for the SDF-only fork account; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/lumenloop/ll-016-historical-dispute-provenance.md — disputed single-source causation for the 2014 fork and 2015 rewrite.",
-        "Sibling sweep 2026-08-27: grep 2014 fork|SCP rewrite|Mazières|Ripple-derived → q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm; no contradiction"
+        "Sibling sweep 2026-08-27: grep 2014 fork|SCP rewrite|Mazières|Ripple-derived → q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm; no contradiction",
+        "Structural re-form (long-fact): split authorship, FBA/rollout history, and disputed causation; truth unchanged.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/stellar-consensus-protocol-proof-code credits the 2015 paper to David Mazières.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/stellar-consensus-protocol-proof-code and https://stellar.org/blog/developers/upgraded-network-is-here confirm FBA and the 2015 rollout.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/safety-liveness-and-fault-tolerance-consensus-choice and https://xrpl.org/blog/2014/why-the-stellar-forking-issue-does-not-affect-ripple retain the parties' conflicting causal accounts.",
+        "Sibling sweep 2026-08-29: grep Mazières|2014 fork|SCP rewrite|Ripple-derived|2015 rollout → q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm, and q-hist-scp-rewrite-2015; no contradiction."
       ],
       "rootCause": [
         "Secondary chronology collapsed a disputed causal narrative into settled fact.",
         "improvements/lumenloop/ll-016-historical-dispute-provenance.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-hist-scp-rewrite-2015"

@@ -8,9 +8,10 @@
   "golden": {
     "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nThere is no provider-independent 'safest bridge.' For Ethereum **Circle USDC → canonical Stellar USDC**, first verify a current native-burn/mint or native-liquidity route rather than assuming an Axelar label gives the same asset. On **2026-07-10**, tested routes differed:\n- Allbridge Next used **Circle CCTP** and delivered canonical Stellar USDC.\n- Allbridge Core used its native-liquidity/message path and also selected canonical Stellar USDC.\n- Squid's canonical-USDC quote used an **Intents/RFQ** provider, not Axelar.\n- An explicit Axelar quote delivered **USDC.axl**, a different contract representation—not Circle-native Stellar USDC.\n\nCCTP burns/mints native USDC; Axelar uses a validator/gateway interchain trust model; Allbridge Core adds liquidity-pool and messaging dependencies. Re-quote at execution time, inspect the messenger and destination issuer/SAC, verify fees/limits and Circle forwarder fields, use a Stellar destination address, and send a small test. MetaMask can be the EVM source wallet, but this audit did not verify MetaMask Bridge itself as the Stellar route. None of these observations is a safety guarantee.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation rather than as an unsupported memory claim.",
+      "Presents source-supported content as a current or dated observation, not a memory claim.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Compares CCTP, Axelar, Allbridge Core, and intent/RFQ trust assumptions without guaranteeing safety."
+      "Compares CCTP, Axelar, Allbridge Core, and intent/RFQ trust assumptions.",
+      "Does not guarantee bridge safety."
     ],
     "avoid": [
       "Do NOT claim an Axelar route currently yields Circle-native Stellar USDC without inspecting the destination token.",
@@ -89,19 +90,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
       "evidence": [
         "Solo scratchpad 575 GT-15 primary 3243 and blind 3246",
         "Quote-time checks: canonical Stellar USDC via CCTP/Allbridge Core/Squid Intents; explicit Axelar route produced USDC.axl",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Structural re-form (long-fact): split and shortened the facts without changing the required claims; truth unchanged.",
+        "Live re-check 2026-08-29: https://docs.axelar.dev/learn/security/ — the current dated primary security page supports a sourced observation rather than a memory claim.",
+        "Live re-check 2026-08-29: https://core.api.allbridgecoreapi.net/token-info?filter=all — the live provider inventory demonstrates that route and token rosters require an as-of date.",
+        "Live re-check 2026-08-29: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar, https://docs.axelar.dev/learn/security/, https://core.api.allbridgecoreapi.net/token-info?filter=all, and https://docs.squidrouter.com/api-and-sdk-integration/coral-intent-swaps/become-a-solver — the primary sources document native CCTP burn/mint, Axelar validators and gateways, Allbridge Core routes, and intent/RFQ solvers.",
+        "Live re-check 2026-08-29: https://docs.axelar.dev/learn/security/ — Axelar's risk and security documentation supports analysis, not a bridge-safety guarantee.",
+        "Sibling sweep 2026-08-29: grep CCTP|Axelar|Allbridge Core|intent/RFQ → q-cctp-v2-usdc-stellar, q-defi-allbridge-what-is, q-defi-bridge-evm-to-stellar-axelar, q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration; no contradiction."
       ],
       "rootCause": [
         "eval-side route abstraction conflated provider brand, messenger, and destination token representation",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-defi-bridge-evm-to-stellar-axelar"

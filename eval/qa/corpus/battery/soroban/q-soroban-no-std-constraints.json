@@ -10,7 +10,9 @@
     "answer": "Soroban contracts use `#![no_std]`; `std` and `std::collections` are unavailable, and floating-point types are unsupported. Prefer host-backed `soroban_sdk::Vec`, `Map`, `Bytes`, `Symbol`, and related types. Guest allocation is off by default, but the SDK's `alloc` feature or a custom allocator can enable `alloc` types at CPU/code-size cost, so heap allocation is not impossible. Contracts can read consensus ledger time and use `Env::prng`; that PRNG is public/validator-influenceable and must not be treated as secret or unbiased randomness.",
     "keyFacts": [
       "Explains no_std/std/floating-point limits and the preferred host-backed SDK types.",
-      "States that allocation is optional and that ledger time/Env PRNG exist with security limitations."
+      "Allocation is optional.",
+      "Contracts can read consensus ledger time.",
+      "`Env::prng` exists with security limitations."
     ],
     "avoid": [
       "Do NOT claim `std` or floating point is supported.",
@@ -70,13 +72,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer correctly said no_std and no floating point, but falsely made heap allocation impossible and denied contract-accessible time/randomness. SDK allocation is optional; Env exposes ledger time and PRNG with security caveats.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
-        "Solo scratchpad 575 GT-46 primary 3326 and independent blind 3329; both confirmed alloc support and blind preserved the time/PRNG nuance."
+        "Solo scratchpad 575 GT-46 primary 3326 and independent blind 3329; both confirmed alloc support and blind preserved the time/PRNG nuance.",
+        "Structural re-form (long-fact): Split allocation, ledger time, and PRNG constraints; truth unchanged.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.0/soroban-sdk/src/alloc/mod.rs — the SDK source says the `alloc` feature is optional and disabled by default.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.0/soroban-sdk/src/ledger.rs — the SDK source exposes the consensus ledger close timestamp through `env.ledger().timestamp()`.",
+        "Live re-check 2026-08-29: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v27.0.0/soroban-sdk/src/env.rs — the SDK source exposes `Env::prng` and warns against security-sensitive use.",
+        "Sibling sweep 2026-08-29: grep no_std|Env::prng|ledger time|dynamic memory allocation → q-soroban-wasm-language, q-soroban-wasm-size-limit, q-sor-doc-timestamping-manage-data, q-sor-recurring-escrow-patterns, and q-soroban-no-std-constraints; no contradiction"
       ],
       "rootCause": [
-        "Stale documentation absolute ('no allocator') and deterministic-execution shorthand were copied into the golden as impossibility claims."
+        "Stale documentation absolute ('no allocator') and deterministic-execution shorthand were copied into the golden as impossibility claims.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-no-std-constraints"

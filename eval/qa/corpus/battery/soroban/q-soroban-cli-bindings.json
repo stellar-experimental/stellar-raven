@@ -8,7 +8,9 @@
   "golden": {
     "answer": "Use the language-specific subcommand. In Stellar CLI 27.0.0, TypeScript is implemented as `stellar contract bindings typescript --output-dir <dir> (--wasm <file> | --wasm-hash <hash> | --contract-id <C…>)`. Rust binding generation is implemented only from local `--wasm` and emits Rust source; for an on-chain Rust target, first fetch/export the exact Wasm and generate from that file. Python, Java, Flutter, Swift, and PHP appear as subcommands but currently exit as not implemented and direct users to external tooling—do not present them as built-in generators. Bindings snapshot the selected embedded spec and must be regenerated after interface changes. `contractimport!` is the separate in-contract Rust typed-client pattern; EVM ABI JSON/ethers is irrelevant.",
     "keyFacts": [
-      "Gives the exact CLI-27 TypeScript versus Rust input matrix and placeholder-language boundary.",
+      "CLI 27 TypeScript bindings accept Wasm, Wasm hash, or contract ID input.",
+      "CLI 27 Rust bindings accept only local Wasm input.",
+      "CLI 27 placeholder language commands are not built-in generators.",
       "Explains spec snapshot/regeneration and contractimport! distinction."
     ],
     "avoid": [
@@ -70,13 +72,19 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited answer presented placeholder language subcommands and TypeScript input options as universally implemented CLI generators.",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
-        "Solo scratchpad 575 GT-44 processes 3316/3324; stellar 27.0.0 empirical run."
+        "Solo scratchpad 575 GT-44 processes 3316/3324; stellar 27.0.0 empirical run.",
+        "Structural re-form (long-fact): Split the CLI 27 language input matrix into three facts; truth unchanged.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-cli/blob/v27.0.0/cmd/soroban-cli/src/commands/contract/bindings/typescript.rs — the tagged CLI 27 source accepts Wasm, Wasm hash, or contract ID input for TypeScript bindings.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-cli/blob/v27.0.0/cmd/soroban-cli/src/commands/contract/bindings/rust.rs — the tagged CLI 27 Rust source accepts only local Wasm input.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-cli/tree/v27.0.0/cmd/soroban-cli/src/commands/contract/bindings — the tagged CLI 27 placeholder-language modules return not-implemented errors and direct users to external tooling.",
+        "Sibling sweep 2026-08-29: grep bindings typescript|bindings rust|placeholder language|contractimport → q-ti-bindings-to-nextjs-integration; no contradiction."
       ],
       "rootCause": [
-        "CLI capability drift/local golden overgeneralization."
+        "CLI capability drift/local golden overgeneralization.",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-soroban-cli-bindings"

@@ -9,9 +9,10 @@
   "golden": {
     "answer": "Treat unlimited local execution only as a debugging aid; public networks enforce CPU, memory, ledger-footprint, transaction-size, and fee constraints. Simulate the exact transaction against the target network, inspect the returned resource estimates, and optimize the verifier and its public inputs. Prefer matching native host functions over pure-Wasm curve arithmetic, avoid large embedded tables, and choose a proof system whose verification fits current network limits. Recheck limits and fees rather than pinning old constants.",
     "keyFacts": [
-      "Unlimited local limits do not represent the enforced resource budget on testnet or mainnet.",
-      "The exact verification transaction should be simulated against the target network and its resource estimates inspected.",
-      "Native matching cryptographic host functions and smaller verifier inputs generally reduce resource use versus pure-Wasm cryptography."
+      "Unlimited local limits differ from testnet and mainnet resource budgets.",
+      "Simulate the exact verifier transaction against the target network.",
+      "Inspect the returned resource estimates.",
+      "Matching native host functions and smaller inputs generally reduce resource use."
     ],
     "avoid": [
       "A verifier that works with unlimited local limits is guaranteed to fit mainnet.",
@@ -122,11 +123,20 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H2 primary+blind (Solo 3411/3412)",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/zk",
-        "https://github.com/stellar/stellar-core/blob/master/docs/software/security-protocol-release-notes.md"
+        "https://github.com/stellar/stellar-core/blob/master/docs/software/security-protocol-release-notes.md",
+        "Structural re-form (long-fact): shortened the network-budget and native-function facts and split simulation from estimate inspection; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — public smart-contract transactions have validator-set per-transaction resource limits.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — the target RPC simulates the submitted transaction against its network ledger state.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — the response returns CPU, memory, transaction-data, and fee estimates.",
+        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md — native host operations replace otherwise prohibitive guest computation, with input-sized costs recorded by metering.",
+        "Sibling sweep 2026-08-29: grep unlimited local|verification transaction|pure-Wasm|resource estimates → q-sor-persistent-unbounded-collection-cap, q-zk-host-functions-status, q-zk-proof-systems-stellar, and q-zk-verification-resource-budget; no contradiction."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "kaan zk-verification-resource-budget"

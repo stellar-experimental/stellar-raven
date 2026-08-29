@@ -9,9 +9,10 @@
   "golden": {
     "answer": "- A **trustline** is an explicit **opt-in** (created with **`ChangeTrust`**) for an account to hold a specific non-native asset from a given issuer; it records the holder's balance and limit for that `(asset_code, issuer)` [1].\n- **Without a trustline, payments of that asset fail/bounce** — the account cannot receive an asset it has not trusted [1].\n- A trustline raises the account's minimum balance by **one base reserve (0.5 XLM)** — this is a held minimum, not a spent fee [2]. **Pool-share (AMM) trustlines cost two base reserves (1.0 XLM)**.\n- **XLM (native) needs no trustline**; only non-native assets require one [1].",
     "keyFacts": [
-      "A trustline is an explicit opt-in (via ChangeTrust) for an account to hold a specific non-native asset from an issuer.",
+      "Defines a trustline as an account's explicit opt-in to hold a non-native asset.",
+      "Creates the trustline through ChangeTrust for a specific asset and issuer.",
       "Without a trustline, payments of that asset fail/bounce.",
-      "States the account must keep enough XLM for the extra base reserve each trustline requires."
+      "Requires the account to keep enough XLM for each trustline's extra base reserve."
     ],
     "avoid": [
       "Do NOT claim assets can be received without any trustline (like ERC-20 on Ethereum).",
@@ -40,15 +41,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 Lane R absorb triage",
+      "date": "2026-08-29",
+      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
       "evidence": [
         "solo://proj/49/scratchpad/truth-maintenance-20--575",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585#lane-r-q-asset-establish-trustline-howto",
-        "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines"
+        "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines",
+        "Structural re-form (long-fact): Split the trustline definition and shortened the reserve requirement; truth unchanged.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines — the page defines a trustline as an account's explicit opt-in to hold a particular asset.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines — the page requires ChangeTrust with the issuing account for a specific asset.",
+        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/lumens — the page says each trustline subentry adds a base reserve to the account's XLM minimum balance.",
+        "Sibling sweep 2026-08-29: grep explicit opt-in|extra base reserve → q-asset-trustline-basics; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
       ]
     },
     "origin": "raven-next q-asset-trustline-basics",
