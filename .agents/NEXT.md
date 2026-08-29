@@ -45,8 +45,8 @@ Record the affected case-id list in the round ledger, as session 3 did.
 
 Skill: `run-evals`. Five items under `TODO.md` "Eval instruments":
 
-- Two judge-prompt contradictions produce `error` rows (4% of the last run). Fix the prompt or
-  the trap path; a rubric bump and behavior-class fixtures are required.
+- The judge-prompt implementation and seven-call self-test passed under rubric `v2.9`.
+  The full QA confirmation remains pending, so the related TODO stays open.
 - Design and validate a three-outcome paired comparison verdict before another comparable rerun.
 - Judge stability is degrading (47 → 57 unstable). Watch the trend at the next register refresh.
 - Implement the `qa-five-track-v1` contract from ADR-0008.

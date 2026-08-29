@@ -10,7 +10,7 @@
 | Scope | Repair both judge-prompt contradictions and reconcile Grok Issues 1 through 7. |
 | Write set | `eval/qa/judge.mjs`, `eval/qa/README.md`, focused tests, `test/helpers/fake-judge-cli.mjs`, and this ledger |
 | Excluded | T3 rules, T4 checks, attempt semantics, evidence semantics, corpus goldens, and unrelated TODO items |
-| Paid authority | None. No paid command can run. |
+| Paid authority at lane start | None. This historical pre-run state is superseded by the later authorization and PASS. |
 
 ## Design
 
@@ -80,19 +80,18 @@ Issues 1 through 7 were blocking.
 All 15 prompt hashes were recomputed through the existing prompt mechanism.
 The focused tests also validate the trap and non-trap prompt surfaces.
 
-## Pending paid gate
+## Historical pre-run paid gate (superseded)
 
-`npm run eval:qa:selftest` remains pending.
-It makes exactly seven paid `claude-sonnet-5` judge calls.
-This lane has no paid authorization, so the command did not run.
-The later gate must record call counts, reported costs, missing costs, and total cost.
-A later paid QA run must also confirm zero errors for both contradiction pairs.
+At this stage, `npm run eval:qa:selftest` was pending.
+The lane did not yet have paid authorization.
+The later authorization and paid result supersede this pre-run state.
+The full QA confirmation remains pending.
 
-## Outcome
+## Historical pre-run outcome (superseded)
 
 Every blocking review finding is reconciled.
 The focused tests and every free gate pass.
-The paid seven-call judge gate remains pending.
+The seven-call judge gate was pending at this stage.
 
 ## Independent Grok recheck
 
@@ -167,3 +166,13 @@ Every expected behavior passed.
 The total cost stayed `$0.5534366` below the hard limit.
 
 Paid gate verdict: **PASS**.
+
+## Current outcome
+
+The rubric `v2.9` implementation passes.
+The independent Grok review passes with all seven findings reconciled.
+The seven-call paid judge self-test passes.
+It reports seven costs, zero missing costs, and `$0.2465634` total cost.
+
+The full QA run still must confirm zero errors from both contradiction pairs.
+The related TODO stays open until that condition passes.
