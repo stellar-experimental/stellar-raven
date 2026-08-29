@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   buildLifecycleRegistry,
   contentSha256,
@@ -107,6 +107,8 @@ describe("golden lifecycle", () => {
     "T1 conditional quality dropped after the last round.",
     "The headline numbers moved against us.",
     "Correct rate fell on the sample.",
+    "The correct-rate fell on the sample.",
+    "The pass-rate fell on the sample.",
     "We need a better aggregate.",
     "The track moved.",
     "The correctness-rate fell.",
@@ -131,6 +133,32 @@ describe("golden lifecycle", () => {
     const retired = tombstone("q-retired-score-cause", "a".repeat(64));
     retired.retired.reason = cause;
     expect(tombstoneProblems(retired).join("\n")).toMatch(/score-independent/);
+  });
+
+  it.each([
+    "The protocol inflation-rate changed.",
+    "The exchange-rate source became stale.",
+    "The fee-rate assumption is no longer valid."
+  ])("accepts a truth cause that uses a non-score rate: %s", (cause) => {
+    const quarantined = kase("q-truth-rate", "quarantined", "queued");
+    quarantined.truth.lifecycle.review = {
+      queuedOn: "2026-08-29",
+      trigger: "live-drift",
+      evidence: ["verified source change"]
+    };
+    quarantined.truth.lifecycle.quarantine = {
+      startedOn: "2026-08-29",
+      reviewBy: "2026-09-28",
+      author: "author",
+      reviewer: "reviewer",
+      cause,
+      ledger: "ledger",
+      evidence: ["verified source change"]
+    };
+    expect(lifecycleProblems(quarantined)).toEqual([]);
+    const retired = tombstone("q-retired-truth-rate", "a".repeat(64));
+    retired.retired.reason = cause;
+    expect(tombstoneProblems(retired)).toEqual([]);
   });
 
   it("forbids judge-noise quarantine evidence", () => {
@@ -285,6 +313,13 @@ describe("golden lifecycle", () => {
       const anchored = loadGitAnchoredLifecycleRegistry({ root, registryPath, baseRef: "HEAD" });
       expect(anchored.genesis).toBe(false);
       expect(anchored.registry).toEqual(committed);
+      vi.stubEnv("CI", "");
+      vi.stubEnv("QA_LIFECYCLE_BASE_REF", "missing-ref");
+      try {
+        expect(loadGitAnchoredLifecycleRegistry({ root, registryPath }).registry).toEqual(committed);
+      } finally {
+        vi.unstubAllEnvs();
+      }
       expect(() => buildLifecycleRegistry({
         root,
         batteryRecords: [{ file: path.join(root, "eval/qa/corpus/battery/protocol-core/q-bypass.json"), value: kase("q-bypass") }],

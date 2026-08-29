@@ -20,7 +20,7 @@ export const MASS_REVIEW_SHARE_THRESHOLD = 0.05;
 export const QUARANTINE_REVIEW_DAYS = 30;
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-const SCORE_CAUSE_RE = /\b(?:score|scoring|verdict|judge[- ]noise|rates?|pass[- ]rate|correct(?:ness)?[- ]rate|accuracy|aggregates?|headline|tracks?|t[1-5]|desired[- ]movement)\b/i;
+const SCORE_CAUSE_RE = /\b(?:score|scoring|verdict|judge[- ]noise|pass[- ]rate|correct(?:ness)?[- ]rate|accuracy|aggregates?|headline|tracks?|t[1-5]|desired[- ]movement)\b/i;
 
 function nonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;

@@ -192,7 +192,7 @@ function defaultLifecycleBaseRef() {
 export function loadGitAnchoredLifecycleRegistry({
   root = REPO_ROOT,
   registryPath = LIFECYCLE_REGISTRY_PATH,
-  baseRef = process.env.QA_LIFECYCLE_BASE_REF ?? defaultLifecycleBaseRef()
+  baseRef = defaultLifecycleBaseRef()
 } = {}) {
   let commits;
   try {
