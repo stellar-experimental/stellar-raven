@@ -13,8 +13,10 @@ Issue #40 requested a copy action, a larger paste limit, and cross-session histo
 the copy action. The owner approved an 8,000-character user-message ceiling on 2026-08-28. The
 owner kept cross-session history deferred and the shipped Playground stateless.
 
-The input-limit change is queued in `.agents/TODO.md`. The durable-session design below remains an
-unapproved idea and requires a new owner decision before implementation.
+The Playground now uses the approved 8,000-character contract. It keeps oversized text editable,
+shows the count and exact excess, disables Send, and rejects bypassed oversized requests. The
+durable-session design below remains an unapproved idea and requires a new owner decision before
+implementation.
 
 ## Input-limit decision
 

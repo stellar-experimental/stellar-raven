@@ -48,7 +48,7 @@ describe("DEMO_CAPS", () => {
       maxSearchCallsPerTurn: 3,
       maxExecuteCallsPerTurn: 3,
       maxExecuteCodeChars: 8000,
-      maxUserMessageChars: 4000,
+      maxUserMessageChars: 8000,
       chatsPerHour: 30
     });
   });

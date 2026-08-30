@@ -121,7 +121,12 @@ describe("demo page states", () => {
     expect(chatHtml).toContain('history.length === 1');
     expect(chatHtml).toContain('behavior: "instant"');
     expect(chatHtml).toContain("preventScroll: true");
-    expect(chatHtml).toContain(`maxlength="${DEMO_CAPS.maxUserMessageChars}"`);
+    expect(chatHtml).not.toContain("maxlength=");
+    expect(chatHtml).toContain('aria-describedby="composer-count"');
+    expect(chatHtml).toContain('<div id="composer-count" class="composer-count"></div>');
+    expect(chatHtml).not.toContain('id="composer-count" class="composer-count" role="status"');
+    expect(chatHtml).toContain(`var userMessageLimit = ${DEMO_CAPS.maxUserMessageChars};`);
+    expect(chatHtml).toContain("updateComposerLimitState(input, sendBtn, composerCount, announce, busy, wasOverLimit, userMessageLimit)");
     expect(chatHtml).toContain('fetch("/playground/chat"');
     expect(chatHtml).toContain("Ask about Stellar and Raven will search its connected sources");
     expect(chatHtml).not.toContain("full power and glory of Stellar Raven");

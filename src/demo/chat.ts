@@ -18,10 +18,10 @@
  * (src/demo/tools.ts); here only token/step/done/error mapping remains
  * (part names re-verified against ai v7's TextStreamPart union: text-delta,
  * reasoning-delta, start-step, tool-error, abort, error, finish — all
- * unchanged from v6, and `finish` still carries finishReason + totalUsage).
+ * unchanged from v6).
  * The switch below is over a discriminated union, so a renamed part is a type
- * error rather than a silent no-op — but the demo tests mock streamText, so
- * only a live turn exercises the provider network path.
+ * error rather than a silent no-op. The demo tests use a model stub, so the
+ * real AI tool loop runs without provider network access.
  *
  * WORKER-ONLY MODULE: imports src/demo/tools.ts (→ src/executor/run.ts →
  * cloudflare:workers). Route coverage lives in test/smoke/server.test.ts.
@@ -138,15 +138,22 @@ export async function handleDemoChat(
   if (contentLength > MAX_BODY_CHARS) {
     return reject(413, "payload_too_large", `Request body exceeds ${MAX_BODY_CHARS} bytes.`);
   }
-  const messages = await parseChatBody(request);
-  if (!messages) {
+  const parsed = await parseChatBody(request);
+  if (!parsed) {
     return reject(
       400,
       "bad_request",
       'Body must be JSON { messages: [{ role: "user" | "assistant", content: string }, ...] } with at least one message.'
     );
   }
-  const history = clampHistory(messages) as ChatMessage[];
+  if ("error" in parsed) {
+    return reject(
+      400,
+      "message_too_long",
+      `Each user message must contain at most ${DEMO_CAPS.maxUserMessageChars} characters.`
+    );
+  }
+  const history = clampHistory(parsed.messages) as ChatMessage[];
 
   const throttle = await demoThrottle(env.OAUTH_KV, subject);
   if (!throttle.allowed) {
@@ -390,14 +397,16 @@ async function runTurn(
                 totalTokens: part.totalUsage.totalTokens
               });
               if (!emittedUsefulOutput && index < demoModels.length - 1) {
-                fallbackToNextModel(`model finished (${part.finishReason}) before useful output`);
+                fallbackToNextModel(`model finished (${finishReason}) before useful output`);
                 break;
               }
-              if (part.finishReason === "tool-calls") {
+              if (finishReason === "tool-calls") {
                 attemptEmit({ type: "error", message: TOOL_BUDGET_MESSAGE });
                 return;
               }
-              attemptEmit({ type: "done", reason: part.finishReason });
+              // The SDK reports "other" when a step ends without a model
+              // finish chunk. The client must label that state as incomplete.
+              attemptEmit({ type: "done", reason: finishReason === "other" ? "incomplete" : finishReason });
               return;
             default:
               break; // source/raw/tool-call etc. — no frame mapping
@@ -536,13 +545,17 @@ function bodyText(body: BodyInit): string {
 }
 
 /**
- * null = malformed (caller answers 400). Oversized contents are truncated,
- * not rejected. Reads text first and re-checks the char cap (Content-Length
+ * null = malformed (caller answers 400). Oversized user messages are rejected.
+ * Reads text first and re-checks the char cap (Content-Length
  * can lie or be absent on chunked bodies) so JSON.parse and the entry walk
  * are bounded — within MAX_BODY_CHARS the walk is a few thousand entries at
  * worst, so no separate messages.length rejection is needed pre-clamp.
  */
-async function parseChatBody(request: Request): Promise<ChatMessage[] | null> {
+async function parseChatBody(request: Request): Promise<
+  | { messages: ChatMessage[] }
+  | { error: "message_too_long" }
+  | null
+> {
   let body: unknown;
   try {
     const raw = await request.text();
@@ -562,9 +575,12 @@ async function parseChatBody(request: Request): Promise<ChatMessage[] | null> {
     if (typeof content !== "string") return null;
     // Apply the per-message cap only to user input. Replayed assistant answers
     // can exceed it, while aggregate history remains bounded separately.
-    out.push({ role, content: role === "user" ? content.slice(0, DEMO_CAPS.maxUserMessageChars) : content });
+    if (role === "user" && content.length > DEMO_CAPS.maxUserMessageChars) {
+      return { error: "message_too_long" };
+    }
+    out.push({ role, content });
   }
-  return out;
+  return { messages: out };
 }
 
 /** Message text only — never a stack, never a serialized error object. */

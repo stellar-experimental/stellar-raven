@@ -181,6 +181,8 @@ details.tcard[open]>summary::before{transform:rotate(90deg)}
 .composer textarea::placeholder{color:var(--ash)}
 .composer .btn-primary{padding:12px 18px}
 .composer .btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.composer-count{min-height:18px;margin:8px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--ash)}
+.composer-count.over{color:#ff8b66}
 .sysnote{min-height:18px;margin-top:8px;font-family:var(--mono);font-size:11.5px;color:var(--ash)}
 .sysnote.err{color:#ff8b66}
 .sysnote a{color:var(--orange);text-decoration:underline;text-underline-offset:2px}
@@ -333,18 +335,48 @@ function attachCopyRow(doc, nav, bubble, source){
   return row;
 }`;
 
-const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
+export const DEMO_COMPOSER_LIMIT_CORE = `
+function updateComposerLimitState(input, sendBtn, composerCount, announce, busy, wasOverLimit, userMessageLimit){
+  var chars = input.value.length;
+  var excess = Math.max(0, chars - userMessageLimit);
+  var label = chars.toLocaleString() + " / " + userMessageLimit.toLocaleString() + " characters";
+  if (excess) label += " \\u2014 " + excess.toLocaleString() + " character" + (excess === 1 ? "" : "s") + " over the limit";
+  composerCount.textContent = label;
+  composerCount.className = "composer-count" + (excess ? " over" : "");
+  input.setAttribute("aria-invalid", excess ? "true" : "false");
+  sendBtn.disabled = busy || excess > 0;
+  if (excess && !wasOverLimit) {
+    announce("Message is " + excess.toLocaleString() + " character" + (excess === 1 ? "" : "s") + " over the " + userMessageLimit.toLocaleString() + "-character limit. Send is disabled.");
+  }
+  return { excess: excess, overLimit: excess > 0 };
+}
+
+function composerSubmission(input, userMessageLimit, updateComposerLimit, setNote){
+  var excess = updateComposerLimit();
+  if (excess) {
+    setNote("Message is " + excess.toLocaleString() + " character" + (excess === 1 ? "" : "s") + " over the " + userMessageLimit.toLocaleString() + "-character limit.", "err");
+    return null;
+  }
+  var value = input.value.trim();
+  if (!value) return null;
+  input.value = "";
+  updateComposerLimit();
+  return value;
+}`;
+
+const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + DEMO_COMPOSER_LIMIT_CORE + `
 (function(){
   "use strict";
   var log = document.getElementById("log");
   var form = document.getElementById("composer-form");
   var input = document.getElementById("composer-input");
   var sendBtn = document.getElementById("send");
+  var composerCount = document.getElementById("composer-count");
   var note = document.getElementById("sysnote");
   var composer = document.querySelector(".composer");
   var jump = document.getElementById("jump");
   var sr = document.getElementById("sr");
-  if (!log || !form || !input || !sendBtn || !note || !composer || !jump || !sr) return;
+  if (!log || !form || !input || !sendBtn || !composerCount || !note || !composer || !jump || !sr) return;
 
   var history = [];
   var cards = {};
@@ -433,6 +465,13 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
   }
   function announce(s){ sr.textContent = s; }
   function setNote(msg, kind){ note.textContent = msg || ""; note.className = "sysnote" + (kind ? " " + kind : ""); }
+  var userMessageLimit = ${DEMO_CAPS.maxUserMessageChars};
+  var wasOverLimit = false;
+  function updateComposerLimit(){
+    var state = updateComposerLimitState(input, sendBtn, composerCount, announce, busy, wasOverLimit, userMessageLimit);
+    wasOverLimit = state.overLimit;
+    return state.excess;
+  }
   function pretty(v){
     if (typeof v === "string") return v;
     try { return JSON.stringify(v, null, 2); } catch (e) { return String(v); }
@@ -685,7 +724,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
     committed = 0;
     acc = "";
     busy = false;
-    sendBtn.disabled = false;
+    updateComposerLimit();
     updateJump();
     if (follow && (document.activeElement === document.body || document.activeElement === sendBtn)) {
       input.focus({ preventScroll: true });
@@ -775,7 +814,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
     } catch (e) {
       hidePulse();
       setNote("Network error \\u2014 the message stays in your history; send again to retry.", "err");
-      busy = false; sendBtn.disabled = false; updateJump();
+      busy = false; updateComposerLimit(); updateJump();
       return;
     }
     if (!res.ok || !res.body) {
@@ -783,7 +822,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
       setNote(res.status === 401 ? "Session expired \\u2014 reload this page to sign in again."
         : res.status === 429 ? "Hourly chat limit reached \\u2014 try again in a bit."
         : "Request failed (" + res.status + ").", "err");
-      busy = false; sendBtn.disabled = false; updateJump();
+      busy = false; updateComposerLimit(); updateJump();
       return;
     }
     var reader = res.body.getReader();
@@ -817,10 +856,12 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
   form.addEventListener("submit", function(e){
     e.preventDefault();
     if (busy) return;
-    var v = input.value.trim();
+    var v = composerSubmission(input, userMessageLimit, updateComposerLimit, setNote);
     if (!v) return;
-    input.value = "";
     send(v);
+  });
+  input.addEventListener("input", function(){
+    updateComposerLimit();
   });
   input.addEventListener("keydown", function(e){
     if (e.key === "Enter" && !e.shiftKey) {
@@ -855,6 +896,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
     updateJump();
   });
   window.addEventListener("resize", updateJump, { passive: true });
+  updateComposerLimit();
   input.focus();
 })();
 `;
@@ -864,7 +906,7 @@ const DEMO_SCRIPT = DEMO_SCRIPT_CORE + DEMO_COPY_CORE + `
 // hard-coded (Web Crypto is async, and these headers are a sync module const);
 // test/demo-page.test.ts recomputes it from the rendered page, so an edit to
 // DEMO_SCRIPT fails the suite with the new value to paste here.
-const DEMO_SCRIPT_SHA256 = "sha256-J5utxnf3Yyxow6cDGr6zPQ9lyVj1Y4JUbUBOYCGDJus=";
+const DEMO_SCRIPT_SHA256 = "sha256-ZB8MB5SKhRnJx0CaegzHU7J/JhdbqAhUdhGgxaO8z+o=";
 
 export const DEMO_PAGE_HEADERS: Record<string, string> = {
   "content-type": "text/html; charset=utf-8",
@@ -1036,13 +1078,12 @@ function chatBody(): string {
     `<div id="log" role="log" aria-live="off"></div>` +
     `<div class="composer"><button id="jump" class="jump" type="button" hidden></button>` +
     `<div id="sr" class="sr-only" role="status"></div><form id="composer-form">` +
-    // maxlength mirrors DEMO_CAPS.maxUserMessageChars (src/demo/budget.ts);
-    // the server clamps regardless — this just fails early in the UI.
-    `<textarea id="composer-input" maxlength="${DEMO_CAPS.maxUserMessageChars}" rows="1" ` +
+    `<textarea id="composer-input" rows="1" aria-describedby="composer-count" ` +
     `placeholder="Ask about the Stellar ecosystem…" ` +
     `aria-label="Message the playground agent"></textarea>` +
     `<button id="send" class="btn btn-primary" type="submit">Send</button>` +
-    `</form><div id="sysnote" class="sysnote" role="status"></div></div>` +
+    `</form><div id="composer-count" class="composer-count"></div>` +
+    `<div id="sysnote" class="sysnote" role="status"></div></div>` +
     `</main>${demoFooter()}` +
     `<script>${DEMO_SCRIPT}</script>`
   );

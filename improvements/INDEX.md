@@ -45,7 +45,7 @@ Total findings: 67
 | sd-032 | The current Flutter Wallet SDK tutorial pins this pair:                                                                                     | reported-upstream | 2026-07-11 | 1           |
 | sd-034 | The current Stellar smart-wallet guide routes a greenfield reader to Passkey Kit without presenting the separate Smart Account Kit…         | reported-upstream | 2026-07-11 | 4           |
 | sd-035 | One current Docs tutorial surface still teaches the Wallets Kit v1 API. The English Example Application tutorial installs…                  | reported-upstream | 2026-07-11 | 1           |
-| sd-036 | > Fixed 2026-08-28. The source recheck closed the CAP-0075 interface contradiction. Everything below describes the defect before the fix    | fixed-upstream    | 2026-07-11 | 2           |
+| sd-036 | Fixed 2026-08-28. The source recheck closed the CAP-0075 interface contradiction. Everything below describes the defect before the fix      | fixed-upstream    | 2026-07-11 | 2           |
 | sd-037 | The canonical stellar-protocol repository contains six Stellar Limits Proposals under limits/, but its root README describes the…           | reported-upstream | 2026-07-11 | 2           |
 | sd-039 | The current Tools documentation presents "OpenZeppelin Relayer" and the managed Stellar Channels service as the same product. Both…         | reported-upstream | 2026-07-27 | 3           |
 | sd-040 | The smart-contract address conversion example accepts Bytes and calls Address::from_xdr(&env, &bytes).unwrap()                              | reported-upstream | 2026-08-11 | 0           |
