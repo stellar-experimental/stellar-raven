@@ -358,6 +358,54 @@ check("frontmatterRouting: extracts service, fire flag, and both card lists", ()
 
 // --- content-pinned hand-authored QA lane contracts -------------------------------
 const caseContentDigest = (cases) => createHash("sha256").update(JSON.stringify(cases)).digest("hex");
+const routingDiagnosticDigest = (diagnostic) =>
+  createHash("sha256")
+    .update(JSON.stringify({
+      positiveCases: diagnostic.positiveCases,
+      controlCases: diagnostic.controlCases,
+    }))
+    .digest("hex");
+
+check("protocol-history diagnostics pin frozen membership and case content", () => {
+  const contracts = [
+    {
+      path: "./protocol-history-cases.json",
+      name: "protocol-history-routing-v1",
+      positives: 8,
+      controls: 4,
+      digest: "5b8ee40f89c846c4e69fa91f5a483f9d224dd79628afa7f9ac45b522f9aaa8a8",
+    },
+    {
+      path: "./protocol-history-blind-cases.json",
+      name: "protocol-history-blind-v1",
+      positives: 11,
+      controls: 9,
+      digest: "b63cfb605bd98aeba6981535be7bd5ee968e1e8b48ee92a1d55e4d5b07521f53",
+    },
+  ];
+  const allIds = new Set();
+  for (const expected of contracts) {
+    const diagnostic = JSON.parse(
+      readFileSync(new URL(expected.path, import.meta.url), "utf8")
+    );
+    assert.equal(diagnostic.contract, expected.name);
+    assert.equal(diagnostic.frozen, true);
+    assert.equal(diagnostic.targetOperation, "scout.searchResearch");
+    assert.equal(diagnostic.positiveCases.length, expected.positives);
+    assert.equal(diagnostic.controlCases.length, expected.controls);
+    assert.equal(routingDiagnosticDigest(diagnostic), expected.digest);
+    assert.equal(
+      diagnostic.contractProvenance.caseContentDigest,
+      `sha256(JSON.stringify({positiveCases,controlCases}))=${expected.digest}`
+    );
+    for (const testCase of [...diagnostic.positiveCases, ...diagnostic.controlCases]) {
+      assert.equal(typeof testCase.id, "string");
+      assert.equal(typeof testCase.question, "string");
+      assert.equal(allIds.has(testCase.id), false, `duplicate diagnostic id ${testCase.id}`);
+      allIds.add(testCase.id);
+    }
+  }
+});
 
 check("live-data-canonical-v3 pins carried-v2 identity, ordered membership, and full case content", () => {
   const canonical = JSON.parse(readFileSync(new URL("./qa/corpus/live/live-cases.json", import.meta.url), "utf8"));

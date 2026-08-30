@@ -1,0 +1,114 @@
+{
+  "$comment": "Frozen blind paraphrases and hostile controls from the independent Grok 4.6 high review of the first product attempt. These cases were fixed before the replacement product design.",
+  "contract": "protocol-history-blind-v1",
+  "frozen": true,
+  "authoredAt": "2026-08-30",
+  "targetOperation": "scout.searchResearch",
+  "contractProvenance": {
+    "caseContentDigest": "sha256(JSON.stringify({positiveCases,controlCases}))=b63cfb605bd98aeba6981535be7bd5ee968e1e8b48ee92a1d55e4d5b07521f53"
+  },
+  "positiveCases": [
+    {
+      "id": "phb-whisk-forced-follow-up",
+      "question": "What forced the rushed follow-up to Whisk, and which archival eviction numbers matter?",
+      "class": "corrective-upgrade"
+    },
+    {
+      "id": "phb-archival-defect-network-upgrade",
+      "question": "Explain the state archival defect that made Stellar cut a quick follow-up network upgrade.",
+      "class": "corrective-upgrade"
+    },
+    {
+      "id": "phb-auth-recursion-auditors",
+      "question": "How was the Soroban authorization recursion issue fixed once the auditors published?",
+      "class": "audit-remediation"
+    },
+    {
+      "id": "phb-core-upgrades-dates-features",
+      "question": "List Stellar core upgrades from P19 onward with dates and the feature each one shipped.",
+      "class": "upgrade-chronology"
+    },
+    {
+      "id": "phb-yieldblox-reflector-manipulation",
+      "question": "What happened to YieldBlox when the Reflector oracle was manipulated?",
+      "class": "ecosystem-incident"
+    },
+    {
+      "id": "phb-network-upgrades-reasons",
+      "question": "Walk through every Stellar network upgrade from nineteen onward and the reason each one shipped.",
+      "class": "upgrade-chronology"
+    },
+    {
+      "id": "phb-second-cut-after-whisk",
+      "question": "Why was there a second protocol cut so fast after Whisk went live?",
+      "class": "corrective-upgrade"
+    },
+    {
+      "id": "phb-cap-archival-fee-repair",
+      "question": "Show me the CAP that cleaned up the archival eviction and the stroop fee-pool repair.",
+      "class": "corrective-change"
+    },
+    {
+      "id": "phb-auditor-auth-recursion-follow-up",
+      "question": "What did OtterSec or Certora write about Soroban auth recursion, and what landed afterward?",
+      "class": "audit-remediation"
+    },
+    {
+      "id": "phb-clawback-origin-emergency-changes",
+      "question": "Give the origin story of clawback and any later emergency changes to it.",
+      "class": "feature-history"
+    },
+    {
+      "id": "phb-whisk-post-mortem",
+      "question": "Show the post-mortem for the Whisk archival failure.",
+      "class": "incident-post-mortem"
+    }
+  ],
+  "controlCases": [
+    {
+      "id": "phb-control-protocol-xdr-bug",
+      "question": "I found a bug in the protocol XDR encoding for muxed accounts.",
+      "class": "implementation-debugging"
+    },
+    {
+      "id": "phb-control-contract-fail-after-upgrade",
+      "question": "Why does my contract fail after a protocol upgrade?",
+      "class": "implementation-debugging"
+    },
+    {
+      "id": "phb-control-incident-runbook",
+      "question": "How do I write an incident response runbook for validators?",
+      "class": "operations-guidance"
+    },
+    {
+      "id": "phb-control-contract-exploit-review",
+      "question": "Show me the exploit in this Soroban contract I am reviewing.",
+      "class": "code-review"
+    },
+    {
+      "id": "phb-control-sdk-version-history",
+      "question": "What is the version history of the JavaScript SDK?",
+      "class": "sdk-reference"
+    },
+    {
+      "id": "phb-control-cap-history-sep-support",
+      "question": "What is the CAP history for wallet SEP support?",
+      "class": "standards-reference"
+    },
+    {
+      "id": "phb-control-kyc-breach-report",
+      "question": "Report a breach in my anchor KYC flow.",
+      "class": "incident-reporting"
+    },
+    {
+      "id": "phb-control-client-protocol-version-failure",
+      "question": "Why did the transaction fail after I set the protocol version on the test client?",
+      "class": "client-debugging"
+    },
+    {
+      "id": "phb-control-failed-deploy-post-mortem",
+      "question": "Write a post-mortem of my failed contract deploy.",
+      "class": "implementation-review"
+    }
+  ]
+}

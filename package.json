@@ -29,6 +29,7 @@
     "eval:vectorize:serve": "node eval/vectorize/serve-frontier.mjs",
     "micro-map:build": "node scripts/build-micro-map.mjs",
     "eval:routing": "node eval/run-routing.mjs",
+    "eval:protocol-history": "node eval/run-protocol-history.mjs",
     "eval:plan": "node eval/plan/grade-plan.mjs",
     "spec:build": "node scripts/build-super-spec.mjs",
     "eval:selftest": "node eval/self-test.mjs",

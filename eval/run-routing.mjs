@@ -19,6 +19,8 @@
  *     for legacy or extended cases. Those cases are reported BOTH ways:
  *     strict (expected_service only — the legacy numbers, unchanged) and
  *     accept-either (any service in expected_any counts).
+ *   - eval/protocol-history-cases.json frozen diagnostic. It stays outside
+ *     every routing denominator. Controls forbid target capture at any top-five rank.
  *
  * Accept-either inputs do not affect strict grading:
  *   - compiled cases may carry corpus-derived expected_any (from acceptable_cards);
@@ -64,6 +66,7 @@ const MANIFEST =
 const CASES = join(EVAL_DIR, "routing-cases.json");
 const SKILLS_CASES = join(EVAL_DIR, "skills-cases.json");
 const HOLDOUT_CASES = join(EVAL_DIR, "holdout-cases.json");
+const PROTOCOL_HISTORY_CASES = join(EVAL_DIR, "protocol-history-cases.json");
 const OVERLAY = join(EVAL_DIR, "build-question-overlay.json");
 const GATES = join(EVAL_DIR, "gates.json");
 const RESULTS_DIR = join(EVAL_DIR, "results");
@@ -339,6 +342,56 @@ async function main() {
     };
   }
 
+  // --- protocol-history / incident diagnostic (never merged into a gate) -----------
+  let protocolHistoryLane = null;
+  let protocolHistoryPerCase = [];
+  if (existsSync(PROTOCOL_HISTORY_CASES)) {
+    const diagnostic = JSON.parse(readFileSync(PROTOCOL_HISTORY_CASES, "utf8"));
+    const target = catalog.entries.filter(
+      (entry) => entry.id === diagnostic.targetOperation && entry.searchable !== false
+    );
+    if (target.length !== 1 || target[0]?.kind !== "operation") {
+      throw new Error(
+        `protocol-history target "${diagnostic.targetOperation}" resolves to ${target.length} searchable operation entries`
+      );
+    }
+    const runDiagnosticCase = (c, role) => {
+      const hits = searchCatalog(catalog, { query: c.question, limit: 5 });
+      const index = hits.findIndex((hit) => hit.id === diagnostic.targetOperation);
+      return {
+        id: c.id,
+        class: c.class,
+        role,
+        targetRank: index === -1 ? null : index + 1,
+        ...(c.sourceCase ? { sourceCase: c.sourceCase } : {}),
+        topHits: hits.map((hit) => ({ id: hit.id, service: hit.service, score: hit.score }))
+      };
+    };
+    protocolHistoryPerCase = [
+      ...diagnostic.positiveCases.map((c) => runDiagnosticCase(c, "positive")),
+      ...diagnostic.controlCases.map((c) => runDiagnosticCase(c, "control"))
+    ];
+    const positives = protocolHistoryPerCase.filter((c) => c.role === "positive");
+    const controls = protocolHistoryPerCase.filter((c) => c.role === "control");
+    protocolHistoryLane = {
+      contract: diagnostic.contract,
+      frozen: diagnostic.frozen,
+      authoredAt: diagnostic.authoredAt,
+      targetOperation: diagnostic.targetOperation,
+      positives: positives.length,
+      top1: positives.filter((c) => c.targetRank === 1).length,
+      top3: positives.filter((c) => c.targetRank !== null && c.targetRank <= 3).length,
+      top5: positives.filter((c) => c.targetRank !== null && c.targetRank <= 5).length,
+      controls: controls.length,
+      controlTop5Captures: controls.filter(
+        (c) => c.targetRank !== null && c.targetRank <= 5
+      ).length
+    };
+    protocolHistoryLane.pass =
+      protocolHistoryLane.top5 === protocolHistoryLane.positives &&
+      protocolHistoryLane.controlTop5Captures === 0;
+  }
+
   // --- gate check (eval/gates.json; EVALS.md: two gates, everything else diagnostic) --
   let gate = null;
   if (existsSync(GATES)) {
@@ -397,7 +450,7 @@ async function main() {
   // --- ranked-id dump (--dump-ranked): every graded case, every lane, in grade order --
   if (DUMP_RANKED_PATH) {
     const ranked = {};
-    for (const r of [...perCase, ...extendedPerCase, ...skillsPerCase]) {
+    for (const r of [...perCase, ...extendedPerCase, ...skillsPerCase, ...protocolHistoryPerCase]) {
       if (r.id in ranked) throw new Error(`--dump-ranked: duplicate case id "${r.id}" across lanes — dump would silently drop one`);
       ranked[r.id] = r.topHits.map((h) => h.id);
     }
@@ -425,11 +478,13 @@ async function main() {
         ...(extendedLane ? { extendedLane: { strict: extendedLane.strict.overall, perService: extendedLane.strict.perService, acceptEither: extendedLane.acceptEither } } : {}),
         ...(skillsLane ? { skillsLane } : {}),
         ...(holdoutLane ? { holdoutLane } : {}),
+        ...(protocolHistoryLane ? { protocolHistoryLane } : {}),
         ...(overlayReport ? { overlay: overlayReport } : {}),
         cases: perCase,
         ...(extendedPerCase.length > 0 ? { extendedCases: extendedPerCase } : {}),
         ...(skillsPerCase.length > 0 ? { skillsCases: skillsPerCase } : {}),
         ...(holdoutPerCase.length > 0 ? { holdoutCases: holdoutPerCase } : {}),
+        ...(protocolHistoryPerCase.length > 0 ? { protocolHistoryCases: protocolHistoryPerCase } : {}),
       },
       null,
       2,
@@ -470,6 +525,28 @@ async function main() {
       result: r.pass ? "PASS" : "FAIL",
     })));
     console.log(`holdout forbidden captures: ${holdoutLane.forbiddenCaptures}/${holdoutLane.n}`);
+  }
+  if (protocolHistoryLane) {
+    console.log(
+      `\nprotocol-history diagnostic — ${protocolHistoryLane.positives} positives and ` +
+        `${protocolHistoryLane.controls} controls (target ${protocolHistoryLane.targetOperation}; diagnostic only)\n`
+    );
+    console.table(
+      protocolHistoryPerCase.map((r) => ({
+        id: r.id,
+        class: r.class,
+        role: r.role,
+        targetRank: r.targetRank ?? "miss",
+        top: r.topHits[0]?.id ?? "none"
+      }))
+    );
+    console.log(
+      `protocol-history target: top-1 ${protocolHistoryLane.top1}/${protocolHistoryLane.positives}, ` +
+        `top-3 ${protocolHistoryLane.top3}/${protocolHistoryLane.positives}, ` +
+        `top-5 ${protocolHistoryLane.top5}/${protocolHistoryLane.positives}; ` +
+        `control top-five captures ${protocolHistoryLane.controlTop5Captures}/${protocolHistoryLane.controls}; ` +
+        `diagnostic ${protocolHistoryLane.pass ? "PASS" : "FAIL"}`
+    );
   }
   if (overlayReport) {
     const printOverlayLane = (name, lane) => {

@@ -1,0 +1,79 @@
+{
+  "$comment": "Frozen diagnostic-only protocol-history and incident routing set. This lane never joins the legacy, extended, skills, or holdout denominators. Positive cases require scout.searchResearch in the top five. Controls forbid scout.searchResearch anywhere in the top five.",
+  "contract": "protocol-history-routing-v1",
+  "frozen": true,
+  "version": 1,
+  "authoredAt": "2026-08-30",
+  "targetOperation": "scout.searchResearch",
+  "contractProvenance": {
+    "caseContentDigest": "sha256(JSON.stringify({positiveCases,controlCases}))=5b8ee40f89c846c4e69fa91f5a483f9d224dd79628afa7f9ac45b522f9aaa8a8"
+  },
+  "positiveCases": [
+    {
+      "id": "ph-protocol-24-archival-root-cause",
+      "question": "Why did Stellar ship Protocol 24 so soon after Protocol 23, and what was the state-archival bug?",
+      "class": "protocol-corrective-upgrade",
+      "sourceCase": "q-protocol-24-whisk-incident"
+    },
+    {
+      "id": "ph-protocol-corrective-upgrade-history",
+      "question": "Which Stellar protocol upgrades were corrective releases after a regression, and what incident caused each one?",
+      "class": "protocol-corrective-upgrade"
+    },
+    {
+      "id": "ph-protocol-upgrade-chronology",
+      "question": "Trace Stellar protocol upgrades 19 through 24, including when each shipped and why the next upgrade followed.",
+      "class": "protocol-chronology",
+      "sourceCase": "q-protocol-version-history-list"
+    },
+    {
+      "id": "ph-protocol-regression-remediation",
+      "question": "Find the cited incident history for a Stellar protocol regression, its root cause, affected state, and remediation.",
+      "class": "protocol-regression"
+    },
+    {
+      "id": "ph-yieldblox-oracle-incident",
+      "question": "What happened in the YieldBlox and Reflector oracle-manipulation incident, and what did the post-mortems conclude?",
+      "class": "ecosystem-incident",
+      "sourceCase": "q-comp-yieldblox-oracle-incident"
+    },
+    {
+      "id": "ph-security-incident-postmortems",
+      "question": "Show cited post-mortems for security incidents in the Stellar ecosystem, with causes, impact, and recovery actions.",
+      "class": "ecosystem-incident"
+    },
+    {
+      "id": "ph-soroban-auth-audit-history",
+      "question": "What did audit reports say about the Soroban authorization-recursion vulnerability, and how was it remediated?",
+      "class": "audit-history",
+      "sourceCase": "q-soroban-auth-recursion-dos-audit"
+    },
+    {
+      "id": "ph-protocol-feature-origin",
+      "question": "Give the historical reason for a Stellar protocol feature, the CAP that introduced it, and later incident-driven changes.",
+      "class": "protocol-feature-history"
+    }
+  ],
+  "controlCases": [
+    {
+      "id": "ph-control-current-protocol",
+      "question": "What is the current Stellar Mainnet protocol version?",
+      "class": "direct-current-lookup"
+    },
+    {
+      "id": "ph-control-validator-vote",
+      "question": "How do Stellar validators vote to activate a protocol upgrade?",
+      "class": "direct-process-lookup"
+    },
+    {
+      "id": "ph-control-soroban-deploy",
+      "question": "How do I build and deploy a Soroban contract to Testnet?",
+      "class": "implementation"
+    },
+    {
+      "id": "ph-control-clawback-cap",
+      "question": "Which CAP and protocol version introduced clawback?",
+      "class": "direct-spec-lookup"
+    }
+  ]
+}
