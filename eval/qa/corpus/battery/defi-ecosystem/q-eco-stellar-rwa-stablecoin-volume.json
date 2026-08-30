@@ -143,13 +143,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "eval/qa/consistency-register.json sweep 2026-07-03; deep-verification quotes/URLs in Solo scratchpad 521",
         "Solo scratchpad 575 GT-20 primary 3256 and blind 3257; current SDF/Allium/rwa.xyz metric matrix asOf 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-009; the corrected RWA and developer-stat attributions are unchanged.",
         "Improvements review 2026-08-27: improvements/lumenloop/ll-009-messari-report-misattribution.md remains reported upstream; the disputed claim is LumenLoop's attribution of the $2.8B RWA value and 1,700 monthly active developers to the written Messari report.",
@@ -161,7 +161,13 @@
         "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — the current source remains a dated report for specific RWA and stablecoin observations.",
         "Live re-check 2026-08-27: https://docs.rwa.xyz/methodology/metrics — current methodology still defines supply, value, and market-cap measures as point-in-time stocks.",
         "Live re-check 2026-08-27: https://stellar.org/resources/institutional-infrastructure-report and https://docs.rwa.xyz/methodology/metrics — current sources still define payment and transfer volumes over periods.",
-        "Sibling sweep 2026-08-27: grep supply|market cap|payment volume|transfer volume|stock|flow → q-asset-rwa-tokenized-freshness; no contradiction"
+        "Sibling sweep 2026-08-27: grep supply|market cap|payment volume|transfer volume|stock|flow → q-asset-rwa-tokenized-freshness; no contradiction",
+        "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — remains a dated Q1 2026 source for RWA and stablecoin observations.",
+        "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — shows Q1 2026 and publication date 2026-05-07.",
+        "Live re-check 2026-08-30: https://docs.rwa.xyz/methodology/metrics.md — defines supply and value as point-in-time snapshots.",
+        "Live re-check 2026-08-30: https://docs.rwa.xyz/methodology/metrics.md — defines transfer volume during a period and accumulates transfers over that period.",
+        "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — the dated quarterly scope requires a staleness warning for current use.",
+        "Sibling sweep 2026-08-30: grep stablecoin payment volume|transfer volume|distributed RWA|represented value|market cap → q-asset-rwa-tokenized-freshness, q-asset-stablecoin-issuers-discovery, q-eco-stablecoins-on-stellar, q-eco-stellar-rwa-stablecoin-volume; no contradiction"
       ],
       "rootCause": [
         "improvements/lumenloop/ll-009 — the upstream misattribution this golden inherited",
@@ -171,7 +177,8 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-eco-stellar-rwa-stablecoin-volume"

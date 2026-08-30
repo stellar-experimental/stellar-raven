@@ -1,0 +1,92 @@
+{
+  "id": "q-defi-soroswap-vs-stellarx",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Treats Soroswap-owned Soroban contracts/API and the StellarX UI as different roles.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/soroswap/docs",
+          "quote": "Soroswap operates as: An Automated Market Maker (AMM) ... An AMM Aggregator ... An API via Soroswap Swap Route API.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://www.stellarx.com/legal/terms",
+          "quote": "The Website is a user interface for the XLM decentralized exchange. ... StellarX does not control the Stellar XLM decentralized exchange.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The owner sources place Soroswap at contract/API layers and StellarX at the interface layer."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Treats API routing, on-chain aggregation, and UI access as three layers.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/soroswap/docs",
+          "quote": "Soroswap operates as: An Automated Market Maker (AMM) ... An AMM Aggregator ... An API ... aggregating liquidity from ... Soroban ... and the Stellar Classic DEX.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://www.stellarx.com/",
+          "quote": "StellarX is a powerful decentralized trading platform built on the Stellar network. ... Access AMMs.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Soroswap's current README distinguishes AMM, aggregator, and API. StellarX describes access through its trading platform."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Names Ultra Stellar as StellarX's builder.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://ultrastellar.com/",
+          "quote": "Our products ... StellarX ... StellarX is a powerful trading platform built on the Stellar network.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Ultra Stellar's owner page lists StellarX as one of its products and states that it builds the listed products."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Describes StellarX as a non-custodial Classic-liquidity trading UI.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://www.stellarx.com/legal/terms",
+          "quote": "The Website is a user interface for the XLM decentralized exchange. ... StellarX is not a custodian of your assets. We do not store any tokens, cryptoassets or private keys on your behalf.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://www.stellarx.com/amm/liquidity",
+          "quote": "Liquidity overview ... Add liquidity ... Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The current product surface provides Classic AMM access. The terms identify the product as a non-custodial interface."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://github.com/soroswap/docs — Soroswap documents owned AMM, aggregator, and route-API components.",
+    "Live re-check 2026-08-30: https://github.com/soroswap/docs — the owner README separates AMM contracts, aggregation, and API routing.",
+    "Live re-check 2026-08-30: https://ultrastellar.com/ — Ultra Stellar still lists StellarX among its products.",
+    "Live re-check 2026-08-30: https://www.stellarx.com/legal/terms — StellarX remains a non-custodial user interface for the Classic decentralized exchange."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Soroswap|StellarX|Ultra Stellar|API routing → q-defi-soroswap-what-is, q-eco-dex-saturation, q-edge-factcheck-soroswap-first-amm, q-scf-history-soroswap, and related product cases; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The current sources preserve the product-layer distinction. StellarX's AMM page proves access to protocol liquidity, not ownership of a proprietary Soroban AMM or router."
+}

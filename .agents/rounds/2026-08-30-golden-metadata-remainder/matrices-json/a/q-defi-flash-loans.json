@@ -1,0 +1,39 @@
+{
+  "id": "q-defi-flash-loans",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {"keyFactIndex": 0, "claim": "Uses dated source observations for changeable claims.", "verdict": "confirmed-as-of", "sources": [
+      {"class": "A", "ref": "https://docs.blend.capital/mainnet-deployments", "quote": "v2 Mainnet Smart Contract Addresses", "asOf": "2026-08-30"}
+    ], "notes": "Deployment and interface observations can change. The answer dates them."},
+    {"keyFactIndex": 1, "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.", "verdict": "confirmed-as-of", "sources": [
+      {"class": "C", "ref": "https://stellarlight.xyz/project/slender", "quote": "Inactive / archived", "asOf": "2026-08-30"}
+    ], "notes": "The current directory status remains changeable and needs its observation date."},
+    {"keyFactIndex": 2, "claim": "Explains atomic Soroban cross-contract flash-loan mechanics and rollback constraints.", "verdict": "confirmed", "sources": [
+      {"class": "A", "ref": "https://developers.stellar.org/docs/build/guides/conventions/cross-contract", "quote": "Call a smart contract from within another smart contract.", "asOf": "2026-08-30"},
+      {"class": "A", "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors", "quote": "If an error is returned from a function anything the function has done is rolled back.", "asOf": "2026-08-30"}
+    ], "notes": "The borrower call can execute synchronously. A failed repayment check can reject and roll back the call tree."},
+    {"keyFactIndex": 3, "claim": "Treats Blend v2 as a verified deployed flash-loan implementation.", "verdict": "confirmed-as-of", "sources": [
+      {"class": "A", "ref": "https://docs.blend.capital/mainnet-deployments", "quote": "There are mainnet deployments of blend and blend adjacent smart contracts at the following addresses.", "asOf": "2026-08-30"},
+      {"class": "B", "ref": "https://github.com/blend-capital/blend-contracts-v2/blob/main/pool/src/contract.rs", "quote": "fn flash_loan(e: Env, from: Address, asset_ids: Vec<Address>, amounts: Vec<i128>, receiver: Address, params: Bytes) -> Vec<Positions>", "asOf": "2026-08-30"}
+    ], "notes": "Owner deployment docs supply the v2 deployment evidence. The current v2 pool source exposes flash_loan."},
+    {"keyFactIndex": 4, "claim": "Treats XycLoans code/history and Slender marketing as different evidence tiers.", "verdict": "confirmed-as-of", "sources": [
+      {"class": "B", "ref": "https://github.com/xycloo/xycloans", "quote": "XycLoans is a flash loans protocol implemented for the Soroban Virtual Machine.", "asOf": "2026-08-30"},
+      {"class": "A", "ref": "https://slender.fi/", "quote": "Flash loans — Borrow and repay in the same block with no collateral.", "asOf": "2026-08-30"},
+      {"class": "C", "ref": "https://stellarlight.xyz/project/slender", "quote": "Inactive / archived", "asOf": "2026-08-30"}
+    ], "notes": "Code and marketing prove association. Neither proves current usable liquidity."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://docs.blend.capital/mainnet-deployments — the page supplies a current deployment observation, so the answer must keep its date.",
+    "Live re-check 2026-08-30: https://stellarlight.xyz/project/slender — the directory marks Slender Inactive, which is a dated and source-relative status.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — returned errors roll back the function's ledger and contract-data changes.",
+    "Live re-check 2026-08-30: https://docs.blend.capital/mainnet-deployments — owner docs list v2 mainnet deployments; current v2 pool source exposes flash_loan.",
+    "Live re-check 2026-08-30: https://github.com/xycloo/xycloans — the repository proves XycLoans code; Slender's operator page proves marketing, not current usability."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep flash.loan|XycLoans|Slender|Blend v2|atomic Soroban → q-defi-blend-alternatives; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The direct checks preserve the evidence-tier distinction."
+}

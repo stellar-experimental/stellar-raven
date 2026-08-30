@@ -1,0 +1,101 @@
+{
+  "id": "q-defi-rwa-scf-similar",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Uses current or dated sources for specific changeable claims.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+          "quote": "status: Awarded; roundName: SCF #43; title: Lend - Tokenized real estate on Stellar; budget: 120560",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The current official payload still supports the dated Lend observation."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/projects",
+          "quote": "Talwex ... SCF #43; TERWA ... SCF #43; lend.xyz ... SCF #43",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The live project roster now also contains SCF #44 projects. This confirms that roster and status observations need an explicit date."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Uses official URLs and statuses for representative Awarded RWA/tokenization work.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/submissions/recK1Xh6hgHosxmbt",
+          "quote": "status: Awarded; roundName: SCF #43; title: Stellar Vault for Real-World Bonds; budget: 150000",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/submissions/recub0G7qf25j381y",
+          "quote": "status: Awarded; roundName: SCF #43; title: Wine Asset Vault for Stellar; budget: 97240",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+          "quote": "status: Awarded; roundName: SCF #43; title: Lend - Tokenized real estate on Stellar; budget: 120560",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Talwex, TERWA, and Lend remain Awarded on their current official pages."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Treats official status, award_type, and directory status as distinct fields.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+          "quote": "status: Awarded; awardType: Build; roundName: SCF #43; budget: 120560",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official structured payload exposes `status` and `awardType` separately. The project directory separately exposes the project and `lastAwardedRound`."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Treats semantic similarity and reconstructed totals as distinct from official status.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
+          "quote": "submission budget: 120560; project totalAwarded: 120560; project totalPaid: 72336; submission status: Awarded",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official page keeps status, requested budget, awarded total, and paid total as separate fields. A semantic match has no authority to replace those fields."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii — Lend SCF #43 remains Awarded with a requested budget of $120,560.",
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/projects — the live project list includes Talwex, TERWA, and lend.xyz under SCF #43.",
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/recK1Xh6hgHosxmbt — Talwex's SCF #43 RWA submission remains Awarded.",
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii — the payload separates Awarded status, Build awardType, and the project link.",
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii — the payload separates $120,560 budget from $72,336 totalPaid."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Talwex|TERWA|lend.xyz|award_type|totalPaid → q-defi-rwa-scf-similar, q-scf-history-soroswap, q-scf-skill-submission-radar, and four incidental field-name hits; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The current official Talwex and TERWA submission URLs are recK1Xh6hgHosxmbt and recub0G7qf25j381y. Existing truth source refs rec2UJLCx1DBLgdm4, rec0OaOoRwjfSdS58, and recXjdDQL2sk7HNKx resolve to 0xAuth, Metafyed, and Verseprop, not the three named SCF #43 examples. Add the exact current URLs during metadata repair."
+}

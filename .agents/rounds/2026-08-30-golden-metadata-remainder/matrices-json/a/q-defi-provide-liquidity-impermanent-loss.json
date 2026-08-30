@@ -1,0 +1,107 @@
+{
+  "id": "q-defi-provide-liquidity-impermanent-loss",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Dates each source-supported roster, status, version, measurement, or current observation.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://www.defindex.io/terms",
+          "quote": "DeFindex does not guarantee, promise, or imply guaranteed returns or yield. Past performance of any Strategy or Vault ... is not indicative of future results.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The rule depends on mutable performance, configuration, and availability observations. The owner terms expressly separate historical performance from future results."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Gives a venue-specific deposit/withdraw checklist.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+          "quote": "There are two operations that facilitate participation in a liquidity pool: `LiquidityPoolDeposit` and `LiquidityPoolWithdraw`.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The same page requires reserve-asset and pool-share trustlines. It documents minimum withdrawal amounts and deposit price bounds."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Treats Classic pool-share operations and Soroban contract/vault flows as distinct.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+          "quote": "This section is scoped specifically to liquidity regarding the AMM and SDEX built into the Stellar protocol and does not include information regarding smart contracts.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool",
+          "quote": "This example uses a very simple share token ... No distinct token contract will be used for these shares.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official guides separate protocol-built Classic pools from contract-defined Soroban pool logic."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Covers liquidity, issuer, contract/admin, oracle/keeper, and reward-token risks.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://www.defindex.io/terms",
+          "quote": "Strategies may experience negative returns or total loss ... due to ... price slippage, low liquidity, changes in reward rates ... improper harvest execution, curation or misconfiguration.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/blend-capital/docs-v2/blob/main/blend-whitepaper.md",
+          "quote": "The pool creator can select any deployed oracle contract as long as the oracle implements the expected BlendOracle trait.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+          "quote": "The account ... must trust the issuer of the asset it is trying to buy.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The sources directly expose liquidity, issuer, contract configuration, oracle, harvest/keeper, and changing reward risks."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Covers lock/queue and withdrawal risks.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/blend-capital/docs-v2/blob/main/blend-whitepaper.md",
+          "quote": "Initiating a withdrawal places the funds into a withdrawal queue, where they remain for 17 days. ... users can withdraw their funds as long as the backstop module has no remaining bad debt.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The live owner repository documents both the delay and the conditional exit."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://www.defindex.io/terms — the owner terms say historical vault performance does not indicate future results.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — Classic pools use explicit deposit and withdrawal operations.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool — Soroban pool shares and exits are contract-defined.",
+    "Live re-check 2026-08-30: https://www.defindex.io/terms — vault risks include low liquidity, reward changes, harvest execution, configuration, and oracle-linked liquidation.",
+    "Live re-check 2026-08-30: https://github.com/blend-capital/docs-v2/blob/main/blend-whitepaper.md — Blend documents a 17-day withdrawal queue and conditional withdrawal."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep impermanent loss|LiquidityPoolDeposit|pool-share|withdrawal queue → q-asset-amm-fee-reserve, q-asset-sdex-vs-amm, q-asset-trustline-basics, q-protocol-base-reserve-min-balance, q-protocol-operation-types-list; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The keyFacts are answer-completeness rules. Their concrete dependencies remain live and venue-specific. No current source supports merging Classic pool operations with Soroban vault mechanics."
+}

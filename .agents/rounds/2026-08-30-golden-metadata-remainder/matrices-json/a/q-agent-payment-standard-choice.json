@@ -1,0 +1,107 @@
+{
+  "id": "q-agent-payment-standard-choice",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "The x402 V2 and MPP HTTP-402 protocols differ in payloads, settlement, and infrastructure.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+          "quote": "x402 defines PaymentRequirements, PaymentPayload, and facilitator verify and settle interfaces.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+          "quote": "MPP Charge uses SEP-41 transfers; Channel uses a one-way channel with cumulative commitments.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The owner specifications expose different payloads, settlement paths, and components."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "x402 V2 provides extensions and discovery.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+          "quote": "Extensions enable modular optional functionality; GET /supported returns supported extensions; tags support discovery filtering.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The same specification states that session handling is out of scope."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "MPP uses on-chain Charge settlement and cumulative off-chain Session channel commitments.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md",
+          "quote": "Each Charge payment settles on-chain individually; Channel signs cumulative off-chain commitments without per-payment transactions.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The current SDK calls the repeated-payment implementation Channel."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "AP2/ACP cover above-rail authorization/mandate/audit and beta commerce, respectively.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md",
+          "quote": "AP2 defines Checkout and Payment Mandates, receipts, authorization evidence, and dispute evidence within a commerce protocol.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/agentic-commerce-protocol/agentic-commerce-protocol/main/README.md",
+          "quote": "ACP remains beta and covers cart, feed, orders, authentication, payment handlers, and checkout.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "AP2 operates within a commerce protocol. ACP delegates payment to handlers."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Adapter covers quote, payment intent/evidence, settlement/fulfillment/idempotency/refunds.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/tree/main/spec/2026-04-17",
+          "quote": "Current schemas and examples model checkout totals, payment handlers, fulfillment, Idempotency-Key behavior, orders, and refunds.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md",
+          "quote": "x402 separates payment requirements, payload, verification, settlement, and resource response.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "This adapter boundary is an engineering synthesis across the distinct specifications."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — MPP uses different payload and settlement paths than x402 V2.",
+    "Live re-check 2026-08-30: https://raw.githubusercontent.com/x402-foundation/x402/main/specs/x402-specification-v2.md — V2 still defines extensions and discovery fields.",
+    "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-mpp-sdk/main/README.md — Charge settles on-chain; Channel signs cumulative commitments.",
+    "Live re-check 2026-08-30: https://raw.githubusercontent.com/google-agentic-commerce/AP2/main/docs/ap2/specification.md — AP2 defines mandates, receipts, and dispute evidence.",
+    "Live re-check 2026-08-30: https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/tree/main/spec/2026-04-17 — schemas cover fulfillment, idempotency, and refunds."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep x402|MPP|AP2|ACP → q-defi-agentic-payment-standards-compare, q-defi-x402-on-stellar-what, q-mpp-discovery-and-modes; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "Current MPP SDK wording uses Channel for the implementation that the case calls Session. The semantics match."
+}

@@ -1,0 +1,98 @@
+{
+  "id": "q-tool-soroban-auth-audit-live",
+  "lane": "d",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Uses searchResearch with the audit filter and cites the versioned Veridise primary audit.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+          "quote": "Version History: Aug. 27, 2025 V2.1 (Intended Behavior and Invalid Issues moved to the Appendix) Dec. 22, 2023 V2 Dec. 22, 2023 V1",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/research?q=authorization%20recursion&source=audit",
+          "quote": "The live audit-filtered search remained available. The identifier probe returned source: audit for the Veridise row.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The primary report is versioned and stable. The live retrieval surface is volatile."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Names the historical Critical label and the zero valid-Critical count as distinct.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+          "quote": "A.2.2 V-SOR-APP-VUL-003: Denial of Service During Authorization. Severity Critical. Status Investigated. Table 2.3: Critical-Severity Issues 0 0.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "D",
+          "ref": "https://stellarsecurityportal.com/api/v1/reports/28",
+          "quote": "V-SOR-VUL-002 Denial of Service During Authorization Critical Investigated; Critical-Severity Issues 0 0.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The Critical label belongs to an investigated item. The valid-vulnerability summary counts zero Critical issues."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "States that V2 already judged the item invalid and V2.1 relocated it to the appendix.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "D",
+          "ref": "https://stellarsecurityportal.com/api/v1/reports/28",
+          "quote": "Why Invalid It turns out that a failed call to require auth in check auth will return an Err. As shown in the loop above, Errs are propagated up, meaning the number of iterations of this loop will be linear in the number of trackers.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+          "quote": "Aug. 27, 2025 V2.1 (Intended Behavior and Invalid Issues moved to the Appendix); A.2.2 V-SOR-APP-VUL-003: Denial of Service During Authorization.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "V2 already contains the invalid disposition. V2.1 changes the placement and identifier."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "States that Scout now retrieves V-SOR-APP-VUL-003 without `meta.exactMiss`.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2",
+          "quote": "meta.generatedAt=2026-08-30T12:45:51.301Z; meta.exactMiss absent; first row source=audit, title=Stellar Soroban Core — Veridise, section=V-SOR-APP-VUL-003:.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4",
+          "quote": "The previous form required exactly THREE groups of 2+ letters, so every VERIDISE id was missed — \"V-SOR-APP-VUL-003\" ... Their findings never became their own chunk.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The absent control returned meta.generatedAt=2026-08-30T12:45:51.552Z, meta.exactMiss present, and first row source=audit. Its warning says not to report V-SOR-APP-VUL-999 as found."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf — the report identifies V2.1 and the earlier V2.",
+    "Live re-check 2026-08-30: https://stellarsecurityportal.com/api/v1/reports/28 — V2 labels the item Critical and reports zero Critical issues.",
+    "Live re-check 2026-08-30: https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf — V2.1 places V-SOR-APP-VUL-003 in Appendix A.2.2.",
+    "Live re-check 2026-08-30: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 — exactMiss is absent and the first row source is audit."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep V-SOR-APP-VUL-003|authorization recursion → q-soroban-auth-recursion-dos-audit, q-tool-soroban-auth-audit-live; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The volatile claim is the live Scout retrieval behavior, not the versioned Veridise report content. The real probe had meta.exactMiss absent and first row source audit. The V-SOR-APP-VUL-999 control had meta.exactMiss present and first row source audit. The PDF still has the V2 V-SOR-VUL-002 history, V2.1 V-SOR-APP-VUL-003, and zero valid Critical issues. Recommend truth.asOf=2026-08-30 because the live behavior was reprobed on that date."
+}

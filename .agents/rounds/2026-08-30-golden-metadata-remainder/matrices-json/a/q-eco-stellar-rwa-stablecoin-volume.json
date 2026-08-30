@@ -1,0 +1,95 @@
+{
+  "id": "q-eco-stellar-rwa-stablecoin-volume",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Uses current or dated source observations for specific claims.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+          "quote": "date 2026-05-07; $2B+ in onchain RWAs; $5.5B in stablecoin payment volume",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official report supplies a publication date and names the measured quarter."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+          "quote": "Q1 2026 quarterly update; date 2026-05-07.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The report identifies both the reporting period and publication date."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Treats supply, value, and market cap as point-in-time stocks.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://docs.rwa.xyz/methodology/metrics.md",
+          "quote": "Aggregation respects the stock vs. flow distinction: supply and value are point-in-time snapshots.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The same page defines market value as total supply multiplied by price and circulating market value separately."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Treats payment and transfer volumes as period flows.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://docs.rwa.xyz/methodology/metrics.md",
+          "quote": "Transfers are accumulated over the period; transfer volume is the total USD value of peer-to-peer transfers during the period.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+          "quote": "Stablecoin payment volume reached $5.5 billion in Q1.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The methodology defines transfer volume as a period flow. The SDF report binds payment volume to Q1."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Flags staleness.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+          "quote": "date 2026-05-07; Q1 2026 quarterly update",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The source is a dated quarterly report. It cannot support an undated current scalar."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — remains a dated Q1 2026 source for RWA and stablecoin observations.",
+    "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — shows Q1 2026 and publication date 2026-05-07.",
+    "Live re-check 2026-08-30: https://docs.rwa.xyz/methodology/metrics.md — defines supply and value as point-in-time snapshots.",
+    "Live re-check 2026-08-30: https://docs.rwa.xyz/methodology/metrics.md — defines transfer volume during a period and accumulates transfers over that period.",
+    "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — the dated quarterly scope requires a staleness warning for current use."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep stablecoin payment volume|transfer volume|distributed RWA|represented value|market cap → q-asset-rwa-tokenized-freshness, q-asset-stablecoin-issuers-discovery, q-eco-stablecoins-on-stellar, q-eco-stellar-rwa-stablecoin-volume; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The current RWA.xyz methodology states the stock-versus-flow rule directly. The SDF report remains a historical Q1 source."
+}

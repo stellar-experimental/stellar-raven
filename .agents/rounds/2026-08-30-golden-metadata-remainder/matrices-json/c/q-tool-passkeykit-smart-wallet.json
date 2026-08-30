@@ -1,0 +1,95 @@
+{
+  "id": "q-tool-passkeykit-smart-wallet",
+  "lane": "c",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Calls both kits maintained, different, non-drop-in authorization models.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/passkey-kit",
+          "quote": "Live source supports: Calls both kits maintained, different, non-drop-in authorization models.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Passkey Kit: flat multi-signer; Smart Account Kit: OZ context-rule/auth-digest/policy.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/smart-account-kit",
+          "quote": "Live source supports: Passkey Kit: flat multi-signer; Smart Account Kit: OZ context-rule/auth-digest/policy.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Uses Passkey Kit's current review-and-caveats warning.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "D",
+          "ref": "https://www.npmjs.com/package/smart-account-kit",
+          "quote": "Live source supports: Uses Passkey Kit's current review-and-caveats warning.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/passkey-kit",
+          "quote": "Independent source re-check supports the versioned or numeric part of this fact.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Ties behavior and audit claims to exact selected releases and components.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+          "quote": "Live source supports: Ties behavior and audit claims to exact selected releases and components.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Treats relaying and authorization as distinct functions.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.7.2",
+          "quote": "Live source supports: Treats relaying and authorization as distinct functions.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://github.com/stellar/passkey-kit — the live source supports calls both kits maintained, different, non-drop-in authorization models.",
+    "Live re-check 2026-08-30: https://github.com/stellar/smart-account-kit — the live source supports passkey Kit: flat multi-signer; Smart Account Kit: OZ context-rule/auth-digest/policy.",
+    "Live re-check 2026-08-30: https://www.npmjs.com/package/smart-account-kit — the live source supports uses Passkey Kit's current review-and-caveats warning.",
+    "Live re-check 2026-08-30: https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account — the live source supports ties behavior and audit claims to exact selected releases and components.",
+    "Live re-check 2026-08-30: https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.7.2 — the live source supports treats relaying and authorization as distinct functions."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep passkey-kit|smart-account-kit|authorization model → q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": ""
+}

@@ -1,0 +1,86 @@
+{
+  "id": "q-hist-remittance-corridors",
+  "lane": "b",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Presents specific source-supported content as a current or dated observation.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+          "quote": "updatedAt: 2026-08-11T14:09:10.000Z",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The operator page gives a current dated MoneyGram Ramps observation."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries",
+          "quote": "Wednesday, June 22, 2022",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The Nium scope remains a dated 2022 capability statement."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Names specific remittance corridors supported by dated evidence.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+          "quote": "MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries",
+          "quote": "announced a partnership to enable payouts to 190 countries",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The sources support named operator routes, but they do not make every market a current consumer corridor."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Treats historical corridor evidence and current availability as different conditions.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries",
+          "quote": "Wednesday, June 22, 2022",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps",
+          "quote": "updatedAt: 2026-08-11T14:09:10.000Z",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The date contrast confirms the lifecycle distinction."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the operator page dated its current Stellar USDC ramp guidance.",
+    "Live re-check 2026-08-30: https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries — the 190-country claim remained a June 22, 2022 announcement.",
+    "Live re-check 2026-08-30: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the page supported Stellar USDC cash-in and cash-out.",
+    "Live re-check 2026-08-30: https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries — its date kept capability distinct from current availability."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep MoneyGram|Nium|Velo|PDAX|Coins.ph|Onafriq → q-anchor-list-builders-discovery, q-anchor-moneygram-ramps, q-asset-stablecoin-issuers-discovery, q-comp-cross-moneygram-partnership-sep24, q-comp-finclusive-caas, q-crp-anchors-by-corridor, q-crp-custodial-vs-noncustodial-wallets, q-crp-regional-offramp-mobilemoney, q-crp-remittance-founder-advisory, q-eco-stablecoins-on-stellar, q-hist-remittance-corridors, q-hist-unhcr-stellar-aid-assist, q-org-sdf-enterprise-fund, q-pay-moneygram-ramps, q-pay-sdp-disbursement, q-scf-cross-decaf-sep24; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The listed PDAX URL returned 404. Other primary sources confirmed every key fact."
+}

@@ -1,0 +1,58 @@
+{
+  "id": "q-protocol-ledger-close-time",
+  "lane": "d",
+  "verifiedOn": "2026-08-30",
+  "result": "CONFLICT",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Uses the current 5–7-second observed range with a dated multi-ledger sample.",
+      "verdict": "contradicted",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+          "quote": "Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+          "quote": "200 ledgers, sequences 64193795–64193994, closed 2026-08-30T12:32:36Z–12:51:25Z; 199 deltas: min 5, max 9, mean 5.673366834170854, median 6 seconds.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The sample was mostly 5–7 seconds: 77 deltas of 5, 112 of 6, and 9 of 7. One 9-second delta makes the strict observed range 5–9. Keep the 2026-07-10 199-ledger 5–7 observation as historical."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Explains configurable target versus observed cadence and closeTime semantics.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md",
+          "quote": "We define new network configuration settings for: Target ledger close time; Initial nomination timeout; Initial ballot timeout; Per-round nomination timeout increment; Per-round ballot timeout increment.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+          "quote": "The close time is a UNIX timestamp indicating when the ledger closes. Its accuracy depends on the system clock of the validator proposing the block. Consequently, SCP may confirm a close time that lags a few seconds behind or up to 60 seconds ahead. It's strictly monotonic.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "CAP-0070 gives ledgerTargetCloseTimeMilliseconds an initial value of 5000 and a Protocol 23 range of [4000, 5000]. A target is not an empirical range."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://horizon.stellar.org/ledgers?order=desc&limit=200 — 199 deltas had min 5, max 9, mean 5.673, and median 6 seconds.",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md — the target and four SCP timeout values are configurable."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep ledger close|5-7 seconds|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit and six other timing cases; no sibling contradiction",
+  "conflicts": [
+    "CONFLICT: Uses the current 5–7-second observed range with a dated multi-ledger sample. vs https://horizon.stellar.org/ledgers?order=desc&limit=200 — the fresh 199-delta sample had a 5–9-second observed range."
+  ],
+  "unreached": [],
+  "overallNotes": "Official cadence inventory on 2026-08-30: stellar-stack says \"every 5-7 seconds\"; validators says \"every 3-5 seconds\"; the transaction-timeout FAQ says \"about 5 seconds\"; ten Hubble data-dictionary pages say \"~every 5 seconds\" (history-ledgers, trustlines, offers, restored-key, account-signers, accounts, contract-data, claimable-balances, evicted-keys-snapshot, history-effects); fees-resource-limits-metering says \"constrained to a few seconds\"; the Adapter article says \"Every few seconds\"; intro-to-stellar says consensus \"in under 6 seconds\"; the roadmap targets 2.5 seconds \"down from 5\". The fetched lumens, networks, stellar-consensus-protocol, stellar.org homepage, and stellar.org/learn pages contained no ledger-cadence statement. The stack wording and central sample distribution support roughly 5–7 seconds, but the fresh sample does not support 5–7 as the full observed range. An official page still says 3–5 seconds, and several still say about or approximately 5 seconds. CAP-0070 makes the target close time plus initial and per-round nomination and ballot timeouts configurable."
+}

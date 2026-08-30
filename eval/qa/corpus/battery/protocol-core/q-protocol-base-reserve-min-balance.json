@@ -66,6 +66,21 @@
         "class": "A",
         "ref": "https://horizon.stellar.org/ledgers/63426130",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+        "note": "Lists trustlines 'for both traditional assets and pool shares' as ordinary one-reserve subentries; conflicts by implication with the two-reserve pool-share rule (2026-08-30)."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+        "note": "Same subentry list; no pool-share exception stated (2026-08-30)."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+        "note": "'The pool share trust line should count as two subentries (and therefore require two base reserves).'"
       }
     ],
     "corroboration": [
@@ -108,13 +123,43 @@
             "ref": "A/B: official account/sponsorship/liquidity/contract-storage docs and CAP-0038",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-08-30",
+            "note": "Ledger 64193982 (proposer) and 64193767 (blind lane): base_reserve_in_stroops 5000000."
+          }
+        ]
+      },
+      {
+        "claim": "A pool-share trustline requires two base reserves.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+            "observedAt": "2026-08-30",
+            "note": "'count as two subentries (and therefore require two base reserves)'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+            "observedAt": "2026-08-30",
+            "note": "'A pool share trustline requires 2 base reserves instead of 1' with the six-reserve worked example."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+            "observedAt": "2026-08-30",
+            "note": "Conflict by implication: pool shares are listed among ordinary subentries that each add one reserve; the dedicated page and the CAP control."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the full sponsorship formula, liabilities boundary, zero-start and reserve-shift semantics, two-reserve pool shares, dated live value, and contract-rent distinction.",
         "2026-07-11 author re-check against stellar-core c16a6d17 TransactionUtils.cpp and live Horizon.",
@@ -127,14 +172,23 @@
         "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance — the official page states the reserve product plus liabilities.selling.",
         "Live re-check 2026-08-29: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp — getMinBalance returns the reserve product, while getAvailableBalance subtracts selling liabilities separately.",
         "Sibling sweep 2026-08-29: grep liabilities.selling|numSponsoring|numSponsored|getMinBalance → q-pc-sponsored-reserves; it encodes the same Docs/Core distinction.",
-        "Independent blind re-derivation 2026-08-29: review-canonical-rederivation-grok.md confirmed the Docs/Core conflict and the source-specific caution boundary."
+        "Independent blind re-derivation 2026-08-29: review-canonical-rederivation-grok.md confirmed the Docs/Core conflict and the source-specific caution boundary.",
+        "Live re-check 2026-08-30: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp — getMinBalance returns (2 + numSubentries + numSponsoring - numSponsored) * baseReserve; selling liabilities are subtracted separately in the available-balance path.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance — the page still adds liabilities.selling to its minimum-balance formula (sd-043 stands, reported-upstream).",
+        "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md and https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — a pool-share trustline requires two base reserves.",
+        "Live re-check 2026-08-30: https://horizon.stellar.org/ledgers?order=desc&limit=1 — base_reserve_in_stroops 5000000 (0.5 XLM) at ledger 64193982.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/lumens — 'Smart contract data does not require any base reserves … must pay rent instead'; the same page lists pool-share trustlines among ordinary one-reserve subentries, recorded as provenance for the conflict, not as support.",
+        "Disposition 2026-08-30: keep the two-reserve pool-share rule (CAP-0038 + dedicated liquidity page); the Lumens and Accounts pages' generic subentry list is recorded as a conflicting official source. No new caution (ADR-0008 boundary); the existing sd-043 caution is unchanged.",
+        "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same verdicts on the formula, the liabilities conflict, the two-reserve rule, and the live base reserve.",
+        "Sibling sweep 2026-08-30: grep baseReserve|minimumBalance|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics and five related cases; no contradiction"
       ],
       "rootCause": [
         "Eval-side pre-P14 formula shorthand and classic-account-versus-contract-storage collapse; current sibling corrections in GT-29/GT-32 were preserved.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
         "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
-        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
+        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases",
+        ".agents/TODO.md — Review five round-specific golden-truth candidates"
       ]
     },
     "origin": "raven-next q-protocol-base-reserve-min-balance"

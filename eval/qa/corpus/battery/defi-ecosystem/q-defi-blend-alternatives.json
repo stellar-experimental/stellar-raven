@@ -87,8 +87,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575: GT-14 process 3239 matrix and independent blind process 3242 report",
         "Direct operator/repository re-walk 2026-07-10 for Blend, Slender, Laina, K2 Lend, YieldBlox, DeFindex, OrbitCDP, EquitX, Peridot, and Templar",
@@ -99,12 +99,18 @@
         "Live re-check 2026-08-27: https://docs.orbitcdp.finance/protocol-overview/whitepaper — Orbit still describes a CDP system that uses Blend.",
         "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — current Scout guidance still requires live, source-grounded ecosystem checks.",
         "Sibling sweep 2026-08-27: grep Blend|Slender|DeFindex|OrbitCDP → q-defi-blend-what-is, q-defi-defindex-honest, q-eco-defi-market-map; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): removed the added qualifier \"adjacent credit\"; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 2 review (gt2-grok-rev)): removed the added qualifier \"adjacent credit\"; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://www.k2lend.com/ — K2 identifies itself as a Stellar lender; Slender, Laina, and Peridot also retain owner footprints.",
+        "Live re-check 2026-08-30: https://yieldblox.finance/ — YieldBlox identifies itself as a Blend-based money market, while DeFindex documents strategy routing.",
+        "Live re-check 2026-08-30: https://orbitcdp.finance/ — Orbit identifies itself as a CDP system, distinct from direct isolated lending.",
+        "Live re-check 2026-08-30: https://stellarlight.xyz/project/slender — StellarLight says Inactive, while the operator page remains reachable; status needs dates and attribution.",
+        "Sibling sweep 2026-08-30: grep Slender|Laina|K2 Lend|DeFindex|OrbitCDP → q-defi-defindex-honest, q-defi-flash-loans, q-defi-named-newer-protocols, q-eco-defi-market-map, q-eco-defi-projects-discovery; no contradiction"
       ],
       "rootCause": [
         "eval-side freshness/authoring: volatile directory lifecycle labels and an unsupported dominance judgment were promoted to durable grading facts",
         "service-improvement candidate recorded by the 2026-07-10 golden audit: project lifecycle labels need operator-conflict provenance",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-defi-blend-alternatives"

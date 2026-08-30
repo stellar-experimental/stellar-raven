@@ -1,0 +1,94 @@
+{
+  "id": "q-scf-vs-sdf-enterprise-fund",
+  "lane": "b",
+  "verifiedOn": "2026-08-30",
+  "result": "CONFLICT",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Presents specific source-supported content as a current or dated observation.",
+      "verdict": "disputed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/enterprise-fund/apply",
+          "quote": "Submit your application",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding",
+          "quote": "There is no application for these programs; we find promising enterprises and engage with them.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The dedicated Enterprise page has an application. The general funding index still says there is no application."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding/matching-fund",
+          "quote": "The Matching Fund is an investment track within the Stellar Development Foundation Enterprise Fund",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Treats SCF Build, Marketing, general Enterprise, and Matching as distinct mechanisms.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding",
+          "quote": "Discover the Stellar Community Fund; Matching fund; Academic research grant; Marketing grants; Enterprise fund",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/enterprise-fund",
+          "quote": "A strategic blockchain fund",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Explains SCF interest-to-invitation and Open-only voting.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+          "quote": "If your project is eligible and aligned, you will receive an invitation via email to submit a full SCF Build proposal.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+          "quote": "Community Vote (for Open Track only)",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://stellar.org/enterprise-fund/apply — the current Enterprise page still exposed an application route.",
+    "Live re-check 2026-08-30: https://stellar.org/grants-and-funding/matching-fund — the page exposed current stage, matching, and application terms.",
+    "Live re-check 2026-08-30: https://stellar.org/grants-and-funding — the funding index kept SCF, Marketing, Enterprise, and Matching separate.",
+    "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — SCF still used eligibility before invitation and Open-only community voting."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Enterprise Fund|Matching Fund → q-org-sdf-enterprise-fund, q-scf-ecosystem-listing-partner-jobs, q-scf-how-to-apply, q-scf-total-distributed, q-scf-vs-sdf-enterprise-fund; no contradiction",
+  "conflicts": [
+    "CONFLICT: Presents specific source-supported content as a current or dated observation. vs https://stellar.org/grants-and-funding — the index says Enterprise has no application, while https://stellar.org/enterprise-fund/apply exposes a current application."
+  ],
+  "unreached": [],
+  "overallNotes": "The application conflict remains live. The answer already requires disclosure and current routing through the dedicated form."
+}

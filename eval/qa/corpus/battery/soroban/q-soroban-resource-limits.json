@@ -77,8 +77,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-47 primary 3327 and valid blind 3334; blind independently rejected the execution-only/every-resource-ledger-cap absolutes.",
         "Structural re-form (symmetric-caution): added a cached-documentation grading caution for sd-024; the Soroban resource-limit facts are unchanged.",
@@ -91,13 +91,19 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still describes validation and apply-time enforcement as different phases",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md — CAP-0046-07 still defines ledger aggregates for many resources and only a transaction memory cap",
         "Sibling sweep 2026-08-27: grep resource limits|ledger aggregate|memory cap|simulateTransaction → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): removed the added \"memory as an exception\" claim (no notes receipt); truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 2 review (gt2-grok-rev)): removed the added \"memory as an exception\" claim (no notes receipt); truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still lists event, return, entry, footprint, I/O, CPU, and memory limits",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — transaction/envelope size remains a Soroban resource dimension",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still describes validation and apply-time enforcement as different phases",
+        "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md — CAP-0046-07 still defines ledger aggregates for many resources and only a transaction memory cap",
+        "Sibling sweep 2026-08-30: grep sd-024|diskReadBytes|refundableFee|Soroban resource → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction"
       ],
       "rootCause": [
         "Eval-side resource taxonomy flattened validation, pre-execution, and apply-time enforcement into one phase.",
         "improvements/stellar-docs/sd-024-transaction-resource-xdr-drift.md",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-soroban-resource-limits"

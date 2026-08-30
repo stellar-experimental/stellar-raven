@@ -1,0 +1,128 @@
+{
+  "id": "q-protocol-base-reserve-min-balance",
+  "lane": "d",
+  "verifiedOn": "2026-08-30",
+  "result": "CONFLICT",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Gives the full sponsorship-aware minimum-balance formula.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
+          "quote": "int64_t effEntries = 2LL; effEntries += numSubentries; effEntries += numSponsoring; effEntries -= numSponsored; ... return effEntries * int64_t(lh.baseReserve);",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+          "quote": "Once sponsorships are introduced, the minimum balance calculation is: (2 base reserves + numSubEntries + numSponsoring - numSponsored) * baseReserve + liabilities.selling.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Core's getMinBalance is the reserve product. The official sponsored-reserves page adds selling liabilities to a broader reserve boundary."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Separates minimum balance from the selling-liability spendable boundary.",
+      "verdict": "disputed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp",
+          "quote": "avail = acc.balance - getMinBalance(header, acc); ... avail -= getSellingLiabilities(header, le);",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance",
+          "quote": "Once sponsorships are introduced, the minimum balance calculation is: ... * baseReserve + liabilities.selling.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Core separates getMinBalance from available-balance liabilities. The official sponsored-reserves page calls their sum the minimum-balance calculation."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Explains sponsored zero-balance account creation and later reserve-obligation shift.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
+          "quote": "Because sponsorship can cover an account's own base reserves as well as its subentries, a brand-new account can be created with a startingBalance of 0 ... and the sponsor carries the two base reserves.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md",
+          "quote": "CreateAccountOp will now be valid if startingBalance >= 0 ... RevokeSponsorshipOp can ... be sponsored to no longer be sponsored ... If getAvailableBalance(owner) < mult * baseReserve, fail with REVOKE_SPONSORSHIP_LOW_RESERVE.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Ending or revoking sponsorship shifts the reserve obligation to the owner only when the owner can meet it."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Sets a pool-share trustline reserve cost at twice the current 0.5 XLM base reserve.",
+      "verdict": "disputed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md",
+          "quote": "The pool share trust line should count as two subentries (and therefore require two base reserves).",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+          "quote": "ledger sequence 64193982; closed_at 2026-08-30T12:50:18Z; base_reserve_in_stroops 5000000.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+          "quote": "Every subentry after that requires an additional base reserve ... Subentries include trustlines (for both traditional assets and pool shares).",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "CAP-0038 and the dedicated liquidity page require two reserves. The current lumens and accounts pages generalize each pool-share trustline as one subentry costing one reserve. Those pages conflict with the two-reserve rule."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Describes Soroban contract rent as its own storage-cost model.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+          "quote": "Smart contract data does not require any base reserves in order to live on the ledger, so every smart contract entry must pay rent instead.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-12.md",
+          "quote": "For any entry bumped, rent_fee is charged from the refundableFee.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Contract data uses TTL, rent, and archival behavior rather than classic account reserve subentries."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp — getMinBalance uses the full sponsorship-aware reserve product.",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp — available balance subtracts selling liabilities after getMinBalance.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — a sponsor can carry both reserves for a zero-balance new account.",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — a pool-share trustline requires two base reserves.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/lumens — smart-contract entries pay rent instead of base reserves."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep baseReserve|minimumBalance|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics and five related cases; no sibling contradiction",
+  "conflicts": [
+    "CONFLICT: Separates minimum balance from the selling-liability spendable boundary. vs https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance — the page calls the reserve product plus liabilities.selling the minimum-balance calculation.",
+    "CONFLICT: Sets a pool-share trustline reserve cost at twice the current 0.5 XLM base reserve. vs https://developers.stellar.org/docs/learn/fundamentals/lumens — the page says every listed subentry, including pool shares, adds one base reserve."
+  ],
+  "unreached": [],
+  "overallNotes": "The lumens page says one base reserve is 0.5 XLM, an account needs two reserves, every listed subentry adds one reserve, sponsorship can cover both account reserves, and contract data pays rent. The accounts page says one reserve is 0.5 XLM, each subentry adds one reserve, and lists pool shares as trustlines. Both pages therefore conflict by implication with CAP-0038's two-reserve pool-share rule. Neither page prints the full sponsorship-aware formula. The sponsored-reserves page prints it but adds liabilities.selling. Core master keeps getMinBalance and selling liabilities separate. The live ledger probe returned sequence 64193982 and base_reserve_in_stroops 5000000."
+}

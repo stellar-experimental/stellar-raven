@@ -1,0 +1,89 @@
+{
+  "id": "q-edge-fresh-most-recent-news",
+  "lane": "b",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Presents source-supported content as a current or dated observation.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog",
+          "quote": "August 24, 2026 • Maryam Mazraei",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The live official feed supplies publication dates for current observations."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog",
+          "quote": "August 24, 2026 • Maryam Mazraei",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The current feed labels changeable news items with dates."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Requires window/asOf, valid date-field labels, date-order post-sort, and dated rows only.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json",
+          "quote": "date_start: ISO date/timestamp lower bound (inclusive); date_end: ISO date/timestamp upper bound (inclusive); dateField: Exact upstream field copied into date",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The operation returns similarity-sorted candidates, so a recency answer must validate dates and sort them."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Treats recency and editorial significance as different criteria.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog",
+          "quote": "The latest & greatest",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The feed supplies chronology. The answer must separately explain why an item is significant."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "States the digest is non-exhaustive.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog",
+          "quote": "562 results",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "A short weekly digest cannot exhaust the current official feed."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://stellar.org/blog — the official feed showed dated current posts.",
+    "Live re-check 2026-08-30: https://stellar.org/blog — each visible current post carried a publication date.",
+    "Live re-check 2026-08-30: https://github.com/stellar-experimental/stellar-raven — the manifest exposed date bounds, date labels, and similarity order.",
+    "Live re-check 2026-08-30: https://stellar.org/blog — the feed exposed chronology, while significance still required a separate rationale.",
+    "Live re-check 2026-08-30: https://stellar.org/blog — the feed showed 562 results, so a short digest is non-exhaustive."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep most recent|recency|non-exhaustive → q-eco-most-active-defi-projects, q-eco-stablecoins-on-stellar, q-edge-exhaustive-defi-deep-report, q-edge-fresh-most-recent-news, q-hot-sdf-transparency-wallets-reports, q-infra-rpc-provider-archive-tier, q-soroban-vuln-classes, q-tool-wallets-comparison; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The dated example remains illustrative. The live feed now contains later items."
+}

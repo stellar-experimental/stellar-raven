@@ -1,0 +1,80 @@
+{
+  "id": "q-scf-sdf-marketing-grant",
+  "lane": "b",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Presents specific source-supported content as current or dated, not unsupported memory.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+          "quote": "SDF offers marketing grants of up to $500,000 to fuel the growth and user acquisition efforts of projects built on the Stellar network.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+          "quote": "Funding for a marketing grant is up to $500k.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The cap is current page state and must remain dated in an answer."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Describes growth purpose and execution requirements.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+          "quote": "Marketing grants go to both new and existing projects with clear use cases and concrete timelines and are reserved for qualified teams with proven capability to define budgets, set benchmarks, execute on marketing campaigns, and deliver results.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Separates the SDF application from the SCF Build track.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+          "quote": "To apply for a Stellar Development Foundation Marketing Grant, please complete all the fields in the form",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+          "quote": "SCF Build is the core award track for teams building applications and protocols on Stellar.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://stellar.org/grants-and-funding/marketing-grants — the current dedicated page supported the program facts.",
+    "Live re-check 2026-08-30: https://stellar.org/grants-and-funding/marketing-grants — the page still showed the changeable $500,000 cap.",
+    "Live re-check 2026-08-30: https://stellar.org/grants-and-funding/marketing-grants — the page required use cases, timelines, budgets, benchmarks, and execution capability.",
+    "Live re-check 2026-08-30: https://stellar.org/grants-and-funding/marketing-grants — the page provided a direct SDF application form."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Marketing Grant|Marketing Grants → q-scf-sdf-marketing-grant, q-scf-vs-sdf-enterprise-fund; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The live page confirms the growth purpose and separate SDF application route."
+}

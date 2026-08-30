@@ -72,12 +72,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-16 primary 3244 and blind 3245",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
         "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
@@ -86,14 +86,21 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — current built-in pool mechanics still support dated venue-specific guidance.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool — Soroban pools remain contract-defined and distinct from Classic pool-share operations.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the current guide still documents pool mechanics and liquidity-provider risk context.",
-        "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share|Soroban contract → q-asset-sdex-vs-amm and q-asset-amm-fee-reserve; no contradiction."
+        "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share|Soroban contract → q-asset-sdex-vs-amm and q-asset-amm-fee-reserve; no contradiction.",
+        "Live re-check 2026-08-30: https://www.defindex.io/terms — the owner terms say historical vault performance does not indicate future results.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — Classic pools use explicit deposit and withdrawal operations.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool — Soroban pool shares and exits are contract-defined.",
+        "Live re-check 2026-08-30: https://www.defindex.io/terms — vault risks include low liquidity, reward changes, harvest execution, configuration, and oracle-linked liquidation.",
+        "Live re-check 2026-08-30: https://github.com/blend-capital/docs-v2/blob/main/blend-whitepaper.md — Blend documents a 17-day withdrawal queue and conditional withdrawal.",
+        "Sibling sweep 2026-08-30: grep impermanent loss|LiquidityPoolDeposit|pool-share|withdrawal queue → q-asset-amm-fee-reserve, q-asset-sdex-vs-amm, q-asset-trustline-basics, q-protocol-base-reserve-min-balance, q-protocol-operation-types-list; no contradiction"
       ],
       "rootCause": [
         "eval-side answer completeness: correct warnings did not answer deposit/withdraw, yield comparison, or impermanent-loss mechanics",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-defi-provide-liquidity-impermanent-loss"

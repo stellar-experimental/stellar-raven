@@ -5,7 +5,7 @@
     "scout.searchProjects"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live wallet search returned 164 matches; Lobstr, xBull, and Freighter appeared on the first page.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-08-30, a live keyword wallet search reported a total of 183 matches across two pages (99 and 87 rows, three overlapping records), while 64 unique records had Wallet in their `types` array (31 had Wallet as the sole type); Lobstr, xBull, and Freighter appeared first on the first page. The keyword total and the exact-type count are different measurements.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific current or dated source evidence, not unsupported memory.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -30,7 +30,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-08-30",
     "sources": [
       {
         "class": "C",
@@ -73,11 +73,35 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "On 2026-08-30 the live keyword search q=wallet reported counts.total 183 (99 + 87 rows, three overlaps); 66 row occurrences / 64 unique ids carried Wallet in the `types` array (31 had Wallet as the sole type); Lobstr, xBull, Freighter were the first rows.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0",
+            "observedAt": "2026-08-30",
+            "note": "generatedAt 2026-08-30T12:45:55Z: returned 99, total 183, 63 Wallet-typed rows (proposer); blind lane 12:31:05Z same totals."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=100",
+            "observedAt": "2026-08-30",
+            "note": "returned 87, 3 Wallet-typed rows; overlaps Coca, Stellar Passport, Pakana.Net."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+            "observedAt": "2026-08-30",
+            "note": "Stellar Wallets Kit list includes Freighter, Lobstr, and xBull."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
       "evidence": [
         "Solo scratchpad 575 GT-20 primary 3256 and blind 3257",
         "Sibling sweep: q-eco-wallets-overview/similar, q-eco-freighter-wallet, q-eco-lobstr-wallet, q-eco-hana-wallet-scf, and wallet tooling cases",
@@ -92,7 +116,14 @@
         "Structural re-form (long-fact): shortened the source rule and kept lifecycle versus availability in golden.avoid; truth unchanged.",
         "Live re-check 2026-08-29: https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0 returned generatedAt, total 183, and wallet records; offset 0 and 100 pages had three overlapping slugs, and identity aliases supplied canonical names.",
         "Live re-check 2026-08-29: https://developers.stellar.org/docs/tools/developer-tools/wallets lists Freighter, Lobstr, xBull, and other current wallet integration options.",
-        "Sibling sweep 2026-08-29: grep wallet roster|wallet search|directory lifecycle|canonical wallet|duplicate.*wallet|Wallet-typed → wallet, tooling, and SEP cases; no contradiction."
+        "Sibling sweep 2026-08-29: grep wallet roster|wallet search|directory lifecycle|canonical wallet|duplicate.*wallet|Wallet-typed → wallet, tooling, and SEP cases; no contradiction.",
+        "Gospel refresh 2026-08-30: the illustrative dated count moved from the 2026-07-11 164-match example to the 2026-08-30 observation (keyword total 183; 64 unique exact-type Wallet records); the durable rules (date the roster, separate keyword from exact type, handle duplicates) are unchanged.",
+        "Live re-check 2026-08-30: https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0 — total 183, 99 rows, `types` is an array, 63 rows include Wallet; first rows Lobstr, xBull, Freighter.",
+        "Live re-check 2026-08-30: https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=100 — 87 rows, 3 include Wallet; 66 occurrences reduce to 64 unique ids.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/developer-tools/wallets — lists Freighter, Lobstr, and xBull.",
+        "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — total 183, 66 rows containing Wallet, 31 sole-type Wallet, same first-page names.",
+        "Sibling sweep 2026-08-30: grep wallet roster|Wallet-typed|canonical wallet|duplicate.*wallet|164 matches → q-eco-stellar-wallets-list, q-tool-wallets-comparison and four related cases; no contradiction",
+        "Owner fix after independent review 2026-08-30 (gmr-grok-rev, review-final-grok.md finding 1): the answer clause now states 64 records with Wallet in `types` and 31 sole-type Wallet records, matching the corroboration row; the sole-type count is the exact-type figure."
       ],
       "rootCause": [
         "A small directory snapshot was presented as exhaustive and semantic/keyword routing was confused with exact type and availability.",
@@ -101,7 +132,9 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        "freshness-drift",
+        ".agents/TODO.md — Review five round-specific golden-truth candidates"
       ]
     },
     "origin": "raven-next q-eco-stellar-wallets-list"

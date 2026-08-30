@@ -42,12 +42,17 @@
       {
         "class": "D",
         "ref": "https://immunefi.com/bug-bounty/stellar/information/",
-        "note": "class inferred at migration"
+        "note": "General Stellar Immunefi program: Not Found on 2026-08-30; HackerOne policy states it is deprecated. Kept as evidence of the deprecation."
       },
       {
         "class": "D",
         "ref": "https://immunefi.com/bug-bounty/openzeppelin-stellar/information/",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/grants-and-funding/bug-bounty",
+        "note": "SDF landing page; on 2026-08-30 it still says two Immunefi bounties are supported (stale versus HackerOne)."
       }
     ],
     "corroboration": [
@@ -83,12 +88,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-40 blind process 3304; controlling policies fetched 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a narrow caution for the pre-fix Scout security-program roster; golden truth unchanged.",
         "Improvement finding read 2026-08-27: improvements/resolved.json entry sls-020; disputed claim: pre-fix Scout retrieval omitted the 2026-05-07 HackerOne migration.",
@@ -98,14 +103,21 @@
         "Live re-check 2026-08-27: https://stellar.org/grants-and-funding/bug-bounty — showed the current official program scope for dated, source-supported content.",
         "Live re-check 2026-08-27: https://immunefi.com/bug-bounty/stellar/information/ returned 404, while https://immunefi.com/bug-bounty/openzeppelin-stellar/information/ showed the independent OpenZeppelin program.",
         "Live re-check 2026-08-27: https://stellar.org/grants-and-funding/bug-bounty — excluded third-party applications; https://stellar.gitbook.io/scf-handbook/scf-awards/build-award showed Audit Bank as audit support.",
-        "Sibling sweep 2026-08-27: grep HackerOne|general Immunefi|OpenZeppelin bounty|third-party apps|Audit Bank → q-comp-security-disclosure-programs, q-scf-sdf-bug-bounty, and q-scf-audit-bank; no contradiction."
+        "Sibling sweep 2026-08-27: grep HackerOne|general Immunefi|OpenZeppelin bounty|third-party apps|Audit Bank → q-comp-security-disclosure-programs, q-scf-sdf-bug-bounty, and q-scf-audit-bank; no contradiction.",
+        "Live re-check 2026-08-30: https://hackerone.com/stellar?view_policy=true — the current policy dated the consolidated program transition.",
+        "Live re-check 2026-08-30: https://hackerone.com/stellar?view_policy=true — the policy made the May 7, 2026 transition date visible.",
+        "Live re-check 2026-08-30: https://immunefi.com/bug-bounty/openzeppelin-stellar/information/ — the independent OpenZeppelin program remained live after the general Stellar page vanished.",
+        "Live re-check 2026-08-30: https://stellar.org/grants-and-funding/bug-bounty — the official page excluded third-party applications from the general bounty.",
+        "Source conflict 2026-08-30: https://stellar.org/grants-and-funding/bug-bounty still says two Immunefi bounties are supported, while https://hackerone.com/stellar?view_policy=true states the general Stellar Immunefi program is deprecated and https://immunefi.com/bug-bounty/stellar/information/ returns Not Found; the OpenZeppelin-on-Stellar Immunefi program remains live and independent, as the answer states.",
+        "Sibling sweep 2026-08-30: grep HackerOne|Immunefi|Audit Bank → q-comp-security-disclosure-programs, q-scf-audit-bank, q-scf-sdf-bug-bounty; no contradiction"
       ],
       "rootCause": [
         "improvements/stellar-light-scout/sls-020-security-program-migration-supersession.md",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-scf-sdf-bug-bounty"

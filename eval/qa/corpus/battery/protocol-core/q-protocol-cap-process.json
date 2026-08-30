@@ -100,8 +100,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
       "evidence": [
         "Current stellar-protocol core/README.md workflow observed 2026-08-04; independent Todo 1347 verifier c3625.",
         "2026-07-11 author re-check against stellar-protocol fbf05c9d CAP process and live P27/CAP-0071 counterexample.",
@@ -114,12 +114,20 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP used quorum sets and federated voting semantics.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — SEPs defined ecosystem standards above the network, unlike core-protocol CAPs.",
         "Sibling sweep 2026-08-27: grep Awaiting Decision|Implementation Review|CAP process|FCP → q-protocol-cap-process; grep CAPs|SEPs → q-protocol-cap-vs-sep and related protocol cases; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): restored explicit FCP acceptance/rejection branches; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 2 review (gt2-grok-rev)): restored explicit FCP acceptance/rejection branches; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — the process retained Draft, Awaiting Decision, FCP branches, and return to Draft.",
+        "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — the workflow continued through Accepted, Implemented, and Final.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — validators still schedule and vote on network activation after implementation.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP still used quorum sets and federated voting.",
+        "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/tree/master/ecosystem — SEPs remained ecosystem proposals, distinct from core-protocol CAPs.",
+        "Source conflict 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/README.md still words Final as acceptance by a majority of validators, while https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol defines quorum-set/FBA agreement; the answer keeps FBA activation semantics and the registry wording is a simplification, not a contradiction.",
+        "Sibling sweep 2026-08-30: grep Awaiting Decision|Final Comment Period|quorum set|token-holder → q-protocol-cap-process, q-protocol-quorum-slice-vs-quorum, q-protocol-scp-consensus-algorithm, q-protocol-tier1-requirements, q-protocol-validator-upgrade-vote; no contradiction"
       ],
       "rootCause": [
         "Eval-side lifecycle drift and governance-layer collapse; the golden retained retired Implementation Review status.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-protocol-cap-process"

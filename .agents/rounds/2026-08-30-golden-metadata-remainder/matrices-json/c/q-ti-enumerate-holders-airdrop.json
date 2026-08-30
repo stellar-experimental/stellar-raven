@@ -1,0 +1,89 @@
+{
+  "id": "q-ti-enumerate-holders-airdrop",
+  "lane": "c",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Uses cursor-paginated /accounts?asset=CODE:ISSUER; filters zero balances/eligibility.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-all-accounts",
+          "quote": "/accounts?asset=CODE:ISSUER remains cursor-paginated for Classic trustline accounts.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "States the Horizon collection excludes C-address token balances.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data",
+          "quote": "trustline/account results still require zero-balance and campaign-eligibility filtering.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "States a moving Horizon crawl is not an atomic historical snapshot.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/structure/pagination",
+          "quote": "a moving cursor crawl remains non-atomic and does not define one historical-ledger snapshot.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Pins network/ledger and defines claimable/pool/auth/issuer/muxed/contract eligibility.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data",
+          "quote": "deterministic holder sets still require a pinned network/ledger and explicit claimable/pool/auth/issuer/muxed/contract eligibility.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Requires an idempotent recipient ledger and retry/sequence/fee/canary controls.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+          "quote": "batched distributions still require recipient state plus retry, sequence, fee, and canary controls.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-all-accounts — /accounts?asset=CODE:ISSUER remains cursor-paginated for Classic trustline accounts.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — trustline/account results still require zero-balance and campaign-eligibility filtering.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/apis/horizon/api-reference/structure/pagination — a moving cursor crawl remains non-atomic and does not define one historical-ledger snapshot.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data — deterministic holder sets still require a pinned network/ledger and explicit claimable/pool/auth/issuer/mux...",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md — batched distributions still require recipient state plus retry, sequence, fee, and canary controls."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep /accounts?asset=CODE:ISSUER|contract balances|atomic exact-ledger snapshot|recipient ledger → q-asset-trustline-vs-sac, q-protocol-24-whisk-incident, q-ti-enumerate-holders-airdrop, q-ti-fetch-all-balances-classic-sac; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": ""
+}

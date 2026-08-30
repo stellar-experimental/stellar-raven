@@ -1,0 +1,74 @@
+{
+  "id": "q-sor-decode-hosterror-codes",
+  "lane": "c",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Names contract, budget, WasmVM, XDR-union, auth, and missing-context error classes.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors",
+          "quote": "HostError classes still require class-specific diagnostic interpretation",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Matches non-root auth, context, event, and ledger-testutils remedies to diagnostics.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors",
+          "quote": "diagnostics still determine the matching auth, context, event, or ledger remedy",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Generated `try_*` clients expose both nested `Result` layers.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
+          "quote": "generated try methods still expose nested Result layers",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Preserve the original failure class before caller remapping.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs",
+          "quote": "SDK tests still preserve distinct declared-error and InvokeError branches",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — HostError classes still require class-specific diagnostic interpretation",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — diagnostics still determine the matching auth, context, event, or ledger remedy",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — generated try methods still expose nested Result layers",
+    "Live re-check 2026-08-30: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs — SDK tests still preserve distinct declared-error and InvokeError branches"
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: q-soroban-unit-testing owns happy-path setup; this case owns exact failure interpretation; q-soroban-publish-events owns event publication and RPC retention.",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": ""
+}

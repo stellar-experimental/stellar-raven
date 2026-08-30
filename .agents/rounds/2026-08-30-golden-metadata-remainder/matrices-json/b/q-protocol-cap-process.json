@@ -1,0 +1,109 @@
+{
+  "id": "q-protocol-cap-process",
+  "lane": "b",
+  "verifiedOn": "2026-08-30",
+  "result": "CONFLICT",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Describes Draft, Awaiting Decision, FCP accept or reject, and return to Draft.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+          "quote": "Draft -> Awaiting Decision",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The current process also states acceptance, rejection, and return-to-Draft branches."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Uses Draft → Awaiting Decision → FCP → Accepted → Implemented → Final.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+          "quote": "Once an implemented CAP has been released in a specified version ... it will move to Final.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Treats CAP status, implementation, release, and SCP activation as distinct stages.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+          "quote": "CAP Finalization",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades",
+          "quote": "When the network time is later than the upgradetime specified in the upgrades command, the validator will vote to update the network",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Uses quorum-set/FBA semantics for network activation.",
+      "verdict": "disputed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+          "quote": "A node’s trusted set of nodes is called a quorum set.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+          "quote": "Final when it has been formally accepted by a majority of validators (nodes) on the network.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The consensus documentation uses quorum-set and FBA semantics. The CAP registry still uses global-majority wording for Final."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Treats CAPs, SEPs, and token-holder votes as distinct governance concepts.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/tree/master/ecosystem",
+          "quote": "Stellar Ecosystem Proposals (SEPs)",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+          "quote": "agreement is achieved using federated voting",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The sources separate ecosystem standards from validator consensus. They provide no token-holder activation vote."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — the process retained Draft, Awaiting Decision, FCP branches, and return to Draft.",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/README.md — the workflow continued through Accepted, Implemented, and Final.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades — validators still schedule and vote on network activation after implementation.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP still used quorum sets and federated voting.",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/tree/master/ecosystem — SEPs remained ecosystem proposals, distinct from core-protocol CAPs."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Awaiting Decision|Final Comment Period|quorum set|token-holder → q-protocol-cap-process, q-protocol-quorum-slice-vs-quorum, q-protocol-scp-consensus-algorithm, q-protocol-tier1-requirements, q-protocol-validator-upgrade-vote; no contradiction",
+  "conflicts": [
+    "CONFLICT: Uses quorum-set/FBA semantics for network activation. vs https://github.com/stellar/stellar-protocol/blob/master/core/README.md — Final is still described as acceptance by a majority of validators (nodes), while the consensus guide defines quorum-set/FBA agreement."
+  ],
+  "unreached": [],
+  "overallNotes": "The process stages remain supported. The current CAP registry and consensus guide use conflicting activation language."
+}

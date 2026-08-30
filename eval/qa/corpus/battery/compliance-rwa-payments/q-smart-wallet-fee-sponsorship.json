@@ -214,8 +214,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "https://developers.stellar.org/docs/build/apps/smart-wallets/fee-sponsorship",
         "https://developers.stellar.org/docs/learn/encyclopedia/sponsored-reserves",
@@ -228,10 +228,17 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — SAC is the contract interface for issued Stellar assets",
         "Live re-check 2026-08-27: https://github.com/OpenZeppelin/openzeppelin-relayer — token relaying remains a provider implementation with operational controls",
         "Sibling sweep 2026-08-27: grep C-address|sponsored reserves|SAC → q-pc-sponsored-reserves, q-ti-fetch-all-balances-classic-sac, q-sor-contract-trustlines-c-address; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored hosted facilitators as a required provider design; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored hosted facilitators as a required provider design; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — G-address issued balances use trustlines; C-address balances use contract data.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions — fee bumps pay another account's transaction fee.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves — begin/end sponsorship moves reserve obligations to the sponsor.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — SAC supplies the contract interface and balance model for issued assets.",
+        "Live re-check 2026-08-30: https://docs.openzeppelin.com/relayer/guides/stellar-sponsored-transactions-guide — the provider design uses allowed tokens, fee caps, balance checks, and swaps.",
+        "Sibling sweep 2026-08-30: grep beginSponsoringFutureReserves|FeeForwarder|hosted facilitator → q-defi-x402-on-stellar-what, q-pc-sponsored-reserves, q-protocol-operation-types-list, q-x402-payment-verification; no contradiction"
       ],
       "rootCause": [
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "kaan smart-wallet-fee-sponsorship-onboarding"

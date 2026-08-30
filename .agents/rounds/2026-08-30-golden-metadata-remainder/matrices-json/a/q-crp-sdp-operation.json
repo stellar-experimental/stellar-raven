@@ -1,0 +1,71 @@
+{
+  "id": "q-crp-sdp-operation",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Uses dated source observations for changeable claims.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+          "quote": "The live architecture page is marked Last updated Aug 27, 2026 and describes the current receiver workflow.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The answer labels its current observations as of 2026-07-10."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform",
+          "quote": "The current introduction identifies SDP as an open-source bulk-payment tool and links its active repositories.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The answer makes its date visible before current architecture and recipient claims."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Treats external wallets, direct G/C payments, and embedded passkey C wallets as distinct.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+          "quote": "Receivers can use a SEP-24 wallet application or receive funds directly to their Stellar account.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+          "quote": "Embedded Wallets create passkey-secured smart contract accounts and use SEP-45 for C accounts.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/platforms/stellar-disbursement-platform/api-reference/create-direct-payment.RequestSchema.json",
+          "quote": "The direct-payment schema accepts a Stellar account or contract wallet address.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The sources distinguish registered external, direct account-or-contract, and SDP-created passkey flows."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture — current observations come from a dated page.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform — the product page supports an explicit observation date.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets — embedded passkey C wallets remain distinct."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Stellar Disbursement Platform|external wallet|passkey C|direct payment → q-anchor-sdp-vs-anchor-platform, q-anchor-sdp-what, q-pay-sdp-disbursement; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "Current official documentation still supports all three recipient models."
+}

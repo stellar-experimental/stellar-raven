@@ -1,0 +1,107 @@
+{
+  "id": "q-edge-fresh-latest-scf-round",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Specific content uses a source-supported current or dated observation.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/awards",
+          "quote": "SCF #46 Submission; SCF #45 Panel Review; SCF #44 Ended; SCF #43 Ended.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official state changed after the answer's 2026-08-18 example. This confirms the need for a dated observation."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Every changeable roster, status, version, or measurement shows an as-of date.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open",
+          "quote": "scfRound asOf 2026-08-30; currentRound 46; currentPhase Submission.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The live response supplies an as-of date with the volatile round state."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Dated map gives current #45 and phase, distributing #44, and last-concluded #43.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/awards",
+          "quote": "The current page has rolled to SCF #46 Submission, SCF #45 Panel Review, and SCF #44 Ended.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open",
+          "quote": "currentRound 46; roundsInProgress includes #45 Panel Review; lastConfirmedRound 44.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Both live sources show a later rollover. They preserve the answer's #45/#44/#43 map only as the explicit 2026-08-18 time slice."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "The dated example reports no SCF round in Submission.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo",
+          "quote": "SCF #45 is currently in the Panel Review phase.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open",
+          "quote": "SCF #46 is now the Submission round as of 2026-08-30.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The later #46 opening does not invalidate the explicit 2026-08-18 observation. The live sources confirm that the state is volatile."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "The dated example treats SCF #45's 2026-08-16 deadline as elapsed.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/awards",
+          "quote": "SCF #45; Deadline to submit: August 16, 2026; Panel Review.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open",
+          "quote": "SCF #45 Panel Review; submission deadline 2026-08-16.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The two independent live classes agree on the numeric deadline and show the round after Submission."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/awards — now shows #46 Submission, #45 Panel Review, and #44 Ended, so a round answer needs a date.",
+    "Live re-check 2026-08-30: https://stellarlight.xyz/api/rfps?status=open — reports currentRound 46, currentPhase Submission, and asOf 2026-08-30.",
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/awards — the later #46/#45/#44 rollover keeps the #45/#44/#43 map time-scoped to 2026-08-18.",
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — now places #45 in Panel Review, after the dated no-Submission example.",
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/awards — still gives #45's submission deadline as August 16, 2026 and now labels it Panel Review."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep SCF #45|SCF #46|Submission phase|current SCF round → q-edge-fresh-latest-scf-round, q-edge-scf-v7-centralization-myths, q-scf-contract-verification-rfp-live, q-scf-current-round, q-scf-open-rfps, q-scf-open-rfps-live, q-scf-passkey-rfps-live, q-scf-rfp-tooling; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The official page and Scout now show SCF #46 in Submission. This is a later rollover, not a contradiction of the answer's explicit 2026-08-18 example."
+}

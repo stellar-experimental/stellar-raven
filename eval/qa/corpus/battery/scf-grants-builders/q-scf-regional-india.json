@@ -103,14 +103,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575, GT-39 primary process 3300 and blind process 3303, independently executed 2026-07-10.",
         "Official Ambassador APAC index and dedicated India Chapter page list Stellar India as an active Exploratory Chapter led by Sahitya Roy of Rise In.",
         "Direct Luma ajcns4mc records Jaipur Builders Camp on 2026-08-21 through 2026-08-25.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-007; the current India chapter and Jaipur event facts are unchanged.",
         "Improvements review 2026-08-27: improvements/lumenloop/ll-007-event-summary-date-prose-mismatch.md remains reported upstream; the disputed claim is the stale LumenLoop Goa identity and August 14–18 Builders Camp dates versus the direct Jaipur event source.",
@@ -118,7 +118,11 @@
         "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory trap to avoid, and moved the false central-operation claim to avoid; truth unchanged.",
         "Live re-check 2026-08-27: https://www.risein.com/stellar — showed current India Stellar activity for dated, source-supported content.",
         "Live re-check 2026-08-27: https://luma.com/ajcns4mc — showed Rise In, SDF, and Stellar India as named Jaipur event hosts, not the chapter label as a sole operator claim.",
-        "Sibling sweep 2026-08-27: grep Stellar India|India Chapter|Exploratory Chapter|Jaipur Builders Camp|centrally operates → q-scf-regional-india only; no contradiction."
+        "Sibling sweep 2026-08-27: grep Stellar India|India Chapter|Exploratory Chapter|Jaipur Builders Camp|centrally operates → q-scf-regional-india only; no contradiction.",
+        "Live re-check 2026-08-30: https://stellar.gitbook.io/ambassador-program/chapters/asia-pacific — the official index still listed Stellar India.",
+        "Live re-check 2026-08-30: https://luma.com/ajcns4mc — the Jaipur event remained dated August 21–25, 2026 and was closed.",
+        "Live re-check 2026-08-30: https://stellar.gitbook.io/ambassador-program/chapters/asia-pacific — Stellar India remained an active Exploratory Chapter.",
+        "Sibling sweep 2026-08-30: grep Stellar India|India Chapter|Jaipur → q-scf-regional-india; no contradiction"
       ],
       "rootCause": [
         "solo://proj/49/todo/judge-rubric-corpus--826 — the avoid-clause judge-artifact class (FIXED: rubric v2.1 + eval:qa:lint, commit 18e234f)",
@@ -127,7 +131,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-scf-regional-india"

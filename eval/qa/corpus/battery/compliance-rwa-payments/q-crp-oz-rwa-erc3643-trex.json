@@ -126,19 +126,25 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 569 Batch E, 2026-07-09; direct check of SEP-0057.",
         "Solo scratchpad 575 GT-10 primary/blind processes 3230/3232; pinned OpenZeppelin source/tests and hosted-doc conflict.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form 2026-08-27: rewrote three long or negative key facts as positive atomic forms; truth unchanged.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md — the specification still separates its minimal core from the claim-based reference architecture.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md — `add_identity` still appears outside the stable core interface.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/control-asset-access — asset controls remain technical policy mechanisms, separate from legal and off-chain rights.",
-        "Sibling sweep 2026-08-27: grep SEP-0057|add_identity|OpenZeppelin|asset access across the QA battery; no contradiction found."
+        "Sibling sweep 2026-08-27: grep SEP-0057|add_identity|OpenZeppelin|asset access across the QA battery; no contradiction found.",
+        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the source still exposes dated status and version fields.",
+        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the preamble remains Draft version 0.3.0.",
+        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the claim-based appendix remains outside the specification.",
+        "Live re-check 2026-08-30: https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/examples/rwa/identity-registry/src/contract.rs — current code implements add_identity.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/control-asset-access — issuer flags enforce technical access policy; legal rights remain external.",
+        "Sibling sweep 2026-08-30: grep SEP-0057|add_identity|T-REX|ERC-3643 → q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-sor-evm-to-soroban-porting; no contradiction"
       ],
       "rootCause": [
         "Eval-side API freshness drift: absence from the minimal core trait was mistaken for nonexistence across appendix and implementation.",
@@ -146,7 +152,8 @@
         "solo://proj/49/todo/golden-corpus-health--901 — risk-weighted refute batch E",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-crp-oz-rwa-erc3643-trex"

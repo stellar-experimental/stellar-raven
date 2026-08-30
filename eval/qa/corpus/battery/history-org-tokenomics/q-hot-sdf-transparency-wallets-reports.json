@@ -76,12 +76,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-27 primary 3270 and blind 3272; transparency/holdings sibling sweep.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for cached SDF wallet labels and balances; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/resolved.json entry sd-012 — fixed older SDF wallet labels and fixed-balance prose on 2026-07-27.",
@@ -90,7 +90,12 @@
         "Live re-check 2026-08-27: https://stellar.org/quarterly-reports — showed the current report series as sourced, dated observations.",
         "Live re-check 2026-08-27: https://stellar.org/foundation/mandate — showed mandate-attributed account links with separate balance timestamps.",
         "Live re-check 2026-08-27: https://stellar.org/foundation/mandate — showed named accounts within multiple allocation buckets and per-bucket totals.",
-        "Sibling sweep 2026-08-27: grep SDF Development|Assets and Liquidity|quarterly reports → q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets, q-org-sdf-structure-mandate; no contradiction"
+        "Sibling sweep 2026-08-27: grep SDF Development|Assets and Liquidity|quarterly reports → q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-mandate-buckets, q-org-sdf-structure-mandate; no contradiction",
+        "Live re-check 2026-08-30: https://stellar.org/foundation/mandate — the mandate page showed dated account and bucket observations.",
+        "Live re-check 2026-08-30: https://stellar.org/foundation/mandate — separate allocation sections showed separate update timestamps.",
+        "Live re-check 2026-08-30: https://stellar.org/quarterly-reports — the landing page exposed the current report series and downloadable reports.",
+        "Live re-check 2026-08-30: https://stellar.org/foundation/mandate — the page said its asset allocation was being updated.",
+        "Sibling sweep 2026-08-30: grep mandate|quarterly reports|wallet addresses → q-agent-payment-standard-choice, q-comp-anchor-compliance-stack, q-defi-agentic-payment-standards-compare, q-hot-sdf-transparency-wallets-reports, q-hot-sdf-xlm-holdings-sales, q-org-sdf-enterprise-fund, q-org-sdf-mandate-buckets, q-org-sdf-structure-mandate, q-scf-vs-sdf-enterprise-fund, q-token-initial-supply-distribution, q-zk-proof-systems-stellar; no contradiction"
       ],
       "rootCause": [
         "A single report pointer and two examples could be read as a complete current wallet/accounting set.",
@@ -98,7 +103,8 @@
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-hot-sdf-transparency-wallets-reports"

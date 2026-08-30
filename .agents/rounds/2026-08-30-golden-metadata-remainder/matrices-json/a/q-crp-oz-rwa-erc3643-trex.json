@@ -1,0 +1,107 @@
+{
+  "id": "q-crp-oz-rwa-erc3643-trex",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+          "quote": "The live preamble exposes changeable Status, Updated, and Version fields: Draft, 2026-06-11, and 0.3.0.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The answer dates these observations to 2026-07-10; the live values still match."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Identifies SEP-0057 as Draft v0.3.0.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+          "quote": "Status: Draft; Version: 0.3.0.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem/sep-0057.md?ref=master",
+          "quote": "The live repository object decodes to the same Draft version 0.3.0 preamble.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official ecosystem registry also lists SEP-0057 under Draft Proposals."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Treats the normative core and claim-based appendix as different specification layers.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+          "quote": "The appendix says it is NOT a part of the T-REX specification and is one claim-based reference implementation.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The core requires IdentityVerifier.verify_identity; the appendix is a larger optional system."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "`add_identity` appears in the appendix and OpenZeppelin code, outside the stable core API.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+          "quote": "The non-specification appendix declares IdentityRegistryStorage.add_identity.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/examples/rwa/identity-registry/src/contract.rs",
+          "quote": "IdentityRegistryContract implements fn add_identity and delegates to identity_storage::add_identity.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The sources preserve the core-versus-appendix-versus-library boundary."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Treats legal compliance and off-chain rights as external to technical policy enforcement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+          "quote": "The page defines issuer flags, trustline authorization, freezing, and clawback as technical access controls.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md",
+          "quote": "The SEP defines on-chain hooks while KYC document submission and provider verification occur off-chain.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The technical sources do not define custody, disclosure, transfer-agent, or property-rights law."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the source still exposes dated status and version fields.",
+    "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the preamble remains Draft version 0.3.0.",
+    "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0057.md — the claim-based appendix remains outside the specification.",
+    "Live re-check 2026-08-30: https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/main/examples/rwa/identity-registry/src/contract.rs — current code implements add_identity.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/control-asset-access — issuer flags enforce technical access policy; legal rights remain external."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep SEP-0057|add_identity|T-REX|ERC-3643 → q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-sor-evm-to-soroban-porting; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The dated answer remains accurate against current specification and implementation sources."
+}

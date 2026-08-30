@@ -1,0 +1,92 @@
+{
+  "id": "q-soroban-vuln-classes",
+  "lane": "c",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Names major current authorization, storage, external-call, and arithmetic/input families.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/smart-contracts/security",
+          "quote": "current Soroban audit guidance still covers authorization, storage, external calls, and arithmetic/input errors.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md",
+          "quote": "Independent source re-check supports the versioned or numeric part of this fact.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Names major current DoS / economic-state-transition families.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+          "quote": "current guidance still covers resource DoS and application invariants/state transitions.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md",
+          "quote": "Independent source re-check supports the versioned or numeric part of this fact.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Scopes storage/TTL issues to current P23+ restoration semantics.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival",
+          "quote": "P23+ Persistent/Instance restoration semantics remain current.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0066.md",
+          "quote": "Independent source re-check supports the versioned or numeric part of this fact.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Scopes storage/TTL issues to atomic failure semantics.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/smart-contracts/security",
+          "quote": "resource-limit failures remain atomic transaction failures.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/security — current Soroban audit guidance still covers authorization, storage, external calls, and arithmetic/input errors.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — current guidance still covers resource DoS and application invariants/state transitions.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — P23+ Persistent/Instance restoration semantics remain current.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/security — resource-limit failures remain atomic transaction failures."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep vulnerability|authorization.*storage|P23+|atomic failure → q-sor-evm-to-soroban-porting, q-soroban-auth-recursion-dos-audit, q-soroban-fuzz-testing, q-soroban-instance-storage-dos, q-soroban-storage-types, q-soroban-vuln-classes, q-tool-soroban-auth-audit-live; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The former security URL returned 404. The current /docs/build/security-docs page supplied the replacement."
+}

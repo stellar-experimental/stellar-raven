@@ -1,0 +1,36 @@
+{
+  "id": "q-defi-etherfuse-stablebonds",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {"keyFactIndex": 0, "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.", "verdict": "confirmed-as-of", "sources": [
+      {"class": "A", "ref": "https://app.etherfuse.com/bonds/USTRY", "quote": "Current Issuance Details", "asOf": "2026-08-30"}
+    ], "notes": "The live page exposes changing issuance, price, liquidity, maturity, and APY fields."},
+    {"keyFactIndex": 1, "claim": "Treats USTRY and CETES as different tokenized Etherfuse Stablebond products.", "verdict": "confirmed", "sources": [
+      {"class": "A", "ref": "https://etherfuse.com/products/stablebonds", "quote": "CETES ... Country Mexico ... Currency MXN ... Mexican government short-term bonds; US Treasury ... USTRY ... Country United States ... Currency USD ... US government treasury bonds.", "asOf": "2026-08-30"}
+    ], "notes": "The operator lists separate instruments, countries, currencies, and underlying debt."},
+    {"keyFactIndex": 2, "claim": "Covers legal, redemption, custody, maturity, and currency risks.", "verdict": "confirmed", "sources": [
+      {"class": "A", "ref": "https://app.etherfuse.com/legal/stablebonds-overview", "quote": "Redemption occurs at the applicable NAV, subject to the product's disclosed terms, fees, and settlement timing.", "asOf": "2026-08-30"},
+      {"class": "A", "ref": "https://etherfuse.com/products/stablebonds", "quote": "Every Stablebond is held by fully-regulated, insured custodians in the home country of the issuer.", "asOf": "2026-08-30"}
+    ], "notes": "The pages cover custody, NAV redemption, maturity, liquidity, fees, liabilities, and MXN/USD differences."},
+    {"keyFactIndex": 3, "claim": "Covers liquidity, oracle, exposure, and operational risks.", "verdict": "confirmed", "sources": [
+      {"class": "A", "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack", "quote": "Liquidity conditions, oracle price feeds, and ecosystem dependencies are part of the attack surface.", "asOf": "2026-08-30"}
+    ], "notes": "The responder report describes low-liquidity manipulation, oracle acceptance, pool risk, and response."},
+    {"keyFactIndex": 4, "claim": "Attributes the YieldBlox incident to the consumer/pool boundary.", "verdict": "confirmed", "sources": [
+      {"class": "A", "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack", "quote": "The affected pool in this incident was part of the YieldBlox DAO community deployment. In this case, the Blend lending pools consumed price data from Reflector.", "asOf": "2026-08-30"},
+      {"class": "B", "ref": "https://github.com/DK27ss/YieldBlox-10M-PoC", "quote": "YieldBlox $10M Exploit — Full Reproduction on Stellar Mainnet Fork", "asOf": "2026-08-30"}
+    ], "notes": "The sources place the failure at the market, oracle, and pool boundary. They do not identify an Etherfuse issuer-contract exploit."}
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://app.etherfuse.com/bonds/USTRY — the page exposes changing issuance, maturity, liquidity, price, and APY fields that require dates.",
+    "Live re-check 2026-08-30: https://etherfuse.com/products/stablebonds — Etherfuse lists CETES as Mexican MXN debt and USTRY as U.S. USD debt.",
+    "Live re-check 2026-08-30: https://app.etherfuse.com/legal/stablebonds-overview — the terms cover custody, NAV redemption, maturity, market liquidity, fees, and liabilities.",
+    "Live re-check 2026-08-30: https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — liquidity, oracle, pool, and response risks remain explicit.",
+    "Live re-check 2026-08-30: https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — the affected YieldBlox pool consumed the manipulated oracle price."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Etherfuse|Stablebonds|USTRY|CETES|YieldBlox → q-ass-cross-bando-stablebonds-sac, q-ass-cross-etherfuse-cetes-controls, q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, q-soroban-oracle-defensive-consumption; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "Current Etherfuse pages list six sovereign products. This reinforces the dated-observation rule."
+}

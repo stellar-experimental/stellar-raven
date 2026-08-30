@@ -71,25 +71,31 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-37 primary 3296 and blind 3298; GT-36 Build-track/tranche reconciliation.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory-claim trap to avoid, and restated stage and eligibility scopes; truth unchanged.",
         "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/scf-build/submission-review-criteria — showed current source-supported Build criteria.",
         "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/scf-build/submission-review-criteria — showed recently updated prescreen and panel criteria for visible dating.",
         "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — showed distinct prescreen, panel, revision, Open Track vote, and KYC stages.",
         "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions — showed team and organization eligibility under participant and program rules.",
-        "Sibling sweep 2026-08-27: grep prescreen|panel review|community vote|KYC/KYB|participant eligibility → q-scf-eligibility-criteria, q-scf-how-to-apply, q-scf-rfp-tooling, and q-scf-submission-lifecycle-deadlines; no contradiction."
+        "Sibling sweep 2026-08-27: grep prescreen|panel review|community vote|KYC/KYB|participant eligibility → q-scf-eligibility-criteria, q-scf-how-to-apply, q-scf-rfp-tooling, and q-scf-submission-lifecycle-deadlines; no contradiction.",
+        "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current page defined three Build tracks and their intended applicants.",
+        "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria — the current page exposed active eligibility and review requirements.",
+        "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the workflow separated prescreen, panel, revision, Open vote, and KYC.",
+        "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions — teams and organizations remained eligible under participant rules.",
+        "Sibling sweep 2026-08-30: grep prescreen|eligibility|Open-only|KYC → q-scf-academic-research-grant, q-scf-audit-bank, q-scf-build-tracks, q-scf-eligibility-criteria, q-scf-how-to-apply, q-scf-instawards, q-scf-rfp-tooling, q-scf-submission-lifecycle-deadlines, q-scf-v7-changes, q-scf-verified-members, q-scf-vs-sdf-enterprise-fund, and related compliance cases; no contradiction"
       ],
       "rootCause": [
         "Eval-side stage conflation and stale high-level prescreen summary.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-scf-eligibility-criteria"

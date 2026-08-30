@@ -152,8 +152,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "eval/qa/results/2026-07-07T19-58-35-variantA.json q-soroban-storage-types: candidate said Instance storage is archived at TTL 0 but auto-restored via Invoke; judge marked this wrong with a RestoreFootprintOp-only rationale",
         "Live official docs 2026-07-07: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — overview says Persistent/Instance restore usually automatically via InvokeHostFunction, rarely manually via RestoreFootprintOp; Contract Data Automatic Restoration says P23 auto-restore requires transaction restore list; RestoreFootprintOp section says manual op is mostly no longer needed from P23",
@@ -173,13 +173,20 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Persistent and Instance remain archived/restorable at expiry; Temporary remains permanently deleted and nonrestorable.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-core/blob/master/src/transactions/InvokeHostFunctionOpFrame.cpp — Protocol 23+ restoration still requires archived keys in the read-write footprint and archivedSorobanEntries.",
         "Sibling sweep 2026-08-27: grep ContractDataDurability|archivedSorobanEntries|RestoreFootprintOp|Instance.*Persistent.*Temporary → q-sor-classic-dex-from-contract, q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto, q-soroban-storage-types; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part1.md): restored RestoreFootprintOp as the required manual fallback while keeping the read-write footprint + archivedSorobanEntries requirement from the HEAD fact; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 1 review (gt2-grok-rev)): restored RestoreFootprintOp as the required manual fallback while keeping the read-write footprint + archivedSorobanEntries requirement from the HEAD fact; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — SDK storage still exposes Instance, Persistent, and Temporary.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage — XDR ContractDataDurability still contains only Persistent and Temporary.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Persistent remains long-lived per-key storage for data such as balances, while Temporary remains cheap, short-...",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Instance remains small contract config/admin/metadata loaded with its contract instance.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival — Persistent and Instance remain archived/restorable at expiry; Temporary remains permanently deleted and nonres...",
+        "Sibling sweep 2026-08-30: grep sd-007|RestoreFootprintOp|archivedSorobanEntries|auto-restore → q-sor-force-fast-archival-localnet, q-sor-p23-auto-restore-extendto, q-infra-simulate-transaction-howto; no contradiction"
       ],
       "rootCause": [
         "eval-side freshness drift of protocol semantics: the generic storage-types golden did not carry the Protocol 23 / CAP-0066 auto-restore update, so a judge applied the older RestoreFootprintOp-only mental model",
         "improvements/stellar-docs/sd-007-state-archival-auto-restore-ambiguity.md — official docs are mostly correct on the state-archival page, but adjacent sections/pages still omit or contradict the restore-list qualifier, making the stale interpretation plausible",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-soroban-storage-types"

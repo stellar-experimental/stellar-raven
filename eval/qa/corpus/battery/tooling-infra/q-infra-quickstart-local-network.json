@@ -102,19 +102,26 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 conversions rework after independent Fable copy/quality review",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-50 processes 3349/3361 independently confirmed the four modes and current command.",
         "GT-52 processes 3356/3368 independently required the local-versus-public Friendbot clarification; this entry is the single sibling landing point.",
         "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/quickstart — the live source supports makes the as-of date visible for every changeable roster, status, version, or measurement.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/quickstart/faucet — the live source supports names all four modes: local, testnet, futurenet, and pubnet.",
+        "Live re-check 2026-08-30: https://github.com/stellar/quickstart — the live source supports states that only local mode is hermetic.",
+        "Live re-check 2026-08-30: https://github.com/stellar/stellar-cli — the live source supports public-network modes do not create independent public faucets.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/quickstart — the live source supports treats Quickstart as disposable development/CI infrastructure, not production.",
+        "Sibling sweep 2026-08-30: grep case topic and key values → q-infra-quickstart-local-network; no contradiction"
       ],
       "rootCause": [
         "Eval-side CLI/docs-release drift: the archived answer copied a retired command shape and an incomplete mode enumeration.",
         "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585"
+        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-infra-quickstart-local-network"

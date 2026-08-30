@@ -64,8 +64,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
@@ -78,11 +78,18 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — outbound SAC transfer requires spending-address authorization",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — Protocol 26 SAC trust creates an authorized G-address trustline subject to reserve",
         "Sibling sweep 2026-08-27: grep C-address|contract storage|SAC trust → q-pc-protocol-26-yardstick, q-ti-fetch-all-balances-classic-sac, q-sor-sac-introspection; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored the default G-address trustline/reserve rule; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored the default G-address trustline/reserve rule; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — contracts still use SAC to interact with classic assets",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — C-address balances use contract storage and G-address issued-asset balances use trustlines",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts — C-address payments still use SAC transfer flows and authorization state",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — outbound SAC transfer requires spending-address authorization",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — Protocol 26 SAC trust creates an authorized G-address trustline subject to reserve",
+        "Sibling sweep 2026-08-30: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members."
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-sor-contract-trustlines-c-address",
