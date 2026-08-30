@@ -217,6 +217,9 @@ export function oneLineTitle(finding) {
     // Strip code and bold markers only. Underscores are identifier characters here
     // (`lumenloop.get_project`), never emphasis, so they must survive into the index.
     .replace(/[`*]/g, "")
+    // Finding records can begin with a dated blockquote note. The index title is
+    // prose, not Markdown, so omit each leading quote marker before flattening.
+    .replace(/^(?:\s*>\s*)+/gm, "")
     .replace(/\s+/g, " ")
     .replace(/\.$/, "");
   if (title.length <= 140) return title;

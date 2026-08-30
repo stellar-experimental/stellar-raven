@@ -27,6 +27,12 @@ describe("improvements resolution lifecycle", () => {
     })).toBe("A wrapped finding title continues on the next physical line");
   });
 
+  test("removes leading blockquote markers from generated titles", () => {
+    expect(oneLineTitle({
+      body: "## Finding\n\n> **Fixed 2026-08-28.** The source recheck closed the contradiction.\n",
+    })).toBe("Fixed 2026-08-28. The source recheck closed the contradiction");
+  });
+
   test("truncates long titles on a word boundary", () => {
     const title = oneLineTitle({ body: `## Finding\n\n${"complete ".repeat(30)}trailing` });
     expect(title.length).toBeLessThanOrEqual(140);
