@@ -72,24 +72,30 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-39 processes 3300/3303 and GT-40 process 3304, 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory trap to avoid, and split the form/process and approval claims; truth unchanged.",
         "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules — showed the current official program rules for dated, source-supported content.",
         "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules — showed no standard open application and a chapter-guided request process.",
         "Live re-check 2026-08-27: https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules — showed SDF independent review and final approval.",
-        "Sibling sweep 2026-08-27: grep Instawards|Instaward|standard open application|Chapter Leads → q-scf-instawards, q-scf-v7-changes, q-scf-regional-india, q-scf-ambassador-program, and q-edge-scf-v7-centralization-myths; no contradiction."
+        "Sibling sweep 2026-08-27: grep Instawards|Instaward|standard open application|Chapter Leads → q-scf-instawards, q-scf-v7-changes, q-scf-regional-india, q-scf-ambassador-program, and q-edge-scf-v7-centralization-myths; no contradiction.",
+        "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules — the current rules described accelerated early-execution support.",
+        "Live re-check 2026-08-30: https://github.com/stellar/scf-handbook/blob/main/scf-awards/instawards/official-rules.md — the source confirmed current award and follow-on limits.",
+        "Live re-check 2026-08-30: https://github.com/stellar/scf-handbook/blob/main/scf-awards/instawards/official-rules.md — no standard open process coexisted with a chapter-guided request process.",
+        "Live re-check 2026-08-30: https://github.com/stellar/scf-handbook/blob/main/scf-awards/instawards/official-rules.md — only SDF could approve an award or funding commitment.",
+        "Sibling sweep 2026-08-30: grep Instawards|Instaward → q-scf-ambassador-program, q-scf-instawards, q-scf-regional-india, q-scf-v7-changes; no contradiction"
       ],
       "rootCause": [
         "Eval-side program-version drift and amount-basis collapse.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-scf-instawards"

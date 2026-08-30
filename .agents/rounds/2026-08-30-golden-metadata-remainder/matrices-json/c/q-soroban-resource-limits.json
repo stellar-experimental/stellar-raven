@@ -1,0 +1,74 @@
+{
+  "id": "q-soroban-resource-limits",
+  "lane": "c",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Names event, return, entry-size, footprint, I/O, CPU, and memory limits.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+          "quote": "current documentation still lists event, return, entry, footprint, I/O, CPU, and memory limits",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Includes transaction/envelope size among Soroban resource limits.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+          "quote": "transaction/envelope size remains a Soroban resource dimension",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Treats validation/preflight and apply-time enforcement as different phases.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+          "quote": "current documentation still describes validation and apply-time enforcement as different phases",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Ledger aggregates cover many transaction resources.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+          "quote": "CAP-0046-07 still defines ledger aggregates for many resources and only a transaction memory cap",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still lists event, return, entry, footprint, I/O, CPU, and memory limits",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — transaction/envelope size remains a Soroban resource dimension",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — current documentation still describes validation and apply-time enforcement as different phases",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md — CAP-0046-07 still defines ledger aggregates for many resources and only a transaction memory cap"
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep sd-024|diskReadBytes|refundableFee|Soroban resource → q-zk-verification-resource-budget, q-infra-simulate-transaction-howto; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": ""
+}

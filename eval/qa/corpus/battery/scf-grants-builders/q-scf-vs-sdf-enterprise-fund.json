@@ -83,26 +83,33 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-40 processes 3301/3304; current pages fetched 2026-07-10.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (presentation-avoid): Reworded two presentation traps as the same concrete false claims; the truth is unchanged.",
         "Sibling sweep 2026-08-27: grep Enterprise Fund|Matching Fund|Enterprise investment|per-company cap → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-how-to-apply; no contradiction",
         "Structural re-form (negative-predicate): Shortened one source rule and reworded one taxonomy fact; the truth is unchanged.",
         "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — showed source-dated SCF Build content and its intake/voting workflow.",
         "Live re-check 2026-08-27: https://stellar.org/enterprise-fund, https://stellar.org/grants-and-funding/matching-fund, and https://stellar.org/grants-and-funding/marketing-grants — showed distinct Enterprise, Matching, and Marketing mechanisms.",
-        "Sibling sweep 2026-08-27: SCF Build|Marketing Grants|Enterprise Fund|Matching Fund → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-how-to-apply, q-scf-academic-research-grant, q-scf-ecosystem-listing-partner-jobs, q-scf-submission-lifecycle-deadlines, q-scf-total-distributed, q-scf-build-award-cap, q-scf-eligibility-criteria, q-scf-regional-india, q-scf-ambassador-program, q-scf-build-tracks; no contradiction."
+        "Sibling sweep 2026-08-27: SCF Build|Marketing Grants|Enterprise Fund|Matching Fund → q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-how-to-apply, q-scf-academic-research-grant, q-scf-ecosystem-listing-partner-jobs, q-scf-submission-lifecycle-deadlines, q-scf-total-distributed, q-scf-build-award-cap, q-scf-eligibility-criteria, q-scf-regional-india, q-scf-ambassador-program, q-scf-build-tracks; no contradiction.",
+        "Live re-check 2026-08-30: https://stellar.org/enterprise-fund/apply — the current Enterprise page still exposed an application route.",
+        "Live re-check 2026-08-30: https://stellar.org/grants-and-funding/matching-fund — the page exposed current stage, matching, and application terms.",
+        "Live re-check 2026-08-30: https://stellar.org/grants-and-funding — the funding index kept SCF, Marketing, Enterprise, and Matching separate.",
+        "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — SCF still used eligibility before invitation and Open-only community voting.",
+        "Source conflict 2026-08-30: https://stellar.org/grants-and-funding says there is no application for the Enterprise Fund, while https://stellar.org/enterprise-fund/apply exposes a current application form; the answer already requires disclosing this intake conflict and routing through the dedicated form.",
+        "Sibling sweep 2026-08-30: grep Enterprise Fund|Matching Fund → q-org-sdf-enterprise-fund, q-scf-ecosystem-listing-partner-jobs, q-scf-how-to-apply, q-scf-total-distributed, q-scf-vs-sdf-enterprise-fund; no contradiction"
       ],
       "rootCause": [
         "Official current Enterprise application contradicts older outreach-only copy; eval preserved the older statement.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-scf-vs-sdf-enterprise-fund"

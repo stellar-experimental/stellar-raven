@@ -120,8 +120,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "solo://proj/49/scratchpad/784#authorization-failures-and-generated-try-clients",
         "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors",
@@ -135,11 +135,17 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — generated try methods still expose nested Result layers",
         "Live re-check 2026-08-27: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs — SDK tests still preserve distinct declared-error and InvokeError branches",
         "Sibling sweep 2026-08-27: grep HostError|try_*|events|set_timestamp → q-soroban-unit-testing, q-sor-test-event-assertion-ordering, q-sor-stale-spec-after-upgrade; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored ledger-testutils and moved the non-universal-remedy caveat into golden.avoid; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored ledger-testutils and moved the non-universal-remedy caveat into golden.avoid; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — HostError classes still require class-specific diagnostic interpretation",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — diagnostics still determine the matching auth, context, event, or ledger remedy",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — generated try methods still expose nested Result layers",
+        "Live re-check 2026-08-30: https://github.com/stellar/rs-soroban-sdk/blob/0c1372a396181a6a6e95281c21823eb124b75e64/tests/errors/src/lib.rs — SDK tests still preserve distinct declared-error and InvokeError branches",
+        "Sibling sweep 2026-08-30: q-soroban-unit-testing owns happy-path setup; this case owns exact failure interpretation; q-soroban-publish-events owns event publication and RPC retention."
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-sor-decode-hosterror-codes"

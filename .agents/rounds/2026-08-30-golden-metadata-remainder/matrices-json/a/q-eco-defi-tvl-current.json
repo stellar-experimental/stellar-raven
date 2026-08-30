@@ -1,0 +1,95 @@
+{
+  "id": "q-eco-defi-tvl-current",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "C",
+          "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+          "quote": "Latest completed point: date 1788048000 (2026-08-30T00:00:00Z), tvl 230223262.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The dated series demonstrates why a TVL value needs an as-of date."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Names the provider used for the reported TVL.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://api-docs.defillama.com/",
+          "quote": "Get historical TVL ... of a chain; Get current TVL of all chains.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The endpoint owner is DefiLlama, so the provider can be named directly."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "States the provider's TVL definition or endpoint scope.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/master/README.md",
+          "quote": "This repo is for TVL adapters ... TVL must be computed from blockchain data.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://api-docs.defillama.com/",
+          "quote": "/v2/historicalChainTvl/{chain} excludes liquid staking and double counted tvl.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official API description and source repository state the endpoint scope and computation basis."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Includes an answer-visible retrieval timestamp.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "C",
+          "ref": "https://api.llama.fi/v2/chains",
+          "quote": "Observed 2026-08-30: Stellar tvl 236574470.37832046.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The intraday value differs from the completed daily point, so retrieval time is material."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Separates chain TVL from protocol, RWA, and asset measures.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://api-docs.defillama.com/",
+          "quote": "The API lists separate chain TVL, protocol TVL, stablecoin market-cap, RWA, DEX-volume, and pool-yield endpoints.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The provider exposes these measures through distinct endpoint families."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://api.llama.fi/v2/historicalChainTvl/Stellar — the latest completed Stellar point carries date 1788048000 and TVL 230223262.",
+    "Live re-check 2026-08-30: https://api-docs.defillama.com/ — identifies the provider's current-chain and historical-chain TVL endpoints.",
+    "Live re-check 2026-08-30: https://github.com/DefiLlama/DefiLlama-Adapters/blob/master/README.md — says TVL adapters compute from blockchain data.",
+    "Live re-check 2026-08-30: https://api.llama.fi/v2/chains — returned Stellar TVL 236574470.37832046 at retrieval time.",
+    "Live re-check 2026-08-30: https://api-docs.defillama.com/ — separates chain TVL, protocol TVL, stablecoin, RWA, DEX-volume, and pool-yield endpoints."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep TVL|total value locked|DeFiLlama → q-asset-rwa-tokenized-freshness, q-defi-aquarius-what-is, q-defi-blend-what-is, q-defi-comet-what-is, q-defi-defindex-honest, q-defi-liquid-staking-whitespace, q-defi-phoenix-what-is, q-defi-provide-liquidity-impermanent-loss, q-eco-defi-market-map, q-eco-defi-projects-discovery, q-eco-defi-tvl-current, q-eco-dex-saturation, q-eco-most-active-defi-projects, q-eco-stellar-rwa-stablecoin-volume, q-edge-factcheck-soroswap-first-amm, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure, q-scf-eligibility-criteria, q-ti-compute-token-lp-market-data; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The live intraday and completed daily values differ. This supports the behavior rule instead of a fixed scalar."
+}

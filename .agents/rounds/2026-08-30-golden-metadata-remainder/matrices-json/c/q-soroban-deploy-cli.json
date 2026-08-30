@@ -1,0 +1,95 @@
+{
+  "id": "q-soroban-deploy-cli",
+  "lane": "c",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Builds Wasm artifact first via stellar contract build into target/wasm32v1-none/release/.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+          "quote": "stellar contract build still creates target/wasm32v1-none/release/ Wasm output.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "F",
+          "ref": "stellar 27.1.0 local help",
+          "quote": "Independent live re-check supports the numeric, versioned, or current part of this fact.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Uses stellar contract deploy with .wasm, --source-account, and --network testnet.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect",
+          "quote": "deployment still uses stellar contract deploy with .wasm, --source-account, and --network testnet.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Uses funded identity/account from stellar keys generate <name> --network testnet --fund.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-contract",
+          "quote": "Testnet setup still uses a funded identity from stellar keys generate <name> --network testnet --fund.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Uses the returned C... ID via stellar contract invoke --id <C...>.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/stellar-keys",
+          "quote": "deploy still returns a C-prefixed contract ID for stellar contract invoke --id.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Gives the invoke tail: `--source-account <identity> --network testnet -- <fn> ...`.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world",
+          "quote": "invoke still uses --source-account, --network testnet, and the -- function separator.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — stellar contract build still creates target/wasm32v1-none/release/ Wasm output.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect — deployment still uses stellar contract deploy with .wasm, --source-account, and --network testnet.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/cli/cookbook/deploy-contract — Testnet setup still uses a funded identity from stellar keys generate <name> --network testnet --fund.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/cli/cookbook/stellar-keys — deploy still returns a C-prefixed contract ID for stellar contract invoke --id.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — invoke still uses --source-account, --network testnet, and the -- function separator."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep wasm32v1-none|--source-account|stellar contract deploy|stellar contract invoke → q-asset-deploy-sac-cli, q-sor-build-target-wasm32v1, q-soroban-constructor-lifecycle, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": ""
+}

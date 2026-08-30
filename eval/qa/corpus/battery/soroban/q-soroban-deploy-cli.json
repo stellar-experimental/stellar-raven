@@ -140,8 +140,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "Stellar Raven production MCP probes 2026-07-07: official docs page reads for Hello World and Rust dialect; official docs searches for `--source-account` deploy/invoke examples; scout repo explanation for the `--source` alias.",
         "Local empirical execution 2026-07-07: `stellar --version` -> 27.0.0; `stellar contract deploy --help`; `stellar contract invoke --help`; `stellar keys generate --help`.",
@@ -159,14 +159,21 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet — deploy still returns a C-prefixed contract ID for stellar contract invoke --id.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet — invoke still uses --source-account, --network testnet, and the -- function separator.",
         "Sibling sweep 2026-08-27: grep stellar contract deploy|wasm32v1-none|source-account|stellar keys generate → q-asset-deploy-sac-cli, q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part1.md): restored --network testnet on the deploy command; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 1 review (gt2-grok-rev)): restored --network testnet on the deploy command; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — stellar contract build still creates target/wasm32v1-none/release/ Wasm output.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect — deployment still uses stellar contract deploy with .wasm, --source-account, and --network testnet.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/cli/cookbook/deploy-contract — Testnet setup still uses a funded identity from stellar keys generate <name> --network testnet --fund.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/cli/cookbook/stellar-keys — deploy still returns a C-prefixed contract ID for stellar contract invoke --id.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — invoke still uses --source-account, --network testnet, and the -- function separator.",
+        "Sibling sweep 2026-08-30: grep wasm32v1-none|--source-account|stellar contract deploy|stellar contract invoke → q-asset-deploy-sac-cli, q-sor-build-target-wasm32v1, q-soroban-constructor-lifecycle, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction"
       ],
       "rootCause": [
         "improvements/resolved.json entry sk-001 — fixed upstream and refreshed locally at stellar-dev-skill commit 3d75a157f6fe; the mirrored playbook now uses wasm32v1-none, no --global, and canonical --source-account examples.",
         "Eval-side freshness/canonicalization drift: the deploy CLI golden answer lagged behind its own current notes and current CLI help by preserving an alias-focused example.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-soroban-deploy-cli"

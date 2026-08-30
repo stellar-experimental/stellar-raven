@@ -85,13 +85,13 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "Blend Fixed Pool CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD matched v2.0.0 pool WASM and exposed flash_loan",
         "Solo scratchpad 575 GT-15 processes 3243/3246",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (negative-predicate): shortened one dated-source fact and split one negative taxonomy fact into positive evidence tiers; truth unchanged.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation — current documentation still requires dated simulation and resource checks.",
@@ -100,13 +100,20 @@
         "Live re-check 2026-08-27: https://github.com/xycloo/xycloans — current XycLoans material still supplies code/history rather than verified current usability.",
         "Live re-check 2026-08-27: https://slender.fi/ — current Slender material still markets flash loans without proving current usability.",
         "Sibling sweep 2026-08-27: grep flash.loan|XycLoans|Slender|Blend v2|atomic Soroban → q-defi-blend-alternatives; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): restored XycLoans code/history as its own evidence tier; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 2 review (gt2-grok-rev)): restored XycLoans code/history as its own evidence tier; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://docs.blend.capital/mainnet-deployments — the page supplies a current deployment observation, so the answer must keep its date.",
+        "Live re-check 2026-08-30: https://stellarlight.xyz/project/slender — the directory marks Slender Inactive, which is a dated and source-relative status.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — returned errors roll back the function's ledger and contract-data changes.",
+        "Live re-check 2026-08-30: https://docs.blend.capital/mainnet-deployments — owner docs list v2 mainnet deployments; current v2 pool source exposes flash_loan.",
+        "Live re-check 2026-08-30: https://github.com/xycloo/xycloans — the repository proves XycLoans code; Slender's operator page proves marketing, not current usability.",
+        "Sibling sweep 2026-08-30: grep flash.loan|XycLoans|Slender|Blend v2|atomic Soroban → q-defi-blend-alternatives; no contradiction"
       ],
       "rootCause": [
         "eval-side deployment evidence drift and false mutually exclusive protocol trap",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-defi-flash-loans"

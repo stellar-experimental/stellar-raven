@@ -103,8 +103,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-51 primary/blind matrices independently confirmed the current target and source-boundary correction.",
         "Sibling sweep checked q-tool-cli-install, q-tool-cli-init-build-deploy, and q-sor-build-target-wasm32v1; sk-006 already owns the missing error-keyed upstream coverage.",
@@ -120,12 +120,20 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab — Friendbot funding remains limited to test networks while mainnet uses real funds and a selected or BYO provider.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — current balance inspection routes remain CLI transaction/payment/contract helpers, ledger entry fetch, Horizon/RPC, or Lab rather than a generic stellar account balance command.",
         "Sibling sweep 2026-08-27: grep wasm32v1-none|link.exe|alias already exists|Unable to fund account|stellar account|BYO RPC → q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part2.md): restored the Windows Rust/rustup + MSVC-or-WSL install requirement as a keyFact; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 2 review (gt2-grok-rev)): restored the Windows Rust/rustup + MSVC-or-WSL install requirement as a keyFact; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — current contract setup still requires Rust 1.84+ and wasm32v1-none.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup — contract build and bindings still require the correct generated Wasm path.",
+        "Live re-check 2026-08-30: https://learn.microsoft.com/en-us/windows/dev-environment/rust/setup — Windows Rust still requires rustup/PATH and MSVC Build Tools or a consistent WSL toolchain.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/lab — aliases remain persistent CLI identity/network configuration with reuse, removal, and overwrite controls.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/lab — Friendbot funding remains limited to test networks while mainnet uses real funds and a selected or BYO provider.",
+        "Live re-check 2026-08-30: https://learn.microsoft.com/en-us/windows/dev-environment/rust/setup — current balance inspection routes remain CLI transaction/payment/contract helpers, ledger entry fetch, Horizon/RPC, or Lab rather than a gen...",
+        "Sibling sweep 2026-08-30: grep Rust 1.84|wasm32v1-none|link.exe|alias already exists → q-sor-build-target-wasm32v1, q-soroban-deploy-cli, q-soroban-wasm-language, q-soroban-wasm-size-limit, q-ti-cli-rust-windows-troubleshooting, q-tool-cli-testnet-identity-howto, q-tool-rust-soroban-sdk; no contradiction"
       ],
       "rootCause": [
         "improvements/resolved.json entry sk-006",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-ti-cli-rust-windows-troubleshooting"

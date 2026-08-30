@@ -82,8 +82,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://communityfund.stellar.org/awards and https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — official state observed 2026-08-18T15:22Z–15:23Z.",
@@ -99,12 +99,19 @@
         "Live re-check 2026-08-27: https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg — the current #46 detail page shows Submission, confirming that the old no-Submission result is only the dated example.",
         "Live re-check 2026-08-27: https://communityfund.stellar.org/awards — the current page places #45 after Submission, consistent with its deadline being elapsed in the dated example.",
         "Sibling sweep 2026-08-27: grep SCF #45|SCF #46|current SCF round|Submission phase → q-scf-current-round, q-scf-open-rfps-live, q-scf-open-rfps, q-scf-rfp-tooling, q-scf-passkey-rfps-live, q-scf-contract-verification-rfp-live, q-edge-scf-v7-centralization-myths; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part3.md): restored the 2026-08-16 deadline date; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 3 review (gt2-grok-rev)): restored the 2026-08-16 deadline date; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/awards — now shows #46 Submission, #45 Panel Review, and #44 Ended, so a round answer needs a date.",
+        "Live re-check 2026-08-30: https://stellarlight.xyz/api/rfps?status=open — reports currentRound 46, currentPhase Submission, and asOf 2026-08-30.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/awards — the later #46/#45/#44 rollover keeps the #45/#44/#43 map time-scoped to 2026-08-18.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/awards/reccaFUJmN4HNQxvo — now places #45 in Panel Review, after the dated no-Submission example.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/awards — still gives #45's submission deadline as August 16, 2026 and now labels it Panel Review.",
+        "Sibling sweep 2026-08-30: grep SCF #45|SCF #46|Submission phase|current SCF round → q-edge-fresh-latest-scf-round, q-edge-scf-v7-centralization-myths, q-scf-contract-verification-rfp-live, q-scf-current-round, q-scf-open-rfps, q-scf-open-rfps-live, q-scf-passkey-rfps-live, q-scf-rfp-tooling; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-edge-fresh-latest-scf-round"

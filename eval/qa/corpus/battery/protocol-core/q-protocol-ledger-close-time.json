@@ -37,6 +37,21 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/validators",
+        "note": "On 2026-08-30 this page still says 'every 3-5 seconds'; it conflicts with the stellar-stack page and with live samples and is recorded as a stale official page, not as support."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+        "note": "closeTime accuracy: may lag a few seconds or run up to 60 seconds ahead; strictly monotonic."
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+        "note": "Fresh consecutive-ledger samples on 2026-08-30 (two independent lanes)."
       }
     ],
     "corroboration": [
@@ -63,16 +78,78 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Fresh 2026-08-30 Pubnet samples: 199 consecutive deltas over ledgers 64193568–64193767 were min 5 / max 7 / mean 5.678 / median 6 s; a second 199-delta sample over 64193795–64193994 was min 5 / max 9 (one delta) / mean 5.673 / median 6 s.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+            "observedAt": "2026-08-30",
+            "note": "Blind lane sample: 5s×78, 6s×107, 7s×14."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+            "observedAt": "2026-08-30",
+            "note": "Proposer sample: 5s×77, 6s×112, 7s×9, 9s×1."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+            "observedAt": "2026-08-30",
+            "note": "'Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds.'"
+          }
+        ]
+      },
+      {
+        "claim": "Stellar ledgers close every 3–5 seconds (the golden.avoid trap).",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+            "observedAt": "2026-08-30",
+            "note": "States 5-7 seconds."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+            "observedAt": "2026-08-30",
+            "note": "Two 199-delta samples had no delta below 5 s; medians were 6 s."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md",
+            "observedAt": "2026-08-30",
+            "note": "ledgerTargetCloseTimeMilliseconds initial 5000, range [4000, 5000]; a target, not an observed range."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators",
+            "observedAt": "2026-08-30",
+            "note": "Still says 'every 3-5 seconds'; stale against the stack page and the samples. Docs-finding candidate; the answer's avoid item punishes only an immutable-guarantee claim from one delta, so an attributed quote of this page is not in the trap."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "Golden-truth sweep import — The inherited 3–5 second cadence was stale and a single-delta primary check under-sampled current behavior.",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dated-conflict lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
       "evidence": [
-        "Solo scratchpad 575 GT-32 blind 3284, resolving primary under-sampling."
+        "Solo scratchpad 575 GT-32 blind 3284, resolving primary under-sampling.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack — 'update the ledger every 5-7 seconds'.",
+        "Live re-check 2026-08-30: https://horizon.stellar.org/ledgers?order=desc&limit=200 — two independent 199-delta samples: min 5 / max 7 / median 6 s and min 5 / max 9 (one delta) / median 6 s.",
+        "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md — target close time plus nomination and ballot timeouts are network-configurable; initial target 5000 ms.",
+        "Official-page inventory 2026-08-30: stellar-stack 5-7 s; docs/validators 3-5 s (stale); storage-strategies '~5-second'; fees-resource-limits-metering 'a few seconds'; stellar.org/soroban '5-second finality'; intro-to-stellar 'under 6 seconds'. The 199-ledger 2026-07-10 observation is kept as a dated historical sample; its Solo attribution is not re-walkable and the fresh samples stand as its independent replacement.",
+        "Disposition 2026-08-30: the golden's 'roughly 5–7 seconds' with a dated sample stays; one 9-second delta in one fresh sample does not move a 'roughly' range. A live official conflict (validators 3-5 s vs stack 5-7 s) remains after direct confirmation; ADR-0008 caps canonical-page cautions at three cases, so no caution was added and the Stellar Docs finding is left as an owner decision (recorded in the round ledger).",
+        "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same sample statistics; found no official 3–5 wording on the pages it visited (it did not visit docs/validators); orchestrator direct fetch confirmed both pages.",
+        "Sibling sweep 2026-08-30: grep ledger close|5-7 seconds|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit and six other timing cases; no contradiction"
       ],
       "rootCause": [
-        "Old target/marketing range and insufficient empirical sampling."
+        "Old target/marketing range and insufficient empirical sampling.",
+        ".agents/TODO.md — Recheck two dated source-metadata conflicts"
       ]
     },
     "origin": "raven-next q-protocol-ledger-close-time"

@@ -1,0 +1,77 @@
+{
+  "id": "q-comp-finclusive-caas",
+  "lane": "d",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Treats FinClusive CaaS, KYC/KYB, and reusable-verification tools as operator claims.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://finclusive.com/products/compliance-as-a-service",
+          "quote": "Global know-your-customer/business (KYC/KYB) coverage ... FinCIDs represent a clearly defined level of due diligence and risk profile and can be digitally verifiable as to that subject's KYC/KYB status.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.govinfo.gov/content/pkg/CHRG-117hhrg48837/pdf/CHRG-117hhrg48837.pdf",
+          "quote": "The FinClusive CaaS platform embeds the decentralized identity/verifiable credential through the KYC/KYB processes, creating a unique identifier termed ‘FinCID’.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "These sources establish operator descriptions. They do not establish a legal-compliance guarantee."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Treats the 2020 Biccos/shared-utility history as dated context for current adoption.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/policy/drive-inclusion-through-compliance",
+          "quote": "Instead, if all five anchors are using FinClusive’s Compliance as a Service, or CaaS, they can do a near-instant verification validation of these clients across the network as a shared utility. Use Case: Biccos.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "D",
+          "ref": "https://stellar.org/blog/policy/drive-inclusion-through-compliance",
+          "quote": "FinClusive’s partnership with Biccos provides a good example. With Biccos, an anchor in Mexico, FinClusive is working to enable money-service businesses to facilitate quicker cross-border remittances.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The page remains live and still names Biccos. Its 2020 use case does not prove current adoption."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Scopes legal duties by actor, activity, transaction, and jurisdiction.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://finclusive.com/company/operating-provisions",
+          "quote": "FinClusive is not a bank, does not have a banking charter and is not a licensed Money Services Business. Rather FinClusive is an exempt third party services provider.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers",
+          "quote": "Only transmittals of funds equal to or greater than $3,000 (or its foreign equivalent) are subject to this rule ... An intermediary financial institution must pass on ... information ... it receives.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The rule attaches duties to defined institutions, roles, covered transmittals, and thresholds. Other duties vary by activity and jurisdiction."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://finclusive.com/products/compliance-as-a-service — the page markets CaaS, KYC/KYB, FinCID, and shared verification.",
+    "Live re-check 2026-08-30: https://stellar.org/blog/policy/drive-inclusion-through-compliance — the dated article still names the Biccos use case.",
+    "Live re-check 2026-08-30: https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — duties depend on the institution role and covered transfer."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep FinClusive|Biccos|CaaS → q-comp-finclusive-caas, q-crp-anchors-by-corridor; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The operating provisions state: “Third Party Service Provider (TPSP). FinClusive is not a bank, does not have a banking charter and is not a licensed Money Services Business. Rather FinClusive is an exempt third party services provider, providing compliance services and tools to assist its payment partners and ‘banks of records’ (BoRs) in meeting their legal and regulatory compliance obligations.” The help page claims FinClusive is a Stellar anchor and provides compliance “ensuring a secure, accessible, and globally compliant digital payment rail.” The CaaS page markets global KYC/KYB, 500+ screens, transaction monitoring, FinCID, and shared verification. The gateway page says “Ensure compliant routing and monitoring of payments” and “customers can direct funds movements securely and compliantly.” Preserve these as operator marketing beside the TPSP/not-bank/not-MSB legal text. The live SDF article still names Biccos."
+}

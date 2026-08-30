@@ -7,7 +7,7 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Use **`@stellar/freighter-api`** in a browser/client context after mount and inspect the structured `isConnected()` result/error. Separate installation detection from authorization: `isConnected` checks the extension, `isAllowed` checks allowed state, and `requestAccess` is the permission/public-address flow. Verify the same browser profile/window, extension enabled/unlocked, reload after install/update, network, site permission, and a top-level page rather than an iframe before investigating RPC/Horizon CORS.\n\nCurrent Freighter 5.43 source/manifest matches `<all_urls>` at `document_start`, omits `all_frames`, and falls back after no content-script response; plain top-level HTTP localhost is therefore not categorically blocked by a Freighter origin allowlist. Official Stellar frontend docs nevertheless say HTTPS is required. Use HTTPS as the supported setup/workaround when needed, but do not grade it as the only possible detection fix or claim localhost universally works. Never bypass the wallet by exporting a secret into local code.",
+    "answer": "Use **`@stellar/freighter-api`** in a browser/client context after mount and inspect the structured `isConnected()` result/error. Separate installation detection from authorization: `isConnected` checks the extension, `isAllowed` checks allowed state, and `requestAccess` is the permission/public-address flow. Verify the same browser profile/window, extension enabled/unlocked, reload after install/update, network, site permission, and a top-level page rather than an iframe before investigating RPC/Horizon CORS.\n\nThe Freighter source/manifest (checked at 5.43 on 2026-07-11 and at master beside release 5.46.0 on 2026-08-30) matches `<all_urls>` at `document_start`, omits `all_frames`, and falls back after no content-script response; plain top-level HTTP localhost is therefore not categorically blocked by a Freighter origin allowlist. Official Stellar frontend docs nevertheless say HTTPS is required. Use HTTPS as the supported setup/workaround when needed, but do not grade it as the only possible detection fix or claim localhost universally works. Never bypass the wallet by exporting a secret into local code.",
     "keyFacts": [
       "Uses supported client-side Freighter APIs.",
       "Treats installation, authorization, unlock, and connection as distinct conditions.",
@@ -34,8 +34,8 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-10-01",
+    "asOf": "2026-08-30",
+    "reverifyBy": "2026-11-20",
     "sources": [
       {
         "class": "D",
@@ -61,6 +61,11 @@
         "class": "B",
         "ref": "https://github.com/stellar/freighter/blob/0f08d9ee973f6f79582d8c6003a8cc75f8a473a2/%40stellar/freighter-api/src/isConnected.ts",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/freighter/releases/tag/5.46.0",
+        "note": "Latest release on 2026-08-30 (published 2026-08-26); master manifest still <all_urls> at document_start without all_frames."
       }
     ],
     "corroboration": [
@@ -97,13 +102,25 @@
             "ref": "B: Freighter 5.43 manifest matches <all_urls> at document_start but omits all_frames; messaging times out after no content-script response",
             "observedAt": "2026-07-11",
             "note": "verbatim legacy evidence descriptor imported at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/dapps/frontend-guide#setup-https-on-localhost",
+            "observedAt": "2026-08-30",
+            "note": "'Freighter wallet requires a secure connection (HTTPS) to interact with your dapp.' (sd-045 reported-upstream, recurrence 2026-08-30)."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/freighter/master/extension/public/static/manifest/v3.json",
+            "observedAt": "2026-08-30",
+            "note": "content_scripts matches ['<all_urls>'], run_at document_start, no all_frames key."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, canonical-page lane, worker gt3-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
       "evidence": [
         "Solo scratchpad 575 GT-52 primary/blind matrices independently required a full provider-qualified rewrite; blind sealed the source/docs disagreement before reading the primary.",
         "Sibling sweep checked q-ti-connect-wallet-button-code, q-ti-bindings-to-nextjs-integration, q-tool-freighter-wallet, and secret-handling cases.",
@@ -118,13 +135,22 @@
         "Live re-check 2026-08-29: https://github.com/stellar/freighter/blob/master/extension/public/static/manifest/v3.json — the current manifest matches <all_urls> at document_start and does not set all_frames.",
         "Targeted reconciliation 2026-08-29: https://www.w3.org/TR/secure-contexts/#is-origin-trustworthy — conforming browsers can treat localhost as potentially trustworthy, so the guide quote does not establish a universal browser rule.",
         "Sibling sweep 2026-08-29: grep Freighter|HTTPS|localhost|all_urls → q-ti-connect-wallet-button-code, q-ti-bindings-to-nextjs-integration, and wallet cases; no contradictory universal rule found.",
-        "Independent blind re-derivation 2026-08-29: the reviewer distinguished manifest injection from HTTPS policy; the caution now accepts the official quote without treating either layer as universal."
+        "Independent blind re-derivation 2026-08-29: the reviewer distinguished manifest injection from HTTPS policy; the caution now accepts the official quote without treating either layer as universal.",
+        "Gospel refresh 2026-08-30: the answer's version reference now dates the 5.43 check and adds the 2026-08-30 master/5.46.0 check; the manifest fact, the HTTPS disagreement, and the sd-045 caution are unchanged; reverifyBy staggered to 2026-11-20.",
+        "Live re-check 2026-08-30: https://raw.githubusercontent.com/stellar/freighter/master/extension/public/static/manifest/v3.json — matches <all_urls>, run_at document_start, all_frames absent.",
+        "Live re-check 2026-08-30: https://api.github.com/repos/stellar/freighter/releases/latest — tag 5.46.0, published 2026-08-26T20:27:49Z.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/dapps/frontend-guide#setup-https-on-localhost — the HTTPS sentence is unchanged.",
+        "Live re-check 2026-08-30: https://docs.freighter.app/extension-freighter-api/connecting and https://github.com/stellar/freighter/blob/master/%40stellar/freighter-api/src/isConnected.ts — isConnected/isAllowed/requestAccess remain distinct structured client-side APIs.",
+        "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same manifest values, same release tag, same HTTPS sentence.",
+        "Sibling sweep 2026-08-30: grep Freighter plus localhost|HTTPS|all_urls|5.43 → q-ti-connect-wallet-button-code, q-ti-bindings-to-nextjs-integration, q-tool-freighter-wallet; no contradiction"
       ],
       "rootCause": [
         "Eval-side browser/product overgeneralization; the Freighter HTTPS/detection mismatch is recorded as a research candidate because no existing deduped finding owns it.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
         "improvements/stellar-docs/sd-045-freighter-https-requirement-unqualified.md",
-        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases"
+        ".agents/TODO.md — Repair the reviewed canonical-page conflict cases",
+        "freshness-drift",
+        ".agents/TODO.md — Review five round-specific golden-truth candidates"
       ]
     },
     "origin": "raven-next q-ti-freighter-localhost-not-detected"

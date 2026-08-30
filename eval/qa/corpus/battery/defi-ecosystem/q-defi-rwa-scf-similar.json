@@ -41,7 +41,7 @@
       {
         "class": "A",
         "ref": "https://communityfund.stellar.org/submissions/rec2UJLCx1DBLgdm4",
-        "note": "class inferred at migration"
+        "note": "0xAuth SCF #27 (historical award named in the answer)."
       },
       {
         "class": "A",
@@ -67,6 +67,16 @@
         "class": "A",
         "ref": "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
         "note": "Lend SCF43 current official submission page."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/submissions/recK1Xh6hgHosxmbt",
+        "note": "Talwex SCF #43 submission (Awarded), added 2026-08-30."
+      },
+      {
+        "class": "A",
+        "ref": "https://communityfund.stellar.org/submissions/recub0G7qf25j381y",
+        "note": "TERWA SCF #43 submission (Awarded), added 2026-08-30."
       }
     ],
     "corroboration": [
@@ -120,14 +130,14 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii",
         "Current official Talwex and TERWA SCF43 submission pages observed 2026-08-04.",
         "Sibling sweep: q-scf-funded-similar-oracle, q-scf-history-orbit-cdp, q-defi-orbit-cdp, and BENJI/CRDT/USDY product cases.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for Lumenloop and cached Scout SCF status fields; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/lumenloop/ll-013-scf-submission-award-fields.md — disputed whether bare budget and award_type establish Awarded or paid status.",
@@ -139,7 +149,14 @@
         "Live re-check 2026-08-27: https://communityfund.stellar.org/governance — the current official workflow keeps SCF status separate from provider-specific fields.",
         "Live re-check 2026-08-27: https://github.com/Stellar-Light/stellar-scout — directory similarity and reconstructed provider fields remain discovery evidence.",
         "Sibling sweep 2026-08-27: grep Talwex|TERWA|lend.xyz|award_type|totalPaid → q-scf-skill-submission-radar and q-scf-history-soroswap; no contradiction.",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): removed the added qualifier \"discovery evidence\" and restored the official-status contrast; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 2 review (gt2-grok-rev)): removed the added qualifier \"discovery evidence\" and restored the official-status contrast; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii — Lend SCF #43 remains Awarded with a requested budget of $120,560.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/projects — the live project list includes Talwex, TERWA, and lend.xyz under SCF #43.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/recK1Xh6hgHosxmbt — Talwex's SCF #43 RWA submission remains Awarded.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii — the payload separates Awarded status, Build awardType, and the project link.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/rec2QeA1y7ln6D3Ii — the payload separates $120,560 budget from $72,336 totalPaid.",
+        "Sibling sweep 2026-08-30: grep Talwex|TERWA|lend.xyz|award_type|totalPaid → q-defi-rwa-scf-similar, q-scf-history-soroswap, q-scf-skill-submission-radar, and four incidental field-name hits; no contradiction",
+        "Source repair 2026-08-30: added the exact Talwex (https://communityfund.stellar.org/submissions/recK1Xh6hgHosxmbt) and TERWA (https://communityfund.stellar.org/submissions/recub0G7qf25j381y) submission URLs; the earlier refs resolve to 0xAuth (https://communityfund.stellar.org/submissions/rec2UJLCx1DBLgdm4), Metafyed (https://communityfund.stellar.org/submissions/rec0OaOoRwjfSdS58), and Verseprop (https://communityfund.stellar.org/submissions/recXjdDQL2sk7HNKx); page text checked 2026-08-30."
       ],
       "rootCause": [
         "Semantic similarity, directory status, reconstructed totals, and award_type were collapsed into official award/current-product truth.",
@@ -149,7 +166,8 @@
         "Official SCF workflow labels changed; the former Talwex/Lend/TERWA counterexamples became Awarded and require requested-budget versus totalPaid separation.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-defi-rwa-scf-similar"

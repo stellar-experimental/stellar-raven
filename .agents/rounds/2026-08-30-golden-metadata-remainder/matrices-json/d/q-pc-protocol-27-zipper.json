@@ -1,0 +1,98 @@
+{
+  "id": "q-pc-protocol-27-zipper",
+  "lane": "d",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Dates the Protocol 27 Mainnet vote to July 8, 2026.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide",
+          "quote": "July 8, 2026: Mainnet upgrade vote",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://horizon.stellar.org/ledgers/63386819",
+          "quote": "Ledger 63386819 closed 2026-07-08T17:00:10Z with protocol_version 27.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The guide gives the vote schedule. The dated ledger confirms Mainnet activation that day."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Gives July 8, 2026 as the official Protocol 27 Mainnet date.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/networks/software-versions",
+          "quote": "Protocol 27 (Mainnet, July 8, 2026)",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://horizon.stellar.org/",
+          "quote": "current_protocol_version=27; history_latest_ledger=64193999. The latest-ledger probe returned sequence 64194000 and protocol_version=27.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The software table supplies the official date. Horizon confirms Protocol 27 remains live."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "CAP-0071-01 adds authentication delegation for custom accounts.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md",
+          "quote": "Add a built-in way for custom (smart contract) accounts to delegate the authentication logic to other addresses.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/networks/software-versions",
+          "quote": "New features in Zipper, Protocol 27: Authentication Delegation and Address-Bound Soroban Credentials: CAP-71.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "CAP-0071-01 defines the delegation mechanism."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "CAP-0071-02 adds SOROBAN_CREDENTIALS_ADDRESS_V2 with an address-bound payload.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md",
+          "quote": "Add SOROBAN_CREDENTIALS_ADDRESS_V2 so non-delegated address credentials can use the address-bound Soroban authorization payload.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/networks/software-versions",
+          "quote": "Authentication Delegation and Address-Bound Soroban Credentials: CAP-71.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "CAP-0071-02 also says: “However, in the future protocol (28 or later) we may want to consider deprecating the old credential type and preimage type.” It does not mandate Protocol 28 deprecation."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide — the guide gives July 8, 2026 as the Mainnet vote date.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/networks/software-versions — the heading is Protocol 27 (Mainnet, July 8, 2026).",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md — the CAP adds built-in custom-account auth delegation.",
+    "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — the CAP adds address-bound V2 credentials."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Protocol 27|Zipper|CAP-0071 → q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27 and related cases; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The 2026-08-30 Horizon root returned current_protocol_version=27, core_supported_protocol_version=28, and history_latest_ledger=64193999. A separate latest-ledger query returned sequence 64194000 with protocol_version=27. Protocol 28 is not live on Mainnet today. Core software supports 28, but the live network protocol is 27. The software heading is “Protocol 27 (Mainnet, July 8, 2026).” CAP-0071-02 says Protocol 28 “or later” may consider deprecation; it does not state that Protocol 28 performs it."
+}

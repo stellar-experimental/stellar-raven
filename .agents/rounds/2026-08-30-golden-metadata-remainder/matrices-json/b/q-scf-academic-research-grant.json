@@ -1,0 +1,100 @@
+{
+  "id": "q-scf-academic-research-grant",
+  "lane": "b",
+  "verifiedOn": "2026-08-30",
+  "result": "CONFLICT",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Presents specific source-supported content as a current or dated observation.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://research.stellar.org/research-grants",
+          "quote": "The submission deadlines are March 31, June 30, September 30, and December 31.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/research/blob/main/docs/research-grants/index.md",
+          "quote": "Budget not to exceed $150,000",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official page and its source repository agree."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://research.stellar.org/research-grants",
+          "quote": "There is a limit of maximum 2 submissions per calendar year.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/research/blob/main/docs/research-grants/index.md",
+          "quote": "Budget not to exceed $150,000 (a rough historical average of funded proposals is $75,000)",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Numeric program terms have independent class A and B confirmation."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Correctly identifies the institution/PI applicant.",
+      "verdict": "disputed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://research.stellar.org/research-grants",
+          "quote": "To qualify, your institution must be a degree-granting institution whose primary mission is research or higher education, and your institution must be able to confirm that you are authorized to lead research (PI status).",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding",
+          "quote": "Students and researchers can earn academic grants from SDF up to $150,000 in USD.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The dedicated program page requires an institution and PI. The general funding index describes students and researchers as grant earners."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Names institutions as recipients, with students as supported researchers.",
+      "verdict": "disputed",
+      "sources": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/research/blob/main/docs/research-grants/index.md",
+          "quote": "Awards are paid to academic institutions only and never to individuals.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding",
+          "quote": "For students and researchers",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The dedicated page says awards are paid only to institutions. The general funding index uses a conflicting audience label."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://research.stellar.org/research-grants — the current page stated the quarterly deadlines and application terms.",
+    "Live re-check 2026-08-30: https://research.stellar.org/research-grants — the page exposed the current cap, historical average, and submission limit.",
+    "Live re-check 2026-08-30: https://research.stellar.org/research-grants — eligibility still required a degree-granting institution and PI-authorized researcher.",
+    "Live re-check 2026-08-30: https://github.com/stellar/research/blob/main/docs/research-grants/index.md — awards still went to institutions and supported a student or post-doc."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Academic Research|degree-granting|PI-authorized → q-scf-academic-research-grant; no contradiction",
+  "conflicts": [
+    "CONFLICT: Correctly identifies the institution/PI applicant. and Names institutions as recipients, with students as supported researchers. vs https://stellar.org/grants-and-funding — the general index says students and researchers can earn grants, while the dedicated page says students are ineligible and institutions alone receive awards."
+  ],
+  "unreached": [],
+  "overallNotes": "The dedicated program page and source repository agree. The general SDF funding index conflicts with their applicant and recipient roles."
+}

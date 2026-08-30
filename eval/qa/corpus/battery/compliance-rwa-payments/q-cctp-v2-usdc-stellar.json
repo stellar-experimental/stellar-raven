@@ -48,7 +48,8 @@
       },
       {
         "class": "A",
-        "ref": "https://developers.circle.com/cctp/stellar-cctp-forwarder"
+        "ref": "https://developers.circle.com/cctp/references/stellar",
+        "note": "Replaced 2026-08-30: the former /cctp/stellar-cctp-forwarder path returns 404; the Stellar reference page carries the forwarder fields."
       },
       {
         "class": "A",
@@ -274,8 +275,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "Production stellarDocs.search_docs recovered the current CCTP-on-Stellar documentation boundary and delegated deployment/support provenance to Circle.",
         "https://developers.circle.com/release-notes/cctp-2026",
@@ -295,11 +296,19 @@
         "Live re-check 2026-08-27: https://developers.circle.com/cctp/concepts/fees — Circle still requires callers to retrieve current route fees from /v2/burn/USDC/fees.",
         "Live re-check 2026-08-27: https://developers.circle.com/cctp/concepts/fees — Circle still describes CCTP protocol fees separately from forwarding costs.",
         "Sibling sweep 2026-08-27: grep CctpForwarder|2026-05-18|2026-05-19|27→0 → q-tool-cctp-stellar-integration, q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part1.md): restored the mintRecipient/destinationCaller stranding fields; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): restored the mintRecipient/destinationCaller stranding fields; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.circle.com/release-notes/cctp-2026 — Circle retains 2026-05-18 support; SDF retains the 2026-05-19 announcement.",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — both forwarder fields remain required for G, M, or C recipients.",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — CCTP uses six decimals and leaves seventh-decimal dust on Stellar.",
+        "Live re-check 2026-08-30: https://iris-api.circle.com/v2/burn/USDC/fees/27/0 — live 27→0 remains 0/0; the companion 0→27 route remains 1/0.",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/concepts/fees — Circle defines route fees separately from other integration costs.",
+        "Sibling sweep 2026-08-30: grep CctpForwarder|2026-05-18|2026-05-19|seventh decimal → q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration; no contradiction",
+        "Source repair 2026-08-30: https://developers.circle.com/cctp/stellar-cctp-forwarder returned 404; truth.sources now cites https://developers.circle.com/cctp/references/stellar (200), which carries the forwarder fields."
       ],
       "rootCause": [
         "Eval-authoring flaw: the case promoted an unsupported 2026-02-24 date to 'launch' and collapsed it with later technical-support and public-announcement milestones.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "kaan cctp-usdc-stellar-crosschain"

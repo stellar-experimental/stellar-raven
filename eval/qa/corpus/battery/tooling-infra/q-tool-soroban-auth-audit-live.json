@@ -33,7 +33,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-25",
+    "asOf": "2026-08-30",
     "sources": [
       {
         "class": "A",
@@ -102,13 +102,25 @@
             "ref": "https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4",
             "observedAt": "2026-08-28",
             "note": "The upstream ingest fix promotes Veridise appendix finding identifiers into the search index."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2",
+            "observedAt": "2026-08-30",
+            "note": "Re-probe: meta.exactMiss absent; first row source audit, Veridise Stellar Soroban Core, section V-SOR-APP-VUL-003 (generatedAt 2026-08-30T12:45:51Z; blind lane 12:30:00Z)."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2",
+            "observedAt": "2026-08-30",
+            "note": "Re-probe: meta.exactMiss present with the do-not-report warning."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-28",
-      "by": "Lane D golden-truth refresh with Lane C independent retirement review",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dated-conflict lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
       "evidence": [
         "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
         "https://stellarsecurityportal.com/api/v1/reports/28",
@@ -120,13 +132,21 @@
         "Source review 2026-08-28: https://github.com/Stellar-Light/stellarlight/commit/b170d0d78583f95bd6aa86d8ede0125cda4089e4 promotes Veridise appendix identifiers into the index.",
         "Independent review 2026-08-28: hyg-retire-report.md re-ran the trigger and control, checked the deployed commit, and approved sls-074 retirement.",
         "Sibling sweep 2026-08-28: grep sls-074|V-SOR-APP-VUL-003|authorization recursion found q-soroban-auth-recursion-dos-audit; both cases now describe the fixed live behavior.",
-        "Resolution provenance: improvements/resolved.json entry sls-074 preserves the deleted finding's audit chain."
+        "Resolution provenance: improvements/resolved.json entry sls-074 preserves the deleted finding's audit chain.",
+        "asOf decision 2026-08-30: the volatile claim is the live Scout retrieval behavior (exactMiss absent for the real id, present for the control); truth.asOf now tracks its latest re-probe date. The Veridise report content is versioned and stable, so its 2026-08-25 observation needs no asOf of its own.",
+        "Live re-check 2026-08-30: https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf — version history lists V2.1 (Aug. 27, 2025) and V2; Appendix A.2.2 is V-SOR-APP-VUL-003, Severity Critical, Status Investigated; Table 2.3 counts zero valid Critical issues.",
+        "Live re-check 2026-08-30: https://stellarsecurityportal.com/api/v1/reports/28 — the V2 text labels V-SOR-VUL-002 Critical/Investigated, carries the inline Why Invalid disposition, and counts zero Critical issues.",
+        "Live re-check 2026-08-30: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&limit=2 — exactMiss absent; first row is the Veridise audit row.",
+        "Live control 2026-08-30: https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-999&limit=2 — exactMiss present with the do-not-report warning.",
+        "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — confirmed the V2.1 appendix id, the zero valid-Critical count, and both live probes; the V2-specific id/severity pairing is unverifiable from the live Veridise URL set (V2 PDF 404), so the proposer's stellarsecurityportal V2 copy is the class-D witness for it.",
+        "Sibling sweep 2026-08-30: grep V-SOR-APP-VUL-003|authorization recursion → q-soroban-auth-recursion-dos-audit, q-tool-soroban-auth-audit-live; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
         "improvements/resolved.json entry sls-074",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Recheck two dated source-metadata conflicts"
       ]
     },
     "origin": "boxy sl-research-soroban-auth-recursion-dos"

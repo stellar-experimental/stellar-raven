@@ -47,7 +47,7 @@
       {
         "class": "D",
         "ref": "https://pdax.ph/2022/03/25/velo-labs-and-pdax-open-remittance-corridor-using-stellar-network",
-        "note": "class inferred at migration"
+        "note": "Historical 2022 announcement; the URL returned 404 on 2026-08-30 and is kept as dated provenance only."
       }
     ],
     "corroboration": [
@@ -78,12 +78,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-27 primary 3270 and blind 3272; corridor sibling sweep.",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (symmetric-caution): Added a claim-specific caution for corridor coverage and lifecycle labels; the truth is unchanged.",
         "Finding read 2026-08-27: improvements/lumenloop/ll-008-directory-record-coverage-field-quality.md — disputed MoneyGram's unscoped 200+ footprint as Stellar cash coverage.",
@@ -94,7 +94,13 @@
         "Structural re-form (negative-predicate): Moved the unsupported-memory trap to avoid and reworded the lifecycle taxonomy; the truth is unchanged.",
         "Live re-check 2026-08-27: https://stellar.org/products-and-tools/moneygram still supports a current, source-dated MoneyGram Ramps observation.",
         "Live re-check 2026-08-27: https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries still identifies its corridor claim as a June 22, 2022 announcement.",
-        "Sibling sweep 2026-08-27: q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, and q-crp-regional-offramp-mobilemoney preserve the same dated lifecycle boundaries."
+        "Sibling sweep 2026-08-27: q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, and q-crp-regional-offramp-mobilemoney preserve the same dated lifecycle boundaries.",
+        "Live re-check 2026-08-30: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the operator page dated its current Stellar USDC ramp guidance.",
+        "Live re-check 2026-08-30: https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries — the 190-country claim remained a June 22, 2022 announcement.",
+        "Live re-check 2026-08-30: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — the page supported Stellar USDC cash-in and cash-out.",
+        "Live re-check 2026-08-30: https://www.nium.com/newsroom/nium-and-stellar-development-foundation-partner-to-enable-pay-outs-in-190-countries — its date kept capability distinct from current availability.",
+        "Sibling sweep 2026-08-30: grep MoneyGram|Nium|Velo|PDAX|Coins.ph|Onafriq → q-anchor-list-builders-discovery, q-anchor-moneygram-ramps, q-asset-stablecoin-issuers-discovery, q-comp-cross-moneygram-partnership-sep24, q-comp-finclusive-caas, q-crp-anchors-by-corridor, q-crp-custodial-vs-noncustodial-wallets, q-crp-regional-offramp-mobilemoney, q-crp-remittance-founder-advisory, q-eco-stablecoins-on-stellar, q-hist-remittance-corridors, q-hist-unhcr-stellar-aid-assist, q-org-sdf-enterprise-fund, q-pay-moneygram-ramps, q-pay-sdp-disbursement, q-scf-cross-decaf-sep24; no contradiction",
+        "Source check 2026-08-30: https://pdax.ph/2022/03/25/velo-labs-and-pdax-open-remittance-corridor-using-stellar-network returned 404; kept as a dated historical reference, every keyFact was re-verified on the MoneyGram and Nium primary pages."
       ],
       "rootCause": [
         "Partner capability, announcement, historic route, and live consumer deployment were collapsed.",
@@ -104,7 +110,8 @@
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-hist-remittance-corridors"

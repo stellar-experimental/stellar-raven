@@ -1,0 +1,77 @@
+{
+  "id": "q-eco-stellar-wallets-list",
+  "lane": "d",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Presents specific current or dated source evidence, not unsupported memory.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0",
+          "quote": "meta.generatedAt=2026-08-30T12:45:55.103Z; meta.counts.total=183; 99 rows returned; 63 rows had types containing the exact value Wallet.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+          "quote": "Stellar Wallet Kit: Albedo, Freighter, Hana, Ledger Hardware Wallet, Trezor Hardware Wallet, Lobstr, Rabet, WalletConnect, xBull, HOT Wallet.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Use the live rows and the official page as dated evidence."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=100",
+          "quote": "meta.generatedAt=2026-08-30T12:45:54.235Z; meta.counts.total=183; 87 rows returned; 3 rows had types containing the exact value Wallet.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+          "quote": "The live page listed Freighter, Lobstr, and xBull on 2026-08-30.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The keyword total, exact-type count, and official roster are changeable."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Handles duplicate and canonical wallet records.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0",
+          "quote": "The two pages had 66 Wallet-typed row occurrences and 64 unique Wallet-typed ids. Stellar Passport and Coca repeated as Wallet rows; Pakana.Net also overlapped but was not Wallet-typed.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+          "quote": "The official integration page supplies canonical product names, including Freighter, Lobstr, and xBull.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Deduplicate by the row id. The row schema field used was types, an array; exact matching tested whether types includes Wallet."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=0 — the first page had 63 exact Wallet rows and total 183.",
+    "Live re-check 2026-08-30: https://stellarlight.xyz/api/projects/search?q=wallet&limit=100&offset=100 — the second page had 3 exact Wallet rows.",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/developer-tools/wallets — the page lists Freighter, Lobstr, and xBull."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep wallet roster|Wallet-typed|canonical wallet|duplicate.*wallet → q-eco-stellar-wallets-list, q-tool-wallets-comparison and four related cases; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The API total is a keyword-search total of 183, not an exact Wallet-type count. The exact schema field is types, an array. Offset 0 returned 99 rows, 63 Wallet rows, and generatedAt 2026-08-30T12:45:55.103Z. Offset 100 returned 87 rows, 3 Wallet rows, and generatedAt 2026-08-30T12:45:54.235Z. There were 66 Wallet row occurrences and 64 unique Wallet ids after id-based deduplication. First-page names: Lobstr; xBull; Freighter; Hana; Beans; Albedo; Decaf; Rabet; Vesseo; Solar Wallet; Stellar Passport; Ledger; Trezor; HOT Wallet; Bitget Wallet; Klever; Cactus Link; Neon Wallet; Unstoppable Wallet; Hito Wallet; Freedom Pay Wallet; Ben Wallet; Bexo; MPCVault; Lumexo; Volta Circuit; SwiftEx; Stellar-MetaMask; Sollpay; Sentit; OneKey; human.tech; HedgePay; Freelii; Coca; Cobo; Bousol; AirGap; Peer; Meru; Kotani Pay; Bebop; Blaze; Cypher; OpenXSwitch; Scopuly; Akuna; Stellarport; Spatium; Simple Signer; Interstellar; Honey Coin; Empowch; Elsa; Boss Revolution; Arculus; Keystone; Tago Cash; Ripio; Pakana.Net; Lemon; Emigro; OpenZeppelin Stellar Privacy Wallet; Stellar Agent Wallet Skill; NemorixPay; DFNS; TypeScript Wallet SDK; Fordefi; WalletConnect; Piggy Wallet; Swift Wallet SDK; Flutter Wallet SDK; D'CENT; Paywit; xcapit; Wirex; Stellar Light; SocketFi; Palremit; Nobak; Blux; Abroad; Rehoboth; SAFU Protocol; Walletban; Wallet Guru; Infinity Wallet; Para; SAFU; Stellar Wallets Kit; Passkey Kit; Privy; uils; Soundness; Sendit; RampMeDaddy; Plutope; Coins PH; Airtm. The official page still lists Freighter, Lobstr, and xBull."
+}

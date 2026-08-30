@@ -124,12 +124,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-09 primary/blind Etherfuse matrices",
         "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
         "Structural re-form (negative-predicate): merged the product taxonomy, split the long risk fact, and retained the incident's positive boundary; truth unchanged.",
         "Live re-check 2026-08-27: https://etherfuse.com/products/stablebonds — the operator still names USTRY and CETES as sovereign-debt Stablebonds.",
@@ -137,14 +137,21 @@
         "Live re-check 2026-08-27: https://etherfuse.com/products/stablebonds — the current page still exposes NAV, custody, redemption, collateral, DeFi use, and integration inputs for risk review.",
         "Live re-check 2026-08-27: https://github.com/DK27ss/YieldBlox-10M-PoC — current incident evidence still places the failure at the YieldBlox pool/oracle-consumer boundary.",
         "Sibling sweep 2026-08-27: grep Etherfuse|Stablebonds|USTRY|CETES|YieldBlox → q-ass-cross-bando-stablebonds-sac, q-ass-cross-etherfuse-cetes-controls, q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): restored the USTRY-vs-CETES distinction; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 2 review (gt2-grok-rev)): restored the USTRY-vs-CETES distinction; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://app.etherfuse.com/bonds/USTRY — the page exposes changing issuance, maturity, liquidity, price, and APY fields that require dates.",
+        "Live re-check 2026-08-30: https://etherfuse.com/products/stablebonds — Etherfuse lists CETES as Mexican MXN debt and USTRY as U.S. USD debt.",
+        "Live re-check 2026-08-30: https://app.etherfuse.com/legal/stablebonds-overview — the terms cover custody, NAV redemption, maturity, market liquidity, fees, and liabilities.",
+        "Live re-check 2026-08-30: https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — liquidity, oracle, pool, and response risks remain explicit.",
+        "Live re-check 2026-08-30: https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack — the affected YieldBlox pool consumed the manipulated oracle price.",
+        "Sibling sweep 2026-08-30: grep Etherfuse|Stablebonds|USTRY|CETES|YieldBlox → q-ass-cross-bando-stablebonds-sac, q-ass-cross-etherfuse-cetes-controls, q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, q-soroban-oracle-defensive-consumption; no contradiction"
       ],
       "rootCause": [
         "A discovery record was promoted into current product/integration truth.",
         "Issuer/product risk was conflated with a downstream pool's oracle-consumption failure.",
         "eval-authoring",
         "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-defi-etherfuse-stablebonds"

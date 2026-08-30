@@ -1,0 +1,101 @@
+{
+  "id": "q-sor-confidential-tokens",
+  "lane": "c",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Ordinary Stellar assets and SAC transfers are public by default.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+          "quote": "ordinary assets remain public unless an application adds privacy",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Confidential Tokens remain a dated Testnet developer preview.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+          "quote": "Confidential Tokens remains an unaudited developer preview from the Testnet preview",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md",
+          "quote": "Independent source re-check supports the versioned or numeric part of this fact.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "The visibility boundary covers private balances/amounts and public addresses.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+          "quote": "the preview hides balances and amounts while addresses stay public",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "ZK host functions are cryptographic primitives.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/apps/zk",
+          "quote": "Stellar ZK host functions remain cryptographic primitives",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Audit evidence depends on the protocol and auditor role.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+          "quote": "audit evidence remains specific to the selected privacy protocol",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md",
+          "quote": "Independent source re-check supports the versioned or numeric part of this fact.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/privacy — ordinary assets remain public unless an application adds privacy",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/privacy — Confidential Tokens remains an unaudited developer preview from the Testnet preview",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/privacy — the preview hides balances and amounts while addresses stay public",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/zk — Stellar ZK host functions remain cryptographic primitives",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/privacy — audit evidence remains specific to the selected privacy protocol"
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Confidential Tokens|BLS12-381|BN254 → q-scf-confidential-tokens-preview, q-edge-noinfo-stellar-native-privacy-default, q-zk-host-functions-status; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": ""
+}

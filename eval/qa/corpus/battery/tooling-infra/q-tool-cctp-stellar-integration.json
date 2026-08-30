@@ -208,8 +208,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
         "https://developers.circle.com/cctp/references/stellar",
@@ -227,12 +227,21 @@
         "Live re-check 2026-08-27: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc and https://developers.circle.com/cctp/concepts/supported-chains-and-domains — the Stellar-source 1000/Fast versus N/A/omitted dispute still supports Standard 2000 until resolution",
         "Live re-check 2026-08-27: https://developers.circle.com/cctp/references/stellar-contracts and https://github.com/circlefin/stellar-cctp/blob/45746f2c803198bc6cd586475eb3c925f12bb488/contracts/token-messenger-minter-v2/src/contract.rs — docs handle_receive_* still conflicts with source/deployed handle_recv_*",
         "Sibling sweep 2026-08-27: grep CctpForwarder|mint_and_forward|handle_recv|Stellar-source Fast → q-cctp-v2-usdc-stellar; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part3.md): restored the recipient/caller field names; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 3 review (gt2-grok-rev)): restored the recipient/caller field names; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — classic USDC's deterministic SAC remains the same asset used for contract burn/approval",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — outbound burn→Iris source-domain-27→attest/mint and integer 7→6 normalization/dust remain required",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — both CctpForwarder fields, the exact StrKey hook version, and actual-source Iris lookup remain required",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — atomic on-chain CctpForwarder mint_and_forward remains distinct from managed Forwarding Service",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc — the Stellar-source 1000/Fast versus N/A/omitted dispute still supports Standard 2000 until resolution",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar-contracts — docs handle_receive_* still conflicts with source/deployed handle_recv_*",
+        "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar-contracts — the live source supports uses source/deployed handle_recv_* amid the docs' handle_receive_* contradiction.",
+        "Sibling sweep 2026-08-30: grep CctpForwarder|mint_and_forward|handle_recv|Stellar-source Fast → q-cctp-v2-usdc-stellar; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
         "Official Circle source disagreement on Stellar-source Fast eligibility and handler naming persists; preserve the dispute rather than pinning either source.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-tool-cctp-stellar-integration"

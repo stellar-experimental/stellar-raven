@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "1d2ba3d0dda48b7ec397ec5c1ede344ca7f238139d253a8a6dec7237e0b61c63",
+  "corpusContentSha256": "06b3bd2583cfec75aa3869557468193289aa2a9863c5aed7084663fe64c053ab",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -956,12 +956,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-30",
+          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
           "evidence": [
             "Solo scratchpad 575 GT-16 primary 3244 and blind 3245",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (presentation-avoid): rewrote the presentational avoid item as the same concrete false-content claim; the trap target is unchanged.",
             "No live re-check was required because the avoid rewrite does not change the forbidden claim.",
@@ -970,14 +970,21 @@
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — current built-in pool mechanics still support dated venue-specific guidance.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool — Soroban pools remain contract-defined and distinct from Classic pool-share operations.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — the current guide still documents pool mechanics and liquidity-provider risk context.",
-            "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share|Soroban contract → q-asset-sdex-vs-amm and q-asset-amm-fee-reserve; no contradiction."
+            "Sibling sweep 2026-08-27: grep impermanent loss|LiquidityPoolDeposit|pool-share|Soroban contract → q-asset-sdex-vs-amm and q-asset-amm-fee-reserve; no contradiction.",
+            "Live re-check 2026-08-30: https://www.defindex.io/terms — the owner terms say historical vault performance does not indicate future results.",
+            "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — Classic pools use explicit deposit and withdrawal operations.",
+            "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool — Soroban pool shares and exits are contract-defined.",
+            "Live re-check 2026-08-30: https://www.defindex.io/terms — vault risks include low liquidity, reward changes, harvest execution, configuration, and oracle-linked liquidation.",
+            "Live re-check 2026-08-30: https://github.com/blend-capital/docs-v2/blob/main/blend-whitepaper.md — Blend documents a 17-day withdrawal queue and conditional withdrawal.",
+            "Sibling sweep 2026-08-30: grep impermanent loss|LiquidityPoolDeposit|pool-share|withdrawal queue → q-asset-amm-fee-reserve, q-asset-sdex-vs-amm, q-asset-trustline-basics, q-protocol-base-reserve-min-balance, q-protocol-operation-types-list; no contradiction"
           ],
           "rootCause": [
             "eval-side answer completeness: correct warnings did not answer deposit/withdraw, yield comparison, or impermanent-loss mechanics",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raven-next q-defi-provide-liquidity-impermanent-loss"
@@ -1128,13 +1135,13 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-30",
+          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
           "evidence": [
             "eval/qa/consistency-register.json sweep 2026-07-03; deep-verification quotes/URLs in Solo scratchpad 521",
             "Solo scratchpad 575 GT-20 primary 3256 and blind 3257; current SDF/Allium/rwa.xyz metric matrix asOf 2026-07-10.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (symmetric-caution): added a source-specific grading caution for ll-009; the corrected RWA and developer-stat attributions are unchanged.",
             "Improvements review 2026-08-27: improvements/lumenloop/ll-009-messari-report-misattribution.md remains reported upstream; the disputed claim is LumenLoop's attribution of the $2.8B RWA value and 1,700 monthly active developers to the written Messari report.",
@@ -1146,7 +1153,13 @@
             "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — the current source remains a dated report for specific RWA and stablecoin observations.",
             "Live re-check 2026-08-27: https://docs.rwa.xyz/methodology/metrics — current methodology still defines supply, value, and market-cap measures as point-in-time stocks.",
             "Live re-check 2026-08-27: https://stellar.org/resources/institutional-infrastructure-report and https://docs.rwa.xyz/methodology/metrics — current sources still define payment and transfer volumes over periods.",
-            "Sibling sweep 2026-08-27: grep supply|market cap|payment volume|transfer volume|stock|flow → q-asset-rwa-tokenized-freshness; no contradiction"
+            "Sibling sweep 2026-08-27: grep supply|market cap|payment volume|transfer volume|stock|flow → q-asset-rwa-tokenized-freshness; no contradiction",
+            "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — remains a dated Q1 2026 source for RWA and stablecoin observations.",
+            "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — shows Q1 2026 and publication date 2026-05-07.",
+            "Live re-check 2026-08-30: https://docs.rwa.xyz/methodology/metrics.md — defines supply and value as point-in-time snapshots.",
+            "Live re-check 2026-08-30: https://docs.rwa.xyz/methodology/metrics.md — defines transfer volume during a period and accumulates transfers over that period.",
+            "Live re-check 2026-08-30: https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale — the dated quarterly scope requires a staleness warning for current use.",
+            "Sibling sweep 2026-08-30: grep stablecoin payment volume|transfer volume|distributed RWA|represented value|market cap → q-asset-rwa-tokenized-freshness, q-asset-stablecoin-issuers-discovery, q-eco-stablecoins-on-stellar, q-eco-stellar-rwa-stablecoin-volume; no contradiction"
           ],
           "rootCause": [
             "improvements/lumenloop/ll-009 — the upstream misattribution this golden inherited",
@@ -1156,7 +1169,8 @@
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raven-next q-eco-stellar-rwa-stablecoin-volume"
@@ -1932,6 +1946,21 @@
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators",
+            "note": "On 2026-08-30 this page still says 'every 3-5 seconds'; it conflicts with the stellar-stack page and with live samples and is recorded as a stale official page, not as support."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+            "note": "closeTime accuracy: may lag a few seconds or run up to 60 seconds ahead; strictly monotonic."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+            "note": "Fresh consecutive-ledger samples on 2026-08-30 (two independent lanes)."
           }
         ],
         "corroboration": [
@@ -1958,16 +1987,78 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "Fresh 2026-08-30 Pubnet samples: 199 consecutive deltas over ledgers 64193568–64193767 were min 5 / max 7 / mean 5.678 / median 6 s; a second 199-delta sample over 64193795–64193994 was min 5 / max 9 (one delta) / mean 5.673 / median 6 s.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+                "observedAt": "2026-08-30",
+                "note": "Blind lane sample: 5s×78, 6s×107, 7s×14."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+                "observedAt": "2026-08-30",
+                "note": "Proposer sample: 5s×77, 6s×112, 7s×9, 9s×1."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+                "observedAt": "2026-08-30",
+                "note": "'Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds.'"
+              }
+            ]
+          },
+          {
+            "claim": "Stellar ledgers close every 3–5 seconds (the golden.avoid trap).",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+                "observedAt": "2026-08-30",
+                "note": "States 5-7 seconds."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+                "observedAt": "2026-08-30",
+                "note": "Two 199-delta samples had no delta below 5 s; medians were 6 s."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md",
+                "observedAt": "2026-08-30",
+                "note": "ledgerTargetCloseTimeMilliseconds initial 5000, range [4000, 5000]; a target, not an observed range."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/validators",
+                "observedAt": "2026-08-30",
+                "note": "Still says 'every 3-5 seconds'; stale against the stack page and the samples. Docs-finding candidate; the answer's avoid item punishes only an immutable-guarantee claim from one delta, so an attributed quote of this page is not in the trap."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "Golden-truth sweep import — The inherited 3–5 second cadence was stale and a single-delta primary check under-sampled current behavior.",
+          "date": "2026-08-30",
+          "by": "golden-truth metadata remainder (2026-08-30, dated-conflict lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
           "evidence": [
-            "Solo scratchpad 575 GT-32 blind 3284, resolving primary under-sampling."
+            "Solo scratchpad 575 GT-32 blind 3284, resolving primary under-sampling.",
+            "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack — 'update the ledger every 5-7 seconds'.",
+            "Live re-check 2026-08-30: https://horizon.stellar.org/ledgers?order=desc&limit=200 — two independent 199-delta samples: min 5 / max 7 / median 6 s and min 5 / max 9 (one delta) / median 6 s.",
+            "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md — target close time plus nomination and ballot timeouts are network-configurable; initial target 5000 ms.",
+            "Official-page inventory 2026-08-30: stellar-stack 5-7 s; docs/validators 3-5 s (stale); storage-strategies '~5-second'; fees-resource-limits-metering 'a few seconds'; stellar.org/soroban '5-second finality'; intro-to-stellar 'under 6 seconds'. The 199-ledger 2026-07-10 observation is kept as a dated historical sample; its Solo attribution is not re-walkable and the fresh samples stand as its independent replacement.",
+            "Disposition 2026-08-30: the golden's 'roughly 5–7 seconds' with a dated sample stays; one 9-second delta in one fresh sample does not move a 'roughly' range. A live official conflict (validators 3-5 s vs stack 5-7 s) remains after direct confirmation; ADR-0008 caps canonical-page cautions at three cases, so no caution was added and the Stellar Docs finding is left as an owner decision (recorded in the round ledger).",
+            "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same sample statistics; found no official 3–5 wording on the pages it visited (it did not visit docs/validators); orchestrator direct fetch confirmed both pages.",
+            "Sibling sweep 2026-08-30: grep ledger close|5-7 seconds|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit and six other timing cases; no contradiction"
           ],
           "rootCause": [
-            "Old target/marketing range and insufficient empirical sampling."
+            "Old target/marketing range and insufficient empirical sampling.",
+            ".agents/TODO.md — Recheck two dated source-metadata conflicts"
           ]
         },
         "origin": "raven-next q-protocol-ledger-close-time"
@@ -2231,25 +2322,32 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-30",
+          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
           "evidence": [
             "Solo scratchpad 575 GT-36 primary 3290 and blind 3291; independently checked 2026-07-10.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (negative-predicate): Shortened the sourcing fact, moved its memory-claim trap to avoid, and restated the student/recipient roles; truth unchanged.",
             "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed current program content for a dated, source-supported observation.",
             "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed the current deadlines, proposal limit, and budget for visible as-of dating.",
             "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed the degree-granting institution and PI-status applicant rules.",
             "Live re-check 2026-08-27: https://research.stellar.org/research-grants — showed awards paid to institutions and support for a graduate student or post-doc.",
-            "Sibling sweep 2026-08-27: grep Academic Research Grant|degree-granting|PI status → q-scf-academic-research-grant only; no contradiction."
+            "Sibling sweep 2026-08-27: grep Academic Research Grant|degree-granting|PI status → q-scf-academic-research-grant only; no contradiction.",
+            "Live re-check 2026-08-30: https://research.stellar.org/research-grants — the current page stated the quarterly deadlines and application terms.",
+            "Live re-check 2026-08-30: https://research.stellar.org/research-grants — the page exposed the current cap, historical average, and submission limit.",
+            "Live re-check 2026-08-30: https://research.stellar.org/research-grants — eligibility still required a degree-granting institution and PI-authorized researcher.",
+            "Live re-check 2026-08-30: https://github.com/stellar/research/blob/main/docs/research-grants/index.md — awards still went to institutions and supported a student or post-doc.",
+            "Source conflict 2026-08-30: https://stellar.org/grants-and-funding says students and researchers can earn academic grants, while the dedicated https://research.stellar.org/research-grants page and https://github.com/stellar/research/blob/main/docs/research-grants/index.md require a degree-granting institution and PI and pay awards to institutions only; the dedicated program page controls and the answer already encodes it.",
+            "Sibling sweep 2026-08-30: grep Academic Research|degree-granting|PI-authorized → q-scf-academic-research-grant; no contradiction"
           ],
           "rootCause": [
             "Eval-side beneficiary/applicant conflation and overbroad route/amount traps.",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raven-next q-scf-academic-research-grant"
@@ -2429,23 +2527,28 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-30",
+          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane b, worker gmr-sol-b; orchestrator applied)",
           "evidence": [
             "Solo scratchpad 575 GT-36/39/40, 2026-07-10.",
             "Preserved main's 2026-07-10 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-            "Independent Fable review: /private/tmp/claude-501/-Users-kalepail-Desktop-stellar-raven-codemode/228cd755-2832-4a13-8e47-9a25e851db2a/scratchpad/p4/conversions-copy-review.md",
+            "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-30 — see the Live re-check lines.",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
             "Structural re-form (negative-predicate): Shortened one source rule and moved the unified Growth trap to avoid; the truth is unchanged.",
             "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — showed source-dated v7 content.",
             "Live re-check 2026-08-27: https://stellar.org/blog/ecosystem/introducing-scf-v7 — described plural post-launch growth pathways, not one unified Growth track.",
-            "Sibling sweep 2026-08-27: SCF v7|Growth track|four payments|three deliverable → q-scf-v7-changes, q-edge-scf-v7-centralization-myths, q-scf-ambassador-program, q-scf-instawards, q-scf-eligibility-criteria, q-scf-sdf-marketing-grant; no contradiction."
+            "Sibling sweep 2026-08-27: SCF v7|Growth track|four payments|three deliverable → q-scf-v7-changes, q-edge-scf-v7-centralization-myths, q-scf-ambassador-program, q-scf-instawards, q-scf-eligibility-criteria, q-scf-sdf-marketing-grant; no contradiction.",
+            "Live re-check 2026-08-30: https://stellar.org/blog/ecosystem/introducing-scf-v7 — the launch article still tied v7 to the February 1, 2026 SCF #41 deadline.",
+            "Live re-check 2026-08-30: https://stellar.org/blog/ecosystem/introducing-scf-v7 — the dated launch page identified the v7 change set.",
+            "Live re-check 2026-08-30: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/budget-and-deliverable-guidelines.md — the source stated four payments and three tranches.",
+            "Sibling sweep 2026-08-30: grep SCF v7|SCF 7.0|four payments → q-edge-scf-v7-centralization-myths, q-scf-ambassador-program, q-scf-instawards, q-scf-v7-changes; no contradiction"
           ],
           "rootCause": [
             "Eval-side historical shorthand promoted into current mechanics.",
             "eval-authoring",
             "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raven-next q-scf-v7-changes"
@@ -3231,8 +3334,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+          "date": "2026-08-30",
+          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
           "evidence": [
             "Solo scratchpad 575, GT-54 primary process 3383 and blind process 3386. The primary correctly identified CLI/Lab drift but misread SEP-52; the blind lane re-derived the standard before reading the primary and corrected it after seal.",
             "Blind KV gt54/blind-lock/process-3386 sealed exactly ten cases with primaryReportRead=false at 2026-07-11T06:06:25.716Z and records the SEP-52 adjudication after primaryReadAt 2026-07-11T06:13:03.599Z.",
@@ -3252,14 +3355,22 @@
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/cli/stellar-cli — current CLI help retained prompted add, secure-store, HD-path, generate --seed semantics, and the argv-secret boundary.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/lab/saved/keypairs — Saved Keypairs remained Testnet/Futurenet-only browser storage; direct-import backup behavior remained wallet/version-specific.",
             "Sibling sweep 2026-08-27: grep SEP-52|SLIP-39|Saved Keypairs|m/44'/148' → q-ti-secret-key-vs-mnemonic-derivation, q-ti-stellar-lab-usage-and-new-ui; no contradiction",
-            "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part3.md): restored the wallet/version-specific direct-import backup claim (pinned at 6 facts, reworded in place); truth unchanged versus HEAD."
+            "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 3 review (gt2-grok-rev)): restored the wallet/version-specific direct-import backup claim (pinned at 6 facts, reworded in place); truth unchanged versus HEAD.",
+            "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/fbf05c9d3220b711e181577e7dca19844c765c3c/ecosystem/sep-0005.md — StrKey still encoded one Ed25519 secret seed separately from BIP39 mnemonic material.",
+            "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/fbf05c9d3220b711e181577e7dca19844c765c3c/ecosystem/sep-0023.md — SEP-5 still specified BIP39, SLIP-10, hardened m/44'/148'/x', passphrases, and account indexes.",
+            "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0052.md — the forward hierarchy still supplied no standardized inverse or same-hierarchy raw-byte mnemonic conversion.",
+            "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0052.md — Draft SEP-52 still defined SEP-5 SLIP-39 threshold shares with recommended 256-bit entropy and 33-word non-BIP39 shares.",
+            "Live re-check 2026-08-30: https://github.com/satoshilabs/slips/blob/a00312491693714d9bc1b6e4cb5b2e356e6c511e/slip-0010.md — current CLI help retained prompted add, secure-store, HD-path, generate --seed semantics, and the argv-secret bou...",
+            "Live re-check 2026-08-30: https://developers.stellar.org/docs/tools/lab/saved/keypairs — Saved Keypairs remained Testnet/Futurenet-only browser storage; direct-import backup behavior remained wallet/version-specific.",
+            "Sibling sweep 2026-08-30: grep BIP39|SEP-52|SLIP-39|33-word|hd-path|m/44'/148' → q-ti-secret-key-vs-mnemonic-derivation; no contradiction"
           ],
           "rootCause": [
             "improvements/stellar-docs/sd-030-lab-saved-keypairs-offline-boundary.md",
             "Eval-side standards/tooling conflation: SEP-5 derivation, SEP-23 StrKey, Draft SEP-52 sharing, CLI generation/import and browser storage were compressed into one recovery-phrase claim.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raven-next q-ti-secret-key-vs-mnemonic-derivation"

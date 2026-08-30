@@ -1,0 +1,89 @@
+{
+  "id": "q-sor-contract-trustlines-c-address",
+  "lane": "c",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Contracts use SAC to interact with classic assets.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+          "quote": "contracts still use SAC to interact with classic assets",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "C-address contract storage and G-address trustline/native balances are distinct models.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+          "quote": "C-address balances use contract storage and G-address issued-asset balances use trustlines",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "C-address sending/receiving uses SAC balance plus authorization state.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts",
+          "quote": "C-address payments still use SAC transfer flows and authorization state",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "An outbound SAC `transfer` requires Soroban authorization.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+          "quote": "outbound SAC transfer requires spending-address authorization",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "G-address recipients need a funded trustline unless Protocol 26 SAC `trust` creates it.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin",
+          "quote": "Protocol 26 SAC trust creates an authorized G-address trustline subject to reserve",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — contracts still use SAC to interact with classic assets",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — C-address balances use contract storage and G-address issued-asset balances use trustlines",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts — C-address payments still use SAC transfer flows and authorization state",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/tokens/stellar-asset-contract — outbound SAC transfer requires spending-address authorization",
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — Protocol 26 SAC trust creates an authorized G-address trustline subject to reserve"
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: checked the affected numeric/SEP/CAP mappings against related P4 5B cases and consistency-register members.",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": ""
+}

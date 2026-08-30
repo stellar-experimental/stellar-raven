@@ -1,0 +1,131 @@
+{
+  "id": "q-cctp-v2-usdc-stellar",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Circle dates Stellar support to 2026-05-18 and the public-live announcement to 2026-05-19.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.circle.com/release-notes/cctp-2026",
+          "quote": "2026.05.18 — Added support for Stellar mainnet.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+          "quote": "The page date is 2026-05-19 and it says Circle CCTP is live on Stellar.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "D",
+          "ref": "https://x.com/circle/status/2056767949445472739",
+          "quote": "May 19. CCTP is now live on @StellarOrg.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The support record and public announcement remain separate milestones."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Use CctpForwarder with correct mintRecipient or destinationCaller for G/M/C funds.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.circle.com/cctp/references/stellar",
+          "quote": "Use CctpForwarder for G, M, or C recipients; set both fields to it; wrong values can leave funds permanently stuck.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/circlefin/stellar-cctp",
+          "quote": "Circle's source includes the on-chain Stellar CctpForwarder.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The current reference explicitly covers all three StrKey recipient types."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "The 6-decimal CCTP format leaves Stellar USDC's seventh decimal on Stellar.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.circle.com/cctp/references/stellar",
+          "quote": "CCTP messages use six-decimal subunits; an outbound seventh-decimal amount stays in the user's Stellar account.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/circlefin/stellar-cctp",
+          "quote": "The Stellar implementation is the source boundary for seven-local-to-six-canonical normalization.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Circle's example leaves 0.0000007 USDC in the Stellar account."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Re-query /v2/burn/USDC/fees for 2026-07-11 Fast/Standard 27→0 0/0, 0→27 1 bp/0.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.circle.com/cctp/concepts/fees",
+          "quote": "Retrieve the current route fee from GET /v2/burn/USDC/fees; Standard is free and Fast varies by route.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+          "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "C",
+          "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/0/27",
+          "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":1},{\"finalityThreshold\":2000,\"minimumFee\":0}]",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Production and sandbox still match the 2026-07-11 readings. A fresh query remains required."
+    },
+    {
+      "keyFactIndex": 4,
+      "claim": "Treats Circle fees, network resources, relayers, integrators, and swaps as distinct costs.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.circle.com/cctp/concepts/fees",
+          "quote": "This page defines the route-specific CCTP Fast Transfer fee.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.circle.com/cctp/references/stellar",
+          "quote": "Stellar CCTP also uses separate on-chain Soroban and integration components.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "Protocol fees do not subsume costs charged by separate networks or providers."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.circle.com/release-notes/cctp-2026 — Circle retains 2026-05-18 support; SDF retains the 2026-05-19 announcement.",
+    "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — both forwarder fields remain required for G, M, or C recipients.",
+    "Live re-check 2026-08-30: https://developers.circle.com/cctp/references/stellar — CCTP uses six decimals and leaves seventh-decimal dust on Stellar.",
+    "Live re-check 2026-08-30: https://iris-api.circle.com/v2/burn/USDC/fees/27/0 — live 27→0 remains 0/0; the companion 0→27 route remains 1/0.",
+    "Live re-check 2026-08-30: https://developers.circle.com/cctp/concepts/fees — Circle defines route fees separately from other integration costs."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep CctpForwarder|2026-05-18|2026-05-19|seventh decimal → q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The old /stellar-cctp-forwarder URL returns 404. Circle's current page is /cctp/references/stellar."
+}

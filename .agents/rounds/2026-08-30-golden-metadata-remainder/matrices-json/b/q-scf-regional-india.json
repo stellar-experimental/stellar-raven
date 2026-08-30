@@ -1,0 +1,59 @@
+{
+  "id": "q-scf-regional-india",
+  "lane": "b",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Presents specific source-supported content as a current or dated observation.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/ambassador-program/chapters/asia-pacific",
+          "quote": "Stellar India — Exploratory Chapter",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "D",
+          "ref": "https://luma.com/ajcns4mc",
+          "quote": "Date: 21-25 August 2026",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The event is now closed. Its dated status does not determine the chapter status."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Confirms the officially listed active Stellar India Exploratory Chapter.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/ambassador-program/chapters/asia-pacific",
+          "quote": "Active Chapters: Stellar India — Exploratory Chapter",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://stellar.gitbook.io/ambassador-program/chapters/asia-pacific — the official index still listed Stellar India.",
+    "Live re-check 2026-08-30: https://luma.com/ajcns4mc — the Jaipur event remained dated August 21–25, 2026 and was closed.",
+    "Live re-check 2026-08-30: https://stellar.gitbook.io/ambassador-program/chapters/asia-pacific — Stellar India remained an active Exploratory Chapter."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Stellar India|India Chapter|Jaipur → q-scf-regional-india; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The chapter status remains current. The Jaipur event is now historical, as its date requires."
+}

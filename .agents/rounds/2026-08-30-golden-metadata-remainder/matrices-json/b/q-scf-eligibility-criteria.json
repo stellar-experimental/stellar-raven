@@ -1,0 +1,74 @@
+{
+  "id": "q-scf-eligibility-criteria",
+  "lane": "b",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Presents specific source-supported content as a current or dated observation.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+          "quote": "SCF Build consists of 3 distinct tracks: Open, Integration, and RFP.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria",
+          "quote": "Only submissions that meet all required criteria and fall within SCF eligibility will be considered for funding.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Lists eligibility, prescreen, panel merits, vote, revision, and KYC as distinct stages.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+          "quote": "Prescreen; Panel Review; Revision Window; Community Vote (for Open Track only); Participant Eligibility & KYC Requirements",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "States that individuals and teams may qualify under participant and track constraints.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions",
+          "quote": "Each SCF Award Program or Initiative is open to: Teams of Eligible Individuals; and Organizations",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The Build page separately gives individual KYC instructions."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the current page defined three Build tracks and their intended applicants.",
+    "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria — the current page exposed active eligibility and review requirements.",
+    "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award — the workflow separated prescreen, panel, revision, Open vote, and KYC.",
+    "Live re-check 2026-08-30: https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions — teams and organizations remained eligible under participant rules."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep prescreen|eligibility|Open-only|KYC → q-scf-academic-research-grant, q-scf-audit-bank, q-scf-build-tracks, q-scf-eligibility-criteria, q-scf-how-to-apply, q-scf-instawards, q-scf-rfp-tooling, q-scf-submission-lifecycle-deadlines, q-scf-v7-changes, q-scf-verified-members, q-scf-vs-sdf-enterprise-fund, and related compliance cases; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "The current pages preserve the stage and participant distinctions."
+}

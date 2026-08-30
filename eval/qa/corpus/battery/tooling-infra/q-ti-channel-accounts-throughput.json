@@ -98,8 +98,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-51 processes 3353/3360 independently retained the channel core and added the source/signature, retry, and non-guarantee precision.",
         "Sibling sweep checked q-pc-fee-bump-channel-accounts-feepool and q-ti-tx-too-late-resubmit.",
@@ -113,12 +113,19 @@
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/horizon/api-reference/submit-async-transaction — identical-envelope submissions remain hash-identical while providers can return duplicate or pending states.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-xdr/blob/main/Stellar-types.x — account sequence numbers remain signed 64-bit values, preserving invalid-u32 as a client parsing/typing issue.",
         "Sibling sweep 2026-08-27: grep channel account|tx_bad_seq|TRY_AGAIN_LATER|invalid u32|provider-lag → q-pc-fee-bump-channel-accounts-feepool, q-pc-sequence-numbers-ordering-replace, q-pc-surge-griefing-threat-model, q-ti-channel-accounts-throughput, q-ti-classic-submission-errors, q-ti-tx-too-late-resubmit; no contradiction",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b5-part2.md): restored the required duplicate/pending/not-found/provider-lag handling as a keyFact; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 5 › Part 2 review (gt2-grok-rev)): restored the required duplicate/pending/not-found/provider-lag handling as a keyFact; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — funded channel sources still separate transaction sequence/fees from operation sources and signatures.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — blind new-sequence payment resubmission after tx_bad_seq can still duplicate one user intent.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — TRY_AGAIN_LATER remains temporary while terminal result codes require transaction correction.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions — identical-envelope submissions remain hash-identical while providers can return duplicate or pending states.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — account sequence numbers remain signed 64-bit values, preserving invalid-u32 as a client parsing/typing issue.",
+        "Sibling sweep 2026-08-30: grep tx_bad_seq|TRY_AGAIN_LATER|channel accounts|invalid u32 → q-pc-fee-bump-channel-accounts-feepool, q-pc-sequence-numbers-ordering-replace, q-pc-surge-griefing-threat-model, q-ti-channel-accounts-throughput, q-ti-classic-submission-errors, q-ti-tx-too-late-resubmit; no contradiction"
       ],
       "rootCause": [
         "Eval-side architecture/rubric incompleteness: source/signature mapping and performance non-guarantees were not explicit.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-ti-channel-accounts-throughput"

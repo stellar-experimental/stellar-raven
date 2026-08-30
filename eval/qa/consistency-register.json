@@ -11,16 +11,16 @@
           "q-eco-stellar-rwa-stablecoin-volume"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-asset-rwa-tokenized-freshness changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "resolved by provenance-bearing overrides on 2026-07-03; retained as historical contradiction evidence and rechecked in the 2026-07-09 corpus-health sweep",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "649c9c883815552fcd20408646068a68ded83206853af30bbf190e69273f2f66",
-          "q-eco-stellar-rwa-stablecoin-volume": "c573d41f5860eda4b844909f7bced844b34d33e76ebf9cf9423a97ffd6b279ca"
+          "q-eco-stellar-rwa-stablecoin-volume": "f6088fecd7afc7d4a0fd442ac5d5d7371e362eda1a18b2f373244b4a46a872b5"
         }
       },
       {
@@ -31,16 +31,16 @@
           "q-hist-remittance-corridors"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-crp-anchors-by-corridor changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-crp-anchors-by-corridor": "b7f9777315356c542658f344079117939844d14935189a3f2d9487a98122699a",
-          "q-hist-remittance-corridors": "2712f51d25f021fef6f192eaba3a67740290145fb887dae71c11404181bd1ad7"
+          "q-hist-remittance-corridors": "9f81f9f7e089c4c772bcdbf0f252d6aaa32ffaa45df040c875dfe5fc3a8a45a7"
         }
       },
       {
@@ -111,16 +111,16 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-eco-stellar-wallets-list changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this pair: wallet rosters are dated and source-attributed and Lobstr is a named first-page wallet; q-eco-lobstr-wallet re-read, no count or roster pinned, both still true together. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
           "verdict": "consistent"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-eco-lobstr-wallet": "744ec07eab8a0e47ddb59ade2b439a5fad40e06538369e7b8e749fea20de7ca3",
-          "q-eco-stellar-wallets-list": "e2590cb5112d635eb1e4ffcc3b6a0cc7f4a61cbee5813cc771733951b45e96f7"
+          "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db"
         }
       },
       {
@@ -145,10 +145,10 @@
           "q-tool-rust-soroban-sdk"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "PR 92 review fix (2026-08-29): byte-only canonical JSON re-serialization of q-protocol-operations-vs-transactions and q-protocol-amm-cap-0038 (Copilot indentation comments); parsed JSON identical to HEAD, no field changed; prior same-day verdict stands. Prior reason: Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-comp-clawback-cap0035, q-edge-fresh-latest-protocol-version, q-hist-soroban-launch-protocol20, q-infra-secp256r1-passkeys, q-pc-protocol-upgrade-timing, q-protocol-23-whisk-caps, q-protocol-24-whisk-incident, q-protocol-27-cap-0071, q-protocol-amm-cap-0038, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-parallel-execution, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-soroban-constructor-lifecycle, q-tool-rust-soroban-sdk (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-comp-clawback-cap0035, q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-amm-cap-0038, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-parallel-execution, q-protocol-version-history-list, q-soroban-constructor-lifecycle changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -158,7 +158,7 @@
           "q-hist-soroban-launch-protocol20": "b2542d4630bec071ed34425a3d14168369915a5b7f282f5ebcac453669bf3168",
           "q-infra-secp256r1-passkeys": "059be4fb28ed3781f2d8d38d9bf2cd130893304c6e978206bb0c540c5aa0a2aa",
           "q-pc-protocol-upgrade-timing": "3ae362ff93313ca63e3b6aeb3563662fdfcdfd2036e2892607ff5b6c3d15b996",
-          "q-protocol-23-whisk-caps": "d890a1ba5b30f1854021b8253f575e3c456b45d3def0f223c14ba50a65a3c69b",
+          "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-24-whisk-incident": "d7f7a2b6242e9006ce23ae014068cc5c6009a96430481b46115edcf3b79258db",
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
           "q-protocol-amm-cap-0038": "16e8a737e4385d99cdd253882d18e0d94c4ec300cd3d957e3ac05a1670acc478",
@@ -191,10 +191,10 @@
           "q-ti-rpc-gettransactions-pagination-xdr"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-comp-clawback-cap0035, q-comp-clawback-holder-risk, q-edge-factcheck-soroswap-first-amm, q-infra-secp256r1-passkeys, q-protocol-23-whisk-caps, q-protocol-27-cap-0071, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-sep-41-token-interface, q-sor-confidential-tokens, q-sor-contract-trustlines-c-address, q-soroban-auth-delegation-p27, q-soroban-constructor-lifecycle, q-ti-rpc-gettransactions-pagination-xdr (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29): members re-read member by member after a gospel change on a member (answer/avoid/notes); the changed sentences were compared against origin/main and every member can still be true together; no contradiction. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Implemented/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
@@ -203,13 +203,13 @@
           "q-comp-clawback-holder-risk": "26e14436b95f7669729cc3abb4fbdcb0fd26b2d3674ad0524cded4e6741a4b86",
           "q-edge-factcheck-soroswap-first-amm": "0a2c40d8bde51db54f13467672b8d456889975ad42e7e3f4107bc54f56c1d2de",
           "q-infra-secp256r1-passkeys": "059be4fb28ed3781f2d8d38d9bf2cd130893304c6e978206bb0c540c5aa0a2aa",
-          "q-protocol-23-whisk-caps": "d890a1ba5b30f1854021b8253f575e3c456b45d3def0f223c14ba50a65a3c69b",
+          "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
           "q-protocol-bls12-381-cap59": "44d0fe2d916103f6bd48edee871cf348b91a0707ceca03eaffdf662367d23022",
           "q-protocol-bn254-poseidon-xray": "96a8150f48567090e3127aef7e3eb9cfbe574c666d1541fec27b5669878d0d5d",
           "q-sep-41-token-interface": "9ea90edb3219f56bd411f241ef2bbd7f29f07af182172876bba341b350e6ab3d",
-          "q-sor-confidential-tokens": "a1077ef376ef9859d0734719cb3c618ea8423f3472ff94ced4c3c58b9e568849",
-          "q-sor-contract-trustlines-c-address": "58e54baa9d335af351a523ce6b237cb6276b118b14c82be6e2e3173c6c0836e6",
+          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f",
+          "q-sor-contract-trustlines-c-address": "d81b73765291188b06e0a6bb4cc74230fb2d8185495d9887e59bfaff96be8caf",
           "q-soroban-auth-delegation-p27": "d098733e231e1f650b321ba2cbb7b46f813192e97e36945c2a2ce0e480348eec",
           "q-soroban-constructor-lifecycle": "2bdaf60793d0f1f3311004a929908fc19226b15a2608aa80ea95254dee138076",
           "q-ti-rpc-gettransactions-pagination-xdr": "0fe0034958504444514187e34dd7456bf1b5aeb7cafe94619aeacd47c3f65c92"
@@ -236,17 +236,17 @@
           "q-tool-lab-what-is"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-aas-sep30-recoverable-wallets, q-sep-1-toml, q-sep-31-cross-border, q-sep-41-token-interface, q-sep-45-contract-auth, q-sep-6-24-deprecation, q-sep-catalog-list, q-sep-interactive-deposit-withdraw, q-soroban-contract-build-verification, q-soroban-oz-token changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "SEP-1/9/10/12/24/31/46/48 Active; SEP-6 Active with only interactive components deprecated in favor of SEP-24 (the only-partial-deprecation nuance is stated identically in all 3 cases that touch it); SEP-30/38/39/41/43/45/55/57/58 Draft — consistent everywhere. SEP-8 moved to tensions (upstream repo itself inconsistent). Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-aas-sep30-recoverable-wallets": "7fd557231a01715b10a66a0f2d2f14f30e5507e466c64bf9e239dc6ba3a7be6a",
           "q-comp-anchor-compliance-stack": "8f9abfe06daac570636d12faacec49b4ae583eadf637e26bcfbd2edbbe9e6301",
-          "q-crp-oz-rwa-erc3643-trex": "f8d844b8a93dea4cd9e3444b6c53bdb9042657c434fdcd24e93f43beb7aaee19",
+          "q-crp-oz-rwa-erc3643-trex": "0a5c51fc65c1dadf0ddd185f12b4273119c2e6ff09b8bca0f766853c4fcc94d4",
           "q-sep-1-toml": "003abe972298404172d851133871e58f8757ce021d516496b6151c0c3025d3c8",
           "q-sep-12-kyc": "ebec5007eb4a5ba477f9861cbac429232589b4fc0758e9575c6b533c26a9376b",
           "q-sep-31-cross-border": "f929a9188d6ae837b11293f2fb73146a3824ef46e975a0fd04183aac42223f53",
@@ -306,10 +306,10 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-edge-scf-v7-centralization-myths, q-org-sdf-enterprise-fund, q-scf-ambassador-program, q-scf-audit-bank, q-scf-build-award-cap, q-scf-current-round, q-scf-hackathons-active, q-scf-how-to-apply, q-scf-instawards, q-scf-nqg-voting, q-scf-open-rfps, q-scf-regional-india, q-scf-rfp-tooling, q-scf-sdf-marketing-grant, q-scf-total-distributed, q-scf-v7-changes, q-scf-vs-sdf-enterprise-fund (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-ambassador-program, q-scf-audit-bank, q-scf-build-award-cap, q-scf-hackathons-active, q-scf-how-to-apply, q-scf-nqg-voting, q-scf-open-rfps, q-scf-total-distributed changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
@@ -322,15 +322,15 @@
           "q-scf-current-round": "8fd5d28bf2a2f89d8530fb9e6595425b00c9f7e34724298dc7c3f23e3095b929",
           "q-scf-hackathons-active": "98f4eaa3afa6d75cf02c353e104f3a33d0127e20d10450756ac18bfc6db291da",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
-          "q-scf-instawards": "a0b80feecc01bdb28e04b0cf54293a4fa45cd0cce2659a153fc300691d4708ba",
+          "q-scf-instawards": "53a993c5870b2fb1d4bede4aaa7dd46fc75c18192e950532b35f6841d1f37490",
           "q-scf-nqg-voting": "8e9b68d360c007878136a2b17f1e5c083d2c0ac8e864d6526093603dce7c4127",
           "q-scf-open-rfps": "be85af36eefc25bf5ae7752ff9f1a1e88c0f6f7a2f44864e532ccbec470690d5",
-          "q-scf-regional-india": "b15a5a2278aeb35bc1e5d92eed6b7398624e7a93a4490c722e5e96379d29c924",
+          "q-scf-regional-india": "8e195179b72086eefb0ec4b9a5ff8c4422e9028099cd3a04ab1d1e80046ba4e1",
           "q-scf-rfp-tooling": "3aad8778c7ad7fd09f008049b7664625bb4678adacf02e78392c4b5b50bf03cd",
-          "q-scf-sdf-marketing-grant": "258e9f139291813e4f3c1881b9559216d9a91da8f08d47d99281e7a69d8c0a20",
+          "q-scf-sdf-marketing-grant": "94d9532c0448790e374ba7c3daa927956b48e0f647fd56f7a22a06d66388ab06",
           "q-scf-total-distributed": "81d48ee2531968b95b2689af391f2fb723bebdd9179c16405409396fdf46ab68",
-          "q-scf-v7-changes": "80e496d9d268515fbb7732c27c29f5b0f9d644756e4c0421fddc12c75f3974d4",
-          "q-scf-vs-sdf-enterprise-fund": "9ee1e688f409255a21a12acc7ef5520755fe05a25de84cc9aa06cee4172da973"
+          "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd",
+          "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         }
       },
       {
@@ -351,24 +351,24 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-defi-x402-on-stellar-what, q-eco-hana-wallet-scf, q-eco-stellar-wallets-list, q-scf-history-soroswap, q-scf-verified-members changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this cluster: per-project SCF funding figures; the wallet-count sentence touches no funding figure and no member repeats a wallet count; every member re-read, consistent. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
           "verdict": "consistent"
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, OrbitCDP $280K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster.",
         "memberContentSha256": {
           "q-defi-aquarius-what-is": "c2eaf588afef2f1727d433c060381a19a565f791ec769d287d66e25b7b744c50",
-          "q-defi-blend-alternatives": "c1072b15e31aa57d9fa6efa95ceeb0a40e1b2b7f08b9d0129abc63ccc7c33428",
+          "q-defi-blend-alternatives": "fa5c7874546202997dca523b5713e53973e00e618fe5e12d73df29e8b59d1e03",
           "q-defi-blend-what-is": "da1ae28620d18520661347a38a48cc0c75a68ab282c6e09c82648d8b476748c0",
           "q-defi-phoenix-what-is": "f7c95f962aca218baa03abb8685ae2522eeefae10075761f12b953dc73059ec5",
           "q-defi-reflector-oracle": "5eb4dfa4a848691882f5a39d889a86613e347c7c3dd18281c5c990de05bb0651",
-          "q-defi-rwa-scf-similar": "c31b7aa378132c70453b52f95f66d88269a0e57afe601ebc5a7fb75fc3b22328",
+          "q-defi-rwa-scf-similar": "6188b68c9d4b7bd55ca639d82de7e5fa20a3cca24293f487b95ebfbb83031fc8",
           "q-defi-soroswap-what-is": "ef5aa414ae3c68a2ecd817ffd8fe905857d946c51f958719f907140e2761f489",
           "q-defi-x402-on-stellar-what": "74b1a618eb34b80415b5c94ae086110b1a02d035e8de61b55c73c187ba50dbdf",
           "q-eco-hana-wallet-scf": "e14915f7762da07e0fab8ca483c83cecc6fac4efa688bad7748521547ea3bb8d",
-          "q-eco-stellar-wallets-list": "e2590cb5112d635eb1e4ffcc3b6a0cc7f4a61cbee5813cc771733951b45e96f7",
+          "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db",
           "q-scf-history-soroswap": "f06b47f25de8eda43c207d88f6db3f466f321ac74427d5e46343a45056031a58",
           "q-scf-verified-members": "e1ba8e94388644ec52fedddc28e6d153e930c4bc5c79ee4e763d5446608680bc"
         }
@@ -385,17 +385,17 @@
           "q-soroban-oracle-defensive-consumption"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): members re-read member by member after a gospel change on a member (answer/avoid/notes); the changed sentences were compared against origin/main and every member can still be true together; no contradiction. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "The cases consistently separate the 61,249,278.31-XLM and 1,000,196.70-USDC exploit transfers from source-specific combined USD valuations around $10M-$10.86M and from Blockaid's separately attributed 48,069,094-XLM quarantine. The decoded pre-state's roughly 14,000-USDC liability is not a second exploit transfer, quarantine is not recovery, and the prior Script3 ~$10.5M net-loss attribution remains unverified. Date, USTRY/Reflector vector, and app-level-not-protocol-level framing remain compatible. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes no longer assert Script3 depositor compensation as settled; remediation-vs-recovery discipline is now uniform with the answer and siblings. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append. Added 2026-07-28 (todo 1253 Lane B, G8): q-hist-yieldblox-v2-2026-exploit joins as the primary bearer of this cluster's claims. Without it, an edit to the corpus's main incident case reopened cluster-126 and the YieldBlox numericInvariant but never this cluster, leaving the date, USTRY/Reflector vector, and app-level-not-protocol-level framing claims with no reopen path. Verified 2026-07-28: its transfer figures, quarantine-is-not-recovery discipline, combined-USD-valuation framing, pre-existing ~14,000-USDC liability, and unverifiable Script3 ~$10.5M attribution match this cluster's note exactly. cluster-126 is now a strict membership subset: kept deliberately — 126 states the quantity invariant, this cluster states the incident framing.",
         "memberContentSha256": {
           "q-comp-security-disclosure-programs": "5da3cc3df7c94de4eff4ad56030e98a4aaedf15319082369a8d0dc3ce6bfb743",
           "q-comp-yieldblox-oracle-incident": "f20f7fd16cae063789c7f5acfd7e08c24ddc2789dda8bfb74b7c8fc2c00abc48",
-          "q-defi-etherfuse-stablebonds": "8ff479c15dc838e544069fc336efb043a82213d270fe15812e82033612e56d47",
+          "q-defi-etherfuse-stablebonds": "e0d83ceb8d3ea583657efbb258ed394ac685fb1d0e31a6565fa0c6f2ad8e149a",
           "q-defi-reflector-oracle": "5eb4dfa4a848691882f5a39d889a86613e347c7c3dd18281c5c990de05bb0651",
           "q-hist-yieldblox-v2-2026-exploit": "f4350fb5fdff1c5d7b2c3e00ea6e2cf641427ca457815262edb186487fca76ce",
           "q-soroban-oracle-defensive-consumption": "4c86f2ce5f62c0fb227d494d3cbf2c45587c3a0ae84b25a4b259579bc5a13239"
@@ -411,15 +411,15 @@
           "q-protocol-amm-cap-0038"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "PR 92 review fix (2026-08-29): byte-only canonical JSON re-serialization of q-protocol-operations-vs-transactions and q-protocol-amm-cap-0038 (Copilot indentation comments); parsed JSON identical to HEAD, no field changed; prior same-day verdict stands. Prior reason: Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-defi-soroswap-vs-stellarx, q-defi-soroswap-what-is, q-edge-factcheck-soroswap-first-amm, q-protocol-amm-cap-0038 (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-protocol-amm-cap-0038 changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Soroswap firstness remains attributed operator/Soroban scope, never independent broad-Stellar chronology. The classic SDEX is an older order-book venue; Protocol-18/CAP-0038 constant-product pools are the direct pre-Soroswap AMM counterexample. TVL, routed volume, and cumulative trading volume remain distinct; dated Soroswap current/max examples are non-gating. Re-swept 2026-07-28: re-read Soroswap chronology after the dated-TVL refresh; firstness attribution, the native P18 counterexample, and metric boundaries remain consistent.",
         "memberContentSha256": {
-          "q-defi-soroswap-vs-stellarx": "1b41b7b306be54d122f2f4d6fcce053b4d7a63d4aee94403ea44b1cf8855254c",
+          "q-defi-soroswap-vs-stellarx": "c07671a9458ab5a5dfa6b61f54de8945d735ac9b32a3d0cc9d003f0e3b1191a6",
           "q-defi-soroswap-what-is": "ef5aa414ae3c68a2ecd817ffd8fe905857d946c51f958719f907140e2761f489",
           "q-edge-factcheck-soroswap-first-amm": "0a2c40d8bde51db54f13467672b8d456889975ad42e7e3f4107bc54f56c1d2de",
           "q-protocol-amm-cap-0038": "16e8a737e4385d99cdd253882d18e0d94c4ec300cd3d957e3ac05a1670acc478"
@@ -442,10 +442,10 @@
           "q-tool-cctp-stellar-integration"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-asset-rwa-tokenized-freshness, q-defi-benji-franklin-templeton, q-defi-named-newer-protocols, q-eco-pyusd-stellar-freshness, q-eco-stablecoins-on-stellar, q-rwa-projects-tokenizing-stellar, q-token-circle-usdc-on-stellar changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "CRDT=WisdomTree Sep 12 2025, USDY=Ondo Sep 17 2025, and PYUSD=PayPal-branded/Paxos-issued Sep 18 2025; Templar is another verified Nov 5 2025 launch. The set is illustrative, not exhaustive, and the old Meridian 'inflection point' narrative is not a truth gate. Announced, approved, technically integrated, listed, and publicly live remain distinct states. Circle recorded CCTP Stellar mainnet support on 2026-05-18 and SDF/Circle publicly announced live on 2026-05-19; the prior 2026-02-24 launch attribution is unverified. EURC=Circle 2023-09-26; BENJI=Franklin Templeton since 2021; Figure YLDS live 2026-05-05; DTCC DTC service planned H1 2027 NOT live. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration now carry the two-milestone CCTP wording instead of the collapsed 2026-05-19 slogan. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
@@ -455,12 +455,12 @@
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
           "q-defi-named-newer-protocols": "45d5b291eccf922e1cd11f29886d9b147eec7711968533412cb348f5276699fb",
           "q-defi-ondo-usdy": "6b3f7e4fde78404d9df4a9b411845f4bf6ad2041e07c0e4ac8b7b7dc69a623f5",
-          "q-defi-wisdomtree-crdt": "871eed529bbf335fb023b9dc430a7b4eaaed967a5107d684d925ae59d8df447d",
+          "q-defi-wisdomtree-crdt": "8c2c579fd0e4e5b6f5045e6bf2f9d470cab1356ecf10a0ac5f4371d4c6773ad2",
           "q-eco-pyusd-stellar-freshness": "0a3a899e077d7072f2dc7ba0a286ba7e9ec11620a0abdbfa7580ecc2f39e640b",
           "q-eco-stablecoins-on-stellar": "fac467330cc87f7f3da94d70df3bbdcb8eb6708ce34db93b414ea30c2cac7e42",
           "q-rwa-projects-tokenizing-stellar": "5efa6eff769f6d95eab25187aa254d26900ee1c261dade213d65a39f1919ba1a",
           "q-token-circle-usdc-on-stellar": "2647f13e3aee14662fd849a26f6bdb8fc67b745e1c50e88cd601c4dbf78c9316",
-          "q-tool-cctp-stellar-integration": "80c1b0fc9dde161347b3c520c2d7a10b8a68bebced698c85983027a05f9de9ae"
+          "q-tool-cctp-stellar-integration": "085b951efc11b1a85e5fc798557eb79eabc5c21d9e960f64d3b84a3d36bf36b0"
         }
       },
       {
@@ -473,17 +473,17 @@
           "q-pay-moneygram-ramps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "SEP-24 + Stellar USDC rails remain consistent across all four members. Both official layers were observed live on 2026-08-14: the Version 1.2 operator guide states a 15 USDC minimum, while the SEP-24 /info endpoint states a 1 USDC minimum. The minimum remains disputed, and both layers support a 2,500 USDC cash-out maximum. Country counts remain source- and direction-specific.",
         "memberContentSha256": {
           "q-anchor-moneygram-ramps": "4150a583efac4553512a169ec46b8093763b84f5927d88845c48d0356c8047d9",
           "q-crp-anchors-by-corridor": "b7f9777315356c542658f344079117939844d14935189a3f2d9487a98122699a",
-          "q-hist-remittance-corridors": "2712f51d25f021fef6f192eaba3a67740290145fb887dae71c11404181bd1ad7",
+          "q-hist-remittance-corridors": "9f81f9f7e089c4c772bcdbf0f252d6aaa32ffaa45df040c875dfe5fc3a8a45a7",
           "q-pay-moneygram-ramps": "56ecf2171e8f985013892d37820b1b2535d667df39bac798569d5093006e5b98"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-hist-remittance-corridors, q-pay-moneygram-ramps (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-anchor-moneygram-ramps changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -507,12 +507,12 @@
           "q-soroban-simulate-resource-fee",
           "q-token-initial-supply-distribution"
         ],
-        "verdict": "tension",
-        "lastChecked": "2026-08-29",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-asset-amm-fee-reserve, q-asset-path-payment-ops, q-asset-sdex-vs-amm, q-asset-trustline-basics, q-edge-1xlm-activation-fee, q-edge-noinfo-stellar-pos-staking-rewards, q-hot-fee-pool-burn-deflation, q-pc-account-activation-not-found, q-pc-practical-fee-setting, q-pc-sponsored-reserves, q-protocol-base-reserve-min-balance, q-protocol-ledger-close-time, q-sor-doc-timestamping-manage-data, q-soroban-simulate-resource-fee, q-token-initial-supply-distribution (no answer, keyFact, avoid, or notes change), so the same-day verdict \"tension\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29): members re-read member by member after q-protocol-base-reserve-min-balance gained the sd-043 canonical-page caution (answer and keyFacts unchanged): numeric facts compatible; the only tension is the already-encoded Docs-vs-Core boundary on whether selling liabilities sit inside \"minimum balance\" (improvements/stellar-docs/sd-043, reported-upstream), which the caution grades rather than pins.. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
-          "verdict": "tension"
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
@@ -526,8 +526,8 @@
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
           "q-pc-practical-fee-setting": "8b9be408770589802758e8a09ab005b4cf7775fb7f4dc2251642688092e87ce5",
           "q-pc-sponsored-reserves": "f42bf3cc0e0e5fb63effb21b02a2f2ec884c7f3f009ffe91eb556a43a89eac70",
-          "q-protocol-base-reserve-min-balance": "a26b3d6649d1e6571abad4ae6c573a006b97fbdd5efdde18b1805bd4845c46c5",
-          "q-protocol-ledger-close-time": "7f90faf0a9c9dc4f869ad7cc02fe14942e86fdb39491666fa5def4d7be2e3fff",
+          "q-protocol-base-reserve-min-balance": "4443cde1457252ebf52a0a6fbe8868e2e889ebf5614c3b9c3a7f6a0a6a4ffbc6",
+          "q-protocol-ledger-close-time": "ea2cd9c983985be01aa7cfcf39596520d3baaf59918b8c3833ec8db57231b7b9",
           "q-sor-doc-timestamping-manage-data": "57b34a7c8abbd547f967f39d1cc78780e3293a68d5f11a529910d2994aa072d9",
           "q-soroban-simulate-resource-fee": "2be7b06bd31021bf1b3af819b60bbdb5db6c091772c938234b2641c540d2dd95",
           "q-token-initial-supply-distribution": "be211329ab5e607eb3539018d51e1b1acf4f698c89e26511b903ec90e4549ef8"
@@ -550,24 +550,24 @@
           "q-ti-rpc-gettransactions-pagination-xdr",
           "q-ti-self-host-retention-backfill"
         ],
-        "verdict": "tension",
-        "lastChecked": "2026-08-29",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-infra-which-indexer, q-soroban-event-indexing-design, q-soroban-publish-events, q-ti-compute-token-lp-market-data, q-ti-enumerate-holders-airdrop, q-ti-historical-pointintime-balances, q-ti-rpc-gettransactions-pagination-xdr, q-ti-self-host-retention-backfill (no answer, keyFact, avoid, or notes change), so the same-day verdict \"tension\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29): members re-read after q-ti-rpc-gettransactions-pagination-xdr gained the durable sd-004 caution (answer and keyFacts unchanged) and q-infra-horizon-vs-rpc rebuilt its disputed Horizon-lifecycle row (sd-042): limits and roles compatible; the only tension is the already-encoded Docs-vs-source disputes (sd-004 declined-upstream, sd-042 reported-upstream), which the cautions and the disputed row grade rather than pin.. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
-          "verdict": "tension"
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "verdict": "consistent"
         },
         "note": "Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose still conflicts with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. Archive/data-lake integration extends getLedgers only; older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
           "q-infra-horizon-vs-rpc": "25b94303374e4b7af0674d08c7782c302b000f6652e02e1a68837f9df3dc4122",
-          "q-infra-hubble-bigquery": "edc6e0545f8bd31ea3e946b4684c4d4f2fd06c9ab8e09c97ad782a6671482a97",
+          "q-infra-hubble-bigquery": "ed5379bf50ec0faa9426e65fad29bf7dd41f53fb4d711d492f08c8ca06ac6153",
           "q-infra-rpc-methods-list": "1c1a70e7139ef47bf805a99bad1127848fb111357ee2b31a12c709452e8313db",
           "q-infra-rpc-provider-archive-tier": "9f97c25d3c228d790b8ed146ff4fda969b8d97cf33e8541c312e2d881ad1c78b",
           "q-infra-which-indexer": "dc8035aa02206b2ec496c27e2a2526909f0988cf2cb6f3117141b590a5aa2307",
           "q-soroban-event-indexing-design": "54e3141f5a785f1422c5b5eca05f1f0cff7fe5e830101c0c2bc0c9cac497a075",
           "q-soroban-publish-events": "31a49b982249d16b1aada8c5794fe39235408043b1dc15d299c42bdd020ccf17",
           "q-ti-compute-token-lp-market-data": "f4bd31a2497981fae5729d15ea8b319b9d2b32b222d254b2da2ac880b1069a1d",
-          "q-ti-enumerate-holders-airdrop": "f302f3ee9e8d8a0d44b730a91f9b4f945d97b9ae1a3c8dd4df06751a59c13625",
+          "q-ti-enumerate-holders-airdrop": "520f7ab53d690d9e7150aa0071a76a50bedb99a5160ee5c0fe4381370bcafdf4",
           "q-ti-historical-pointintime-balances": "b3f3dce2c84894f6fcc18b5161bcc845b25ea5b3efc4da644d60b063603b15b2",
           "q-ti-rpc-gettransactions-pagination-xdr": "0fe0034958504444514187e34dd7456bf1b5aeb7cafe94619aeacd47c3f65c92",
           "q-ti-self-host-retention-backfill": "cfd6debb1530699d1ab7f07f323380aff6a832a89873e851a61c48e84bcb1fcd"
@@ -634,17 +634,17 @@
           "q-edge-noinfo-exact-tvl-figure"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-defi-defindex-honest, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "All gate on provider/endpoint/definition/as-of discipline rather than frozen numbers. Blend additionally requires a same-provider declared-quarter start/end trend; current, quarter peak, record, borrowed, pool/backstop, fees, and volume are distinct. DeFiLlama's Stellar history reports a June 19 point above May 30, so May 30 is not an all-time-high gate. Chain, protocol, RWA, asset, and CEX measures must not be summed.",
         "memberContentSha256": {
           "q-defi-aquarius-what-is": "c2eaf588afef2f1727d433c060381a19a565f791ec769d287d66e25b7b744c50",
           "q-defi-defindex-honest": "4bd9d33d8edf75271d7fccd18912c01e78a986de9f9d5105fa77808d132fccf6",
-          "q-eco-defi-tvl-current": "cf30010636e76f8135fb02474c9cd5d14751f3f8a76371ae3f217b0f5fe46ce7",
+          "q-eco-defi-tvl-current": "736ab0f241ad07145525068a3f463b9fe7442f781be8415eb368603ccd018a19",
           "q-edge-fresh-latest-blend-tvl": "30a9eb5591212312a551158bb1afc4ac754e642b6867783a97dd73eee3257267",
           "q-edge-noinfo-exact-tvl-figure": "927ceda477dcecb833fffba1948735e5cfb1f4c7038be5f5be242ec9ea74e6f2"
         }
@@ -661,19 +661,19 @@
           "q-tool-smart-wallet-repos-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-eco-stellar-wallets-list changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this cluster: wallet maintainer/operator attribution (Freighter SDF-maintained; LOBSTR/StellarX/StellarTerm Ultra Stellar brand) and attributed scale; the count sentence asserts no affiliation; every member re-read, consistent. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
           "verdict": "consistent"
         },
         "note": "Freighter = SDF-maintained; LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed and its SCF totals disputed. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/unaudited-demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
         "memberContentSha256": {
-          "q-defi-soroswap-vs-stellarx": "1b41b7b306be54d122f2f4d6fcce053b4d7a63d4aee94403ea44b1cf8855254c",
+          "q-defi-soroswap-vs-stellarx": "c07671a9458ab5a5dfa6b61f54de8945d735ac9b32a3d0cc9d003f0e3b1191a6",
           "q-eco-dex-saturation": "07fa859fc42f5fb3369cc5d6065ab8bd111b04abd2b0befebbeab35cd4f68634",
           "q-eco-lobstr-wallet": "744ec07eab8a0e47ddb59ade2b439a5fad40e06538369e7b8e749fea20de7ca3",
-          "q-eco-stellar-wallets-list": "e2590cb5112d635eb1e4ffcc3b6a0cc7f4a61cbee5813cc771733951b45e96f7",
-          "q-tool-passkeykit-smart-wallet": "4cb5d3edc757b4c363d21d3a32dc4f29478813d1b57c38230ebf66cdee499e23",
+          "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db",
+          "q-tool-passkeykit-smart-wallet": "7ae74c0c752ab19fe534326e7c51b303887aa1400c12425891409ea620356375",
           "q-tool-smart-wallet-repos-discovery": "21da8cb4a4af5fb66cfd745a661dfe6155ae24ccc9c8a7dc0d99553c77190fc8"
         }
       },
@@ -832,17 +832,17 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-asset-rwa-tokenized-freshness, q-defi-agent-identity-stellar-experimental, q-eco-stellar-wallets-list changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this cluster: unverifiable clauses stay out and supported dated cores remain; the new count is dated and source-attributed; every member re-read, consistent. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
           "verdict": "consistent"
         },
         "note": "resolved by removing the unverifiable clauses and retaining the supported core",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "649c9c883815552fcd20408646068a68ded83206853af30bbf190e69273f2f66",
           "q-defi-agent-identity-stellar-experimental": "18b9d4e4908babac18ddabc8938fb23009d86d22ee3750ab3570c94d7b0e84ba",
-          "q-eco-stellar-wallets-list": "e2590cb5112d635eb1e4ffcc3b6a0cc7f4a61cbee5813cc771733951b45e96f7"
+          "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db"
         }
       },
       {
@@ -952,10 +952,10 @@
           "q-soroban-deploy-cli"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-asset-rwa-tokenized-freshness, q-builder-by-region-latam, q-eco-pyusd-stellar-freshness, q-eco-stellar-wallets-list, q-scf-funding-by-category changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): q-eco-stellar-wallets-list changed its dated illustrative count (2026-08-30: keyword total 183; 64 records with Wallet in `types`, 31 sole-type), reworded after independent review. Shared rule of this cluster: dated source snapshots, legal entities, directory reconstructions, and current CLI/API semantics stay separated; the new sentence is a dated directory snapshot that separates keyword total from type membership; every member re-read, consistent. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
           "verdict": "consistent"
         },
         "note": "Dated/provenance-bearing overrides now distinguish source snapshots, legal entities, directory reconstructions, and current CLI/API semantics without unsupported comparisons. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -964,9 +964,9 @@
           "q-asset-usdc-eurc-issuer": "ef69b37bfe9c988eb1a3979d16da6d9b8f526708dfcbb489403ad30b1d169dee",
           "q-builder-by-region-latam": "b8768107d170a32e32daaa8fc10f5b5b01a0a3825820bcbe47efdb9b3af1f6f8",
           "q-eco-pyusd-stellar-freshness": "0a3a899e077d7072f2dc7ba0a286ba7e9ec11620a0abdbfa7580ecc2f39e640b",
-          "q-eco-stellar-wallets-list": "e2590cb5112d635eb1e4ffcc3b6a0cc7f4a61cbee5813cc771733951b45e96f7",
+          "q-eco-stellar-wallets-list": "720800472a8ea73ee5ce1ccecde00b9b70a33c5597fc2549968ce2c9275785db",
           "q-scf-funding-by-category": "7929f3bc2bff0cd171d1602155ef7c17ae4e706059ee283469a63f0caf6d932c",
-          "q-soroban-deploy-cli": "a1c79b8490bae9da82762d5fdfbad207b694123925d7b94800d39ac31030ca61"
+          "q-soroban-deploy-cli": "2bca537a339333056fdc35452afdab9224ce9e9a1d182c254d8c5efdf4dc2306"
         }
       },
       {
@@ -1052,17 +1052,17 @@
           "q-edge-fresh-most-recent-news"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-defi-blend-what-is changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Semantic relevance rank is not chronology. Recent-window answers declare window/asOf, validate and label publication versus event date, exclude undated rows, post-sort chronologically, explain editorial significance, and remain non-exhaustive. Ingestion/scrape timestamps do not silently become publication dates.",
         "memberContentSha256": {
           "q-defi-blend-what-is": "da1ae28620d18520661347a38a48cc0c75a68ab282c6e09c82648d8b476748c0",
           "q-defi-soroswap-what-is": "ef5aa414ae3c68a2ecd817ffd8fe905857d946c51f958719f907140e2761f489",
-          "q-edge-fresh-most-recent-news": "e12e5f16a1a38c6a057c9ffd3aed78a844348a25ff737bae80afac2751101f7b"
+          "q-edge-fresh-most-recent-news": "8670e27683d28aeec11cb67f90c4a1a6a402e2b90ddae0d0ffe287631c365283"
         }
       },
       {
@@ -1096,19 +1096,19 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-how-to-apply changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "The dated Build schedule is 10/20/30/40 with current 90-day completion-form/unpaid-tranche terms. Grant administration and normative fairness are distinct from protocol authority. Current round/phase/deadline facts stay in the dedicated round cases rather than standing in for award terms.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "fc6883d75a137d9d6a9358a5b64e2611d3a52aa9a2c8ed35d79d6f1004551459",
+          "q-edge-fresh-latest-scf-round": "fe7da409fc487d3e070c748806a9e9ec6bcc69f6a474e418fd90e3b18dc02c60",
           "q-edge-scf-v7-centralization-myths": "44d5ea813f8779d2366853bd20a103662f5becf3e6d75dc51d855f40db15d879",
           "q-scf-current-round": "8fd5d28bf2a2f89d8530fb9e6595425b00c9f7e34724298dc7c3f23e3095b929",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
-          "q-scf-v7-changes": "80e496d9d268515fbb7732c27c29f5b0f9d644756e4c0421fddc12c75f3974d4"
+          "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd"
         }
       },
       {
@@ -1166,17 +1166,17 @@
           "q-hist-unhcr-stellar-aid-assist"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-defi-benji-franklin-templeton changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Announcements, capabilities, historic routes, phased activation, GA, and current deployment are distinct. Aid individuals/households/countries/windows and RWA chain/suite/fund values remain source-scoped. Current rosters and chain support never overwrite dated launch history or imply sole-chain deployment.",
         "memberContentSha256": {
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
-          "q-defi-wisdomtree-crdt": "871eed529bbf335fb023b9dc430a7b4eaaed967a5107d684d925ae59d8df447d",
-          "q-hist-remittance-corridors": "2712f51d25f021fef6f192eaba3a67740290145fb887dae71c11404181bd1ad7",
+          "q-defi-wisdomtree-crdt": "8c2c579fd0e4e5b6f5045e6bf2f9d470cab1356ecf10a0ac5f4371d4c6773ad2",
+          "q-hist-remittance-corridors": "9f81f9f7e089c4c772bcdbf0f252d6aaa32ffaa45df040c875dfe5fc3a8a45a7",
           "q-hist-soroban-launch-protocol20": "b2542d4630bec071ed34425a3d14168369915a5b7f282f5ebcac453669bf3168",
           "q-hist-unhcr-stellar-aid-assist": "f1e27f0ac911513c9ccca99360e7deee6ff27af8d435df2966bb15f796c61f07"
         }
@@ -1191,16 +1191,16 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-protocol-parallel-execution, q-protocol-version-history-list changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "No official sharding CAP was found in the dated registry/history sweep. P23 introduced CAP-0063 scheduling support with ledgerMaxDependentTxClusters initially one (no multi-cluster parallel execution); later settings activation led to the current Mainnet value two. Parallel scheduling is not sharding, and the setting-change date is not invented.",
         "memberContentSha256": {
           "q-edge-noinfo-sep-9999": "8ccff4aa275a4d27f41c28ca3ae4ddf03414fcb074aa68bd3bd7b27d2ae8b4ac",
-          "q-protocol-23-whisk-caps": "d890a1ba5b30f1854021b8253f575e3c456b45d3def0f223c14ba50a65a3c69b",
+          "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-parallel-execution": "684e9304c747f268fad7c3692a469df78a881b6efffa2dd11e7d9c75d19ebdf4",
           "q-protocol-version-history-list": "e8198ba6d0d069b40027a659d7c001d9c212e59ae4069f98a7e2714b42c42450"
         }
@@ -1216,17 +1216,17 @@
           "q-edge-noinfo-exact-tvl-figure"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-defi-defindex-honest, q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "A live provider may expose a many-decimal scalar, but it remains a provider/endpoint/as-of/inclusion/pricing snapshot rather than an objective protocol fact. The corpus no longer requires an approximate range or claims TVL necessarily moves block-by-block.",
         "memberContentSha256": {
           "q-defi-aquarius-what-is": "c2eaf588afef2f1727d433c060381a19a565f791ec769d287d66e25b7b744c50",
           "q-defi-defindex-honest": "4bd9d33d8edf75271d7fccd18912c01e78a986de9f9d5105fa77808d132fccf6",
-          "q-eco-defi-tvl-current": "cf30010636e76f8135fb02474c9cd5d14751f3f8a76371ae3f217b0f5fe46ce7",
+          "q-eco-defi-tvl-current": "736ab0f241ad07145525068a3f463b9fe7442f781be8415eb368603ccd018a19",
           "q-edge-fresh-latest-blend-tvl": "30a9eb5591212312a551158bb1afc4ac754e642b6867783a97dd73eee3257267",
           "q-edge-noinfo-exact-tvl-figure": "927ceda477dcecb833fffba1948735e5cfb1f4c7038be5f5be242ec9ea74e6f2"
         }
@@ -1264,17 +1264,17 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-edge-noinfo-stellar-native-privacy-default, q-protocol-bn254-poseidon-xray changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Ordinary Stellar activity is public by default and there is no global privacy toggle. Optional applications have explicit visibility/network/audit boundaries; Confidential Tokens is a 2026-06-29 Testnet developer preview, while P22/P25 ZK host functions are primitives rather than turnkey privacy.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-protocol-bn254-poseidon-xray": "96a8150f48567090e3127aef7e3eb9cfbe574c666d1541fec27b5669878d0d5d",
-          "q-sor-confidential-tokens": "a1077ef376ef9859d0734719cb3c618ea8423f3472ff94ced4c3c58b9e568849"
+          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
         }
       },
       {
@@ -1287,17 +1287,17 @@
           "q-protocol-scp-consensus-algorithm"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "Stellar uses SCP/FBA and validators receive no monetary rewards. Issuer interest, lending, AMM/LP, vault, token-lock, RWA, and external-chain wrapper yield are not native staking. The no-live-native-XLM-LST result is dated and source-bounded to the 2026-07-10 sweep.",
         "memberContentSha256": {
           "q-defi-build-staking-for-own-token": "fa425aae14267b4ec0eabcfe986440a6b6359ad2096fcc5856d74c8b5d8a5cc5",
-          "q-defi-liquid-staking-whitespace": "1d04d8adc7c89f7041f21ae8c1f04d15e9995ebeb1eee2d86c25d6d95cca15ef",
+          "q-defi-liquid-staking-whitespace": "9b7bd4f7a1c4bf5df8f7c106544c69e715d13be74c25515b41e7c816bbe051f4",
           "q-edge-noinfo-stellar-pos-staking-rewards": "5d62e5f09e0c19773e579e22d4e82867820a2423d464d03b2949ada7ad6eb3de",
           "q-protocol-scp-consensus-algorithm": "2f28f094b930ccde9cfbfbd98a8b51aa24fb2826a9406077ba8feb7c519a65a5"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-defi-build-staking-for-own-token, q-defi-liquid-staking-whitespace, q-edge-noinfo-stellar-pos-staking-rewards, q-protocol-scp-consensus-algorithm (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-defi-build-staking-for-own-token, q-edge-noinfo-stellar-pos-staking-rewards, q-protocol-scp-consensus-algorithm changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1311,15 +1311,15 @@
           "q-org-sdf-structure-mandate"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-hot-sdf-xlm-holdings-sales changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "SDF sells existing XLM through named exchanges/direct sales for operations and mandate work without a price guarantee. The 2019 no-additional-burn statement and current no-new-plan sweep are dated evidence. Current mandate/dashboard/report balances are source-, method-, and timestamp-scoped; ~30B is not a current durable reserve fact and named mixed-timestamp accounts are non-exhaustive.",
         "memberContentSha256": {
-          "q-hot-sdf-transparency-wallets-reports": "ed43b0802ea9031ccc9fada75a08d97d1a24d72ca76ded64be9e95efeeb084b3",
+          "q-hot-sdf-transparency-wallets-reports": "457587d6997730b35e71c526c2a377f142d537b6c5be7bebe6efae1930ba5ddf",
           "q-hot-sdf-xlm-holdings-sales": "21e0183b7d3869b5005ee6f7c2da63d6ea1c2e8d24f827b6d78f45cac4b4f0e7",
           "q-org-sdf-mandate-buckets": "b8c9c11bd4ea36e0cb68ec2852ebe4021a03a73fec872215388603b6a185c022",
           "q-org-sdf-structure-mandate": "2aa70a6c7e97b0a54740846770fd2e77342e677ef943b0514df3fc44b962d826"
@@ -1353,16 +1353,16 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (negative-predicate): members q-org-sdf-enterprise-fund, q-scf-vs-sdf-enterprise-fund changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "SDF's current 'portfolio totals over $100m' wording is not an exact cumulative-cash, fair-value, or cost-basis scalar. MoneyGram was funded from SDF cash treasury outside the Enterprise Fund.",
         "memberContentSha256": {
           "q-org-sdf-enterprise-fund": "28826139602111d4be2492f10241068afaedbd3c3b6551ab10d312f23ef512e8",
-          "q-scf-vs-sdf-enterprise-fund": "9ee1e688f409255a21a12acc7ef5520755fe05a25de84cc9aa06cee4172da973"
+          "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         }
       },
       {
@@ -1464,10 +1464,10 @@
           "q-ti-channel-accounts-throughput"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-pc-fee-bump-channel-accounts-feepool changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Fee source pays the outer charged fee once; inner/outer visible fee fields are not additive charges. Channel transaction sources consume their own sequences. Live estimates should use RPC getFeeStats/current CLI or Horizon /fee_stats; Horizon is legacy/no-new-features but not formally deprecated, and Hubble is historical analytics. Fees are not validator rewards. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -1476,7 +1476,7 @@
           "q-pc-fee-bump-channel-accounts-feepool": "0788ab8d5affc0339413f414f9fc7c189ac862fb4dece7853a8289b07dfec5fe",
           "q-pc-practical-fee-setting": "8b9be408770589802758e8a09ab005b4cf7775fb7f4dc2251642688092e87ce5",
           "q-pc-sequence-numbers-ordering-replace": "abd89e306d57a25f792ddc204ccfdc393212444d4881163e7f4543325b04e827",
-          "q-ti-channel-accounts-throughput": "86257af07ad77fabf3d22cd4ac136eab2c85b0c52326bedbfad4749fe0c89ceb"
+          "q-ti-channel-accounts-throughput": "0b73d24da2438a871e5d2ae8afb8bf392de61b409e262775c2bc792115cd27f6"
         }
       },
       {
@@ -1528,16 +1528,16 @@
           "q-pc-muxed-accounts"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "M addresses encode G+uint64 and share the underlying G account state. Only specified account positions accept M; current InvokeHostFunction sources and some external services do not. Compatibility is dated, not universal.",
         "memberContentSha256": {
-          "q-crp-sdp-operation": "75e934490b7f604ea2841e896890ac79091e2d00b2fc45b96727335f76f3967e",
+          "q-crp-sdp-operation": "1e51065490499daac595a360f3570108732c2d75a080a47cccc350cc18bddf96",
           "q-pc-address-types-strkey": "2fdaa985abc06184d0eba050dccecd5b41562cf4fadf41388aad517812ec4477",
           "q-pc-muxed-accounts": "77f9a90c9d4d60348f1424a558b948f5a24db1b0a9338afe4ae336f141f58f64"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-crp-sdp-operation, q-pc-address-types-strkey, q-pc-muxed-accounts (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-pc-address-types-strkey changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1651,15 +1651,15 @@
           "q-protocol-max-tx-set-size"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "Observed Pubnet cadence is about 5–7 seconds from a multi-ledger sample. Current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
-          "q-protocol-ledger-close-time": "7f90faf0a9c9dc4f869ad7cc02fe14942e86fdb39491666fa5def4d7be2e3fff",
+          "q-protocol-ledger-close-time": "ea2cd9c983985be01aa7cfcf39596520d3baaf59918b8c3833ec8db57231b7b9",
           "q-protocol-max-tx-set-size": "ba2858f1caed9e74cd40db66851ee3cd3dc4cf744b7a1f12c77fb25ac2e561ed"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): members re-read member by member after a gospel change on a member (answer/avoid/notes); the changed sentences were compared against origin/main and every member can still be true together; no contradiction. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1714,17 +1714,17 @@
           "q-soroban-storage-types"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-protocol-state-archival-ttl, q-soroban-storage-types changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Temporary entries expire irreversibly; Persistent and Instance entries archive and are restorable. CAP-0062 separates live/archive state; CAP-0066 added automatic restoration behavior. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-protocol-state-archival-ttl": "32e1f59986be102f252e299013defa6dd973cf34d1fee023216af044755643b5",
           "q-sor-p23-auto-restore-extendto": "5e5611cc0a19f2f6644c2197583a4ba4830003891aa0ae94ccc5d81aadda4b26",
-          "q-soroban-storage-types": "cbf153258a71d7a7af04d850170b17cad1eb406a903f3b71f12ecc1e9a39aff3"
+          "q-soroban-storage-types": "ff5ff50131f348e4dae6ce031edc8c36d6dc62badf01db461c7794507cbf908e"
         }
       },
       {
@@ -1778,17 +1778,17 @@
           "q-builder-rust-soroban-devs"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-anchor-list-builders-discovery, q-builder-by-region-latam changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Scout is candidate discovery. Membership/counts are dated; public footprints corroborate returned rows but do not establish deployment, audit status, seniority, or availability. Skill matches need row-level provenance (sls-041). Re-swept 2026-07-28: the 2026-07-15 reopen was only q-builder-by-region-latam changing an improvement root-cause pointer; roster/evidence-tier claims remain consistent.",
         "memberContentSha256": {
           "q-anchor-list-builders-discovery": "bfdd89b46cca1dabbd2e08c22b14b8dba7e2afce7b81a0502edfff8dd2487f16",
           "q-builder-by-region-latam": "b8768107d170a32e32daaa8fc10f5b5b01a0a3825820bcbe47efdb9b3af1f6f8",
-          "q-builder-rust-soroban-devs": "0a06c4c15c197139b23720bd36c2477f82c46641b619f9a89cc8510e77dd3ea2"
+          "q-builder-rust-soroban-devs": "f00bf4197d11eaba5ec39ac710db4a05f964d64ce8a8a9e83db5d8103597401f"
         }
       },
       {
@@ -1825,10 +1825,10 @@
           "q-defi-wisdomtree-crdt"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-builder-content-by-person, q-defi-benji-franklin-templeton changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
@@ -1836,7 +1836,7 @@
           "q-builder-content-by-person": "cce42c00a37d04797236c5b9b93518df632848057f513c38070998476c3ac59e",
           "q-defi-benji-franklin-templeton": "5c287f2dcc067f6adea99696f8f7e312ddcdcff5365f401e0261f4559a445a5c",
           "q-defi-ondo-usdy": "6b3f7e4fde78404d9df4a9b411845f4bf6ad2041e07c0e4ac8b7b7dc69a623f5",
-          "q-defi-wisdomtree-crdt": "871eed529bbf335fb023b9dc430a7b4eaaed967a5107d684d925ae59d8df447d"
+          "q-defi-wisdomtree-crdt": "8c2c579fd0e4e5b6f5045e6bf2f9d470cab1356ecf10a0ac5f4371d4c6773ad2"
         }
       },
       {
@@ -1848,17 +1848,17 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-build-award-cap, q-scf-hackathons-active changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Each selected team receives $20K; the $50K/$100K/$200K performance amount is one cohort-wide pool shared among the top five, not a per-team ceiling. Landing awaits GT-36 blind reconciliation.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
           "q-scf-hackathons-active": "98f4eaa3afa6d75cf02c353e104f3a33d0127e20d10450756ac18bfc6db291da",
-          "q-scf-v7-changes": "80e496d9d268515fbb7732c27c29f5b0f9d644756e4c0421fddc12c75f3974d4"
+          "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd"
         }
       },
       {
@@ -1871,17 +1871,17 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "Open interest form precedes eligibility/referral confirmation and invitation to a full proposal; revision, track-specific review/Open vote, and later KYC/KYB remain distinct. Reverified against the current official application flow on 2026-08-05.",
         "memberContentSha256": {
-          "q-scf-eligibility-criteria": "e61676825e068af64bcb66a92bdb793ed1dfb739587e40ec9e0a9d4208c39ed3",
+          "q-scf-eligibility-criteria": "d14e338a5a1e4a4351cb13b5444f58cdb14ae18000dfb58ed0d2553a424a79a7",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
-          "q-scf-submission-lifecycle-deadlines": "0c09680f0e37897d47b784b43912a1f8dea0d0f8475af9223a93319f9fbc4ced",
-          "q-scf-vs-sdf-enterprise-fund": "9ee1e688f409255a21a12acc7ef5520755fe05a25de84cc9aa06cee4172da973"
+          "q-scf-submission-lifecycle-deadlines": "4b6bd0ce01c257d13e665babfd34df8b94cfd6cc79240440d1d10b85364d02c7",
+          "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-how-to-apply changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1916,16 +1916,16 @@
           "q-scf-how-to-apply"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "Academic grants are institution/PI-led and distinct from Build, but SCF is not categorically unavailable as a separate path. Build separates open interest/eligibility, completeness prescreen, panel merits, Open-only vote/revision, and KYC.",
         "memberContentSha256": {
-          "q-scf-academic-research-grant": "97c938354f8a4b3fdde8b7ba61a4b0db2f6155591aee38f515bdff723fb163be",
-          "q-scf-eligibility-criteria": "e61676825e068af64bcb66a92bdb793ed1dfb739587e40ec9e0a9d4208c39ed3",
+          "q-scf-academic-research-grant": "3863e3f2ae54579798b5ccacbdb75a033a1dc39d46d373019e27077a51b04f0c",
+          "q-scf-eligibility-criteria": "d14e338a5a1e4a4351cb13b5444f58cdb14ae18000dfb58ed0d2553a424a79a7",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-how-to-apply changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -1960,17 +1960,17 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-build-award-cap, q-scf-hackathons-active changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "$20K is per selected company; one dynamic $50K/$100K/$200K pool is shared among the top five. Program-menu/v7 siblings await GT-39/40 independent completion.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
           "q-scf-hackathons-active": "98f4eaa3afa6d75cf02c353e104f3a33d0127e20d10450756ac18bfc6db291da",
-          "q-scf-v7-changes": "80e496d9d268515fbb7732c27c29f5b0f9d644756e4c0421fddc12c75f3974d4"
+          "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd"
         }
       },
       {
@@ -2025,18 +2025,18 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-scf-ambassador-program, q-scf-build-award-cap, q-scf-instawards, q-scf-v7-changes (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-ambassador-program, q-scf-build-award-cap changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Typical initial award is $1K–$5K USD value in XLM, with up to two conditional follow-ons and $15K aggregate over time; chapter guidance is non-binding and SDF approval is final. Reverified against the current official rules on 2026-08-05.",
         "memberContentSha256": {
           "q-scf-ambassador-program": "fd296d5bc36350b62b2734dd07cfcf995ce36e837c4d14ad12db296fb9e66977",
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
-          "q-scf-instawards": "a0b80feecc01bdb28e04b0cf54293a4fa45cd0cce2659a153fc300691d4708ba",
-          "q-scf-v7-changes": "80e496d9d268515fbb7732c27c29f5b0f9d644756e4c0421fddc12c75f3974d4"
+          "q-scf-instawards": "53a993c5870b2fb1d4bede4aaa7dd46fc75c18192e950532b35f6841d1f37490",
+          "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd"
         }
       },
       {
@@ -2047,16 +2047,16 @@
           "q-scf-eligibility-criteria"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-edge-noinfo-stellar-pos-staking-rewards changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Legitimate community, education, content, event, operations, product, marketing, and job paths exist, but participation does not imply compensation, program eligibility, mining, staking rewards, airdrops, or free XLM.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-pos-staking-rewards": "5d62e5f09e0c19773e579e22d4e82867820a2423d464d03b2949ada7ad6eb3de",
-          "q-scf-eligibility-criteria": "e61676825e068af64bcb66a92bdb793ed1dfb739587e40ec9e0a9d4208c39ed3"
+          "q-scf-eligibility-criteria": "d14e338a5a1e4a4351cb13b5444f58cdb14ae18000dfb58ed0d2553a424a79a7"
         }
       },
       {
@@ -2111,15 +2111,15 @@
           "q-scf-sdf-bug-bounty"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "corrected; sls-020 recurrence.",
         "memberContentSha256": {
           "q-comp-security-disclosure-programs": "5da3cc3df7c94de4eff4ad56030e98a4aaedf15319082369a8d0dc3ce6bfb743",
-          "q-scf-sdf-bug-bounty": "1105fb5b97c269b17766cdcba00aaf42c4a618b22da444ee77aeddd88461e98e"
+          "q-scf-sdf-bug-bounty": "7037e6e762ba11aa58b7d7d8872effa10db2782ecfadf16e455b078920e5a6ea"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): members re-read member by member after a gospel change on a member (answer/avoid/notes); the changed sentences were compared against origin/main and every member can still be true together; no contradiction. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2131,16 +2131,16 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (negative-predicate): members q-org-sdf-enterprise-fund, q-scf-vs-sdf-enterprise-fund changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "route to current form with explicit conflict; sibling follow-up remains.",
         "memberContentSha256": {
           "q-org-sdf-enterprise-fund": "28826139602111d4be2492f10241068afaedbd3c3b6551ab10d312f23ef512e8",
-          "q-scf-vs-sdf-enterprise-fund": "9ee1e688f409255a21a12acc7ef5520755fe05a25de84cc9aa06cee4172da973"
+          "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         }
       },
       {
@@ -2152,17 +2152,17 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-how-to-apply changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "accept either label only with the correct 10/20/30/40 mechanics and acceptance distinction.",
         "memberContentSha256": {
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
-          "q-scf-submission-lifecycle-deadlines": "0c09680f0e37897d47b784b43912a1f8dea0d0f8475af9223a93319f9fbc4ced",
-          "q-scf-v7-changes": "80e496d9d268515fbb7732c27c29f5b0f9d644756e4c0421fddc12c75f3974d4"
+          "q-scf-submission-lifecycle-deadlines": "4b6bd0ce01c257d13e665babfd34df8b94cfd6cc79240440d1d10b85364d02c7",
+          "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd"
         }
       },
       {
@@ -2175,17 +2175,17 @@
           "q-scf-submission-lifecycle-deadlines"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "Rolling interest precedes eligibility/referral and invitation to a full proposal. Only Open uses project-level community voting; Integration/RFP are panel-led.",
         "memberContentSha256": {
-          "q-scf-eligibility-criteria": "e61676825e068af64bcb66a92bdb793ed1dfb739587e40ec9e0a9d4208c39ed3",
+          "q-scf-eligibility-criteria": "d14e338a5a1e4a4351cb13b5444f58cdb14ae18000dfb58ed0d2553a424a79a7",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
           "q-scf-rfp-tooling": "3aad8778c7ad7fd09f008049b7664625bb4678adacf02e78392c4b5b50bf03cd",
-          "q-scf-submission-lifecycle-deadlines": "0c09680f0e37897d47b784b43912a1f8dea0d0f8475af9223a93319f9fbc4ced"
+          "q-scf-submission-lifecycle-deadlines": "4b6bd0ce01c257d13e665babfd34df8b94cfd6cc79240440d1d10b85364d02c7"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-how-to-apply changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2221,18 +2221,18 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-build-award-cap, q-scf-hackathons-active changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "v7 introduced three Build tracks and post-launch pathways, not one unified Growth track. Current detailed rules control each separate program.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "c91aeece49b48f96e42a4b0ecc36470a65855da8f1e4acf1c8055ee82b95649c",
           "q-scf-hackathons-active": "98f4eaa3afa6d75cf02c353e104f3a33d0127e20d10450756ac18bfc6db291da",
-          "q-scf-instawards": "a0b80feecc01bdb28e04b0cf54293a4fa45cd0cce2659a153fc300691d4708ba",
-          "q-scf-v7-changes": "80e496d9d268515fbb7732c27c29f5b0f9d644756e4c0421fddc12c75f3974d4"
+          "q-scf-instawards": "53a993c5870b2fb1d4bede4aaa7dd46fc75c18192e950532b35f6841d1f37490",
+          "q-scf-v7-changes": "17b09919a85529c4b298f5968055b04cd464f28956a55b133838d795ca6a9fcd"
         }
       },
       {
@@ -2243,15 +2243,15 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "corrected with dated preview status and conditional evidence.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
-          "q-sor-confidential-tokens": "a1077ef376ef9859d0734719cb3c618ea8423f3472ff94ced4c3c58b9e568849"
+          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-edge-noinfo-stellar-native-privacy-default changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2284,16 +2284,16 @@
           "q-sor-contract-trustlines-c-address"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-30",
         "note": "Contracts cannot issue classic SDEX/LP/claimable-balance operations or mix classic+Soroban ops atomically. SAC contract balances are ContractData, not C-address trustlines; direct contract invoker authorization and fee payer remain separate.",
         "memberContentSha256": {
           "q-sor-classic-dex-from-contract": "e42370dabf974fda3001dd64e50503a416559f4bba0ec5d8bac495a7b6b77650",
           "q-sor-contract-as-claimable-arbiter": "0d4a616c9d8ffb8c98f142e1fb192a6bd04eaf91a9591846494647a7e1bf2703",
-          "q-sor-contract-trustlines-c-address": "58e54baa9d335af351a523ce6b237cb6276b118b14c82be6e2e3173c6c0836e6"
+          "q-sor-contract-trustlines-c-address": "d81b73765291188b06e0a6bb4cc74230fb2d8185495d9887e59bfaff96be8caf"
         },
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (negative-predicate): members q-sor-classic-dex-from-contract, q-sor-contract-as-claimable-arbiter, q-sor-contract-trustlines-c-address changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2330,15 +2330,15 @@
           "q-soroban-unit-testing"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (negative-predicate): members q-sor-decode-hosterror-codes, q-sor-scval-conversion changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Contract #N is local, Bad union switch is an XDR/type boundary, and non-root auth differs from missing contract context. Generated try_* clients preserve nested success, declared-error, and invocation-error branches. The unit-testing case owns setup and happy paths. The HostError case owns exact failure interpretation.",
         "memberContentSha256": {
-          "q-sor-decode-hosterror-codes": "a6e879f840bfc496c4dc5ddf77390bba9c067c085f038e3a313a0d5d697fdaca",
+          "q-sor-decode-hosterror-codes": "3ae2d0191990201c2997722bd4533a762ad68f2d62f736e3c3c4ca3d70071753",
           "q-sor-scval-conversion": "1ff37ca68e8078ba81e1886a03db851c0b519d63ea46d60ae5b6999e89f51886",
           "q-soroban-unit-testing": "5a67594ac0cd78b426a9d580673b95f768133facb9b740689894ab2c48a0222d"
         }
@@ -2471,16 +2471,16 @@
           "q-soroban-deploy-cli"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-soroban-cli-bindings changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "corrected; owner candidate captured in research. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-soroban-cli-bindings": "f3169b1be7374cbd1ee3450ccae8d61dd7af7146c7a3ff68fe42d4e617746248",
-          "q-soroban-deploy-cli": "a1c79b8490bae9da82762d5fdfbad207b694123925d7b94800d39ac31030ca61"
+          "q-soroban-deploy-cli": "2bca537a339333056fdc35452afdab9224ce9e9a1d182c254d8c5efdf4dc2306"
         }
       },
       {
@@ -2577,15 +2577,15 @@
           "q-soroban-unit-testing"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-soroban-publish-events changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "mock_all_auths is a happy-path convenience. Exact negative-auth failures require generated try_* and diagnostic interpretation. Failed invocations roll events back. Successful nested calls contribute ordered events to the last top-level invocation. Publication and RPC retention remain separate from event-test ordering.",
         "memberContentSha256": {
-          "q-sor-decode-hosterror-codes": "a6e879f840bfc496c4dc5ddf77390bba9c067c085f038e3a313a0d5d697fdaca",
+          "q-sor-decode-hosterror-codes": "3ae2d0191990201c2997722bd4533a762ad68f2d62f736e3c3c4ca3d70071753",
           "q-sor-test-event-assertion-ordering": "3367bd9139b2d34e7c62dc314b9aea25f0e803b94079d552344a549d81fbc4ab",
           "q-soroban-publish-events": "31a49b982249d16b1aada8c5794fe39235408043b1dc15d299c42bdd020ccf17",
           "q-soroban-unit-testing": "5a67594ac0cd78b426a9d580673b95f768133facb9b740689894ab2c48a0222d"
@@ -2600,17 +2600,17 @@
           "q-soroban-storage-types"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-27",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-soroban-storage-types changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "Dated network settings, explicit extension, P23 auto-restore, and Temporary deletion remain separate concepts. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-sor-p23-auto-restore-extendto": "5e5611cc0a19f2f6644c2197583a4ba4830003891aa0ae94ccc5d81aadda4b26",
           "q-sor-ttl-defaults-extend": "8822bd8cf6aa8f8f2732dfc3bc903fcb50fe0c104cc7d76e05d73b1ffa7eb88f",
-          "q-soroban-storage-types": "cbf153258a71d7a7af04d850170b17cad1eb406a903f3b71f12ecc1e9a39aff3"
+          "q-soroban-storage-types": "ff5ff50131f348e4dae6ce031edc8c36d6dc62badf01db461c7794507cbf908e"
         }
       },
       {
@@ -2621,16 +2621,16 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-protocol-bn254-poseidon-xray changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "BN254/Poseidon are live primitives, not default privacy or a complete protocol.",
         "memberContentSha256": {
           "q-protocol-bn254-poseidon-xray": "96a8150f48567090e3127aef7e3eb9cfbe574c666d1541fec27b5669878d0d5d",
-          "q-sor-confidential-tokens": "a1077ef376ef9859d0734719cb3c618ea8423f3472ff94ced4c3c58b9e568849"
+          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
         }
       },
       {
@@ -2642,16 +2642,16 @@
           "q-protocol-parallel-execution"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-protocol-parallel-execution changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "target corrected; fake-sharding path/freshness corrected; later coherent parallel sibling retained.",
         "memberContentSha256": {
           "q-edge-noinfo-sep-9999": "8ccff4aa275a4d27f41c28ca3ae4ddf03414fcb074aa68bd3bd7b27d2ae8b4ac",
-          "q-protocol-23-whisk-caps": "d890a1ba5b30f1854021b8253f575e3c456b45d3def0f223c14ba50a65a3c69b",
+          "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-parallel-execution": "684e9304c747f268fad7c3692a469df78a881b6efffa2dd11e7d9c75d19ebdf4"
         }
       },
@@ -2710,19 +2710,19 @@
           "q-pc-sponsored-reserves",
           "q-protocol-base-reserve-min-balance"
         ],
-        "verdict": "tension",
-        "lastChecked": "2026-08-29",
+        "verdict": "consistent",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): same member set and same encoded sd-043 boundary tension as cluster-017; numeric facts compatible.. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
-          "verdict": "tension"
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "verdict": "consistent"
         },
         "note": "target corrected; later GT-29/32 siblings retained. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-asset-amm-fee-reserve": "9f567a26ac7fd416a597a92e2fb0b8c3d52da2b0939eeeb836317543cc00ec4f",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
           "q-pc-sponsored-reserves": "f42bf3cc0e0e5fb63effb21b02a2f2ec884c7f3f009ffe91eb556a43a89eac70",
-          "q-protocol-base-reserve-min-balance": "a26b3d6649d1e6571abad4ae6c573a006b97fbdd5efdde18b1805bd4845c46c5"
+          "q-protocol-base-reserve-min-balance": "4443cde1457252ebf52a0a6fbe8868e2e889ebf5614c3b9c3a7f6a0a6a4ffbc6"
         }
       },
       {
@@ -2734,16 +2734,16 @@
           "q-protocol-validator-upgrade-vote"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "CAP-process target corrected; coherent CAP-vs-SEP and validator siblings retained.",
         "memberContentSha256": {
-          "q-protocol-cap-process": "5a87c55b98e6f868d18e0536871298495dda0b49fbdd1f0cbef4082450db1203",
+          "q-protocol-cap-process": "bd4bded68d7c5e39d4a2caf3d4b97389b256243443da02528acc73f4ff1439e2",
           "q-protocol-cap-vs-sep": "a0fb25c543438dbb3bd89aa8f32a6d48885faec05fd3a2d47d3b9a9b4cbe9fd5",
           "q-protocol-validator-upgrade-vote": "8e44181d5f560b81778aab9ae42dbb9d65e7f8260157457ff3d60d1f645b30ad"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, final-review fix): after the same-day re-sweep, the Grok final review required a second evidence class on newly added truth.corroboration rows; only judge-blind corroboration evidence changed on q-protocol-cap-process, q-protocol-cap-vs-sep, q-protocol-validator-upgrade-vote (no answer, keyFact, avoid, or notes change), so the same-day verdict \"consistent\" stands. Prior same-day reason: Golden-truth session 3 (2026-08-29, long-fact class): members q-protocol-validator-upgrade-vote changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2796,16 +2796,16 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "note": "P23 initialized one cluster; a separate settings upgrade activated two on 2026-01-29. Current value two is dated/configuration-sensitive and canonical SLP path is limits/slp-0004.md.",
         "memberContentSha256": {
-          "q-protocol-23-whisk-caps": "d890a1ba5b30f1854021b8253f575e3c456b45d3def0f223c14ba50a65a3c69b",
+          "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-parallel-execution": "684e9304c747f268fad7c3692a469df78a881b6efffa2dd11e7d9c75d19ebdf4",
           "q-protocol-version-history-list": "e8198ba6d0d069b40027a659d7c001d9c212e59ae4069f98a7e2714b42c42450"
         },
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-protocol-parallel-execution, q-protocol-version-history-list changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -2843,16 +2843,16 @@
           "q-soroban-auth-delegation-p27"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): members re-read member by member after a gospel change on a member (answer/avoid/notes); the changed sentences were compared against origin/main and every member can still be true together; no contradiction. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): q-pc-protocol-27-zipper's dated Horizon example now also records the 2026-08-30 check (current_protocol_version 27, core_supported_protocol_version 28, Protocol 28 not live). Shared rule of this cluster: P27 current on Mainnet from ledger 63386819 on 2026-07-08, CAP-0071 features are P27, P28/AddressV2 is a future recheck; the new sentence reaffirms it and no member presents P28 as active; every member re-read, consistent. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
           "verdict": "consistent"
         },
         "note": "P27 is current on Mainnet from ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features. P28/AddressV2 remains a future recheck, not current activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "d210bd6db64d122a31a61bbafd2e137a05d7333acb1343ee681cba0a5180ec94",
-          "q-pc-protocol-27-zipper": "9c95e3561d8eaca1a1a531a2cd4aa534476bc88b66de82621b9424ac6ed7845a",
+          "q-pc-protocol-27-zipper": "53acd2375bc3d33549b8f8c2fe4029c63f8f19f7e60b293fb6d1e3a4aa584022",
           "q-pc-protocol-upgrade-timing": "3ae362ff93313ca63e3b6aeb3563662fdfcdfd2036e2892607ff5b6c3d15b996",
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
           "q-protocol-version-history-list": "e8198ba6d0d069b40027a659d7c001d9c212e59ae4069f98a7e2714b42c42450",
@@ -2871,10 +2871,10 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-build-award-cap, q-scf-build-tracks, q-scf-how-to-apply changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "All cases distinguish the current SCF Build cap of $150,000 worth of XLM from project-history amounts and other SDF programs.",
@@ -2884,7 +2884,7 @@
           "q-scf-build-tracks": "5fa791dca7d40fe769531d3b2ea6573c89f666d6de4b67cf8d82866f01f3fd29",
           "q-scf-current-round": "8fd5d28bf2a2f89d8530fb9e6595425b00c9f7e34724298dc7c3f23e3095b929",
           "q-scf-how-to-apply": "fca1f639feccdb7df77b7a45e602fc63731b5910da99a5baa03808d17a9dde56",
-          "q-scf-vs-sdf-enterprise-fund": "9ee1e688f409255a21a12acc7ef5520755fe05a25de84cc9aa06cee4172da973"
+          "q-scf-vs-sdf-enterprise-fund": "9dc75ae60ee4edd2cc54662baca76cbb64c2d7bee6ac6cc644c88466d472bb5b"
         }
       },
       {
@@ -2921,10 +2921,10 @@
           "q-raph-low-xlm-transfer-fail"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): members re-read member by member after a gospel change on a member (answer/avoid/notes); the changed sentences were compared against origin/main and every member can still be true together; no contradiction. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "At the checked network setting, one base reserve is 0.5 XLM; an empty unsponsored account needs two reserves (1 XLM), ordinary subentries add one reserve, and a pool-share trustline adds two. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -2933,7 +2933,7 @@
           "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
           "q-pc-account-activation-not-found": "c31abcfc5b5d22c7d8934c24aecba8d8e2f63958d41aafcd6a20aa732ed003de",
-          "q-protocol-base-reserve-min-balance": "a26b3d6649d1e6571abad4ae6c573a006b97fbdd5efdde18b1805bd4845c46c5",
+          "q-protocol-base-reserve-min-balance": "4443cde1457252ebf52a0a6fbe8868e2e889ebf5614c3b9c3a7f6a0a6a4ffbc6",
           "q-raph-low-xlm-transfer-fail": "9eb2e101f4f9e386509e31c6b3e92bfa00ed5429ebc01a35daef418e8e41e13a"
         }
       },
@@ -2947,18 +2947,18 @@
           "q-tool-cctp-stellar-integration"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-token-circle-usdc-on-stellar changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "The cases consistently distinguish Circle's 2026-05-18 Stellar mainnet-support milestone, the 2026-05-19 SDF/Circle public-live announcement, and mutable fee/finality support. No accessible primary source recovered the prior 2026-02-24 launch attribution, so it remains explicitly unverified rather than being collapsed into either May milestone. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration adopt the two-milestone wording and q-cctp-v2-usdc-stellar fee corroboration now labels the 2026-07-11 readings as a dated probe observation, matching the mutable-fee discipline. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
-          "q-cctp-v2-usdc-stellar": "609687247b9f752444312c817151da4f343ded101bad3110056bfd851c78557f",
+          "q-cctp-v2-usdc-stellar": "503aa9e8ee457984242a8d27aaf8410cef7541c2e6fe4e86591dd527fa40335a",
           "q-hist-cctp-stellar-live-announcement": "5dd5144018cd1093329ece552dd6837939046479506b0766504afc3001165d5f",
           "q-token-circle-usdc-on-stellar": "2647f13e3aee14662fd849a26f6bdb8fc67b745e1c50e88cd601c4dbf78c9316",
-          "q-tool-cctp-stellar-integration": "80c1b0fc9dde161347b3c520c2d7a10b8a68bebced698c85983027a05f9de9ae"
+          "q-tool-cctp-stellar-integration": "085b951efc11b1a85e5fc798557eb79eabc5c21d9e960f64d3b84a3d36bf36b0"
         }
       },
       {
@@ -3016,17 +3016,17 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-edge-noinfo-stellar-native-privacy-default, q-scf-confidential-tokens-preview changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "All cases describe the 2026-06-29 release as a Testnet developer preview, not a Mainnet launch or a network-wide privacy mode. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-scf-confidential-tokens-preview": "4a3021c31235028550baea78a408b6e4c815a019f0cec2c56d264c368f9e0fb9",
-          "q-sor-confidential-tokens": "a1077ef376ef9859d0734719cb3c618ea8423f3472ff94ced4c3c58b9e568849"
+          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
         }
       },
       {
@@ -3042,10 +3042,10 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-builder-content-by-person, q-edge-closed-world-builder-directory-miss, q-edge-lumenloop-person-entity-empty changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
@@ -3054,7 +3054,7 @@
           "q-builder-justin-rice-history": "666e25ec6c21713634ebec85fa3e3906be546df9a88c080820fa916ec74ad1dd",
           "q-edge-closed-world-builder-directory-miss": "7e55f4e9fc468ad7f3606a52121ca356d3955ae1b4e2dc46076e28bee5ec629e",
           "q-edge-lumenloop-person-entity-empty": "46b0c6f9b14c35a622553e95456108b6f27caf71b1784db61a8130ce669f637f",
-          "q-edge-open-world-recovery-after-narrow-miss": "6fd3c3a350f42fd1dc34ed99f1bea8a662605eb491b10bb442e786032d647914",
+          "q-edge-open-world-recovery-after-narrow-miss": "0ba9afe931d8563e8e0a34cc2418da8df32b330d8bd2e2bb498e2f8c77f9c86c",
           "q-edge-strupey-ambiguous-stellar-history": "bd9698ad1f190c789ab217a2d91eb95d067612a3f58295c5b975b9819409a127",
           "q-gap-semantic-directory-fallback": "3036816cab81318e490ce7101c0266866d2f4a0af1cf5c049da215d1e791f95f"
         }
@@ -3165,17 +3165,17 @@
           "q-zk-nullifier-storage"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-sor-persistent-unbounded-collection-cap, q-zk-nullifier-storage changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "The generic resource case covers simulation and network limits. The Instance-storage case covers contract-instance state and DoS risk. The nullifier case covers retention and privacy safety. The Persistent-collection case owns one growing Persistent value under one key. The cases are compatible because they use different storage scopes and threat models.",
         "memberContentSha256": {
           "q-sor-persistent-unbounded-collection-cap": "d2eba0b6c5e0026879cccddd736733f32cd90164d07aed791c5c0785c9aab940",
           "q-soroban-instance-storage-dos": "1f57e8cf4481d436172f1641de627fe1c98e668f5fb19ec50620d557dfeeb3c2",
-          "q-soroban-resource-limits": "4421fca9b87e85cb4a80e54faedeaada04311cd1b6b11c74efd4f34e2820f769",
+          "q-soroban-resource-limits": "5612a92d78c5f5b210a23787717c2d5ee6161ddac4d0ad67ff8fb3ed537b9a61",
           "q-zk-nullifier-storage": "070ed88316c6350d2142d1b126c715c5784ff1870cb6a0125885866b0b556fa9"
         }
       },
@@ -3213,18 +3213,35 @@
           "q-pay-sdp-disbursement"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): members re-read member by member after a gospel change on a member (answer/avoid/notes); the changed sentences were compared against origin/main and every member can still be true together; no contradiction. Evidence: .agents/rounds/2026-08-29-golden-truth-session-3.md (register re-sweep by gt3-sol-b, report mirrored as register-resweep-sol-b.md).",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
         "note": "All four cases agree that current SDP is a bulk-disbursement application whose Core implements native SEP-10/24 and does not universally require an external Anchor Platform; downstream wallet, cash-out, or anchor rails are optional deployment choices. The stellar.org product page's as-of 2026-08-05 'up to 10,000 payments' statement is advertised capacity, not a hard implementation or protocol invariant, and is not required by the two Docs-only questions after the exact-phrase Lumenloop probe returned no exact primary-linked evidence.",
         "memberContentSha256": {
           "q-anchor-sdp-vs-anchor-platform": "ab391e2fd4839c195e9f67ad8a8fdc21a4ed90d3860bf92d2f3fec038510103a",
           "q-anchor-sdp-what": "736157a880fed2e6db27aa1a2eccaa6917347dbd9ccb719f02668e934a221677",
-          "q-crp-sdp-operation": "75e934490b7f604ea2841e896890ac79091e2d00b2fc45b96727335f76f3967e",
+          "q-crp-sdp-operation": "1e51065490499daac595a360f3570108732c2d75a080a47cccc350cc18bddf96",
           "q-pay-sdp-disbursement": "bede1c516bbca080cdf683068c0e647bca7ba8cefe185f9f507d4c67dcaf8570"
+        }
+      },
+      {
+        "id": "cluster-136",
+        "label": "scout.hackathonBrief composite boundaries and registry-relative contract absence",
+        "members": [
+          "q-gap-contracts-domain-empty",
+          "q-gap-hackathon-brief-evidence-boundaries",
+          "q-scout-hackathon-brief-first-hour"
+        ],
+        "verdict": "consistent",
+        "lastChecked": "2026-08-30",
+        "note": "Decision 2026-08-30 (.agents/rounds/2026-08-30-golden-metadata-remainder.md): the two scout.hackathonBrief cases do not join the SCF program clusters (cluster-011/074/079/091 hold SCF award, tier, and menu facts that neither case asserts). They share one manifest contract with each other and with q-gap-contracts-domain-empty: catalog/manifest.json#scout.hackathonBrief says an empty liveContracts.contracts array means no verified contract on record, never nothing on mainnet, the domain is null when nothing maps, whatNotToClaim is derived from the brief's own facts, and rails and RFPs are not bundled; scout.listContracts carries the same evidence-gated, registry-relative absence rule. A change to that contract would have to land in all three cases together, which is the contradiction risk a cluster tracks.",
+        "memberContentSha256": {
+          "q-gap-contracts-domain-empty": "21543adfddeb774d931b3679851ad45627e96b39c7b3c4b4da0c2eff081f2deb",
+          "q-gap-hackathon-brief-evidence-boundaries": "a34032d48f9455908963e903e82cc914d71f05eba002fa7ca95634f560010207",
+          "q-scout-hackathon-brief-first-hour": "1ce8a3a914709b9222cdfaa74519adfae92e95899dab7c47749060946194997a"
         }
       }
     ]
@@ -3317,14 +3334,14 @@
         "memberContentSha256": {
           "q-asset-trustline-basics": "d1757c699abf390e230935694b27f32c83e28b73450f9a3e30c827341c7ad0c3",
           "q-edge-1xlm-activation-fee": "5a149225b851e884e07425948c5c6a4be88226d78d398809a31bdb0c9be6382a",
-          "q-protocol-base-reserve-min-balance": "a26b3d6649d1e6571abad4ae6c573a006b97fbdd5efdde18b1805bd4845c46c5",
+          "q-protocol-base-reserve-min-balance": "4443cde1457252ebf52a0a6fbe8868e2e889ebf5614c3b9c3a7f6a0a6a4ffbc6",
           "q-raph-low-xlm-transfer-fail": "9eb2e101f4f9e386509e31c6b3e92bfa00ed5429ebc01a35daef418e8e41e13a"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, canonical-page lane): q-protocol-base-reserve-min-balance gained a lint-canonical grading caution for the Sponsored Reserves page (sd-043) and refreshed Docs/Core provenance; q-asset-trustline-basics changed by form-only re-form. The authoritative value (0.5 XLM dated) and the sponsorship-aware formula are unchanged in every member (orchestrator re-read; Grok blind lane R2 confirmed Core getMinBalance excludes selling liabilities), so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },
@@ -3369,18 +3386,18 @@
         ],
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "d210bd6db64d122a31a61bbafd2e137a05d7333acb1343ee681cba0a5180ec94",
-          "q-pc-protocol-27-zipper": "9c95e3561d8eaca1a1a531a2cd4aa534476bc88b66de82621b9424ac6ed7845a",
+          "q-pc-protocol-27-zipper": "53acd2375bc3d33549b8f8c2fe4029c63f8f19f7e60b293fb6d1e3a4aa584022",
           "q-pc-protocol-upgrade-timing": "3ae362ff93313ca63e3b6aeb3563662fdfcdfd2036e2892607ff5b6c3d15b996",
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
           "q-soroban-auth-delegation-p27": "d098733e231e1f650b321ba2cbb7b46f813192e97e36945c2a2ce0e480348eec"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, canonical-page lane): q-pc-protocol-27-zipper now states July 8, 2026 as the official Protocol 27 Mainnet date (software-versions table) and keeps the July 11 Horizon observation as a live check only, which matches this invariant's 2026-07-08 activation rule; q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, and q-protocol-27-cap-0071 changed by form-only re-form. The 2026-08-28 member-content reopen carried no substantive open finding (marker only). Verdict consistent.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): q-pc-protocol-27-zipper's answer now also records the 2026-08-30 Horizon check (27 live, core supports 28, P28 not live); the trigger has not fired; members re-read, none presents P28 as active. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-29"
+        "lastChecked": "2026-08-30"
       },
       {
         "label": "SCF #43 official total",
@@ -3465,18 +3482,18 @@
           "q-tool-cctp-stellar-integration"
         ],
         "memberContentSha256": {
-          "q-cctp-v2-usdc-stellar": "609687247b9f752444312c817151da4f343ded101bad3110056bfd851c78557f",
+          "q-cctp-v2-usdc-stellar": "503aa9e8ee457984242a8d27aaf8410cef7541c2e6fe4e86591dd527fa40335a",
           "q-hist-cctp-stellar-live-announcement": "5dd5144018cd1093329ece552dd6837939046479506b0766504afc3001165d5f",
           "q-token-circle-usdc-on-stellar": "2647f13e3aee14662fd849a26f6bdb8fc67b745e1c50e88cd601c4dbf78c9316",
-          "q-tool-cctp-stellar-integration": "80c1b0fc9dde161347b3c520c2d7a10b8a68bebced698c85983027a05f9de9ae"
+          "q-tool-cctp-stellar-integration": "085b951efc11b1a85e5fc798557eb79eabc5c21d9e960f64d3b84a3d36bf36b0"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-token-circle-usdc-on-stellar changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; the authoritative value and rule are unchanged and no member changed its answer, avoid, or notes, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-29"
+        "lastChecked": "2026-08-30"
       },
       {
         "label": "YieldBlox borrowed XLM USDC totals",
@@ -3562,16 +3579,16 @@
           "q-scf-current-round"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "fc6883d75a137d9d6a9358a5b64e2611d3a52aa9a2c8ed35d79d6f1004551459",
+          "q-edge-fresh-latest-scf-round": "fe7da409fc487d3e070c748806a9e9ec6bcc69f6a474e418fd90e3b18dc02c60",
           "q-scf-current-round": "8fd5d28bf2a2f89d8530fb9e6595425b00c9f7e34724298dc7c3f23e3095b929"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (compound-predicate): members q-edge-fresh-latest-scf-round, q-scf-current-round changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-27"
+        "lastChecked": "2026-08-30"
       },
       {
         "label": "Stellar base fee floor",
@@ -3626,7 +3643,7 @@
       {
         "triggerDateEvent": "Mainnet activation of Protocol 28 or any AddressV2 successor change",
         "requiredRecheck": "Re-probe Mainnet protocol_version and re-verify every case that calls P27 current or AddressV2 future; update the current-version invariant and hashes.",
-        "disposition": "open — P27 is current as of 2026-08-05; P28/AddressV2 must not be presented as active before the trigger.",
+        "disposition": "open — P27 is current as of 2026-08-30 (Horizon current_protocol_version 27, core_supported_protocol_version 28, Protocol 28 Testnet TBD on the software-versions page); P28/AddressV2 must not be presented as active before the trigger.",
         "caseIds": [
           "q-edge-fresh-latest-protocol-version",
           "q-pc-protocol-27-zipper",
@@ -3635,17 +3652,17 @@
         ],
         "memberContentSha256": {
           "q-edge-fresh-latest-protocol-version": "d210bd6db64d122a31a61bbafd2e137a05d7333acb1343ee681cba0a5180ec94",
-          "q-pc-protocol-27-zipper": "9c95e3561d8eaca1a1a531a2cd4aa534476bc88b66de82621b9424ac6ed7845a",
+          "q-pc-protocol-27-zipper": "53acd2375bc3d33549b8f8c2fe4029c63f8f19f7e60b293fb6d1e3a4aa584022",
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
           "q-protocol-version-history-list": "e8198ba6d0d069b40027a659d7c001d9c212e59ae4069f98a7e2714b42c42450"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29): q-pc-protocol-27-zipper changed its activation-date keyFact to the official July 8, 2026 date (July 11 kept as a live observation); the other members changed by form-only re-form. The trigger, required recheck, and disposition are unchanged; the trap still fires on Protocol 28 activation. Verdict consistent.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): q-pc-protocol-27-zipper's answer now also records the 2026-08-30 Horizon check (27 live, core supports 28, P28 not live); the trigger has not fired; members re-read, none presents P28 as active. Evidence: .agents/rounds/2026-08-30-golden-metadata-remainder.md.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-29"
+        "lastChecked": "2026-08-30"
       },
       {
         "triggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",
@@ -3658,17 +3675,17 @@
         ],
         "note": "Updated 2026-07-28: the 2026-02-24 launch attribution was retired as unsupported by primary material.",
         "memberContentSha256": {
-          "q-cctp-v2-usdc-stellar": "609687247b9f752444312c817151da4f343ded101bad3110056bfd851c78557f",
+          "q-cctp-v2-usdc-stellar": "503aa9e8ee457984242a8d27aaf8410cef7541c2e6fe4e86591dd527fa40335a",
           "q-hist-cctp-stellar-live-announcement": "5dd5144018cd1093329ece552dd6837939046479506b0766504afc3001165d5f",
-          "q-tool-cctp-stellar-integration": "80c1b0fc9dde161347b3c520c2d7a10b8a68bebced698c85983027a05f9de9ae"
+          "q-tool-cctp-stellar-integration": "085b951efc11b1a85e5fc798557eb79eabc5c21d9e960f64d3b84a3d36bf36b0"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-27",
-          "reason": "Golden-truth burn-down 2026-08-27 (negative-predicate): members q-cctp-v2-usdc-stellar, q-tool-cctp-stellar-integration changed by form-only lint fixes with refreshed truth.verified; members re-read, no fact changed, prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-27"
+        "lastChecked": "2026-08-30"
       },
       {
         "triggerDateEvent": "Publication or state change for SCF #44/#45 after the fixed SCF #43 recap",
@@ -3681,18 +3698,18 @@
           "q-scf-total-distributed"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "fc6883d75a137d9d6a9358a5b64e2611d3a52aa9a2c8ed35d79d6f1004551459",
+          "q-edge-fresh-latest-scf-round": "fe7da409fc487d3e070c748806a9e9ec6bcc69f6a474e418fd90e3b18dc02c60",
           "q-scf-current-round": "8fd5d28bf2a2f89d8530fb9e6595425b00c9f7e34724298dc7c3f23e3095b929",
           "q-scf-round-43-results": "214582a4ecc47300bd52bc8b8d5cdd3adebbff202656130c349879f607159133",
           "q-scf-total-distributed": "81d48ee2531968b95b2689af391f2fb723bebdd9179c16405409396fdf46ab68"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-scf-total-distributed changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; the trigger, required recheck, and disposition are unchanged and no member changed its answer, avoid, or notes, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-08-29"
+        "lastChecked": "2026-08-30"
       },
       {
         "triggerDateEvent": "2026-10-08 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",
@@ -3728,13 +3745,13 @@
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-scf-confidential-tokens-preview": "4a3021c31235028550baea78a408b6e4c815a019f0cec2c56d264c368f9e0fb9",
-          "q-sor-confidential-tokens": "a1077ef376ef9859d0734719cb3c618ea8423f3472ff94ced4c3c58b9e568849"
+          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-08-30",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-edge-noinfo-stellar-native-privacy-default, q-scf-confidential-tokens-preview changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; the trigger, required recheck, and disposition are unchanged and no member changed its answer, avoid, or notes, so the prior verdict \"consistent\" stands.",
+          "date": "2026-08-30",
+          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
           "verdict": "consistent"
         }
       },

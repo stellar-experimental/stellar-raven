@@ -1,0 +1,38 @@
+{
+  "id": "q-defi-blend-alternatives",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {"keyFactIndex": 0, "claim": "Names real Stellar lending and credit candidates.", "verdict": "confirmed-as-of", "sources": [
+      {"class": "A", "ref": "https://www.k2lend.com/", "quote": "K2 brings sophisticated DeFi lending to Stellar through pooled, isolated, and gated markets.", "asOf": "2026-08-30"},
+      {"class": "B", "ref": "https://github.com/laina-defi/laina", "quote": "Laina is a low fee, trustless, and easy-to-use decentralized loan platform.", "asOf": "2026-08-30"},
+      {"class": "A", "ref": "https://peridot.finance/", "quote": "Experience the future of DeFi lending with our secure, transparent, and user-friendly platform.", "asOf": "2026-08-30"},
+      {"class": "B", "ref": "https://github.com/eq-lab/slender-ui", "quote": "Slender is the first noncustodial Lending protocol on Stellar Soroban.", "asOf": "2026-08-30"}
+    ], "notes": "The candidates have current owner or repository footprints. Availability remains separate."},
+    {"keyFactIndex": 1, "claim": "Treats direct lenders, Blend-built pools, and yield routers as different categories.", "verdict": "confirmed", "sources": [
+      {"class": "A", "ref": "https://yieldblox.finance/", "quote": "YieldBlox is a DAO-managed money market on the Stellar Network, using Blend Protocol and Soroban Governor.", "asOf": "2026-08-30"},
+      {"class": "B", "ref": "https://github.com/paltalabs/defindex/blob/main/apps/docs/strategy-developers/what-is-a-strategy.md", "quote": "A strategy is a set of steps to be followed to execute an investment in one or several protocols.", "asOf": "2026-08-30"}
+    ], "notes": "YieldBlox identifies itself as Blend-based. DeFindex documents strategy routing into Blend."},
+    {"keyFactIndex": 2, "claim": "Treats CDPs and synthetic or cross-chain systems as different categories.", "verdict": "confirmed", "sources": [
+      {"class": "A", "ref": "https://orbitcdp.finance/", "quote": "A transparent, on-chain CDP system governed by the community.", "asOf": "2026-08-30"},
+      {"class": "C", "ref": "https://lumenloop.com/projects?tag=defi&page=2", "quote": "EquitX ... enables users to mint, trade, and stake xAssets, which are synthetic assets mirroring the value of real-world stocks.", "asOf": "2026-08-30"}
+    ], "notes": "These designs differ from an isolated direct-lending money market."},
+    {"keyFactIndex": 3, "claim": "Treats lifecycle and market-rank claims as dated, source-relative claims.", "verdict": "confirmed-as-of", "sources": [
+      {"class": "C", "ref": "https://stellarlight.xyz/project/slender", "quote": "Inactive / archived", "asOf": "2026-08-30"},
+      {"class": "A", "ref": "https://slender.fi/", "quote": "Enter App", "asOf": "2026-08-30"},
+      {"class": "C", "ref": "https://stellarlight.xyz/project/laina", "quote": "Pre-Release", "asOf": "2026-08-30"},
+      {"class": "C", "ref": "https://stellarlight.xyz/project/k2-lend", "quote": "Live", "asOf": "2026-08-30"}
+    ], "notes": "Current labels differ from some 2026-07-10 observations. The answer dates those observations."}
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://www.k2lend.com/ — K2 identifies itself as a Stellar lender; Slender, Laina, and Peridot also retain owner footprints.",
+    "Live re-check 2026-08-30: https://yieldblox.finance/ — YieldBlox identifies itself as a Blend-based money market, while DeFindex documents strategy routing.",
+    "Live re-check 2026-08-30: https://orbitcdp.finance/ — Orbit identifies itself as a CDP system, distinct from direct isolated lending.",
+    "Live re-check 2026-08-30: https://stellarlight.xyz/project/slender — StellarLight says Inactive, while the operator page remains reachable; status needs dates and attribution."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep Slender|Laina|K2 Lend|DeFindex|OrbitCDP → q-defi-defindex-honest, q-defi-flash-loans, q-defi-named-newer-protocols, q-eco-defi-market-map, q-eco-defi-projects-discovery; no contradiction",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "Current labels changed since 2026-07-10. This supports dated and source-attributed lifecycle claims."
+}

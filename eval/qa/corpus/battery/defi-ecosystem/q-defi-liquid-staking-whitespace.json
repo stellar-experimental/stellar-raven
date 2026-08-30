@@ -80,8 +80,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane a, worker gmr-sol-a; orchestrator applied)",
       "evidence": [
         "Solo scratchpad 575 GT-15 primary 3243 and blind 3246; 952-project Scout snapshot plus official/provider/repo sweeps",
         "Structural re-form (negative-predicate): split two compound key facts into three single-predicate facts; the source-bounded native-XLM LST negative and product taxonomy are unchanged.",
@@ -90,11 +90,17 @@
         "Live re-check 2026-08-27: https://ultracapital.xyz/.well-known/stellar.toml and https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — issuer yield and LP/vault positions remain distinct from protocol validator staking.",
         "Live re-check 2026-08-27: https://chrysalis.raum.network and https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — Chrysalis remains a cross-chain liquid-staking surface, while SCP remains non-PoS.",
         "Sibling sweep 2026-08-27: grep liquid staking|native-XLM|yXLM|Chrysalis → q-eco-defi-market-map and related staking cases; no contradiction.",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part2.md): removed the added qualifier \"audited\"; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 2 review (gt2-grok-rev)): removed the added qualifier \"audited\"; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP remains FBA-based and validators receive no monetary rewards.",
+        "Live re-check 2026-08-30: https://stellar.org/blog/ecosystem/becoming-a-stellar-validator — Stellar validators receive no block rewards or staking yield.",
+        "Live re-check 2026-08-30: https://ultracapital.xyz/.well-known/stellar.toml — yXLM remains an Ultra Capital anchor-redeemable interest token.",
+        "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/reclPkvuD4iqLs6E5 — Chrysalis converts XLM to ETH and stakes the ETH through Lido on Ethereum.",
+        "Sibling sweep 2026-08-30: grep liquid staking|native-XLM|yXLM|Chrysalis|sXLM → q-defi-liquid-staking-whitespace, q-eco-defi-market-map, q-edge-noinfo-stellar-pos-staking-rewards, and five incidental hits; no contradiction to the dated claim"
       ],
       "rootCause": [
         "eval-side negative claim lacked search universe/date and conflated third-party yield with validator staking",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-defi-liquid-staking-whitespace"

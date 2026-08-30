@@ -1,0 +1,86 @@
+{
+  "id": "q-defi-liquid-staking-whitespace",
+  "lane": "a",
+  "verifiedOn": "2026-08-30",
+  "result": "DONE",
+  "claims": [
+    {
+      "keyFactIndex": 0,
+      "claim": "Explains Stellar's SCP and lack of protocol validator rewards.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+          "quote": "The Stellar network reaches consensus using the Stellar Consensus Protocol (SCP), which is a construction of the Federated Byzantine Agreement (FBA). ... There are no monetary rewards for being a validator on the Stellar network.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The official page also contrasts FBA with Proof of Stake, which relies on staking power."
+    },
+    {
+      "keyFactIndex": 1,
+      "claim": "Reports no live native-XLM LST in the dated source universe.",
+      "verdict": "confirmed-as-of",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+          "quote": "As validators on Stellar, they will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+          "quote": "FBA differs from ... Proof of Stake ... by instead relying on the agreement of trusted nodes.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "This verdict applies only to the explicit 2026-07-10 source-bounded finding. A 2026-08-30 web sweep found stst-lake.vercel.app claiming an sXLM mainnet product. Its linked GitHub repository returned 404, and the UI showed 0.00% APY. This later surface does not contradict the dated finding, but it requires future review before any current absence claim."
+    },
+    {
+      "keyFactIndex": 2,
+      "claim": "Treats issuer-funded XLM yield and lending/LP/vault positions as non-LSTs.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://ultracapital.xyz/.well-known/stellar.toml",
+          "quote": "yXLM is an interest earning XLM tethered token. ... 1 yXLM is always redeemable for 1 XLM through Ultra Capital anchor.",
+          "asOf": "2026-08-30"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+          "quote": "Any eligible participant can deposit assets into a liquidity pool, and in return, receive pool shares representing their ownership of that asset.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The issuer record attributes yXLM to an anchor-backed tethered token. The pool guide attributes LP yield to pool participation, not validator staking."
+    },
+    {
+      "keyFactIndex": 3,
+      "claim": "Treats external ETH staking wrappers as different from native validator staking.",
+      "verdict": "confirmed",
+      "sources": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/submissions/reclPkvuD4iqLs6E5",
+          "quote": "Chrysalis enables users to convert their XLM into ETH, which is then staked on Lido ... on Ethereum.",
+          "asOf": "2026-08-30"
+        }
+      ],
+      "notes": "The current official submission page describes conversion to ETH and Ethereum staking. It does not describe native XLM validator staking."
+    }
+  ],
+  "evidenceLines": [
+    "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP remains FBA-based and validators receive no monetary rewards.",
+    "Live re-check 2026-08-30: https://stellar.org/blog/ecosystem/becoming-a-stellar-validator — Stellar validators receive no block rewards or staking yield.",
+    "Live re-check 2026-08-30: https://ultracapital.xyz/.well-known/stellar.toml — yXLM remains an Ultra Capital anchor-redeemable interest token.",
+    "Live re-check 2026-08-30: https://communityfund.stellar.org/submissions/reclPkvuD4iqLs6E5 — Chrysalis converts XLM to ETH and stakes the ETH through Lido on Ethereum."
+  ],
+  "siblingSweep": "Sibling sweep 2026-08-30: grep liquid staking|native-XLM|yXLM|Chrysalis|sXLM → q-defi-liquid-staking-whitespace, q-eco-defi-market-map, q-edge-noinfo-stellar-pos-staking-rewards, and five incidental hits; no contradiction to the dated claim",
+  "conflicts": [],
+  "unreached": [],
+  "overallNotes": "Keep the answer's 2026-07-10 boundary. A newly discoverable sXLM website now claims mainnet deployment, but its linked source repository is unavailable. The current surface needs an independent deployment and launch-date check before the next freshness update."
+}

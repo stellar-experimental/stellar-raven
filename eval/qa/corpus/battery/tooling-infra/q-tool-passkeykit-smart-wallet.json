@@ -131,8 +131,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-08-30",
+      "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
       "evidence": [
         "https://github.com/stellar/passkey-kit",
         "https://github.com/stellar/smart-account-kit",
@@ -148,12 +148,19 @@
         "Sibling sweep 2026-08-27: grep passkey-kit|smart-account-kit|authorization model → q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery; no contradiction",
         "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — live re-check 2026-08-27 confirms Passkey Kit's WebAuthn smart-wallet role.",
         "Structural re-form 2026-08-27: preserved maintenance, non-drop-in models, flat multi-signer, context/auth-digest/policy, review caveat, release/component scope, and relaying boundaries.",
-        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, /tmp/raven-qadeep/gt2/review-b4-part3.md): restored OpenZeppelin (as OZ, for the 90-char cap) and context-rule alongside flat multi-signer and auth-digest/policy; truth unchanged versus HEAD."
+        "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 3 review (gt2-grok-rev)): restored OpenZeppelin (as OZ, for the 90-char cap) and context-rule alongside flat multi-signer and auth-digest/policy; truth unchanged versus HEAD.",
+        "Live re-check 2026-08-30: https://github.com/stellar/passkey-kit — the live source supports calls both kits maintained, different, non-drop-in authorization models.",
+        "Live re-check 2026-08-30: https://github.com/stellar/smart-account-kit — the live source supports passkey Kit: flat multi-signer; Smart Account Kit: OZ context-rule/auth-digest/policy.",
+        "Live re-check 2026-08-30: https://www.npmjs.com/package/smart-account-kit — the live source supports uses Passkey Kit's current review-and-caveats warning.",
+        "Live re-check 2026-08-30: https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account — the live source supports ties behavior and audit claims to exact selected releases and components.",
+        "Live re-check 2026-08-30: https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.7.2 — the live source supports treats relaying and authorization as distinct functions.",
+        "Sibling sweep 2026-08-30: grep passkey-kit|smart-account-kit|authorization model → q-soroban-add-signer-smart-wallet-howto, q-tool-passkey-wallet-recovery; no contradiction"
       ],
       "rootCause": [
         "freshness-drift",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raven-next q-tool-passkeykit-smart-wallet"
