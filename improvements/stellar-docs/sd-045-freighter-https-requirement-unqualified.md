@@ -16,7 +16,7 @@ evidence:
   - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2773
 recurrences:
   - date: 2026-08-30
-    evidence: same-100 row q-ti-freighter-localhost-not-detected and its independent live review confirmed that the frontend guide still states the unqualified HTTPS requirement while the current Freighter manifest matches <all_urls> without a TLS gate
+    evidence: same-100 row q-ti-freighter-localhost-not-detected and its independent live review confirmed that the frontend guide still states the unqualified HTTPS requirement while the current Freighter manifest matches `<all_urls>` without a TLS gate
 ---
 
 ## Finding

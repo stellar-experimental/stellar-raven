@@ -74,7 +74,7 @@ No result JSON entered Git.
 | MCP surface artifact SHA-256 | `ca886ee761e5e3682d300552af0f91f263a4e7beac1b379c18d232e68d7b34b5` |
 | QA implementation SHA-256 | `5c1c9d2043d6ddaaba67904a1b44842756bc8c35cd6f74d7cf7aaa0bf1e2fa94` |
 | Manifest SHA-256 | `4945c3117d464d7155fe6bc2bd2f2f42638ef83159435ae48a90bab046dc6789` |
-| `run-qa.mjs` SHA-256 | `3f7414ced6f1c6852ecf9e8e2d3e4af4c6a50d721285882105cbd43109755d` |
+| `run-qa.mjs` SHA-256 | `3f7414ced6f1c6852ecf9e8e2d3e4af4a4c6a50d721285882105cbd43109755d` |
 | Agent-result SHA-256 | `654d5a8a1d3f51cc3087afe3105d1fd8ea89efa207efef94703ace541b30d39c` |
 | Evidence-pack SHA-256 | `1c8401833b0a0e03cd75a062e6ed55aa417ffacd4279c9e08fc056c576cc0bbe` |
 | Judge SHA-256 | `799171025c72848ef2be38b4a7534661133145e50665906326a79ee66473fdd5` |
