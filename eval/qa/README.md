@@ -560,6 +560,12 @@ absent background facts only explain or restate it. Every fired `avoidMatches` i
 `wrong`, even when another safe behavior appears. The deterministic
 `successful-trap-refusal-not-correct` and `fired-avoid-not-wrong` checks remain unchanged.
 
+Rubric `v2.10` (2026-08-30) requires every non-trap `partial` verdict to record an
+answer-visible issue in `missingFacts` or `wrongClaims`. When grader notes cap an accurately
+supported claim at `partial`, the supported claim is not wrong. The judge must put the missing
+corrective distinction that prevents a `correct` verdict in `missingFacts`. The deterministic
+`partial-without-issue` check remains strict and unchanged.
+
 Every consistency error emits `coreAnswer: null`, whatever the judge returned. An **error** is not
 a grade, so it carries no graded core answer — the same shape the CLI-failure and
 unparseable-verdict paths already emit. The raw model score is still recoverable as `judgeScore`;
@@ -575,7 +581,7 @@ finalizes, and no resume spends a second paid call on it.
 **Comparability rules:**
 
 - Re-judge identity is the **judge model + rubric + pack** tuple (currently `claude-sonnet-5` /
-  `v2.9` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
+  `v2.10` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
   `evidence-pack.mjs`, each with a short changelog in its own file header). Compare stored rows
   only when that tuple, the exact selected-case snapshot, and prompt/pack-hash semantics match.
   Otherwise, re-judge the saved `rows[].answer` under the

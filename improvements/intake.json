@@ -188,6 +188,10 @@
       "repo": "stellar/stellar-docs",
       "reason": "The dapp frontend guide states the unqualified Freighter HTTPS requirement; coordinate final wording with the Freighter maintainers."
     },
+    "sd-046": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Lumens and Accounts pages omit the two-reserve pool-share trustline exception that the Liquidity Pools page and CAP-0038 define."
+    },
     "sk-004": {
       "repo": "lumenloop/lumenloop-skills"
     },

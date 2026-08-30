@@ -12,6 +12,9 @@ evidence:
   - eval round 2026-08-14, main stamp 2026-08-14T03-56-23-variantA, row q-quickstart-manual-ledger-close
   - Solo scratchpad 809, todo 1542 review
   - upstream issue filed 2026-08-19: https://github.com/stellar/stellar-docs/issues/2772
+recurrences:
+  - date: 2026-08-30
+    evidence: same-100 row q-quickstart-manual-ledger-close and its independent live review confirmed that stellar/quickstart/start still parses --enable-core-manual-close and that current Quickstart Docs do not teach the flag or manualclose operation
 ---
 
 ## Finding
