@@ -96,11 +96,12 @@ node eval/compile-routing.mjs            # optional arg: alternate corpus path
 node eval/run-routing.mjs
 ```
 
-`run-routing.mjs` also loads two **hand-authored** files at run time (deliberately not part
+`run-routing.mjs` also loads three **hand-authored** files at run time (deliberately not part
 of the compile step, so `node eval/compile-routing.mjs` can never wipe them):
 `eval/skills-cases.json` (the skills lane) and `eval/build-question-overlay.json` (the
-accept-either overlay) — see "Skills lane" below. Both are optional: if absent, the run
-degrades to the legacy 338-case eval.
+accept-either overlay), plus `eval/protocol-history-cases.json` (a diagnostic with eight
+positive cases and four direct-lookup controls). These files are optional. Without them,
+the run degrades to the legacy 338-case eval.
 
 Zero new dependencies: `run-routing.mjs` imports `src/catalog/search.ts` directly (Node
 ≥ 23.6 native type stripping); if the direct import fails it transpiles the file (and its
@@ -1073,3 +1074,26 @@ Skills remain **16/23/23**. The frozen holdout remains **10/22/25**, with 11
 forbidden captures. No scorer, routing corpus, floor, band, or runner operation
 changed. The final passing evidence trace is
 `routing-2026-08-28T02-49-08-451Z.json`.
+
+## Protocol-history frozen measurement (2026-08-30)
+
+This round adds a frozen diagnostic with eight positive cases and four direct controls.
+It measures whether `scout.searchResearch` surfaces for protocol-history and incident questions.
+Positive cases require a top-five hit. Controls forbid any top-five research capture.
+
+An independent review supplied a second frozen set before the replacement product design.
+It has 11 blind paraphrases and nine hostile controls. Run both sets with
+`npm run eval:protocol-history`. The original 12 cases remain in `run-routing.mjs`.
+This keeps its ranked dump at exactly 495 cases.
+
+The untouched scorer passes all existing routing gates. The original diagnostic starts at
+3/4/4 for top-1/top-3/top-5. One of four controls captures research at rank five.
+The blind set starts at 3/11 top-five, with six hostile control captures.
+
+The first product attempt is not part of this measurement commit. Independent review found
+copied vocabulary, broad false captures, and a gated-tier inversion. The round ledger records
+that rejected attempt and each finding.
+
+Three manifest-driven tiering replacements were also rejected. The closest candidate kept all
+routing gates and surfaced the named case at rank five. It increased blind hostile captures from
+6/9 to 8/9 and changed 15 of 495 rankings. The branch therefore ships measurement only.
