@@ -95,7 +95,7 @@ describe("QA verdict consistency", () => {
       transcriptEvidence: ""
     });
 
-    expect(JUDGE_RUBRIC).toBe("v2.9");
+    expect(JUDGE_RUBRIC).toBe("v2.10");
     expect(prompt).toContain("KEY FACTS (each must be present in the candidate");
     expect(prompt).toContain("Work through the key facts one by one before scoring.");
     expect(prompt).toContain('"missingFacts": ["key facts absent from the candidate"]');
@@ -105,6 +105,30 @@ describe("QA verdict consistency", () => {
     expect(prompt).not.toContain("TRAP CASE");
     expect(prompt).not.toContain("complete behavior required by the current golden is the core answer");
     expect(prompt).not.toContain("most key facts are absent");
+  });
+
+  it("requires an issue and the missing corrective distinction for a capped non-trap partial", () => {
+    const prompt = buildJudgePrompt({
+      question: "What is the current protocol version?",
+      golden: {
+        answer: "Protocol 27 is current.",
+        keyFacts: ["Protocol 27 is current, not Protocol 26."],
+        avoid: [],
+        notes:
+          "An accurately supported older-source claim is not wrong; grade caps at partial unless the answer adds the current version."
+      },
+      tags: { freshness: "live" },
+      candidateAnswer: "The cited older page says Protocol 26 is current.",
+      transcriptEvidence: ""
+    });
+
+    expect(prompt).toContain(
+      'Every "partial" verdict MUST record at least one answer-visible issue in missingFacts or wrongClaims'
+    );
+    expect(prompt).toContain(
+      'Put the missing corrective distinction that prevents a "correct" verdict in missingFacts.'
+    );
+    expect(prompt).toContain("grade caps at partial");
   });
 
   it("makes fired avoids incompatible with trap partial", () => {
@@ -685,7 +709,7 @@ describe("QA verdict consistency", () => {
     });
   });
 
-  it("requests semantic core and avoid fields under rubric v2.9", async () => {
+  it("requests semantic core and avoid fields under rubric v2.10", async () => {
     const verdict = await judgeWithFakeClaude(
       {
         rationale: "The candidate has the correct core answer and fires no avoid.",
@@ -710,7 +734,7 @@ describe("QA verdict consistency", () => {
     expect(verdict).toMatchObject({
       score: "correct",
       costUsd: 0.25,
-      rubric: "v2.9",
+      rubric: "v2.10",
       packVersion: "p5"
     });
   });

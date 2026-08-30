@@ -1,6 +1,6 @@
 # NEXT — handoff for the next work block
 
-Written 2026-08-29 after golden-truth session 3 landed. Read this first. `TODO.md` holds the
+Updated 2026-08-30 after the same-100 eval closeout. Read this first. `TODO.md` holds the
 full item text; this file only ranks and sequences. Delete or rewrite this file when the block
 below is done.
 
@@ -9,7 +9,7 @@ below is done.
 - `origin/main` is clean. Production runs Worker Version ID
   `6282fe2a-54d8-471e-9f0a-0a2565110af1`, deployed 2026-08-28 from `main` HEAD. Session 3 did
   not deploy.
-- `improvements/`: 66 active findings, lint ok. Stellar-Light/stellarlight#1031 is still open;
+- `improvements/`: 67 active findings, lint ok. Stellar-Light/stellarlight#1031 is still open;
   the maintainer owns the close.
 - Corpus lint: 0 errors, 60 warnings (0 long-fact, 44 sourcing-guard, 16 corroboration). Every
   remaining warning carries an audited disposition: the 44 sourcing-guard items stay advisory
@@ -17,40 +17,40 @@ below is done.
   agreement, two models). Do not chase these counts to zero.
 - Golden import validates Stellar strkeys (CRC16, SEP-23 version bytes) in `eval/qa/compile-qa.mjs`
   through `eval/qa/strkey.mjs`.
-- Same-100 baseline for the next comparison: `eval/qa/results/2026-08-28T19-27-08-variantA.json`
-  (local-only). Session 3 changed judge-facing gospel on 211 cases; the per-id list is
-  `.agents/rounds/2026-08-29-golden-truth-session-3/affected-case-ids.md`. Read it before any
-  same-100 rerun to decide per-id comparability. Judge stability: 57 of 100 same-100 cases sit
-  below 0.75.
+- The first `qa-five-track-v1` same-100 result is local at
+  `eval/qa/results/2026-08-30T03-43-11-variantA.json`. Its independent decision is
+  `VALID WITH A T4 EXCEPTION`. The one T4 exclusion leaves 99 paired-eligible IDs, so the
+  100-ID method is `INDETERMINATE`. Judge stability remains 57 of 100 below 0.75.
+- The paid artifact used rubric `v2.9`. The closeout fixes its `partial-without-issue` defect in
+  rubric `v2.10`. Cross-rubric comparison requires a rejudge under the target tuple.
 - Consistency register: reconciled on 2026-08-29; 0 reopen entries.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
-- Ledger for the finished block: `.agents/rounds/2026-08-29-golden-truth-session-3.md` (route
-  cards, matrices, three review parts, final review, warning breakdown, affected ids).
+- Ledgers for the finished blocks: `.agents/rounds/2026-08-29-golden-truth-session-3.md` and
+  `.agents/rounds/2026-08-29-five-track-same-100.md`.
 
 ## Ranked blocks
 
 ### 1. Golden metadata remainder
 
-Skill: `golden-truth`. Two `TODO.md` items under "Goldens":
+Skill: `golden-truth`. Three `TODO.md` items remain under "Goldens":
 
 - Dead provenance: 47 untouched files still cite a temporary path (94 before session 3). Repair
   them only during a verified touch of each case; no bulk edit. The session-3 rule for each
   path class is in the TODO item.
 - Recheck the two dated source-metadata conflicts (`q-tool-soroban-auth-audit-live`,
   `q-protocol-ledger-close-time`).
+- Review the five same-100 candidates listed in `TODO.md`. The result review found no false golden.
 
 Record the affected case-id list in the round ledger, as session 3 did.
 
 ### 2. Eval instruments
 
-Skill: `run-evals`. Three open items remain under `TODO.md` "Eval instruments":
+Skill: `run-evals`. Two open items remain under `TODO.md` "Eval instruments":
 
-- The judge-prompt implementation and seven-call self-test passed under rubric `v2.9`.
-  The full QA confirmation remains pending, so the related TODO stays open.
-- Design and validate a three-outcome paired comparison verdict before another comparable rerun.
+- Harden the answering prompt for the Raven lookup boundary and Friendbot network distinctions.
 - Judge stability is degrading (47 → 57 unstable). Watch the trend at the next register refresh.
 
-The `qa-five-track-v1` and score-independent golden lifecycle contracts are implemented.
+The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.
 
 ### 3. Routing: `scout.searchResearch` for protocol-history questions
 

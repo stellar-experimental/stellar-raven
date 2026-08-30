@@ -1,33 +1,76 @@
-# First `qa-five-track-v1` same-100 round: pre-spend brief
+# First `qa-five-track-v1` same-100 round: final record
 
 Date: 2026-08-29
 
-Status: reviewed-brief candidate; no paid method is authorized
+Status: `VALID WITH A T4 EXCEPTION`; collection and independent review complete
 Prepared code baseline: `origin/main` at `9b039b966c5f7eee628ad820bc1ccc8ed960a119`
 
 ## Purpose
 
-This round will create the first paid `qa-five-track-v1` artifact for the pinned same-100 set.
-It will test the merged panel, judge, five-track, paired, and lifecycle contracts together.
-It will also establish one side of a future compatible paired comparison.
+This round created the first paid `qa-five-track-v1` artifact for the pinned same-100 set.
+It tested the merged panel, judge, five-track, paired, and lifecycle contracts together.
 
-This brief does not authorize a paid command.
-Each paid method needs separate authorization with its exact budget cap.
-The smoke does not authorize the same-100 collection.
-A repeat does not inherit authorization from the first attempt.
+The user separately authorized Method 1 with a `$3` cap and Method 2 with a `$50` cap.
+The complete reviewed smoke satisfied the condition for Method 2.
+No authorization transferred between methods.
 
 All result JSON files stay local under `eval/qa/results/`.
 Do not commit, upload, publish, or attach these result files.
+
+## Final outcome
+
+| Item | Method 1 smoke | Method 2 same-100 |
+| --- | ---: | ---: |
+| Authorized cap | `$3` | `$50` |
+| Exact spend | `$1.3152268` | `$40.9579502` |
+| Agent spend | `$0.8993612` | `$24.3950378` |
+| Judge spend | `$0.4158656` | `$16.5629124` |
+| Paid calls | `10/10` | `314/314` |
+| Missing costs | `0` | `0` |
+| Rows complete | `3/3` | `100/100` |
+| Artifact SHA-256 | `3f26bd32e4bade70d714af84bcdf3fc85bd1a18d3e5f755be446e7331c0a00dd` | `211577ce0dcb7c994dcc1bbec0be7cc0fca534c6638be261420d21a761502387` |
+
+The two approved methods spent exactly `$42.273177` in total.
+Method 1 stayed `$1.6847732` below its cap.
+Method 2 stayed `$9.0420498` below its cap.
+Both methods were complete, cost-complete, pin-complete, and comparable.
+
+Method 1 recorded T1 as `2 correct / 0 partial / 1 wrong`.
+T2 had no eligible failure or retry.
+T3 recorded `1 pass / 1 fail` across two traps.
+T4 recorded two panels, one single, and no contradiction.
+T5 recorded all fields and no event.
+
+Method 2 recorded T1 as `45 correct / 42 partial / 13 wrong`.
+Its strict, half-credit, core-correct, and mean-coverage values were `45.0%`, `66.0%`, `93.0%`, and `52.8%`.
+T2 had no eligible failure or retry.
+T3 recorded `5 pass / 2 fail` across seven traps.
+T4 recorded 57 panels, 43 singles, and one consistency contradiction.
+T5 recorded all fields and no safeguard, transport failure, or timeout.
+
+The T4 contradiction was `q-eco-stellar-wallets-list` with `partial-without-issue`.
+The independent review retained the aggregate `partial` from the two valid votes.
+It overturned none of the 13 `wrong` verdicts.
+The final round decision is `VALID WITH A T4 EXCEPTION`.
+
+The T4 exclusion leaves paired eligibility at `99`.
+The 100-ID paired method therefore returns `INDETERMINATE` for this artifact.
+This artifact is not a paired look-one candidate.
+The unresolved owner product margin remains open.
+
+No repeat, rejudge, Method 3, deployment, or golden edit occurred.
+No result JSON entered Git.
 
 ## Source and contract pins
 
 | Item | Pin |
 | --- | --- |
 | Code baseline revision | `9b039b966c5f7eee628ad820bc1ccc8ed960a119` |
-| Runner revision at launch | The clean commit containing this brief |
-| Server revision at launch | The same clean commit as the runner |
+| Runner revision at launch | `d8ae30bba3e57f7da89bb465e1489ef85b65873d` |
+| Server revision at launch | `d8ae30bba3e57f7da89bb465e1489ef85b65873d` |
 | MCP URL used for preflight | `http://localhost:8788/mcp` |
 | MCP surface SHA-256 | `21a7c649c340119ab2a0f04347c8afee8aa4fb7ae68fc00c1fc876581ef955af` |
+| Watched environment SHA-256 | `f17ba7ffa59d9bcb58cd45601ced3a2cde358565c1a49997c485f53c141a42ff` |
 | MCP surface artifact SHA-256 | `ca886ee761e5e3682d300552af0f91f263a4e7beac1b379c18d232e68d7b34b5` |
 | QA implementation SHA-256 | `5c1c9d2043d6ddaaba67904a1b44842756bc8c35cd6f74d7cf7aaa0bf1e2fa94` |
 | Manifest SHA-256 | `4945c3117d464d7155fe6bc2bd2f2f42638ef83159435ae48a90bab046dc6789` |
@@ -45,8 +88,7 @@ Do not commit, upload, publish, or attach these result files.
 
 The merge chain is `cf8af54`, `2a36842`, `b612942`, `7fd7b5e`, then `9b039b9`.
 These commits contain the panel, judge, paired, five-track, and lifecycle contracts.
-The handoff records the exact reviewed-brief commit after Git creates it.
-Every paid method must use that clean `HEAD` for both runner and server revisions.
+Both paid methods used clean commit `d8ae30bba3e57f7da89bb465e1489ef85b65873d` for the runner and server.
 
 ## Judge tuple and agent binary
 
@@ -69,10 +111,10 @@ The boundary cap applies only when usable history does not select a tier.
 
 ## Agent environment pin
 
-The harness watches exact names and four name prefixes.
+The harness watches six exact environment names and three name prefixes.
 Exact names are `CI`, `HOME`, `NODE_OPTIONS`, `PATH`, `SHELL`, and `TMPDIR`.
 The prefixes are `ANTHROPIC_`, `CLAUDE_`, and `RAVEN_CLAUDE_`.
-The exact prompt name is `QA_AGENT_PROMPT_APPEND`.
+It also watches the exact prompt name `QA_AGENT_PROMPT_APPEND`.
 
 The paid launch state is:
 
@@ -291,7 +333,7 @@ q-tool-sep41-status-live
 q-zk-circuit-setup
 ```
 
-## Paid methods requiring separate authorization
+## Paid method contracts and authorizations
 
 ### Method 1: three-case smoke, maximum `$3`
 
@@ -303,7 +345,7 @@ The smoke records T5 fields but does not force T5 events.
 node eval/qa/run-qa.mjs --variant A --ids q-edge-1xlm-activation-fee,q-edge-noinfo-stellar-native-privacy-default,q-protocol-ledger-close-time --model claude-sonnet-5 --judge-model claude-sonnet-5 --max-panel-cases 10 --stability-register eval/qa/results/2026-08-29-five-track-same-100-stability.json --max-budget-usd 3 --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 625869b01e0050f260b2980fac248fd9cef9e462612bded4ec9d3d49ff8969a5
 ```
 
-Method 1 needs explicit authorization for a maximum spend of `$3`.
+Method 1 received separate authorization for a maximum spend of `$3`.
 The same three 2026-08-28 answers cost `$0.579`.
 Two panels plus one single judge add about `$0.429` under the observed means.
 The expected smoke cost is about `$1.0` to `$1.5`.
@@ -317,7 +359,7 @@ The cap can therefore leave the smoke incomplete.
 node eval/qa/run-qa.mjs --variant A --ids q-aas-burn-clawback-redemption-mechanics,q-aas-list-token-on-exchanges-aggregators,q-aas-sep30-recoverable-wallets,q-agent-identity-erc8004-stellar,q-anchor-sdp-vs-anchor-platform,q-asset-issue-asset-howto,q-asset-rwa-tokenized-freshness,q-asset-stablecoin-issuers-discovery,q-asset-two-account-issuer,q-comp-auth-flags-overview,q-comp-cross-moneygram-partnership-sep24,q-comp-finclusive-caas,q-comp-sep8-number-lookup-no-deepresearch,q-crp-partner-detail-after-discovery,q-defi-allbridge-what-is,q-defi-arbitrage-pathpayment-bots,q-defi-bridge-evm-to-stellar-axelar,q-defi-comet-what-is,q-defi-etherfuse-stablebonds,q-defi-perps-whitespace,q-defi-phoenix-what-is,q-defi-skill-ecosystem-scout,q-defi-wisdomtree-crdt,q-eco-defi-market-map,q-eco-pyusd-stellar-freshness,q-eco-stellar-wallets-list,q-edge-1xlm-activation-fee,q-edge-asset-site-scam-detection,q-edge-exchange-memo-lost-funds,q-edge-fresh-latest-blend-tvl,q-edge-fresh-latest-scf-round,q-edge-noinfo-stellar-native-privacy-default,q-edge-send-me-free-xlm,q-gap-av-offset-not-timestamp,q-gap-builders-person-empty,q-gap-match-partners-degrade,q-gap-related-projects-empty,q-gap-upcoming-hackathon-fallback,q-hist-quantum-preparedness-plan,q-history-ecosystem-index-freshness-live,q-infra-horizon-vs-rpc,q-infra-secp256r1-passkeys,q-jutsu-what-is-a-memo,q-mpp-discovery-and-modes,q-n3-missing-funds-account-support,q-n3-ssrf-metadata-endpoint,q-org-sdf-enterprise-fund,q-pay-moneygram-ramps,q-pc-bucketlist-vs-merkle-inclusion-proof,q-pc-multisig-setup-lifecycle,q-pc-protocol-27-zipper,q-pc-sponsored-reserves,q-protocol-23-whisk-caps,q-protocol-base-reserve-min-balance,q-protocol-ledger-close-time,q-protocol-operation-types-list,q-protocol-state-archival-ttl,q-quickstart-manual-ledger-close,q-raph-hardware-wallet,q-raph-offramp-xlm-usdc,q-raph-scam-spam-tokens,q-raph-xlm-simple,q-scf-academic-research-grant,q-scf-build-tracks,q-scf-ecosystem-listing-partner-jobs,q-scf-history-soroswap,q-scf-how-to-apply,q-scf-open-rfps,q-scf-rfps-hackathons-live,q-scf-v7-changes,q-sep-31-cross-border,q-sep-53-sign-verify-message,q-sep-catalog-list,q-sep6-sep24-sep31-choice,q-sor-confidential-tokens,q-sor-cross-warmancer-zk-stack,q-sor-doc-page-sections-followup,q-sor-p23-auto-restore-extendto,q-sor-sep41-transfer-vs-transferfrom,q-soroban-auth-delegation-p27,q-soroban-auth-recursion-dos-audit,q-soroban-contract-id-derivation,q-soroban-factory-pattern,q-soroban-oz-token,q-soroban-sdk-cve,q-soroban-sdk-macros,q-soroban-token-transfer-pattern,q-stellar-recurring-payments,q-ti-connect-wallet-button-code,q-ti-custodial-account-generation-c-address,q-ti-freighter-localhost-not-detected,q-ti-rpc-gettransactions-pagination-xdr,q-ti-testnet-usdc-faucet,q-ti-vocab-content-tags-live,q-token-circle-usdc-on-stellar,q-tool-freighter-wallet,q-tool-indexer-repos-discovery,q-tool-passkeykit-smart-wallet,q-tool-sep41-status-live,q-zk-circuit-setup --model claude-sonnet-5 --judge-model claude-sonnet-5 --max-panel-cases 34 --stability-register eval/qa/results/2026-08-29-five-track-same-100-stability.json --max-budget-usd 50 --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 625869b01e0050f260b2980fac248fd9cef9e462612bded4ec9d3d49ff8969a5
 ```
 
-Method 2 needs explicit authorization for a maximum spend of `$50`.
+Method 2 received separate authorization for a maximum spend of `$50`.
 
 The closest stored same-100 cost evidence is:
 
@@ -358,7 +400,7 @@ This method can rejudge only those 57 old answers against the current judge tupl
 node eval/qa/re-judge.mjs /Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-08-28T19-27-08-variantA.json --ids q-aas-burn-clawback-redemption-mechanics,q-agent-identity-erc8004-stellar,q-asset-issue-asset-howto,q-comp-finclusive-caas,q-comp-sep8-number-lookup-no-deepresearch,q-crp-partner-detail-after-discovery,q-defi-allbridge-what-is,q-defi-etherfuse-stablebonds,q-defi-perps-whitespace,q-defi-phoenix-what-is,q-defi-wisdomtree-crdt,q-eco-defi-market-map,q-edge-1xlm-activation-fee,q-edge-asset-site-scam-detection,q-edge-exchange-memo-lost-funds,q-edge-fresh-latest-scf-round,q-edge-send-me-free-xlm,q-gap-av-offset-not-timestamp,q-gap-builders-person-empty,q-gap-related-projects-empty,q-gap-upcoming-hackathon-fallback,q-hist-quantum-preparedness-plan,q-history-ecosystem-index-freshness-live,q-infra-horizon-vs-rpc,q-infra-secp256r1-passkeys,q-jutsu-what-is-a-memo,q-mpp-discovery-and-modes,q-org-sdf-enterprise-fund,q-pay-moneygram-ramps,q-pc-multisig-setup-lifecycle,q-protocol-23-whisk-caps,q-protocol-ledger-close-time,q-protocol-state-archival-ttl,q-quickstart-manual-ledger-close,q-raph-hardware-wallet,q-raph-offramp-xlm-usdc,q-raph-scam-spam-tokens,q-raph-xlm-simple,q-scf-academic-research-grant,q-scf-ecosystem-listing-partner-jobs,q-scf-v7-changes,q-sep-53-sign-verify-message,q-sep6-sep24-sep31-choice,q-sor-confidential-tokens,q-sor-cross-warmancer-zk-stack,q-sor-p23-auto-restore-extendto,q-soroban-auth-delegation-p27,q-soroban-factory-pattern,q-soroban-sdk-cve,q-soroban-sdk-macros,q-soroban-token-transfer-pattern,q-ti-custodial-account-generation-c-address,q-ti-testnet-usdc-faucet,q-ti-vocab-content-tags-live,q-tool-freighter-wallet,q-tool-passkeykit-smart-wallet,q-tool-sep41-status-live --cases-ref 644f3649c449d899021d2c95c52641fcb09d1966 --judge-model claude-sonnet-5 --allow-non-identical --max-budget-usd 10
 ```
 
-Method 3 needs separate authorization for a maximum spend of `$10`.
+Method 3 received no authorization and did not run.
 It produces diagnostic `qa-rejudge-v1` evidence only.
 It cannot produce five-track or paired evidence.
 At `$0.069` per single judge, 57 calls cost about `$3.93`.
@@ -370,12 +412,13 @@ The 2026-08-28 artifact uses rubric `v2.8` and lacks `caseInputSha256`.
 Its server revision is `644f3649c449d899021d2c95c52641fcb09d1966`.
 Its artifact SHA-256 is `3fa1bf01fe831e999c5282b332ec1309b7dcb9804e6cc4ec41135ab0681531dd`.
 
-The free paired check returned `INDETERMINATE` with denominator zero.
-Both inputs lacked valid case identity hashes.
-The old artifact cannot enter `qa-paired-ordinal-ni-v1`.
+The pre-spend paired check returned `INDETERMINATE` with denominator zero.
+The old artifact cannot enter `qa-paired-ordinal-ni-v1` because it lacks case identity hashes.
 
-Therefore, this round is not a valid paired comparison against the old artifact.
-This round will establish one compatible side for a later same-tuple pair.
+The new Method 2 artifact also cannot enter a 100-ID paired look.
+Its one T4 contradiction excludes `q-eco-stellar-wallets-list`.
+Paired eligibility is `99`, below the required `100`.
+The method result is therefore `INDETERMINATE`.
 A later paired repeat needs a new plan, review, and paid authorization.
 
 ## Unresolved owner product margin
@@ -428,18 +471,19 @@ The owner must resolve this margin before any later paired decision.
 | Artifact | Path |
 | --- | --- |
 | Reviewed brief | `.agents/rounds/2026-08-29-five-track-same-100.md` |
-| Smoke result | `eval/qa/results/<timestamp>-variantA.json` |
-| Same-100 result | `eval/qa/results/<timestamp>-variantA.json` |
-| Optional rejudge result | `eval/qa/results/<timestamp>-rejudge.json` |
+| Smoke result | `eval/qa/results/2026-08-30T00-43-10-variantA.json` |
+| Same-100 result | `eval/qa/results/2026-08-30T03-43-11-variantA.json` |
+| Optional rejudge result | Not created |
 | Durable stability register | `eval/qa/results/2026-08-29-five-track-same-100-stability.json` |
 | Preflight surface report | `/tmp/raven-eval-surface.json` |
 | Per-method surface report | `/tmp/raven-eval-surface-<method>.json` |
 | Operator handoff | `/tmp/eval-round-sol.md` |
-| Independent review | `/tmp/five-track-same-100-pre-spend-review-grok.md` |
+| Smoke handoff and review | `/tmp/eval-smoke-sol.md`; `/tmp/eval-smoke-review-grok.md` |
+| Method 2 handoff and review | `/tmp/eval-full-sol.md`; `/tmp/eval-full-review-grok.md` |
+| Pre-spend review | `/tmp/five-track-same-100-pre-spend-review-grok.md` |
 | Old local baseline | `/Users/kalepail/Desktop/stellar-raven-codemode/eval/qa/results/2026-08-28T19-27-08-variantA.json` |
 
-Use distinct timestamps to identify the smoke and same-100 files.
-Record their exact paths and SHA-256 values before review.
+Both result paths stay local and gitignored.
 
 ## Review finding reconciliation
 
@@ -456,38 +500,66 @@ Record their exact paths and SHA-256 values before review.
 | L3 | Corrected the `sourceIdentity` command in the local handoff. |
 | L4 | Added `DEV_ALLOW_UNAUTHENTICATED=true` as a local prerequisite. |
 
-## Independent review plan
+## Independent review
 
-The Grok high-effort adversarial review completed on 2026-08-29.
-That reviewer differed from the Sol author and the Fable orchestrator.
-The review required changes in findings H1, H2, M1-M4, and L1-L4.
+The Grok high-effort pre-spend review completed on 2026-08-29.
+It differed from the Sol author and the Fable orchestrator.
+The reviewed brief reconciled H1, H2, M1-M4, and L1-L4 before paid work.
 
-This candidate reconciles all ten findings.
-The source review remains `/tmp/five-track-same-100-pre-spend-review-grok.md`.
+Grok high independently reviewed the complete smoke on 2026-08-30.
+The review found the smoke complete and mechanically suitable for Method 2.
+It also required healthy Docs and Lumenloop probes before Method 2.
+Those free service gates passed.
 
-Commit this reviewed-brief candidate after all free delta checks pass.
-Then request a bounded delta review of only the repaired sections.
-Do not authorize a paid method until that delta review passes.
+Grok high independently reviewed all Method 2 rows on 2026-08-30.
+The reviewer differed from the Sol run author and Fable orchestrator.
+The review used current public sources for every `wrong` row.
+It confirmed all pins, costs, tracks, and artifact hashes.
+Its decision was `VALID WITH A T4 EXCEPTION`.
 
-## Live-verification plan
+## Live-verification result
 
-Review every `wrong`, `partial`, and `error` result.
-Also review surprising passes and all judge contradictions.
-Join each result to its exact case input and golden material.
+The independent review checked every `wrong` row and the T4 contradiction.
+It also checked suspicious partial and correct rows.
+It joined each result to the exact case and saved transcript.
 
-Re-execute disputed claims with free live operations where possible.
-Separate documentation, ecosystem, transcript, and trap evidence lanes.
-Review T3, T4, and T5 evidence explicitly.
+The review used Horizon, current Stellar Docs, repository sources, CVE.org, OSV, GHSA, and product sources.
+No proposed verdict changed.
+No golden was false.
 
-Use the `golden-truth` workflow for any proposed golden change.
-Use independent source classes for disputed or unstable facts.
-Keep uncertainty explicit when a claim cannot be verified.
+The review routed two answering-prompt defects and two reachable-source ranking defects to `.agents/TODO.md`.
+It deduplicated the Quickstart and Freighter defects to `sd-044` and `sd-045`.
+It created `sd-046` for the distinct pool-share reserve documentation conflict.
+Five golden candidates remain for a later `golden-truth` pass.
 
-File evidence-backed upstream findings in `improvements/`.
-Record own-repo work in `.agents/TODO.md`.
-Update the round ledger only after the full review finishes.
+## Judge-contract closeout
 
-Do not push, open a pull request, or deploy during this round preparation.
+The Method 2 artifact used the pinned `claude-sonnet-5` / `v2.9` / `p5` tuple.
+The T4 defect showed one panel vote with `partial` and empty issue arrays.
+The deterministic `partial-without-issue` consistency check correctly rejected that vote.
+
+Rubric `v2.10` fixes the model-facing contract without weakening the deterministic check.
+Every non-trap `partial` must name an issue in `missingFacts` or `wrongClaims`.
+When notes cap a supported claim at partial, `missingFacts` must name the missing corrective distinction.
+The 74 active case notes containing `grade caps at partial` remain unchanged.
+The closeout judge file SHA-256 is `b895910e5b2d0fd17cae6f111ec2ed648fc7c8ddf5f76cee98bf796b28fa8137`.
+
+## Final review finding reconciliation
+
+| Review finding | Disposition |
+| --- | --- |
+| Judge `partial-without-issue` | Fixed in rubric `v2.10`; the deterministic check stays strict. |
+| Raven account or transaction lookup offer | Recorded as an answering-prompt task in `.agents/TODO.md`. |
+| Friendbot Testnet-only wording | Recorded in the same answering-prompt task with Testnet, Futurenet, and local Quickstart. |
+| Pool-share reserve conflict | Created `improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md`. |
+| Quickstart manual close | Added the round recurrence to existing `sd-044`; no duplicate finding. |
+| Freighter HTTPS wording | Added the round recurrence to existing `sd-045`; no duplicate finding. |
+| GitHub security advisory recovery | Added the case evidence to the existing repository-recovery TODO. |
+| SDP native SEP-10 and SEP-24 recovery | Added the case evidence to the existing repository-recovery TODO. |
+| Market-map versus perps | Kept as monitor-only because the review requested no action. |
+| Confidential-token panel tie | Kept as monitor-only because the specified tie-break worked. |
+| Protocol 27 heading | Kept as monitor-only because the avoid remains a method rule. |
+| Five golden candidates | Recorded once in `.agents/TODO.md` for a later `golden-truth` pass. |
 
 ## Free preflight record
 
@@ -519,3 +591,29 @@ The preflight used `WRANGLER_LOG_PATH` under `/tmp` for later Wrangler commands.
 
 `npm run eval:qa:selftest` was not run.
 That command makes seven paid judge calls under the current contract.
+
+## Final closeout checks
+
+| Check | Result |
+| --- | --- |
+| Narrow judge tests | PASS; 2 files and 156 tests |
+| Prompt fixture reproduction | PASS; all 15 hashes reproduced |
+| `npm run eval:qa:compile` | PASS; 500 cases |
+| `npm run eval:qa:register` | PASS; zero reopened cases |
+| `npm run eval:qa:lint -- --since d8ae30bba3e57f7da89bb465e1489ef85b65873d --stale` | PASS; zero errors and 60 known warnings |
+| `npm run eval:selftest` | PASS |
+| `npm run eval:routing -- --gate` | PASS |
+| `npm run eval:qa:paired:validate` | PASS; all six gates |
+| `npm run typecheck` | PASS |
+| `npm test` | PASS; 95 files and 1,506 tests |
+| `WRANGLER_LOG_PATH=/tmp/wrangler-eval-closeout-build.log npm run build` | PASS |
+| `npm run improvements:index` | PASS; 67 findings |
+| `npm run improvements:lint` | PASS; 67 findings |
+| `npm run improvements:lint -- --live` | PASS; live intake checked |
+| `npm run improvements:probes -- --service stellar-docs` | PASS; no applicable probes |
+| `npm run secrets:scan -- --tree` | PASS; no leaks |
+
+The sandbox blocked the first full test attempt from binding `::1`.
+The same test command passed outside that network sandbox.
+The first live improvements lint attempt lacked sandbox network access.
+The same live lint passed with network access.

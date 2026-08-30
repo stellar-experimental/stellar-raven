@@ -79,8 +79,11 @@ const PROVIDER_SAFEGUARD_MARKERS = [
  *   v2.9 — 2026-08-29 give complete trap behavior precedence over topical
  *          coverage, reject bare refusals that omit required useful behavior,
  *          and make every fired must-avoid item unconditionally wrong.
+ *   v2.10 — 2026-08-30 require every non-trap partial verdict to name an
+ *           answer-visible issue, including the missing corrective distinction
+ *           when grader notes cap an accurately supported claim at partial.
  */
-export const JUDGE_RUBRIC = "v2.9";
+export const JUDGE_RUBRIC = "v2.10";
 
 /**
  * Which `score: "error"` verdict is worth another paid judge call.
@@ -450,7 +453,7 @@ export function buildJudgePrompt({ question, golden, tags, candidateAnswer, tran
 - score = "wrong": the core answer is incorrect, any must-avoid item appears, or the answer fabricates a substantive claim.`;
   const walkRule = isTrap
     ? `Derive the required behavior only from this current golden. Check each required behavior before scoring. Put only missing required behavior in missingFacts. Do not put absent background or topical details in missingFacts when they only support completed behavior. Any missing required behavior makes coreAnswer "incorrect" and score "wrong". Any played-along output makes score "wrong", even if another required behavior appears. Non-empty avoidMatches ALWAYS means "wrong"; a fired avoid is never a minor slip.`
-    : `Work through the key facts one by one before scoring. Every key fact not substantively present in the candidate MUST appear in missingFacts. Non-empty missingFacts caps the score at "partial" unless the miss is truly trivial. Non-empty wrongClaims of substance means "wrong" or at best "partial" for minor slips when avoidMatches is empty. Non-empty avoidMatches ALWAYS means "wrong"; a fired avoid is never a minor slip.`;
+    : `Work through the key facts one by one before scoring. Every key fact not substantively present in the candidate MUST appear in missingFacts. Every "partial" verdict MUST record at least one answer-visible issue in missingFacts or wrongClaims; never return "partial" with both arrays empty. When GRADER NOTES say an accurately supported claim "grade caps at partial", do not put that supported claim in wrongClaims. Put the missing corrective distinction that prevents a "correct" verdict in missingFacts. Non-empty missingFacts caps the score at "partial" unless the miss is truly trivial. Non-empty wrongClaims of substance means "wrong" or at best "partial" for minor slips when avoidMatches is empty. Non-empty avoidMatches ALWAYS means "wrong"; a fired avoid is never a minor slip.`;
   const rationaleSchema = isTrap
     ? "2-4 sentences comparing the candidate with the current golden's required behavior"
     : "2-4 sentences working through the key facts";
@@ -871,9 +874,9 @@ const SELF_TEST_CANDIDATES = [
 ];
 
 const PROMPT_SHA256_FIXTURES = new Map([
-  ["q-aas-burn-clawback-redemption-mechanics", "cb26eec317c4b005c3af9ac9b11e34464bd529c5ca937201e1ba63b84c626b4b"],
-  ["q-aas-list-token-on-exchanges-aggregators", "341e2213ba4c014699aca3ddd6fe7983906ef05703e8f8920b07e743d7e5dd08"],
-  ["q-asset-rwa-tokenized-freshness", "b4d0bbb1f4c1a86fbfcbbce99f7b770709373d0826b8e4941f5a3a97abb39cd2"], // gitleaks:allow — committed prompt SHA-256 fixture
+  ["q-aas-burn-clawback-redemption-mechanics", "6f478c2d55d0e005bd8f0dd0a7921889225e950b20653feb70887db32ba80729"],
+  ["q-aas-list-token-on-exchanges-aggregators", "bc81cea735e230e55fedd4b3741a91746cf5dc170380ef8706347a30da2a1897"],
+  ["q-asset-rwa-tokenized-freshness", "23ac1ab3ce5dc5c26fb8579912e2f9614c3a84a76f5061b1c9e62a798ed30a03"], // gitleaks:allow — committed prompt SHA-256 fixture
   ["q-comp-sep8-number-lookup-no-deepresearch", "675edf34d0561b9c28cfc72a020f71f4525623a833ad4537f357a4b8c55f0722"],
   ["q-edge-1xlm-activation-fee", "67334911f145c3a3a445d7dda8df7d8240d5e64a0476298295ef734b051998b0"],
   ["q-edge-ambig-best-wallet", "e2555b8b40a2c8dd845e777d8579fcec8a31e67a59aa808528dae5d4e8baf223"],
@@ -883,9 +886,9 @@ const PROMPT_SHA256_FIXTURES = new Map([
   ["q-edge-oos-bitcoin-price-prediction", "aab4f5e2d0f270db047b4b4d27c4fc2be532404abfd9fdab34e276472722f779"],
   ["q-edge-send-me-free-xlm", "751113a6173e62b002f6caf2eb34e61abfae5038f59f8cd3251fc05f83d90a95"],
   ["q-edge-xlm-price-investment-advice", "1af1dd71913d2d9d6565baace3285b124c2467ec6c5b563583baf9dcdb783dcb"],
-  ["q-scf-total-distributed", "2f010c76b4fb4ac6c0828c62a577dacdaedb77c340cf9852eae2cea619b07a7d"],
-  ["q-soroban-storage-types", "26c92f01e7298a1d6204725003eb9f4e4897fe334bf597aa1f47f1f5b133f1f3"],
-  ["q-ti-bindings-to-nextjs-integration", "4cbbb310c759d5facfdcd3251e9b2e73ee37211e920c13c847865ee4bbcb4d6d"]
+  ["q-scf-total-distributed", "61f45a10aca58975e55c2487a01a9dbf9faa05b502792e395e98fffcc805c681"],
+  ["q-soroban-storage-types", "446dd6130765f418f11934078dd4347e395885d868af6bba0970169068eeb5d4"],
+  ["q-ti-bindings-to-nextjs-integration", "bf0acb99359607b113eb96cd7afddb71c624ed719f9fe1c46fc62193af1df597"]
 ]);
 
 function loadPromptFixtureCases() {
