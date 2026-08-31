@@ -1101,3 +1101,8 @@ routing gates and surfaced the named case at rank five. It increased blind hosti
 The reviewed clause-fit follow-up lives under `eval/vectorize/`.
 Its 2026-08-31 local-only finish completed and measured `FAIL` under both frozen contracts.
 The experiment changed no production search code. See `eval/vectorize/README.md` for the pins.
+
+The reviewed cross-encoder attempt two also completed on 2026-08-31 and measured a verified
+`FAIL`: every registered grid kept both frozen contracts at the lexical baseline while failing
+the routing gate. The experiment changed no production search code. Attempt three of the box
+remains unused. See `eval/vectorize/README.md` for the pins and tables.

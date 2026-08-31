@@ -222,3 +222,45 @@ The measured outcome is `FAIL` with `selected: null`. No production search code 
 The harness and artifact remain as the frozen instrument.
 
 See `.agents/rounds/2026-08-31-eval-routing-next/finish-result-sol.md` for the full command record.
+
+## Cross-encoder measurement attempt (2026-08-31)
+
+The `cross-encoder-fit-v1` experiment is attempt two of the protocol-history routing box.
+It reuses the frozen 683-clause set from the clause-fit attempt
+(`clauseSetSha256` `cc5df2e4d89522c580626cfc21727b927494f5f528f42acfa035187a211d89e5`, artifact
+`e5f86644af89158c3ac4d61ee7f651e2a062c9d292f194cb94872c7eee4e71f4`) and swaps only the model
+class. The pinned model is `Xenova/bge-reranker-base` at commit
+`280bcc27a84e0b898c251e06fddb25171bd9b101` (base `BAAI/bge-reranker-base`), q8 ONNX, loaded
+directly through `AutoTokenizer` plus `AutoModelForSequenceClassification` with `text_pair`
+encoding, `max_length` 512, and one sigmoid over the raw logit. The snapshot parent is
+`~/.cache/stellar-raven/bge-reranker-base-q8-280bcc2`, local-only with no runtime fetch path.
+
+The single fetch and referee each ran once under review gates. The preflight ran twice.
+Its first run recorded the probe-score SHA-256. Its second run confirmed the same value after
+the implementation commit: `e2bc86efb15f5232993b0bf5f63b5ce55cc7241abaec6a7e54364a13b664331b`.
+The implementation commit is `2763fb0afd4e6811f449cb6b1f56f2baf85e3734`, on Node `v24.13.0`
+with `onnxruntime-node` `1.24.3` on `darwin`. The five byte-hash file pins live in the round
+ledger, `.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md`.
+
+The one authorized referee scored all 383,273 pinned pairs and wrote its result. The stamp is
+`2026-08-31T23-36-38-660Z-cross-encoder-fit-v1`. The score-cache SHA-256 is
+`fa1252fc8bfbf62b6f69bb8ca431cf603d2b512e4d0299b2ca0de0d7c2cec0bc`, and the result SHA-256 is
+`529351b1562b14f68d18ef94b584ca37ae61290f68cfff7a5a1489e8b601ae0d`.
+
+| Reading | Original top-five / controls | Blind top-five / controls | Routing gate | Changed rankings | Outcome |
+| --- | --- | --- | --- | ---: | --- |
+| identity | 4/8, 1/4 | 3/11, 6/9 | pass | 0 | calibration only |
+| pure fit | 5/8, 2/4 | 3/11, 4/9 | fail | 495 | diagnostic only |
+| `m = 0.05` | 4/8, 1/4 | 3/11, 6/9 | fail | 338 | fail |
+| `m = 0.10` | 4/8, 1/4 | 3/11, 6/9 | fail | 276 | fail |
+| `m = 0.20` | 4/8, 1/4 | 3/11, 6/9 | fail | 215 | fail |
+
+Every registered grid kept both frozen contracts at the lexical baseline while failing the
+routing gate. Among the grids, `m = 0.20` had the fewest gate failures (four) and the fewest
+changed rankings (215). The measured outcome is `FAIL` with `selected: null`, and the
+independent Terra verification recomputed all five readings from the stored cache and passed.
+No production search code changed. No `improvements/` finding applies: the result measures
+this repository's ranking. Attempt two is spent; attempt three remains unused and needs its
+own reviewed brief with a distinct mechanism.
+
+See `.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md` for the full record.
