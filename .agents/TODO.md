@@ -9,20 +9,6 @@ archive. Each item states what is wrong, how it was found, and what "done" means
 
 ## Improvements backlog
 
-### Remove a blockquote marker from generated improvement titles
-
-`oneLineTitle` preserves a leading `>` from the first Markdown paragraph. The generated
-`improvements/INDEX.md` title for `sd-036` therefore starts with `>`. This is a presentation defect,
-not a finding-state defect.
-
-Add a regression test to `test/improvements-resolve.test.ts`, fix the shared title helper, and
-regenerate the index. Do not replace `scripts/improvements-resolve.mjs`'s global GitHub-reference
-matcher with the non-global `GITHUB_EVIDENCE_REF_RE`. A later refactor needs a shared extraction
-helper if it removes that private matcher.
-
-Done when: generated titles remove a leading blockquote marker, the resolver tests pass, and the
-index comes only from `npm run improvements:index`.
-
 ### Watch Stellar-Light/stellarlight#1031 for the maintainer close
 
 `sls-074` was retired on 2026-08-28 after a live verification comment
@@ -30,35 +16,6 @@ index comes only from `npm run improvements:index`.
 still open at retirement. Untouched open issues stay quiet; do not post reminders.
 
 Done when: the next improvements round records the issue state. No action if it is closed.
-
-## Playground
-
-### Raise the user-message ceiling to 8,000 characters without truncation
-
-The current client uses a 4,000-character `maxlength`, and `parseChatBody` silently slices user
-messages to that limit. ADR-0008 replaces both behaviors.
-
-Keep the full pasted text editable. Show a live count and exact excess, disable Send while over the
-limit, and use an accessible inline error associated with the composer. Reject bypassed requests
-server-side with a 400 response and the same 8,000-character contract. Keep the Playground
-stateless; durable history remains a deferred idea. The existing 20-message and 24,000-character
-history clamps remain unchanged, so longer messages can reduce the number of replayed turns. The
-384-KiB body ceiling already accommodates the new per-message limit.
-
-Done when: client and server tests cover 7,999, 8,000, and 8,001 characters; no path truncates the
-current user message; the UI retains excessive text; accessibility behavior is tested; smoke
-passes; and the Playground idea describes the shipped result.
-
-## Tests
-
-### The `ai` tool-loop guard is never exercised
-
-`test/demo-chat.test.ts:6` calls `vi.mock("ai")`. It spreads `importOriginal` and replaces only
-`streamText`, so the unsafe-finish-reason guard added in `ai@7.0.70` never runs. Smoke stops at the auth gauntlet, and
-`workers-ai-provider` maps unknown finish reasons to `"stop"`, which can hide the exact condition
-the guard exists for. Affects `/demo/chat` only.
-
-Done when: a test stubs the model rather than the module, so the real tool loop runs.
 
 ## Routing
 

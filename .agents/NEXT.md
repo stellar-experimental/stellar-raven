@@ -1,8 +1,7 @@
 # NEXT — handoff for the next work block
 
-Updated 2026-08-31 after the eval-stability and protocol-history routing round. Read this first. `TODO.md` holds the
-full item text; this file only ranks and sequences. Delete or rewrite this file when the block
-below is done.
+Updated 2026-08-31 after PR #99. Read this first. `TODO.md` holds the full item text.
+This file only ranks and sequences. Delete or rewrite this file when the block is done.
 
 ## State at handoff
 
@@ -45,43 +44,13 @@ below is done.
   QA PR https://github.com/stellar-experimental/stellar-raven/pull/103 also closed without merge.
   The record-only evidence is in
   `.agents/rounds/2026-08-31-rejected-experiments-closeout.md`.
+- PR #99 shipped the Playground limit, the real `ai` tool-loop test, and title cleanup at
+  commit `3c7f0e5`.
+- Focused verification passed 31 tests across four files on 2026-08-31.
 
 ## Ranked blocks
 
-### 1. Golden metadata remainder
-
-Skill: `golden-truth`. PR #100 landed the 47 dead-provenance repairs, both dated-conflict
-dispositions, and the five same-100 candidates. The 2026-08-31 round verified all 54 landed ids,
-repaired all 37 bare-relative files through verified touches (two after blind re-derivation),
-superseded the stale `~3-5s` notes sentence on `q-protocol-ledger-close-time`, created `sd-047`
-(`verified`), and closed the two metadata gaps. Grok 4.6 high completed the independent review and
-follow-up review; every finding was repaired, and the follow-up verdict is `PASS`. PR #106 merged the
-round as `0916e09`. Stellar Docs issue #2805 records `sd-047`. Block 1 is complete.
-
-Decisions recorded on 2026-08-31: `solo://` references in corpus truth metadata are historical dated
-records under `AGENTS.md` and are never rewritten; `q-protocol-ledger-close-time` gets no
-canonical-page caution (ADR-0008 three-case boundary), and its advisory `symmetric-caution` lint
-warning is accepted.
-
-Record the affected case-id list in the round ledger, as this round did
-(`2026-08-31-golden-metadata-remainder/affected-case-ids.md`).
-
-### 2. Eval instruments
-
-Skill: `run-evals`. The Raven capability-boundary prompt change is rejected and does not ship.
-Method 1 failed its product gate. Its inherited environment hash also differed.
-Method 2 did not run and has no authorization from this result.
-The next boundary attempt needs a stronger mechanism and a new pre-registered diagnostic before a
-headline sample.
-
-The Friendbot network-context failure is monitor-only.
-The 2026-08-31 post-collection refresh held the unstable count at 57, with four cases in and four
-cases out. The TODO item is closed. The register combines verdict movement across collections and
-re-judges, so it does not isolate judge-only variance.
-
-The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.
-
-### 3. Routing: `scout.searchResearch` for protocol-history questions
+### 1. Active routing: `scout.searchResearch` for protocol-history questions
 
 `search` never surfaces the research lane for incident questions such as
 `q-protocol-24-whisk-incident`. The data is reachable; ranking is the fault. Measure on the
@@ -91,10 +60,10 @@ Attempt one of the three-attempt box is complete. The clause-level Qwen route-fi
 produced a reviewed `FAIL`. No grid passed both frozen contracts with the routing gates intact.
 The harness and clause artifact remain as the frozen instrument. No production change shipped.
 
-Attempt two is held for a separate, reviewed pinned cross-encoder measurement brief. That brief
-needs its own model pin, loader, artifact, and review chain. Attempt three remains unused.
+Attempt two is the next active block. Prepare a separate, reviewed pinned cross-encoder measurement
+brief. It needs its own model pin, loader, artifact, and review chain. Attempt three remains unused.
 
-### 4. Repository-level tooling recovery
+### 2. Repository-level tooling recovery
 
 The rejected v2 implementation does not ship. Its result was 9 of 12 positive recoveries and 0 of
 8 premature detours. It had 18 of 20 correct and 20 of 20 grounded answers.
@@ -111,17 +80,40 @@ The next Scout finding must use `sls-082`. `sls-081` is historical only.
 `sources.locate` stays deferred. Its phase-zero study reopens only through the measured trigger in
 `ideas/source-delivery-ranked-references.md` §8.
 
-### 5. Playground message limit
+### 3. Eval instruments
 
-Raise the user-message ceiling from 4,000 to 8,000 characters. Keep excessive text intact, disable
-Send, show the accessible count and error, and reject bypassed requests server-side. Keep the
-Playground stateless; durable session history remains a deferred idea.
+Skill: `run-evals`. The Raven capability-boundary prompt change is rejected and does not ship.
+Method 1 failed its product gate. Its inherited environment hash also differed.
+Method 2 did not run and has no authorization from this result.
+The next boundary attempt needs a stronger mechanism and a new pre-registered diagnostic before a
+headline sample.
 
-### 6. Small own-repo fixes
+The Friendbot network-context failure is monitor-only.
+The 2026-08-31 post-collection refresh held the unstable count at 57, with four cases in and four
+cases out. The TODO item is closed. The register combines verdict movement across collections and
+re-judges, so it does not isolate judge-only variance.
 
-- `test/demo-chat.test.ts` mocks the `ai` module, so the tool-loop guard never runs. Stub the
-  model instead.
-- Remove the leading blockquote marker from generated improvement titles.
+The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.
+
+## Completed blocks
+
+### Golden metadata remainder
+
+Skill: `golden-truth`. PR #100 landed the 47 dead-provenance repairs, both dated-conflict
+dispositions, and the five same-100 candidates. The 2026-08-31 round verified all 54 landed ids,
+repaired all 37 bare-relative files through verified touches (two after blind re-derivation),
+superseded the stale `~3-5s` notes sentence on `q-protocol-ledger-close-time`, created `sd-047`
+(`verified`), and closed the two metadata gaps. Grok 4.6 high completed the independent review and
+follow-up review; every finding was repaired, and the follow-up verdict is `PASS`. PR #106 merged the
+round as `0916e09`. Stellar Docs issue #2805 records `sd-047`. This block is complete.
+
+Decisions recorded on 2026-08-31: `solo://` references in corpus truth metadata are historical dated
+records under `AGENTS.md` and are never rewritten; `q-protocol-ledger-close-time` gets no
+canonical-page caution (ADR-0008 three-case boundary), and its advisory `symmetric-caution` lint
+warning is accepted.
+
+Record the affected case-id list in the round ledger, as this round did
+(`2026-08-31-golden-metadata-remainder/affected-case-ids.md`).
 
 ## Owner decisions
 
@@ -143,8 +135,5 @@ Promotion also needs one same-tuple pinned pair for recalibration.
 
 ## Suggested sequence
 
-Block 3 is held until a separate cross-encoder measurement brief passes review. Block 4 remains
-monitor-only until its free Horizon probe returns `28`.
-
-Continue with block 5, the Playground message limit. Then complete block 6, the small own-repo
-fixes. Resolve the owner product-loss margin before a later paired QA promotion.
+Start block 1 with the cross-encoder measurement brief. Block 2 remains monitor-only until its free
+Horizon probe returns `28`. Resolve the owner product-loss margin before a later paired QA promotion.
