@@ -56,7 +56,7 @@ Total findings: 69
 | sd-044 | The Quickstart container supports a manual ledger-close mode. The stellar/quickstart start script parses --enable-core-manual-close and…    | reported-upstream | 2026-08-14 | 1           |
 | sd-045 | The dapp frontend guide states one unqualified requirement: "Freighter wallet requires a secure connection (HTTPS) to interact with your…   | reported-upstream | 2026-08-14 | 1           |
 | sd-046 | The Lumens and Accounts pages group traditional-asset and pool-share trustlines as account subentries. Neither page states the important…   | proposed          | 2026-08-30 | 0           |
-| sd-047 | Two canonical developer-docs pages state different ledger cadences with the same sentence frame. The Validators introduction…               | verified          | 2026-08-31 | 0           |
+| sd-047 | Two canonical developer-docs pages state different ledger cadences with the same sentence frame. The Validators introduction…               | reported-upstream | 2026-08-31 | 0           |
 
 ## lumenloop
 

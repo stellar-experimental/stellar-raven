@@ -1,7 +1,7 @@
 ---
 id: sd-047
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-08-31
 upstreamTitle: The Validators introduction says ledgers close every 3-5 seconds while the Stellar Stack page says every 5-7 seconds
 evidence:
@@ -17,6 +17,7 @@ evidence:
   - 2026-08-30 orchestrator fetch recorded the same two sentences in .agents/rounds/2026-08-30-golden-metadata-remainder.md
   - source case eval/qa/corpus/battery/protocol-core/q-protocol-ledger-close-time.json; its truth.verified entry dated 2026-08-31 names this finding in rootCause
   - proposer and blind re-derivation reports in .agents/rounds/2026-08-31-golden-metadata-remainder/ (matrices-lane-b-events-d1.md, review-blind-ledger-close-grok.md)
+  - upstream issue filed 2026-08-31: https://github.com/stellar/stellar-docs/issues/2805
 ---
 
 ## Finding

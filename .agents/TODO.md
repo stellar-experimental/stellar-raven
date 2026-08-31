@@ -31,20 +31,6 @@ still open at retirement. Untouched open issues stay quiet; do not post reminder
 
 Done when: the next improvements round records the issue state. No action if it is closed.
 
-## Goldens
-
-### File `sd-047` with the Stellar Docs owner
-
-`improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md` is `verified`
-(2026-08-31): `docs/validators/README.mdx` says "every 3-5 seconds" while `stellar-stack.mdx` says
-"every 5-7 seconds"; the protocol minimum target is 4000 ms. The stale `~3-5s` sentence in
-`golden.notes` of `q-protocol-ledger-close-time` was superseded on 2026-08-31 with a stamped gospel
-change. Decision recorded 2026-08-31: no canonical-page caution, because ADR-0008 fixes that boundary at three cases; the advisory `symmetric-caution` lint warning on the case is accepted.
-
-Done when: `npm run improvements:file -- --file improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md --dry-run`
-is reviewed, the issue is filed on `stellar/stellar-docs`, the durable URL is in evidence, the status is
-`reported-upstream`, and `npm run improvements:index` and `npm run improvements:lint` pass.
-
 ## Playground
 
 ### Raise the user-message ceiling to 8,000 characters without truncation
