@@ -1,0 +1,390 @@
+{
+  "q-protocol-ledger-close-time": [
+    {
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack",
+      "status": 200,
+      "claimText": "'update the ledger every 5-7 seconds'.",
+      "found": true,
+      "quote": "update the ledger every 5-7 seconds. Nodes reach consensus using the Stellar Consensus Protocol, which can you can learn"
+    },
+    {
+      "url": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+      "status": 200,
+      "claimText": "two independent 199-delta samples: min 5 / max 7 / median 6 s and min 5 / max 9 (one delta) / median 6 s.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0070.md",
+      "status": 200,
+      "claimText": "target close time plus nomination and ballot timeouts are network-configurable; initial target 5000 ms.",
+      "found": true,
+      "quote": "actions Preamble CAP: 0070 Title: Configurable SCP Timing Parameters Working Group: Owner: Garand Tyson &lt;@SirTyson&g"
+    }
+  ],
+  "q-ti-channel-accounts-throughput": [
+    {
+      "url": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling",
+      "status": 200,
+      "claimText": "funded channel sources still separate transaction sequence/fees from operation sources and signatures.",
+      "found": true,
+      "quote": "ival Stellar Asset Contract Tokens Transactions Type Conversions Security Best Practices Learn Core Concepts Stellar Sta"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling",
+      "status": 200,
+      "claimText": "blind new-sequence payment resubmission after tx_bad_seq can still duplicate one user intent.",
+      "found": true,
+      "quote": "ransaction : Before attempting any resubmissions, you need to make sure your transaction has timed out based on the time"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling",
+      "status": 200,
+      "claimText": "TRY_AGAIN_LATER remains temporary while terminal result codes require transaction correction.",
+      "found": true,
+      "quote": "ival Stellar Asset Contract Tokens Transactions Type Conversions Security Best Practices Learn Core Concepts Stellar Sta"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+      "status": 200,
+      "claimText": "identical-envelope submissions remain hash-identical while providers can return duplicate or pending states.",
+      "found": true,
+      "quote": "CTP Data Overview Analytics Hubble Providers API RPC RPC Providers Horizon Horizon Providers Migrate Horizon to RPC Inde"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling",
+      "status": 200,
+      "claimText": "account sequence numbers remain signed 64-bit values, preserving invalid-u32 as a client parsing/typing issue.",
+      "found": true,
+      "quote": "ged - same operations, signatures, sequence number, etc... Be careful when working around an error that does require cha"
+    }
+  ],
+  "q-smart-wallet-fee-sponsorship": [
+    {
+      "url": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+      "status": 200,
+      "claimText": "G-address issued balances use trustlines; C-address balances use contract data.",
+      "found": true,
+      "quote": "ance. This logic lines up with how trustlines interact with the AUTH_REQUIRED_FLAG issuer flag, allowing asset issuers t"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+      "status": 200,
+      "claimText": "fee bumps pay another account's transaction fee.",
+      "found": true,
+      "quote": "Fee-bump transactions | Stellar Docs Skip to main content Build Overview Building with AI Buil"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
+      "status": 200,
+      "claimText": "begin/end sponsorship moves reserve obligations to the sponsor.",
+      "found": true,
+      "quote": "rves operations must appear in the sponsorship transaction, guaranteeing that both accounts agree to the sponsorship. An"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+      "status": 200,
+      "claimText": "SAC supplies the contract interface and balance model for issued assets.",
+      "found": true,
+      "quote": "tions Stellar Asset Contract Token Interface Tutorial: Issue an Asset Publish Asset Information CCTP Data Overview Analy"
+    },
+    {
+      "url": "https://docs.openzeppelin.com/relayer/guides/stellar-sponsored-transactions-guide",
+      "status": 200,
+      "claimText": "the provider design uses allowed tokens, fee caps, balance checks, and swaps.",
+      "found": true,
+      "quote": "uot;max_fee&quot; : 100000 , &quot;allowed_tokens&quot; : [ { &quot;asset&quot; : &quot;USDC:GBBD47IF6LWK7P7MDEVSCWR7DPU"
+    }
+  ],
+  "q-scf-eligibility-criteria": [
+    {
+      "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+      "status": 200,
+      "claimText": "the current page defined three Build tracks and their intended applicants.",
+      "found": true,
+      "quote": "a “Project”). SCF Build Awards are intended to cover (up to ~4 months of) development costs until the Project launches o"
+    },
+    {
+      "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria",
+      "status": 200,
+      "claimText": "the current page exposed active eligibility and review requirements.",
+      "found": true,
+      "quote": "rables that don’t align with SCF’s requirements GitBook Assistant (Integration Track) A present, concrete, and credible"
+    },
+    {
+      "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+      "status": 200,
+      "claimText": "the workflow separated prescreen, panel, revision, Open vote, and KYC.",
+      "found": true,
+      "quote": "istant 🧭 SCF Build Review Process Prescreen GitBook Assistant SDF confirms your application is complete and meets the c"
+    },
+    {
+      "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/official-rules-for-submissions",
+      "status": 200,
+      "claimText": "teams and organizations remained eligible under participant rules.",
+      "found": true,
+      "quote": "3 (“Teams”); and GitBook Assistant Organizations (including corporations, not-for-profit corporations, and other nonprof"
+    }
+  ],
+  "q-defi-etherfuse-stablebonds": [
+    {
+      "url": "https://app.etherfuse.com/bonds/USTRY",
+      "status": 200,
+      "claimText": "the page exposes changing issuance, maturity, liquidity, price, and APY fields that require dates.",
+      "found": true,
+      "quote": "rice Price Per Token USD $1.073377 Liquidity Current Buy Liquidity 1.000000 Token Symbol USTRY Start Date Aug 27, 2026 N"
+    },
+    {
+      "url": "https://etherfuse.com/products/stablebonds",
+      "status": 200,
+      "claimText": "Etherfuse lists CETES as Mexican MXN debt and USTRY as U.S. USD debt.",
+      "found": true,
+      "quote": "Stablebonds | Etherfuse Products Stablebonds Company Developers Resources EN ES Launch app Book a d"
+    },
+    {
+      "url": "https://app.etherfuse.com/legal/stablebonds-overview",
+      "status": 200,
+      "claimText": "the terms cover custody, NAV redemption, maturity, market liquidity, fees, and liabilities.",
+      "found": true,
+      "quote": "valuation, fees, and other product liabilities. Redemption occurs at the applicable NAV, subject to the product’s disclo"
+    },
+    {
+      "url": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+      "status": 200,
+      "claimText": "liquidity, oracle, pool, and response risks remain explicit.",
+      "found": true,
+      "quote": "ipulated the market price of a low liquidity token on a key decentralized exchange on Stellar, and used the inflated val"
+    },
+    {
+      "url": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+      "status": 200,
+      "claimText": "the affected YieldBlox pool consumed the manipulated oracle price.",
+      "found": true,
+      "quote": "On February 22, 2026, an attacker manipulated the market price of a low liquidity token on a key decentralized exchange"
+    }
+  ],
+  "q-scf-sdf-marketing-grant": [
+    {
+      "url": "https://stellar.org/grants-and-funding/marketing-grants",
+      "status": 200,
+      "claimText": "the current dedicated page supported the program facts.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://stellar.org/grants-and-funding/marketing-grants",
+      "status": 200,
+      "claimText": "the page still showed the changeable $500,000 cap.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://stellar.org/grants-and-funding/marketing-grants",
+      "status": 200,
+      "claimText": "the page required use cases, timelines, budgets, benchmarks, and execution capability.",
+      "found": true,
+      "quote": "capability to define budgets, set benchmarks, execute on marketing campaigns, and deliver results. Initiatives Marketin"
+    },
+    {
+      "url": "https://stellar.org/grants-and-funding/marketing-grants",
+      "status": 200,
+      "claimText": "the page provided a direct SDF application form.",
+      "found": true,
+      "quote": "on about your project based on the provided guidelines. Funding for a marketing grant is up to $500k . For questions, co"
+    }
+  ],
+  "q-defi-wisdomtree-crdt": [
+    {
+      "url": "https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of",
+      "status": 200,
+      "claimText": "identifies CRDYX and CRDT as the private-credit fund and token.",
+      "found": true,
+      "quote": "WisdomTree Brings Private Credit Onchain with the Launch of Tokenized WisdomTree Private Credit and Alt"
+    },
+    {
+      "url": "https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of",
+      "status": 200,
+      "claimText": "gives the 2025-09-12 Ethereum and Stellar launch.",
+      "found": true,
+      "quote": "the fund will be tokenized on the Ethereum and Stellar blockchains. The WisdomTree Prime and WisdomTree Connect platfor"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1859001/000121465925013564/wtd98250485bpos.htm",
+      "status": 403,
+      "claimText": "makes the transfer-agent book entry official and describes wallet approval.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://stellar.wisdomtree.com/.well-known/stellar.toml",
+      "status": 200,
+      "claimText": "lists CRDT issuer GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45.",
+      "found": true,
+      "quote": "IRZWVTIYRMHBXTHGCDS4XJXXYEUALVD\", \"GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45 ] VERSION=\"2.0.0\" [DOCUMENTA"
+    },
+    {
+      "url": "https://horizon.stellar.org/assets",
+      "status": 200,
+      "claimText": "returns CRDT SAC CBQDK4Y3B2RYUSXE6JYYTHB6AIW655FPGE4OW7A2BWDZXZ5RALQ3UK3P for the exact issuer query.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    }
+  ],
+  "q-defi-provide-liquidity-impermanent-loss": [
+    {
+      "url": "https://www.defindex.io/terms",
+      "status": 200,
+      "claimText": "the owner terms say historical vault performance does not indicate future results.",
+      "found": true,
+      "quote": "entation, educational content, and performance dashboards. 2.3 What DeFindex Does NOT Do DeFindex does not: provide inve"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+      "status": 200,
+      "claimText": "Classic pools use explicit deposit and withdrawal operations.",
+      "found": true,
+      "quote": "zed No restrictions on deposit and withdrawal Trustline for A is fully authorized but trustline for B is authorized to m"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/liquidity-pool",
+      "status": 200,
+      "claimText": "Soroban pool shares and exits are contract-defined.",
+      "found": true,
+      "quote": "a constant-product liquidity pool contract. Skip to main content Build Overview Building with AI Build Smart Contracts"
+    },
+    {
+      "url": "https://www.defindex.io/terms",
+      "status": 200,
+      "claimText": "vault risks include low liquidity, reward changes, harvest execution, configuration, and oracle-linked liquidation.",
+      "found": true,
+      "quote": "pplicable smart contract logic and configuration. Each Vault Role is associated with an Address, which may be an externa"
+    },
+    {
+      "url": "https://github.com/blend-capital/docs-v2/blob/main/blend-whitepaper.md",
+      "status": 200,
+      "claimText": "Blend documents a 17-day withdrawal queue and conditional withdrawal.",
+      "found": true,
+      "quote": "000, the reduction of the backstop withdrawal queue time to 17 days, and the modification of the reward zone length to a"
+    }
+  ],
+  "q-eco-stellar-rwa-stablecoin-volume": [
+    {
+      "url": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+      "status": 200,
+      "claimText": "remains a dated Q1 2026 source for RWA and stablecoin observations.",
+      "found": true,
+      "quote": "structure. Payments hit a new high Stablecoin payment volume reached $5.5 billion in Q1, an all-time high and up 72% yea"
+    },
+    {
+      "url": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+      "status": 200,
+      "claimText": "shows Q1 2026 and publication date 2026-05-07.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://docs.rwa.xyz/methodology/metrics.md",
+      "status": 200,
+      "claimText": "defines supply and value as point-in-time snapshots.",
+      "found": true,
+      "quote": "supply and value are point-in-time snapshots, while mints, burns, and transfers are accumulated over the period"
+    },
+    {
+      "url": "https://docs.rwa.xyz/methodology/metrics.md",
+      "status": 200,
+      "claimText": "defines transfer volume during a period and accumulates transfers over that period.",
+      "found": true,
+      "quote": "ances change automatically without transfers), we track the raw (base unit) supply separately from the display supply. T"
+    },
+    {
+      "url": "https://stellar.org/blog/foundation-news/q1-2026-execution-at-network-scale",
+      "status": 200,
+      "claimText": "the dated quarterly scope requires a staleness warning for current use.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    }
+  ],
+  "q-defi-soroswap-vs-stellarx": [
+    {
+      "url": "https://github.com/soroswap/docs",
+      "status": 200,
+      "claimText": "Soroswap documents owned AMM, aggregator, and route-API components.",
+      "found": true,
+      "quote": "ntation for Soroswap AMM, Soroswap Aggregator & Spacewalk Bridge Implementation · GitHub Skip to content Navigation Menu"
+    },
+    {
+      "url": "https://github.com/soroswap/docs",
+      "status": 200,
+      "claimText": "the owner README separates AMM contracts, aggregation, and API routing.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://ultrastellar.com/",
+      "status": 200,
+      "claimText": "Ultra Stellar still lists StellarX among its products.",
+      "found": true,
+      "quote": "web and mobile app. Open Lobstr → StellarX Your one stop for AMM & DEX StellarX is a powerful trading platform built on"
+    },
+    {
+      "url": "https://www.stellarx.com/legal/terms",
+      "status": 200,
+      "claimText": "StellarX remains a non-custodial user interface for the Classic decentralized exchange.",
+      "found": "unrendered",
+      "quote": "UNRENDERED: raw HTML has no usable visible text; phrase not found."
+    }
+  ],
+  "q-crp-sdp-operation": [
+    {
+      "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+      "status": 200,
+      "claimText": "current observations come from a dated page.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform",
+      "status": 200,
+      "claimText": "the product page supports an explicit observation date.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets",
+      "status": 200,
+      "claimText": "embedded passkey C wallets remain distinct.",
+      "found": true,
+      "quote": "Embedded Wallets | Stellar Docs Skip to main content Build Overview Building with AI"
+    }
+  ],
+  "q-scf-vs-sdf-enterprise-fund": [
+    {
+      "url": "https://stellar.org/enterprise-fund/apply",
+      "status": 200,
+      "claimText": "the current Enterprise page still exposed an application route.",
+      "found": false,
+      "quote": "NOT-FOUND-ON-PAGE"
+    },
+    {
+      "url": "https://stellar.org/grants-and-funding/matching-fund",
+      "status": 200,
+      "claimText": "the page exposed current stage, matching, and application terms.",
+      "found": true,
+      "quote": "Stellar | Stellar Matching Fund About Use Cases Start Building Community Start Building Menu Learn Stel"
+    },
+    {
+      "url": "https://stellar.org/grants-and-funding",
+      "status": 200,
+      "claimText": "the funding index kept SCF, Marketing, Enterprise, and Matching separate.",
+      "found": true,
+      "quote": "estments through SDF Matching, and Enterprise Fund, as well as connections to accelerators Ready to bring your Stellar p"
+    },
+    {
+      "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award",
+      "status": 200,
+      "claimText": "SCF still used eligibility before invitation and Open-only community voting.",
+      "found": true,
+      "quote": "nd aligned, you&#x27;ll receive an invitation via email to submit a full SCF Build proposal to one of the three Build Aw"
+    }
+  ]
+}

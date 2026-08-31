@@ -1,0 +1,685 @@
+{
+  "q-eco-stellar-wallets-list": {
+    "c1": true,
+    "c2": false,
+    "c3": {
+      "live": 3,
+      "keyFacts": 3,
+      "pass": true
+    },
+    "c4": true,
+    "c5": {
+      "pass": true,
+      "classBar": true,
+      "landed": true,
+      "newRows": 1
+    },
+    "notes": "Failed: c2"
+  },
+  "q-pc-protocol-27-zipper": {
+    "c1": true,
+    "c2": false,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": {
+      "pass": true,
+      "classBar": true,
+      "landed": true,
+      "newRows": 1
+    },
+    "notes": "Failed: c2"
+  },
+  "q-ti-freighter-localhost-not-detected": {
+    "c1": true,
+    "c2": false,
+    "c3": {
+      "live": 4,
+      "keyFacts": 5,
+      "pass": false
+    },
+    "c4": true,
+    "c5": {
+      "pass": true,
+      "classBar": true,
+      "landed": true,
+      "newRows": 1
+    },
+    "notes": "Failed: c2, c3"
+  },
+  "q-agent-payment-standard-choice": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-builder-rust-soroban-devs": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 3,
+      "keyFacts": 3,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-cctp-v2-usdc-stellar": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-comp-finclusive-caas": {
+    "c1": true,
+    "c2": false,
+    "c3": {
+      "live": 4,
+      "keyFacts": 3,
+      "pass": false
+    },
+    "c4": true,
+    "c5": {
+      "pass": false,
+      "classBar": false,
+      "landed": true,
+      "newRows": 1
+    },
+    "notes": "Failed: c2, c3, c5"
+  },
+  "q-crp-oz-rwa-erc3643-trex": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-crp-sdp-operation": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 3,
+      "keyFacts": 3,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-defi-blend-alternatives": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-defi-etherfuse-stablebonds": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-defi-flash-loans": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-defi-liquid-staking-whitespace": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-defi-provide-liquidity-impermanent-loss": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-defi-rwa-scf-similar": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-defi-soroswap-vs-stellarx": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-defi-wisdomtree-crdt": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-eco-defi-tvl-current": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-eco-stellar-rwa-stablecoin-volume": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-edge-fresh-latest-scf-round": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-edge-fresh-most-recent-news": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-edge-open-world-recovery-after-narrow-miss": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-hist-remittance-corridors": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-hot-sdf-transparency-wallets-reports": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-infra-hubble-bigquery": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-infra-quickstart-local-network": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-protocol-23-whisk-caps": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-protocol-base-reserve-min-balance": {
+    "c1": true,
+    "c2": false,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": {
+      "pass": true,
+      "classBar": true,
+      "landed": true,
+      "newRows": 2
+    },
+    "notes": "Failed: c2"
+  },
+  "q-protocol-cap-process": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-protocol-ledger-close-time": {
+    "c1": true,
+    "c2": false,
+    "c3": {
+      "live": 3,
+      "keyFacts": 2,
+      "pass": false
+    },
+    "c4": true,
+    "c5": {
+      "pass": true,
+      "classBar": true,
+      "landed": true,
+      "newRows": 2
+    },
+    "notes": "Failed: c2, c3"
+  },
+  "q-scf-academic-research-grant": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-scf-eligibility-criteria": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-scf-instawards": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-scf-regional-india": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 3,
+      "keyFacts": 3,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-scf-sdf-bug-bounty": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-scf-sdf-marketing-grant": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-scf-submission-lifecycle-deadlines": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-scf-v7-changes": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 3,
+      "keyFacts": 3,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-scf-vs-sdf-enterprise-fund": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-smart-wallet-fee-sponsorship": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-sor-confidential-tokens": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-sor-contract-trustlines-c-address": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-sor-decode-hosterror-codes": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-soroban-deploy-cli": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-soroban-resource-limits": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-soroban-storage-types": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-soroban-vuln-classes": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 4,
+      "keyFacts": 4,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-ti-channel-accounts-throughput": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-ti-cli-rust-windows-troubleshooting": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 6,
+      "keyFacts": 6,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-ti-enumerate-holders-airdrop": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-ti-secret-key-vs-mnemonic-derivation": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 6,
+      "keyFacts": 6,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-tool-cctp-stellar-integration": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 7,
+      "keyFacts": 7,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-tool-passkeykit-smart-wallet": {
+    "c1": true,
+    "c2": true,
+    "c3": {
+      "live": 5,
+      "keyFacts": 5,
+      "pass": true
+    },
+    "c4": true,
+    "c5": null,
+    "notes": "Pass"
+  },
+  "q-tool-soroban-auth-audit-live": {
+    "c1": true,
+    "c2": false,
+    "c3": {
+      "live": 3,
+      "keyFacts": 4,
+      "pass": false
+    },
+    "c4": true,
+    "c5": {
+      "pass": true,
+      "classBar": true,
+      "landed": true,
+      "newRows": 1
+    },
+    "notes": "Failed: c2, c3"
+  }
+}

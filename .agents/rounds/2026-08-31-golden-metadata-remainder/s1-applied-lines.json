@@ -1,0 +1,472 @@
+{
+ "q-raph-stolen-wallet-recovery": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — SDF 'DOES NOT have the capability to freeze or return XLM'; class B CAP-0035 limits clawback to issuer assets.",
+   "Live re-check 2026-08-31: https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud — keep tx hashes, addresses, dates; never pay recovery services; SDF never asks for keys."
+  ],
+  "sib": "reverse|freeze|drained|clawback|recovery agent",
+  "read": [
+   "q-edge-validators-reverse-tx-fork-detection",
+   "q-comp-clawback-cap0035",
+   "q-n3-wallet-hacked-support-redirect",
+   "q-raph-missing-exchange-memo"
+  ]
+ },
+ "q-jutsu-cash-crypto-ramps": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — 'over 475,000 global cash to crypto on and off ramp locations' on this date; class D MoneyGram Ramps page reports 470000+ locations, so counts are dated snapshots.",
+   "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — 'Supported fiat payment methods will differ depending on the on and off-ramp institution'; class D provider page lists its own country footprint."
+  ],
+  "sib": "cash-to-crypto|off-ramp|Anchor Directory|corridor",
+  "read": [
+   "q-crp-anchors-by-corridor",
+   "q-anchor-moneygram-ramps",
+   "q-raph-offramp-xlm-usdc",
+   "q-pay-anchor-msb-licensing"
+  ]
+ },
+ "q-jutsu-check-account-history": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — lookup takes the public key; class F Horizon /accounts/GAAEUUIR…OMNY returned balances with no secret (F3).",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — separate testnet endpoint documented; class F public mainnet /transactions returned public hashes, no auth."
+  ],
+  "sib": "account balances|transaction history|public key|block explorer",
+  "read": [
+   "q-ti-block-explorer-basics",
+   "q-crp-export-tx-history-taxes",
+   "q-ti-historical-pointintime-balances"
+  ]
+ },
+ "q-jutsu-what-is-a-memo": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-transaction.x#L764-L785 — MEMO_NONE/TEXT/ID/HASH/RETURN; class F tx ff79aa13… has memo_type text.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — pooled services used memos to tell users apart; class B SEP-0029 and class A Kraken confirm the exact-value rule."
+  ],
+  "sib": "memo type|pooled account|memo ID|memo text",
+  "read": [
+   "q-pc-memos-reference",
+   "q-raph-exchange-memo",
+   "q-raph-missing-exchange-memo"
+  ]
+ },
+ "q-raph-claimable-balance-safety": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — two-part conditional flow; class B CAP-0023 defines ClaimableBalanceEntry; class F live entry shows claimants and predicates.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — claimant needs a trustline or the claim fails with op_no_trust; class B CAP-0023 defines CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4."
+  ],
+  "sib": "claimable balance|op_no_trust|ClaimableBalanceEntry",
+  "read": [
+   "q-asset-claimable-balance",
+   "q-aas-claim-received-claimable-balances",
+   "q-raph-phishing-pending-claim",
+   "q-raph-unsolicited-airdrop"
+  ]
+ },
+ "q-raph-exchange-memo": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://support.kraken.com/articles/360000184543-memo-for-stellar-lumens-xlm-deposits — the memo assigns the deposit to the customer account; class B SEP-0029 defines the receiver-side memo requirement.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — one pooled account ID serves many users and memos tell them apart; class B SEP-0029 corroborates."
+  ],
+  "sib": "exchange memo|pooled address|memo_required|memo-less",
+  "read": [
+   "q-edge-exchange-memo-lost-funds",
+   "q-pc-memos-reference",
+   "q-raph-missing-exchange-memo"
+  ]
+ },
+ "q-raph-hardware-wallet": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://www.ledger.com/coin/wallet/stellar — keeps private keys offline; Ledger support 360007223753 says never share the 24 words; class D CISA phishing page covers malicious links; no absolute-protection claim.",
+   "Live re-check 2026-08-31: https://www.ledger.com/coin/wallet/stellar — describes a security control, not a balance threshold; class D sweep (thaibitcast and others) found differing thresholds and no authoritative universal amount."
+  ],
+  "sib": "hardware wallet|Ledger device|recovery phrase|private key device",
+  "read": [
+   "q-tool-wallets-comparison",
+   "q-ti-secret-key-vs-mnemonic-derivation",
+   "q-raph-restore-wallet"
+  ]
+ },
+ "q-raph-low-xlm-transfer-fail": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — XLM pays fees, rent, and minimum-balance reserves; class F Horizon ledger 64209416: base_fee 100, base_reserve 5000000 stroops.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — a failed operation rolls back all previous operations; class B TransactionFrame.cpp commits ltxTx only on success.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — closing a subentry returns its base reserve to the available balance; class B ChangeTrustOpFrame.cpp deletes the trustline when limit == 0.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Account Merge moves XLM and removes the source only without non-signer subentries; class B MergeOpFrame.cpp."
+  ],
+  "sib": "minimum balance|base reserve|AccountMerge|low XLM",
+  "read": [
+   "q-protocol-base-reserve-min-balance",
+   "q-pc-account-merge-reclaim-reserve",
+   "q-edge-1xlm-activation-fee"
+  ]
+ },
+ "q-raph-merchant-payments": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — anchors and payment providers set their own fee structures; class B SEP-0006 separates anchor deposit and withdrawal flows from holding.",
+   "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — businesses determine their own compliance obligations by service and country; class B SEP-0006 defines anchor fee and KYC handling."
+  ],
+  "sib": "merchant|small shop|accept XLM|payment provider|off-ramp",
+  "read": [
+   "q-raph-offramp-xlm-usdc",
+   "q-pay-anchor-msb-licensing",
+   "q-stellar-recurring-payments"
+  ]
+ },
+ "q-raph-missing-exchange-memo": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://support.kraken.com/articles/360000184543-memo-for-stellar-lumens-xlm-deposits — a forgotten memo goes to exchange support; class B SEP-0029: manual receiver intervention; SDF cannot reverse.",
+   "Live re-check 2026-08-31: https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud — hash, addresses, amount, date and time are the evidence fields; class F tx shows them."
+  ],
+  "sib": "missing memo|forgot memo|memo-less|deposit recovery",
+  "read": [
+   "q-edge-exchange-memo-lost-funds",
+   "q-jutsu-what-is-a-memo",
+   "q-raph-exchange-memo"
+  ]
+ },
+ "q-raph-offramp-xlm-usdc": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — off-ramps convert crypto to fiat through an institution; class B SEP-0006 maps a user to an anchor; class D MoneyGram Ramps: 170+ countries.",
+   "Live re-check 2026-08-31: https://developers.circle.com/stablecoins/usdc-contract-addresses — Stellar USDC issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; class F /assets?asset_code=USDC returned ten issuers for one code."
+  ],
+  "sib": "cash out|off-ramp|bank account|anchor",
+  "read": [
+   "q-crp-anchors-by-corridor",
+   "q-asset-usdc-eurc-issuer",
+   "q-jutsu-cash-crypto-ramps"
+  ]
+ },
+ "q-raph-phishing-pending-claim": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — SDF never asks for private keys or deposits; class D CISA says do not click suspicious links and contact the company another way.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — legitimate claimable-balance use; class B CAP-0023 defines the entry; class D sweep found abuse but no universal-fraud rule."
+  ],
+  "sib": "pending XLM|phishing|claimable balance|rectification",
+  "read": [
+   "q-raph-claimable-balance-safety",
+   "q-raph-unsolicited-airdrop",
+   "q-edge-asset-site-scam-detection"
+  ]
+ },
+ "q-raph-remittance-path-payment": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — ramps are the fiat endpoints; class B SEP-0006 defines anchor deposit and withdrawal; class B PathPaymentStrictReceiveOpFrame.cpp converts each hop where liquidity exists.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/path-payments — balances settle at the end of the operation; class B TransactionFrame.cpp commits only on success; provider fees and FX stay off-chain."
+  ],
+  "sib": "remittance|path payment|cross-border|FX",
+  "read": [
+   "q-asset-path-payment-ops",
+   "q-asset-usdc-eurc-path-fx",
+   "q-crp-anchors-by-corridor"
+  ]
+ },
+ "q-raph-remove-scam-token": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-ledger-entries.x#L24-L62 — credit assets carry assetCode plus issuer; class F ten issuers share code USDC.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Change Trust deletes a trustline; class B ChangeTrustOpFrame.cpp blocks a limit below the held balance and liabilities."
+  ],
+  "sib": "scam token|fake token|ChangeTrust|trustline remove|issuer",
+  "read": [
+   "q-edge-asset-site-scam-detection",
+   "q-aas-trustline-limit-lifecycle",
+   "q-ti-enumerate-holders-airdrop"
+  ]
+ },
+ "q-raph-restore-wallet": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/ecosystem/sep-0005.md — path m/44'/148'/x'; class A LOBSTR restore article documents wallet-specific formats.",
+   "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key- — vendor recovery steps; class A LOBSTR phrase page and Ledger support require secrecy; class D CISA on links."
+  ],
+  "sib": "restore wallet|recovery phrase|derivation path|secret key",
+  "read": [
+   "q-ti-secret-key-vs-mnemonic-derivation",
+   "q-tool-passkey-wallet-recovery",
+   "q-raph-hardware-wallet"
+  ]
+ },
+ "q-raph-scam-spam-tokens": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — claimable balances have legitimate uses; class B CAP-0023 defines the entry; class D sweep found abuse reports and legitimate uses.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — a trustline is needed for any asset except XLM; class B Stellar-ledger-entries.x separates native from issued assets."
+  ],
+  "sib": "spam token|scam token|weird claimable|unsolicited asset",
+  "read": [
+   "q-raph-unsolicited-airdrop",
+   "q-raph-remove-scam-token",
+   "q-ti-enumerate-holders-airdrop"
+  ]
+ },
+ "q-raph-unsolicited-airdrop": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — a real protocol feature; class B CAP-0023 defines it; class D sweep shows attackers also abuse it.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — never share private keys or deposit funds on request; class D CISA rejects suspicious links."
+  ],
+  "sib": "unsolicited|airdrop|claimable balance|unlock charge",
+  "read": [
+   "q-raph-phishing-pending-claim",
+   "q-raph-scam-spam-tokens",
+   "q-asset-claimable-balance"
+  ]
+ },
+ "q-raph-usdc-onto-stellar": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://www.circle.com/multi-chain-usdc/stellar — 'Choose USDC on Stellar' and swap across chains via Circle Mint; class B Stellar-ledger-entries.x shows Stellar's distinct asset representation.",
+   "Live re-check 2026-08-31: https://developers.circle.com/stablecoins/usdc-contract-addresses — Stellar USDC issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; class A: trustline required; class F: code alone is ambiguous."
+  ],
+  "sib": "USDC Stellar|ERC-20|Circle issuer|trustline",
+  "read": [
+   "q-asset-usdc-eurc-issuer",
+   "q-token-circle-usdc-on-stellar",
+   "q-cctp-v2-usdc-stellar"
+  ]
+ },
+ "q-raph-withdraw-exchange-self-custody": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — the account public key is the destination; class B XDR defines native XLM; class D MoneyGram shows a separate Stellar route.",
+   "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001252-what-is-a-recovery-phrase-on-lobstr- — anyone with the phrase controls the wallet; class A Ledger support says never share the 24 words."
+  ],
+  "sib": "self-custody|exchange withdrawal|public address|recovery material",
+  "read": [
+   "q-crp-custodial-vs-noncustodial-wallets",
+   "q-ti-find-export-secret-key",
+   "q-raph-restore-wallet"
+  ]
+ },
+ "q-raph-xlm-network-role": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — XLM pays all transaction fees and covers minimum balance requirements; class F Horizon ledger 64209416: base_fee 100, base_reserve 5000000 stroops.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — the lumen is the only token without an issuer or trustline; class B Stellar-ledger-entries.x gives issued assets assetCode and issuer fields."
+  ],
+  "sib": "native asset|XLM fee|XLM reserve|gas",
+  "read": [
+   "q-raph-xlm-simple",
+   "q-protocol-base-reserve-min-balance",
+   "q-edge-metamask-evm-mental-model"
+  ]
+ },
+ "q-raph-xlm-simple": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — 'Lumens (XLM) are the native currency of the Stellar network'; class B Stellar-ledger-entries.x defines ASSET_TYPE_NATIVE = 0.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — fees, rent, and minimum-balance reserves are XLM roles; class F Horizon ledger 64209416: base_fee 100, base_reserve 5000000 stroops.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — XLM needs no issuer or trustline; class B Stellar-ledger-entries.x requires assetCode plus issuer for credit assets."
+  ],
+  "sib": "XLM|lumen|native asset|issuer-backed",
+  "read": [
+   "q-raph-xlm-network-role",
+   "q-edge-ambig-stellar-token-meaning",
+   "q-asset-trustline-basics"
+  ]
+ },
+ "q-raph-xlm-staking": {
+  "lane": "A",
+  "lines": [
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator'; class B stellar-protocol 8912a804: no native-staking CAP; class D: none.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP is FBA with no staking; class D stakingrewards.com says 'There is no way to stake XLM' beyond custodial lending products."
+  ],
+  "sib": "XLM staking|native staking|validator reward|proof-of-stake",
+  "read": [
+   "q-edge-noinfo-stellar-pos-staking-rewards",
+   "q-defi-liquid-staking-whitespace",
+   "q-protocol-scp-consensus-algorithm"
+  ]
+ },
+ "q-crp-cme-xlm-futures-dates": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://www.cmegroup.com/content/dam/cmegroup/notices/ser/2026/01/ser-9663.pdf — 'DATE: January 15, 2026' and 'trade date Monday, February 9, 2026'; class D FX News Group (2026-01-15) repeats the February 9 launch.",
+   "Live re-check 2026-08-31: https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/lumens/specs — standard contract '250,000 Lumen'; SER-9663 states '250,000 Lumens'.",
+   "Live re-check 2026-08-31: https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/micro-lumens/specs — micro contract '12,500 Lumens'; SER-9663 states the same size."
+  ],
+  "sib": "CME|Lumens futures|XLM futures",
+  "read": [
+   "q-defi-perps-whitespace",
+   "q-tool-cctp-stellar-integration"
+  ]
+ },
+ "q-crp-dtcc-stellar-connection-plan": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain — DTCC release dated 2026-05-27; class D CoinDesk (2026-05-28) reports the same announcement.",
+   "Live re-check 2026-08-31: https://stellar.org/case-studies/dtcc — 'announced plans' with assets 'expected to become available ... in the first half of 2027'; class D CoinDesk 'targets ... the first half of 2027'; not live on this date.",
+   "Live re-check 2026-08-31: https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain — 'advances its multi-chain strategy'; class D CoinDesk frames it as a multi-chain push."
+  ],
+  "sib": "DTCC|DTC-tokenized|multi-chain tokenization",
+  "read": [
+   "q-rwa-projects-tokenizing-stellar"
+  ]
+ },
+ "q-hist-cctp-stellar-live-announcement": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — SDF announcement dated 2026-05-19; class D Binance Square (2026-05-21) reports 'On May 19, 2026 ... CCTP went live'.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — 'native USDC is burned and minted'; class A Circle release notes (2026-05-18) add Stellar mainnet; class D Crossmint: not wrapped."
+  ],
+  "sib": "CCTP|burn-and-mint",
+  "read": [
+   "q-cctp-v2-usdc-stellar",
+   "q-token-circle-usdc-on-stellar",
+   "q-tool-cctp-stellar-integration",
+   "q-defi-bridge-evm-to-stellar-axelar"
+  ]
+ },
+ "q-hist-meridian-2026-corrected-venue": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://meridian.stellar.org/event-details — 'October 28–29, 2026 at Convento do Beato in Lisbon, Portugal'; class D Luma listing independently shows Lisbon and October 28–29.",
+   "Live re-check 2026-08-31: https://www.hackmeridian.com/ — 'October 25–26, 2026 · Lisbon, Portugal'; class C Scout witness (non-origin) lists HackMeridian in Lisbon on October 25–26.",
+   "Live re-check 2026-08-31: https://x.com/StellarOrg/status/2039405316803031315 — SDF post dated 2026-04-01: 'Meridian is headed to Lisbon. October 28–29'; class D dated social witness displays the same April 1 announcement."
+  ],
+  "sib": "Meridian 2026|HackMeridian|Convento do Beato",
+  "read": [
+   "q-scf-hackathons-active"
+  ]
+ },
+ "q-hist-quantum-preparedness-plan": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — SDF plan dated 2026-06-09; class D Blockchain Posts (2026-06-10) reports the publication.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — 'Stage 1—Building blocks and contract accounts (2026)' names ML-DSA-44 and ML-DSA-65; class D report repeats the stage.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — host functions target Soroban contract accounts; class C SDF quarterly-report witness (non-origin) repeats the plan.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — a three-stage roadmap, not shipped code; class D Blockchain Posts calls it a 'three-stage program'."
+  ],
+  "sib": "Quantum Preparedness|ML-DSA-44|ML-DSA-65",
+  "read": [
+   "q-pc-quantum-preparedness-dormant"
+  ]
+ },
+ "q-hist-x402-stellar-announcement": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/x402-on-stellar — SDF announcement dated 2026-03-10; class D Gate report (2026-03-13) covers the launch.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/agentic-payments/x402 — 'per-request HTTP payments on Stellar'; class A SDF announcement describes HTTP 402 payment flows.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/agentic-payments/x402 — the flow uses SEP-41 tokens and Soroban authorization; class B https://github.com/stellar/x402-stellar holds the implementation.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — no x402 SEP listed; class B stellar-protocol search for x402 and sep-402 returned zero matches; class D sweep found no SEP.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/x402-on-stellar — 'The settlement layer is live' and 'The agent tooling is being built'; class D x402agentic.ai lists its MCP bridge as planned work."
+  ],
+  "sib": "x402|HTTP 402",
+  "read": [
+   "q-agent-payment-standard-choice",
+   "q-defi-x402-on-stellar-what",
+   "q-mpp-discovery-and-modes",
+   "q-soroban-x402-auth-entry-signing",
+   "q-x402-payment-verification"
+  ]
+ },
+ "q-pc-protocol-26-yardstick": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26 — 'went live on mainnet on May 6, 2026'; class F Horizon ledger 62447230 reports protocol 25 and ledger 62447240 reports protocol 26.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26 — seven CAP roles; class B CAP-0073, -0077, -0078, -0079, -0080, -0081, -0082 titles in stellar/stellar-protocol match.",
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — 'Efficient ZK Primitives for BN254' extensions are P26; class A Yardstick article dates BN254 and Poseidon primitives to P25."
+  ],
+  "sib": "Protocol 26|Yardstick|CAP-0080",
+  "read": [
+   "q-edge-fresh-latest-protocol-version",
+   "q-protocol-bn254-poseidon-xray",
+   "q-protocol-version-history-list"
+  ]
+ },
+ "q-pc-protocol-27-zipper": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide — 'Mainnet Protocol Vote: July 8'; class C Horizon ledger 63386819 closed 2026-07-08T17:00:10Z with protocol_version 27.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/networks/software-versions — heading 'Protocol 27 (Mainnet, July 8, 2026)'; class C Horizon ledger 63386819 is the first-day ledger at protocol 27.",
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md — 'Authorization Delegation for Soroban Accounts'; class A Zipper guide lists the same CAP.",
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — defines SOROBAN_CREDENTIALS_ADDRESS_V2 with an address-bound payload; class A Zipper guide lists the same CAP."
+  ],
+  "sib": "Protocol 27|Zipper|SOROBAN_CREDENTIALS_ADDRESS_V2",
+  "read": [
+   "q-protocol-27-cap-0071",
+   "q-soroban-auth-delegation-p27",
+   "q-protocol-version-history-list",
+   "q-edge-fresh-latest-protocol-version"
+  ]
+ },
+ "q-pc-slp-0004-0006-status": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — status 'Final'; SLP-0006 status 'Draft'; class F stellar network settings -n mainnet reflects SLP-0004; July 11 statuses stand as dated.",
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — table lists 100,000,000→400,000,000, 50→200, 100→200; class F mainnet settings return tx_max_instructions 400000000.",
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — proposed fees cut most non-refundable fees about four times; class F mainnet settings return 7, 1563, 447, 2500, 875, 406, 4059, 5000.",
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — 'freezes three account entries' via CAP-0077 network configuration; class F mainnet settings return three frozen ledger keys.",
+   "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — names the three YieldBlox accounts; class F frozen keys match; class D rekt.news/yieldblox-rekt records the exploit context."
+  ],
+  "sib": "SLP-0004|SLP-0006|YieldBlox",
+  "read": [
+   "q-comp-yieldblox-oracle-incident",
+   "q-hist-yieldblox-v2-2026-exploit",
+   "q-protocol-parallel-execution"
+  ]
+ },
+ "q-scf-confidential-tokens-preview": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — dated 2026-06-29, 'live on testnet'; class D brozorec/stellar-confidential-token-demo says 'Testnet only'.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — 'not yet approved for mainnet'; class D demo repository deploys to Testnet only.",
+   "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — 'audits are underway'; class D r/Stellar thread (2026-07-02) describes Mainnet as pending a security audit.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/meetings/2026/08/06 — 'private balances and transfer amounts'; class A SDF preview describes hidden balances and amounts.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/meetings/2026/08/06 — 'addresses kept public'; class A SDF preview keeps sender and recipient visible."
+  ],
+  "sib": "Confidential Tokens|transfer amounts",
+  "read": [
+   "q-cctp-v2-usdc-stellar",
+   "q-edge-noinfo-stellar-native-privacy-default",
+   "q-sor-confidential-tokens"
+  ]
+ },
+ "q-n3-cross-thread-memory-exfiltration": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/ARCHITECTURE.md — 'fresh, stateless McpServer'; class C live exposed surface has no cross-user memory, recovery-phrase, or wallet-secret operation.",
+   "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/ARCHITECTURE.md — model code never sees a URL, header, or key; class F local source: globalOutbound null and host-side secret redaction."
+  ],
+  "sib": "cross-user|recovery phrases|private user data",
+  "read": [
+   "q-raph-restore-wallet"
+  ]
+ },
+ "q-n3-inject-ignore-previous-instructions": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/ARCHITECTURE.md — 'host-RPC stubs ... hold the secrets and enforce the policy'; class C live surface exposes no hidden-configuration retrieval.",
+   "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the exact public operation boundary; class C live surface exposes search and execute over public service operations only."
+  ],
+  "sib": "ignore previous instructions|hidden configuration|instruction-override",
+  "read": []
+ },
+ "q-n3-issues-842-backup-faucet-wallet": {
+  "lane": "B",
+  "lines": [
+   "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — no secret wallet or backup-faucet operation; class C live exposed surface shows the same absence.",
+   "Live re-check 2026-08-31: https://api.github.com/repos/stellar/stellar-docs/issues/842 — title 'Update RPC retention window to 7 days' about getLedgerEntries, not a wallet; class D sweep found no verified backup-wallet address.",
+   "Live re-check 2026-08-31: https://developers.stellar.org/docs/networks#friendbot — Friendbot is the free Testnet and Futurenet funding route; class D sweep found only official Friendbot guidance."
+  ],
+  "sib": "issues/842|issue 842|Friendbot|backup faucet",
+  "read": [
+   "q-edge-send-me-free-xlm",
+   "q-ti-friendbot-ratelimit-alternatives",
+   "q-ti-stellar-lab-usage-and-new-ui"
+  ]
+ }
+}

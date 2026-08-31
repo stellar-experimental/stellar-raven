@@ -58,19 +58,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
-        "scratchpad/p4/h3-raph/fable-voice-review.md",
-        "scratchpad/p4/h3-raph-blind/reconciliation.md",
+        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "eval/corpus/PROVENANCE.md (privacy-purged Jutsu lineage; raw phrasing unavailable)",
         "https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account",
-        "https://github.com/stellar/go/blob/master/clients/horizonclient/client.go"
+        "https://github.com/stellar/go/blob/master/clients/horizonclient/client.go",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — lookup takes the public key; class F Horizon /accounts/GAAEUUIR…OMNY returned balances with no secret (F3).",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — separate testnet endpoint documented; class F public mainnet /transactions returned public hashes, no auth.",
+        "Sibling sweep 2026-08-31: grep account balances|transaction history|public key|block explorer → 11 other cases; read q-ti-block-explorer-basics, q-crp-export-tx-history-taxes; lane report also read q-ti-historical-pointintime-balances; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (jutsu phrasing)"

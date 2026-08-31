@@ -114,12 +114,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md",
@@ -139,7 +139,12 @@
         "Live re-check 2026-08-30: https://developers.stellar.org/docs/networks/software-versions — heading 'Protocol 27 (Mainnet, July 8, 2026)'; 'Protocol 28 (Testnet, TBD)'.",
         "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — 'in the future protocol (28 or later) we may want to consider deprecating the old credential type'.",
         "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same heading, same Horizon fields, Protocol 28 not live, same CAP-0071-02 sentence.",
-        "Sibling sweep 2026-08-30: grep Protocol 27|Zipper|CAP-0071|Protocol 28 → q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-edge-fresh-latest-protocol-version; no contradiction (register dateContingentTraps P28 entry disposition refreshed to 2026-08-30)"
+        "Sibling sweep 2026-08-30: grep Protocol 27|Zipper|CAP-0071|Protocol 28 → q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-edge-fresh-latest-protocol-version; no contradiction (register dateContingentTraps P28 entry disposition refreshed to 2026-08-30)",
+        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide — 'Mainnet Protocol Vote: July 8'; class C Horizon ledger 63386819 closed 2026-07-08T17:00:10Z with protocol_version 27.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/networks/software-versions — heading 'Protocol 27 (Mainnet, July 8, 2026)'; class C Horizon ledger 63386819 is the first-day ledger at protocol 27.",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md — 'Authorization Delegation for Soroban Accounts'; class A Zipper guide lists the same CAP.",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — defines SOROBAN_CREDENTIALS_ADDRESS_V2 with an address-bound payload; class A Zipper guide lists the same CAP.",
+        "Sibling sweep 2026-08-31: grep Protocol 27|Zipper|SOROBAN_CREDENTIALS_ADDRESS_V2 → 12 other cases; read q-protocol-27-cap-0071, q-soroban-auth-delegation-p27, q-protocol-version-history-list, q-edge-fresh-latest-protocol-version; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
@@ -147,7 +152,8 @@
         ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
         ".agents/TODO.md — Repair the reviewed canonical-page conflict cases",
         "freshness-drift",
-        ".agents/TODO.md — Review five round-specific golden-truth candidates"
+        ".agents/TODO.md — Review five round-specific golden-truth candidates",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

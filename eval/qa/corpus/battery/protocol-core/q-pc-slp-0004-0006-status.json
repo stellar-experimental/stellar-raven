@@ -91,12 +91,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md",
         "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
         "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
@@ -107,11 +107,18 @@
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — the fee section still proposes roughly fourfold cuts to most non-refundable fees.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — SLP-0006 still proposes CAP-0077 network configuration.",
         "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — the proposal still names three already overlay-blocked YieldBlox exploit accounts.",
-        "Sibling sweep 2026-08-27: grep SLP-0004|SLP-0006|CAP-0077 → q-hist-yieldblox-v2-2026-exploit, q-pc-protocol-26-yardstick; no contradiction"
+        "Sibling sweep 2026-08-27: grep SLP-0004|SLP-0006|CAP-0077 → q-hist-yieldblox-v2-2026-exploit, q-pc-protocol-26-yardstick; no contradiction",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — status 'Final'; SLP-0006 status 'Draft'; class F stellar network settings -n mainnet reflects SLP-0004; July 11 statuses stand as dated.",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — table lists 100,000,000→400,000,000, 50→200, 100→200; class F mainnet settings return tx_max_instructions 400000000.",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — proposed fees cut most non-refundable fees about four times; class F mainnet settings return 7, 1563, 447, 2500, 875, 406, 4059, 5000.",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — 'freezes three account entries' via CAP-0077 network configuration; class F mainnet settings return three frozen ledger keys.",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — names the three YieldBlox accounts; class F frozen keys match; class D rekt.news/yieldblox-rekt records the exploit context.",
+        "Sibling sweep 2026-08-31: grep SLP-0004|SLP-0006|YieldBlox → 12 other cases; read q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, q-protocol-parallel-execution; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

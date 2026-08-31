@@ -113,12 +113,12 @@
       }
     ],
     "verified": {
-      "date": "2026-07-14",
-      "by": "P4 N2 primary+blind facts (Solo 3417/3423) + Terra scope audit (Solo 3633)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
         "https://x.com/circle/status/2056767949445472739",
         "https://developers.circle.com/release-notes/cctp-2026",
@@ -128,11 +128,15 @@
         "solo://proj/49/process/3633",
         "solo://proj/49/scratchpad/633#GPT-5.6-Terra-G3-classification",
         "eval/local-lanes/playground-semantic/overfit-audit-g3-itemkeys/2026-07-14T14-54-38-868Z-39ac21e3-5a0c-4a3b-b4fd-a3c14e61b97f-playground-semantic.json",
-        "Sibling sweep: q-cctp-v2-usdc-stellar, q-defi-bridge-evm-to-stellar-axelar, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration, and q-tool-js-sdk-package contain no conflicting announcement-date claim."
+        "Sibling sweep: q-cctp-v2-usdc-stellar, q-defi-bridge-evm-to-stellar-axelar, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration, and q-tool-js-sdk-package contain no conflicting announcement-date claim.",
+        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — SDF announcement dated 2026-05-19; class D Binance Square (2026-05-21) reports 'On May 19, 2026 ... CCTP went live'.",
+        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — 'native USDC is burned and minted'; class A Circle release notes (2026-05-18) add Stellar mainnet; class D Crossmint: not wrapped.",
+        "Sibling sweep 2026-08-31: grep CCTP|burn-and-mint → 10 other cases; read q-cctp-v2-usdc-stellar, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration, q-defi-bridge-evm-to-stellar-axelar; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        "solo://proj/49/scratchpad/633#GPT-5.6-Terra-G3-classification"
+        "solo://proj/49/scratchpad/633#GPT-5.6-Terra-G3-classification",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

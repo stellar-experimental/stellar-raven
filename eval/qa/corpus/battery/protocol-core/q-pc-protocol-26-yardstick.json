@@ -143,12 +143,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
         "https://stellar.org/protocol-upgrades",
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
@@ -160,11 +160,16 @@
         "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0082.md",
         "Structural re-form (long-fact): Shortened one long protocol-generation distinction; truth unchanged.",
         "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/zk and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — the official documentation places BN254 and Poseidon/Poseidon2 primitives in Protocol 25, while CAP-0080 places its added BN254 functions in Protocol 26.",
-        "Sibling sweep 2026-08-29: grep CAP-0080|BN254|Poseidon|Protocol 26|Yardstick → q-edge-fresh-latest-protocol-version, q-edge-noinfo-stellar-native-privacy-default, q-pc-protocol-26-yardstick, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-contract-trustlines-c-address, q-sor-cross-warmancer-zk-stack, q-zk-host-functions-status, q-zk-poseidon-input-encoding, q-zk-proof-systems-stellar; no contradiction."
+        "Sibling sweep 2026-08-29: grep CAP-0080|BN254|Poseidon|Protocol 26|Yardstick → q-edge-fresh-latest-protocol-version, q-edge-noinfo-stellar-native-privacy-default, q-pc-protocol-26-yardstick, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-contract-trustlines-c-address, q-sor-cross-warmancer-zk-stack, q-zk-host-functions-status, q-zk-poseidon-input-encoding, q-zk-proof-systems-stellar; no contradiction.",
+        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26 — 'went live on mainnet on May 6, 2026'; class F Horizon ledger 62447230 reports protocol 25 and ledger 62447240 reports protocol 26.",
+        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26 — seven CAP roles; class B CAP-0073, -0077, -0078, -0079, -0080, -0081, -0082 titles in stellar/stellar-protocol match.",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — 'Efficient ZK Primitives for BN254' extensions are P26; class A Yardstick article dates BN254 and Poseidon primitives to P25.",
+        "Sibling sweep 2026-08-31: grep Protocol 26|Yardstick|CAP-0080 → 11 other cases; read q-edge-fresh-latest-protocol-version, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

@@ -89,21 +89,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
-        "scratchpad/p4/h3-raph/fable-voice-review.md",
-        "scratchpad/p4/h3-raph-blind/reconciliation.md",
+        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
         "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
         "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
         "https://github.com/stellar/basic-payment-app/blob/main/src/lib/stellar/transactions.js",
-        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md"
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-ledger-entries.x#L24-L62 — credit assets carry assetCode plus issuer; class F ten issuers share code USDC.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Change Trust deletes a trustline; class B ChangeTrustOpFrame.cpp blocks a limit below the held balance and liabilities.",
+        "Sibling sweep 2026-08-31: grep scam token|fake token|ChangeTrust|trustline remove|issuer → 81 other cases; read q-edge-asset-site-scam-detection, q-aas-trustline-limit-lifecycle, q-ti-enumerate-holders-airdrop; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raph scam-token-detect-and-remove-trustline"

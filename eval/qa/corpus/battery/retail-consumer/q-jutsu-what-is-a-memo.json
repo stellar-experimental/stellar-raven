@@ -57,19 +57,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
-        "scratchpad/p4/h3-raph/fable-voice-review.md",
-        "scratchpad/p4/h3-raph-blind/reconciliation.md",
+        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "eval/corpus/PROVENANCE.md (privacy-purged Jutsu lineage; raw phrasing unavailable)",
         "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
-        "https://stellar.org/blog/developers/fixing-memo-less-payments"
+        "https://stellar.org/blog/developers/fixing-memo-less-payments",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-transaction.x#L764-L785 — MEMO_NONE/TEXT/ID/HASH/RETURN; class F tx ff79aa13… has memo_type text.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — pooled services used memos to tell users apart; class B SEP-0029 and class A Kraken confirm the exact-value rule.",
+        "Sibling sweep 2026-08-31: grep memo type|pooled account|memo ID|memo text → 4 other cases; read q-pc-memos-reference, q-raph-exchange-memo; lane report also read q-raph-missing-exchange-memo; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (jutsu phrasing)"

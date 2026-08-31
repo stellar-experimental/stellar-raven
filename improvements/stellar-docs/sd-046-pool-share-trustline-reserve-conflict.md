@@ -9,6 +9,7 @@ evidence:
   - 2026-08-30 live read of https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts grouped traditional-asset and pool-share trustlines as account subentries without naming the pool-share two-reserve exception
   - 2026-08-30 live read of https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools stated that a pool-share trustline requires two base reserves instead of one
   - 2026-08-30 live read of https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md stated that a pool-share trustline counts as two subentries and requires two base reserves
+  - source case eval/qa/corpus/battery/protocol-core/q-protocol-base-reserve-min-balance.json; its truth.verified entry dated 2026-08-31 names this finding in rootCause (mutual link recorded 2026-08-31)
 ---
 
 ## Finding
