@@ -1,0 +1,13 @@
+{
+  "positive": [
+    "Raven can perform only capabilities exposed by this session's MCP tools.",
+    "Do not claim or offer that Raven can perform a lookup or action when no exposed operation supports it, including in a follow-up."
+  ],
+  "negative": [
+    "Friendbot",
+    "Testnet-only",
+    "I can look it up",
+    "G-address",
+    "transaction hash"
+  ]
+}

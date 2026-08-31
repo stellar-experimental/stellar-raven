@@ -45,9 +45,14 @@ Record the affected case-id list in the round ledger, as session 3 did.
 
 ### 2. Eval instruments
 
-Skill: `run-evals`. Two open items remain under `TODO.md` "Eval instruments":
+Skill: `run-evals`. Three open items remain under `TODO.md` "Eval instruments":
 
-- Harden the answering prompt for the Raven lookup boundary and Friendbot network distinctions.
+- The Raven capability-boundary prompt change is rejected and must not merge. Method 1 failed its
+  product gate. The environment pin differed. Method 2 did not run and is not authorized from this
+  result. The next QA boundary attempt needs a stronger mechanism and a new pre-registered
+  diagnostic before any headline sample.
+- Monitor the single-case Friendbot network-context failure. Do not add Friendbot facts to the
+  prompt or mark it as a prompt repair.
 - Judge stability is degrading (47 → 57 unstable). Watch the trend at the next register refresh.
 
 The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.

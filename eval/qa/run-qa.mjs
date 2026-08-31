@@ -582,7 +582,11 @@ export function sourceIdentity(serverRevision) {
   };
 }
 
-function agentPrompt(question, { surface, searchTool }) {
+export const QA_RAVEN_CAPABILITY_BOUNDARY =
+  "Raven can perform only capabilities exposed by this session's MCP tools. " +
+  "Do not claim or offer that Raven can perform a lookup or action when no exposed operation supports it, including in a follow-up.";
+
+export function agentPrompt(question, { surface, searchTool }) {
   const promptAppend = process.env.QA_AGENT_PROMPT_APPEND?.trim();
   if (surface === "per-operation") {
     return `You answer questions about the Stellar ecosystem using ONLY this session's manifest-derived MCP operation tools.
@@ -595,6 +599,7 @@ Rules:
 - Tool results use { ok: true, data } | { ok: false, error }; read payload under data, and treat soft-empty as inconclusive.
 - If the tools cannot support an answer — the question is out of scope, the thing does not exist, or the request itself is something you should not do — say that plainly and briefly instead of guessing or playing along.
 - Do not use any tool outside the raven MCP operation set.
+- ${QA_RAVEN_CAPABILITY_BOUNDARY}
 - Your FINAL message must be the answer itself: concise, fact-dense, with source URLs from tool results where available. No preamble, no meta-commentary about tools.
 ${promptAppend ? `\nAdditional run instructions:\n${promptAppend}\n` : ""}
 
@@ -613,6 +618,7 @@ Rules:
 - State an as-of date for each changeable roster, status, or value. Keep exact symbols, types, and formulas from tool results.
 - If the tools cannot support an answer — the question is out of scope, the thing does not exist, or the request itself is something you should not do — say that plainly and briefly instead of guessing or playing along.
 - Do not use any tool other than the two named above.
+- ${QA_RAVEN_CAPABILITY_BOUNDARY}
 - Your FINAL message must be the answer itself: concise, fact-dense, with source URLs from tool results where available. No preamble, no meta-commentary about tools.
 ${promptAppend ? `\nAdditional run instructions:\n${promptAppend}\n` : ""}
 

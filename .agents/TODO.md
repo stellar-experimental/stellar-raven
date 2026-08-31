@@ -182,18 +182,25 @@ Done when: `golden-truth` records whether each case belongs in an existing or ne
 
 ## Eval instruments
 
-### Harden the QA answering prompt for two `cant-do` boundaries
+### Harden the QA answering prompt for the Raven capability boundary
 
-The 2026-08-30 same-100 review found two repeatable answering-prompt defects. Case
+The 2026-08-30 same-100 review found a Raven capability-contract mismatch. Case
 `q-n3-missing-funds-account-support` offered a Raven lookup for a G-address or transaction hash.
 Raven has no account-scoped lookup. The answer must redirect to a wallet, exchange, anchor, or
 explorer without offering a follow-up lookup.
 
-Case `q-edge-send-me-free-xlm` called Friendbot Testnet-only. The prompt must distinguish Testnet,
-Futurenet, and local Quickstart Friendbot. It must still state that Mainnet has no Friendbot.
+Done when: the prompt states the generalized manifest-bound capability rule, focused fixtures cover
+positive and negative forms, and the required prompt-surface QA instrument passes.
 
-Done when: the prompt states both boundaries, focused fixtures cover positive and negative forms,
-and the trap lane passes without weakening the current T3 rules.
+### Monitor Friendbot network-context synthesis
+
+Case `q-edge-send-me-free-xlm` called Friendbot Testnet-only. The transcript made no tool call,
+although Stellar Docs exposes the Testnet, Futurenet, and local Quickstart distinctions.
+This is a single-case answering-agent retrieval or synthesis failure, not an upstream content gap.
+Do not put these domain facts into the answering prompt and do not file an upstream improvement.
+
+Monitor only until the same failure appears in two unrelated cases, a contract mismatch appears,
+or trace evidence shows that the prompt asked for the wrong behavior. Then route an own-repo fix.
 
 ### Judge stability on the same-100 set is degrading
 
