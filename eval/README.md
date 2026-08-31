@@ -1097,3 +1097,7 @@ that rejected attempt and each finding.
 Three manifest-driven tiering replacements were also rejected. The closest candidate kept all
 routing gates and surfaced the named case at rank five. It increased blind hostile captures from
 6/9 to 8/9 and changed 15 of 495 rankings. The branch therefore ships measurement only.
+
+The reviewed clause-fit follow-up lives under `eval/vectorize/`.
+Its 2026-08-31 local-only finish completed and measured `FAIL` under both frozen contracts.
+The experiment changed no production search code. See `eval/vectorize/README.md` for the pins.

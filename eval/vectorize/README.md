@@ -187,3 +187,38 @@ semantic arm: frontier legacy 95/211/269, extended strict 42/88/109, extended ac
 50/100/116, and mined replay deltas −15.4 points top-1 / −8.8 points top-5. The command exits 1
 by design when `triggerCleared:false`; this remains a measured no-ship experiment, not a failing
 production gate.
+
+## Clause-fit measurement attempt (2026-08-31)
+
+The `clause-fit-hysteresis-v1` harness builds 683 mechanical routing clauses across 79 searchable entries.
+It excludes all keyword fields and keeps the production scorer unchanged.
+The membership gate includes `scout.searchResearch` for all 19 frozen positive questions.
+
+The first free model fetch built the pinned artifact successfully.
+Its SHA-256 is `e5f86644af89158c3ac4d61ee7f651e2a062c9d292f194cb94872c7eee4e71f4`.
+All 21 offline tests pass against that artifact.
+
+The first referee stopped before scoring because a new process lacked local tokenizer metadata.
+A reviewed finish copied the pinned model files into a machine-local snapshot. It then added a
+local-only loader and preflight. The preflight probe-vector SHA-256 is
+`d32aabf37d5aaeda98bd2c817cc7d38c6b746f82c89d874f982d8016fbaf4b4b`.
+
+The one authorized finish referee completed all five readings. The result stamp is
+`2026-08-31T16-58-42-389Z-clause-fit-hysteresis-v1`. The query-cache SHA-256 is
+`65ca5052c5258aeb1f5a30e93a1b9c1fde61aace80c8b3fdd4d044346385b8c2`, and the result
+SHA-256 is `17e75f0d1b13848aa2e0841624e8496c558624493d156c3cb2115301a6a9cda0`.
+
+| Reading | Original top-five / controls | Blind top-five / controls | Routing gate | Outcome |
+| --- | --- | --- | --- | --- |
+| identity | 4/8, 1/4 | 3/11, 6/9 | pass | calibration only |
+| pure fit | 0/8, 2/4 | 2/11, 1/9 | fail | diagnostic only |
+| `m = 0.03` | 4/8, 1/4 | 4/11, 2/9 | fail | fail |
+| `m = 0.06` | 4/8, 1/4 | 4/11, 6/9 | fail | fail |
+| `m = 0.10` | 4/8, 1/4 | 3/11, 6/9 | fail | fail |
+
+The `m = 0.03` and `m = 0.06` grids increased blind top-five from 3 to 4.
+Original top-five stayed 4, and every grid failed the routing gate and both control bars.
+The measured outcome is `FAIL` with `selected: null`. No production search code changed.
+The harness and artifact remain as the frozen instrument.
+
+See `.agents/rounds/2026-08-31-eval-routing-next/finish-result-sol.md` for the full command record.

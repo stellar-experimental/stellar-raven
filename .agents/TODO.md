@@ -100,6 +100,12 @@ lane carries a single required fact.
 This is not a description gap. `scout.searchResearch` already advertises "incident reports" and
 offers `source` values `cap` and `incident`. The lane says what it is; ranking does not find it.
 
+The 2026-08-31 `clause-fit-hysteresis-v1` measurement produced a reviewed `FAIL`.
+No grid passed both frozen contracts with the routing gates intact.
+Its result stamp is `2026-08-31T16-58-42-389Z-clause-fit-hysteresis-v1`, and its clause artifact
+SHA-256 is `e5f86644af89158c3ac4d61ee7f651e2a062c9d292f194cb94872c7eee4e71f4`.
+Attempt one is spent. Attempt two needs a separate, reviewed pinned cross-encoder brief.
+
 Done when: a protocol-history or incident question surfaces `scout.searchResearch` in `search`,
 measured on the routing eval rather than on this one case. Treat a fix that only helps this case
 as unshipped.
@@ -131,20 +137,6 @@ Do not infer a prompt repair from it.
 
 Done when: the same failure appears in two unrelated cases, a contract mismatch appears, or trace
 evidence shows the prompt requests the wrong behavior.
-
-### Judge stability on the same-100 set is degrading
-
-57 of the same-100 cases now sit below the 0.75 stability threshold, up from 47
-before the 2026-08-28 run. Eleven crossed into unstable and one crossed out
-when the run added one sample per case. The register decides paid escalations,
-so this number governs future spend as well as verdict quality.
-
-Found: register regenerated 2026-08-28 after
-`eval/qa/results/2026-08-28T19-27-08-variantA.json` — 538 cases from 195
-artifacts (161 collection, 34 rejudge, 0 skipped).
-
-Done when: the next post-collection register refresh reports a stable or
-falling unstable-count trend, or the escalation policy accounts for the drift.
 
 ## Owner decisions
 

@@ -823,6 +823,12 @@ panels and skipped 21. Its mean panel cost was `$0.180`. Its mean single-call co
 Covering all 31 boundary rows adds about `$2.40` of judge cost. No stored evidence supports
 scaling that absolute panel allowance above 34 for a larger denominator.
 
+The 2026-08-30 same-100 run measured a mean panel-row cost of `$0.244` and a mean single-row cost
+of `$0.0617`. The rounded estimate `57 × $0.244 + 43 × $0.0617` approximates the stored
+`$16.5629124` judge spend. Future briefs must use the `$0.244` panel-row figure. The stability
+register combines verdict movement across collections and re-judges. It is not the same measure
+as the committed `23.3%` identical-input re-judge noise floor.
+
 **Read the cap before reading historical tier counts.** The 2026-08-28 run below used an explicit
 cap of 10. Its 31 boundary rows produced 10 panels and 21 skips. Therefore, `single` in that
 artifact can mean "not escalated", which is not the same as "not borderline".
