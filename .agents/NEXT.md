@@ -1,6 +1,6 @@
 # NEXT — handoff for the next work block
 
-Updated 2026-08-31 after the golden-metadata verify-and-close pass. Read this first. `TODO.md` holds the
+Updated 2026-08-31 after the eval-stability and protocol-history routing round. Read this first. `TODO.md` holds the
 full item text; this file only ranks and sequences. Delete or rewrite this file when the block
 below is done.
 
@@ -25,6 +25,10 @@ below is done.
   `eval/qa/results/2026-08-30T03-43-11-variantA.json`. Its independent decision is
   `VALID WITH A T4 EXCEPTION`. The one T4 exclusion leaves 99 paired-eligible IDs, so the
   100-ID method is `INDETERMINATE`. Judge stability remains 57 of 100 below 0.75.
+- The 2026-08-31 post-collection register refresh kept the same-100 unstable count at 57.
+  Four cases entered and four left the unstable set. The judge-stability TODO is closed.
+- The `clause-fit-hysteresis-v1` routing experiment completed with a reviewed `FAIL`.
+  No production routing change shipped. Its harness and pinned artifact remain as evidence.
 - The paid artifact used rubric `v2.9`. The closeout fixes its `partial-without-issue` defect in
   rubric `v2.10`. Cross-rubric comparison requires a rejudge under the target tuple.
 - Consistency register: reconciled on 2026-08-29; 0 reopen entries.
@@ -71,7 +75,9 @@ The next boundary attempt needs a stronger mechanism and a new pre-registered di
 headline sample.
 
 The Friendbot network-context failure is monitor-only.
-Judge stability is degrading (47 → 57 unstable). Watch its trend at the next register refresh.
+The 2026-08-31 post-collection refresh held the unstable count at 57, with four cases in and four
+cases out. The TODO item is closed. The register combines verdict movement across collections and
+re-judges, so it does not isolate judge-only variance.
 
 The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.
 
@@ -80,6 +86,13 @@ The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle cont
 `search` never surfaces the research lane for incident questions such as
 `q-protocol-24-whisk-incident`. The data is reachable; ranking is the fault. Measure on the
 routing eval, not one case. A fix that helps only this case is unshipped.
+
+Attempt one of the three-attempt box is complete. The clause-level Qwen route-fit measurement
+produced a reviewed `FAIL`. No grid passed both frozen contracts with the routing gates intact.
+The harness and clause artifact remain as the frozen instrument. No production change shipped.
+
+Attempt two is held for a separate, reviewed pinned cross-encoder measurement brief. That brief
+needs its own model pin, loader, artifact, and review chain. Attempt three remains unused.
 
 ### 4. Repository-level tooling recovery
 
@@ -130,9 +143,8 @@ Promotion also needs one same-tuple pinned pair for recalibration.
 
 ## Suggested sequence
 
-Use the next register refresh for block 2, judge stability. Continue with block 3, protocol-history
-routing.
+Block 3 is held until a separate cross-encoder measurement brief passes review. Block 4 remains
+monitor-only until its free Horizon probe returns `28`.
 
-Block 4 is monitor-only until its stated free-probe trigger occurs. Then continue with block 5, the
-Playground message limit, and block 6, small own-repo fixes. Resolve the owner product-loss margin
-before a later paired QA promotion.
+Continue with block 5, the Playground message limit. Then complete block 6, the small own-repo
+fixes. Resolve the owner product-loss margin before a later paired QA promotion.
