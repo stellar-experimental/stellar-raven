@@ -1,6 +1,7 @@
 # NEXT — handoff for the next work block
 
-Updated 2026-08-31 after PR #99. Read this first. `TODO.md` holds the full item text.
+Updated 2026-08-31 after the cross-encoder attempt-two closeout. Read this first.
+`TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 
 ## State at handoff
@@ -47,10 +48,13 @@ This file only ranks and sequences. Delete or rewrite this file when the block i
 - PR #99 shipped the Playground limit, the real `ai` tool-loop test, and title cleanup at
   commit `3c7f0e5`.
 - Focused verification passed 31 tests across four files on 2026-08-31.
+- The `cross-encoder-fit-v1` routing experiment completed on 2026-08-31 with a verified `FAIL`.
+  Terra's cache-only recomputation passed. No production routing change shipped. Attempt two of
+  the three-attempt box is spent; attempt three remains unused.
 
 ## Ranked blocks
 
-### 1. Active routing: `scout.searchResearch` for protocol-history questions
+### 1. Routing (held): `scout.searchResearch` for protocol-history questions
 
 `search` never surfaces the research lane for incident questions such as
 `q-protocol-24-whisk-incident`. The data is reachable; ranking is the fault. Measure on the
@@ -60,8 +64,14 @@ Attempt one of the three-attempt box is complete. The clause-level Qwen route-fi
 produced a reviewed `FAIL`. No grid passed both frozen contracts with the routing gates intact.
 The harness and clause artifact remain as the frozen instrument. No production change shipped.
 
-Attempt two is the next active block. Prepare a separate, reviewed pinned cross-encoder measurement
-brief. It needs its own model pin, loader, artifact, and review chain. Attempt three remains unused.
+Attempt two completed on 2026-08-31 with a verified `FAIL`. The reviewed `cross-encoder-fit-v1`
+measurement kept both frozen contracts at the lexical baseline on every registered grid while
+failing the routing gate. Its stamp is `2026-08-31T23-36-38-660Z-cross-encoder-fit-v1`, and the
+full record is `.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md`. No production
+change shipped. The block returns to held. Attempt two is spent, and attempt three remains
+unused. Attempt three needs its own reviewed brief with a distinct mechanism — the measured
+negatives rule out the clause bi-encoder and the pairwise cross-encoder at a registered
+hysteresis grid.
 
 ### 2. Repository-level tooling recovery
 
@@ -135,5 +145,6 @@ Promotion also needs one same-tuple pinned pair for recalibration.
 
 ## Suggested sequence
 
-Start block 1 with the cross-encoder measurement brief. Block 2 remains monitor-only until its free
-Horizon probe returns `28`. Resolve the owner product-loss margin before a later paired QA promotion.
+Keep block 1 held until a distinct attempt-three brief passes review. Block 2 remains monitor-only
+until its free Horizon probe returns `28`. Resolve the owner product-loss margin before a later
+paired QA promotion.

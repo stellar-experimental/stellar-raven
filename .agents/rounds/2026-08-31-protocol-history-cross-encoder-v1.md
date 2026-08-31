@@ -24,7 +24,8 @@ independent review of the brief.
 | Implementation | Codex, GPT-5.6 Sol, high | per brief section 12 | complete; review verdict `PASS` |
 | Pre-fetch implementation review | Grok, Grok 4.6, high | `review-grok-implementation.md` | complete; verdict `PASS` |
 | Bounded pin review | Grok, Grok 4.6, high | `review-grok-pins.md` | complete; verdict `PASS` |
-| Result verification | Codex, GPT-5.6 Terra, high | `result-verification-terra.md` | pending after referee |
+| Result verification | Codex, GPT-5.6 Terra, high | `result-verification-terra.md` | complete; verdict `PASS` |
+| Final adversarial review | Grok, Grok 4.6, high | `review-grok-final.md` | `BLOCK` reconciled; delta `PASS` |
 
 Role record: Claude Fable 5 high authored the brief and the reconciliation. The root Codex
 agent orchestrates this round. Grok 4.6 high reviews and differs from both.
@@ -165,6 +166,111 @@ It recorded this environment:
 The referee has not run.
 The implementation commit and the free contract checks are the remaining referee preconditions.
 
+### 2026-08-31 — implementation identity frozen
+
+The reviewed implementation commit is
+`2763fb0afd4e6811f449cb6b1f56f2baf85e3734`.
+The referee must receive this full hash through `RAVEN_RERANK_IMPLEMENTATION_COMMIT`.
+A second preflight returned `PASS` after this commit.
+It reproduced `probeScoreSha256` `e2bc86efb15f5232993b0bf5f63b5ce55cc7241abaec6a7e54364a13b664331b`.
+
+### 2026-08-31 — single referee completed with FAIL
+
+The single authorized referee invocation scored all 383,273 frozen pairs.
+It returned `FAIL` and exited with status `1`, as required for a failed grid.
+No second referee ran.
+
+- stamp: `2026-08-31T23-36-38-660Z-cross-encoder-fit-v1`
+- result SHA-256: `529351b1562b14f68d18ef94b584ca37ae61290f68cfff7a5a1489e8b601ae0d`
+- score-cache SHA-256: `fa1252fc8bfbf62b6f69bb8ca431cf603d2b512e4d0299b2ca0de0d7c2cec0bc`
+- score-payload SHA-256: `44c274680cd324d00aa16d240e21d3260005766d507a430e93c423e9c16fcd55`
+- cache-record SHA-256: `ecea4c6981eb22a59d59b4b9434cad57732309e28504574e7ed483a01512fca1`
+- selected margin: `null`
+- preserved local artifacts: `/Users/kalepail/.cache/stellar-raven/eval-results/cross-encoder-fit-v1-2026-08-31/`
+
+| reading | original top1/top3/top5; controls | blind top1/top3/top5; controls | routing gate | changed rankings | acceptance |
+| --- | --- | --- | --- | ---: | --- |
+| identity | 3/4/4; 1/4 | 3/3/3; 6/9 | `PASS` | 0 | `FAIL` |
+| pure fit | 3/4/5; 2/4 | 2/2/3; 4/9 | `FAIL` | 495 | `FAIL` |
+| `m = 0.05` | 4/4/4; 1/4 | 3/3/3; 6/9 | `FAIL` | 338 | `FAIL` |
+| `m = 0.10` | 4/4/4; 1/4 | 3/3/3; 6/9 | `FAIL` | 276 | `FAIL` |
+| `m = 0.20` | 3/4/4; 1/4 | 3/3/3; 6/9 | `FAIL` | 215 | `FAIL` |
+
+Identity and every registered grid had these original misses:
+`ph-protocol-24-archival-root-cause`, `ph-protocol-corrective-upgrade-history`,
+`ph-protocol-upgrade-chronology`, and `ph-protocol-feature-origin`.
+They captured `ph-control-current-protocol`.
+
+Identity and every registered grid had these blind misses:
+`phb-whisk-forced-follow-up`, `phb-archival-defect-network-upgrade`,
+`phb-core-upgrades-dates-features`, `phb-network-upgrades-reasons`,
+`phb-second-cut-after-whisk`, `phb-cap-archival-fee-repair`,
+`phb-auditor-auth-recursion-follow-up`, and `phb-clawback-origin-emergency-changes`.
+They captured `phb-control-protocol-xdr-bug`, `phb-control-incident-runbook`,
+`phb-control-contract-exploit-review`, `phb-control-sdk-version-history`,
+`phb-control-cap-history-sep-support`, and `phb-control-kyc-breach-report`.
+
+Pure fit missed `ph-protocol-24-archival-root-cause`,
+`ph-protocol-corrective-upgrade-history`, and `ph-protocol-upgrade-chronology`.
+It captured `ph-control-current-protocol` and `ph-control-validator-vote`.
+Its blind misses were `phb-whisk-forced-follow-up`,
+`phb-archival-defect-network-upgrade`, `phb-auth-recursion-auditors`,
+`phb-core-upgrades-dates-features`, `phb-network-upgrades-reasons`,
+`phb-second-cut-after-whisk`, `phb-cap-archival-fee-repair`, and
+`phb-clawback-origin-emergency-changes`.
+It captured `phb-control-incident-runbook`, `phb-control-sdk-version-history`,
+`phb-control-kyc-breach-report`, and `phb-control-failed-deploy-post-mortem`.
+
+No upstream improvement follows from this result.
+The result measures this repository's ranking mechanism.
+Codex GPT-5.6 Terra high must now verify the stored cache without loading the model.
+
+### 2026-08-31 — independent result verification returned PASS
+
+Terra wrote `result-verification-terra.md` with verdict `PASS`.
+The verifier ran from a temporary directory with `RAVEN_RERANK_MODEL_DIR` unset.
+It imported no scorer, preflight, fetch, or Transformers module.
+
+It independently reproduced all four hashes: the result, the cache, the decoded float32
+payload, and the compact cache record. All matched the values in this ledger.
+The cache held 563 queries, 563 pair-index rows, and 383,273 finite scores in zero through one.
+Every query hash matched the rebuilt first-seen order, and every pair-index row matched the
+rebuilt candidate union in clause-artifact order.
+The verifier rebuilt all five readings from the stored cache only.
+Every contract row, ranking, capture, miss, gate failure, and acceptance field matched exactly.
+The recomputed outcome was `FAIL` with selected margin `null`, matching the result file.
+The one-referee accounting passed: one cache file, one result file, no second referee.
+
+### 2026-08-31 — FAIL closeout applied
+
+The terminal outcome is a verified `FAIL`. Attempt two of the three-attempt box is spent.
+Attempt three remains unused. It requires its own reviewed brief with a distinct mechanism.
+The closeout applied the record to `eval/vectorize/README.md` (new dated section),
+`eval/README.md` (attempt-two pointer), `.agents/TODO.md` (dated attempt accounting on the
+open routing item), and `.agents/NEXT.md` (block state).
+Result and cache JSON stay local and uncommitted, preserved under
+`/Users/kalepail/.cache/stellar-raven/eval-results/cross-encoder-fit-v1-2026-08-31/`.
+
+### 2026-08-31 — final adversarial review reconciled
+
+Grok wrote `review-grok-final.md` with an initial `BLOCK` on two stale queue instructions.
+`.agents/TODO.md` still ordered an attempt-two brief after recording that attempt as spent.
+`.agents/NEXT.md` also told the next agent to start that completed brief.
+Both instructions were repaired without changing the harness, hashes, tables, or frozen contracts.
+Grok appended a bounded delta verdict of `PASS`.
+
 ## Outcome
 
-Open. The pinned model passed preflight, and the single referee is pending.
+Complete. The measured outcome is a verified `FAIL` with selected margin `null`.
+
+The identity reading reproduced every lexical baseline exactly with zero changed rankings.
+No registered grid passed the acceptance table. At `m = 0.05`, `0.10`, and `0.20`, both frozen
+contracts stayed at the lexical baseline — original 4/8 with 1/4 captures, blind 3/11 with 6/9
+captures — while every grid failed the routing gate. Among the grids, `m = 0.20` had the
+fewest routing-gate failures (four) and the fewest changed rankings (215).
+
+No production routing change ships from this experiment. No `improvements/` finding applies:
+the result measures this repository's ranking, and the data remains reachable upstream.
+The own-repo routing defect stays open in `.agents/TODO.md` and is held for a separately
+reviewed attempt-three brief with a distinct mechanism.
+Every review in this round completed with a reconciled or passing verdict.

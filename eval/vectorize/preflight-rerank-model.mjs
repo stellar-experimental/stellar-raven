@@ -14,7 +14,7 @@ import {
 export const PROBE_QUERY = "cross-encoder preflight probe query";
 export const PROBE_DOCUMENT = "cross-encoder preflight probe document";
 
-// The fetch records the three null values. A bounded pin review must pass before preflight runs.
+// These byte hashes bind the reviewed snapshot used by preflight and the referee.
 export const PHASE_TWO_SHA256 = Object.freeze({
   "config.json": "b6575b9d5be20d6747417c8e20c5a0db1636356e0b6d422d7244c628423c4d4c", // gitleaks:allow — public model file SHA-256
   "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b", // gitleaks:allow — public model file SHA-256

@@ -61,7 +61,16 @@ The 2026-08-31 `clause-fit-hysteresis-v1` measurement produced a reviewed `FAIL`
 No grid passed both frozen contracts with the routing gates intact.
 Its result stamp is `2026-08-31T16-58-42-389Z-clause-fit-hysteresis-v1`, and its clause artifact
 SHA-256 is `e5f86644af89158c3ac4d61ee7f651e2a062c9d292f194cb94872c7eee4e71f4`.
-Attempt one is spent. Attempt two needs a separate, reviewed pinned cross-encoder brief.
+Attempt one is spent.
+
+The 2026-08-31 `cross-encoder-fit-v1` measurement also produced a verified `FAIL`.
+Every registered grid kept both frozen contracts at the lexical baseline and failed the routing
+gate. Its result stamp is `2026-08-31T23-36-38-660Z-cross-encoder-fit-v1`, and its result
+SHA-256 is `529351b1562b14f68d18ef94b584ca37ae61290f68cfff7a5a1489e8b601ae0d`. The full record
+is `.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md`. Attempt two is spent.
+Attempt three remains unused; it needs its own reviewed brief with a distinct mechanism —
+neither the clause bi-encoder nor the pairwise cross-encoder at a registered hysteresis grid.
+No production change shipped, and no `improvements/` finding applies.
 
 Done when: a protocol-history or incident question surfaces `scout.searchResearch` in `search`,
 measured on the routing eval rather than on this one case. Treat a fix that only helps this case
