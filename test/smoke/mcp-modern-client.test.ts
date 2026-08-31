@@ -64,6 +64,13 @@ describe("modern (2026-07-28) client end-to-end", () => {
       const execute = tools.tools.find((tool) => tool.name === "execute");
       expect(execute).toMatchObject(EXPECTED_TOOL_METADATA.execute);
       expect(execute).not.toHaveProperty("outputSchema");
+      expect(execute?.inputSchema).toMatchObject({
+        required: ["code"],
+        properties: {
+          code: { type: "string" },
+          recoveryReceipt: { type: "string" }
+        }
+      });
 
       const result = await client.callTool({
         name: "search",

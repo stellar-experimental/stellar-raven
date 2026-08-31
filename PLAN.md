@@ -63,9 +63,9 @@ Host Worker  (Workers Paid · wrangler: worker_loaders LOADER · nodejs_compat)
   ├─ tool "search"  { query, kind?, service?, limit?, recoverFrom?, reason? }
   │     [no isolate — host-side; recovery is exact-ID advisory metadata, separate from ranking]
   │     ranked search over searchable catalog entries (ConnectorDescription[]):
-  │     every service operation + every whole skill; section keys ride on skill hits
+  │     ordinary service operations + every whole skill; recovery-only operations stay exact-ID
   │     top-k hits returned WITH rendered TS signatures (describeTarget)
-  ├─ tool "execute" { code }                                   [one Dynamic Worker per call]
+  ├─ tool "execute" { code, recoveryReceipt? }                 [one Dynamic Worker per call]
   │     DynamicWorkerExecutor · globalOutbound: null · 60s wall-clock timeout
   │     sandbox globals:
   │       lumenloop.*   scout.*   stellarDocs.*        ← host RPC stubs (secrets stay host-side)
@@ -90,7 +90,9 @@ service?, limit?, recoverFrom?, reason? }` (the round-2 implementation, over ups
 vendored `searchConnectors` scorer); structurally poor operation pages add bounded manifest-derived
 `widerCandidates`, while explicit prior-attempt recovery remains exact-ID advisory metadata. Both
 are returned separately from ranked hits and never change ranking
-([ADR-0007](research/decisions/0007-structural-recovery-guidance.md)). `execute` is `{ code }`. The code-shaped discovery variant that upstream's
+([ADR-0007](research/decisions/0007-structural-recovery-guidance.md)). `execute` is
+`{ code, recoveryReceipt? }`. The optional receipt permits one later recovery-only operation.
+The code-shaped discovery variant that upstream's
 `openApiMcpServer` puts at the front door was **retired into `execute`'s sandbox**: a golden Q→A
 A/B (60 paired cases, `eval/qa/`) found the host-side ranked search directionally more accurate
 and — decisively — more reliable, while the in-sandbox code search burned the caller's turn
@@ -102,14 +104,16 @@ survives at zero marginal turn cost; only the mandatory isolate-per-search front
 Routing remains *shortlisting* — one script hedges across several candidate tools with follow-up
 detail calls; committing to a single route is never required.
 
-**Stateless first.** Fresh `McpServer` per request via `createMcpHandler`. Adopt
-`McpAgent` + `createCodemodeRuntime` (DO facet) only if/when we want durable approvals,
-abort-and-replay, or an audit log.
+**Stateless request handling.** Each request gets a fresh `McpServer` through
+`createMcpHandler`. The host stores bounded recovery receipts and result artifacts in R2.
+Adopt `McpAgent` plus `createCodemodeRuntime` only for durable approvals, abort-and-replay,
+or an audit log.
 
 ## 2. The unified catalog (the thing `search` searches)
 
 One checked-in, machine-generated manifest (`catalog/manifest.json`) with a typed entry per
-callable surface — fields chosen for what search/execute actually consume, nothing vestigial:
+exposed surface. A `discoveryMode: "recovery-only"` entry needs a host receipt before dispatch
+(ADR-0009). Fields are chosen for what search/execute consume, nothing vestigial:
 
 ```jsonc
 {
@@ -133,8 +137,9 @@ daily upstream and skill drift can change them. The catalog contains exposed ser
 excluded surfaces (the paid research lane incl. its read half, account mutations, scout writes
 and their schema/assistant feeders, retired onboarding skills, the `lumenloop.skill.*` twin
 namespace) are filtered at build time and never emitted; there is no `policy`/`cost`/`auth` field
-and no runtime deny layer, and a build guard rejects any emitted text that references a
-non-exposed surface. See
+and no generic runtime deny layer. A manifest `discoveryMode` can require a host capability
+before adapter dispatch. A build guard rejects emitted text that references a non-exposed
+surface. See
 [`research/decisions/0003-build-time-exposure-filtering.md`](./research/decisions/0003-build-time-exposure-filtering.md)
 (ADR-0003, 2026-07-04: 299→274 entries, 25→0 denied, superseding ADR-0002's deny-list model;
 2026-07-04 follow-up: 274→271, dead-end read-halves and description leaks removed, exclusion
@@ -259,7 +264,7 @@ src/fonts.ts src/og.ts   # generated (npm run site:fonts / site:og) — embedded
 src/mcp/                 # tool registration, descriptions (copy codemode's rules-block prompting)
 src/catalog/             # manifest types, builder, search (vendored searchConnectors/describeTarget)
 src/adapters/            # lumenloop.ts · scout.ts · stellar-docs.ts (own design, per live research)
-src/policy/              # arg validation, redaction, truncation (no runtime deny layer — ADR-0003)
+src/policy/              # arg validation, redaction, truncation, recovery receipts
 src/skills/              # skill store, section index, read resolution
 src/executor/            # DynamicWorkerExecutor wiring, providers, super-spec sandbox, truncation
 src/observability.ts     # structured JSON events → Workers Logs; custom execute span
@@ -361,4 +366,4 @@ Phases 2–3 are independently parallelizable after 1; 4–6 after 3.
 | `request_research` (paid) | off at launch | on with budget gate from day one |
 | Server auth | **Decided: WorkOS OAuth** (`workers-oauth-provider` + AuthKit; named-key/dev bypasses — §4, README.md) | plain bearer secret (retired placeholder) |
 | Skills scope | **19 of 20 mirrored public skills exposed**; retired onboarding surfaces never emitted, and one composite skill is runnable via `codemode.skill.run` | re-expose an onboarding skill only after a transport-agnostic rewrite and a fresh ADR |
-| Statefulness | stateless `createMcpHandler` | `McpAgent` + CodemodeRuntime DO (approvals/audit) |
+| Statefulness | Stateless MCP requests with bounded R2 artifacts and recovery receipts | `McpAgent` + CodemodeRuntime DO for durable approvals or audit |

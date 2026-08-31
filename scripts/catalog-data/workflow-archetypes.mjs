@@ -185,8 +185,7 @@ export const WORKFLOW_ARCHETYPES = [
     steps: [
       "stellarDocs.search_wallet_dapp_docs",
       "skills.stellar-dev.dapp",
-      "scout.searchRepos",
-      "scout.explainRepo"
+      "scout.searchRepos"
     ]
   },
   {

@@ -181,6 +181,21 @@ describe("recoveryCandidates — advisory contingency graph", () => {
     expect(recoveryCandidates(catalog, ["scout.getBuilders"], "empty", 0)).toEqual([]);
     expect(recoveryCandidates(catalog, ["scout.getBuilders"], "empty", -1)).toEqual([]);
   });
+
+  it("offers repository recovery only for empty or adjacent tooling docs", () => {
+    const id = "stellarDocs.search_sdk_cli_tools_docs";
+    for (const reason of ["empty", "adjacent"] as const) {
+      expect(recoveryCandidates(catalog, [id], reason, 1)).toMatchObject([
+        { id: "scout.explainRepo", relation: "source-code", reasons: ["empty", "adjacent"] }
+      ]);
+    }
+    expect(recoveryCandidates(catalog, [id], "weak").map(({ id }) => id)).not.toContain(
+      "scout.explainRepo"
+    );
+    expect(recoveryCandidates(catalog, [id], "partial").map(({ id }) => id)).not.toContain(
+      "scout.explainRepo"
+    );
+  });
 });
 
 describe("recoveryCandidatesFromSources — execute-time contingency graph", () => {
@@ -764,8 +779,8 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     // the candidate only changes its order.
     expect(page.hits.map((hit) => hit.id).sort()).toEqual(
       [
-        "scout.explainRepo",
         "stellarDocs.search_anchor_sep_docs",
+        "stellarDocs.search_asset_token_docs",
         "stellarDocs.search_docs",
         "stellarDocs.search_docs_in_category",
         "stellarDocs.search_meeting_notes"
@@ -773,7 +788,7 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     );
     // total counts searchable candidates only — 210 sections left search at
     // the 2026-07-13 A/B, so the candidate pool shrank from 272.
-    expect(page.total).toBe(79);
+    expect(page.total).toBe(78);
     expect(page.truncated).toBe(true);
   });
 
@@ -797,6 +812,41 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     expect(page.total).toBe(ids.length);
     // Still exposed: the entry exists in the catalog for exact-id surfaces.
     expect(hidden.entries.some((e) => e.id === "lumenloop.alpha_shadow")).toBe(true);
+  });
+
+  it("keeps recovery-only operations out of ranked hits and totals but in exact recovery", () => {
+    const query = "deep code answer repository routing deepwiki internals";
+    const hidden = searchCatalogPage(catalog, { query, kind: "operation", service: "scout", limit: 50 });
+    expect(hidden.hits.map((hit) => hit.id)).not.toContain("scout.explainRepo");
+    const emptyPage = searchCatalogPage(catalog, {
+      query: "zzzzqqqq zzqqzzqq",
+      kind: "operation",
+      service: "scout"
+    });
+    expect(emptyPage.widerCandidates.map((candidate) => candidate.id)).not.toContain(
+      "scout.explainRepo"
+    );
+
+    const visibleCatalog = loadManifest({
+      ...catalog,
+      entries: catalog.entries.map((entry) => {
+        if (entry.id !== "scout.explainRepo") return entry;
+        const { discoveryMode: _mode, searchable: _searchable, ...visible } = entry;
+        return visible;
+      })
+    });
+    const visible = searchCatalogPage(visibleCatalog, {
+      query,
+      kind: "operation",
+      service: "scout",
+      limit: 50
+    });
+    expect(visible.hits.map((hit) => hit.id)).toContain("scout.explainRepo");
+    expect(visible.total).toBe(hidden.total + 1);
+    expect(
+      recoveryCandidates(catalog, ["stellarDocs.search_sdk_cli_tools_docs"], "empty", 3)
+        .map((candidate) => candidate.id)
+    ).toContain("scout.explainRepo");
   });
 
   it("is deterministic across repeated mixed-page interleaves", () => {

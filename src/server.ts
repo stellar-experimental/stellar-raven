@@ -90,6 +90,15 @@ export function resolveArtifactOwner(
   return undefined;
 }
 
+export function resolveRecoveryIdentity(
+  oauthSubject: string | undefined,
+  accessContext: McpAccessContext
+): string | undefined {
+  if (accessContext.mode === "oauth") return oauthSubject ? `oauth:${oauthSubject}` : undefined;
+  if (accessContext.mode === "api-key") return `api-key:${accessContext.apiKeyName}`;
+  return "dev-bypass:local";
+}
+
 // Stateless: fresh McpServer per request (research/codemode.md §6). Used
 // both as the provider's /mcp apiHandler (token already validated there)
 // and directly for the two bypasses.
@@ -119,6 +128,7 @@ export const mcpHandler = {
       runExecute: (code, callContext) => runner(code, callContext),
       executeContext: () => ({
         artifactOwner: resolveArtifactOwner(oauthSubject, accessContext),
+        recoveryIdentity: resolveRecoveryIdentity(oauthSubject, accessContext),
         requestId,
         rayId: requestTelemetry.rayId ?? undefined
       }),

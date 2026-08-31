@@ -25,6 +25,7 @@ import {
   SOURCE_BASIS_MARKER,
   SOURCE_METADATA_MARKER
 } from "../../src/policy/source-basis";
+import { recoveryReceiptBlock } from "../../src/policy/recovery-receipt";
 import fxSemantic from "../fixtures/skill-runners/lumenloop.search_content_semantic.ts";
 import fxListDocs from "../fixtures/skill-runners/lumenloop.list_documents.ts";
 
@@ -706,6 +707,27 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       "stellarDocs.search_meeting_notes"
     ]);
 
+    const toolingDocs = await run(`async () => {
+      const docs = await stellarDocs.search_sdk_cli_tools_docs({ query: "repository default", hitsPerPage: 1 });
+      return { docsOk: docs.ok };
+    }`);
+    expect(toolingDocs.ok).toBe(true);
+    if (!toolingDocs.ok) throw new Error(toolingDocs.error);
+    expect(toolingDocs.operationSummary).toMatchObject({ ok: 0, softEmpty: 1 });
+    expect(toolingDocs.recoveryHint?.mode).toBe("conditional-alternatives");
+    expect(toolingDocs.recoveryHint?.sourceOperations).toEqual([
+      "stellarDocs.search_sdk_cli_tools_docs"
+    ]);
+    expect(toolingDocs.recoveryHint?.candidates.map((candidate) => candidate.id)).toEqual([
+      "scout.explainRepo",
+      "stellarDocs.search_docs",
+      "scout.searchResearch"
+    ]);
+    expect(toolingDocs.recoveryHint?.candidates[0]).toMatchObject({
+      relation: "source-code",
+      reasons: ["empty", "adjacent"]
+    });
+
     const unprofiledSemantic = await run(`async () => {
       const [builders, similar] = await Promise.all([
         scout.getBuilders({ q: "Example Builder", limit: 1 }),
@@ -717,6 +739,89 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     if (!unprofiledSemantic.ok) throw new Error(unprofiledSemantic.error);
     expect(unprofiledSemantic.operationSummary?.candidateEvidence).toBeUndefined();
     expect(unprofiledSemantic.recoveryHint).toBeUndefined();
+  });
+
+  it("enforces the recovery receipt across real Dynamic Worker executes", async () => {
+    let scoutFetches = 0;
+    vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
+      const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
+      if (url.pathname.includes("/1/indexes/")) {
+        return Response.json({ hits: [], nbHits: 0, page: 0, nbPages: 0, hitsPerPage: 1 });
+      }
+      if (url.pathname === "/api/repos/explain") {
+        scoutFetches += 1;
+        return Response.json({
+          ok: true,
+          answered: true,
+          answer: "The timeout default is source-grounded.",
+          repo: "stellar/js-stellar-sdk",
+          sources: []
+        });
+      }
+      return Response.json({ error: `unexpected ${url.pathname}` }, { status: 500 });
+    });
+
+    const identity = `oauth:${uniqueOwner("recovery")}`;
+    const direct = await run(`async () => scout.explainRepo({
+      q: "Where is the timeout default?",
+      repo: "stellar/js-stellar-sdk"
+    })`, { recoveryIdentity: identity, requestId: "direct" });
+    expect(direct.ok).toBe(true);
+    if (!direct.ok) throw new Error(direct.error);
+    expect(JSON.parse(direct.result)).toMatchObject({
+      ok: false,
+      error: { message: expect.stringContaining("recovery receipt is required") }
+    });
+    expect(scoutFetches).toBe(0);
+
+    const authority = await run(`async () => {
+      const docs = await stellarDocs.search_sdk_cli_tools_docs({ query: "timeout default", hitsPerPage: 1 });
+      const repo = await scout.explainRepo({
+        q: "Where is the timeout default?",
+        repo: "stellar/js-stellar-sdk"
+      });
+      return { docs, repo };
+    }`, { recoveryIdentity: identity, requestId: "authority" });
+    expect(authority.ok).toBe(true);
+    if (!authority.ok) throw new Error(authority.error);
+    expect(JSON.parse(authority.result)).toMatchObject({
+      repo: { ok: false, error: { message: expect.stringContaining("recovery receipt is required") } }
+    });
+    expect(authority.recoveryReceipts).toHaveLength(1);
+    expect(authority.recoveryReceipts?.[0]).toMatchObject({
+      source: "stellarDocs.search_sdk_cli_tools_docs",
+      target: "scout.explainRepo"
+    });
+    expect(scoutFetches).toBe(0);
+
+    const receiptBlock = recoveryReceiptBlock(getCatalog(), authority.recoveryReceipts);
+    const example = JSON.parse(receiptBlock.split("\n").at(-1) ?? "") as {
+      code: string;
+      recoveryReceipt: string;
+    };
+    expect(receiptBlock.split(example.recoveryReceipt)).toHaveLength(2);
+    const recovered = await run(
+      example.code
+        .replace("<remaining code question>", "Where is the timeout default?")
+        .replace("<owner/name>", "stellar/js-stellar-sdk"),
+      { recoveryIdentity: identity, requestId: "recovery", recoveryReceipt: example.recoveryReceipt }
+    );
+    expect(recovered.ok).toBe(true);
+    if (!recovered.ok) throw new Error(recovered.error);
+    expect(JSON.parse(recovered.result)).toMatchObject({ ok: true });
+    expect(scoutFetches).toBe(1);
+
+    const replay = await run(`async () => scout.explainRepo({
+      q: "Where is the timeout default?",
+      repo: "stellar/js-stellar-sdk"
+    })`, { recoveryIdentity: identity, requestId: "replay", recoveryReceipt: example.recoveryReceipt });
+    expect(replay.ok).toBe(true);
+    if (!replay.ok) throw new Error(replay.error);
+    expect(JSON.parse(replay.result)).toMatchObject({
+      ok: false,
+      error: { message: expect.stringContaining("already used") }
+    });
+    expect(scoutFetches).toBe(1);
   });
 
   it("ownerless truncated results get a generic unavailable artifact line with no auth-mode wording", async () => {
@@ -1033,6 +1138,27 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(parsed.viaData).toBe(1);
       expect(parsed.payloadReadError).toContain("r.data.projects");
     }
+  });
+
+  it("returns a raw awaited service envelope across the Dynamic Worker boundary", async () => {
+    vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
+      const url = new URL(typeof input === "string" || input instanceof URL ? input : input.url);
+      expect(url.href).toBe("https://api.lumenloop.com/v1/tools/search_directory");
+      return Response.json({
+        success: true,
+        data: { count: 1, projects: [{ slug: "raw-envelope" }] },
+        meta: { tool: "search_directory", format: "json" }
+      });
+    });
+
+    const outcome = await run(`async () => await lumenloop.search_directory({ query: "raw" })`);
+
+    expect(outcome.ok).toBe(true);
+    if (!outcome.ok) throw new Error(outcome.error);
+    expect(parseResultJsonWithMetadata(outcome.result)).toEqual({
+      ok: true,
+      data: { count: 1, projects: [{ slug: "raw-envelope" }] }
+    });
   });
 
   it("guards a skill.read result: reading .data throws a pointer to top-level content", async () => {

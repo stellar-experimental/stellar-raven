@@ -1,7 +1,8 @@
 # ADR-0003: Build-time exposure filtering — the manifest IS the exposed surface
 
 - Status: accepted (2026-07-04); supersedes the deny-list/see-but-not-call half of
-  [ADR-0002](./0002-skills-retirement-twin-dedup.md)
+  [ADR-0002](./0002-skills-retirement-twin-dedup.md); amended by
+  [ADR-0009](./0009-recovery-only-discovery-receipts.md) for recovery-only operations
 - Decision rule (user): consumers get useful, forward-only tooling and services — never
   information about what the gateway *cannot* do. Cleanup and filtering belong upstream of
   clients, agents, and MCP: at build time. The knowledge of *why* something is excluded lives
@@ -56,14 +57,16 @@ in the model-facing world.
    outside the dying deny machinery. The manifest schema is now: id, service, kind, description,
    keywords?, inputSchema, outputSchema, transport, provenance.
 
-3. **The runtime deny layer is deleted.** `guard()` validates args, nothing else. `search`,
-   `catalog()`, `spec()`, `describe`, and `skill.read` need no exposure filter — the manifest is
-   pre-filtered by construction. The `store.ts` `lumenloop.skill.*` read alias (back-compat) is
-   deleted: unknown ids fail exact-match with a nearest-id suggestion.
+3. **The generic runtime deny layer is deleted.** `guard()` validates args, nothing else.
+   `search`, `catalog()`, `spec()`, `describe`, and `skill.read` need no exposure filter — the
+   manifest is pre-filtered by construction. ADR-0009 adds a narrowly scoped host capability for
+   manifest-declared recovery-only operations. The `store.ts` `lumenloop.skill.*` read alias
+   (back-compat) is deleted: unknown ids fail exact-match with a nearest-id suggestion.
 
 4. **The envelope error kind is two-way**: `"error" | "soft-empty"`. `"denied"` is gone from
-   `AdapterErrorKind`, rendered signatures, and both MCP tool descriptions — nothing callable can
-   be policy-refused at runtime. (Forward-only contract change; clients relying on "denied" break.)
+   `AdapterErrorKind`, rendered signatures, and both MCP tool descriptions. A recovery-only call
+   without a valid ADR-0009 receipt uses the ordinary `"error"` kind. (Forward-only contract
+   change; clients relying on "denied" break.)
 
 5. **The super spec contains exactly the manifest's operations** (56 paths: 53 service ops + 3
    synthetic skills ops; previously 75 with 19 denied). x-policy/x-cost/x-auth are gone;
@@ -114,12 +117,12 @@ in the model-facing world.
 - Correction discipline for future exclusions: add the surface to the relevant exclusion data in
   `scripts/exposure.mjs` with a comment naming the reason, extend the drift guard if the list is
   keyed on upstream names, rebuild (`build-catalog` → `build-super-spec` → `build-op-classes`),
-  and record the decision in an ADR/Solo todo. Never reintroduce runtime allow/deny.
+  and record the decision in an ADR/Solo todo. Never reintroduce a generic runtime allow/deny layer.
 
 ## Revisit triggers
 
-- A genuine need for *runtime-conditional* exposure (e.g. per-auth-tier catalogs) — that would be
-  a new, deliberate design, not a revival of the deny-list.
+- A genuine need for additional runtime-conditional exposure (e.g. per-auth-tier catalogs) — that
+  needs a new, deliberate design and must not revive the generic deny-list.
 - Lumenloop re-prices or splits `request_research` — the named exclusion + metered flag both
   guard it; enabling it is the PLAN §8 budget-gate feature.
 - The upstream skill source adds machine-readable audience/transport metadata (sk-005) — the
@@ -177,7 +180,14 @@ nearest-id suggestion — the recovery this ADR deliberately designed.
 **Therefore: never add a runtime payload scrubber.** That is the runtime allow/deny layer this ADR
 deleted, resurrected on the data plane with a worse failure mode — silent false-positive rewrites
 corrupting evidence instead of loud, inspectable denials. The correction discipline's closing rule
-("never reintroduce runtime allow/deny") covers it.
+("never reintroduce a generic runtime allow/deny layer") covers it.
+
+## Amendment (2026-08-30): recovery-only operations
+
+ADR-0009 adds a manifest-declared recovery-only operation. The manifest still owns exposure.
+The host validates a short-lived, one-use receipt before that operation dispatches. This is not a
+generic runtime policy layer. Ranked search excludes the operation, while exact catalog, spec,
+describe, and graph recovery keep it visible.
 
 **The line still binds our own words about relayed data.** Fixed in this round:
 `scout.getStatus`'s description recommended the payload "to discover endpoints", which is *our*

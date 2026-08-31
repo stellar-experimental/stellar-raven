@@ -34,6 +34,7 @@ import { RUNNERS } from "../src/skills/runners/index.ts";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts, skillFileUrl } from "./lib/skill-mirror.mjs";
 import { RETRIEVAL_PROFILES } from "./catalog-data/retrieval-profiles.mjs";
+import { RECOVERY_ONLY_OPERATION_IDS } from "./catalog-data/discovery-modes.mjs";
 import { KNOWN_ALIAS_PACKS } from "./catalog-data/known-aliases.mjs";
 import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
 import { lumenloopInputSchema, lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
@@ -289,7 +290,8 @@ function stellarDocsTitleExtras(entries, titlesSnapshot) {
 // ---------------------------------------------------------------------------
 // Exposure filtering — build-time, data-driven (ADR-0003; supersedes the
 // runtime deny-list of ADR-0002). The manifest IS the exposed surface: an
-// entry is either emitted (callable/readable) or it does not exist to
+// entry is either emitted (exposed; a recovery-only entry also needs an
+// ADR-0009 receipt) or it does not exist to
 // consumers. The exclusion DATA lives in scripts/exposure.mjs, shared by every
 // emitter (manifest, super-spec, description rewrites, skill sectioning) so the
 // surfaces cannot drift; the fail-loud guards that pin that data to the live
@@ -1019,6 +1021,30 @@ export function attachRetrievalProfiles(entries, profiles = RETRIEVAL_PROFILES) 
   return out;
 }
 
+/** Mark operations that require a verified prior recovery transition. */
+export function attachDiscoveryModes(entries, recoveryOnlyIds = RECOVERY_ONLY_OPERATION_IDS) {
+  const byId = new Map(entries.map((entry) => [entry.id, entry]));
+  for (const id of recoveryOnlyIds) {
+    const target = byId.get(id);
+    if (!target || target.kind !== "operation") {
+      throw new Error(`recovery-only id "${id}" matched no exposed operation`);
+    }
+    const hasSource = entries.some((entry) =>
+      entry.retrievalProfile?.recoverWith?.some(
+        (edge) => edge.id === id && edge.relation === "source-code"
+      )
+    );
+    if (!hasSource) {
+      throw new Error(`recovery-only operation "${id}" has no inbound source-code recovery edge`);
+    }
+  }
+  return entries.map((entry) =>
+    recoveryOnlyIds.has(entry.id)
+      ? { ...entry, discoveryMode: "recovery-only", searchable: false }
+      : entry
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Assemble
 // ---------------------------------------------------------------------------
@@ -1112,7 +1138,7 @@ async function main() {
   // Runnable attachment runs over the FULLY assembled set: its declared-op
   // guard needs every service's operation entries in scope, not just skills.
   const entries = applySkillsFormArm(
-    attachKnownAliases(attachRetrievalProfiles(attachRunnableSkills(
+    attachDiscoveryModes(attachKnownAliases(attachRetrievalProfiles(attachRunnableSkills(
       [
         ...attachOperationKeywords(buildLumenloop(lumenloop)),
         // Scout ops: x-routing vocabulary → routingKeywords (lever 7) first,
@@ -1128,7 +1154,7 @@ async function main() {
         ),
         ...buildSkills(skillsManifest, skillTexts, arm)
       ].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
-    ))),
+    )))),
     arm
   );
 

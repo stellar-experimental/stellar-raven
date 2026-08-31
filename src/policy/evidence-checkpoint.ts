@@ -7,7 +7,7 @@ export type EvidenceRecoveryCandidate = {
 };
 
 /**
- * Query-independent advice derived only from successful operation ids and the
+ * Query-independent advice derived only from non-error operation ids and the
  * catalog recovery graph. It never claims that a returned payload is empty or
  * irrelevant; the model still owns that answer-level judgment.
  */
@@ -31,11 +31,14 @@ export function candidateEvidenceBlock(count: number | undefined, suppressed = f
 export function evidenceCheckpointBlock(hint: EvidenceRecoveryHint | undefined): string {
   if (!hint?.candidates.length) return "";
   const sources = hint.sourceOperations.join(", ");
+  const repositoryRecovery = hint.candidates.some((candidate) => candidate.relation === "source-code")
+    ? " Use a source-code candidate only when prior evidence identifies one exact repository. Pass its canonical owner/name and make only one repository explanation attempt."
+    : "";
   const candidates = hint.candidates
     .map((candidate) => `${candidate.id} (${candidate.relation}; ${candidate.reasons.join("/")})`)
     .join(", ");
   if (hint.mode === "conditional-alternatives") {
-    return `\n\n--- EVIDENCE CHECKPOINT ---\nThe host observed successful broad operation class(es) (${sources}); it did not inspect or judge the returned rows. If exact evidence already answers the request, or the user asked a closed-world question about a named source, stop at that scope without extra calls. If the open-world question remains unanswered, make at most one bounded alternative pass using an uncalled exact recovery candidate: ${candidates}. Candidate rows still require exact identity or canonical slug plus source and date before attribution.`;
+    return `\n\n--- EVIDENCE CHECKPOINT ---\nThe host observed completed broad operation class(es) (${sources}); it did not inspect or judge the returned rows. If exact evidence already answers the request, or the user asked a closed-world question about a named source, stop at that scope without extra calls. If the open-world question remains unanswered, make at most one bounded alternative pass using an uncalled exact recovery candidate: ${candidates}.${repositoryRecovery} Candidate rows still require exact identity or canonical slug plus source and date before attribution.`;
   }
-  return `\n\n--- EVIDENCE CHECKPOINT ---\nThis run used successful narrow, operation-scoped lookup(s) only (${sources}); the host did not observe a semantic, research, A/V, or corpus-wide candidate lane. Inspect the returned projection before stopping. If it exactly answers the request, or the user asked a closed-world question about the named source, answer at that scope without extra calls. If an open-world identity, history, or footprint remains empty, weak, adjacent, ambiguous, or partial, make one bounded wider pass using an exact recovery candidate: ${candidates}. Candidate rows still require exact identity or canonical slug plus source and date before attribution.`;
+  return `\n\n--- EVIDENCE CHECKPOINT ---\nThis run used completed narrow, operation-scoped lookup(s) only (${sources}); the host did not observe a semantic, research, A/V, or corpus-wide candidate lane. Inspect the returned projection before stopping. If it exactly answers the request, or the user asked a closed-world question about the named source, answer at that scope without extra calls. If an open-world identity, history, or footprint remains empty, weak, adjacent, ambiguous, or partial, make one bounded wider pass using an exact recovery candidate: ${candidates}.${repositoryRecovery} Candidate rows still require exact identity or canonical slug plus source and date before attribution.`;
 }

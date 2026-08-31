@@ -6,6 +6,7 @@
 
 const BROAD_MISS = ["empty", "weak", "adjacent", "ambiguous"];
 const CORROBORATE = ["weak", "adjacent", "ambiguous", "partial"];
+const REPOSITORY_MISS = ["empty", "adjacent"];
 
 export const RETRIEVAL_PROFILES = {
   "lumenloop.search_directory": { lane: "directory", emptyScope: "operation", recoverWith: [
@@ -158,15 +159,17 @@ export const RETRIEVAL_PROFILES = {
     { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE }
   ] },
   "stellarDocs.search_rpc_horizon_data_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
+    { id: "scout.explainRepo", relation: "source-code", on: REPOSITORY_MISS },
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
-    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
-    { id: "scout.explainRepo", relation: "source-code", on: CORROBORATE }
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
   ] },
   "stellarDocs.search_sdk_cli_tools_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
+    { id: "scout.explainRepo", relation: "source-code", on: REPOSITORY_MISS },
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
   ] },
   "stellarDocs.search_soroban_contract_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
+    { id: "scout.explainRepo", relation: "source-code", on: REPOSITORY_MISS },
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
   ] },

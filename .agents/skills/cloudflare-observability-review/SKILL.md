@@ -267,7 +267,11 @@ High-value fields:
   `ok`, `evidenceOutcome`, `codeChars`, result/log truncation fields,
   `latestUserChars`, `historyChars`,
   `historyMessages`, `userMessages`, `subjectHash`, `auth`, `model`,
-  `openAiApiMode`, `reasoningEffort`
+  `openAiApiMode`, `reasoningEffort`, `outcome`, `source`, `target`,
+  `reason`, `errorName`
+- Recovery receipt: `evt = "recovery_receipt"`; group by `outcome`, `source`,
+  `target`, `reason`, and `errorName`. The event contains no receipt value,
+  nonce, identity, request ID, or expiry.
 
 - `$metadata.service`, `$metadata.requestId`, `$metadata.type`,
   `$metadata.trigger`, `$metadata.message`

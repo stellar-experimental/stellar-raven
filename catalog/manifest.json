@@ -2105,7 +2105,8 @@
       }
     },
     {
-      "description": "Deep code answer about a Stellar repo (routing × DeepWiki). Source-grounded ANSWER to a deep code question about a Stellar internal — routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls), then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
+      "description": "Deep code answer about a Stellar repo (routing × DeepWiki). Source-grounded ANSWER to a deep code question about a Stellar internal — routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls), then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok. The routing list above is stale where it says Horizon/go: stellar/go is archived. As of 2026-08-30 Horizon lives in stellar/stellar-horizon and the Go SDK in stellar/go-stellar-sdk. Pin repo to the current canonical owner/name; auto-routing is a fallback for questions without a known repository.",
+      "discoveryMode": "recovery-only",
       "id": "scout.explainRepo",
       "inputSchema": {
         "properties": {
@@ -2150,7 +2151,6 @@
         "symbols",
         "target",
         "note2",
-        "archived",
         "commit",
         "stars",
         "via",
@@ -2380,14 +2380,13 @@
         "xdr",
         "work",
         "show",
-        "questions",
         "answered",
         "transaction",
         "reach",
         "ingest",
-        "sdk",
         "deepwiki"
       ],
+      "searchable": false,
       "service": "scout",
       "transport": {
         "base": "https://stellarlight.xyz",
@@ -17634,6 +17633,14 @@
         "lane": "corpus",
         "recoverWith": [
           {
+            "id": "scout.explainRepo",
+            "on": [
+              "empty",
+              "adjacent"
+            ],
+            "relation": "source-code"
+          },
+          {
             "id": "stellarDocs.search_docs",
             "on": [
               "empty",
@@ -17652,16 +17659,6 @@
               "partial"
             ],
             "relation": "cited-research"
-          },
-          {
-            "id": "scout.explainRepo",
-            "on": [
-              "weak",
-              "adjacent",
-              "ambiguous",
-              "partial"
-            ],
-            "relation": "source-code"
           }
         ]
       },
@@ -17846,6 +17843,14 @@
         "emptyScope": "operation",
         "lane": "corpus",
         "recoverWith": [
+          {
+            "id": "scout.explainRepo",
+            "on": [
+              "empty",
+              "adjacent"
+            ],
+            "relation": "source-code"
+          },
           {
             "id": "stellarDocs.search_docs",
             "on": [
@@ -18143,6 +18148,14 @@
         "emptyScope": "operation",
         "lane": "corpus",
         "recoverWith": [
+          {
+            "id": "scout.explainRepo",
+            "on": [
+              "empty",
+              "adjacent"
+            ],
+            "relation": "source-code"
+          },
           {
             "id": "stellarDocs.search_docs",
             "on": [

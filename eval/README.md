@@ -1097,3 +1097,21 @@ that rejected attempt and each finding.
 Three manifest-driven tiering replacements were also rejected. The closest candidate kept all
 routing gates and surfaced the named case at rank five. It increased blind hostile captures from
 6/9 to 8/9 and changed 15 of 495 rankings. The branch therefore ships measurement only.
+
+## Re-baseline (2026-08-30): recovery-only repository detail
+
+The manifest now marks `scout.explainRepo` as `recovery-only`. Ordinary search excludes it from
+ranked hits and totals. Exact graph recovery and exact description still expose its contract.
+
+No scorer or corpus changed. Legacy strict improves from **208/279/311** to **209/280/312**.
+Card@5 remains **95/182**. Extended strict remains **90/109/117**. Skills remain **16/23/23**.
+The frozen holdout improves from **10/22/25** to **11/23/26**. Forbidden captures remain 11.
+Its accepted `cardHit5` moves from 25 to 26 and `passed` moves from 21 to 22.
+The holdout floors advance to the observed result. The evidence trace is
+`routing-2026-08-30T20-57-46-024Z.json`.
+
+## Routing evidence refresh (2026-08-30): receipt handoff description
+
+The receipt handoff corrects the `scout.explainRepo` catalog description. The manifest hash changes.
+`routing-2026-08-30T23-13-52-388Z.json` records unchanged totals: legacy 209/280/312,
+extended 90/109/117, skills 16/23/23, and holdout 11/23/26 with 11 forbidden captures.

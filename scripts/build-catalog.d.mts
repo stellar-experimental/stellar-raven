@@ -16,3 +16,7 @@ export function attachRetrievalProfiles(
   entries: readonly Record<string, unknown>[],
   profiles?: Record<string, unknown>
 ): Array<Record<string, unknown>>;
+export function attachDiscoveryModes(
+  entries: readonly Record<string, unknown>[],
+  recoveryOnlyIds?: ReadonlySet<string>
+): Array<Record<string, unknown>>;

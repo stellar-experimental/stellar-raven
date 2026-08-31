@@ -1,0 +1,762 @@
+{
+  "contract": "repository-tooling-recovery-v2",
+  "contractProvenance": {
+    "authoredAt": "2026-08-30",
+    "blindAuthor": "Claude Fable 5 high independent source matrix",
+    "startingRevision": "b53f62d3e6370231103b221e5474ecb6cbfd5627",
+    "supersedes": "repository-tooling-recovery-v1",
+    "supersededAt": "2026-08-30",
+    "reason": "positive evidence rule is the pre-registered set {empty, adjacent}; per-case labels were unstable across blind reviews",
+    "decision": "research/decisions/0010-repository-recovery-contract-v2.md",
+    "caseContentDigest": "sha256(JSON.stringify(cases))=482547a95a07f760f892bc72f9014d51f9e7dec26ac457ab83e4d1a3225a5479",
+    "orderedIdsDigest": "sha256(ids.join(\"\\n\"))=1883592ca7b52ac06cc40881efa49e4b84b2054875aee459be2245f71372115f"
+  },
+  "thresholds": {
+    "positivePasses": 10,
+    "prematureDetours": 0
+  },
+  "cases": [
+    {
+      "id": "rr-pos-go-sdk-trade-resolutions",
+      "class": "positive",
+      "question": "Which duration values do the Go SDK horizonclient trade-resolution variables contain?",
+      "repository": "stellar/go-stellar-sdk",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "MinuteResolution is 1 minute. The other variables are 5 minutes, 15 minutes, 1 hour, 24 hours, and 168 hours.",
+        "keyFacts": ["MinuteResolution is 1 minute.", "FiveMinuteResolution and FifteenMinuteResolution are 5 and 15 minutes.", "HourResolution, DayResolution, and WeekResolution are 1, 24, and 168 hours."],
+        "avoid": ["Do not report these values as ledger counts.", "Do not claim Stellar Docs list these Go variables."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/go-stellar-sdk/blob/5ee91ba60a828723ab8cad45067612420161ea4d/clients/horizonclient/main.go#L99-L115" },
+          { "class": "A", "ref": "https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.7.3/clients/horizonclient#pkg-variables" }
+        ],
+        "corroboration": [{
+          "claim": "The six trade-resolution variables contain 1, 5, 15, 60, 1440, and 10080 minutes.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "Pinned go-stellar-sdk horizonclient main.go", "observedAt": "2026-08-30" },
+            { "class": "A", "ref": "Versioned horizonclient package documentation", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["Pinned source and versioned package documentation agree."],
+          "rootCause": ["The first blind suite used a numeric fact with only source-code corroboration."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-go-sdk-query-enums",
+      "class": "positive",
+      "question": "Which string values do Go SDK horizonclient ordering and asset-type constants use?",
+      "repository": "stellar/go-stellar-sdk",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "OrderAsc and OrderDesc use asc and desc. AssetType4, AssetType12, and AssetTypeNative use credit_alphanum4, credit_alphanum12, and native.",
+        "keyFacts": ["OrderAsc is asc and OrderDesc is desc.", "AssetType4 is credit_alphanum4.", "AssetType12 is credit_alphanum12.", "AssetTypeNative is native."],
+        "avoid": ["Do not use uppercase wire values.", "Do not replace the exported Go symbol names with protocol prose."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/go-stellar-sdk/blob/5ee91ba60a828723ab8cad45067612420161ea4d/clients/horizonclient/main.go#L54-L64" },
+          { "class": "A", "ref": "https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.7.3/clients/horizonclient#pkg-constants" }
+        ],
+        "corroboration": [{
+          "claim": "The ordering and asset-type constants use the stated lowercase wire values.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "Pinned go-stellar-sdk horizonclient constants", "observedAt": "2026-08-30" },
+            { "class": "A", "ref": "Versioned horizonclient package constants", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["Pinned source and versioned package documentation agree."],
+          "rootCause": ["The first blind suite used a numeric fact with only source-code corroboration."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-js-rpc-sleep-strategies",
+      "class": "positive",
+      "question": "What do BasicSleepStrategy and LinearSleepStrategy return in JavaScript RPC polling?",
+      "repository": "stellar/js-stellar-sdk",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "BasicSleepStrategy always returns 1000 milliseconds. LinearSleepStrategy returns 1000 times the iteration value.",
+        "keyFacts": ["BasicSleepStrategy ignores the iteration and returns 1000.", "LinearSleepStrategy returns 1000 * iter.", "The unit is milliseconds."],
+        "avoid": ["Do not claim BasicSleepStrategy grows by one second.", "Do not report seconds instead of milliseconds."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/js-stellar-sdk/blob/3839fd2ee0a2d3e89e0e73638aa103479733c9d2/src/rpc/server.ts#L115-L126" },
+          { "class": "F", "ref": "node @stellar/stellar-sdk@17.0.1 probe: BasicSleepStrategy(7)=1000; LinearSleepStrategy(7)=7000, run 2026-08-30" }
+        ],
+        "corroboration": [{
+          "claim": "The basic strategy returns 1000, and the linear strategy returns 1000 times its iteration.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "Pinned js-stellar-sdk server.ts strategy definitions", "observedAt": "2026-08-30" },
+            { "class": "F", "ref": "Installed package runtime probe at version 17.0.1", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["Pinned source and an installed package execution agree."],
+          "rootCause": ["The replaced export did not survive in the published runtime package."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-go-sdk-default-horizon-clients",
+      "class": "positive",
+      "question": "Which HorizonURL values and timeout variable do the Go SDK default Horizon clients use?",
+      "repository": "stellar/go-stellar-sdk",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "DefaultTestNetClient uses https://horizon-testnet.stellar.org/. DefaultPublicNetClient uses https://horizon.stellar.org/. Both use HorizonTimeout.",
+        "keyFacts": ["DefaultTestNetClient includes a trailing slash.", "DefaultPublicNetClient includes a trailing slash.", "Both clients use HorizonTimeout."],
+        "avoid": ["Do not omit the exported client names.", "Do not claim these variables select RPC endpoints."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/go-stellar-sdk/blob/5ee91ba60a828723ab8cad45067612420161ea4d/clients/horizonclient/main.go#L243-L255" },
+          { "class": "A", "ref": "https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.7.3/clients/horizonclient#pkg-variables" }
+        ],
+        "corroboration": [{
+          "claim": "The two default clients use their stated Horizon URLs and HorizonTimeout.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "Pinned go-stellar-sdk default client definitions", "observedAt": "2026-08-30" },
+            { "class": "A", "ref": "Versioned horizonclient package variables", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["Pinned source and versioned package documentation agree."],
+          "rootCause": ["The replaced test-ledger values had only source-code evidence."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-env-host-depth-limit",
+      "class": "positive",
+      "question": "Which value does soroban-env-host assign to DEFAULT_HOST_DEPTH_LIMIT?",
+      "repository": "stellar/rs-soroban-env",
+      "initialEvidence": { "id": "stellarDocs.search_soroban_contract_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_soroban_contract_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "DEFAULT_HOST_DEPTH_LIMIT is a u32 constant with the value 100.",
+        "keyFacts": ["The constant name is DEFAULT_HOST_DEPTH_LIMIT.", "Its type is u32.", "Its value is 100."],
+        "avoid": ["Do not report the separate XDR depth of 500."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/rs-soroban-env/blob/a97c6ffecbedd6dba74807276a5115ad86b5396f/soroban-env-host/src/budget/limits.rs#L34-L41" },
+          { "class": "A", "ref": "https://docs.rs/soroban-env-host/latest/soroban_env_host/budget/constant.DEFAULT_HOST_DEPTH_LIMIT.html" }
+        ],
+        "corroboration": [{
+          "claim": "DEFAULT_HOST_DEPTH_LIMIT is a u32 constant equal to 100.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "rs-soroban-env limits.rs at a97c6ffecbedd6dba74807276a5115ad86b5396f", "observedAt": "2026-08-30" },
+            { "class": "A", "ref": "Published soroban-env-host crate documentation", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["Pinned source and rendered crate documentation agree on the same public constant."],
+          "rootCause": ["The removed XDR values lacked independent non-source corroboration."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-js-rpc-durability-values",
+      "class": "positive",
+      "question": "Which runtime strings do the JavaScript RPC Durability enum members contain?",
+      "repository": "stellar/js-stellar-sdk",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "Durability.Temporary is temporary, and Durability.Persistent is persistent.",
+        "keyFacts": ["Durability.Temporary maps to temporary.", "Durability.Persistent maps to persistent.", "Both are lowercase runtime strings."],
+        "avoid": ["Do not report uppercase runtime strings.", "Do not confuse the enum with ledger TTL values."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/js-stellar-sdk/blob/3839fd2ee0a2d3e89e0e73638aa103479733c9d2/src/rpc/server.ts#L69-L78" },
+          { "class": "F", "ref": "node @stellar/stellar-sdk@17.0.1 probe: rpc.Durability={Temporary:temporary,Persistent:persistent}, run 2026-08-30" }
+        ],
+        "corroboration": [{
+          "claim": "The two Durability members map to temporary and persistent.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "Pinned js-stellar-sdk Durability enum", "observedAt": "2026-08-30" },
+            { "class": "F", "ref": "Installed package runtime enum probe at version 17.0.1", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["Pinned source and an installed package execution agree."],
+          "rootCause": ["The replaced package source was not an independent evidence class."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-cli-config-home-env",
+      "class": "positive",
+      "question": "Which environment variable gives Stellar CLI a custom global config directory, and how is local config found?",
+      "repository": "stellar/stellar-cli",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "STELLAR_CONFIG_HOME has priority over XDG_CONFIG_HOME. Local lookup walks ancestors for .stellar or legacy .soroban, then uses the current .stellar directory.",
+        "keyFacts": ["STELLAR_CONFIG_HOME has priority.", "Local lookup walks ancestor directories.", "The local fallback is <cwd>/.stellar."],
+        "avoid": ["Do not claim XDG_CONFIG_HOME is the only override."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/stellar-cli/blob/0cc28fcb61d2746536a92b795f270b2d5d3d506e/cmd/soroban-cli/src/config/locator.rs#L937-L949" },
+          { "class": "B", "ref": "https://github.com/stellar/stellar-cli/blob/0cc28fcb61d2746536a92b795f270b2d5d3d506e/cmd/soroban-cli/src/utils.rs#L127-L139" },
+          { "class": "F", "ref": "Local stellar 27.1.0 STELLAR_CONFIG_HOME probe on 2026-08-30" }
+        ],
+        "corroboration": [{
+          "claim": "STELLAR_CONFIG_HOME takes priority and local lookup walks ancestors.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "stellar-cli locator.rs and utils.rs at 0cc28fcb61d2746536a92b795f270b2d5d3d506e", "observedAt": "2026-08-30" },
+            { "class": "F", "ref": "Local stellar 27.1.0 config write probe", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["Pinned source and a local CLI probe agree."],
+          "rootCause": ["The official CLI manual omits STELLAR_CONFIG_HOME and local precedence."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-cli-stellar-soroban-dir-precedence",
+      "class": "positive",
+      "question": "Which directory wins when .stellar and legacy .soroban both exist at one path?",
+      "repository": "stellar/stellar-cli",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "The CLI uses .stellar and logs a warning that both directories exist. It keeps .soroban as a legacy fallback.",
+        "keyFacts": [".stellar wins.", "The CLI logs a warning.", ".soroban remains a legacy fallback."],
+        "avoid": ["Do not claim .soroban wins.", "Do not claim the CLI exits with an error."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/stellar-cli/blob/0cc28fcb61d2746536a92b795f270b2d5d3d506e/cmd/soroban-cli/src/utils.rs#L127-L139" },
+          { "class": "F", "ref": "Local stellar 27.1.0 dual-directory probe on 2026-08-30" }
+        ],
+        "corroboration": [{
+          "claim": ".stellar wins over .soroban and produces a warning.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "stellar-cli utils.rs find_config_dir at 0cc28fcb61d2746536a92b795f270b2d5d3d506e", "observedAt": "2026-08-30" },
+            { "class": "F", "ref": "Local stellar 27.1.0 warning probe", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["Pinned source and a local CLI probe agree."],
+          "rootCause": ["The official CLI manual omits legacy directory precedence."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-js-rpc-insecure-http-guard",
+      "class": "positive",
+      "question": "Which error does the JavaScript RPC Server throw for an HTTP URL when allowHttp is absent?",
+      "repository": "stellar/js-stellar-sdk",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "The constructor throws: Cannot connect to insecure Soroban RPC server if `allowHttp` isn't set.",
+        "keyFacts": ["The guard applies to non-HTTPS URLs.", "allowHttp permits the connection.", "The error names an insecure Soroban RPC server."],
+        "avoid": ["Do not claim HTTP is accepted by default.", "Do not replace allowHttp with a different option name."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/js-stellar-sdk/blob/3839fd2ee0a2d3e89e0e73638aa103479733c9d2/src/rpc/server.ts#L207-L216" },
+          { "class": "F", "ref": "node @stellar/stellar-sdk@17.0.1 probe: new rpc.Server(http://localhost:8000) throws the recorded error, run 2026-08-30" }
+        ],
+        "corroboration": [{
+          "claim": "An HTTP RPC URL without allowHttp throws the recorded error.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "Pinned js-stellar-sdk RpcServer constructor guard", "observedAt": "2026-08-30" },
+            { "class": "F", "ref": "Installed package runtime guard probe at version 17.0.1", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["Pinned source and an installed package execution agree."],
+          "rootCause": ["The replaced Action defaults had only source-code evidence."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-go-sdk-timebound-factories",
+      "class": "positive",
+      "question": "Which values do Go SDK TimeoutInfinite and NewInfiniteTimeout use for transaction time bounds?",
+      "repository": "stellar/go-stellar-sdk",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "TimeoutInfinite is int64(0). NewInfiniteTimeout returns TimeBounds with MinTime 0 and MaxTime TimeoutInfinite.",
+        "keyFacts": ["TimeoutInfinite is 0.", "NewInfiniteTimeout sets MinTime to 0.", "NewInfiniteTimeout sets MaxTime to TimeoutInfinite."],
+        "avoid": ["Do not claim NewInfiniteTimeout uses the current time.", "Do not recommend indefinite time bounds for ordinary transactions."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/go-stellar-sdk/blob/5ee91ba60a828723ab8cad45067612420161ea4d/txnbuild/timebounds.go#L8-L72" },
+          { "class": "A", "ref": "https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.7.3/txnbuild#TimeoutInfinite" }
+        ],
+        "corroboration": [{
+          "claim": "TimeoutInfinite equals 0, and NewInfiniteTimeout uses it as MaxTime.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "Pinned go-stellar-sdk timebounds.go", "observedAt": "2026-08-30" },
+            { "class": "A", "ref": "Versioned txnbuild package documentation", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["Pinned source and versioned package documentation agree."],
+          "rootCause": ["The replaced Horizon default had only source-code evidence."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-horizon-max-supported-protocol",
+      "class": "positive",
+      "question": "Which Horizon ingestion constant pins the highest supported protocol version, and what is its value?",
+      "repository": "stellar/stellar-horizon",
+      "initialEvidence": { "id": "stellarDocs.search_rpc_horizon_data_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_rpc_horizon_data_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "MaxSupportedProtocolVersion is 28 in internal/ingest/main.go as of 2026-08-30.",
+        "keyFacts": ["The name is MaxSupportedProtocolVersion.", "The value is 28 as of 2026-08-30.", "The file is internal/ingest/main.go."],
+        "avoid": ["Do not omit the as-of date.", "Do not equate the supported maximum with the live network version."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-09-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/stellar-horizon/blob/2abda012313e162d822fda44076893054a3b27a2/internal/ingest/main.go#L36-L38" },
+          { "class": "C", "ref": "https://horizon.stellar.org/ observed 2026-08-30" }
+        ],
+        "corroboration": [{
+          "claim": "MaxSupportedProtocolVersion was 28 on 2026-08-30.",
+          "verdict": "confirmed-as-of",
+          "evidence": [
+            { "class": "B", "ref": "stellar-horizon main.go at 2abda012313e162d822fda44076893054a3b27a2", "observedAt": "2026-08-30" },
+            { "class": "C", "ref": "Live Horizon root core_supported_protocol_version field", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["Pinned source and live Horizon agree."],
+          "rootCause": ["The official ingestion Docs omit the source constant and its current value."]
+        }
+      }
+    },
+    {
+      "id": "rr-pos-go-sdk-horizon-timeout",
+      "class": "positive",
+      "question": "What default request timeout does Go SDK horizonclient use, and what is its variable name?",
+      "repository": "stellar/go-stellar-sdk",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs", "scout.explainRepo"],
+      "golden": {
+        "answer": "horizonclient sets HorizonTimeout to 60 * time.Second. Client.SetHorizonTimeout changes it for one client.",
+        "keyFacts": ["The variable is HorizonTimeout.", "The value is 60 seconds.", "SetHorizonTimeout changes the client value."],
+        "avoid": ["Do not use the archived stellar/go repository as the current module source."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "B", "ref": "https://github.com/stellar/go-stellar-sdk/blob/5ee91ba60a828723ab8cad45067612420161ea4d/clients/horizonclient/main.go#L96-L97" },
+          { "class": "A", "ref": "https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.7.3/clients/horizonclient#HorizonTimeout" }
+        ],
+        "corroboration": [{
+          "claim": "HorizonTimeout is 60 seconds.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "B", "ref": "go-stellar-sdk horizonclient main.go at 5ee91ba60a828723ab8cad45067612420161ea4d", "observedAt": "2026-08-30" },
+            { "class": "A", "ref": "Published Go package documentation", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["Pinned source and published package documentation agree."],
+          "rootCause": ["The official developer Docs name the module but omit this timeout."]
+        }
+      }
+    },
+    {
+      "id": "rr-neg-release-profile",
+      "class": "negative",
+      "question": "Which profile.release settings does the official Hello World contract template use?",
+      "repository": "stellar/stellar-cli",
+      "initialEvidence": { "id": "stellarDocs.search_soroban_contract_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_soroban_contract_docs"],
+      "golden": {
+        "answer": "The official Hello World page lists opt-level z, overflow checks, stripped symbols, aborting panics, one codegen unit, and LTO.",
+        "keyFacts": ["opt-level is z.", "overflow-checks is true.", "panic is abort.", "lto is true."],
+        "avoid": ["Do not call scout.explainRepo before Docs.", "Do not claim opt-level is 3."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "A", "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world" },
+          { "class": "F", "ref": "stellar 27.1.0 contract init /tmp/repo-recovery-release-probe-20260830 generated the recorded Cargo.toml profile on 2026-08-30" }
+        ],
+        "corroboration": [{
+          "claim": "Official Docs state the release profile settings.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "A", "ref": "Official Hello World contract page", "observedAt": "2026-08-30" },
+            { "class": "F", "ref": "Local stellar 27.1.0 contract init output", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["The official page and an empirical CLI-generated project agree."],
+          "rootCause": ["This control detects an unnecessary repository detour."]
+        }
+      }
+    },
+    {
+      "id": "rr-neg-quickstart-diagnostic-flag",
+      "class": "negative",
+      "question": "How do I enable Soroban diagnostic events in the quickstart container?",
+      "repository": "stellar/quickstart",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs"],
+      "golden": {
+        "answer": "Start quickstart with --enable-soroban-diagnostic-events. Local mode enables diagnostics by default.",
+        "keyFacts": ["The flag is --enable-soroban-diagnostic-events.", "Local mode enables diagnostics by default."],
+        "avoid": ["Do not call scout.explainRepo before Docs."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "A", "ref": "https://developers.stellar.org/docs/tools/quickstart/debugging/diagnostic-events" },
+          { "class": "B", "ref": "https://github.com/stellar/quickstart/blob/98e7824610f1f3fef36a5fe1e03682d778a4a1f3/start#L42-L75" },
+          { "class": "B", "ref": "https://github.com/stellar/quickstart/blob/98e7824610f1f3fef36a5fe1e03682d778a4a1f3/start#L189-L193" }
+        ],
+        "corroboration": [{
+          "claim": "Official Docs give the quickstart diagnostic-events flag.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "A", "ref": "Official quickstart diagnostic events page", "observedAt": "2026-08-30" },
+            { "class": "B", "ref": "Pinned quickstart start script flag and local-mode logic", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["The official page and pinned quickstart script agree."],
+          "rootCause": ["This control detects an unnecessary repository detour."]
+        }
+      }
+    },
+    {
+      "id": "rr-neg-testnet-endpoints",
+      "class": "negative",
+      "question": "What are the official SDF testnet RPC, Horizon, and Friendbot URLs, and which SDK constant supplies the passphrase?",
+      "repository": "stellar/js-stellar-sdk",
+      "initialEvidence": { "id": "skills.stellar-dev.data#network-configuration" },
+      "expectedOperationOrder": ["skills.stellar-dev.data#network-configuration"],
+      "golden": {
+        "answer": "Use soroban-testnet.stellar.org, horizon-testnet.stellar.org, friendbot.stellar.org, and StellarSdk.Networks.TESTNET for the passphrase.",
+        "keyFacts": ["The RPC URL is https://soroban-testnet.stellar.org.", "The Horizon URL is https://horizon-testnet.stellar.org.", "The Friendbot URL is https://friendbot.stellar.org.", "The passphrase constant is StellarSdk.Networks.TESTNET."],
+        "avoid": ["Do not call scout.explainRepo before the skill.", "Do not use the futurenet RPC URL."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-09-30",
+        "sources": [
+          { "class": "A", "ref": "https://developers.stellar.org/docs/networks" },
+          { "class": "B", "ref": "https://github.com/stellar/js-stellar-sdk/blob/3839fd2ee0a2d3e89e0e73638aa103479733c9d2/src/base/network.ts#L1-L14" }
+        ],
+        "corroboration": [{
+          "claim": "The skill and official network Docs provide the testnet connection values.",
+          "verdict": "confirmed-as-of",
+          "evidence": [
+            { "class": "A", "ref": "Official Stellar networks page", "observedAt": "2026-08-30" },
+            { "class": "B", "ref": "Pinned JavaScript SDK Networks enum", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["The official network page, maintained skill, and pinned SDK enum agree."],
+          "rootCause": ["This control detects an unnecessary repository detour."]
+        }
+      }
+    },
+    {
+      "id": "rr-neg-core-validators-fields",
+      "class": "negative",
+      "question": "Which fields can a stellar-core VALIDATORS table contain?",
+      "repository": "stellar/stellar-core",
+      "initialEvidence": { "id": "stellarDocs.search_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_docs"],
+      "golden": {
+        "answer": "The table accepts NAME, QUALITY, HOME_DOMAIN, PUBLIC_KEY, ADDRESS, and HISTORY. ADDRESS and HISTORY are optional.",
+        "keyFacts": ["The six fields are NAME, QUALITY, HOME_DOMAIN, PUBLIC_KEY, ADDRESS, and HISTORY.", "ADDRESS and HISTORY are optional."],
+        "avoid": ["Do not call scout.explainRepo before Docs.", "Do not use SEP-1 validator fields."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "A", "ref": "https://developers.stellar.org/docs/validators/admin-guide/configuring#validators-array" },
+          { "class": "B", "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/docs/stellar-core_example.cfg#L875-L905" }
+        ],
+        "corroboration": [{
+          "claim": "Official Docs list all accepted VALIDATORS fields.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "A", "ref": "Official validator configuration field table", "observedAt": "2026-08-30" },
+            { "class": "B", "ref": "Pinned stellar-core example configuration", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["The official field table and pinned example configuration agree."],
+          "rootCause": ["This control detects an unnecessary repository detour."]
+        }
+      }
+    },
+    {
+      "id": "rr-neg-rpc-history-retention-window",
+      "class": "negative",
+      "question": "What is the default stellar-rpc HISTORY_RETENTION_WINDOW, and what period does it represent?",
+      "repository": "stellar/stellar-rpc",
+      "initialEvidence": { "id": "stellarDocs.search_rpc_horizon_data_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_rpc_horizon_data_docs"],
+      "golden": {
+        "answer": "HISTORY_RETENTION_WINDOW defaults to 120960 ledgers, which represents about seven days of transaction and event history.",
+        "keyFacts": ["The default is 120960 ledgers.", "It retains transaction and event history.", "The period is about seven days."],
+        "avoid": ["Do not call scout.explainRepo before Docs.", "Do not confuse this key with a fee-statistics window."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "A", "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring" },
+          { "class": "B", "ref": "https://github.com/stellar/stellar-rpc/blob/9c13d418978631e702d1687490f2a1110af48a22/cmd/stellar-rpc/internal/config/options.go#L313-L321" }
+        ],
+        "corroboration": [{
+          "claim": "HISTORY_RETENTION_WINDOW defaults to 120960 ledgers, or about seven days.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "A", "ref": "Official RPC configuration page", "observedAt": "2026-08-30" },
+            { "class": "B", "ref": "Pinned stellar-rpc options.go retention-window option", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Codex GPT-5.6 Sol high after independent blocking review",
+          "evidence": ["The official configuration page and pinned source agree."],
+          "rootCause": ["The replaced getEvents method page is not present in the Docs search index."]
+        }
+      }
+    },
+    {
+      "id": "rr-neg-sdp-max-base-fee",
+      "class": "negative",
+      "question": "What is the default SDP MAX_BASE_FEE, and what does it control?",
+      "repository": "stellar/stellar-disbursement-platform-backend",
+      "initialEvidence": { "id": "stellarDocs.search_anchor_sep_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_anchor_sep_docs"],
+      "golden": {
+        "answer": "MAX_BASE_FEE defaults to 10000 stroops. It caps the base fee used for submitted Stellar transactions.",
+        "keyFacts": ["The default is 10000 stroops.", "It caps the submitted transaction base fee."],
+        "avoid": ["Do not call scout.explainRepo before Docs.", "Do not report the network minimum of 100 stroops."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "A", "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/configuring-sdp" },
+          { "class": "B", "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/blob/1a1051f956d8799b8ed89f26dee8fdd54429f514/cmd/utils/shared_config_options.go#L221-L228" }
+        ],
+        "corroboration": [{
+          "claim": "MAX_BASE_FEE defaults to 10000 stroops.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "A", "ref": "Official SDP configuration page", "observedAt": "2026-08-30" },
+            { "class": "B", "ref": "SDP shared_config_options.go at 1a1051f956d8799b8ed89f26dee8fdd54429f514", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["Official Docs and pinned source agree."],
+          "rootCause": ["This control detects an unnecessary repository detour."]
+        }
+      }
+    },
+    {
+      "id": "rr-neg-rpc-max-events-limit",
+      "class": "negative",
+      "question": "What is the default maximum getEvents response size, and which stellar-rpc key sets it?",
+      "repository": "stellar/stellar-rpc",
+      "initialEvidence": { "id": "stellarDocs.search_rpc_horizon_data_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_rpc_horizon_data_docs"],
+      "golden": {
+        "answer": "MAX_EVENTS_LIMIT sets the maximum to 10000 events. DEFAULT_EVENTS_LIMIT sets the default page size to 100.",
+        "keyFacts": ["MAX_EVENTS_LIMIT is 10000.", "DEFAULT_EVENTS_LIMIT is 100."],
+        "avoid": ["Do not call scout.explainRepo before Docs.", "Do not report the queue limit of 1000."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "A", "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring" },
+          { "class": "B", "ref": "https://github.com/stellar/stellar-rpc/blob/9c13d418978631e702d1687490f2a1110af48a22/cmd/stellar-rpc/internal/config/options.go#L338-L348" }
+        ],
+        "corroboration": [{
+          "claim": "Official Docs state MAX_EVENTS_LIMIT as 10000.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "A", "ref": "Official RPC configuration page", "observedAt": "2026-08-30" },
+            { "class": "B", "ref": "Pinned stellar-rpc options.go event-limit options", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["The official page and pinned source agree."],
+          "rootCause": ["This control detects an unnecessary repository detour."]
+        }
+      }
+    },
+    {
+      "id": "rr-neg-contract-optimize-deprecated",
+      "class": "negative",
+      "question": "Is stellar contract optimize still the required way to shrink contract Wasm?",
+      "repository": "stellar/stellar-cli",
+      "initialEvidence": { "id": "stellarDocs.search_sdk_cli_tools_docs" },
+      "expectedOperationOrder": ["stellarDocs.search_sdk_cli_tools_docs"],
+      "golden": {
+        "answer": "No. The command is deprecated in favor of stellar contract build --optimize, and build optimizes by default.",
+        "keyFacts": ["stellar contract optimize is deprecated.", "Use stellar contract build --optimize.", "Build optimizes by default."],
+        "avoid": ["Do not call scout.explainRepo before Docs.", "Do not require a separate optimize step."]
+      },
+      "truth": {
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-08-30",
+        "reverifyBy": "2026-11-30",
+        "sources": [
+          { "class": "A", "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-contract-optimize" },
+          { "class": "F", "ref": "Local stellar 27.1.0 help observed 2026-08-30" }
+        ],
+        "corroboration": [{
+          "claim": "The CLI manual deprecates contract optimize in favor of build optimization.",
+          "verdict": "confirmed",
+          "evidence": [
+            { "class": "A", "ref": "Official Stellar CLI manual", "observedAt": "2026-08-30" },
+            { "class": "F", "ref": "Local stellar 27.1.0 command help", "observedAt": "2026-08-30" }
+          ]
+        }],
+        "verified": {
+          "date": "2026-08-30",
+          "by": "Claude Fable 5 high",
+          "evidence": ["Official Docs and local CLI evidence agree."],
+          "rootCause": ["This control detects an unnecessary repository detour."]
+        }
+      }
+    }
+  ]
+}

@@ -134,6 +134,19 @@ describe("server instructions — Claude Code 2KB budget", () => {
     expect(recovery).toContain("does not verify an execution ledger");
   });
 
+  it("requires a host receipt for later source-code recovery", () => {
+    for (const contract of [
+      SEARCH_DESCRIPTION,
+      EXECUTE_DESCRIPTION,
+      BASE_SERVER_INSTRUCTIONS,
+      SERVER_INSTRUCTIONS
+    ]) {
+      expect(contract).toContain("`scout.explainRepo` is recovery-only and absent from ranked hits");
+      expect(contract).toContain("one-use `recoveryReceipt`");
+      expect(contract).toContain("one later execute");
+    }
+  });
+
   it("publishes ranking confidence and service-filter recovery metadata", () => {
     expect(rankedSearchOutputSchema.confidence.description).toContain("topScoreGap");
     expect(rankedSearchOutputSchema.recoveryMetadata.description).toContain("service filter");
@@ -167,8 +180,10 @@ describe("tool descriptions — Claude Code 2KB clipped prefix", () => {
     for (const phrase of [
       "## Workflow",
       "Plan which source families could ground the answer before searching",
-      "`search` once per candidate family",
-      "Write ONE `execute` script that composes SEVERAL relevant operations",
+      "`search` each candidate family",
+      "`scout.explainRepo` is recovery-only and absent from ranked hits",
+      "one-use `recoveryReceipt`",
+      "Otherwise, compose independent broad calls",
       "Match breadth to the claim",
       // The breadth rule is only actionable with its open-world half attached.
       "needs a broad content/research family in the same script."

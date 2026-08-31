@@ -16,7 +16,8 @@ import {
   assertNoNonExposedRefs,
   assertSideEffectingOpsExcluded,
   attachKnownAliases,
-  attachRetrievalProfiles
+  attachRetrievalProfiles,
+  attachDiscoveryModes
 } from "../scripts/build-catalog.mjs";
 import { EXCLUDED_SCOUT_OPS } from "../scripts/exposure.mjs";
 import { MICRO_MAP } from "../src/mcp/micro-map.ts";
@@ -214,23 +215,62 @@ describe("build-catalog.mjs", () => {
     })).toThrow(/non-exposed operation/);
   });
 
-  it("recovers weak RPC docs results through cited research and source-code explanation", () => {
-    const rpcDocs = catalog.entries.find(
-      (entry) => entry.id === "stellarDocs.search_rpc_horizon_data_docs"
+  it("rejects a recovery-only id that is absent or not an operation", () => {
+    expect(() => attachDiscoveryModes(catalog.entries, new Set(["scout.notExposed"]))).toThrow(
+      /matched no exposed operation/
     );
-    expect(rpcDocs?.retrievalProfile?.recoverWith).toEqual(
-      expect.arrayContaining([
-        {
-          id: "scout.searchResearch",
-          relation: "cited-research",
-          on: ["weak", "adjacent", "ambiguous", "partial"]
-        },
-        {
-          id: "scout.explainRepo",
-          relation: "source-code",
-          on: ["weak", "adjacent", "ambiguous", "partial"]
-        }
-      ])
+  });
+
+  it("rejects a recovery-only operation without an inbound source-code edge", () => {
+    const entries = catalog.entries.map(({ retrievalProfile: _profile, ...entry }) => entry);
+    expect(() => attachDiscoveryModes(entries, new Set(["scout.explainRepo"]))).toThrow(
+      /has no inbound source-code recovery edge/
+    );
+  });
+
+  it("recovers empty or adjacent tooling docs through one source-code edge", () => {
+    for (const id of [
+      "stellarDocs.search_rpc_horizon_data_docs",
+      "stellarDocs.search_sdk_cli_tools_docs",
+      "stellarDocs.search_soroban_contract_docs"
+    ]) {
+      const recoverWith = catalog.entries.find((entry) => entry.id === id)?.retrievalProfile?.recoverWith;
+      expect(recoverWith?.[0], id).toEqual({
+        id: "scout.explainRepo",
+        relation: "source-code",
+        on: ["empty", "adjacent"]
+      });
+      expect(recoverWith?.filter((edge) => edge.id === "scout.explainRepo"), id).toHaveLength(1);
+    }
+  });
+
+  it("marks repository detail as recovery-only and fails loud on invalid policy data", () => {
+    const explain = catalog.entries.find((entry) => entry.id === "scout.explainRepo");
+    expect(explain).toMatchObject({
+      kind: "operation",
+      discoveryMode: "recovery-only",
+      searchable: false
+    });
+    expect(explain?.description).toContain("stellar/stellar-horizon");
+    expect(explain?.description).toContain("stellar/go-stellar-sdk");
+    expect(explain?.description).toContain("archived");
+    expect(explain?.description).toContain("data.ok");
+    expect(() =>
+      loadManifest({
+        ...catalog,
+        entries: catalog.entries.map((entry) => {
+          if (entry.id !== "scout.explainRepo") return entry;
+          const { searchable: _searchable, ...withoutSearchable } = entry;
+          return withoutSearchable;
+        })
+      })
+    ).toThrow(/must set searchable:false/);
+    const withoutProfiles = {
+      ...catalog,
+      entries: catalog.entries.map(({ retrievalProfile: _profile, ...entry }) => entry)
+    };
+    expect(() => loadManifest(withoutProfiles)).toThrow(
+      /no inbound source-code recovery edge/
     );
   });
 

@@ -78,6 +78,7 @@ Decide what changed (or what question you're asking) — that picks the instrume
 | Major search-behavior change | + agentic lane (~$, minutes, needs live server) |
 | Big change / A-B / before-after on answer quality | + QA battery sample (headline; ~$0.2–0.7/case, ~30 min per 30) |
 | Executor / adapter / envelope changes | + QA live-data lane (`--cases eval/qa/corpus/live/live-cases.json`) |
+| Repository-recovery profile or receipt change | `eval:repo-recovery:lint` and `eval:repo-recovery -- --gate`; see `eval/repo-recovery/README.md`. A live promotion needs a separate authorization. |
 | Tool-description / agent-prompt-surface change (tool descriptions, MCP instructions, nudges) | QA sample + plan regrade — behavior shifts, routing math doesn't |
 | Any QA run already stored | + plan regrade (free, offline) |
 | Upstream drift refresh landed | routing `--gate`; refresh `improvements/` statuses (drift is the natural checkpoint for `fixed-upstream` re-checks) |

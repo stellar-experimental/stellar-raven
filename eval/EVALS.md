@@ -26,6 +26,7 @@ the headline wins.
 | `npm run eval:playground` — actual `/playground/chat` SSE over existing QA cases | public playground model loop → tools → answer | paid; seeded 5-case default, max 30 per run-scoped subject — after playground prompt/model/loop changes; model-backed runs require an operator-matched server/tree generation and machine-readable round-cap context | Diagnostic, scored by the same QA judge/evidence pack; v2 artifacts self-pin answering/judge/cap/source provenance; never merge its denominator with the main MCP headline |
 | — canonical live-data contract `live-data-canonical-v3` (`--cases eval/qa/corpus/live/live-cases.json`, 15 = the carried v2 ten (7 Scout / 2 Lumenloop / 1 cant-do, byte-identical under an independent projection digest) + 5 behavioral additions: lifecycle-label provenance, jobs recency, cross-service reconciliation, guessed-slug soft-empty, artifact-read continuation) | `execute` **grounding** where priors fail | ~$3.30–10 full at the documented ~$0.22–0.67/case — after executor/adapter changes | Diagnostic for the execute path; membership/order stays the frozen 15 while full case content is pinned by the contract's `caseContentDigest`; graded on behavior, never exact values. History: `live-data-canonical-v2` (10 cases) was the contract through 2026-07-12 and saturated at 10/10; v2 aggregates stay v2-denominated, per-id comparison remains valid for the carried ten |
 | — opt-in digest contract `live-digest-supplement-v2` (`--cases eval/qa/corpus/live/live-digest-supplement-cases.json`, 2 Lumenloop) | `execute` recency-digest grounding | ~$0.44–1.34 full at the same per-case estimate — only for digest/skill-run questions | Diagnostic supplement; report separately from the canonical live-data lane and main battery |
+| `eval/repo-recovery/` — `repository-tooling-recovery-v2` (20 = 12 positive / 8 negative) | Docs-first recovery for repository-only flags, defaults, symbols, and configuration keys | free recovery-only discovery checks on every recovery-profile change; a separately authorized live-agent collection before promotion | Separate frozen ship gate: `scout.explainRepo` stays outside ordinary ranking. Unit and smoke suites enforce the later one-use receipt. Live promotion still requires at least 10 positive operation-order plus grounded-answer passes, and zero premature detours across all eight negatives |
 | `eval/plan/grade-plan.mjs` | which services `execute` actually touched | free (regrades stored QA transcripts) | Diagnostic (coverage; progression informational only) |
 
 `npm run eval:qa:paired` is an experimental stored-run printer. It requires 100 eligible IDs
@@ -124,6 +125,11 @@ replaced two; the same README rule applies across that boundary.
     otherwise-correct answers that omitted dates for volatile claims. Inventory the pattern across
     service shards before changing prompts or rubrics. A single case remains diagnostic and does
     not justify per-question tuning.
+11. **Repository recovery stays separate and frozen.** The 20-case
+    `repository-tooling-recovery-v2` contract has its own identity digests, lint, structural
+    measurement, and stored-result grader. It never compiles into another lane. Its free measure
+    proves only manifest eligibility and negative ranking risk. The full gate needs reviewed live
+    operation order and grounded answers under the exact frozen identity.
 
 ## Primary artifact: service-improvement recommendations
 

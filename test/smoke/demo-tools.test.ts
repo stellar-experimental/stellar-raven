@@ -31,6 +31,36 @@ function makeTools(budget?: DemoToolBudget, runExecute?: ExecuteRunner) {
 }
 
 describe("demo tools at the worker boundary", () => {
+  it("renders the same recovery receipt contract card as MCP", async () => {
+    const { execute } = makeTools(undefined, async () => ({
+      ok: true,
+      result: '{"docs":"inspected"}',
+      truncated: false,
+      logs: [],
+      operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
+      evidenceSummary: {
+        kind: "service-data",
+        skillRead: false,
+        buildAuthoritySkillIds: [],
+        buildAuthorityRoles: [],
+        skillRuns: 0,
+        artifactReads: 0
+      },
+      recoveryReceipts: [{
+        source: "stellarDocs.search_sdk_cli_tools_docs",
+        target: "scout.explainRepo",
+        receipt: "demo-signed-host-receipt",
+        expiresAt: "2026-08-30T12:05:00.000Z"
+      }]
+    }));
+    const text = await execute.execute({ code: "async () => ({ docs: true })" }) as string;
+    expect(text).toContain("--- RECOVERY RECEIPT ---");
+    expect(text).toContain("scout.explainRepo(input: ExplainRepoInput)");
+    expect(text.split("demo-signed-host-receipt")).toHaveLength(2);
+    const example = JSON.parse(text.split("\n").at(-1) ?? "") as Record<string, string>;
+    expect(Object.keys(example).sort()).toEqual(["code", "recoveryReceipt"]);
+  });
+
   it("reports empty successful collections separately from service data", () => {
     expect(
       evidenceOutcome({
@@ -158,6 +188,27 @@ describe("demo tools at the worker boundary", () => {
     } finally {
       logSpy.mockRestore();
     }
+  });
+
+  it("keeps recovery-only source code out of ordinary ranked discovery", async () => {
+    const { search } = makeTools();
+    const result = (await search.execute({
+      query: "Go SDK trade resolution variables",
+      kind: "operation",
+      limit: 6
+    })) as {
+      hits: Array<{ id: string }>;
+      recovery: unknown[];
+      nextSteps: string;
+    };
+    const docsIndex = result.hits.findIndex((hit) => hit.id === "stellarDocs.search_sdk_cli_tools_docs");
+    const repositoryIndex = result.hits.findIndex((hit) => hit.id === "scout.explainRepo");
+
+    expect(docsIndex).toBeGreaterThanOrEqual(0);
+    expect(repositoryIndex).toBe(-1);
+    expect(result.recovery).toEqual([]);
+    expect(result.nextSteps).toContain("recovery-only and absent from ranked hits");
+    expect(result.nextSteps).toContain("one-use `recoveryReceipt`");
   });
 
   it("keeps a bare recovery reason inert", async () => {
@@ -651,7 +702,7 @@ describe("demo tools at the worker boundary", () => {
     expect(budget.latestRecoveryHint).toBeNull();
     const recoveryStep = prepareDemoStep({ steps: [], stepNumber: 2, budget });
     expect(recoveryStep?.system).toContain("returned only errors");
-    expect(recoveryStep?.system).not.toContain("successful narrow, operation-scoped lookup");
+    expect(recoveryStep?.system).not.toContain("completed narrow, operation-scoped lookup");
 
     const build = (await execute.execute({
       code: `async () => {

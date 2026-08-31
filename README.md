@@ -112,7 +112,9 @@ the production consoles as follows:
 
 1. In WorkOS, find the user by the contact email and record the WorkOS user ID. With the production
    `MCP_SERVER_SECRET`, compute `subject = SHA-256(workosUserId + ":" + MCP_SERVER_SECRET)`, exactly as
-   [`deriveSubject`](./src/auth/workos.ts) does. Never paste the ID, subject, or secret into logs/tickets.
+   [`deriveSubject`](./src/auth/workos.ts) does. This secret also signs recovery receipts.
+   Rotation invalidates outstanding receipts, which expire within five minutes. Never paste the ID,
+   subject, or secret into logs/tickets.
 2. In Cloudflare's production `OAUTH_KV` namespace, list and delete every exact key under both
    `grant:<subject>:` and `token:<subject>:`. This revokes Raven OAuth grants and tokens. Also list and
    delete `demo-throttle:<subject>:` keys. Use the KV dashboard or Wrangler's documented remote

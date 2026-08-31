@@ -9,8 +9,8 @@
  *  - `error.kind` is the two-way discriminator the model (and tests) branch
  *    on: "error" (call failed / args invalid), "soft-empty" (the service
  *    answered politely with nothing — unknown slug, zero hits, guidance
- *    text). There is no "denied": exposure is filtered at build time
- *    (ADR-0003), so nothing callable can be policy-refused at runtime.
+ *    text). There is no separate "denied" kind. Exposure is filtered at
+ *    build time. A recovery-only host refusal uses the standard error kind.
  *  - One envelope across three heterogeneous services keeps the `execute`
  *    prompt honest: model code checks `r.ok` and never has to guess whether
  *    a bare array vs `{error}` vs `{text}` means failure.

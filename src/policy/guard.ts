@@ -19,7 +19,11 @@ export function guard(entry: CatalogEntry, args: unknown): AdapterResult | null 
       kind: "error",
       message: `invalid arguments for ${entry.id} — no call was made`,
       details: issues,
-      hint: "Fix the listed fields and retry; the operation's exact input schema is in its `search` hit signature."
+      hint: `Fix the listed fields and retry; codemode.describe(${JSON.stringify(entry.id)}) returns the exact input schema.${
+        entry.discoveryMode === "recovery-only"
+          ? " This rejection did not consume the recovery receipt; reuse it on the retry."
+          : ""
+      }`
     });
   }
 

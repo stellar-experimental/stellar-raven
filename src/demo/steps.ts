@@ -158,6 +158,11 @@ export function prepareDemoStep({
     DEMO_CAPS.maxExecuteCallsPerTurn - (budget?.executeCalls ?? signals.executeResults)
   );
   const usesRecoveryHint = !noHostEvidence && recoveryHint !== null;
+  const repositoryRecovery = recoveryHint?.candidates.some(
+    (candidate) => candidate.relation === "source-code"
+  )
+    ? " Use a source-code candidate only when prior evidence identifies one exact repository. Pass its canonical owner/name and make only one repository explanation attempt."
+    : "";
   const reason =
     noHostEvidence
       ? "The latest execute returned no host-observed service, skill-content, or artifact evidence; catalog/spec/search results and model-authored constants are navigation or unsupported data, not factual grounding."
@@ -165,8 +170,8 @@ export function prepareDemoStep({
         ? "The latest successful service response contained no result rows. Its envelope remains ok, but it is inconclusive host evidence."
       : recoveryHint
         ? recoveryHint.mode === "conditional-alternatives"
-          ? `The latest execute used successful broad operation class(es) (${recoveryHint.sourceOperations.join(", ")}); the host did not inspect or judge their rows. If exact evidence answers the request or the question names a closed-world source, stop at that scope. If the open-world question remains unanswered, use at most one bounded uncalled alternative (${recoveryHint.candidates.map((candidate) => candidate.id).join(", ")}).`
-          : `The latest execute used only successful narrow, operation-scoped lookup(s) (${recoveryHint.sourceOperations.join(", ")}). If the returned projection exactly answers the request or the question is closed-world, stop at that scope. If an open-world identity, history, or footprint remains empty, weak, adjacent, ambiguous, or partial, use one exact wider candidate (${recoveryHint.candidates.map((candidate) => candidate.id).join(", ")}).`
+          ? `The latest execute used completed broad operation class(es) (${recoveryHint.sourceOperations.join(", ")}); the host did not inspect or judge their rows. If exact evidence answers the request or the question names a closed-world source, stop at that scope. If the open-world question remains unanswered, use at most one bounded uncalled alternative (${recoveryHint.candidates.map((candidate) => candidate.id).join(", ")}).${repositoryRecovery}`
+          : `The latest execute used only completed narrow, operation-scoped lookup(s) (${recoveryHint.sourceOperations.join(", ")}). If the returned projection exactly answers the request or the question is closed-world, stop at that scope. If an open-world identity, history, or footprint remains empty, weak, adjacent, ambiguous, or partial, use one exact wider candidate (${recoveryHint.candidates.map((candidate) => candidate.id).join(", ")}).${repositoryRecovery}`
       : operationRecovery && operations.softEmpty > 0 && operations.error > 0
       ? "The host-observed operations returned only errors or soft-empty results, with no successful operation evidence."
       : operationRecovery && operations.softEmpty > 0

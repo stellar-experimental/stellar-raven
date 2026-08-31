@@ -141,6 +141,19 @@ stays inside its pre-registered band. Consider ranking only if at least three qu
 misses remain. A suite-specific validator and lint enforce the full `golden-truth` evidence fields
 without compiling the suite into existing corpora.
 
+The 2026-08-30 fourth collection and the 2026-08-31 fifth v2 collection evaluated the ranking
+trigger. The fifth collection had one selection miss, so the trigger remains unmet. Monitor later
+v2 collections. Reopen the `stellarDocs.search_docs` source-code edge only after three selection
+misses recur and a separate measured A/B reads the production detour band.
+
+The Docs-versus-repository conflict in `rr-pos-cli-config-home-env` is monitor-only. Reopen prompt
+or authority work only after three successful-recovery answer conflicts recur.
+
+No paid repository-recovery rerun may occur until the Horizon free probe returns `28`.
+
+G1 is a pre-registered v3 candidate only. It needs an owner decision, new digests, and an ADR before
+any collection. Do not apply it to a stored v2 artifact.
+
 ### `search` does not surface the research lane for protocol-history questions
 
 Eval case `q-protocol-24-whisk-incident` asks why Protocol 24 followed Protocol 23 so quickly. The

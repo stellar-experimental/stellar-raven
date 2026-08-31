@@ -61,15 +61,17 @@ in-script discovery helpers (`codemode.search/describe/catalog/spec`) as `/mcp`;
 boundary is enforced by the outer step, tool-call, output, code-size, timeout, auth, and rate caps.
 A narrow AI SDK `prepareStep` policy reserves the final step for tool-free synthesis and asks for
 recovery only after structural navigation/failure/truncation signals or a host-observed execute
-ledger containing no successful operation with structurally positive service data. It also carries
-forward a conditional evidence checkpoint when the latest successful execute used only narrow,
-operation-scoped lookups. The checkpoint names exact catalog recovery candidates but preserves the
-closed-world stopping rule; a later search cannot erase already-grounded execute evidence.
+ledger containing no operation with structurally positive service data. It also carries forward a
+conditional evidence checkpoint from completed profiled operations. Completed operations are
+successful or soft-empty. The checkpoint names exact catalog recovery candidates but preserves the
+closed-world stopping rule. A source-code candidate requires one exact repository owner/name and
+permits one repository explanation attempt. A later search cannot erase grounded execute evidence.
 
 
-Each authorized request gets a **fresh, stateless `McpServer`** (MCP SDK 2.0,
+Each authorized request gets a **fresh `McpServer`** (MCP SDK 2.0,
 `@modelcontextprotocol/server`) served over streamable HTTP by `createMcpHandler` (from
-`agents/mcp`) — no Durable Objects, no session state. The handler serves both wire eras:
+`agents/mcp`). The request path has no Durable Object or MCP session state. R2 stores bounded
+result artifacts and one-use recovery receipt markers. The handler serves both wire eras:
 the 2026-07-28 revision (`server/discover` negotiation, pinned end-to-end by
 `test/smoke/mcp-modern-client.test.ts`) and the 2025 `initialize` lifecycle via its built-in
 stateless legacy fallback. Custom domains skip the SDK's Host allowlist (Cloudflare routing
@@ -125,7 +127,7 @@ nextSteps }` (as both `text` and
 `structuredContent`): `total` counts every distinct catalog entry the consulted scorer
 tiers matched (post-filter, pre-paging), `truncated` = `total > hits.length` (retry with a
 higher `limit`, the other candidate family, or varied vocabulary), and
-`nextSteps` is a server-authored hint that restates the compose-in-one-script workflow and
+`nextSteps` is a server-authored hint that restates the ranked-hit workflow and
 the envelope rule on every call. `prepareCatalogSearch` validates the `service` filter against
 the catalog's real service set (`catalogServices`). An unknown value ("stellardocs",
 "stellar-docs") becomes a structured issue instead of a silently-empty page. The MCP adapter maps
@@ -239,12 +241,14 @@ that a candidate is relevant. It only distinguishes positive rows or detail fiel
 collections and metadata. Model-facing instructions and adapter hints then enforce the
 answer-level rule: a closed-world directory/index miss can be reported only at that source's scope,
 while an open-world identity/history/topic miss gets one broad pass; semantic candidates need exact
-identity (or canonical slug), source, and date before attribution. A successful profiled
-narrow operation may produce a `narrow-only` checkpoint, while a successful profiled broad
+identity (or canonical slug), source, and date before attribution. A completed profiled
+narrow operation may produce a `narrow-only` checkpoint, while a completed profiled broad
 operation may produce a graph-derived `conditional-alternatives` checkpoint naming
 only uncalled exposed operations. Its standalone copy says the host observed operation classes, not
 row relevance, and recommends one bounded alternative pass only if the question remains unresolved.
-Runs with no structurally positive successful operation use the independent empty-success,
+Here, completed means successful or soft-empty. A source-code checkpoint requires one exact
+repository owner/name and permits one repository explanation attempt. The checkpoint is guidance,
+not authorization. Runs with no structurally positive operation use the independent empty-success,
 no-host-evidence, or all-error/soft-empty recovery paths instead. The service envelope remains
 unchanged. Playground exposes at most one hint-driven recovery cycle per turn; the latch
 is consumed when its first standalone checkpoint is emitted, and a later execute supersedes any pending
@@ -263,7 +267,7 @@ candidates carry schema-derived `outputKeys` and one-level `outputItemKeys` outs
 signature, so the playground's signature clipping cannot hide the documented projection shape.
 This prevents a model-authored projection from silently erasing a stronger row or guessing legacy
 payload fields, without inspecting query semantics or claiming an identity match. When a
-successful run used only `emptyScope: "operation"` lookups and no semantic, research, A/V, corpus,
+completed run used only `emptyScope: "operation"` lookups and no semantic, research, A/V, corpus,
 or other candidate-evidence operation, the same ledger derives a conditional evidence checkpoint
 from those operations' existing `recoverWith` edges. `/mcp` appends that checkpoint to the execute
 result; `/playground` also carries it into the next-step system note. The model still inspects the
@@ -441,8 +445,9 @@ the local/dev owner path to the production artifact bucket.
 Every service call resolves — never throws — to `{ ok: true, data }` or
 `{ ok: false, error: { service, kind, message, status?, code?, hint? } }`, with `kind`
 two-way: `"error"` (call failed / bad args) or `"soft-empty"` (the service answered with
-nothing — *not* evidence of absence) (`src/adapters/types.ts`). There is no `"denied"`:
-exposure is filtered at build time (ADR-0003), so nothing callable can be policy-refused.
+nothing — *not* evidence of absence) (`src/adapters/types.ts`). There is no `"denied"`.
+A recovery-only operation without a valid receipt returns the standard `"error"` kind before
+dispatch (§4, Recovery-only operation receipts).
 An `ok: true` envelope whose payload arrays are empty is data-shaped empty, not a `soft-empty`
 error. The host ledger classifies that success as inconclusive without changing the public envelope.
 Positive rows and meaningful detail fields remain service data. Both empty-success and soft-empty
@@ -462,13 +467,44 @@ and plants non-enumerable accessor pairs on each envelope:
 | SET (either) | **writes through** (self-replaces with a plain property — decorating the envelope is legal) | warns once, then writes through |
 | `r.error` on ok:true | stays plain `undefined` (the `if (r.error)` pattern keeps working) | — |
 
-Non-enumerable accessors, deliberately **not** a Proxy (Proxies `DataCloneError` under
-Workers RPC serialization): `Object.keys` / spread / JSON / structured clone / returning
-the raw envelope all read enumerable-only and stay untouched; only direct wrong-level
-access trips a trap. The SET is not try/caught — a frozen envelope must throw loudly at
+Non-enumerable own accessors, deliberately **not** a Proxy (Proxy prototypes cause
+`DataCloneError` under Dynamic Worker RPC serialization): `Object.keys` / spread / JSON /
+structured clone / returning the raw envelope all read enumerable-only and stay untouched;
+only direct wrong-level access trips a trap. The SET is not try/caught — a frozen envelope must throw loudly at
 the write. The guard applies to service namespaces only; `codemode.*` discovery fns return
-their own shapes by design. The same contract is taught in four channels: rendered
-signatures, `search`'s `nextSteps`, the `execute` description, and `SERVER_INSTRUCTIONS`.
+their own shapes by design. The authority/repository-detail rule is taught in four channels:
+the `search` description, `search`'s `nextSteps`, the `execute` description, and
+`SERVER_INSTRUCTIONS`.
+
+### Recovery-only operation receipts
+
+The manifest can mark an exposed operation with `discoveryMode: "recovery-only"`. Ranked search
+excludes that operation. Exact `describe`, super-spec lookup, and graph recovery can still expose
+its contract. `scout.explainRepo` is the first operation with this role.
+
+A completed authority call qualifies through a manifest `source-code` recovery edge. The host
+observes the call outcome, not row relevance, so every non-error completion qualifies. The edge
+`on` list guides the model. The execute runner issues the receipt only after the Dynamic Worker finishes successfully. Therefore, code in
+that execute cannot use the new receipt. An error or a nonqualifying operation issues no receipt.
+
+The host signs a versioned payload with `MCP_SERVER_SECRET`. The payload binds the source operation,
+target operation, request identity, issuing request id, issue time, expiry, and a random nonce. The
+request identity is the OAuth subject, named API-key identity, or the local development identity.
+The signed receipt does not contain the secret.
+
+The receipt expires after five minutes. A later execute supplies it through the top-level
+`recoveryReceipt` field. The host validates the signature, version, identity, target, and expiry
+before any target adapter call. It then uses an R2 conditional write to change the nonce marker
+from ready to used. This transition permits one caller and rejects concurrent reuse or replay.
+
+The execute result renders the target manifest description, input signature, and a copyable execute
+input beside the receipt. Argument validation runs before receipt consumption, so a rejected
+argument set does not consume the receipt.
+
+The adapter receives no receipt state and no signing secret. Invalid, altered, expired, wrong-owner,
+wrong-target, and replay attempts return the normal error envelope before dispatch.
+The R2 bucket's existing seven-day lifecycle removes consumed and expired marker objects. Logical
+authorization always ends at the signed five-minute expiry.
 
 ## 5. Discovery inside the sandbox
 
@@ -477,8 +513,9 @@ The `codemode` provider (`buildCodemodeProvider`, `src/executor/providers.ts`) i
 
 - **`codemode.spec()`** — the unified super spec (`specs/super-spec.json`: OpenAPI-3.1-style,
   paths keyed `/{service}/{operation}`, operationId = the exact sandbox call, `x-execute` /
-  `x-skill-index` vendor extensions; exactly the manifest's operations — every path callable
-  (ADR-0003); design record and per-service
+  `x-skill-index` vendor extensions; exactly the manifest's exposed operations. A path with
+  `x-discovery-mode: recovery-only` requires a host receipt before dispatch. Other paths are
+  directly callable (ADR-0003). The design record and per-service
   mapping in [`research/services/stellar-docs-spec-design.md`](./research/services/stellar-docs-spec-design.md)
   for stellarDocs and [`research/super-spec-design.md`](./research/super-spec-design.md) for the
   whole document), with `$refs` resolved inline
@@ -502,8 +539,8 @@ The `codemode` provider (`buildCodemodeProvider`, `src/executor/providers.ts`) i
   code-grep, optionally sliced by exact kind/service filters. The default/full projection includes
   schemas; `compact: true` omits `inputSchema`/`outputSchema` while retaining identity,
   descriptions, and runnable markers. Host-only detail (transport, provenance) is stripped.
-  Everything in it is callable/readable —
-  the manifest is pre-filtered at build time (ADR-0003), so there is no policy layer to show.
+  Everything in it is exposed. A `discoveryMode: "recovery-only"` entry needs a host receipt
+  before dispatch (ADR-0009).
 - **`codemode.describe(id)`** — the canonical detail-on-demand step (exact-match id only;
   mirrors upstream codemode's search → describe → call). A describe result carries all the
   DETAIL a search hit has and more (ranking facts — `score`, `tier` — stay on hits, since
@@ -798,6 +835,7 @@ auth gates, schemas, the shared sandbox, and artifact caps are the main limits.
 | --- | --- | --- |
 | Top-level `search` | Default 10, max 50. | `src/mcp/tools.ts`, `src/catalog/search.ts` |
 | `execute.code` length | No app-level max; schema requires only a non-empty string. | `src/mcp/tools.ts` |
+| Recovery receipt | One target call in a later execute; five-minute logical TTL; atomic R2 ready-to-used transition. | `src/policy/recovery-receipt.ts`, `src/executor/providers.ts` |
 | Execute/search call count | No app-level per-session count cap. | `src/mcp/tools.ts`, `src/server.ts` |
 | OAuth access token TTL | 1 hour; compatible MCP clients refresh automatically while the grant remains valid. | `src/auth/gate.ts` |
 | OAuth refresh/grant TTL | 90 days fixed from authorization; refresh-token rotation does not extend the window. | `src/auth/gate.ts` |

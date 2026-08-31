@@ -41,6 +41,7 @@ import { getCatalog } from "../catalog/load.ts";
 import {
   SEARCH_DESCRIPTION,
   EXECUTE_DESCRIPTION,
+  AUTHORITY_REPOSITORY_RULE,
   rankedSearchInputSchema,
   executeInputSchema
 } from "../mcp/tools.ts";
@@ -64,6 +65,7 @@ import {
   evidenceCheckpointBlock,
   type EvidenceRecoveryHint
 } from "../policy/evidence-checkpoint.ts";
+import { recoveryReceiptBlock } from "../policy/recovery-receipt.ts";
 import { DEMO_CAPS, createDemoToolBudget, type DemoToolBudget } from "./budget.ts";
 import type { DemoFrame } from "./frames.ts";
 
@@ -254,6 +256,7 @@ export function buildDemoTools(opts: {
   emit: (f: DemoFrame) => void;
   budget?: DemoToolBudget;
   runExecute?: ExecuteRunner;
+  recoveryIdentity?: string;
 }): {
   tools: Record<string, unknown>;
   budgetReport: () => DemoToolBudget;
@@ -379,7 +382,7 @@ export function buildDemoTools(opts: {
           : " No search calls remain; do not conclude capability absence from mismatched hits alone, and use the best available exact ids.";
       const baseNextSteps =
         hits.length > 0
-          ? `Navigation only: these hits identify composable operations and skills, but they are not factual evidence for the user's answer. Write ONE \`execute\` script that calls several relevant operations (Promise.all across services for independent calls), then follow up with deeper calls parameterized by returned rows. Every call resolves to { ok: true, data } or { ok: false, error: { kind, message, hint? } } — payload fields live under \`.data\` (\`r.data.projects\`, never \`r.projects\`); check \`r.ok\` first. Errors are failed evidence and \`soft-empty\` is inconclusive: recover with remaining budget or qualify/abstain. Skill hits are operational playbooks — read needed sections via \`codemode.skill.read(id, { sections })\`; runnable hits show the exact \`codemode.skill.run("<exact id>", input)\` call. Scores share one scale; gated hits lead except a backfill hit may be promoted when it decisively dominates (>=1.6x), so hit order is authoritative. The same production discovery helpers are enabled in-script: \`codemode.search\`, \`codemode.describe\`, \`codemode.catalog\`, and \`codemode.spec\`. Avoid lossy projection false negatives: inspect row keys or filter raw rows before selecting fields.${truncated ? " More entries matched than shown (truncated)." : ""}${searchAgain}`
+          ? `Navigation only: these hits identify composable operations and skills, but they are not factual evidence for the user's answer. ${AUTHORITY_REPOSITORY_RULE} Otherwise, write ONE \`execute\` script that calls several relevant operations (Promise.all across services for independent calls), then follow up with deeper calls parameterized by returned rows. Every call resolves to { ok: true, data } or { ok: false, error: { kind, message, hint? } } — payload fields live under \`.data\` (\`r.data.projects\`, never \`r.projects\`); check \`r.ok\` first. Errors are failed evidence and \`soft-empty\` is inconclusive: recover with remaining budget or qualify/abstain. Skill hits are operational playbooks — read needed sections via \`codemode.skill.read(id, { sections })\`; runnable hits show the exact \`codemode.skill.run("<exact id>", input)\` call. Scores share one scale; gated hits lead except a backfill hit may be promoted when it decisively dominates (>=1.6x), so hit order is authoritative. The same production discovery helpers are enabled in-script: \`codemode.search\`, \`codemode.describe\`, \`codemode.catalog\`, and \`codemode.spec\`. Avoid lossy projection false negatives: inspect row keys or filter raw rows before selecting fields.${truncated ? " More entries matched than shown (truncated)." : ""}${searchAgain}`
           : remainingSearches > 0
             ? `No navigation hits. Use another candidate family or varied vocabulary (${remainingSearches} searches remain), or use codemode.search inside execute; do not conclude the capability or fact is absent from one empty catalog search.`
             : "No navigation hits and no top-level search calls remain. You may use codemode.search inside execute; do not conclude the capability or fact is absent from an empty catalog search, and qualify if factual evidence cannot be recovered.";
@@ -439,7 +442,11 @@ export function buildDemoTools(opts: {
       const t0 = Date.now();
       let outcome: ExecuteOutcome;
       try {
-        outcome = await (opts.runExecute ?? getRunner(env))(args.code);
+        outcome = await (opts.runExecute ?? getRunner(env))(args.code, {
+          recoveryIdentity: opts.recoveryIdentity,
+          requestId: id,
+          recoveryReceipt: args.recoveryReceipt
+        });
       } catch (e) {
         // The runner is designed never to throw; belt-and-braces anyway.
         outcome = {
@@ -551,9 +558,10 @@ export function buildDemoTools(opts: {
       const candidateBlock = outcome.ok
         ? candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight)
         : "";
+      const receiptBlock = outcome.ok ? recoveryReceiptBlock(getCatalog(), outcome.recoveryReceipts) : "";
 
       const text = outcome.ok
-        ? `${outcome.result}\n\n${evidenceBlock}${candidateBlock}${evidenceCheckpoint}${truncationAdvisory}${logsBlock}`
+        ? `${outcome.result}\n\n${evidenceBlock}${candidateBlock}${evidenceCheckpoint}${receiptBlock}${truncationAdvisory}${logsBlock}`
         : `Execution failed: ${shapedError ? shapedError.text : outcome.error}\n\n${evidenceBlock}${logsBlock}`;
       emit({ type: "tool-result", id, tool: "execute", ok: outcome.ok, output: text });
       return text;

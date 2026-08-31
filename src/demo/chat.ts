@@ -293,7 +293,12 @@ async function runTurn(
       // Fallback model attempts share the same demo tool budget. Tool trace
       // frames intentionally count as useful output, so a model that reached
       // tool activity does not unlock another search/execute allowance.
-      const { tools } = buildDemoTools({ env, emit: attemptEmit, budget: toolBudget });
+      const { tools } = buildDemoTools({
+        env,
+        emit: attemptEmit,
+        budget: toolBudget,
+        recoveryIdentity: `demo:${subject}`
+      });
       const fallbackToNextModel = (reason: string): void => {
         if (fallbackLogged) return;
         fallbackLogged = true;

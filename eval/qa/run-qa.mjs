@@ -582,7 +582,7 @@ export function sourceIdentity(serverRevision) {
   };
 }
 
-function agentPrompt(question, { surface, searchTool }) {
+export function agentPrompt(question, { surface, searchTool }) {
   const promptAppend = process.env.QA_AGENT_PROMPT_APPEND?.trim();
   if (surface === "per-operation") {
     return `You answer questions about the Stellar ecosystem using ONLY this session's manifest-derived MCP operation tools.
@@ -729,7 +729,7 @@ export function runAgent(question, {
   };
 }
 
-function agentAttemptRecord(run, number, durationMs) {
+export function agentAttemptRecord(run, number, durationMs) {
   return {
     number,
     inputSha256: run.inputSha256,
@@ -878,7 +878,7 @@ export async function judgeRowWithRetry(input, options, existingAttempts = []) {
   return attempts;
 }
 
-function isRequiredMcpServerFailure(failure) {
+export function isRequiredMcpServerFailure(failure) {
   return (
     failure?.class === "protocol" &&
     String(failure.reason ?? "").startsWith(`required MCP server ${REQUIRED_MCP_SERVER_NAME}`)

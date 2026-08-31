@@ -9,7 +9,7 @@ below is done.
 - `origin/main` is clean. Production runs Worker Version ID
   `6282fe2a-54d8-471e-9f0a-0a2565110af1`, deployed 2026-08-28 from `main` HEAD. Session 3 did
   not deploy.
-- `improvements/`: 67 active findings, lint ok. Stellar-Light/stellarlight#1031 is still open;
+- `improvements/`: 68 active findings, lint ok. Stellar-Light/stellarlight#1031 is still open;
   the maintainer owns the close.
 - Corpus lint: 0 errors, 60 warnings (0 long-fact, 44 sourcing-guard, 16 corroboration). Every
   remaining warning carries an audited disposition: the 44 sourcing-guard items stay advisory
@@ -60,9 +60,17 @@ routing eval, not one case. A fix that helps only this case is unshipped.
 
 ### 4. Repository-level tooling recovery
 
-Build the separate frozen 20-case suite before any ranking work. Add manifest-owned recovery from
-adjacent or empty Docs evidence to one pinned `scout.explainRepo` attempt. Require 10 of 12 positive
-recoveries and zero premature detours across eight negatives. Keep every existing lane frozen.
+Use the v2 decision at
+[`research/decisions/0010-repository-recovery-contract-v2.md`](../research/decisions/0010-repository-recovery-contract-v2.md).
+Require 10 of 12 positive recoveries and zero premature detours across eight negatives. Keep every existing lane frozen.
+
+The fifth v2 closeout is in
+[`fable-plan-v2-live-failure.md`](./rounds/2026-08-30-repository-tooling-recovery/fable-plan-v2-live-failure.md).
+The v2 result remains a FAIL. The Docs-versus-repository synthesis pattern is monitor-only.
+The 2026-08-31 free probe retained the stale Horizon value `25`.
+The local-config answer now includes the ancestor search and `<cwd>/.stellar` fallback.
+No paid rerun may occur until the Horizon free probe returns `28`.
+G1 is a pre-registered v3 candidate only.
 
 `sources.locate` stays deferred. Its phase-zero study reopens only through the measured trigger in
 `ideas/source-delivery-ranked-references.md` §8.

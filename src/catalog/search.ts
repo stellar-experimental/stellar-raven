@@ -256,6 +256,12 @@ const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
     if (entry.retrievalProfile && entry.kind !== "operation") {
       ctx.addIssue({ code: "custom", message: `retrieval profile entry ${entry.id} is not an operation` });
     }
+    if (entry.discoveryMode && entry.kind !== "operation") {
+      ctx.addIssue({ code: "custom", message: `discovery mode entry ${entry.id} is not an operation` });
+    }
+    if (entry.discoveryMode === "recovery-only" && entry.searchable !== false) {
+      ctx.addIssue({ code: "custom", message: `recovery-only operation ${entry.id} must set searchable:false` });
+    }
     if (entry.buildAuthorityRoles && (entry.kind !== "skill" || entry.service !== "skills")) {
       ctx.addIssue({ code: "custom", message: `build authority roles on ${entry.id} require a skills whole-skill entry` });
     }
@@ -292,6 +298,12 @@ const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
   }
 
   const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
+  const recoveryOnlyTargets = new Set(
+    catalog.entries
+      .filter((entry) => entry.discoveryMode === "recovery-only")
+      .map((entry) => entry.id)
+  );
+  const referencedRecoveryOnlyTargets = new Set<string>();
   for (const entry of catalog.entries) {
     if (!entry.retrievalProfile) continue;
     const seenTargets = new Set<string>();
@@ -307,6 +319,14 @@ const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
         ctx.addIssue({ code: "custom", message: `retrieval profile ${entry.id} repeats target ${edge.id}` });
       }
       seenTargets.add(edge.id);
+      if (edge.relation === "source-code" && target?.discoveryMode === "recovery-only") {
+        referencedRecoveryOnlyTargets.add(target.id);
+      }
+    }
+  }
+  for (const id of recoveryOnlyTargets) {
+    if (!referencedRecoveryOnlyTargets.has(id)) {
+      ctx.addIssue({ code: "custom", message: `recovery-only operation ${id} has no inbound source-code recovery edge` });
     }
   }
 });
@@ -505,7 +525,7 @@ function scoreCandidates(
   for (const entry of catalog.entries) {
     // Search-visibility seam (skills-form arms): searchable:false entries are
     // exposed (exact-id describe/read/run) but never scored or counted here.
-    if (entry.searchable === false) continue;
+    if (entry.searchable === false || entry.discoveryMode === "recovery-only") continue;
     if (opts.kind && entry.kind !== opts.kind) continue;
     if (opts.service && entry.service !== opts.service) continue;
     const score = scoreFn(
@@ -720,6 +740,7 @@ function widerCandidateOf(
   const lane = entry.retrievalProfile?.lane;
   if (
     entry.kind !== "operation" ||
+    entry.discoveryMode === "recovery-only" ||
     lane === undefined ||
     !BROAD_RETRIEVAL_LANES.has(lane as BroadRetrievalLane)
   ) {
@@ -754,6 +775,7 @@ function catalogBroadAnchors(
       if (
         !target ||
         target.kind !== "operation" ||
+        target.discoveryMode === "recovery-only" ||
         lane === undefined ||
         !BROAD_RETRIEVAL_LANES.has(lane as BroadRetrievalLane) ||
         (service !== undefined && target.service !== service)
@@ -902,8 +924,8 @@ export function recoveryCandidates(
 }
 
 /**
- * Execute-time graph walk: derive candidates from successful source
- * operations while excluding every operation already attempted in the run.
+ * Execute-time graph walk: derive candidates from successful or soft-empty
+ * source operations while excluding every operation already attempted.
  * Separate source/exclusion sets avoid traversing failed calls merely because
  * they must not be suggested again.
  */

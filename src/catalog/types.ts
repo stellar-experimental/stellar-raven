@@ -2,7 +2,7 @@
  * Catalog types — the unified, machine-generated index that `search` ranks
  * (PLAN §2 as a starting sketch, deliberately trimmed).
  *
- * One entry per callable surface: every service operation, every skill, and
+ * One entry per exposed surface: every service operation, every skill, and
  * every skill section. `scripts/build-catalog.mjs` generates
  * `catalog/manifest.json`; `loadManifest` (src/catalog/search.ts) validates it
  * against `catalogSchema` before anything trusts it.
@@ -19,8 +19,8 @@
  *
  * Deliberately absent:
  *  - policy/auth/cost — exposure is filtered at BUILD time (ADR-0003): the
- *    manifest is the exposed surface, so every entry in it is callable or
- *    readable and a runtime allow/deny layer has nothing to express.
+ *    manifest is the exposed surface. A manifest discovery role can require
+ *    a short-lived host capability before an operation becomes callable.
  *    Exclusions (paid ops, write endpoints, retired skills, upstream skill
  *    twins) live as data + reasons in scripts/build-catalog.mjs.
  *  - raven-next's `resultShape` (evidence/soft-empty/error paths): search
@@ -41,6 +41,9 @@ export type CatalogKind = (typeof CATALOG_KINDS)[number];
 // zero hits.
 export const SEARCH_KINDS = ["operation", "skill"] as const;
 export type SearchKind = (typeof SEARCH_KINDS)[number];
+
+export const DISCOVERY_MODES = ["recovery-only"] as const;
+export type DiscoveryMode = (typeof DISCOVERY_MODES)[number];
 
 /** A JSON Schema fragment — kept opaque; only the TS renderer walks it. */
 const jsonSchemaShape = z.record(z.string(), z.unknown());
@@ -171,6 +174,8 @@ const catalogEntryBaseSchema = z.object({
   knownAliasTriggers: z.array(z.string().trim().min(1)).min(1).optional(),
   /** Query-independent exact-ID recovery graph, validated at catalog build/load. */
   retrievalProfile: retrievalProfileSchema.optional(),
+  /** Operation is callable only through a host-issued recovery receipt. */
+  discoveryMode: z.enum(DISCOVERY_MODES).optional(),
   /**
    * Whole-skill entries only: the build domains this exact exposed playbook
    * authoritatively covers for the host's bounded prior-art composition cue.

@@ -4860,7 +4860,7 @@
     },
     "/scout/explainRepo": {
       "get": {
-        "description": "Source-grounded ANSWER to a deep code question about a Stellar internal — routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls), then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok.",
+        "description": "Source-grounded ANSWER to a deep code question about a Stellar internal — routes the question to the authoritative repo (stellar-core, Horizon/go, RPC, SDKs, SEP reference impls), then DeepWiki answers from that repo's source files. Degrades to the routed repo + deepWikiUrl when DeepWiki is unavailable. Not for discovering which repos/projects exist → use searchRepos.\n\nCatalog note: the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok. The routing list above is stale where it says Horizon/go: stellar/go is archived. As of 2026-08-30 Horizon lives in stellar/stellar-horizon and the Go SDK in stellar/go-stellar-sdk. Pin repo to the current canonical owner/name; auto-routing is a fallback for questions without a known repository.",
         "operationId": "scout.explainRepo",
         "parameters": [
           {
@@ -5104,6 +5104,7 @@
           "scout",
           "Repos"
         ],
+        "x-discovery-mode": "recovery-only",
         "x-execute": "await scout.explainRepo(args)",
         "x-service": "scout",
         "x-upstream": {

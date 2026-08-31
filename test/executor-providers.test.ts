@@ -17,6 +17,7 @@ import {
   put as putArtifact,
   type ArtifactPutInput
 } from "../src/artifacts/store.ts";
+import { issueRecoveryReceipt } from "../src/policy/recovery-receipt.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const catalog: Catalog = loadManifest(
@@ -190,6 +191,19 @@ describe("sandbox surface shape", () => {
     expect(codemode.fns.catalog).toBeTypeOf("function");
     expect(codemode.fns.spec).toBeTypeOf("function");
     expect(codemode.fns.describe).toBeTypeOf("function");
+  });
+
+  it("describes recovery-only operations with manifest-derived qualifying sources", async () => {
+    const codemode = fnsOf(buildSandbox(catalog, skillSource, env), "codemode");
+    await expect(codemode.describe!("scout.explainRepo")).resolves.toMatchObject({
+      ok: true,
+      discoveryMode: "recovery-only",
+      qualifyingSources: [
+        "stellarDocs.search_rpc_horizon_data_docs",
+        "stellarDocs.search_sdk_cli_tools_docs",
+        "stellarDocs.search_soroban_contract_docs"
+      ]
+    });
   });
 
   it("the skill prelude carries the run wrapper: flat skill_run dispatch + the shared envelope guard", () => {
@@ -394,6 +408,239 @@ describe("dispatch behavior (error-as-data, exposure, parallelism)", () => {
     expect(r.ok).toBe(false);
     expect(r.error.message).toContain("no call was made");
     expect(fetched).toBe(0);
+  });
+
+  it("blocks recovery-only dispatch without a receipt before the adapter", async () => {
+    const bucket = new MemoryR2Bucket();
+    let fetched = 0;
+    const providers = buildSandbox(catalog, skillSource, env, {
+      fetchImpl: async () => {
+        fetched += 1;
+        return Response.json({ answer: "must not run" });
+      },
+      recovery: {
+        bucket: bucket as unknown as R2Bucket,
+        secret: "provider-recovery-secret",
+        identity: "oauth:owner-a"
+      }
+    });
+    const result = await fnsOf(providers, "scout").explainRepo!({
+      q: "Where is the timeout default?",
+      repo: "stellar/js-stellar-sdk"
+    });
+    expect(result).toMatchObject({
+      ok: false,
+      error: { kind: "error", message: expect.stringContaining("recovery receipt is required") }
+    });
+    expect(fetched).toBe(0);
+  });
+
+  it("keeps a receipt after an argument refusal and explains missing receipt placement", async () => {
+    const bucket = new MemoryR2Bucket();
+    const secret = "provider-recovery-secret";
+    const identity = "oauth:owner-a";
+    const grant = await issueRecoveryReceipt(
+      bucket as unknown as R2Bucket,
+      secret,
+      identity,
+      "authority-request",
+      { source: "stellarDocs.search_sdk_cli_tools_docs", target: "scout.explainRepo" }
+    );
+    let fetched = 0;
+    const events: Array<Record<string, unknown>> = [];
+    const spy = vi.spyOn(console, "log").mockImplementation((line: unknown) => {
+      const event = JSON.parse(String(line)) as Record<string, unknown>;
+      if (event.evt === "recovery_receipt") events.push(event);
+    });
+    try {
+      const build = (receipt?: string) => buildSandbox(catalog, skillSource, env, {
+        fetchImpl: async () => {
+          fetched += 1;
+          return Response.json({ answer: "source-grounded", ok: true });
+        },
+        recovery: {
+          bucket: bucket as unknown as R2Bucket,
+          secret,
+          identity,
+          receipt
+        }
+      });
+      const invalid = await fnsOf(build(grant.receipt), "scout").explainRepo!({
+        repo: "stellar/stellar-horizon"
+      }) as { ok: boolean; error: { hint: string } };
+      expect(invalid.ok).toBe(false);
+      expect(invalid.error.hint).toContain('codemode.describe("scout.explainRepo")');
+      expect(invalid.error.hint).toContain("did not consume");
+      expect(fetched).toBe(0);
+      expect(events).toEqual([]);
+
+      const retry = await fnsOf(build(grant.receipt), "scout").explainRepo!({
+        q: "Where is the timeout default?",
+        repo: "stellar/stellar-horizon"
+      });
+      expect(retry).toMatchObject({ ok: true });
+      expect(fetched).toBe(1);
+      expect(events).toEqual([
+        {
+          evt: "recovery_receipt",
+          outcome: "consumed",
+          source: "stellarDocs.search_sdk_cli_tools_docs",
+          target: "scout.explainRepo"
+        }
+      ]);
+
+      const misplaced = await fnsOf(build(), "scout").explainRepo!({
+        q: "Where is the timeout default?",
+        repo: "stellar/stellar-horizon",
+        recoveryReceipt: "inside-the-arguments"
+      }) as { ok: boolean; error: { message: string } };
+      expect(misplaced.ok).toBe(false);
+      expect(misplaced.error.message).toContain("top-level execute field recoveryReceipt");
+      expect(fetched).toBe(1);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("logs recovery receipt denials without receipt content", async () => {
+    const receipt = "sensitive-receipt-content";
+    const events: Array<Record<string, unknown>> = [];
+    const spy = vi.spyOn(console, "log").mockImplementation((line: unknown) => {
+      const event = JSON.parse(String(line)) as Record<string, unknown>;
+      if (event.evt === "recovery_receipt") events.push(event);
+    });
+    try {
+      const providers = buildSandbox(catalog, skillSource, env, {
+        recovery: {
+          bucket: new MemoryR2Bucket() as unknown as R2Bucket,
+          secret: "provider-recovery-secret",
+          identity: "oauth:owner-a",
+          receipt
+        }
+      });
+      await fnsOf(providers, "scout").explainRepo!({
+        q: "Where is the timeout default?",
+        repo: "stellar/js-stellar-sdk"
+      });
+      expect(events).toEqual([
+        { evt: "recovery_receipt", outcome: "denied", reason: "invalid", target: "scout.explainRepo" }
+      ]);
+      expect(JSON.stringify(events)).not.toContain(receipt);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("logs receipt consumption without receipt content", async () => {
+    const bucket = new MemoryR2Bucket();
+    const receipt = await issueRecoveryReceipt(
+      bucket as unknown as R2Bucket,
+      "provider-recovery-secret",
+      "oauth:owner-a",
+      "request-authority-1",
+      { source: "stellarDocs.search_sdk_cli_tools_docs", target: "scout.explainRepo" }
+    );
+    const events: Array<Record<string, unknown>> = [];
+    const spy = vi.spyOn(console, "log").mockImplementation((line: unknown) => {
+      const event = JSON.parse(String(line)) as Record<string, unknown>;
+      if (event.evt === "recovery_receipt") events.push(event);
+    });
+    try {
+      const providers = buildSandbox(catalog, skillSource, env, {
+        fetchImpl: async () => Response.json({ answer: "source-backed result" }),
+        recovery: {
+          bucket: bucket as unknown as R2Bucket,
+          secret: "provider-recovery-secret",
+          identity: "oauth:owner-a",
+          receipt: receipt.receipt
+        }
+      });
+      await fnsOf(providers, "scout").explainRepo!({
+        q: "Where is the timeout default?",
+        repo: "stellar/js-stellar-sdk"
+      });
+      expect(events).toEqual([
+        {
+          evt: "recovery_receipt",
+          outcome: "consumed",
+          source: "stellarDocs.search_sdk_cli_tools_docs",
+          target: "scout.explainRepo"
+        }
+      ]);
+      expect(JSON.stringify(events)).not.toContain(receipt.receipt);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("refuses a same-execute repository call after a Docs call", async () => {
+    const bucket = new MemoryR2Bucket();
+    let scoutFetches = 0;
+    const providers = buildSandbox(catalog, skillSource, env, {
+      fetchImpl: async (input) => {
+        const url = new URL(String(input));
+        if (url.pathname.includes("/1/indexes/")) {
+          return Response.json({ hits: [], nbHits: 0, page: 0, nbPages: 0, hitsPerPage: 1 });
+        }
+        scoutFetches += 1;
+        return Response.json({ answer: "must not run" });
+      },
+      recovery: {
+        bucket: bucket as unknown as R2Bucket,
+        secret: "provider-recovery-secret",
+        identity: "oauth:owner-a"
+      }
+    });
+    await fnsOf(providers, "stellarDocs").search_sdk_cli_tools_docs!({ query: "timeout", hitsPerPage: 1 });
+    const result = await fnsOf(providers, "scout").explainRepo!({
+      q: "Where is the timeout default?",
+      repo: "stellar/js-stellar-sdk"
+    });
+    expect(result).toMatchObject({ ok: false, error: { kind: "error" } });
+    expect(scoutFetches).toBe(0);
+  });
+
+  it("allows one matching receipt call and rejects later provider replay", async () => {
+    const bucket = new MemoryR2Bucket();
+    const secret = "provider-recovery-secret";
+    const identity = "oauth:owner-a";
+    const grant = await issueRecoveryReceipt(
+      bucket as unknown as R2Bucket,
+      secret,
+      identity,
+      "authority-request",
+      {
+        source: "stellarDocs.search_sdk_cli_tools_docs",
+        target: "scout.explainRepo"
+      }
+    );
+    let fetched = 0;
+    const build = () => buildSandbox(catalog, skillSource, env, {
+      fetchImpl: async () => {
+        fetched += 1;
+        return Response.json({ answer: "source-grounded", ok: true });
+      },
+      recovery: {
+        bucket: bucket as unknown as R2Bucket,
+        secret,
+        identity,
+        receipt: grant.receipt
+      }
+    });
+    const first = await fnsOf(build(), "scout").explainRepo!({
+      q: "Where is the timeout default?",
+      repo: "stellar/js-stellar-sdk"
+    });
+    expect(first).toMatchObject({ ok: true });
+    const replay = await fnsOf(build(), "scout").explainRepo!({
+      q: "Where is the timeout default?",
+      repo: "stellar/js-stellar-sdk"
+    });
+    expect(replay).toMatchObject({
+      ok: false,
+      error: { message: expect.stringContaining("already used") }
+    });
+    expect(fetched).toBe(1);
   });
 
   it("refuses an unknown Lumenloop document sort before any network call", async () => {
@@ -631,7 +878,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(r.data).toBeInstanceOf(Payload);
     expect(r.data).toBeInstanceOf(Object);
     expect(r.data.describe()).toBe("class-payload");
-    expect(Object.getPrototypeOf(Object.getPrototypeOf(r.data))).toBe(Payload.prototype);
+    expect(Object.getPrototypeOf(r.data)).toBe(Payload.prototype);
     expect(() => (r.data as unknown as { map: unknown }).map).toThrow(/Use r\.data\.hits/);
   });
 
@@ -644,7 +891,7 @@ describe("envelope guard prelude (fail-loud wrong-level access)", () => {
     expect(r.data).toBe(payload);
     expect(r.data instanceof Object).toBe(false);
     expect(r.data.toString).toBeUndefined();
-    expect(Object.getPrototypeOf(Object.getPrototypeOf(r.data))).toBeNull();
+    expect(Object.getPrototypeOf(r.data)).toBeNull();
     expect(() => r.data.map).toThrow(/Use r\.data\.hits/);
   });
 

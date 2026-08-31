@@ -16,8 +16,8 @@
  *
  * Every fn: guard (arg-validation) → adapter → redaction, and
  * ALWAYS returns a value ({ok:...} envelope) — never throws to the sandbox.
- * Calls hold no shared mutable state, so Promise.all fan-out is safe: each
- * dispatch is an independent host RPC. A sandbox-side prelude
+ * Ordinary calls hold no shared mutable state. Recovery-only dispatch uses
+ * host receipt state and rejects multiple attempts in one execute. A sandbox-side prelude
  * (envelopeGuardPrelude below) guards the envelope: fail-loud on wrong-level
  * payload reads (`r.projects` throws "use r.data.projects"), warn-once +
  * undefined on failed-envelope data access, and writes are write-through.
@@ -40,8 +40,9 @@
  *   codemode.catalog({ kind?, service?, compact? }) — the catalog as plain
  *     data for arbitrary code-grep discovery (spec-as-data pattern; strict
  *     superset of the fixed scorer). Exact filters slice the exposed surface;
- *     compact omits schemas. Everything returned is callable/readable —
- *     exposure is filtered at build time (ADR-0003). Host-only transport/
+ *     compact omits schemas. Everything returned is exposed/readable.
+ *     Recovery-only operations require a host receipt before dispatch.
+ *     Exposure is filtered at build time (ADR-0003). Host-only transport/
  *     provenance detail is stripped.
  *   codemode.describe(id)             — canonical detail-on-demand step
  *     (exact id): operations get the FULL rendered signature (search hits
@@ -80,7 +81,7 @@ import {
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
 import { callService } from "../adapters/index.ts";
-import type { AdapterEnv, FetchLike } from "../adapters/types.ts";
+import { errResult, type AdapterEnv, type FetchLike } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
 import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
 import type { SourceMetadataField, SourceMetadataPath } from "../policy/source-basis.ts";
@@ -93,6 +94,11 @@ import { resolveSpecRefs } from "./spec-sandbox.ts";
 import { logArtifactRead, logEvent, logSkillRead } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import { info as artifactInfo, read as artifactRead } from "../artifacts/store.ts";
+import {
+  consumeRecoveryReceipt,
+  qualifyingSourcesForRecoveryTarget,
+  type RecoveryReceiptFailure
+} from "../policy/recovery-receipt.ts";
 
 /** Structurally identical to @cloudflare/codemode's ResolvedProvider. */
 export type SandboxProvider = {
@@ -243,6 +249,13 @@ export type ArtifactSandboxDeps = {
   onReadStats?: (stats: ArtifactReadStats) => void;
 };
 
+export type RecoverySandboxDeps = {
+  bucket: R2Bucket;
+  secret: string;
+  identity?: string;
+  receipt?: string;
+};
+
 /**
  * Skill namespace + result-shape guard. `codemode.skill.read` returns skill
  * content at the TOP LEVEL ({ ok, id, content | sections, availableSections,
@@ -332,12 +345,12 @@ const ARTIFACT_PRELUDE = [
  *     the real error. `r.error` on ok:true stays a plain undefined, so the
  *     `if (r.error)` guard pattern keeps working.
  *
- * Non-enumerable accessors — deliberately NOT a Proxy around the envelope
- * (Proxies DataCloneError under Workers RPC v8 serialization) — keep every
- * legitimate pattern untouched: Object.keys / spread / JSON / structured
- * clone all read enumerable-only (so a script returning the raw envelope
- * still serializes across the Workers RPC boundary), and `await` never trips
- * over a `then` trap. Only direct wrong-level property access trips a trap.
+ * Non-enumerable accessors deliberately avoid a Proxy around the envelope.
+ * Dynamic Worker RPC cannot serialize Proxy prototypes. Keep every legitimate
+ * pattern untouched with non-enumerable own accessors: Object.keys / spread /
+ * JSON / structured clone all read enumerable-only, so a script can return a
+ * raw envelope across the Workers RPC boundary. `await` never trips over a
+ * `then` trap. Only direct wrong-level property access trips a trap.
  * The write-through SET is NOT try/caught: on a frozen envelope it must
  * throw loudly at the write, not silently no-op and then throw on read.
  * Applies to service namespaces only — codemode.* discovery fns return
@@ -362,26 +375,21 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
     "        if (guardPayloadShape) {",
     "          try {",
     "            const data = r.data;",
-    "            const base = Object.getPrototypeOf(data);",
-    "            const bridge = Object.create(base);",
-    "            const arrayReads = new Set(['map', 'filter', 'length']);",
-    "            const diagnosticPrototype = new Proxy(bridge, {",
-    "              get(target, key, receiver) {",
-    "                if (key === Symbol.iterator || arrayReads.has(key)) {",
-    "                  const keys = Object.keys(data);",
-    "                  const arrays = keys.filter((candidate) => {",
-    "                    const descriptor = Object.getOwnPropertyDescriptor(data, candidate);",
-    "                    return descriptor && Object.prototype.hasOwnProperty.call(descriptor, 'value') && Array.isArray(descriptor.value);",
-    "                  });",
-    "                  const accessor = arrays.includes('hits') ? 'hits' : arrays.length === 1 ? arrays[0] : null;",
-    "                  const read = key === Symbol.iterator ? 'iteration' : '.' + String(key);",
-    "                  const suggestion = accessor ? ' Use r.data.' + accessor + ' for the array.' : '';",
-    "                  throw new Error(call + ' result payload is an object, not an array: ' + read + ' is array-only. Top-level payload keys: ' + (keys.length ? keys.join(', ') : '(none)') + '.' + suggestion);",
-    "                }",
-    "                return Reflect.get(target, key, receiver);",
-    "              }",
-    "            });",
-    "            Object.setPrototypeOf(data, diagnosticPrototype);",
+    "            for (const key of ['map', 'filter', 'length', Symbol.iterator]) {",
+    "              if (key in data) continue;",
+    "              const keys = Object.keys(data);",
+    "              const arrays = keys.filter((candidate) => {",
+    "                const descriptor = Object.getOwnPropertyDescriptor(data, candidate);",
+    "                return descriptor && Object.prototype.hasOwnProperty.call(descriptor, 'value') && Array.isArray(descriptor.value);",
+    "              });",
+    "              const accessor = arrays.includes('hits') ? 'hits' : arrays.length === 1 ? arrays[0] : null;",
+    "              const read = key === Symbol.iterator ? 'iteration' : '.' + String(key);",
+    "              const suggestion = accessor ? ' Use r.data.' + accessor + ' for the array.' : '';",
+    "              Object.defineProperty(data, key, {",
+    "                enumerable: false, configurable: true,",
+    "                get() { throw new Error(call + ' result payload is an object, not an array: ' + read + ' is array-only. Top-level payload keys: ' + (keys.length ? keys.join(', ') : '(none)') + '.' + suggestion); }",
+    "              });",
+    "            }",
     "          } catch {}",
     "        }",
     "        for (const key of Object.keys(r.data)) {",
@@ -425,10 +433,15 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
 export function buildOpsFns(
   catalog: Catalog,
   env: AdapterEnv,
-  deps?: { fetchImpl?: FetchLike; onOpCall?: (call: OpLedgerCall) => void }
+  deps?: {
+    fetchImpl?: FetchLike;
+    onOpCall?: (call: OpLedgerCall) => void;
+    recovery?: RecoverySandboxDeps;
+  }
 ): OpsFacade {
   const secrets = secretsFromEnv(env as Record<string, unknown>);
   const fetchImpl = deps?.fetchImpl;
+  let recoveryAttempted = false;
 
   const byService: OpsFacade = {};
   for (const entry of catalog.entries) {
@@ -455,6 +468,55 @@ export function buildOpsFns(
           ms
         });
         return refused;
+      }
+      if (entry.discoveryMode === "recovery-only") {
+        let message: string;
+        let denialReason: RecoveryReceiptFailure | "attempted" | undefined;
+        if (recoveryAttempted) {
+          message = "only one recovery-only attempt is allowed per execute";
+          denialReason = "attempted";
+        } else {
+          recoveryAttempted = true;
+          const recovery = deps?.recovery;
+          if (!recovery?.receipt) {
+            message = "a recovery receipt is required before this operation can run; pass it as the top-level execute field recoveryReceipt beside code, not inside the script or the call arguments";
+            denialReason = "missing";
+          } else if (!recovery.identity || !recovery.secret || !recovery.bucket) {
+            message = "the recovery receipt cannot be verified for this request";
+            denialReason = "unavailable";
+          } else {
+            const authorization = await consumeRecoveryReceipt(
+              recovery.bucket,
+              recovery.secret,
+              recovery.identity,
+              entry.id,
+              recovery.receipt
+            );
+            if (authorization.ok) {
+              message = "";
+              logEvent("recovery_receipt", {
+                outcome: "consumed",
+                source: authorization.source,
+                target: authorization.target
+              });
+            } else {
+              message = authorization.message;
+              denialReason = authorization.reason;
+            }
+          }
+        }
+        if (message) {
+          const ms = Date.now() - t0;
+          const result = errResult({
+            service: entry.service,
+            kind: "error",
+            message: `${entry.id} blocked by host recovery policy: ${message}. No adapter call was made.`
+          });
+          logEvent("op", { id: entry.id, outcome: "error", ms });
+          logEvent("recovery_receipt", { outcome: "denied", reason: denialReason, target: entry.id });
+          deps?.onOpCall?.({ op: entry.id, outcome: "error", ms });
+          return result;
+        }
       }
       const result = await callService(
         entry,
@@ -534,8 +596,8 @@ type CatalogArg = { kind?: unknown; service?: unknown; compact?: unknown };
  * Sandbox-facing projection of one catalog entry for `codemode.catalog()`:
  * everything the model may reason over, nothing host-only (transport carries
  * base URLs / Algolia mappings / env-var names; provenance is refresh
- * bookkeeping). Every entry is callable/readable — exposure is filtered at
- * build time (ADR-0003), so there is no policy to show.
+ * bookkeeping). Every entry is exposed. A `discoveryMode: "recovery-only"`
+ * entry needs a host receipt before dispatch (ADR-0009).
  */
 function catalogEntryView(entry: CatalogEntry) {
   return {
@@ -546,6 +608,7 @@ function catalogEntryView(entry: CatalogEntry) {
     inputSchema: entry.inputSchema,
     outputSchema: entry.outputSchema,
     ...(entry.retrievalProfile ? { retrievalProfile: entry.retrievalProfile } : {}),
+    ...(entry.discoveryMode ? { discoveryMode: entry.discoveryMode } : {}),
     // Runnable-skill affordance flag (design §5): present-and-true only, same
     // as the manifest — code-grep discovery (`entries.filter(e => e.runnable)`)
     // sees exactly what the catalog says, no third truth value.
@@ -577,7 +640,11 @@ function describeCatalogEntry(catalog: Catalog, id?: unknown) {
     service: entry.service,
     kind: entry.kind,
     description: entry.description,
-    ...(entry.retrievalProfile ? { retrievalProfile: entry.retrievalProfile } : {})
+    ...(entry.retrievalProfile ? { retrievalProfile: entry.retrievalProfile } : {}),
+    ...(entry.discoveryMode ? { discoveryMode: entry.discoveryMode } : {}),
+    ...(entry.discoveryMode === "recovery-only"
+      ? { qualifyingSources: qualifyingSourcesForRecoveryTarget(catalog, entry.id) }
+      : {})
   };
   if (entry.kind === "skill") {
     const availableSections = sectionKeysOf(catalog, entry.id);
@@ -618,7 +685,10 @@ function describeCatalogEntry(catalog: Catalog, id?: unknown) {
     ...(signature ? { signature } : {}),
     inputSchema: entry.inputSchema,
     outputSchema: entry.outputSchema,
-    usage: "call it exactly as the signature's callable line shows — the payload arrives under r.data ({ ok: true, data } | { ok: false, error }), never at the top level"
+    usage:
+      entry.discoveryMode === "recovery-only"
+        ? "call it only inside an execute whose top-level recoveryReceipt authorizes this exact target; the receipt is one-use and comes from an earlier qualifying authority execute"
+        : "call it exactly as the signature's callable line shows — the payload arrives under r.data ({ ok: true, data } | { ok: false, error }), never at the top level"
   };
 }
 
@@ -1180,6 +1250,7 @@ export function buildSandbox(
     onSkillRead?: (skillId: string, roles: readonly BuildAuthorityRole[]) => void;
     onSkillRun?: () => void;
     onOpCall?: (call: OpLedgerCall) => void;
+    recovery?: RecoverySandboxDeps;
     artifact?: ArtifactSandboxDeps;
     codemodeDiscovery?: boolean;
   }

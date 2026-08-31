@@ -261,5 +261,5 @@ export const SCOUT_DESCRIPTION_NOTES = {
   getChangelog:
     "Catalog note: the upstream payload carries its own `ok` flag at `data.ok` — distinct from the envelope call-status `ok`.",
   explainRepo:
-    "Catalog note: the upstream payload carries its own `ok` flag at `data.ok` — distinct from the envelope call-status `ok`."
+    "Catalog note: the upstream payload carries its own `ok` flag at `data.ok` — distinct from the envelope call-status `ok`. The routing list above is stale where it says Horizon/go: `stellar/go` is archived. As of 2026-08-30 Horizon lives in `stellar/stellar-horizon` and the Go SDK in `stellar/go-stellar-sdk`. Pin `repo` to the current canonical owner/name; auto-routing is a fallback for questions without a known repository."
 };

@@ -34,6 +34,7 @@ type Operation = {
   >;
   "x-service": string;
   "x-execute"?: string;
+  "x-discovery-mode"?: string;
   "x-algolia"?: unknown;
   "x-skill-index"?: Array<{ id: string; source: string; description: string; sections: string[] }>;
   "x-runnable-index"?: Array<{
@@ -121,7 +122,7 @@ describe("shape and counts", () => {
     }
   });
 
-  it("every op carries an exact x-execute call line (everything in the spec is callable)", () => {
+  it("every path declares x-execute, and recovery-only paths declare their host gate", () => {
     for (const [, , op] of allOps()) {
       expect(op["x-execute"], op.operationId).toBeTruthy();
     }
@@ -131,6 +132,7 @@ describe("shape and counts", () => {
         expect(op["x-execute"]).toBe(`await ${op.operationId}(args)`);
       }
     }
+    expect(spec.paths["/scout/explainRepo"]?.get?.["x-discovery-mode"]).toBe("recovery-only");
   });
 
   it("describes search scores on the shared cross-tier interleave scale", () => {

@@ -49,8 +49,13 @@ import {
 } from "../policy/source-basis.ts";
 import { shapeLogs } from "./shape-logs.ts";
 import { put as putArtifact, type ArtifactMime } from "../artifacts/store.ts";
-import { logArtifactWrite } from "../observability.ts";
+import { logArtifactWrite, logEvent } from "../observability.ts";
 import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
+import {
+  issueRecoveryReceipt,
+  recoveryTransitionsFromLedger,
+  type RecoveryReceiptGrant
+} from "../policy/recovery-receipt.ts";
 
 export type ExecuteOperationSummary = {
   total: number;
@@ -85,8 +90,10 @@ export type ExecuteOutcome =
       operationSummary: ExecuteOperationSummary;
       /** Host-owned evidence classification; never inspects model-authored payload text. */
       evidenceSummary: ExecuteEvidenceSummary;
-      /** Conditional wider-pass advice derived only from successful operation ids. */
+      /** Conditional wider-pass advice derived from successful or soft-empty operation ids. */
       recoveryHint?: EvidenceRecoveryHint;
+      /** One-use capabilities minted after qualifying completed authority calls. */
+      recoveryReceipts?: RecoveryReceiptGrant[];
       resultOriginalChars?: number;
       resultReturnedChars?: number;
       resultMaxTokens?: number;
@@ -111,6 +118,10 @@ export type ExecuteCallContext = {
   artifactOwner?: string;
   requestId?: string;
   rayId?: string;
+  /** Stable authenticated access identity. It is HMAC-bound inside receipts and never serialized raw. */
+  recoveryIdentity?: string;
+  /** Optional one-use receipt supplied at the top-level execute boundary. */
+  recoveryReceipt?: string;
 };
 
 export type ExecuteRunner = (code: string, context?: ExecuteCallContext) => Promise<ExecuteOutcome>;
@@ -190,11 +201,13 @@ function evidenceRecoveryHint(
   calls: readonly OpLedgerCall[],
   summary: ExecuteOperationSummary
 ): EvidenceRecoveryHint | undefined {
-  // Empty successful collections are inconclusive evidence, but their exact
-  // operation ids still carry the catalog recovery profile.
-  if (summary.ok === 0) return undefined;
+  // Successful and soft-empty calls both carry their exact catalog recovery
+  // profile. Errors remain excluded because they establish no evidence state.
+  if (summary.ok === 0 && summary.softEmpty === 0) return undefined;
   const calledIds = [...new Set(calls.map((call) => call.op))];
-  const successfulIds = [...new Set(calls.filter((call) => call.outcome === "ok").map((call) => call.op))];
+  const completedIds = [
+    ...new Set(calls.filter((call) => call.outcome !== "error").map((call) => call.op))
+  ];
   const catalog = getCatalog();
   const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
   // Candidate-evidence classification controls attribution guidance, not
@@ -204,8 +217,8 @@ function evidenceRecoveryHint(
   // An unprofiled successful operation may itself be a wider/candidate lane.
   // Stay silent instead of making the stronger (and potentially false) claim
   // that the host observed narrow lookups only.
-  if (successfulIds.some((id) => !byId.get(id)?.retrievalProfile)) return undefined;
-  const broadIds = successfulIds.filter((id) => {
+  if (completedIds.some((id) => !byId.get(id)?.retrievalProfile)) return undefined;
+  const broadIds = completedIds.filter((id) => {
     const lane = byId.get(id)?.retrievalProfile?.lane;
     return lane !== undefined && BROAD_RETRIEVAL_LANES.has(lane);
   });
@@ -219,7 +232,7 @@ function evidenceRecoveryHint(
     };
   }
 
-  const narrowIds = successfulIds.filter((id) => byId.get(id)?.retrievalProfile?.emptyScope === "operation");
+  const narrowIds = completedIds.filter((id) => byId.get(id)?.retrievalProfile?.emptyScope === "operation");
   if (narrowIds.length === 0) return undefined;
   const candidates = recoveryCandidatesFromSources(catalog, narrowIds, calledIds, 3);
   if (candidates.length === 0) return undefined;
@@ -373,6 +386,12 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
           artifactReadStats = stats;
         }
       },
+      recovery: {
+        bucket: env.ARTIFACTS,
+        secret: env.MCP_SERVER_SECRET,
+        identity: context.recoveryIdentity,
+        receipt: context.recoveryReceipt
+      },
       codemodeDiscovery: options.codemodeDiscovery
     });
     // Custom span because the Worker Loader isolate is NOT auto-instrumented
@@ -425,6 +444,29 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
         evidenceSummary,
         artifactReadBytes: artifactReadStats.bytes
       };
+    }
+    const recoveryReceipts: RecoveryReceiptGrant[] = [];
+    if (context.recoveryIdentity && context.requestId) {
+      for (const transition of recoveryTransitionsFromLedger(catalog, opLedger)) {
+        try {
+          recoveryReceipts.push(
+            await issueRecoveryReceipt(
+              env.ARTIFACTS,
+              env.MCP_SERVER_SECRET,
+              context.recoveryIdentity,
+              context.requestId,
+              transition
+            )
+          );
+        } catch (error) {
+          logEvent("recovery_receipt", {
+            outcome: "error",
+            source: transition.source,
+            target: transition.target,
+            errorName: error instanceof Error ? error.name : "error"
+          });
+        }
+      }
     }
     const redactedResult = redactSecrets(outcome.result, secrets);
     const result = truncateForModel(redactedResult, modelBoundaryMaxTokens, {
@@ -521,6 +563,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       operationSummary,
       evidenceSummary,
       ...(recoveryHint ? { recoveryHint } : {}),
+      ...(recoveryReceipts.length > 0 ? { recoveryReceipts } : {}),
       resultOriginalChars: result.originalChars,
       resultReturnedChars: text.length,
       resultMaxTokens: result.maxTokens,

@@ -47,7 +47,7 @@ describe("demo system prompt", () => {
     expect(DEMO_PREAMBLE).toContain("counts, top 5-8 named rows, and source/provenance fields");
     expect(DEMO_PREAMBLE).toContain("Aggregate, slice arrays, and project columns inside the sandbox after filtering");
     expect(BASE_SERVER_INSTRUCTIONS).toContain(
-      "Filter raw list rows (and nested field variants) before projecting compact columns"
+      "Filter raw rows before projecting."
     );
   });
 

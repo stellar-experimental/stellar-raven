@@ -45,11 +45,29 @@ describe("evidence checkpoint prose", () => {
         }
       ]
     });
-    expect(block).toContain("successful broad operation class(es)");
+    expect(block).toContain("completed broad operation class(es)");
     expect(block).toContain("did not inspect or judge the returned rows");
     expect(block).toContain("If exact evidence already answers");
     expect(block).toContain("closed-world question");
     expect(block).toContain("at most one bounded alternative pass");
     expect(block).not.toMatch(/rows (?:were|are) weak|irrelevant rows|non-match/i);
+  });
+
+  it("bounds source-code recovery to one exact repository", () => {
+    const block = evidenceCheckpointBlock({
+      mode: "conditional-alternatives",
+      sourceOperations: ["stellarDocs.search_sdk_cli_tools_docs"],
+      candidates: [
+        {
+          id: "scout.explainRepo",
+          relation: "source-code",
+          reasons: ["empty", "adjacent"]
+        }
+      ]
+    });
+    expect(block).toContain("scout.explainRepo (source-code; empty/adjacent)");
+    expect(block).toContain("only when prior evidence identifies one exact repository");
+    expect(block).toContain("Pass its canonical owner/name");
+    expect(block).toContain("make only one repository explanation attempt");
   });
 });

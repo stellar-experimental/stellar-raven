@@ -106,7 +106,7 @@ describe("prepareDemoStep", () => {
       ]
     };
     const prepared = prepareDemoStep({ steps: [], stepNumber: 2, budget });
-    expect(prepared?.system).toContain("only successful narrow, operation-scoped lookup");
+    expect(prepared?.system).toContain("only completed narrow, operation-scoped lookup");
     expect(prepared?.system).toContain("If the returned projection exactly answers");
     expect(prepared?.system).toContain("question is closed-world, stop at that scope");
     expect(prepared?.system).toContain("lumenloop.search_content_semantic");
@@ -133,7 +133,7 @@ describe("prepareDemoStep", () => {
       ]
     };
     const first = prepareDemoStep({ steps: [], stepNumber: 2, budget });
-    expect(first?.system).toContain("successful broad operation class(es)");
+    expect(first?.system).toContain("completed broad operation class(es)");
     expect(first?.system).toContain("did not inspect or judge their rows");
     expect(first?.system).toContain("at most one bounded uncalled alternative");
     expect(budget.recoveryAdviceDelivered).toBe(true);
@@ -144,6 +144,30 @@ describe("prepareDemoStep", () => {
     expect(prepareDemoStep({ steps: [], stepNumber: 4, budget })?.system).toContain(
       "returned only errors"
     );
+  });
+
+  it("bounds soft-empty source-code recovery to one exact repository", () => {
+    const budget = createDemoToolBudget();
+    budget.executeCalls = 1;
+    budget.latestOperations = { total: 1, ok: 0, error: 0, softEmpty: 1 };
+    budget.latestExecuteEvidence = "service-inconclusive";
+    budget.latestRecoveryHint = {
+      mode: "conditional-alternatives",
+      sourceOperations: ["stellarDocs.search_sdk_cli_tools_docs"],
+      candidates: [
+        {
+          id: "scout.explainRepo",
+          relation: "source-code",
+          reasons: ["empty", "adjacent"]
+        }
+      ]
+    };
+
+    const prepared = prepareDemoStep({ steps: [], stepNumber: 2, budget });
+    expect(prepared?.system).toContain("completed broad operation class(es)");
+    expect(prepared?.system).toContain("one exact repository");
+    expect(prepared?.system).toContain("Pass its canonical owner/name");
+    expect(prepared?.system).toContain("make only one repository explanation attempt");
   });
 
   it("recovers when the latest execute has no host-observed evidence", () => {

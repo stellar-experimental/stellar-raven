@@ -168,9 +168,10 @@ describe("tool registration", () => {
     expect(execute).toBeDefined();
     const schema = execute!.inputSchema as JsonSchema;
     expect(schema.type).toBe("object");
-    expect(Object.keys(schema.properties ?? {}).sort()).toEqual(["code"]);
+    expect(Object.keys(schema.properties ?? {}).sort()).toEqual(["code", "recoveryReceipt"]);
     expect(schema.required).toEqual(["code"]);
     expect(schema.properties?.code?.type).toBe("string");
+    expect(schema.properties?.recoveryReceipt?.type).toBe("string");
     // execute mirrors upstream REQUEST_TYPES: spec + calls in one sandbox.
     expect(execute!.description).toContain("codemode.spec()");
   });
@@ -225,6 +226,16 @@ describe("artifact owner resolution", () => {
     );
     expect(gateFired).toBe(false);
     expect(resolveArtifactOwner(undefined, oauthAccess)).toBeUndefined();
+  });
+});
+
+describe("recovery identity resolution", () => {
+  it("binds OAuth, named-key, and dev access modes to distinct stable identities", async () => {
+    const { resolveRecoveryIdentity } = await import("../src/server");
+    expect(resolveRecoveryIdentity("peppered-subject", oauthAccess)).toBe("oauth:peppered-subject");
+    expect(resolveRecoveryIdentity(undefined, apiKeyAccess)).toBe("api-key:admin");
+    expect(resolveRecoveryIdentity(undefined, devBypassAccess)).toBe("dev-bypass:local");
+    expect(resolveRecoveryIdentity(undefined, oauthAccess)).toBeUndefined();
   });
 });
 
@@ -846,6 +857,43 @@ describe("search behavior (host-side ranked)", () => {
     expect(after.recovery.every((candidate) => candidate.from === "scout.getBuilders")).toBe(true);
   });
 
+  it("keeps recovery-only source code out of ordinary ranked discovery", async () => {
+    const result = await client.callTool({
+      name: "search",
+      arguments: { query: "Go SDK trade resolution variables", kind: "operation", limit: 6 }
+    });
+    const structured = result.structuredContent as {
+      hits: Array<{ id: string }>;
+      recovery: unknown[];
+      nextSteps: string;
+    };
+    const docsIndex = structured.hits.findIndex((hit) => hit.id === "stellarDocs.search_sdk_cli_tools_docs");
+    const repositoryIndex = structured.hits.findIndex((hit) => hit.id === "scout.explainRepo");
+
+    expect(docsIndex).toBeGreaterThanOrEqual(0);
+    expect(repositoryIndex).toBe(-1);
+    expect(structured.recovery).toEqual([]);
+    expect(structured.nextSteps).toContain("recovery-only and absent from ranked hits");
+    expect(structured.nextSteps).toContain("one-use `recoveryReceipt`");
+  });
+
+  it("requires candidate inspection and a later execute for exact-ID recovery", async () => {
+    const result = await client.callTool({
+      name: "search",
+      arguments: {
+        query: "builder directory",
+        limit: 5,
+        recoverFrom: ["scout.getBuilders"],
+        reason: "empty"
+      }
+    });
+    const structured = result.structuredContent as { nextSteps: string };
+
+    expect(structured.nextSteps).toContain("inspect a relevant candidate first, then use a later `execute`");
+    expect(structured.nextSteps).toContain("Do not add it to the execute that made the recovery observation.");
+    expect(structured.nextSteps).not.toContain("use relevant ones in the same execute");
+  });
+
   it("projects structural wider candidates separately from ranked hits", async () => {
     const result = await client.callTool({
       name: "search",
@@ -1157,11 +1205,13 @@ describe("execute behavior", () => {
   it("delegates to the injected runner and renders result + logs", async () => {
     let seenCode: string | undefined;
     let seenOwner: string | undefined;
+    let seenReceipt: string | undefined;
     const execClient = await connectedClient({
       executeContext: () => ({ artifactOwner: "owner-a", requestId: "req-a", rayId: "ray-a" }),
       runExecute: async (code, context) => {
         seenCode = code;
         seenOwner = context?.artifactOwner;
+        seenReceipt = context?.recoveryReceipt;
         return {
           ok: true,
           result: JSON.stringify({ echoed: code.length }),
@@ -1173,11 +1223,12 @@ describe("execute behavior", () => {
     });
     const result = await execClient.callTool({
       name: "execute",
-      arguments: { code: "async () => 1" }
+      arguments: { code: "async () => 1", recoveryReceipt: "receipt-a" }
     });
     expect(result.isError).toBeFalsy();
     expect(seenCode).toBe("async () => 1");
     expect(seenOwner).toBe("owner-a");
+    expect(seenReceipt).toBe("receipt-a");
     const content = result.content as Array<{ type: string; text: string }>;
     expect(content).toHaveLength(1);
     expect(content[0]?.type).toBe("text");
@@ -1186,6 +1237,39 @@ describe("execute behavior", () => {
     expect(text).toContain('{"echoed":13}');
     expect(text).toContain("--- console (1 lines) ---");
     expect(text).toContain("hello from sandbox");
+  });
+
+  it("renders the recovery receipt block", async () => {
+    const execClient = await connectedClient({
+      runExecute: async () => ({
+        ok: true,
+        result: '{"docs":"inspected"}',
+        truncated: false,
+        logs: [],
+        ...executeSummaries({ total: 1, ok: 1, error: 0, softEmpty: 0 }),
+        recoveryReceipts: [
+          {
+            source: "stellarDocs.search_sdk_cli_tools_docs",
+            target: "scout.explainRepo",
+            receipt: "signed-host-receipt",
+            expiresAt: "2026-08-30T12:05:00.000Z"
+          }
+        ]
+      })
+    });
+    const result = await execClient.callTool({
+      name: "execute",
+      arguments: { code: "async () => ({ docs: true })" }
+    });
+    const text = (result.content as Array<{ text: string }>)[0]?.text ?? "";
+    expect(text).toContain("--- RECOVERY RECEIPT ---");
+    expect(text).toContain("scout.explainRepo once");
+    expect(text).toContain("scout.explainRepo(input: ExplainRepoInput)");
+    expect(text).toContain("stellar/go is archived");
+    expect(text.split("signed-host-receipt")).toHaveLength(2);
+    const example = JSON.parse(text.split("\n").at(-1) ?? "") as Record<string, string>;
+    expect(Object.keys(example).sort()).toEqual(["code", "recoveryReceipt"]);
+    expect(example.recoveryReceipt).toBe("signed-host-receipt");
   });
 
   it("preserves error, soft-empty, mixed, data, and no-call evidence outcomes in the footer", async () => {
@@ -1326,7 +1410,7 @@ describe("execute behavior", () => {
     const result = await execClient.callTool({ name: "execute", arguments: { code: "async () => 1" } });
     const text = (result.content as Array<{ text: string }>)[0]?.text ?? "";
     expect(text).toContain("--- EVIDENCE CHECKPOINT ---");
-    expect(text).toContain("successful narrow, operation-scoped lookup");
+    expect(text).toContain("completed narrow, operation-scoped lookup");
     expect(text).toContain("closed-world question about the named source");
     expect(text).toContain("lumenloop.search_content_semantic (broader-semantic");
     expect(text).not.toContain("--- EVIDENCE RECOVERY ---");
@@ -1360,7 +1444,7 @@ describe("execute behavior", () => {
     const text = (result.content as Array<{ text: string }>)[0]?.text ?? "";
     expect(text).not.toContain("--- CANDIDATE EVIDENCE ---");
     expect(text).toContain("--- EVIDENCE CHECKPOINT ---");
-    expect(text).toContain("successful broad operation class(es) (stellarDocs.search_docs)");
+    expect(text).toContain("completed broad operation class(es) (stellarDocs.search_docs)");
     expect(text).toContain("did not inspect or judge the returned rows");
     expect(text).toContain("at most one bounded alternative pass");
   });

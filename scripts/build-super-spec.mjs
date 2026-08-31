@@ -26,8 +26,8 @@
  *
  * Exposure consistency (ADR-0003): the spec contains EXACTLY the operations
  * in catalog/manifest.json — the manifest is the exposed surface, filtered at
- * build time by scripts/build-catalog.mjs, and every path here is callable.
- * Nothing uncallable is described: no denied paths, no x-policy layer.
+ * build time by scripts/build-catalog.mjs. Recovery-only paths declare their
+ * manifest role and require a host receipt. No generic denied paths exist.
  *
  * Determinism: object keys sorted recursively, entries sorted by path,
  * generatedAt taken from the catalog manifest (itself derived from input
@@ -308,6 +308,7 @@ function buildScout(inv, exposed, manifest) {
       const opName = upstream.operationId ?? `${method}_${slugify(path)}`;
       const id = `scout.${opName}`;
       if (!exposed.has(id)) continue;
+      const catalogEntry = manifest.entries.find((entry) => entry.id === id);
       // pathItem-level parameters are merged into the op so nothing is lost
       // when re-keying the path to the callable name.
       const correctedContract = applyModelContractCorrection(id, {
@@ -345,6 +346,9 @@ function buildScout(inv, exposed, manifest) {
           : {}),
         ...(responses ? { responses } : {}),
         "x-service": "scout",
+        ...(catalogEntry?.discoveryMode
+          ? { "x-discovery-mode": catalogEntry.discoveryMode }
+          : {}),
         "x-upstream": { method: method.toUpperCase(), path },
         "x-execute": `await scout.${opName}(args)`
       };

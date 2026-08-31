@@ -50,6 +50,14 @@ describe("guard — arg validation (exposure is build-time, ADR-0003)", () => {
     expect(r.error.kind).toBe("error");
     expect(r.error.message).toContain("no call was made");
     expect(JSON.stringify(r.error.details)).toContain("query");
+    expect(r.error.hint).toContain('codemode.describe("lumenloop.search_directory")');
+  });
+
+  it("keeps a recovery receipt available after a recovery-only argument refusal", () => {
+    const r = guard(entry("scout.explainRepo"), { repo: "stellar/stellar-horizon" });
+    if (!r || r.ok) throw new Error("expected validation refusal");
+    expect(r.error.hint).toContain('codemode.describe("scout.explainRepo")');
+    expect(r.error.hint).toContain("did not consume the recovery receipt");
   });
 
   it("passes valid args (returns null = proceed)", () => {
