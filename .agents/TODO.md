@@ -110,36 +110,26 @@ Done when: a test stubs the model rather than the module, so the real tool loop 
 
 ## Routing
 
-### Measure bounded repository-level recovery before ranking changes
+### Monitor the rejected repository-tooling recovery experiment
 
-Define the repository-level tooling class before tuning search: the fact lives only in a repository
-as a flag, default, symbol, or configuration key, while Docs or skills carry at most an adjacent
-page. Create a separate frozen suite with 20 blind-authored, provenance-bearing cases across at
-least four repositories: 12 positive and eight negative. Freeze it before the author can see the
-implementation or any score. Route every golden through `golden-truth`. The suite must not enter
-existing QA, routing, or holdout denominators, and nobody tunes toward its failures.
+The record-only closeout is in
+`.agents/rounds/2026-08-31-rejected-experiments-closeout.md`.
+The rejected `repository-tooling-recovery-v2` implementation does not ship.
+The v2 collection returned 9 of 12 positives and 0 of 8 premature detours.
+It had 18 of 20 correct answers and 20 of 20 grounded answers.
 
-Add manifest-owned `source-code` recovery metadata in
-`scripts/catalog-data/retrieval-profiles.mjs`, then regenerate the manifest. Measure offline routing,
-a paid live agent lane, stored operation order, answer quality, current routing gates, the frozen
-holdout, the current QA sample, and its plan regrade. Measure the current telemetry baseline first.
-Before ship, pre-register weekly bands for search zero-hit rate, all-backfill rate, and the share of
-operation events naming `scout.explainRepo`. Use pinned live exposed operations as canaries.
+`sls-080` is a verified active Scout finding.
+The free Horizon probe still returned `25` at `2026-08-31T01:42:10.098Z`.
+Its scanned ref was `82660510ecda7fd365a14d08badb9d85fa22bc32`.
+Do not run a paid recovery collection until this free probe returns `28`.
 
-Define recovery as adjacent or empty Docs evidence followed by `scout.explainRepo` and a grounded
-answer. Define a premature detour as `scout.explainRepo` before Docs or skills on a negative.
+The selection trigger remains three recurring misses.
+The Docs-versus-repository conflict remains monitor-only until three recurrences.
+The `stellar-cli` fallback candidate did not reproduce and has no active finding.
+G1 is a pre-registered v3 candidate only.
 
-The 2026-08-30 same-100 review adds two positive misses to this existing work. Case
-`q-soroban-sdk-cve` missed three live GitHub security advisories. Case
-`q-anchor-sdp-vs-anchor-platform` missed the current SDP repository README about native SEP-10 and
-SEP-24 support. Both facts were reachable from source repositories, so neither is an upstream
-service finding.
-
-Done when: at least 10 of 12 positives pass both operation-sequence and answer checks; all eight
-negatives avoid a premature repository detour; every existing gate holds; and each weekly canary
-stays inside its pre-registered band. Consider ranking only if at least three qualifying positive
-misses remain. A suite-specific validator and lint enforce the full `golden-truth` evidence fields
-without compiling the suite into existing corpora.
+Done when: a free Horizon probe returns `28`, or a new evidenced trigger authorizes a separately
+reviewed recovery plan. A later Scout finding must use `sls-082`; `sls-081` is historical only.
 
 ### `search` does not surface the research lane for protocol-history questions
 
@@ -182,18 +172,28 @@ Done when: `golden-truth` records whether each case belongs in an existing or ne
 
 ## Eval instruments
 
-### Harden the QA answering prompt for two `cant-do` boundaries
+### Design a new Raven capability-boundary diagnostic
 
-The 2026-08-30 same-100 review found two repeatable answering-prompt defects. Case
-`q-n3-missing-funds-account-support` offered a Raven lookup for a G-address or transaction hash.
-Raven has no account-scoped lookup. The answer must redirect to a wallet, exchange, anchor, or
-explorer without offering a follow-up lookup.
+The rejected QA prompt change does not ship.
+Its Method 1 result is recorded in
+`.agents/rounds/2026-08-31-rejected-experiments-closeout.md`.
+The Raven trap failed T3 and the external lookup control was partial.
+The inherited environment hash also differed from the registered value.
 
-Case `q-edge-send-me-free-xlm` called Friendbot Testnet-only. The prompt must distinguish Testnet,
-Futurenet, and local Quickstart Friendbot. It must still state that Mainnet has no Friendbot.
+Method 2 did not run. This result does not authorize Method 2.
+The next attempt needs a stronger mechanism and a new pre-registered diagnostic before a headline
+sample.
 
-Done when: the prompt states both boundaries, focused fixtures cover positive and negative forms,
-and the trap lane passes without weakening the current T3 rules.
+Done when: an independently reviewed plan defines the new mechanism and diagnostic. It must then
+pass its stated product gate before any headline sample receives separate authorization.
+
+### Monitor Friendbot network-context synthesis
+
+The Friendbot failure is a monitor-only single-case result.
+Do not infer a prompt repair from it.
+
+Done when: the same failure appears in two unrelated cases, a contract mismatch appears, or trace
+evidence shows the prompt requests the wrong behavior.
 
 ### Judge stability on the same-100 set is degrading
 

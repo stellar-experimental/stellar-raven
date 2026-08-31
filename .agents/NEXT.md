@@ -1,15 +1,16 @@
 # NEXT — handoff for the next work block
 
-Updated 2026-08-30 after the same-100 eval closeout. Read this first. `TODO.md` holds the
+Updated 2026-08-31 after the rejected-experiments closeout. Read this first. `TODO.md` holds the
 full item text; this file only ranks and sequences. Delete or rewrite this file when the block
 below is done.
 
 ## State at handoff
 
-- `origin/main` is clean. Production runs Worker Version ID
+- The record-only closeout does not change production. Production runs Worker Version ID
   `6282fe2a-54d8-471e-9f0a-0a2565110af1`, deployed 2026-08-28 from `main` HEAD. Session 3 did
   not deploy.
-- `improvements/`: 67 active findings, lint ok. Stellar-Light/stellarlight#1031 is still open;
+- `improvements/`: 68 active findings, lint passes. `sls-080` is verified.
+  Stellar-Light/stellarlight#1031 is still open;
   the maintainer owns the close.
 - Corpus lint: 0 errors, 60 warnings (0 long-fact, 44 sourcing-guard, 16 corroboration). Every
   remaining warning carries an audited disposition: the 44 sourcing-guard items stay advisory
@@ -27,6 +28,10 @@ below is done.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
 - Ledgers for the finished blocks: `.agents/rounds/2026-08-29-golden-truth-session-3.md` and
   `.agents/rounds/2026-08-29-five-track-same-100.md`.
+- Recovery PR https://github.com/stellar-experimental/stellar-raven/pull/102 closed without merge.
+  QA PR https://github.com/stellar-experimental/stellar-raven/pull/103 also closed without merge.
+  The record-only evidence is in
+  `.agents/rounds/2026-08-31-rejected-experiments-closeout.md`.
 
 ## Ranked blocks
 
@@ -45,10 +50,14 @@ Record the affected case-id list in the round ledger, as session 3 did.
 
 ### 2. Eval instruments
 
-Skill: `run-evals`. Two open items remain under `TODO.md` "Eval instruments":
+Skill: `run-evals`. The Raven capability-boundary prompt change is rejected and does not ship.
+Method 1 failed its product gate. Its inherited environment hash also differed.
+Method 2 did not run and has no authorization from this result.
+The next boundary attempt needs a stronger mechanism and a new pre-registered diagnostic before a
+headline sample.
 
-- Harden the answering prompt for the Raven lookup boundary and Friendbot network distinctions.
-- Judge stability is degrading (47 → 57 unstable). Watch the trend at the next register refresh.
+The Friendbot network-context failure is monitor-only.
+Judge stability is degrading (47 → 57 unstable). Watch its trend at the next register refresh.
 
 The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.
 
@@ -60,9 +69,17 @@ routing eval, not one case. A fix that helps only this case is unshipped.
 
 ### 4. Repository-level tooling recovery
 
-Build the separate frozen 20-case suite before any ranking work. Add manifest-owned recovery from
-adjacent or empty Docs evidence to one pinned `scout.explainRepo` attempt. Require 10 of 12 positive
-recoveries and zero premature detours across eight negatives. Keep every existing lane frozen.
+The rejected v2 implementation does not ship. Its result was 9 of 12 positive recoveries and 0 of
+8 premature detours. It had 18 of 20 correct and 20 of 20 grounded answers.
+
+`sls-080` is a verified active finding. The free Horizon probe still returned `25` at
+`2026-08-31T01:42:10.098Z`, with scanned ref `82660510ecda7fd365a14d08badb9d85fa22bc32`.
+Do not run a paid recovery collection until this probe returns `28`.
+The selection trigger remains three recurring misses. The Docs-versus-repository conflict stays
+monitor-only until three recurrences. The `stellar-cli` fallback did not reproduce and has no active
+finding. G1 remains a pre-registered v3 candidate only.
+
+The next Scout finding must use `sls-082`. `sls-081` is historical only.
 
 `sources.locate` stays deferred. Its phase-zero study reopens only through the measured trigger in
 `ideas/source-delivery-ranked-references.md` §8.
@@ -100,5 +117,9 @@ Promotion also needs one same-tuple pinned pair for recalibration.
 
 ## Suggested sequence
 
-Start block 1 in an idle golden lane; it is small. Block 2 is the largest block and can start at
-once. Run block 4 before any `sources.locate` discovery. Blocks 3, 5, and 6 fit an idle lane.
+Start with block 1, Golden metadata remainder. Then use the next register refresh for block 2,
+Judge stability. Continue with block 3, protocol-history routing.
+
+Block 4 is monitor-only until its stated free-probe trigger occurs. Then continue with block 5,
+the Playground message limit, and block 6, small own-repo fixes. Resolve the owner product-loss
+margin before a later paired QA promotion.
