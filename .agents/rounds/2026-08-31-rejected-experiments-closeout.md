@@ -30,11 +30,17 @@ It cost `$4.5646914`.
 | Local annotations | `08691d62a8f501d57684866d56e00d801474799754544308df2684e3bf24a207` |
 | Local reviewed result | `e53a83952e5701ef49a33c955e59ebfa002413b542937c22c49a166f8e0a7ac0` |
 
-`sls-080` is the verified active Scout finding from this result.
+`sls-080` is the reported-upstream active Scout finding from this result.
 The v2 collection recorded 1 stale numeric answer in 12 successful repository answers.
 The free Horizon probe also returned `25`.
 It ran at `2026-08-31T01:42:10.098Z` with scanned ref
 `82660510ecda7fd365a14d08badb9d85fa22bc32`.
+
+The finding was filed at https://github.com/Stellar-Light/stellarlight/issues/1134.
+GitHub read back the issue as OPEN with the expected title.
+GitHub reports `createdAt: 2026-08-31T02:49:22Z`.
+The body contains `generated-by-stellar-raven`, the active main source link, and the immutable `b59517d` snapshot.
+The body also contains the full evidence and the resolution handoff.
 
 No product change ships from this experiment.
 Do not run another paid collection until this free probe returns `28`.

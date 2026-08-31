@@ -29,7 +29,7 @@ Total findings: 68
 | sls-077 | Scout OpenAPI 1.9.1 omits issued from the 200 response claim.type enum. The same endpoint accepts issued in the type query parameter. The…  | reported-upstream | 2026-08-27 | 1           |
 | sls-078 | Scout OpenAPI 1.9.1 gives getQualityReport broad x-routing keywords. The live list includes trust, confidence in the data, coverage,…       | reported-upstream | 2026-08-27 | 1           |
 | sls-079 | The status field returned by scout.searchProjects carries one label for two different facts. Live can mean "listed and active in the…       | proposed          | 2026-08-28 | 0           |
-| sls-080 | scout.explainRepo returned a DeepWiki answer that stated MaxSupportedProtocolVersion = 25. The answer ran on 2026-08-30 for…                | verified          | 2026-08-30 | 2           |
+| sls-080 | scout.explainRepo returned a DeepWiki answer that stated MaxSupportedProtocolVersion = 25. The answer ran on 2026-08-30 for…                | reported-upstream | 2026-08-30 | 2           |
 
 ## stellar-docs
 

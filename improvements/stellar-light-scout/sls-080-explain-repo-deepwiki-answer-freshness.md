@@ -1,7 +1,7 @@
 ---
 id: sls-080
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-08-30
 upstreamTitle: Date DeepWiki answers separately from scanned repository content
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-08-30 independent GitHub reads of stellar/stellar-horizon internal/ingest/main.go at 2abda012 and 82660510 both define MaxSupportedProtocolVersion as 28
   - fourth collection: 1 of 9 successful scout.explainRepo answers carried a stale numeric value; the other 8 matched pinned source
   - third collection row for the same case returned 22 from archived stellar/go
+  - 2026-08-31 GitHub read-back: https://github.com/Stellar-Light/stellarlight/issues/1134 is OPEN; title "Date DeepWiki answers separately from scanned repository content"; createdAt 2026-08-31T02:49:22Z; the body contains generated-by-stellar-raven, the active main source link, immutable b59517d snapshot, full evidence, and the resolution handoff
 recurrences:
   - date: 2026-08-31
     evidence: repository recovery v2 collection sha256 da4a4e245b05c737023d6e858e8b8866b00375649b0a90b2be0a1b68da6424da; rr-pos-horizon-max-supported-protocol; execute call 7; generatedAt 2026-08-31T00:52:03.666Z; DeepWiki returned 25 with scannedRef 82660510; 1 of 12 successful repository answers carried a stale numeric value
@@ -51,6 +52,12 @@ It asked the same Horizon question through the local Raven server at port 8788.
 DeepWiki returned `MaxSupportedProtocolVersion = 25` at `2026-08-31T01:42:10.098Z`.
 The response recorded `scannedRef: 82660510ecda7fd365a14d08badb9d85fa22bc32`.
 The freshness trigger did not fire.
+
+GitHub read back https://github.com/Stellar-Light/stellarlight/issues/1134 on 2026-08-31.
+The issue is OPEN and has the expected title.
+GitHub reports `createdAt: 2026-08-31T02:49:22Z`.
+Its body contains `generated-by-stellar-raven`, the active `main` source link, and the immutable `b59517d` snapshot.
+Its body also contains the full evidence and the resolution handoff.
 
 ## Recommendation
 
