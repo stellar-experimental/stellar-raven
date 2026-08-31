@@ -127,7 +127,7 @@ quote inventories are in the mirrored lane reports.
 ## Applied changes
 
 - **P2 bookkeeping.** TODO: the three Goldens items rewritten to the true remainder, then closed as
-  the work landed; a new "File `sd-047`" item. NEXT: state bullets, block 1, block 6, owner decisions.
+  the work landed. NEXT: state bullets, block 1, block 6, owner decisions.
   2026-08-30 ledger: `## Outcome` appended with the `cluster-136` hackathon decision (both added
   `scout.hackathonBrief` cases sit in that one cluster with `q-gap-contracts-domain-empty`; no SCF
   cluster gained a member), plus dated follow-up lines.
@@ -153,7 +153,7 @@ quote inventories are in the mirrored lane reports.
 - **`sd-047`** (`improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md`,
   `docs-content`, `verified`, discovered 2026-08-31): the two-page wording conflict, raw blob ids, the
   two Horizon samples, the CAP-0070 and `NetworkConfig.h` target range, docs-index hits, no existing
-  issue or PR, and the mutual case link. Not filed upstream.
+  issue or PR, and the mutual case link. Filed after PR #106; see the receipt below.
 - **Gaps.** `q-comp-finclusive-caas`: class D evidence on the 2026-08-30 row.
   `q-protocol-base-reserve-min-balance`: `rootCause` names `sd-046`; `sd-046` evidence names the case.
 - **Decisions.** `solo://` references are retained historical dated records under `AGENTS.md` and are
@@ -231,6 +231,10 @@ NEXT, and the helper removals. Its verdict is `PASS`, with no remaining findings
   (ADR-0008).
 - **Gaps:** both closed. **Hackathon decision:** recorded from `cluster-136`.
 - **Affected ids:** 40 files (3 judge-facing, 37 truth-only), listed in `affected-case-ids.md`.
-- **Remaining work:** commit the round on `next/golden-metadata-remainder`; file `sd-047` through
-  `improvements:file` (TODO item); the SEC filing link on `q-defi-wisdomtree-crdt` stays verified only
-  by its 2026-08-30 line; pane `w1W:p5` (`gmr2-terra-v`) is idle and open.
+- **Merge:** PR https://github.com/stellar-experimental/stellar-raven/pull/106 merged the round as
+  `0916e09805909f41a34d08abbde1995f7bc94a8e` on 2026-08-31.
+- **Upstream filing:** `sd-047` is `reported-upstream` at
+  https://github.com/stellar/stellar-docs/issues/2805. The issue carries the `raven` label, generated
+  marker, public source record, immutable `0916e09` snapshot, and resolution handoff.
+- **Remaining risk:** the SEC filing link on `q-defi-wisdomtree-crdt` stays verified only by its
+  2026-08-30 line. It did not block the 12-id re-walk. No block-1 action remains.

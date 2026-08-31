@@ -9,7 +9,8 @@ below is done.
 - The record-only closeout does not change production. Production runs Worker Version ID
   `6282fe2a-54d8-471e-9f0a-0a2565110af1`, deployed 2026-08-28 from `main` HEAD. Session 3 did
   not deploy.
-- `improvements/`: 69 active findings (`sd-047` added 2026-08-31, `verified`, unfiled), lint passes.
+- `improvements/`: 69 active findings. `sd-047` is `reported-upstream` at
+  https://github.com/stellar/stellar-docs/issues/2805. Lint passes.
   `sls-080` is verified.
   Stellar-Light/stellarlight#1031 is still open;
   the maintainer owns the close.
@@ -35,7 +36,7 @@ below is done.
   `.agents/rounds/2026-08-31-golden-metadata-remainder.md`.
 - Both temporary-path classes are gone from the battery (0 files on 2026-08-31).
   301 files carry a `solo://` reference; these are retained historical dated records.
-- `sd-047` (Validators 3-5 versus Stellar Stack 5-7 ledger cadence) is `verified` and unfiled.
+- `sd-047` (Validators 3-5 versus Stellar Stack 5-7 ledger cadence) is `reported-upstream`.
 - Recovery PR https://github.com/stellar-experimental/stellar-raven/pull/102 closed without merge.
   QA PR https://github.com/stellar-experimental/stellar-raven/pull/103 also closed without merge.
   The record-only evidence is in
@@ -50,8 +51,8 @@ dispositions, and the five same-100 candidates. The 2026-08-31 round verified al
 repaired all 37 bare-relative files through verified touches (two after blind re-derivation),
 superseded the stale `~3-5s` notes sentence on `q-protocol-ledger-close-time`, created `sd-047`
 (`verified`), and closed the two metadata gaps. Grok 4.6 high completed the independent review and
-follow-up review; every finding was repaired, and the follow-up verdict is `PASS`. One `TODO.md` item
-remains under "Goldens": file `sd-047` upstream.
+follow-up review; every finding was repaired, and the follow-up verdict is `PASS`. PR #106 merged the
+round as `0916e09`. Stellar Docs issue #2805 records `sd-047`. Block 1 is complete.
 
 Decisions recorded on 2026-08-31: `solo://` references in corpus truth metadata are historical dated
 records under `AGENTS.md` and are never rewritten; `q-protocol-ledger-close-time` gets no
@@ -129,8 +130,8 @@ Promotion also needs one same-tuple pinned pair for recalibration.
 
 ## Suggested sequence
 
-File `sd-047` through `improvements:file`. Then use the next register refresh for block 2, judge
-stability. Continue with block 3, protocol-history routing.
+Use the next register refresh for block 2, judge stability. Continue with block 3, protocol-history
+routing.
 
 Block 4 is monitor-only until its stated free-probe trigger occurs. Then continue with block 5, the
 Playground message limit, and block 6, small own-repo fixes. Resolve the owner product-loss margin
