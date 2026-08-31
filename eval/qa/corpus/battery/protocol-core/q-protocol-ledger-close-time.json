@@ -13,7 +13,7 @@
     "avoid": [
       "Do NOT state 3–5 seconds or exactly five seconds as an immutable guarantee based on one adjacent-ledger delta."
     ],
-    "notes": "~3-5s ledger close. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard).\nGT-32 CORRECTION 2026-07-10: current multi-ledger sample and Docs support 5–7 seconds; one delta is insufficient."
+    "notes": "Ledger close is roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
   },
   "tags": {
     "category": "protocol-core",
@@ -130,13 +130,49 @@
             "ref": "https://developers.stellar.org/docs/validators",
             "observedAt": "2026-08-30",
             "note": "Still says 'every 3-5 seconds'; stale against the stack page and the samples. Docs-finding candidate; the answer's avoid item punishes only an immutable-guarantee claim from one delta, so an attributed quote of this page is not in the trap."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators",
+            "observedAt": "2026-08-31",
+            "note": "Still says 'every 3-5 seconds' in rendered HTML and raw MDX (blob 37f879807c150e794578e80d2e751597938f8423); conflicts with the Stellar Stack page's 'every 5-7 seconds'. Tracked as sd-047."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/src/ledger/NetworkConfig.h",
+            "observedAt": "2026-08-31",
+            "note": "The configured target cannot be set below 4000 ms. That is a target floor, not an observed-close floor; the two 2026-08-31 samples had no delta below 5 s."
+          }
+        ]
+      },
+      {
+        "claim": "Fresh 2026-08-31 Pubnet samples: two 199-delta windows (ledgers 64209159–64209358 and 64209225–64209424) were min 5 / max 9 / median 6 s with 196–198 of 199 deltas inside 5–7 s; the configured target is 5000 ms with a legal range of 4000–5000 ms.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+            "observedAt": "2026-08-31",
+            "note": "Two independent fetches at 13:10:23Z (blind lane) and 13:16:30Z (lane B); each 200 records, consecutive sequences."
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+            "observedAt": "2026-08-31",
+            "note": "199 closed_at deltas computed per fetch: 5s×75–77, 6s×111–113, 7s×8–10, 8s×0–1, 9s×1–2; mean 5.688–5.693 s."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/src/ledger/NetworkConfig.h",
+            "observedAt": "2026-08-31",
+            "note": "InitialSorobanNetworkConfig::LEDGER_TARGET_CLOSE_TIME_MILLISECONDS = 5000; Minimum 4000; Maximum 5000. These bound the configured target, not observed closes."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, dated-conflict lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, D1 reconciliation; proposer lane B matrices-lane-b-events-d1.md, blind re-derivation review-blind-ledger-close-grok.md; orchestrator reconciled and applied)",
       "evidence": [
         "Solo scratchpad 575 GT-32 blind 3284, resolving primary under-sampling.",
         "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack — 'update the ledger every 5-7 seconds'.",
@@ -145,11 +181,25 @@
         "Official-page inventory 2026-08-30: stellar-stack 5-7 s; docs/validators 3-5 s (stale); storage-strategies '~5-second'; fees-resource-limits-metering 'a few seconds'; stellar.org/soroban '5-second finality'; intro-to-stellar 'under 6 seconds'. The 199-ledger 2026-07-10 observation is kept as a dated historical sample; its Solo attribution is not re-walkable and the fresh samples stand as its independent replacement.",
         "Disposition 2026-08-30: the golden's 'roughly 5–7 seconds' with a dated sample stays; one 9-second delta in one fresh sample does not move a 'roughly' range. A live official conflict (validators 3-5 s vs stack 5-7 s) remains after direct confirmation; ADR-0008 caps canonical-page cautions at three cases, so no caution was added and the Stellar Docs finding is left as an owner decision (recorded in the round ledger).",
         "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same sample statistics; found no official 3–5 wording on the pages it visited (it did not visit docs/validators); orchestrator direct fetch confirmed both pages.",
-        "Sibling sweep 2026-08-30: grep ledger close|5-7 seconds|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit and six other timing cases; no contradiction"
+        "Sibling sweep 2026-08-30: grep ledger close|5-7 seconds|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit and six other timing cases; no contradiction",
+        "Gospel change 2026-08-31: the stale golden.notes sentence '~3-5s ledger close.' is superseded by 'roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas'; answer, keyFacts, avoid, and the no-caution decision are unchanged.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/validators — rendered and raw (docs/validators/README.mdx, blob 37f879807c150e794578e80d2e751597938f8423) both say 'update the ledger every 3-5 seconds'.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack — rendered and raw (stellar-stack.mdx, blob 06c92f8dbcd2f30e0f855bd18bf7abbc3c9e9713) both say 'update the ledger every 5-7 seconds'.",
+        "Live re-check 2026-08-31: https://horizon.stellar.org/ledgers?order=desc&limit=200 — two independent 199-delta samples (ledgers 64209159–64209358 at 13:10:23Z; 64209225–64209424 at 13:16:30Z): min 5 / max 9 / median 6 / mean 5.688–5.693 s; 5s×75–77, 6s×111–113, 7s×8–10, 8s×0–1, 9s×1–2.",
+        "Live re-check 2026-08-31: https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/src/ledger/NetworkConfig.h — LEDGER_TARGET_CLOSE_TIME_MILLISECONDS initial 5000, minimum 4000, maximum 5000; LedgerManagerImpl::getExpectedLedgerCloseTime() returns ledgerTargetCloseTimeMilliseconds() as std::chrono::milliseconds on protocol 23+; Herder::TARGET_LEDGER_CLOSE_TIME_BEFORE_PROTOCOL_VERSION_23_MS = 5000.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers — closeTime is a UNIX timestamp, may lag a few seconds or lead up to 60 seconds, strictly monotonic.",
+        "Docs index 2026-08-31: stellarDocs.search_docs '3-5 seconds' → 1 hit (docs/validators); '5-7 seconds' → 1 hit (stellar-stack#stellar-core); both strings indexed, so this is a content conflict, not a search miss.",
+        "Lane disagreement resolved 2026-08-31: lane B marked keyFact 1 contradicted because the full observed range is 5–9 s; the blind lane read 5–7 s as typical with rare 8–9 s deltas. The answer says 'roughly 5–7' with a dated sample and the 5–7 band holds 196–198 of 199 deltas in every sample, so the keyFact stands as confirmed-as-of; the notes now name the rare 8–9-second deltas.",
+        "Finding filed 2026-08-31: improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md (docs-content, verified); no caution added because ADR-0008 fixes the canonical-page caution boundary at three cases.",
+        "Sibling sweep 2026-08-31: grep 3-5 seconds|5-7 seconds|ledger close|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit, q-soroban-storage-types, q-infra-quickstart-local-network read; no sibling states a 3–5-second cadence; no contradiction",
+        "Review fixes 2026-08-31 (review-final-grok.md F1, F2, F4): the CAP-0070/NetworkConfig.h range [4000, 5000] ms bounds the configured target only and is not an observed-close floor, so no evidence claims a 3-second close is impossible; the undocumented third Horizon window was removed and only the two mirrored samples remain; the GT-32 correction narrative was dropped from golden.notes, which now carries only current guidance."
       ],
       "rootCause": [
         "Old target/marketing range and insufficient empirical sampling.",
-        ".agents/TODO.md — Recheck two dated source-metadata conflicts"
+        ".agents/TODO.md — Recheck two dated source-metadata conflicts",
+        "eval-authoring — the GT-32 correction of 2026-07-10 appended a correction line but left the original '~3-5s' sentence in golden.notes",
+        "improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md",
+        ".agents/TODO.md — Decide the ledger-close-time documentation conflict (D1)"
       ]
     },
     "origin": "raven-next q-protocol-ledger-close-time"

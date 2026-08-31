@@ -165,13 +165,19 @@
             "ref": "https://finclusive.com/products/caas-gateway",
             "observedAt": "2026-08-30",
             "note": "'Ensure compliant routing and monitoring of payments'."
+          },
+          {
+            "class": "D",
+            "ref": "https://dfpi.ca.gov/wp-content/uploads/sites/337/2022/09/FinClusive-comment-letter-8.1.22.pdf",
+            "observedAt": "2026-08-31",
+            "note": "Independent public-authority-hosted record (California DFPI, FinClusive comment letter dated 2022-08-01): 'FinClusive is a hybrid regulatory technology (Regtech) and financial technology (Fintech) company' providing 'a comprehensive and modernized full-stack financial crimes compliance (FCC) solution for bank and nonbank financial intermediaries'; it also states 'FinClusive is registered with FinCEN as a nonbank Money Services Business (MSB) and is in the process of obtaining money transmission licenses'. FinCEN registration is not state money-transmitter licensing, so this dated statement coexists with the current 'not a licensed Money Services Business' wording; it does not establish a license, which the avoid item already guards."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, verification-gap repair; class D sweep by the orchestrator)",
       "evidence": [
         "Solo scratchpad 575 GT-07 primary and blind matrices",
         "Current FinCEN registry exact-name probe was inconclusive and is not used to infer licensing",
@@ -185,14 +191,16 @@
         "Live re-check 2026-08-30: https://stellar.org/blog/policy/drive-inclusion-through-compliance — the dated SDF article still names Biccos as the use case.",
         "Live re-check 2026-08-30: https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — duties attach by institution role, covered transmittal, and the $3,000 threshold.",
         "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same TPSP quote, same marketing claims, Biccos confirmed.",
-        "Sibling sweep 2026-08-30: grep FinClusive|Biccos|CaaS → q-comp-finclusive-caas, q-crp-anchors-by-corridor; no contradiction"
+        "Sibling sweep 2026-08-30: grep FinClusive|Biccos|CaaS → q-comp-finclusive-caas, q-crp-anchors-by-corridor; no contradiction",
+        "Second class 2026-08-31: class D web sweep ('FinClusive compliance-as-a-service third party service provider', 'FinClusive not a bank money services business', 'FinClusive Stellar anchor compliance rail') → the DFPI-hosted 2022-08-01 comment letter corroborates the Regtech/Fintech TPSP description and records a dated FinCEN MSB registration statement; added to the 2026-08-30 corroboration row. No judge-facing change."
       ],
       "rootCause": [
         "Historical partnership content became timeless product/legal authority.",
         "Unrelated ecosystem relationships were conflated with FinClusive partnerships.",
         "Technical anchor and legal regulated-person roles were collapsed.",
         ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Review five round-specific golden-truth candidates"
+        ".agents/TODO.md — Review five round-specific golden-truth candidates",
+        ".agents/TODO.md — Close two metadata gaps found by the 2026-08-31 verification"
       ]
     },
     "origin": "raven-next q-comp-finclusive-caas"

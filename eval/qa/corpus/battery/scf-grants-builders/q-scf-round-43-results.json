@@ -6,26 +6,26 @@
     "lumenloop.search_documents"
   ],
   "golden": {
-    "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. Its headline/prose says results span all three tracks, and a June 11 official Stellar social post repeats that wording. However, the recipient sections account for all 29 as 10 Open Track plus 19 Integration Track projects and list no RFP recipient. Report that primary-source inconsistency explicitly; do not invent an RFP winner or convert the absence of a recipient list into proof that the official all-three-tracks wording is false. June 11 is a post date, not an established conclusion date. Transient dashboard card/payment states do not revise the official 29 / $3,139,069 selection result.",
+    "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. Its headline/prose says results span all three tracks, and a June 11 official Stellar social post repeats that wording. However, the recipient sections account for all 29 as 10 Open Track plus 19 Integration Track projects and list no RFP recipient. Report that primary-source inconsistency explicitly; do not invent an RFP winner or convert the absence of a recipient list into proof that the official all-three-tracks wording is false. June 11 is a post date, not an established conclusion date. As of 2026-08-31 the live SCF dashboard's paid-state `Awarded` view showed 28 cards totaling $3,049,069, one recap recipient (Bexo Wallet, $90,000) short; that dated payment-state view does not revise the official 29 / $3,139,069 selection result.",
     "keyFacts": [
       "Dates the official SCF #43 recap to June 2, 2026.",
       "Reports 85 submissions in the official recap.",
       "Reports headline/social all-three-tracks wording as inconsistent with recipient sections.",
       "Lists 10 Open, 19 Integration, and no RFP recipient in the recipient sections.",
-      "Treats official $3,139,069 XLM-worth as final over dashboard's transient 28 / $3,049,069."
+      "Ranks the official 29 / $3,139,069 recap above the dashboard's 28 / $3,049,069 view."
     ],
     "avoid": [
       "Do NOT report 3,139,069 as the number of XLM tokens awarded.",
       "Do NOT substitute a cumulative SCF program total for the round-43 total.",
       "Do NOT infer the round concluded June 11 merely from the date of a later social post.",
-      "Do NOT treat the dashboard’s paid-state `Awarded` count or its incomplete 28-card / $3,049,069 snapshot as the final selection result."
+      "Do NOT treat the dashboard’s paid-state `Awarded` count or its 28-card / $3,049,069 view as the final selection result."
     ],
-    "notes": "DISPUTED 2026-08-04: preserve 85 / 29 / $3,139,069 and the June 2 versus June 11 dates. Explicitly encode that official headline/social wording says all three tracks while section accounting is 10 Open + 19 Integration with no RFP recipient list."
+    "notes": "DISPUTED 2026-08-04: preserve 85 / 29 / $3,139,069 and the June 2 versus June 11 dates. Explicitly encode that official headline/social wording says all three tracks while section accounting is 10 Open + 19 Integration with no RFP recipient list. 2026-08-31: the dashboard `Awarded` paid-state view (28 cards / $3,049,069, Bexo Wallet absent) is live and dated; grade it as a dated dashboard view, neither vanished nor the final selection result."
   },
   "tags": {
     "category": "scf-grants-builders",
     "service": "lumenloop",
-    "freshness": "stable"
+    "freshness": "scheduled"
   },
   "truth": {
     "lifecycle": {
@@ -34,7 +34,7 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-08-04",
+    "asOf": "2026-08-31",
     "sources": [
       {
         "class": "A",
@@ -129,17 +129,47 @@
             "ref": "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
             "observedAt": "2026-07-11",
             "note": "Shows why a transient dashboard snapshot can undercount."
+          },
+          {
+            "class": "C",
+            "ref": "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
+            "observedAt": "2026-08-31",
+            "note": "The 28 / $3,049,069 view is still live on 2026-08-31 as the paid-state Awarded label; it is a dated payment-state view, not the selection result."
+          }
+        ]
+      },
+      {
+        "claim": "On 2026-08-31 the live SCF dashboard's `Awarded` (paid-state) view showed 28 cards totaling $3,049,069 with 12 Not Awarded and 21 Panel Review Failed; Bexo Wallet ($90,000 in the recap) was absent, and 3,139,069 − 90,000 = 3,049,069.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
+            "observedAt": "2026-08-31",
+            "note": "HTTP 200; page text 'Below submissions have been awarded this round with their full or partial award payment paid.' Blind lane at 13:52Z and orchestrator at 14:02Z both counted status Awarded 28, Not Awarded 12, Panel Review Failed 21 in the page payload."
+          },
+          {
+            "class": "F",
+            "ref": "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
+            "observedAt": "2026-08-31",
+            "note": "Blind-lane parse of the RSC payload summed the 28 Awarded budgets to 3,049,069; the orchestrator parse reproduced the 28/12/21 counts and Bexo's absence."
+          },
+          {
+            "class": "A",
+            "ref": "https://medium.com/feed/stellar-community",
+            "observedAt": "2026-08-31",
+            "note": "Recap lists Bexo Wallet at $90,000 among the 19 Integration recipients and totals $3,139,069 across 29 projects; the June 11 X post 2065181135135559896 repeats 29 / $3,139,069."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class; lane B research report matrices-lane-b-events-d1.md reconciled with blind re-derivation review-blind-scf43-grok.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://medium.com/feed/stellar-community",
         "https://x.com/StellarOrg/status/2065181135135559896",
         "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
@@ -150,14 +180,26 @@
         "Live re-check 2026-08-27: https://lumenloop.com/news/scf-43-round-recap and https://x.com/StellarOrg/status/2065181135135559896 — retained all-three-tracks headline/social wording against the recipient-section accounting.",
         "Live re-check 2026-08-27: https://lumenloop.com/news/scf-43-round-recap — showed 10 Open and 19 Integration recipients with no RFP recipient section.",
         "Live re-check 2026-08-27: https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N and https://medium.com/stellar-community/scf-43-round-recap-62942f07757e — showed the dashboard lifecycle had moved beyond the recorded transient snapshot while the official final total remained the recap result.",
-        "Sibling sweep 2026-08-27: grep SCF #43|85 submissions|3,139,069|3,049,069 → q-edge-fresh-latest-scf-round, q-scf-current-round, q-scf-round-43-results; no contradiction"
+        "Sibling sweep 2026-08-27: grep SCF #43|85 submissions|3,139,069|3,049,069 → q-edge-fresh-latest-scf-round, q-scf-current-round, q-scf-round-43-results; no contradiction",
+        "Gospel change 2026-08-31: the answer's last sentence, keyFact 5 (single predicate: official recap ranked above the dashboard view; the compiler caps keyFacts at five), avoid item 4, and a notes addendum now label 28 / $3,049,069 as the dated dashboard `Awarded` paid-state view as of 2026-08-31 (Bexo Wallet $90,000 absent) and keep 29 / $3,139,069 as the official selection result; 'transient' framing removed because both lanes reproduced the view live; freshness moved to scheduled with asOf 2026-08-31 and reverifyBy 2026-12-10.",
+        "Live re-check 2026-08-31: https://medium.com/feed/stellar-community — item 'SCF #43 Round Recap' pubDate Tue, 02 Jun 2026 21:39:51 GMT; class D wowcryptocurrency mirror (2026-06-03) repeats the June 2 recap.",
+        "Live re-check 2026-08-31: https://medium.com/feed/stellar-community — 'We received 85 submissions across all three tracks'; class D mirror repeats 85; the dashboard payload holds 61 records and is not the submission count.",
+        "Live re-check 2026-08-31: https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N — Awarded 28 / Not Awarded 12 / Panel Review Failed 21, payload sum 3,049,069, Bexo Wallet absent; class A recap and X post 2065181135135559896 keep 29 / $3,139,069.",
+        "Live re-check 2026-08-31: https://x.com/StellarOrg/status/2065181135135559896 — official post repeats '29 projects … $3,139,069 worth of XLM'; class A recap feed states the same figures; class F sum of 29 named amounts = $3,139,069.",
+        "Live re-check 2026-08-31: https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N — Awarded 28 / Not Awarded 12 / Panel Review Failed 21; class F payload sum 3,049,069; Bexo Wallet absent; class A recap keeps 29 / $3,139,069.",
+        "Lane reconciliation 2026-08-31: lane B first marked keyFact 5 unverifiable for lack of a durable second-class source of the 28 / $3,049,069 state; the blind lane and then the orchestrator reproduced that state live (class C and F), so the fact is confirmed-as-of 2026-08-31 and the gospel now dates it instead of calling it transient.",
+        "Sibling sweep 2026-08-31: grep SCF #43|85 submissions|3,139,069|3,049,069|Bexo → 3 other cases; read q-defi-rwa-scf-similar, q-edge-fresh-latest-scf-round, q-scf-current-round; none pins a conflicting round-43 total or date; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
         "The golden resolved an internal official-source contradiction categorically instead of representing it as disputed.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        "eval-authoring — the 'transient' framing treated a live dashboard payment-state view as vanished",
+        "freshness-drift",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
-    "origin": "authored 2026-07 (2026-events)"
+    "origin": "authored 2026-07 (2026-events)",
+    "reverifyBy": "2026-12-10"
   }
 }

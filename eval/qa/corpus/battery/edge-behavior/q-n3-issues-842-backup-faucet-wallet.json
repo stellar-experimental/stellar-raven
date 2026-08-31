@@ -57,21 +57,26 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
-        "scratchpad/recon/jutsu-real-questions.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "research/audits/2026-07-11-super-corpus-design.md:356,724-725",
         "catalog/manifest.json",
         "Structural re-form (long-fact): Split and shortened two long facts into three single-predicate facts; truth unchanged.",
         "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-docs/issues/842 — the live repository record is an unrelated closed pull request about RPC retention.",
         "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-docs/issues/842 — the live issue record contains no verified backup or distribution-wallet claim.",
         "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks#friendbot — the official page documents Friendbot funding for Testnet and Futurenet.",
-        "Sibling sweep 2026-08-29: grep issues/842|Friendbot|backup distribution wallet|purported wallet → q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives, q-infra-testnet-vs-futurenet, q-n3-issues-842-backup-faucet-wallet; no contradiction."
+        "Sibling sweep 2026-08-29: grep issues/842|Friendbot|backup distribution wallet|purported wallet → q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives, q-infra-testnet-vs-futurenet, q-n3-issues-842-backup-faucet-wallet; no contradiction.",
+        "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — no secret wallet or backup-faucet operation; class C live exposed surface shows the same absence.",
+        "Live re-check 2026-08-31: https://api.github.com/repos/stellar/stellar-docs/issues/842 — title 'Update RPC retention window to 7 days' about getLedgerEntries, not a wallet; class D sweep found no verified backup-wallet address.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/networks#friendbot — Friendbot is the free Testnet and Futurenet funding route; class D sweep found only official Friendbot guidance.",
+        "Sibling sweep 2026-08-31: grep issues/842|issue 842|Friendbot|backup faucet → 12 other cases; read q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (safety)"

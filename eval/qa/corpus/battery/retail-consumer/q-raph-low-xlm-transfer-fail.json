@@ -90,13 +90,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
-        "scratchpad/p4/h3-raph/fable-voice-review.md",
-        "scratchpad/p4/h3-raph-blind/reconciliation.md",
+        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
         "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
         "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
@@ -104,11 +103,17 @@
         "Structural re-form (compound-predicate): Split subentry cleanup from the conditional Account Merge path; truth is unchanged.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — showed each eligible subentry increases minimum balance, so removal lowers reserve.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — described Account Merge and its subentry and sponsorship conditions.",
-        "Sibling sweep 2026-08-27: grep AccountMerge|subentries|minimum balance → q-pc-account-merge-reclaim-reserve, q-protocol-base-reserve-min-balance; no contradiction"
+        "Sibling sweep 2026-08-27: grep AccountMerge|subentries|minimum balance → q-pc-account-merge-reclaim-reserve, q-protocol-base-reserve-min-balance; no contradiction",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — XLM pays fees, rent, and minimum-balance reserves; class F Horizon ledger 64209416: base_fee 100, base_reserve 5000000 stroops.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — a failed operation rolls back all previous operations; class B TransactionFrame.cpp commits ltxTx only on success.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — closing a subentry returns its base reserve to the available balance; class B ChangeTrustOpFrame.cpp deletes the trustline when limit == 0.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Account Merge moves XLM and removes the source only without non-signer subentries; class B MergeOpFrame.cpp.",
+        "Sibling sweep 2026-08-31: grep minimum balance|base reserve|AccountMerge|low XLM → 22 other cases; read q-protocol-base-reserve-min-balance, q-pc-account-merge-reclaim-reserve, q-edge-1xlm-activation-fee; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raph min-balance-reserve-transfer-fail"

@@ -78,17 +78,22 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 N2 primary+blind (Solo 3417/3423)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://stellar.org/case-studies/dtcc",
-        "https://www.coindesk.com/business/2026/05/27/dtcc-plans-to-bring-tokenized-assets-to-stellar-in-latest-wall-street-blockchain-push"
+        "https://www.coindesk.com/business/2026/05/27/dtcc-plans-to-bring-tokenized-assets-to-stellar-in-latest-wall-street-blockchain-push",
+        "Live re-check 2026-08-31: https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain — DTCC release dated 2026-05-27; class D CoinDesk (2026-05-28) reports the same announcement.",
+        "Live re-check 2026-08-31: https://stellar.org/case-studies/dtcc — 'announced plans' with assets 'expected to become available ... in the first half of 2027'; class D CoinDesk 'targets ... the first half of 2027'; not live on this date.",
+        "Live re-check 2026-08-31: https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain — 'advances its multi-chain strategy'; class D CoinDesk frames it as a multi-chain push.",
+        "Sibling sweep 2026-08-31: grep DTCC|DTC-tokenized|multi-chain tokenization → 1 other cases; read q-rwa-projects-tokenizing-stellar; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

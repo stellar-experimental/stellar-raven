@@ -59,18 +59,21 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
-        "scratchpad/p4/h3-raph/fable-voice-review.md",
-        "scratchpad/p4/h3-raph-blind/reconciliation.md",
+        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
-        "https://github.com/stellar/stellar-core/blob/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp"
+        "https://github.com/stellar/stellar-core/blob/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+        "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — ramps are the fiat endpoints; class B SEP-0006 defines anchor deposit and withdrawal; class B PathPaymentStrictReceiveOpFrame.cpp converts each hop where liquidity exists.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/path-payments — balances settle at the end of the operation; class B TransactionFrame.cpp commits only on success; provider fees and FX stay off-chain.",
+        "Sibling sweep 2026-08-31: grep remittance|path payment|cross-border|FX → 40 other cases; read q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-crp-anchors-by-corridor; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raph remittance-end-to-end-vs-banks"

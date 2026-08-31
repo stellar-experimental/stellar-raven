@@ -33,51 +33,17 @@ Done when: the next improvements round records the issue state. No action if it 
 
 ## Goldens
 
-### Replace expired temporary evidence in golden truth metadata
+### File `sd-047` with the Stellar Docs owner
 
-Golden-truth session 3 (2026-08-29, `.agents/rounds/2026-08-29-golden-truth-session-3.md`)
-repaired every temporary-path reference on the 224 cases it touched. Forty-seven untouched files
-still cite a temporary path: most cite the deleted Fable report `conversions-copy-review.md`,
-whose full report is not recoverable, and a few cite the session-2 Grok reviews under
-`/tmp/raven-qadeep/gt2/`, whose finding summaries live in `program-log.md`.
+`improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md` is `verified`
+(2026-08-31): `docs/validators/README.mdx` says "every 3-5 seconds" while `stellar-stack.mdx` says
+"every 5-7 seconds"; the protocol minimum target is 4000 ms. The stale `~3-5s` sentence in
+`golden.notes` of `q-protocol-ledger-close-time` was superseded on 2026-08-31 with a stamped gospel
+change. Decision recorded 2026-08-31: no canonical-page caution, because ADR-0008 fixes that boundary at three cases; the advisory `symmetric-caution` lint warning on the case is accepted.
 
-Do not replace these paths with an unreviewed bulk edit. Use the session-3 rule: a Fable-report
-line is replaced only when every keyFact of the case has been re-verified live in the same edit;
-a session-2 review line migrates to the `program-log.md` pointer during the next verified touch.
-
-Done when: no active corpus evidence names a temporary path, every replacement is re-walkable from
-the repository or a live primary source, the consistency register is reconciled, and all
-golden-truth gates pass.
-
-### Recheck two dated source-metadata conflicts
-
-The 2026-08-29 temporary-artifact audit found two current conflicts that need `golden-truth` review.
-
-- `q-tool-soroban-auth-audit-live` has `truth.asOf: 2026-08-25`, while its verification date is
-  `2026-08-28`. Confirm the intended claim date before changing the metadata.
-- `q-protocol-ledger-close-time` cites official wording for a 5–7-second range. Verify the current
-  wording across every cited official page. Preserve the dated 199-ledger observation, but verify
-  its attribution separately. Add a symmetric caution or file a Stellar Docs finding only if a
-  live conflict remains after direct confirmation.
-
-Done when: `golden-truth` records both dispositions, any changed fact keeps primary-source
-provenance, the round records the affected IDs, and all golden gates pass.
-
-### Review five round-specific golden-truth candidates
-
-The 2026-08-30 independent same-100 review found five current candidates. It found no false
-golden and authorized no corpus edit.
-
-- `q-protocol-base-reserve-min-balance`: keep the two-reserve pool-share rule. Add the current
-  Lumens and Accounts page conflict as provenance.
-- `q-comp-finclusive-caas`: record the TPSP legal text and the conflicting operator marketing.
-- `q-eco-stellar-wallets-list`: refresh the illustrative count and distinguish exact-type from
-  keyword-search totals.
-- `q-pc-protocol-27-zipper`: refresh the dated Horizon example. Keep the vote-versus-live rule.
-- `q-ti-freighter-localhost-not-detected`: retain the manifest fact and the Docs conflict caution.
-
-Done when: a later `golden-truth` pass verifies each candidate through independent source classes,
-records each disposition, updates only supported facts, and passes every golden gate.
+Done when: `npm run improvements:file -- --file improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md --dry-run`
+is reviewed, the issue is filed on `stellar/stellar-docs`, the durable URL is in evidence, the status is
+`reported-upstream`, and `npm run improvements:index` and `npm run improvements:lint` pass.
 
 ## Playground
 
@@ -154,21 +120,6 @@ as unshipped.
 
 Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
 our ranking.
-
-## Staleness
-
-### Decide the two hackathon cases' consistency-cluster membership
-
-The consistency-register comment now states the current 499-case battery. The remaining question
-concerns the two added `scout.hackathonBrief` cases.
-
-This is not a number bump. Neither added `scout.hackathonBrief` case appears in any of the 135
-clusters. The only hackathon id in the register is `q-scf-hackathons-active`, and it sits in four
-clusters — `cluster-011` (SCF program mechanics), `cluster-074` and `cluster-079` (Growth Hack
-amount basis), and `cluster-091` (v7 program menu). All four are SCF program facts; none concerns
-the `scout.hackathonBrief` operation. Whether the new cases join a cluster is a content decision.
-
-Done when: `golden-truth` records whether each case belongs in an existing or new cluster.
 
 ## Eval instruments
 

@@ -88,3 +88,48 @@ Route cards:
 - `2026-08-30T13:08Z` — Gates (after `npm ci`; the worktree had no node_modules): `eval:qa:compile` 500 cases; `eval:qa:register` up to date, 0 reopened; `lint-corpus --since b53f62d --stale` → 0 error(s), 60 warning(s) (unchanged advisory classes); `eval:plan` on `eval/qa/results/2026-08-30T03-43-11-variantA.json` (main checkout, local) → grades unchanged (broad→detail 10 correct / 16 partial / 2 wrong / 0 error of 28); `typecheck` clean; `npm test` 95 files, 1506 passed; `build` dry-run ok (7036.53 KiB); `secrets:scan -- --tree` clean. Parsed-JSON diff: 54 case files, 3 judge-facing, 51 truth-only (`affected-case-ids.md`). Grok final review prompted with the full diff against b53f62d.
 - `2026-08-30T13:17Z` — Grok final review (`review-final-grok.md`): APPROVE-WITH-FIXES, 25 URLs spot-checked live, three findings, all accepted and fixed: (1) wallets-list answer clause now says 64 records with Wallet in `types` and 31 sole-type (the corroboration row's wording); (2) the vuln-classes DoS/invariants line retargeted from the state-archival page (no such wording) to the Certora roadmap; (3) the six judge-facing `reSwept` reasons rewritten to name only the durable rule each cluster actually shares. Register re-stamped after the two case edits; reopened entries closed with the specific reasons; 0 reopened.
 - `2026-08-30T13:18Z` — Close: final gates re-run after the review fixes (compile, register 0 reopened, lint --since b53f62d --stale 0 errors / 60 warnings, plan grades unchanged, typecheck, test, build, secrets scan) and committed locally on `next/golden-metadata-remainder`. Not done here (coordinator-owned): `.agents/TODO.md` / `.agents/NEXT.md` reconciliation; push/PR; the Stellar Docs finding for the stale `docs/validators` 3-5-second wording and the owner decision on a caution; the second temporary-path class (relative `scratchpad/p4/h3-raph/…` and `scratchpad/p4/n2-events-blind/…` lines, 79 files) which the TODO item does not name. Panes `w1J:p2`–`w1J:p5` (agents gmr-sol-a/b/c, gmr-grok-rev) are idle and owned by this session.
+
+## Outcome
+
+Appended 2026-08-31 by the follow-up round (`.agents/rounds/2026-08-31-golden-metadata-remainder.md`)
+from the merged record. The round itself ended at the local commit.
+
+- **Commit and merge:** PR https://github.com/stellar-experimental/stellar-raven/pull/100 merged at
+  `2026-08-30T13:24:37Z` as `a617512` ("Complete the golden metadata remainder").
+- **Lane A:** 16 DONE (`a-all.md`, `matrices-sol-a.md`). Five source repairs re-checked by the
+  orchestrator with curl on 2026-08-30.
+- **Lane B:** 12 DONE, 4 accepted source conflicts with a dated `Source conflict 2026-08-30` line
+  (`overrides.json`): `q-protocol-cap-process`, `q-scf-academic-research-grant`, `q-scf-sdf-bug-bounty`,
+  `q-scf-vs-sdf-enterprise-fund`. No new canonical-page caution.
+- **Lane C:** 15 DONE after the sibling-sweep redo on five cases (`c-all.md`, `matrices-sol-c.md`).
+- **Lane D and R (seven high-stakes cases):** all seven reconciled between the proposer matrix
+  (`matrices-sol-d.md`) and the blind lane (`review-blind-rederivation-grok.md`). Three judge-facing
+  refreshes: `q-eco-stellar-wallets-list`, `q-pc-protocol-27-zipper`,
+  `q-ti-freighter-localhost-not-detected`. Four truth-only: `q-tool-soroban-auth-audit-live`,
+  `q-protocol-ledger-close-time`, `q-protocol-base-reserve-min-balance`, `q-comp-finclusive-caas`.
+  `sd-046` filed from the base-reserve case.
+- **Dead provenance:** 47 of 47 files repaired; `grep conversions-copy-review|/tmp/raven-qadeep` over
+  the battery → 0 files.
+- **Hackathon cluster decision:** `cluster-136` ("scout.hackathonBrief composite boundaries and
+  registry-relative contract absence") holds `q-gap-contracts-domain-empty`,
+  `q-gap-hackathon-brief-evidence-boundaries`, and `q-scout-hackathon-brief-first-hour`. Both added
+  cases therefore join one new cluster with the contracts-domain sibling. No existing SCF cluster
+  gained a member. The TODO "Staleness" item closed on 2026-08-31 against this record.
+- **Review:** `review-final-grok.md` APPROVE-WITH-FIXES; three findings, all fixed before the commit.
+- **Gates at close:** compile 500 cases; register up to date, 0 reopened; lint `--since b53f62d --stale`
+  0 errors / 60 warnings; plan grades unchanged; typecheck clean; `npm test` 95 files, 1506 passed;
+  build dry-run ok; secrets scan clean.
+- **Affected ids:** `affected-case-ids.md` — 54 files, 3 judge-facing, 51 truth-only.
+- **Remaining risk (as recorded on 2026-08-31):** the second temporary-path class (37 bare-relative
+  files; 301 `solo://` files pending an owner decision); D1 undecided; `golden.notes` on
+  `q-protocol-ledger-close-time` still opens with `~3-5s ledger close.`; the 2026-08-30 corroboration
+  row on `q-comp-finclusive-caas` has one class; `sd-046` and its source case do not name each other.
+- **Panes:** `w1J:p2`–`w1J:p5` were left idle by the 2026-08-30 session and stay under its ownership.
+- **Follow-up 2026-08-31** (`.agents/rounds/2026-08-31-golden-metadata-remainder.md`): 35 of the 37
+  bare-relative files repaired through verified touches; the stale `~3-5s` notes sentence on
+  `q-protocol-ledger-close-time` superseded; `sd-047` created as `verified`; the finclusive row gained
+  a second class; `sd-046` and its source case now name each other. Remaining: two S1 files
+  (`q-raph-lobstr-legitimacy`, `q-scf-round-43-results`) and the `solo://` owner decision.
+- **Follow-up 2026-08-31, second pass:** the last two bare-relative files (`q-raph-lobstr-legitimacy`,
+  `q-scf-round-43-results`) were repaired after blind re-derivation; the bare-relative scan is 0.
+  `solo://` references are retained as historical dated records under `AGENTS.md`.

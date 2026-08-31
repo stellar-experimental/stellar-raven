@@ -86,12 +86,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar",
         "https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential",
         "https://github.com/NethermindEth/rs-soroban-ultrahonk",
@@ -101,11 +101,18 @@
         "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — the editor's note says contract and verifier audits were underway.",
         "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential — the current implementation README says balances and amounts remain private.",
         "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential — the current implementation README says sender and recipient addresses remain visible.",
-        "Sibling sweep 2026-08-29: grep Confidential Tokens|Confidential Token → q-edge-noinfo-stellar-native-privacy-default, q-sor-confidential-tokens, q-scout-hackathon-brief-first-hour, and q-scf-confidential-tokens-preview; no contradiction"
+        "Sibling sweep 2026-08-29: grep Confidential Tokens|Confidential Token → q-edge-noinfo-stellar-native-privacy-default, q-sor-confidential-tokens, q-scout-hackathon-brief-first-hour, and q-scf-confidential-tokens-preview; no contradiction",
+        "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — dated 2026-06-29, 'live on testnet'; class D brozorec/stellar-confidential-token-demo says 'Testnet only'.",
+        "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — 'not yet approved for mainnet'; class D demo repository deploys to Testnet only.",
+        "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — 'audits are underway'; class D r/Stellar thread (2026-07-02) describes Mainnet as pending a security audit.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/meetings/2026/08/06 — 'private balances and transfer amounts'; class A SDF preview describes hidden balances and amounts.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/meetings/2026/08/06 — 'addresses kept public'; class A SDF preview keeps sender and recipient visible.",
+        "Sibling sweep 2026-08-31: grep Confidential Tokens|transfer amounts → 3 other cases; read q-cctp-v2-usdc-stellar, q-edge-noinfo-stellar-native-privacy-default, q-sor-confidential-tokens; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

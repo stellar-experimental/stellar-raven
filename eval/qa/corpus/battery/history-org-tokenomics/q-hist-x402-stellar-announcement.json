@@ -109,12 +109,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://stellar.org/blog/foundation-news/x402-on-stellar",
         "https://developers.stellar.org/docs/build/agentic-payments/x402",
         "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
@@ -123,11 +123,18 @@
         "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/x402-on-stellar — the announcement still describes programmatic per-request HTTP payments on Stellar.",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — current documentation still shows Soroban authorization and SEP-41 token flows.",
         "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/x402-on-stellar — the announcement still says settlement was live while agent/MCP tooling was being built.",
-        "Sibling sweep 2026-08-27: grep x402|SEP-402|SEP-41 → q-defi-x402-on-stellar-what, q-x402-payment-verification, q-soroban-x402-auth-entry-signing, q-sep-41-token-interface; no contradiction"
+        "Sibling sweep 2026-08-27: grep x402|SEP-402|SEP-41 → q-defi-x402-on-stellar-what, q-x402-payment-verification, q-soroban-x402-auth-entry-signing, q-sep-41-token-interface; no contradiction",
+        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/x402-on-stellar — SDF announcement dated 2026-03-10; class D Gate report (2026-03-13) covers the launch.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/agentic-payments/x402 — 'per-request HTTP payments on Stellar'; class A SDF announcement describes HTTP 402 payment flows.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/agentic-payments/x402 — the flow uses SEP-41 tokens and Soroban authorization; class B https://github.com/stellar/x402-stellar holds the implementation.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — no x402 SEP listed; class B stellar-protocol search for x402 and sep-402 returned zero matches; class D sweep found no SEP.",
+        "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/x402-on-stellar — 'The settlement layer is live' and 'The agent tooling is being built'; class D x402agentic.ai lists its MCP bridge as planned work.",
+        "Sibling sweep 2026-08-31: grep x402|HTTP 402 → 22 other cases; read q-agent-payment-standard-choice, q-defi-x402-on-stellar-what, q-mpp-discovery-and-modes, q-soroban-x402-auth-entry-signing, q-x402-payment-verification; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

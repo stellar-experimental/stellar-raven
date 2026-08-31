@@ -90,19 +90,24 @@
       }
     ],
     "verified": {
-      "date": "2026-07-11",
-      "by": "P4 N2 primary+blind (Solo 3417/3423)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3417",
         "solo://proj/49/process/3423",
-        "scratchpad/p4/n2-events-blind/reconciliation.md",
+        "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://www.cmegroup.com/content/dam/cmegroup/notices/ser/2026/01/ser-9663.pdf",
         "https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/lumens.calendar.html",
         "https://www.cmegroup.com/markets/cryptocurrencies/ada-link-lumens-futures.html",
-        "https://fxnewsgroup.com/forex-news/cryptocurrency/cme-group-reports-first-trades-for-new-cardano-chainlink-and-stellar-crypto-futures/"
+        "https://fxnewsgroup.com/forex-news/cryptocurrency/cme-group-reports-first-trades-for-new-cardano-chainlink-and-stellar-crypto-futures/",
+        "Live re-check 2026-08-31: https://www.cmegroup.com/content/dam/cmegroup/notices/ser/2026/01/ser-9663.pdf — 'DATE: January 15, 2026' and 'trade date Monday, February 9, 2026'; class D FX News Group (2026-01-15) repeats the February 9 launch.",
+        "Live re-check 2026-08-31: https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/lumens/specs — standard contract '250,000 Lumen'; SER-9663 states '250,000 Lumens'.",
+        "Live re-check 2026-08-31: https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/micro-lumens/specs — micro contract '12,500 Lumens'; SER-9663 states the same size.",
+        "Sibling sweep 2026-08-31: grep CME|Lumens futures|XLM futures → 2 other cases; read q-defi-perps-whitespace, q-tool-cctp-stellar-integration; no contradiction"
       ],
       "rootCause": [
-        "eval-authoring"
+        "eval-authoring",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (2026-events)"

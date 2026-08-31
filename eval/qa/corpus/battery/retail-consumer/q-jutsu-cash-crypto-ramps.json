@@ -59,23 +59,26 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
-        "scratchpad/p4/h3-raph/fable-voice-review.md",
-        "scratchpad/p4/h3-raph-blind/reconciliation.md",
+        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "eval/corpus/PROVENANCE.md (privacy-purged Jutsu lineage; raw phrasing unavailable)",
         "https://developers.stellar.org/platforms/anchor-platform",
         "https://stellar.org/",
         "Structural re-form (negative-predicate): Replaced the negative durable-count demand with the same positive dated-snapshot requirement; the truth is unchanged.",
         "Live re-check 2026-08-27: https://stellar.org/use-cases/payments — showed a current global ramp-location count plus country and asset filters for provider discovery.",
-        "Sibling sweep 2026-08-27: grep cash-to-crypto|Anchor Directory|corridor → q-anchor-endpoint-discovery, q-crp-anchors-by-corridor, q-crp-remittance-founder-advisory, q-jutsu-cash-crypto-ramps, q-pay-anchor-msb-licensing; no contradiction"
+        "Sibling sweep 2026-08-27: grep cash-to-crypto|Anchor Directory|corridor → q-anchor-endpoint-discovery, q-crp-anchors-by-corridor, q-crp-remittance-founder-advisory, q-jutsu-cash-crypto-ramps, q-pay-anchor-msb-licensing; no contradiction",
+        "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — 'over 475,000 global cash to crypto on and off ramp locations' on this date; class D MoneyGram Ramps page reports 470000+ locations, so counts are dated snapshots.",
+        "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — 'Supported fiat payment methods will differ depending on the on and off-ramp institution'; class D provider page lists its own country footprint.",
+        "Sibling sweep 2026-08-31: grep cash-to-crypto|off-ramp|Anchor Directory|corridor → 26 other cases; read q-crp-anchors-by-corridor, q-anchor-moneygram-ramps, q-raph-offramp-xlm-usdc, q-pay-anchor-msb-licensing; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "authored 2026-07 (jutsu phrasing)"

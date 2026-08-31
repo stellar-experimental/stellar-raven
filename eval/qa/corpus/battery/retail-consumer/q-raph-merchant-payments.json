@@ -59,22 +59,25 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
-        "scratchpad/p4/h3-raph/fable-voice-review.md",
-        "scratchpad/p4/h3-raph-blind/reconciliation.md",
+        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://developers.stellar.org/platforms/anchor-platform",
         "https://stellar.org/",
         "Structural re-form (negative-predicate): Recast the payment-versus-conversion comparison as a positive three-choice taxonomy; truth unchanged",
         "Live re-check 2026-08-27: https://developers.stellar.org/platforms/anchor-platform — Anchor Platform exposed deposit, withdrawal, payment, quote, and exchange workflows as distinct operations.",
-        "Sibling sweep 2026-08-27: grep merchant|off-ramp|accept XLM|accept USDC → q-anchor-platform-what, q-crp-become-an-anchor-licensing, q-raph-offramp-xlm-usdc, q-raph-remittance-path-payment; no contradiction"
+        "Sibling sweep 2026-08-27: grep merchant|off-ramp|accept XLM|accept USDC → q-anchor-platform-what, q-crp-become-an-anchor-licensing, q-raph-offramp-xlm-usdc, q-raph-remittance-path-payment; no contradiction",
+        "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — anchors and payment providers set their own fee structures; class B SEP-0006 separates anchor deposit and withdrawal flows from holding.",
+        "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — businesses determine their own compliance obligations by service and country; class B SEP-0006 defines anchor fee and KYC handling.",
+        "Sibling sweep 2026-08-31: grep merchant|small shop|accept XLM|payment provider|off-ramp → 22 other cases; read q-raph-offramp-xlm-usdc, q-pay-anchor-msb-licensing, q-stellar-recurring-payments; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raph merchant-accept-crypto-payments-compliant"

@@ -158,8 +158,8 @@
       }
     ],
     "verified": {
-      "date": "2026-08-30",
-      "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, verification-gap repair; mutual sd-046 link)",
       "evidence": [
         "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the full sponsorship formula, liabilities boundary, zero-start and reserve-shift semantics, two-reserve pool shares, dated live value, and contract-rent distinction.",
         "2026-07-11 author re-check against stellar-core c16a6d17 TransactionUtils.cpp and live Horizon.",
@@ -180,7 +180,8 @@
         "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/lumens — 'Smart contract data does not require any base reserves … must pay rent instead'; the same page lists pool-share trustlines among ordinary one-reserve subentries, recorded as provenance for the conflict, not as support.",
         "Disposition 2026-08-30: keep the two-reserve pool-share rule (CAP-0038 + dedicated liquidity page); the Lumens and Accounts pages' generic subentry list is recorded as a conflicting official source. No new caution (ADR-0008 boundary); the existing sd-043 caution is unchanged.",
         "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same verdicts on the formula, the liabilities conflict, the two-reserve rule, and the live base reserve.",
-        "Sibling sweep 2026-08-30: grep baseReserve|minimumBalance|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics and five related cases; no contradiction"
+        "Sibling sweep 2026-08-30: grep baseReserve|minimumBalance|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics and five related cases; no contradiction",
+        "Mutual link 2026-08-31: improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md was filed from this case on 2026-08-30 (Lumens and Accounts pages omit the pool-share two-reserve exception); the finding now names this case file and this entry. No judge-facing change."
       ],
       "rootCause": [
         "Eval-side pre-P14 formula shorthand and classic-account-versus-contract-storage collapse; current sibling corrections in GT-29/GT-32 were preserved.",
@@ -188,7 +189,9 @@
         ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
         "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
         ".agents/TODO.md — Repair the reviewed canonical-page conflict cases",
-        ".agents/TODO.md — Review five round-specific golden-truth candidates"
+        ".agents/TODO.md — Review five round-specific golden-truth candidates",
+        "improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md",
+        ".agents/TODO.md — Close two metadata gaps found by the 2026-08-31 verification"
       ]
     },
     "origin": "raven-next q-protocol-base-reserve-min-balance"

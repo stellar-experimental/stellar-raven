@@ -1,6 +1,6 @@
 # NEXT — handoff for the next work block
 
-Updated 2026-08-31 after the rejected-experiments closeout. Read this first. `TODO.md` holds the
+Updated 2026-08-31 after the golden-metadata verify-and-close pass. Read this first. `TODO.md` holds the
 full item text; this file only ranks and sequences. Delete or rewrite this file when the block
 below is done.
 
@@ -9,13 +9,15 @@ below is done.
 - The record-only closeout does not change production. Production runs Worker Version ID
   `6282fe2a-54d8-471e-9f0a-0a2565110af1`, deployed 2026-08-28 from `main` HEAD. Session 3 did
   not deploy.
-- `improvements/`: 68 active findings, lint passes. `sls-080` is verified.
+- `improvements/`: 69 active findings (`sd-047` added 2026-08-31, `verified`, unfiled), lint passes.
+  `sls-080` is verified.
   Stellar-Light/stellarlight#1031 is still open;
   the maintainer owns the close.
-- Corpus lint: 0 errors, 60 warnings (0 long-fact, 44 sourcing-guard, 16 corroboration). Every
-  remaining warning carries an audited disposition: the 44 sourcing-guard items stay advisory
-  (20-case audit, two models); the 16 corroboration items are grammar-only (56/56 class
-  agreement, two models). Do not chase these counts to zero.
+- Corpus lint: 0 errors, 61 warnings (0 long-fact, 44 sourcing-guard, 16 corroboration, 1
+  symmetric-caution). Every warning carries a recorded disposition: the 44 sourcing-guard items stay
+  advisory (20-case audit, two models); the 16 corroboration items are grammar-only (56/56 class
+  agreement, two models); the `symmetric-caution` on `q-protocol-ledger-close-time` is accepted under
+  the ADR-0008 no-caution decision. Do not chase these counts to zero.
 - Golden import validates Stellar strkeys (CRC16, SEP-23 version bytes) in `eval/qa/compile-qa.mjs`
   through `eval/qa/strkey.mjs`.
 - The first `qa-five-track-v1` same-100 result is local at
@@ -26,8 +28,14 @@ below is done.
   rubric `v2.10`. Cross-rubric comparison requires a rejudge under the target tuple.
 - Consistency register: reconciled on 2026-08-29; 0 reopen entries.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
-- Ledgers for the finished blocks: `.agents/rounds/2026-08-29-golden-truth-session-3.md` and
-  `.agents/rounds/2026-08-29-five-track-same-100.md`.
+- Ledgers for the finished blocks: `.agents/rounds/2026-08-29-golden-truth-session-3.md`,
+  `.agents/rounds/2026-08-29-five-track-same-100.md`, and
+  `.agents/rounds/2026-08-30-golden-metadata-remainder.md` (PR #100, merged 2026-08-30 as
+  `a617512`). The 2026-08-31 verify-and-close ledger is
+  `.agents/rounds/2026-08-31-golden-metadata-remainder.md`.
+- Both temporary-path classes are gone from the battery (0 files on 2026-08-31).
+  301 files carry a `solo://` reference; these are retained historical dated records.
+- `sd-047` (Validators 3-5 versus Stellar Stack 5-7 ledger cadence) is `verified` and unfiled.
 - Recovery PR https://github.com/stellar-experimental/stellar-raven/pull/102 closed without merge.
   QA PR https://github.com/stellar-experimental/stellar-raven/pull/103 also closed without merge.
   The record-only evidence is in
@@ -37,16 +45,21 @@ below is done.
 
 ### 1. Golden metadata remainder
 
-Skill: `golden-truth`. Three `TODO.md` items remain under "Goldens":
+Skill: `golden-truth`. PR #100 landed the 47 dead-provenance repairs, both dated-conflict
+dispositions, and the five same-100 candidates. The 2026-08-31 round verified all 54 landed ids,
+repaired all 37 bare-relative files through verified touches (two after blind re-derivation),
+superseded the stale `~3-5s` notes sentence on `q-protocol-ledger-close-time`, created `sd-047`
+(`verified`), and closed the two metadata gaps. Grok 4.6 high completed the independent review and
+follow-up review; every finding was repaired, and the follow-up verdict is `PASS`. One `TODO.md` item
+remains under "Goldens": file `sd-047` upstream.
 
-- Dead provenance: 47 untouched files still cite a temporary path (94 before session 3). Repair
-  them only during a verified touch of each case; no bulk edit. The session-3 rule for each
-  path class is in the TODO item.
-- Recheck the two dated source-metadata conflicts (`q-tool-soroban-auth-audit-live`,
-  `q-protocol-ledger-close-time`).
-- Review the five same-100 candidates listed in `TODO.md`. The result review found no false golden.
+Decisions recorded on 2026-08-31: `solo://` references in corpus truth metadata are historical dated
+records under `AGENTS.md` and are never rewritten; `q-protocol-ledger-close-time` gets no
+canonical-page caution (ADR-0008 three-case boundary), and its advisory `symmetric-caution` lint
+warning is accepted.
 
-Record the affected case-id list in the round ledger, as session 3 did.
+Record the affected case-id list in the round ledger, as this round did
+(`2026-08-31-golden-metadata-remainder/affected-case-ids.md`).
 
 ### 2. Eval instruments
 
@@ -94,7 +107,6 @@ Playground stateless; durable session history remains a deferred idea.
 
 - `test/demo-chat.test.ts` mocks the `ai` module, so the tool-loop guard never runs. Stub the
   model instead.
-- Decide cluster membership for the two `scout.hackathonBrief` cases.
 - Remove the leading blockquote marker from generated improvement titles.
 
 ## Owner decisions
@@ -117,9 +129,9 @@ Promotion also needs one same-tuple pinned pair for recalibration.
 
 ## Suggested sequence
 
-Start with block 1, Golden metadata remainder. Then use the next register refresh for block 2,
-Judge stability. Continue with block 3, protocol-history routing.
+File `sd-047` through `improvements:file`. Then use the next register refresh for block 2, judge
+stability. Continue with block 3, protocol-history routing.
 
-Block 4 is monitor-only until its stated free-probe trigger occurs. Then continue with block 5,
-the Playground message limit, and block 6, small own-repo fixes. Resolve the owner product-loss
-margin before a later paired QA promotion.
+Block 4 is monitor-only until its stated free-probe trigger occurs. Then continue with block 5, the
+Playground message limit, and block 6, small own-repo fixes. Resolve the owner product-loss margin
+before a later paired QA promotion.

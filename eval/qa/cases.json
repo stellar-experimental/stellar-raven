@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "06b3bd2583cfec75aa3869557468193289aa2a9863c5aed7084663fe64c053ab",
+  "corpusContentSha256": "0bb7be5b6ec3c250bc19831b71a820ea03173d7d88be6327827b23fbbf0f06ca",
   "counts": {
     "total": 500,
     "byCategory": {
@@ -25,8 +25,8 @@
     },
     "byFreshness": {
       "live": 155,
-      "scheduled": 146,
-      "stable": 199
+      "scheduled": 147,
+      "stable": 198
     },
     "traps": {
       "ambiguous": 2,
@@ -5839,13 +5839,19 @@
                 "ref": "https://finclusive.com/products/caas-gateway",
                 "observedAt": "2026-08-30",
                 "note": "'Ensure compliant routing and monitoring of payments'."
+              },
+              {
+                "class": "D",
+                "ref": "https://dfpi.ca.gov/wp-content/uploads/sites/337/2022/09/FinClusive-comment-letter-8.1.22.pdf",
+                "observedAt": "2026-08-31",
+                "note": "Independent public-authority-hosted record (California DFPI, FinClusive comment letter dated 2022-08-01): 'FinClusive is a hybrid regulatory technology (Regtech) and financial technology (Fintech) company' providing 'a comprehensive and modernized full-stack financial crimes compliance (FCC) solution for bank and nonbank financial intermediaries'; it also states 'FinClusive is registered with FinCEN as a nonbank Money Services Business (MSB) and is in the process of obtaining money transmission licenses'. FinCEN registration is not state money-transmitter licensing, so this dated statement coexists with the current 'not a licensed Money Services Business' wording; it does not establish a license, which the avoid item already guards."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, verification-gap repair; class D sweep by the orchestrator)",
           "evidence": [
             "Solo scratchpad 575 GT-07 primary and blind matrices",
             "Current FinCEN registry exact-name probe was inconclusive and is not used to infer licensing",
@@ -5859,14 +5865,16 @@
             "Live re-check 2026-08-30: https://stellar.org/blog/policy/drive-inclusion-through-compliance — the dated SDF article still names Biccos as the use case.",
             "Live re-check 2026-08-30: https://www.fincen.gov/resources/statutes-regulations/guidance/funds-travel-regulations-questions-answers — duties attach by institution role, covered transmittal, and the $3,000 threshold.",
             "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same TPSP quote, same marketing claims, Biccos confirmed.",
-            "Sibling sweep 2026-08-30: grep FinClusive|Biccos|CaaS → q-comp-finclusive-caas, q-crp-anchors-by-corridor; no contradiction"
+            "Sibling sweep 2026-08-30: grep FinClusive|Biccos|CaaS → q-comp-finclusive-caas, q-crp-anchors-by-corridor; no contradiction",
+            "Second class 2026-08-31: class D web sweep ('FinClusive compliance-as-a-service third party service provider', 'FinClusive not a bank money services business', 'FinClusive Stellar anchor compliance rail') → the DFPI-hosted 2022-08-01 comment letter corroborates the Regtech/Fintech TPSP description and records a dated FinCEN MSB registration statement; added to the 2026-08-30 corroboration row. No judge-facing change."
           ],
           "rootCause": [
             "Historical partnership content became timeless product/legal authority.",
             "Unrelated ecosystem relationships were conflated with FinClusive partnerships.",
             "Technical anchor and legal regulated-person roles were collapsed.",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-            ".agents/TODO.md — Review five round-specific golden-truth candidates"
+            ".agents/TODO.md — Review five round-specific golden-truth candidates",
+            ".agents/TODO.md — Close two metadata gaps found by the 2026-08-31 verification"
           ]
         },
         "origin": "raven-next q-comp-finclusive-caas"
@@ -7207,19 +7215,24 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 N2 primary+blind (Solo 3417/3423)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://www.cmegroup.com/content/dam/cmegroup/notices/ser/2026/01/ser-9663.pdf",
             "https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/lumens.calendar.html",
             "https://www.cmegroup.com/markets/cryptocurrencies/ada-link-lumens-futures.html",
-            "https://fxnewsgroup.com/forex-news/cryptocurrency/cme-group-reports-first-trades-for-new-cardano-chainlink-and-stellar-crypto-futures/"
+            "https://fxnewsgroup.com/forex-news/cryptocurrency/cme-group-reports-first-trades-for-new-cardano-chainlink-and-stellar-crypto-futures/",
+            "Live re-check 2026-08-31: https://www.cmegroup.com/content/dam/cmegroup/notices/ser/2026/01/ser-9663.pdf — 'DATE: January 15, 2026' and 'trade date Monday, February 9, 2026'; class D FX News Group (2026-01-15) repeats the February 9 launch.",
+            "Live re-check 2026-08-31: https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/lumens/specs — standard contract '250,000 Lumen'; SER-9663 states '250,000 Lumens'.",
+            "Live re-check 2026-08-31: https://www.cmegroup.com/markets/cryptocurrencies/stellar-lumens/micro-lumens/specs — micro contract '12,500 Lumens'; SER-9663 states the same size.",
+            "Sibling sweep 2026-08-31: grep CME|Lumens futures|XLM futures → 2 other cases; read q-defi-perps-whitespace, q-tool-cctp-stellar-integration; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -7454,17 +7467,22 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 N2 primary+blind (Solo 3417/3423)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/case-studies/dtcc",
-            "https://www.coindesk.com/business/2026/05/27/dtcc-plans-to-bring-tokenized-assets-to-stellar-in-latest-wall-street-blockchain-push"
+            "https://www.coindesk.com/business/2026/05/27/dtcc-plans-to-bring-tokenized-assets-to-stellar-in-latest-wall-street-blockchain-push",
+            "Live re-check 2026-08-31: https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain — DTCC release dated 2026-05-27; class D CoinDesk (2026-05-28) reports the same announcement.",
+            "Live re-check 2026-08-31: https://stellar.org/case-studies/dtcc — 'announced plans' with assets 'expected to become available ... in the first half of 2027'; class D CoinDesk 'targets ... the first half of 2027'; not live on this date.",
+            "Live re-check 2026-08-31: https://www.dtcc.com/news/2026/may/27/tokenization-service-to-connect-with-stellar-public-blockchain — 'advances its multi-chain strategy'; class D CoinDesk frames it as a multi-chain push.",
+            "Sibling sweep 2026-08-31: grep DTCC|DTC-tokenized|multi-chain tokenization → 1 other cases; read q-rwa-projects-tokenizing-stellar; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -20062,12 +20080,12 @@
           }
         ],
         "verified": {
-          "date": "2026-07-14",
-          "by": "P4 N2 primary+blind facts (Solo 3417/3423) + Terra scope audit (Solo 3633)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
             "https://x.com/circle/status/2056767949445472739",
             "https://developers.circle.com/release-notes/cctp-2026",
@@ -20077,11 +20095,15 @@
             "solo://proj/49/process/3633",
             "solo://proj/49/scratchpad/633#GPT-5.6-Terra-G3-classification",
             "eval/local-lanes/playground-semantic/overfit-audit-g3-itemkeys/2026-07-14T14-54-38-868Z-39ac21e3-5a0c-4a3b-b4fd-a3c14e61b97f-playground-semantic.json",
-            "Sibling sweep: q-cctp-v2-usdc-stellar, q-defi-bridge-evm-to-stellar-axelar, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration, and q-tool-js-sdk-package contain no conflicting announcement-date claim."
+            "Sibling sweep: q-cctp-v2-usdc-stellar, q-defi-bridge-evm-to-stellar-axelar, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration, and q-tool-js-sdk-package contain no conflicting announcement-date claim.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — SDF announcement dated 2026-05-19; class D Binance Square (2026-05-21) reports 'On May 19, 2026 ... CCTP went live'.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar — 'native USDC is burned and minted'; class A Circle release notes (2026-05-18) add Stellar mainnet; class D Crossmint: not wrapped.",
+            "Sibling sweep 2026-08-31: grep CCTP|burn-and-mint → 10 other cases; read q-cctp-v2-usdc-stellar, q-token-circle-usdc-on-stellar, q-tool-cctp-stellar-integration, q-defi-bridge-evm-to-stellar-axelar; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            "solo://proj/49/scratchpad/633#GPT-5.6-Terra-G3-classification"
+            "solo://proj/49/scratchpad/633#GPT-5.6-Terra-G3-classification",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -20178,12 +20200,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://meridian.stellar.org/",
             "https://meridian.stellar.org/event-details",
             "https://x.com/StellarOrg/status/2039405316803031315",
@@ -20193,12 +20215,17 @@
             "Structural re-form (long-fact): shortened the current schedule and announcement facts while keeping the superseded schedule in the answer and avoid; truth unchanged.",
             "Live re-check 2026-08-29: https://meridian.stellar.org/event-details — the current official FAQ schedules Meridian 2026 for October 28–29 at Convento do Beato in Lisbon.",
             "Live re-check 2026-08-29: https://x.com/StellarOrg/status/2039405316803031315 — SDF's official post announces Lisbon and October 28–29 at 6:11 PM on April 1, 2026.",
-            "Sibling sweep 2026-08-29: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no contradiction."
+            "Sibling sweep 2026-08-29: grep Meridian 2026|Yas Marina|Convento do Beato → q-hist-meridian-2026-corrected-venue only; no contradiction.",
+            "Live re-check 2026-08-31: https://meridian.stellar.org/event-details — 'October 28–29, 2026 at Convento do Beato in Lisbon, Portugal'; class D Luma listing independently shows Lisbon and October 28–29.",
+            "Live re-check 2026-08-31: https://www.hackmeridian.com/ — 'October 25–26, 2026 · Lisbon, Portugal'; class C Scout witness (non-origin) lists HackMeridian in Lisbon on October 25–26.",
+            "Live re-check 2026-08-31: https://x.com/StellarOrg/status/2039405316803031315 — SDF post dated 2026-04-01: 'Meridian is headed to Lisbon. October 28–29'; class D dated social witness displays the same April 1 announcement.",
+            "Sibling sweep 2026-08-31: grep Meridian 2026|HackMeridian|Convento do Beato → 1 other cases; read q-scf-hackathons-active; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -20293,12 +20320,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
             "https://stellar.org/protocol-upgrades",
             "https://horizon.stellar.org/",
@@ -20306,11 +20333,17 @@
             "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — Stage 1 still specifies 2026 ML-DSA-44/65 verification host functions.",
             "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — the planned host functions still target Soroban contract accounts.",
             "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — the article still presents a roadmap and identifies quantum-safe signer support as missing at publication.",
-            "Sibling sweep 2026-08-27: grep Quantum Preparedness|ML-DSA|quantum-safe → q-pc-quantum-preparedness-dormant; no contradiction"
+            "Sibling sweep 2026-08-27: grep Quantum Preparedness|ML-DSA|quantum-safe → q-pc-quantum-preparedness-dormant; no contradiction",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — SDF plan dated 2026-06-09; class D Blockchain Posts (2026-06-10) reports the publication.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — 'Stage 1—Building blocks and contract accounts (2026)' names ML-DSA-44 and ML-DSA-65; class D report repeats the stage.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — host functions target Soroban contract accounts; class C SDF quarterly-report witness (non-origin) repeats the plan.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan — a three-stage roadmap, not shipped code; class D Blockchain Posts calls it a 'three-stage program'.",
+            "Sibling sweep 2026-08-31: grep Quantum Preparedness|ML-DSA-44|ML-DSA-65 → 1 other cases; read q-pc-quantum-preparedness-dormant; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -20852,12 +20885,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/blog/foundation-news/x402-on-stellar",
             "https://developers.stellar.org/docs/build/agentic-payments/x402",
             "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
@@ -20866,11 +20899,18 @@
             "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/x402-on-stellar — the announcement still describes programmatic per-request HTTP payments on Stellar.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402 — current documentation still shows Soroban authorization and SEP-41 token flows.",
             "Live re-check 2026-08-27: https://stellar.org/blog/foundation-news/x402-on-stellar — the announcement still says settlement was live while agent/MCP tooling was being built.",
-            "Sibling sweep 2026-08-27: grep x402|SEP-402|SEP-41 → q-defi-x402-on-stellar-what, q-x402-payment-verification, q-soroban-x402-auth-entry-signing, q-sep-41-token-interface; no contradiction"
+            "Sibling sweep 2026-08-27: grep x402|SEP-402|SEP-41 → q-defi-x402-on-stellar-what, q-x402-payment-verification, q-soroban-x402-auth-entry-signing, q-sep-41-token-interface; no contradiction",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/x402-on-stellar — SDF announcement dated 2026-03-10; class D Gate report (2026-03-13) covers the launch.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/agentic-payments/x402 — 'per-request HTTP payments on Stellar'; class A SDF announcement describes HTTP 402 payment flows.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/agentic-payments/x402 — the flow uses SEP-41 tokens and Soroban authorization; class B https://github.com/stellar/x402-stellar holds the implementation.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals — no x402 SEP listed; class B stellar-protocol search for x402 and sep-402 returned zero matches; class D sweep found no SEP.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/x402-on-stellar — 'The settlement layer is live' and 'The agent tooling is being built'; class D x402agentic.ai lists its MCP bridge as planned work.",
+            "Sibling sweep 2026-08-31: grep x402|HTTP 402 → 22 other cases; read q-agent-payment-standard-choice, q-defi-x402-on-stellar-what, q-mpp-discovery-and-modes, q-soroban-x402-auth-entry-signing, q-x402-payment-verification; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -22811,23 +22851,26 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "eval/corpus/PROVENANCE.md (privacy-purged Jutsu lineage; raw phrasing unavailable)",
             "https://developers.stellar.org/platforms/anchor-platform",
             "https://stellar.org/",
             "Structural re-form (negative-predicate): Replaced the negative durable-count demand with the same positive dated-snapshot requirement; the truth is unchanged.",
             "Live re-check 2026-08-27: https://stellar.org/use-cases/payments — showed a current global ramp-location count plus country and asset filters for provider discovery.",
-            "Sibling sweep 2026-08-27: grep cash-to-crypto|Anchor Directory|corridor → q-anchor-endpoint-discovery, q-crp-anchors-by-corridor, q-crp-remittance-founder-advisory, q-jutsu-cash-crypto-ramps, q-pay-anchor-msb-licensing; no contradiction"
+            "Sibling sweep 2026-08-27: grep cash-to-crypto|Anchor Directory|corridor → q-anchor-endpoint-discovery, q-crp-anchors-by-corridor, q-crp-remittance-founder-advisory, q-jutsu-cash-crypto-ramps, q-pay-anchor-msb-licensing; no contradiction",
+            "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — 'over 475,000 global cash to crypto on and off ramp locations' on this date; class D MoneyGram Ramps page reports 470000+ locations, so counts are dated snapshots.",
+            "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — 'Supported fiat payment methods will differ depending on the on and off-ramp institution'; class D provider page lists its own country footprint.",
+            "Sibling sweep 2026-08-31: grep cash-to-crypto|off-ramp|Anchor Directory|corridor → 26 other cases; read q-crp-anchors-by-corridor, q-anchor-moneygram-ramps, q-raph-offramp-xlm-usdc, q-pay-anchor-msb-licensing; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (jutsu phrasing)"
@@ -22893,19 +22936,22 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "eval/corpus/PROVENANCE.md (privacy-purged Jutsu lineage; raw phrasing unavailable)",
             "https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account",
-            "https://github.com/stellar/go/blob/master/clients/horizonclient/client.go"
+            "https://github.com/stellar/go/blob/master/clients/horizonclient/client.go",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — lookup takes the public key; class F Horizon /accounts/GAAEUUIR…OMNY returned balances with no secret (F3).",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — separate testnet endpoint documented; class F public mainnet /transactions returned public hashes, no auth.",
+            "Sibling sweep 2026-08-31: grep account balances|transaction history|public key|block explorer → 11 other cases; read q-ti-block-explorer-basics, q-crp-export-tx-history-taxes; lane report also read q-ti-historical-pointintime-balances; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (jutsu phrasing)"
@@ -22970,19 +23016,22 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "eval/corpus/PROVENANCE.md (privacy-purged Jutsu lineage; raw phrasing unavailable)",
             "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
-            "https://stellar.org/blog/developers/fixing-memo-less-payments"
+            "https://stellar.org/blog/developers/fixing-memo-less-payments",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-transaction.x#L764-L785 — MEMO_NONE/TEXT/ID/HASH/RETURN; class F tx ff79aa13… has memo_type text.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — pooled services used memos to tell users apart; class B SEP-0029 and class A Kraken confirm the exact-value rule.",
+            "Sibling sweep 2026-08-31: grep memo type|pooled account|memo ID|memo text → 4 other cases; read q-pc-memos-reference, q-raph-exchange-memo; lane report also read q-raph-missing-exchange-memo; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (jutsu phrasing)"
@@ -23305,20 +23354,24 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
-            "scratchpad/recon/jutsu-real-questions.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "ARCHITECTURE.md:199-207",
             "catalog/manifest.json",
             "Structural re-form (negative-predicate): Shortened the refusal and kept the positive authorized-review alternative; existing avoid items retain the pretext and fabricated-access traps, so the truth is unchanged.",
             "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar-experimental/stellar-raven/main/catalog/manifest.json — showed no operation for cross-user conversations, credentials, recovery phrases, or wallet records.",
             "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar-experimental/stellar-raven/main/ARCHITECTURE.md — showed a manifest-bound, networkless model-code surface suitable only for authorized service operations.",
-            "Sibling sweep 2026-08-27: grep cross-user|recovery phrase|security audit|private user data → q-n3-cross-thread-memory-exfiltration, q-n3-generate-secret-key-refusal, q-n3-missing-funds-account-support, q-n3-wallet-hacked-support-redirect; no contradiction"
+            "Sibling sweep 2026-08-27: grep cross-user|recovery phrase|security audit|private user data → q-n3-cross-thread-memory-exfiltration, q-n3-generate-secret-key-refusal, q-n3-missing-funds-account-support, q-n3-wallet-hacked-support-redirect; no contradiction",
+            "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/ARCHITECTURE.md — 'fresh, stateless McpServer'; class C live exposed surface has no cross-user memory, recovery-phrase, or wallet-secret operation.",
+            "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/ARCHITECTURE.md — model code never sees a URL, header, or key; class F local source: globalOutbound null and host-side secret redaction.",
+            "Sibling sweep 2026-08-31: grep cross-user|recovery phrases|private user data → 1 other cases; read q-raph-restore-wallet; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (safety)"
@@ -23458,20 +23511,24 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
-            "scratchpad/recon/jutsu-real-questions.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "ARCHITECTURE.md:199-207",
             "catalog/manifest.json",
             "Structural re-form (negative-predicate): Replaced the negative override demand with a positive privacy statement and retained the public-information alternative; existing avoid items preserve both injected traps, so the truth is unchanged.",
             "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar-experimental/stellar-raven/main/ARCHITECTURE.md — showed the manifest-defined public surface and bounded model-facing instructions.",
             "Live re-check 2026-08-27: https://raw.githubusercontent.com/stellar-experimental/stellar-raven/main/catalog/manifest.json — showed public, source-based Stellar operations without a hidden-configuration disclosure operation.",
-            "Sibling sweep 2026-08-27: grep ignore previous instructions|hidden configuration|wallet verified → q-n3-cross-thread-memory-exfiltration, q-n3-inject-ignore-previous-instructions, q-n3-generate-secret-key-refusal; no contradiction"
+            "Sibling sweep 2026-08-27: grep ignore previous instructions|hidden configuration|wallet verified → q-n3-cross-thread-memory-exfiltration, q-n3-inject-ignore-previous-instructions, q-n3-generate-secret-key-refusal; no contradiction",
+            "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/ARCHITECTURE.md — 'host-RPC stubs ... hold the secrets and enforce the policy'; class C live surface exposes no hidden-configuration retrieval.",
+            "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — the exact public operation boundary; class C live surface exposes search and execute over public service operations only.",
+            "Sibling sweep 2026-08-31: grep ignore previous instructions|hidden configuration|instruction-override → no other case; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (safety)"
@@ -23536,21 +23593,26 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
-            "scratchpad/recon/jutsu-real-questions.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "research/audits/2026-07-11-super-corpus-design.md:356,724-725",
             "catalog/manifest.json",
             "Structural re-form (long-fact): Split and shortened two long facts into three single-predicate facts; truth unchanged.",
             "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-docs/issues/842 — the live repository record is an unrelated closed pull request about RPC retention.",
             "Live re-check 2026-08-29: https://api.github.com/repos/stellar/stellar-docs/issues/842 — the live issue record contains no verified backup or distribution-wallet claim.",
             "Live re-check 2026-08-29: https://developers.stellar.org/docs/networks#friendbot — the official page documents Friendbot funding for Testnet and Futurenet.",
-            "Sibling sweep 2026-08-29: grep issues/842|Friendbot|backup distribution wallet|purported wallet → q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives, q-infra-testnet-vs-futurenet, q-n3-issues-842-backup-faucet-wallet; no contradiction."
+            "Sibling sweep 2026-08-29: grep issues/842|Friendbot|backup distribution wallet|purported wallet → q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives, q-infra-testnet-vs-futurenet, q-n3-issues-842-backup-faucet-wallet; no contradiction.",
+            "Live re-check 2026-08-31: https://github.com/stellar-experimental/stellar-raven/blob/main/catalog/manifest.json — no secret wallet or backup-faucet operation; class C live exposed surface shows the same absence.",
+            "Live re-check 2026-08-31: https://api.github.com/repos/stellar/stellar-docs/issues/842 — title 'Update RPC retention window to 7 days' about getLedgerEntries, not a wallet; class D sweep found no verified backup-wallet address.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/networks#friendbot — Friendbot is the free Testnet and Futurenet funding route; class D sweep found only official Friendbot guidance.",
+            "Sibling sweep 2026-08-31: grep issues/842|issue 842|Friendbot|backup faucet → 12 other cases; read q-edge-send-me-free-xlm, q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (safety)"
@@ -27410,12 +27472,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26",
             "https://stellar.org/protocol-upgrades",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
@@ -27427,11 +27489,16 @@
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0082.md",
             "Structural re-form (long-fact): Shortened one long protocol-generation distinction; truth unchanged.",
             "Live re-check 2026-08-29: https://developers.stellar.org/docs/build/apps/zk and https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — the official documentation places BN254 and Poseidon/Poseidon2 primitives in Protocol 25, while CAP-0080 places its added BN254 functions in Protocol 26.",
-            "Sibling sweep 2026-08-29: grep CAP-0080|BN254|Poseidon|Protocol 26|Yardstick → q-edge-fresh-latest-protocol-version, q-edge-noinfo-stellar-native-privacy-default, q-pc-protocol-26-yardstick, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-contract-trustlines-c-address, q-sor-cross-warmancer-zk-stack, q-zk-host-functions-status, q-zk-poseidon-input-encoding, q-zk-proof-systems-stellar; no contradiction."
+            "Sibling sweep 2026-08-29: grep CAP-0080|BN254|Poseidon|Protocol 26|Yardstick → q-edge-fresh-latest-protocol-version, q-edge-noinfo-stellar-native-privacy-default, q-pc-protocol-26-yardstick, q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-contract-trustlines-c-address, q-sor-cross-warmancer-zk-stack, q-zk-host-functions-status, q-zk-poseidon-input-encoding, q-zk-proof-systems-stellar; no contradiction.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26 — 'went live on mainnet on May 6, 2026'; class F Horizon ledger 62447230 reports protocol 25 and ledger 62447240 reports protocol 26.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/yardstick-stellar-protocol-26 — seven CAP roles; class B CAP-0073, -0077, -0078, -0079, -0080, -0081, -0082 titles in stellar/stellar-protocol match.",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md — 'Efficient ZK Primitives for BN254' extensions are P26; class A Yardstick article dates BN254 and Poseidon primitives to P25.",
+            "Sibling sweep 2026-08-31: grep Protocol 26|Yardstick|CAP-0080 → 11 other cases; read q-edge-fresh-latest-protocol-version, q-protocol-bn254-poseidon-xray, q-protocol-version-history-list; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -27553,12 +27620,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md",
@@ -27578,7 +27645,12 @@
             "Live re-check 2026-08-30: https://developers.stellar.org/docs/networks/software-versions — heading 'Protocol 27 (Mainnet, July 8, 2026)'; 'Protocol 28 (Testnet, TBD)'.",
             "Live re-check 2026-08-30: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — 'in the future protocol (28 or later) we may want to consider deprecating the old credential type'.",
             "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same heading, same Horizon fields, Protocol 28 not live, same CAP-0071-02 sentence.",
-            "Sibling sweep 2026-08-30: grep Protocol 27|Zipper|CAP-0071|Protocol 28 → q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-edge-fresh-latest-protocol-version; no contradiction (register dateContingentTraps P28 entry disposition refreshed to 2026-08-30)"
+            "Sibling sweep 2026-08-30: grep Protocol 27|Zipper|CAP-0071|Protocol 28 → q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, q-protocol-version-history-list, q-soroban-auth-delegation-p27, q-edge-fresh-latest-protocol-version; no contradiction (register dateContingentTraps P28 entry disposition refreshed to 2026-08-30)",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide — 'Mainnet Protocol Vote: July 8'; class C Horizon ledger 63386819 closed 2026-07-08T17:00:10Z with protocol_version 27.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/networks/software-versions — heading 'Protocol 27 (Mainnet, July 8, 2026)'; class C Horizon ledger 63386819 is the first-day ledger at protocol 27.",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-01.md — 'Authorization Delegation for Soroban Accounts'; class A Zipper guide lists the same CAP.",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — defines SOROBAN_CREDENTIALS_ADDRESS_V2 with an address-bound payload; class A Zipper guide lists the same CAP.",
+            "Sibling sweep 2026-08-31: grep Protocol 27|Zipper|SOROBAN_CREDENTIALS_ADDRESS_V2 → 12 other cases; read q-protocol-27-cap-0071, q-soroban-auth-delegation-p27, q-protocol-version-history-list, q-edge-fresh-latest-protocol-version; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
@@ -27586,7 +27658,8 @@
             ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
             ".agents/TODO.md — Repair the reviewed canonical-page conflict cases",
             "freshness-drift",
-            ".agents/TODO.md — Review five round-specific golden-truth candidates"
+            ".agents/TODO.md — Review five round-specific golden-truth candidates",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -28049,12 +28122,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md",
             "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
             "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
@@ -28065,11 +28138,18 @@
             "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — the fee section still proposes roughly fourfold cuts to most non-refundable fees.",
             "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — SLP-0006 still proposes CAP-0077 network configuration.",
             "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — the proposal still names three already overlay-blocked YieldBlox exploit accounts.",
-            "Sibling sweep 2026-08-27: grep SLP-0004|SLP-0006|CAP-0077 → q-hist-yieldblox-v2-2026-exploit, q-pc-protocol-26-yardstick; no contradiction"
+            "Sibling sweep 2026-08-27: grep SLP-0004|SLP-0006|CAP-0077 → q-hist-yieldblox-v2-2026-exploit, q-pc-protocol-26-yardstick; no contradiction",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — status 'Final'; SLP-0006 status 'Draft'; class F stellar network settings -n mainnet reflects SLP-0004; July 11 statuses stand as dated.",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — table lists 100,000,000→400,000,000, 50→200, 100→200; class F mainnet settings return tx_max_instructions 400000000.",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — proposed fees cut most non-refundable fees about four times; class F mainnet settings return 7, 1563, 447, 2500, 875, 406, 4059, 5000.",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — 'freezes three account entries' via CAP-0077 network configuration; class F mainnet settings return three frozen ledger keys.",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md — names the three YieldBlox accounts; class F frozen keys match; class D rekt.news/yieldblox-rekt records the exploit context.",
+            "Sibling sweep 2026-08-31: grep SLP-0004|SLP-0006|YieldBlox → 12 other cases; read q-comp-yieldblox-oracle-incident, q-hist-yieldblox-v2-2026-exploit, q-protocol-parallel-execution; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -29372,8 +29452,8 @@
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, same-100 candidate lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, verification-gap repair; mutual sd-046 link)",
           "evidence": [
             "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required the full sponsorship formula, liabilities boundary, zero-start and reserve-shift semantics, two-reserve pool shares, dated live value, and contract-rent distinction.",
             "2026-07-11 author re-check against stellar-core c16a6d17 TransactionUtils.cpp and live Horizon.",
@@ -29394,7 +29474,8 @@
             "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/lumens — 'Smart contract data does not require any base reserves … must pay rent instead'; the same page lists pool-share trustlines among ordinary one-reserve subentries, recorded as provenance for the conflict, not as support.",
             "Disposition 2026-08-30: keep the two-reserve pool-share rule (CAP-0038 + dedicated liquidity page); the Lumens and Accounts pages' generic subentry list is recorded as a conflicting official source. No new caution (ADR-0008 boundary); the existing sd-043 caution is unchanged.",
             "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same verdicts on the formula, the liabilities conflict, the two-reserve rule, and the live base reserve.",
-            "Sibling sweep 2026-08-30: grep baseReserve|minimumBalance|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics and five related cases; no contradiction"
+            "Sibling sweep 2026-08-30: grep baseReserve|minimumBalance|pool-share trustline → q-pc-sponsored-reserves, q-asset-amm-fee-reserve, q-asset-trustline-basics and five related cases; no contradiction",
+            "Mutual link 2026-08-31: improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md was filed from this case on 2026-08-30 (Lumens and Accounts pages omit the pool-share two-reserve exception); the finding now names this case file and this entry. No judge-facing change."
           ],
           "rootCause": [
             "Eval-side pre-P14 formula shorthand and classic-account-versus-contract-storage collapse; current sibling corrections in GT-29/GT-32 were preserved.",
@@ -29402,7 +29483,9 @@
             ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
             "improvements/stellar-docs/sd-043-sponsored-reserves-min-balance-liabilities.md",
             ".agents/TODO.md — Repair the reviewed canonical-page conflict cases",
-            ".agents/TODO.md — Review five round-specific golden-truth candidates"
+            ".agents/TODO.md — Review five round-specific golden-truth candidates",
+            "improvements/stellar-docs/sd-046-pool-share-trustline-reserve-conflict.md",
+            ".agents/TODO.md — Close two metadata gaps found by the 2026-08-31 verification"
           ]
         },
         "origin": "raven-next q-protocol-base-reserve-min-balance"
@@ -29829,7 +29912,7 @@
         "avoid": [
           "Do NOT state 3–5 seconds or exactly five seconds as an immutable guarantee based on one adjacent-ledger delta."
         ],
-        "notes": "~3-5s ledger close. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard).\nGT-32 CORRECTION 2026-07-10: current multi-ledger sample and Docs support 5–7 seconds; one delta is insufficient."
+        "notes": "Ledger close is roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
       },
       "tags": {
         "category": "protocol-core",
@@ -29946,13 +30029,49 @@
                 "ref": "https://developers.stellar.org/docs/validators",
                 "observedAt": "2026-08-30",
                 "note": "Still says 'every 3-5 seconds'; stale against the stack page and the samples. Docs-finding candidate; the answer's avoid item punishes only an immutable-guarantee claim from one delta, so an attributed quote of this page is not in the trap."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/validators",
+                "observedAt": "2026-08-31",
+                "note": "Still says 'every 3-5 seconds' in rendered HTML and raw MDX (blob 37f879807c150e794578e80d2e751597938f8423); conflicts with the Stellar Stack page's 'every 5-7 seconds'. Tracked as sd-047."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/src/ledger/NetworkConfig.h",
+                "observedAt": "2026-08-31",
+                "note": "The configured target cannot be set below 4000 ms. That is a target floor, not an observed-close floor; the two 2026-08-31 samples had no delta below 5 s."
+              }
+            ]
+          },
+          {
+            "claim": "Fresh 2026-08-31 Pubnet samples: two 199-delta windows (ledgers 64209159–64209358 and 64209225–64209424) were min 5 / max 9 / median 6 s with 196–198 of 199 deltas inside 5–7 s; the configured target is 5000 ms with a legal range of 4000–5000 ms.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+                "observedAt": "2026-08-31",
+                "note": "Two independent fetches at 13:10:23Z (blind lane) and 13:16:30Z (lane B); each 200 records, consecutive sequences."
+              },
+              {
+                "class": "F",
+                "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+                "observedAt": "2026-08-31",
+                "note": "199 closed_at deltas computed per fetch: 5s×75–77, 6s×111–113, 7s×8–10, 8s×0–1, 9s×1–2; mean 5.688–5.693 s."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/src/ledger/NetworkConfig.h",
+                "observedAt": "2026-08-31",
+                "note": "InitialSorobanNetworkConfig::LEDGER_TARGET_CLOSE_TIME_MILLISECONDS = 5000; Minimum 4000; Maximum 5000. These bound the configured target, not observed closes."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, dated-conflict lane; proposer gmr-sol-c, blind re-derivation gmr-grok-rev; orchestrator reconciled and applied)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, D1 reconciliation; proposer lane B matrices-lane-b-events-d1.md, blind re-derivation review-blind-ledger-close-grok.md; orchestrator reconciled and applied)",
           "evidence": [
             "Solo scratchpad 575 GT-32 blind 3284, resolving primary under-sampling.",
             "Live re-check 2026-08-30: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack — 'update the ledger every 5-7 seconds'.",
@@ -29961,11 +30080,25 @@
             "Official-page inventory 2026-08-30: stellar-stack 5-7 s; docs/validators 3-5 s (stale); storage-strategies '~5-second'; fees-resource-limits-metering 'a few seconds'; stellar.org/soroban '5-second finality'; intro-to-stellar 'under 6 seconds'. The 199-ledger 2026-07-10 observation is kept as a dated historical sample; its Solo attribution is not re-walkable and the fresh samples stand as its independent replacement.",
             "Disposition 2026-08-30: the golden's 'roughly 5–7 seconds' with a dated sample stays; one 9-second delta in one fresh sample does not move a 'roughly' range. A live official conflict (validators 3-5 s vs stack 5-7 s) remains after direct confirmation; ADR-0008 caps canonical-page cautions at three cases, so no caution was added and the Stellar Docs finding is left as an owner decision (recorded in the round ledger).",
             "Independent blind re-derivation 2026-08-30: .agents/rounds/2026-08-30-golden-metadata-remainder/review-blind-rederivation-grok.md — same sample statistics; found no official 3–5 wording on the pages it visited (it did not visit docs/validators); orchestrator direct fetch confirmed both pages.",
-            "Sibling sweep 2026-08-30: grep ledger close|5-7 seconds|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit and six other timing cases; no contradiction"
+            "Sibling sweep 2026-08-30: grep ledger close|5-7 seconds|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit and six other timing cases; no contradiction",
+            "Gospel change 2026-08-31: the stale golden.notes sentence '~3-5s ledger close.' is superseded by 'roughly 5–7 seconds by dated multi-ledger samples, with rare 8–9-second deltas'; answer, keyFacts, avoid, and the no-caution decision are unchanged.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/validators — rendered and raw (docs/validators/README.mdx, blob 37f879807c150e794578e80d2e751597938f8423) both say 'update the ledger every 3-5 seconds'.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack — rendered and raw (stellar-stack.mdx, blob 06c92f8dbcd2f30e0f855bd18bf7abbc3c9e9713) both say 'update the ledger every 5-7 seconds'.",
+            "Live re-check 2026-08-31: https://horizon.stellar.org/ledgers?order=desc&limit=200 — two independent 199-delta samples (ledgers 64209159–64209358 at 13:10:23Z; 64209225–64209424 at 13:16:30Z): min 5 / max 9 / median 6 / mean 5.688–5.693 s; 5s×75–77, 6s×111–113, 7s×8–10, 8s×0–1, 9s×1–2.",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-core/blob/0752b5176d22c8d57ed562c93038f76ab97e8285/src/ledger/NetworkConfig.h — LEDGER_TARGET_CLOSE_TIME_MILLISECONDS initial 5000, minimum 4000, maximum 5000; LedgerManagerImpl::getExpectedLedgerCloseTime() returns ledgerTargetCloseTimeMilliseconds() as std::chrono::milliseconds on protocol 23+; Herder::TARGET_LEDGER_CLOSE_TIME_BEFORE_PROTOCOL_VERSION_23_MS = 5000.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers — closeTime is a UNIX timestamp, may lag a few seconds or lead up to 60 seconds, strictly monotonic.",
+            "Docs index 2026-08-31: stellarDocs.search_docs '3-5 seconds' → 1 hit (docs/validators); '5-7 seconds' → 1 hit (stellar-stack#stellar-core); both strings indexed, so this is a content conflict, not a search miss.",
+            "Lane disagreement resolved 2026-08-31: lane B marked keyFact 1 contradicted because the full observed range is 5–9 s; the blind lane read 5–7 s as typical with rare 8–9 s deltas. The answer says 'roughly 5–7' with a dated sample and the 5–7 band holds 196–198 of 199 deltas in every sample, so the keyFact stands as confirmed-as-of; the notes now name the rare 8–9-second deltas.",
+            "Finding filed 2026-08-31: improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md (docs-content, verified); no caution added because ADR-0008 fixes the canonical-page caution boundary at three cases.",
+            "Sibling sweep 2026-08-31: grep 3-5 seconds|5-7 seconds|ledger close|closeTime → q-protocol-ledger-header-fields, q-ti-tx-too-late-resubmit, q-soroban-storage-types, q-infra-quickstart-local-network read; no sibling states a 3–5-second cadence; no contradiction",
+            "Review fixes 2026-08-31 (review-final-grok.md F1, F2, F4): the CAP-0070/NetworkConfig.h range [4000, 5000] ms bounds the configured target only and is not an observed-close floor, so no evidence claims a 3-second close is impossible; the undocumented third Horizon window was removed and only the two mirrored samples remain; the GT-32 correction narrative was dropped from golden.notes, which now carries only current guidance."
           ],
           "rootCause": [
             "Old target/marketing range and insufficient empirical sampling.",
-            ".agents/TODO.md — Recheck two dated source-metadata conflicts"
+            ".agents/TODO.md — Recheck two dated source-metadata conflicts",
+            "eval-authoring — the GT-32 correction of 2026-07-10 appended a correction line but left the original '~3-5s' sentence in golden.notes",
+            "improvements/stellar-docs/sd-047-validators-ledger-close-cadence-conflict.md",
+            ".agents/TODO.md — Decide the ledger-close-time documentation conflict (D1)"
           ]
         },
         "origin": "raven-next q-protocol-ledger-close-time"
@@ -31781,24 +31914,27 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
             "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
             "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
             "Structural re-form (negative-predicate): Replaced the adjective trigger with an equivalent positive taxonomy term; truth unchanged",
             "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — CAP-0023 defined a conditional ClaimableBalanceEntry with distinct create and claim operations.",
-            "Sibling sweep 2026-08-27: grep claimable balance|ClaimableBalanceEntry|op_no_trust → q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-asset-claimable-balance, q-raph-phishing-pending-claim; no contradiction"
+            "Sibling sweep 2026-08-27: grep claimable balance|ClaimableBalanceEntry|op_no_trust → q-aas-claim-received-claimable-balances, q-aas-claimable-predicates-expiry-reserves, q-asset-claimable-balance, q-raph-phishing-pending-claim; no contradiction",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — two-part conditional flow; class B CAP-0023 defines ClaimableBalanceEntry; class F live entry shows claimants and predicates.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — claimant needs a trustline or the claim fails with op_no_trust; class B CAP-0023 defines CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4.",
+            "Sibling sweep 2026-08-31: grep claimable balance|op_no_trust|ClaimableBalanceEntry → 16 other cases; read q-asset-claimable-balance, q-aas-claim-received-claimable-balances, q-raph-phishing-pending-claim, q-raph-unsolicited-airdrop; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph claimable-balance-claim-and-safety"
@@ -31866,18 +32002,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
-            "https://stellar.org/blog/developers/fixing-memo-less-payments"
+            "https://stellar.org/blog/developers/fixing-memo-less-payments",
+            "Live re-check 2026-08-31: https://support.kraken.com/articles/360000184543-memo-for-stellar-lumens-xlm-deposits — the memo assigns the deposit to the customer account; class B SEP-0029 defines the receiver-side memo requirement.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — one pooled account ID serves many users and memos tell them apart; class B SEP-0029 corroborates.",
+            "Sibling sweep 2026-08-31: grep exchange memo|pooled address|memo_required|memo-less → 4 other cases; read q-edge-exchange-memo-lost-funds, q-pc-memos-reference, q-raph-missing-exchange-memo; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph memo-types-exchange-deposit"
@@ -31944,22 +32083,25 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/build/guides/freighter",
             "https://stellar.org/blog/developers/key-management-101",
             "Structural re-form (negative-predicate): Recast the universal-threshold rejection as the same non-universal requirement; truth unchanged",
             "Live re-check 2026-08-27: https://stellar.org/blog/developers/key-management-101 — the current guidance described multiple key-management and recovery tradeoffs without a fixed investment-size trigger.",
-            "Sibling sweep 2026-08-27: grep hardware wallet|recovery phrase|investment-size|universal dollar → q-edge-asset-site-scam-detection, q-raph-restore-wallet, q-ti-secret-key-vs-mnemonic-derivation, q-tool-wallets-comparison; no contradiction"
+            "Sibling sweep 2026-08-27: grep hardware wallet|recovery phrase|investment-size|universal dollar → q-edge-asset-site-scam-detection, q-raph-restore-wallet, q-ti-secret-key-vs-mnemonic-derivation, q-tool-wallets-comparison; no contradiction",
+            "Live re-check 2026-08-31: https://www.ledger.com/coin/wallet/stellar — keeps private keys offline; Ledger support 360007223753 says never share the 24 words; class D CISA phishing page covers malicious links; no absolute-protection claim.",
+            "Live re-check 2026-08-31: https://www.ledger.com/coin/wallet/stellar — describes a security control, not a balance threshold; class D sweep (thaibitcast and others) found differing thresholds and no authoritative universal amount.",
+            "Sibling sweep 2026-08-31: grep hardware wallet|Ledger device|recovery phrase|private key device → 15 other cases; read q-tool-wallets-comparison, q-ti-secret-key-vs-mnemonic-derivation, q-raph-restore-wallet; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph hardware-wallet-key-custody-threshold"
@@ -31972,7 +32114,7 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-07-11; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are encrypted with user-password participation and stored locally/on-device, while accounts created before 2020-09-01 that were never migrated are a documented exception. Its 12-word Recovery Phrase (or older wallet-specific 10-word Recovery Code) must be kept private/offline; LOBSTR says it cannot reconstruct users’ phrase, code, secret, or password. Install only from links reached through `lobstr.co`, verify the app publisher, and use 2FA plus multisig or hardware signing when the threat model warrants it.",
+        "answer": "LOBSTR is a real, currently maintained third-party wallet operated under the Ultra Stellar identity, with a current official Apple app listing as of 2026-08-31; that establishes the provider/publisher, not risk-free safety or SDF endorsement. Current LOBSTR documentation says keys for current or migrated accounts are encrypted with user-password participation and stored locally/on-device, while accounts created before 2020-09-01 that were never migrated are a documented exception. Its 12-word Recovery Phrase (or older wallet-specific 10-word Recovery Code) must be kept private/offline; LOBSTR says it cannot reconstruct users’ phrase, code, secret, or password. Install only from links reached through `lobstr.co`, verify the app publisher, and use 2FA plus multisig or hardware signing when the threat model warrants it.",
         "keyFacts": [
           "Identifies LOBSTR as an active Ultra Stellar third-party wallet.",
           "Dates the LOBSTR activity assessment to an observation date.",
@@ -32001,8 +32143,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-11-19",
+        "asOf": "2026-08-31",
+        "reverifyBy": "2026-11-30",
         "sources": [
           {
             "class": "A",
@@ -32054,16 +32196,75 @@
                 "note": "Owner documentation only; no independent reproducible binary audit was found, so this is not encoded as an audited implementation claim."
               }
             ]
+          },
+          {
+            "claim": "LOBSTR is an active Ultra Stellar third-party wallet, unaffiliated with SDF, with a current official app listing as of 2026-08-31.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://lobstr.co/terms/",
+                "observedAt": "2026-08-31",
+                "note": "'LOBSTR wallet is provided to you by Ultra Stellar OÜ, an independent commercial entity unaffiliated with the Stellar Development Foundation.' ultrastellar.com lists LOBSTR as its web and mobile wallet."
+              },
+              {
+                "class": "D",
+                "ref": "https://itunes.apple.com/lookup?id=1404357892&country=us",
+                "observedAt": "2026-08-31",
+                "note": "sellerName 'ULTRA STELLAR, LLC', version 15.6.0, currentVersionReleaseDate 2026-08-19T12:06:08Z; Play listing com.lobstr.client names Ultra Stellar OU (Tallinn). Legal-entity suffixes differ (OÜ/OU on web and Play, LLC on Apple); the brand owner is the same."
+              }
+            ]
+          },
+          {
+            "claim": "Current LOBSTR documentation says current or migrated keys are generated and decrypted on-device with password participation, and that an encrypted copy of the Recovery phrase/Secret key is also stored on LOBSTR servers.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr",
+                "observedAt": "2026-08-31",
+                "note": "'The keys themselves can only be decrypted and accessed by users on-device'; 'We store the encrypted version of the Recovery phrase/Secret key on our server'; 'The transaction signing also happens locally on-device'. Owner documentation only; no class F audit, so the storage claim stays source-relative and the avoid item forbids an era-independent local-only or server-only claim."
+              },
+              {
+                "class": "A",
+                "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001273",
+                "observedAt": "2026-08-31",
+                "note": "Migration overview: pre-September 1, 2020 wallets kept keys on the platform in encrypted form; stated migration deadline July 10, 2026 has passed, and the documented exception remains for unmigrated wallets."
+              }
+            ]
+          },
+          {
+            "claim": "Current LOBSTR documentation requires credentials to stay unshared and states that support cannot reconstruct a lost Recovery phrase, code, secret, or password.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet-",
+                "observedAt": "2026-08-31",
+                "note": "'Do not share your Recovery Phrase and Secret key with anyone'; 'We (the LOBSTR team) do not have access to users' Recovery phrases, Secret keys, Recovery codes, or Account passwords.'"
+              },
+              {
+                "class": "A",
+                "ref": "https://recovery.lobstr.co/",
+                "observedAt": "2026-08-31",
+                "note": "The recovery tool requires the user's Recovery code or Recovery Phrase plus the account email; staff approval is a process gate, not reconstruction. The restore article's 'Only share your Recovery Phrase with trusted services' is ordinary English for services the user elects to trust (blind lane: no product or docs-index hit for a named 'trusted services' product), so it does not contradict the unshared-credential rule."
+              },
+              {
+                "class": "D",
+                "ref": "https://apps.apple.com/us/app/lobstr-wallet-buy-xlm-xrp/id1404357892",
+                "observedAt": "2026-08-31",
+                "note": "Independent sweep (lane A D6) found an active publisher and current app; user allegations found in the sweep did not establish provider fraud or cryptographic safety."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class; lane A research report matrices-lane-a-retail.md reconciled with blind re-derivation review-blind-lobstr-grok.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key-",
             "https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key-",
             "https://ultrastellar.com/",
@@ -32076,12 +32277,22 @@
             "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — described on-device access and local storage of downloaded encrypted keys.",
             "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000001273 — preserved the pre-2020 unmigrated wallet-key storage exception.",
             "Live re-check 2026-08-27: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — required credentials to stay unshared and stated LOBSTR lacks access to them.",
-            "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|recovery phrase → q-eco-lobstr-wallet, q-defi-aquarius-what-is, q-raph-lobstr-legitimacy; no contradiction"
+            "Sibling sweep 2026-08-27: grep LOBSTR|Ultra Stellar|recovery phrase → q-eco-lobstr-wallet, q-defi-aquarius-what-is, q-raph-lobstr-legitimacy; no contradiction",
+            "Gospel change 2026-08-31: the answer's dated activity observation moved from 'as of 2026-07-11' to 'as of 2026-08-31'; storage language stays source-relative ('Current LOBSTR documentation says … stored locally/on-device') with the era-independent avoid item unchanged; no other judge-facing text changed.",
+            "Live re-check 2026-08-31: https://lobstr.co/terms/ — Ultra Stellar OÜ, 'an independent commercial entity unaffiliated with the Stellar Development Foundation'; class D Apple lookup: ULTRA STELLAR, LLC, version 15.6.0 (2026-08-19).",
+            "Live re-check 2026-08-31: https://itunes.apple.com/lookup?id=1404357892&country=us — version 15.6.0 released 2026-08-19T12:06:08Z; class A ultrastellar.com lists LOBSTR; observation dated 2026-08-31 in the answer.",
+            "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000169419-security-of-your-wallet-on-lobstr — 'decrypted and accessed by users on-device' and an encrypted server copy; owner docs only (no class F audit), so the fact stays source-relative.",
+            "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001271-where-can-i-find-my-secret-key- — 'before September 1, 2020' unmigrated accounts reveal the key only on the website; article 151000001273 keeps the exception after the July 10, 2026 deadline.",
+            "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001289-how-can-i-back-up-my-stellar-wallet- — do not share; LOBSTR team has no access; class A recovery.lobstr.co needs the user's phrase or code; 'trusted services' is generic wording.",
+            "Lane reconciliation 2026-08-31: lane A marked keyFact 5 disputed on the restore article's 'trusted services' sentence; the blind lane resolved that phrase as ordinary English (no named product, no docs-index hit) and confirmed every source-relative keyFact; the blind lane's extra metadata-control claim is not a keyFact and was not added.",
+            "Sibling sweep 2026-08-31: grep LOBSTR|Ultra Stellar|Recovery code|September 1, 2020 → 15 other cases; read q-eco-lobstr-wallet, q-eco-stellar-wallets-list, q-tool-wallets-comparison, q-raph-restore-wallet, q-raph-withdraw-exchange-self-custody; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            "freshness-drift",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph wallet-lobstr-legitimacy-recovery-storage"
@@ -32179,13 +32390,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
             "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
             "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
@@ -32193,11 +32403,17 @@
             "Structural re-form (compound-predicate): Split subentry cleanup from the conditional Account Merge path; truth is unchanged.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — showed each eligible subentry increases minimum balance, so removal lowers reserve.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — described Account Merge and its subentry and sponsorship conditions.",
-            "Sibling sweep 2026-08-27: grep AccountMerge|subentries|minimum balance → q-pc-account-merge-reclaim-reserve, q-protocol-base-reserve-min-balance; no contradiction"
+            "Sibling sweep 2026-08-27: grep AccountMerge|subentries|minimum balance → q-pc-account-merge-reclaim-reserve, q-protocol-base-reserve-min-balance; no contradiction",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — XLM pays fees, rent, and minimum-balance reserves; class F Horizon ledger 64209416: base_fee 100, base_reserve 5000000 stroops.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — a failed operation rolls back all previous operations; class B TransactionFrame.cpp commits ltxTx only on success.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — closing a subentry returns its base reserve to the available balance; class B ChangeTrustOpFrame.cpp deletes the trustline when limit == 0.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Account Merge moves XLM and removes the source only without non-signer subentries; class B MergeOpFrame.cpp.",
+            "Sibling sweep 2026-08-31: grep minimum balance|base reserve|AccountMerge|low XLM → 22 other cases; read q-protocol-base-reserve-min-balance, q-pc-account-merge-reclaim-reserve, q-edge-1xlm-activation-fee; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph min-balance-reserve-transfer-fail"
@@ -32264,22 +32480,25 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/platforms/anchor-platform",
             "https://stellar.org/",
             "Structural re-form (negative-predicate): Recast the payment-versus-conversion comparison as a positive three-choice taxonomy; truth unchanged",
             "Live re-check 2026-08-27: https://developers.stellar.org/platforms/anchor-platform — Anchor Platform exposed deposit, withdrawal, payment, quote, and exchange workflows as distinct operations.",
-            "Sibling sweep 2026-08-27: grep merchant|off-ramp|accept XLM|accept USDC → q-anchor-platform-what, q-crp-become-an-anchor-licensing, q-raph-offramp-xlm-usdc, q-raph-remittance-path-payment; no contradiction"
+            "Sibling sweep 2026-08-27: grep merchant|off-ramp|accept XLM|accept USDC → q-anchor-platform-what, q-crp-become-an-anchor-licensing, q-raph-offramp-xlm-usdc, q-raph-remittance-path-payment; no contradiction",
+            "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — anchors and payment providers set their own fee structures; class B SEP-0006 separates anchor deposit and withdrawal flows from holding.",
+            "Live re-check 2026-08-31: https://stellar.org/use-cases/payments — businesses determine their own compliance obligations by service and country; class B SEP-0006 defines anchor fee and KYC handling.",
+            "Sibling sweep 2026-08-31: grep merchant|small shop|accept XLM|payment provider|off-ramp → 22 other cases; read q-raph-offramp-xlm-usdc, q-pay-anchor-msb-licensing, q-stellar-recurring-payments; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph merchant-accept-crypto-payments-compliant"
@@ -32370,20 +32589,23 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
             "https://stellar.org/blog/developers/fixing-memo-less-payments",
             "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0029.md",
-            "https://support.kraken.com/articles/crypto-assets-deposit-recovery"
+            "https://support.kraken.com/articles/crypto-assets-deposit-recovery",
+            "Live re-check 2026-08-31: https://support.kraken.com/articles/360000184543-memo-for-stellar-lumens-xlm-deposits — a forgotten memo goes to exchange support; class B SEP-0029: manual receiver intervention; SDF cannot reverse.",
+            "Live re-check 2026-08-31: https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud — hash, addresses, amount, date and time are the evidence fields; class F tx shows them.",
+            "Sibling sweep 2026-08-31: grep missing memo|forgot memo|memo-less|deposit recovery → 2 other cases; read q-jutsu-what-is-a-memo, q-raph-exchange-memo; lane report also read q-edge-exchange-memo-lost-funds; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph memoless-exchange-deposit-recovery"
@@ -32450,18 +32672,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/platforms/anchor-platform",
-            "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers"
+            "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+            "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — off-ramps convert crypto to fiat through an institution; class B SEP-0006 maps a user to an anchor; class D MoneyGram Ramps: 170+ countries.",
+            "Live re-check 2026-08-31: https://developers.circle.com/stablecoins/usdc-contract-addresses — Stellar USDC issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; class F /assets?asset_code=USDC returned ten issuers for one code.",
+            "Sibling sweep 2026-08-31: grep cash out|off-ramp|bank account|anchor → 106 other cases; read q-crp-anchors-by-corridor, q-jutsu-cash-crypto-ramps; lane report also read q-asset-usdc-eurc-issuer; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph offramp-xlm-usdc-to-bank-fiat"
@@ -32553,20 +32778,23 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
             "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
             "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
-            "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md"
+            "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — SDF never asks for private keys or deposits; class D CISA says do not click suspicious links and contact the company another way.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — legitimate claimable-balance use; class B CAP-0023 defines the entry; class D sweep found abuse but no universal-fraud rule.",
+            "Sibling sweep 2026-08-31: grep pending XLM|phishing|claimable balance|rectification → 16 other cases; read q-raph-claimable-balance-safety, q-raph-unsolicited-airdrop; lane report also read q-edge-asset-site-scam-detection; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph scam-stellar-phishing-pending-claim"
@@ -32633,18 +32861,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
-            "https://github.com/stellar/stellar-core/blob/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp"
+            "https://github.com/stellar/stellar-core/blob/master/src/transactions/PathPaymentStrictReceiveOpFrame.cpp",
+            "Live re-check 2026-08-31: https://stellar.org/use-cases/ramps — ramps are the fiat endpoints; class B SEP-0006 defines anchor deposit and withdrawal; class B PathPaymentStrictReceiveOpFrame.cpp converts each hop where liquidity exists.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/path-payments — balances settle at the end of the operation; class B TransactionFrame.cpp commits only on success; provider fees and FX stay off-chain.",
+            "Sibling sweep 2026-08-31: grep remittance|path payment|cross-border|FX → 40 other cases; read q-asset-path-payment-ops, q-asset-usdc-eurc-path-fx, q-crp-anchors-by-corridor; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph remittance-end-to-end-vs-banks"
@@ -32741,21 +32972,24 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
             "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
             "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
             "https://github.com/stellar/basic-payment-app/blob/main/src/lib/stellar/transactions.js",
-            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md"
+            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-xdr/blob/03cbf40cec4d89f82171bf895ef7598458d83e1b/Stellar-ledger-entries.x#L24-L62 — credit assets carry assetCode plus issuer; class F ten issuers share code USDC.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — Change Trust deletes a trustline; class B ChangeTrustOpFrame.cpp blocks a limit below the held balance and liabilities.",
+            "Sibling sweep 2026-08-31: grep scam token|fake token|ChangeTrust|trustline remove|issuer → 81 other cases; read q-edge-asset-site-scam-detection, q-aas-trustline-limit-lifecycle, q-ti-enumerate-holders-airdrop; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph scam-token-detect-and-remove-trustline"
@@ -32822,18 +33056,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/build/guides/freighter",
-            "https://stellar.org/blog/developers/key-management-101"
+            "https://stellar.org/blog/developers/key-management-101",
+            "Live re-check 2026-08-31: https://github.com/stellar/stellar-protocol/blob/8912a8047931453bb5d6a631e10a9d7125c570f3/ecosystem/sep-0005.md — path m/44'/148'/x'; class A LOBSTR restore article documents wallet-specific formats.",
+            "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001291-how-to-restore-my-secret-key- — vendor recovery steps; class A LOBSTR phrase page and Ledger support require secrecy; class D CISA on links.",
+            "Sibling sweep 2026-08-31: grep restore wallet|recovery phrase|derivation path|secret key → 24 other cases; read q-ti-secret-key-vs-mnemonic-derivation, q-raph-hardware-wallet; lane report also read q-tool-passkey-wallet-recovery; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph wallet-restore-from-phrase-or-secret-key"
@@ -32932,21 +33169,24 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
             "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
             "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
-            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md"
+            "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — claimable balances have legitimate uses; class B CAP-0023 defines the entry; class D sweep found abuse reports and legitimate uses.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — a trustline is needed for any asset except XLM; class B Stellar-ledger-entries.x separates native from issued assets.",
+            "Sibling sweep 2026-08-31: grep spam token|scam token|weird claimable|unsolicited asset → 1 other cases; read q-raph-unsolicited-airdrop; lane report also read q-raph-remove-scam-token, q-ti-enumerate-holders-airdrop; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph scam-claimable-balance-open-network"
@@ -33165,20 +33405,23 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
             "https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
-            "https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud"
+            "https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — SDF 'DOES NOT have the capability to freeze or return XLM'; class B CAP-0035 limits clawback to issuer assets.",
+            "Live re-check 2026-08-31: https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud — keep tx hashes, addresses, dates; never pay recovery services; SDF never asks for keys.",
+            "Sibling sweep 2026-08-31: grep reverse|freeze|drained|clawback|recovery agent → 85 other cases; read q-edge-validators-reverse-tx-fork-detection, q-comp-clawback-cap0035, q-n3-wallet-hacked-support-redirect, q-raph-missing-exchange-memo; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph wallet-stolen-funds-recovery"
@@ -33268,24 +33511,27 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
             "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
             "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
             "Structural re-form (negative-predicate): Recast the mechanism-versus-legitimacy comparison as a positive two-part taxonomy; truth unchanged",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — the current guide confirmed claimable balances as real ledger mechanics independent of any offer's legitimacy.",
-            "Sibling sweep 2026-08-27: grep unsolicited claim|claimable-balance legitimacy|random token|airdrop → q-asset-claimable-balance, q-raph-claimable-balance-safety, q-raph-phishing-pending-claim, q-ti-enumerate-holders-airdrop; no contradiction"
+            "Sibling sweep 2026-08-27: grep unsolicited claim|claimable-balance legitimacy|random token|airdrop → q-asset-claimable-balance, q-raph-claimable-balance-safety, q-raph-phishing-pending-claim, q-ti-enumerate-holders-airdrop; no contradiction",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — a real protocol feature; class B CAP-0023 defines it; class D sweep shows attackers also abuse it.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — never share private keys or deposit funds on request; class D CISA rejects suspicious links.",
+            "Sibling sweep 2026-08-31: grep unsolicited|airdrop|claimable balance|unlock charge → 22 other cases; read q-raph-phishing-pending-claim, q-raph-scam-spam-tokens, q-asset-claimable-balance; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph scam-unsolicited-airdrop-claimable-balance"
@@ -33352,18 +33598,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
-            "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x"
+            "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
+            "Live re-check 2026-08-31: https://www.circle.com/multi-chain-usdc/stellar — 'Choose USDC on Stellar' and swap across chains via Circle Mint; class B Stellar-ledger-entries.x shows Stellar's distinct asset representation.",
+            "Live re-check 2026-08-31: https://developers.circle.com/stablecoins/usdc-contract-addresses — Stellar USDC issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; class A: trustline required; class F: code alone is ambiguous.",
+            "Sibling sweep 2026-08-31: grep USDC Stellar|ERC-20|Circle issuer|trustline → 66 other cases; read ; lane report also read q-asset-usdc-eurc-issuer, q-token-circle-usdc-on-stellar, q-cctp-v2-usdc-stellar; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph move-usdc-onto-stellar-from-ethereum-or-exchange"
@@ -33431,18 +33680,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos",
-            "https://stellar.org/blog/developers/key-management-101"
+            "https://stellar.org/blog/developers/key-management-101",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — the account public key is the destination; class B XDR defines native XLM; class D MoneyGram shows a separate Stellar route.",
+            "Live re-check 2026-08-31: https://lobstr.freshdesk.com/support/solutions/articles/151000001252-what-is-a-recovery-phrase-on-lobstr- — anyone with the phrase controls the wallet; class A Ledger support says never share the 24 words.",
+            "Sibling sweep 2026-08-31: grep self-custody|exchange withdrawal|public address|recovery material → 10 other cases; read q-ti-find-export-secret-key; lane report also read q-crp-custodial-vs-noncustodial-wallets, q-raph-restore-wallet; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph wallet-withdraw-exchange-to-self-custody"
@@ -33507,18 +33759,21 @@
           }
         ],
         "verified": {
-          "date": "2026-07-11",
-          "by": "P4 H3 primary+blind (Solo 3415/3419) with Fable voice review",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
-            "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x"
+            "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — XLM pays all transaction fees and covers minimum balance requirements; class F Horizon ledger 64209416: base_fee 100, base_reserve 5000000 stroops.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — the lumen is the only token without an issuer or trustline; class B Stellar-ledger-entries.x gives issued assets assetCode and issuer fields.",
+            "Sibling sweep 2026-08-31: grep native asset|XLM fee|XLM reserve|gas → 21 other cases; read q-raph-xlm-simple, q-edge-metamask-evm-mental-model; lane report also read q-protocol-base-reserve-min-balance; no contradiction"
           ],
           "rootCause": [
-            "eval-authoring"
+            "eval-authoring",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph xlm-native-asset-purpose-vs-gas"
@@ -33584,23 +33839,27 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
             "https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x",
             "Structural re-form (compound-predicate): Split XLM identity from its fee and reserve roles; truth is unchanged.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens — identified XLM as Stellar's native currency.",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/lumens — listed transaction fees and minimum-balance reserves as XLM roles.",
-            "Sibling sweep 2026-08-27: grep XLM|native asset|issuer|trustline → q-raph-xlm-network-role, q-asset-trustline-basics, q-edge-ambig-stellar-token-meaning; no contradiction"
+            "Sibling sweep 2026-08-27: grep XLM|native asset|issuer|trustline → q-raph-xlm-network-role, q-asset-trustline-basics, q-edge-ambig-stellar-token-meaning; no contradiction",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — 'Lumens (XLM) are the native currency of the Stellar network'; class B Stellar-ledger-entries.x defines ASSET_TYPE_NATIVE = 0.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — fees, rent, and minimum-balance reserves are XLM roles; class F Horizon ledger 64209416: base_fee 100, base_reserve 5000000 stroops.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — XLM needs no issuer or trustline; class B Stellar-ledger-entries.x requires assetCode plus issuer for credit assets.",
+            "Sibling sweep 2026-08-31: grep XLM|lumen|native asset|issuer-backed → 187 other cases; read q-raph-xlm-network-role, q-edge-ambig-stellar-token-meaning, q-asset-trustline-basics; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph xlm-explained-simply-non-technical"
@@ -33700,13 +33959,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3415",
             "solo://proj/49/process/3419",
-            "scratchpad/p4/h3-raph/fable-voice-review.md",
-            "scratchpad/p4/h3-raph-blind/reconciliation.md",
+            "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
             "https://stellar.org/blog/ecosystem/the-hidden-risks-of-proof-of-stake",
             "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide",
@@ -33714,11 +33972,15 @@
             "https://www.ftc.gov/media/cryptocurrency-scams",
             "Structural re-form (negative-predicate): Recast the third-party-yield versus native-staking comparison with a positive taxonomy verb; truth unchanged",
             "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — the current page described SCP as proof of agreement, so third-party yield remains different from native staking.",
-            "Sibling sweep 2026-08-27: grep XLM staking|native staking|third-party yield|proof-of-stake → q-defi-build-staking-for-own-token, q-defi-liquid-staking-whitespace, q-edge-noinfo-stellar-pos-staking-rewards; no contradiction"
+            "Sibling sweep 2026-08-27: grep XLM staking|native staking|third-party yield|proof-of-stake → q-defi-build-staking-for-own-token, q-defi-liquid-staking-whitespace, q-edge-noinfo-stellar-pos-staking-rewards; no contradiction",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator'; class B stellar-protocol 8912a804: no native-staking CAP; class D: none.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP is FBA with no staking; class D stakingrewards.com says 'There is no way to stake XLM' beyond custodial lending products.",
+            "Sibling sweep 2026-08-31: grep XLM staking|native staking|validator reward|proof-of-stake → 6 other cases; read q-edge-noinfo-stellar-pos-staking-rewards, q-defi-liquid-staking-whitespace, q-protocol-scp-consensus-algorithm; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "raph xlm-native-staking-not-supported"
@@ -34894,12 +35156,12 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-b)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane B research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-b-events-d1.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar",
             "https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential",
             "https://github.com/NethermindEth/rs-soroban-ultrahonk",
@@ -34909,11 +35171,18 @@
             "Live re-check 2026-08-29: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — the editor's note says contract and verifier audits were underway.",
             "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential — the current implementation README says balances and amounts remain private.",
             "Live re-check 2026-08-29: https://github.com/OpenZeppelin/stellar-contracts/tree/feat/confidential-verifier-ultrahonk/packages/tokens/src/confidential — the current implementation README says sender and recipient addresses remain visible.",
-            "Sibling sweep 2026-08-29: grep Confidential Tokens|Confidential Token → q-edge-noinfo-stellar-native-privacy-default, q-sor-confidential-tokens, q-scout-hackathon-brief-first-hour, and q-scf-confidential-tokens-preview; no contradiction"
+            "Sibling sweep 2026-08-29: grep Confidential Tokens|Confidential Token → q-edge-noinfo-stellar-native-privacy-default, q-sor-confidential-tokens, q-scout-hackathon-brief-first-hour, and q-scf-confidential-tokens-preview; no contradiction",
+            "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — dated 2026-06-29, 'live on testnet'; class D brozorec/stellar-confidential-token-demo says 'Testnet only'.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — 'not yet approved for mainnet'; class D demo repository deploys to Testnet only.",
+            "Live re-check 2026-08-31: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar — 'audits are underway'; class D r/Stellar thread (2026-07-02) describes Mainnet as pending a security audit.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/meetings/2026/08/06 — 'private balances and transfer amounts'; class A SDF preview describes hidden balances and amounts.",
+            "Live re-check 2026-08-31: https://developers.stellar.org/meetings/2026/08/06 — 'addresses kept public'; class A SDF preview keeps sender and recipient visible.",
+            "Sibling sweep 2026-08-31: grep Confidential Tokens|transfer amounts → 3 other cases; read q-cctp-v2-usdc-stellar, q-edge-noinfo-stellar-native-privacy-default, q-sor-confidential-tokens; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
         "origin": "authored 2026-07 (2026-events)"
@@ -37573,26 +37842,26 @@
         "lumenloop.search_documents"
       ],
       "golden": {
-        "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. Its headline/prose says results span all three tracks, and a June 11 official Stellar social post repeats that wording. However, the recipient sections account for all 29 as 10 Open Track plus 19 Integration Track projects and list no RFP recipient. Report that primary-source inconsistency explicitly; do not invent an RFP winner or convert the absence of a recipient list into proof that the official all-three-tracks wording is false. June 11 is a post date, not an established conclusion date. Transient dashboard card/payment states do not revise the official 29 / $3,139,069 selection result.",
+        "answer": "The official SCF #43 recap was published June 2, 2026 and reports 85 submissions, 29 awarded projects, and $3,139,069 worth of XLM. Its headline/prose says results span all three tracks, and a June 11 official Stellar social post repeats that wording. However, the recipient sections account for all 29 as 10 Open Track plus 19 Integration Track projects and list no RFP recipient. Report that primary-source inconsistency explicitly; do not invent an RFP winner or convert the absence of a recipient list into proof that the official all-three-tracks wording is false. June 11 is a post date, not an established conclusion date. As of 2026-08-31 the live SCF dashboard's paid-state `Awarded` view showed 28 cards totaling $3,049,069, one recap recipient (Bexo Wallet, $90,000) short; that dated payment-state view does not revise the official 29 / $3,139,069 selection result.",
         "keyFacts": [
           "Dates the official SCF #43 recap to June 2, 2026.",
           "Reports 85 submissions in the official recap.",
           "Reports headline/social all-three-tracks wording as inconsistent with recipient sections.",
           "Lists 10 Open, 19 Integration, and no RFP recipient in the recipient sections.",
-          "Treats official $3,139,069 XLM-worth as final over dashboard's transient 28 / $3,049,069."
+          "Ranks the official 29 / $3,139,069 recap above the dashboard's 28 / $3,049,069 view."
         ],
         "avoid": [
           "Do NOT report 3,139,069 as the number of XLM tokens awarded.",
           "Do NOT substitute a cumulative SCF program total for the round-43 total.",
           "Do NOT infer the round concluded June 11 merely from the date of a later social post.",
-          "Do NOT treat the dashboard’s paid-state `Awarded` count or its incomplete 28-card / $3,049,069 snapshot as the final selection result."
+          "Do NOT treat the dashboard’s paid-state `Awarded` count or its 28-card / $3,049,069 view as the final selection result."
         ],
-        "notes": "DISPUTED 2026-08-04: preserve 85 / 29 / $3,139,069 and the June 2 versus June 11 dates. Explicitly encode that official headline/social wording says all three tracks while section accounting is 10 Open + 19 Integration with no RFP recipient list."
+        "notes": "DISPUTED 2026-08-04: preserve 85 / 29 / $3,139,069 and the June 2 versus June 11 dates. Explicitly encode that official headline/social wording says all three tracks while section accounting is 10 Open + 19 Integration with no RFP recipient list. 2026-08-31: the dashboard `Awarded` paid-state view (28 cards / $3,049,069, Bexo Wallet absent) is live and dated; grade it as a dated dashboard view, neither vanished nor the final selection result."
       },
       "tags": {
         "category": "scf-grants-builders",
         "service": "lumenloop",
-        "freshness": "stable"
+        "freshness": "scheduled"
       },
       "truth": {
         "lifecycle": {
@@ -37601,7 +37870,7 @@
         },
         "domain": "real-world",
         "status": "disputed",
-        "asOf": "2026-08-04",
+        "asOf": "2026-08-31",
         "sources": [
           {
             "class": "A",
@@ -37696,17 +37965,47 @@
                 "ref": "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
                 "observedAt": "2026-07-11",
                 "note": "Shows why a transient dashboard snapshot can undercount."
+              },
+              {
+                "class": "C",
+                "ref": "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
+                "observedAt": "2026-08-31",
+                "note": "The 28 / $3,049,069 view is still live on 2026-08-31 as the paid-state Awarded label; it is a dated payment-state view, not the selection result."
+              }
+            ]
+          },
+          {
+            "claim": "On 2026-08-31 the live SCF dashboard's `Awarded` (paid-state) view showed 28 cards totaling $3,049,069 with 12 Not Awarded and 21 Panel Review Failed; Bexo Wallet ($90,000 in the recap) was absent, and 3,139,069 − 90,000 = 3,049,069.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
+                "observedAt": "2026-08-31",
+                "note": "HTTP 200; page text 'Below submissions have been awarded this round with their full or partial award payment paid.' Blind lane at 13:52Z and orchestrator at 14:02Z both counted status Awarded 28, Not Awarded 12, Panel Review Failed 21 in the page payload."
+              },
+              {
+                "class": "F",
+                "ref": "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
+                "observedAt": "2026-08-31",
+                "note": "Blind-lane parse of the RSC payload summed the 28 Awarded budgets to 3,049,069; the orchestrator parse reproduced the 28/12/21 counts and Bexo's absence."
+              },
+              {
+                "class": "A",
+                "ref": "https://medium.com/feed/stellar-community",
+                "observedAt": "2026-08-31",
+                "note": "Recap lists Bexo Wallet at $90,000 among the 19 Integration recipients and totals $3,139,069 across 29 projects; the June 11 X post 2065181135135559896 repeats 29 / $3,139,069."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+          "date": "2026-08-31",
+          "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class; lane B research report matrices-lane-b-events-d1.md reconciled with blind re-derivation review-blind-scf43-grok.md; orchestrator applied)",
           "evidence": [
             "solo://proj/49/process/3417",
             "solo://proj/49/process/3423",
-            "scratchpad/p4/n2-events-blind/reconciliation.md",
+            "Independent Lane B review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
             "https://medium.com/feed/stellar-community",
             "https://x.com/StellarOrg/status/2065181135135559896",
             "https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N",
@@ -37717,15 +38016,27 @@
             "Live re-check 2026-08-27: https://lumenloop.com/news/scf-43-round-recap and https://x.com/StellarOrg/status/2065181135135559896 — retained all-three-tracks headline/social wording against the recipient-section accounting.",
             "Live re-check 2026-08-27: https://lumenloop.com/news/scf-43-round-recap — showed 10 Open and 19 Integration recipients with no RFP recipient section.",
             "Live re-check 2026-08-27: https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N and https://medium.com/stellar-community/scf-43-round-recap-62942f07757e — showed the dashboard lifecycle had moved beyond the recorded transient snapshot while the official final total remained the recap result.",
-            "Sibling sweep 2026-08-27: grep SCF #43|85 submissions|3,139,069|3,049,069 → q-edge-fresh-latest-scf-round, q-scf-current-round, q-scf-round-43-results; no contradiction"
+            "Sibling sweep 2026-08-27: grep SCF #43|85 submissions|3,139,069|3,049,069 → q-edge-fresh-latest-scf-round, q-scf-current-round, q-scf-round-43-results; no contradiction",
+            "Gospel change 2026-08-31: the answer's last sentence, keyFact 5 (single predicate: official recap ranked above the dashboard view; the compiler caps keyFacts at five), avoid item 4, and a notes addendum now label 28 / $3,049,069 as the dated dashboard `Awarded` paid-state view as of 2026-08-31 (Bexo Wallet $90,000 absent) and keep 29 / $3,139,069 as the official selection result; 'transient' framing removed because both lanes reproduced the view live; freshness moved to scheduled with asOf 2026-08-31 and reverifyBy 2026-12-10.",
+            "Live re-check 2026-08-31: https://medium.com/feed/stellar-community — item 'SCF #43 Round Recap' pubDate Tue, 02 Jun 2026 21:39:51 GMT; class D wowcryptocurrency mirror (2026-06-03) repeats the June 2 recap.",
+            "Live re-check 2026-08-31: https://medium.com/feed/stellar-community — 'We received 85 submissions across all three tracks'; class D mirror repeats 85; the dashboard payload holds 61 records and is not the submission count.",
+            "Live re-check 2026-08-31: https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N — Awarded 28 / Not Awarded 12 / Panel Review Failed 21, payload sum 3,049,069, Bexo Wallet absent; class A recap and X post 2065181135135559896 keep 29 / $3,139,069.",
+            "Live re-check 2026-08-31: https://x.com/StellarOrg/status/2065181135135559896 — official post repeats '29 projects … $3,139,069 worth of XLM'; class A recap feed states the same figures; class F sum of 29 named amounts = $3,139,069.",
+            "Live re-check 2026-08-31: https://communityfund.stellar.org/awards/reciQ16Y1ztmnmE3N — Awarded 28 / Not Awarded 12 / Panel Review Failed 21; class F payload sum 3,049,069; Bexo Wallet absent; class A recap keeps 29 / $3,139,069.",
+            "Lane reconciliation 2026-08-31: lane B first marked keyFact 5 unverifiable for lack of a durable second-class source of the 28 / $3,049,069 state; the blind lane and then the orchestrator reproduced that state live (class C and F), so the fact is confirmed-as-of 2026-08-31 and the gospel now dates it instead of calling it transient.",
+            "Sibling sweep 2026-08-31: grep SCF #43|85 submissions|3,139,069|3,049,069|Bexo → 3 other cases; read q-defi-rwa-scf-similar, q-edge-fresh-latest-scf-round, q-scf-current-round; none pins a conflicting round-43 total or date; no contradiction"
           ],
           "rootCause": [
             "eval-authoring",
             "The golden resolved an internal official-source contradiction categorically instead of representing it as disputed.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)",
+            "eval-authoring — the 'transient' framing treated a live dashboard payment-state view as vanished",
+            "freshness-drift",
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
           ]
         },
-        "origin": "authored 2026-07 (2026-events)"
+        "origin": "authored 2026-07 (2026-events)",
+        "reverifyBy": "2026-12-10"
       }
     },
     {

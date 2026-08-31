@@ -92,13 +92,12 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-b)",
+      "date": "2026-08-31",
+      "by": "golden-truth metadata remainder (2026-08-31, second temporary-path class, lane A research report .agents/rounds/2026-08-31-golden-metadata-remainder/matrices-lane-a-retail.md; orchestrator applied)",
       "evidence": [
         "solo://proj/49/process/3415",
         "solo://proj/49/process/3419",
-        "scratchpad/p4/h3-raph/fable-voice-review.md",
-        "scratchpad/p4/h3-raph-blind/reconciliation.md",
+        "Independent Lane A review (temporary path, unrecoverable); its claims were re-verified live on 2026-08-31 — see the Live re-check lines.",
         "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
         "https://stellar.org/blog/ecosystem/the-hidden-risks-of-proof-of-stake",
         "https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide",
@@ -106,11 +105,15 @@
         "https://www.ftc.gov/media/cryptocurrency-scams",
         "Structural re-form (negative-predicate): Recast the third-party-yield versus native-staking comparison with a positive taxonomy verb; truth unchanged",
         "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — the current page described SCP as proof of agreement, so third-party yield remains different from native staking.",
-        "Sibling sweep 2026-08-27: grep XLM staking|native staking|third-party yield|proof-of-stake → q-defi-build-staking-for-own-token, q-defi-liquid-staking-whitespace, q-edge-noinfo-stellar-pos-staking-rewards; no contradiction"
+        "Sibling sweep 2026-08-27: grep XLM staking|native staking|third-party yield|proof-of-stake → q-defi-build-staking-for-own-token, q-defi-liquid-staking-whitespace, q-edge-noinfo-stellar-pos-staking-rewards; no contradiction",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator'; class B stellar-protocol 8912a804: no native-staking CAP; class D: none.",
+        "Live re-check 2026-08-31: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — SCP is FBA with no staking; class D stakingrewards.com says 'There is no way to stake XLM' beyond custodial lending products.",
+        "Sibling sweep 2026-08-31: grep XLM staking|native staking|validator reward|proof-of-stake → 6 other cases; read q-edge-noinfo-stellar-pos-staking-rewards, q-defi-liquid-staking-whitespace, q-protocol-scp-consensus-algorithm; no contradiction"
       ],
       "rootCause": [
         "eval-authoring",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
+        ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
       ]
     },
     "origin": "raph xlm-native-staking-not-supported"
