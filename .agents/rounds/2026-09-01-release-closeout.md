@@ -1,7 +1,7 @@
 # Release closeout
 
 Date: 2026-09-01
-Status: reviewed; merge pending
+Status: complete
 Branch: `maintenance/free-improvements-followup`
 Author and orchestrator: Codex GPT-5.6 Sol
 
@@ -297,7 +297,7 @@ The existing `sd-048` finding remains active outside this grading contract.
 - `npm run eval:algolia-raven`: passed its read-only live checks.
 - `npm run eval:plan -- eval/qa/results/2026-09-01T21-36-44-variantA.json`: one of one required service covered.
 
-Baseline tests and the final Opus review remain before merge.
+Baseline tests and the final Opus review passed before merge.
 
 ### Release baseline
 
@@ -363,4 +363,53 @@ Commit `9074093` will remain reachable through the PR #114 ref after squash merg
 The final focused reconciliation tests passed 85 tests across three files.
 A sandboxed full-test attempt could not bind local sockets or use the GPG fixture.
 The approved host-access rerun passed the full release baseline.
-A bounded Opus delta review remains before the stack merge.
+The bounded Opus delta reviews passed before the stack merge.
+
+## Merge and deployment
+
+PR #112 squash-merged as `c46171eff991bc2ef9f42f9227e53e574fbe5f74`.
+PR #113 squash-merged as `e20ccf12561eb69ce86b6a2a2e475de442ff607a`.
+PR #114 squash-merged as `ea01f0d03c2bba88f5846922465c6a03af57e41e`.
+All refreshed CI and CodeQL checks passed before each merge.
+No unresolved review comment remained.
+
+The stacked branches received content-preserving `main` ancestry merges after each squash.
+The merge-conflict workflow preserved the reviewed branch trees.
+The final squash tree equals the reviewed PR #114 tree at `f0825cd2677346cc6cf38dca45feba5649b271fc`.
+Commit `9074093` remains reachable through `refs/pull/114/head`.
+
+The post-merge baseline passed on `main`.
+It included typecheck, 99 files and 1,595 tests, build, 4 smoke files and 82 tests, eval self-test,
+improvements lint, and the full-tree secret scan.
+
+The deploy preflight confirmed a clean tree and `HEAD == origin/main`.
+Cloudflare deployed Version `5ea8c1fe-e052-494d-b36b-ee8f5486a662` at 100 percent traffic.
+Deployment `bc6cbb36-3d17-4f43-86a9-f9b24fb597d2` started at `2026-09-01T22:27:28.631905Z`.
+
+## Production verification
+
+`GET /playground` returned `200` with Ray ID `a347b54d1961b5d9`.
+Its CSP uses `sha256-ZB8MB5SKhRnJx0CaegzHU7J/JhdbqAhUdhGgxaO8z+o=`.
+This fingerprint confirms that the PR #99 Playground bundle is live.
+
+`GET /health/skills` returned `200` with Ray ID `a347b54d0ef54f55`.
+It reported `ok: true`, `checked: 41`, and no error.
+An unauthenticated MCP initialize returned `401` with Ray ID `a347b54d0a903670`.
+
+An authorized MCP initialize returned `200` with Ray ID `a347b6488ad3a1cc`.
+It reported server name `stellar-raven-codemode`, protocol `2025-06-18`, and current instructions.
+A free `search` call returned `200` with Ray ID `a347b64a5e4f591f`.
+It returned three hits and `isError: false`.
+
+Cloudflare telemetry matched both authorized Ray IDs to successful `POST` spans.
+The related platform events reported `POST https://raven.stellar.org/mcp`.
+No production error appeared in these bounded checks.
+
+## Cleanup
+
+GitHub deleted all three merged remote branches.
+The three related local branches were deleted after their merge receipts were verified.
+The clean PR #112 and PR #114 temporary worktrees were removed.
+No related stash existed.
+The owned Fable and Opus review agents and panes were closed.
+Only the primary `main` worktree remains.

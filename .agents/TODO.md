@@ -7,28 +7,7 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-01 after the free improvements maintenance closeout.
-
-## Production
-
-### Verify the production revision and resolve the Playground deployment
-
-The local comparison found two conflicting records for the 2026-08-28 deployment. The drift
-ledger records `2dc2afcb-2449-4553-8b65-a6c082950a0d`. The queue later recorded
-`6282fe2a-54d8-471e-9f0a-0a2565110af1` without a deployment ledger. PR #99 merged the Playground
-input-limit and accessibility changes at `3c7f0e5` on 2026-08-30. Local evidence cannot identify
-the active version.
-
-The local comparison and proposed query are in
-`.agents/rounds/2026-09-01-next-actionable-blocks/production-local-plan.md`. Do not run the query
-before the owner authorizes the live production read.
-
-Authorization boundary: the live production read is owner-blocked. After that read, a deployment
-needs a separate recorded owner decision and the normal production preflight. Run
-`npm run test:smoke` and the baseline checks before any deployment proposal.
-
-Done when: the live Worker Version ID and revision are recorded. Then either verify the deployment
-and `/playground` behavior, or record a hold reason and its reopen condition.
+Updated 2026-09-01 after the reviewed release deployment.
 
 ## Improvements follow-up
 

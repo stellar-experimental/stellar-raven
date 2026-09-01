@@ -1,18 +1,19 @@
 # NEXT — current handoff
 
-Updated 2026-09-01 after the free improvements maintenance round. Read this first.
+Updated 2026-09-01 after the reviewed release deployment. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
-No unconditional agent-actionable block remains.
+One unconditional agent-actionable block remains.
 
 ## State at handoff
 
-- The free improvements maintenance block is complete.
-- It made no paid run, deployment, production edit, or Algolia write.
-- The last recorded production deployment is Worker Version ID
-  `6282fe2a-54d8-471e-9f0a-0a2565110af1` from 2026-08-28. This round did not verify live state.
-- The 2026-08-28 drift ledger records a different Worker Version ID:
-  `2dc2afcb-2449-4553-8b65-a6c082950a0d`. Local evidence cannot select the active record.
+- The free improvements maintenance block and release closeout are complete.
+- Pull requests #112, #113, and #114 merged into `main` in that order.
+- Production runs Worker Version `5ea8c1fe-e052-494d-b36b-ee8f5486a662` at 100 percent traffic.
+- Deployment `bc6cbb36-3d17-4f43-86a9-f9b24fb597d2` started at `2026-09-01T22:27:28.631905Z`.
+- The deployed source commit is `ea01f0d03c2bba88f5846922465c6a03af57e41e`.
+- `/playground`, `/health/skills`, authorized MCP initialize, and a free `search` call passed.
+- The Playground now serves the merged input-limit and accessibility changes from PR #99.
 - `improvements/` contains 66 active findings.
 - The statuses are 60 `reported-upstream`, three `proposed`, and three `declined-upstream`.
 - The service counts are 29 Lumenloop, 21 Stellar Docs, nine Stellar Light, six skills, and one provider finding.
@@ -53,9 +54,6 @@ No unconditional agent-actionable block remains.
   QA PR https://github.com/stellar-experimental/stellar-raven/pull/103 also closed without merge.
   The record-only evidence is in
   `.agents/rounds/2026-08-31-rejected-experiments-closeout.md`.
-- PR #99 merged the Playground limit, the real `ai` tool-loop test, and title cleanup at
-  commit `3c7f0e5` on 2026-08-30. If the recorded 2026-08-28 deployment is current, this change is
-  not deployed.
 - The `clause-support-fit-v1` routing experiment completed on 2026-09-01 with a verified `FAIL`.
   Its stamp is `2026-09-01T14-22-28-993Z-clause-support-fit-v1`.
   Attempt three is spent, so the three-attempt box is spent. No production routing change shipped.
@@ -63,18 +61,23 @@ No unconditional agent-actionable block remains.
 - The owned QA battery contains 500 cases as of 2026-08-28. The committed QA record now includes
   the first `qa-five-track-v1` same-100 checkpoint.
 
+## Agent-actionable block
+
+### Add paid-run preconditions to agent discovery
+
+Use `run-evals`.
+
+`eval/discovery/run-agent-discovery.mjs` still lacks the QA runner's required environment and
+budget pins. Its binary pin also accepts duplicate and equals-form values.
+
+Add fail-closed binary, environment, and total-budget preconditions.
+Record complete spend provenance.
+Add focused tests that prove every rejected form makes zero paid calls.
+Do not make a provider call while implementing or testing this block.
+
+Exit gate: focused tests, the release baseline, and an independent review pass.
+
 ## Owner-blocked blocks
-
-### Verify production state
-
-The local comparison and query plan are complete at
-`.agents/rounds/2026-09-01-next-actionable-blocks/production-local-plan.md`. They show two
-conflicting recorded Version IDs. This block is owner-blocked. Ask the owner to authorize the live
-production read. After authorization, use `cloudflare-observability-review` to identify the active
-version. Then ask the owner whether to deploy or hold. Do not fetch or deploy from this handoff.
-
-Exit gate after both authorizations: record the live revision, the decision, and either the
-verified deployment or the hold condition.
 
 ### Classify the Raven capability boundary
 
@@ -114,6 +117,8 @@ diagnostic, product gate, stop rules, and separate authorization boundaries.
 
 ## Completed blocks
 
+- Release closeout: PRs #112, #113, and #114 merged. Version
+  `5ea8c1fe-e052-494d-b36b-ee8f5486a662` passed production verification.
 - Free improvements maintenance: four resolver receipts are in `improvements/resolved.json`.
 - `sd-048` was filed at https://github.com/stellar/stellar-protocol/issues/2010.
 - Golden metadata remainder: PR #106, ledger
@@ -128,15 +133,6 @@ diagnostic, product gate, stop rules, and separate authorization boundaries.
 
 The 2026-08-28 human-review grill resolved its 21 questions. The questions below can change a
 future action. Record each answer in a round ledger, `eval/qa/README.md`, or a decision record.
-
-### Deploy or hold after live verification
-
-Question: should the current `main` revision deploy after the live revision and smoke checks are
-known?
-
-Options: deploy through the documented preflight, or hold with a reason and reopen condition.
-
-Safe default: hold until the live revision is verified. A silent hold is not acceptable.
 
 ### Select the Raven capability-boundary surface
 
@@ -189,8 +185,8 @@ Safe default: stay trigger-only. Never lower the 19-of-19 bar because three mech
 
 ## Suggested sequence
 
-The local production plan, environment pin, and free Raven evidence are complete.
-Obtain an owner decision when ready.
-Do not start an unconditional work block.
+The production release, QA environment pin, and free Raven evidence are complete.
+Harden the discovery runner next without provider spend.
+Obtain the Raven capability-boundary decision when ready.
 Keep each paid action and production action behind its separate authorization.
-No current item has authorization for evaluation ladder stages 3, 4, or 6.
+No current item has authorization for evaluation ladder stages 3 or 4.
