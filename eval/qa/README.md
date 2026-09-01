@@ -154,9 +154,9 @@ npm run eval:qa:lint -- --since <ref>      # + gospel-change guard vs that ref (
 npm run eval:qa:register                   # --seed to baseline, --check for CI-style dry run
 
 # Run the battery (boot the server first; see below)
-node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256>
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json    # plan regrade, offline
 ```
 
@@ -178,12 +178,26 @@ Server for live lanes: reuse a pane already running `npm run dev:eval` when one 
 run `npm run dev:eval -- --port 8788`. The launcher requires a clean worktree and compiles its
 commit into the Worker's MCP `serverInfo`.
 
-`run-qa.mjs` requires `--server-revision <commit>`, `--expect-sha256 <surface-sha256>`, and
-`--expect-agent-binary-sha256 <wrapper-sha256>`. These flags pin the source revision, the bound
-server, and the capped Claude executable before spending. The runner checks the listener, revision,
-clean state, compiled source revision, and surface again after collection. It rejects a comparison
-if these values change.
+Every `run-qa.mjs` mode requires `--expect-agent-binary-sha256 <wrapper-sha256>` and
+`--expect-agent-environment-sha256 <environment-sha256>`. Collection runs also require
+`--server-revision <commit>` and `--expect-sha256 <surface-sha256>`. These flags pin the source
+revision, the bound server, the capped Claude executable, and the inherited Claude environment
+before spending. The runner checks the listener, revision, clean state, compiled source revision,
+and surface again after collection. It rejects a comparison if these values change.
 It still writes the paid rows. It marks the artifact as non-comparable and suppresses aggregates.
+
+Every `run-qa.mjs` mode requires the environment flag exactly once as two arguments. The runner
+rejects an absent, duplicate, missing, malformed, mismatched, or equals-form flag before an
+answering-agent or judge call. Compute the value after all Claude-related environment variables
+have their final values. Use the same shell for this command and the paid run:
+
+```sh
+AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
+```
+
+The result records the observed `sha256`, the `expectedSha256`, and `matches: true`. Collection
+stores this identity at `meta.agentEnvironment.inherited`. Stored judging uses
+`meta.judgeEnvironment`. Both locations record environment names, but they do not record values.
 Every paid runner command requires exactly one `--max-budget-usd <usd>` flag. Duplicate budget
 flags fail before any call. Other flags include `--ids a,b,c`, `--no-judge`, `--model`,
 `--judge-model`, `--cases <path>`, and `--surface per-operation` for the isolated 50-operation architecture instrument

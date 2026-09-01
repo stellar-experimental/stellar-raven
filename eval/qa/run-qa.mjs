@@ -61,6 +61,10 @@
  *   --expect-sha256    required SHA-256 of the bound MCP surface
  *   --expect-agent-binary-sha256
  *                      required SHA-256 of the capped Claude executable
+ *   --expect-agent-environment-sha256
+ *                      required SHA-256 pin for the inherited Claude
+ *                      environment. It must match before any answering-agent
+ *                      or judge call.
  *   --no-judge         collect answers only (judge later)
  *   --judge-stored F   two-phase mode, phase 2: judge a saved --no-judge
  *                      results file IN PLACE (no server, no agent). Judges
@@ -139,6 +143,7 @@ import {
 } from "../lib/harness-guards.mjs";
 import {
   agentEnvironmentIdentity,
+  assertExpectedAgentEnvironment,
   assertExpectedExecutable,
   executableIdentity
 } from "../lib/executable-identity.mjs";
@@ -234,6 +239,25 @@ export function parseRequiredBudgetFlag(args, { label = "run-qa" } = {}) {
     throw new Error("--max-budget-usd requires a value");
   }
   return parseMaxBudgetUsd(value);
+}
+
+function parseRequiredAgentEnvironmentFlag(args) {
+  const flag = "--expect-agent-environment-sha256";
+  if (args.some((arg) => arg.startsWith(`${flag}=`))) {
+    throw new Error(`${flag}=<value> is not supported; use ${flag} <value>`);
+  }
+  const indexes = args
+    .map((arg, index) => arg === flag ? index : -1)
+    .filter((index) => index !== -1);
+  if (indexes.length === 0) {
+    throw new Error(`run-qa requires ${flag} for every run`);
+  }
+  if (indexes.length > 1) throw new Error(`run-qa accepts ${flag} exactly once`);
+  const value = args[indexes[0] + 1];
+  if (value === undefined || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
 }
 
 export function parseMaxPanelCases(value) {
@@ -1394,7 +1418,10 @@ async function main() {
     argVal("--expect-agent-binary-sha256"),
     { label: "Claude CLI" }
   );
-  const inheritedAgentEnvironment = agentEnvironmentIdentity();
+  const inheritedAgentEnvironment = assertExpectedAgentEnvironment(
+    agentEnvironmentIdentity(),
+    parseRequiredAgentEnvironmentFlag(args)
+  );
   const safeJudge = (input, options) =>
     judgeCase(input, { ...options, command: agentBinary.resolvedPath, safeMode: true });
   const {

@@ -54,17 +54,41 @@ export function executableIdentity(command = "claude", options = {}) {
   };
 }
 
-export function assertExpectedExecutable(identity, expectedSha256, { label = "agent executable" } = {}) {
-  const expected = typeof expectedSha256 === "string" ? expectedSha256.trim().toLowerCase() : "";
+function assertExpectedIdentity(
+  identity,
+  expectedSha256,
+  { label, flag, observed }
+) {
+  const expected = typeof expectedSha256 === "string" ? expectedSha256.trim() : "";
   if (!SHA256_PATTERN.test(expected)) {
-    throw new Error(`${label}: --expect-agent-binary-sha256 must be a 64-character lowercase SHA-256`);
+    throw new Error(`${label}: ${flag} must be a 64-character lowercase SHA-256`);
   }
   if (identity.sha256 !== expected) {
     throw new Error(
-      `${label}: expected SHA-256 ${expected}, resolved ${identity.resolvedPath} with ${identity.sha256}; refusing paid calls`
+      `${label}: expected SHA-256 ${expected}, ${observed(identity)}; refusing paid calls`
     );
   }
   return { ...identity, expectedSha256: expected, matches: true };
+}
+
+export function assertExpectedExecutable(identity, expectedSha256, { label = "agent executable" } = {}) {
+  return assertExpectedIdentity(identity, expectedSha256, {
+    label,
+    flag: "--expect-agent-binary-sha256",
+    observed: (value) => `resolved ${value.resolvedPath} with ${value.sha256}`
+  });
+}
+
+export function assertExpectedAgentEnvironment(
+  identity,
+  expectedSha256,
+  { label = "Claude environment" } = {}
+) {
+  return assertExpectedIdentity(identity, expectedSha256, {
+    label,
+    flag: "--expect-agent-environment-sha256",
+    observed: (value) => `observed ${value.sha256}`
+  });
 }
 
 /**
