@@ -1,7 +1,7 @@
 # Release closeout
 
 Date: 2026-09-01
-Status: pre-spend review
+Status: second-method pre-spend review
 Branch: `maintenance/free-improvements-followup`
 Author and orchestrator: Codex GPT-5.6 Sol
 
@@ -17,9 +17,10 @@ It does not define a headline score or a product comparison.
 ## Authorization
 
 The owner authorized paid work, live reads, merging, deployment, and cleanup.
-This brief limits the paid method to one run and `$1.50` total cost.
+This first authorization limits the first method to one run and `$1.50` total cost.
 The cap includes one answering call and up to three judge calls.
-This brief authorizes no rerun.
+The first authorization permits no rerun.
+The separate second authorization appears below.
 
 ## Change attribution
 
@@ -103,8 +104,9 @@ The round will not compare its verdict with an older tuple.
 
 Stop before spend after any identity, surface, revision, or clean-tree mismatch.
 Stop after any incomplete row, missing cost, provider safeguard, or harness failure.
-Stop after the single authorized run.
-Do not launch a repair rerun under this authorization.
+Stop after the first authorized run.
+Do not launch a repair rerun under the first authorization.
+The separate second authorization appears below.
 Do not edit a repository file between server launch and paid-command completion.
 
 ## Review gates
@@ -152,6 +154,75 @@ It reported `ok: true`, `checked: 41`, and no error.
 The queries used Wrangler deployment and version views plus public HTTP reads.
 No private request fields were needed.
 The record omits account identifiers and author details.
+
+## First paid method
+
+The method used server revision `003ae4ea83c4322b8c89f9598929295dccfe295c`.
+The result file is `2026-09-01T21-27-42-variantA.json`.
+The selected denominator was one active case of one selected case.
+
+The answering process reached its 600-second wall-clock limit.
+It made one successful Raven search and produced no answer.
+The judge made no call.
+The killed CLI process reported no cost, so cost completeness failed.
+Unrecorded provider spend occurred across three assistant turns.
+The artifact records 27,713 cache-creation tokens and 80,092 cache-read tokens.
+It also records six output tokens.
+That unknown amount does not enter the first `$1.50` ledger total.
+
+T5 records one answering-side timeout.
+The harness cannot distinguish a provider stream stall from a Claude CLI stall.
+This is the first timeout class across 2,207 stored answering rows.
+T1 has no answered row or valid grade.
+T4 records complete row collection but incomplete cost reporting.
+The harness correctly suppressed all aggregates.
+
+The artifact confirms these successful guards:
+
+- the Claude executable matched;
+- the inherited environment matched;
+- `safeMode` was `false`;
+- the isolated working directory was outside the repository;
+- the `raven` MCP server was connected;
+- the selected ID and lifecycle state matched.
+
+The run produced no evidence about answer or golden quality.
+It also produced no actionable Raven defect.
+One answering-side timeout remains diagnostic and monitor-only.
+
+The server log shows no Raven call in flight after the completed search.
+The stall occurred after the model received that result.
+
+## Second paid method authorization
+
+The owner wrote “all spend is fine” on 2026-09-01.
+The current release request also asks for appropriate eval work.
+This section creates a separate bounded method authorization.
+It does not reuse the first method authorization.
+
+The second method repeats the same single selected ID.
+It uses a fresh `run-qa.mjs` collection.
+It never changes the first artifact through stored judging or re-judging.
+It keeps variant A, Sonnet-5 answering, Sonnet-5 judging, `v2.10`, and `p5`.
+It permits one answering call and up to three judge calls.
+Its independent total cap is `$1.50`.
+It permits no third method run.
+
+The two method caps total `$3.00`.
+The true lane spend also includes the unknown first-method provider amount.
+
+The second method remains diagnostic only.
+It cannot repair or replace the first artifact.
+The two artifacts will remain separate.
+No combined aggregate or variance claim is permitted.
+
+The brief, both reviews, and this authorization must enter one clean commit.
+A new external prelaunch receipt must pin that exact commit and surface.
+Every first-method identity and artifact check applies again.
+
+Stop after another timeout, incomplete cost, provider safeguard, or harness failure.
+Stop after any pin, clean-tree, revision, or surface mismatch.
+Do not launch a third method under any current authorization.
 
 ## Outcome
 
