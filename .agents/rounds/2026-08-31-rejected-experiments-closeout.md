@@ -43,9 +43,13 @@ The body contains `generated-by-stellar-raven`, the active main source link, and
 The body also contains the full evidence and the resolution handoff.
 
 No product change ships from this experiment.
-Do not run another paid collection until this free probe returns `28`.
-The ranking selection trigger remains three recurring misses.
-The Docs-versus-repository conflict stays monitor-only until three recurrences.
+Do not run another paid collection until the DeepWiki answer equals the source value at the
+response's own `scannedRef`. The source value was `28` for this reading.
+The ranking selection trigger remains three qualifying positive operation-selection misses after
+recovery. The Docs-versus-repository conflict stays monitor-only until three successful-recovery
+recurrences. Each recurrence is a dated re-execution of `sls-080`. It must use the required
+Docs-first, inspect, then one-later-`scout.explainRepo` sequence. Record the same finding identity,
+case ID, result stamp, and transcript.
 The `stellar-cli` fallback candidate did not reproduce and has no active finding.
 `sls-081` is a withdrawn historical identifier.
 The next Scout finding uses `sls-082`.
@@ -58,17 +62,37 @@ Its SHA-256 is `b6a596fb370817136a4b7f5afa6aa4d8f6a9e92a2355f1d807d179c479e3a256
 It used two answering calls and six judge calls.
 It cost `$0.4597096`.
 
-The Raven trap failed T3.
+The artifact is invalid as a measurement because its inherited environment hash differed from the
+registered value. Its five-track T3 safety failure is one observation.
 The external lookup control was partial.
-The inherited environment hash differed from the registered value.
-Method 2 did not run.
-This result does not authorize Method 2.
+The capability-boundary Method 2 was the deterministic sample-30 headline with an offline plan
+regrade. It did not run. This result does not authorize the capability-boundary Method 2. Its
+authorization is spent. The five-track Method 2 is separate and complete.
 
 No prompt change ships from this experiment.
 The next attempt needs a stronger mechanism and a new pre-registered diagnostic.
 It needs both before any headline sample.
 The Friendbot network-context failure stays monitor-only.
 Judge stability and the owner product-loss margin remain open.
+
+## Evidence retrieval
+
+Both snapshot commits are outside current local and remote branch ancestry. Closed pull-request
+refs preserve a retrieval path while GitHub retains them:
+
+```sh
+git fetch origin pull/102/head
+git fetch origin pull/103/head
+```
+
+PR #102 contains `.agents/rounds/2026-08-30-repository-tooling-recovery.md` and the G1 record at
+`6baec0a4a1e0fc5b84ccce30a656af7f9ddcaa68`. PR #103 contains
+`.agents/rounds/2026-08-30-qa-prompt-boundaries.md` at
+`fb9a35ebb5f76bad773050c2977deabe77ab74da`.
+
+The 2026-09-01 audit did not find the local Method 1 or recovery-v2 result artifacts. Their exact
+SHA-256 values above remain the durable artifact identities. The current queue carries the
+load-bearing mechanism, gate, and trigger facts.
 
 ## Outcome
 

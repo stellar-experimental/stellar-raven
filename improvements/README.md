@@ -51,7 +51,7 @@ upstreamTitle: <reader-first issue title; required before filing>
 evidence:
   - eval/qa/results/<results-file stamp>
   - live verification note
-  - Solo todo/comment ref
+  - .agents/TODO.md item or round-ledger ref
 ---
 
 ## Finding        (what's wrong, factually)
@@ -75,10 +75,9 @@ evidence:
 - Declined, wontfix, legacy, and overfit decisions are retained while the original defect still
   reproduces. A superseded record can be retired only after its upstream ref points to a
   self-contained successor and that successor preserves the essential evidence.
-- Findings here are for the **services**. Fixes to this repo (adapters,
-  normalizers, catalog, eval golden) go to Solo todos instead (the Solo project binding
-  lives in [`AGENTS.md` “Coordination”](../AGENTS.md#coordination)) — a finding file may note
-  that a fix landed here, but the repo work is tracked there.
+- Findings here are for the **services**. Fixes to this repo (adapters, normalizers, catalog,
+  eval goldens, and eval instruments) go to [`.agents/TODO.md`](../.agents/TODO.md). A finding file
+  can note that a fix landed here, but the own-repo work stays in that queue.
 
 ## Upstream filing channels
 
