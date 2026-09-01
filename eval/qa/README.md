@@ -847,6 +847,29 @@ as the committed `23.3%` identical-input re-judge noise floor.
 cap of 10. Its 31 boundary rows produced 10 panels and 21 skips. Therefore, `single` in that
 artifact can mean "not escalated", which is not the same as "not borderline".
 
+## 2026-09-01 release-closeout targeted diagnostic
+
+This diagnostic tested `q-protocol-bn254-poseidon-xray` with the new environment pin.
+It does not define a headline score, baseline, comparison, or variance estimate.
+The committed record is `.agents/rounds/2026-09-01-release-closeout.md`.
+
+| Method | Result stamp | SHA-256 | Revision | Result |
+| --- | --- | --- | --- | --- |
+| First | `2026-09-01T21-27-42-variantA.json` | `e80998af1ef4289c96ad3bda96d732c6504c5e58742620e3620cbcba01577a84` | `003ae4ea83c4322b8c89f9598929295dccfe295c` | answering-side timeout after 600 seconds; no answer or judge call; cost incomplete |
+| Second | `2026-09-01T21-36-44-variantA.json` | `d9b117298e9a3d4bb562b461ff91f5caa17a3ff9667c4ec74b2238a7f3737a55` | `11429719d28b71a328bf4c8f74ff98dbb1a5eb4e` | 1 correct / 0 partial / 0 wrong / 0 error |
+
+The first artifact records the first timeout class across 2,207 stored answering rows.
+It remains a monitor-only T5 event.
+The killed CLI omitted its final cost frame, so its true provider spend is unknown.
+
+The second method cost `$0.3764636`.
+Answering cost `$0.2946388`, and judging cost `$0.0818248`.
+The plan regrade covered the required service for 1 of 1 rows.
+
+Every second-method revision, surface, binary, environment, listener, and postflight guard matched.
+The result used Sonnet-5 answering, Sonnet-5 judging, rubric `v2.10`, and pack `p5`.
+The artifacts remain separate and local-only.
+
 ## 2026-08-30 first `qa-five-track-v1` same-100 run (checkpoint, not a re-baseline)
 
 This run exercised the panel, five-track, paired, and lifecycle contracts on the pinned same-100

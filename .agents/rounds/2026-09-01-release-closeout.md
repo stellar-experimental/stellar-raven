@@ -1,7 +1,7 @@
 # Release closeout
 
 Date: 2026-09-01
-Status: second-method pre-spend review
+Status: release validation
 Branch: `maintenance/free-improvements-followup`
 Author and orchestrator: Codex GPT-5.6 Sol
 
@@ -226,4 +226,102 @@ Do not launch a third method under any current authorization.
 
 ## Outcome
 
-Pending.
+### Second paid method
+
+The method used server revision `11429719d28b71a328bf4c8f74ff98dbb1a5eb4e`.
+The MCP surface SHA-256 was `21a7c649c340119ab2a0f04347c8afee8aa4fb7ae68fc00c1fc876581ef955af`.
+The result stamp is `2026-09-01T21-36-44-variantA.json`.
+Its SHA-256 is `d9b117298e9a3d4bb562b461ff91f5caa17a3ff9667c4ec74b2238a7f3737a55`.
+
+The method completed in 44 seconds.
+It made one answering call and one judge call.
+The result was `correct`.
+
+Total reported cost was `$0.3764636`.
+Answering cost was `$0.2946388`.
+Judge cost was `$0.0818248`.
+Cost reporting was complete.
+
+The five-track reading is:
+
+- T1: one answered row and one valid `correct` grade;
+- T2: no eligible retry;
+- T3: no selected trap;
+- T4: complete collection, one healthy judge call, and no contradiction;
+- T5: no provider event.
+
+Every preflight and postflight identity pair matched.
+The listener process stayed stable.
+The artifact stayed comparable with aggregates enabled.
+The `raven` MCP server reported `connected`.
+
+### Answer and verdict review
+
+The answer names all three CAP-0074 BN254 functions.
+It names both CAP-0075 permutation functions.
+It does not call those permutations turnkey hash helpers.
+It dates the Protocol 25 activation.
+It does not claim default transaction privacy.
+
+The extra Protocol 26 and CAP-0080 context is source-supported.
+The answer triggered no avoid item.
+The judge reported no missing fact or wrong claim.
+
+The transcript contains two searches and four execute calls.
+The first execute returned a serialization error.
+The agent recovered through smaller serializable calls.
+One recovered serialization error remains diagnostic and requires no action.
+
+The offline plan regrade covered the required service for one of one rows.
+Its artifact SHA-256 is `e1ad69bb32c5fd6d18220e96e8dd88ca663ef854a394fc886a5023b90987ea95`.
+
+### Findings and golden decision
+
+The first timeout remains monitor-only.
+The successful second method shows no repeated provider or CLI pattern.
+This round found no new upstream service gap.
+It therefore creates no new `improvements/` finding.
+
+The tested golden matches the reviewed answer and the verified source matrix.
+No additional golden change is needed.
+The existing `sd-048` finding remains active outside this grading contract.
+
+### Free gates
+
+- `npm run eval:selftest`: passed.
+- `npm run eval:compile`: compiled 338 legacy and 122 extended cases.
+- `npm run eval:qa:compile`: compiled 500 cases with SHA-256 `0393e7bef6b8bea9e519fbdf11d65fa4a7d32ea2ea803f469c0ac8bd78857ad7`.
+- `npm run eval:qa:register`: up to date with zero reopened clusters.
+- `npm run eval:qa:lint -- --since main --stale`: zero errors and 62 warnings.
+- `npm run eval:routing -- --gate`: passed both gates.
+- `npm run eval:algolia-raven`: passed its read-only live checks.
+- `npm run eval:plan -- eval/qa/results/2026-09-01T21-36-44-variantA.json`: one of one required service covered.
+
+Baseline tests and the final Opus review remain before merge.
+
+### Release baseline
+
+- `npm run typegen`: passed on the approved rerun.
+- `npm run typecheck`: passed.
+- `npm test`: 99 files and 1,588 tests passed.
+- `npm run build`: passed.
+- `npm run test:smoke`: 4 files and 82 tests passed.
+- `npm run improvements:lint`: passed with 66 findings.
+- `npm run improvements:probes`: six recurring, zero fixed-candidate, zero inconclusive, and zero errors.
+- `npm run secrets:scan -- --tree`: passed.
+- `git diff --check`: passed.
+
+The first sandboxed type generation could not write its Wrangler log.
+The approved rerun wrote the log and passed.
+
+The first recurrence probe lacked the worktree's ignored Lumenloop credential.
+It reported four recurring and two inconclusive results.
+The authorized host-environment rerun resolved both results as recurring.
+
+`npm audit --omit=dev` reports one existing high-severity `browserslist` advisory.
+The dependency path is `agents` through Babel compilation dependencies.
+`main` already pins the same `browserslist@4.28.4` package.
+This stacked change does not change dependencies.
+The advisory is outside this release diff and does not block this merge.
+
+The final Opus review remains before merge.
