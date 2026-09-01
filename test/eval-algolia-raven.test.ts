@@ -9,6 +9,7 @@ describe("Algolia semantic matcher", () => {
       { cwd: process.cwd(), encoding: "utf8" },
     );
 
-    expect(output).toContain("Algolia semantic matcher self-test ok (9 controls)");
+    // The exact control count is a regression contract.
+    expect(output).toContain("Algolia semantic matcher self-test ok (12 controls)");
   });
 });

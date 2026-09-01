@@ -1,28 +1,33 @@
-# NEXT — handoff for the next work block
+# NEXT — current handoff
 
-Updated 2026-09-01 after six independent remaining-work audits. Read this first.
+Updated 2026-09-01 after the free improvements maintenance round. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
+No unconditional agent-actionable block remains.
 
 ## State at handoff
 
-- The prior six-lane audit changed planning and eval documentation only. It authorized no paid
-  run, live fetch, deployment, production edit, golden change, routing attempt, or upstream message.
+- The free improvements maintenance block is complete.
+- It made no paid run, deployment, production edit, or Algolia write.
 - The last recorded production deployment is Worker Version ID
   `6282fe2a-54d8-471e-9f0a-0a2565110af1` from 2026-08-28. This round did not verify live state.
 - The 2026-08-28 drift ledger records a different Worker Version ID:
   `2dc2afcb-2449-4553-8b65-a6c082950a0d`. Local evidence cannot select the active record.
-- `improvements/` contains 69 finding files: 60 `reported-upstream`, 3 `proposed`, 3
-  `declined-upstream`, and 3 `fixed-upstream` deletion candidates. `sd-047` is
-  `reported-upstream` at https://github.com/stellar/stellar-docs/issues/2805. `sls-080` is
-  `reported-upstream` at https://github.com/Stellar-Light/stellarlight/issues/1134.
-  Stellar-Light/stellarlight#1031 was last recorded open on 2026-08-31. The maintainer owns the
-  close.
-- Corpus lint: 0 errors, 61 warnings (0 long-fact, 44 sourcing-guard, 16 corroboration, 1
-  symmetric-caution). Every warning carries a recorded disposition: the 44 sourcing-guard items stay
-  advisory (20-case audit, two models); the 16 corroboration items are grammar-only (56/56 class
-  agreement, two models); the `symmetric-caution` on `q-protocol-ledger-close-time` is accepted under
-  the ADR-0008 no-caution decision. Do not chase these counts to zero.
+- `improvements/` contains 66 active findings.
+- The statuses are 60 `reported-upstream`, three `proposed`, and three `declined-upstream`.
+- The service counts are 29 Lumenloop, 21 Stellar Docs, nine Stellar Light, six skills, and one provider finding.
+- No `fixed-upstream` deletion candidate remains.
+- `sd-048` is `reported-upstream` at https://github.com/stellar/stellar-protocol/issues/2010.
+- `sd-047` is `reported-upstream` at https://github.com/stellar/stellar-docs/issues/2805.
+- Issue #2805 and PR #2806 remain open. The cadence conflict still reproduces.
+- Retired `sls-074` remains fixed while Stellar-Light/stellarlight#1031 stays open.
+- The maintainer owns the close for issue #1031.
+- Retired `sls-080` has a complete receipt in `improvements/resolved.json`.
+- Stellar-Light/stellarlight#1134 is closed as completed, and PR #1174 is merged.
+- Deployed API `1.9.16` returned source parity at `2026-09-01T20:08:07.092Z`.
+- Corpus lint: 0 errors and 62 warnings.
+- One symmetric-caution warning preserves the resolved `sd-036` root cause without a stale grading caution.
+- The warnings retain their recorded dispositions. Do not chase these counts to zero.
 - Golden import validates Stellar strkeys (CRC16, SEP-23 version bytes) in `eval/qa/compile-qa.mjs`
   through `eval/qa/strkey.mjs`.
 - The first `qa-five-track-v1` same-100 result is local at
@@ -35,7 +40,7 @@ This file only ranks and sequences. Delete or rewrite this file when the block i
   No production routing change shipped. Its harness and pinned artifact remain as evidence.
 - The paid artifact used rubric `v2.9`. The closeout fixes its `partial-without-issue` defect in
   rubric `v2.10`. Cross-rubric comparison requires a rejudge under the target tuple.
-- Consistency register: reconciled on 2026-08-29; 0 reopen entries.
+- Consistency register: reconciled on 2026-09-01; 0 reopen entries.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
 - Ledgers for the finished blocks: `.agents/rounds/2026-08-29-golden-truth-session-3.md`,
   `.agents/rounds/2026-08-29-five-track-same-100.md`, and
@@ -58,9 +63,9 @@ This file only ranks and sequences. Delete or rewrite this file when the block i
 - The owned QA battery contains 500 cases as of 2026-08-28. The committed QA record now includes
   the first `qa-five-track-v1` same-100 checkpoint.
 
-## Ranked blocks
+## Owner-blocked blocks
 
-### 1. Verify production state
+### Verify production state
 
 The local comparison and query plan are complete at
 `.agents/rounds/2026-09-01-next-actionable-blocks/production-local-plan.md`. They show two
@@ -71,7 +76,7 @@ version. Then ask the owner whether to deploy or hold. Do not fetch or deploy fr
 Exit gate after both authorizations: record the live revision, the decision, and either the
 verified deployment or the hold condition.
 
-### 2. Make the Raven capability-boundary evidence trustworthy
+### Classify the Raven capability boundary
 
 Use `run-evals`.
 
@@ -96,22 +101,12 @@ safety failure is one observation. Another QA-prompt wording layer is spent.
 Exit gate: an independent reviewer passes a plan that names the mechanism, surface, focused
 diagnostic, product gate, stop rules, and separate authorization boundaries.
 
-### 3. Complete free improvements maintenance
-
-Use `improvements-pipeline`.
-
-- Read the states of stellarlight#1031, stellarlight#1134, and stellar-docs#2805.
-- Independently review and drain `sd-001`, `sd-036`, and `sk-020` if their fixes still hold.
-- Run the free `sls-080` Scout reading and record its source-parity fields.
-
-Exit gate: the round ledger records every issue state, probe result, and deletion receipt or deferral.
-
-### 4. Keep the other programs conditional
+## Conditional programs
 
 - Paired QA: free validator design is allowed. No collection occurs without a merged product
   candidate, the owner design decisions, reviewed briefs, and new caps.
-- Repository recovery: monitor source parity. A match only removes one blocker. It authorizes no
-  paid collection.
+- Repository recovery: keep the exact free monitor in `TODO.md`. The durable record is the
+  `sls-080` receipt. Source parity authorizes no paid collection. Use `sls-082` for a distinct defect.
 - Protocol-history routing: keep the three-attempt box closed. Use PH1 to PH4 in `TODO.md` only.
 - `sources.locate`: log incomplete incidents. The phase-zero trigger cannot fire while no recovery
   steering is live.
@@ -119,6 +114,8 @@ Exit gate: the round ledger records every issue state, probe result, and deletio
 
 ## Completed blocks
 
+- Free improvements maintenance: four resolver receipts are in `improvements/resolved.json`.
+- `sd-048` was filed at https://github.com/stellar/stellar-protocol/issues/2010.
 - Golden metadata remainder: PR #106, ledger
   `.agents/rounds/2026-08-31-golden-metadata-remainder.md`.
 - Judge-stability review: closed at 57 in
@@ -192,7 +189,8 @@ Safe default: stay trigger-only. Never lower the 19-of-19 bar because three mech
 
 ## Suggested sequence
 
-The local production plan, environment pin, and free Raven evidence are complete. Obtain either
-owner decision when ready. The free improvements maintenance block is the next agent-actionable
-work. Keep every fetch, paid action, or production action behind its separate authorization. No
-current item has authorization for evaluation ladder stages 3, 4, or 6.
+The local production plan, environment pin, and free Raven evidence are complete.
+Obtain an owner decision when ready.
+Do not start an unconditional work block.
+Keep each paid action and production action behind its separate authorization.
+No current item has authorization for evaluation ladder stages 3, 4, or 6.

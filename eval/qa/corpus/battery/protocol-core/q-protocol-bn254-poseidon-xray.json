@@ -5,7 +5,7 @@
     "stellarDocs.search_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\n**Protocol 25 (X-Ray)** activated on Mainnet on **2026-01-22 at 17:00 UTC**. It added two low-level Soroban host surfaces for ZK systems:\n\n- **CAP-0074 / BN254:** `bn254_g1_add`, `bn254_g1_mul`, and `bn254_multi_pairing_check`. These give contracts native operations on the EVM-compatible pairing curve for verifier and interoperability designs.\n- **CAP-0075 / Poseidon and Poseidon2:** `poseidon_permutation` and `poseidon2_permutation` over BLS12-381 Fr or BN254 Fr. These are configurable **permutation primitives** from which a correctly parameterized hash construction can be built; they are not turnkey `poseidon_hash` helpers.\n\nBoth CAPs are Final and gated at Protocol 25. These primitives enable verifier, commitment, Merkle, and privacy-application components; they do not make Stellar transactions private by default. Current source has a documented interface erratum: CAP-0075 says `U32Val` field selector and contains one stray P24 sentence, while the shipped P25+ host environment uses a `Symbol` selector (`BLS12_381` or `BN254`). Follow the exact SDK/host version in use rather than inventing helper names.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-09-01, the verified sources supported this observed answer:\n\n**Protocol 25 (X-Ray)** activated on Mainnet on **2026-01-22 at 17:00 UTC**. It added two low-level Soroban host surfaces for ZK systems:\n\n- **CAP-0074 / BN254:** `bn254_g1_add`, `bn254_g1_mul`, and `bn254_multi_pairing_check`. These give contracts native operations on the EVM-compatible pairing curve for verifier and interoperability designs.\n- **CAP-0075 / Poseidon and Poseidon2:** `poseidon_permutation` and `poseidon2_permutation` over BLS12-381 Fr or BN254 Fr. These are configurable **permutation primitives** from which a correctly parameterized hash construction can be built; they are not turnkey `poseidon_hash` helpers.\n\nBoth CAPs are Final and gated at Protocol 25. These primitives enable verifier, commitment, Merkle, and privacy-application components; they do not make Stellar transactions private by default. Follow the exact SDK/host version in use rather than inventing helper names.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation.",
       "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
@@ -15,10 +15,10 @@
     "avoid": [
       "Do NOT call the CAP-0075 host functions ready-made hash helpers or invent helper names.",
       "Do NOT attribute these additions to P22/BLS12-381 or describe P25 as merely pending after 2026-01-22.",
-      "Do NOT claim these primitives create on-by-default privacy or silently choose the CAP's stale U32Val interface over the exact shipped version.",
+      "Do NOT claim these primitives create on-by-default privacy.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "GT-31 CORRECTION 2026-07-11: P25 activation completed 2026-01-22. CAP-0074 has exactly three BN254 functions; CAP-0075 exposes two configurable permutations, not turnkey hash helpers. The pinned CAP-0075 P24/P25 and U32Val/Symbol contradictions are source errata tracked separately from sd-021's Docs errors.\nAccurately quoting the canonical Stellar documentation on CAP-0075 as a hash API or with a `U32Val` selector is not a wrong claim while a cached or older Docs copy still shows the pre-2026-07-27 hash wording or sd-036 still shows `U32Val`; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Protocol 25 activated on 2026-01-22. CAP-0074 has exactly three BN254 functions. CAP-0075 exposes two configurable permutations, not turnkey hash helpers."
   },
   "tags": {
     "category": "protocol-core",
@@ -32,32 +32,32 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-09-01",
     "sources": [
       {
         "class": "B",
-        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md",
-        "note": "class inferred at migration"
+        "ref": "https://github.com/stellar/stellar-protocol/blob/65e2b6262c0825494caf2a94116eb512c8335f22/core/cap-0074.md",
+        "note": "Final CAP-0074 defines the three BN254 host functions at Protocol 25."
       },
       {
         "class": "B",
-        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md",
-        "note": "class inferred at migration"
+        "ref": "https://github.com/stellar/stellar-protocol/blob/65e2b6262c0825494caf2a94116eb512c8335f22/core/cap-0075.md",
+        "note": "Final CAP-0075 defines two permutation primitives at Protocol 25."
       },
       {
         "class": "B",
-        "ref": "https://github.com/stellar/rs-soroban-env/blob/master/soroban-env-common/env.json",
-        "note": "class inferred at migration"
-      },
-      {
-        "class": "B",
-        "ref": "https://github.com/stellar/stellar-core/blob/master/docs/software/security-protocol-release-notes.md",
-        "note": "class inferred at migration"
+        "ref": "https://github.com/stellar/rs-soroban-env/blob/a7e15b439c4b49b17ba8f9e4527efee8d8119aba/soroban-env-common/env.json",
+        "note": "The shipped environment exposes both CAP-0075 permutations from Protocol 25."
       },
       {
         "class": "A",
         "ref": "https://stellar.org/blog/developers/announcing-stellar-x-ray-protocol-25",
-        "note": "class inferred at migration"
+        "note": "The official X-Ray announcement records the Protocol 25 Mainnet activation."
+      },
+      {
+        "class": "A",
+        "ref": "https://github.com/stellar/stellar-docs/blob/83c68f21c721905327f5db12fb84702e3a48367c/docs/build/apps/zk.mdx",
+        "note": "Current official documentation states that Protocol 25 introduced BN254 and Poseidon/Poseidon2, including both permutation functions."
       }
     ],
     "corroboration": [
@@ -67,63 +67,40 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "A: SDF X-Ray upgrade material",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://stellar.org/blog/developers/announcing-stellar-x-ray-protocol-25",
+            "observedAt": "2026-09-01",
+            "note": "The official announcement records the X-Ray upgrade and activation time."
+          },
+          {
+            "class": "A",
+            "ref": "https://github.com/stellar/stellar-docs/blob/83c68f21c721905327f5db12fb84702e3a48367c/docs/build/apps/zk.mdx",
+            "observedAt": "2026-09-01",
+            "note": "The current official documentation states that Protocol 25 introduced BN254 and Poseidon/Poseidon2. It names poseidon_permutation and poseidon2_permutation."
           },
           {
             "class": "B",
-            "ref": "B: CAP-0074, CAP-0075, stellar-core release notes, and shipped host environment",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://github.com/stellar/stellar-protocol/tree/65e2b6262c0825494caf2a94116eb512c8335f22/core",
+            "observedAt": "2026-09-01",
+            "note": "CAP-0074 and CAP-0075 define the exact functions and Protocol 25 gates."
           }
         ]
-      },
-      {
-        "claim": "Current CAP-0075 internally says P25 in its preamble/function gates but P24 in Backwards Incompatibilities, and specifies a U32Val field selector while the shipped environment uses Symbol values BLS12_381/BN254.",
-        "verdict": "confirmed",
-        "evidence": [
-          {
-            "class": "B",
-            "ref": "B: stellar-protocol fbf05c9d CAP-0075",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
-          },
-          {
-            "class": "B",
-            "ref": "B: rs-soroban-env 1d0a2c6a env.json",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
-          }
-        ],
-        "note": "Legacy verdict: confirmed-current-source-conflict."
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-09-01",
+      "by": "2026-09-01 free-improvements closeout Sol lane",
       "evidence": [
-        "Solo scratchpad 575 GT-31 primary process 3280 and blind process 3282 independently required permutation-versus-hash precision and owner-correct erratum handling.",
-        "2026-07-11 author reproduced both CAP-0075 contradictions from pinned current heads; documentation/API blurring remains separately deduped in sd-021, while the protocol-spec defects are sd-036.",
-        "Preserved main's 2026-07-11 observation date and prior evidence; this rewording does not claim a 2026-07-11 re-observation.",
-        "Independent Fable copy-review report (temporary path, unrecoverable); its claims were re-verified live on 2026-08-29 — see the Live re-check lines.",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        "Structural re-form (symmetric-caution): added a source-specific grading caution for sd-021 and sd-036; the Protocol 25 host-function facts are unchanged.",
-        "Improvements review 2026-08-27: improvements/resolved.json entry sd-021 records the 2026-07-27 Docs fix, and improvements/stellar-docs/sd-036-cap-0075-protocol-version-field-selector-errata.md remains open; the disputed claims are CAP-0075 hash-versus-permutation wording and U32Val-versus-Symbol selector type.",
-        "Sibling sweep 2026-08-27: grep sd-021|sd-036|CAP-0075|poseidon_permutation|U32Val → q-zk-host-functions-status, q-zk-poseidon-input-encoding, q-protocol-bls12-381-cap59; no contradiction",
-        "Structural re-form (long-fact): Shortened two long facts while preserving their sourcing and API distinctions; truth unchanged.",
-        "Live re-check 2026-08-29: https://stellar.org/blog/developers/announcing-stellar-x-ray-protocol-25 — SDF's dated Protocol 25 announcement supplies current official source-supported content and a dated upgrade timeline.",
-        "Live re-check 2026-08-29: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md — CAP-0075 defines exactly two low-level permutation functions and explicitly distinguishes them from complete hash functions.",
-        "Sibling sweep 2026-08-29: grep CAP-0075|poseidon_permutation|turnkey hash|Protocol 25|X-Ray → q-edge-noinfo-stellar-native-privacy-default, q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, q-protocol-validator-upgrade-vote, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-cross-warmancer-zk-stack, q-tool-zk-repo-live, q-zk-host-functions-status, q-zk-proof-systems-stellar; no contradiction."
+        "Class A, observed 2026-09-01: https://stellar.org/blog/developers/announcing-stellar-x-ray-protocol-25 records the Protocol 25 X-Ray activation.",
+        "Class A, observed 2026-09-01: https://github.com/stellar/stellar-docs/blob/83c68f21c721905327f5db12fb84702e3a48367c/docs/build/apps/zk.mdx states that Protocol 25 introduced BN254 and Poseidon/Poseidon2, and names poseidon_permutation and poseidon2_permutation.",
+        "Class B, observed 2026-09-01: https://github.com/stellar/stellar-protocol/blob/65e2b6262c0825494caf2a94116eb512c8335f22/core/cap-0074.md defines the three BN254 functions at Protocol 25.",
+        "Class B, observed 2026-09-01: https://github.com/stellar/stellar-protocol/blob/65e2b6262c0825494caf2a94116eb512c8335f22/core/cap-0075.md defines two low-level permutation functions at Protocol 25.",
+        "Class B, observed 2026-09-01: https://github.com/stellar/rs-soroban-env/blob/a7e15b439c4b49b17ba8f9e4527efee8d8119aba/soroban-env-common/env.json matches the CAP-0075 Protocol 25 interface.",
+        "The former CAP-0075 interface contradictions are fixed. Active sd-048 remains outside this grading contract.",
+        "Sibling sweep 2026-09-01: q-edge-noinfo-stellar-native-privacy-default, q-pc-protocol-26-yardstick, q-protocol-bls12-381-cap59, q-protocol-version-history-list, q-sor-confidential-tokens, q-sor-cross-warmancer-zk-stack, q-tool-zk-repo-live, q-zk-host-functions-status, q-zk-poseidon-input-encoding, and q-zk-proof-systems-stellar preserve the same Protocol 25, low-level primitive, and privacy boundaries; no contradiction."
       ],
       "rootCause": [
-        "Eval-side title-driven hash shorthand.",
-        "improvements/stellar-docs/sd-021-protocol-25-bn254-poseidon-source-errors.md",
-        "improvements/stellar-docs/sd-036-cap-0075-protocol-version-field-selector-errata.md",
-        "eval-authoring",
-        "solo://proj/49/scratchpad/super-corpus-rebuild--585",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "improvements/resolved.json entry sd-021",
+        "improvements/resolved.json entry sd-036"
       ]
     },
     "origin": "raven-next q-protocol-bn254-poseidon-xray"

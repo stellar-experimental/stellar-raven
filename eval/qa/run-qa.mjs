@@ -228,36 +228,29 @@ export function parseJudgePanel(value) {
   return panelSize;
 }
 
-export function parseRequiredBudgetFlag(args, { label = "run-qa" } = {}) {
-  const indexes = args
-    .map((arg, index) => arg === "--max-budget-usd" ? index : -1)
-    .filter((index) => index !== -1);
-  if (indexes.length === 0) throw new Error(`${label} requires --max-budget-usd for every paid run`);
-  if (indexes.length > 1) throw new Error(`${label} accepts --max-budget-usd exactly once`);
-  const value = args[indexes[0] + 1];
-  if (value === undefined || value.startsWith("--")) {
-    throw new Error("--max-budget-usd requires a value");
-  }
-  return parseMaxBudgetUsd(value);
-}
-
-function parseRequiredAgentEnvironmentFlag(args) {
-  const flag = "--expect-agent-environment-sha256";
+function parseRequiredFlagValue(args, flag) {
   if (args.some((arg) => arg.startsWith(`${flag}=`))) {
     throw new Error(`${flag}=<value> is not supported; use ${flag} <value>`);
   }
   const indexes = args
     .map((arg, index) => arg === flag ? index : -1)
     .filter((index) => index !== -1);
-  if (indexes.length === 0) {
-    throw new Error(`run-qa requires ${flag} for every run`);
-  }
+  if (indexes.length === 0) throw new Error(`run-qa requires ${flag} for every paid run`);
   if (indexes.length > 1) throw new Error(`run-qa accepts ${flag} exactly once`);
   const value = args[indexes[0] + 1];
   if (value === undefined || value.startsWith("--")) {
     throw new Error(`${flag} requires a value`);
   }
   return value;
+}
+
+export function parseRequiredBudgetFlag(args) {
+  return parseMaxBudgetUsd(parseRequiredFlagValue(args, "--max-budget-usd"));
+}
+
+function parseRequiredAgentEnvironmentFlag(args) {
+  const flag = "--expect-agent-environment-sha256";
+  return parseRequiredFlagValue(args, flag);
 }
 
 export function parseMaxPanelCases(value) {
@@ -1415,7 +1408,7 @@ async function main() {
   };
   const agentBinary = assertExpectedExecutable(
     executableIdentity("claude"),
-    argVal("--expect-agent-binary-sha256"),
+    parseRequiredFlagValue(args, "--expect-agent-binary-sha256"),
     { label: "Claude CLI" }
   );
   const inheritedAgentEnvironment = assertExpectedAgentEnvironment(
@@ -1482,7 +1475,9 @@ async function main() {
   const stabilityRegister = prepareStabilityRegister();
   const noJudge = args.includes("--no-judge");
   const spendLedger = createSpendLedger(maxBudgetUsd);
-  const serverRevision = assertPinnedServerRevision(argVal("--server-revision"));
+  const serverRevisionArgument = parseRequiredFlagValue(args, "--server-revision");
+  const expectedSurfaceSha256 = parseRequiredFlagValue(args, "--expect-sha256");
+  const serverRevision = assertPinnedServerRevision(serverRevisionArgument);
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
   const casesPath = argVal("--cases") ?? path.join(QA_DIR, "cases.json");
   const plainSurface = loadPlainOperationSurface();
@@ -1519,7 +1514,7 @@ async function main() {
   }
 
   const preflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
-  const surfacePin = assertExpectedSurface(preflightResult.metrics, argVal("--expect-sha256"), {
+  const surfacePin = assertExpectedSurface(preflightResult.metrics, expectedSurfaceSha256, {
     label: "run-qa live MCP surface"
   });
   const sourceRevisionPin = assertExpectedSourceRevision(preflightResult.serverInfo, serverRevision, {
@@ -1720,7 +1715,7 @@ async function main() {
 
   try {
     postflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
-    surfacePinAfter = assertExpectedSurface(postflightResult.metrics, argVal("--expect-sha256"), {
+    surfacePinAfter = assertExpectedSurface(postflightResult.metrics, expectedSurfaceSha256, {
       label: "run-qa final live MCP surface"
     });
     sourceRevisionPinAfter = assertExpectedSourceRevision(postflightResult.serverInfo, serverRevision, {
