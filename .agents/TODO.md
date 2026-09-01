@@ -7,7 +7,7 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-01 after the six-lane remaining-work adversarial audit.
+Updated 2026-09-01 after the free improvements maintenance closeout.
 
 ## Production
 
@@ -30,27 +30,20 @@ needs a separate recorded owner decision and the normal production preflight. Ru
 Done when: the live Worker Version ID and revision are recorded. Then either verify the deployment
 and `/playground` behavior, or record a hold reason and its reopen condition.
 
-## Improvements backlog
+## Improvements follow-up
 
-### Refresh the recorded upstream states
+### Re-check `sd-047` only after PR #2806 merges
 
-The next improvements round must read these refs and record their current states:
+Trigger only when https://github.com/stellar/stellar-docs/pull/2806 merges.
+Do not poll the pull request or post reminder comments.
 
-- `sls-074`: Stellar-Light/stellarlight#1031. The finding is retired. The maintainer owns the close.
-- `sls-080`: Stellar-Light/stellarlight#1134. The finding is `reported-upstream`.
-- `sd-047`: stellar/stellar-docs#2805. The finding is `reported-upstream`.
+After the merge, re-read the cadence sentences in `docs/validators/README.mdx` and
+`docs/learn/fundamentals/stellar-stack.mdx`.
+Record the result against `sd-047` and issue https://github.com/stellar/stellar-docs/issues/2805.
+Use `.agents/rounds/2026-09-01-free-improvements-maintenance.md` as the prior evidence ledger.
 
-Untouched open issues stay quiet. Do not post reminder or status-chasing comments.
-
-Done when: the next improvements round records each state and the related live re-check result.
-
-### Drain the fixed-upstream deletion candidates
-
-`sd-001`, `sd-036`, and `sk-020` are `fixed-upstream`. This status is a transient deletion queue.
-Use the `improvements-pipeline` resolution workflow for each file.
-
-Done when: a distinct reviewer re-runs each trigger, reviews every persistent reference, and the
-resolver records complete receipts in `improvements/resolved.json`.
+Done when: both current sentences agree, or the queue records the remaining contradiction.
+Move `sd-047` only after the normal live verification and lifecycle gates pass.
 
 ## Recovery
 
@@ -62,15 +55,15 @@ The rejected `repository-tooling-recovery-v2` implementation does not ship.
 The v2 collection returned 9 of 12 positives and 0 of 8 premature detours.
 It had 18 of 20 correct answers and 20 of 20 grounded answers.
 
-`sls-080` is `fixed-upstream` at Stellar-Light/stellarlight#1134.
-The deployed API `1.9.16` reading returned `28` at `2026-09-01T19:42:19.933Z`.
+`sls-080` is retired in `improvements/resolved.json`.
+The deployed API `1.9.16` reading returned `28` at `2026-09-01T20:08:07.092Z`.
 Its scanned ref was `82660510ecda7fd365a14d08badb9d85fa22bc32`, whose source value is also `28`.
 
 During each improvements or drift-maintenance round, run one free `scout.explainRepo` reading
 against the existing local Raven server. Ask: “Which Horizon ingestion constant pins the highest
 supported protocol version, and what is its value?” Use repository `stellar/stellar-horizon`.
 Record the returned value, `generatedAt`, `scannedRef`, and `answerSource` in the current round ledger.
-After retirement, cite the `sls-080` receipt in `improvements/resolved.json` as the durable finding record.
+Use the `sls-080` receipt in `improvements/resolved.json` as the durable finding record.
 
 The freshness blocker clears only when the DeepWiki answer equals the source value at the
 response's own `scannedRef`. The current source value is `28`; the match rule is not a permanent

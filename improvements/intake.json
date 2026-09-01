@@ -108,10 +108,6 @@
       "repo": "lumenloop/lumenloop-backend",
       "reason": "list_documents query-parameter validation is API behavior, not a committed directory record."
     },
-    "sd-001": {
-      "repo": "stellar/stellar-docs",
-      "reason": "Reclassified 2026-08-25 from ranking to a crawler defect, then fixed directly rather than filed. /docs/networks/software-versions exceeded the crawler's 750-record page cap and was dropped whole; the extractor now degrades to heading granularity above the cap. Kept as the routing record in case a successor finding needs the same owner."
-    },
     "sd-003": {
       "repo": "stellar/stellar-docs",
       "reason": "API reference content/indexability."
@@ -151,10 +147,6 @@
     "sd-035": {
       "repo": "stellar/stellar-docs",
       "reason": "The Wallets Kit docs retain a v1 API and an @^1-pinned npm @creit.tech install; the v2 migration uses JSR @creit-tech/stellar-wallets-kit and static initialization."
-    },
-    "sd-036": {
-      "repo": "stellar/stellar-protocol",
-      "reason": "CAP-0075's protocol-version and field-selector contradictions are owned by the normative stellar-protocol source, distinct from sd-021's Stellar Docs errors."
     },
     "sd-037": {
       "repo": "stellar/stellar-protocol",

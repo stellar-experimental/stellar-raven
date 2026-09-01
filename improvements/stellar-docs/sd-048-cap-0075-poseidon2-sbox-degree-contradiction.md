@@ -1,7 +1,7 @@
 ---
 id: sd-048
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-09-01
 upstreamTitle: CAP-0075 lists unsupported Poseidon2 S-box degrees
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - 2026-09-01 ABI check at stellar/rs-soroban-env commit a7e15b439c4b49b17ba8f9e4527efee8d8119aba found that soroban-env-common/env.json line 2725 documents degree 5 for BLS12_381 and BN254
   - 2026-09-01 host check at stellar/rs-soroban-env commit a7e15b439c4b49b17ba8f9e4527efee8d8119aba found SUPPORTED_SBOX_DEGREES = [5] in soroban-env-host/src/crypto/poseidon/mod.rs and an unsupported-degree error in poseidon2_params.rs
   - independent residual review in .agents/rounds/2026-09-01-free-improvements-maintenance/opus-deletion-review.md
+  - upstream issue filed 2026-09-01: https://github.com/stellar/stellar-protocol/issues/2010
 ---
 
 ## Finding

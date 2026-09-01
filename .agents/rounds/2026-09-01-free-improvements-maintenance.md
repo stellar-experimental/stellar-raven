@@ -73,24 +73,24 @@ Untouched upstream issues stay quiet.
 | finding | trigger evidence | upstream ref | ref state | PR checks/reviews | live re-check | action |
 |---|---|---|---|---|---|---|
 | `sls-074` | resolved record; exact audit identifier and absent control | `Stellar-Light/stellarlight#1031` | open; no close reason | no linked work; only Raven's 2026-08-28 resolution comment | 2026-09-01 orchestrator recheck below: `V-SOR-APP-VUL-003` returns the Veridise row without `exactMiss`; `V-SOR-APP-VUL-999` retains `exactMiss` | Keep quiet; the maintainer owns closure. |
-| `sls-080` | exact Horizon source-parity question | `Stellar-Light/stellarlight#1134` | closed completed | PR #1136 and follow-up PR #1174 merged | 2026-09-01: answer and source at `82660510ecda7fd365a14d08badb9d85fa22bc32` both equal `28` | Independent lifecycle review pending. |
+| `sls-080` | exact Horizon source-parity question | `Stellar-Light/stellarlight#1134` | closed completed | PR #1136 and follow-up PR #1174 merged | 2026-09-01: answer and source at `82660510ecda7fd365a14d08badb9d85fa22bc32` both equal `28` | Retired with a complete receipt. |
 | `sd-047` | current raw cadence sentences | `stellar/stellar-docs#2805` | open; no close reason | PR #2806 remains open | 2026-09-01: Validators still says 3-5 seconds; Stellar Stack still says 5-7 seconds | Retain and record recurrence. |
 
 ## Deletion candidates
 
 | finding | author live recheck | independent review | persistent references | upstream comment | resolver receipt |
 |---|---|---|---|---|---|
-| `sd-001` | PASS; settled full reindex and controls hold | Opus 5 high: PASS | harness and README cleanup complete; intake removal waits for the resolver | not applicable; never filed | gated; do not run yet |
-| `sd-036` | PASS for the named field-selector defect | Opus 5 high: SUCCESSOR | `sd-048` added; golden reconciliation remains gated | required on issue #1980 | gated; do not run yet |
-| `sk-020` | PASS; upstream source and deployed skill use `stellardev` | Opus 5 high: PASS | no active non-generated cleanup identified | required on issue #113 | gated; do not run yet |
-| `sls-080` | PASS; source parity holds | Grok 4.6 high: DEFER | recovery home moved in `TODO.md`; `NEXT.md` remains gated | required on issue #1134 | status is `fixed-upstream`; comment, public snapshot, and resolver remain gated |
+| `sd-001` | PASS; settled full reindex and controls hold | Opus 5 high: PASS | harness, README, and intake cleanup complete | not applicable; never filed | `improvements/resolved.json` entry `sd-001` |
+| `sd-036` | PASS for the named field-selector defect | Opus 5 high: SUCCESSOR | `sd-048` filed; golden and references reconciled | posted and read back on issue #1980 | `improvements/resolved.json` entry `sd-036` |
+| `sk-020` | PASS; upstream source and deployed skill use `stellardev` | Opus 5 high: PASS | no active non-generated cleanup remains | posted and read back on issue #113 | `improvements/resolved.json` entry `sk-020` |
+| `sls-080` | PASS; source parity holds | Grok 4.6 high: PASS after final gates | recovery cites the resolved receipt | posted and read back on issue #1134 | `improvements/resolved.json` entry `sls-080` |
 
 ## Reviewer outcomes
 
 - Opus 5 high approved later retirement for `sd-001` and `sk-020`.
 - Opus 5 high required successor `sd-048` before later `sd-036` retirement.
-- Grok 4.6 high confirmed the live `sls-080` fix and deferred retirement.
-- The `sls-080` comment, public snapshot, `NEXT.md`, and resolver still block retirement.
+- Grok 4.6 high confirmed the live `sls-080` fix and initially deferred retirement.
+- The later comment, public snapshot, queue update, and resolver cleared the remaining gates.
 - Fable 5 high found two medium record-truth issues and six lower findings in the safe preflight.
 - This round reconciled F1 through F8 before the safe checkpoint.
 
@@ -108,7 +108,7 @@ This recheck supports the ledger row and does not justify another upstream comme
 - Added successor `sd-048` with pinned CAP, ABI, and host evidence. The gated closeout changed it to `verified`.
 - Added the `sd-048` intake override for `stellar/stellar-protocol`.
 - Replaced the obsolete `sd-001` meeting target with a monitor-only rank-one canary.
-- Recorded `sd-001` as fixed pending retirement in `improvements/README.md`.
+- At this phase, `improvements/README.md` still described `sd-001` as fixed pending retirement.
 
 ## Gated local closeout implementation
 
@@ -136,8 +136,8 @@ It removed the obsolete Protocol 24 and `U32Val` claims.
 It removed the stale `sd-036` grading caution and contradiction row.
 It preserved the Protocol 25, CAP-0074, CAP-0075, permutation, helper-name, and privacy facts.
 It set `truth.asOf` to `2026-09-01` and refreshed source classes A and B.
-Its root causes name `sd-021` and `sd-036` receipts plus active `sd-048`.
-The separate Poseidon2 degree defect does not enter the grading contract.
+Its root causes name the `sd-021` and `sd-036` receipts.
+Its evidence cross-references active `sd-048` outside the grading contract.
 
 The focused follow-up added the pinned current Stellar Docs page as class A evidence.
 The command `gh api 'repos/stellar/stellar-docs/contents/docs/build/apps/zk.mdx?ref=83c68f21c721905327f5db12fb84702e3a48367c' -H 'Accept: application/vnd.github.raw+json' | nl -ba | sed -n '1,220p'` verified it.
@@ -165,56 +165,86 @@ No sibling retains the obsolete `U32Val` or `sd-036` grading claim.
 
 ### Local lifecycle preparation
 
-- Changed `sd-048` from `proposed` to `verified`. No issue was filed.
+- This phase changed `sd-048` from `proposed` to `verified` before issue #2010 was filed.
 - Changed `sls-080` from `reported-upstream` to `fixed-upstream` with deployed evidence.
 - Updated only the `sls-080` recovery section in `.agents/TODO.md`.
 - Moved future evidence into the round ledger and eventual resolved receipt.
 - Preserved the monitor, cadence, thresholds, evidence fields, and spend gate.
 - Kept `sls-082` reserved for a later distinct defect.
-- Did not edit `.agents/NEXT.md`.
+- This phase did not edit `.agents/NEXT.md`; the later resolution closeout rewrote it.
 
-## Remaining gated actions
+## Resolution closeout
 
-1. Do not make another lifecycle change until a later authorized lane starts.
-2. The `sd-036` golden is locally reconciled. Its final receipt still requires the later resolver lane.
-3. Do not edit `.agents/NEXT.md` until the authorized resolution lane starts.
-4. Post and read back the required resolution comments before any applicable resolver run.
-5. Keep `sd-048` verified until an authorized filing lane reviews and files it.
-6. Run each resolver only after all finding-specific bars pass.
-7. Run the separate final-diff review before round closeout.
+### Filed successor and resolution comments
+
+- `sd-048`: https://github.com/stellar/stellar-protocol/issues/2010
+- `sd-036`: https://github.com/stellar/stellar-protocol/issues/1980#issuecomment-5499757126
+- `sk-020`: https://github.com/stellar/stellar-dev-skill/issues/113#issuecomment-5499760587
+- `sls-080`: https://github.com/Stellar-Light/stellarlight/issues/1134#issuecomment-5499763507
+
+All three resolution comments were posted and read back.
+This queue closeout posted no new comment.
+
+### Resolver receipts
+
+| finding | receipt | source commit | result |
+|---|---|---|---|
+| `sd-001` | `improvements/resolved.json` entry `sd-001` | `5e23340be0da63630f86e662f010219cf0458eef` | Retired after the settled reindex and control checks passed. |
+| `sd-036` | `improvements/resolved.json` entry `sd-036` | `5e23340be0da63630f86e662f010219cf0458eef` | Retired after `sd-048` preserved the distinct residual defect. |
+| `sk-020` | `improvements/resolved.json` entry `sk-020` | `462ff2b1976040d9d04097981f71ae8970f1439c` | Retired after source and deployed skill checks passed. |
+| `sls-080` | `improvements/resolved.json` entry `sls-080` | `9074093d4686cb34a05371b5a21a4b6c83aa80f2` | Retired after deployed source parity and the final comment gate passed. |
+
+### Fresh `sls-080` reading
+
+The exact monitor question returned `MaxSupportedProtocolVersion = 28`.
+It returned `answerSource: knowledge-note`.
+It returned `answerAsOf: 2026-09-01T00:00:00Z`.
+It returned `generatedAt: 2026-09-01T20:08:07.092Z`.
+It returned `scannedRef: 82660510ecda7fd365a14d08badb9d85fa22bc32`.
+The source at that ref defines `MaxSupportedProtocolVersion uint32 = 28`.
+
+### Active queue and final handoff
+
+The active queue contains 66 findings.
+It contains 60 `reported-upstream`, three `proposed`, and three `declined-upstream` findings.
+No `fixed-upstream` deletion candidate remains.
+The active service counts are 29 Lumenloop, 21 Stellar Docs, nine Stellar Light, six skills, and one provider finding.
+
+The completed Improvements backlog items were removed from `.agents/TODO.md`.
+The recovery monitor now cites the retired `sls-080` receipt.
+Its monitor, cadence, thresholds, evidence requirements, and spend gate did not change.
+`sls-082` remains reserved for a distinct future Scout defect.
+
+`.agents/NEXT.md` now records no unconditional agent-actionable block.
+The production and Raven capability choices remain owner-blocked.
+The paired, recovery, protocol-history, `sources.locate`, Friendbot, and short-token programs remain conditional.
+The queue-documentation phase made no additional finding lifecycle change.
+
+## Remaining gates
+
+1. Keep `sd-048` active at issue #2010 until a later verified fix clears its lifecycle gates.
+2. Keep `sd-047` active at issue #2805 while the cadence conflict remains.
+3. Keep issue #1031 quiet. The maintainer owns its close.
+4. Require the recorded owner decisions before production or paid work.
+5. Fire conditional programs only through their recorded triggers.
 
 ## Validation
 
-- Source check `gh api 'repos/stellar/stellar-docs/contents/docs/build/apps/zk.mdx?ref=83c68f21c721905327f5db12fb84702e3a48367c' -H 'Accept: application/vnd.github.raw+json' | nl -ba | sed -n '1,220p'`: PASS.
-- The source check found the introduction claim at line 6 and both function names at lines 41-42.
-- Focused follow-up `npm run eval:qa:compile`: PASS; 500 cases, corpus SHA-256 `4f9b5017d6ee1efbd18c542873b0bfdf5dbd330d102112187cff83e0ab964cef`.
-- Focused follow-up `npm run eval:qa:register`: reopened clusters 007, 008, 047, 110, and 117 after the truth hash changed.
-- The lane confirmed that the answer, key facts, avoid clauses, and notes did not change.
-- The lane reconciled all five clusters as `consistent`.
-- The final `npm run eval:qa:register`: PASS; up to date with 0 reopened clusters.
-- Focused follow-up `npm run eval:qa:lint -- --since 23982548b7b67a1931c61f2d02a04d8a386f6b5c`: PASS; 0 errors and 62 warnings.
-- Focused follow-up `npm run improvements:lint`: PASS; `improvements lint ok (70 findings)`.
-- Focused follow-up `git diff --check`: PASS.
-- Gated closeout `npm run eval:qa:compile`: PASS; 500 cases, corpus SHA-256 `e14fb81b539163f8a8dae0448c58c39c205f37fdeeeba3eb931a0d6ecb120dbe`.
-- Gated closeout `npm run eval:qa:register`: reopened clusters 007, 008, 047, 110, and 117 after the case hash changed.
-- The lane reviewed and reconciled all five clusters as `consistent`.
-- The second `npm run eval:qa:register`: PASS; up to date with 0 reopened clusters.
-- `npm run eval:qa:lint -- --since 23982548b7b67a1931c61f2d02a04d8a386f6b5c`: PASS; 0 errors and 62 warnings.
-- The new warning names active `sd-048` without a grading caution. This is intentional because its degree claim stays outside the grading contract.
-- Gated closeout `npm run improvements:index`: PASS; wrote 70 findings.
-- Gated closeout `npm run improvements:lint`: PASS; `improvements lint ok (70 findings)`.
-- Gated closeout `git diff --check`: PASS.
-- Generated review: only `q-protocol-bn254-poseidon-xray` changed in `cases.json`.
-- Generated review: `sample.json` changed only its corpus hash.
-- Generated review: `lifecycle-registry.json` changed only the affected case hash.
-- Generated review: `INDEX.md` changed only the `sd-048` and `sls-080` status rows.
-- `npm run improvements:index`: PASS; wrote `improvements/INDEX.md` with 70 findings.
-- `npm run improvements:lint`: PASS; `improvements lint ok (70 findings)`.
-- `node scripts/eval-algolia-raven.mjs --self-test`: PASS; 14 controls.
-- `npm run eval:algolia-raven`: PASS; the `sd-001` monitor target ranked first with rules enabled and disabled.
-- `npm run typegen && npm run typecheck`: PASS; type generation reported a non-fatal Wrangler log-file permission warning.
-- `npm test`: PASS; 99 files and 1,588 tests passed.
-- `npm run build`: PASS; the Wrangler dry run completed.
-- `npm run improvements:lint -- --live`: pending.
-- `npm run improvements:probes`: pending.
-- `npm run secrets:scan -- --tree`: pending.
+| command | final result |
+|---|---|
+| `npm run eval:qa:compile` | PASS; 500 cases; corpus SHA-256 `0393e7bef6b8bea9e519fbdf11d65fa4a7d32ea2ea803f469c0ac8bd78857ad7`. |
+| `npm run eval:qa:register` | PASS; up to date with 0 reopened clusters. |
+| `npm run eval:qa:lint -- --since 23982548b7b67a1931c61f2d02a04d8a386f6b5c` | PASS; 0 errors and 62 warnings. |
+| `npm run improvements:index` | PASS; wrote 66 findings. |
+| `npm run improvements:lint` | PASS; `improvements lint ok (66 findings)`. |
+| `npm run improvements:lint -- --live` | PASS; `improvements lint ok (66 findings, live intake checked)`. |
+| `npm run improvements:probes` | PASS; 6 recurring, 0 fixed-candidate, 0 inconclusive, and 0 errors. |
+| `node scripts/eval-algolia-raven.mjs --self-test` | PASS; 14 controls. |
+| `npm test` | PASS; 99 files and 1,588 tests. |
+| `npm run typecheck` | PASS. |
+| `npm run build` | PASS; Wrangler dry-run build completed. |
+| `npm run secrets:scan -- --tree` | PASS; no leaks found. |
+| `git diff --check` | PASS. |
+
+The `q-protocol-bn254-poseidon-xray` symmetric-caution warning preserves resolved `sd-036` provenance.
+The current canonical source agrees with the golden, so the removed grading caution must not return.

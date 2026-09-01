@@ -138,7 +138,7 @@ is now directly remediable with the operator Algolia credentials in `.env`
   stay **upstream** on `stellar/stellar-docs`. Do not "fix" them by rewriting index records; the
   crawler would overwrite it and we would be diverging a shared corpus from its source.
 - **Search-mechanism gaps** — ranking, tokenization, synonym/vocabulary, or crawler-config issues
-  (`sd-003`; `sd-006` is a resolved precedent, and `sd-001` is fixed pending retirement). These we *can* now remediate directly (a general rule/synonym, an
+  (`sd-003`; `sd-001` and `sd-006` are resolved precedents). These we *can* now remediate directly (a general rule/synonym, an
   index-settings change, a crawler-config fix + reindex), subject to a hard bar:
   - a **general mechanism only** — no per-page/per-query rules or synonyms (same anti-overfitting
     rule the eval loop enforces);

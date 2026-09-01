@@ -16,6 +16,20 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/29557089d9a315aeeff2ae9f5b01bf201e55aed1/improvements/lumenloop/ll-021-scf-43-recap-discoverability.md"
     },
     {
+      "id": "sd-001",
+      "title": "The Stellar Docs crawler dropped /docs/networks/software-versions because its 1,319 extracted records exceeded the 750-record page cap",
+      "service": "stellar-docs",
+      "discovered": "2026-07-03",
+      "resolved": "2026-09-01",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [],
+      "resolvingRefs": [],
+      "liveRecheck": "2026-09-01T18:26:25Z live Algolia recheck on the settled index: full reindex 2026-09-01T12:00:01.677Z-12:04:05.299Z (crawler 79c5d36e, stats/urls shows 660 DONE and no extracted_too_many_records bucket); both crawler_Stellar Docs - Docusaurus and docs_replica_agent hold 14,761 entries at updatedAt 2026-09-01T12:04:00.150Z; Protocol 22/23/24/24 release/25/26/27/28 and 'software versions' each rank a /docs/networks/software-versions anchor #1 in both indexes; controls 'brew install stellar-cli', 'publish event contract events', 'fee bump transaction inner outer envelope' hold #1 in both and 'stellar cli install command' holds #1 on the primary Raven queries; residual natural-language and table-cell misses persist as the recorded accepted trade-off",
+      "reviewEvidence": "Distinct reviewer Opus 5 high (pane w1H:p3), 2026-09-01: re-derived the fix without the author transcript; cleared the 2026-08-25 DO-NOT-RETIRE blockers 2 (settled full reindex) and 3 (reference cleanup); confirmed blocker 1 is the own-repo routing gap already tracked in .agents/TODO.md and not an upstream defect; verified the replica's rank-5 install-cli result equals the primary rules-disabled control and Raven serves the primary index only; scanned residuals and found no successor warranted",
+      "sourceCommit": "5e23340be0da63630f86e662f010219cf0458eef",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/5e23340be0da63630f86e662f010219cf0458eef/improvements/stellar-docs/sd-001-protocol-n-vs-sep-n-tokenization.md"
+    },
+    {
       "id": "sd-002",
       "title": "Operation-level protocol vocabulary is under-represented in the docs search surface relative to how users phrase questions. Terms in the…",
       "service": "stellar-docs",
@@ -497,6 +511,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/bb8731b3e09ac56fe0a2429e56beb583b84158b3/improvements/stellar-docs/sd-033-python-sdk-rpc-capability-omitted.md"
     },
     {
+      "id": "sd-036",
+      "title": "Fix CAP-0075 protocol-version and field-selector contradictions",
+      "service": "stellar-docs",
+      "discovered": "2026-07-11",
+      "resolved": "2026-09-01",
+      "repo": "stellar/stellar-protocol",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-protocol/issues/1980",
+        "https://github.com/stellar/stellar-protocol/pull/1996"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-protocol/pull/1996"
+      ],
+      "liveRecheck": "2026-09-01 source recheck of stellar/stellar-protocol core/cap-0075.md on main: both interface blocks declare field: Symbol (lines 52, 69), both docs strings name BLS12_381/BN254, both keep min_supported_protocol 25, no Protocol 24 string remains, and Semantics states the field parameter is a Symbol; cross-checked against stellar/rs-soroban-env main soroban-env-common/env.json lines 2696-2726 where both permutations declare field: Symbol at min_supported_protocol 25. Issue 1980 closed completed 2026-08-20T16:31:15Z by merged PR 1996 (merge commit d186cf3187722ebcdbd647e782449e543f9d0ef3). Residual S-box-degree erratum in the same block carried to successor sd-048.",
+      "reviewEvidence": "Distinct reviewer Opus 5 high (pane w1H:p3), 2026-09-01: independently fetched the CAP and env.json; read issue 1980 and PR 1996; found the residual Poseidon2 degree conflict and required successor sd-048; filed successor https://github.com/stellar/stellar-protocol/issues/2010; reconciled q-protocol-bn254-poseidon-xray and generated corpus; posted and read back resolution comment https://github.com/stellar/stellar-protocol/issues/1980#issuecomment-5499757126 on issue 1980 only; did not comment on third-party PR 1996",
+      "sourceCommit": "5e23340be0da63630f86e662f010219cf0458eef",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/5e23340be0da63630f86e662f010219cf0458eef/improvements/stellar-docs/sd-036-cap-0075-protocol-version-field-selector-errata.md"
+    },
+    {
       "id": "sd-038",
       "title": "The StellarAssetInterface doc-comments in soroban-sdk/src/token.rs describe pre-CAP-67 Stellar Asset Contract event shapes. CAP-0067…",
       "service": "stellar-docs",
@@ -764,6 +797,27 @@
       "reviewEvidence": "Grok 4.6 process 4832, Solo todo 1769 comment 4641; root read the full changed skill selection and reproduced the pre-existing feedback exposure debt.",
       "sourceCommit": "9e277702fd5f70a18cdc7c4d5f9bda0127461644",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/9e277702fd5f70a18cdc7c4d5f9bda0127461644/improvements/skills/sk-018-stellar-scout-api-reference-composite-endpoint-drift.md"
+    },
+    {
+      "id": "sk-020",
+      "title": "The standards skill told agents that the Stellar Developers Discord is https://discord.gg/stellar. That vanity code does not belong to…",
+      "service": "skills",
+      "discovered": "2026-08-25",
+      "resolved": "2026-09-01",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar/ecosystem-resources/issues/9",
+        "https://github.com/stellar/stellar-dev-skill/issues/113",
+        "https://github.com/stellar/stellar-dev-skill/pull/114"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/113",
+        "https://github.com/stellar/stellar-dev-skill/pull/114"
+      ],
+      "liveRecheck": "2026-09-01 production skill.read against raven.stellar.org returns '- [Stellar Developers Discord](https://discord.gg/stellardev)' for skills.stellar-dev.standards file:resources.md, served from pin b78983c92330d81943fa99cdaee4e4a52e85eba3; raw main confirms stellar-dev-skill skills/standards/resources.md:233 and README.md:126 plus ecosystem-resources learning/README.md:181 all read discord.gg/stellardev; a discord.gg/stellar([^A-Za-z0-9]|$) sweep across all four pinned skill trees (b78983c9, d92c56bd, 6f215af6, d25b9f6b) returns no stale match",
+      "reviewEvidence": "Distinct reviewer Opus 5 high (pane w1H:p3), 2026-09-01: independently fetched all three upstream files and read issue 113, PR 114, and ecosystem-resources issue 9; confirmed the deployed production skill.read result; swept all four pinned skill trees and found no residual; ecosystem-resources#9 is a separate closed defect and received no comment; posted and read back resolution comment https://github.com/stellar/stellar-dev-skill/issues/113#issuecomment-5499760587 on stellar-dev-skill#113 only; did not comment on PR 114",
+      "sourceCommit": "462ff2b1976040d9d04097981f71ae8970f1439c",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/462ff2b1976040d9d04097981f71ae8970f1439c/improvements/skills/sk-020-standards-skill-stale-discord-vanity.md"
     },
     {
       "id": "sls-001",
@@ -2038,6 +2092,29 @@
       "reviewEvidence": "Lane C distinct read-only reviewer 2026-08-28 re-ran trigger/control and verified issue 1055 closed-completed and PR 1056 merged 2a85c1b resolution posted and read back 2026-08-28: https://github.com/Stellar-Light/stellarlight/issues/1055#issuecomment-5455031036",
       "sourceCommit": "e8dbf9972068b2affa65bdeef9fc195ab702a2b9",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e8dbf9972068b2affa65bdeef9fc195ab702a2b9/improvements/stellar-light-scout/sls-076-project-search-strict-spelling-neighbor.md"
+    },
+    {
+      "id": "sls-080",
+      "title": "Date DeepWiki answers separately from scanned repository content",
+      "service": "stellar-light-scout",
+      "discovered": "2026-08-30",
+      "resolved": "2026-09-01",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1134",
+        "https://github.com/Stellar-Light/stellarlight/pull/1174"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1134",
+        "https://github.com/Stellar-Light/stellarlight/pull/1136",
+        "https://github.com/Stellar-Light/stellarlight/pull/1163",
+        "https://github.com/Stellar-Light/stellarlight/pull/1168",
+        "https://github.com/Stellar-Light/stellarlight/pull/1174"
+      ],
+      "liveRecheck": "2026-09-01 POST http://localhost:8787/mcp execute scout.explainRepo repo=stellar/stellar-horizon q='Which Horizon ingestion constant pins the highest supported protocol version, and what is its value?' returned MaxSupportedProtocolVersion = 28, answerSource=knowledge-note, answerAsOf=2026-09-01T00:00:00Z, generatedAt=2026-09-01T20:08:07.092Z, scannedRef=82660510ecda7fd365a14d08badb9d85fa22bc32; source at that ref defines MaxSupportedProtocolVersion uint32 = 28",
+      "reviewEvidence": "Independent Grok 4.6 deletion review 2026-09-01: .agents/rounds/2026-09-01-free-improvements-maintenance/grok-sls080-review.md; live Raven execute plus source read at scannedRef; fixed-state blob a8dafc22962088295bf138ac204e087b62b3fb00 is public in commit 9074093d4686cb34a05371b5a21a4b6c83aa80f2; posted and read back resolution comment https://github.com/Stellar-Light/stellarlight/issues/1134#issuecomment-5499763507 on issue 1134 only; adjacent defects remain out of scope for sls-080",
+      "sourceCommit": "9074093d4686cb34a05371b5a21a4b6c83aa80f2",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/9074093d4686cb34a05371b5a21a4b6c83aa80f2/improvements/stellar-light-scout/sls-080-explain-repo-deepwiki-answer-freshness.md"
     }
   ]
 }

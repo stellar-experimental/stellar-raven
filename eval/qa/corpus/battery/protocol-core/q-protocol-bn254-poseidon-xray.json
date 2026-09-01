@@ -18,7 +18,7 @@
       "Do NOT claim these primitives create on-by-default privacy.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "GT-31 CORRECTION: Protocol 25 activated on 2026-01-22. CAP-0074 has exactly three BN254 functions. CAP-0075 exposes two configurable permutations, not turnkey hash helpers."
+    "notes": "Protocol 25 activated on 2026-01-22. CAP-0074 has exactly three BN254 functions. CAP-0075 exposes two configurable permutations, not turnkey hash helpers."
   },
   "tags": {
     "category": "protocol-core",
@@ -100,8 +100,7 @@
       ],
       "rootCause": [
         "improvements/resolved.json entry sd-021",
-        "improvements/resolved.json entry sd-036",
-        "improvements/stellar-docs/sd-048-cap-0075-poseidon2-sbox-degree-contradiction.md"
+        "improvements/resolved.json entry sd-036"
       ]
     },
     "origin": "raven-next q-protocol-bn254-poseidon-xray"
