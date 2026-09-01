@@ -274,9 +274,9 @@ Compute `AGENT_ENVIRONMENT_SHA256` after every Claude-related environment variab
 value. Use the same shell for the identity command and the paid run. The command emits only the
 SHA-256. It does not emit environment values.
 
-Every `run-qa.mjs` mode requires exactly one
-`--expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"` pair. This includes
-`--judge-stored`. Do not use the `--expect-agent-environment-sha256=<hash>` form.
+Every `run-qa.mjs` mode requires exactly one budget, binary, and environment pair.
+This includes `--judge-stored`. Collection also requires one server-revision pair and one
+surface-SHA-256 pair. Do not use the `--flag=value` form for any required pair.
 
 The QA runner starts each answering agent in a temporary directory outside the repository.
 It uses `--setting-sources ""`, `--disable-slash-commands`, and `--strict-mcp-config`.

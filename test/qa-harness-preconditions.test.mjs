@@ -547,6 +547,53 @@ printf '%s\\n' '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correc
 }
 
 describe("P3 — run-qa CLI pins the inherited agent environment", () => {
+  it.each([
+    ["duplicate", ["--expect-agent-binary-sha256", "0".repeat(64)], /accepts --expect-agent-binary-sha256 exactly once/],
+    ["equals form", [`--expect-agent-binary-sha256=${"0".repeat(64)}`], /=<value> is not supported/]
+  ])("fails before a paid call when the binary pin uses the %s form", (name, binaryArgs, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, `binary-${name}`);
+      const result = fixture.run(resultsPath, [
+        ...binaryArgs,
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["server revision duplicate", ["--server-revision", "0".repeat(40)], /accepts --server-revision exactly once/],
+    ["server revision equals form", [`--server-revision=${"0".repeat(40)}`], /server-revision=<value> is not supported/],
+    ["surface duplicate", ["--expect-sha256", "0".repeat(64)], /accepts --expect-sha256 exactly once/],
+    ["surface equals form", [`--expect-sha256=${"0".repeat(64)}`], /expect-sha256=<value> is not supported/]
+  ])("fails before a paid call when the collection pin uses the %s", (name, pinArgs, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const result = fixture.runCollection([
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        "--server-revision",
+        "0".repeat(40),
+        "--expect-sha256",
+        "0".repeat(64),
+        ...pinArgs
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
   it("accepts a matching pin and stamps the judge environment identity", () => {
     const fixture = createEnvironmentPinCliFixture();
     try {
@@ -572,6 +619,7 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
     ["absent", [], /requires --expect-agent-environment-sha256/],
     ["mismatch", ["--expect-agent-environment-sha256", "0".repeat(64)], /refusing paid calls/],
     ["malformed", ["--expect-agent-environment-sha256", "not-a-sha256"], /64-character lowercase SHA-256/],
+    ["uppercase", ["--expect-agent-environment-sha256", "A".repeat(64)], /64-character lowercase SHA-256/],
     ["missing", ["--expect-agent-environment-sha256"], /requires a value/],
     [
       "duplicate",

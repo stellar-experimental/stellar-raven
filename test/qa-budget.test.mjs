@@ -132,6 +132,7 @@ describe("QA sequential budget", () => {
     expect(() => parseRequiredBudgetFlag([
       "--max-budget-usd", "1", "--max-budget-usd", "2"
     ])).toThrow(/exactly once/);
+    expect(() => parseRequiredBudgetFlag(["--max-budget-usd=1"])).toThrow(/=<value> is not supported/);
 
     expect(() => parseRejudgeArgs(["source.json", "--ids", "one"])).toThrow(/requires --max-budget-usd/);
     expect(parseRejudgeArgs(["source.json", "--ids", "one", "--dry-run"]).maxBudgetUsd).toBeNull();

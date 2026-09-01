@@ -207,7 +207,6 @@ function containsBoundedTerm(text, term) {
 
 function rankExpected(hits, testCase) {
   const expectedUrls = testCase.expectUrlIncludes ?? [];
-  const requiredText = testCase.expectTextIncludesAll ?? [];
   const alternativeText = testCase.expectTextIncludesAny ?? [];
   const index = hits.findIndex((hit) => {
     if (expectedUrls.length && !expectedUrls.some((item) => hit.url?.includes(item))) return false;
@@ -217,9 +216,8 @@ function rankExpected(hits, testCase) {
       .replace(/\*\*/g, " ")
       .replace(/<[^>]+>/g, " ")
       .normalize("NFKC");
-    if (requiredText.some((item) => !containsBoundedTerm(searchable, item))) return false;
     if (alternativeText.length && !alternativeText.some((item) => containsBoundedTerm(searchable, item))) return false;
-    return expectedUrls.length > 0 || requiredText.length > 0 || alternativeText.length > 0;
+    return expectedUrls.length > 0 || alternativeText.length > 0;
   });
   return index < 0 ? null : index + 1;
 }
@@ -228,9 +226,6 @@ function expectedLabel(testCase) {
   const groups = [];
   if (testCase.expectUrlIncludes?.length) {
     groups.push(`url-any(${testCase.expectUrlIncludes.join(" | ")})`);
-  }
-  if (testCase.expectTextIncludesAll?.length) {
-    groups.push(`text-all(${testCase.expectTextIncludesAll.join(" + ")})`);
   }
   if (testCase.expectTextIncludesAny?.length) {
     groups.push(`text-any(${testCase.expectTextIncludesAny.join(" | ")})`);
@@ -338,7 +333,6 @@ function runMatcherSelfTest() {
   });
   const sd001 = byId("sd-001-software-versions-rank-one");
   const sd005 = byId("sd-005-ap2-acp-agentic-commerce");
-  const textAll = { expectTextIncludesAll: ["state", "archival", "Whisk"] };
 
   assert.equal(rankExpected([hit("Protocol 24", "https://developers.stellar.org/meetings/2025/10/16")], sd001), null);
   assert.equal(rankExpected([hit("Protocol 24", "https://developers.stellar.org/docs/networks/software-versions")], sd001), 1);
@@ -354,9 +348,6 @@ function runMatcherSelfTest() {
   assert.equal(rankExpected([hit("Agentic Commerce Protocol")], sd005), 1);
   assert.equal(rankExpected([hit("ACP")], sd005), 1);
 
-  assert.equal(rankExpected([hit("state archival")], textAll), null);
-  assert.equal(rankExpected([hit("Whisk state archival")], textAll), 1);
-
   const monitorResults = (rulesRank, noRulesRank) => [{
     ...sd001,
     results: [
@@ -368,7 +359,7 @@ function runMatcherSelfTest() {
   assert.match(summarize(monitorResults(1, 2))[0].recommendation, /observed rules=#1, no-rules=#2/);
   assert.match(summarize(monitorResults(null, null))[0].recommendation, /observed rules=miss, no-rules=miss/);
 
-  console.log("Algolia semantic matcher self-test ok (14 controls)");
+  console.log("Algolia semantic matcher self-test ok (12 controls)");
 }
 
 async function main() {

@@ -186,10 +186,12 @@ before spending. The runner checks the listener, revision, clean state, compiled
 and surface again after collection. It rejects a comparison if these values change.
 It still writes the paid rows. It marks the artifact as non-comparable and suppresses aggregates.
 
-Every `run-qa.mjs` mode requires the environment flag exactly once as two arguments. The runner
-rejects an absent, duplicate, missing, malformed, mismatched, or equals-form flag before an
-answering-agent or judge call. Compute the value after all Claude-related environment variables
-have their final values. Use the same shell for this command and the paid run:
+Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as two
+arguments. Collection also requires the server revision and surface SHA-256 flags in that form.
+The runner rejects an absent, duplicate, missing, malformed, mismatched, or equals-form required
+flag before an answering-agent or judge call. Compute the environment value after all
+Claude-related environment variables have their final values. Use the same shell for this command
+and the paid run:
 
 ```sh
 AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')

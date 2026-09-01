@@ -30,7 +30,8 @@ Untouched upstream issues stay quiet.
 - Reason: This lane needs precision review and costly deletion judgment.
 - Verified: Herdr started the configured model and effort in `w1H:p3`.
 - Fallback: `gpt-5.6-sol` at `high`.
-- Reviewer: A later Grok 4.6 gate will review the final diff.
+- Reviewer: Opus 5 at `high` reviewed the final release diff.
+- Route note: Opus matched the precision-review lane better than another Grok pass.
 - Report contract: Write one verdict per candidate, independent rechecks, reference cleanup, and blockers.
 
 ### `sls-080` lifecycle review

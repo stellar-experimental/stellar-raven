@@ -168,6 +168,17 @@ our ranking.
 
 ## Eval instruments
 
+### Add paid-run preconditions to agent discovery
+
+The final 2026-09-01 release review found a separate paid runner without the QA preconditions.
+`eval/discovery/run-agent-discovery.mjs` accepts duplicate or equals-form binary pins.
+It also has no required environment pin or total budget flag.
+The current behavior predates the release and is outside its validated QA runner change.
+
+Done when: the discovery runner fails before spend for every missing or malformed required pin.
+It must enforce a total budget and record complete spend provenance.
+Focused tests must prove that each rejected form makes zero paid calls.
+
 ### Monitor vendor short-token prefix matching
 
 The 2026-09-01 token audit found no minimum length in the vendored scorer prefix rule.

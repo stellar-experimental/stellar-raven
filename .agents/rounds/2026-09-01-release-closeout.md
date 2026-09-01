@@ -1,7 +1,7 @@
 # Release closeout
 
 Date: 2026-09-01
-Status: release validation
+Status: reviewed; merge pending
 Branch: `maintenance/free-improvements-followup`
 Author and orchestrator: Codex GPT-5.6 Sol
 
@@ -303,7 +303,7 @@ Baseline tests and the final Opus review remain before merge.
 
 - `npm run typegen`: passed on the approved rerun.
 - `npm run typecheck`: passed.
-- `npm test`: 99 files and 1,588 tests passed.
+- `npm test`: 99 files and 1,595 tests passed.
 - `npm run build`: passed.
 - `npm run test:smoke`: 4 files and 82 tests passed.
 - `npm run improvements:lint`: passed with 66 findings.
@@ -324,4 +324,43 @@ The dependency path is `agents` through Babel compilation dependencies.
 This stacked change does not change dependencies.
 The advisory is outside this release diff and does not block this merge.
 
-The final Opus review remains before merge.
+### Final independent review
+
+Claude Opus 5 at high completed separate standards and specification reviews.
+Both reviews returned `PASS`.
+The reports are `final-standards-opus.md` and `final-spec-opus.md` in this round directory.
+
+Opus was the final-review fallback for this change.
+Sol was ineligible because Sol authored and orchestrated the work.
+Fable had already reviewed the paid brief and the earlier PR #114 change.
+Opus provided an independent precision review with fresh context.
+This route replaces an older draft plan that named Grok for the final gate.
+Grok was not selected because Opus better matched the precision-review lane.
+The completed Fable and Grok reviews already supplied vendor-diverse assumption checks.
+
+The standards review found five judgment items.
+The shared required-flag parser now removes duplicated parsing logic.
+All required paid-run budget and identity flags now require exactly one positional value.
+They reject the `--flag=value` form consistently.
+A focused test now records the intentional rejection of uppercase SHA-256 pins.
+The unused `expectTextIncludesAll` matcher and its synthetic controls are removed.
+
+The `sd-001` rank check remains diagnostic by design.
+It monitors a resolved crawler fix that should work with rules enabled and disabled.
+The rule-canary engine instead protects load-bearing rules that must beat the disabled control.
+Combining those opposite invariants would obscure both contracts.
+`improvements/README.md` also defines the resolved precedents as separate canaries.
+
+The denominator appears in three operator surfaces intentionally.
+Each surface must state the current QA corpus size without requiring another document.
+A generator would add more maintenance machinery than this value warrants.
+
+The specification review found that PR #112 commit `0a933c2` was absent from the validated stack.
+The merge procedure will merge #112 into #113, then merge updated #113 into #114.
+No rebase or force-push will occur.
+Commit `9074093` will remain reachable through the PR #114 ref after squash merging.
+
+The final focused reconciliation tests passed 85 tests across three files.
+A sandboxed full-test attempt could not bind local sockets or use the GPG fixture.
+The approved host-access rerun passed the full release baseline.
+A bounded Opus delta review remains before the stack merge.

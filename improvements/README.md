@@ -151,7 +151,8 @@ is now directly remediable with the operator Algolia credentials in `.env`
   Record a direct Algolia remediation in the finding's `evidence` (what changed, the A/B before/after,
   the live re-check) exactly like an upstream fix; keep the GitHub ref too when the underlying cause is
   also a content/crawler issue the docs owner should know about. The `sd-001` crawler fix and the
-  resolved `sd-006` precedent retain separate monitor-only canaries.
+  resolved `sd-006` precedent retain separate canaries. The `sd-001` canary reports drift, while the
+  load-bearing `sd-006` rule canary fails on drift.
 
 **Analytics as evidence.** The Search Analytics / usage keys give us aggregated top-query and
 no-result-query reports — a new, low-risk evidence source. Use them to quantify a finding's prevalence

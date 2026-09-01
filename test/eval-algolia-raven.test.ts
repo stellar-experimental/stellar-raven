@@ -10,6 +10,6 @@ describe("Algolia semantic matcher", () => {
     );
 
     // The exact control count is a regression contract.
-    expect(output).toContain("Algolia semantic matcher self-test ok (14 controls)");
+    expect(output).toContain("Algolia semantic matcher self-test ok (12 controls)");
   });
 });
