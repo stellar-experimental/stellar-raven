@@ -145,10 +145,10 @@
           "q-tool-rust-soroban-sdk"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-01",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-01",
+          "reason": "Free-improvements focused follow-up: q-protocol-bn254-poseidon-xray added pinned class A truth evidence only. Its answer, keyFacts, avoid, and notes did not change. Protocol 25 activation and CAP assignments remain consistent with the sibling sweep in .agents/rounds/2026-09-01-free-improvements-maintenance.md.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -163,7 +163,7 @@
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
           "q-protocol-amm-cap-0038": "16e8a737e4385d99cdd253882d18e0d94c4ec300cd3d957e3ac05a1670acc478",
           "q-protocol-bls12-381-cap59": "44d0fe2d916103f6bd48edee871cf348b91a0707ceca03eaffdf662367d23022",
-          "q-protocol-bn254-poseidon-xray": "96a8150f48567090e3127aef7e3eb9cfbe574c666d1541fec27b5669878d0d5d",
+          "q-protocol-bn254-poseidon-xray": "2aad80084e878524e42613b50c513956cf58cd0ebc8b95446e2f6b185a64b3ba",
           "q-protocol-parallel-execution": "684e9304c747f268fad7c3692a469df78a881b6efffa2dd11e7d9c75d19ebdf4",
           "q-protocol-version-history-list": "e8198ba6d0d069b40027a659d7c001d9c212e59ae4069f98a7e2714b42c42450",
           "q-soroban-auth-delegation-p27": "d098733e231e1f650b321ba2cbb7b46f813192e97e36945c2a2ce0e480348eec",
@@ -191,10 +191,10 @@
           "q-ti-rpc-gettransactions-pagination-xdr"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-01",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-01",
+          "reason": "Free-improvements focused follow-up: q-protocol-bn254-poseidon-xray added pinned class A truth evidence only. Its answer, keyFacts, avoid, and notes did not change. Final CAP-0074 and CAP-0075 remain assigned to Protocol 25 without a sibling contradiction.",
           "verdict": "consistent"
         },
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Implemented/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
@@ -206,7 +206,7 @@
           "q-protocol-23-whisk-caps": "f67d8d7fb26d524a15fc49b3f213e54eeffecc2d7b72203f9bc275669b8bb1e0",
           "q-protocol-27-cap-0071": "3c266e65efa79c6d231a419e75ac297ac158bfc14fd7c4eef4f55ab50fdb1b30",
           "q-protocol-bls12-381-cap59": "44d0fe2d916103f6bd48edee871cf348b91a0707ceca03eaffdf662367d23022",
-          "q-protocol-bn254-poseidon-xray": "96a8150f48567090e3127aef7e3eb9cfbe574c666d1541fec27b5669878d0d5d",
+          "q-protocol-bn254-poseidon-xray": "2aad80084e878524e42613b50c513956cf58cd0ebc8b95446e2f6b185a64b3ba",
           "q-sep-41-token-interface": "9ea90edb3219f56bd411f241ef2bbd7f29f07af182172876bba341b350e6ab3d",
           "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f",
           "q-sor-contract-trustlines-c-address": "d81b73765291188b06e0a6bb4cc74230fb2d8185495d9887e59bfaff96be8caf",
@@ -1264,16 +1264,16 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-01",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-01",
+          "reason": "Free-improvements focused follow-up: q-protocol-bn254-poseidon-xray added pinned class A truth evidence only. Its answer, keyFacts, avoid, and notes did not change. The default-transparency and optional-privacy boundaries remain consistent.",
           "verdict": "consistent"
         },
         "note": "Ordinary Stellar activity is public by default and there is no global privacy toggle. Optional applications have explicit visibility/network/audit boundaries; Confidential Tokens is a 2026-06-29 Testnet developer preview, while P22/P25 ZK host functions are primitives rather than turnkey privacy.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
-          "q-protocol-bn254-poseidon-xray": "96a8150f48567090e3127aef7e3eb9cfbe574c666d1541fec27b5669878d0d5d",
+          "q-protocol-bn254-poseidon-xray": "2aad80084e878524e42613b50c513956cf58cd0ebc8b95446e2f6b185a64b3ba",
           "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
         }
       },
@@ -2621,15 +2621,15 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-01",
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-01",
+          "reason": "Free-improvements focused follow-up: q-protocol-bn254-poseidon-xray added pinned class A truth evidence only. Its answer, keyFacts, avoid, and notes did not change. BN254 and Poseidon remain low-level primitives, not default privacy.",
           "verdict": "consistent"
         },
         "note": "BN254/Poseidon are live primitives, not default privacy or a complete protocol.",
         "memberContentSha256": {
-          "q-protocol-bn254-poseidon-xray": "96a8150f48567090e3127aef7e3eb9cfbe574c666d1541fec27b5669878d0d5d",
+          "q-protocol-bn254-poseidon-xray": "2aad80084e878524e42613b50c513956cf58cd0ebc8b95446e2f6b185a64b3ba",
           "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
         }
       },
@@ -2775,16 +2775,16 @@
           "q-protocol-bn254-poseidon-xray"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-01",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-01",
+          "reason": "Free-improvements focused follow-up: q-protocol-bn254-poseidon-xray added pinned class A truth evidence only. Its answer, keyFacts, avoid, and notes did not change. BN254 and Poseidon remain Protocol 25 surfaces distinct from Protocol 22 BLS12-381.",
           "verdict": "consistent"
         },
         "note": "BLS12-381 host functions remain CAP-0059/P22/Mainnet 2024-12-05; BN254/Poseidon are separate P25 surfaces; BLS target retained unchanged.",
         "memberContentSha256": {
           "q-protocol-bls12-381-cap59": "44d0fe2d916103f6bd48edee871cf348b91a0707ceca03eaffdf662367d23022",
-          "q-protocol-bn254-poseidon-xray": "96a8150f48567090e3127aef7e3eb9cfbe574c666d1541fec27b5669878d0d5d"
+          "q-protocol-bn254-poseidon-xray": "2aad80084e878524e42613b50c513956cf58cd0ebc8b95446e2f6b185a64b3ba"
         }
       },
       {

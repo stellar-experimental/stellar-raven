@@ -62,14 +62,15 @@ The rejected `repository-tooling-recovery-v2` implementation does not ship.
 The v2 collection returned 9 of 12 positives and 0 of 8 premature detours.
 It had 18 of 20 correct answers and 20 of 20 grounded answers.
 
-`sls-080` is `reported-upstream` at Stellar-Light/stellarlight#1134.
-The free Scout reading still returned `25` at `2026-08-31T01:42:10.098Z`.
-Its scanned ref was `82660510ecda7fd365a14d08badb9d85fa22bc32`.
+`sls-080` is `fixed-upstream` at Stellar-Light/stellarlight#1134.
+The deployed API `1.9.16` reading returned `28` at `2026-09-01T19:42:19.933Z`.
+Its scanned ref was `82660510ecda7fd365a14d08badb9d85fa22bc32`, whose source value is also `28`.
 
 During each improvements or drift-maintenance round, run one free `scout.explainRepo` reading
 against the existing local Raven server. Ask: “Which Horizon ingestion constant pins the highest
 supported protocol version, and what is its value?” Use repository `stellar/stellar-horizon`.
-Record the returned value, `generatedAt`, `scannedRef`, and `answerSource` in `sls-080` recurrences.
+Record the returned value, `generatedAt`, `scannedRef`, and `answerSource` in the current round ledger.
+After retirement, cite the `sls-080` receipt in `improvements/resolved.json` as the durable finding record.
 
 The freshness blocker clears only when the DeepWiki answer equals the source value at the
 response's own `scannedRef`. The current source value is `28`; the match rule is not a permanent

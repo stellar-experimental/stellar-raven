@@ -1,7 +1,7 @@
 ---
 id: sd-048
 service: stellar-docs
-status: proposed
+status: verified
 discovered: 2026-09-01
 upstreamTitle: CAP-0075 lists unsupported Poseidon2 S-box degrees
 evidence:

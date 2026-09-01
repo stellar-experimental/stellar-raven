@@ -29,7 +29,7 @@ Total findings: 70
 | sls-077 | Scout OpenAPI 1.9.1 omits issued from the 200 response claim.type enum. The same endpoint accepts issued in the type query parameter. The…  | reported-upstream | 2026-08-27 | 1           |
 | sls-078 | Scout OpenAPI 1.9.1 gives getQualityReport broad x-routing keywords. The live list includes trust, confidence in the data, coverage,…       | reported-upstream | 2026-08-27 | 1           |
 | sls-079 | The status field returned by scout.searchProjects carries one label for two different facts. Live can mean "listed and active in the…       | proposed          | 2026-08-28 | 0           |
-| sls-080 | scout.explainRepo returned a DeepWiki answer that stated MaxSupportedProtocolVersion = 25. The answer ran on 2026-08-30 for…                | reported-upstream | 2026-08-30 | 3           |
+| sls-080 | Fixed upstream 2026-09-01. The deployed 1.9.16 API returns a dated source-parity answer for the exact monitor question                      | fixed-upstream    | 2026-08-30 | 3           |
 
 ## stellar-docs
 
@@ -57,7 +57,7 @@ Total findings: 70
 | sd-045 | The dapp frontend guide states one unqualified requirement: "Freighter wallet requires a secure connection (HTTPS) to interact with your…   | reported-upstream | 2026-08-14 | 1           |
 | sd-046 | The Lumens and Accounts pages group traditional-asset and pool-share trustlines as account subentries. Neither page states the important…   | proposed          | 2026-08-30 | 0           |
 | sd-047 | Two canonical developer-docs pages state different ledger cadences with the same sentence frame. The Validators introduction…               | reported-upstream | 2026-08-31 | 1           |
-| sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | proposed          | 2026-09-01 | 0           |
+| sd-048 | The CAP-0075 poseidon2_permutation interface lists d values 3, 5, 7, and 11. The same CAP later says that only d=5 is supported. Its error… | verified          | 2026-09-01 | 0           |
 
 ## lumenloop
 
