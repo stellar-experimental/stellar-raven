@@ -60,7 +60,7 @@ require either the same explicit ids or a disclosed sample-membership change.
 The 492→497 compile retained 9 sample ids and replaced 21. Two new cases entered sample-30.
 `eval/qa/README.md` records the exact membership history. Comparisons across this boundary need a
 common-id set or a disclosed membership change. The 497→499 compile retained 28 sample ids and
-replaced two. The 499→500 boundary also needs a common-id set or a disclosed membership check.
+replaced two. The 499→500 boundary also needs a common-id set or a disclosed membership change.
 
 ## Rules that keep this from getting messy
 
