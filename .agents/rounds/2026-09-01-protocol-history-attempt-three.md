@@ -23,17 +23,21 @@ Out of scope: closeout edits to `.agents/TODO.md`, `.agents/NEXT.md`, `eval/READ
 
 | lane | agent (model, effort) | pane | write set | status |
 | --- | --- | --- | --- | --- |
-| Evidence analysis | Codex, GPT-5.6 Terra, high (per the file's own title) | not recorded in this ledger | `2026-09-01-protocol-history-attempt-three/evidence-terra.md` | complete before brief authoring; recommends `HOLD`; names family 3 as the cheapest next measurement |
-| Mechanism brief | Claude, Fable 5, high | this session | this ledger; `…/brief-fable.md`; `…/brief-reconciliation-fable.md` | revised after review; registers `clause-support-fit-v1` |
-| Independent brief review | Grok, Grok 4.6, high | not recorded in this ledger | `…/review-grok-hold.md` | complete; verdict `BLOCK` |
-| Brief reconciliation | Claude, Fable 5, high | this session | `…/brief-reconciliation-fable.md` | complete |
-| Bounded delta review | Grok, Grok 4.6, high | not recorded in this ledger | `…/review-grok-hold-delta.md` | complete; verdict `BLOCK` on D1; D2–D6 residual |
-| Second reconciliation | Claude, Fable 5, high | this session | `…/brief-reconciliation-fable.md` (appended) | complete |
-| Second bounded delta review | Grok, Grok 4.6, high | not recorded in this ledger | `…/review-grok-hold-delta-2.md` | complete; verdict `PASS` |
-| Implementation | Codex, GPT-5.6 Sol, high | not recorded in this ledger | section 11 files; `…/implementation-sol.md` | complete; all implementation gates passed |
-| Independent implementation review | Grok, Grok 4.6, high | not recorded in this ledger | `…/review-grok-implementation.md` | complete; verdict `PASS` |
-| Referee | to be assigned | pending | one local result under `eval/vectorize/results/` | pending; cache remains unopened |
-| Closeout | to be assigned after the result | pending | `.agents/TODO.md`, `.agents/NEXT.md`, README sections | not authorized by this ledger |
+| Evidence analysis | Codex, GPT-5.6 Terra, high | `w1B:p2` | `2026-09-01-protocol-history-attempt-three/evidence-terra.md` | complete before brief authoring; recommends `HOLD`; names family 3 as the cheapest next measurement |
+| Mechanism brief | Claude, Fable 5, high | `w1B:p1` | this ledger; `…/brief-fable.md`; `…/brief-reconciliation-fable.md` | complete after two reconciliations; registers `clause-support-fit-v1` |
+| Independent brief review | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-hold.md` | complete; verdict `BLOCK` |
+| Brief reconciliation | Claude, Fable 5, high | `w1B:p1` | `…/brief-reconciliation-fable.md` | complete |
+| Bounded delta review | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-hold-delta.md` | complete; verdict `BLOCK` on D1; D2–D6 residual |
+| Second reconciliation | Claude, Fable 5, high | `w1B:p1` | `…/brief-reconciliation-fable.md` (appended) | complete |
+| Second bounded delta review | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-hold-delta-2.md` | complete; verdict `PASS` |
+| Implementation | Codex, GPT-5.6 Sol, high | `w1B:p4` | section 11 files; `…/implementation-sol.md` | complete; all implementation gates passed |
+| Independent implementation review | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-implementation.md` | complete; verdict `PASS` |
+| Referee | deterministic Node runner; no model | `w1B:p2` | one local result under `eval/vectorize/results/` | complete; measured `FAIL` |
+| Result verification | Codex, GPT-5.6 Terra, high | `w1B:p2` | `…/result-verification-terra.md` | complete; verdict `PASS` |
+| Product closeout | Claude, Fable 5, high | `w1B:p1` | `…/closeout-fable.md` | complete; queue proposal reconciled below |
+| Closeout | root orchestrator | current pane | `.agents/TODO.md`, `.agents/NEXT.md`, README sections | documentation and validation complete |
+| Independent closeout review | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-closeout.md` | complete; verdict `BLOCK` on C1; C2 and C3 residual |
+| Bounded closeout delta | Grok, Grok 4.6, high | `w1B:p3` | `…/review-grok-closeout-delta.md` | complete; verdict `PASS` |
 
 Role record: Claude Fable 5 high authored the brief and the reconciliation. The root agent that
 opened this worktree orchestrates; it is not the brief lane. Grok 4.6 high reviews and differs
@@ -395,28 +399,156 @@ a closeout step.
 
 The review requires a recorded 40-character implementation commit before the referee.
 
+### 2026-09-01 — implementation identity frozen
+
+The reviewed implementation commit is
+`24de12200c459ac0ce9ae91e7a4f39988429bf20`.
+The commit contains the reviewed implementation, tests, brief, and review records.
+The staged secret scan passed before the commit.
+It scanned 195,385 bytes and found no leaks.
+
+The referee must receive this full hash through
+`RAVEN_SUPPORT_IMPLEMENTATION_COMMIT`.
+The referee may open only the pinned attempt-two score cache.
+It may not load a model or score a pair.
+
+### 2026-09-01 — single referee completed
+
+The referee received implementation commit
+`24de12200c459ac0ce9ae91e7a4f39988429bf20`.
+It opened the retained attempt-two pair-score cache once.
+It loaded no model, scored no pair, used no network, and made no paid call.
+
+The source cache retained all three pins.
+The file SHA-256 is `fa1252fc8bfbf62b6f69bb8ca431cf603d2b512e4d0299b2ca0de0d7c2cec0bc`.
+The score SHA-256 is `44c274680cd324d00aa16d240e21d3260005766d507a430e93c423e9c16fcd55`.
+The record SHA-256 is `ecea4c6981eb22a59d59b4b9434cad57732309e28504574e7ed483a01512fca1`.
+The cache contains 563 queries and 383,273 pair scores.
+
+The result stamp is `2026-09-01T14-22-28-993Z-clause-support-fit-v1`.
+The local result path is
+`eval/vectorize/results/2026-09-01T14-22-28-993Z-clause-support-fit-v1.json`.
+Its SHA-256 is `a522bfa28ef4b06146c5f247ba64c08bfd6edaa4a81a0642c4010da2d6de479c`.
+Exactly one matching result file exists under `eval/vectorize/results/`.
+
+The retained copy is under
+`~/.cache/stellar-raven/eval-results/clause-support-fit-v1-2026-09-01/`.
+Its SHA-256 matches the local result.
+The attempt-two cache directory remained unchanged.
+
+Both calibrations passed.
+
+| Reading | Original top-1/3/5; controls | Blind top-1/3/5; controls | Changed rankings | Routing gate |
+| --- | --- | --- | ---: | --- |
+| identity | 3/4/4; 1/4 | 3/3/3; 6/9 | 0 | pass |
+| max-clause | 3/4/5; 2/4 | 2/2/3; 4/9 | 495 | fail |
+| support-fit | 4/6/7; 2/4 | 5/6/10; 7/9 | 495 | fail |
+
+Support-fit improved the positive contracts.
+It also captured two original controls and seven blind controls.
+Legacy fell to 220/266/276. Holdout reached 19 forbidden captures.
+Extended fell to 55/89/96, with 118 accept-either top-five results.
+The protocol-version top result became `scout.searchResearch`.
+
+The registered acceptance table returned `FAIL`.
+The runner applied its reviewed failure rule and set exit status 1.
+This one terminal result spent attempt three.
+
+### 2026-09-01 — independent result verification returned PASS
+
+Codex GPT-5.6 Terra high wrote `result-verification-terra.md` with verdict `PASS`.
+It did not rerun the referee. It loaded no model, scored no pair, and used no network.
+
+The verifier independently decoded all 383,273 cached scores.
+It recomputed identity, max-clause, and support-fit.
+All 495 saved rankings matched for each reading.
+The result hash, retained copy, source pins, calibrations, gates, and outcome matched.
+The report found zero discrepancies.
+
+### 2026-09-01 — product closeout prepared
+
+Claude Fable 5 high wrote `closeout-fable.md`.
+It mapped the terminal result to the existing queue rules.
+The proposal keeps the ranking defect open but trigger-only.
+It does not authorize a fourth attempt.
+
+The closeout updates `.agents/TODO.md`, `.agents/NEXT.md`, and both eval README files.
+The next ranked block is a new Raven capability-boundary diagnostic plan.
+Repository tooling remains monitor-only until its free Horizon probe returns `28`.
+The protocol-history box reopens only through triggers T1 to T4 in brief section 16.
+
+### 2026-09-01 — reviewability audit and final validation
+
+The root orchestrator ran the `audit-reviewability` skill in repair mode.
+The fixed point was `7c2c2857df1ed3696ec863eef3d2da80332c609c`.
+The audit covered all 16 changed files and both new closeout reports.
+
+The dated round files remain because they own the review and measurement evidence.
+The four queue and eval documents each retain their separate operational purpose.
+The code, tests, and package script contain no compatibility path or unrelated refactor.
+
+The audit found one low-severity output burden.
+`printReading` prints full changed-ranking and capture lists that the result file also preserves.
+The audit did not change the runner after the measurement.
+That change would break the frozen file hash and weaken result provenance.
+Any future instrument can use compact output from its first reviewed commit.
+
+Final validation results:
+
+| Command | Result |
+| --- | --- |
+| `./node_modules/.bin/vitest run test/eval-vectorize-support-fit.test.mjs` | 1 file and 18 tests passed |
+| `npm run typecheck` | passed |
+| `npm test` | 99 files and 1,579 tests passed |
+| `npm run build` | Wrangler dry run passed; total upload 6,990.49 KiB |
+| `npm run secrets:scan -- --tree` | passed; no leaks found |
+| `npm run eval:selftest` | all checks passed |
+| `npm run eval:compile` | 338 legacy and 122 extended cases compiled |
+| `npm run eval:routing -- --gate` | `GATE PASS` |
+| `git diff --check 7c2c2857df1ed3696ec863eef3d2da80332c609c` | no output |
+
+The first compiler and routing-gate attempts hit the workspace sandbox on generated writes.
+Both commands passed unchanged after repository-scoped permission.
+No smoke lane applies because no `src/executor` or `src/demo` file changed.
+No command reran the support referee.
+
+### 2026-09-01 — independent closeout review reconciled
+
+Grok 4.6 high wrote `review-grok-closeout.md` with verdict `BLOCK`.
+The review confirmed the result, hashes, spent-box rule, and unchanged production surface.
+It found two stale attempt-three sentences in the eval README files.
+It also found two incomplete gate-failure lists and one premature Outcome status.
+
+The closeout repaired C1 through C3 only.
+Both README files now say attempt three is spent.
+The TODO and vector README now include the protocol-version top-one failure.
+The ledger stayed pending during repair.
+
+Grok wrote `review-grok-closeout-delta.md` with verdict `PASS`.
+It confirmed all four documentation lines and the pending ledger state.
+No finding remains open.
+The reviewer opened no cache and did not rerun the referee.
+
 ### 2026-09-01 — current state
 
-The implementation is ready. The final delta and independent implementation reviews both passed.
-The retained score cache remains unopened. Attempt three remains unspent.
-
-The referee is pending. It cannot run until the implementation commit exists in the ledger.
-The next authorized measurement is one referee invocation from that commit.
+The measurement, verification, documentation, and final validation are complete.
+Attempt three is spent, so the three-attempt box is spent.
+No production search code changed. No deployment occurred.
+No `improvements/` finding applies because the data remains reachable upstream.
+The vendor short-token prefix observation remains monitor-only.
+The independent closeout review passed after one bounded repair.
 
 ## Outcome
 
-Open. The brief lane is complete after two `BLOCK` verdicts and two reconciliations. The final
-delta review passed. The implementation and its independent review also passed.
+Complete. `clause-support-fit-v1` measured a verified `FAIL`.
+It raised original top-five from 4/8 to 7/8.
+It raised blind top-five from 3/11 to 10/11.
+It also raised control captures to 2/4 and 7/9.
+The routing gate failed on legacy, holdout, extended, and protocol-version top-one.
 
-The revised brief registers `clause-support-fit-v1`. It is a cache-only multi-clause aggregation
-measurement. It has no grid and no hysteresis. This round has not spent attempt three.
+Attempt three is spent, so the three-attempt box is spent.
+No fourth attempt is authorized. No production routing change ships.
+No `improvements/` finding applies.
 
-The slot stays reserved for one referee run. The cache remains unopened. A 40-character
-implementation commit must enter this ledger before the referee.
-
-Pending, in order: the implementation commit; the single referee; result verification by Codex
-GPT-5.6 Terra high; and a separately authorized closeout.
-
-No production routing change ships from this round. No `improvements/` finding applies: the
-evidence measures this repository's catalog text and ranking, and the data remains reachable
-upstream. The vendor short-token prefix observation stays monitor-only.
+The next ranked work is an independently reviewed Raven capability-boundary diagnostic plan.
+Protocol-history routing remains open but trigger-only under brief section 16.

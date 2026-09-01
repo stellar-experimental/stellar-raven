@@ -1104,5 +1104,11 @@ The experiment changed no production search code. See `eval/vectorize/README.md`
 
 The reviewed cross-encoder attempt two also completed on 2026-08-31 and measured a verified
 `FAIL`: every registered grid kept both frozen contracts at the lexical baseline while failing
-the routing gate. The experiment changed no production search code. Attempt three of the box
-remains unused. See `eval/vectorize/README.md` for the pins and tables.
+the routing gate. The experiment changed no production search code. Attempt three is spent.
+See `eval/vectorize/README.md` for the pins and tables.
+
+The reviewed cache-only attempt three, `clause-support-fit-v1`, completed on 2026-09-01.
+It measured a verified `FAIL`. Multi-clause aggregation raised blind top-five recall to 10/11.
+It also raised blind control captures to 7/9 and failed the routing gate.
+The experiment changed no production search code. The three-attempt box is spent.
+See `eval/vectorize/README.md` for the pins and table.

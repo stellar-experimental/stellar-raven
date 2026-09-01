@@ -68,9 +68,24 @@ Every registered grid kept both frozen contracts at the lexical baseline and fai
 gate. Its result stamp is `2026-08-31T23-36-38-660Z-cross-encoder-fit-v1`, and its result
 SHA-256 is `529351b1562b14f68d18ef94b584ca37ae61290f68cfff7a5a1489e8b601ae0d`. The full record
 is `.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md`. Attempt two is spent.
-Attempt three remains unused; it needs its own reviewed brief with a distinct mechanism —
-neither the clause bi-encoder nor the pairwise cross-encoder at a registered hysteresis grid.
+
+The 2026-09-01 `clause-support-fit-v1` measurement also produced a verified `FAIL`.
+It used cache-only multi-clause aggregation over the retained attempt-two pair scores.
+Its result stamp is `2026-09-01T14-22-28-993Z-clause-support-fit-v1`.
+Its result SHA-256 is
+`a522bfa28ef4b06146c5f247ba64c08bfd6edaa4a81a0642c4010da2d6de479c`.
+Blind top-five rose from 3/11 to 10/11. Control captures also rose to 2/4 and 7/9.
+The routing gate failed on legacy, holdout, extended, and protocol-version top-one.
+The full record is `.agents/rounds/2026-09-01-protocol-history-attempt-three.md`.
+Attempt three is spent, so the three-attempt box is spent. No fourth attempt is authorized.
 No production change shipped, and no `improvements/` finding applies.
+
+Reopen only through a trigger in the attempt-three brief, section 16.
+T1 is an upstream `x-routing` change for `GET /api/research`.
+T2 is an owner decision about the frozen control set or the 19/19 positive bar.
+T3 is an owner decision to open a new box for a non-card evidence source.
+T4 is two unrelated live routing misses with transcripts.
+A trigger authorizes a brief only. It does not authorize a fetch, run, production edit, or paid lane.
 
 Done when: a protocol-history or incident question surfaces `scout.searchResearch` in `search`,
 measured on the routing eval rather than on this one case. Treat a fix that only helps this case
@@ -80,6 +95,17 @@ Filed here and not in `improvements/`: the data is reachable, so there is no ups
 our ranking.
 
 ## Eval instruments
+
+### Monitor vendor short-token prefix matching
+
+The 2026-09-01 token audit found no minimum length in the vendored scorer prefix rule.
+The tokenizer keeps one-character tokens.
+A description containing `a` therefore prefix-matches each query token that starts with `a`.
+This is a single-source observation. Do not edit the vendor file from this observation.
+The record is `.agents/rounds/2026-09-01-protocol-history-attempt-three.md`.
+
+Done when: a second unrelated case shows coverage inflation from a one-character or two-character
+token, or a re-vendor changes the rule.
 
 ### Design a new Raven capability-boundary diagnostic
 

@@ -260,7 +260,47 @@ routing gate. Among the grids, `m = 0.20` had the fewest gate failures (four) an
 changed rankings (215). The measured outcome is `FAIL` with `selected: null`, and the
 independent Terra verification recomputed all five readings from the stored cache and passed.
 No production search code changed. No `improvements/` finding applies: the result measures
-this repository's ranking. Attempt two is spent; attempt three remains unused and needs its
-own reviewed brief with a distinct mechanism.
+this repository's ranking. Attempt two is spent. Attempt three is also spent.
 
 See `.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md` for the full record.
+
+## Clause-support measurement attempt (2026-09-01)
+
+`clause-support-fit-v1` is attempt three of the protocol-history routing box.
+It reads the retained attempt-two pair-score cache only.
+The file SHA-256 is `fa1252fc8bfbf62b6f69bb8ca431cf603d2b512e4d0299b2ca0de0d7c2cec0bc`.
+The score SHA-256 is `44c274680cd324d00aa16d240e21d3260005766d507a430e93c423e9c16fcd55`.
+The record SHA-256 is `ecea4c6981eb22a59d59b4b9434cad57732309e28504574e7ed483a01512fca1`.
+
+The mechanism replaces max-clause fit with noisy-OR over each entry's positive and negative clauses.
+The negative rule stays unchanged. A stable descending sort orders the attempt-two candidate union.
+The mechanism has no margin and no grid. The referee loads no model and scores no pair.
+
+Run the instrument with `npm run eval:vectorize:support:run`.
+It needs `RAVEN_SUPPORT_CACHE_PATH` and `RAVEN_SUPPORT_IMPLEMENTATION_COMMIT`.
+
+The one authorized referee ran at commit
+`24de12200c459ac0ce9ae91e7a4f39988429bf20`.
+The stamp is `2026-09-01T14-22-28-993Z-clause-support-fit-v1`.
+The result SHA-256 is
+`a522bfa28ef4b06146c5f247ba64c08bfd6edaa4a81a0642c4010da2d6de479c`.
+Both calibrations passed. Identity reproduced the lexical baseline.
+Max-clause reproduced the attempt-two pure reading.
+
+| Reading | Original top-five / controls | Blind top-five / controls | Routing gate | Changed rankings | Outcome |
+| --- | --- | --- | --- | ---: | --- |
+| identity | 4/8, 1/4 | 3/11, 6/9 | pass | 0 | calibration only |
+| max-clause | 5/8, 2/4 | 3/11, 4/9 | fail | 495 | calibration only |
+| support-fit | 7/8, 2/4 | 10/11, 7/9 | fail | 495 | fail |
+
+Support-fit raised blind top-five from 3 to 10. It raised original top-five from 4 to 7.
+It also raised control captures to 2/4 and 7/9.
+Legacy fell to 220/266/276. Holdout reached 19 forbidden captures.
+Extended fell to 55/89/96, with 118 accept-either top-five results.
+The protocol-version top result became `scout.searchResearch`.
+
+The measured outcome is `FAIL`.
+Independent Terra verification recomputed all three readings from the same cache and passed.
+No production search code changed. No `improvements/` finding applies.
+Attempt three is spent, so the three-attempt box is spent.
+See `.agents/rounds/2026-09-01-protocol-history-attempt-three.md` for the full record.
