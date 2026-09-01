@@ -93,6 +93,8 @@ Untouched upstream issues stay quiet.
 - The later comment, public snapshot, queue update, and resolver cleared the remaining gates.
 - Fable 5 high found two medium record-truth issues and six lower findings in the safe preflight.
 - This round reconciled F1 through F8 before the safe checkpoint.
+- Fable 5 high passed the final PR review after all actionable findings were reconciled.
+  See `.agents/rounds/2026-09-01-free-improvements-maintenance/fable-final-review.md`.
 
 ## Orchestrator recheck for resolved `sls-074`
 

@@ -5,9 +5,9 @@ Reviewer: Fable 5 (`claude-fable-5-1`) at high. Author: GPT-5.6 Sol.
 Scope: fixed point `23982548b7b67a1931c61f2d02a04d8a386f6b5c` through the working tree.
 Mode: audit. This report is the only file this review wrote.
 
-## Verdict
+## Initial verdict (superseded by the follow-up PASS)
 
-**FAIL.** One High finding remains: `npm test` fails on the Algolia self-test control count,
+The initial review returned **FAIL**. The follow-up review of commit `3bcd4df` and PR #114 below supersedes it with **PASS**. The findings that follow are preserved as written at the initial review. One High finding remained: `npm test` fails on the Algolia self-test control count,
 and the ledger records that command as passing. Four Medium and four Low findings follow.
 Every completion requirement other than the test gate and the record-truth items passed
 independent verification.
@@ -209,3 +209,64 @@ Tests  1 failed | 1587 passed (1588)
   "Reviewer outcomes" section summarizes them. No repair required.
 - The `sd-001` monitor-only canary keeps `finding: "sd-001"` after retirement. This follows the
   `sd-006` precedent that `improvements/README.md` names.
+
+## Follow-up review — commit `3bcd4df`, PR #114
+
+Date: 2026-09-01. Reviewer: Fable 5 high, independent of the author.
+Scope: `23982548` through `3bcd4df28bca1ffcd23f0abcc6d7a607ec18a264`, the head of
+https://github.com/stellar-experimental/stellar-raven/pull/114. Working tree clean at `3bcd4df`.
+
+### Finding dispositions
+
+| finding | disposition | evidence |
+|---|---|---|
+| F1 High — `npm test` failure | **Fixed** | `test/eval-algolia-raven.test.ts:13` expects `(14 controls)`. Local `npm test` exit 0: 99 files, 1,588 tests. PR check `test` passes. |
+| F2 Medium — register reasons | **Fixed** | Five `reSwept.reason` strings (lines 151, 197, 1270, 2627, 2781) now state the removed `U32Val`, Protocol 24, and `sd-036` caution text plus the added A/B evidence. `eval:qa:register` up to date, 0 reopened, byte-identical. |
+| F3 Medium — accretive ledger | **Fixed** | Validation is one final-state table. Every row re-derived by this review: compile SHA `0393e7be…`, 62 warnings, 66 findings, live lint ok, probes 6/0/0/0, self-test 14, typecheck exit 0, build dry-run exit 0, secrets clean. Lines 111, 168, 174 are phase-qualified. No `70 findings`, `e14fb81b`, `pending`, or `9 controls` text remains. |
+| F4 Medium — receipt titles | **Fixed** | `resolved.json:515` "Fix CAP-0075 protocol-version and field-selector contradictions"; `:2098` "Date DeepWiki answers separately from scanned repository content". `improvements:lint` ok. |
+| F5 Medium — snapshot and main link | **Merge-time condition, not a PR defect** | See below. |
+| F6 Low — `sd-048` in rootCause | **Fixed** | `rootCause` holds the `sd-021` and `sd-036` receipts only. The remaining symmetric-caution warning comes from resolved `sd-036`; `NEXT.md:29` and the ledger record that disposition. |
+| F7 Low — `GT-31` label | **Fixed** | `golden.notes` now starts "Protocol 25 activated on 2026-01-22." |
+| F8 Low — internal path in issue #2010 | **Non-blocking, unchanged** | Issue body unchanged (`updated_at` 2026-09-01T20:06:23Z, 0 comments). The path becomes public when the stack reaches `main`. No repository repair required. |
+| F9 Low — `sd-047` re-check | **Fixed** | `.agents/TODO.md:33-45` "Re-check `sd-047` only after PR #2806 merges" names the trigger, both pages, issue #2805, and the ledger. |
+
+### F5 detail and pull-request state
+
+- PR #114 is open, not draft, `mergeable: MERGEABLE`, `mergeStateStatus: CLEAN`; checks
+  `secrets` pass and `test` pass. Commits: `d9d03b2`, `9074093`, `3bcd4df`.
+- The PR base is `eval/answering-agent-environment-pin`, whose head is exactly the review fixed
+  point `23982548`. The PR diff therefore equals the reviewed range (30 files).
+- Commit `9074093` was not rewritten. It is an ancestor of `refs/pull/114/head` and resolves through
+  the GitHub API. The `sd-048` issue snapshot and the `sls-080` comment snapshot stay reachable for
+  the life of the pull request, independent of squash merging.
+- The issue #2010 "Public source record" link still targets `blob/main/…sd-048…`, which returns
+  404 today. This is the expected merge-time transition.
+- Stack: #114 → #113 (`eval/answering-agent-environment-pin` → `docs/remaining-work-adversarial-audit`)
+  → #112 (→ `main`). All three are open. The main link resolves only after all three merge in
+  order. The PR body records "Merge PR #113 first." This is a sequencing dependency, not a defect
+  in #114.
+
+### Verification run by this review at `3bcd4df`
+
+| command | result |
+|---|---|
+| `npm run improvements:index` / `improvements:lint` | 66 findings; INDEX byte-identical; lint ok |
+| `npm run eval:qa:compile` | 500 cases; SHA `0393e7be…`; three outputs byte-identical |
+| `npm run eval:qa:register` | up to date; 0 reopened; byte-identical |
+| `npm run eval:qa:lint -- --since 23982548…` | 0 errors, 62 warnings |
+| `node scripts/eval-algolia-raven.mjs --self-test` | ok (14 controls) |
+| `npm test` | exit 0; 99 files, 1,588 tests |
+| `npm run typecheck` / `npm run build` | exit 0 / exit 0 (dry run) |
+| `git diff --check 23982548…` | clean |
+| `gh pr checks 114` | secrets pass, test pass |
+
+### Optional, non-blocking
+
+- The ledger's "Reviewer outcomes" list names the Fable preflight but not this final review. The
+  reconciliation is recorded once in `resolution-sol.md` lines 65-78, so no truth is missing. A
+  one-line pointer there would help a cold reader.
+
+### Final verdict
+
+**PASS.** No actionable pull-request finding remains in PR #114. Merge-time conditions: merge
+#112, then #113, then #114 so the `sd-048` public source link resolves; do not rewrite `9074093`.
