@@ -13,13 +13,15 @@ Updated 2026-09-01 after the six-lane remaining-work adversarial audit.
 
 ### Verify the production revision and resolve the Playground deployment
 
-The last repository record names Worker Version ID
-`6282fe2a-54d8-471e-9f0a-0a2565110af1`, deployed on 2026-08-28. This audit did not verify the
-live revision. PR #99 merged the Playground input-limit and accessibility changes at `3c7f0e5`
-on 2026-08-30. If the deployment record is current, those changes are not deployed.
+The local comparison found two conflicting records for the 2026-08-28 deployment. The drift
+ledger records `2dc2afcb-2449-4553-8b65-a6c082950a0d`. The queue later recorded
+`6282fe2a-54d8-471e-9f0a-0a2565110af1` without a deployment ledger. PR #99 merged the Playground
+input-limit and accessibility changes at `3c7f0e5` on 2026-08-30. Local evidence cannot identify
+the active version.
 
-Permitted now: compare `main` with PR #99 locally. Write a proposed read-only production query plan.
-Do not run the query before the owner authorizes the live production read.
+The local comparison and proposed query are in
+`.agents/rounds/2026-09-01-next-actionable-blocks/production-local-plan.md`. Do not run the query
+before the owner authorizes the live production read.
 
 Authorization boundary: the live production read is owner-blocked. After that read, a deployment
 needs a separate recorded owner decision and the normal production preflight. Run
@@ -172,19 +174,6 @@ our ranking.
 
 ## Eval instruments
 
-### Add a fail-closed answering-agent environment pin
-
-`eval/qa/run-qa.mjs` records `meta.agentEnvironment.inherited.sha256`, but it cannot assert an
-expected value before paid calls. The rejected capability-boundary diagnostic ran with a different
-environment hash from its pre-registration.
-
-Add `--expect-agent-environment-sha256`. Validate it before the first paid call.
-Stamp the expected and observed identities in the result. Add tests for match, mismatch, missing
-value, and no-paid-call behavior.
-
-Done when: the narrow tests, `npm test`, and the relevant eval self-tests pass. The Raven boundary
-block then uses the flag as a required pre-spend pin.
-
 ### Monitor vendor short-token prefix matching
 
 The 2026-09-01 token audit found no minimum length in the vendored scorer prefix rule.
@@ -211,17 +200,26 @@ one observation. The prompt mechanism was withdrawn. The capability-boundary Met
 deterministic sample-30 headline with an offline plan regrade. It did not run. Both
 capability-boundary authorizations are spent. The five-track Method 2 is separate and complete.
 
-The next free step has two parts:
+The free evidence record is
+`.agents/rounds/2026-09-01-next-actionable-blocks/raven-free-evidence.md`. Its all-answer screen
+scanned 338 local result files, 4,891 rows, and 2,406 answers. It adjudicated 51 high-recall offer
+candidates. Six offers were unsupported, and no additional unsupported offer appeared. Its
+separate no-tool screen scanned 44 explicit no-tool answers and adjudicated 17 candidates. The
+same six offers remain unsupported. Five repeat this trap case. One appears in the Friendbot case.
+No direct shipped prose advertises an account or transaction lookup. The generated micro-map gives
+Data/RPC documentation and skill guidance, but does not expose an account query. The evidence
+shows repeated QA behavior, but it does not identify a shipped Raven cause.
 
-1. Scan stored answers for unsupported Raven capability offers. An independent reviewer must
-   adjudicate every hit.
-2. Inventory every prose surface that can reach a no-tool answer. Decide whether the defect belongs
-   to the QA harness or a shipped Raven surface.
+The `--expect-agent-environment-sha256` guard now fails before any answering-agent or judge call.
+Matching runs stamp the expected and observed identities. Its CLI tests cover a match and every
+rejected flag form. Rejected stored-judge and collection runs record zero paid-call attempts.
 
-The next plan must name the surface owner and an observable product hypothesis. It must use a
-mechanism that reaches no-tool answers. Another QA-prompt wording layer is spent. Do not copy case
-facts, identifiers, or redirect lists into a prompt. Include the trap, the control, the environment
-pin, and a pre-registered product gate.
+The owner must now decide whether the observation is an eval-harness fidelity defect, a shipped
+Raven product defect, or monitor-only. After that decision, the next plan must name the surface
+owner and an observable product hypothesis. It must use a mechanism that reaches no-tool answers.
+Another QA-prompt wording layer is spent. Do not copy case facts, identifiers, or redirect lists
+into a prompt. Include the trap, the control, the environment pin, and a pre-registered product
+gate.
 
 The design record from closed PR #103 is at commit `fb9a35eb`. Fetch it with
 `git fetch origin pull/103/head` if needed. Its result artifact is not a durable baseline.

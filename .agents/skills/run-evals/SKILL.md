@@ -267,16 +267,25 @@ SERVER_REVISION=<clean 40-character server commit>
 node eval/report-live-surface.mjs --port "$PORT" --expect-source-revision "$SERVER_REVISION" --json /tmp/raven-eval-surface.json
 SURFACE_SHA256=<surfaceSha256 from the report>
 AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
+AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
 ```
+
+Compute `AGENT_ENVIRONMENT_SHA256` after every Claude-related environment variable has its final
+value. Use the same shell for the identity command and the paid run. The command emits only the
+SHA-256. It does not emit environment values.
+
+Every `run-qa.mjs` mode requires exactly one
+`--expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"` pair. This includes
+`--judge-stored`. Do not use the `--expect-agent-environment-sha256=<hash>` form.
 
 The QA runner starts each answering agent in a temporary directory outside the repository.
 It uses `--setting-sources ""`, `--disable-slash-commands`, and `--strict-mcp-config`.
 It does not use Claude `--safe-mode`, because Claude Code 2.1.247 drops explicit MCP servers in
-that mode. Judges use `--safe-mode` because they use no MCP server. Confirm
-`meta.agentEnvironment.isolation.safeMode: false` and `meta.agentBinary.matches: true` in every
-result artifact. Compare
-`meta.agentEnvironment.inherited.sha256` between arms. The artifact records variable names, but it
-does not record environment values.
+that mode. Judges use `--safe-mode` because they use no MCP server. For collection artifacts,
+confirm `meta.agentEnvironment.isolation.safeMode: false`, `meta.agentBinary.matches: true`, and
+`meta.agentEnvironment.inherited.matches: true`. For stored judging, confirm
+`meta.judgeEnvironment.matches: true`. Confirm that each `expectedSha256` and `sha256` pair
+matches. The artifact records variable names, but it does not record environment values.
 Confirm `agent.mcpServers` reports the explicit `raven` server as `connected` in every row.
 
 ## Step 3 — run the instruments
@@ -286,14 +295,14 @@ Confirm `agent.mcpServers` reports the explicit `raven` server as `connected` in
 npm run eval:routing -- --gate            # exit 1 on gate breach or changed denominator
 
 # QA headline (sample) — variant A = the shipped `search` tool
-node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"
 # targeted smoke: --ids a,b,c ; collect-only: --no-judge ; overrides: --model/--judge-model
 
 # QA live-data lane (grounding behavior; graded behaviorally, never on snapshot values)
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"
 
 # Opt-in digest supplement — run and report separately from the canonical lane
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"
 
 # Plan regrade (offline, reads stored transcripts)
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json

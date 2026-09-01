@@ -10,9 +10,12 @@
  *  P5  an arm was pinned by a fingerprint computed inside the runner, with no
  *      standalone way to check the bound server BEFORE spending.
  *
- * No test here spawns an agent or spends a token. The seams are pure.
+ * No test here reaches a provider or spends a token. The CLI process tests
+ * use a local fake Claude executable.
  */
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
+import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -54,6 +57,7 @@ import {
 } from "../eval/lib/mcp-surface.mjs";
 import {
   agentEnvironmentIdentity,
+  assertExpectedAgentEnvironment,
   assertExpectedExecutable,
   executableIdentity,
   resolveExecutable
@@ -65,8 +69,10 @@ import {
   gitWorktreeIdentity
 } from "../eval/lib/bound-server-identity.mjs";
 import { fetchLiveSurface, normalizeServerUrl } from "../eval/report-live-surface.mjs";
+import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const RUN_QA_PATH = path.join(REPO_ROOT, "eval", "qa", "run-qa.mjs");
 const NEUTRAL_CWD = path.join(os.tmpdir(), "qa-agent-cwd-fixture");
 const sha256 = (s) => createHash("sha256").update(s).digest("hex");
 
@@ -382,6 +388,235 @@ describe("P3 — the paid executable is resolved and pinned", () => {
     expect(first.variableNames).toEqual(["ANTHROPIC_API_KEY", "PATH"]);
     expect(JSON.stringify(first)).not.toContain("secret-a");
     expect(first.sha256).not.toBe(second.sha256);
+  });
+
+  it("creates a secret-safe environment pin stamp", () => {
+    const identity = agentEnvironmentIdentity({
+      PATH: "/tmp/bin",
+      ANTHROPIC_API_KEY: "secret-a"
+    });
+    const pinned = assertExpectedAgentEnvironment(identity, identity.sha256);
+
+    expect(pinned).toEqual({
+      ...identity,
+      expectedSha256: identity.sha256,
+      matches: true
+    });
+    expect(JSON.stringify(pinned)).not.toContain("secret-a");
+  });
+});
+
+function writeEnvironmentPinFixture(root, name) {
+  const lifecycle = { state: "active", reviewState: "none" };
+  const kase = {
+    id: `q-environment-pin-${name}`,
+    question: "What command builds a Stellar smart contract?",
+    golden: {
+      answer: "Use `stellar contract build`.",
+      keyFacts: ["Uses `stellar contract build`."],
+      avoid: [],
+      sources: [],
+      notes: ""
+    },
+    tags: { category: "soroban", service: "stellarDocs", freshness: "stable" },
+    truth: { lifecycle }
+  };
+  const casesPath = path.join(root, `${name}-cases.json`);
+  const resultsPath = path.join(root, `${name}-results.json`);
+  const lifecycleSnapshot = [{ id: kase.id, lifecycle }];
+  const row = {
+    id: kase.id,
+    question: kase.question,
+    tags: kase.tags,
+    truth: { status: "verified", lifecycle },
+    answer: "Use `stellar contract build`.",
+    transcript: [],
+    agent: {
+      model: "fixture-agent",
+      turns: 1,
+      costUsd: 0.01,
+      usage: { final: null, perTurn: [], perTurnAvailable: false },
+      promptChars: 64,
+      stderr: null,
+      failure: null
+    },
+    verdict: null,
+    evidencePack: { packVersion: PACK_VERSION, chars: 0, sha256: null },
+    durationMs: 1
+  };
+  writeFileSync(casesPath, JSON.stringify({ cases: [kase] }, null, 2));
+  writeFileSync(
+    resultsPath,
+    JSON.stringify(
+      {
+        meta: {
+          variant: "A",
+          surface: "search-execute",
+          searchTool: "search",
+          model: "fixture-agent",
+          judgeModel: null,
+          judgeRubric: null,
+          packVersion: PACK_VERSION,
+          resultsSchema: AGENT_RESULT_SCHEMA,
+          casesPath,
+          caseCount: 1,
+          inputSnapshot: {
+            casesSha256: sha256(JSON.stringify([kase])),
+            caseIdsSha256: sha256(JSON.stringify([kase.id])),
+            lifecycle: lifecycleSnapshot,
+            lifecycleSha256: sha256(JSON.stringify(lifecycleSnapshot))
+          },
+          comparable: true,
+          completeness: {
+            expectedRows: 1,
+            collectedRows: 1,
+            judgedRows: 0,
+            complete: true,
+            aggregatesAllowed: true,
+            reasons: []
+          },
+          totalAgentCostUsd: 0.01,
+          totalJudgeCostUsd: 0,
+          totalCostUsd: 0.01
+        },
+        summary: null,
+        rows: [row]
+      },
+      null,
+      2
+    ) + "\n"
+  );
+  return resultsPath;
+}
+
+function createEnvironmentPinCliFixture() {
+  const root = mkdtempSync(path.join(os.tmpdir(), "qa-environment-pin-"));
+  const claudePath = path.join(root, "claude");
+  const callLogPath = path.join(root, "paid-calls.log");
+  const claudeSource = `#!/bin/sh
+if [ "$1" = "--version" ]; then
+  printf '%s\\n' 'fixture-claude 1.0.0'
+  exit 0
+fi
+printf '%s\\n' paid >> "$QA_FAKE_CALL_LOG"
+printf '%s\\n' '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"missingFacts\\":[],\\"wrongClaims\\":[],\\"avoidMatches\\":[],\\"rationale\\":\\"fixture\\"}","total_cost_usd":0.01}'
+`;
+  writeFileSync(claudePath, claudeSource);
+  chmodSync(claudePath, 0o755);
+  const environment = {
+    PATH: `${root}:/usr/bin:/bin`,
+    HOME: path.join(root, "home"),
+    SHELL: "/bin/sh",
+    TMPDIR: root,
+    QA_FAKE_CALL_LOG: callLogPath
+  };
+  const binarySha256 = sha256(readFileSync(claudePath));
+  const environmentSha256 = agentEnvironmentIdentity(environment).sha256;
+  const run = (resultsPath, extraArgs = []) =>
+    spawnSync(
+      process.execPath,
+      [
+        RUN_QA_PATH,
+        "--judge-stored",
+        resultsPath,
+        "--max-budget-usd",
+        "1",
+        "--expect-agent-binary-sha256",
+        binarySha256,
+        ...extraArgs
+      ],
+      { cwd: REPO_ROOT, env: environment, encoding: "utf8" }
+    );
+  const runCollection = (extraArgs = []) =>
+    spawnSync(
+      process.execPath,
+      [
+        RUN_QA_PATH,
+        "--max-budget-usd",
+        "1",
+        "--expect-agent-binary-sha256",
+        binarySha256,
+        ...extraArgs
+      ],
+      { cwd: REPO_ROOT, env: environment, encoding: "utf8" }
+    );
+  const paidCalls = () =>
+    readFileSync(callLogPath, "utf8").split("\n").filter(Boolean);
+  writeFileSync(callLogPath, "");
+  return { root, run, runCollection, paidCalls, environmentSha256 };
+}
+
+describe("P3 — run-qa CLI pins the inherited agent environment", () => {
+  it("accepts a matching pin and stamps the judge environment identity", () => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const matchingPath = writeEnvironmentPinFixture(fixture.root, "matching");
+      const matching = fixture.run(matchingPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256
+      ]);
+
+      expect(matching.status, matching.stderr).toBe(0);
+      expect(fixture.paidCalls()).toEqual(["paid"]);
+      expect(JSON.parse(readFileSync(matchingPath, "utf8")).meta.judgeEnvironment).toMatchObject({
+        sha256: fixture.environmentSha256,
+        expectedSha256: fixture.environmentSha256,
+        matches: true
+      });
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["absent", [], /requires --expect-agent-environment-sha256/],
+    ["mismatch", ["--expect-agent-environment-sha256", "0".repeat(64)], /refusing paid calls/],
+    ["malformed", ["--expect-agent-environment-sha256", "not-a-sha256"], /64-character lowercase SHA-256/],
+    ["missing", ["--expect-agent-environment-sha256"], /requires a value/],
+    [
+      "duplicate",
+      [
+        "--expect-agent-environment-sha256",
+        "0".repeat(64),
+        "--expect-agent-environment-sha256",
+        "0".repeat(64)
+      ],
+      /accepts --expect-agent-environment-sha256 exactly once/
+    ],
+    [
+      "equals form",
+      [`--expect-agent-environment-sha256=${"0".repeat(64)}`],
+      /=<value> is not supported/
+    ]
+  ])("fails before a paid call when the pin is %s", (name, extraArgs, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, name);
+      const result = fixture.run(resultsPath, extraArgs);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+      expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects a collection-mode mismatch before an answering-agent spawn", () => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const result = fixture.runCollection([
+        "--expect-agent-environment-sha256",
+        "0".repeat(64)
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(/Claude environment.*refusing paid calls/);
+      expect(fixture.paidCalls()).toEqual([]);
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
   });
 });
 

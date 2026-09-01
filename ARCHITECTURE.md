@@ -768,7 +768,7 @@ before model/tool execution, so later model or tool failure still counts.
 | Rate-limit response | `429` with `Retry-After: 3600`. | `src/demo/chat.ts` |
 | Request body | 384 KiB max before JSON parse. Malformed/oversized requests do not burn throttle. | `src/demo/chat.ts` |
 | Replayed history | Newest 20 messages, then oldest messages dropped until total content is at most 24,000 chars when possible. | `src/demo/budget.ts` |
-| User-role message | 4,000 chars max per user-role message; overlong user content is truncated rather than rejected by the validation path. | `src/demo/budget.ts`, `src/demo/chat.ts` |
+| User-role message | 8,000 chars max per user-role message. The composer blocks overlong submissions. The server rejects a bypassed overlong message with `400 message_too_long` before the throttle or model call. | `src/demo/budget.ts`, `src/demo/chat.ts`, `src/demo/page.ts` |
 | Whole turn | 120s abort signal covering model stream plus tool calls. | `src/demo/chat.ts` |
 | Model steps | 7 total; the seventh/final step has no active tools and is reserved for synthesis. | `src/demo/budget.ts`, `src/demo/chat.ts`, `src/demo/steps.ts` |
 | Model output | 4,096 output tokens. | `src/demo/budget.ts`, `src/demo/chat.ts` |

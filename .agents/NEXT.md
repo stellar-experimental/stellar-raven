@@ -6,10 +6,12 @@ This file only ranks and sequences. Delete or rewrite this file when the block i
 
 ## State at handoff
 
-- This audit changed planning and eval documentation only. It authorized no paid run, live fetch,
-  deployment, production edit, golden change, routing attempt, or upstream message.
+- The prior six-lane audit changed planning and eval documentation only. It authorized no paid
+  run, live fetch, deployment, production edit, golden change, routing attempt, or upstream message.
 - The last recorded production deployment is Worker Version ID
   `6282fe2a-54d8-471e-9f0a-0a2565110af1` from 2026-08-28. This round did not verify live state.
+- The 2026-08-28 drift ledger records a different Worker Version ID:
+  `2dc2afcb-2449-4553-8b65-a6c082950a0d`. Local evidence cannot select the active record.
 - `improvements/` contains 69 finding files: 60 `reported-upstream`, 3 `proposed`, 3
   `declined-upstream`, and 3 `fixed-upstream` deletion candidates. `sd-047` is
   `reported-upstream` at https://github.com/stellar/stellar-docs/issues/2805. `sls-080` is
@@ -60,10 +62,11 @@ This file only ranks and sequences. Delete or rewrite this file when the block i
 
 ### 1. Verify production state
 
-This block is owner-blocked. Prepare a local comparison of `main` and PR #99. Write the proposed
-read-only query plan. Ask the owner to authorize the live production read. After authorization, use
-`cloudflare-observability-review` to read the live Worker revision. Then ask the owner whether to
-deploy or hold. Do not fetch or deploy from this handoff alone.
+The local comparison and query plan are complete at
+`.agents/rounds/2026-09-01-next-actionable-blocks/production-local-plan.md`. They show two
+conflicting recorded Version IDs. This block is owner-blocked. Ask the owner to authorize the live
+production read. After authorization, use `cloudflare-observability-review` to identify the active
+version. Then ask the owner whether to deploy or hold. Do not fetch or deploy from this handoff.
 
 Exit gate after both authorizations: record the live revision, the decision, and either the
 verified deployment or the hold condition.
@@ -72,11 +75,20 @@ verified deployment or the hold condition.
 
 Use `run-evals`.
 
-1. Add the fail-closed `--expect-agent-environment-sha256` guard and its tests.
-2. Run the free stored-answer prevalence scan for unsupported Raven capability offers.
-3. Inventory the QA and shipped prose surfaces that can reach a no-tool answer.
-4. Ask the owner to select the product surface only after those free results exist.
-5. Write an independently reviewed diagnostic plan for the selected surface.
+The first three free steps are complete.
+
+- The fail-closed `--expect-agent-environment-sha256` guard and its CLI tests pass.
+- The all-answer screen found 6 unsupported offers among 2,406 stored answers. It found no
+  additional unsupported offer.
+- The separate no-tool screen found the same 6 unsupported offers among 44 explicit no-tool
+  answers.
+- The no-tool screen adjudicated 17 candidates. The all-answer screen adjudicated 51 candidates.
+- Five hits repeat the Raven trap. One hit appears in the Friendbot case.
+- The prose inventory found no direct shipped text that advertises the unsupported capability.
+  The generated micro-map gives Data/RPC guidance only.
+
+Ask the owner to classify the observation as an eval-harness defect, a shipped Raven defect, or
+monitor-only. Then write an independently reviewed diagnostic plan for the selected surface.
 
 The prior prompt measurement is invalid because its environment pin differed. Its five-track T3
 safety failure is one observation. Another QA-prompt wording layer is spent.
@@ -134,8 +146,8 @@ Safe default: hold until the live revision is verified. A silent hold is not acc
 Question: is the observed unsupported lookup offer a QA-harness fidelity defect, a shipped Raven
 product defect, or a monitor-only observation?
 
-Evidence needed first: the stored-answer prevalence scan, the prose-surface inventory, and the
-no-tool-answer reachability analysis.
+Evidence available: `.agents/rounds/2026-09-01-next-actionable-blocks/raven-free-evidence.md`
+contains the stored-answer prevalence, prose-surface inventory, and no-tool reachability analysis.
 
 Safe default: monitor-only. Do not authorize a paid diagnostic until an independently reviewed
 plan names a mechanism that reaches the selected surface.
@@ -180,7 +192,7 @@ Safe default: stay trigger-only. Never lower the 19-of-19 bar because three mech
 
 ## Suggested sequence
 
-Start with the local production comparison and query plan. Then add the fail-closed environment
-pin. Run the free Raven evidence work and the improvements maintenance block next. Keep every
-fetch, paid action, or production action behind its separate authorization. No current item has
-authorization for evaluation ladder stages 3, 4, or 6.
+The local production plan, environment pin, and free Raven evidence are complete. Obtain either
+owner decision when ready. The free improvements maintenance block is the next agent-actionable
+work. Keep every fetch, paid action, or production action behind its separate authorization. No
+current item has authorization for evaluation ladder stages 3, 4, or 6.
