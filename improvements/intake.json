@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-08-19",
+  "updated": "2026-09-01",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Algolia ranking-only docs findings may not have a clear public intake even though developers.stellar.org content lives in stellar/stellar-docs."
@@ -191,6 +191,10 @@
     "sd-046": {
       "repo": "stellar/stellar-docs",
       "reason": "The Lumens and Accounts pages omit the two-reserve pool-share trustline exception that the Liquidity Pools page and CAP-0038 define."
+    },
+    "sd-048": {
+      "repo": "stellar/stellar-protocol",
+      "reason": "CAP-0075 owns the Poseidon2 S-box-degree contradiction; the shipped ABI and host accept only degree 5."
     },
     "sk-004": {
       "repo": "lumenloop/lumenloop-skills"

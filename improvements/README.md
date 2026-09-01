@@ -138,7 +138,7 @@ is now directly remediable with the operator Algolia credentials in `.env`
   stay **upstream** on `stellar/stellar-docs`. Do not "fix" them by rewriting index records; the
   crawler would overwrite it and we would be diverging a shared corpus from its source.
 - **Search-mechanism gaps** — ranking, tokenization, synonym/vocabulary, or crawler-config issues
-  (`sd-001`, `sd-003`; resolved precedent `sd-006` is in `resolved.json`). These we *can* now remediate directly (a general rule/synonym, an
+  (`sd-003`; `sd-006` is a resolved precedent, and `sd-001` is fixed pending retirement). These we *can* now remediate directly (a general rule/synonym, an
   index-settings change, a crawler-config fix + reindex), subject to a hard bar:
   - a **general mechanism only** — no per-page/per-query rules or synonyms (same anti-overfitting
     rule the eval loop enforces);
@@ -150,8 +150,8 @@ is now directly remediable with the operator Algolia credentials in `.env`
 
   Record a direct Algolia remediation in the finding's `evidence` (what changed, the A/B before/after,
   the live re-check) exactly like an upstream fix; keep the GitHub ref too when the underlying cause is
-  also a content/crawler issue the docs owner should know about. The resolved `sd-006` receipt is the
-  precedent for retaining a separate monitor-only rule-health canary after the active finding retires.
+  also a content/crawler issue the docs owner should know about. The `sd-001` crawler fix and the
+  resolved `sd-006` precedent retain separate monitor-only canaries.
 
 **Analytics as evidence.** The Search Analytics / usage keys give us aggregated top-query and
 no-result-query reports — a new, low-risk evidence source. Use them to quantify a finding's prevalence

@@ -18,6 +18,9 @@ evidence:
   - source case eval/qa/corpus/battery/protocol-core/q-protocol-ledger-close-time.json; its truth.verified entry dated 2026-08-31 names this finding in rootCause
   - proposer and blind re-derivation reports in .agents/rounds/2026-08-31-golden-metadata-remainder/ (matrices-lane-b-events-d1.md, review-blind-ledger-close-grok.md)
   - upstream issue filed 2026-08-31: https://github.com/stellar/stellar-docs/issues/2805
+recurrences:
+  - date: 2026-09-01
+    evidence: issue #2805 remains open without comments; PR https://github.com/stellar/stellar-docs/pull/2806 is open; `gh api repos/stellar/stellar-docs/contents/<path> -H 'Accept: application/vnd.github.raw+json'` at repo HEAD 83c68f21c721905327f5db12fb84702e3a48367c found 3-5 seconds in docs/validators/README.mdx blob 37f879807c150e794578e80d2e751597938f8423 and 5-7 seconds in docs/learn/fundamentals/stellar-stack.mdx blob 06c92f8dbcd2f30e0f855bd18bf7abbc3c9e9713, so the conflict still reproduces
 ---
 
 ## Finding

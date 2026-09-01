@@ -18,13 +18,14 @@ const MEETINGS_FACET = [["docusaurus_tag:-docs-default-current"]];
 const CASES = [
   ...RULE_CANARY_CASES.map(({ assertionPrefix: _assertionPrefix, ...testCase }) => testCase),
   {
-    id: "sd-001-protocol-24",
-    category: "Protocol 24",
+    id: "sd-001-software-versions-rank-one",
+    category: "software versions",
     finding: "sd-001",
     query: "Protocol 24",
-    expectUrlIncludes: ["/meetings/2025/10/16"],
-    expectTextIncludesAll: ["state", "archival", "Whisk"],
-    note: "Protocol-version query should reach the actual Whisk/state-archival meeting record, not merely any meetings URL."
+    expectUrlIncludes: ["/docs/networks/software-versions"],
+    monitorOnly: true,
+    expectedPrimaryRulesRank: 1,
+    note: "Monitor only: the sd-001 crawler fix should keep the software-versions page at rank 1 with rules enabled and disabled."
   },
   {
     id: "sd-003-gettransactions-limits",
@@ -270,6 +271,9 @@ function summarize(results) {
     const primaryRulesBest = bestRank(item.results, ["primary-docs-rules", "primary-meetings-rules"]);
     const primaryNoRulesBest = bestRank(item.results, ["primary-docs-no-rules", "primary-meetings-no-rules"]);
     const primaryGood = primaryRulesBest !== null && primaryRulesBest <= 3;
+    const monitorExpectationMet = item.monitorOnly
+      ? primaryRulesBest === item.expectedPrimaryRulesRank && primaryNoRulesBest === item.expectedPrimaryRulesRank
+      : undefined;
     return {
       id: item.id,
       category: item.category,
@@ -279,7 +283,11 @@ function summarize(results) {
       primaryNoRulesBest,
       bestStrategy: bestAny?.strategy ?? null,
       bestRank: bestAny?.expectedRank ?? null,
-      recommendation: primaryGood
+      recommendation: item.monitorOnly
+        ? monitorExpectationMet
+          ? `Monitor only: the target remains at expected rank #${item.expectedPrimaryRulesRank} with rules enabled and disabled.`
+          : `Monitor only: expected rank #${item.expectedPrimaryRulesRank} with rules enabled and disabled; observed rules=${rankLabel(primaryRulesBest)}, no-rules=${rankLabel(primaryNoRulesBest)}; investigate crawler or index drift.`
+        : primaryGood
         ? "Primary DocSearch now covers this in the top 3; keep this as a regression check for crawler/rule drift."
         : bestAny && bestAny.expectedRank <= 3
           ? "A non-default primary query strategy can cover this; prefer routing/category selection over adding a second docs op."
@@ -328,12 +336,16 @@ function runMatcherSelfTest() {
     breadcrumb: "",
     snippet,
   });
-  const sd001 = byId("sd-001-protocol-24");
+  const sd001 = byId("sd-001-software-versions-rank-one");
   const sd005 = byId("sd-005-ap2-acp-agentic-commerce");
+  const textAll = { expectTextIncludesAll: ["state", "archival", "Whisk"] };
 
-  assert.equal(rankExpected([hit("Whisk state archival", "https://developers.stellar.org/meetings/2025/10/15")], sd001), null);
-  assert.equal(rankExpected([hit("state archival", "https://developers.stellar.org/meetings/2025/10/16")], sd001), null);
-  assert.equal(rankExpected([hit("Whisk state archival", "https://developers.stellar.org/meetings/2025/10/16")], sd001), 1);
+  assert.equal(rankExpected([hit("Protocol 24", "https://developers.stellar.org/meetings/2025/10/16")], sd001), null);
+  assert.equal(rankExpected([hit("Protocol 24", "https://developers.stellar.org/docs/networks/software-versions")], sd001), 1);
+  assert.equal(rankExpected([
+    hit("unrelated"),
+    hit("Protocol 24", "https://developers.stellar.org/docs/networks/software-versions")
+  ], sd001), 2);
 
   assert.equal(rankExpected([hit("generic x402 and MPP meeting notes")], sd005), null);
   assert.equal(rankExpected([hit("SNAP2 upgrade notes")], sd005), null);
@@ -342,7 +354,21 @@ function runMatcherSelfTest() {
   assert.equal(rankExpected([hit("Agentic Commerce Protocol")], sd005), 1);
   assert.equal(rankExpected([hit("ACP")], sd005), 1);
 
-  console.log("Algolia semantic matcher self-test ok (9 controls)");
+  assert.equal(rankExpected([hit("state archival")], textAll), null);
+  assert.equal(rankExpected([hit("Whisk state archival")], textAll), 1);
+
+  const monitorResults = (rulesRank, noRulesRank) => [{
+    ...sd001,
+    results: [
+      { strategy: "primary-docs-rules", expectedRank: rulesRank },
+      { strategy: "primary-docs-no-rules", expectedRank: noRulesRank }
+    ]
+  }];
+  assert.match(summarize(monitorResults(1, 1))[0].recommendation, /rules enabled and disabled/);
+  assert.match(summarize(monitorResults(1, 2))[0].recommendation, /observed rules=#1, no-rules=#2/);
+  assert.match(summarize(monitorResults(null, null))[0].recommendation, /observed rules=miss, no-rules=miss/);
+
+  console.log("Algolia semantic matcher self-test ok (14 controls)");
 }
 
 async function main() {
