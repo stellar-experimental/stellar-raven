@@ -396,13 +396,14 @@ Known judge failure modes (from `eval/qa/README.md`):
   (`JUDGE_RUBRIC` in `judge.mjs` is the current version; verdicts carry
   `{rubric, packVersion, promptSha256}` stamps). The comparability rules and the committed
   noise floor live in `eval/qa/README.md` ("Judging rubric and score comparability").
-- **Denominator note:** the owned battery is 499 cases as of 2026-08-19. The retrieval audit added
-  five service-semantics cases to the 492-case corpus. The current maintenance change added two
+- **Denominator note:** the owned battery is 500 cases as of 2026-08-28. The 499→500 compile added
+  `q-scf-resolve-passport-superseded-slug`. The retrieval audit added five service-semantics cases
+  to the 492-case corpus. The 2026-08-19 maintenance change added two
   broad `scout.hackathonBrief` cases to the 497-case corpus. Commit `6e1f979` previously added two Soroban
   cases to the 490-case corpus. The 2026-07-11 baseline remains historically 484-denominated, and
   the 2026-07-13 corpus remains historically 490-denominated. Pre-rebuild aggregates remain archival
   (`research/audits/2026-07-qa-history.md`). Historical aggregates are not directly comparable to a
-  current 499-case aggregate. Per-id comparisons remain valid for continuing ids under the same tuple.
+  current 500-case aggregate. Per-id comparisons remain valid for continuing ids under the same tuple.
 - **Deterministic sample-membership note:** sample-30 is proportional by service and uses
   even-spaced picks over id-sorted strata. Adding cases can therefore change sampled ids without
   changing sampler code. The 484→490 expansion retained 25 ids and replaced five (full list in
@@ -412,8 +413,9 @@ Known judge failure modes (from `eval/qa/README.md`):
   cases entered sample-30: `q-gap-vet-pitch-vertical-null` and
   `q-ti-scout-refresh-cached-rows`. The 497→499 expansion retained 28 ids and replaced two. It
   removed `q-edge-noinfo-exact-tvl-figure` and `q-scf-total-distributed`; it added
-  `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. Before claiming movement across any denominator change, use an
-  explicit common-id list or disclose the membership churn.
+  `q-edge-partner-detail-soft-empty` and `q-scf-v7-changes`. The 499→500 expansion added
+  `q-scf-resolve-passport-superseded-slug`. Before claiming movement across any denominator change,
+  use an explicit common-id list or disclose the membership churn.
 - Freshness cases: sourced drift from the golden snapshot is fine; confident unsourced
   contradiction is not. Expect a small floor of judge-vs-live disagreements.
 - **Avoid-clause bypass of the rubric-v2 addendum**: a golden whose must-avoid item bans
@@ -580,7 +582,7 @@ the reviewer checks they're true.
 ## Step 6 — file the findings (the round's primary artifact)
 
 Charter: `improvements/README.md`. One file per finding in the matching collection
-(`lumenloop/`, `stellar-light-scout/`, `stellar-docs/`, `skills/`), next id in the
+(`lumenloop/`, `stellar-light-scout/`, `stellar-docs/`, `skills/`, `workers-ai-provider/`), next id in the
 collection's `<prefix>-NNN` sequence. Frontmatter + three sections.
 For lifecycle, intake, probe, index, and lint maintenance details, use the
 `improvements-pipeline` skill.
@@ -592,7 +594,7 @@ the proposed owner must actually undertake to expose the fact.
 ```
 ---
 id: <collection>-NNN
-service: lumenloop | stellar-light-scout | stellar-docs | skills
+service: lumenloop | stellar-light-scout | stellar-docs | skills | workers-ai-provider
 status: proposed | verified | reported-upstream | declined-upstream | fixed-upstream
 discovered: YYYY-MM-DD
 evidence:

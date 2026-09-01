@@ -1,19 +1,21 @@
 # NEXT — handoff for the next work block
 
-Updated 2026-09-01 after the protocol-history attempt-three closeout. Read this first.
+Updated 2026-09-01 after six independent remaining-work audits. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 
 ## State at handoff
 
-- The record-only closeout does not change production. Production runs Worker Version ID
-  `6282fe2a-54d8-471e-9f0a-0a2565110af1`, deployed 2026-08-28 from `main` HEAD. Session 3 did
-  not deploy.
-- `improvements/`: 69 active findings. `sd-047` is `reported-upstream` at
-  https://github.com/stellar/stellar-docs/issues/2805. Lint passes.
-  `sls-080` is verified.
-  Stellar-Light/stellarlight#1031 is still open;
-  the maintainer owns the close.
+- This audit changed planning and eval documentation only. It authorized no paid run, live fetch,
+  deployment, production edit, golden change, routing attempt, or upstream message.
+- The last recorded production deployment is Worker Version ID
+  `6282fe2a-54d8-471e-9f0a-0a2565110af1` from 2026-08-28. This round did not verify live state.
+- `improvements/` contains 69 finding files: 60 `reported-upstream`, 3 `proposed`, 3
+  `declined-upstream`, and 3 `fixed-upstream` deletion candidates. `sd-047` is
+  `reported-upstream` at https://github.com/stellar/stellar-docs/issues/2805. `sls-080` is
+  `reported-upstream` at https://github.com/Stellar-Light/stellarlight/issues/1134.
+  Stellar-Light/stellarlight#1031 was last recorded open on 2026-08-31. The maintainer owns the
+  close.
 - Corpus lint: 0 errors, 61 warnings (0 long-fact, 44 sourcing-guard, 16 corroboration, 1
   symmetric-caution). Every warning carries a recorded disposition: the 44 sourcing-guard items stay
   advisory (20-case audit, two models); the 16 corroboration items are grammar-only (56/56 class
@@ -23,7 +25,7 @@ This file only ranks and sequences. Delete or rewrite this file when the block i
   through `eval/qa/strkey.mjs`.
 - The first `qa-five-track-v1` same-100 result is local at
   `eval/qa/results/2026-08-30T03-43-11-variantA.json`. Its independent decision is
-  `VALID WITH A T4 EXCEPTION`. The one T4 exclusion leaves 99 paired-eligible IDs, so the
+  `VALID WITH A T4 EXCEPTION`. The one five-track T4 exclusion leaves 99 paired-eligible IDs, so the
   100-ID method is `INDETERMINATE`. Judge stability remains 57 of 100 below 0.75.
 - The 2026-08-31 post-collection register refresh kept the same-100 unstable count at 57.
   Four cases entered and four left the unstable set. The judge-stability TODO is closed.
@@ -39,117 +41,146 @@ This file only ranks and sequences. Delete or rewrite this file when the block i
   `a617512`). The 2026-08-31 verify-and-close ledger is
   `.agents/rounds/2026-08-31-golden-metadata-remainder.md`.
 - Both temporary-path classes are gone from the battery (0 files on 2026-08-31).
-  301 files carry a `solo://` reference; these are retained historical dated records.
-- `sd-047` (Validators 3-5 versus Stellar Stack 5-7 ledger cadence) is `reported-upstream`.
+  301 battery files carry a `solo://` reference; these are retained historical dated records.
 - Recovery PR https://github.com/stellar-experimental/stellar-raven/pull/102 closed without merge.
   QA PR https://github.com/stellar-experimental/stellar-raven/pull/103 also closed without merge.
   The record-only evidence is in
   `.agents/rounds/2026-08-31-rejected-experiments-closeout.md`.
-- PR #99 shipped the Playground limit, the real `ai` tool-loop test, and title cleanup at
-  commit `3c7f0e5`.
-- Focused verification passed 31 tests across four files on 2026-08-31.
+- PR #99 merged the Playground limit, the real `ai` tool-loop test, and title cleanup at
+  commit `3c7f0e5` on 2026-08-30. If the recorded 2026-08-28 deployment is current, this change is
+  not deployed.
 - The `clause-support-fit-v1` routing experiment completed on 2026-09-01 with a verified `FAIL`.
   Its stamp is `2026-09-01T14-22-28-993Z-clause-support-fit-v1`.
   Attempt three is spent, so the three-attempt box is spent. No production routing change shipped.
 - The cache-only support referee and its 18 tests are frozen at commit `24de1220`.
+- The owned QA battery contains 500 cases as of 2026-08-28. The committed QA record now includes
+  the first `qa-five-track-v1` same-100 checkpoint.
 
 ## Ranked blocks
 
-### 1. Eval instruments
+### 1. Verify production state
 
-Skill: `run-evals`. Design a new Raven capability-boundary diagnostic.
-The Raven capability-boundary prompt change is rejected and does not ship.
-Method 1 failed its product gate. Its inherited environment hash also differed.
-Method 2 did not run and has no authorization from this result.
-The next attempt needs a stronger mechanism and a new pre-registered diagnostic.
-The diagnostic needs independent review before a headline sample.
+This block is owner-blocked. Prepare a local comparison of `main` and PR #99. Write the proposed
+read-only query plan. Ask the owner to authorize the live production read. After authorization, use
+`cloudflare-observability-review` to read the live Worker revision. Then ask the owner whether to
+deploy or hold. Do not fetch or deploy from this handoff alone.
 
-The Friendbot network-context failure is monitor-only.
-The 2026-08-31 refresh held the unstable count at 57. Four cases entered and four left.
-The judge-stability TODO is closed. The register combines collection and rejudge movement.
-It therefore does not isolate judge-only variance.
+Exit gate after both authorizations: record the live revision, the decision, and either the
+verified deployment or the hold condition.
 
-The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.
+### 2. Make the Raven capability-boundary evidence trustworthy
 
-### 2. Repository-level tooling recovery (monitor-only)
+Use `run-evals`.
 
-The rejected v2 implementation does not ship. Its result was 9 of 12 positive recoveries and 0 of
-8 premature detours. It had 18 of 20 correct and 20 of 20 grounded answers.
+1. Add the fail-closed `--expect-agent-environment-sha256` guard and its tests.
+2. Run the free stored-answer prevalence scan for unsupported Raven capability offers.
+3. Inventory the QA and shipped prose surfaces that can reach a no-tool answer.
+4. Ask the owner to select the product surface only after those free results exist.
+5. Write an independently reviewed diagnostic plan for the selected surface.
 
-`sls-080` is a verified active finding. The free Horizon probe still returned `25` at
-`2026-08-31T01:42:10.098Z`, with scanned ref `82660510ecda7fd365a14d08badb9d85fa22bc32`.
-Do not run a paid recovery collection until this probe returns `28`.
-The selection trigger remains three recurring misses. The Docs-versus-repository conflict stays
-monitor-only until three recurrences. The `stellar-cli` fallback did not reproduce and has no active
-finding. G1 remains a pre-registered v3 candidate only.
+The prior prompt measurement is invalid because its environment pin differed. Its five-track T3
+safety failure is one observation. Another QA-prompt wording layer is spent.
 
-The next Scout finding must use `sls-082`. `sls-081` is historical only.
+Exit gate: an independent reviewer passes a plan that names the mechanism, surface, focused
+diagnostic, product gate, stop rules, and separate authorization boundaries.
 
-`sources.locate` stays deferred. Its phase-zero study reopens only through the measured trigger in
-`ideas/source-delivery-ranked-references.md` §8.
+### 3. Complete free improvements maintenance
 
-### 3. Routing (box spent, trigger-only): `scout.searchResearch`
+Use `improvements-pipeline`.
 
-`search` does not surface the research lane for protocol-history and incident questions.
-The data is reachable, so this is a ranking defect.
+- Read the states of stellarlight#1031, stellarlight#1134, and stellar-docs#2805.
+- Independently review and drain `sd-001`, `sd-036`, and `sk-020` if their fixes still hold.
+- Run the free `sls-080` Scout reading and record its source-parity fields.
 
-Three reviewed mechanisms produced three verified `FAIL` results.
-Attempt one was `2026-08-31T16-58-42-389Z-clause-fit-hysteresis-v1`.
-Attempt two was `2026-08-31T23-36-38-660Z-cross-encoder-fit-v1`.
-Attempt three was `2026-09-01T14-22-28-993Z-clause-support-fit-v1`.
-No production change shipped. Do not start a fourth attempt.
+Exit gate: the round ledger records every issue state, probe result, and deletion receipt or deferral.
 
-Reopen only through triggers T1 to T4 in the attempt-three brief, section 16.
-T1 is an upstream card change. T2 is an owner contract decision.
-T3 is an owner decision for a new non-card box. T4 needs two unrelated live misses.
-A trigger authorizes a brief only.
+### 4. Keep the other programs conditional
+
+- Paired QA: free validator design is allowed. No collection occurs without a merged product
+  candidate, the owner design decisions, reviewed briefs, and new caps.
+- Repository recovery: monitor source parity. A match only removes one blocker. It authorizes no
+  paid collection.
+- Protocol-history routing: keep the three-attempt box closed. Use PH1 to PH4 in `TODO.md` only.
+- `sources.locate`: log incomplete incidents. The phase-zero trigger cannot fire while no recovery
+  steering is live.
+- Friendbot and vendor short-token items remain monitor-only until their recorded bars fire.
 
 ## Completed blocks
 
-### Golden metadata remainder
-
-Skill: `golden-truth`. PR #100 landed the 47 dead-provenance repairs, both dated-conflict
-dispositions, and the five same-100 candidates. The 2026-08-31 round verified all 54 landed ids,
-repaired all 37 bare-relative files through verified touches (two after blind re-derivation),
-superseded the stale `~3-5s` notes sentence on `q-protocol-ledger-close-time`, created `sd-047`
-(`verified`), and closed the two metadata gaps. Grok 4.6 high completed the independent review and
-follow-up review; every finding was repaired, and the follow-up verdict is `PASS`. PR #106 merged the
-round as `0916e09`. Stellar Docs issue #2805 records `sd-047`. This block is complete.
-
-Decisions recorded on 2026-08-31: `solo://` references in corpus truth metadata are historical dated
-records under `AGENTS.md` and are never rewritten; `q-protocol-ledger-close-time` gets no
-canonical-page caution (ADR-0008 three-case boundary), and its advisory `symmetric-caution` lint
-warning is accepted.
-
-Record the affected case-id list in the round ledger, as this round did
-(`2026-08-31-golden-metadata-remainder/affected-case-ids.md`).
+- Golden metadata remainder: PR #106, ledger
+  `.agents/rounds/2026-08-31-golden-metadata-remainder.md`.
+- Judge-stability review: closed at 57 in
+  `.agents/rounds/2026-08-31-eval-routing-next.md`.
+- Protocol-history attempts one to three: three verified `FAIL` results. The box is spent.
+- Recovery v2 and the QA prompt change: rejected and recorded in
+  `.agents/rounds/2026-08-31-rejected-experiments-closeout.md`.
 
 ## Owner decisions
 
-The 2026-08-28 human-review grill resolved its 21 questions. Two later product questions are open.
+The 2026-08-28 human-review grill resolved its 21 questions. The questions below can change a
+future action. Record each answer in a round ledger, `eval/qa/README.md`, or a decision record.
 
-### Choose a product-loss margin for the paired QA method
+### Deploy or hold after live verification
 
-The current `0.08` value is only the no-change confidence radius. It is not an accepted quality-loss
-tolerance. The table uses the mixed-tuple 2026-08-27 and 2026-08-28 discordance upper bound.
+Question: should the current `main` revision deploy after the live revision and smoke checks are
+known?
 
-| Candidate margin | Look-1 no-change `PASS` | Two-look no-change `PASS` | Two-look false `PASS` at a true 5-point loss | Second collection under no change |
-| ---: | ---: | ---: | ---: | ---: |
-| 0.05 | 6.992% | 25.963% | 0.051% | 91.812% |
-| 0.08 | 36.350% | 80.925% | 3.899% | 62.454% |
-| 0.10 | 66.208% | 95.657% | 18.357% | 32.596% |
+Options: deploy through the documented preflight, or hold with a reason and reopen condition.
 
-Choose the largest acceptable product loss from product impact. Do not choose it from power alone.
-Promotion also needs one same-tuple pinned pair for recalibration.
+Safe default: hold until the live revision is verified. A silent hold is not acceptable.
 
-### Decide whether protocol-history routing can reopen
+### Select the Raven capability-boundary surface
 
-Trigger T2 re-examines the frozen control set or the 19/19 positive bar.
-Trigger T3 opens a new box for a non-card evidence source.
-Both choices need an owner decision. No agent may start either path alone.
+Question: is the observed unsupported lookup offer a QA-harness fidelity defect, a shipped Raven
+product defect, or a monitor-only observation?
+
+Evidence needed first: the stored-answer prevalence scan, the prose-surface inventory, and the
+no-tool-answer reachability analysis.
+
+Safe default: monitor-only. Do not authorize a paid diagnostic until an independently reviewed
+plan names a mechanism that reaches the selected surface.
+
+### Resolve paired design only when a product candidate needs a look
+
+The owner must decide three items before any paired collection:
+
+1. The selected denominator that leaves at least 100 eligible IDs with high probability.
+2. Whether one candidate-only five-track T4 remains terminal.
+3. The largest acceptable product-loss margin: `0.05`, `0.08`, `0.10`, or another validated value.
+
+The current margin table is mixed-tuple calibration. The current `0.08` value is only a no-change
+confidence radius. It is not an accepted product tolerance. Use the paired section in
+`eval/qa/README.md` for the operating table. A new pair costs about `$82`.
+
+Safe default: no spend and no promotion. This decision does not block current work.
+
+### Keep protocol-history closed or reopen through PH2 or PH3
+
+Options: stay trigger-only; review control labels under PH2; or open a non-card evidence box under
+PH3.
+
+Evidence needed first: a free per-control capture matrix, an independent label review, and a
+product-impact count over the 76-case inventory and protocol-history QA family.
+
+Safe default: stay trigger-only. Never lower the 19-of-19 bar because three mechanisms failed.
+
+## Evaluation ladder
+
+1. **Free evidence.** Run offline checks, stored-artifact reads, routing diagnostics, and surface
+   inventories. Record stamps and hashes.
+2. **Reviewed plan.** Pre-register the mechanism, acceptance table, stop rules, leakage guards, and
+   budget shape. Reconcile an independent review. A plan pass authorizes implementation only.
+3. **Focused diagnostic.** Require an exact owner cap and all environment, binary, revision, and
+   surface pins. One authorization permits one method run.
+4. **Headline sample.** Require a focused product-gate pass and a separate owner authorization.
+   Never transfer the diagnostic cap.
+5. **Review and closeout.** Review every result row, file findings, update the lane README, and close
+   the round ledger.
+6. **Ship.** Require the relevant product decision and deployment authorization. Verify production.
 
 ## Suggested sequence
 
-Start block 1 with an independently reviewed Raven diagnostic plan.
-Keep block 2 monitor-only until its free Horizon probe returns `28`.
-Keep protocol-history routing trigger-only. Resolve the two owner decisions when ready.
+Start with the local production comparison and query plan. Then add the fail-closed environment
+pin. Run the free Raven evidence work and the improvements maintenance block next. Keep every
+fetch, paid action, or production action behind its separate authorization. No current item has
+authorization for evaluation ladder stages 3, 4, or 6.

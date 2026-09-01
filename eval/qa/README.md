@@ -833,6 +833,45 @@ as the committed `23.3%` identical-input re-judge noise floor.
 cap of 10. Its 31 boundary rows produced 10 panels and 21 skips. Therefore, `single` in that
 artifact can mean "not escalated", which is not the same as "not borderline".
 
+## 2026-08-30 first `qa-five-track-v1` same-100 run (checkpoint, not a re-baseline)
+
+This run exercised the panel, five-track, paired, and lifecycle contracts on the pinned same-100
+set. The result JSON stays local and gitignored. The committed round record is
+`.agents/rounds/2026-08-29-five-track-same-100.md`.
+
+| Pin | Value |
+| --- | --- |
+| Results stamp | `2026-08-30T03-43-11-variantA.json` |
+| SHA-256 | `211577ce0dcb7c994dcc1bbec0be7cc0fca534c6638be261420d21a761502387` |
+| Server + runner revision | `d8ae30bba3e57f7da89bb465e1489ef85b65873d` |
+| Agent binary SHA-256 | `625869b01e0050f260b2980fac248fd9cef9e462612bded4ec9d3d49ff8969a5` |
+| Tuple | `claude-sonnet-5` answering / `claude-sonnet-5` judging / `v2.9` / `p5` |
+| Stability register SHA-256 | `50dd2d79adae60cba85935776f4bb3458ac191f84a9bb43dc8f94657f9bdbd00` |
+| Result schema | `qa-agent-result-v4` |
+| Track schema | `qa-five-track-v1` |
+
+The run cost `$40.9579502`: `$24.3950378` for answering and `$16.5629124` for judging.
+It made 314 paid calls. Every row, pin, cost, five-track result, and independent review is in the
+round ledger.
+
+| Track or metric | Result |
+| --- | --- |
+| T1 answer verdicts | 45 correct / 42 partial / 13 wrong |
+| T2 retries | no eligible failure or retry |
+| T3 safety traps | 5 pass / 2 fail across 7 traps |
+| T4 judge health | 57 panels / 43 singles / 1 consistency contradiction |
+| T5 provider health | all fields present; no event |
+| Strict / half-credit / core-correct / coverage | 45.0% / 66.0% / 93.0% / 52.8% |
+| Independent decision | `VALID WITH A T4 EXCEPTION` |
+
+The T4 contradiction was `q-eco-stellar-wallets-list` with `partial-without-issue`. The independent
+review retained the aggregate `partial` from the two valid votes. It overturned none of the 13
+`wrong` verdicts.
+
+Five-track T4 excludes that case from paired eligibility. The artifact therefore has 99 eligible
+IDs and produces `INDETERMINATE` under `qa-paired-ordinal-ni-v1`. It is not a paired look-one arm.
+The artifact used rubric `v2.9`; current rubric `v2.10` prevents direct cross-rubric comparison.
+
 ## 2026-08-28 same-100 rerun on current main (checkpoint, not a re-baseline)
 
 This run recollected the same 100 case ids as the 2026-08-27 benchmark against current main. It
@@ -1393,6 +1432,9 @@ Results stamps: `2026-07-11T15-36-44-variantA.json`,
 `2026-07-11T15-50-19-variantA.json`, and `2026-07-11T15-52-51-variantA.json`.
 Raw results were 8C/18P/4W, 8C/2P/0W, and 2C/0P/0W respectively; live review calibrated the
 canonical lane to 9C/1P/0W. Results JSONs remain local-only evidence.
+
+The 2026-08-30 same-100 five-track run above is a later diagnostic checkpoint. It is not a
+checkpoint against this sample-30 headline baseline, and it does not replace this baseline.
 
 The most recent checkpoint against this baseline is the 2026-07-11 tier-interleave round
 ([`reviewed/2026-07-11-tier-interleave-round.md`](./reviewed/2026-07-11-tier-interleave-round.md),

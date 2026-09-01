@@ -7,17 +7,50 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
+Updated 2026-09-01 after the six-lane remaining-work adversarial audit.
+
+## Production
+
+### Verify the production revision and resolve the Playground deployment
+
+The last repository record names Worker Version ID
+`6282fe2a-54d8-471e-9f0a-0a2565110af1`, deployed on 2026-08-28. This audit did not verify the
+live revision. PR #99 merged the Playground input-limit and accessibility changes at `3c7f0e5`
+on 2026-08-30. If the deployment record is current, those changes are not deployed.
+
+Permitted now: compare `main` with PR #99 locally. Write a proposed read-only production query plan.
+Do not run the query before the owner authorizes the live production read.
+
+Authorization boundary: the live production read is owner-blocked. After that read, a deployment
+needs a separate recorded owner decision and the normal production preflight. Run
+`npm run test:smoke` and the baseline checks before any deployment proposal.
+
+Done when: the live Worker Version ID and revision are recorded. Then either verify the deployment
+and `/playground` behavior, or record a hold reason and its reopen condition.
+
 ## Improvements backlog
 
-### Watch Stellar-Light/stellarlight#1031 for the maintainer close
+### Refresh the recorded upstream states
 
-`sls-074` was retired on 2026-08-28 after a live verification comment
-(https://github.com/Stellar-Light/stellarlight/issues/1031#issuecomment-5455030587). The issue was
-still open at retirement. Untouched open issues stay quiet; do not post reminders.
+The next improvements round must read these refs and record their current states:
 
-Done when: the next improvements round records the issue state. No action if it is closed.
+- `sls-074`: Stellar-Light/stellarlight#1031. The finding is retired. The maintainer owns the close.
+- `sls-080`: Stellar-Light/stellarlight#1134. The finding is `reported-upstream`.
+- `sd-047`: stellar/stellar-docs#2805. The finding is `reported-upstream`.
 
-## Routing
+Untouched open issues stay quiet. Do not post reminder or status-chasing comments.
+
+Done when: the next improvements round records each state and the related live re-check result.
+
+### Drain the fixed-upstream deletion candidates
+
+`sd-001`, `sd-036`, and `sk-020` are `fixed-upstream`. This status is a transient deletion queue.
+Use the `improvements-pipeline` resolution workflow for each file.
+
+Done when: a distinct reviewer re-runs each trigger, reviews every persistent reference, and the
+resolver records complete receipts in `improvements/resolved.json`.
+
+## Recovery
 
 ### Monitor the rejected repository-tooling recovery experiment
 
@@ -27,18 +60,39 @@ The rejected `repository-tooling-recovery-v2` implementation does not ship.
 The v2 collection returned 9 of 12 positives and 0 of 8 premature detours.
 It had 18 of 20 correct answers and 20 of 20 grounded answers.
 
-`sls-080` is a verified active Scout finding.
-The free Horizon probe still returned `25` at `2026-08-31T01:42:10.098Z`.
+`sls-080` is `reported-upstream` at Stellar-Light/stellarlight#1134.
+The free Scout reading still returned `25` at `2026-08-31T01:42:10.098Z`.
 Its scanned ref was `82660510ecda7fd365a14d08badb9d85fa22bc32`.
-Do not run a paid recovery collection until this free probe returns `28`.
 
-The selection trigger remains three recurring misses.
-The Docs-versus-repository conflict remains monitor-only until three recurrences.
+During each improvements or drift-maintenance round, run one free `scout.explainRepo` reading
+against the existing local Raven server. Ask: “Which Horizon ingestion constant pins the highest
+supported protocol version, and what is its value?” Use repository `stellar/stellar-horizon`.
+Record the returned value, `generatedAt`, `scannedRef`, and `answerSource` in `sls-080` recurrences.
+
+The freshness blocker clears only when the DeepWiki answer equals the source value at the
+response's own `scannedRef`. The current source value is `28`; the match rule is not a permanent
+literal-`28` rule.
+
+The selection trigger remains three qualifying positive operation-selection misses after recovery.
+The Docs-versus-repository conflict remains monitor-only until three successful-recovery
+recurrences. Each recurrence must be a dated re-execution of `sls-080`. It must use the required
+Docs-first, inspect, then one-later-`scout.explainRepo` sequence. Record the same finding identity,
+the case ID, the result stamp, and the transcript for every recurrence.
 The `stellar-cli` fallback candidate did not reproduce and has no active finding.
 G1 is a pre-registered v3 candidate only.
 
-Done when: a free Horizon probe returns `28`, or a new evidenced trigger authorizes a separately
-reviewed recovery plan. A later Scout finding must use `sls-082`; `sls-081` is historical only.
+A matching free reading does not authorize a paid collection. A new recovery plan must cite
+ADR-0008. It must retain the 10-of-12 positive and 0-of-8 premature-detour gate. Ranking remains
+blocked until three qualifying positive misses remain after recovery. Any paid collection needs
+an independent plan review and its own spend authorization.
+
+G1's detailed record is in closed PR #102 at commit `6baec0a4`. Fetch it with
+`git fetch origin pull/102/head` if this block reopens.
+
+Done when: a reviewed v3 plan later passes ADR-0008 and ships, or the owner retires this recovery
+program. A later Scout finding must use `sls-082`; `sls-081` is historical only.
+
+## Routing
 
 ### `search` does not surface the research lane for protocol-history questions
 
@@ -80,21 +134,56 @@ The full record is `.agents/rounds/2026-09-01-protocol-history-attempt-three.md`
 Attempt three is spent, so the three-attempt box is spent. No fourth attempt is authorized.
 No production change shipped, and no `improvements/` finding applies.
 
-Reopen only through a trigger in the attempt-three brief, section 16.
-T1 is an upstream `x-routing` change for `GET /api/research`.
-T2 is an owner decision about the frozen control set or the 19/19 positive bar.
-T3 is an owner decision to open a new box for a non-card evidence source.
-T4 is two unrelated live routing misses with transcripts.
-A trigger authorizes a brief only. It does not authorize a fetch, run, production edit, or paid lane.
+Permitted now: build a free per-control capture matrix across the three retained results. Add an
+independent label review against the target card's `notFor` and `useWhen`. Count product impact over
+the pinned 76-case inventory and the protocol-history QA family. These results inform PH2 or PH3;
+they authorize neither path.
 
-Done when: a protocol-history or incident question surfaces `scout.searchResearch` in `search`,
-measured on the routing eval rather than on this one case. Treat a fix that only helps this case
-as unshipped.
+This queue calls the dated brief's T1 to T4 triggers `PH1` to `PH4`. This avoids collision with
+the five-track T1 to T5 contract.
+
+- **PH1 — dual upstream card change.** Both hashes must change together. The
+  `inventory/stellar-light.json` SHA-256 must differ from
+  `1a261c4a2e2172683e91a52ddc33b02ff41e74760c861dfacb29c60a8d8671b0`. The
+  `sha256(JSON.stringify(openapi.paths["/api/research"].get["x-routing"]))` value must differ from
+  `468a9d9834e8cb50cb905f80ccc42f9d3daa7a3d0ff2d8c5194d566812ba716b`. Routine inventory drift
+  alone does not fire PH1. The drift lane may run the free `npm run eval:protocol-history`
+  diagnostic and record both contract counts. PH1 does not authorize a new mechanism.
+- **PH2 — owner contract decision.** The owner can review the frozen control labels or the 19-of-19
+  positive bar. A changed label needs label evidence, provenance, and a contract-version change.
+  A spent mechanism's misses cannot justify lowering the bar.
+- **PH3 — new non-card evidence box.** The owner can open a box for corpus-derived route vocabulary
+  or another named non-card source. The brief must carry every pre-registration item from the
+  attempt-three brief, section 16. Independent review must pass before any fetch.
+- **PH4 — new live routing evidence.** Two cases must show the same absent-lane pattern. They must
+  use different question families and entities. Neither can paraphrase a frozen positive. Each case
+  needs a dated transcript. PH4 opens a TODO note and a token-reachability audit. The owner then
+  chooses PH2 or PH3. PH4 does not open a mechanism box by itself.
+
+Run `npm run eval:protocol-history` as a free diagnostic after changes to `src/catalog/**`,
+`catalog/manifest.json`, `scripts/build-catalog.mjs`, or
+`src/catalog/vendor/search-scoring.ts`. Record the counts. Keep this lane diagnostic-only.
+
+Done when: a later reviewed mechanism passes the complete section 8 acceptance table from the
+attempt-three brief. One new target capture or one-case improvement does not close this item.
 
 Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
 our ranking.
 
 ## Eval instruments
+
+### Add a fail-closed answering-agent environment pin
+
+`eval/qa/run-qa.mjs` records `meta.agentEnvironment.inherited.sha256`, but it cannot assert an
+expected value before paid calls. The rejected capability-boundary diagnostic ran with a different
+environment hash from its pre-registration.
+
+Add `--expect-agent-environment-sha256`. Validate it before the first paid call.
+Stamp the expected and observed identities in the result. Add tests for match, mismatch, missing
+value, and no-paid-call behavior.
+
+Done when: the narrow tests, `npm test`, and the relevant eval self-tests pass. The Raven boundary
+block then uses the flag as a required pre-spend pin.
 
 ### Monitor vendor short-token prefix matching
 
@@ -103,32 +192,103 @@ The tokenizer keeps one-character tokens.
 A description containing `a` therefore prefix-matches each query token that starts with `a`.
 This is a single-source observation. Do not edit the vendor file from this observation.
 The record is `.agents/rounds/2026-09-01-protocol-history-attempt-three.md`.
+The rule lives in `src/catalog/vendor/search-scoring.ts`. Its current SHA-256 is
+`718924d10533ea49d472602f600ece0e4d7a0aae3e9e0ca5a95d9a8c6e611b14`.
 
-Done when: a second unrelated case shows coverage inflation from a one-character or two-character
-token, or a re-vendor changes the rule.
+Done when: a case from a different question family and primary service shows short-token coverage
+inflation, or a re-vendor changes the file hash.
 
 ### Design a new Raven capability-boundary diagnostic
 
-The rejected QA prompt change does not ship.
-Its Method 1 result is recorded in
-`.agents/rounds/2026-08-31-rejected-experiments-closeout.md`.
-The Raven trap failed T3 and the external lookup control was partial.
-The inherited environment hash also differed from the registered value.
+Case `q-n3-missing-funds-account-support` offered a later Raven lookup by G-address or transaction
+hash. Raven exposes no account-scoped lookup. The answer was a no-tool answer. Control case
+`q-jutsu-check-account-history` asks for public lookup guidance that another service can perform.
+A valid mechanism must not suppress that guidance.
 
-Method 2 did not run. This result does not authorize Method 2.
-The next attempt needs a stronger mechanism and a new pre-registered diagnostic before a headline
-sample.
+The rejected capability-boundary Method 1 added prose to `eval/qa/run-qa.mjs:agentPrompt`. Its
+environment pin differed, so it is invalid as a measurement. Its five-track T3 safety failure is
+one observation. The prompt mechanism was withdrawn. The capability-boundary Method 2 was the
+deterministic sample-30 headline with an offline plan regrade. It did not run. Both
+capability-boundary authorizations are spent. The five-track Method 2 is separate and complete.
 
-Done when: an independently reviewed plan defines the new mechanism and diagnostic. It must then
-pass its stated product gate before any headline sample receives separate authorization.
+The next free step has two parts:
+
+1. Scan stored answers for unsupported Raven capability offers. An independent reviewer must
+   adjudicate every hit.
+2. Inventory every prose surface that can reach a no-tool answer. Decide whether the defect belongs
+   to the QA harness or a shipped Raven surface.
+
+The next plan must name the surface owner and an observable product hypothesis. It must use a
+mechanism that reaches no-tool answers. Another QA-prompt wording layer is spent. Do not copy case
+facts, identifiers, or redirect lists into a prompt. Include the trap, the control, the environment
+pin, and a pre-registered product gate.
+
+The design record from closed PR #103 is at commit `fb9a35eb`. Fetch it with
+`git fetch origin pull/103/head` if needed. Its result artifact is not a durable baseline.
+
+Authorization boundary: free scans, inventory, plan writing, and independent plan review are
+allowed. A focused diagnostic needs its own bounded authorization. A headline sample needs a
+separate authorization after the focused diagnostic passes. Denominators never merge.
+
+Done when: an independently reviewed plan names the mechanism, surface, diagnostic, acceptance
+table, stop rules, and authorization boundaries. Measurement is a later item.
+
+### Resolve paired-QA design before promotion
+
+`qa-paired-ordinal-ni-v1` is implemented, experimental, and not a ship gate. No same-tuple pinned
+pair exists. The 2026-08-30 artifact used rubric `v2.9`; the target rubric is `v2.10`.
+
+The method selects 100 IDs and requires 100 eligible IDs after five-track T4 and T5 exclusions.
+The validator reports a 99.356% terminal `INDETERMINATE` rate under its selected-100 missingness
+assumptions. The real run lost one ID and returned `INDETERMINATE` at 99 eligible IDs. A
+candidate-only T4 also forces `INDETERMINATE`; the validator reports 64.079% blocking under its 1%
+assumption.
+
+Permitted now: extend the free validator to evaluate a pre-registered selected denominator above
+100. Review denominator and candidate-only rules before the first new look. Never change either
+rule after reading a paid look.
+
+The spend trigger is a merged product candidate that needs a paired look, plus a recorded owner
+margin. Do not collect a pair for calibration alone. Two new same-tuple collections cost about
+`$82`; the stored range is `$64` to `$92`. Each collection needs a reviewed brief and its own cap.
+
+Before the next collection, decide whether the optional one-row rubric `v2.10` rejudge of
+`q-eco-stellar-wallets-list` is still useful. It is judge-contract evidence only and needs its own
+small authorization.
+
+Done when: two complete arms share the answering model, judge model, rubric, pack, pinned register,
+environment hash, agent binary, and implementation hash. At least 100 IDs remain eligible. Then
+`npm run eval:qa:paired:validate -- --recalibrate <baseline> <candidate>` passes, and a round ledger
+records the promotion decision.
 
 ### Monitor Friendbot network-context synthesis
 
-The Friendbot failure is a monitor-only single-case result.
-Do not infer a prompt repair from it.
+Case `q-edge-send-me-free-xlm` called Friendbot Testnet-only. The transcript made no tool call.
+Stellar Docs expose Testnet, Futurenet, and local Quickstart distinctions. This is one answering
+failure, not an upstream finding or a prompt-repair decision.
 
-Done when: the same failure appears in two unrelated cases, a contract mismatch appears, or trace
-evidence shows the prompt requests the wrong behavior.
+Done when: the same wording defect appears in a second unrelated case, a contract mismatch appears,
+or trace evidence shows the prompt requests the wrong behavior. An unrelated case uses a different
+question family and primary service. A paraphrase of the first case does not count. Record every
+recurrence with its case ID, result stamp, and transcript.
+
+## Deferred programs
+
+### Keep `sources.locate` deferred
+
+The owner deferred the program on 2026-08-28. The design and reopen rule live in
+`ideas/source-delivery-ranked-references.md` section 8. Its twelve design questions are not current
+owner questions.
+
+Every verified incident must prove source coverage rather than routing, answer craft, judge error,
+or golden error. It must meet all four section 8 conditions. Condition 3 requires live
+repository-recovery steering. No such steering is live because recovery v2 was rejected.
+
+Log incidents that meet conditions 1, 2, and 4 in the recovery item. Do not count them until
+condition 3 is satisfied. No trigger authorizes implementation.
+
+Done when: the full section 8 trigger fires and the owner approves a phase-zero study, or the owner
+retires the program.
 
 ## Owner decisions
 
