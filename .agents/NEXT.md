@@ -1,6 +1,6 @@
 # NEXT — handoff for the next work block
 
-Updated 2026-08-31 after the cross-encoder attempt-two closeout. Read this first.
+Updated 2026-09-01 after the protocol-history attempt-three closeout. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 
@@ -48,32 +48,30 @@ This file only ranks and sequences. Delete or rewrite this file when the block i
 - PR #99 shipped the Playground limit, the real `ai` tool-loop test, and title cleanup at
   commit `3c7f0e5`.
 - Focused verification passed 31 tests across four files on 2026-08-31.
-- The `cross-encoder-fit-v1` routing experiment completed on 2026-08-31 with a verified `FAIL`.
-  Terra's cache-only recomputation passed. No production routing change shipped. Attempt two of
-  the three-attempt box is spent; attempt three remains unused.
+- The `clause-support-fit-v1` routing experiment completed on 2026-09-01 with a verified `FAIL`.
+  Its stamp is `2026-09-01T14-22-28-993Z-clause-support-fit-v1`.
+  Attempt three is spent, so the three-attempt box is spent. No production routing change shipped.
+- The cache-only support referee and its 18 tests are frozen at commit `24de1220`.
 
 ## Ranked blocks
 
-### 1. Routing (held): `scout.searchResearch` for protocol-history questions
+### 1. Eval instruments
 
-`search` never surfaces the research lane for incident questions such as
-`q-protocol-24-whisk-incident`. The data is reachable; ranking is the fault. Measure on the
-routing eval, not one case. A fix that helps only this case is unshipped.
+Skill: `run-evals`. Design a new Raven capability-boundary diagnostic.
+The Raven capability-boundary prompt change is rejected and does not ship.
+Method 1 failed its product gate. Its inherited environment hash also differed.
+Method 2 did not run and has no authorization from this result.
+The next attempt needs a stronger mechanism and a new pre-registered diagnostic.
+The diagnostic needs independent review before a headline sample.
 
-Attempt one of the three-attempt box is complete. The clause-level Qwen route-fit measurement
-produced a reviewed `FAIL`. No grid passed both frozen contracts with the routing gates intact.
-The harness and clause artifact remain as the frozen instrument. No production change shipped.
+The Friendbot network-context failure is monitor-only.
+The 2026-08-31 refresh held the unstable count at 57. Four cases entered and four left.
+The judge-stability TODO is closed. The register combines collection and rejudge movement.
+It therefore does not isolate judge-only variance.
 
-Attempt two completed on 2026-08-31 with a verified `FAIL`. The reviewed `cross-encoder-fit-v1`
-measurement kept both frozen contracts at the lexical baseline on every registered grid while
-failing the routing gate. Its stamp is `2026-08-31T23-36-38-660Z-cross-encoder-fit-v1`, and the
-full record is `.agents/rounds/2026-08-31-protocol-history-cross-encoder-v1.md`. No production
-change shipped. The block returns to held. Attempt two is spent, and attempt three remains
-unused. Attempt three needs its own reviewed brief with a distinct mechanism — the measured
-negatives rule out the clause bi-encoder and the pairwise cross-encoder at a registered
-hysteresis grid.
+The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.
 
-### 2. Repository-level tooling recovery
+### 2. Repository-level tooling recovery (monitor-only)
 
 The rejected v2 implementation does not ship. Its result was 9 of 12 positive recoveries and 0 of
 8 premature detours. It had 18 of 20 correct and 20 of 20 grounded answers.
@@ -90,20 +88,21 @@ The next Scout finding must use `sls-082`. `sls-081` is historical only.
 `sources.locate` stays deferred. Its phase-zero study reopens only through the measured trigger in
 `ideas/source-delivery-ranked-references.md` §8.
 
-### 3. Eval instruments
+### 3. Routing (box spent, trigger-only): `scout.searchResearch`
 
-Skill: `run-evals`. The Raven capability-boundary prompt change is rejected and does not ship.
-Method 1 failed its product gate. Its inherited environment hash also differed.
-Method 2 did not run and has no authorization from this result.
-The next boundary attempt needs a stronger mechanism and a new pre-registered diagnostic before a
-headline sample.
+`search` does not surface the research lane for protocol-history and incident questions.
+The data is reachable, so this is a ranking defect.
 
-The Friendbot network-context failure is monitor-only.
-The 2026-08-31 post-collection refresh held the unstable count at 57, with four cases in and four
-cases out. The TODO item is closed. The register combines verdict movement across collections and
-re-judges, so it does not isolate judge-only variance.
+Three reviewed mechanisms produced three verified `FAIL` results.
+Attempt one was `2026-08-31T16-58-42-389Z-clause-fit-hysteresis-v1`.
+Attempt two was `2026-08-31T23-36-38-660Z-cross-encoder-fit-v1`.
+Attempt three was `2026-09-01T14-22-28-993Z-clause-support-fit-v1`.
+No production change shipped. Do not start a fourth attempt.
 
-The `qa-five-track-v1`, paired verdict, judge `v2.10`, and golden lifecycle contracts are implemented.
+Reopen only through triggers T1 to T4 in the attempt-three brief, section 16.
+T1 is an upstream card change. T2 is an owner contract decision.
+T3 is an owner decision for a new non-card box. T4 needs two unrelated live misses.
+A trigger authorizes a brief only.
 
 ## Completed blocks
 
@@ -127,7 +126,7 @@ Record the affected case-id list in the round ledger, as this round did
 
 ## Owner decisions
 
-The 2026-08-28 human-review grill resolved its 21 questions. One later eval-method question is open.
+The 2026-08-28 human-review grill resolved its 21 questions. Two later product questions are open.
 
 ### Choose a product-loss margin for the paired QA method
 
@@ -143,8 +142,14 @@ tolerance. The table uses the mixed-tuple 2026-08-27 and 2026-08-28 discordance 
 Choose the largest acceptable product loss from product impact. Do not choose it from power alone.
 Promotion also needs one same-tuple pinned pair for recalibration.
 
+### Decide whether protocol-history routing can reopen
+
+Trigger T2 re-examines the frozen control set or the 19/19 positive bar.
+Trigger T3 opens a new box for a non-card evidence source.
+Both choices need an owner decision. No agent may start either path alone.
+
 ## Suggested sequence
 
-Keep block 1 held until a distinct attempt-three brief passes review. Block 2 remains monitor-only
-until its free Horizon probe returns `28`. Resolve the owner product-loss margin before a later
-paired QA promotion.
+Start block 1 with an independently reviewed Raven diagnostic plan.
+Keep block 2 monitor-only until its free Horizon probe returns `28`.
+Keep protocol-history routing trigger-only. Resolve the two owner decisions when ready.

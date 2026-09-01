@@ -32,6 +32,7 @@
     "eval:vectorize:rerank:fetch": "node eval/vectorize/fetch-rerank-model.mjs",
     "eval:vectorize:rerank:preflight": "node eval/vectorize/preflight-rerank-model.mjs",
     "eval:vectorize:rerank:run": "node eval/vectorize/run-rerank-fit.mjs",
+    "eval:vectorize:support:run": "node eval/vectorize/run-support-fit.mjs",
     "eval:vectorize:serve": "node eval/vectorize/serve-frontier.mjs",
     "micro-map:build": "node scripts/build-micro-map.mjs",
     "eval:routing": "node eval/run-routing.mjs",
