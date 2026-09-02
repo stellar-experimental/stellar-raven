@@ -29,7 +29,12 @@ import {
   makeSearchResultProjector,
   projectSearchResult
 } from "../eval/qa/search-projection.mjs";
-import { buildAgentSpawn, collectionAggregates, probeLiveSurface } from "../eval/qa/run-qa.mjs";
+import {
+  buildAgentSpawn,
+  collectionAggregates,
+  parseOptionalIdsFlag,
+  probeLiveSurface
+} from "../eval/qa/run-qa.mjs";
 import {
   buildDiscoveryAgentArgs,
   buildDiscoverySpawnOptions,
@@ -546,6 +551,56 @@ printf '%s\\n' '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correc
   writeFileSync(callLogPath, "");
   return { root, run, runCollection, paidCalls, environmentSha256 };
 }
+
+describe("run-qa optional IDs selector guards", () => {
+  it.each([
+    ["equals form", ["--ids=q-example"], /--ids=<value> is not supported/],
+    ["duplicate", ["--ids", "q-example", "--ids", "q-second"], /accepts --ids at most once/]
+  ])("rejects the %s in the direct parser", (_name, idsArgs, message) => {
+    expect(() => parseOptionalIdsFlag(idsArgs)).toThrow(message);
+  });
+
+  it.each([
+    ["equals form", ["--ids=q-example"], /--ids=<value> is not supported/],
+    ["duplicate", ["--ids", "q-example", "--ids", "q-second"], /accepts --ids at most once/]
+  ])("rejects the %s --ids selector before a paid call", (_name, idsArgs, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const result = fixture.runCollection(idsArgs);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it("preserves a spaced --ids selector", () => {
+    expect(parseOptionalIdsFlag(["--ids", "q-example,q-second"]))
+      .toBe("q-example,q-second");
+  });
+
+  it("rejects --ids with --judge-stored before a paid call", () => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "ids-with-judge-stored");
+      const result = fixture.run(resultsPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        "--ids",
+        "q-example"
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(/--judge-stored and --ids are contradictory/);
+      expect(fixture.paidCalls()).toEqual([]);
+      expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+});
 
 describe("P3 — run-qa CLI pins the inherited agent environment", () => {
   it.each([

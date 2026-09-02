@@ -173,6 +173,25 @@ The 2026-09-01 agent-discovery guard review found this issue after the required-
 Done when: both runners reject equals and duplicate `--ids` forms before spend.
 Focused tests must cover each rejected form and prove that no paid call starts.
 
+### Harden residual optional equals-form flags in paid runners
+
+`eval/qa/run-qa.mjs` still ignores `--sample=30`, `--model=<name>`,
+`--judge-model=<name>`, `--cases=<path>`, and `--variant=B`.
+`eval/discovery/run-agent-discovery.mjs` still ignores `--repeat=3`, `--model=<name>`,
+`--effort=<value>`, and `--cases=<path>`.
+
+An ignored `--sample=30` can select all 500 cases instead of 30.
+The budget limits cost, but it does not preserve the intended sample size.
+Ignored model flags use default models and break model-tuple comparability.
+
+`eval/qa/re-judge.mjs` rejects unknown flags.
+Use its fail-closed parser as the candidate pattern.
+
+Done when every listed equals form stops silent fallback before paid calls.
+Each runner must use exact parsing or unknown-flag rejection.
+Discriminating zero-call tests must prove each rejection.
+Documentation must state the accepted and rejected forms.
+
 ### Monitor vendor short-token prefix matching
 
 The 2026-09-01 token audit found no minimum length in the vendored scorer prefix rule.

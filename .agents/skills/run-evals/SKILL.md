@@ -131,6 +131,9 @@ each sequential answering or judge call. Reported cost reduces the ledger, exhau
 next call, and the artifact retains incomplete and unattempted IDs. A budgeted call with no
 reported cost invalidates the method. Record the real CLI path, version, and hash.
 
+For `run-qa.mjs` and `run-agent-discovery.mjs`, `--ids` accepts one spaced `--ids a,b,c` form.
+The runners reject `--ids=a,b,c` and duplicate `--ids` flags before any paid call.
+
 **Incomplete lanes are incomplete, not smaller.** Harnesses that catch per-job failures and filter
 them out (`eval/agentic/workflow-agentic-routing.js`) shrink the denominator silently, so
 percentages still look clean. Assert the expected job count before reading any result; a short run

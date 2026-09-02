@@ -9,6 +9,7 @@ import {
   buildDiscoveryAgentArgs,
   collectBudgetedAgentRun,
   formatRunFailure,
+  parseOptionalIdsFlag,
   parsePaidRunPreconditions,
   withPaidRunPreconditions
 } from "../eval/discovery/run-agent-discovery.mjs";
@@ -111,6 +112,32 @@ describe("agent-discovery paid-run flag guards", () => {
     }
   });
 
+  it.each([
+    ["equals form", ["--ids=discovery-001"], /--ids=<value> is not supported/],
+    ["duplicate", ["--ids", "discovery-001", "--ids", "discovery-002"], /accepts --ids at most once/]
+  ])("rejects the %s --ids selector before a paid call", (_name, idsArgs, message) => {
+    const fixture = createCliFixture();
+    try {
+      const args = [...requiredArgs(fixture), ...idsArgs];
+      const continuations = [];
+      expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
+        .toThrow(message);
+      expect(continuations).toEqual([]);
+
+      const result = fixture.run(args);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it("preserves a spaced --ids selector", () => {
+    expect(parseOptionalIdsFlag(["--ids", "discovery-001,discovery-002"]))
+      .toBe("discovery-001,discovery-002");
+  });
+
   it("passes each remaining authorization to the agent command", () => {
     const args = buildDiscoveryAgentArgs({
       mcpConfigPath: "/tmp/mcp.json",
@@ -209,20 +236,22 @@ describe("agent-discovery paid-run flag guards", () => {
     });
   });
 
-  it("parses valid paid-run preconditions exactly once", () => {
+  it("parses and forwards valid paid-run preconditions exactly once", () => {
     const args = [
       "--expect-agent-binary-sha256", "a".repeat(64),
       "--expect-agent-environment-sha256", "b".repeat(64),
       "--max-budget-usd", "1.25",
       "--server-revision", "c".repeat(40),
-      "--expect-sha256", "d".repeat(64)
+      "--expect-sha256", "d".repeat(64),
+      "--ids", "discovery-001,discovery-002"
     ];
     const expected = {
       agentBinarySha256: "a".repeat(64),
       agentEnvironmentSha256: "b".repeat(64),
       maxBudgetUsd: 1.25,
       serverRevision: "c".repeat(40),
-      surfaceSha256: "d".repeat(64)
+      surfaceSha256: "d".repeat(64),
+      ids: "discovery-001,discovery-002"
     };
     expect(parsePaidRunPreconditions(args)).toEqual(expected);
 

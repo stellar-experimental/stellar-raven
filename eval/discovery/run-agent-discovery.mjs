@@ -111,13 +111,35 @@ function requiredPaidFlag(args, flag) {
   return value;
 }
 
+/** Reject ambiguous selectors before they can expand a paid run. */
+export function parseOptionalIdsFlag(args) {
+  const flag = "--ids";
+  if (args.some((arg) => arg.startsWith(`${flag}=`))) {
+    throw new Error(`${flag}=<value> is not supported; use ${flag} <value>`);
+  }
+  const indexes = args
+    .map((arg, index) => (arg === flag ? index : -1))
+    .filter((index) => index !== -1);
+  if (indexes.length > 1) {
+    throw new Error(`run-agent-discovery accepts ${flag} at most once`);
+  }
+  if (indexes.length === 0) return undefined;
+  const value = args[indexes[0] + 1];
+  if (value === undefined || value === "" || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
 export function parsePaidRunPreconditions(args) {
+  const ids = parseOptionalIdsFlag(args);
   return {
     agentBinarySha256: requiredPaidFlag(args, "--expect-agent-binary-sha256"),
     agentEnvironmentSha256: requiredPaidFlag(args, "--expect-agent-environment-sha256"),
     maxBudgetUsd: parseMaxBudgetUsd(requiredPaidFlag(args, "--max-budget-usd")),
     serverRevision: requiredPaidFlag(args, "--server-revision"),
-    surfaceSha256: requiredPaidFlag(args, "--expect-sha256")
+    surfaceSha256: requiredPaidFlag(args, "--expect-sha256"),
+    ...(ids === undefined ? {} : { ids })
   };
 }
 
@@ -347,7 +369,7 @@ async function runPaidDiscovery(paidRun) {
   if (!/^[a-f0-9]{40}$/.test(String(serverRevision ?? ""))) {
     throw new Error("--server-revision must be a clean 40-character commit");
   }
-  const ids = argValue("--ids")?.split(",").map((id) => id.trim()).filter(Boolean);
+  const ids = paidRun.ids?.split(",").map((id) => id.trim()).filter(Boolean);
   if (!Number.isInteger(repeat) || repeat < 1) throw new Error("--repeat must be a positive integer");
 
   const { meta, cases: loaded } = loadDiscoveryCases(casesPath);

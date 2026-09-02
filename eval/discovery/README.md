@@ -46,8 +46,9 @@ Results are written to `eval/discovery/results/<ISO-stamp>.json` and are local e
 The agent runner defaults to `claude-sonnet-5` at medium effort, launches non-interactively with
 permission bypass, and exposes only `mcp__raven__search`. It records the observed call count,
 grades at most the first three searches, and invalidates final-selection credit if the agent makes
-zero or more than three calls. `--repeat N`, `--cases`, `--ids`, `--model`, and `--effort`
-support isolated A/Bs.
+zero or more than three calls. `--ids` accepts only one spaced `--ids a,b,c` form.
+The runner rejects `--ids=a,b,c` and duplicate `--ids` flags before any paid call.
+`--repeat N`, `--cases`, `--ids`, `--model`, and `--effort` support isolated A/Bs.
 
 `mine-agent-queries.mjs` builds `mined-lumenloop-queries.json` only from agent-generated queries over committed eval questions; raw user traffic is forbidden. The committed lane has 91 occurrences across the eight LumenLoop target cases from three retained historical agentic result files. Its deterministic register classifier reports 42 mixed (46.2%), 19 entity-only, and 30 capability queries. This does not recreate the unavailable July 9 160-query artifact's 66.3% mixed share; the different retained sample is recorded honestly rather than relabeled to match history.
 

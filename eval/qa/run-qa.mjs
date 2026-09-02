@@ -244,6 +244,24 @@ function parseRequiredFlagValue(args, flag) {
   return value;
 }
 
+/** Reject ambiguous selectors before they can expand a paid run. */
+export function parseOptionalIdsFlag(args) {
+  const flag = "--ids";
+  if (args.some((arg) => arg.startsWith(`${flag}=`))) {
+    throw new Error(`${flag}=<value> is not supported; use ${flag} <value>`);
+  }
+  const indexes = args
+    .map((arg, index) => arg === flag ? index : -1)
+    .filter((index) => index !== -1);
+  if (indexes.length > 1) throw new Error(`run-qa accepts ${flag} at most once`);
+  if (indexes.length === 0) return undefined;
+  const value = args[indexes[0] + 1];
+  if (value === undefined || value === "" || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
 export function parseRequiredBudgetFlag(args) {
   return parseMaxBudgetUsd(parseRequiredFlagValue(args, "--max-budget-usd"));
 }
@@ -1402,6 +1420,7 @@ export function collectionAggregates(rows, cases, { judging }) {
 
 async function main() {
   const args = process.argv.slice(2);
+  const ids = parseOptionalIdsFlag(args);
   const argVal = (flag) => {
     const i = args.indexOf(flag);
     return i !== -1 ? args[i + 1] : undefined;
@@ -1441,6 +1460,9 @@ async function main() {
   const judgeStoredPath = argVal("--judge-stored");
   if (judgeStoredPath) {
     if (args.includes("--no-judge")) throw new Error("--judge-stored and --no-judge are contradictory");
+    if (ids !== undefined) {
+      throw new Error("--judge-stored and --ids are contradictory; use re-judge.mjs --ids");
+    }
     const stabilityRegister = prepareStabilityRegister();
     const { summary, metrics, judgeTiering } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
       judgeModel: argVal("--judge-model") ?? JUDGE_MODEL,
@@ -1484,7 +1506,6 @@ async function main() {
 
   const battery = loadCases(casesPath);
   let cases = battery.cases;
-  const ids = argVal("--ids");
   if (ids) {
     const want = new Set(ids.split(",").map((s) => s.trim()));
     cases = cases.filter((c) => want.has(c.id));

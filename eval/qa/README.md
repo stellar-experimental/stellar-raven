@@ -201,8 +201,11 @@ The result records the observed `sha256`, the `expectedSha256`, and `matches: tr
 stores this identity at `meta.agentEnvironment.inherited`. Stored judging uses
 `meta.judgeEnvironment`. Both locations record environment names, but they do not record values.
 Every paid runner command requires exactly one `--max-budget-usd <usd>` flag. Duplicate budget
-flags fail before any call. Other flags include `--ids a,b,c`, `--no-judge`, `--model`,
-`--judge-model`, `--cases <path>`, and `--surface per-operation` for the isolated 50-operation architecture instrument
+flags fail before any call. `--ids` accepts only one spaced `--ids a,b,c` form.
+The runner rejects `--ids=a,b,c` and duplicate `--ids` flags before any paid call.
+The `--judge-stored` mode rejects `--ids`; use `re-judge.mjs --ids` for stored rows.
+Other flags include `--no-judge`, `--model`, `--judge-model`, `--cases <path>`,
+and `--surface per-operation` for the isolated 50-operation architecture instrument
 (`compare-architecture-ab.mjs`). Variant A = the shipped `search` (ADR-0001); B requires a
 build exposing a code-shaped tool plus `--search-tool`. Results land in
 `eval/qa/results/<stamp>-variant<X>.json` (local-only): rows carry `truth.status`/`truth.asOf`
