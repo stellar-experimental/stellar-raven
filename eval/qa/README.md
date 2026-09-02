@@ -543,7 +543,7 @@ Style, length, and citation format are ignored. Beyond-golden specifics are "unv
 wrong. Avoid items bind only on answer-visible content; support-relative avoid phrasing is
 advisory (and linted). Cases with `tags.freshness != "stable"` get the freshness-leniency block
 and a deterministic bounded **source-basis evidence pack** built from the saved execute results
-(`evidence-pack.mjs`, pack `p5`); sourced drift from the golden snapshot is tolerated, confident
+(`evidence-pack.mjs`, pack `p6`); sourced drift from the golden snapshot is tolerated, confident
 unsourced contradiction is not.
 
 Rubric `v2.5` adds judge-owned `coreAnswer` and `avoidMatches` fields. A deterministic
@@ -602,7 +602,7 @@ finalizes, and no resume spends a second paid call on it.
 **Comparability rules:**
 
 - Re-judge identity is the **judge model + rubric + pack** tuple (currently `claude-sonnet-5` /
-  `v2.10` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
+  `v2.10` / `p6`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
   `evidence-pack.mjs`, each with a short changelog in its own file header). Compare stored rows
   only when that tuple, the exact selected-case snapshot, and prompt/pack-hash semantics match.
   Otherwise, re-judge the saved `rows[].answer` under the
@@ -630,11 +630,14 @@ finalizes, and no resume spends a second paid call on it.
   meanings, avoid/freshness/trap handling. A pack bump is required for evidence-pack
   serialization/selection changes. Cosmetic refactors that keep `buildJudgePrompt` output
   byte-identical (provable via the promptSha256 fixtures) need no bump.
-- **Pack p5** (2026-08-17, current) recognizes emitted `SOURCE BASIS` boundaries, retains exact
-  facts from clipped JSON, and flags transcript-supported claims that a bounded pack omitted. The
-  diagnostic never changes the judge score or its claim lists. `p4` was an intermediate build of
-  the same 2026-08-17 work; it reached only the superseded paid probe recorded below and is never
-  the current pack.
+- **Pack p6** (2026-09-02, current) omits A/V `created_at` values from detected A/V rows. It
+  detects `collection: "av"` or `"videos"`, `type` or `kind: "av"`, an `av` or `videos` response
+  path, `start_offset`, and an all-A/V execute request. It does not infer custom response-key
+  aliases. It retains the p5 source-basis boundaries and diagnostics. The diagnostic never changes
+  the judge score or its claim lists.
+- **Pack p5** (2026-08-17) recognizes emitted `SOURCE BASIS` boundaries, retains exact facts from
+  clipped JSON, and flags transcript-supported claims that a bounded pack omitted. `p4` was an
+  intermediate build of the same work. It reached only the superseded paid probe below.
 - **Noise floor**: per-row any-flip rate **23.3%** across three identical v2.4/p3 re-judge
   passes (pairwise score disagreement 15.6%). Isolated single-run score movement at or below
   that scale is variance until confirmed by live transcript review or a repeated mechanism.
@@ -1165,15 +1168,16 @@ new answer, made zero answering-agent calls, and changed no product or Playgroun
 The free deterministic side is reproducible:
 
 ```sh
-# 10 committed fixtures against their saved rows, then the 117-row p3→p5 replay
+# 10 committed fixtures against their saved rows, then the 117-row p3→current-pack replay
 node eval/qa/verify-evidence-pack-fixtures.mjs --portfolio
 ```
 
 `--portfolio` reads the gitignored `eval/qa/results/` artifacts, so it prints
 `SKIP (no ignored result artifacts found)` on a machine that does not hold the 2026-08-14 run.
-The recorded replay is `rows=117 eligible=70 allRowsWithSourceBasis=64
-packEligibleSourceBasisRows=38 p3Mean=9228.06 p5Mean=10580.16 supportedTerms=1156
-omissions=399->114 improved=55 tied=15 worsened=0`.
+The recorded p3→p5 replay used the then-p5 formatter keys: `rows=117 eligible=70
+allRowsWithSourceBasis=64 packEligibleSourceBasisRows=38 p3Mean=9228.06 p5Mean=10580.16
+supportedTerms=1156 omissions=399->114 improved=55 tied=15 worsened=0`. A current replay prints
+`currentPack=p6` and `currentMean`; it needs the ignored artifacts to produce a p6 baseline.
 
 The paid matrix ran three lanes over eight rows: `q-tool-indexer-repos-discovery` and
 `q-live-beans-cross-service-reconcile` (targets), plus `q-comp-cross-moneygram-partnership-sep24`,
@@ -1511,7 +1515,7 @@ Pin the corpus revision when the battery has moved since collection — otherwis
 guard compares saved rows against today's working tree and refuses.
 
 **Corpus pinning is not pack identity.** `--cases-ref` fixes only the case snapshot. The guard
-also compares the judge tuple (model / rubric / pack), and the evidence pack is currently `p5`
+also compares the judge tuple (model / rubric / pack), and the evidence pack is currently `p6`
 while the 2026-08-14 artifacts were collected under `p3`. That mismatch refuses on its own, so
 this example is necessarily a **non-identical** re-judge — it produces a loudly labeled side
 artifact, and its verdicts are NOT identical-input evidence and can never be cited as judge

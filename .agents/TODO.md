@@ -147,17 +147,6 @@ our ranking.
 
 ## Eval instruments
 
-### Stop treating A/V `created_at` as a QA evidence-pack source date
-
-`eval/qa/evidence-pack.mjs` uses `created_at` in its generic `sourceDate` fallback.
-An A/V row can therefore expose ingest metadata as its source date in a judge evidence pack.
-This is the same field whose recording-date meaning live rows contradicted.
-
-Discovery source: `.agents/rounds/2026-09-02-av-runtime-date-semantics.md`, Review.
-
-Done when: A/V `created_at` is omitted or labeled as metadata without changing verified date
-handling for other source types. Focused deterministic fixtures must cover A/V and non-A/V rows.
-
 ### Harden optional selector flags in both paid runners
 
 `eval/qa/run-qa.mjs` and `eval/discovery/run-agent-discovery.mjs` both read `--ids` with a plain
