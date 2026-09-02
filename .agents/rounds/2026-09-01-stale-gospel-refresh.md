@@ -3,6 +3,7 @@
 Date: 2026-09-01
 Status: release ready; merge pending
 Branch: `maintenance/stale-gospel-2026-09-02`
+Pull request: `#115`
 Base: `8c0f0069dff2f5b1d8d69666bd779dff994c6f08`
 Author and orchestrator: Codex GPT-5.6 Sol
 
