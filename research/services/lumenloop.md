@@ -93,6 +93,8 @@ tools, with underscore meta keys (`_hint`, `_top_similarity`, `_weak_match`) on 
 matches; `{items, pagination:{page,limit,total,hasMore}, hint?}` for `list_documents`/
 `search_documents`. Per-row dates are per-collection: `articles → publishing_date`,
 `av`/`research → created_at`, `events → start_at`; the generic `date` field is often null.
+Upstream's `returns` text calls `created_at` the recording's date. Live rows
+contradict it. The field's real meaning is undocumented.
 
 ## Error envelope (verified live)
 

@@ -77,7 +77,7 @@ Total findings: 66
 | ll-016 | Historical retrieval can collapse disputed causal narratives into one factual summary. For Stellar's 2014 fork and 2015 SCP rewrite, SDF…   | reported-upstream | 2026-07-10 | 1           |
 | ll-017 | Person-oriented semantic and A/V searches do not expose enough match provenance to distinguish an exact named-person hit from topic…        | reported-upstream | 2026-07-10 | 6           |
 | ll-018 | The SCF submissions operation applies fuzzy matching even when the caller supplies the supposedly exact slug identity. The band slug…       | reported-upstream | 2026-07-10 | 1           |
-| ll-019 | The A/V passage contract is internally inconsistent beyond the already-filed verbatim-quote claim. Documentation describes an object…       | reported-upstream | 2026-07-11 | 1           |
+| ll-019 | The A/V response contract is internally inconsistent. Documentation describes an object containing results. The live adapter returns a…     | reported-upstream | 2026-07-11 | 2           |
 | ll-020 | Lumenloop's Protocol 27 editorial retrieval leaves a pre-vote scheduling item as the available event record without a superseding…          | reported-upstream | 2026-07-11 | 1           |
 | ll-022 | Lumenloop's CCTP event material lacks explicit milestone provenance. Deployment, technical support, and public-announcement dates can be…   | reported-upstream | 2026-07-11 | 1           |
 | ll-023 | Lumenloop product-news summaries can drop the network and maturity boundary for Confidential Tokens. Omitting that the June 29 item is a…   | reported-upstream | 2026-07-11 | 1           |

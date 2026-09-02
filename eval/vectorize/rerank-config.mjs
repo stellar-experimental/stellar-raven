@@ -15,8 +15,8 @@ export const BATCH_SIZE = 16;
 export const GRID_MARGINS = Object.freeze([0.05, 0.10, 0.20]);
 export const REGISTERED_MARGINS = Object.freeze([Infinity, 0, ...GRID_MARGINS]);
 
-export const CLAUSE_ARTIFACT_SHA256 = "e5f86644af89158c3ac4d61ee7f651e2a062c9d292f194cb94872c7eee4e71f4"; // gitleaks:allow — public artifact SHA-256
-export const CLAUSE_SET_SHA256 = "cc5df2e4d89522c580626cfc21727b927494f5f528f42acfa035187a211d89e5"; // gitleaks:allow — public clause-set SHA-256
+export const CLAUSE_ARTIFACT_SHA256 = "d9de70079a1b94507854949b93b99f90b4f03370021c9a2e313a59f8b759002b"; // gitleaks:allow — public artifact SHA-256
+export const CLAUSE_SET_SHA256 = "bed608469e73e719beb51912f483c4f8daf9fc2d843334387d0851475b581ff2"; // gitleaks:allow — public clause-set SHA-256
 
 export const RERANK_MODEL = Object.freeze({
   provider: "huggingface-local-onnx",

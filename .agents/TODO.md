@@ -147,17 +147,19 @@ our ranking.
 
 ## Catalog correctness
 
-### Correct Lumenloop A/V `created_at` semantics
+### Stop using A/V `created_at` for stellar-ecosystem-digest date sorting
 
-The 2026-09-02 stale-gospel refresh found that live A/V rows use `created_at` like an ingest or
-index date. A DEVCON 2024 recording returned `created_at: 2026-04-02T23:21:21.744Z`.
-`catalog/manifest.json` currently calls the field the recording date and tells agents to use it
-for recency. The evidence is in
-`.agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md`.
+`src/skills/runners/stellar-ecosystem-digest.ts` uses A/V `created_at` for
+date filtering and descending date sorting. The DEVCON 2024 row `av_id` 445
+has `created_at` `2026-04-02T23:21:21.744Z`. Row `av_id` 1162 has
+`created_at` `2026-04-28T05:25:34.817Z`. Upstream's `returns` text calls the
+field the recording date, but live rows contradict it. The real field meaning
+is undocumented.
 
-Done when: the owning catalog source describes the field from verified service semantics, generated
-catalog outputs are rebuilt, affected A/V cases are rechecked, and focused tests prevent the
-recording-date claim from returning.
+Discovery sources: `.agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md`
+P6 and `.agents/rounds/2026-09-02-av-created-at-semantics/review-fable-closure.md` M3.
+
+Done when: A/V rows are undated or dated only from a verified recording field.
 
 ## Eval instruments
 

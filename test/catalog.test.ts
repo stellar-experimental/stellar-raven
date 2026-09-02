@@ -413,6 +413,7 @@ describe("build-catalog.mjs", () => {
     const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
     const entity = byId.get("lumenloop.find_content_by_entity")!;
     const related = byId.get("lumenloop.get_related_projects")!;
+    const av = byId.get("lumenloop.find_av_passages")!;
     const hackathon = byId.get("scout.searchHackathonBuilds")!;
     const rfps = byId.get("scout.getRfps")!;
 
@@ -420,6 +421,17 @@ describe("build-catalog.mjs", () => {
     expect(entity.description).not.toContain("Array of content items");
     expect(related.description).toContain("An object with content");
     expect(related.description).not.toContain("Array of mentioned projects");
+    const avOperationDescription = av.description.split("\n\n")[0]!;
+    expect(avOperationDescription).toBe(
+      "Find specific passages in long videos, podcasts, and recorded talks by semantic similarity. Returns parent recording metadata, AI summaries, and an opaque ordering offset."
+    );
+    expect(avOperationDescription).not.toContain("Transcript text");
+    expect(av.description).toContain(
+      "created_at (upstream metadata; do not treat it as the recording date or recency evidence)"
+    );
+    expect(av.description).not.toContain("matched chunk text");
+    expect(av.description).not.toContain("recording's date");
+    expect(av.description).not.toContain("quote what was said");
     expect(Object.keys((hackathon.inputSchema as { properties: Record<string, unknown> }).properties).sort()).toEqual([
       "limit",
       "q",
