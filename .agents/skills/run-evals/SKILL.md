@@ -124,7 +124,8 @@ the observed maximum. Four stored `live-data-canonical-v3` Sonnet-5/Sonnet-5 `p3
 $8.57–$9.54, with a $9.39 median. One stored `p5` run cost $9.25.
 
 **Use the implemented total method cap for every paid QA command.** Pass exactly one
-`--max-budget-usd` to `run-qa.mjs`, `--judge-stored`, or `re-judge.mjs`. A missing or duplicate flag
+`--max-budget-usd` to `run-qa.mjs`, `--judge-stored`, `re-judge.mjs`, or
+`eval/discovery/run-agent-discovery.mjs`. A missing or duplicate flag
 stops the command before a paid call. The harness sends only the remaining authorized amount to
 each sequential answering or judge call. Reported cost reduces the ledger, exhaustion stops the
 next call, and the artifact retains incomplete and unattempted IDs. A budgeted call with no

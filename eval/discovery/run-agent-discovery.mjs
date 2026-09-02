@@ -24,9 +24,18 @@ import {
 } from "../lib/mcp-surface.mjs";
 import {
   agentEnvironmentIdentity,
+  assertExpectedAgentEnvironment,
   assertExpectedExecutable,
   executableIdentity
 } from "../lib/executable-identity.mjs";
+import {
+  authorizeSpend,
+  createSpendLedger,
+  formatBudgetUsd,
+  parseMaxBudgetUsd,
+  recordSpend,
+  spendLedgerRecord
+} from "../qa/spend-budget.mjs";
 import {
   assertStableGitWorktreeIdentity,
   assertStableBoundServerIdentity,
@@ -78,6 +87,51 @@ const argValue = (flag) => {
   return index === -1 ? undefined : process.argv[index + 1];
 };
 
+/**
+ * Required paid-run flags use only the space-separated `--flag value` form. Parse
+ * them before any live preflight so malformed approval cannot reach an agent.
+ */
+function requiredPaidFlag(args, flag) {
+  if (args.some((arg) => arg.startsWith(`${flag}=`))) {
+    throw new Error(`${flag}=<value> is not supported; use ${flag} <value>`);
+  }
+  const indexes = args
+    .map((arg, index) => (arg === flag ? index : -1))
+    .filter((index) => index !== -1);
+  if (indexes.length === 0) {
+    throw new Error(`run-agent-discovery requires ${flag} for every paid run`);
+  }
+  if (indexes.length > 1) {
+    throw new Error(`run-agent-discovery accepts ${flag} exactly once`);
+  }
+  const value = args[indexes[0] + 1];
+  if (value === undefined || value === "" || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
+export function parsePaidRunPreconditions(args) {
+  return {
+    agentBinarySha256: requiredPaidFlag(args, "--expect-agent-binary-sha256"),
+    agentEnvironmentSha256: requiredPaidFlag(args, "--expect-agent-environment-sha256"),
+    maxBudgetUsd: parseMaxBudgetUsd(requiredPaidFlag(args, "--max-budget-usd")),
+    serverRevision: requiredPaidFlag(args, "--server-revision"),
+    surfaceSha256: requiredPaidFlag(args, "--expect-sha256")
+  };
+}
+
+/** Keep every runner action behind the required paid-run flag parser. */
+export function withPaidRunPreconditions(args, run) {
+  return run(parsePaidRunPreconditions(args));
+}
+
+export function formatRunFailure(error) {
+  const message = String(error?.message ?? error);
+  if (!error?.cause) return message;
+  return `${message}; cause: ${String(error.cause?.message ?? error.cause)}`;
+}
+
 function prompt(question) {
   return `You are evaluating discovery for a Stellar-ecosystem MCP catalog. The only tool you may use is mcp__raven__search.
 
@@ -120,7 +174,13 @@ export function buildDiscoverySpawnOptions({ input, cwd }) {
 }
 
 /** Exact Claude arguments for one isolated MCP discovery agent. */
-export function buildDiscoveryAgentArgs({ mcpConfigPath, model, effort, environment = process.env }) {
+export function buildDiscoveryAgentArgs({
+  mcpConfigPath,
+  model,
+  effort,
+  maxBudgetUsd,
+  environment = process.env
+}) {
   return [
     "-p",
     "--model",
@@ -138,6 +198,8 @@ export function buildDiscoveryAgentArgs({ mcpConfigPath, model, effort, environm
     ...answeringAgentIsolationArgs(environment),
     "--allowedTools",
     "mcp__raven__search",
+    "--max-budget-usd",
+    formatBudgetUsd(maxBudgetUsd),
     "--max-turns",
     String(MAX_TURNS),
     "--dangerously-skip-permissions",
@@ -145,10 +207,10 @@ export function buildDiscoveryAgentArgs({ mcpConfigPath, model, effort, environm
   ];
 }
 
-function runAgent(c, { mcpConfigPath, model, effort, agentCwd, agentCommand }) {
+function runAgent(c, { mcpConfigPath, model, effort, maxBudgetUsd, agentCwd, agentCommand }) {
   const response = spawnSync(
     agentCommand,
-    buildDiscoveryAgentArgs({ mcpConfigPath, model, effort }),
+    buildDiscoveryAgentArgs({ mcpConfigPath, model, effort, maxBudgetUsd }),
     buildDiscoverySpawnOptions({ input: prompt(c.question), cwd: agentCwd })
   );
   if (response.error) {
@@ -230,6 +292,34 @@ function runAgent(c, { mcpConfigPath, model, effort, agentCwd, agentCommand }) {
   return { ...capped, output, costUsd, turns, mcpServers, error: resultError };
 }
 
+/** Authorize one call, then record its reported cost before another can start. */
+export function collectBudgetedAgentRun({ caseId, runIndex, spendLedger, invokeAgent }) {
+  const authorization = authorizeSpend(spendLedger, {
+    method: "agent-discovery",
+    id: caseId,
+    attempt: runIndex
+  });
+  let run;
+  try {
+    run = invokeAgent(authorization.maxBudgetUsd);
+  } catch (error) {
+    try {
+      recordSpend(spendLedger, authorization, undefined);
+    } catch (budgetError) {
+      budgetError.cause = error;
+      throw budgetError;
+    }
+    throw error;
+  }
+  try {
+    recordSpend(spendLedger, authorization, run.costUsd);
+  } catch (error) {
+    error.agentRun = run;
+    throw error;
+  }
+  return run;
+}
+
 export function gradeAgentRow(c, run) {
   if (run.error) {
     return { familyHitAt3: null, usableOpAt5: null, primaryHit: null, anyHit: null };
@@ -245,7 +335,7 @@ export function gradeAgentRow(c, run) {
   return { ...visible, primaryHit, anyHit };
 }
 
-async function main() {
+async function runPaidDiscovery(paidRun) {
   const startedAt = new Date().toISOString();
   const url = normalizeUrl(argValue("--url") ?? DEFAULT_URL);
   const casesPath = path.resolve(argValue("--cases") ?? DEFAULT_CASES);
@@ -253,7 +343,7 @@ async function main() {
   const effort = argValue("--effort") ?? DEFAULT_EFFORT;
   const repeat = Number(argValue("--repeat") ?? 1);
   const runLabel = argValue("--run-label") ?? "agent";
-  const serverRevision = argValue("--server-revision");
+  const serverRevision = paidRun.serverRevision;
   if (!/^[a-f0-9]{40}$/.test(String(serverRevision ?? ""))) {
     throw new Error("--server-revision must be a clean 40-character commit");
   }
@@ -273,7 +363,7 @@ async function main() {
   const liveSurface = await fetchLiveSurface(url, {
     token: process.env.RAVEN_MCP_BEARER_TOKEN ?? null
   });
-  const surfacePin = assertExpectedSurface(liveSurface.metrics, argValue("--expect-sha256"), {
+  const surfacePin = assertExpectedSurface(liveSurface.metrics, paidRun.surfaceSha256, {
     label: "agent-discovery live MCP surface"
   });
   const sourceRevisionPin = assertExpectedSourceRevision(liveSurface.serverInfo, serverRevision, {
@@ -291,10 +381,14 @@ async function main() {
   }
   const agentBinary = assertExpectedExecutable(
     executableIdentity("claude"),
-    argValue("--expect-agent-binary-sha256"),
+    paidRun.agentBinarySha256,
     { label: "Claude CLI" }
   );
-  const inheritedAgentEnvironment = agentEnvironmentIdentity();
+  const inheritedAgentEnvironment = assertExpectedAgentEnvironment(
+    agentEnvironmentIdentity(),
+    paidRun.agentEnvironmentSha256
+  );
+  const spendLedger = createSpendLedger(paidRun.maxBudgetUsd);
 
   const tempDir = mkdtempSync(path.join(os.tmpdir(), "agent-discovery-"));
   // Precondition P2: an empty directory outside the repository, so the agent
@@ -320,13 +414,30 @@ async function main() {
     for (let runIndex = 1; runIndex <= repeat; runIndex += 1) {
       for (const [index, c] of cases.entries()) {
         process.stdout.write(`[run ${runIndex}/${repeat} ${index + 1}/${cases.length}] ${c.id} ... `);
-        const run = runAgent(c, {
-          mcpConfigPath,
-          model,
-          effort,
-          agentCwd,
-          agentCommand: agentBinary.resolvedPath
-        });
+        let run;
+        try {
+          run = collectBudgetedAgentRun({
+            caseId: c.id,
+            runIndex,
+            spendLedger,
+            invokeAgent: (maxBudgetUsd) =>
+              runAgent(c, {
+                mcpConfigPath,
+                model,
+                effort,
+                maxBudgetUsd,
+                agentCwd,
+                agentCommand: agentBinary.resolvedPath
+              })
+          });
+        } catch (error) {
+          if (error.agentRun) run = error.agentRun;
+          else throw error;
+          run.error = run.error
+            ? `${run.error}; budget failure: ${error.message}`
+            : `budget failure: ${error.message}`;
+          collectionError = error;
+        }
         const grade = gradeAgentRow(c, run);
         rows.push({
           run: runIndex,
@@ -353,8 +464,9 @@ async function main() {
           `searches=${run.observedSearchCount} visible-family=${grade.familyHitAt3 ? "hit" : "miss"} primary=${grade.primaryHit ? "hit" : "miss"}${run.error ? ` error=${run.error}` : ""}`
         );
         if (String(run.error ?? "").includes(`required MCP server ${REQUIRED_MCP_SERVER_NAME}`)) {
-          throw new Error(`answering harness failed: ${run.error}`);
+          collectionError ??= new Error(`answering harness failed: ${run.error}`);
         }
+        if (collectionError) throw collectionError;
       }
     }
   } catch (error) {
@@ -368,7 +480,7 @@ async function main() {
     liveSurfaceAfter = await fetchLiveSurface(url, {
       token: process.env.RAVEN_MCP_BEARER_TOKEN ?? null
     });
-    surfacePinAfter = assertExpectedSurface(liveSurfaceAfter.metrics, argValue("--expect-sha256"), {
+    surfacePinAfter = assertExpectedSurface(liveSurfaceAfter.metrics, paidRun.surfaceSha256, {
       label: "agent-discovery final live MCP surface"
     });
     sourceRevisionPinAfter = assertExpectedSourceRevision(liveSurfaceAfter.serverInfo, serverRevision, {
@@ -385,7 +497,7 @@ async function main() {
   }
 
   const comparabilityReasons = [
-    ...(collectionError ? [`collection failed: ${String(collectionError.message ?? collectionError)}`] : []),
+    ...(collectionError ? [`collection failed: ${formatRunFailure(collectionError)}`] : []),
     ...(postflightError ? [`postflight failed: ${String(postflightError.message ?? postflightError)}`] : []),
     ...(rows.some((row) => row.agent?.error)
       ? [`${rows.filter((row) => row.agent?.error).length} agent row(s) failed`]
@@ -440,6 +552,7 @@ async function main() {
         inherited: inheritedAgentEnvironment
       },
       agentBinary,
+      budget: spendLedgerRecord(spendLedger),
       toolSurface: liveSurface.metrics,
       toolSurfaceAfter: liveSurfaceAfter?.metrics ?? null,
       surfacePin,
@@ -457,7 +570,7 @@ async function main() {
       postflightError: postflightError
         ? { message: String(postflightError.message ?? postflightError) }
         : null,
-      totalAgentCostUsd: rows.reduce((sum, row) => sum + (row.agent.costUsd ?? 0), 0)
+      totalAgentCostUsd: spendLedger.reportedSpendUsd
     },
     summariesByRun,
     rows
@@ -473,10 +586,14 @@ async function main() {
   }
 }
 
+async function main() {
+  return withPaidRunPreconditions(process.argv.slice(2), runPaidDiscovery);
+}
+
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {
   main().catch((error) => {
-    console.error(`run-agent-discovery failed: ${error.message}`);
+    console.error(`run-agent-discovery failed: ${formatRunFailure(error)}`);
     process.exit(1);
   });
 }

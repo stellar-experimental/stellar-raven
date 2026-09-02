@@ -300,6 +300,7 @@ describe("P2 — answering agents run in a neutral working directory", () => {
       mcpConfigPath: "/tmp/mcp.json",
       model: "claude-sonnet-5",
       effort: "medium",
+      maxBudgetUsd: 1,
       environment: {}
     });
     expect(args).not.toContain("--safe-mode");
