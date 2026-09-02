@@ -21,7 +21,7 @@
       "Do NOT call SEP-57 Final or Solang production-ready, or imply ERC-1404/1410 are automatically covered by SEP-57.",
       "Do NOT use zero-byte G/C addresses as null sentinels."
     ],
-    "notes": "Solang repository was live and active on 2026-06-29; answer still treats Rust/Soroban SDK as the default production route.\nAlso good if the answer: Warns that there is no universal zero/null address pattern; use explicit `Option`, sentinel state, or validation instead of `address(0)` mental models. | Mentions OpenZeppelin Stellar modules for fungible, non-fungible, RWA/ERC-3643, allowlist/blocklist, pausable, access control, and upgradeability. | Mentions gas/resource differences: simulate to estimate resources/fees; avoid EVM gas-refund assumptions.\nGolden cites: Official EVM migration docs and authorization docs. | Official SAC/token overview or SEP-41 docs for token mapping. | OpenZeppelin Stellar docs or repository when citing OZ modules.\nGT-41 snapshot 2026-07-10: SEP-57 Draft v0.3.0 and Solang 0.3.5 pre-alpha are volatile. Auth—not syntax—is the top scored footgun."
+    "notes": "Solang repository was live and active on 2026-06-29; answer still treats Rust/Soroban SDK as the default production route.\nAlso good if the answer: Warns that there is no universal zero/null address pattern; use explicit `Option`, sentinel state, or validation instead of `address(0)` mental models. | Mentions OpenZeppelin Stellar modules for fungible, non-fungible, RWA/ERC-3643, allowlist/blocklist, pausable, access control, and upgradeability. | Mentions gas/resource differences: simulate to estimate resources/fees; avoid EVM gas-refund assumptions.\nGolden cites: Official EVM migration docs and authorization docs. | Official SAC/token overview or SEP-41 docs for token mapping. | OpenZeppelin Stellar docs or repository when citing OZ modules.\nGT-41 snapshot 2026-07-10, re-verified unchanged 2026-09-02: SEP-57 Draft v0.3.0 and Solang 0.3.5 pre-alpha are volatile. Auth—not syntax—is the top scored footgun."
   },
   "tags": {
     "category": "soroban",
@@ -35,8 +35,8 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-10",
-    "reverifyBy": "2026-09-01",
+    "asOf": "2026-09-02",
+    "reverifyBy": "2026-12-01",
     "sources": [
       {
         "class": "A",
@@ -66,44 +66,96 @@
     ],
     "corroboration": [
       {
-        "claim": "Current EVM-to-Soroban design mapping and tool/standard status",
+        "claim": "SEP-57 is Draft version 0.3.0 as of 2026-09-02.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "A",
-            "ref": "A/B: current Stellar docs, SEP-41/57, SDK/OZ/Solang source",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+            "observedAt": "2026-09-02",
+            "note": "The source marks SEP-57 Draft, updated 2026-06-11, at version 0.3.0."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.openzeppelin.com/news/rwa-wizard-issue-regulated-real-world-assets-on-stellar",
+            "observedAt": "2026-09-02",
+            "note": "The 2026-08-27 post uses SEP-57 for a Testnet RWA wizard and makes no Final claim."
+          }
+        ]
+      },
+      {
+        "claim": "Solang 0.3.5 is the latest release and its Soroban target remains experimental and not production-ready as of 2026-09-02.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.3.5",
+            "observedAt": "2026-09-02",
+            "note": "The v0.3.5 release remains the newest tag."
           },
           {
             "class": "B",
-            "ref": "A/B: current Stellar docs, SEP-41/57, SDK/OZ/Solang source",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://github.com/hyperledger-solang/solang/blob/main/docs/targets/soroban.rst",
+            "observedAt": "2026-09-02",
+            "note": "The target documentation calls Soroban support pre-alpha and not production-ready."
           },
           {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
+            "observedAt": "2026-09-02",
+            "note": "The official guide says Solang support is experimental and not recommended for production."
+          }
+        ]
+      },
+      {
+        "claim": "SEP-41 allowances carry a live_until_ledger expiry.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-09-02",
+            "note": "The approve signature includes live_until_ledger and defines its expiry behavior."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/token-interface",
+            "observedAt": "2026-09-02",
+            "note": "The official token interface defines expired allowances as zero."
+          }
+        ]
+      },
+      {
+        "claim": "All-zero G and C strkeys are valid Stellar addresses; the zero G account exists on Mainnet.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
             "class": "F",
-            "ref": "F: GT-41 primary/blind compile, parser, and CLI probes",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "strkey computation recorded in .agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md",
+            "observedAt": "2026-09-02",
+            "note": "The lane computed valid zero-payload G and C strkeys."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/accounts/GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF",
+            "observedAt": "2026-09-02",
+            "note": "The public Mainnet account endpoint returned the zero-payload G account."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-09-02",
+      "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md (Fable 5 high; orchestrator reconciled)",
       "evidence": [
-        "Solo scratchpad 575 GT-41 processes 3302/3305; Solang 0.3.5 and SEP-57 v0.3.0 checked 2026-07-10.",
-        "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation — the current official guide says simulation uses a temporary snapshot, discards effects, and precedes real submission.",
-        "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the current official guide defines multidimensional resources plus TTL-related ledger-space rent.",
-        "Live re-check 2026-08-29: https://github.com/hyperledger/solang/blob/main/docs/targets/soroban.rst — the current target documentation calls Soroban support pre-alpha and experimental.",
-        "Sibling sweep 2026-08-29: grep Solang|multidimensional resources|TTL/rent|simulation/finality|SEP-57 → q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-protocol-state-archival-ttl, q-sor-evm-to-soroban-porting, q-tool-rust-soroban-sdk, q-tool-which-sdk-comparison; no contradiction."
+        "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md",
+        "Source review 2026-09-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+        "Source review 2026-09-02: https://github.com/hyperledger-solang/solang/releases/tag/v0.3.5",
+        "Live source 2026-09-02: https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
+        "Sibling sweep 2026-09-02: q-crp-oz-rwa-erc3643-trex, q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-tool-rust-soroban-sdk, and q-tool-which-sdk-comparison; no contradiction."
       ],
       "rootCause": [
-        "Eval-side requested-clause omissions and release-status drift.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-sor-evm-to-soroban-porting"

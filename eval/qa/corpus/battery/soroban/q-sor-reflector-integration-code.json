@@ -5,7 +5,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "Select the exact live Reflector contract by network/type from the operator registry and fetch its current spec before encoding arguments. Current Pulse uses `lastprice(asset)`; Beam uses `lastprice(caller, asset)`. `Asset` is `Stellar(Address)` or `Other(Symbol)`, and the return is `Option<PriceData>{price:i128,timestamp:u64}`; apply `decimals()` scaling and reject None/stale data. Current mainnet registry examples as of 2026-07-11 are external-exchanges `CAFJZQW...N34DLN`, on-chain/pubnet `CALI2BY...B2PLE6M`, and forex `CBKGPWG...DXMCJZC`. Re-fetch full IDs/specs rather than copying abbreviations. `CBQSUF...XQLSE` is a DAO, not an oracle. Current public Pulse ABI exposes `lastprice`, not stale `x_last_price`; official site text mentioning x_* conflicts with current source/live ABI. For JS traps, inspect network, ID, live spec/WASM, Pulse-versus-Beam signature, UDT ScVals, and simulation diagnostics—do not assert one cause. Beam's deeper XRF call may require `authorize_as_current_contract` for the nested call.",
+    "answer": "Select the exact live Reflector contract by network/type from the operator registry and fetch its current spec before encoding arguments. Current Pulse uses `lastprice(asset)`; Beam uses `lastprice(caller, asset)`. `Asset` is `Stellar(Address)` or `Other(Symbol)`, and the return is `Option<PriceData>{price:i128,timestamp:u64}`; apply `decimals()` scaling and reject None/stale data. Current mainnet registry examples as of 2026-09-02 are external-exchanges `CAFJZQW...N34DLN`, on-chain/pubnet `CALI2BY...B2PLE6M`, and forex `CBKGPWG...DXMCJZC`. Re-fetch full IDs/specs rather than copying abbreviations. `CBQSUF...XQLSE` is a DAO, not an oracle. Current official source, operator text, and public Pulse ABI expose `lastprice`, not stale `x_last_price`; the old name survives in the October 2025 snapshot and third-party copies. For JS traps, inspect network, ID, live spec/WASM, Pulse-versus-Beam signature, UDT ScVals, and simulation diagnostics—do not assert one cause. Beam's deeper XRF call may require `authorize_as_current_contract` for the nested call.",
     "keyFacts": [
       "Use the current registry, network, type, and live ABI.",
       "Pulse/Beam signatures use the documented `Asset` and `PriceData` types.",
@@ -14,7 +14,7 @@
     "avoid": [
       "Do NOT call CBQ a price oracle, grade x_last_price as current, freeze IDs/specs, or assert a trap cause without diagnostics."
     ],
-    "notes": "Phase 3 checked Reflector README, TOML, Scout, SEP-40, and the live SPA bundle on 2026-06-29. README sample Pulse id remains CAFJ...; the live SPA bundle also embedded CBQSUF57OYX4RIMCZV62DKN6JFOTEKPHIZASMJYOUOCNHGNG2P3XQLSE. Treat IDs as freshness-sensitive and require live oracle-page/project-doc verification.\nAlso good if the answer: Mentions Beam's XRF cost/authorization path and `authorize_as_current_contract` when calling from a contract. | Recommends generated bindings/spec-derived clients or explicit ScVal construction for the UDT enum when calling from JS.\nGolden cites: Reflector's README/interface or live oracle page for contract interface and contract IDs. | SEP-40 for the oracle-interface standard. | Stellar docs for Soroban typed clients/specs or contract invocation encoding when discussing JS calls.\nGT-42 live-spec correction as of 2026-07-11; method/IDs are freshness-sensitive and the operator site currently conflicts with live ABI."
+    "notes": "Phase 3 checked Reflector README, TOML, Scout, SEP-40, and the live SPA bundle on 2026-06-29. README sample Pulse id remains CAFJ...; the live SPA bundle also embedded CBQSUF57OYX4RIMCZV62DKN6JFOTEKPHIZASMJYOUOCNHGNG2P3XQLSE. Treat IDs as freshness-sensitive and require live oracle-page/project-doc verification.\nAlso good if the answer: Mentions Beam's XRF cost/authorization path and `authorize_as_current_contract` when calling from a contract. | Recommends generated bindings/spec-derived clients or explicit ScVal construction for the UDT enum when calling from JS. | Warns that the README Beam example points to a Pulse contract ID.\nGolden cites: Reflector's README/interface or live oracle page for contract interface and contract IDs. | SEP-40 for the oracle-interface standard. | Stellar docs for Soroban typed clients/specs or contract invocation encoding when discussing JS calls.\nGT-42 live-spec correction as of 2026-09-02; method/IDs are freshness-sensitive. The operator site no longer shows x_* names, but historical and third-party copies do."
   },
   "tags": {
     "category": "soroban",
@@ -28,23 +28,23 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-09-01",
+    "asOf": "2026-09-02",
+    "reverifyBy": "2026-11-01",
     "sources": [
       {
-        "class": "D",
+        "class": "B",
         "ref": "https://github.com/reflector-network/reflector-contract",
-        "note": "class inferred at migration"
+        "note": "Reflector's canonical contract source"
       },
       {
-        "class": "D",
+        "class": "C",
         "ref": "https://orchestrator.reflector.network/config",
-        "note": "class inferred at migration"
+        "note": "Reflector's live operator registry"
       },
       {
-        "class": "D",
+        "class": "A",
         "ref": "https://reflector.network/oracles",
-        "note": "class inferred at migration"
+        "note": "Reflector's official operator page"
       },
       {
         "class": "B",
@@ -54,44 +54,109 @@
     ],
     "corroboration": [
       {
-        "claim": "Current Reflector method/type/registry contract",
+        "claim": "The three named Reflector Mainnet Pulse oracle IDs remain current as of 2026-09-02.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "B",
-            "ref": "B/D: Reflector source and operator config",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "C",
+            "ref": "https://orchestrator.reflector.network/config",
+            "observedAt": "2026-09-02",
+            "note": "The live registry lists the exchanges, pubnet, and forex oracle IDs."
           },
           {
-            "class": "D",
-            "ref": "B/D: Reflector source and operator config",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+            "observedAt": "2026-09-02",
+            "note": "The official provider table lists the same three Mainnet IDs."
           },
           {
             "class": "F",
-            "ref": "F: live ABI inspection and successful lastprice simulation",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "stellar contract info interface --network mainnet",
+            "observedAt": "2026-09-02",
+            "note": "All three contracts expose the Pulse lastprice ABI and no x_* function."
+          }
+        ]
+      },
+      {
+        "claim": "Pulse exposes lastprice(asset); Beam source exposes lastprice(caller, asset); the current official interface has no x_last_price.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/reflector-network/reflector-contract/blob/main/pulse-contract/src/lib.rs",
+            "observedAt": "2026-09-02",
+            "note": "Pulse exposes lastprice with an Asset argument."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/reflector-network/reflector-contract/blob/main/beam-contract/src/lib.rs",
+            "observedAt": "2026-09-02",
+            "note": "Beam exposes lastprice with caller and Asset arguments."
+          },
+          {
+            "class": "F",
+            "ref": "stellar contract info interface --network mainnet",
+            "observedAt": "2026-09-02",
+            "note": "The live Pulse ABI contains lastprice and no x_* export."
+          }
+        ]
+      },
+      {
+        "claim": "The current Reflector operator site mentions x_* functions that conflict with the live ABI.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://reflector.network/oracles",
+            "observedAt": "2026-09-02",
+            "note": "The current operator site and loaded documentation chunks show lastprice only."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/code-423n4/2025-10-reflector",
+            "observedAt": "2026-09-02",
+            "note": "The October 2025 snapshot still defines x_last_price."
+          },
+          {
+            "class": "D",
+            "ref": "GitHub code search for x_last_price reflector",
+            "observedAt": "2026-09-02",
+            "note": "Third-party tutorials and copies still contain the old interface."
+          }
+        ]
+      },
+      {
+        "claim": "A live Mainnet Beam oracle deployment exposing lastprice(caller, asset) exists.",
+        "verdict": "unverifiable",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://orchestrator.reflector.network/config",
+            "observedAt": "2026-09-02",
+            "note": "No oracle entry exposes the Beam ABI; the published oracle entries use Pulse."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+            "observedAt": "2026-09-02",
+            "note": "The official provider table lists Pulse oracle deployments only."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-09-02",
+      "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md (Fable 5 high; orchestrator reconciled)",
       "evidence": [
-        "Solo scratchpad 575 GT-42 processes 3308/3315; live mainnet probe 2026-07-11.",
-        "Structural re-form (negative-predicate): split the long positive fact and moved no truth because equivalent traps already exist in avoid; truth is unchanged",
-        "Live re-check 2026-08-27: https://orchestrator.reflector.network/config — the operator registry remains the live network/type selection surface",
-        "Live re-check 2026-08-27: https://github.com/reflector-network/reflector-contract — Pulse/Beam lastprice signatures still use Asset and PriceData",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — simulation returns failure details and diagnostic events for trap analysis",
-        "Sibling sweep 2026-08-27: grep Reflector|lastprice|SEP-40 → q-defi-reflector-oracle, q-tool-oracle-repo-live, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40; no contradiction"
+        "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md",
+        "Live registry 2026-09-02: https://orchestrator.reflector.network/config",
+        "Source review 2026-09-02: https://github.com/reflector-network/reflector-contract",
+        "Live ABI review 2026-09-02: the three named Mainnet contracts expose lastprice and no x_* function.",
+        "Sibling sweep 2026-09-02: q-defi-reflector-oracle, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40, q-tool-oracle-repo-live, and other Reflector cases; no contradiction."
       ],
       "rootCause": [
-        "Operator docs/spec drift captured in research/audits/2026-07-11-gt42-archival-events-reflector.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        "freshness-drift",
+        "research/audits/2026-07-11-gt42-archival-events-reflector.md"
       ]
     },
     "origin": "raven-next q-sor-reflector-integration-code"

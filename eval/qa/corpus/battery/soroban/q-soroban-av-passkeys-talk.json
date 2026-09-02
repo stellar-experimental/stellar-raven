@@ -16,7 +16,7 @@
       "Do NOT emit retired lumenloop_find_av_passages, fabricate quotes/speakers/timestamps, or turn summary text into verbatim evidence.",
       "Do NOT silently substitute docs when the requested A/V corpus misses."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routing/behavior case — the 'answer' is the correct tool + honest corpus-bounded behavior, not a factual essay. lumenloop_find_av_passages is the transcript/AV-passage lane; semantic content search is acceptable but the explicit 'recorded passage, not docs' intent favors the av_passages card. No fixed source URL: graded on returning real transcript passages (with their talk/podcast provenance) or honestly reporting none in corpus. Fabrication is the trap.\nAlso good if the answer: Frames the topic as passkeys / secp256r1 smart-wallet signing on Stellar when surfacing passages.\nGolden cites: Each surfaced passage carries its talk/podcast source (lumenloop_find_av_passages).\nGT-44 live service contract 2026-07-11. Grade routing/output honesty; source URLs come from returned rows and are volatile.\nAccurately quoting the canonical upstream skill source that `find_av_passages` returns verbatim transcript passages is not a wrong claim while sk-004 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routing/behavior case — the 'answer' is the correct tool + honest corpus-bounded behavior, not a factual essay. `lumenloop.find_av_passages` is the A/V summary lane; semantic content search is acceptable but the explicit 'recorded passage, not docs' intent favors the av_passages card. No fixed source URL: graded on returning real summary rows with their talk/podcast provenance or honestly reporting none in corpus. Fabrication is the trap.\nAlso good if the answer: Frames the topic as passkeys / secp256r1 smart-wallet signing on Stellar when surfacing passages.\nGolden cites: Each surfaced summary row carries its talk/podcast source through `lumenloop.find_av_passages`.\nGT-44 live service contract 2026-09-02. Grade routing/output honesty; source URLs come from returned rows and are volatile.\nAccurately quoting the canonical upstream skill source that `find_av_passages` returns verbatim transcript passages is not a wrong claim while sk-004 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
   },
   "tags": {
     "category": "soroban",
@@ -30,8 +30,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-09-01",
+    "asOf": "2026-09-02",
+    "reverifyBy": "2026-12-10",
     "sources": [
       {
         "class": "B",
@@ -41,47 +41,43 @@
     ],
     "corroboration": [
       {
-        "claim": "Current exposed A/V operation and output semantics",
+        "claim": "The exposed A/V operation returns AI summaries with source metadata, but no transcript text, as of 2026-09-02.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
-            "class": "B",
-            "ref": "B: current manifest/inventory contract",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "E",
+            "ref": "catalog/manifest.json entry lumenloop.find_av_passages",
+            "observedAt": "2026-09-02",
+            "note": "The exposed operation is dot-qualified and documents summary-only output."
           },
           {
             "class": "C",
-            "ref": "C: live execute payload",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "live stellar_raven.execute result recorded in .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+            "observedAt": "2026-09-02",
+            "note": "Rows contained summary, long_summary, title, URL, channel, created_at, and start_offset, but no transcript text."
           },
           {
             "class": "F",
-            "ref": "F: GT-44 primary/blind",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": ".agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+            "observedAt": "2026-09-02",
+            "note": "The lane inspected live row shapes and confirmed that start_offset is not a playback timestamp."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-09-02",
+      "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md (Grok 4.6 high; orchestrator reconciled)",
       "evidence": [
-        "Solo scratchpad 575 GT-44 processes 3316/3324; live Lumenloop probe 2026-07-11.",
-        "Structural re-form (symmetric-caution): Added a dispute-scoped grading caution; the answer and facts are unchanged.",
-        "Reviewed improvement 2026-08-27: improvements/skills/sk-004-av-passages-verbatim-claim.md — upstream skill playbooks wrongly describe returned AI summaries as verbatim transcript passages.",
-        "Sibling sweep 2026-08-27: grep find_av_passages|transcript passages|verbatim passages → q-asset-rwa-tokenized-freshness, q-defi-blend-what-is, q-eco-stellar-rwa-stablecoin-volume, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp, q-ti-video-tutorials; no contradiction",
-        "Structural re-form (compound-predicate): split transcript absence from start_offset semantics; the truth is unchanged.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/lumenloop.md — the current service specification still returns AI summaries without transcript text.",
-        "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/lumenloop.md — the current service specification still defines start_offset as an opaque ordering key.",
-        "Sibling sweep 2026-08-27: grep find_av_passages|transcript text|start_offset → q-gap-av-offset-not-timestamp, q-ti-video-tutorials, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history; no contradiction"
+        "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+        "Live service review 2026-09-02: lumenloop.find_av_passages returned summary fields and source metadata without transcript text.",
+        "Source review 2026-09-02: catalog/manifest.json documents the dot-qualified operation and opaque start_offset semantics.",
+        "Reviewed open improvement: improvements/skills/sk-004-av-passages-verbatim-claim.md.",
+        "Sibling sweep 2026-09-02: q-gap-av-offset-not-timestamp, q-ti-video-tutorials, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history, and passkey cases; no contradiction."
       ],
       "rootCause": [
-        "improvements/skills/sk-004-av-passages-verbatim-claim.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift",
+        "improvements/skills/sk-004-av-passages-verbatim-claim.md"
       ]
     },
     "origin": "raven-next q-soroban-av-passkeys-talk"

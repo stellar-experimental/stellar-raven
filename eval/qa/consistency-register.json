@@ -191,10 +191,10 @@
           "q-ti-rpc-gettransactions-pagination-xdr"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-01",
+        "lastChecked": "2026-09-02",
         "reSwept": {
-          "date": "2026-09-01",
-          "reason": "Free-improvements cumulative sweep: q-protocol-bn254-poseidon-xray removed obsolete U32Val, Protocol 24, and sd-036 caution text. It added pinned class A and B evidence. Final CAP-0074 and CAP-0075 remain assigned to Protocol 25, with stable low-level primitive boundaries and no sibling contradiction.",
+          "date": "2026-09-02",
+          "reason": "Stale-gospel refresh (2026-09-02): only q-sor-confidential-tokens changed, and only by an in-answer as-of date plus judge-blind truth metadata. No CAP id, status, or protocol assignment moved. The cluster's own assignments were re-derived from canonical source: cap-0059.md Status Final / Protocol version 22; cap-0074.md Final / 25; cap-0075.md Final / 25. The cluster note stands unchanged.",
           "verdict": "consistent"
         },
         "note": "CAP-35 Final/P17, CAP-38 P18, CAP-46 series P20, CAP-51+53 P21, CAP-58+59 Final/P22, CAP-62/63/65/67 P23 (CAP-67 Final), CAP-73 Implemented/P26, CAP-74+75 Final/P25, CAP-71 Final/P27 — status and protocol number identical everywhere they appear. Re-swept 2026-07-28: re-read CAP mappings after the Soroswap dated-TVL refresh and metadata rescheduling; no CAP-status tension.",
@@ -208,7 +208,7 @@
           "q-protocol-bls12-381-cap59": "44d0fe2d916103f6bd48edee871cf348b91a0707ceca03eaffdf662367d23022",
           "q-protocol-bn254-poseidon-xray": "93e1da9288a97dd9226e856c437f83026b5943322e8551813ef0d7b74eecad29",
           "q-sep-41-token-interface": "9ea90edb3219f56bd411f241ef2bbd7f29f07af182172876bba341b350e6ab3d",
-          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f",
+          "q-sor-confidential-tokens": "331b5f59ba544456055463a829e7553e9c8d60d54d5927ba7050a9ed103905f9",
           "q-sor-contract-trustlines-c-address": "d81b73765291188b06e0a6bb4cc74230fb2d8185495d9887e59bfaff96be8caf",
           "q-soroban-auth-delegation-p27": "d098733e231e1f650b321ba2cbb7b46f813192e97e36945c2a2ce0e480348eec",
           "q-soroban-constructor-lifecycle": "2bdaf60793d0f1f3311004a929908fc19226b15a2608aa80ea95254dee138076",
@@ -690,10 +690,10 @@
           "q-tool-cli-testnet-identity-howto"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-29",
+        "lastChecked": "2026-09-02",
         "reSwept": {
-          "date": "2026-08-29",
-          "reason": "Golden-truth session 3 (2026-08-29, long-fact class): members q-infra-testnet-vs-futurenet, q-tool-cli-testnet-identity-howto changed by form-only keyFact re-form and/or judge-blind corroboration/provenance metadata with refreshed truth.verified; answer, avoid, and notes unchanged; per-case sibling sweeps recorded in .agents/rounds/2026-08-29-golden-truth-session-3/matrices-sol-{a,b,c}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-02",
+          "reason": "Stale-gospel refresh (2026-09-02): q-ti-testnet-usdc-faucet refreshed its dated issuer and faucet observation to 2026-09-01 and removed an unsupported named Lab path-payment distribution route. The durable Friendbot, trustline, reserve, and SAC boundaries are unchanged. Removal verified against https://developers.stellar.org/docs/tools/lab/account, which documents Friendbot XLM funding and USDC/EURC trustline creation but no way to receive test USDC units. Members re-read: q-ti-stellar-lab-usage-and-new-ui already avoids 'say a trustline credits tokens'; q-tool-cli-testnet-identity-howto, q-infra-testnet-vs-futurenet, q-edge-send-me-free-xlm, q-edge-jailbreak-generate-secret-keys, and q-ti-custodial-account-generation-c-address assert no Lab USDC distribution route. No contradiction.",
           "verdict": "consistent"
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -703,7 +703,7 @@
           "q-infra-testnet-vs-futurenet": "0cbacad7c6ce832c85a791e78ebb68753111fabaf3d7370878fc9a29953418d5",
           "q-ti-custodial-account-generation-c-address": "9201738ea99647028b00a71648da5b96a30d8149e751a858f271d8a1b5aef042",
           "q-ti-stellar-lab-usage-and-new-ui": "9e2a312246f5b87a50976ec60319a5319fb90e7797c6c7666a5ce0755afc0c37",
-          "q-ti-testnet-usdc-faucet": "80538739a601be3062866622391f722a44b9a320a4a705aeeeb3e146c1b7989c",
+          "q-ti-testnet-usdc-faucet": "b63dbd8f354b77b26f4847dc55bc9006dc6f33ec570775fc7a17c0775359dc4c",
           "q-tool-cli-testnet-identity-howto": "43cfc42ea3ad0429fc7ea7a57b30981327de833c7567602e6a17dc20a7a37b7f"
         }
       },
@@ -1264,17 +1264,17 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-01",
+        "lastChecked": "2026-09-02",
         "reSwept": {
-          "date": "2026-09-01",
-          "reason": "Free-improvements cumulative sweep: q-protocol-bn254-poseidon-xray removed obsolete U32Val, Protocol 24, and sd-036 caution text. It added pinned class A and B evidence. Protocol 25 primitives remain distinct from default privacy, so the transparency and optional-privacy boundaries remain stable.",
+          "date": "2026-09-02",
+          "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date and judge-blind truth metadata. The preview status, the visibility boundary, and the primitives-are-not-a-product boundary are unchanged, and were re-derived from https://developers.stellar.org/docs/build/apps/privacy on 2026-09-02. Sibling q-edge-noinfo-stellar-native-privacy-default carries an older asOf of 2026-07-10, but the fact it dates did not move. No contradiction.",
           "verdict": "consistent"
         },
         "note": "Ordinary Stellar activity is public by default and there is no global privacy toggle. Optional applications have explicit visibility/network/audit boundaries; Confidential Tokens is a 2026-06-29 Testnet developer preview, while P22/P25 ZK host functions are primitives rather than turnkey privacy.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-protocol-bn254-poseidon-xray": "93e1da9288a97dd9226e856c437f83026b5943322e8551813ef0d7b74eecad29",
-          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
+          "q-sor-confidential-tokens": "331b5f59ba544456055463a829e7553e9c8d60d54d5927ba7050a9ed103905f9"
         }
       },
       {
@@ -2243,15 +2243,15 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-30",
+        "lastChecked": "2026-09-02",
         "note": "corrected with dated preview status and conditional evidence.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
-          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
+          "q-sor-confidential-tokens": "331b5f59ba544456055463a829e7553e9c8d60d54d5927ba7050a9ed103905f9"
         },
         "reSwept": {
-          "date": "2026-08-30",
-          "reason": "Golden metadata remainder (2026-08-30): members changed only by judge-blind truth metadata (temporary-path provenance replaced after live re-verification of every keyFact, source-URL repairs, corroboration rows, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-30-golden-metadata-remainder/matrices-sol-{a,b,c,d}.md found no contradiction, so the prior verdict \"consistent\" stands.",
+          "date": "2026-09-02",
+          "reason": "Stale-gospel refresh (2026-09-02): the only member change is the q-sor-confidential-tokens in-answer as-of date plus judge-blind truth metadata. The dated preview status and the conditional-evidence framing that this cluster records are both unchanged. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -2621,16 +2621,16 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-09-01",
+        "lastChecked": "2026-09-02",
         "reSwept": {
-          "date": "2026-09-01",
-          "reason": "Free-improvements cumulative sweep: q-protocol-bn254-poseidon-xray removed obsolete U32Val, Protocol 24, and sd-036 caution text. It added pinned class A and B evidence. BN254 and Poseidon remain stable Protocol 25 low-level primitives, not default privacy.",
+          "date": "2026-09-02",
+          "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date and judge-blind truth metadata. BN254 and Poseidon remain Protocol 25 primitives, re-derived from cap-0074.md and cap-0075.md (both Status Final, Protocol version 25) and from https://developers.stellar.org/docs/build/apps/zk. No contradiction.",
           "verdict": "consistent"
         },
         "note": "BN254/Poseidon are live primitives, not default privacy or a complete protocol.",
         "memberContentSha256": {
           "q-protocol-bn254-poseidon-xray": "93e1da9288a97dd9226e856c437f83026b5943322e8551813ef0d7b74eecad29",
-          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
+          "q-sor-confidential-tokens": "331b5f59ba544456055463a829e7553e9c8d60d54d5927ba7050a9ed103905f9"
         }
       },
       {
@@ -3016,17 +3016,17 @@
           "q-sor-confidential-tokens"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-09-02",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-09-02",
+          "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date and judge-blind truth metadata. All members still describe a Testnet developer preview and not a Mainnet launch. Re-derived 2026-09-02 from https://developers.stellar.org/docs/build/apps/privacy and the SDF developer-preview post, which says the contract is live on testnet and not yet approved for mainnet. Sibling q-scf-confidential-tokens-preview keeps reverifyBy 2026-11-19 and is unchanged. No contradiction.",
           "verdict": "consistent"
         },
         "note": "All cases describe the 2026-06-29 release as a Testnet developer preview, not a Mainnet launch or a network-wide privacy mode. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-scf-confidential-tokens-preview": "73fa12b03eb8e0c2fd469e9e456620b855593b9be0f1f4d4fd7221e264b815e6",
-          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
+          "q-sor-confidential-tokens": "331b5f59ba544456055463a829e7553e9c8d60d54d5927ba7050a9ed103905f9"
         }
       },
       {
@@ -3734,9 +3734,9 @@
         }
       },
       {
-        "triggerDateEvent": "2026-09-01/2026-11-19 review or any Confidential Tokens Mainnet approval/launch",
+        "triggerDateEvent": "2026-11-19/2026-12-15 review or any Confidential Tokens Mainnet approval/launch",
         "requiredRecheck": "Re-fetch the SDF preview, audits, verifier repository, and network availability; remove the not-Mainnet trap only after authoritative activation evidence.",
-        "disposition": "open — Testnet developer preview as of 2026-06-29; q-sor-confidential-tokens reverifyBy 2026-09-01 and q-scf-confidential-tokens-preview reverifyBy 2026-11-19.",
+        "disposition": "open — Testnet developer preview, unaudited, re-verified 2026-09-02; q-sor-confidential-tokens reverifyBy 2026-12-15 and q-scf-confidential-tokens-preview reverifyBy 2026-11-19.",
         "caseIds": [
           "q-edge-noinfo-stellar-native-privacy-default",
           "q-scf-confidential-tokens-preview",
@@ -3745,13 +3745,13 @@
         "memberContentSha256": {
           "q-edge-noinfo-stellar-native-privacy-default": "a7e8fa71c47d4c074027312c0e81d9e22a06304e5541f929be16030ed2655720",
           "q-scf-confidential-tokens-preview": "73fa12b03eb8e0c2fd469e9e456620b855593b9be0f1f4d4fd7221e264b815e6",
-          "q-sor-confidential-tokens": "326913c33d30dbcd1684048a6bbef40d2a43de5e3940353cd1ecd4635406416f"
+          "q-sor-confidential-tokens": "331b5f59ba544456055463a829e7553e9c8d60d54d5927ba7050a9ed103905f9"
         },
         "verdict": "consistent",
-        "lastChecked": "2026-08-31",
+        "lastChecked": "2026-09-02",
         "reSwept": {
-          "date": "2026-08-31",
-          "reason": "Golden metadata remainder (2026-08-31): members changed only by judge-blind truth metadata (bare-relative temporary-path provenance replaced after live re-verification of every keyFact on 2026-08-31, corroboration or link evidence added, refreshed truth.verified); question, answer, keyFacts, avoid, and notes unchanged; per-case sibling sweeps in .agents/rounds/2026-08-31-golden-metadata-remainder/s1-applied-lines.json and the lane reports found no contradiction, so the prior verdict stands.",
+          "date": "2026-09-02",
+          "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date (2026-07-10 to 2026-09-02) and judge-blind truth metadata; the preview status it dates is unchanged. Re-derived from https://developers.stellar.org/docs/build/apps/privacy ('developer preview ... unaudited — not yet intended for production use or real assets') and https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar. No Mainnet approval evidence exists as of 2026-09-02, so the trap stays open with refreshed reverifyBy references.",
           "verdict": "consistent"
         }
       },

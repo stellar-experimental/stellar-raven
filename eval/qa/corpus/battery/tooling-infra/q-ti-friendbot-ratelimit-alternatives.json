@@ -9,7 +9,7 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Public Testnet Friendbot is rate-limited, but no durable official requests-per-hour number was corroborated. On `429`, honor `Retry-After` when present or back off with jitter; do not rotate IPs or hammer retries. For many public-Testnet accounts, fund one account once and create/fund additional accounts with normal `CreateAccount`/payments.\n\nFor hermetic CI/bulk fixtures, run Quickstart in **local** mode and use its local Friendbot. Quickstart Testnet/Futurenet modes proxy the public faucets and do not evade their limits. As of **2026-07-11**, Validation Cloud advertises a Stellar Testnet XLM faucet, but access/limits are provider-specific and not assumed independent of Friendbot. Futurenet is a reset-prone different network, not a quota bypass; Circle's faucet supplies test **USDC**, not native XLM/base reserve. Never send credentials or Mainnet funds to obtain test funds, and do not trust an alleged official backup wallet without current primary documentation.",
+    "answer": "Public Testnet Friendbot is rate-limited, but no durable official requests-per-hour number was corroborated. On `429`, honor `Retry-After` when present or back off with jitter; do not rotate IPs or hammer retries. For many public-Testnet accounts, fund one account once and create/fund additional accounts with normal `CreateAccount`/payments.\n\nFor hermetic CI/bulk fixtures, run Quickstart in **local** mode and use its local Friendbot. Quickstart Testnet/Futurenet modes proxy the public faucets and do not evade their limits. As of **2026-09-01**, Validation Cloud advertises a Stellar Testnet XLM faucet, but access/limits are provider-specific and not assumed independent of Friendbot. Futurenet is a reset-prone different network, not a quota bypass; Circle's faucet supplies test **USDC**, not native XLM/base reserve. Never send credentials or Mainnet funds to obtain test funds, and do not trust an alleged official backup wallet without current primary documentation.",
     "keyFacts": [
       "Uses 429 Retry-After/backoff without inventing a numeric quota or evading limits.",
       "Uses fund-one-then-create-many for public Testnet and local Quickstart for hermetic CI.",
@@ -22,7 +22,7 @@
       "Do NOT call Lab/Freighter an independent faucet or say Quickstart Testnet mode avoids public limits.",
       "Do NOT confuse test USDC with XLM or send keys/Mainnet funds to a faucet/wallet."
     ],
-    "notes": "No official backup faucet wallet was verified. If one appears later, require a dated SDF/developers.stellar.org citation before treating it as legitimate.\nAlso good if the answer: Mentions Circle faucet only for testnet USDC after creating a trustline, not as a replacement for XLM Friendbot.\nGolden cites: Official Stellar Lab/Friendbot/Quickstart docs.\nGT-52 CORRECTION 2026-07-11: no numeric public quota is a golden gate. Provider alternatives must be dated; local-mode and token/network distinctions are required."
+    "notes": "No official backup faucet wallet was verified. If one appears later, require a dated SDF/developers.stellar.org citation before treating it as legitimate.\nAlso good if the answer: Mentions Circle faucet only for testnet USDC after creating a trustline, not as a replacement for XLM Friendbot. | Reports a dated Friendbot rate-limit response that used HTTP 400 instead of 429.\nGolden cites: Official Stellar Lab/Friendbot/Quickstart docs.\nGT-52 CORRECTION re-verified 2026-09-01: no numeric public quota is a golden gate. Provider alternatives must be dated; local-mode and token/network distinctions are required."
   },
   "tags": {
     "category": "tooling-infra",
@@ -36,8 +36,8 @@
     },
     "domain": "real-world",
     "status": "mixed",
-    "asOf": "2026-07-11",
-    "reverifyBy": "2026-09-01",
+    "asOf": "2026-09-01",
+    "reverifyBy": "2026-12-01",
     "sources": [
       {
         "class": "A",
@@ -62,24 +62,24 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "A: current Networks documentation",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://developers.stellar.org/docs/networks",
+            "observedAt": "2026-09-01",
+            "note": "The official page says Friendbot is rate-limited but gives no numeric quota."
           },
           {
-            "class": "D",
-            "ref": "D: independent source sweep found no stable official numeric quota",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "B",
+            "ref": "https://github.com/stellar/friendbot",
+            "observedAt": "2026-09-01",
+            "note": "The public source and configuration documentation give no public request-window quota."
           },
           {
-            "class": "C",
-            "ref": "C: harmless Friendbot validation response confirmed availability without funding",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+            "observedAt": "2026-09-01",
+            "note": "The official guide distinguishes the local Friendbot from public-network proxy modes."
           }
         ],
-        "note": "Legacy verdict: confirmed-with-unverifiable-number."
+        "note": "The rate-limit fact is confirmed. A durable numeric quota remains unverifiable."
       },
       {
         "claim": "Only Quickstart local mode has an independent local Friendbot; Testnet/Futurenet modes proxy public faucets. Validation Cloud currently advertises Testnet XLM while Circle supplies test USDC.",
@@ -87,41 +87,44 @@
         "evidence": [
           {
             "class": "A",
-            "ref": "A: Quickstart faucet docs and provider-owned Validation Cloud page",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+            "observedAt": "2026-09-01",
+            "note": "Local mode runs a local Friendbot; Testnet and Futurenet modes proxy public deployments."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.validationcloud.io/multi-chain-faucets",
+            "observedAt": "2026-09-01",
+            "note": "Validation Cloud lists a Stellar Testnet XLM faucet path."
           },
           {
             "class": "A",
-            "ref": "A: current Circle/Stellar test-token guidance",
-            "observedAt": "2026-07-11",
-            "note": "verbatim legacy evidence descriptor imported at migration"
+            "ref": "https://docs.validationcloud.io/v1/about/faucets",
+            "observedAt": "2026-09-01",
+            "note": "The provider says it links to an existing Stellar faucet, so independence from Friendbot is not established."
+          },
+          {
+            "class": "C",
+            "ref": "https://faucet.circle.com/",
+            "observedAt": "2026-09-01",
+            "note": "Circle lists Stellar Testnet for test USDC, not native XLM."
           }
         ],
-        "note": "Legacy verdict: confirmed-as-of-2026-07-11."
+        "note": "Provider availability is confirmed as of 2026-09-01."
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+      "date": "2026-09-02",
+      "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/friendbot-lane.md (Codex Terra high; orchestrator reconciled)",
       "evidence": [
-        "Solo scratchpad 575 GT-52 primary/blind matrices independently retained safe alternatives and source-relative negative claims; blind added the operational/provider distinctions.",
-        "Sibling sweep checked q-infra-friendbot-fund-testnet, q-infra-quickstart-local-network, q-ti-testnet-usdc-faucet, and migration/CLI identity cases.",
-        "Structural re-form (negative-predicate): split one compound taxonomy fact into two atomic positive facts; truth is unchanged",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks — uses 429 Retry-After/backoff without inventing a numeric quota or evading limits",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks and https://developers.stellar.org/docs/tools/quickstart/faucet — uses fund-one-then-create-many for public Testnet and local Quickstart for hermetic CI",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/quickstart/faucet — states that public-network Quickstart modes proxy public faucets",
-        "Live re-check 2026-08-27: https://www.validationcloud.io/multi-chain-faucets — dates provider alternatives for Testnet funding",
-        "Live re-check 2026-08-27: https://faucet.circle.com/ and https://developers.stellar.org/docs/networks — treats Futurenet, Circle test USDC, and Testnet XLM as distinct resources",
-        "Sibling sweep 2026-08-27: grep Friendbot|Quickstart|Futurenet|test USDC|Testnet XLM → q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet, q-ti-testnet-usdc-faucet, q-n3-issues-842-backup-faucet-wallet; no contradiction",
-        "Structural re-form (compound-predicate): no keyFact change was needed because the prior atomic re-form already cleared this class; the truth is unchanged.",
-        "Sibling sweep 2026-08-27: grep Friendbot|Quickstart|Futurenet|test USDC|Testnet XLM → q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet, q-ti-testnet-usdc-faucet; no contradiction",
-        "Owner note 2026-08-27: a mis-assigned compound chunk re-touched only this metadata after the negative-predicate review; keyFacts are the reviewed ones (review-b4-part3.md); `by` corrected to the negative-predicate batch."
+        "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/friendbot-lane.md",
+        "Live source 2026-09-01: https://developers.stellar.org/docs/networks",
+        "Live source 2026-09-01: https://developers.stellar.org/docs/tools/quickstart/faucet",
+        "Provider review 2026-09-01: https://www.validationcloud.io/multi-chain-faucets, https://docs.validationcloud.io/v1/about/faucets, and https://faucet.circle.com/",
+        "Sibling sweep 2026-09-01: q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet, q-ti-testnet-usdc-faucet, q-n3-issues-842-backup-faucet-wallet, and q-edge-send-me-free-xlm; no contradiction."
       ],
       "rootCause": [
-        "Eval-side operational/freshness incompleteness; Friendbot 429/CI funding documentation remains a research candidate.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-ti-friendbot-ratelimit-alternatives"

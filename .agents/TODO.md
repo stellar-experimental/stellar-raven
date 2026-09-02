@@ -145,6 +145,20 @@ attempt-three brief. One new target capture or one-case improvement does not clo
 Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
 our ranking.
 
+## Catalog correctness
+
+### Correct Lumenloop A/V `created_at` semantics
+
+The 2026-09-02 stale-gospel refresh found that live A/V rows use `created_at` like an ingest or
+index date. A DEVCON 2024 recording returned `created_at: 2026-04-02T23:21:21.744Z`.
+`catalog/manifest.json` currently calls the field the recording date and tells agents to use it
+for recency. The evidence is in
+`.agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md`.
+
+Done when: the owning catalog source describes the field from verified service semantics, generated
+catalog outputs are rebuilt, affected A/V cases are rechecked, and focused tests prevent the
+recording-date claim from returning.
+
 ## Eval instruments
 
 ### Add paid-run preconditions to agent discovery

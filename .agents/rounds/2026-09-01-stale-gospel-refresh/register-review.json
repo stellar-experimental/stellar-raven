@@ -1,0 +1,85 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-008",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-02",
+      "reSwept": {
+        "date": "2026-09-02",
+        "reason": "Stale-gospel refresh (2026-09-02): only q-sor-confidential-tokens changed, and only by an in-answer as-of date plus judge-blind truth metadata. No CAP id, status, or protocol assignment moved. The cluster's own assignments were re-derived from canonical source: cap-0059.md Status Final / Protocol version 22; cap-0074.md Final / 25; cap-0075.md Final / 25. The cluster note stands unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-023",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-02",
+      "reSwept": {
+        "date": "2026-09-02",
+        "reason": "Stale-gospel refresh (2026-09-02): q-ti-testnet-usdc-faucet refreshed its dated issuer and faucet observation to 2026-09-01 and removed an unsupported named Lab path-payment distribution route. The durable Friendbot, trustline, reserve, and SAC boundaries are unchanged. Removal verified against https://developers.stellar.org/docs/tools/lab/account, which documents Friendbot XLM funding and USDC/EURC trustline creation but no way to receive test USDC units. Members re-read: q-ti-stellar-lab-usage-and-new-ui already avoids 'say a trustline credits tokens'; q-tool-cli-testnet-identity-howto, q-infra-testnet-vs-futurenet, q-edge-send-me-free-xlm, q-edge-jailbreak-generate-secret-keys, and q-ti-custodial-account-generation-c-address assert no Lab USDC distribution route. No contradiction.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-047",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-02",
+      "reSwept": {
+        "date": "2026-09-02",
+        "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date and judge-blind truth metadata. The preview status, the visibility boundary, and the primitives-are-not-a-product boundary are unchanged, and were re-derived from https://developers.stellar.org/docs/build/apps/privacy on 2026-09-02. Sibling q-edge-noinfo-stellar-native-privacy-default carries an older asOf of 2026-07-10, but the fact it dates did not move. No contradiction.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-092",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-02",
+      "reSwept": {
+        "date": "2026-09-02",
+        "reason": "Stale-gospel refresh (2026-09-02): the only member change is the q-sor-confidential-tokens in-answer as-of date plus judge-blind truth metadata. The dated preview status and the conditional-evidence framing that this cluster records are both unchanged. No contradiction.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-110",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-02",
+      "reSwept": {
+        "date": "2026-09-02",
+        "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date and judge-blind truth metadata. BN254 and Poseidon remain Protocol 25 primitives, re-derived from cap-0074.md and cap-0075.md (both Status Final, Protocol version 25) and from https://developers.stellar.org/docs/build/apps/zk. No contradiction.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-127",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-02",
+      "reSwept": {
+        "date": "2026-09-02",
+        "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date and judge-blind truth metadata. All members still describe a Testnet developer preview and not a Mainnet launch. Re-derived 2026-09-02 from https://developers.stellar.org/docs/build/apps/privacy and the SDF developer-preview post, which says the contract is live on testnet and not yet approved for mainnet. Sibling q-scf-confidential-tokens-preview keeps reverifyBy 2026-11-19 and is unchanged. No contradiction.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "dateContingentTraps": [
+    {
+      "matchTriggerDateEvent": "2026-09-01/2026-11-19 review or any Confidential Tokens Mainnet approval/launch",
+      "triggerDateEvent": "2026-11-19/2026-12-15 review or any Confidential Tokens Mainnet approval/launch",
+      "disposition": "open — Testnet developer preview, unaudited, re-verified 2026-09-02; q-sor-confidential-tokens reverifyBy 2026-12-15 and q-scf-confidential-tokens-preview reverifyBy 2026-11-19.",
+      "verdict": "consistent",
+      "lastChecked": "2026-09-02",
+      "reSwept": {
+        "date": "2026-09-02",
+        "reason": "Stale-gospel refresh (2026-09-02): q-sor-confidential-tokens changed only by an in-answer as-of date (2026-07-10 to 2026-09-02) and judge-blind truth metadata; the preview status it dates is unchanged. Re-derived from https://developers.stellar.org/docs/build/apps/privacy ('developer preview ... unaudited — not yet intended for production use or real assets') and https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar. No Mainnet approval evidence exists as of 2026-09-02, so the trap stays open with refreshed reverifyBy references.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}
