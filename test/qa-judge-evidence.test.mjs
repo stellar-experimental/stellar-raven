@@ -9,6 +9,7 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it, vi } from "vitest";
 import { decodeCliEvidenceText, sanitizeCliEvidenceText } from "../eval/qa/evidence-sanitizer.mjs";
+import { isRetryableJudgeError } from "../eval/qa/judge.mjs";
 import {
   judgeFailureWithFakeClaude,
   judgeFailureWithRawBytes,
@@ -16,10 +17,91 @@ import {
   judgeSignalWithFakeClaude,
   judgeTimeoutWithFakeClaude,
   judgeWithFakeClaude,
-  judgeWithMissingClaude
+  judgeWithMissingClaude,
+  judgeWithUnreadStdinFakeOutput
 } from "./helpers/fake-judge-cli.mjs";
 
 describe("QA judge CLI evidence", () => {
+  it("makes a valid status-zero EPIPE a terminal prompt-write failure", async () => {
+    const stdout = JSON.stringify({
+      result: JSON.stringify({
+        score: "correct",
+        coreAnswer: "correct",
+        missingFacts: [],
+        wrongClaims: [],
+        avoidMatches: [],
+        rationale: "The answer matches the golden."
+      }),
+      diagnostic: "x".repeat(20_000),
+      total_cost_usd: 0.125
+    });
+    const verdict = await judgeWithUnreadStdinFakeOutput({ stdout });
+
+    expect(verdict).toMatchObject({
+      score: "error",
+      coreAnswer: null,
+      failureClass: "prompt-write",
+      costUsd: 0.125,
+      cliFailure: {
+        kind: "prompt-write",
+        exitStatus: 0,
+        signal: null,
+        message: expect.stringContaining("EPIPE"),
+        stdout: {
+          totalBytes: Buffer.byteLength(stdout),
+          truncated: true
+        },
+        stderr: { excerpt: "", totalBytes: 0, truncated: false },
+        parsedEnvelope: { truncated: true }
+      }
+    });
+    expect(Buffer.byteLength(verdict.cliFailure.stdout.excerpt)).toBeLessThanOrEqual(8_192);
+    expect(Buffer.byteLength(verdict.cliFailure.parsedEnvelope.excerpt)).toBeLessThanOrEqual(8_192);
+    expect(isRetryableJudgeError(verdict)).toBe(false);
+  });
+
+  it("makes invalid status-zero EPIPE output a terminal prompt-write failure", async () => {
+    const stdout = JSON.stringify({ result: "not a judge verdict", total_cost_usd: 0.125 });
+    const verdict = await judgeWithUnreadStdinFakeOutput({ stdout });
+
+    expect(verdict).toMatchObject({
+      score: "error",
+      failureClass: "prompt-write",
+      costUsd: 0.125,
+      cliFailure: {
+        kind: "prompt-write",
+        exitStatus: 0,
+        message: expect.stringContaining("EPIPE"),
+        stdout: { excerpt: stdout, totalBytes: Buffer.byteLength(stdout), truncated: false },
+        parsedEnvelope: { excerpt: stdout, truncated: false }
+      }
+    });
+    expect(isRetryableJudgeError(verdict)).toBe(false);
+  });
+
+  it("classifies nonzero EPIPE as a CLI spawn failure", async () => {
+    const verdict = await judgeWithUnreadStdinFakeOutput({
+      stdout: JSON.stringify({
+        result: JSON.stringify({
+          score: "correct",
+          coreAnswer: "correct",
+          missingFacts: [],
+          wrongClaims: [],
+          avoidMatches: [],
+          rationale: "The answer matches the golden."
+        }),
+        total_cost_usd: 0.125
+      }),
+      exitCode: 1
+    });
+
+    expect(verdict).toMatchObject({
+      score: "error",
+      failureClass: "cli",
+      cliFailure: { kind: "spawn-error", exitStatus: 1 }
+    });
+  });
+
   it("preserves bounded CLI evidence and cost when Claude exits nonzero", async () => {
     const stdout = JSON.stringify({
       type: "result",

@@ -190,6 +190,41 @@ describe("qa-five-track-v1", () => {
     expect(summary.t4.retryInputHashMismatches.ids).toEqual(["mismatch"]);
   });
 
+  it("attributes a terminal judge prompt-write failure only to its T4 bucket", () => {
+    const tracked = row("prompt-write", {
+      judges: [judgeAttempt({ score: "error", failureClass: "prompt-write" })]
+    });
+    const summary = buildFiveTrackSummary({ selectedIds: [tracked.id], rows: [tracked] });
+
+    expect(summary.schema).toBe("qa-five-track-v1");
+    expect(summary.t4.judgePromptWriteFailures).toEqual({
+      count: 1,
+      denominator: 1,
+      ids: ["prompt-write"]
+    });
+    expect(summary.t1.validGradesOverAnswered.ids).toEqual([]);
+    expect(summary.t4.spawnFailures.ids).toEqual([]);
+    expect(summary.t4.protocolFailures.ids).toEqual([]);
+    expect(summary.t4.cliOrParseFailures.ids).toEqual([]);
+    expect(summary.t4.judgeTimeouts.ids).toEqual([]);
+    expect(summary.t4.judgeProviderSafeguards.ids).toEqual([]);
+    expect(summary.t4.consistencyContradictions.ids).toEqual([]);
+    expect(summary.t5.providerSafeguards.ids).toEqual([]);
+    expect(summary.t5.transport.ids).toEqual([]);
+    expect(summary.t5.timeouts.ids).toEqual([]);
+  });
+
+  it("formats the T4 judge prompt-write failure bucket", () => {
+    const tracked = row("prompt-write", {
+      judges: [judgeAttempt({ score: "error", failureClass: "prompt-write" })]
+    });
+    const summary = buildFiveTrackSummary({ selectedIds: [tracked.id], rows: [tracked] });
+
+    expect(formatFiveTrackSummary(summary)).toContain(
+      "judge prompt-write failures 1/1 IDs: prompt-write"
+    );
+  });
+
   it("keeps an unattempted selected trap in the runner T3 denominator", () => {
     const selectedCases = [
       { id: "trap-answered", tags: { trap: "injection" } },

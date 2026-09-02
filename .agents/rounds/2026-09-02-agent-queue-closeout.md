@@ -80,6 +80,59 @@ The final tree passed `npm run secrets:scan -- --tree` and `git diff --check`.
 The authorized external stages follow this commit: push, pull-request creation, checks, and merge.
 Deployment and production verification remain separate owner gates under `NEXT.md` stage 6.
 
+## CI EPIPE repair
+
+Linux CI exposed a duplicate fake judge call after this closeout.
+The first CI attempt failed three cases.
+The second CI attempt failed one different case at `test/qa-harness-preconditions.test.mjs:801`.
+Both failures recorded two calls where the test required one call.
+
+The Opus 5 high diagnosis is
+[`ci-test-diagnosis-opus.md`](2026-09-02-agent-queue-closeout/ci-test-diagnosis-opus.md).
+The fake Claude exited without reading standard input.
+Linux then returned status 0, complete stdout, and an EPIPE spawn error.
+`judgeCase` classified that result as a retryable CLI failure.
+The stored judge path then made a second call.
+
+The fake Claude now drains standard input before it logs and prints.
+The exact one-call assertions remain in place and include failure messages.
+`judgeCase` now treats status-zero EPIPE as a terminal `prompt-write` failure.
+The child did not receive the complete prompt, so its verdict is not valid.
+The failure keeps the bounded CLI evidence and reported cost.
+`isRetryableJudgeError` rejects this class, so stored judging makes no second call.
+Normal CLI and parse failures keep their existing one-retry behavior.
+Nonzero EPIPE and other spawn errors remain CLI failures.
+
+The Opus 5 high repair review is
+[`ci-epipe-review-opus.md`](2026-09-02-agent-queue-closeout/ci-epipe-review-opus.md).
+F1 rejected the silent acceptance of an incomplete prompt.
+The terminal `prompt-write` class closes F1 without trusting the returned verdict.
+F2 required tests that prove the real EPIPE precondition.
+Both status-zero tests now require EPIPE evidence and a terminal result.
+The helper explains why its 4 MiB input exceeds the 64 KiB Linux pipe buffer.
+
+The focused command was
+`npm test -- --run test/qa-judge-evidence.test.mjs test/qa-budget.test.mjs test/qa-verdict-consistency.test.mjs test/qa-harness-preconditions.test.mjs`.
+It passed four files and 278 tests.
+The real `judgeCase` tests use a local fake executable and make no provider call.
+
+The Opus 5 high closure review is
+[`ci-epipe-review-opus-closure.md`](2026-09-02-agent-queue-closeout/ci-epipe-review-opus-closure.md).
+N1 found that `prompt-write` was absent from the five-track failure buckets.
+T4 now reports `judgePromptWriteFailures` and prints every contributing ID.
+Focused tests prove that the class stays outside all existing T4 and T5 failure buckets.
+N2 found that the QA README omitted `prompt-write` from the terminal class list.
+The README now defines the status-zero EPIPE condition and explains why the verdict is invalid.
+
+The Opus 5 high final closure review is
+[`ci-epipe-review-opus-final-closure.md`](2026-09-02-agent-queue-closeout/ci-epipe-review-opus-final-closure.md).
+It closed F1, F2, N1, and N2 with no new finding.
+
+`QA_TRACK_SCHEMA` remains `qa-five-track-v1`.
+The new bucket is additive and fulfills the existing v1 T4 harness-health contract.
+It changes no existing key semantics or comparability rule.
+`npm test -- --run test/qa-five-track.test.mjs` passed one file and nine tests.
+
 ## Ledger
 
 - 2026-09-02: `review-fable.md` added under this round directory. Read-only audit complete.
@@ -89,11 +142,17 @@ Deployment and production verification remain separate owner gates under `NEXT.m
 - 2026-09-02: `review-grok-closure.md` closed M2 and L1, then found authorization conflict N1.
 - 2026-09-02: The owner authorization record was aligned in `NEXT.md` and this ledger.
 - 2026-09-02: `review-grok-final-closure.md` passed M1 and N1 with no new finding.
+- 2026-09-02: `ci-epipe-review-opus.md` reported F1 and F2 on the first EPIPE repair.
+- 2026-09-02: The terminal `prompt-write` design reconciled F1 and F2.
+- 2026-09-02: `ci-epipe-review-opus-closure.md` reported N1 and N2.
+- 2026-09-02: The additive T4 bucket and README definition reconciled N1 and N2.
+- 2026-09-02: `ci-epipe-review-opus-final-closure.md` passed with no new finding.
 
 ## Outcome
 
 The six integrated blocks and their queue documentation are complete.
 All required code, evaluation, review, secret, and diff checks passed.
 The missing ignored evidence artifacts remain an environment limit, not a product regression.
+The EPIPE closure review passed after the N1 and N2 repair.
 The authorized push, pull request, checks, merge, and repository cleanup follow this commit.
 Deployment remains outside this round and needs separate authorization.

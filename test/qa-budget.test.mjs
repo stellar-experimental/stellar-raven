@@ -145,6 +145,7 @@ describe("QA sequential budget", () => {
   it.each([
     ["cli", 2],
     ["parse", 2],
+    ["prompt-write", 1],
     ["provider-safeguard", 1],
     ["timeout", 1],
     ["consistency", 1]

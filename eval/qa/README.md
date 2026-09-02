@@ -239,8 +239,10 @@ agent-limit exits, and unclassified failures never retry.
 
 Judge errors carry `failureClass`. Only `cli` and `parse` can receive one total retry. The limit
 applies across inline judging and all `--judge-stored` resumes. `provider-safeguard`, `timeout`,
-and `consistency` are terminal. Stored judging writes each completed attempt before it starts an
-eligible retry.
+`consistency`, and `prompt-write` are terminal. A `prompt-write` failure means the child exited
+before the harness finished writing the prompt. The status is zero, but the write reports EPIPE.
+The harness rejects the returned verdict because the child did not receive the complete prompt.
+Stored judging writes each completed attempt before it starts an eligible retry.
 Untyped legacy judge errors are also terminal. Their timeout and safeguard status is unknown.
 Use `re-judge.mjs` for those saved rows instead of inferring a retry class.
 

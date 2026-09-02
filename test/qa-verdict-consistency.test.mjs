@@ -288,6 +288,7 @@ describe("QA verdict consistency", () => {
   it.each([
     ["cli failure", { score: "error", failureClass: "cli" }, true],
     ["unparseable verdict", { score: "error", failureClass: "parse" }, true],
+    ["prompt-write failure", { score: "error", failureClass: "prompt-write" }, false],
     ["timeout", { score: "error", failureClass: "timeout" }, false],
     ["provider safeguard", { score: "error", failureClass: "provider-safeguard" }, false],
     ["consistency error", { score: "error", failureClass: "consistency", judgeScore: "wrong" }, false],

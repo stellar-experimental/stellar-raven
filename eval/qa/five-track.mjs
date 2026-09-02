@@ -232,6 +232,9 @@ export function buildFiveTrackSummary({
   const judgeTimeoutIds = unique(allJudgeCalls
     .filter(({ attempt }) => judgeFailureClass(attempt) === "timeout")
     .map(({ id }) => id));
+  const judgePromptWriteIds = unique(allJudgeCalls
+    .filter(({ attempt }) => judgeFailureClass(attempt) === "prompt-write")
+    .map(({ id }) => id));
   const judgeSafeguardIds = unique(allJudgeCalls
     .filter(({ attempt }) => judgeFailureClass(attempt) === "provider-safeguard")
     .map(({ id }) => id));
@@ -315,6 +318,7 @@ export function buildFiveTrackSummary({
         unattempted: coverage(judgingUnattemptedIds, selectedAnsweredIds)
       },
       cliOrParseFailures: coverage(cliOrParseFailureIds, selectedAnsweredIds),
+      judgePromptWriteFailures: coverage(judgePromptWriteIds, selectedAnsweredIds),
       judgeTimeouts: coverage(judgeTimeoutIds, selectedAnsweredIds),
       judgeProviderSafeguards: coverage(judgeSafeguardIds, selectedAnsweredIds),
       consistencyContradictions: {
@@ -404,6 +408,7 @@ export function formatFiveTrackSummary(summary) {
     `  judging attempted ${coverageText(summary.t4.judging.attempted)}`,
     `  judging unattempted ${coverageText(summary.t4.judging.unattempted)}`,
     `  non-timeout CLI or parse failures ${coverageText(summary.t4.cliOrParseFailures)}`,
+    `  judge prompt-write failures ${coverageText(summary.t4.judgePromptWriteFailures)}`,
     `  judge provider safeguards ${coverageText(summary.t4.judgeProviderSafeguards)}`,
     `  judge timeouts ${coverageText(summary.t4.judgeTimeouts)}`,
     `  consistency contradictions ${coverageText(summary.t4.consistencyContradictions)}`,

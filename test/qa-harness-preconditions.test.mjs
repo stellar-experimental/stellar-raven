@@ -506,6 +506,7 @@ if [ "$1" = "--version" ]; then
   printf '%s\\n' 'fixture-claude 1.0.0'
   exit 0
 fi
+cat >/dev/null
 printf '%s\\n' paid >> "$QA_FAKE_CALL_LOG"
 printf '%s\\n' '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"missingFacts\\":[],\\"wrongClaims\\":[],\\"avoidMatches\\":[],\\"rationale\\":\\"fixture\\"}","total_cost_usd":0.01}'
 `;
@@ -733,7 +734,10 @@ describe("run-qa residual optional flag guards", () => {
       ]);
 
       expect(result.status, result.stderr).toBe(0);
-      expect(fixture.paidCalls()).toEqual(["paid"]);
+      expect(
+        fixture.paidCalls(),
+        "one stored row must produce exactly one judge call"
+      ).toEqual(["paid"]);
     } finally {
       rmSync(fixture.root, { recursive: true, force: true });
     }
@@ -798,8 +802,15 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
       ]);
 
       expect(matching.status, matching.stderr).toBe(0);
-      expect(fixture.paidCalls()).toEqual(["paid"]);
-      expect(JSON.parse(readFileSync(matchingPath, "utf8")).meta.judgeEnvironment).toMatchObject({
+      expect(
+        fixture.paidCalls(),
+        "one judge call per stored row; a second means a judge retry"
+      ).toEqual(["paid"]);
+      const stored = JSON.parse(readFileSync(matchingPath, "utf8"));
+      expect(stored.rows[0].verdict, "judge attempt must not be a retryable CLI error")
+        .toMatchObject({ score: "correct" });
+      expect(stored.rows[0].verdict.failureClass ?? null).toBeNull();
+      expect(stored.meta.judgeEnvironment).toMatchObject({
         sha256: fixture.environmentSha256,
         expectedSha256: fixture.environmentSha256,
         matches: true
