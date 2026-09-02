@@ -156,3 +156,6 @@ The closure review passed all four repairs and found no new actionable issue.
 The closure report is
 `.agents/rounds/2026-09-02-av-runtime-date-semantics/review-fable-closure.md`.
 The completed Catalog correctness TODO item left `.agents/TODO.md`.
+
+Superseded 2026-09-02: commit `c4a064b` completed the evidence-pack follow-up recorded above.
+Its ledger is `.agents/rounds/2026-09-02-av-evidence-pack-source-date.md`.

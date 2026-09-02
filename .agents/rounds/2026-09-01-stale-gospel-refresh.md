@@ -1,7 +1,7 @@
 # Stale-gospel refresh
 
 Date: 2026-09-01
-Status: release ready; merge pending
+Status: complete; merged as `8ee41f3` (PR #115)
 Branch: `maintenance/stale-gospel-2026-09-02`
 Pull request: `#115`
 Base: `8c0f0069dff2f5b1d8d69666bd779dff994c6f08`
@@ -150,4 +150,6 @@ The final bounded review returned `PASS` with no remaining finding on that path.
 Final validation passes `eval:selftest`, `eval:qa:compile`, the register check, stale lint,
 `improvements:lint`, typecheck, the full test suite, the build, the secret scan, and diff check.
 No saved `eval/qa/results` directory exists for a saved-answer rejudge or plan regrade.
-No product deployment is required. Merge and task-state cleanup remain.
+No product deployment was required.
+PR #115 merged into `main` as `8ee41f3` on 2026-09-02.
+Task-state cleanup is complete.

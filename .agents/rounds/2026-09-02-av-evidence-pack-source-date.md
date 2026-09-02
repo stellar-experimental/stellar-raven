@@ -1,7 +1,7 @@
 # A/V evidence-pack source date
 
 Date: 2026-09-02
-Status: local reconciliation complete
+Status: complete; committed as `c4a064b`
 Scope: `eval/qa/evidence-pack.mjs` and its public evidence-pack output.
 
 ## Contract
@@ -92,7 +92,7 @@ The focused public-seam test passed with 35 tests.
 No paid or live provider call occurred.
 
 The completed TODO item was removed after the independent review passed.
-The implementation remains uncommitted.
+At that review point, the implementation remained uncommitted.
 
 ## Opus review reconciliation
 
@@ -121,17 +121,23 @@ The final focused suite passes with 41 tests.
 `npm run secrets:scan -- --tree` and `git diff --check` passed.
 No paid or provider call occurred.
 
-## Final Opus closure
+## Opus closure reconciliation
 
-The final closure report is `.agents/rounds/2026-09-02-av-evidence-pack-source-date/review-opus-final-closure.md`.
-Its verdict is PASS with no actionable finding.
-All five reviewer reports are tracked under this round directory.
-The final closure confirms both straddle controls, the 4.81 passage fact, nearby non-A/V dates,
-and byte-identical non-A/V fixtures.
+The closure report is `.agents/rounds/2026-09-02-av-evidence-pack-source-date/review-opus-closure.md`.
+Its verdict remains NOT PASS. This ledger does not alter either Opus report.
 
-The focused suite passed with 45 tests.
-The full suite passed with 100 files and 1,643 tests.
-The final secrets scan and diff check passed.
+- R1: Claim snippets remove only classified A/V `created_at` or derived `date` fields.
+  They retain the A/V title, channel, summary, long summary, and exact facts.
+  A claim match inside an A/V date value remains intentionally skipped.
+- R2: `collection`, `type`, and `kind` all use `isSupportedAvCollection`.
+  The public control covers `videos` in each field and an `articles` control.
+
+The R1 and R2 test-first run failed with two public-seam failures.
+The final focused suite passed with 43 tests.
+`npm run typecheck`, `npm test`, `npm run build`, and `npm run eval:selftest` passed.
+The full suite passed with 100 files and 1,641 tests.
+`npm run secrets:scan -- --tree` and `git diff --check` passed.
+No paid or provider call occurred.
 
 ## Opus final reconciliation
 
@@ -151,20 +157,20 @@ The full suite passed with 100 files and 1,643 tests.
 `npm run secrets:scan -- --tree` and `git diff --check` passed.
 No paid or provider call occurred.
 
-## Opus closure reconciliation
+## Final Opus closure
 
-The closure report is `.agents/rounds/2026-09-02-av-evidence-pack-source-date/review-opus-closure.md`.
-Its verdict remains NOT PASS. This ledger does not alter either Opus report.
+The final closure report is `.agents/rounds/2026-09-02-av-evidence-pack-source-date/review-opus-final-closure.md`.
+Its verdict is PASS with no actionable finding.
+All five reviewer reports are tracked under this round directory.
+The final closure confirms both straddle controls and the exact `4.81` passage fact.
+It also confirms nearby non-A/V dates and byte-identical non-A/V fixtures.
 
-- R1: Claim snippets remove only classified A/V `created_at` or derived `date` fields.
-  They retain the A/V title, channel, summary, long summary, and exact facts.
-  A claim match inside an A/V date value remains intentionally skipped.
-- R2: `collection`, `type`, and `kind` all use `isSupportedAvCollection`.
-  The public control covers `videos` in each field and an `articles` control.
+The focused suite passed with 45 tests.
+The full suite passed with 100 files and 1,643 tests.
+The final secrets scan and diff check passed.
 
-The R1 and R2 test-first run failed with two public-seam failures.
-The final focused suite passed with 43 tests.
-`npm run typecheck`, `npm test`, `npm run build`, and `npm run eval:selftest` passed.
-The full suite passed with 100 files and 1,641 tests.
-`npm run secrets:scan -- --tree` and `git diff --check` passed.
-No paid or provider call occurred.
+## Outcome
+
+Commit `c4a064b` landed the reviewed evidence-pack `p6` implementation on 2026-09-02.
+The final Opus closure passed with no actionable finding.
+The completed TODO item remains closed.

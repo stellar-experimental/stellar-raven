@@ -82,6 +82,9 @@ The equals forms below remain silently ignored.
 | `run-agent-discovery.mjs` | `--effort=<value>` | Uses the default effort. |
 | `run-agent-discovery.mjs` | `--cases=<path>` | Uses the default cases. |
 
+Superseded 2026-09-02: `.agents/rounds/2026-09-02-residual-optional-flag-guards.md` closed every
+form in this table.
+
 ## Accepted duplication
 
 The two runners keep bounded copies of `parseOptionalIdsFlag`.

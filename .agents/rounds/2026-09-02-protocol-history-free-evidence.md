@@ -199,3 +199,14 @@ The Node check verified result stamps, result hashes, cache hashes, payload hash
 This record completes the permitted free evidence.
 The three-attempt closure remains unchanged.
 T1 through T4 remain the existing trigger-only paths.
+
+## 2026-09-02 reconciliation after the A/V catalog commit
+
+Commit `d6efe5f` moved `catalog/manifest.json` from `4945c311…6789` to `4cd28f4b…fe8b`.
+The target description hash remains `80157277…798e43`, so the label-review inputs still hold.
+The capture matrix identity columns are historical for the earlier manifest.
+`npm run eval:protocol-history` on the current manifest reads 4/8 original positives and 2/4
+original controls. `ph-control-validator-vote` moved from a miss to rank five.
+The blind set remains 3/11 positives and 6/9 controls.
+`ph-control-validator-vote` is one of the four disputed controls.
+The three-attempt box remains spent. This entry changes no label, contract, or gate.
