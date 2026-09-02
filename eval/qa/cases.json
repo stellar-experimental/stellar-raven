@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "0393e7bef6b8bea9e519fbdf11d65fa4a7d32ea2ea803f469c0ac8bd78857ad7",
+  "corpusContentSha256": "0ee234861142cb65415cff98492568a1138f8971d6b9bee6d928dfafc2120292",
   "counts": {
     "total": 500,
     "byCategory": {
@@ -41828,7 +41828,7 @@
         "stellarDocs.search_sdk_cli_tools_docs"
       ],
       "golden": {
-        "answer": "Ordinary Stellar assets, SAC transfers, and SEP-41 tokens are public unless an application implements a privacy protocol. As of **2026-07-10**, Stellar Confidential Tokens is a **Testnet developer preview**, not audited/approved Mainnet default infrastructure; its stated model hides balances and amounts while addresses remain visible. BLS12-381 and BN254/Poseidon host functions are cryptographic primitives, not a turnkey privacy product.\n\nThere is no universal Stellar 'offline leaf' audit package. Evidence depends on the specific cross-chain/privacy protocol and auditor role. A verifier may need the protocol's commitment/ciphertext, authenticated chain inclusion/finality evidence, domain-separated public inputs binding chain/asset/nonce/policy, the applicable proof, and—only where the protocol defines it—a Merkle path, disclosure key, viewing key, or selective-disclosure witness. If required disclosure/witness material was never retained or published, public chain data alone may be insufficient. Do not invent a generic Merkle-leaf recipe or claim that primitives guarantee auditability.",
+        "answer": "Ordinary Stellar assets, SAC transfers, and SEP-41 tokens are public unless an application implements a privacy protocol. As of **2026-09-02**, Stellar Confidential Tokens is a **Testnet developer preview**, not audited/approved Mainnet default infrastructure; its stated model hides balances and amounts while addresses remain visible. BLS12-381 and BN254/Poseidon host functions are cryptographic primitives, not a turnkey privacy product.\n\nThere is no universal Stellar 'offline leaf' audit package. Evidence depends on the specific cross-chain/privacy protocol and auditor role. A verifier may need the protocol's commitment/ciphertext, authenticated chain inclusion/finality evidence, domain-separated public inputs binding chain/asset/nonce/policy, the applicable proof, and—only where the protocol defines it—a Merkle path, disclosure key, viewing key, or selective-disclosure witness. If required disclosure/witness material was never retained or published, public chain data alone may be insufficient. Do not invent a generic Merkle-leaf recipe or claim that primitives guarantee auditability.",
         "keyFacts": [
           "Ordinary Stellar assets and SAC transfers are public by default.",
           "Confidential Tokens remain a dated Testnet developer preview.",
@@ -41855,8 +41855,8 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-07-10",
-        "reverifyBy": "2026-09-01",
+        "asOf": "2026-09-02",
+        "reverifyBy": "2026-12-15",
         "sources": [
           {
             "class": "A",
@@ -41881,49 +41881,90 @@
         ],
         "corroboration": [
           {
-            "claim": "Confidential Tokens is a Testnet developer preview as of 2026-06-29, not a Mainnet-approved default token property.",
+            "claim": "Confidential Tokens is a Testnet developer preview, unaudited and not Mainnet-approved, as of 2026-09-02.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: official Confidential Tokens announcement and privacy docs",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+                "observedAt": "2026-09-02",
+                "note": "The page calls Confidential Tokens an unaudited developer preview that is not for production assets."
+              },
+              {
+                "class": "A",
+                "ref": "https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar",
+                "observedAt": "2026-09-02",
+                "note": "The editor's note says the contract is live on Testnet and not approved for Mainnet."
               },
               {
                 "class": "B",
-                "ref": "B: contract/protocol source and CAP assignments",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/tokens/src/confidential",
+                "observedAt": "2026-09-02",
+                "note": "The package exists on main, but the newest tagged release predates it."
+              }
+            ]
+          },
+          {
+            "claim": "Confidential Tokens hide balances and transfer amounts while sender and receiver addresses stay public.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/apps/privacy",
+                "observedAt": "2026-09-02",
+                "note": "The page states the visibility boundary for amounts, balances, and addresses."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/meetings/2026/08/06",
+                "observedAt": "2026-09-02",
+                "note": "The meeting record states that sender and recipient addresses stay public."
+              }
+            ]
+          },
+          {
+            "claim": "CAP-0059 is Final at Protocol 22; CAP-0074 and CAP-0075 are Final at Protocol 25; the host functions are primitives.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0059.md",
+                "observedAt": "2026-09-02",
+                "note": "The source marks CAP-0059 Final at Protocol 22."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0074.md",
+                "observedAt": "2026-09-02",
+                "note": "The source marks CAP-0074 Final at Protocol 25."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0075.md",
+                "observedAt": "2026-09-02",
+                "note": "The source marks CAP-0075 Final at Protocol 25."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/apps/zk",
+                "observedAt": "2026-09-02",
+                "note": "The page says these primitives do not provide complete private payments alone."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-30",
-          "by": "golden-truth metadata remainder (2026-08-30, dead-provenance lane c, worker gmr-sol-c; orchestrator applied)",
+          "date": "2026-09-02",
+          "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md (Fable 5 high; orchestrator reconciled)",
           "evidence": [
-            "Solo scratchpad 575 GT-25 primary 3268 and blind 3273 privacy sibling reconciliation.",
-            "Structural re-form (negative-predicate): replaced a taxonomy negation with five atomic positive facts; truth is unchanged",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — ordinary assets remain public unless an application adds privacy",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — Confidential Tokens remains an unaudited developer preview from the Testnet preview",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — the preview hides balances and amounts while addresses stay public",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/zk — Stellar ZK host functions remain cryptographic primitives",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/apps/privacy — audit evidence remains specific to the selected privacy protocol",
-            "Sibling sweep 2026-08-27: grep Confidential Tokens|BLS12-381|BN254 → q-scf-confidential-tokens-preview, q-edge-noinfo-stellar-native-privacy-default, q-zk-host-functions-status; no contradiction",
-            "Owner fix after independent review 2026-08-27 (gt2-grok-rev, program-log.md § Session 2 › Batch 4 › Part 1 review (gt2-grok-rev)): removed the added adjective \"unaudited\" (no notes receipt), restored SEP-41 in the public-by-default fact, and moved the \"not a standardized Stellar recipe\" clause into golden.avoid; truth unchanged versus HEAD.",
-            "Owner note 2026-08-27: the reviewer's proposed keyFact naming SEP-41 trips the numeric-corroboration lint (no covering row); the HEAD fact never named SEP-41, so the worker's wording stands and no claim is dropped.",
-            "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/privacy — ordinary assets remain public unless an application adds privacy",
-            "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/privacy — Confidential Tokens remains an unaudited developer preview from the Testnet preview",
-            "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/privacy — the preview hides balances and amounts while addresses stay public",
-            "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/zk — Stellar ZK host functions remain cryptographic primitives",
-            "Live re-check 2026-08-30: https://developers.stellar.org/docs/build/apps/privacy — audit evidence remains specific to the selected privacy protocol",
-            "Sibling sweep 2026-08-30: grep Confidential Tokens|BLS12-381|BN254 → q-scf-confidential-tokens-preview, q-edge-noinfo-stellar-native-privacy-default, q-zk-host-functions-status; no contradiction"
+            "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md",
+            "Live source 2026-09-02: https://developers.stellar.org/docs/build/apps/privacy",
+            "Live source 2026-09-02: https://stellar.org/blog/developers/developer-preview-confidential-tokens-on-stellar",
+            "Source review 2026-09-02: https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/tokens/src/confidential",
+            "Sibling sweep 2026-09-02: q-scf-confidential-tokens-preview, q-edge-noinfo-stellar-native-privacy-default, q-zk-host-functions-status, q-protocol-bls12-381-cap59, q-protocol-bn254-poseidon-xray, and related ZK cases; no contradiction."
           ],
           "rootCause": [
-            "Eval-side deployment-status freshness drift.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-sor-confidential-tokens"
@@ -42954,7 +42995,7 @@
           "Do NOT call SEP-57 Final or Solang production-ready, or imply ERC-1404/1410 are automatically covered by SEP-57.",
           "Do NOT use zero-byte G/C addresses as null sentinels."
         ],
-        "notes": "Solang repository was live and active on 2026-06-29; answer still treats Rust/Soroban SDK as the default production route.\nAlso good if the answer: Warns that there is no universal zero/null address pattern; use explicit `Option`, sentinel state, or validation instead of `address(0)` mental models. | Mentions OpenZeppelin Stellar modules for fungible, non-fungible, RWA/ERC-3643, allowlist/blocklist, pausable, access control, and upgradeability. | Mentions gas/resource differences: simulate to estimate resources/fees; avoid EVM gas-refund assumptions.\nGolden cites: Official EVM migration docs and authorization docs. | Official SAC/token overview or SEP-41 docs for token mapping. | OpenZeppelin Stellar docs or repository when citing OZ modules.\nGT-41 snapshot 2026-07-10: SEP-57 Draft v0.3.0 and Solang 0.3.5 pre-alpha are volatile. Auth—not syntax—is the top scored footgun."
+        "notes": "Solang repository was live and active on 2026-06-29; answer still treats Rust/Soroban SDK as the default production route.\nAlso good if the answer: Warns that there is no universal zero/null address pattern; use explicit `Option`, sentinel state, or validation instead of `address(0)` mental models. | Mentions OpenZeppelin Stellar modules for fungible, non-fungible, RWA/ERC-3643, allowlist/blocklist, pausable, access control, and upgradeability. | Mentions gas/resource differences: simulate to estimate resources/fees; avoid EVM gas-refund assumptions.\nGolden cites: Official EVM migration docs and authorization docs. | Official SAC/token overview or SEP-41 docs for token mapping. | OpenZeppelin Stellar docs or repository when citing OZ modules.\nGT-41 snapshot 2026-07-10, re-verified unchanged 2026-09-02: SEP-57 Draft v0.3.0 and Solang 0.3.5 pre-alpha are volatile. Auth—not syntax—is the top scored footgun."
       },
       "tags": {
         "category": "soroban",
@@ -42968,8 +43009,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-10",
-        "reverifyBy": "2026-09-01",
+        "asOf": "2026-09-02",
+        "reverifyBy": "2026-12-01",
         "sources": [
           {
             "class": "A",
@@ -42999,44 +43040,96 @@
         ],
         "corroboration": [
           {
-            "claim": "Current EVM-to-Soroban design mapping and tool/standard status",
+            "claim": "SEP-57 is Draft version 0.3.0 as of 2026-09-02.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "A",
-                "ref": "A/B: current Stellar docs, SEP-41/57, SDK/OZ/Solang source",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+                "observedAt": "2026-09-02",
+                "note": "The source marks SEP-57 Draft, updated 2026-06-11, at version 0.3.0."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.openzeppelin.com/news/rwa-wizard-issue-regulated-real-world-assets-on-stellar",
+                "observedAt": "2026-09-02",
+                "note": "The 2026-08-27 post uses SEP-57 for a Testnet RWA wizard and makes no Final claim."
+              }
+            ]
+          },
+          {
+            "claim": "Solang 0.3.5 is the latest release and its Soroban target remains experimental and not production-ready as of 2026-09-02.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.3.5",
+                "observedAt": "2026-09-02",
+                "note": "The v0.3.5 release remains the newest tag."
               },
               {
                 "class": "B",
-                "ref": "A/B: current Stellar docs, SEP-41/57, SDK/OZ/Solang source",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/hyperledger-solang/solang/blob/main/docs/targets/soroban.rst",
+                "observedAt": "2026-09-02",
+                "note": "The target documentation calls Soroban support pre-alpha and not production-ready."
               },
               {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
+                "observedAt": "2026-09-02",
+                "note": "The official guide says Solang support is experimental and not recommended for production."
+              }
+            ]
+          },
+          {
+            "claim": "SEP-41 allowances carry a live_until_ledger expiry.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+                "observedAt": "2026-09-02",
+                "note": "The approve signature includes live_until_ledger and defines its expiry behavior."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/token-interface",
+                "observedAt": "2026-09-02",
+                "note": "The official token interface defines expired allowances as zero."
+              }
+            ]
+          },
+          {
+            "claim": "All-zero G and C strkeys are valid Stellar addresses; the zero G account exists on Mainnet.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
                 "class": "F",
-                "ref": "F: GT-41 primary/blind compile, parser, and CLI probes",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "strkey computation recorded in .agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md",
+                "observedAt": "2026-09-02",
+                "note": "The lane computed valid zero-payload G and C strkeys."
+              },
+              {
+                "class": "C",
+                "ref": "https://horizon.stellar.org/accounts/GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF",
+                "observedAt": "2026-09-02",
+                "note": "The public Mainnet account endpoint returned the zero-payload G account."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+          "date": "2026-09-02",
+          "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md (Fable 5 high; orchestrator reconciled)",
           "evidence": [
-            "Solo scratchpad 575 GT-41 processes 3302/3305; Solang 0.3.5 and SEP-57 v0.3.0 checked 2026-07-10.",
-            "Structural re-form (long-fact): Split one long fact into three one-predicate facts; truth unchanged.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation — the current official guide says simulation uses a temporary snapshot, discards effects, and precedes real submission.",
-            "Live re-check 2026-08-29: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — the current official guide defines multidimensional resources plus TTL-related ledger-space rent.",
-            "Live re-check 2026-08-29: https://github.com/hyperledger/solang/blob/main/docs/targets/soroban.rst — the current target documentation calls Soroban support pre-alpha and experimental.",
-            "Sibling sweep 2026-08-29: grep Solang|multidimensional resources|TTL/rent|simulation/finality|SEP-57 → q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-protocol-state-archival-ttl, q-sor-evm-to-soroban-porting, q-tool-rust-soroban-sdk, q-tool-which-sdk-comparison; no contradiction."
+            "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md",
+            "Source review 2026-09-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+            "Source review 2026-09-02: https://github.com/hyperledger-solang/solang/releases/tag/v0.3.5",
+            "Live source 2026-09-02: https://developers.stellar.org/docs/learn/migrate/evm/solidity-support-via-solang",
+            "Sibling sweep 2026-09-02: q-crp-oz-rwa-erc3643-trex, q-crp-tokenize-personal-rwa, q-rwa-stellar-vs-erc20-regulated, q-tool-rust-soroban-sdk, and q-tool-which-sdk-comparison; no contradiction."
           ],
           "rootCause": [
-            "Eval-side requested-clause omissions and release-status drift.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-sor-evm-to-soroban-porting"
@@ -43454,7 +43547,7 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "Select the exact live Reflector contract by network/type from the operator registry and fetch its current spec before encoding arguments. Current Pulse uses `lastprice(asset)`; Beam uses `lastprice(caller, asset)`. `Asset` is `Stellar(Address)` or `Other(Symbol)`, and the return is `Option<PriceData>{price:i128,timestamp:u64}`; apply `decimals()` scaling and reject None/stale data. Current mainnet registry examples as of 2026-07-11 are external-exchanges `CAFJZQW...N34DLN`, on-chain/pubnet `CALI2BY...B2PLE6M`, and forex `CBKGPWG...DXMCJZC`. Re-fetch full IDs/specs rather than copying abbreviations. `CBQSUF...XQLSE` is a DAO, not an oracle. Current public Pulse ABI exposes `lastprice`, not stale `x_last_price`; official site text mentioning x_* conflicts with current source/live ABI. For JS traps, inspect network, ID, live spec/WASM, Pulse-versus-Beam signature, UDT ScVals, and simulation diagnostics—do not assert one cause. Beam's deeper XRF call may require `authorize_as_current_contract` for the nested call.",
+        "answer": "Select the exact live Reflector contract by network/type from the operator registry and fetch its current spec before encoding arguments. Current Pulse uses `lastprice(asset)`; Beam uses `lastprice(caller, asset)`. `Asset` is `Stellar(Address)` or `Other(Symbol)`, and the return is `Option<PriceData>{price:i128,timestamp:u64}`; apply `decimals()` scaling and reject None/stale data. Current mainnet registry examples as of 2026-09-02 are external-exchanges `CAFJZQW...N34DLN`, on-chain/pubnet `CALI2BY...B2PLE6M`, and forex `CBKGPWG...DXMCJZC`. Re-fetch full IDs/specs rather than copying abbreviations. `CBQSUF...XQLSE` is a DAO, not an oracle. Current official source, operator text, and public Pulse ABI expose `lastprice`, not stale `x_last_price`; the old name survives in the October 2025 snapshot and third-party copies. For JS traps, inspect network, ID, live spec/WASM, Pulse-versus-Beam signature, UDT ScVals, and simulation diagnostics—do not assert one cause. Beam's deeper XRF call may require `authorize_as_current_contract` for the nested call.",
         "keyFacts": [
           "Use the current registry, network, type, and live ABI.",
           "Pulse/Beam signatures use the documented `Asset` and `PriceData` types.",
@@ -43463,7 +43556,7 @@
         "avoid": [
           "Do NOT call CBQ a price oracle, grade x_last_price as current, freeze IDs/specs, or assert a trap cause without diagnostics."
         ],
-        "notes": "Phase 3 checked Reflector README, TOML, Scout, SEP-40, and the live SPA bundle on 2026-06-29. README sample Pulse id remains CAFJ...; the live SPA bundle also embedded CBQSUF57OYX4RIMCZV62DKN6JFOTEKPHIZASMJYOUOCNHGNG2P3XQLSE. Treat IDs as freshness-sensitive and require live oracle-page/project-doc verification.\nAlso good if the answer: Mentions Beam's XRF cost/authorization path and `authorize_as_current_contract` when calling from a contract. | Recommends generated bindings/spec-derived clients or explicit ScVal construction for the UDT enum when calling from JS.\nGolden cites: Reflector's README/interface or live oracle page for contract interface and contract IDs. | SEP-40 for the oracle-interface standard. | Stellar docs for Soroban typed clients/specs or contract invocation encoding when discussing JS calls.\nGT-42 live-spec correction as of 2026-07-11; method/IDs are freshness-sensitive and the operator site currently conflicts with live ABI."
+        "notes": "Phase 3 checked Reflector README, TOML, Scout, SEP-40, and the live SPA bundle on 2026-06-29. README sample Pulse id remains CAFJ...; the live SPA bundle also embedded CBQSUF57OYX4RIMCZV62DKN6JFOTEKPHIZASMJYOUOCNHGNG2P3XQLSE. Treat IDs as freshness-sensitive and require live oracle-page/project-doc verification.\nAlso good if the answer: Mentions Beam's XRF cost/authorization path and `authorize_as_current_contract` when calling from a contract. | Recommends generated bindings/spec-derived clients or explicit ScVal construction for the UDT enum when calling from JS. | Warns that the README Beam example points to a Pulse contract ID.\nGolden cites: Reflector's README/interface or live oracle page for contract interface and contract IDs. | SEP-40 for the oracle-interface standard. | Stellar docs for Soroban typed clients/specs or contract invocation encoding when discussing JS calls.\nGT-42 live-spec correction as of 2026-09-02; method/IDs are freshness-sensitive. The operator site no longer shows x_* names, but historical and third-party copies do."
       },
       "tags": {
         "category": "soroban",
@@ -43477,23 +43570,23 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-09-01",
+        "asOf": "2026-09-02",
+        "reverifyBy": "2026-11-01",
         "sources": [
           {
-            "class": "D",
+            "class": "B",
             "ref": "https://github.com/reflector-network/reflector-contract",
-            "note": "class inferred at migration"
+            "note": "Reflector's canonical contract source"
           },
           {
-            "class": "D",
+            "class": "C",
             "ref": "https://orchestrator.reflector.network/config",
-            "note": "class inferred at migration"
+            "note": "Reflector's live operator registry"
           },
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://reflector.network/oracles",
-            "note": "class inferred at migration"
+            "note": "Reflector's official operator page"
           },
           {
             "class": "B",
@@ -43503,44 +43596,109 @@
         ],
         "corroboration": [
           {
-            "claim": "Current Reflector method/type/registry contract",
+            "claim": "The three named Reflector Mainnet Pulse oracle IDs remain current as of 2026-09-02.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "B",
-                "ref": "B/D: Reflector source and operator config",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "C",
+                "ref": "https://orchestrator.reflector.network/config",
+                "observedAt": "2026-09-02",
+                "note": "The live registry lists the exchanges, pubnet, and forex oracle IDs."
               },
               {
-                "class": "D",
-                "ref": "B/D: Reflector source and operator config",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+                "observedAt": "2026-09-02",
+                "note": "The official provider table lists the same three Mainnet IDs."
               },
               {
                 "class": "F",
-                "ref": "F: live ABI inspection and successful lastprice simulation",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "stellar contract info interface --network mainnet",
+                "observedAt": "2026-09-02",
+                "note": "All three contracts expose the Pulse lastprice ABI and no x_* function."
+              }
+            ]
+          },
+          {
+            "claim": "Pulse exposes lastprice(asset); Beam source exposes lastprice(caller, asset); the current official interface has no x_last_price.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/reflector-network/reflector-contract/blob/main/pulse-contract/src/lib.rs",
+                "observedAt": "2026-09-02",
+                "note": "Pulse exposes lastprice with an Asset argument."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/reflector-network/reflector-contract/blob/main/beam-contract/src/lib.rs",
+                "observedAt": "2026-09-02",
+                "note": "Beam exposes lastprice with caller and Asset arguments."
+              },
+              {
+                "class": "F",
+                "ref": "stellar contract info interface --network mainnet",
+                "observedAt": "2026-09-02",
+                "note": "The live Pulse ABI contains lastprice and no x_* export."
+              }
+            ]
+          },
+          {
+            "claim": "The current Reflector operator site mentions x_* functions that conflict with the live ABI.",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://reflector.network/oracles",
+                "observedAt": "2026-09-02",
+                "note": "The current operator site and loaded documentation chunks show lastprice only."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/code-423n4/2025-10-reflector",
+                "observedAt": "2026-09-02",
+                "note": "The October 2025 snapshot still defines x_last_price."
+              },
+              {
+                "class": "D",
+                "ref": "GitHub code search for x_last_price reflector",
+                "observedAt": "2026-09-02",
+                "note": "Third-party tutorials and copies still contain the old interface."
+              }
+            ]
+          },
+          {
+            "claim": "A live Mainnet Beam oracle deployment exposing lastprice(caller, asset) exists.",
+            "verdict": "unverifiable",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://orchestrator.reflector.network/config",
+                "observedAt": "2026-09-02",
+                "note": "No oracle entry exposes the Beam ABI; the published oracle entries use Pulse."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+                "observedAt": "2026-09-02",
+                "note": "The official provider table lists Pulse oracle deployments only."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-02",
+          "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md (Fable 5 high; orchestrator reconciled)",
           "evidence": [
-            "Solo scratchpad 575 GT-42 processes 3308/3315; live mainnet probe 2026-07-11.",
-            "Structural re-form (negative-predicate): split the long positive fact and moved no truth because equivalent traps already exist in avoid; truth is unchanged",
-            "Live re-check 2026-08-27: https://orchestrator.reflector.network/config — the operator registry remains the live network/type selection surface",
-            "Live re-check 2026-08-27: https://github.com/reflector-network/reflector-contract — Pulse/Beam lastprice signatures still use Asset and PriceData",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction — simulation returns failure details and diagnostic events for trap analysis",
-            "Sibling sweep 2026-08-27: grep Reflector|lastprice|SEP-40 → q-defi-reflector-oracle, q-tool-oracle-repo-live, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40; no contradiction"
+            "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/soroban-core-matrix.md",
+            "Live registry 2026-09-02: https://orchestrator.reflector.network/config",
+            "Source review 2026-09-02: https://github.com/reflector-network/reflector-contract",
+            "Live ABI review 2026-09-02: the three named Mainnet contracts expose lastprice and no x_* function.",
+            "Sibling sweep 2026-09-02: q-defi-reflector-oracle, q-soroban-oracle-defensive-consumption, q-pc-cross-redstone-sep40, q-tool-oracle-repo-live, and other Reflector cases; no contradiction."
           ],
           "rootCause": [
-            "Operator docs/spec drift captured in research/audits/2026-07-11-gt42-archival-events-reflector.md",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "freshness-drift",
+            "research/audits/2026-07-11-gt42-archival-events-reflector.md"
           ]
         },
         "origin": "raven-next q-sor-reflector-integration-code"
@@ -44695,7 +44853,7 @@
           "Do NOT emit retired lumenloop_find_av_passages, fabricate quotes/speakers/timestamps, or turn summary text into verbatim evidence.",
           "Do NOT silently substitute docs when the requested A/V corpus misses."
         ],
-        "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routing/behavior case — the 'answer' is the correct tool + honest corpus-bounded behavior, not a factual essay. lumenloop_find_av_passages is the transcript/AV-passage lane; semantic content search is acceptable but the explicit 'recorded passage, not docs' intent favors the av_passages card. No fixed source URL: graded on returning real transcript passages (with their talk/podcast provenance) or honestly reporting none in corpus. Fabrication is the trap.\nAlso good if the answer: Frames the topic as passkeys / secp256r1 smart-wallet signing on Stellar when surfacing passages.\nGolden cites: Each surfaced passage carries its talk/podcast source (lumenloop_find_av_passages).\nGT-44 live service contract 2026-07-11. Grade routing/output honesty; source URLs come from returned rows and are volatile.\nAccurately quoting the canonical upstream skill source that `find_av_passages` returns verbatim transcript passages is not a wrong claim while sk-004 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+        "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routing/behavior case — the 'answer' is the correct tool + honest corpus-bounded behavior, not a factual essay. `lumenloop.find_av_passages` is the A/V summary lane; semantic content search is acceptable but the explicit 'recorded passage, not docs' intent favors the av_passages card. No fixed source URL: graded on returning real summary rows with their talk/podcast provenance or honestly reporting none in corpus. Fabrication is the trap.\nAlso good if the answer: Frames the topic as passkeys / secp256r1 smart-wallet signing on Stellar when surfacing passages.\nGolden cites: Each surfaced summary row carries its talk/podcast source through `lumenloop.find_av_passages`.\nGT-44 live service contract 2026-09-02. Grade routing/output honesty; source URLs come from returned rows and are volatile.\nAccurately quoting the canonical upstream skill source that `find_av_passages` returns verbatim transcript passages is not a wrong claim while sk-004 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
       },
       "tags": {
         "category": "soroban",
@@ -44709,8 +44867,8 @@
         },
         "domain": "corpus-grounded",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-09-01",
+        "asOf": "2026-09-02",
+        "reverifyBy": "2026-12-10",
         "sources": [
           {
             "class": "B",
@@ -44720,47 +44878,43 @@
         ],
         "corroboration": [
           {
-            "claim": "Current exposed A/V operation and output semantics",
+            "claim": "The exposed A/V operation returns AI summaries with source metadata, but no transcript text, as of 2026-09-02.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
-                "class": "B",
-                "ref": "B: current manifest/inventory contract",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "E",
+                "ref": "catalog/manifest.json entry lumenloop.find_av_passages",
+                "observedAt": "2026-09-02",
+                "note": "The exposed operation is dot-qualified and documents summary-only output."
               },
               {
                 "class": "C",
-                "ref": "C: live execute payload",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "live stellar_raven.execute result recorded in .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+                "observedAt": "2026-09-02",
+                "note": "Rows contained summary, long_summary, title, URL, channel, created_at, and start_offset, but no transcript text."
               },
               {
                 "class": "F",
-                "ref": "F: GT-44 primary/blind",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": ".agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+                "observedAt": "2026-09-02",
+                "note": "The lane inspected live row shapes and confirmed that start_offset is not a playback timestamp."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+          "date": "2026-09-02",
+          "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md (Grok 4.6 high; orchestrator reconciled)",
           "evidence": [
-            "Solo scratchpad 575 GT-44 processes 3316/3324; live Lumenloop probe 2026-07-11.",
-            "Structural re-form (symmetric-caution): Added a dispute-scoped grading caution; the answer and facts are unchanged.",
-            "Reviewed improvement 2026-08-27: improvements/skills/sk-004-av-passages-verbatim-claim.md — upstream skill playbooks wrongly describe returned AI summaries as verbatim transcript passages.",
-            "Sibling sweep 2026-08-27: grep find_av_passages|transcript passages|verbatim passages → q-asset-rwa-tokenized-freshness, q-defi-blend-what-is, q-eco-stellar-rwa-stablecoin-volume, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history, q-soroban-av-passkeys-talk, q-gap-av-offset-not-timestamp, q-ti-video-tutorials; no contradiction",
-            "Structural re-form (compound-predicate): split transcript absence from start_offset semantics; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/lumenloop.md — the current service specification still returns AI summaries without transcript text.",
-            "Live re-check 2026-08-27: https://github.com/kalepail/stellar-raven/blob/main/research/services/lumenloop.md — the current service specification still defines start_offset as an opaque ordering key.",
-            "Sibling sweep 2026-08-27: grep find_av_passages|transcript text|start_offset → q-gap-av-offset-not-timestamp, q-ti-video-tutorials, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history; no contradiction"
+            "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+            "Live service review 2026-09-02: lumenloop.find_av_passages returned summary fields and source metadata without transcript text.",
+            "Source review 2026-09-02: catalog/manifest.json documents the dot-qualified operation and opaque start_offset semantics.",
+            "Reviewed open improvement: improvements/skills/sk-004-av-passages-verbatim-claim.md.",
+            "Sibling sweep 2026-09-02: q-gap-av-offset-not-timestamp, q-ti-video-tutorials, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history, and passkey cases; no contradiction."
           ],
           "rootCause": [
-            "improvements/skills/sk-004-av-passages-verbatim-claim.md",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "freshness-drift",
+            "improvements/skills/sk-004-av-passages-verbatim-claim.md"
           ]
         },
         "origin": "raven-next q-soroban-av-passkeys-talk"
@@ -50463,7 +50617,7 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "Public Testnet Friendbot is rate-limited, but no durable official requests-per-hour number was corroborated. On `429`, honor `Retry-After` when present or back off with jitter; do not rotate IPs or hammer retries. For many public-Testnet accounts, fund one account once and create/fund additional accounts with normal `CreateAccount`/payments.\n\nFor hermetic CI/bulk fixtures, run Quickstart in **local** mode and use its local Friendbot. Quickstart Testnet/Futurenet modes proxy the public faucets and do not evade their limits. As of **2026-07-11**, Validation Cloud advertises a Stellar Testnet XLM faucet, but access/limits are provider-specific and not assumed independent of Friendbot. Futurenet is a reset-prone different network, not a quota bypass; Circle's faucet supplies test **USDC**, not native XLM/base reserve. Never send credentials or Mainnet funds to obtain test funds, and do not trust an alleged official backup wallet without current primary documentation.",
+        "answer": "Public Testnet Friendbot is rate-limited, but no durable official requests-per-hour number was corroborated. On `429`, honor `Retry-After` when present or back off with jitter; do not rotate IPs or hammer retries. For many public-Testnet accounts, fund one account once and create/fund additional accounts with normal `CreateAccount`/payments.\n\nFor hermetic CI/bulk fixtures, run Quickstart in **local** mode and use its local Friendbot. Quickstart Testnet/Futurenet modes proxy the public faucets and do not evade their limits. As of **2026-09-01**, Validation Cloud advertises a Stellar Testnet XLM faucet, but access/limits are provider-specific and not assumed independent of Friendbot. Futurenet is a reset-prone different network, not a quota bypass; Circle's faucet supplies test **USDC**, not native XLM/base reserve. Never send credentials or Mainnet funds to obtain test funds, and do not trust an alleged official backup wallet without current primary documentation.",
         "keyFacts": [
           "Uses 429 Retry-After/backoff without inventing a numeric quota or evading limits.",
           "Uses fund-one-then-create-many for public Testnet and local Quickstart for hermetic CI.",
@@ -50476,7 +50630,7 @@
           "Do NOT call Lab/Freighter an independent faucet or say Quickstart Testnet mode avoids public limits.",
           "Do NOT confuse test USDC with XLM or send keys/Mainnet funds to a faucet/wallet."
         ],
-        "notes": "No official backup faucet wallet was verified. If one appears later, require a dated SDF/developers.stellar.org citation before treating it as legitimate.\nAlso good if the answer: Mentions Circle faucet only for testnet USDC after creating a trustline, not as a replacement for XLM Friendbot.\nGolden cites: Official Stellar Lab/Friendbot/Quickstart docs.\nGT-52 CORRECTION 2026-07-11: no numeric public quota is a golden gate. Provider alternatives must be dated; local-mode and token/network distinctions are required."
+        "notes": "No official backup faucet wallet was verified. If one appears later, require a dated SDF/developers.stellar.org citation before treating it as legitimate.\nAlso good if the answer: Mentions Circle faucet only for testnet USDC after creating a trustline, not as a replacement for XLM Friendbot. | Reports a dated Friendbot rate-limit response that used HTTP 400 instead of 429.\nGolden cites: Official Stellar Lab/Friendbot/Quickstart docs.\nGT-52 CORRECTION re-verified 2026-09-01: no numeric public quota is a golden gate. Provider alternatives must be dated; local-mode and token/network distinctions are required."
       },
       "tags": {
         "category": "tooling-infra",
@@ -50490,8 +50644,8 @@
         },
         "domain": "real-world",
         "status": "mixed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-09-01",
+        "asOf": "2026-09-01",
+        "reverifyBy": "2026-12-01",
         "sources": [
           {
             "class": "A",
@@ -50516,24 +50670,24 @@
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: current Networks documentation",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://developers.stellar.org/docs/networks",
+                "observedAt": "2026-09-01",
+                "note": "The official page says Friendbot is rate-limited but gives no numeric quota."
               },
               {
-                "class": "D",
-                "ref": "D: independent source sweep found no stable official numeric quota",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "B",
+                "ref": "https://github.com/stellar/friendbot",
+                "observedAt": "2026-09-01",
+                "note": "The public source and configuration documentation give no public request-window quota."
               },
               {
-                "class": "C",
-                "ref": "C: harmless Friendbot validation response confirmed availability without funding",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+                "observedAt": "2026-09-01",
+                "note": "The official guide distinguishes the local Friendbot from public-network proxy modes."
               }
             ],
-            "note": "Legacy verdict: confirmed-with-unverifiable-number."
+            "note": "The rate-limit fact is confirmed. A durable numeric quota remains unverifiable."
           },
           {
             "claim": "Only Quickstart local mode has an independent local Friendbot; Testnet/Futurenet modes proxy public faucets. Validation Cloud currently advertises Testnet XLM while Circle supplies test USDC.",
@@ -50541,41 +50695,44 @@
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: Quickstart faucet docs and provider-owned Validation Cloud page",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet",
+                "observedAt": "2026-09-01",
+                "note": "Local mode runs a local Friendbot; Testnet and Futurenet modes proxy public deployments."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.validationcloud.io/multi-chain-faucets",
+                "observedAt": "2026-09-01",
+                "note": "Validation Cloud lists a Stellar Testnet XLM faucet path."
               },
               {
                 "class": "A",
-                "ref": "A: current Circle/Stellar test-token guidance",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://docs.validationcloud.io/v1/about/faucets",
+                "observedAt": "2026-09-01",
+                "note": "The provider says it links to an existing Stellar faucet, so independence from Friendbot is not established."
+              },
+              {
+                "class": "C",
+                "ref": "https://faucet.circle.com/",
+                "observedAt": "2026-09-01",
+                "note": "Circle lists Stellar Testnet for test USDC, not native XLM."
               }
             ],
-            "note": "Legacy verdict: confirmed-as-of-2026-07-11."
+            "note": "Provider availability is confirmed as of 2026-09-01."
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-02",
+          "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/friendbot-lane.md (Codex Terra high; orchestrator reconciled)",
           "evidence": [
-            "Solo scratchpad 575 GT-52 primary/blind matrices independently retained safe alternatives and source-relative negative claims; blind added the operational/provider distinctions.",
-            "Sibling sweep checked q-infra-friendbot-fund-testnet, q-infra-quickstart-local-network, q-ti-testnet-usdc-faucet, and migration/CLI identity cases.",
-            "Structural re-form (negative-predicate): split one compound taxonomy fact into two atomic positive facts; truth is unchanged",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks — uses 429 Retry-After/backoff without inventing a numeric quota or evading limits",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks and https://developers.stellar.org/docs/tools/quickstart/faucet — uses fund-one-then-create-many for public Testnet and local Quickstart for hermetic CI",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tools/quickstart/faucet — states that public-network Quickstart modes proxy public faucets",
-            "Live re-check 2026-08-27: https://www.validationcloud.io/multi-chain-faucets — dates provider alternatives for Testnet funding",
-            "Live re-check 2026-08-27: https://faucet.circle.com/ and https://developers.stellar.org/docs/networks — treats Futurenet, Circle test USDC, and Testnet XLM as distinct resources",
-            "Sibling sweep 2026-08-27: grep Friendbot|Quickstart|Futurenet|test USDC|Testnet XLM → q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet, q-ti-testnet-usdc-faucet, q-n3-issues-842-backup-faucet-wallet; no contradiction",
-            "Structural re-form (compound-predicate): no keyFact change was needed because the prior atomic re-form already cleared this class; the truth is unchanged.",
-            "Sibling sweep 2026-08-27: grep Friendbot|Quickstart|Futurenet|test USDC|Testnet XLM → q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet, q-ti-testnet-usdc-faucet; no contradiction",
-            "Owner note 2026-08-27: a mis-assigned compound chunk re-touched only this metadata after the negative-predicate review; keyFacts are the reviewed ones (review-b4-part3.md); `by` corrected to the negative-predicate batch."
+            "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/friendbot-lane.md",
+            "Live source 2026-09-01: https://developers.stellar.org/docs/networks",
+            "Live source 2026-09-01: https://developers.stellar.org/docs/tools/quickstart/faucet",
+            "Provider review 2026-09-01: https://www.validationcloud.io/multi-chain-faucets, https://docs.validationcloud.io/v1/about/faucets, and https://faucet.circle.com/",
+            "Sibling sweep 2026-09-01: q-infra-quickstart-local-network, q-infra-testnet-vs-futurenet, q-ti-testnet-usdc-faucet, q-n3-issues-842-backup-faucet-wallet, and q-edge-send-me-free-xlm; no contradiction."
           ],
           "rootCause": [
-            "Eval-side operational/freshness incompleteness; Friendbot 429/CI funding documentation remains a research candidate.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-ti-friendbot-ratelimit-alternatives"
@@ -50836,12 +50993,12 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. Hosted service billing/top-up policy is a Channels contract; it is not a generic address or rule that applies to every self-hosted Relayer. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-08-04**, the repository's latest release was **v1.7.0**, published 2026-07-28, while rendered documentation still exposed 1.5.x/current paths inconsistently. A hosted endpoint's authentication response proves reachability rather than successful relaying; recheck the current release, supported networks, funding terms, and official service status before production use.",
+        "answer": "OpenZeppelin **Relayer** is a self-hostable AGPL relaying service. Its Stellar support includes prepared XDR submission, classic payments, Soroban invocation, fee-bump/sponsorship workflows, policies, and multiple signer backends. In self-hosted use, you configure and fund the Stellar relayer account yourself so it can pay network fees and required reserves.\n\nOpenZeppelin **Channels** is the managed offering. It adds hosted authentication/operations and uses parallel Stellar accounts and fee handling for throughput. As of **2026-09-02**, official Channels terms said the service was free under a fair-use stroop limit that resets after 24 hours. The hosted service publishes no generic top-up address, while a self-hosted Relayer still needs a funded account. In either model, keep credentials and signing authority server-side, validate the exact transaction intent, apply app policy/rate limits, submit, and track the result.\n\nVersion and health claims must be dated. As of **2026-09-02**, the repository's latest release was **v1.8.0**, published 2026-08-19, while rendered documentation still labeled 1.5.x as stable and had no 1.7.x or 1.8.x path. A hosted endpoint's authentication response proves reachability rather than successful relaying. The public Channels Statuspage was inactive on that date, so recheck the current release, supported networks, funding terms, and official service status before production use.",
         "keyFacts": [
           "Treats self-hosted OpenZeppelin Relayer and managed OpenZeppelin Channels as distinct.",
           "Covers Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support.",
-          "Treats self-hosted account funding and managed Channels billing/top-up as distinct.",
-          "Reports the observed v1.7.0-versus-rendered-1.5.x documentation mismatch.",
+          "Explains each product's funding model.",
+          "Reports the observed v1.8.0-versus-rendered-1.5.x documentation mismatch.",
           "Dates each version or provider-health claim to an observation date."
         ],
         "avoid": [
@@ -50851,7 +51008,7 @@
           "Do NOT interpret HTTP 401 as downtime or one reachable request as successful full service health.",
           "Do NOT pin release, network support, or provider health without an as-of date."
         ],
-        "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-08-04, repository v1.7.0 and rendered 1.5.x docs disagreed. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally."
+        "notes": "GT-53: grade the self-hosted Relayer versus managed Channels distinction, their different funding/service contracts, and dated evidence. As observed 2026-09-02, repository v1.8.0 and rendered 1.5.x docs disagreed. The public Channels Statuspage was inactive. A 401 proves an authenticated endpoint is reachable, not that a relay succeeded or failed globally. Sources disagree: the official Stellar Docs page calls Relayer 'also known as Stellar Channels Service,' while OpenZeppelin distinguishes the self-hosted Relayer, hosted Relayer Service, and Channels plugin. An attributed official source is not a wrong claim. Grade a product-identity conflation at partial."
       },
       "tags": {
         "category": "tooling-infra",
@@ -50865,8 +51022,8 @@
         },
         "domain": "mixed",
         "status": "disputed",
-        "asOf": "2026-08-04",
-        "reverifyBy": "2026-09-01",
+        "asOf": "2026-09-02",
+        "reverifyBy": "2026-11-24",
         "sources": [
           {
             "class": "A",
@@ -50874,48 +51031,48 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://docs.openzeppelin.com/relayer/stellar",
-            "note": "class inferred at migration"
+            "note": "OpenZeppelin's official Relayer documentation"
           },
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide",
-            "note": "class inferred at migration"
+            "note": "OpenZeppelin's official Channels guide"
           },
           {
-            "class": "D",
-            "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.7.0",
-            "note": "class inferred at migration"
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.8.0",
+            "note": "OpenZeppelin Relayer release record"
           },
           {
-            "class": "D",
-            "ref": "https://status.channels.openzeppelin.com/api/v2/status.json",
-            "note": "class inferred at migration"
+            "class": "C",
+            "ref": "https://relayerchannelsmainnet.statuspage.io/inactive",
+            "note": "Inactive live Statuspage surface"
           }
         ],
         "corroboration": [
           {
-            "claim": "Self-hosted Relayer and managed Channels are distinct contracts with overlapping Stellar support",
+            "claim": "Self-hosted Relayer and managed Channels are distinct products with overlapping Stellar support.",
             "verdict": "confirmed",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: OpenZeppelin Stellar Relayer and Channels guides plus Stellar migration page, accessed 2026-07-11",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://www.openzeppelin.com/news/expanding-stellar-support-with-relayer-service",
+                "observedAt": "2026-09-02",
+                "note": "The owner distinguishes the self-hosted Relayer, hosted Relayer Service, and Channels plugin."
               },
               {
                 "class": "B",
-                "ref": "B: OpenZeppelin Relayer v1.7.0 release/source",
-                "observedAt": "2026-08-04",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer",
+                "observedAt": "2026-09-02",
+                "note": "The repository defines the self-hosted AGPL service and its Stellar implementation."
               },
               {
-                "class": "C",
-                "ref": "C: official Channels status feed and package registry, probed read-only 2026-07-11",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "class": "A",
+                "ref": "https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide",
+                "observedAt": "2026-09-02",
+                "note": "The guide defines the managed Channels service and its fair-use fee limit."
               }
             ]
           },
@@ -50925,39 +51082,69 @@
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: rendered Relayer docs expose 1.5.x/current paths",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://docs.openzeppelin.com/relayer/1.5.x",
+                "observedAt": "2026-09-02",
+                "note": "Rendered documentation labels 1.5.x as the latest stable path."
               },
               {
                 "class": "B",
-                "ref": "B: repository latest release is v1.7.0 as of 2026-08-04",
-                "observedAt": "2026-08-04",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.8.0",
+                "observedAt": "2026-09-02",
+                "note": "The latest release is v1.8.0, published 2026-08-19."
+              }
+            ]
+          },
+          {
+            "claim": "Hosted Channels currently uses free access with a fair-use stroop limit and no generic public top-up address.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide",
+                "observedAt": "2026-09-02",
+                "note": "The guide states free use under a fair-use policy and documents the 24-hour limit reset."
+              },
+              {
+                "class": "C",
+                "ref": "https://channels.openzeppelin.com",
+                "observedAt": "2026-09-02",
+                "note": "The authenticated service endpoint was reachable; no generic top-up address was published."
+              }
+            ]
+          },
+          {
+            "claim": "The public Channels Statuspage provides a current service-health feed.",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://status.channels.openzeppelin.com/",
+                "observedAt": "2026-09-02",
+                "note": "The URL redirected to an inactive Statuspage."
+              },
+              {
+                "class": "D",
+                "ref": "https://relayerchannelsmainnet.statuspage.io/inactive",
+                "observedAt": "2026-09-02",
+                "note": "The page states that it is inactive and only visible to team members."
               }
             ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-02",
+          "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md (Grok 4.6 high; orchestrator reconciled)",
           "evidence": [
-            "Solo scratchpad 575, GT-53 primary 3372 and blind 3378, independently reviewed 2026-07-11.",
-            "Both lanes confirmed the hosted/self-host funding boundary; the blind lane added release/status evidence and rejected 401-as-downtime.",
-            "Structural re-form (snapshot-date): Split the documented version mismatch from its snapshot-date requirement; truth is unchanged.",
-            "Live re-check 2026-08-27: https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.7.0 and https://docs.openzeppelin.com/relayer/stellar — the release page showed v1.7.0 while the rendered docs pointed to stable v1.5.x.",
-            "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/stellar — the page labeled its main-branch content as development documentation, supporting an observation-date gate.",
-            "Sibling sweep 2026-08-27: grep OpenZeppelin Relayer|v1.7.0|Stellar Channels → q-defi-x402-on-stellar-what, q-ti-openzeppelin-relayer; no contradiction",
-            "Structural re-form (negative-predicate): expressed two product boundaries positively and moved the managed-feature protocol trap to avoid; all support and funding claims remain, so truth is unchanged",
-            "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/stellar and https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide — self-hosted Relayer and managed Channels remain distinct products",
-            "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/stellar — Stellar XDR/payment/Soroban, policy/signer, and fee-bump/sponsorship support remains documented",
-            "Live re-check 2026-08-27: https://docs.openzeppelin.com/relayer/1.5.x/plugins/channels — self-hosted account funding and managed Channels billing/top-up remain distinct",
-            "Sibling sweep 2026-08-27: grep OpenZeppelin Relayer|OpenZeppelin Channels|v1.7.0 → q-defi-x402-on-stellar-what, q-soroban-x402-auth-entry-signing; no contradiction"
+            "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+            "Release review 2026-09-02: https://github.com/OpenZeppelin/openzeppelin-relayer/releases/tag/v1.8.0",
+            "Documentation review 2026-09-02: https://docs.openzeppelin.com/relayer/1.5.x",
+            "Product and fair-use review 2026-09-02: https://docs.openzeppelin.com/relayer/guides/stellar-channels-guide",
+            "Status review 2026-09-02: https://relayerchannelsmainnet.statuspage.io/inactive",
+            "Sibling sweep 2026-09-02: q-defi-x402-on-stellar-what, q-soroban-x402-auth-entry-signing, q-x402-payment-verification, q-smart-wallet-fee-sponsorship, q-pc-fee-bump-channel-accounts-feepool, and q-tool-passkeykit-smart-wallet; no contradiction."
           ],
           "rootCause": [
-            "Eval-side product-identity collapse and freshness drift; the cross-owner SDF/OpenZeppelin cleanup candidate is recorded in the GT-53 audit rather than forced into one upstream finding.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "freshness-drift",
+            "improvements/stellar-docs/sd-039-openzeppelin-relayer-conflated-with-managed-channels.md"
           ]
         },
         "origin": "raven-next q-ti-openzeppelin-relayer"
@@ -52446,12 +52633,12 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "Friendbot creates/funds a Testnet account with fake **XLM only**; it is not a USDC faucet. First ensure the Testnet account exists and has enough XLM for its base reserve, then establish a trustline to the current Circle-issued Testnet USDC asset. A trustline only permits holding the asset—it does not credit any USDC.\n\nAs of **2026-07-11**, Circle Faucet supported Stellar Testnet and the classic USDC issuer was `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`. The UI observation of 20 test USDC per address/chain per two hours is volatile and is not a grading requirement; recheck issuer, chain support, amount and cooldown before use. A Circle faucet payment is separate from Friendbot, and an SDF/Lab path-payment demo is another distinct distribution path.\n\nFor classic accounts, identify USDC by code plus issuer/trustline. Its deterministic SAC C-address is the contract bridge for the same classic asset, not a second issuer or a wrapped token. Use only Testnet endpoints/assets and never represent faucet units as redeemable Mainnet value. Maintenance verification should inspect public issuer/service data without calling a faucet.",
+        "answer": "Friendbot creates/funds a Testnet account with fake **XLM only**; it is not a USDC faucet. First ensure the Testnet account exists and has enough XLM for its base reserve, then establish a trustline to the current Circle-issued Testnet USDC asset. A trustline only permits holding the asset—it does not credit any USDC.\n\nAs of **2026-09-01**, Circle Faucet supported Stellar Testnet and the classic USDC issuer was `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`. The UI observation of 20 test USDC per address/chain per two hours is volatile and is not a grading requirement; recheck issuer, chain support, amount and cooldown before use. A Circle faucet payment is separate from Friendbot. A separate USDC payment can credit an established trustline.\n\nFor classic accounts, identify USDC by code plus issuer/trustline. Its deterministic SAC C-address is the contract bridge for the same classic asset, not a second issuer or a wrapped token. Use only Testnet endpoints/assets and never represent faucet units as redeemable Mainnet value. Maintenance verification should inspect public issuer/service data without calling a faucet.",
         "keyFacts": [
           "Identifies Friendbot funding as fake Testnet XLM.",
           "Requires the correct classic USDC trustline plus XLM for the base reserve.",
           "Dates Circle Testnet issuer, faucet amount, plus cooldown to an observation date.",
-          "Treats Circle faucet payment and Lab path-payment demo as distinct distribution paths.",
+          "Allows a separate USDC payment after trustline setup.",
           "Treats classic issuer/trustline and deterministic SAC as distinct representations."
         ],
         "avoid": [
@@ -52460,7 +52647,7 @@
           "Do NOT pin faucet amount, cooldown, issuer or availability without an as-of/recheck.",
           "Do NOT call a faucet during maintenance, expose a secret, or treat test USDC as real value."
         ],
-        "notes": "Circle faucet availability and testnet issuer details are external/current-service dependent. Verified docs search shows testnet USDC issuer `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5` and Circle faucet flow.\nAlso good if the answer: Mentions Stellar Lab's fund page can help add Testnet USDC/EURC trustlines but receiving units still requires the asset issuer/faucet/payment. | Cites a dated/current source for any specific issuer address or faucet URL.\nGolden cites: Friendbot/Lab/Testnet docs. | A current source for testnet USDC issuer/faucet, such as Stellar x402 docs or Circle faucet docs.\nGT-54 freshness correction 2026-07-11: grade Friendbot/XLM, trustline/balance and issuer/SAC distinctions. The issuer and faucet support are dated; do not gate the observed exact amount/cooldown and never require a faucet invocation."
+        "notes": "Circle faucet availability and testnet issuer details are external/current-service dependent. Verified sources show Testnet USDC issuer `GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5` and the Circle faucet flow. Current official Lab evidence does not show a USDC path-payment distribution demo, so do not require that named route.\nAlso good if the answer: Says a separate payment can credit USDC after the trustline exists. | Cites a dated/current source for any specific issuer address or faucet URL.\nGolden cites: Friendbot/Testnet docs. | A current source for Testnet USDC issuer/faucet, such as Circle's Stellar and faucet docs.\nGT-54 freshness correction 2026-09-01: grade Friendbot/XLM, trustline/balance and issuer/SAC distinctions. The issuer and faucet support are dated; do not gate the observed exact amount/cooldown and never require a faucet invocation."
       },
       "tags": {
         "category": "retail-consumer",
@@ -52474,8 +52661,8 @@
         },
         "domain": "mixed",
         "status": "confirmed",
-        "asOf": "2026-07-11",
-        "reverifyBy": "2026-09-01",
+        "asOf": "2026-09-01",
+        "reverifyBy": "2026-12-01",
         "sources": [
           {
             "class": "A",
@@ -52483,24 +52670,24 @@
             "note": "class inferred at migration"
           },
           {
-            "class": "D",
-            "ref": "https://developers.circle.com/stablecoins/quickstart-setup-usdc-trustline-stellar",
-            "note": "class inferred at migration"
+            "class": "A",
+            "ref": "https://developers.circle.com/stablecoins/quickstarts/setup-usdc-trustline-stellar",
+            "note": "Circle's current Stellar trustline guide"
           },
           {
-            "class": "D",
-            "ref": "https://developers.circle.com/stablecoins/quickstart-transfer-usdc-stellar",
-            "note": "class inferred at migration"
+            "class": "A",
+            "ref": "https://developers.circle.com/stablecoins/quickstarts/transfer-usdc-stellar",
+            "note": "Circle's current Stellar transfer guide"
           },
           {
-            "class": "D",
+            "class": "A",
             "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
-            "note": "class inferred at migration"
+            "note": "Circle's current address registry"
           },
           {
-            "class": "D",
+            "class": "C",
             "ref": "https://faucet.circle.com/",
-            "note": "class inferred at migration"
+            "note": "Circle's live faucet surface; read only"
           },
           {
             "class": "A",
@@ -52515,67 +52702,75 @@
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: official Stellar network/trustline and Circle Stellar setup documentation",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://developers.stellar.org/docs/networks",
+                "observedAt": "2026-09-01",
+                "note": "Friendbot funds Testnet accounts with fake XLM."
               },
               {
                 "class": "B",
-                "ref": "B: Classic asset/trustline protocol semantics",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp",
+                "observedAt": "2026-09-01",
+                "note": "A new trustline starts with zero balance and can fail for low reserve."
               }
             ]
           },
           {
-            "claim": "Circle Faucet supported Stellar Testnet and the issuer was GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-07-11; amount/cooldown are volatile",
+            "claim": "Circle Faucet supported Stellar Testnet and the issuer was GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-09-01; amount and cooldown are volatile.",
             "verdict": "confirmed-as-of",
             "evidence": [
               {
                 "class": "A",
-                "ref": "A: Circle current-address/trustline/transfer documentation",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+                "observedAt": "2026-09-01",
+                "note": "Circle lists the same Stellar Testnet USDC issuer."
               },
               {
                 "class": "C",
-                "ref": "C/F: live faucet availability and read-only Testnet issuer lookup; no faucet request was made",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://faucet.circle.com/",
+                "observedAt": "2026-09-01",
+                "note": "The live page listed Stellar Testnet, 20 USDC, and a two-hour cooldown. No faucet request was made."
               },
               {
                 "class": "F",
-                "ref": "C/F: live faucet availability and read-only Testnet issuer lookup; no faucet request was made",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
+                "ref": "https://horizon-testnet.stellar.org/accounts/GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+                "observedAt": "2026-09-01",
+                "note": "A read-only lookup confirmed the issuer account."
               }
             ],
-            "note": "Legacy verdict: confirmed-as-of-2026-07-11."
+            "note": "Confirmed as of 2026-09-01."
+          },
+          {
+            "claim": "The current Stellar Lab offers a USDC path-payment distribution demo.",
+            "verdict": "unverifiable",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tools/lab/account",
+                "observedAt": "2026-09-02",
+                "note": "The page documents Friendbot XLM funding and USDC/EURC trustline creation, but no way to receive test USDC units."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+                "observedAt": "2026-09-02",
+                "note": "The path-payment page is an SDK transaction tutorial, not a Lab distribution route."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-08-27",
-          "by": "golden-truth burn-down 2026-08-27 (negative-predicate batch, worker gt2-sol-c)",
+          "date": "2026-09-02",
+          "by": ".agents/rounds/2026-09-01-stale-gospel-refresh/usdc-lane.md (Codex Terra high; orchestrator reconciled)",
           "evidence": [
-            "Solo scratchpad 575, GT-54 primary 3383 and blind 3386 independently retained the core and required freshness/source precision; helper 3388 was harvested before seal.",
-            "Sibling sweep checked Friendbot/faucet-rate-limit, trustline/SAC, Lab and Testnet→Mainnet cases; no sibling treats a trustline as balance or Circle faucet as Friendbot.",
-            "Structural re-form (snapshot-date): Replaced the literal snapshot date with observation-date behavior and split volatile faucet terms; the truth is unchanged.",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide — showed the Testnet USDC issuer and Circle faucet path.",
-            "Live re-check 2026-08-27: https://faucet.circle.com/ — listed Stellar Testnet and its current faucet limits.",
-            "Sibling sweep 2026-08-27: grep Friendbot|Circle Faucet|testnet USDC → q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui, q-tool-lab-what-is; no contradiction",
-            "Owner correction 2026-08-27: merged the dated-issuer and volatile-non-gate facts into one dated-observation fact to keep golden.keyFacts within the 1-5 compile bound; truth unchanged.",
-            "Reviewer fix 2026-08-27 (gt-grok-rev, batch-1 review): reworded the dating fact to a single predicate; truth unchanged.",
-            "Structural re-form (negative-predicate): expressed the funding, trustline, distribution-path, and issuer/SAC boundaries as five atomic positive facts; existing avoid items retain the USDC, balance-credit, test-value, and no-probe traps, so truth is unchanged",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/networks — Friendbot funding remains fake Testnet XLM",
-            "Live re-check 2026-08-27: https://developers.circle.com/stablecoins/quickstart-transfer-usdc-stellar — the correct classic USDC trustline plus XLM reserve remain prerequisites",
-            "Live re-check 2026-08-27: https://faucet.circle.com/ and https://developers.stellar.org/docs/tools/lab — Circle faucet payment and the Lab path-payment demo remain distinct distribution paths",
-            "Live re-check 2026-08-27: https://developers.stellar.org/docs/tokens/stellar-asset-contract — the classic issuer/trustline and deterministic SAC remain distinct representations of one asset",
-            "Sibling sweep 2026-08-27: grep Friendbot|Circle Faucet|testnet USDC|deterministic SAC → q-ti-friendbot-ratelimit-alternatives, q-tool-cctp-stellar-integration, q-tool-lab-what-is; no contradiction"
+            "Re-verification matrix: .agents/rounds/2026-09-01-stale-gospel-refresh/usdc-lane.md",
+            "Live source 2026-09-01: https://developers.stellar.org/docs/networks",
+            "Issuer review 2026-09-01: https://developers.circle.com/stablecoins/usdc-contract-addresses",
+            "Read-only service review 2026-09-01: https://faucet.circle.com/ and the Testnet issuer account; no faucet request was made.",
+            "Lab review 2026-09-02: https://developers.stellar.org/docs/tools/lab/account and https://developers.stellar.org/docs/build/guides/transactions/path-payments do not establish a Lab USDC distribution route.",
+            "Sibling sweep 2026-09-01: q-ti-friendbot-ratelimit-alternatives, q-ti-stellar-lab-usage-and-new-ui, q-tool-lab-what-is, q-infra-testnet-vs-futurenet, q-asset-trustline-vs-sac, q-asset-deploy-sac-cli, q-sor-contract-trustlines-c-address, and q-asset-usdc-eurc-issuer; no contradiction."
           ],
           "rootCause": [
-            "Plain golden freshness drift: an external issuer/faucet/service limit was tagged static even though the durable protocol distinction remained correct.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (snapshot-date class)",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-ti-testnet-usdc-faucet"

@@ -3,6 +3,8 @@
  * Stamp consistency-register entries with their owned case-file hashes.
  * A changed known hash reopens the entry; a missing historical hash is seeded
  * without blocking or reopening it.
+ * Each review applies once to a reopened entry. Date-trap reviews match the old
+ * trigger text and can rewrite that same match key.
  */
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
@@ -109,13 +111,65 @@ export function updateRegister(register, hashes, { seed = false, date = new Date
   return { register, changed, reopened: reopened.sort(), missingCases: missingCases.sort((a, b) => a.entry.localeCompare(b.entry) || a.id.localeCompare(b.id)) };
 }
 
+const REVIEW_FIELDS = new Set(["verdict", "lastChecked", "reSwept", "triggerDateEvent", "disposition"]);
+
+function applyReviewFields(entry, review, label) {
+  for (const key of Object.keys(review)) {
+    if (!["id", "matchTriggerDateEvent", "clearReopened"].includes(key) && !REVIEW_FIELDS.has(key)) {
+      throw new Error(`${label}: unsupported review field ${key}`);
+    }
+  }
+  if (entry.verdict !== "reopen" || !entry.reopened || typeof entry.reopened !== "object") {
+    throw new Error(`${label}: target must be reopened`);
+  }
+  if (review.verdict !== "consistent") throw new Error(`${label}: review verdict must be consistent`);
+  if (typeof review.lastChecked !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(review.lastChecked)) {
+    throw new Error(`${label}: lastChecked must be an ISO date`);
+  }
+  if (!review.reSwept || typeof review.reSwept !== "object" || Array.isArray(review.reSwept)) {
+    throw new Error(`${label}: reSwept must be an object`);
+  }
+  if (review.reSwept.date !== review.lastChecked) {
+    throw new Error(`${label}: reSwept.date must match lastChecked`);
+  }
+  if (typeof review.reSwept.reason !== "string" || !review.reSwept.reason.trim()) {
+    throw new Error(`${label}: reSwept.reason must be a non-empty string`);
+  }
+  if (review.reSwept.verdict !== review.verdict) {
+    throw new Error(`${label}: reSwept.verdict must match verdict`);
+  }
+  if (review.clearReopened !== true) throw new Error(`${label}: clearReopened must be true`);
+  for (const key of REVIEW_FIELDS) {
+    if (review[key] !== undefined) entry[key] = review[key];
+  }
+  delete entry.reopened;
+}
+
+export function applyRegisterReview(register, review) {
+  const clusters = clusterList(register);
+  const traps = register.dateContingentTraps?.entries ?? [];
+  for (const item of review.clusters ?? []) {
+    const matches = clusters.filter((entry) => entry.id === item.id);
+    if (matches.length !== 1) throw new Error(`review cluster ${item.id}: expected one match, found ${matches.length}`);
+    applyReviewFields(matches[0], item, `review cluster ${item.id}`);
+  }
+  for (const item of review.dateContingentTraps ?? []) {
+    const matches = traps.filter((entry) => entry.triggerDateEvent === item.matchTriggerDateEvent);
+    if (matches.length !== 1) {
+      throw new Error(`review date trap ${item.matchTriggerDateEvent}: expected one match, found ${matches.length}`);
+    }
+    applyReviewFields(matches[0], item, `review date trap ${item.matchTriggerDateEvent}`);
+  }
+  return register;
+}
+
 function parseArgs(argv) {
   const options = { seed: false, check: false };
   for (let index = 0; index < argv.length; index++) {
     const arg = argv[index];
     if (arg === "--seed") options.seed = true;
     else if (arg === "--check") options.check = true;
-    else if (["--register", "--corpus", "--date"].includes(arg)) {
+    else if (["--register", "--corpus", "--date", "--review"].includes(arg)) {
       if (!argv[index + 1]) throw new Error(`${arg} requires a value`);
       options[arg.slice(2)] = argv[++index];
     } else throw new Error(`unknown argument: ${arg}`);
@@ -125,6 +179,8 @@ function parseArgs(argv) {
 
 function main() {
   const options = parseArgs(process.argv.slice(2));
+  if (options.review && options.check) throw new Error("--review cannot be combined with --check");
+  if (options.review && options.seed) throw new Error("--review cannot be combined with --seed");
   const registerPath = path.resolve(options.register ?? DEFAULT_REGISTER);
   const corpusDir = path.resolve(options.corpus ?? DEFAULT_CORPUS);
   const register = JSON.parse(readFileSync(registerPath, "utf8"));
@@ -133,6 +189,11 @@ function main() {
     console.warn(`[register-helper] WARN ${item.entry}: missing case ${item.id}; historical missing hashes never block`);
   }
   for (const id of result.reopened) console.log(`[register-helper] REOPEN ${id}: member content changed`);
+  if (options.review) {
+    if (result.reopened.length > 0) throw new Error("cannot apply a review while member changes are unstamped");
+    applyRegisterReview(result.register, JSON.parse(readFileSync(path.resolve(options.review), "utf8")));
+    result.changed = true;
+  }
   if (options.check) {
     console.log(`[register-helper] ${result.changed ? "changes required" : "up to date"}`);
     if (result.changed) process.exitCode = 1;

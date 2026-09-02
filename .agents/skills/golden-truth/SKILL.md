@@ -85,6 +85,8 @@ not present.
   or direct Lumenloop / Stellar Light calls. **The aggregator being checked NEVER counts as
   corroboration for its own claims** — if the claim came from Scout, probing Scout again is
   re-reading the same witness.
+  Use a documented read path for a read-only probe. Treat provisioning, issuing, and creation
+  endpoints as side effects, including endpoints that use `GET`.
 - **D. General-web research** — `mcp__perplexity__perplexity_search/ask/research/reason`;
   `mcp__parallel-search__web_search_preview`; `mcp__parallel-task__createDeepResearch` for
   analyst-grade single topics; the `parallel-cli` bin (`~/.local/bin/parallel-cli` —

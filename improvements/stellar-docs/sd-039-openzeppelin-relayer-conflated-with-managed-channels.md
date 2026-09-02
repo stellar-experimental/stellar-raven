@@ -12,6 +12,8 @@ evidence:
   - 2026-07-27 live production scout.searchResearch returned /docs/build/agentic-payments/x402, which already states the x402 plugin uses the Relayer framework and leverages managed Channels underneath
   - filed upstream 2026-07-28: https://github.com/stellar/stellar-docs/issues/2707
 recurrences:
+  - date: 2026-09-02
+    evidence: .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md rechecked the live Tools page against OpenZeppelin's current Relayer, Relayer Service, and Channels documentation; the alias framing still reproduces. The page also links an inactive Channels Statuspage and OpenZeppelin's 1.3.x guide while rendered docs label 1.5.x stable. Issue #2707 remains open without comments or maintainer activity, so no recurrence-only comment was posted.
   - date: 2026-08-11
     evidence: live Tools recheck still returns the alias framing on both /docs/tools and /docs/tools/openzeppelin-relayer. Issue #2707 remains open without comments or maintainer activity.
   - date: 2026-08-04
