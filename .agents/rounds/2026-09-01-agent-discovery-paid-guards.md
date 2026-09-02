@@ -1,8 +1,9 @@
 # Agent-discovery paid-run guards
 
 Date: 2026-09-01
-Status: implementation complete; release pending
+Status: complete
 Branch: `codex/agent-discovery-guards`
+Pull request: `#116`
 Base: `8c0f0069dff2f5b1d8d69666bd779dff994c6f08`
 Author and orchestrator: Codex GPT-5.6 Sol
 
@@ -100,5 +101,5 @@ The durable Opus closure covers the complete final diff and reconciles every nam
 
 ## Outcome
 
-The implementation and independent review are complete.
-Release, merge, and cleanup remain before this ledger closes.
+The implementation, independent review, and release validation are complete.
+Pull request `#116` is the release vehicle. No product deployment is required.
