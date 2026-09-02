@@ -7,7 +7,7 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-01 after the reviewed release deployment.
+Updated 2026-09-02 after the reviewed agent-queue integration.
 
 ## Improvements follow-up
 
@@ -109,10 +109,17 @@ The full record is `.agents/rounds/2026-09-01-protocol-history-attempt-three.md`
 Attempt three is spent, so the three-attempt box is spent. No fourth attempt is authorized.
 No production change shipped, and no `improvements/` finding applies.
 
-Permitted now: build a free per-control capture matrix across the three retained results. Add an
-independent label review against the target card's `notFor` and `useWhen`. Count product impact over
-the pinned 76-case inventory and the protocol-history QA family. These results inform PH2 or PH3;
-they authorize neither path.
+The free evidence is complete in `.agents/rounds/2026-09-02-protocol-history-free-evidence.md`.
+The blind label review disputes four of 13 frozen controls: `ph-control-validator-vote`,
+`ph-control-clawback-cap`, `phb-control-sdk-version-history`, and
+`phb-control-cap-history-sep-support`. All 19 positive labels hold. The combined 13-control
+exclude-top-five rule is not a ship gate until the owner re-adjudicates those four labels under
+PH2. The product-exposure union contains 78 QA cases. It combines the 76-case
+`scout.searchResearch` inventory and four-case protocol-history family, with two shared cases.
+The attempt-one result file is absent locally, so its matrix column remains `NA`.
+On manifest `4cd28f4b…fe8b`, the original diagnostic reads 4/8 positives and 2/4 controls.
+`ph-control-validator-vote` reaches rank five without a new mechanism. The blind set reads 3/11
+positives and 6/9 controls. These results inform PH2 or PH3; they authorize neither path.
 
 This queue calls the dated brief's T1 to T4 triggers `PH1` to `PH4`. This avoids collision with
 the five-track T1 to T5 contract.
@@ -145,33 +152,7 @@ attempt-three brief. One new target capture or one-case improvement does not clo
 Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
 our ranking.
 
-## Catalog correctness
-
-### Correct Lumenloop A/V `created_at` semantics
-
-The 2026-09-02 stale-gospel refresh found that live A/V rows use `created_at` like an ingest or
-index date. A DEVCON 2024 recording returned `created_at: 2026-04-02T23:21:21.744Z`.
-`catalog/manifest.json` currently calls the field the recording date and tells agents to use it
-for recency. The evidence is in
-`.agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md`.
-
-Done when: the owning catalog source describes the field from verified service semantics, generated
-catalog outputs are rebuilt, affected A/V cases are rechecked, and focused tests prevent the
-recording-date claim from returning.
-
 ## Eval instruments
-
-### Harden optional selector flags in both paid runners
-
-`eval/qa/run-qa.mjs` and `eval/discovery/run-agent-discovery.mjs` both read `--ids` with a plain
-first-match helper. The `--ids=a,b` form is silently ignored and expands the run to the full case
-list. A duplicate `--ids` silently takes the first value.
-
-The total budget caps the dollar loss. It does not preserve the selected scope or comparability.
-The 2026-09-01 agent-discovery guard review found this issue after the required-pin work passed.
-
-Done when: both runners reject equals and duplicate `--ids` forms before spend.
-Focused tests must cover each rejected form and prove that no paid call starts.
 
 ### Monitor vendor short-token prefix matching
 

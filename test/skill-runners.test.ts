@@ -109,6 +109,55 @@ describe("stellar-ecosystem-digest runner", () => {
     expectValidates(stellarEcosystemDigest, out, recorded.map((r) => r.op));
   });
 
+  it("keeps A/V created_at out of digest dates and recency sorting", async () => {
+    const map = digestHappy();
+    map["lumenloop.search_content_semantic"] = okData({
+      items: [
+        {
+          id: "av-445",
+          collection: "av",
+          title: "Workshop: Stellar | Multichain Day | DEVCON 2024",
+          created_at: "2026-09-01T00:00:00Z",
+          date: "2026-09-01T00:00:00Z",
+          dateField: "created_at"
+        },
+        {
+          id: "article",
+          collection: "articles",
+          title: "Article",
+          publishing_date: "2026-08-31T00:00:00Z"
+        },
+        {
+          id: "research",
+          collection: "research",
+          title: "Research",
+          created_at: "2026-08-30T00:00:00Z"
+        },
+        {
+          id: "event",
+          collection: "events",
+          title: "Event",
+          start_at: "2026-08-29T00:00:00Z"
+        }
+      ],
+      counts: { articles: 1, av: 1, events: 1, research: 1 },
+      meta: {}
+    });
+    const recorded: Recorded[] = [];
+
+    const out = asRecord(
+      await stellarEcosystemDigest.run({ subject: "x" }, stubFacade(map, recorded))
+    );
+
+    expect(out.items.map((item: any) => [item.type, item.date])).toEqual([
+      ["articles", "2026-08-31T00:00:00Z"],
+      ["research", "2026-08-30T00:00:00Z"],
+      ["events", "2026-08-29T00:00:00Z"],
+      ["av", null]
+    ]);
+    expectValidates(stellarEcosystemDigest, out, recorded.map((r) => r.op));
+  });
+
   it('applies its own defaults: 30-day window, "theme" mode, perTypeLimit 5, upcoming limit 5', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-07-06T12:00:00Z"));
@@ -167,6 +216,42 @@ describe("stellar-ecosystem-digest runner", () => {
       expect(item.summary).toBe("");
     }
     expect(out.counts).toEqual({ articles: 2, av: 0, events: 0, research: 0 });
+    expectValidates(stellarEcosystemDigest, out, recorded.map((r) => r.op));
+  });
+
+  it("keeps type-keyed entity A/V rows undated", async () => {
+    const map = digestHappy();
+    map["lumenloop.find_content_by_entity"] = okData({
+      articles: [
+        {
+          id: "article",
+          title: "Article",
+          publishing_date: "2026-08-31T00:00:00Z"
+        }
+      ],
+      av: [
+        {
+          id: "av-1162",
+          title: "Passkeys: The Future of Passwords",
+          created_at: "2026-09-01T00:00:00Z"
+        }
+      ],
+      events: [],
+      research: []
+    });
+    const recorded: Recorded[] = [];
+
+    const out = asRecord(
+      await stellarEcosystemDigest.run(
+        { subject: "passkeys", subjectType: "entity" },
+        stubFacade(map, recorded)
+      )
+    );
+
+    expect(out.items.map((item: any) => [item.type, item.date])).toEqual([
+      ["articles", "2026-08-31T00:00:00Z"],
+      ["av", null]
+    ]);
     expectValidates(stellarEcosystemDigest, out, recorded.map((r) => r.op));
   });
 

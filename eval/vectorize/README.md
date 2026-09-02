@@ -304,3 +304,11 @@ Independent Terra verification recomputed all three readings from the same cache
 No production search code changed. No `improvements/` finding applies.
 Attempt three is spent, so the three-attempt box is spent.
 See `.agents/rounds/2026-09-01-protocol-history-attempt-three.md` for the full record.
+
+On 2026-09-02, the A/V catalog correction changed `catalog/manifest.json` to
+`4cd28f4b…fe8b`. The clause artifact was rebuilt from the pinned local model cache.
+Artifact `d9de7007…002b`, clause set `bed60846…1ff2`, and vectors `c6acd8b8…121f` now satisfy
+`requireCatalogMatch`. `rerank-config.mjs` pins these values. The dated sections above retain the
+attempt-era artifact `e5f86644…71f4` by hash. It is no longer the committed artifact.
+No referee was rerun. The decision record is
+`.agents/rounds/2026-09-02-av-created-at-semantics.md`.

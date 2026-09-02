@@ -11,7 +11,8 @@ import {
 } from "../../test/fixtures/evidence-pack.mjs";
 import {
   buildTranscriptEvidencePack,
-  findTranscriptEvidencePackOmissions
+  findTranscriptEvidencePackOmissions,
+  PACK_VERSION
 } from "./evidence-pack.mjs";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -378,10 +379,11 @@ export async function auditEvidencePackPortfolio({ repoRoot = REPO_ROOT } = {}) 
     allRowsWithSourceBasis: 0,
     packEligibleSourceBasisRows: 0,
     p3Chars: 0,
-    p5Chars: 0,
+    currentPackChars: 0,
+    currentPackVersion: PACK_VERSION,
     transcriptSupportedExactTerms: 0,
     p3Omissions: 0,
-    p5Omissions: 0,
+    currentPackOmissions: 0,
     improvedRows: 0,
     tiedRows: 0,
     worsenedRows: [],
@@ -414,17 +416,17 @@ export async function auditEvidencePackPortfolio({ repoRoot = REPO_ROOT } = {}) 
         transcript: row.transcript
       };
       const p3Pack = historicalModule.buildTranscriptEvidencePack(input);
-      const p5Pack = buildTranscriptEvidencePack(input);
+      const currentPack = buildTranscriptEvidencePack(input);
       const hasSourceBasis = row.transcript.some((entry) =>
         String(entry.result ?? "").includes("--- SOURCE BASIS ---")
       );
       if (hasSourceBasis) report.allRowsWithSourceBasis += 1;
-      if (!p3Pack && !p5Pack) continue;
+      if (!p3Pack && !currentPack) continue;
 
       report.packEligibleRows += 1;
       if (hasSourceBasis) report.packEligibleSourceBasisRows += 1;
       report.p3Chars += p3Pack.length;
-      report.p5Chars += p5Pack.length;
+      report.currentPackChars += currentPack.length;
       const p3HashFailure = findStoredP3PackHashFailure({ row, p3Pack });
       if (p3HashFailure) report.failures.push(p3HashFailure);
       const p3Diagnostic = findTranscriptEvidencePackOmissions({
@@ -432,35 +434,35 @@ export async function auditEvidencePackPortfolio({ repoRoot = REPO_ROOT } = {}) 
         transcriptEvidence: p3Pack,
         claims: [row.answer]
       });
-      const p5Diagnostic = findTranscriptEvidencePackOmissions({
+      const currentPackDiagnostic = findTranscriptEvidencePackOmissions({
         transcript: row.transcript,
-        transcriptEvidence: p5Pack,
+        transcriptEvidence: currentPack,
         claims: [row.answer]
       });
-      report.transcriptSupportedExactTerms += p5Diagnostic.transcriptSupportedTerms;
+      report.transcriptSupportedExactTerms += currentPackDiagnostic.transcriptSupportedTerms;
       report.p3Omissions += p3Diagnostic.omittedTerms.length;
-      report.p5Omissions += p5Diagnostic.omittedTerms.length;
-      if (p5Diagnostic.omittedTerms.length < p3Diagnostic.omittedTerms.length) {
+      report.currentPackOmissions += currentPackDiagnostic.omittedTerms.length;
+      if (currentPackDiagnostic.omittedTerms.length < p3Diagnostic.omittedTerms.length) {
         report.improvedRows += 1;
-      } else if (p5Diagnostic.omittedTerms.length === p3Diagnostic.omittedTerms.length) {
+      } else if (currentPackDiagnostic.omittedTerms.length === p3Diagnostic.omittedTerms.length) {
         report.tiedRows += 1;
       } else {
         report.worsenedRows.push({
           id: row.id,
           p3Omissions: p3Diagnostic.omittedTerms.length,
-          p5Omissions: p5Diagnostic.omittedTerms.length
+          currentPackOmissions: currentPackDiagnostic.omittedTerms.length
         });
       }
     }
   }
 
   report.p3MeanPackChars = report.packEligibleRows ? report.p3Chars / report.packEligibleRows : 0;
-  report.p5MeanPackChars = report.packEligibleRows ? report.p5Chars / report.packEligibleRows : 0;
+  report.currentPackMeanChars = report.packEligibleRows ? report.currentPackChars / report.packEligibleRows : 0;
   return report;
 }
 
 export function formatEvidencePackPortfolioSummary(portfolio) {
-  return `portfolio: rows=${portfolio.resultRows} eligible=${portfolio.packEligibleRows} allRowsWithSourceBasis=${portfolio.allRowsWithSourceBasis} packEligibleSourceBasisRows=${portfolio.packEligibleSourceBasisRows} p3Mean=${portfolio.p3MeanPackChars.toFixed(2)} p5Mean=${portfolio.p5MeanPackChars.toFixed(2)} supportedTerms=${portfolio.transcriptSupportedExactTerms} omissions=${portfolio.p3Omissions}->${portfolio.p5Omissions} improved=${portfolio.improvedRows} tied=${portfolio.tiedRows} worsened=${portfolio.worsenedRows.length}`;
+  return `portfolio: rows=${portfolio.resultRows} eligible=${portfolio.packEligibleRows} allRowsWithSourceBasis=${portfolio.allRowsWithSourceBasis} packEligibleSourceBasisRows=${portfolio.packEligibleSourceBasisRows} p3Mean=${portfolio.p3MeanPackChars.toFixed(2)} currentPack=${portfolio.currentPackVersion} currentMean=${portfolio.currentPackMeanChars.toFixed(2)} supportedTerms=${portfolio.transcriptSupportedExactTerms} omissions=${portfolio.p3Omissions}->${portfolio.currentPackOmissions} improved=${portfolio.improvedRows} tied=${portfolio.tiedRows} worsened=${portfolio.worsenedRows.length}`;
 }
 
 async function main() {
@@ -493,7 +495,7 @@ async function main() {
     }
     console.log(formatEvidencePackPortfolioSummary(portfolio));
     for (const row of portfolio.worsenedRows) {
-      console.log(`portfolio worsened ${row.id}: ${row.p3Omissions}->${row.p5Omissions}`);
+      console.log(`portfolio worsened ${row.id}: ${row.p3Omissions}->${row.currentPackOmissions}`);
     }
     if (portfolio.failures.length) {
       for (const failure of portfolio.failures) console.error(`FAIL ${failure}`);

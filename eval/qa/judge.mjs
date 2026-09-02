@@ -92,8 +92,8 @@ export const JUDGE_RUBRIC = "v2.10";
  * call itself failed, so re-issuing it can still produce a grade. A
  * consistency error is the opposite. The judge answered, and the answer
  * contradicted itself under a deterministic rule, so the same prompt stays
- * terminal. The explicit failure class also keeps provider safeguards and
- * timeouts terminal.
+ * terminal. The explicit failure class also keeps prompt-write failures,
+ * provider safeguards, and timeouts terminal.
  */
 export function isRetryableJudgeError(verdict) {
   return verdict?.score === "error" && ["cli", "parse"].includes(verdict.failureClass);
@@ -584,16 +584,22 @@ export async function judgeCase(
     buildJudgeArgs({ model, safeMode, maxBudgetUsd }),
     { input: prompt, timeout: timeoutMs, maxBuffer }
   );
+  const promptWriteFailed = res.status === 0 && res.error?.code === "EPIPE";
   if (res.error || res.status !== 0) {
     const stdoutEnvelope = parseJsonStream(res.stdout);
     const stderrEnvelope = parseJsonStream(res.stderr);
-    const cliFailure = buildCliFailure(res, stdoutEnvelope);
+    const cliFailure = {
+      ...buildCliFailure(res, stdoutEnvelope),
+      ...(promptWriteFailed ? { kind: "prompt-write" } : {})
+    };
     const failureCostUsd = resolveFailureCost(stdoutEnvelope, stderrEnvelope);
-    const failureClass = cliFailure.kind === "timeout"
-      ? "timeout"
-      : isProviderSafeguardEvidence(res.stdout, res.stderr)
-        ? "provider-safeguard"
-        : "cli";
+    const failureClass = promptWriteFailed
+      ? "prompt-write"
+      : cliFailure.kind === "timeout"
+        ? "timeout"
+        : isProviderSafeguardEvidence(res.stdout, res.stderr)
+          ? "provider-safeguard"
+          : "cli";
     return {
       score: "error",
       coreAnswer: null,

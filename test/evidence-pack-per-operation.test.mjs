@@ -114,10 +114,11 @@ describe("QA transcript evidence pack", () => {
       allRowsWithSourceBasis: 64,
       packEligibleSourceBasisRows: 38,
       p3MeanPackChars: 9228.06,
-      p5MeanPackChars: 10579.79,
+      currentPackVersion: "p6",
+      currentPackMeanChars: 10579.79,
       transcriptSupportedExactTerms: 1652,
       p3Omissions: 474,
-      p5Omissions: 133,
+      currentPackOmissions: 133,
       improvedRows: 55,
       tiedRows: 15,
       worsenedRows: []
@@ -125,6 +126,9 @@ describe("QA transcript evidence pack", () => {
 
     expect(summary).toContain("allRowsWithSourceBasis=64");
     expect(summary).toContain("packEligibleSourceBasisRows=38");
+    expect(summary).toContain("currentPack=p6");
+    expect(summary).toContain("currentMean=10579.79");
+    expect(summary).not.toContain("p5Mean=");
   });
 
   it("rejects stored evidence-pack metadata where pack text is required", () => {
@@ -140,7 +144,7 @@ describe("QA transcript evidence pack", () => {
   });
 
   it("uses a new pack version for changed evidence selection", () => {
-    expect(PACK_VERSION).toBe("p5");
+    expect(PACK_VERSION).toBe("p6");
   });
 
   it("admits direct manifest-operation results but still ignores top-level search metadata", () => {
@@ -177,6 +181,349 @@ describe("QA transcript evidence pack", () => {
 
     expect(pack).toContain("Beta Bridge");
     expect(pack).not.toContain("Gamma Bridge search metadata");
+  });
+
+  it("omits A/V created_at source dates and keeps non-A/V source dates", () => {
+    const result = JSON.stringify({
+      semantic: [
+        {
+          collection: "av",
+          title: "Semantic A/V source",
+          url: "https://example.test/semantic-av",
+          summary: "An A/V summary.",
+          created_at: "2026-04-02T23:21:21.744Z",
+          date: "2026-04-02T23:21:21.744Z",
+          dateField: "created_at"
+        },
+        {
+          collection: "articles",
+          title: "Article source",
+          url: "https://example.test/article",
+          summary: "An article summary.",
+          publishing_date: "2026-04-01T00:00:00Z"
+        },
+        {
+          collection: "research",
+          title: "Research source",
+          url: "https://example.test/research",
+          summary: "Research summary.",
+          created_at: "2026-03-31T00:00:00Z"
+        }
+      ],
+      grouped: {
+        av: [
+          {
+            title: "Grouped A/V source",
+            url: "https://example.test/grouped-av",
+            summary: "Another A/V summary.",
+            created_at: "2026-04-28T05:25:34.817Z"
+          }
+        ],
+        events: [
+          {
+            title: "Event source",
+            url: "https://example.test/event",
+            summary: "An event summary.",
+            date: "2026-03-30T00:00:00Z"
+          }
+        ]
+      }
+    });
+    const directAvResult = JSON.stringify({
+      results: [
+        {
+          title: "Direct A/V source",
+          url: "https://example.test/direct-av",
+          summary: "A direct A/V summary.",
+          start_offset: 24300,
+          created_at: "2026-04-29T08:47:59.964Z"
+        }
+      ]
+    });
+    const listedAvResult = JSON.stringify({
+      items: [
+        {
+          title: "Listed A/V source",
+          url: "https://example.test/listed-av",
+          channel: "Stellar Development Foundation",
+          summary: "A listed video summary.",
+          created_at: "2026-06-18T18:18:47.672Z"
+        }
+      ],
+      pagination: { page: 1, limit: 20, total: 1 }
+    });
+    const mixedResult = JSON.stringify({
+      av: { items: [{ title: "Mixed A/V source", summary: "A mixed A/V summary.", created_at: "2026-01-02T00:00:00Z" }] },
+      research: [{ title: "Mixed research source", summary: "A mixed research summary.", created_at: "2026-01-01T00:00:00Z" }]
+    });
+    const clippedAvResult = '{"av":[{"title":"First clipped A/V source","summary":"A first clipped A/V summary.","created_at":"2026-02-01T00:00:00Z"},{"title":"Second clipped A/V source","summary":"A second clipped A/V summary.","created_at":"2026-02-02T00:00:00Z"}';
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "The A/V values are 2026-04-02T23:21:21.744Z, 2026-04-28T05:25:34.817Z, 2026-04-29T08:47:59.964Z, 2026-06-18T18:18:47.672Z, 2026-02-01T00:00:00Z, 2026-02-02T00:00:00Z, and 2026-01-02T00:00:00Z.",
+      transcript: [
+        { tool: "mcp__raven__execute", result, resultChars: result.length, isError: false },
+        { tool: "mcp__raven__execute", result: directAvResult, resultChars: directAvResult.length, isError: false },
+        {
+          tool: "mcp__raven__execute",
+          input: JSON.stringify({ code: 'async () => lumenloop.list_documents({ collection: "av", limit: 20 })' }),
+          result: listedAvResult,
+          resultChars: listedAvResult.length,
+          isError: false
+        },
+        { tool: "mcp__raven__execute", result: clippedAvResult, resultChars: clippedAvResult.length, isError: false },
+        {
+          tool: "mcp__raven__execute",
+          input: JSON.stringify({ code: 'async () => { const [av, research] = await Promise.all([lumenloop.list_documents({ collection: "av" }), lumenloop.list_research({})]); return { av, research }; }' }),
+          result: mixedResult,
+          resultChars: mixedResult.length,
+          isError: false
+        }
+      ]
+    });
+
+    const sourceLine = (title) => pack.split("\n").find((line) => /^\d+\. title=/.test(line) && line.includes(`title="${title}"`));
+    expect(sourceLine("Semantic A/V source")).not.toContain(" date=");
+    expect(sourceLine("Grouped A/V source")).not.toContain(" date=");
+    expect(sourceLine("Direct A/V source")).not.toContain(" date=");
+    expect(sourceLine("Listed A/V source")).not.toContain(" date=");
+    expect(sourceLine("Mixed A/V source")).not.toContain(" date=");
+    expect(sourceLine("First clipped A/V source")).not.toContain(" date=");
+    expect(sourceLine("Second clipped A/V source")).not.toContain(" date=");
+    for (const date of [
+      "2026-04-02T23:21:21.744Z",
+      "2026-04-28T05:25:34.817Z",
+      "2026-04-29T08:47:59.964Z",
+      "2026-06-18T18:18:47.672Z",
+      "2026-02-01T00:00:00Z",
+      "2026-02-02T00:00:00Z",
+      "2026-01-02T00:00:00Z"
+    ]) expect(pack).not.toContain(date);
+    expect(pack).toContain('title="Article source" date="2026-04-01T00:00:00Z"');
+    expect(pack).toContain('title="Research source" date="2026-03-31T00:00:00Z"');
+    expect(pack).toContain('title="Event source" date="2026-03-30T00:00:00Z"');
+    expect(pack).toContain('title="Mixed research source" date="2026-01-01T00:00:00Z"');
+  });
+
+  it("keeps a non-A/V claim snippet unchanged when an A/V row is nearby", () => {
+    const result = JSON.stringify({
+      av: [{
+        title: "Talk about Protocol 23",
+        summary: "A/V source.",
+        created_at: "2026-05-04T00:00:00Z"
+      }],
+      articles: [{
+        title: "Protocol 23 release article",
+        summary: "An article source.",
+        date: "2025-11-05T00:00:00Z"
+      }]
+    });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "Protocol 23 release article",
+      transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
+    });
+
+    expect(pack).toContain('"date":"2025-11-05T00:00:00Z"');
+    expect(pack).not.toContain("av_metadata_date");
+    expect(pack).not.toContain("2026-05-04T00:00:00Z");
+  });
+
+  it("does not classify an ordinary collection object as A/V metadata", () => {
+    const result = JSON.stringify({
+      results: [{
+        title: "Protocol 23 release article",
+        collection: { name: "articles", id: 7 },
+        summary: "An article source.",
+        created_at: "2025-11-05T00:00:00Z",
+        date: "2025-11-05T00:00:00Z"
+      }]
+    });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "Protocol 23 release article",
+      transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
+    });
+
+    expect(pack).toContain('"created_at":"2025-11-05T00:00:00Z"');
+    expect(pack).toContain('"date":"2025-11-05T00:00:00Z"');
+    expect(pack).not.toContain("av_metadata");
+  });
+
+  it("classifies repeated A/V document operations by distinct operation and collection", () => {
+    const result = JSON.stringify({
+      items: [{
+        title: "Paged A/V source",
+        summary: "A paged video source.",
+        created_at: "2026-06-18T18:18:47.672Z"
+      }]
+    });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "Paged A/V source 2026-06-18T18:18:47.672Z",
+      transcript: [{
+        tool: "mcp__raven__execute",
+        input: JSON.stringify({ code: 'async () => { await lumenloop.list_documents({ collection: "av", page: 1 }); return lumenloop.list_documents({ collection: "av", page: 2 }); }' }),
+        result,
+        resultChars: result.length,
+        isError: false
+      }]
+    });
+
+    expect(pack).not.toContain("2026-06-18T18:18:47.672Z");
+  });
+
+  it("classifies the supported videos response path in a composed result", () => {
+    const result = JSON.stringify({
+      videos: [{
+        title: "Composed A/V source",
+        summary: "A video source.",
+        created_at: "2026-05-05T00:00:00Z"
+      }],
+      research: [{
+        title: "Composed research source",
+        summary: "A research source.",
+        created_at: "2026-05-04T00:00:00Z"
+      }]
+    });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "Composed A/V source 2026-05-05T00:00:00Z",
+      transcript: [{
+        tool: "mcp__raven__execute",
+        input: JSON.stringify({ code: 'async () => { const [videos, research] = await Promise.all([lumenloop.list_documents({ collection: "av" }), lumenloop.list_research({})]); return { videos, research }; }' }),
+        result,
+        resultChars: result.length,
+        isError: false
+      }]
+    });
+
+    expect(pack).not.toContain("2026-05-05T00:00:00Z");
+    expect(pack).toContain('title="Composed research source" date="2026-05-04T00:00:00Z"');
+  });
+
+  it("keeps parsed and visible-text fact collection for a valid result", () => {
+    const result = JSON.stringify({ records: [{
+      title: "Visible text control",
+      description: "Text scanner keeps this fact."
+    }] });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "Text scanner keeps this fact.",
+      transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
+    });
+
+    expect(pack).toContain('records[0].description="Text scanner keeps this fact."');
+    expect(pack).toContain('description="Text scanner keeps this fact."');
+  });
+
+  it("keeps A/V array context after an escaped quote in a clipped row", () => {
+    const result = '{"av":[{"title":"First \\"quoted\\" A/V source","summary":"First.","created_at":"2026-02-03T00:00:00Z"},{"title":"Later A/V source","summary":"Later.","created_at":"2026-02-04T00:00:00Z"}';
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "First quoted A/V source 2026-02-03T00:00:00Z and Later A/V source 2026-02-04T00:00:00Z",
+      transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
+    });
+
+    expect(pack).not.toContain("2026-02-03T00:00:00Z");
+    expect(pack).not.toContain("2026-02-04T00:00:00Z");
+  });
+
+  it("keeps an A/V passage snippet while removing its created_at field", () => {
+    const result = JSON.stringify({ results: [{
+      av_id: "av-123",
+      title: "Protocol 23 passage",
+      url: "https://example.test/protocol-23",
+      channel: "Stellar Dev",
+      summary: "The passage gives the short context.",
+      long_summary: "The passage gives the unique exact score 4.81 for Protocol 23.",
+      start_offset: 24300,
+      created_at: "2026-06-20T00:00:00Z"
+    }] });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "The Protocol 23 passage reports the exact score 4.81.",
+      transcript: [{
+        tool: "mcp__raven__lumenloop_find_av_passages",
+        result,
+        resultChars: result.length,
+        isError: false
+      }]
+    });
+
+    expect(pack).toContain('"title":"Protocol 23 passage"');
+    expect(pack).toContain('"channel":"Stellar Dev"');
+    expect(pack).toContain('"summary":"The passage gives the short context."');
+    expect(pack).toContain('"long_summary":"The passage gives the unique exact score 4.81 for Protocol 23."');
+    expect(pack).toContain("4.81");
+    expect(pack).not.toContain("2026-06-20T00:00:00Z");
+  });
+
+  it("classifies videos in collection, type, and kind without classifying a non-A/V row", () => {
+    const result = JSON.stringify({ results: [
+      { title: "Collection videos", collection: "videos", summary: "A/V collection row.", created_at: "2026-06-21T00:00:00Z" },
+      { title: "Type videos", type: "videos", summary: "A/V type row.", created_at: "2026-06-22T00:00:00Z" },
+      { title: "Kind videos", kind: "videos", summary: "A/V kind row.", created_at: "2026-06-23T00:00:00Z" },
+      { title: "Article control", collection: "articles", summary: "A non-A/V control.", created_at: "2026-06-24T00:00:00Z" }
+    ] });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "Collection videos, Type videos, and Kind videos are A/V rows.",
+      transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
+    });
+
+    expect(pack).not.toContain("2026-06-21T00:00:00Z");
+    expect(pack).not.toContain("2026-06-22T00:00:00Z");
+    expect(pack).not.toContain("2026-06-23T00:00:00Z");
+    expect(pack).toContain('title="Article control" date="2026-06-24T00:00:00Z"');
+  });
+
+  it("excises a trailing-edge A/V date field at the reproduced 323-character alignment", () => {
+    const result = JSON.stringify({
+      results: [{
+        title: "Trailing boundary anchor",
+        summary: "The A/V passage prose preserves Boundary Signal.",
+        transcript_note: "x".repeat(323),
+        created_at: "2026-08-08T00:00:00Z",
+        start_offset: 24300
+      }],
+      articles: [{
+        title: "Nearby article",
+        summary: "A non-A/V date control.",
+        date: "2025-11-05T09:09:09Z"
+      }]
+    });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "Boundary Signal",
+      transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
+    });
+
+    expect(pack).toContain("The A/V passage prose preserves Boundary Signal.");
+    expect(pack).toContain('title="Nearby article" date="2025-11-05T09:09:09Z"');
+    expect(pack).not.toContain('"created_at"');
+    expect(pack).not.toContain("2026-08-08");
+    expect(pack).not.toContain("00:00:00Z");
+  });
+
+  it("excises a leading-edge A/V date field without dropping passage prose", () => {
+    const result = JSON.stringify({ results: [{
+      title: "A/V passage",
+      created_at: "2026-07-07T11:22:33Z",
+      transcript_note: "x".repeat(300),
+      long_summary: "Boundary Evidence keeps this exact passage prose.",
+      start_offset: 24301
+    }] });
+    const pack = buildTranscriptEvidencePack({
+      ...LIVE_CASE,
+      candidateAnswer: "Boundary Evidence",
+      transcript: [{ tool: "mcp__raven__execute", result, resultChars: result.length, isError: false }]
+    });
+
+    expect(pack).toContain("Boundary Evidence keeps this exact passage prose.");
+    expect(pack).not.toContain('"created_at"');
+    expect(pack).not.toContain("2026-07-07");
+    expect(pack).not.toContain("11:22:33Z");
+    expect(pack).not.toContain(":33Z");
   });
 
   it.each([

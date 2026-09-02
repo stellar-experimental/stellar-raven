@@ -1075,6 +1075,26 @@ forbidden captures. No scorer, routing corpus, floor, band, or runner operation
 changed. The final passing evidence trace is
 `routing-2026-08-28T02-49-08-451Z.json`.
 
+## Re-baseline (2026-09-02): Lumenloop A/V contract correction
+
+The model-facing `lumenloop.find_av_passages` contract now states its supported search behavior.
+It covers videos, podcasts, and recorded talks. It does not promise transcript text, quotes,
+playback timestamps, or a recording date from `created_at`. Upstream calls `created_at` the
+recording date, but live rows contradict that claim. Finding `ll-019` records the discrepancy.
+The correction lives in `scripts/catalog-data/model-contract-corrections.mjs`.
+
+Against the prior baseline, legacy strict routing moves from **208/279/311** to
+**213/279/312**. Extended strict moves from **90/109/117** to **90/110/116**.
+Skills remain **16/23/23**. The frozen holdout moves from **10/22/25** to **10/22/26**,
+with 11 forbidden captures and 21 passed cases. The canonical passkey-talk case remains a direct
+A/V result at rank three. `q-ti-video-tutorials` moves from rank four to outside the top five.
+No evidence-true wording reaches the gated tier for that case. Two wallet cases and one anchor
+case lose false service credit from the A/V operation.
+
+No scorer, corpus, floor, band, or runner operation changed. The holdout was not tuned.
+The decision record is `.agents/rounds/2026-09-02-av-created-at-semantics.md`.
+The final passing trace is `routing-2026-09-02T17-26-17-593Z.json`.
+
 ## Protocol-history frozen measurement (2026-08-30)
 
 This round adds a frozen diagnostic with eight positive cases and four direct controls.

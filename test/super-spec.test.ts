@@ -390,10 +390,22 @@ describe("service specifics", () => {
   it("matches the corrected Lumenloop prose and Scout inputs in the model spec", () => {
     const entity = spec.paths["/lumenloop/find_content_by_entity"]!.post!;
     const related = spec.paths["/lumenloop/get_related_projects"]!.post!;
+    const av = spec.paths["/lumenloop/find_av_passages"]!.post!;
     const hackathon = spec.paths["/scout/searchHackathonBuilds"]!.get!;
 
     expect(entity.responses?.["200"]?.description).toContain("Content grouped by type in articles");
     expect(related.responses?.["200"]?.description).toContain("An object with content");
+    const avOperationDescription = av.description?.split("\n\n")[0];
+    expect(avOperationDescription).toBe(
+      "Find specific passages in long videos, podcasts, and recorded talks by semantic similarity. Returns parent recording metadata, AI summaries, and an opaque ordering offset."
+    );
+    expect(avOperationDescription).not.toContain("Transcript text");
+    expect(av.responses?.["200"]?.description).toContain(
+      "created_at (upstream metadata; do not treat it as the recording date or recency evidence)"
+    );
+    expect(av.description).not.toContain("matched chunk text");
+    expect(av.description).not.toContain("recording's date");
+    expect(av.description).not.toContain("quote what was said");
     expect((hackathon as { parameters?: Array<{ name: string }> }).parameters?.map((p) => p.name).sort()).toEqual([
       "limit",
       "q",

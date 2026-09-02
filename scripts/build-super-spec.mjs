@@ -109,11 +109,12 @@ function buildLumenloopPaths(inv, exposed) {
     const id = `lumenloop.${tool.name}`;
     if (!exposed.has(id)) continue;
     const contract = applyModelContractCorrection(id, {
+      description: tool.description,
       returns: tool.returns,
       inputSchema: lumenloopInputSchema(id, tool.input_schema ?? null),
       outputSchema: lumenloopOutputSchema(id, tool.output_schema ?? null)
     });
-    const descriptionParts = [tool.description];
+    const descriptionParts = [contract.description];
     if (tool.when_to_use) descriptionParts.push(`When to use: ${tool.when_to_use}`);
     if (contract.returns) descriptionParts.push(`Returns: ${contract.returns}`);
     const note = LUMENLOOP_DESCRIPTION_NOTES[tool.name];
@@ -124,7 +125,7 @@ function buildLumenloopPaths(inv, exposed) {
     const { inputSchema, outputSchema } = contract;
     const op = {
       operationId: id,
-      summary: firstSentence(tool.description),
+      summary: firstSentence(contract.description),
       description: descriptionParts.join("\n\n"),
       tags: ["lumenloop", ...(tool.category ? [tool.category] : [])],
       requestBody: inputSchema

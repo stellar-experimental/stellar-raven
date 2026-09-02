@@ -186,9 +186,9 @@ before spending. The runner checks the listener, revision, clean state, compiled
 and surface again after collection. It rejects a comparison if these values change.
 It still writes the paid rows. It marks the artifact as non-comparable and suppresses aggregates.
 
-Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as two
-arguments. Collection also requires the server revision and surface SHA-256 flags in that form.
-The runner rejects an absent, duplicate, missing, malformed, mismatched, or equals-form required
+Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as spaced pairs.
+Collection also requires the server revision and surface SHA-256 flags in that form.
+The runner rejects an absent, duplicate, missing, malformed, or mismatched required
 flag before an answering-agent or judge call. Compute the environment value after all
 Claude-related environment variables have their final values. Use the same shell for this command
 and the paid run:
@@ -200,9 +200,14 @@ AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmen
 The result records the observed `sha256`, the `expectedSha256`, and `matches: true`. Collection
 stores this identity at `meta.agentEnvironment.inherited`. Stored judging uses
 `meta.judgeEnvironment`. Both locations record environment names, but they do not record values.
-Every paid runner command requires exactly one `--max-budget-usd <usd>` flag. Duplicate budget
-flags fail before any call. Other flags include `--ids a,b,c`, `--no-judge`, `--model`,
-`--judge-model`, `--cases <path>`, and `--surface per-operation` for the isolated 50-operation architecture instrument
+`run-qa.mjs` uses fail-closed CLI syntax.
+`--no-judge` is the only boolean flag and uses its bare form.
+Every other supported flag requires one spaced value.
+The runner rejects every equals form, unknown flag, and stray argument before any paid call.
+`--ids` accepts only one spaced `--ids a,b,c` form.
+The runner rejects `--ids=a,b,c` and duplicate `--ids` flags before any paid call.
+The `--judge-stored` mode rejects `--ids`; use `re-judge.mjs --ids` for stored rows.
+Use `--surface per-operation` for the isolated 50-operation architecture instrument
 (`compare-architecture-ab.mjs`). Variant A = the shipped `search` (ADR-0001); B requires a
 build exposing a code-shaped tool plus `--search-tool`. Results land in
 `eval/qa/results/<stamp>-variant<X>.json` (local-only): rows carry `truth.status`/`truth.asOf`
@@ -234,8 +239,10 @@ agent-limit exits, and unclassified failures never retry.
 
 Judge errors carry `failureClass`. Only `cli` and `parse` can receive one total retry. The limit
 applies across inline judging and all `--judge-stored` resumes. `provider-safeguard`, `timeout`,
-and `consistency` are terminal. Stored judging writes each completed attempt before it starts an
-eligible retry.
+`consistency`, and `prompt-write` are terminal. A `prompt-write` failure means the child exited
+before the harness finished writing the prompt. The status is zero, but the write reports EPIPE.
+The harness rejects the returned verdict because the child did not receive the complete prompt.
+Stored judging writes each completed attempt before it starts an eligible retry.
 Untyped legacy judge errors are also terminal. Their timeout and safeguard status is unknown.
 Use `re-judge.mjs` for those saved rows instead of inferring a retry class.
 
@@ -538,7 +545,7 @@ Style, length, and citation format are ignored. Beyond-golden specifics are "unv
 wrong. Avoid items bind only on answer-visible content; support-relative avoid phrasing is
 advisory (and linted). Cases with `tags.freshness != "stable"` get the freshness-leniency block
 and a deterministic bounded **source-basis evidence pack** built from the saved execute results
-(`evidence-pack.mjs`, pack `p5`); sourced drift from the golden snapshot is tolerated, confident
+(`evidence-pack.mjs`, pack `p6`); sourced drift from the golden snapshot is tolerated, confident
 unsourced contradiction is not.
 
 Rubric `v2.5` adds judge-owned `coreAnswer` and `avoidMatches` fields. A deterministic
@@ -597,7 +604,7 @@ finalizes, and no resume spends a second paid call on it.
 **Comparability rules:**
 
 - Re-judge identity is the **judge model + rubric + pack** tuple (currently `claude-sonnet-5` /
-  `v2.10` / `p5`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
+  `v2.10` / `p6`; `JUDGE_RUBRIC` is exported from `judge.mjs` and `PACK_VERSION` from
   `evidence-pack.mjs`, each with a short changelog in its own file header). Compare stored rows
   only when that tuple, the exact selected-case snapshot, and prompt/pack-hash semantics match.
   Otherwise, re-judge the saved `rows[].answer` under the
@@ -625,11 +632,14 @@ finalizes, and no resume spends a second paid call on it.
   meanings, avoid/freshness/trap handling. A pack bump is required for evidence-pack
   serialization/selection changes. Cosmetic refactors that keep `buildJudgePrompt` output
   byte-identical (provable via the promptSha256 fixtures) need no bump.
-- **Pack p5** (2026-08-17, current) recognizes emitted `SOURCE BASIS` boundaries, retains exact
-  facts from clipped JSON, and flags transcript-supported claims that a bounded pack omitted. The
-  diagnostic never changes the judge score or its claim lists. `p4` was an intermediate build of
-  the same 2026-08-17 work; it reached only the superseded paid probe recorded below and is never
-  the current pack.
+- **Pack p6** (2026-09-02, current) omits A/V `created_at` values from detected A/V rows. It
+  detects `collection: "av"` or `"videos"`, `type` or `kind: "av"`, an `av` or `videos` response
+  path, `start_offset`, and an all-A/V execute request. It does not infer custom response-key
+  aliases. It retains the p5 source-basis boundaries and diagnostics. The diagnostic never changes
+  the judge score or its claim lists.
+- **Pack p5** (2026-08-17) recognizes emitted `SOURCE BASIS` boundaries, retains exact facts from
+  clipped JSON, and flags transcript-supported claims that a bounded pack omitted. `p4` was an
+  intermediate build of the same work. It reached only the superseded paid probe below.
 - **Noise floor**: per-row any-flip rate **23.3%** across three identical v2.4/p3 re-judge
   passes (pairwise score disagreement 15.6%). Isolated single-run score movement at or below
   that scale is variance until confirmed by live transcript review or a repeated mechanism.
@@ -1160,15 +1170,16 @@ new answer, made zero answering-agent calls, and changed no product or Playgroun
 The free deterministic side is reproducible:
 
 ```sh
-# 10 committed fixtures against their saved rows, then the 117-row p3→p5 replay
+# 10 committed fixtures against their saved rows, then the 117-row p3→current-pack replay
 node eval/qa/verify-evidence-pack-fixtures.mjs --portfolio
 ```
 
 `--portfolio` reads the gitignored `eval/qa/results/` artifacts, so it prints
 `SKIP (no ignored result artifacts found)` on a machine that does not hold the 2026-08-14 run.
-The recorded replay is `rows=117 eligible=70 allRowsWithSourceBasis=64
-packEligibleSourceBasisRows=38 p3Mean=9228.06 p5Mean=10580.16 supportedTerms=1156
-omissions=399->114 improved=55 tied=15 worsened=0`.
+The recorded p3→p5 replay used the then-p5 formatter keys: `rows=117 eligible=70
+allRowsWithSourceBasis=64 packEligibleSourceBasisRows=38 p3Mean=9228.06 p5Mean=10580.16
+supportedTerms=1156 omissions=399->114 improved=55 tied=15 worsened=0`. A current replay prints
+`currentPack=p6` and `currentMean`; it needs the ignored artifacts to produce a p6 baseline.
 
 The paid matrix ran three lanes over eight rows: `q-tool-indexer-repos-discovery` and
 `q-live-beans-cross-service-reconcile` (targets), plus `q-comp-cross-moneygram-partnership-sep24`,
@@ -1506,7 +1517,7 @@ Pin the corpus revision when the battery has moved since collection — otherwis
 guard compares saved rows against today's working tree and refuses.
 
 **Corpus pinning is not pack identity.** `--cases-ref` fixes only the case snapshot. The guard
-also compares the judge tuple (model / rubric / pack), and the evidence pack is currently `p5`
+also compares the judge tuple (model / rubric / pack), and the evidence pack is currently `p6`
 while the 2026-08-14 artifacts were collected under `p3`. That mismatch refuses on its own, so
 this example is necessarily a **non-identical** re-judge — it produces a loudly labeled side
 artifact, and its verdicts are NOT identical-input evidence and can never be cited as judge

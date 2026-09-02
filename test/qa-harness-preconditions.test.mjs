@@ -29,7 +29,13 @@ import {
   makeSearchResultProjector,
   projectSearchResult
 } from "../eval/qa/search-projection.mjs";
-import { buildAgentSpawn, collectionAggregates, probeLiveSurface } from "../eval/qa/run-qa.mjs";
+import {
+  assertRunQaCliSyntax,
+  buildAgentSpawn,
+  collectionAggregates,
+  parseOptionalIdsFlag,
+  probeLiveSurface
+} from "../eval/qa/run-qa.mjs";
 import {
   buildDiscoveryAgentArgs,
   buildDiscoverySpawnOptions,
@@ -39,6 +45,7 @@ import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
   answeringAgentIsolationRecord,
+  assertFailClosedCliSyntax,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
@@ -499,6 +506,7 @@ if [ "$1" = "--version" ]; then
   printf '%s\\n' 'fixture-claude 1.0.0'
   exit 0
 fi
+cat >/dev/null
 printf '%s\\n' paid >> "$QA_FAKE_CALL_LOG"
 printf '%s\\n' '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"missingFacts\\":[],\\"wrongClaims\\":[],\\"avoidMatches\\":[],\\"rationale\\":\\"fixture\\"}","total_cost_usd":0.01}'
 `;
@@ -546,6 +554,195 @@ printf '%s\\n' '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correc
   writeFileSync(callLogPath, "");
   return { root, run, runCollection, paidCalls, environmentSha256 };
 }
+
+describe("run-qa optional IDs selector guards", () => {
+  it.each([
+    ["equals form", ["--ids=q-example"], /--ids=<value> is not supported/],
+    ["duplicate", ["--ids", "q-example", "--ids", "q-second"], /accepts --ids at most once/]
+  ])("rejects the %s in the direct parser", (_name, idsArgs, message) => {
+    expect(() => parseOptionalIdsFlag(idsArgs)).toThrow(message);
+  });
+
+  it.each([
+    ["equals form", ["--ids=q-example"], /--ids=<value> is not supported/],
+    ["duplicate", ["--ids", "q-example", "--ids", "q-second"], /accepts --ids at most once/]
+  ])("rejects the %s --ids selector before a paid call", (_name, idsArgs, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const result = fixture.runCollection(idsArgs);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it("preserves a spaced --ids selector", () => {
+    expect(parseOptionalIdsFlag(["--ids", "q-example,q-second"]))
+      .toBe("q-example,q-second");
+  });
+
+  it("rejects --ids with --judge-stored before a paid call", () => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "ids-with-judge-stored");
+      const result = fixture.run(resultsPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        "--ids",
+        "q-example"
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(/--judge-stored and --ids are contradictory/);
+      expect(fixture.paidCalls()).toEqual([]);
+      expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("fail-closed CLI syntax helper", () => {
+  const syntax = {
+    valueFlags: ["--cases", "--cases-ref", "--model", "--sample"],
+    booleanFlags: ["--dry-run"],
+    label: "fixture"
+  };
+
+  it("accepts multiple declared spaced flags and a bare boolean flag", () => {
+    expect(() => assertFailClosedCliSyntax([
+      "--sample", "30",
+      "--model", "fixture-model",
+      "--dry-run"
+    ], syntax)).not.toThrow();
+  });
+
+  it.each([
+    ["an empty equals form", ["--sample="], /--sample=<value> is not supported/],
+    ["an equals form after another flag", ["--model", "fixture-model", "--sample=30"], /--sample=<value> is not supported/],
+    ["an unknown flag", ["--unknown"], /fixture: unknown flag --unknown/],
+    ["a stray argument", ["stray"], /fixture: unexpected positional argument "stray"/]
+  ])("rejects %s", (_name, args, message) => {
+    expect(() => assertFailClosedCliSyntax(args, syntax)).toThrow(message);
+  });
+
+  it("matches --cases-ref only when that exact flag is declared", () => {
+    expect(() => assertFailClosedCliSyntax(["--cases-ref", "HEAD"], syntax)).not.toThrow();
+    expect(() => assertFailClosedCliSyntax(["--cases-ref=HEAD"], syntax))
+      .toThrow(/--cases-ref=<value> is not supported; use --cases-ref <value>/);
+  });
+});
+
+describe("run-qa residual optional flag guards", () => {
+  it.each([
+    ["--sample=1", /--sample=<value> is not supported/],
+    ["--model=fixture-agent", /--model=<value> is not supported/],
+    ["--judge-model=fixture-judge", /--judge-model=<value> is not supported/],
+    ["--cases=fixture-cases.json", /--cases=<value> is not supported/],
+    ["--variant=B", /--variant=<value> is not supported/],
+    ["--max-panel-cases=10", /--max-panel-cases=<value> is not supported/],
+    ["--no-judge=true", /--no-judge=<value> is not supported; use --no-judge/],
+    ["--judge-panel=3", /--judge-panel=<value> is not supported/],
+    ["--stability-register=fixture.json", /--stability-register=<value> is not supported/],
+    ["--surface=per-operation", /--surface=<value> is not supported/],
+    ["--search-tool=fixture-search", /--search-tool=<value> is not supported/],
+    ["--port=8790", /--port=<value> is not supported/],
+    ["--judge-stored=fixture.json", /--judge-stored=<value> is not supported/]
+  ])("rejects %s before a fake judge call", (optionalArg, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "optional-equals");
+      const result = fixture.run(resultsPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        optionalArg
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+      expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["an unknown flag", "--unknown", /run-qa: unknown flag --unknown/],
+    ["a stray argument", "stray", /run-qa: unexpected positional argument "stray"/]
+  ])("rejects %s before a fake judge call", (_name, arg, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "fail-closed");
+      const result = fixture.run(resultsPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        arg
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+      expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it("preserves every declared spaced value and bare boolean form", () => {
+    expect(() => assertRunQaCliSyntax([
+      "--cases", "fixture-cases.json",
+      "--expect-agent-binary-sha256", "binary",
+      "--expect-agent-environment-sha256", "environment",
+      "--expect-sha256", "surface",
+      "--ids", "q-example",
+      "--judge-model", "fixture-judge",
+      "--judge-panel", "2",
+      "--judge-stored", "fixture-results.json",
+      "--max-budget-usd", "1",
+      "--max-panel-cases", "10",
+      "--model", "fixture-agent",
+      "--no-judge",
+      "--port", "8788",
+      "--sample", "30",
+      "--search-tool", "search",
+      "--server-revision", "revision",
+      "--stability-register", "fixture-stability.json",
+      "--surface", "search-execute",
+      "--variant", "A"
+    ])).not.toThrow();
+  });
+
+  it.each([
+    ["--sample", "1"],
+    ["--model", "fixture-agent"],
+    ["--judge-model", "fixture-judge"],
+    ["--cases", "fixture-cases.json"],
+    ["--variant", "B"]
+  ])("preserves the spaced %s form", (flag, value) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "optional-spaced");
+      const result = fixture.run(resultsPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        flag,
+        value
+      ]);
+
+      expect(result.status, result.stderr).toBe(0);
+      expect(
+        fixture.paidCalls(),
+        "one stored row must produce exactly one judge call"
+      ).toEqual(["paid"]);
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+});
 
 describe("P3 — run-qa CLI pins the inherited agent environment", () => {
   it.each([
@@ -605,8 +802,15 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
       ]);
 
       expect(matching.status, matching.stderr).toBe(0);
-      expect(fixture.paidCalls()).toEqual(["paid"]);
-      expect(JSON.parse(readFileSync(matchingPath, "utf8")).meta.judgeEnvironment).toMatchObject({
+      expect(
+        fixture.paidCalls(),
+        "one judge call per stored row; a second means a judge retry"
+      ).toEqual(["paid"]);
+      const stored = JSON.parse(readFileSync(matchingPath, "utf8"));
+      expect(stored.rows[0].verdict, "judge attempt must not be a retryable CLI error")
+        .toMatchObject({ score: "correct" });
+      expect(stored.rows[0].verdict.failureClass ?? null).toBeNull();
+      expect(stored.meta.judgeEnvironment).toMatchObject({
         sha256: fixture.environmentSha256,
         expectedSha256: fixture.environmentSha256,
         matches: true

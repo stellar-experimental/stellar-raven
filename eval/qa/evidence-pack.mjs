@@ -1,7 +1,6 @@
 const EVIDENCE_PACK_MAX_CHARS = 12000;
-// p5 recognizes emitted SOURCE BASIS boundaries, retains exact facts from
-// clipped JSON, and diagnoses transcript-supported claims omitted by the pack.
-export const PACK_VERSION = "p5";
+// p6 omits A/V created_at from source dates and retains the p5 evidence boundaries.
+export const PACK_VERSION = "p6";
 const MAX_CANONICAL_URLS = 8;
 const MAX_CITED_SOURCE_TITLES = 24;
 const MAX_CITED_SOURCE_FIELDS = 24;
@@ -312,12 +311,96 @@ function sourceTitle(value) {
   return cleanText(value?.title ?? value?.name ?? value?.fullName ?? value?.label ?? value?.slug ?? "");
 }
 
-function sourceDate(value) {
+const AV_COLLECTION_VALUES = new Set(["av", "videos"]);
+
+function isSupportedAvCollection(value) {
+  return AV_COLLECTION_VALUES.has(cleanText(value).toLowerCase());
+}
+
+function isSupportedAvPath(path) {
+  return String(path ?? "")
+    .split(/[.\[\]]+/)
+    .some((segment) => isSupportedAvCollection(segment));
+}
+
+function activeSupportedAvContainer(text, index) {
+  const containers = [];
+  let lastString = "";
+  let pendingKey = "";
+  let inString = false;
+  let escaped = false;
+  let stringStart = -1;
+  for (let at = 0; at < index; at += 1) {
+    const ch = text[at];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === "\\") escaped = true;
+      else if (ch === '"') {
+        lastString = text.slice(stringStart + 1, at);
+        inString = false;
+      }
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+      stringStart = at;
+    } else if (ch === ":") {
+      pendingKey = lastString;
+    } else if (ch === "[" || ch === "{") {
+      containers.push(pendingKey);
+      pendingKey = "";
+    } else if (ch === "]" || ch === "}") {
+      containers.pop();
+    } else if (ch === ",") {
+      pendingKey = "";
+    }
+  }
+  return [...containers].reverse().find((key) => isSupportedAvCollection(key)) ?? "";
+}
+
+function entryIsAv(entry) {
+  const tool = String(entry.tool ?? "");
+  if (/__lumenloop_find_av_passages$/.test(tool)) return true;
+  const rawInput = String(entry.input ?? "");
+  let input = rawInput;
+  try {
+    const parsed = JSON.parse(rawInput);
+    if (typeof parsed?.code === "string") input = parsed.code;
+  } catch {
+    // Direct test fixtures can carry JavaScript instead of a recorded tool input.
+  }
+  const operations = [...new Set([...input.matchAll(/\blumenloop\.([a-z_]+)/g)].map((match) => match[1]))];
+  if (operations.length !== 1) return false;
+  if (operations[0] === "find_av_passages") return true;
+  return ["list_documents", "search_documents", "get_document"].includes(operations[0]) &&
+    /collection\s*:\s*["'](?:av|videos)["']/i.test(input);
+}
+
+function isAvSource(value, path, entryAv = false) {
+  return entryAv ||
+    isSupportedAvCollection(value?.collection) ||
+    isSupportedAvCollection(value?.type) ||
+    isSupportedAvCollection(value?.kind) ||
+    isSupportedAvPath(path) ||
+    "start_offset" in value;
+}
+
+function omitsAvDateField(value, key, avSource) {
+  return avSource && (
+    key === "created_at" ||
+    key === "dateField" ||
+    (key === "date" && value?.dateField === "created_at")
+  );
+}
+
+function sourceDate(value, path, entryAv) {
+  const avSource = isAvSource(value, path, entryAv);
+  const dateFromAvCreatedAt = avSource && value?.dateField === "created_at";
   return cleanText(
-    value?.date ??
+    (dateFromAvCreatedAt ? undefined : value?.date) ??
       value?.publishing_date ??
       value?.publishedAt ??
-      value?.created_at ??
+      (avSource ? undefined : value?.created_at) ??
       value?.updated_at ??
       value?.lastCommitAt ??
       value?.checkedAt ??
@@ -338,7 +421,7 @@ function sourceSummary(value) {
   );
 }
 
-function maybeSourceItem(value, path, entryIndex) {
+function maybeSourceItem(value, path, entryIndex, entryAv) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const title = sourceTitle(value);
   const url = sanitizeUrl(value.url ?? value.sourceUrl ?? value.source ?? value.href);
@@ -348,7 +431,8 @@ function maybeSourceItem(value, path, entryIndex) {
       .filter((candidate) => candidate && candidate !== url)
   );
   const summary = sourceSummary(value);
-  const date = sourceDate(value);
+  const avSource = isAvSource(value, path, entryAv);
+  const date = sourceDate(value, path, entryAv);
   if (!title && !url && !summary) return null;
   if (!title && summary.length < 24) return null;
   return {
@@ -358,13 +442,13 @@ function maybeSourceItem(value, path, entryIndex) {
     date,
     summary,
     type: cleanText(value.type ?? value.kind ?? value.domain ?? value.channel ?? ""),
-    fields: scalarFactsForObject(value),
+    fields: scalarFactsForObject(value, avSource),
     path,
     entryIndex
   };
 }
 
-function scalarFactsForObject(value) {
+function scalarFactsForObject(value, avSource = false) {
   const skip = new Set([
     "title",
     "name",
@@ -388,6 +472,7 @@ function scalarFactsForObject(value) {
   ]);
   const facts = [];
   for (const [key, raw] of Object.entries(value)) {
+    if (omitsAvDateField(value, key, avSource)) continue;
     if (skip.has(key) || raw === null || raw === undefined || typeof raw === "object") continue;
     const rendered = cleanText(raw);
     if (!rendered || rendered.length > 100) continue;
@@ -403,16 +488,16 @@ function scalarFieldPriority(key) {
   return /rank|placement|winner|count|date|status|round|amount|total|source|award|prize/i.test(key) ? 2 : 1;
 }
 
-function walkSourceItems(value, path, entryIndex, out) {
+function walkSourceItems(value, path, entryIndex, out, entryAv) {
   if (!value || typeof value !== "object") return;
   if (Array.isArray(value)) {
-    value.forEach((item, index) => walkSourceItems(item, `${path}[${index}]`, entryIndex, out));
+    value.forEach((item, index) => walkSourceItems(item, `${path}[${index}]`, entryIndex, out, entryAv));
     return;
   }
-  const item = maybeSourceItem(value, path, entryIndex);
+  const item = maybeSourceItem(value, path, entryIndex, entryAv);
   if (item) out.push(item);
   for (const [key, child] of Object.entries(value)) {
-    if (child && typeof child === "object") walkSourceItems(child, path ? `${path}.${key}` : key, entryIndex, out);
+    if (child && typeof child === "object") walkSourceItems(child, path ? `${path}.${key}` : key, entryIndex, out, entryAv);
   }
 }
 
@@ -438,7 +523,7 @@ function scanBalancedObjectAt(text, start) {
   return "";
 }
 
-function scanSourceItemsFromText(result, entryIndex) {
+function scanSourceItemsFromText(result, entryIndex, entryAv) {
   const text = splitExecuteResult(result).body;
   const out = [];
   const seenStarts = new Set();
@@ -453,7 +538,9 @@ function scanSourceItemsFromText(result, entryIndex) {
       if (!objectText) continue;
       try {
         const parsed = JSON.parse(objectText);
-        const item = maybeSourceItem(parsed, "visible-json-fragment", entryIndex);
+        const activeContainer = activeSupportedAvContainer(text, start);
+        const path = activeContainer ? `visible-json-fragment.${activeContainer}` : "visible-json-fragment";
+        const item = maybeSourceItem(parsed, path, entryIndex, entryAv);
         if (item) out.push(item);
       } catch {
         // Ignore partial/truncated fragments.
@@ -489,14 +576,6 @@ function termHits(text, terms) {
   return unique(hits);
 }
 
-function snippetAround(text, index, length, radius) {
-  const start = Math.max(0, index - radius);
-  const end = Math.min(text.length, index + length + radius);
-  const prefix = start > 0 ? "..." : "";
-  const suffix = end < text.length ? "..." : "";
-  return cleanText(sanitizeUrlsInText(`${prefix}${text.slice(start, end)}${suffix}`));
-}
-
 function sourceItemText(item) {
   return cleanText(
     `${item.title} ${item.date} ${item.url} ${item.alternateUrls.join(" ")} ${item.type} ${item.fields.join(" ")} ${item.summary}`
@@ -514,6 +593,98 @@ function overlapsSourceItem(snippet, rankedItemsForDedupe) {
   });
 }
 
+function enclosingObjectStartAt(text, index) {
+  const objects = [];
+  let inString = false;
+  let escaped = false;
+  for (let at = 0; at < index; at += 1) {
+    const ch = text[at];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === "\\") escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') inString = true;
+    else if (ch === "{") objects.push(at);
+    else if (ch === "}") objects.pop();
+  }
+  return objects.at(-1) ?? -1;
+}
+
+function objectAt(text, index) {
+  const start = enclosingObjectStartAt(text, index);
+  if (start < 0) return null;
+  const objectText = scanBalancedObjectAt(text, start);
+  if (!objectText) return null;
+  try {
+    const value = JSON.parse(objectText);
+    return { start, end: start + objectText.length, value };
+  } catch {
+    return null;
+  }
+}
+
+function avObjectAt(text, index, entryAv) {
+  const object = objectAt(text, index);
+  if (!object) return null;
+  const path = activeSupportedAvContainer(text, object.start);
+  return isAvSource(object.value, path, entryAv || Boolean(path)) ? object : null;
+}
+
+function dateKeyAt(text, index, object) {
+  return (
+    text.slice(object.start, index).match(/"([^"]+)"\s*:\s*"[^"]*$/)?.[1] ??
+    text.slice(index, object.end).match(/^"([^"]+)"\s*:/)?.[1]
+  );
+}
+
+function classifiedAvDateFieldAt(text, index, entryAv) {
+  const object = avObjectAt(text, index, entryAv);
+  if (!object) return false;
+  const key = dateKeyAt(text, index, object);
+  return omitsAvDateField(object.value, key, true);
+}
+
+function classifiedAvDateFieldsInRange(text, start, end, entryAv) {
+  const fields = [];
+  const dateFieldRe = /"(?:created_at|date)"\s*:\s*"(?:\\.|[^"\\])*"/g;
+  let match;
+  while ((match = dateFieldRe.exec(text)) && match.index < end) {
+    const fieldEnd = match.index + match[0].length;
+    if (fieldEnd <= start || !classifiedAvDateFieldAt(text, match.index, entryAv)) continue;
+    const valueStart = match.index + match[0].indexOf('"', match[0].indexOf(":")) + 1;
+    fields.push({ start: match.index, end: fieldEnd, valueStart, valueEnd: fieldEnd - 1 });
+  }
+  return fields;
+}
+
+function snippetWithClassifiedAvDatesOmitted(text, start, end, entryAv) {
+  const fields = classifiedAvDateFieldsInRange(text, start, end, entryAv);
+  let snippet = text.slice(start, end);
+  for (const field of [...fields].reverse()) {
+    let removeStart = Math.max(field.start, start) - start;
+    let removeEnd = Math.min(field.end, end) - start;
+    while (/\s/.test(snippet[removeEnd] ?? "")) removeEnd += 1;
+    if (snippet[removeEnd] === ",") {
+      removeEnd += 1;
+      while (/\s/.test(snippet[removeEnd] ?? "")) removeEnd += 1;
+    } else {
+      let before = removeStart - 1;
+      while (before >= 0 && /\s/.test(snippet[before])) before -= 1;
+      if (snippet[before] === ",") removeStart = before;
+    }
+    snippet = `${snippet.slice(0, removeStart)}${snippet.slice(removeEnd)}`;
+  }
+  const prefix = start > 0 ? "..." : "";
+  const suffix = end < text.length ? "..." : "";
+  return cleanText(sanitizeUrlsInText(`${prefix}${snippet}${suffix}`));
+}
+
+function isClassifiedAvDateValueMatch(fields, matchStart, matchEnd) {
+  return fields.some((field) => field.valueStart <= matchStart && matchEnd <= field.valueEnd);
+}
+
 function collectClaimSnippets(entries, claimTerms, rankedItemsForDedupe) {
   const snippets = [];
   const seen = new Set();
@@ -522,20 +693,23 @@ function collectClaimSnippets(entries, claimTerms, rankedItemsForDedupe) {
     const re = termMatchRegExp(term, "gi");
     for (const [entryIndex, entry] of entries.entries()) {
       const text = splitExecuteResult(entry.result).body;
+      const entryAv = entryIsAv(entry);
       let match;
       let perTermEntryMatches = 0;
       while ((match = re.exec(text))) {
         const start = Math.max(0, match.index - 360);
         const end = Math.min(text.length, match.index + match[0].length + 360);
+        const dateFields = classifiedAvDateFieldsInRange(text, start, end, entryAv);
+        if (isClassifiedAvDateValueMatch(dateFields, match.index, match.index + match[0].length)) continue;
         const ranges = seenRangesByEntry.get(entryIndex) ?? [];
         if (ranges.some((range) => Math.max(start, range.start) < Math.min(end, range.end))) {
           perTermEntryMatches += 1;
           if (perTermEntryMatches >= 2) break;
           continue;
         }
-        const rawSnippet = snippetAround(text, match.index, match[0].length, 360);
-        const key = rawSnippet.slice(0, 220).toLowerCase();
-        if (!seen.has(key) && !overlapsSourceItem(rawSnippet, rankedItemsForDedupe)) {
+        const snippet = snippetWithClassifiedAvDatesOmitted(text, start, end, entryAv);
+        const key = snippet.slice(0, 220).toLowerCase();
+        if (!seen.has(key) && !overlapsSourceItem(snippet, rankedItemsForDedupe)) {
           seen.add(key);
           ranges.push({ start, end });
           seenRangesByEntry.set(entryIndex, ranges);
@@ -546,7 +720,7 @@ function collectClaimSnippets(entries, claimTerms, rankedItemsForDedupe) {
             matchIndex: match.index,
             tool: cleanText(entry.tool ?? `entry#${entryIndex + 1}`),
             resultChars: entry.resultChars ?? text.length,
-            snippet: rawSnippet
+            snippet
           });
         }
         perTermEntryMatches += 1;
@@ -661,25 +835,28 @@ function collectSourceItems(entries) {
   const items = [];
   entries.forEach((entry, entryIndex) => {
     const parsed = tryParseJsonPrefix(entry.result);
-    if (parsed) walkSourceItems(parsed, "", entryIndex, items);
-    for (const item of scanSourceItemsFromText(entry.result, entryIndex)) items.push(item);
+    const entryAv = entryIsAv(entry);
+    if (parsed) walkSourceItems(parsed, "", entryIndex, items, entryAv);
+    for (const item of scanSourceItemsFromText(entry.result, entryIndex, entryAv)) items.push(item);
   });
   return dedupeItems(items);
 }
 
-function collectRelevantFactsFromParsed(value, terms, path = "", out = []) {
+function collectRelevantFactsFromParsed(value, terms, path = "", out = [], entryAv = false) {
   if (!value || typeof value !== "object") return out;
   if (Array.isArray(value)) {
-    value.forEach((item, index) => collectRelevantFactsFromParsed(item, terms, `${path}[${index}]`, out));
+    value.forEach((item, index) => collectRelevantFactsFromParsed(item, terms, `${path}[${index}]`, out, entryAv));
     return out;
   }
+  const avSource = isAvSource(value, path, entryAv);
   for (const [key, raw] of Object.entries(value)) {
     const nextPath = path ? `${path}.${key}` : key;
     if (raw && typeof raw === "object") {
-      collectRelevantFactsFromParsed(raw, terms, nextPath, out);
+      collectRelevantFactsFromParsed(raw, terms, nextPath, out, entryAv);
       continue;
     }
     if (raw === undefined) continue;
+    if (omitsAvDateField(value, key, avSource)) continue;
     for (const fact of factValuesFromText(nextPath, raw, terms)) {
       if (!fact.value || fact.value.length > 120) continue;
       const score = termHits(`${fact.path} ${fact.value}`, terms).length +
@@ -707,7 +884,7 @@ function factValuesFromText(key, raw, terms) {
   return values;
 }
 
-function collectRelevantFactsFromText(result, terms) {
+function collectRelevantFactsFromText(result, terms, entryAv) {
   const body = splitExecuteResult(result).body;
   const facts = [];
   const scalarRe = /"((?:\\.|[^"\\]){1,90})"\s*:\s*("(?:\\.|[^"\\]){0,400}"|-?\d+(?:\.\d+)?|true|false|null)/g;
@@ -718,6 +895,8 @@ function collectRelevantFactsFromText(result, terms) {
     } catch {
       continue;
     }
+    const avObject = avObjectAt(body, match.index ?? 0, entryAv);
+    if (omitsAvDateField(avObject?.value, match[1], Boolean(avObject))) continue;
     for (const fact of factValuesFromText(match[1], raw, terms)) {
       if (!fact.value || fact.value.length > 200) continue;
       const hits = termHits(`${fact.path} ${fact.value}`, terms).length;
@@ -749,10 +928,11 @@ function collectRelevantFacts(entries, terms) {
   const facts = [];
   entries.forEach((entry, entryIndex) => {
     const parsed = tryParseJsonPrefix(entry.result);
+    const entryAv = entryIsAv(entry);
     if (parsed) {
-      for (const fact of collectRelevantFactsFromParsed(parsed, terms)) facts.push({ ...fact, entryIndex });
+      for (const fact of collectRelevantFactsFromParsed(parsed, terms, "", [], entryAv)) facts.push({ ...fact, entryIndex });
     }
-    for (const fact of collectRelevantFactsFromText(entry.result, terms)) facts.push({ ...fact, entryIndex });
+    for (const fact of collectRelevantFactsFromText(entry.result, terms, entryAv)) facts.push({ ...fact, entryIndex });
   });
   const seen = new Set();
   return facts

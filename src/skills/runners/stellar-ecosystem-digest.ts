@@ -60,9 +60,14 @@ const errData = (message: string, hint?: string): ErrEnvelope => ({
 
 type DigestItem = { type: ContentType; title: string; url: string | null; date: string | null; summary: string };
 
-/** Per-type date field: articles publish, events start, av/research created. */
-const itemDate = (row: Record<string, unknown>): string | null =>
-  str(row["publishing_date"]) ?? str(row["start_at"]) ?? str(row["created_at"]);
+/**
+ * A/V created_at has no verified recording-date meaning (ll-019). Every
+ * other collection keeps the existing publishing/start/created fallback.
+ */
+const itemDate = (type: ContentType, row: Record<string, unknown>): string | null => {
+  if (type === "av") return null;
+  return str(row["publishing_date"]) ?? str(row["start_at"]) ?? str(row["created_at"]);
+};
 
 /**
  * Project either operation's authored contract into the digest item list:
@@ -94,7 +99,7 @@ function projectItems(data: unknown): DigestItem[] | null {
         url ?? (id !== undefined && id !== null ? `id:${String(id)}` : `${type}:${title}`);
       if (seen.has(dedupKey)) continue;
       seen.add(dedupKey);
-      items.push({ type, title, url, date: itemDate(r), summary: trunc(r["summary"], 200) });
+      items.push({ type, title, url, date: itemDate(type, r), summary: trunc(r["summary"], 200) });
     }
   }
   items.sort((a, b) => {

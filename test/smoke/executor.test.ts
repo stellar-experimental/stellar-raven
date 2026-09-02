@@ -1188,6 +1188,9 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
         softEmpty: r.data.softEmpty,
         sectionsNonNull: [r.data.items, r.data.upcomingEvents].every((s) => s !== null),
         itemCount: r.data.items === null ? null : r.data.items.length,
+        avDates: r.data.items === null
+          ? null
+          : r.data.items.filter((item) => item.type === "av").map((item) => item.date),
         upcomingCount: r.data.upcomingEvents === null ? null : r.data.upcomingEvents.length,
         calls: r.data.calls.map((c) => ({ op: c.op, ok: c.ok })),
         envelopeTrap
@@ -1201,6 +1204,7 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
         softEmpty: boolean;
         sectionsNonNull: boolean;
         itemCount: number | null;
+        avDates: Array<string | null> | null;
         upcomingCount: number | null;
         calls: { op: string; ok: boolean }[];
         envelopeTrap: string;
@@ -1211,6 +1215,7 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
       expect(parsed.softEmpty).toBe(false);
       expect(parsed.sectionsNonNull).toBe(true);
       expect(parsed.itemCount).toBeGreaterThan(0);
+      expect(parsed.avDates).toEqual([null]);
       expect(parsed.upcomingCount).toBeGreaterThan(0);
       expect(parsed.calls.map((c) => c.op).sort()).toEqual([
         "lumenloop.list_documents",

@@ -3046,7 +3046,7 @@
   "paths": {
     "/lumenloop/find_av_passages": {
       "post": {
-        "description": "Find specific passages inside long AV transcripts via per-chunk embedding similarity. Use this when you want to quote what was said, not just \"which video\". Returns the parent video metadata plus the matched chunk text and its start offset.\n\nWhen to use: Find WHERE in videos/podcasts/spaces a topic is discussed — returns AI summaries of the matching passages plus an opaque ordering offset (NOT a playback timestamp). Use when you need \"the part of the talk where they discuss X\".\n\nReturns: Array of AV items with AI summary, created_at (the recording's date — use it to judge and cite how recent the talk is), start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds; do not render it as a timestamp or build a deep-link from it), and link. Transcript text itself is never returned — cite the link + the passage summary.",
+        "description": "Find specific passages in long videos, podcasts, and recorded talks by semantic similarity. Returns parent recording metadata, AI summaries, and an opaque ordering offset.\n\nWhen to use: Find WHERE in videos/podcasts/spaces a topic is discussed — returns AI summaries of the matching passages plus an opaque ordering offset (NOT a playback timestamp). Use when you need \"the part of the talk where they discuss X\".\n\nReturns: Array of AV items with AI summaries, created_at (upstream metadata; do not treat it as the recording date or recency evidence), start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds; do not render it as a timestamp or build a deep-link from it), and link. Transcript text itself is never returned — cite the link + the passage summary.",
         "operationId": "lumenloop.find_av_passages",
         "requestBody": {
           "content": {
@@ -3085,10 +3085,10 @@
         },
         "responses": {
           "200": {
-            "description": "Array of AV items with AI summary, created_at (the recording's date — use it to judge and cite how recent the talk is), start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds; do not render it as a timestamp or build a deep-link from it), and link. Transcript text itself is never returned — cite the link + the passage summary."
+            "description": "Array of AV items with AI summaries, created_at (upstream metadata; do not treat it as the recording date or recency evidence), start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds; do not render it as a timestamp or build a deep-link from it), and link. Transcript text itself is never returned — cite the link + the passage summary."
           }
         },
-        "summary": "Find specific passages inside long AV transcripts via per-chunk embedding similarity.",
+        "summary": "Find specific passages in long videos, podcasts, and recorded talks by semantic similarity.",
         "tags": [
           "lumenloop",
           "discovery"

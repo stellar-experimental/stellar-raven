@@ -73,6 +73,24 @@ export function judgeWithFakeClaude(
   );
 }
 
+/** Output from a child that exits without reading a large prompt. */
+export function judgeWithUnreadStdinFakeOutput({ stdout, exitCode = 0 }) {
+  return judgeWithFakeCli(
+    `#!/usr/bin/env node\n` +
+      `require("node:fs").writeSync(1, ${JSON.stringify(stdout)});\n` +
+      `process.exitCode = ${exitCode};\n`,
+    {
+      prefix: "qa-unread-stdin-claude-",
+      input: {
+        ...FAKE_JUDGE_INPUT,
+        // This 4 MiB input exceeds the 64 KiB Linux pipe buffer. The child
+        // exits first, so spawnSync must report EPIPE while writing the prompt.
+        candidateAnswer: "x".repeat(4 * 1024 * 1024)
+      }
+    }
+  );
+}
+
 /** A CLI that writes the given streams and exits nonzero. */
 export function judgeFailureWithFakeClaude({ stdout, stderr, exitCode = 1 }) {
   return judgeWithFakeCli(
