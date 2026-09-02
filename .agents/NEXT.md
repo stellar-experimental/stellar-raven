@@ -1,6 +1,6 @@
 # NEXT — current handoff
 
-Updated 2026-09-02 after the agent-queue integration closeout. Read this first.
+Updated 2026-09-02 after PR #117 merged. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 No unconditional agent-actionable block remains. Every open item is owner-blocked, trigger-only,
@@ -8,11 +8,10 @@ or monitor-only.
 
 ## State at handoff
 
-- Six reviewed blocks are integrated after PR #116. Their ledgers are listed under
-  "Completed blocks". Each ledger records its release baseline and its independent review.
-- At this ledger's pre-push fixed point, branch `codex/agent-queue-2026-09-02` is local, has no
-  upstream, and has no pull request. The owner authorized this task to push the branch, create the
-  pull request, and merge after all checks pass. Deployment remains a separate owner-blocked action.
+- Six reviewed blocks are merged on `main` through `5774a1e` (PR #117). Their ledgers are listed
+  under "Completed blocks". Each ledger records its release baseline and independent review.
+- PR #117 passed CI, CodeQL, secrets scanning, and independent closure review before it merged.
+  Deployment remains a separate owner-blocked action.
 - Production runs Worker Version `5ea8c1fe-e052-494d-b36b-ee8f5486a662` from source commit
   `ea01f0d03c2bba88f5846922465c6a03af57e41e`. The integrated tree carries two runtime changes
   that production does not serve yet: the `lumenloop.find_av_passages` contract in
@@ -41,9 +40,8 @@ or monitor-only.
 
 ### Deploy the integrated runtime changes
 
-The current task first pushes the branch, opens the pull request, and merges it under the owner's
-instruction. Deployment then requires separate authorization. Run `npm run deploy` after that
-authorization (the `predeploy` preflight runs), then verify production: `/playground`,
+PR #117 merged as `5774a1e`. Deployment requires separate authorization. Run `npm run deploy`
+after that authorization (the `predeploy` preflight runs), then verify production: `/playground`,
 `/health/skills`, an authorized MCP initialize, a free `search` call, and one free
 `codemode.skill.run` digest call that returns an A/V row with `date: null`. Record the new Worker
 Version and source commit here.
@@ -151,8 +149,7 @@ Safe default: no spend.
 
 ## Suggested sequence
 
-Complete the authorized push, pull request, and merge for this queue closeout.
-Then deploy the integrated runtime changes under separate authorization and verify production.
+Obtain separate authorization to deploy the integrated runtime changes and verify production.
 Then obtain the Raven capability-boundary and protocol-history decisions.
 Keep each paid action and production action behind its separate authorization.
 No current item has authorization for evaluation ladder stages 3 or 4.

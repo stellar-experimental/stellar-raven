@@ -23,6 +23,9 @@ Base: `3428631` (`main`, PR #116).
 | `1421ffe` | Digest A/V date policy | `.agents/rounds/2026-09-02-av-runtime-date-semantics.md` |
 | `c4a064b` | QA evidence pack `p6` | `.agents/rounds/2026-09-02-av-evidence-pack-source-date.md` |
 
+PR #117 was squash-merged. These commits, `8088467`, and `c11b185` remain reachable through
+`refs/pull/117/head`.
+
 Each block has an independent review with a final passing closure recorded in its ledger.
 
 ## Durable review
@@ -77,8 +80,14 @@ No saved artifact was available to recreate the missing ignored files.
 
 The final tree passed `npm run secrets:scan -- --tree` and `git diff --check`.
 
-The authorized external stages follow this commit: push, pull-request creation, checks, and merge.
+PR #117 completed the authorized push, checks, and merge as `5774a1e`.
 Deployment and production verification remain separate owner gates under `NEXT.md` stage 6.
+The Fable high post-merge documentation review is
+[`post-merge-docs-review-fable.md`](2026-09-02-agent-queue-closeout/post-merge-docs-review-fable.md).
+Its L1 finding required the durable `refs/pull/117/head` reachability note.
+The final closure review is
+[`post-merge-docs-review-fable-closure.md`](2026-09-02-agent-queue-closeout/post-merge-docs-review-fable-closure.md).
+It passed with no remaining finding.
 
 ## CI EPIPE repair
 
@@ -147,6 +156,8 @@ It changes no existing key semantics or comparability rule.
 - 2026-09-02: `ci-epipe-review-opus-closure.md` reported N1 and N2.
 - 2026-09-02: The additive T4 bucket and README definition reconciled N1 and N2.
 - 2026-09-02: `ci-epipe-review-opus-final-closure.md` passed with no new finding.
+- 2026-09-02: PR #117 passed CI, CodeQL, and secrets scanning, then merged as `5774a1e`.
+- 2026-09-02: Fable high found and closed the post-merge commit-reachability note.
 
 ## Outcome
 
@@ -154,5 +165,5 @@ The six integrated blocks and their queue documentation are complete.
 All required code, evaluation, review, secret, and diff checks passed.
 The missing ignored evidence artifacts remain an environment limit, not a product regression.
 The EPIPE closure review passed after the N1 and N2 repair.
-The authorized push, pull request, checks, merge, and repository cleanup follow this commit.
+PR #117 squash-merged the complete branch to `main` as `5774a1e`.
 Deployment remains outside this round and needs separate authorization.
