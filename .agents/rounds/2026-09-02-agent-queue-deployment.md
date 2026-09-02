@@ -75,7 +75,8 @@ and `/.well-known/oauth-protected-resource` returned `200`.
 The playground response carried Ray ID `a34fe91ac815bffa-ATL` and the unchanged CSP fingerprint.
 The health response carried Ray ID `a34fe92058a8aefb-ATL`, `ok: true`, and `checked: 41`.
 Its `checkedAt` value was `2026-09-02T22:07:40.732Z`.
-That field records the most recent scheduled canary, not the later HTTP request time.
+The timestamp marks the end of the last canary run stored by the cron trigger.
+It is not the later `/health/skills` request time.
 An unauthenticated MCP initialize returned `401` with Ray ID `a34fe98f187fed80-ATL` and the
 expected OAuth challenge.
 
