@@ -136,6 +136,7 @@ import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
   answeringAgentIsolationRecord,
+  assertFailClosedCliSyntax,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
@@ -191,6 +192,35 @@ const AGENT_TIMEOUT_MS = 10 * 60_000;
 const SURFACES = new Set(["search-execute", "per-operation"]);
 /** Repository root — the directory an answering agent must NOT be spawned in. */
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
+const RUN_QA_VALUE_FLAGS = [
+  "--cases",
+  "--expect-agent-binary-sha256",
+  "--expect-agent-environment-sha256",
+  "--expect-sha256",
+  "--ids",
+  "--judge-model",
+  "--judge-panel",
+  "--judge-stored",
+  "--max-budget-usd",
+  "--max-panel-cases",
+  "--model",
+  "--port",
+  "--sample",
+  "--search-tool",
+  "--server-revision",
+  "--stability-register",
+  "--surface",
+  "--variant"
+];
+const RUN_QA_BOOLEAN_FLAGS = ["--no-judge"];
+
+export function assertRunQaCliSyntax(args) {
+  assertFailClosedCliSyntax(args, {
+    valueFlags: RUN_QA_VALUE_FLAGS,
+    booleanFlags: RUN_QA_BOOLEAN_FLAGS,
+    label: "run-qa"
+  });
+}
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -1420,6 +1450,7 @@ export function collectionAggregates(rows, cases, { judging }) {
 
 async function main() {
   const args = process.argv.slice(2);
+  assertRunQaCliSyntax(args);
   const ids = parseOptionalIdsFlag(args);
   const argVal = (flag) => {
     const i = args.indexOf(flag);

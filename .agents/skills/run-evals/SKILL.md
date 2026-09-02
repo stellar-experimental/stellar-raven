@@ -131,8 +131,12 @@ each sequential answering or judge call. Reported cost reduces the ledger, exhau
 next call, and the artifact retains incomplete and unattempted IDs. A budgeted call with no
 reported cost invalidates the method. Record the real CLI path, version, and hash.
 
-For `run-qa.mjs` and `run-agent-discovery.mjs`, `--ids` accepts one spaced `--ids a,b,c` form.
-The runners reject `--ids=a,b,c` and duplicate `--ids` flags before any paid call.
+`run-qa.mjs` and `run-agent-discovery.mjs` use fail-closed CLI syntax.
+Every value flag requires the spaced `--flag value` form.
+`--no-judge` is the only boolean flag in either runner and uses its bare form.
+Both runners reject every equals form, unknown flag, and stray argument before any paid call.
+Required paid-run flags still reject missing values and duplicates.
+`--ids` also rejects duplicates in both runners.
 
 **Incomplete lanes are incomplete, not smaller.** Harnesses that catch per-job failures and filter
 them out (`eval/agentic/workflow-agentic-routing.js`) shrink the denominator silently, so

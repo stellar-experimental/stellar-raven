@@ -186,9 +186,9 @@ before spending. The runner checks the listener, revision, clean state, compiled
 and surface again after collection. It rejects a comparison if these values change.
 It still writes the paid rows. It marks the artifact as non-comparable and suppresses aggregates.
 
-Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as two
-arguments. Collection also requires the server revision and surface SHA-256 flags in that form.
-The runner rejects an absent, duplicate, missing, malformed, mismatched, or equals-form required
+Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as spaced pairs.
+Collection also requires the server revision and surface SHA-256 flags in that form.
+The runner rejects an absent, duplicate, missing, malformed, or mismatched required
 flag before an answering-agent or judge call. Compute the environment value after all
 Claude-related environment variables have their final values. Use the same shell for this command
 and the paid run:
@@ -200,12 +200,14 @@ AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmen
 The result records the observed `sha256`, the `expectedSha256`, and `matches: true`. Collection
 stores this identity at `meta.agentEnvironment.inherited`. Stored judging uses
 `meta.judgeEnvironment`. Both locations record environment names, but they do not record values.
-Every paid runner command requires exactly one `--max-budget-usd <usd>` flag. Duplicate budget
-flags fail before any call. `--ids` accepts only one spaced `--ids a,b,c` form.
+`run-qa.mjs` uses fail-closed CLI syntax.
+`--no-judge` is the only boolean flag and uses its bare form.
+Every other supported flag requires one spaced value.
+The runner rejects every equals form, unknown flag, and stray argument before any paid call.
+`--ids` accepts only one spaced `--ids a,b,c` form.
 The runner rejects `--ids=a,b,c` and duplicate `--ids` flags before any paid call.
 The `--judge-stored` mode rejects `--ids`; use `re-judge.mjs --ids` for stored rows.
-Other flags include `--no-judge`, `--model`, `--judge-model`, `--cases <path>`,
-and `--surface per-operation` for the isolated 50-operation architecture instrument
+Use `--surface per-operation` for the isolated 50-operation architecture instrument
 (`compare-architecture-ab.mjs`). Variant A = the shipped `search` (ADR-0001); B requires a
 build exposing a code-shaped tool plus `--search-tool`. Results land in
 `eval/qa/results/<stamp>-variant<X>.json` (local-only): rows carry `truth.status`/`truth.asOf`

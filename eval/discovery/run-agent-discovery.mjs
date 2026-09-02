@@ -13,6 +13,7 @@ import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
   answeringAgentIsolationRecord,
+  assertFailClosedCliSyntax,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
@@ -66,6 +67,29 @@ const DEFAULT_EFFORT = "medium";
 const MAX_SEARCHES = 3;
 const MAX_TURNS = 6;
 const TIMEOUT_MS = 5 * 60_000;
+const AGENT_DISCOVERY_VALUE_FLAGS = [
+  "--cases",
+  "--effort",
+  "--expect-agent-binary-sha256",
+  "--expect-agent-environment-sha256",
+  "--expect-sha256",
+  "--ids",
+  "--max-budget-usd",
+  "--model",
+  "--repeat",
+  "--run-label",
+  "--server-revision",
+  "--url"
+];
+const AGENT_DISCOVERY_BOOLEAN_FLAGS = [];
+
+export function assertAgentDiscoveryCliSyntax(args) {
+  assertFailClosedCliSyntax(args, {
+    valueFlags: AGENT_DISCOVERY_VALUE_FLAGS,
+    booleanFlags: AGENT_DISCOVERY_BOOLEAN_FLAGS,
+    label: "run-agent-discovery"
+  });
+}
 
 const OUTPUT_SCHEMA = {
   type: "object",
@@ -132,6 +156,7 @@ export function parseOptionalIdsFlag(args) {
 }
 
 export function parsePaidRunPreconditions(args) {
+  assertAgentDiscoveryCliSyntax(args);
   const ids = parseOptionalIdsFlag(args);
   return {
     agentBinarySha256: requiredPaidFlag(args, "--expect-agent-binary-sha256"),

@@ -36,7 +36,10 @@ failure and suppresses all aggregates.
 
 The paid runner requires one space-separated value for each required flag: the binary pin,
 environment pin, total budget, `--server-revision`, and `--expect-sha256`.
-It rejects missing, duplicate, empty, and `--flag=value` forms before an agent starts.
+It rejects missing, duplicate, and empty required flags before an agent starts.
+The paid runner uses fail-closed CLI syntax and has no boolean flags.
+Every supported flag requires one spaced value.
+It rejects every equals form, unknown flag, and stray argument before any paid call.
 Each agent receives only its remaining budget authorization.
 Missing, invalid, and excessive costs fail the run.
 The result artifact records every authorization, reported cost, and remaining amount.

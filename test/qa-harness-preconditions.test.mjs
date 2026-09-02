@@ -30,6 +30,7 @@ import {
   projectSearchResult
 } from "../eval/qa/search-projection.mjs";
 import {
+  assertRunQaCliSyntax,
   buildAgentSpawn,
   collectionAggregates,
   parseOptionalIdsFlag,
@@ -44,6 +45,7 @@ import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
   answeringAgentIsolationRecord,
+  assertFailClosedCliSyntax,
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
@@ -596,6 +598,142 @@ describe("run-qa optional IDs selector guards", () => {
       expect(result.stderr).toMatch(/--judge-stored and --ids are contradictory/);
       expect(fixture.paidCalls()).toEqual([]);
       expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("fail-closed CLI syntax helper", () => {
+  const syntax = {
+    valueFlags: ["--cases", "--cases-ref", "--model", "--sample"],
+    booleanFlags: ["--dry-run"],
+    label: "fixture"
+  };
+
+  it("accepts multiple declared spaced flags and a bare boolean flag", () => {
+    expect(() => assertFailClosedCliSyntax([
+      "--sample", "30",
+      "--model", "fixture-model",
+      "--dry-run"
+    ], syntax)).not.toThrow();
+  });
+
+  it.each([
+    ["an empty equals form", ["--sample="], /--sample=<value> is not supported/],
+    ["an equals form after another flag", ["--model", "fixture-model", "--sample=30"], /--sample=<value> is not supported/],
+    ["an unknown flag", ["--unknown"], /fixture: unknown flag --unknown/],
+    ["a stray argument", ["stray"], /fixture: unexpected positional argument "stray"/]
+  ])("rejects %s", (_name, args, message) => {
+    expect(() => assertFailClosedCliSyntax(args, syntax)).toThrow(message);
+  });
+
+  it("matches --cases-ref only when that exact flag is declared", () => {
+    expect(() => assertFailClosedCliSyntax(["--cases-ref", "HEAD"], syntax)).not.toThrow();
+    expect(() => assertFailClosedCliSyntax(["--cases-ref=HEAD"], syntax))
+      .toThrow(/--cases-ref=<value> is not supported; use --cases-ref <value>/);
+  });
+});
+
+describe("run-qa residual optional flag guards", () => {
+  it.each([
+    ["--sample=1", /--sample=<value> is not supported/],
+    ["--model=fixture-agent", /--model=<value> is not supported/],
+    ["--judge-model=fixture-judge", /--judge-model=<value> is not supported/],
+    ["--cases=fixture-cases.json", /--cases=<value> is not supported/],
+    ["--variant=B", /--variant=<value> is not supported/],
+    ["--max-panel-cases=10", /--max-panel-cases=<value> is not supported/],
+    ["--no-judge=true", /--no-judge=<value> is not supported; use --no-judge/],
+    ["--judge-panel=3", /--judge-panel=<value> is not supported/],
+    ["--stability-register=fixture.json", /--stability-register=<value> is not supported/],
+    ["--surface=per-operation", /--surface=<value> is not supported/],
+    ["--search-tool=fixture-search", /--search-tool=<value> is not supported/],
+    ["--port=8790", /--port=<value> is not supported/],
+    ["--judge-stored=fixture.json", /--judge-stored=<value> is not supported/]
+  ])("rejects %s before a fake judge call", (optionalArg, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "optional-equals");
+      const result = fixture.run(resultsPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        optionalArg
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+      expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ["an unknown flag", "--unknown", /run-qa: unknown flag --unknown/],
+    ["a stray argument", "stray", /run-qa: unexpected positional argument "stray"/]
+  ])("rejects %s before a fake judge call", (_name, arg, message) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "fail-closed");
+      const result = fixture.run(resultsPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        arg
+      ]);
+
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(message);
+      expect(fixture.paidCalls()).toEqual([]);
+      expect(JSON.parse(readFileSync(resultsPath, "utf8")).rows[0].verdict).toBeNull();
+    } finally {
+      rmSync(fixture.root, { recursive: true, force: true });
+    }
+  });
+
+  it("preserves every declared spaced value and bare boolean form", () => {
+    expect(() => assertRunQaCliSyntax([
+      "--cases", "fixture-cases.json",
+      "--expect-agent-binary-sha256", "binary",
+      "--expect-agent-environment-sha256", "environment",
+      "--expect-sha256", "surface",
+      "--ids", "q-example",
+      "--judge-model", "fixture-judge",
+      "--judge-panel", "2",
+      "--judge-stored", "fixture-results.json",
+      "--max-budget-usd", "1",
+      "--max-panel-cases", "10",
+      "--model", "fixture-agent",
+      "--no-judge",
+      "--port", "8788",
+      "--sample", "30",
+      "--search-tool", "search",
+      "--server-revision", "revision",
+      "--stability-register", "fixture-stability.json",
+      "--surface", "search-execute",
+      "--variant", "A"
+    ])).not.toThrow();
+  });
+
+  it.each([
+    ["--sample", "1"],
+    ["--model", "fixture-agent"],
+    ["--judge-model", "fixture-judge"],
+    ["--cases", "fixture-cases.json"],
+    ["--variant", "B"]
+  ])("preserves the spaced %s form", (flag, value) => {
+    const fixture = createEnvironmentPinCliFixture();
+    try {
+      const resultsPath = writeEnvironmentPinFixture(fixture.root, "optional-spaced");
+      const result = fixture.run(resultsPath, [
+        "--expect-agent-environment-sha256",
+        fixture.environmentSha256,
+        flag,
+        value
+      ]);
+
+      expect(result.status, result.stderr).toBe(0);
+      expect(fixture.paidCalls()).toEqual(["paid"]);
     } finally {
       rmSync(fixture.root, { recursive: true, force: true });
     }

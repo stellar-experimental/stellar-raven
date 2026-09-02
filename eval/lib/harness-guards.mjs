@@ -2,7 +2,7 @@
  * harness-guards.mjs — pre-spend and pre-aggregate guards shared by every
  * agent-spawning eval lane.
  *
- * Two failure modes these guards exist for, both observed:
+ * Three failure modes these guards exist for, all observed:
  *
  * 1. An answering agent spawned inside this repository reads AGENTS.md and
  *    CLAUDE.md as project instructions. Those files describe the measurement
@@ -11,6 +11,9 @@
  *    (`.agents/rounds/2026-08-26-connectors-contract.md`).
  * 2. A lane that loses rows still prints a clean percentage. The denominator
  *    shrinks silently and the aggregate reads as full coverage.
+ * 3. Paid runners silently ignored unsupported CLI syntax. The 2026-09-02
+ *    residual-flag review recorded spend and comparability failures
+ *    (`.agents/rounds/2026-09-02-residual-optional-flag-guards/review-opus.md`).
  *
  * PURITY: no fs, no spawn, no clock, no network. Callers create their own
  * temporary directories and pass the path in.
@@ -19,6 +22,48 @@ import path from "node:path";
 
 /** The explicit MCP server every paid answering agent must connect to. */
 export const REQUIRED_MCP_SERVER_NAME = "raven";
+
+/** Accept only declared spaced-value and bare-boolean CLI forms. */
+export function assertFailClosedCliSyntax(
+  args,
+  { valueFlags, booleanFlags, label = "command" }
+) {
+  const values = new Set(valueFlags);
+  const booleans = new Set(booleanFlags);
+  for (const flag of values) {
+    if (booleans.has(flag)) {
+      throw new Error(`${label}: ${flag} cannot be both a value flag and a boolean flag`);
+    }
+  }
+
+  for (let index = 0; index < args.length; index++) {
+    const arg = args[index];
+    if (values.has(arg)) {
+      const value = args[++index];
+      if (value === undefined || value === "" || value.startsWith("--")) {
+        throw new Error(`${arg} requires a value`);
+      }
+      continue;
+    }
+    if (booleans.has(arg)) continue;
+
+    if (arg.startsWith("--")) {
+      const equalsIndex = arg.indexOf("=");
+      if (equalsIndex !== -1) {
+        const flag = arg.slice(0, equalsIndex);
+        if (values.has(flag)) {
+          throw new Error(`${flag}=<value> is not supported; use ${flag} <value>`);
+        }
+        if (booleans.has(flag)) {
+          throw new Error(`${flag}=<value> is not supported; use ${flag}`);
+        }
+      }
+      throw new Error(`${label}: unknown flag ${arg}`);
+    }
+
+    throw new Error(`${label}: unexpected positional argument ${JSON.stringify(arg)}`);
+  }
+}
 
 /**
  * Claude answering agents need explicit MCP access. Safe mode cannot be used:

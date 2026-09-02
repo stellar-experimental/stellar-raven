@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
+  assertAgentDiscoveryCliSyntax,
   buildDiscoveryAgentArgs,
   collectBudgetedAgentRun,
   formatRunFailure,
@@ -136,6 +137,93 @@ describe("agent-discovery paid-run flag guards", () => {
   it("preserves a spaced --ids selector", () => {
     expect(parseOptionalIdsFlag(["--ids", "discovery-001,discovery-002"]))
       .toBe("discovery-001,discovery-002");
+  });
+
+  describe("residual optional flag guards", () => {
+    it.each([
+      ["--repeat=3", /--repeat=<value> is not supported/],
+      ["--model=fixture-model", /--model=<value> is not supported/],
+      ["--effort=high", /--effort=<value> is not supported/],
+      ["--cases=fixture-cases.json", /--cases=<value> is not supported/],
+      ["--run-label=arm-b", /--run-label=<value> is not supported/],
+      ["--url=http:\/\/localhost:8787", /--url=<value> is not supported/]
+    ])("rejects %s before the paid continuation", (optionalArg, message) => {
+      const fixture = createCliFixture();
+      try {
+        const args = [...requiredArgs(fixture), optionalArg];
+        const continuations = [];
+        expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
+          .toThrow(message);
+        expect(continuations).toEqual([]);
+
+        const result = fixture.run(args);
+        expect(result.status).not.toBe(0);
+        expect(result.stderr).toMatch(message);
+        expect(fixture.paidCalls()).toEqual([]);
+      } finally {
+        rmSync(fixture.root, { recursive: true, force: true });
+      }
+    });
+
+    it.each([
+      ["an unknown flag", "--unknown", /run-agent-discovery: unknown flag --unknown/],
+      ["a stray argument", "stray", /run-agent-discovery: unexpected positional argument "stray"/]
+    ])("rejects %s before the paid continuation", (_name, arg, message) => {
+      const fixture = createCliFixture();
+      try {
+        const args = [...requiredArgs(fixture), arg];
+        const continuations = [];
+        expect(() => withPaidRunPreconditions(args, (paidRun) => continuations.push(paidRun)))
+          .toThrow(message);
+        expect(continuations).toEqual([]);
+
+        const result = fixture.run(args);
+        expect(result.status).not.toBe(0);
+        expect(result.stderr).toMatch(message);
+        expect(fixture.paidCalls()).toEqual([]);
+      } finally {
+        rmSync(fixture.root, { recursive: true, force: true });
+      }
+    });
+
+    it("preserves every declared spaced value form", () => {
+      expect(() => assertAgentDiscoveryCliSyntax([
+        "--cases", "fixture-cases.json",
+        "--effort", "high",
+        "--expect-agent-binary-sha256", "binary",
+        "--expect-agent-environment-sha256", "environment",
+        "--expect-sha256", "surface",
+        "--ids", "discovery-001",
+        "--max-budget-usd", "1",
+        "--model", "fixture-model",
+        "--repeat", "3",
+        "--run-label", "arm-b",
+        "--server-revision", "revision",
+        "--url", "http://localhost:8787"
+      ])).not.toThrow();
+    });
+
+    it.each([
+      ["--repeat", "3"],
+      ["--model", "fixture-model"],
+      ["--effort", "high"],
+      ["--cases", "fixture-cases.json"]
+    ])("preserves the spaced %s form", (flag, value) => {
+      const args = [
+        "--expect-agent-binary-sha256", "a".repeat(64),
+        "--expect-agent-environment-sha256", "b".repeat(64),
+        "--max-budget-usd", "1",
+        "--server-revision", "c".repeat(40),
+        "--expect-sha256", "d".repeat(64),
+        flag, value
+      ];
+      const continuations = [];
+      expect(withPaidRunPreconditions(args, (paidRun) => {
+        continuations.push(paidRun);
+        return "continued";
+      })).toBe("continued");
+      expect(continuations).toHaveLength(1);
+    });
   });
 
   it("passes each remaining authorization to the agent command", () => {
