@@ -145,23 +145,18 @@ attempt-three brief. One new target capture or one-case improvement does not clo
 Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
 our ranking.
 
-## Catalog correctness
-
-### Stop using A/V `created_at` for stellar-ecosystem-digest date sorting
-
-`src/skills/runners/stellar-ecosystem-digest.ts` uses A/V `created_at` for
-date filtering and descending date sorting. The DEVCON 2024 row `av_id` 445
-has `created_at` `2026-04-02T23:21:21.744Z`. Row `av_id` 1162 has
-`created_at` `2026-04-28T05:25:34.817Z`. Upstream's `returns` text calls the
-field the recording date, but live rows contradict it. The real field meaning
-is undocumented.
-
-Discovery sources: `.agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md`
-P6 and `.agents/rounds/2026-09-02-av-created-at-semantics/review-fable-closure.md` M3.
-
-Done when: A/V rows are undated or dated only from a verified recording field.
-
 ## Eval instruments
+
+### Stop treating A/V `created_at` as a QA evidence-pack source date
+
+`eval/qa/evidence-pack.mjs` uses `created_at` in its generic `sourceDate` fallback.
+An A/V row can therefore expose ingest metadata as its source date in a judge evidence pack.
+This is the same field whose recording-date meaning live rows contradicted.
+
+Discovery source: `.agents/rounds/2026-09-02-av-runtime-date-semantics.md`, Review.
+
+Done when: A/V `created_at` is omitted or labeled as metadata without changing verified date
+handling for other source types. Focused deterministic fixtures must cover A/V and non-A/V rows.
 
 ### Harden optional selector flags in both paid runners
 

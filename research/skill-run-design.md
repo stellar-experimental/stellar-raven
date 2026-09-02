@@ -342,6 +342,12 @@ live-lane grading expectation).
   limit: perTypeLimit })` only (a generic upcoming-events list is off-subject noise for an
   entity digest).
 
+The projection treats A/V rows as undated because no verified recording or event date field is
+present. It does not use A/V `created_at` as recency evidence. Other collections keep the
+`publishing_date` → `start_at` → `created_at` fallback.
+Upstream still applies `date_start` and `date_end` to A/V rows on an undocumented basis.
+The digest keeps those rows but never restates the window as their date.
+
 **outputSchema** (prose form):
 
 ```ts
