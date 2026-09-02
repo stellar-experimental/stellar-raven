@@ -1,6 +1,6 @@
 # NEXT — current handoff
 
-Updated 2026-09-01 after the reviewed release deployment. Read this first.
+Updated 2026-09-01 after the agent-discovery paid-run guard review. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 One unconditional agent-actionable block remains.
@@ -60,18 +60,22 @@ One unconditional agent-actionable block remains.
 - The cache-only support referee and its 18 tests are frozen at commit `24de1220`.
 - The owned QA battery contains 500 cases as of 2026-08-28. The committed QA record now includes
   the first `qa-five-track-v1` same-100 checkpoint.
+- Agent discovery now requires one binary pin, environment pin, budget, server revision, and
+  surface pin before any runner action. One total ledger controls all agent calls.
+- Focused tests cover every rejected required-pin form without a provider call.
+- Independent Opus 5 review reconciled all required-pin, spend-provenance, test, and reporting
+  findings.
 
 ## Agent-actionable block
 
-### Add paid-run preconditions to agent discovery
+### Harden optional selector flags in both paid runners
 
 Use `run-evals`.
 
-`eval/discovery/run-agent-discovery.mjs` still lacks the QA runner's required environment and
-budget pins. Its binary pin also accepts duplicate and equals-form values.
+`eval/qa/run-qa.mjs` and `eval/discovery/run-agent-discovery.mjs` both silently ignore
+`--ids=a,b`. A duplicate `--ids` silently uses the first value.
 
-Add fail-closed binary, environment, and total-budget preconditions.
-Record complete spend provenance.
+Reject equals and duplicate `--ids` forms in both paid runners before any paid call.
 Add focused tests that prove every rejected form makes zero paid calls.
 Do not make a provider call while implementing or testing this block.
 
@@ -117,6 +121,8 @@ diagnostic, product gate, stop rules, and separate authorization boundaries.
 
 ## Completed blocks
 
+- Agent-discovery paid-run guards: required binary, environment, budget, revision, and surface
+  flags fail closed. One total spend ledger and complete provenance now cover every agent call.
 - Release closeout: PRs #112, #113, and #114 merged. Version
   `5ea8c1fe-e052-494d-b36b-ee8f5486a662` passed production verification.
 - Free improvements maintenance: four resolver receipts are in `improvements/resolved.json`.
@@ -186,7 +192,7 @@ Safe default: stay trigger-only. Never lower the 19-of-19 bar because three mech
 ## Suggested sequence
 
 The production release, QA environment pin, and free Raven evidence are complete.
-Harden the discovery runner next without provider spend.
+Harden optional `--ids` forms in both paid runners next without provider spend.
 Obtain the Raven capability-boundary decision when ready.
 Keep each paid action and production action behind its separate authorization.
 No current item has authorization for evaluation ladder stages 3 or 4.

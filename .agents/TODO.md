@@ -161,16 +161,17 @@ recording-date claim from returning.
 
 ## Eval instruments
 
-### Add paid-run preconditions to agent discovery
+### Harden optional selector flags in both paid runners
 
-The final 2026-09-01 release review found a separate paid runner without the QA preconditions.
-`eval/discovery/run-agent-discovery.mjs` accepts duplicate or equals-form binary pins.
-It also has no required environment pin or total budget flag.
-The current behavior predates the release and is outside its validated QA runner change.
+`eval/qa/run-qa.mjs` and `eval/discovery/run-agent-discovery.mjs` both read `--ids` with a plain
+first-match helper. The `--ids=a,b` form is silently ignored and expands the run to the full case
+list. A duplicate `--ids` silently takes the first value.
 
-Done when: the discovery runner fails before spend for every missing or malformed required pin.
-It must enforce a total budget and record complete spend provenance.
-Focused tests must prove that each rejected form makes zero paid calls.
+The total budget caps the dollar loss. It does not preserve the selected scope or comparability.
+The 2026-09-01 agent-discovery guard review found this issue after the required-pin work passed.
+
+Done when: both runners reject equals and duplicate `--ids` forms before spend.
+Focused tests must cover each rejected form and prove that no paid call starts.
 
 ### Monitor vendor short-token prefix matching
 

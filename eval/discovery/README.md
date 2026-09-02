@@ -11,7 +11,9 @@ node eval/discovery/run-discovery.mjs --url http://localhost:8788
 SERVER_REVISION=$(git rev-parse HEAD)
 SURFACE_SHA256=<surfaceSha256 from eval/report-live-surface.mjs>
 AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
-node eval/discovery/run-agent-discovery.mjs --url http://localhost:8787 --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256"
+AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
+MAX_BUDGET_USD=<approved total USD cap>
+node eval/discovery/run-agent-discovery.mjs --url http://localhost:8787 --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --max-budget-usd "$MAX_BUDGET_USD"
 node eval/discovery/run-replay.mjs --url http://localhost:8787
 ```
 
@@ -31,6 +33,13 @@ configuration and the existing permission-bypass flag. It does not use Claude `-
 because Claude Code 2.1.247 drops explicit MCP servers in that mode.
 Each row must report the explicit `raven` server as `connected`. The runner stops after the first
 failure and suppresses all aggregates.
+
+The paid runner requires one space-separated value for each required flag: the binary pin,
+environment pin, total budget, `--server-revision`, and `--expect-sha256`.
+It rejects missing, duplicate, empty, and `--flag=value` forms before an agent starts.
+Each agent receives only its remaining budget authorization.
+Missing, invalid, and excessive costs fail the run.
+The result artifact records every authorization, reported cost, and remaining amount.
 
 Results are written to `eval/discovery/results/<ISO-stamp>.json` and are local evidence, matching the existing eval results convention.
 
