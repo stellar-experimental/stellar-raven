@@ -1,6 +1,6 @@
 # Agent queue deployment — 2026-09-02
 
-Status: pre-deployment pull request ready
+Status: complete
 
 ## Scope and authorization
 
@@ -8,10 +8,11 @@ The owner authorized commit, push, merge, and production deployment on 2026-09-0
 This round deploys the runtime changes merged through PR #117.
 It also records the deployed Worker Version and updates the current handoff.
 
-The intended source starts from `32eaa9524b5f76f573df906ddaacea18e679409e` on `origin/main`.
-The exact target will be the clean `origin/main` commit after this pre-deployment repair merges.
-The preflight must prove that `HEAD` equals `origin/main` before deployment.
-`DEPLOY_ALLOW_UNCLEAN` is not authorized.
+The dependency repair merged through PR #119 as
+`0c71b99c02425307be5ef5c5c4ff1ef05935663d`.
+The deployment used that exact clean `origin/main` commit.
+The preflight proved that `HEAD` equaled `origin/main`.
+`DEPLOY_ALLOW_UNCLEAN` was not used.
 
 ## Rollback target and pre-deployment read
 
@@ -49,16 +50,39 @@ The assembled Worker contains no `adm-zip`, `sharp`, or `onnxruntime-node` modul
 - The dry-run upload was 7,053.07 KiB and 1,410.85 KiB compressed.
 - `npm audit --omit=dev` reported zero vulnerabilities.
 - `npm run secrets:scan -- --tree` and `git diff --check` passed.
+- PR #119 passed CI, CodeQL, secrets scanning, and test checks.
+- Copilot recommended approval and generated no review comments.
+- Exact-main CI run `33689321189` and CodeQL run `33689320523` passed.
 
 ## Required gates
 
 - Production dependency audit reports zero vulnerabilities. Complete.
 - Baseline typecheck, unit tests, smoke tests, and build pass. Complete.
 - Secrets scanning and diff checks pass. Complete.
-- Pull-request checks pass and every legitimate review comment is reconciled.
-- The deployed tree is clean and exactly equals `origin/main`.
+- Pull-request checks pass and every legitimate review comment is reconciled. Complete.
+- The deployed tree is clean and exactly equals `origin/main`. Complete.
 - Production verification covers every endpoint and MCP probe required by `.agents/NEXT.md`.
+  Complete.
 
 ## Deployment outcome
 
-Pending.
+Wrangler completed the production deployment at `2026-09-02T22:16:20.411844Z`.
+Production runs Worker Version `f62b64fa-1fb7-4c25-970d-7f98c83ab302` at 100 percent.
+The deployed source is `0c71b99c02425307be5ef5c5c4ff1ef05935663d`.
+The rollback Worker Version remains `5ea8c1fe-e052-494d-b36b-ee8f5486a662`.
+
+After propagation, `/playground`, `/health/skills`, `/`, `/docs`, `/terms`, both public aliases,
+and `/.well-known/oauth-protected-resource` returned `200`.
+The playground response carried Ray ID `a34fe91ac815bffa-ATL` and the unchanged CSP fingerprint.
+The health response carried Ray ID `a34fe92058a8aefb-ATL`, `ok: true`, and `checked: 41`.
+Its `checkedAt` value was `2026-09-02T22:07:40.732Z`.
+An unauthenticated MCP initialize returned `401` with Ray ID `a34fe98f187fed80-ATL` and the
+expected OAuth challenge.
+
+The authenticated production MCP connector initialized and completed a free `search` call.
+The search returned `skills.lumenloop.stellar-ecosystem-digest` as its first hit.
+One free digest run covered Blend from 2026-06-04 through 2026-09-02.
+It returned 10 articles and seven A/V items without a constituent-call error.
+All seven A/V items carried `date: null`, as required by the deployed contract.
+
+No review comment remains unresolved. Production verification passed without rollback.

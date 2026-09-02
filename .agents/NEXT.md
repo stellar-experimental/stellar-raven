@@ -1,6 +1,6 @@
 # NEXT — current handoff
 
-Updated 2026-09-02 after PR #117 merged. Read this first.
+Updated 2026-09-02 after production deployment. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 No unconditional agent-actionable block remains. Every open item is owner-blocked, trigger-only,
@@ -8,15 +8,14 @@ or monitor-only.
 
 ## State at handoff
 
-- Six reviewed blocks are merged on `main` through `5774a1e` (PR #117). Their ledgers are listed
-  under "Completed blocks". Each ledger records its release baseline and independent review.
-- PR #117 passed CI, CodeQL, secrets scanning, and independent closure review before it merged.
-  Deployment remains a separate owner-blocked action.
-- Production runs Worker Version `5ea8c1fe-e052-494d-b36b-ee8f5486a662` from source commit
-  `ea01f0d03c2bba88f5846922465c6a03af57e41e`. The integrated tree carries two runtime changes
-  that production does not serve yet: the `lumenloop.find_av_passages` contract in
-  `catalog/manifest.json` and `specs/super-spec.json`, and A/V `date: null` in
-  `src/skills/runners/stellar-ecosystem-digest.ts`. Deployment needs its own authorization.
+- The reviewed queue is merged on `main` through `0c71b99` (PR #119). The completed ledgers below
+  record each release baseline and independent review.
+- PR #119 passed CI, CodeQL, secrets scanning, and test checks before it merged. Its compatible
+  transitive refresh leaves `npm audit --omit=dev` at zero vulnerabilities.
+- Production runs Worker Version `f62b64fa-1fb7-4c25-970d-7f98c83ab302` from source commit
+  `0c71b99c02425307be5ef5c5c4ff1ef05935663d`. Post-deployment checks passed the public routes,
+  authenticated MCP search and execute, and the digest A/V `date: null` contract. The deployment
+  record is `.agents/rounds/2026-09-02-agent-queue-deployment.md`.
 - Both paid runners use fail-closed CLI syntax. Every value flag needs the spaced form.
   Equals forms, unknown flags, stray arguments, and duplicate `--ids` fail before any paid call.
 - The QA evidence pack is `p6`. Detected A/V rows omit `created_at` and any `date` derived from
@@ -37,14 +36,6 @@ or monitor-only.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
 
 ## Owner-blocked blocks
-
-### Deploy the integrated runtime changes
-
-PR #117 merged as `5774a1e`. Deployment requires separate authorization. Run `npm run deploy`
-after that authorization (the `predeploy` preflight runs), then verify production: `/playground`,
-`/health/skills`, an authorized MCP initialize, a free `search` call, and one free
-`codemode.skill.run` digest call that returns an A/V row with `date: null`. Record the new Worker
-Version and source commit here.
 
 ### Classify the Raven capability boundary
 
@@ -77,6 +68,7 @@ diagnostic, product gate, stop rules, and separate authorization boundaries.
 - Digest A/V date policy: `.agents/rounds/2026-09-02-av-runtime-date-semantics.md`.
 - QA evidence pack `p6`: `.agents/rounds/2026-09-02-av-evidence-pack-source-date.md`.
 - Queue closeout audit: `.agents/rounds/2026-09-02-agent-queue-closeout/review-fable.md`.
+- Production deployment: `.agents/rounds/2026-09-02-agent-queue-deployment.md`.
 - Earlier: agent-discovery paid-run guards (#116), stale-gospel refresh (#115), release closeout
   (#112 to #114), golden metadata remainder (#106), protocol-history attempts one to three, and
   the rejected experiments closeout.
@@ -149,7 +141,6 @@ Safe default: no spend.
 
 ## Suggested sequence
 
-Obtain separate authorization to deploy the integrated runtime changes and verify production.
-Then obtain the Raven capability-boundary and protocol-history decisions.
+Obtain the Raven capability-boundary and protocol-history decisions.
 Keep each paid action and production action behind its separate authorization.
 No current item has authorization for evaluation ladder stages 3 or 4.
