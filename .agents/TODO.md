@@ -7,7 +7,7 @@ gates, and documentation. Upstream service defects go to `improvements/` instead
 Add an item when you find work you are not doing now. Delete it when it is done; git history is the
 archive. Each item states what is wrong, how it was found, and what "done" means.
 
-Updated 2026-09-02 after the reviewed agent-queue integration.
+Updated 2026-09-03 after the owner resolved the Raven monitor and protocol-history PH2 decisions.
 
 ## Improvements follow-up
 
@@ -112,14 +112,22 @@ No production change shipped, and no `improvements/` finding applies.
 The free evidence is complete in `.agents/rounds/2026-09-02-protocol-history-free-evidence.md`.
 The blind label review disputes four of 13 frozen controls: `ph-control-validator-vote`,
 `ph-control-clawback-cap`, `phb-control-sdk-version-history`, and
-`phb-control-cap-history-sep-support`. All 19 positive labels hold. The combined 13-control
-exclude-top-five rule is not a ship gate until the owner re-adjudicates those four labels under
-PH2. The product-exposure union contains 78 QA cases. It combines the 76-case
+`phb-control-cap-history-sep-support`. All 19 positive labels hold. The product-exposure union
+contains 78 QA cases. It combines the 76-case
 `scout.searchResearch` inventory and four-case protocol-history family, with two shared cases.
 The attempt-one result file is absent locally, so its matrix column remains `NA`.
 On manifest `4cd28f4b…fe8b`, the original diagnostic reads 4/8 positives and 2/4 controls.
 `ph-control-validator-vote` reaches rank five without a new mechanism. The blind set reads 3/11
-positives and 6/9 controls. These results inform PH2 or PH3; they authorize neither path.
+positives and 6/9 controls. These results informed the PH2 owner decision. They do not authorize
+PH3.
+
+The owner resolved PH2 on 2026-09-03. The v2 contracts retain all 19 required cases, keep nine
+valid controls as forbidden, and mark the four disputed controls neutral. Neutral ranks remain
+visible but do not affect pass or fail. The v1 contracts remain byte-identical historical inputs.
+The decision record is `.agents/rounds/2026-09-03-owner-decisions.md`.
+
+The current v2 baseline reaches 7 of 19 required cases. It captures five of nine forbidden cases.
+Three of four neutral cases also surface the target. Both v2 contracts remain diagnostic `FAIL`.
 
 This queue calls the dated brief's T1 to T4 triggers `PH1` to `PH4`. This avoids collision with
 the five-track T1 to T5 contract.
@@ -131,23 +139,24 @@ the five-track T1 to T5 contract.
   `468a9d9834e8cb50cb905f80ccc42f9d3daa7a3d0ff2d8c5194d566812ba716b`. Routine inventory drift
   alone does not fire PH1. The drift lane may run the free `npm run eval:protocol-history`
   diagnostic and record both contract counts. PH1 does not authorize a new mechanism.
-- **PH2 — owner contract decision.** The owner can review the frozen control labels or the 19-of-19
-  positive bar. A changed label needs label evidence, provenance, and a contract-version change.
-  A spent mechanism's misses cannot justify lowering the bar.
+- **PH2 — completed owner contract decision.** The versioned v2 contract uses 19 required, nine
+  forbidden, and four neutral cases. It preserves the 19-of-19 required bar and all v1 evidence.
 - **PH3 — new non-card evidence box.** The owner can open a box for corpus-derived route vocabulary
   or another named non-card source. The brief must carry every pre-registration item from the
   attempt-three brief, section 16. Independent review must pass before any fetch.
 - **PH4 — new live routing evidence.** Two cases must show the same absent-lane pattern. They must
   use different question families and entities. Neither can paraphrase a frozen positive. Each case
   needs a dated transcript. PH4 opens a TODO note and a token-reachability audit. The owner then
-  chooses PH2 or PH3. PH4 does not open a mechanism box by itself.
+  decides whether the new evidence opens PH3. PH4 does not open a mechanism box by itself.
 
 Run `npm run eval:protocol-history` as a free diagnostic after changes to `src/catalog/**`,
 `catalog/manifest.json`, `scripts/build-catalog.mjs`, or
 `src/catalog/vendor/search-scoring.ts`. Record the counts. Keep this lane diagnostic-only.
 
-Done when: a later reviewed mechanism passes the complete section 8 acceptance table from the
-attempt-three brief. One new target capture or one-case improvement does not close this item.
+Done when: a later reviewed mechanism passes both v2 contracts and all routing gates. That requires
+19 of 19 required top-five hits and zero captures among nine forbidden cases. Neutral cases remain
+diagnostic. The attempt-three section 8 table remains historical and is not the current ship gate.
+One new target capture or one-case improvement does not close this item.
 
 Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
 our ranking.
@@ -167,7 +176,7 @@ The rule lives in `src/catalog/vendor/search-scoring.ts`. Its current SHA-256 is
 Done when: a case from a different question family and primary service shows short-token coverage
 inflation, or a re-vendor changes the file hash.
 
-### Design a new Raven capability-boundary diagnostic
+### Monitor Raven capability-boundary offers
 
 Case `q-n3-missing-funds-account-support` offered a later Raven lookup by G-address or transaction
 hash. Raven exposes no account-scoped lookup. The answer was a no-tool answer. Control case
@@ -194,22 +203,26 @@ The `--expect-agent-environment-sha256` guard now fails before any answering-age
 Matching runs stamp the expected and observed identities. Its CLI tests cover a match and every
 rejected flag form. Rejected stored-judge and collection runs record zero paid-call attempts.
 
-The owner must now decide whether the observation is an eval-harness fidelity defect, a shipped
-Raven product defect, or monitor-only. After that decision, the next plan must name the surface
-owner and an observable product hypothesis. It must use a mechanism that reaches no-tool answers.
-Another QA-prompt wording layer is spent. Do not copy case facts, identifiers, or redirect lists
-into a prompt. Include the trap, the control, the environment pin, and a pre-registered product
-gate.
+The owner selected monitor-only on 2026-09-03. Muse Spark 1.3, Fable 5.1, and Kimi K3 independently
+supported that classification. No active diagnostic or product change remains.
+
+Reopen a free cause audit after any production occurrence, any transcript showing an attempted
+account-scoped operation, or any direct model-facing prose that advertises the capability. A third
+distinct QA case can also reopen the free audit. It does not authorize a product change.
+
+Any later plan must name the surface owner and an observable product hypothesis. It must use a
+mechanism that reaches no-tool answers. Another QA-prompt wording layer is spent. Do not copy case
+facts, identifiers, or redirect lists into a prompt. Include the trap, the control, the environment
+pin, and a pre-registered product gate.
 
 The design record from closed PR #103 is at commit `fb9a35eb`. Fetch it with
 `git fetch origin pull/103/head` if needed. Its result artifact is not a durable baseline.
 
-Authorization boundary: free scans, inventory, plan writing, and independent plan review are
-allowed. A focused diagnostic needs its own bounded authorization. A headline sample needs a
+Authorization boundary: a fired trigger allows free scans, inventory, plan writing, and independent
+plan review. A focused diagnostic needs its own bounded authorization. A headline sample needs a
 separate authorization after the focused diagnostic passes. Denominators never merge.
 
-Done when: an independently reviewed plan names the mechanism, surface, diagnostic, acceptance
-table, stop rules, and authorization boundaries. Measurement is a later item.
+Done when: the owner retires the monitor, or a fired trigger leads to a reviewed resolution.
 
 ### Resolve paired-QA design before promotion
 

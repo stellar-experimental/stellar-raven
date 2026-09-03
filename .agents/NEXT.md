@@ -1,6 +1,7 @@
 # NEXT — current handoff
 
-Updated 2026-09-02 after production deployment. Read this first.
+Updated 2026-09-03 after the owner resolved the Raven monitor and protocol-history PH2 decisions.
+Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 No unconditional agent-actionable block remains. Every open item is owner-blocked, trigger-only,
@@ -26,26 +27,16 @@ or monitor-only.
   captures. Decision record: `.agents/rounds/2026-09-02-av-created-at-semantics.md`.
 - The protocol-history free evidence is complete in
   `.agents/rounds/2026-09-02-protocol-history-free-evidence.md`. The blind label review
-  disputes four of 13 frozen controls. The product-exposure union is 78 QA cases. On the
-  current manifest the original diagnostic reads 4/8 positives and 2/4 controls; the blind set
-  reads 3/11 and 6/9. The three-attempt box stays spent.
+  disputes four of 13 frozen controls. The owner resolved PH2 with versioned tri-state contracts.
+  They keep 19 required, nine forbidden, and four neutral cases. The current v2 baseline reaches
+  7/19 required and captures 5/9 forbidden cases. The three-attempt box stays spent.
+- The Raven capability-boundary observation is monitor-only. A trigger-based free audit replaces
+  the obsolete diagnostic-design block. No prompt, paid diagnostic, or product change is active.
 - `improvements/` contains 66 active findings: 60 `reported-upstream`, three `proposed`, and
   three `declined-upstream`. `ll-019` carries the 2026-09-02 A/V `created_at` recurrence.
   Issues stellar-docs#2805, stellar-docs PR #2806, and lumenloop-backend#35 remain open.
 - Corpus lint: 0 errors and 62 warnings. Do not chase these counts to zero.
 - The Terms are in force. `TERMS_EFFECTIVE_DATE` is `August 5, 2026` and stays as is.
-
-## Owner-blocked blocks
-
-### Classify the Raven capability boundary
-
-Use `run-evals`. The free evidence is complete. Ask the owner to classify the observation as
-an eval-harness defect, a shipped Raven defect, or monitor-only. Then write an independently
-reviewed diagnostic plan for the selected surface. Full text: `TODO.md` "Design a new Raven
-capability-boundary diagnostic".
-
-Exit gate: an independent reviewer passes a plan that names the mechanism, surface, focused
-diagnostic, product gate, stop rules, and separate authorization boundaries.
 
 ## Conditional programs
 
@@ -53,8 +44,10 @@ diagnostic, product gate, stop rules, and separate authorization boundaries.
   candidate, the owner design decisions, reviewed briefs, and new caps.
 - Repository recovery: keep the exact free monitor in `TODO.md`. The durable record is the
   `sls-080` receipt. Source parity authorizes no paid collection. Use `sls-082` for a distinct defect.
-- Protocol-history routing: keep the three-attempt box closed. Use PH1 to PH4 in `TODO.md` only.
-  The PH2 decision now has its evidence.
+- Protocol-history routing: PH2 is complete. Keep the three-attempt box closed. Use PH1, PH3, and
+  PH4 in `TODO.md` only. The v2 diagnostic does not authorize a mechanism.
+- Raven capability boundary: keep the exact monitor triggers in `TODO.md`. A trigger allows a free
+  cause audit only. No diagnostic or product mechanism is active.
 - `sources.locate`: log incomplete incidents. The phase-zero trigger cannot fire while no recovery
   steering is live.
 - Friendbot and vendor short-token items remain monitor-only until their recorded bars fire.
@@ -69,6 +62,7 @@ diagnostic, product gate, stop rules, and separate authorization boundaries.
 - QA evidence pack `p6`: `.agents/rounds/2026-09-02-av-evidence-pack-source-date.md`.
 - Queue closeout audit: `.agents/rounds/2026-09-02-agent-queue-closeout/review-fable.md`.
 - Production deployment: `.agents/rounds/2026-09-02-agent-queue-deployment.md`.
+- Raven monitor and protocol-history PH2 decisions: `.agents/rounds/2026-09-03-owner-decisions.md`.
 - Earlier: agent-discovery paid-run guards (#116), stale-gospel refresh (#115), release closeout
   (#112 to #114), golden metadata remainder (#106), protocol-history attempts one to three, and
   the rejected experiments closeout.
@@ -77,31 +71,6 @@ diagnostic, product gate, stop rules, and separate authorization boundaries.
 
 The 2026-08-28 human-review grill resolved its 21 questions. The questions below can change a
 future action. Record each answer in a round ledger, `eval/qa/README.md`, or a decision record.
-
-### Select the Raven capability-boundary surface
-
-Question: is the observed unsupported lookup offer a QA-harness fidelity defect, a shipped Raven
-product defect, or a monitor-only observation?
-
-Evidence available: `.agents/rounds/2026-09-01-next-actionable-blocks/raven-free-evidence.md`
-contains the stored-answer prevalence, prose-surface inventory, and no-tool reachability analysis.
-
-Safe default: monitor-only. Do not authorize a paid diagnostic until an independently reviewed
-plan names a mechanism that reaches the selected surface.
-
-### Keep protocol-history closed or reopen through PH2 or PH3
-
-Evidence available: the blind label review in
-`.agents/rounds/2026-09-02-protocol-history-free-evidence/label-review-grok.md` disputes
-`ph-control-validator-vote`, `ph-control-clawback-cap`, `phb-control-sdk-version-history`, and
-`phb-control-cap-history-sep-support`. The card `useWhen` and `source` text assigns each ask to
-`scout.searchResearch`. All 19 positive labels hold. The current manifest captures
-`ph-control-validator-vote` at rank five with no mechanism. The exposure union is 78 QA cases.
-
-Options: stay trigger-only; re-adjudicate the four labels under PH2 with label evidence,
-provenance, and a contract-version change; or open a PH3 non-card evidence box.
-
-Safe default: stay trigger-only. Never lower the 19-of-19 bar because three mechanisms failed.
 
 ### Resolve paired design only when a product candidate needs a look
 
@@ -141,6 +110,6 @@ Safe default: no spend.
 
 ## Suggested sequence
 
-Obtain the Raven capability-boundary and protocol-history decisions.
+Run normal maintenance and the v2 protocol-history diagnostic after relevant ranking changes.
 Keep each paid action and production action behind its separate authorization.
 No current item has authorization for evaluation ladder stages 3 or 4.

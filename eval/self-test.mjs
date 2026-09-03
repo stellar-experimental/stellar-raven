@@ -365,6 +365,14 @@ const routingDiagnosticDigest = (diagnostic) =>
       controlCases: diagnostic.controlCases,
     }))
     .digest("hex");
+const routingDiagnosticV2Digest = (diagnostic) =>
+  createHash("sha256")
+    .update(JSON.stringify({
+      requiredCases: diagnostic.requiredCases,
+      forbiddenCases: diagnostic.forbiddenCases,
+      neutralCases: diagnostic.neutralCases,
+    }))
+    .digest("hex");
 
 check("protocol-history diagnostics pin frozen membership and case content", () => {
   const contracts = [
@@ -399,6 +407,82 @@ check("protocol-history diagnostics pin frozen membership and case content", () 
       `sha256(JSON.stringify({positiveCases,controlCases}))=${expected.digest}`
     );
     for (const testCase of [...diagnostic.positiveCases, ...diagnostic.controlCases]) {
+      assert.equal(typeof testCase.id, "string");
+      assert.equal(typeof testCase.question, "string");
+      assert.equal(allIds.has(testCase.id), false, `duplicate diagnostic id ${testCase.id}`);
+      allIds.add(testCase.id);
+    }
+  }
+  const v1RequiredPairs = [
+    ["./protocol-history-cases.json", "./protocol-history-cases-v2.json"],
+    ["./protocol-history-blind-cases.json", "./protocol-history-blind-cases-v2.json"],
+  ];
+  for (const [v1Path, v2Path] of v1RequiredPairs) {
+    const v1 = JSON.parse(readFileSync(new URL(v1Path, import.meta.url), "utf8"));
+    const v2 = JSON.parse(readFileSync(new URL(v2Path, import.meta.url), "utf8"));
+    assert.deepEqual(v2.requiredCases, v1.positiveCases);
+    const v2BoundaryCases = [...v2.forbiddenCases, ...v2.neutralCases];
+    const v2BoundaryById = new Map(v2BoundaryCases.map((testCase) => [testCase.id, testCase]));
+    assert.equal(v2BoundaryCases.length, v1.controlCases.length);
+    for (const testCase of v1.controlCases) {
+      assert.deepEqual(v2BoundaryById.get(testCase.id), testCase);
+    }
+  }
+});
+
+check("protocol-history v2 diagnostics pin roles, membership, and case content", () => {
+  const contracts = [
+    {
+      path: "./protocol-history-cases-v2.json",
+      name: "protocol-history-routing-v2",
+      required: 8,
+      forbidden: 2,
+      neutral: ["ph-control-validator-vote", "ph-control-clawback-cap"],
+      predecessor: "eval/protocol-history-cases.json (protocol-history-routing-v1)",
+      digest: "66fa06ac2990c3591fb279955f7ce61fa8fffd616650f642877424f45b108077",
+    },
+    {
+      path: "./protocol-history-blind-cases-v2.json",
+      name: "protocol-history-blind-v2",
+      required: 11,
+      forbidden: 7,
+      neutral: ["phb-control-sdk-version-history", "phb-control-cap-history-sep-support"],
+      predecessor: "eval/protocol-history-blind-cases.json (protocol-history-blind-v1)",
+      digest: "afd4ccb8ee777c9b81de824c5bc4878497ad383ffe8488c77ff32b6ae7820827",
+    },
+  ];
+  const allIds = new Set();
+  for (const expected of contracts) {
+    const diagnostic = JSON.parse(
+      readFileSync(new URL(expected.path, import.meta.url), "utf8")
+    );
+    assert.equal(diagnostic.contract, expected.name);
+    assert.equal(diagnostic.frozen, true);
+    assert.equal(diagnostic.version, 2);
+    assert.equal(diagnostic.authoredAt, "2026-09-03");
+    assert.equal(diagnostic.targetOperation, "scout.searchResearch");
+    assert.equal(diagnostic.contractProvenance.predecessor, expected.predecessor);
+    assert.equal(
+      diagnostic.contractProvenance.labelReview,
+      ".agents/rounds/2026-09-02-protocol-history-free-evidence/label-review-grok.md"
+    );
+    assert.equal(
+      diagnostic.contractProvenance.ownerDecision,
+      ".agents/rounds/2026-09-03-owner-decisions.md"
+    );
+    assert.equal(diagnostic.requiredCases.length, expected.required);
+    assert.equal(diagnostic.forbiddenCases.length, expected.forbidden);
+    assert.deepEqual(diagnostic.neutralCases.map((testCase) => testCase.id), expected.neutral);
+    assert.equal(routingDiagnosticV2Digest(diagnostic), expected.digest);
+    assert.equal(
+      diagnostic.contractProvenance.caseContentDigest,
+      `sha256(JSON.stringify({requiredCases,forbiddenCases,neutralCases}))=${expected.digest}`
+    );
+    for (const testCase of [
+      ...diagnostic.requiredCases,
+      ...diagnostic.forbiddenCases,
+      ...diagnostic.neutralCases,
+    ]) {
       assert.equal(typeof testCase.id, "string");
       assert.equal(typeof testCase.question, "string");
       assert.equal(allIds.has(testCase.id), false, `duplicate diagnostic id ${testCase.id}`);

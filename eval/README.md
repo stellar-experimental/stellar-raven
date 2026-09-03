@@ -100,8 +100,10 @@ node eval/run-routing.mjs
 of the compile step, so `node eval/compile-routing.mjs` can never wipe them):
 `eval/skills-cases.json` (the skills lane) and `eval/build-question-overlay.json` (the
 accept-either overlay), plus `eval/protocol-history-cases.json` (a diagnostic with eight
-positive cases and four direct-lookup controls). These files are optional. Without them,
-the run degrades to the legacy 338-case eval.
+positive cases and four direct-lookup controls). That in-run protocol-history lane remains the
+historical v1 contract. The standalone `npm run eval:protocol-history` command loads both v2
+protocol-history contracts. These files are optional. Without them, the run degrades to the
+legacy 338-case eval.
 
 Zero new dependencies: `run-routing.mjs` imports `src/catalog/search.ts` directly (Node
 ≥ 23.6 native type stripping); if the direct import fails it transpiles the file (and its
@@ -1132,3 +1134,17 @@ It measured a verified `FAIL`. Multi-clause aggregation raised blind top-five re
 It also raised blind control captures to 7/9 and failed the routing gate.
 The experiment changed no production search code. The three-attempt box is spent.
 See `eval/vectorize/README.md` for the pins and table.
+
+PH2 completed on 2026-09-03 with additive v2 contracts. The v1 files remain byte-identical inputs
+for the three spent experiments and the historical lane inside `run-routing.mjs`. The standalone
+`npm run eval:protocol-history` command now uses the v2 contracts.
+
+The v2 contracts preserve all 19 required cases. They keep nine reviewed controls as forbidden and
+mark four disputed controls neutral. Neutral cases keep their questions and ranked output, but they
+never affect pass or fail. A v2 pass requires all 19 required cases in the top five and zero captures
+among the nine forbidden cases. The owner decision and review reconciliation are in
+`.agents/rounds/2026-09-03-owner-decisions.md`.
+
+The current manifest starts v2 at 4/8 required and 1/2 forbidden captures for the original set.
+The blind set starts at 3/11 required and 4/7 forbidden captures. Neutral capture counts are 1/2
+and 2/2. Both contracts remain diagnostic `FAIL`.
