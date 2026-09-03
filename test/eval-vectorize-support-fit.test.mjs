@@ -12,7 +12,7 @@ import { loadManifest, searchCatalog } from "../src/catalog/search.ts";
 import {
   applyRerankHysteresis,
   buildCandidateUnion,
-  loadRerankClauseArtifact,
+  loadBankedRerankClauseArtifact,
   pairIndexForBase,
 } from "../eval/vectorize/rerank-retrieval.mjs";
 import { createScoreCache, shouldFail as attemptTwoShouldFail } from "../eval/vectorize/run-rerank-fit.mjs";
@@ -42,7 +42,7 @@ const environment = {
 
 let clauseData;
 function clausesFixture() {
-  clauseData ??= loadRerankClauseArtifact();
+  clauseData ??= loadBankedRerankClauseArtifact();
   return clauseData;
 }
 

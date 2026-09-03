@@ -1,12 +1,12 @@
 {
   "$comment": "Mechanically-enforced gate baselines (see EVALS.md rules). run-routing.mjs prints a gate verdict on every run and exits 1 on breach when invoked with --gate (CI does). Re-baselining is an explicit act: update these numbers, evidence input fingerprints, and accepted totals in the same commit as the change that moves them, with the decision recorded in the round ledger. Counts are absolute hits, not percentages. A raw local trace name is optional evidence.localTrace context, never the committed evidence identity.",
   "gradingRule": "v3-manifest-exposed",
-  "baselinedAt": "2026-09-02T17:27:40.000Z",
+  "baselinedAt": "2026-09-03T17:23:50.826Z",
   "evidence": {
     "inputs": [
       {
         "path": "catalog/manifest.json",
-        "sha256": "4cd28f4bdfe8c73950e0a6d4dfa1a09dd2f82674859e93990fdd62daef24fe8b"
+        "sha256": "b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729"
       },
       {
         "path": "eval/routing-cases.json",
@@ -49,9 +49,9 @@
         "passed": 21
       }
     },
-    "localTrace": "routing-2026-09-02T17-26-17-593Z.json"
+    "localTrace": "routing-2026-09-03T17-23-50-826Z.json"
   },
-  "note": "2026-09-02 Lumenloop A/V contract correction: the model-facing description now states supported video, podcast, and recorded-talk passage search. It does not promise transcript text, quotes, timestamps, or a recording date from created_at. Legacy strict moves 208/279/311 to 213/279/312. Extended strict moves 90/109/117 to 90/110/116. Skills remain 16/23/23. Holdout moves 10/22/25 to 10/22/26 with 11 forbidden captures and 21 passed cases. The canonical passkey-talk case remains direct A/V routing at rank three. The tutorial discovery case moves from rank four to outside the top five. No scorer, corpus, floor, band, or runner operation changed. This re-baseline accepts the evidence-true wording without tuning the frozen holdout. Decision record: .agents/rounds/2026-09-02-av-created-at-semantics.md.",
+  "note": "2026-09-03 Stellar Docs title refresh: the title inventory added only /docs/tokens/usdt0-layerzero, titled USDT0 Transfers with LayerZero. The generated asset-token Docs entry gained the derived keywords usdt0, layer, and zero. Ordered top-five route IDs and all committed gate totals remain unchanged across the same inputs. Only the catalog manifest evidence fingerprint changes. Scout remains OpenAPI 1.9.1. Decision record: .agents/rounds/2026-09-03-truth-maintenance/docs-drift-review-sol.md.",
   "legacy": {
     "n": 338,
     "top1": 213,

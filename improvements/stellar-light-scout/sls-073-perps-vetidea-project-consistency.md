@@ -1,7 +1,7 @@
 ---
 id: sls-073
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-21
 upstreamTitle: vet-idea returns an empty report.competitors.projects array for an idea the directory does match
 evidence:
@@ -15,6 +15,8 @@ evidence:
   - Solo project 49 todo 1740 comments 5016 and 5018 record the replay and its coordinator verification
   - 2026-08-25 live re-check reproduced the empty report.competitors.projects array; the gaps axis now lists 23 byType verticals and still holds no perpetuals entry
   - upstream issue filed 2026-08-25: https://github.com/Stellar-Light/stellarlight/issues/1025
+  - 2026-09-03T15:53:09.999Z live GET https://stellarlight.xyz/api/vet-idea?q=perpetuals%20%2F%20derivatives%20trading%20protocol%20on%20Stellar returned report.vertical=null, report.gap=null, matchMode=scored, 8 competitor projects, and 6 competitor repos
+  - the live competitor projects included noether, stellars-finance, turbolong, and zenex; GET /api/projects/search with limit=6 returned the same first six candidates
 ---
 
 ## Finding
@@ -110,6 +112,15 @@ The same re-check reproduced the defect. `vet-idea` again returned
 `report.competitors.repos`. The gaps axis has since grown to 23 `byType`
 verticals. `Card Issuing` and `Exchange` are the two added names. No entry
 matches perpetuals, derivatives, futures, margin, or leverage.
+
+### Fixed upstream recheck (2026-09-03)
+
+At 2026-09-03T15:53:09.999Z, `GET /api/vet-idea` with the original perpetuals
+query returned `report.vertical: null`, `report.gap: null`,
+`matchMode: "scored"`, eight competitor projects, and six competitor repos.
+The projects included `noether`, `stellars-finance`, `turbolong`, and `zenex`.
+`GET /api/projects/search` with `limit=6` returned the same first six
+candidates. Upstream issue #1025 is closed as completed.
 
 ## Recommendation
 

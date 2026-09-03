@@ -20,6 +20,10 @@ import {
 import { runPairedVerdictValidation } from "../eval/qa/validate-paired-verdict.mjs";
 
 const REGISTER_HASH = "c".repeat(64);
+const ADAPTER_REVISION = "a".repeat(40);
+const BASELINE_REVISION = "b".repeat(40);
+const CANDIDATE_REVISION = "d".repeat(40);
+const ADAPTER_SHA256 = "e".repeat(64);
 
 function tiering(overrides = {}) {
   return {
@@ -93,10 +97,86 @@ function result(grades, {
   };
 }
 
+function withRuntimeAdapter(run, arm, overrides = {}) {
+  const mode = arm === "baseline" ? "add-missing" : "verify-native";
+  const sourceRevision = arm === "baseline" ? BASELINE_REVISION : CANDIDATE_REVISION;
+  const publicPort = 8788;
+  const upstreamPort = 8790;
+  const listenerPair = {
+    verification: "dual-listener-process-cwd",
+    adapter: {
+      verification: "listener-process-cwd",
+      port: publicPort,
+      pid: 101,
+      command: "node",
+      cwd: "/tmp/runner",
+      revision: ADAPTER_REVISION,
+      dirty: false
+    },
+    upstream: {
+      verification: "listener-process-cwd",
+      port: upstreamPort,
+      pid: arm === "baseline" ? 201 : 301,
+      command: "workerd",
+      cwd: arm === "baseline" ? "/tmp/baseline" : "/tmp/candidate",
+      revision: sourceRevision,
+      dirty: false
+    }
+  };
+  const attestation = {
+    schema: "exact-old-runtime-adapter-v1",
+    mode,
+    sourceRevision,
+    implementationSha256: ADAPTER_SHA256,
+    upstream: {
+      url: `http://127.0.0.1:${upstreamPort}/`,
+      port: upstreamPort,
+      pid: listenerPair.upstream.pid,
+      cwd: listenerPair.upstream.cwd,
+      revision: sourceRevision,
+      dirty: false
+    },
+    matches: true
+  };
+  const runtimeAdapter = {
+    schema: "exact-old-runtime-adapter-v1",
+    mode,
+    adapterRevision: ADAPTER_REVISION,
+    implementationSha256: ADAPTER_SHA256,
+    publicPort,
+    upstreamPort,
+    sourceRevision,
+    attestation,
+    attestationAfter: structuredClone(attestation),
+    ...overrides.runtimeAdapter
+  };
+  return {
+    ...run,
+    meta: {
+      ...run.meta,
+      port: publicPort,
+      sourceIdentity: { ...run.meta.sourceIdentity, serverRevision: sourceRevision },
+      runtimeAdapter,
+      listenerPair: overrides.listenerPair ?? listenerPair,
+      listenerPairAfter: overrides.listenerPairAfter ?? structuredClone(listenerPair),
+      listenerPairGuard: overrides.listenerPairGuard ?? {
+        verification: "dual-listener-process-stability",
+        adapter: { matches: true },
+        upstream: { matches: true },
+        matches: true
+      }
+    }
+  };
+}
+
 function compare(baseline, candidate, repeats = null) {
   return comparePairedArtifacts({
-    baselineRuns: repeats ? [baseline, repeats.baseline] : [baseline],
-    candidateRuns: repeats ? [candidate, repeats.candidate] : [candidate]
+    baselineRuns: repeats
+      ? [withRuntimeAdapter(baseline, "baseline"), withRuntimeAdapter(repeats.baseline, "baseline")]
+      : [withRuntimeAdapter(baseline, "baseline")],
+    candidateRuns: repeats
+      ? [withRuntimeAdapter(candidate, "candidate"), withRuntimeAdapter(repeats.candidate, "candidate")]
+      : [withRuntimeAdapter(candidate, "candidate")]
   });
 }
 
@@ -373,6 +453,72 @@ describe("paired QA verdict", () => {
     );
   });
 
+  it.each([
+    ["missing baseline adapter", (baseline) => { baseline.meta.runtimeAdapter = null; }],
+    ["direct candidate", (_baseline, candidate) => { candidate.meta.runtimeAdapter = null; }],
+    ["wrong schema", (baseline) => { baseline.meta.runtimeAdapter.schema = "other"; }],
+    ["mixed adapter revision", (_baseline, candidate) => {
+      candidate.meta.runtimeAdapter.adapterRevision = "f".repeat(40);
+      candidate.meta.listenerPair.adapter.revision = "f".repeat(40);
+      candidate.meta.listenerPairAfter.adapter.revision = "f".repeat(40);
+    }],
+    ["mixed adapter hash", (_baseline, candidate) => {
+      candidate.meta.runtimeAdapter.implementationSha256 = "f".repeat(64);
+      candidate.meta.runtimeAdapter.attestation.implementationSha256 = "f".repeat(64);
+      candidate.meta.runtimeAdapter.attestationAfter.implementationSha256 = "f".repeat(64);
+    }],
+    ["mixed public port", (_baseline, candidate) => {
+      candidate.meta.runtimeAdapter.publicPort = 8787;
+      candidate.meta.port = 8787;
+      candidate.meta.listenerPair.adapter.port = 8787;
+      candidate.meta.listenerPairAfter.adapter.port = 8787;
+    }],
+    ["mixed private port", (_baseline, candidate) => {
+      candidate.meta.runtimeAdapter.upstreamPort = 8791;
+      candidate.meta.listenerPair.upstream.port = 8791;
+      candidate.meta.listenerPairAfter.upstream.port = 8791;
+      candidate.meta.runtimeAdapter.attestation.upstream.port = 8791;
+      candidate.meta.runtimeAdapter.attestationAfter.upstream.port = 8791;
+    }],
+    ["reversed modes", (baseline, candidate) => {
+      baseline.meta.runtimeAdapter.mode = "verify-native";
+      baseline.meta.runtimeAdapter.attestation.mode = "verify-native";
+      baseline.meta.runtimeAdapter.attestationAfter.mode = "verify-native";
+      candidate.meta.runtimeAdapter.mode = "add-missing";
+      candidate.meta.runtimeAdapter.attestation.mode = "add-missing";
+      candidate.meta.runtimeAdapter.attestationAfter.mode = "add-missing";
+    }],
+    ["mixed candidate mode", (_baseline, candidate) => {
+      candidate.meta.runtimeAdapter.mode = "add-missing";
+      candidate.meta.runtimeAdapter.attestation.mode = "add-missing";
+      candidate.meta.runtimeAdapter.attestationAfter.mode = "add-missing";
+    }],
+    ["adapter source mismatch", (baseline) => {
+      baseline.meta.runtimeAdapter.sourceRevision = "f".repeat(40);
+    }],
+    ["adapter attestation drift", (baseline) => {
+      baseline.meta.runtimeAdapter.attestationAfter.upstream.pid += 1;
+    }],
+    ["listener attestation drift", (baseline) => {
+      baseline.meta.listenerPairAfter.upstream.pid += 1;
+    }],
+    ["missing listener guard", (baseline) => { baseline.meta.listenerPairGuard = null; }],
+    ["failed listener guard", (_baseline, candidate) => {
+      candidate.meta.listenerPairGuard.matches = false;
+    }]
+  ])("rejects the %s topology", (_name, mutate) => {
+    const baseline = withRuntimeAdapter(result(Array(100).fill("partial")), "baseline");
+    const candidate = withRuntimeAdapter(result(Array(100).fill("partial")), "candidate");
+    mutate(baseline, candidate);
+    const compared = comparePairedArtifacts({ baselineRuns: [baseline], candidateRuns: [candidate] });
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.denominator).toBe(0);
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "runtime-adapter-pairing" })
+    );
+  });
+
   it("keeps strict equality with the experimental margin boundary indeterminate", () => {
     const deltas = [...Array(5).fill([-1, 0]), ...Array(95).fill([0, 0])];
     const first = statisticalDecision(deltas);
@@ -386,8 +532,14 @@ describe("paired QA verdict", () => {
     try {
       const baselinePath = join(root, "baseline.json");
       const candidatePath = join(root, "candidate.json");
-      writeFileSync(baselinePath, JSON.stringify(result(Array(100).fill("partial"))));
-      writeFileSync(candidatePath, JSON.stringify(result(Array(100).fill("partial"))));
+      writeFileSync(
+        baselinePath,
+        JSON.stringify(withRuntimeAdapter(result(Array(100).fill("partial")), "baseline"))
+      );
+      writeFileSync(
+        candidatePath,
+        JSON.stringify(withRuntimeAdapter(result(Array(100).fill("partial")), "candidate"))
+      );
       const run = spawnSync(
         process.execPath,
         ["eval/qa/paired-verdict.mjs", baselinePath, candidatePath],

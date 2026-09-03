@@ -8,6 +8,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
+import { RUNTIME_ADAPTER_SCHEMA } from "./exact-old-runtime-adapter.mjs";
 
 export const PAIRED_VERDICT_METHOD = "qa-paired-ordinal-ni-v1";
 export const CASE_INPUT_IDENTITY = "qa-judge-case-v2";
@@ -212,6 +213,105 @@ function artifactProblems(result, label) {
   return problems;
 }
 
+function adapterArtifactProblems(result, label, expectedMode) {
+  const problems = [];
+  const adapter = result.meta?.runtimeAdapter;
+  const fail = (message) => problems.push(reason("runtime-adapter-pairing", `${label} ${message}`));
+  if (!adapter || typeof adapter !== "object") {
+    fail("does not contain the required runtime adapter record");
+    return problems;
+  }
+  if (adapter.schema !== RUNTIME_ADAPTER_SCHEMA) fail(`uses runtime adapter schema ${adapter.schema ?? "none"}`);
+  if (adapter.mode !== expectedMode) fail(`uses runtime adapter mode ${adapter.mode ?? "none"}; expected ${expectedMode}`);
+  if (!/^[a-f0-9]{40}$/.test(adapter.adapterRevision ?? "")) fail("has an invalid adapter revision");
+  if (!/^[a-f0-9]{64}$/.test(adapter.implementationSha256 ?? "")) fail("has an invalid adapter SHA-256");
+  if (!Number.isInteger(adapter.publicPort) || !Number.isInteger(adapter.upstreamPort)) {
+    fail("has invalid public or private ports");
+  } else if (adapter.publicPort === adapter.upstreamPort) {
+    fail("uses one port for both listeners");
+  }
+  if (adapter.publicPort !== result.meta?.port) fail("does not match the artifact public port");
+
+  const serverRevision = result.meta?.sourceIdentity?.serverRevision;
+  if (!/^[a-f0-9]{40}$/.test(serverRevision ?? "") || adapter.sourceRevision !== serverRevision) {
+    fail("does not match the pinned server revision");
+  }
+
+  const listenerPair = result.meta?.listenerPair;
+  const listenerPairAfter = result.meta?.listenerPairAfter;
+  if (!listenerPair || !listenerPairAfter || !same(listenerPair, listenerPairAfter)) {
+    fail("does not contain matching preflight and postflight listener attestations");
+  } else if (
+    listenerPair.adapter?.port !== adapter.publicPort ||
+    listenerPair.adapter?.revision !== adapter.adapterRevision ||
+    listenerPair.upstream?.port !== adapter.upstreamPort ||
+    listenerPair.upstream?.revision !== serverRevision
+  ) {
+    fail("listener attestations do not match the registered adapter topology");
+  }
+  const listenerGuard = result.meta?.listenerPairGuard;
+  if (
+    listenerGuard?.matches !== true ||
+    listenerGuard.adapter?.matches !== true ||
+    listenerGuard.upstream?.matches !== true
+  ) {
+    fail("does not contain a successful dual-listener stability guard");
+  }
+
+  const attestation = adapter.attestation;
+  const attestationAfter = adapter.attestationAfter;
+  if (!attestation || !attestationAfter || !same(attestation, attestationAfter)) {
+    fail("does not contain matching preflight and postflight adapter attestations");
+  } else if (
+    attestation.matches !== true ||
+    attestation.schema !== RUNTIME_ADAPTER_SCHEMA ||
+    attestation.mode !== expectedMode ||
+    attestation.sourceRevision !== serverRevision ||
+    attestation.implementationSha256 !== adapter.implementationSha256 ||
+    attestation.upstream?.port !== adapter.upstreamPort ||
+    attestation.upstream?.revision !== serverRevision ||
+    attestation.upstream?.dirty !== false
+  ) {
+    fail("adapter attestation does not match the registered adapter topology");
+  }
+  return problems;
+}
+
+function adapterPairingProblems(baselineRuns, candidateRuns) {
+  const artifacts = baselineRuns.flatMap((baseline, index) => [
+    { result: baseline, label: `baseline run ${index + 1}`, mode: "add-missing" },
+    { result: candidateRuns[index], label: `candidate run ${index + 1}`, mode: "verify-native" }
+  ]);
+  const problems = artifacts.flatMap(({ result, label, mode }) =>
+    adapterArtifactProblems(result, label, mode)
+  );
+  const adapters = artifacts.map(({ result }) => result.meta?.runtimeAdapter).filter(Boolean);
+  if (adapters.length === artifacts.length) {
+    const expected = {
+      adapterRevision: adapters[0].adapterRevision,
+      implementationSha256: adapters[0].implementationSha256,
+      publicPort: adapters[0].publicPort,
+      upstreamPort: adapters[0].upstreamPort
+    };
+    for (const { result, label } of artifacts) {
+      const adapter = result.meta.runtimeAdapter;
+      const actual = {
+        adapterRevision: adapter.adapterRevision,
+        implementationSha256: adapter.implementationSha256,
+        publicPort: adapter.publicPort,
+        upstreamPort: adapter.upstreamPort
+      };
+      if (!same(actual, expected)) {
+        problems.push(reason(
+          "runtime-adapter-pairing",
+          `${label} does not use the shared adapter revision, hash, and ports`
+        ));
+      }
+    }
+  }
+  return problems;
+}
+
 function comparisonProblems(baselineRuns, candidateRuns) {
   const problems = [];
   if (baselineRuns.length !== candidateRuns.length) {
@@ -230,6 +330,8 @@ function comparisonProblems(baselineRuns, candidateRuns) {
   for (const artifact of artifacts) {
     problems.push(...artifactProblems(artifact.result, artifact.label));
   }
+  if (problems.length) return problems;
+  problems.push(...adapterPairingProblems(baselineRuns, candidateRuns));
   if (problems.length) return problems;
 
   const expectedIds = rowIds(baselineRuns[0]);

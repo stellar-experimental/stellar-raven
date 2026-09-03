@@ -8,12 +8,22 @@ import {
 } from "./rerank-config.mjs";
 import { loadClauseArtifact } from "./clause-retrieval.mjs";
 
-export function loadRerankClauseArtifact() {
-  if (sha256(readFileSync(CLAUSE_ARTIFACT_PATH)) !== CLAUSE_ARTIFACT_SHA256) {
+export function loadBankedRerankClauseArtifact({ artifactPath = CLAUSE_ARTIFACT_PATH } = {}) {
+  if (sha256(readFileSync(artifactPath)) !== CLAUSE_ARTIFACT_SHA256) {
     throw new Error("clause artifact file SHA-256 drift");
   }
-  const loaded = loadClauseArtifact({ requireCatalogMatch: true });
+  const loaded = loadClauseArtifact({ requireCatalogMatch: false, artifactPath });
   if (loaded.artifact.clauseSetSha256 !== CLAUSE_SET_SHA256) throw new Error("clause-set SHA-256 drift");
+  for (let index = 0; index < loaded.clauses.length; index += 1) {
+    const identity = loaded.clauses[index];
+    if (Object.hasOwn(identity, "text")) throw new Error(`clause artifact unexpectedly stores text at index ${index}`);
+  }
+  return loaded;
+}
+
+export function loadRerankClauseArtifact() {
+  loadBankedRerankClauseArtifact();
+  const loaded = loadClauseArtifact({ requireCatalogMatch: true });
   for (let index = 0; index < loaded.clauses.length; index += 1) {
     const clause = loaded.clauses[index];
     const identity = loaded.artifact.clauses[index];

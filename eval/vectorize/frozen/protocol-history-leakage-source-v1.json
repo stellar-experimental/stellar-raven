@@ -1,0 +1,204 @@
+{
+  "$comment": "Frozen scout.searchResearch clause-text projection from the accepted 2026-09-02 source. Tests use this file instead of current production text.",
+  "schemaVersion": 1,
+  "projection": "protocol-history-leakage-source-v1",
+  "targetOperation": "scout.searchResearch",
+  "sourceEpoch": {
+    "manifestSha256": "4cd28f4bdfe8c73950e0a6d4dfa1a09dd2f82674859e93990fdd62daef24fe8b",
+    "inventorySha256": "1a261c4a2e2172683e91a52ddc33b02ff41e74760c861dfacb29c60a8d8671b0",
+    "archetypesSha256": "beeea9b5ff48680e2f13a030dfd68f21f2d5c50ed4220733d8f1e6095a1b5c14",
+    "clauseSetSha256": "bed608469e73e719beb51912f483c4f8daf9fc2d843334387d0851475b581ff2",
+    "artifactSha256": "d9de70079a1b94507854949b93b99f90b4f03370021c9a2e313a59f8b759002b"
+  },
+  "clauses": [
+    {
+      "role": "positive",
+      "source": "purpose",
+      "index": 0,
+      "text": "Purpose: Cited knowledge/docs answers from the Stellar research corpus ($vectorSearch over Voyage embeddings; BM25-lite keyword fallback when vectors are unavailable).",
+      "renderedTextSha256": "1cd1602e76b702f1a277ec09461dba6d43d1889e4c5e114de06513d1d19a0bf6"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 0,
+      "text": "Use when: SDF organizational questions (enterprise fund, mandate, leadership, structure)",
+      "renderedTextSha256": "525965cbfba95f6725745216fbf8a0e8b52c639e6910090add5f0a300851862b"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 1,
+      "text": "Use when: 'how does X work', 'is X possible / has X been discussed on Stellar', 'what does the SEP/spec/audit say about X'",
+      "renderedTextSha256": "cde34c26ed0a483391c2eba6b53a3b968cf890a5f9b8cafd170f394be35dc0f8"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 2,
+      "text": "Use when: primary-source citations for a thesis or design question; ecosystem KNOWLEDGE & explainer questions ('what is / how does / who / why / is it true that…')",
+      "renderedTextSha256": "a647ae06110d55a9020bc45cbad7fb3ea439c87e6c9115511d96e107e76e8a70"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 3,
+      "text": "Use when: security & risk (audits, exploits, incidents, post-mortems, oracle manipulation), bug-bounty / disclosure program status (source=security-program: which program is current, HackerOne vs Immunefi, where to report), compliance & regulation (Travel Rule, FATF, KYC/AML, sanctions)",
+      "renderedTextSha256": "08020300d6db4c97e76cd8ff73771b205b5e248442c2582a0d5281993ed70a49"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 4,
+      "text": "Use when: SDF's canonical organizational pages (source=sdf-org): mandate incl. self-funded/pays-taxes structure, terms of service / Delaware non-profit legal form, foundation mission, leadership & board roster, Enterprise Fund scope & portfolio size, quarterly-reports index",
+      "renderedTextSha256": "46f7e37c3eaed38e7efbc5ccc9e56820c74eabe3b3e95dc43f5e1baf0a71aadd"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 5,
+      "text": "Use when: funding & governance (SCF v7.0, award tiers, Neural Quorum Governance) and SCF program mechanics — how to apply step-by-step, Build/Instawards/Liquidity/Public-Goods awards, eligibility, review timeline (prescreen, panel review, community vote, KYC), deadlines",
+      "renderedTextSha256": "0493a2585405395c54c7f6241e809e6147c0b69e51947a245b007ab973a98b86"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 6,
+      "text": "Use when: SDF org/mission/legal structure; protocol history (SCP whitepaper, authors); ecosystem programs (ambassadors, regional chapters, bootcamps)",
+      "renderedTextSha256": "a13aabbb88fed33ef1ad1528069ba86897094edfc535b0fa0a4024a8be4e744a"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 7,
+      "text": "Use when: Soroban security incidents (reentrancy, sdk advisories/CVEs, DoS); ecosystem history (Protocol 20 mainnet launch, XLM initial supply, UNHCR aid, Enterprise Fund)",
+      "renderedTextSha256": "ebf6b68aa1fd5d80c3d05d6ee533beef472ba903c1cbcd60026bf32db626980e"
+    },
+    {
+      "role": "positive",
+      "source": "useWhen",
+      "index": 8,
+      "text": "Use when: making an issued asset tradable/visible on exchanges, wallets, explorers, aggregators; contract source verification (release.yml, Stellar Lab vs stellar.expert); fact-checking a claim about Stellar",
+      "renderedTextSha256": "33da66c84eb6b2b45b4e20e2ff2efafee095803ca7c62be4642cd24f19bd4bb0"
+    },
+    {
+      "role": "positive",
+      "source": "exampleQuestion",
+      "index": 0,
+      "text": "Example question: What is the SDF enterprise fund and what is its mandate?",
+      "renderedTextSha256": "e874ddbbc8fef43145dc568bf3dadbfd3ecd47439b7862262cfc32881a07df2a"
+    },
+    {
+      "role": "positive",
+      "source": "exampleQuestion",
+      "index": 1,
+      "text": "Example question: How does the Stellar Consensus Protocol work?",
+      "renderedTextSha256": "a558aa5c631da7597116b334f9788f18f5868732c0135f47376d897e0b757bea"
+    },
+    {
+      "role": "positive",
+      "source": "exampleQuestion",
+      "index": 2,
+      "text": "Example question: What does the SCF Handbook say about award tiers?",
+      "renderedTextSha256": "ed0957867991b12816ab72dfc50041eb4fc3f1924debc6edf5259640d3b4343f"
+    },
+    {
+      "role": "positive",
+      "source": "exampleQuestion",
+      "index": 3,
+      "text": "Example question: Has there been a reentrancy incident on Soroban?",
+      "renderedTextSha256": "60acf2ac895ce96539c9e50fa951d5dd1c7b46cbd03fe34bf31b770eedbc4243"
+    },
+    {
+      "role": "positive",
+      "source": "exampleQuestion",
+      "index": 4,
+      "text": "Example question: How do I apply for an SCF Build Award?",
+      "renderedTextSha256": "71e0d4a9f2f81e604d9cd16ffb6462fb83aeb4f6d39bddcc69400ce8cf14571f"
+    },
+    {
+      "role": "positive",
+      "source": "exampleQuestion",
+      "index": 5,
+      "text": "Example question: How do I make my issued asset visible on exchanges and explorers?",
+      "renderedTextSha256": "068752e7e24f1880327dfef2c072e8bee49aca600f010a4916d7231d08384ddc"
+    },
+    {
+      "role": "positive",
+      "source": "description",
+      "index": 0,
+      "text": "Description: Vector search over the Stellar research corpus.",
+      "renderedTextSha256": "bd5f5f9e345f23292aeeedd3a7b0db03177adbff96ae7d4f63f4027d369c63f6"
+    },
+    {
+      "role": "positive",
+      "source": "description",
+      "index": 1,
+      "text": "Description: Semantic search over the Stellar knowledge corpus — SDF blog, SCF Handbook, SEPs/standards, dev docs, papers, audits, incident reports.",
+      "renderedTextSha256": "dc3151bc94d4dad1920879b8a98578e82fcc115988edf5ca02c1c4840b9731f1"
+    },
+    {
+      "role": "positive",
+      "source": "description",
+      "index": 2,
+      "text": "Description: Returns cited text chunks with source, section, URL, confidence, and provenance dates (publishedAt = the source's own stated date; observedAt = when ingest last crawled the page; audits add auditor/severity — filterable; report-level enumeration → listAudits).",
+      "renderedTextSha256": "dbe00d7b16a593152cf6e8ef245f01cf8d276e2351f7436aa2266703c274d6e3"
+    },
+    {
+      "role": "positive",
+      "source": "description",
+      "index": 3,
+      "text": "Description: THE surface for 'how does X work', 'what does the SEP/spec/audit say', and how-to/feasibility questions.",
+      "renderedTextSha256": "f64ae523eac15d4879a42c3ed8caaff67fdd4b23ab09bed5ebbc6060b46652df"
+    },
+    {
+      "role": "positive",
+      "source": "description",
+      "index": 4,
+      "text": "Description: Not for products and their funding/status → use searchProjects.",
+      "renderedTextSha256": "2167c02a06298271217672089a7a9a117b4b32ad91bfb1b4b8269e07c75bc78a"
+    },
+    {
+      "role": "positive",
+      "source": "description",
+      "index": 5,
+      "text": "Description: Catalog note: this is the broad Scout cited-research recovery lane for history, standards, incidents, audits, and unknown technical topics.",
+      "renderedTextSha256": "06d79dc82c5d3961c697ac01e1d5a2149de0e83812019c186654d40ddfddec4f"
+    },
+    {
+      "role": "positive",
+      "source": "description",
+      "index": 6,
+      "text": "Description: Treat chunks as leads: preserve their source and date, and require an exact entity match before attribution.",
+      "renderedTextSha256": "c9b380a669a331aa5db51564a5f7e0cd251c37d68570dfef290c5ab456481c13"
+    },
+    {
+      "role": "positive",
+      "source": "workflow",
+      "index": 0,
+      "text": "Workflow: Ecosystem people/events: Who participated, built, won, or showed up in a hackathon or ecosystem event?",
+      "renderedTextSha256": "d9d8e654df10ec354370cdb778aeacf744f8ae3f1157299f8ccea6f367e255f0"
+    },
+    {
+      "role": "positive",
+      "source": "workflow",
+      "index": 1,
+      "text": "Workflow: Evidence-poor open-world recovery: Who or what is an obscure Stellar entity, what is its history, or what should I do when narrow lookups return empty or only adjacent candidates?",
+      "renderedTextSha256": "e1beccf8c3b0d406f59bce34d5e55e8ac93113608c743fd400bd9dd3c240bb49"
+    },
+    {
+      "role": "negative",
+      "source": "notFor",
+      "index": 0,
+      "text": "Not for: what products exist or their funding/status -> searchProjects",
+      "renderedTextSha256": "1537f721925b36d937cddf09481f1074107b3bf11cca951e5767dcc6d37d580e"
+    },
+    {
+      "role": "negative",
+      "source": "notFor",
+      "index": 1,
+      "text": "Not for: GitHub source code ranked by quality -> searchRepos",
+      "renderedTextSha256": "9341da4f657e3ebdae9397e6904ec2aeee4ba325f2437bbd8cce729f60ae477f"
+    }
+  ]
+}

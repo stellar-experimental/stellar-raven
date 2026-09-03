@@ -105,3 +105,36 @@ export function assertStableBoundServerIdentity(before, after) {
     matches: true
   };
 }
+
+export function dualBoundServerIdentity(
+  { adapterPort, adapterRevision, upstreamPort, upstreamRevision },
+  options = {}
+) {
+  if (adapterPort === upstreamPort) {
+    throw new Error("dual listener identity: adapter and upstream ports must differ");
+  }
+  const adapter = boundServerIdentity(adapterPort, adapterRevision, options);
+  const upstream = boundServerIdentity(upstreamPort, upstreamRevision, options);
+  if (adapter.pid === upstream.pid) {
+    throw new Error("dual listener identity: adapter and upstream must use different processes");
+  }
+  if (adapter.cwd === upstream.cwd) {
+    throw new Error("dual listener identity: adapter and upstream must use different worktrees");
+  }
+  return {
+    verification: "dual-listener-process-cwd",
+    adapter,
+    upstream
+  };
+}
+
+export function assertStableDualBoundServerIdentity(before, after) {
+  const adapter = assertStableBoundServerIdentity(before?.adapter, after?.adapter);
+  const upstream = assertStableBoundServerIdentity(before?.upstream, after?.upstream);
+  return {
+    verification: "dual-listener-process-stability",
+    adapter,
+    upstream,
+    matches: true
+  };
+}

@@ -6,21 +6,21 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Scout response and official SCF pages. As of 2026-08-18, the Q3 roster contains two published open RFP briefs: **LayerZero DVN** and **x402 Facilitator with Bazaar**. The live response reports `syntheticRounds=0`. SCF #45 is in Initial Review, so the open briefs do not establish that #45 still accepts full proposals.\n\nThe dated example is illustrative: a later grounded answer should report the roster and round state supported at its own observation time.",
+    "answer": "A grounded answer derives names and status from the live Scout response and official SCF pages. As of 2026-09-03, two Q3 RFP briefs remain open: LayerZero DVN and x402 Facilitator with Bazaar. Scout also returns one synthetic `scf-round-46` row. That row represents #46's Submission window through 2026-11-08. It is not a third RFP brief.\n\nThe dated example is illustrative. A later answer must report the roster and round state supported then.",
     "keyFacts": [
       "Presents specific source-supported content as a current or dated observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Reports the currently-open RFP briefs.",
-      "States that the live response has no synthetic round row.",
-      "Distinguishes an open RFP brief from an open SCF full-proposal window."
+      "Makes the as-of date visible for each changeable roster or status.",
+      "Reports the two currently open RFP briefs.",
+      "Reports one synthetic SCF #46 round row.",
+      "Distinguishes an RFP brief from a synthetic round row."
     ],
     "avoid": [
-      "Do NOT reference retired scout_rfps, claim a synthetic SCF #45 row is present, or count a round row as another brief.",
-      "Do NOT claim that SCF #45 still accepts full proposals solely because the Q3 briefs remain published as open.",
-      "Do NOT claim the roster is permanent, invent per-RFP bounties, or claim RFP projects use NQG voting.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim syntheticRounds=0 or omit the current synthetic #46 row.",
+      "Do NOT count the synthetic round row as a third RFP brief.",
+      "Do NOT claim an open brief guarantees eligibility or an invitation.",
+      "Do NOT claim the observed roster is permanent or complete."
     ],
-    "notes": "Freshness item: the open set rotates, so grade dated observation behavior rather than a permanent roster. As of 2026-08-18, the official RFP page and live feed support two published Q3 briefs. The newer awards state and Scout round metadata show #45 in Initial Review with no open submission window. Do not penalize an answer that calls the briefs active while saying the #45 full-proposal window has closed. RFP Track review is panel-led, and the separate Build-cap cases own the $150,000 limit."
+    "notes": "Freshness item: grade dated roster and round behavior. As of 2026-09-03, two briefs remain open. Scout returns one separate #46 synthetic round row. #46 accepts submissions through 2026-11-08."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -34,67 +34,70 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-08-18",
-    "reverifyBy": "2026-09-17",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-11-12",
     "sources": [
       {
         "class": "C",
         "ref": "https://stellarlight.xyz/api/rfps?status=open",
-        "note": "Live open-RFP response observed 2026-08-18; two briefs and syntheticRounds=0."
+        "note": "Live open-RFP response observed 2026-09-03; two briefs and one synthetic scf-round-46 row."
       },
       {
         "class": "A",
         "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-        "note": "Official RFP page observed 2026-08-18; it names the two Q3 briefs."
+        "note": "Official RFP page rechecked 2026-09-03; it names the two Q3 briefs."
       },
       {
         "class": "A",
         "ref": "https://communityfund.stellar.org/awards",
-        "note": "Official awards index observed 2026-08-18; SCF #45 was in Initial Review."
+        "note": "Official awards index observed 2026-09-03; SCF #46 was in Submission through 2026-11-08."
       }
     ],
     "corroboration": [
       {
-        "claim": "As of 2026-08-18, the published Q3 roster contains two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=0.",
+        "claim": "As of 2026-09-03, the published Q3 roster contains two open briefs—LayerZero DVN and x402 Facilitator with Bazaar—and the live response has syntheticRounds=1.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "C",
             "ref": "https://stellarlight.xyz/api/rfps?status=open",
-            "observedAt": "2026-08-18T15:24:51Z",
-            "note": "Returned two open RFP rows and syntheticRounds=0."
+            "observedAt": "2026-09-03T15:39:35.870Z",
+            "note": "Returned two open RFP rows and one synthetic scf-round-46 row."
           },
           {
             "class": "A",
             "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track",
-            "observedAt": "2026-08-18T15:25:19Z",
+            "observedAt": "2026-09-03T15:39:35.870Z",
             "note": "Official Q3 page names the same two briefs."
           }
         ]
       },
       {
-        "claim": "As of 2026-08-18, SCF #45 is in Initial Review with no confirmed open submission window; an open brief does not prove that a full proposal can still enter #45.",
+        "claim": "As of 2026-09-03, SCF #46 is in Submission through 2026-11-08; the synthetic round row is separate from the two open briefs.",
         "verdict": "confirmed-as-of",
         "evidence": [
           {
             "class": "A",
             "ref": "https://communityfund.stellar.org/awards",
-            "observedAt": "2026-08-18T15:22:00Z",
-            "note": "Official awards index showed #45 in Initial Review after its August 16 deadline."
+            "observedAt": "2026-09-03T15:39:35.870Z",
+            "note": "Official awards index showed #46 in Submission through November 8, 2026."
           },
           {
             "class": "C",
-            "ref": "https://stellarlight.xyz/api/rfps?status=open and https://stellarlight.xyz/api/scf-pitch",
-            "observedAt": "2026-08-18T15:24:51Z",
-            "note": "Scout reported #45 Initial Review, no submission window, and no round in Submission."
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-09-03T15:39:35.870Z",
+            "note": "Scout reported currentRound=46, currentPhase=Submission, and one separate synthetic round row."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-a)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
+        "C: https://stellarlight.xyz/api/rfps?status=open returned two open briefs and one synthetic scf-round-46 row on 2026-09-03T15:39:35.870Z.",
+        "A: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track confirms the two named briefs and the invitation path.",
+        "Sibling sweep 2026-09-03: q-scf-rfp-tooling and SCF roster clusters remain consistent.",
         "solo://proj/80/scratchpad/retrieval-system-aud--816 — SCF truth primary research and SCF truth adversarial review.",
         "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track and https://stellarlight.xyz/api/rfps?status=open — two Q3 briefs observed 2026-08-18.",
         "https://communityfund.stellar.org/awards and https://stellarlight.xyz/api/scf-pitch — #45 Initial Review and no Submission-phase round observed 2026-08-18.",

@@ -1,7 +1,7 @@
 ---
 id: sls-079
 service: stellar-light-scout
-status: proposed
+status: fixed-upstream
 discovered: 2026-08-28
 upstreamTitle: Scout project status Live conflates directory listing with mainnet deployment
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - live re-execution 2026-08-28 scout.searchProjects matchMode strict generatedAt 2026-08-28T19:29:47.704Z returns Stellars Finance Live, Zenex Pre-Release, Noether Pre-Release
   - the perps vertical holds 28 strict matches and at least one is mislabelled
   - operator bundle https://stellars.finance/assets/index-3HEaNhUX.js fetched 2026-08-28: testnet contract addresses populated, mainnet addresses empty (address "", startLedger 0)
+  - 2026-09-03T15:55:57.782Z live GET https://stellarlight.xyz/api/projects/search?q=Stellars%20Finance&limit=8 returned stellars-finance with status Pre-Release, statusBasis human-verified, deployment.network testnet, and source operator bundle
 ---
 
 ## Finding
@@ -50,6 +51,14 @@ strict matches, and at least one is mislabelled.
 
 The operator bundle at `https://stellars.finance/assets/index-3HEaNhUX.js` (fetched
 2026-08-28) defines `{local, testnet, mainnet}` with populated testnet contracts and empty mainnet addresses.
+
+### Fixed upstream recheck (2026-09-03)
+
+At 2026-09-03T15:55:57.782Z, `GET /api/projects/search?q=Stellars%20Finance&limit=8`
+returned `stellars-finance` with `status: "Pre-Release"`,
+`statusBasis: "human-verified"`, `deployment.network: "testnet"`, and source
+`"operator bundle"`. The response now separates the lifecycle status from the
+deployment state.
 
 ## Recommendation
 

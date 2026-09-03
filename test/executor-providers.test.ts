@@ -1188,10 +1188,25 @@ describe("codemode fns", () => {
     expect(miss.error.message).toContain("exact-match");
   });
 
-  it("describe on an operation: FULL signature + raw schemas + usage", async () => {
+  it("describe preserves the full output after the super spec compacts it", async () => {
     // scout.searchProjects is the motivating monster: its search hit stubs
     // the ~12.7KB output type; describe must carry the whole thing.
     const entry = catalog.entries.find((e) => e.id === "scout.searchProjects")!;
+    const superSpec = JSON.parse(readFileSync(join(ROOT, "specs", "super-spec.json"), "utf8")) as {
+      paths: Record<
+        string,
+        Record<
+          string,
+          { responses?: Record<string, { content?: Record<string, { schema?: Record<string, unknown> }> }> }
+        >
+      >;
+    };
+    const compactSchema = superSpec.paths["/scout/searchProjects"]!.get!.responses?.["200"]
+      ?.content?.["application/json"]?.schema;
+    expect(compactSchema?.["x-codemode-describe"]).toBe(
+      'codemode.describe("scout.searchProjects")'
+    );
+    expect(compactSchema?.properties).toEqual({ codeReferences: {}, meta: {}, projects: {} });
     const r = (await codemode.describe!("scout.searchProjects")) as {
       ok: boolean;
       signature: string;
@@ -1212,6 +1227,9 @@ describe("codemode fns", () => {
     // Raw schemas as plain data — the same projection codemode.catalog() uses.
     expect(r.inputSchema).toEqual(entry.inputSchema);
     expect(r.outputSchema).toEqual(entry.outputSchema);
+    expect(JSON.stringify(r.outputSchema).length).toBeGreaterThan(
+      JSON.stringify(compactSchema).length
+    );
     // One-line envelope reminder.
     expect(r.usage).toContain("callable line");
     expect(r.usage).toContain("r.data");

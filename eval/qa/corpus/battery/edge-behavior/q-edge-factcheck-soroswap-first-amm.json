@@ -5,7 +5,7 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "The draft contains two false-or-unsupported claims:\n\n- **'Soroswap is Stellar's first AMM' — false in the broad Stellar sense.** The classic SDEX is an older order-book venue, and the direct AMM counterexample is Stellar's protocol-native constant-product liquidity pools, activated with **CAP-0038 / Protocol 18 on 2021-11-03**. Soroswap's 'first DEX/aggregator' or 'first AMM on Soroban' wording remains attributed operator marketing unless independent chronology supports it.\n- **'just passed $1B in TVL' — false within the identified live Soroswap-AMM series and unsupported more broadly.** At a **2026-08-05** DefiLlama probe, that series was about **$1.20M current** and its recorded maximum was below **$10M**. Those examples are volatile and non-gating; other routed-volume or private metrics must be named separately and cumulative trading volume is not TVL.\n\nA safe correction is: Soroswap is a Soroban AMM and aggregation/API stack, not Stellar's first AMM, and no dated source checked supports $1B TVL.",
+    "answer": "The draft contains two false-or-unsupported claims:\n\n- **'Soroswap is Stellar's first AMM' — false in the broad Stellar sense.** The classic SDEX is an older order-book venue, and the direct AMM counterexample is Stellar's protocol-native constant-product liquidity pools, activated with **CAP-0038 / Protocol 18 on 2021-11-03**. Soroswap's 'first DEX/aggregator' or 'first AMM on Soroban' wording remains attributed operator marketing unless independent chronology supports it.\n- **'just passed $1B in TVL' — false within the identified live Soroswap-AMM series and unsupported more broadly.** At a **2026-09-03** DefiLlama probe, that series was about **$1.19M current** and its recorded maximum was below **$10M**. Those examples are volatile and non-gating; other routed-volume or private metrics must be named separately and cumulative trading volume is not TVL.\n\nA safe correction is: Soroswap is a Soroban AMM and aggregation/API stack, not Stellar's first AMM, and no dated source checked supports $1B TVL.",
     "keyFacts": [
       "Corrects the first-AMM claim using SDEX and CAP-0038/Protocol-18 chronology.",
       "Attributes Soroswap's first-aggregator wording.",
@@ -30,8 +30,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-09-17",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-12-17",
     "sources": [
       {
         "class": "A",
@@ -103,18 +103,18 @@
           {
             "class": "F",
             "ref": "https://api.llama.fi/protocol/soroswap",
-            "observedAt": "2026-07-11",
-            "note": "Direct current protocol-series fetch provides independent TVL observations far below $1B; it does not establish the claimed figure."
+            "observedAt": "2026-09-03",
+            "note": "Direct protocol-series fetch returned current Stellar TVL about $1.19M and a historical maximum below $10M; it does not establish $1B."
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
         "A/B: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md and https://stellar.org/blog/developers/protocol-18-upgrade-guide confirm Protocol 18/CAP-0038 AMM chronology before Soroswap.",
-        "D/F: https://api.llama.fi/protocol/soroswap on 2026-08-05 returned current Stellar TVL $1,196,894 and maximum $9,799,848; neither supports $1B, and TVL remains distinct from routed/cumulative volume.",
+        "D/F: https://api.llama.fi/protocol/soroswap on 2026-09-03 returned current Stellar TVL about $1.19M; the historical maximum remains below $10M. Neither supports $1B, and TVL remains distinct from routed/cumulative volume.",
         "A/D: current Soroswap operator docs call it the first DEX and exchange aggregator built on Stellar; that firstness remains attributed operator marketing rather than independent chronology.",
         "Sibling sweep: q-protocol-amm-cap-0038 and q-defi-soroswap-what-is agree on native Protocol-18 AMM versus Soroswap's Soroban product layer.",
         "Structural re-form (compound-predicate): split first-aggregator attribution and the $1B TVL rejection into atomic facts; the truth is unchanged.",
@@ -123,8 +123,7 @@
         "Sibling sweep 2026-08-27: grep Soroswap|first AMM|CAP-0038|Protocol 18|TVL → q-protocol-amm-cap-0038, q-asset-sdex-vs-amm, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx, q-edge-fresh-latest-blend-tvl; no contradiction"
       ],
       "rootCause": [
-        "scheduled freshness re-verification found no semantic drift; refreshed the dated TVL observation and operator wording",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-edge-factcheck-soroswap-first-amm"

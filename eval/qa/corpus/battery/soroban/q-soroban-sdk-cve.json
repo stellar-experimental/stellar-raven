@@ -5,7 +5,7 @@
     "scout.searchRepos"
   ],
   "golden": {
-    "answer": "As of **2026-08-05**, check the live advisory feeds rather than treating this list as permanent. The current three repository advisories are: CVE-2026-24889 / GHSA-96xm-fv9w-pf3f for `soroban-sdk` (fixed in 25.0.2, 23.5.1, 22.0.9); CVE-2026-26267 / GHSA-4chv-4c6w-w254 for `soroban-sdk-macros` (fixed in 25.1.1, 23.5.2, 22.0.10); and CVE-2026-32322 / GHSA-x2hw-px52-wp4m for `soroban-sdk` (fixed in 25.3.0, 23.5.3, 22.0.11). Prefer the latest supported SDK major—check the repository releases live rather than trusting any pinned version here—or a patched supported branch, then recompile/review affected deployed code. Impact conditions differ; do not describe every advisory as unconditional.",
+    "answer": "As of **2026-09-03**, check the live advisory feeds rather than treating this list as permanent. The current three repository advisories are: CVE-2026-24889 / GHSA-96xm-fv9w-pf3f for `soroban-sdk` (fixed in 25.0.2, 23.5.1, 22.0.9); CVE-2026-26267 / GHSA-4chv-4c6w-w254 for `soroban-sdk-macros` (fixed in 25.1.1, 23.5.2, 22.0.10); and CVE-2026-32322 / GHSA-x2hw-px52-wp4m for `soroban-sdk` (fixed in 25.3.0, 23.5.3, 22.0.11). Prefer the latest supported SDK major—check the repository releases live rather than trusting any pinned version here—or a patched supported branch, then recompile/review affected deployed code. Impact conditions differ; do not describe every advisory as unconditional.",
     "keyFacts": [
       "Names all three dated CVE/GHSA/package mappings and patched branch releases.",
       "Requires live re-checking and upgrade/recompile review."
@@ -28,8 +28,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-09-10",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-12-10",
     "sources": [
       {
         "class": "B",
@@ -62,52 +62,52 @@
     ],
     "corroboration": [
       {
-        "claim": "As of 2026-07-28, the rs-soroban-sdk repository publishes exactly three advisories: CVE-2026-24889/GHSA-96xm for soroban-sdk, CVE-2026-26267/GHSA-4chv for soroban-sdk-macros, and CVE-2026-32322/GHSA-x2hw for soroban-sdk, with the stated patched 22/23/25 branch releases.",
+        "claim": "As of 2026-09-03, the rs-soroban-sdk repository publishes exactly three advisories: CVE-2026-24889/GHSA-96xm for soroban-sdk, CVE-2026-26267/GHSA-4chv for soroban-sdk-macros, and CVE-2026-32322/GHSA-x2hw for soroban-sdk, with the stated patched 22/23/25 branch releases.",
         "verdict": "confirmed",
         "evidence": [
           {
             "class": "B",
             "ref": "https://github.com/stellar/rs-soroban-sdk/security/advisories/GHSA-96xm-fv9w-pf3f",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-09-03"
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/rs-soroban-sdk/security/advisories/GHSA-4chv-4c6w-w254",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-09-03"
           },
           {
             "class": "B",
             "ref": "https://github.com/stellar/rs-soroban-sdk/security/advisories/GHSA-x2hw-px52-wp4m",
-            "observedAt": "2026-07-28"
+            "observedAt": "2026-09-03"
           },
           {
             "class": "D",
-            "ref": "https://nvd.nist.gov/vuln/detail/CVE-2026-24889",
-            "observedAt": "2026-07-28"
+            "ref": "https://api.osv.dev/v1/vulns/CVE-2026-24889",
+            "observedAt": "2026-09-03"
           },
           {
             "class": "D",
-            "ref": "https://nvd.nist.gov/vuln/detail/CVE-2026-26267",
-            "observedAt": "2026-07-28"
+            "ref": "https://api.osv.dev/v1/vulns/CVE-2026-26267",
+            "observedAt": "2026-09-03"
           },
           {
             "class": "D",
-            "ref": "https://nvd.nist.gov/vuln/detail/CVE-2026-32322",
-            "observedAt": "2026-07-28"
+            "ref": "https://api.osv.dev/v1/vulns/CVE-2026-32322",
+            "observedAt": "2026-09-03"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-08-05",
-      "by": "Solo Todo 1390 independent early scheduled security-advisory re-verification.",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
-        "GitHub's canonical repository-advisory API returned exactly GHSA-96xm-fv9w-pf3f, GHSA-4chv-4c6w-w254 and GHSA-x2hw-px52-wp4m with the package and patched-version mappings stated above on 2026-08-05.",
-        "NVD independently listed all three CVEs as Analyzed with the same GHSA references; its prose for CVE-2026-24889 contains a garbled version range, so the structured repository advisory remains authoritative for patched versions.",
-        "The repository release API returned v27.0.5 (published 2026-08-03T20:52:03Z); the answer deliberately does not pin a current SDK version."
+        "GitHub's repository-advisory API returned GHSA-96xm-fv9w-pf3f, GHSA-4chv-4c6w-w254, and GHSA-x2hw-px52-wp4m with the stated package and patched-version mappings on 2026-09-03.",
+        "OSV independently returned the same three CVEs on 2026-09-03. No listed advisory was withdrawn.",
+        "Sibling sweep 2026-09-03: q-soroban-sdk-cve remains the only current repository-advisory mapping case; no contradiction found."
       ],
       "rootCause": [
-        "Scheduled security-advisory freshness re-verification found no new repository advisory and refreshed the current release observation without pinning it in the answer."
+        "freshness-recheck"
       ]
     },
     "origin": "raven-next q-soroban-sdk-cve"

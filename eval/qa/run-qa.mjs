@@ -34,6 +34,15 @@
  *                      compile-qa.mjs for the committed sample.json)
  *   --ids a,b,c        run only these case ids (smoke tests)
  *   --port N           wrangler dev port (default 8788)
+ *   --upstream-port N  private Wrangler port when --port is the eval-only
+ *                      exact-old-runtime adapter listener
+ *   --adapter-mode add-missing|verify-native
+ *                      add the attested revision only for an old runtime, or
+ *                      require and preserve the candidate's native revision
+ *   --adapter-revision SHA
+ *                      clean runner revision that owns the adapter listener
+ *   --expect-adapter-sha256 HEX
+ *                      exact adapter implementation bytes
  *   --cases path       battery file (default eval/qa/cases.json). Named
  *                      hand-authored contracts include live-data-canonical-v3
  *                      (corpus/live/live-cases.json) and live-digest-supplement-v2
@@ -149,9 +158,17 @@ import {
   executableIdentity
 } from "../lib/executable-identity.mjs";
 import {
+  assertStableDualBoundServerIdentity,
   assertStableBoundServerIdentity,
-  boundServerIdentity
+  boundServerIdentity,
+  dualBoundServerIdentity
 } from "../lib/bound-server-identity.mjs";
+import {
+  ADAPTER_MODES,
+  RUNTIME_ADAPTER_SCHEMA,
+  adapterImplementationSha256,
+  fetchAdapterAttestation
+} from "./exact-old-runtime-adapter.mjs";
 import {
   PLAIN_SERVER_INSTRUCTIONS,
   loadPlainOperationSurface,
@@ -194,7 +211,10 @@ const SURFACES = new Set(["search-execute", "per-operation"]);
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
 const RUN_QA_VALUE_FLAGS = [
   "--cases",
+  "--adapter-mode",
+  "--adapter-revision",
   "--expect-agent-binary-sha256",
+  "--expect-adapter-sha256",
   "--expect-agent-environment-sha256",
   "--expect-sha256",
   "--ids",
@@ -210,6 +230,7 @@ const RUN_QA_VALUE_FLAGS = [
   "--server-revision",
   "--stability-register",
   "--surface",
+  "--upstream-port",
   "--variant"
 ];
 const RUN_QA_BOOLEAN_FLAGS = ["--no-judge"];
@@ -272,6 +293,52 @@ function parseRequiredFlagValue(args, flag) {
     throw new Error(`${flag} requires a value`);
   }
   return value;
+}
+
+export function parseRuntimeAdapterFlags(args, {
+  publicPort,
+  runnerRevision,
+  serverRevision,
+  localImplementationSha256 = adapterImplementationSha256()
+}) {
+  const flags = ["--adapter-mode", "--adapter-revision", "--expect-adapter-sha256", "--upstream-port"];
+  const present = flags.filter((flag) => args.includes(flag) || args.some((arg) => arg.startsWith(`${flag}=`)));
+  if (present.length === 0) return null;
+  if (present.length !== flags.length) {
+    throw new Error(`run-qa runtime adapter requires ${flags.join(", ")}`);
+  }
+  const mode = parseRequiredFlagValue(args, "--adapter-mode");
+  if (!ADAPTER_MODES.has(mode)) throw new Error(`--adapter-mode must be add-missing or verify-native, got ${mode}`);
+  const adapterRevision = parseRequiredFlagValue(args, "--adapter-revision").toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(adapterRevision)) {
+    throw new Error("--adapter-revision must be a 40-character lowercase commit");
+  }
+  if (adapterRevision !== String(runnerRevision).toLowerCase()) {
+    throw new Error("run-qa requires the runtime adapter from the clean runner revision");
+  }
+  const implementationSha256 = parseRequiredFlagValue(args, "--expect-adapter-sha256");
+  if (!/^[a-f0-9]{64}$/.test(implementationSha256)) {
+    throw new Error("--expect-adapter-sha256 must be a 64-character lowercase SHA-256");
+  }
+  if (implementationSha256 !== localImplementationSha256) {
+    throw new Error("run-qa runtime adapter file does not match --expect-adapter-sha256");
+  }
+  const upstreamPortText = parseRequiredFlagValue(args, "--upstream-port");
+  if (!/^\d+$/.test(upstreamPortText)) throw new Error("--upstream-port must contain decimal digits");
+  const upstreamPort = Number(upstreamPortText);
+  if (!Number.isInteger(upstreamPort) || upstreamPort < 1 || upstreamPort > 65_535) {
+    throw new Error(`--upstream-port is invalid: ${upstreamPortText}`);
+  }
+  if (upstreamPort === publicPort) throw new Error("--upstream-port must differ from --port");
+  return {
+    schema: RUNTIME_ADAPTER_SCHEMA,
+    mode,
+    adapterRevision,
+    implementationSha256,
+    publicPort,
+    upstreamPort,
+    sourceRevision: serverRevision
+  };
 }
 
 /** Reject ambiguous selectors before they can expand a paid run. */
@@ -643,7 +710,9 @@ export function sourceIdentity(serverRevision) {
     agentResultFileSha256: fileSha256("agent-result.mjs"),
     evidencePackFileSha256: fileSha256("evidence-pack.mjs"),
     judgeFileSha256: fileSha256("judge.mjs"),
-    plainHarnessFileSha256: fileSha256("plain-operation-harness.mjs")
+    plainHarnessFileSha256: fileSha256("plain-operation-harness.mjs"),
+    runtimeAdapterFileSha256: fileSha256("exact-old-runtime-adapter.mjs"),
+    p6SelfTestWrapperFileSha256: fileSha256("run-p6-judge-self-test.mjs")
   };
 }
 
@@ -1532,6 +1601,11 @@ async function main() {
   const expectedSurfaceSha256 = parseRequiredFlagValue(args, "--expect-sha256");
   const serverRevision = assertPinnedServerRevision(serverRevisionArgument);
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
+  const runtimeAdapter = parseRuntimeAdapterFlags(args, {
+    publicPort: port,
+    runnerRevision: collectionSourceIdentity.runnerRevision,
+    serverRevision
+  });
   const casesPath = argVal("--cases") ?? path.join(QA_DIR, "cases.json");
   const plainSurface = loadPlainOperationSurface();
 
@@ -1565,6 +1639,29 @@ async function main() {
     }), "before"));
   }
 
+  let listenerPair = null;
+  let adapterAttestation = null;
+  let serverProcess;
+  let upstreamServerProcess = null;
+  if (runtimeAdapter) {
+    listenerPair = dualBoundServerIdentity({
+      adapterPort: port,
+      adapterRevision: runtimeAdapter.adapterRevision,
+      upstreamPort: runtimeAdapter.upstreamPort,
+      upstreamRevision: serverRevision
+    });
+    serverProcess = listenerPair.adapter;
+    upstreamServerProcess = listenerPair.upstream;
+    adapterAttestation = await fetchAdapterAttestation(port, {
+      mode: runtimeAdapter.mode,
+      sourceRevision: serverRevision,
+      implementationSha256: runtimeAdapter.implementationSha256,
+      upstreamPort: runtimeAdapter.upstreamPort,
+      upstreamIdentity: listenerPair.upstream
+    });
+  } else {
+    serverProcess = boundServerIdentity(port, serverRevision);
+  }
   const preflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
   const surfacePin = assertExpectedSurface(preflightResult.metrics, expectedSurfaceSha256, {
     label: "run-qa live MCP surface"
@@ -1572,7 +1669,6 @@ async function main() {
   const sourceRevisionPin = assertExpectedSourceRevision(preflightResult.serverInfo, serverRevision, {
     label: "run-qa live Worker"
   });
-  const serverProcess = boundServerIdentity(port, serverRevision);
   console.log(
     `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}active ${lifecyclePartition.active.length} of ${cases.length} selected cases · excluded quarantined IDs: ${lifecyclePartition.quarantinedIds.join(", ") || "none"} · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`}`
   );
@@ -1610,6 +1706,10 @@ async function main() {
   let sourceRevisionPinAfter;
   let serverProcessAfter;
   let serverProcessGuard;
+  let upstreamServerProcessAfter;
+  let listenerPairAfter;
+  let listenerPairGuard;
+  let adapterAttestationAfter;
   let postflightError = null;
   try {
     for (const [i, c] of cases.entries()) {
@@ -1766,6 +1866,28 @@ async function main() {
   }
 
   try {
+    if (runtimeAdapter) {
+      listenerPairAfter = dualBoundServerIdentity({
+        adapterPort: port,
+        adapterRevision: runtimeAdapter.adapterRevision,
+        upstreamPort: runtimeAdapter.upstreamPort,
+        upstreamRevision: serverRevision
+      });
+      listenerPairGuard = assertStableDualBoundServerIdentity(listenerPair, listenerPairAfter);
+      serverProcessAfter = listenerPairAfter.adapter;
+      serverProcessGuard = listenerPairGuard.adapter;
+      upstreamServerProcessAfter = listenerPairAfter.upstream;
+      adapterAttestationAfter = await fetchAdapterAttestation(port, {
+        mode: runtimeAdapter.mode,
+        sourceRevision: serverRevision,
+        implementationSha256: runtimeAdapter.implementationSha256,
+        upstreamPort: runtimeAdapter.upstreamPort,
+        upstreamIdentity: listenerPairAfter.upstream
+      });
+    } else {
+      serverProcessAfter = boundServerIdentity(port, serverRevision);
+      serverProcessGuard = assertStableBoundServerIdentity(serverProcess, serverProcessAfter);
+    }
     postflightResult = await probeLiveSurface(port, { surface, searchTool, plainSurface });
     surfacePinAfter = assertExpectedSurface(postflightResult.metrics, expectedSurfaceSha256, {
       label: "run-qa final live MCP surface"
@@ -1773,8 +1895,6 @@ async function main() {
     sourceRevisionPinAfter = assertExpectedSourceRevision(postflightResult.serverInfo, serverRevision, {
       label: "run-qa final live Worker"
     });
-    serverProcessAfter = boundServerIdentity(port, serverRevision);
-    serverProcessGuard = assertStableBoundServerIdentity(serverProcess, serverProcessAfter);
   } catch (error) {
     postflightError = error;
   }
@@ -1874,9 +1994,21 @@ async function main() {
           sourceIdentityGuard: collectionSourceIdentityGuard,
           comparable,
           comparabilityReasons,
+          runtimeAdapter: runtimeAdapter
+            ? {
+                ...runtimeAdapter,
+                attestation: adapterAttestation,
+                attestationAfter: adapterAttestationAfter ?? null
+              }
+            : null,
+          listenerPair,
+          listenerPairAfter: listenerPairAfter ?? null,
+          listenerPairGuard: listenerPairGuard ?? null,
           serverProcess,
           serverProcessAfter,
           serverProcessGuard,
+          upstreamServerProcess,
+          upstreamServerProcessAfter: upstreamServerProcessAfter ?? null,
           toolSurface: preflightResult.metrics,
           toolSurfaceAfter: postflightResult?.metrics ?? null,
           surfacePin,

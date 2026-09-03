@@ -431,6 +431,13 @@ check("protocol-history diagnostics pin frozen membership and case content", () 
 });
 
 check("protocol-history v2 diagnostics pin roles, membership, and case content", () => {
+  const sourceEpoch = {
+    frozenAt: "2026-09-02T17:27:40.000Z",
+    manifestSha256: "4cd28f4bdfe8c73950e0a6d4dfa1a09dd2f82674859e93990fdd62daef24fe8b",
+    targetScoringSha256: "c3956d225eba75f0543a9aa0d7cf42dc3f6169189e1e3f995f028a6252a42752",
+    targetRoutingSha256: "468a9d9834e8cb50cb905f80ccc42f9d3daa7a3d0ff2d8c5194d566812ba716b",
+    caseAuthoringReceipt: ".agents/rounds/2026-09-02-protocol-history-free-evidence/label-review-grok.md",
+  };
   const contracts = [
     {
       path: "./protocol-history-cases-v2.json",
@@ -461,6 +468,7 @@ check("protocol-history v2 diagnostics pin roles, membership, and case content",
     assert.equal(diagnostic.version, 2);
     assert.equal(diagnostic.authoredAt, "2026-09-03");
     assert.equal(diagnostic.targetOperation, "scout.searchResearch");
+    assert.deepEqual(diagnostic.sourceEpoch, sourceEpoch);
     assert.equal(diagnostic.contractProvenance.predecessor, expected.predecessor);
     assert.equal(
       diagnostic.contractProvenance.labelReview,

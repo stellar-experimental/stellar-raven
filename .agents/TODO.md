@@ -11,6 +11,17 @@ Updated 2026-09-03 after the owner resolved the Raven monitor and protocol-histo
 
 ## Improvements follow-up
 
+### Independently verify `sd-049` and `sk-021` before upstream filing
+
+Re-run the Saved Keypairs page, Laboratory storage-helper, and Saved Keypairs UI checks for
+`sd-049`. Re-run the Smart Contracts skill source and Horizon protocol-version checks for `sk-021`.
+Use `.agents/rounds/2026-09-03-truth-maintenance/golden-implementation-terra.md` as the evidence ledger.
+
+Move either finding from `proposed` only after an independent live re-derivation confirms its trigger.
+File only through `npm run improvements:file` after the normal intake and lint checks pass.
+
+Done when: the findings are verified with current evidence, or a recheck shows that either source changed.
+
 ### Re-check `sd-047` only after PR #2806 merges
 
 Trigger only when https://github.com/stellar/stellar-docs/pull/2806 merges.
@@ -161,6 +172,41 @@ One new target capture or one-case improvement does not close this item.
 Filed here and not in `improvements/`: the data is reachable, so there is no upstream gap. This is
 our ranking.
 
+### Preserve structured routing intent across extraction caps and gate tiers
+
+Trigger only after the current truth-maintenance round closes and the owner authorizes a general
+Raven scoring repair. The 2026-09-03 Scout routing attribution found eight real regressions from
+phrase flattening, first-token truncation, generic schema-word coverage, substring coverage, and
+five weak gated rows. It also found valid leaderboard and RFP gains. This item does not authorize
+the rejected Scout surface, a routing-baseline change, operation-specific exceptions, or
+question-specific exceptions. Keep the protocol-history measurement source-expired for the rejected
+Scout surface.
+
+Keep phrase and field boundaries from `x-routing` during scoring. Replace first-token truncation
+with deterministic fair allocation. Retain specific older intent when a source adds long sections.
+Stop generic response-property names and unrelated substrings inside schema words from satisfying
+the coverage gate. Let strong ungated cross-service evidence compete with five weak gated rows.
+This item also owns the `sls-078` residual. Scout fixed its quality `x-routing`
+contract in 1.9.13. The reviewed 1.9.23 candidate still caused 90 unrelated
+`scout.getQualityReport` captures through Raven response-schema keywords. Keep
+`GET /api/quality` excluded until this general repair passes. Do not create a
+separate routing TODO or upstream successor.
+
+Acceptance checks:
+
+1. Protocol-history additions do not remove `yieldblox` or `reflector` intent.
+2. `through`, `network`, `each`, and `walk through` cannot route alone.
+3. `contract` cannot route `explainRepo` without a repository or code anchor.
+4. Added `use` cannot promote `hackathonBrief` above account-merge Docs.
+5. `has` cannot match inside the schema keyword `phase`.
+6. Strong Docs evidence remains eligible after five weak gated Scout candidates.
+7. All eight regression rows meet their clean grades.
+8. The leaderboard and RFP improvements remain.
+9. The full legacy, extended, skills, and holdout gates do not regress.
+
+Done when: all nine acceptance checks pass in a reviewed general scoring change. The existing
+protocol-history diagnostic stays source-expired until a separate accepted Scout source epoch exists.
+
 ## Eval instruments
 
 ### Monitor vendor short-token prefix matching
@@ -264,6 +310,19 @@ question family and primary service. A paraphrase of the first case does not cou
 recurrence with its case ID, result stamp, and transcript.
 
 ## Deferred programs
+
+### Re-evaluate Scout exposure after a routing-contract change
+
+Trigger only when a new Scout inventory changes `GET /api/quality` or `GET /api/verify`
+`x-routing`, description, request schema, or response schema. A version-only change does not trigger
+this work.
+
+Before an exposure candidate, rebuild the catalog and generated surfaces. Run the focused exposure
+tests and `npm run eval:routing -- --gate` without changing `eval/gates.json`. Compare the candidate
+against the committed 1.9.1 surface. Record the manifest hash and all routing lane totals.
+
+Done when: a changed routing contract passes the existing gate and an independent review accepts the
+exposure decision. Otherwise, keep both operations in `EXCLUDED_SCOUT_OPS`.
 
 ### Keep `sources.locate` deferred
 

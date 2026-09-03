@@ -18,7 +18,7 @@ the headline wins.
 | — skills lane (23, hand-authored) | skills routing | free, same run | **GATE**: must not fall below the current top-1 floor in `eval/gates.json`; top-3/top-5/card@5 remain visible diagnostics. |
 | — extended lane (122, real-user phrasing) | `search` on jitsu-mined questions | free, same run | Diagnostic; **target metric for retrieval work**. Read the latest local result for the current tree. Local results are not committed and do not define the gate baseline. |
 | — protocol-history v1 lane (8 positives, 4 controls) | `search` routing to a cited research corpus | free, same run | Historical frozen diagnostic inside `run-routing.mjs`. Positives require `scout.searchResearch` in the top five. Controls forbid any top-five capture. |
-| `npm run eval:protocol-history` — v2 original plus blind sets (19 required, 9 forbidden, 4 neutral) | protocol-history routing and symmetric false captures | free, seconds — every candidate for this work | Versioned frozen diagnostic. Every required case needs `scout.searchResearch` in the top five. Forbidden cases exclude it. Neutral ranks remain diagnostic only. |
+| `npm run eval:protocol-history` — v2 original plus blind sets (19 required, 9 forbidden, 4 neutral) | protocol-history routing and symmetric false captures | free, seconds — every candidate for this work | Source-epoch-bound frozen diagnostic. The runner checks source hashes before scoring. It writes `source-expired` without scored sets after any mismatch. Eligible results stamp the actual manifest and contract digests. |
 | — accept-either views (corpus `acceptable_cards` ∪ overlay) | label-tolerance context | free, same run | Diagnostic only; never the headline |
 | `eval/discovery/` | one-search, agent-allowed-≤3-search, and mined-query replay source-family / usable-route discovery | one-shot/replay free; agent arm paid; after discovery guidance or retrieval-shape work | Diagnostic: 43 adjudicated cases; `familyHit@3` + `usableOp@5`; paired miss classification; 91-query LumenLoop replay lane |
 | `eval/agentic/` | agent-driven `search`, live server | ~$, minutes — after major search-behavior changes | Diagnostic (label-ambiguity analysis) |
@@ -106,7 +106,7 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
    contract-version bump, provenance note, and digest update. Generated files
    (`routing-cases.json`, `qa/cases.json`, `qa/sample.json`, `qa/lifecycle-registry.json`) are never hand-edited — CI
    byte-pins them.
-7. **Results are local-only evidence** (`eval/**/results/`, gitignored). `eval/gates.json`
+7. **Results are local-only evidence** (`eval/**/results/`, gitignored). Routing results stamp the actual manifest SHA-256. `eval/gates.json`
    carries the routing gate's committed fingerprints and accepted totals. READMEs carry historical
    records and can cite exact local result stamps. A routing gate can add `evidence.localTrace` as
    optional context, but the trace is never required to resolve the baseline. The results dirs are

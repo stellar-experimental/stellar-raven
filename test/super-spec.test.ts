@@ -7,7 +7,7 @@
  * with catalog/manifest.json (ADR-0003: spec paths = manifest operations,
  * every one callable), the judicious skills representation (3 ops + embedded
  * index, NOT one path per skill/section), and the size budget the design doc
- * records (the compact form ships into a sandbox on every search).
+ * records (the compact form ships into the execute sandbox).
  */
 import { describe, expect, it } from "vitest";
 import { execFileSync } from "node:child_process";
@@ -15,6 +15,16 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { EXCLUDED_SCOUT_OPS } from "../scripts/exposure.mjs";
+import { compactResponseSchema } from "../scripts/lib/super-spec-compaction.ts";
+import { isOversizedOutputBlock } from "../src/catalog/output-compaction.ts";
+import { lastIdSegment } from "../src/catalog/id.ts";
+import {
+  jsonSchemaToType,
+  sanitizeToolName,
+  toPascalCase,
+  type JsonSchema
+} from "../src/catalog/vendor/json-schema-types.ts";
+import { resolveSpecRefs } from "../src/executor/spec-sandbox.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SPEC_PATH = join(ROOT, "specs", "super-spec.json");
@@ -70,6 +80,23 @@ function allOps(): Array<[string, string, Operation]> {
     for (const [method, op] of Object.entries(item)) out.push([path, method, op]);
   }
   return out;
+}
+
+function operationById(
+  document: typeof spec,
+  id: string
+): Operation {
+  const match = Object.values(document.paths)
+    .flatMap((item) => Object.values(item))
+    .find((op) => op.operationId === id);
+  if (!match) throw new Error(`missing operation ${id}`);
+  return match;
+}
+
+function outputBlock(entry: (typeof manifest.entries)[number]): string | undefined {
+  if (!entry.outputSchema) return undefined;
+  const typeBase = toPascalCase(sanitizeToolName(lastIdSegment(entry.id)));
+  return jsonSchemaToType(entry.outputSchema as JsonSchema, `${typeBase}Output`);
 }
 
 describe("build determinism", () => {
@@ -272,6 +299,90 @@ describe("consistency with the catalog (single source of truth)", () => {
   });
 });
 
+describe("oversized response-schema compaction", () => {
+  it("preserves required names that have no matching property", () => {
+    const fixture = JSON.parse(
+      readFileSync(
+        join(ROOT, "test", "fixtures", "super-spec", "required-without-property.json"),
+        "utf8"
+      )
+    ) as {
+      id: string;
+      outputSchema: Record<string, unknown>;
+    };
+    const compact = compactResponseSchema(fixture);
+
+    expect(compact.properties).toEqual({ present: {} });
+    expect(compact.required).toEqual(["present", "missing"]);
+    expect(compact.type).toBe("object");
+    expect(compact["x-codemode-describe"]).toBe(
+      'codemode.describe("fixture.requiredWithoutProperty")'
+    );
+  });
+
+  it("compacts exactly the operation outputs selected by the shared threshold", () => {
+    const catalogOps = manifest.entries.filter((entry) => entry.kind === "operation");
+    const expected = catalogOps
+      .filter((entry) => {
+        const block = outputBlock(entry);
+        return block !== undefined && isOversizedOutputBlock(block);
+      })
+      .map((entry) => entry.id)
+      .sort();
+    const actual = allOps()
+      .filter(([, , op]) => {
+        const schema = op.responses?.["200"]?.content?.["application/json"]?.schema;
+        return schema?.["x-codemode-describe"] !== undefined;
+      })
+      .map(([, , op]) => op.operationId)
+      .sort();
+
+    expect(actual).toEqual(expected);
+    expect(actual.length).toBeGreaterThan(0);
+  });
+
+  it("keeps exact top-level field names and an exact-id describe pointer", () => {
+    for (const entry of manifest.entries.filter((candidate) => candidate.kind === "operation")) {
+      const block = outputBlock(entry);
+      if (block === undefined || !isOversizedOutputBlock(block)) continue;
+
+      const schema = operationById(spec, entry.id).responses?.["200"]?.content?.[
+        "application/json"
+      ]?.schema as Record<string, unknown>;
+      const expectedKeys = Object.keys(entry.outputSchema?.properties ?? {}).sort();
+      const properties = schema.properties as Record<string, unknown> | undefined;
+      expect(Object.keys(properties ?? {}).sort(), entry.id).toEqual(expectedKeys);
+      expect(schema.required, entry.id).toEqual(entry.outputSchema?.required);
+      expect(schema.type, entry.id).toEqual(entry.outputSchema?.type);
+      expect(schema["x-codemode-describe"], entry.id).toBe(
+        `codemode.describe(${JSON.stringify(entry.id)})`
+      );
+      expect(schema.description, entry.id).toContain(
+        `codemode.describe(${JSON.stringify(entry.id)})`
+      );
+      expect(JSON.stringify(schema).length, entry.id).toBeLessThan(
+        JSON.stringify(entry.outputSchema).length
+      );
+    }
+  });
+
+  it("keeps every non-oversized output schema equivalent after ref resolution", () => {
+    const resolved = resolveSpecRefs(spec) as typeof spec;
+    let checked = 0;
+    for (const entry of manifest.entries.filter((candidate) => candidate.kind === "operation")) {
+      const block = outputBlock(entry);
+      if (block === undefined || isOversizedOutputBlock(block)) continue;
+
+      const schema = operationById(resolved, entry.id).responses?.["200"]?.content?.[
+        "application/json"
+      ]?.schema;
+      expect(schema, entry.id).toEqual(entry.outputSchema);
+      checked += 1;
+    }
+    expect(checked).toBeGreaterThan(0);
+  });
+});
+
 describe("runnable skills — /skills/run_skill (design §5)", () => {
   const runSkillOp = () => spec.paths["/skills/run_skill"]!.post!;
 
@@ -346,21 +457,20 @@ describe("service specifics", () => {
     expect(status.description).toContain("brief is still soliciting");
     expect(status.description).toContain("submissionWindow");
     expect(status.description).toContain("currentPhase");
-    const schema = op.responses!["200"]!.content!["application/json"]!.schema as {
+    const entry = manifest.entries.find((candidate) => candidate.id === "scout.getRfps")!;
+    const schema = entry.outputSchema as {
       properties: {
         meta: { properties: { scfRound: { properties: Record<string, unknown> } } };
-        rfps: { items: { $ref: string } };
+        rfps: { items: { properties: Record<string, { description?: string }> } };
       };
     };
     const round = schema.properties.meta.properties.scfRound.properties;
     expect(round).toHaveProperty("currentPhase");
     expect(round).toHaveProperty("roundsInProgress");
     expect(round).toHaveProperty("verifyAt");
-    expect(schema.properties.rfps.items.$ref).toBe("#/components/schemas/scout.Rfp");
-    const rfp = spec.components.schemas!["scout.Rfp"] as {
-      properties: { status: { description: string } };
-    };
-    expect(rfp.properties.status.description).toContain("brief is still soliciting");
+    expect(schema.properties.rfps.items.properties.status!.description).toContain(
+      "brief is still soliciting"
+    );
   });
 
   it("scout $refs resolve within the merged doc (namespaced components)", () => {
@@ -416,7 +526,7 @@ describe("service specifics", () => {
 });
 
 describe("size budget (design doc §4)", () => {
-  it("the compact form that ships into each search sandbox stays under 300 KB", () => {
+  it("the compact form that ships into the execute sandbox stays under 300 KiB", () => {
     const compact = Buffer.byteLength(JSON.stringify(spec), "utf8");
     expect(compact).toBeLessThan(300 * 1024);
   });

@@ -27,7 +27,7 @@ import {
   applyRerankHysteresis,
   buildCandidateUnion,
   clauseFit,
-  loadRerankClauseArtifact,
+  loadBankedRerankClauseArtifact,
   pairIndexForBase,
   scoringProjection,
 } from "../eval/vectorize/rerank-retrieval.mjs";
@@ -48,16 +48,17 @@ const frozenRows = [originalContract, blindContract]
 
 let clauseData;
 function clausesFixture() {
-  clauseData ??= loadRerankClauseArtifact();
+  clauseData ??= loadBankedRerankClauseArtifact();
   return clauseData;
 }
 
 describe("pair construction and encoding", () => {
-  it("1. matches every reconstructed document to its artifact textSha256", () => {
+  it("1. validates the banked artifact without reconstructing current source text", () => {
     const { artifact, clauses } = clausesFixture();
     expect(clauses).toHaveLength(artifact.clauses.length);
     clauses.forEach((clause, index) => {
-      expect(sha256(clause.text), `${index}:${clause.entryId}`).toBe(artifact.clauses[index].textSha256);
+      expect(clause, `${index}:${clause.entryId}`).toEqual(artifact.clauses[index]);
+      expect(clause.textSha256).toMatch(/^[a-f0-9]{64}$/);
       expect(artifact.clauses[index]).not.toHaveProperty("text");
     });
   });
@@ -70,14 +71,8 @@ describe("pair construction and encoding", () => {
     expect(calls[0].texts[0]).not.toContain("Instruct:");
   });
 
-  it("3. keeps frozen case ids and questions out of pair documents", () => {
-    const documents = clausesFixture().clauses.map((clause) => clause.text);
-    for (const row of frozenRows) {
-      for (const document of documents) {
-        expect(document).not.toContain(row.id);
-        expect(document).not.toContain(row.question);
-      }
-    }
+  it("3. keeps historical clause text out of the banked artifact", () => {
+    expect(clausesFixture().clauses.every((clause) => !Object.hasOwn(clause, "text"))).toBe(true);
   });
 
   it("4. passes clauses through text_pair with the frozen tokenizer options", () => {

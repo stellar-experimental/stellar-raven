@@ -1,0 +1,6022 @@
+{
+  "schema": "affected-case-stratum-v1",
+  "purpose": "Pre-spend review stratum only. It does not select, exclude, replace, or append cases in either paid 500-case arm.",
+  "baseline": {
+    "serviceRevision": "90d0ba75eb529c6a1cf6fe276f16cf4f1da4f9f0",
+    "manifestSha256": "f70880932b6262260260da028556f8027802b003cae79263417db4760d0a4e05",
+    "operationCount": 58
+  },
+  "candidate": {
+    "reference": "current working-tree service surface",
+    "headRevision": "2ee801f80d626e68f010392a7d541aab7997349d",
+    "immutableRevision": null,
+    "manifestSha256": "b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729",
+    "operationCount": 60,
+    "serviceSurfacePaths": [
+      {
+        "path": "catalog/manifest.json",
+        "baselineSha256": "f70880932b6262260260da028556f8027802b003cae79263417db4760d0a4e05",
+        "candidateSha256": "b613201846076e9fbaa70edfee4f506841c7cf690265e69c8d07afde567f6729",
+        "changed": true
+      },
+      {
+        "path": "src/catalog/search.ts",
+        "baselineSha256": "4677b192c3074696a5a6dab011b38a66e8a74285f06ded0060ad30bd0f9b6f24",
+        "candidateSha256": "cbec29322f6853de5a90a5d6b2ada2ea91fad0693ab1d9d9789c3d8183519c76",
+        "changed": true
+      },
+      {
+        "path": "src/mcp/micro-map.ts",
+        "baselineSha256": "f58c16fc12793c2ead9613199c948dc83eed86c2015e38e4d6df96923a524d62",
+        "candidateSha256": "eda38f9d752dc28a300c4450dd6033349e7de21a17f620a7637f9e72d9f4a77f",
+        "changed": true
+      },
+      {
+        "path": "src/executor/providers.ts",
+        "baselineSha256": "67b0780045a79f3e8ed80d4f96f68ae3f7ecf218b78c7a867d0caedd75e505d2",
+        "candidateSha256": "bfa810d931b263d56f0847ebe8e754bb767079d26854ae25937ab34e8785fa49",
+        "changed": true
+      },
+      {
+        "path": "src/executor/run.ts",
+        "baselineSha256": "d0094a17772db4771b54b3b23941fe8587406a4fccca5888fef246f68d414f2a",
+        "candidateSha256": "9aaff37561d7725a9a3c6e2910ba0df4dfe8508508fdfe96edd8581abf657378",
+        "changed": true
+      },
+      {
+        "path": "src/policy/scout-exposure.ts",
+        "baselineSha256": null,
+        "candidateSha256": "6a8cb4def17f886a42e3b65f73832fc78e6a7a0b223e7119f0b8add8a0d8c769",
+        "changed": true
+      },
+      {
+        "path": "src/policy/source-basis.ts",
+        "baselineSha256": "2159ce97b2ad4b354b92e44286dce43d9ad7be87823678390592dd6e36918990",
+        "candidateSha256": "f0abfbe3a039a6f5ce550758e7f6749f5d347dc9a28ed2cda3fb4506d1d04af4",
+        "changed": true
+      },
+      {
+        "path": "specs/super-spec.json",
+        "baselineSha256": "4d62ab35df374102c19228b9bcac89a822174215e08f76677da66f0240e26e2e",
+        "candidateSha256": "93799e8c9e5c9045b1f2352d2611c1741d2d2458e12712de81da878a33147538",
+        "changed": true
+      }
+    ]
+  },
+  "caseUniverse": {
+    "path": "eval/qa/cases.json",
+    "caseCount": 500,
+    "caseFileSha256": "1042c0e226ad44b5ffab8844e1c97a2752f94a3096b13e628ed630fd0f015c7f",
+    "orderedCaseIdsSha256": "b557bcb5cff8a434ad684b90a60343358360330ca1f91072089ceb57a38310d0",
+    "paidArmRule": "Both paid arms retain all ordered active cases from eval/qa/cases.json. The review stratum changes no paid-arm membership.",
+    "excludedFromPaidArms": []
+  },
+  "selection": {
+    "routingImplementation": "candidate src/catalog/search.ts evaluated against the baseline and candidate manifests",
+    "rules": [
+      "Select when the ordered top-five operation IDs differ between the baseline and candidate manifests.",
+      "Select when a changed operation record appears in either baseline or candidate top-five operation IDs.",
+      "Changed operation record means canonical JSON differs for a manifest operation entry, including an added or removed operation."
+    ],
+    "changedOperationIds": [
+      "lumenloop.find_av_passages",
+      "lumenloop.find_content_by_entity",
+      "lumenloop.search_directory",
+      "scout.analyzeEcosystem",
+      "scout.compareHackathons",
+      "scout.explainRepo",
+      "scout.getBuilders",
+      "scout.getChangelog",
+      "scout.getChanges",
+      "scout.getClusters",
+      "scout.getHackathon",
+      "scout.getHackathons",
+      "scout.getLeaderboard",
+      "scout.getPartner",
+      "scout.getPartners",
+      "scout.getPeople",
+      "scout.getRepoTrust",
+      "scout.getRfps",
+      "scout.getSkill",
+      "scout.getStablecoins",
+      "scout.getStatus",
+      "scout.hackathonBrief",
+      "scout.listAudits",
+      "scout.listContracts",
+      "scout.listSkills",
+      "scout.matchPartners",
+      "scout.resolveProject",
+      "scout.scfPitch",
+      "scout.searchHackathonBuilds",
+      "scout.searchProjects",
+      "scout.searchRepos",
+      "scout.searchResearch",
+      "scout.vetIdea",
+      "stellarDocs.search_anchor_sep_docs",
+      "stellarDocs.search_asset_token_docs",
+      "stellarDocs.search_docs_in_category",
+      "stellarDocs.search_protocol_concepts_docs",
+      "stellarDocs.search_rpc_horizon_data_docs",
+      "stellarDocs.search_sdk_cli_tools_docs",
+      "stellarDocs.search_soroban_contract_docs",
+      "stellarDocs.search_wallet_dapp_docs"
+    ],
+    "addedOperationIds": [
+      "scout.hackathonBrief",
+      "scout.resolveProject"
+    ],
+    "removedOperationIds": [],
+    "counts": {
+      "selected": 496,
+      "notSelected": 4,
+      "orderedTopFiveDifference": 215,
+      "changedOperationInTopFive": 496,
+      "bothRules": 215
+    },
+    "orderedTopFiveSha256": {
+      "baseline": "cf5e8816c26153da622f5da6d014077ad72b3a43c14638ce02ceb568f05e320a",
+      "candidate": "cd0b237d6a8a9accdbecc0b8da8b0053ea1ee9f493ef70955979244507e1e01e"
+    },
+    "selectedIdsSha256": "0aca348f479a095e9657fc225652ef2b77e48d52926da982a13044fe97c8ceec",
+    "selected": [
+      {
+        "id": "q-aas-burn-clawback-redemption-mechanics",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-aas-claim-received-claimable-balances",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.vetIdea",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-aas-claimable-predicates-expiry-reserves",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-aas-issuer-fees-supply-cap-freeze",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-aas-list-token-on-exchanges-aggregators",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-aas-sep30-recoverable-wallets",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-aas-trusted-asset-list-whitelist",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "scout.listSkills",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-aas-trustline-limit-lifecycle",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-agent-identity-erc8004-stellar",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchRepos",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-agent-payment-standard-choice",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.getSkill",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-anchor-endpoint-discovery",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-anchor-list-builders-discovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-anchor-moneygram-ramps",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getRfps",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-anchor-platform-what",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-anchor-sdp-vs-anchor-platform",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-anchor-sdp-what",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getRfps",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-ass-cross-bando-stablebonds-sac",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.scfPitch",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-ass-cross-etherfuse-cetes-controls",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-asset-amm-fee-reserve",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-asset-claimable-balance",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-asset-deploy-sac-cli",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-asset-issue-asset-howto",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.explainRepo",
+          "scout.getHackathon",
+          "scout.getHackathons",
+          "scout.listAudits",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-asset-path-payment-ops",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-asset-rwa-tokenized-freshness",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-asset-sdex-vs-amm",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-asset-stablecoin-issuers-discovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-asset-trustline-basics",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-asset-trustline-vs-sac",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-asset-two-account-issuer",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-asset-usdc-eurc-issuer",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-asset-usdc-eurc-path-fx",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.hackathonBrief",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-asset-wallet-sdk-seps",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-builder-by-region-latam",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getBuilders",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-builder-by-scf-tier",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.hackathonBrief",
+          "scout.scfPitch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-builder-content-by-person",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem"
+        ]
+      },
+      {
+        "id": "q-builder-justin-rice-history",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem"
+        ]
+      },
+      {
+        "id": "q-builder-lumenloop-regions-vocab",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getBuilders",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-builder-rust-soroban-devs",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-cctp-v2-usdc-stellar",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-comp-anchor-compliance-stack",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-comp-auth-flags-overview",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.hackathonBrief",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-comp-clawback-cap0035",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.searchRepos"
+        ]
+      },
+      {
+        "id": "q-comp-clawback-holder-risk",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-comp-cross-bitso-sep31",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-comp-cross-moneygram-partnership-sep24",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-comp-finclusive-caas",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-comp-sac-inherits-flags",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-comp-security-disclosure-programs",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-comp-sep6-vs-sep12-roles",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-comp-sep8-number-lookup-no-deepresearch",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-comp-yieldblox-oracle-incident",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.resolveProject",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-crp-anchors-by-corridor",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.getSkill",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-crp-become-an-anchor-licensing",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-crp-cme-xlm-futures-dates",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-crp-custodial-vs-noncustodial-wallets",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-crp-dtcc-stellar-connection-plan",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathon",
+          "scout.hackathonBrief",
+          "scout.searchProjects",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-crp-export-tx-history-taxes",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathons",
+          "scout.listContracts",
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchRepos",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-crp-partner-detail-after-discovery",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getPartner",
+          "scout.getPartners",
+          "scout.matchPartners"
+        ]
+      },
+      {
+        "id": "q-crp-regional-offramp-mobilemoney",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-crp-remittance-founder-advisory",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-crp-sdp-operation",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-crp-tokenize-personal-rwa",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getClusters",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.listSkills",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-defi-agentic-payment-standards-compare",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-defi-allbridge-what-is",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-defi-arbitrage-pathpayment-bots",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-defi-asset-whitespace-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-defi-benji-franklin-templeton",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-defi-blend-alternatives",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-defi-blend-what-is",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-defi-bridge-evm-to-stellar-axelar",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchProjects",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-defi-build-staking-for-own-token",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "scout.vetIdea",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-defi-category-funding-ratio-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.scfPitch",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-defi-category-saturation-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-defi-cluster-rollup-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters"
+        ]
+      },
+      {
+        "id": "q-defi-comet-what-is",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.listContracts",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-defi-cross-blend-rivool-sac",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-defi-defindex-honest",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-defi-etherfuse-stablebonds",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-defi-flash-loans",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-defi-lending-landscape-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.resolveProject",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-defi-liquid-staking-whitespace",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-defi-lumenloop-categories-vocab",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.analyzeEcosystem",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-defi-market-making-kelp",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-defi-named-newer-protocols",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.getPeople"
+        ]
+      },
+      {
+        "id": "q-defi-ondo-usdy",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-defi-oracle-landscape-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.resolveProject",
+          "scout.searchProjects",
+          "scout.searchRepos",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-defi-perps-whitespace",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.searchProjects",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-defi-phoenix-what-is",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-defi-provide-liquidity-impermanent-loss",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-defi-reflector-oracle",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-defi-rwa-scf-similar",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-defi-rwa-treasury-funding-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchRepos",
+          "scout.searchResearch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-defi-sdex-offer-lifecycle",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "scout.listContracts",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-defi-skill-ecosystem-scout",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "scout.listAudits"
+        ]
+      },
+      {
+        "id": "q-defi-soroswap-vs-stellarx",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.listSkills",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-defi-soroswap-what-is",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-defi-streaming-payments-prior-art",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-defi-tooling-whitespace-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-defi-wisdomtree-crdt",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "lumenloop.search_directory",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-defi-x402-on-stellar-what",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts"
+        ]
+      },
+      {
+        "id": "q-eco-defi-market-map",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.getBuilders"
+        ]
+      },
+      {
+        "id": "q-eco-defi-projects-discovery",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-eco-defi-tvl-current",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-eco-dex-saturation",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.getClusters",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-eco-freighter-wallet",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getChanges",
+          "scout.getPeople",
+          "scout.listAudits",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-eco-hana-wallet-scf",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getRfps",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-eco-lobstr-wallet",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "scout.vetIdea",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-eco-most-active-defi-projects",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "scout.resolveProject",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-eco-nft-marketplace-whitespace",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-eco-pyusd-stellar-freshness",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathon",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-eco-stablecoins-on-stellar",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getStablecoins"
+        ]
+      },
+      {
+        "id": "q-eco-stellar-rwa-stablecoin-volume",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-eco-stellar-wallets-list",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getClusters",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-eco-xbull-wallet",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.getBuilders",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-edge-1xlm-activation-fee",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-edge-ambig-best-wallet",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-edge-ambig-stellar-token-meaning",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.vetIdea",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.listContracts"
+        ]
+      },
+      {
+        "id": "q-edge-closed-world-builder-directory-miss",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getBuilders",
+          "scout.getClusters",
+          "scout.getPeople",
+          "scout.listSkills",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-edge-deep-full-history-report",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.listAudits",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-edge-doc-category-filter-empty",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-edge-doc-page-sections-soft-empty",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getPeople",
+          "scout.getStatus",
+          "scout.listSkills",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-edge-doc-title-zero-hits",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getPeople",
+          "scout.vetIdea",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-edge-exchange-memo-lost-funds",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-edge-exhaustive-defi-deep-report",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-edge-factcheck-soroswap-first-amm",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-edge-fresh-latest-blend-tvl",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathons",
+          "scout.getRfps",
+          "scout.listContracts",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-edge-fresh-latest-protocol-version",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.searchProjects",
+          "scout.vetIdea",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-edge-fresh-latest-scf-round",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "scout.getRfps",
+          "scout.scfPitch"
+        ]
+      },
+      {
+        "id": "q-edge-fresh-most-recent-news",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getLeaderboard",
+          "scout.listSkills"
+        ]
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getClusters",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-edge-jailbreak-generate-secret-keys",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-edge-lumenloop-person-entity-empty",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity"
+        ]
+      },
+      {
+        "id": "q-edge-metamask-evm-mental-model",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchRepos",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-edge-noinfo-exact-tvl-figure",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.analyzeEcosystem"
+        ]
+      },
+      {
+        "id": "q-edge-noinfo-sep-9999",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listSkills",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-edge-noinfo-stellar-native-privacy-default",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-edge-oos-bitcoin-price-prediction",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.getChangelog",
+          "scout.getStatus",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-edge-oos-solana-vs-aptos",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-edge-open-world-recovery-after-narrow-miss",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "lumenloop.search_directory",
+          "scout.getBuilders",
+          "scout.resolveProject",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-edge-partner-detail-soft-empty",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getChangelog",
+          "scout.getChanges",
+          "scout.getPartner",
+          "scout.getPartners",
+          "scout.getSkill"
+        ]
+      },
+      {
+        "id": "q-edge-retail-everyday-use-eli5",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-edge-scf-v7-centralization-myths",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "scout.listAudits"
+        ]
+      },
+      {
+        "id": "q-edge-send-me-free-xlm",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchResearch",
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-edge-strupey-ambiguous-stellar-history",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem"
+        ]
+      },
+      {
+        "id": "q-edge-validators-reverse-tx-fork-detection",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-edge-xlm-price-investment-advice",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-gap-av-offset-not-timestamp",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-gap-builders-person-empty",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-compare-hackathons",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.compareHackathons",
+          "scout.listContracts",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-gap-contracts-domain-empty",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-digest-defi-adjacent",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-gap-digest-soroban-adjacent",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getStatus",
+          "scout.hackathonBrief",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-explainrepo-payload-ok",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.getBuilders",
+          "scout.searchProjects",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-gap-hackathon-brief-evidence-boundaries",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-hackathon-winner-order",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "scout.getHackathon",
+          "scout.hackathonBrief",
+          "scout.listAudits",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-gap-leaderboard-project-not-builder",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getLeaderboard",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-gap-lumen-documents-browse",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathons",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-gap-lumen-exact-document-empty",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-lumen-project-tag-vocabulary",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-gap-match-partners-degrade",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getPartner",
+          "scout.getPartners",
+          "scout.matchPartners",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-gap-related-projects-empty",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters"
+        ]
+      },
+      {
+        "id": "q-gap-rpc-horizon-unindexed-reference",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-gap-scout-changelog-envelope",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getBuilders",
+          "scout.getChangelog",
+          "scout.getStatus",
+          "scout.listSkills",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-scout-get-skill-detail",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "scout.listSkills",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-gap-scout-list-skill-directory",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getPartner",
+          "scout.getSkill",
+          "scout.hackathonBrief",
+          "scout.listSkills"
+        ]
+      },
+      {
+        "id": "q-gap-scout-status-envelope",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getChangelog",
+          "scout.getRepoTrust",
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-semantic-directory-fallback",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-semantic-similar-projects",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-gap-upcoming-hackathon-fallback",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getHackathons",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-gap-vet-pitch-vertical-null",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.scfPitch",
+          "scout.searchResearch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-hist-cctp-stellar-live-announcement",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getHackathons",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-hist-meridian-2026-corrected-venue",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.find_content_by_entity",
+          "lumenloop.search_directory",
+          "scout.resolveProject"
+        ]
+      },
+      {
+        "id": "q-hist-quantum-preparedness-plan",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-hist-remittance-corridors",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getChanges",
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-hist-scp-rewrite-2015",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-hist-soroban-launch-protocol20",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-hist-unhcr-stellar-aid-assist",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-hist-x402-stellar-announcement",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getHackathon",
+          "scout.searchRepos"
+        ]
+      },
+      {
+        "id": "q-hist-yieldblox-v2-2026-exploit",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-history-ecosystem-index-freshness-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getRfps",
+          "scout.getStatus",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-hot-fee-pool-burn-deflation",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-hot-sdf-transparency-wallets-reports",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRepoTrust",
+          "scout.searchResearch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-hot-sdf-xlm-holdings-sales",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-infra-horizon-vs-rpc",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-infra-hubble-bigquery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "scout.searchResearch",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-infra-quickstart-local-network",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-infra-rpc-methods-list",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-infra-rpc-provider-archive-tier",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-infra-secp256r1-passkeys",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getClusters",
+          "scout.getPeople",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-infra-simulate-transaction-howto",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getHackathons",
+          "scout.getSkill",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-infra-which-indexer",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-jutsu-cash-crypto-ramps",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.compareHackathons",
+          "scout.getClusters",
+          "scout.getStatus",
+          "scout.searchProjects",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-jutsu-check-account-history",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.vetIdea",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-jutsu-what-is-a-memo",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listAudits",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-mpp-discovery-and-modes",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.explainRepo",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-n3-cross-thread-memory-exfiltration",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchResearch",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-n3-generate-secret-key-refusal",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getClusters",
+          "scout.getPeople",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-n3-inject-ignore-previous-instructions",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.vetIdea",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-n3-issues-842-backup-faucet-wallet",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-n3-missing-funds-account-support",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.resolveProject",
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-n3-offtopic-home-renovation",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getChanges",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-n3-paid-research-budget-bypass",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathons"
+        ]
+      },
+      {
+        "id": "q-n3-pi-network-wrong-chain",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-n3-ssrf-localhost-probe",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.find_content_by_entity",
+          "scout.getHackathons",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-n3-ssrf-metadata-endpoint",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-n3-wallet-hacked-support-redirect",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.resolveProject",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-n3-xlm-personal-investment-advice",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-org-mazieres-chief-scientist",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getBuilders",
+          "scout.getPeople",
+          "scout.resolveProject",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-org-sdf-board-directors",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getPeople",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-org-sdf-enterprise-fund",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getRfps",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-org-sdf-mandate-buckets",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getPeople",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-org-sdf-structure-mandate",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getPeople",
+          "scout.listSkills",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-passkey-platform-constraints",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.hackathonBrief",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-passkey-smart-account-architecture",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-passkey-wallet-recovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchRepos",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-pay-anchor-msb-licensing",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-pay-moneygram-ramps",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pay-sdp-disbursement",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-pay-travel-rule-aid-flows",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pc-account-activation-not-found",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pc-account-merge-reclaim-reserve",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pc-address-types-strkey",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-pc-doc-category-validator-search",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pc-fee-bump-channel-accounts-feepool",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-pc-l2-payment-channels-starlight",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.compareHackathons",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-pc-memos-reference",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-pc-multisig-setup-lifecycle",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-pc-muxed-accounts",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pc-practical-fee-setting",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getClusters",
+          "scout.listSkills",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pc-protocol-26-yardstick",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-pc-protocol-27-zipper",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getStatus",
+          "scout.searchProjects",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-pc-protocol-upgrade-timing",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-pc-sequence-numbers-ordering-replace",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-pc-slp-0004-0006-status",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-pc-sponsored-reserves",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-pc-surge-griefing-threat-model",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.getClusters",
+          "scout.getHackathons",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-pc-tx-finality-failure-semantics",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-production-anchor-architecture",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-19-preconditions-cap-0021",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-23-whisk-caps",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-protocol-24-whisk-incident",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.explainRepo",
+          "scout.searchHackathonBuilds",
+          "scout.vetIdea",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-27-cap-0071",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-accounts-signers-thresholds",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-amm-cap-0038",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-base-reserve-min-balance",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-bls12-381-cap59",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.vetIdea",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-bn254-poseidon-xray",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-cap-process",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-protocol-cap-vs-sep",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-ledger-close-time",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getRfps",
+          "scout.listContracts",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-ledger-entry-types",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-ledger-header-fields",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-max-tx-set-size",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-network-passphrases-list",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-operation-types-list",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchProjects",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-operations-vs-transactions",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-parallel-execution",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-protocol-quorum-slice-vs-quorum",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-protocol-scp-consensus-algorithm",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.explainRepo",
+          "scout.getPeople",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-protocol-state-archival-ttl",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.getSkill",
+          "scout.searchRepos",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-tier1-requirements",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-validator-node-roles",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-protocol-validator-upgrade-vote",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-protocol-version-history-list",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-quickstart-manual-ledger-close",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-raph-buy-xlm-safely",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listSkills",
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-raph-claimable-balance-safety",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-raph-exchange-memo",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-raph-hardware-wallet",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathon",
+          "scout.getPartner",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-raph-lobstr-legitimacy",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRfps",
+          "scout.listContracts",
+          "scout.listSkills"
+        ]
+      },
+      {
+        "id": "q-raph-low-xlm-transfer-fail",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-raph-merchant-payments",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-raph-missing-exchange-memo",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.hackathonBrief",
+          "scout.scfPitch",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-raph-offramp-xlm-usdc",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-raph-phishing-pending-claim",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-raph-remittance-path-payment",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.hackathonBrief",
+          "scout.scfPitch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-raph-remove-scam-token",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.vetIdea",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-raph-restore-wallet",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-raph-scam-spam-tokens",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-raph-secret-key-hash-recovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-raph-stolen-wallet-recovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-raph-unsolicited-airdrop",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.vetIdea",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-raph-usdc-onto-stellar",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-raph-withdraw-exchange-self-custody",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-raph-xlm-network-role",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-raph-xlm-simple",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "lumenloop.search_directory",
+          "scout.searchResearch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-raph-xlm-staking",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-rwa-projects-tokenizing-stellar",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-rwa-stellar-vs-erc20-regulated",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-rwa-tokenization-standards",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.hackathonBrief",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-scf-academic-research-grant",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRfps",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-ambassador-program",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRfps",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-audit-bank",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.scfPitch",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-scf-blend-winners-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getHackathons",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-build-award-cap",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters",
+          "scout.getPeople",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-scf-build-tracks",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getRfps",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-scf-confidential-tokens-preview",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-scf-contract-verification-rfp-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.getRfps",
+          "scout.hackathonBrief"
+        ]
+      },
+      {
+        "id": "q-scf-cross-decaf-sep24",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getSkill",
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-cross-reflector-rounds-current",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.getChanges",
+          "scout.getRfps",
+          "scout.hackathonBrief",
+          "scout.scfPitch",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-current-hackathons-compare-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.compareHackathons",
+          "scout.getHackathon",
+          "scout.getHackathons",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-scf-current-round",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRfps",
+          "scout.scfPitch"
+        ]
+      },
+      {
+        "id": "q-scf-ecosystem-listing-partner-jobs",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.getPartners",
+          "scout.getStatus",
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-scf-eligibility-criteria",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.getChanges",
+          "scout.getClusters",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-funding-by-category",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.compareHackathons",
+          "scout.getClusters",
+          "scout.getRfps",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-scf-hackathon-compare-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-scf-hackathons-active",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters",
+          "scout.getHackathons",
+          "scout.getRfps",
+          "scout.resolveProject"
+        ]
+      },
+      {
+        "id": "q-scf-history-soroswap",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.scfPitch",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-scf-how-to-apply",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-scf-hummingbot-kelp-closed-rfp",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.getRfps",
+          "scout.scfPitch"
+        ]
+      },
+      {
+        "id": "q-scf-instawards",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.getRfps"
+        ]
+      },
+      {
+        "id": "q-scf-kale-winner-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathon",
+          "scout.listContracts",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-nqg-voting",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.scfPitch",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-open-rfps",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.getRfps",
+          "scout.hackathonBrief",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-scf-open-rfps-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRfps",
+          "scout.getSkill",
+          "scout.scfPitch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-scf-passkey-rfps-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getRfps",
+          "scout.hackathonBrief",
+          "scout.searchRepos",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-scf-pitch-prep-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.getRepoTrust",
+          "scout.scfPitch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-scf-regional-india",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-scf-resolve-passport-superseded-slug",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.resolveProject",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-scf-rfp-tooling",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.getRfps",
+          "scout.scfPitch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-scf-rfps-hackathons-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRfps",
+          "scout.scfPitch"
+        ]
+      },
+      {
+        "id": "q-scf-round-43-results",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-scf-sdf-bug-bounty",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-scf-sdf-marketing-grant",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-scf-skill-stellar-scout",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.getBuilders",
+          "scout.getRfps",
+          "scout.hackathonBrief",
+          "scout.scfPitch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-scf-skill-submission-radar",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRfps",
+          "scout.hackathonBrief",
+          "scout.scfPitch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-scf-submission-lifecycle-deadlines",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRfps",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-total-distributed",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters",
+          "scout.scfPitch",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scf-v7-changes",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getChangelog",
+          "scout.scfPitch"
+        ]
+      },
+      {
+        "id": "q-scf-verified-members",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "scout.getBuilders",
+          "scout.scfPitch",
+          "scout.searchRepos"
+        ]
+      },
+      {
+        "id": "q-scf-vs-sdf-enterprise-fund",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.scfPitch",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-scout-hackathon-brief-first-hour",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getHackathon",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-sep-1-toml",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getClusters",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-sep-12-kyc",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.explainRepo",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-sep-31-cross-border",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-sep-38-quotes",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.matchPartners",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-sep-41-token-interface",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getPeople",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listSkills",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-sep-6-24-deprecation",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-sep-6-vs-31-misnumber-trap",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.vetIdea",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-sep-7-uri",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-sep-8-regulated-assets",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getRfps",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-sep-catalog-list",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_protocol_concepts_docs"
+        ]
+      },
+      {
+        "id": "q-sep-clawback-prereq-flag",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.getClusters",
+          "scout.getPeople",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-sep-interactive-deposit-withdraw",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs"
+        ]
+      },
+      {
+        "id": "q-sep-wallet-seps-list",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listSkills",
+          "scout.vetIdea",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-sep53-message-signing",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.matchPartners",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-smart-account-scoped-policy-signers",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getHackathon",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "scout.vetIdea",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-smart-wallet-fee-sponsorship",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-sor-build-target-wasm32v1",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-classic-dex-from-contract",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-confidential-tokens",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-sor-contract-as-claimable-arbiter",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-contract-trustlines-c-address",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-cross-socketfi-auth",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getClusters",
+          "scout.getPeople",
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-sor-cross-warmancer-zk-stack",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.scfPitch",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-sor-decode-hosterror-codes",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-deploy-invoke-from-js-sdk",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-doc-page-sections-followup",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getPartner",
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-sor-doc-timestamping-manage-data",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-doc-title-discovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchRepos",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-sor-evm-to-soroban-porting",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-force-fast-archival-localnet",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-p23-auto-restore-extendto",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-persistent-unbounded-collection-cap",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getClusters",
+          "scout.vetIdea",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-sor-recurring-escrow-patterns",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchRepos",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-reflector-integration-code",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-require-auth-propagation",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-sac-introspection",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-scval-conversion",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-sep41-transfer-vs-transferfrom",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-skill-openzeppelin-setup",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.getSkill",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-sor-stale-spec-after-upgrade",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-test-event-assertion-ordering",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.listContracts",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-sor-ttl-defaults-extend",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRepoTrust",
+          "scout.listContracts",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-add-signer-smart-wallet-howto",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "scout.searchRepos",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-auth-delegation-p27",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-soroban-auth-recursion-dos-audit",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-soroban-av-passkeys-talk",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-check-auth-custom-account",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getBuilders",
+          "scout.listContracts",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-cli-bindings",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-constructor-lifecycle",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.vetIdea",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-contract-build-verification",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-contract-id-derivation",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listAudits",
+          "scout.listContracts",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-contractmeta-vs-contractevent",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchResearch",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-cross-contract-call",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-deploy-cli",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-event-indexing-design",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.listContracts",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-factory-pattern",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-fuzz-testing",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchRepos",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-instance-storage-dos",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getClusters",
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-soroban-no-std-constraints",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-oracle-defensive-consumption",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.searchProjects",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchRepos",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-oz-upgradeable-macro",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchProjects",
+          "scout.searchRepos",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-soroban-publish-events",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-reentrancy",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.hackathonBrief",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-require-auth",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-resource-limits",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-sdk-cve",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listSkills",
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-sdk-macros",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-simulate-resource-fee",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.hackathonBrief",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-soroban-storage-migration",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.explainRepo",
+          "scout.getStatus",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-storage-types",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "lumenloop.search_directory",
+          "scout.listSkills",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-soroban-token-transfer-pattern",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.hackathonBrief",
+          "scout.searchResearch",
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-unit-testing",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-upgradeable-storage-compat",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-vuln-classes",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "scout.searchRepos",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-soroban-wasm-language",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.hackathonBrief",
+          "scout.searchProjects",
+          "scout.searchRepos",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-wasm-size-limit",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.listSkills",
+          "scout.searchResearch",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-soroban-x402-auth-entry-signing",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getHackathon",
+          "scout.getSkill",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-stellar-recurring-payments",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getHackathon",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-ti-bindings-to-nextjs-integration",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-block-explorer-basics",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-ti-channel-accounts-throughput",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-ti-classic-submission-errors",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-cli-rust-windows-troubleshooting",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-compute-token-lp-market-data",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-ti-connect-wallet-button-code",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-ti-custodial-account-generation-c-address",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-enumerate-all-contracts",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-enumerate-holders-airdrop",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-ti-explain-repo-payload-status",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.explainRepo",
+          "scout.getClusters",
+          "scout.getRepoTrust"
+        ]
+      },
+      {
+        "id": "q-ti-fetch-all-balances-classic-sac",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-find-export-secret-key",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-ti-freighter-localhost-not-detected",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-ti-friendbot-ratelimit-alternatives",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getChangelog",
+          "scout.getChanges",
+          "scout.getClusters",
+          "scout.getRfps",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-ti-historical-pointintime-balances",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-ti-java-sdk-wallet-feebump",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-ti-openzeppelin-relayer",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "scout.searchProjects",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-ti-parse-raw-ledger-data",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-related-projects-from-content",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills"
+        ]
+      },
+      {
+        "id": "q-ti-rpc-gettransactions-pagination-xdr",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getChanges",
+          "scout.getHackathon",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-ti-scaffold-stellar",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-scout-changelog-contract-check",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getChangelog",
+          "scout.getChanges",
+          "scout.hackathonBrief",
+          "scout.listContracts",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-scout-refresh-cached-rows",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getChanges",
+          "scout.hackathonBrief",
+          "scout.searchProjects",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-ti-secret-key-vs-mnemonic-derivation",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-ti-self-host-retention-backfill",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-ti-skill-builder-quickstart",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-ti-skill-content-auditor",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listAudits",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-ti-skill-integration-finder",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.listContracts",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-ti-stellar-lab-usage-and-new-ui",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-ti-testnet-usdc-faucet",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getRepoTrust",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-ti-tx-too-late-resubmit",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-ti-video-tutorials",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.getSkill",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-ti-vocab-content-tags-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill"
+        ]
+      },
+      {
+        "id": "q-ti-vocab-project-categories-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.search_directory",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-ti-vocab-project-tags-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-ti-vocab-regions-live",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_content_by_entity",
+          "scout.searchProjects",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-token-circle-usdc-on-stellar",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters",
+          "scout.hackathonBrief"
+        ]
+      },
+      {
+        "id": "q-token-initial-supply-distribution",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getStatus",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-tool-cctp-stellar-integration",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.searchProjects",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-tool-cli-skills-discovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getSkill",
+          "scout.listSkills",
+          "scout.vetIdea"
+        ]
+      },
+      {
+        "id": "q-tool-cli-testnet-identity-howto",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.vetIdea",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-tool-developer-leaderboard-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.getRfps",
+          "scout.searchProjects",
+          "stellarDocs.search_docs_in_category"
+        ]
+      },
+      {
+        "id": "q-tool-flutter-mobile-sdk",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-tool-freighter-wallet",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listAudits",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-tool-go-sdk-ingest",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-tool-greenfield-indexer-prior-art-preflight",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.analyzeEcosystem",
+          "scout.listContracts",
+          "scout.searchRepos",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-tool-indexer-repos-discovery",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.searchRepos",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-tool-js-sdk-package",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-tool-lab-what-is",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listSkills",
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-tool-leaderboard-open-issues",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getLeaderboard",
+          "scout.listSkills",
+          "scout.resolveProject",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-tool-oracle-repo-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.resolveProject",
+          "scout.searchRepos"
+        ]
+      },
+      {
+        "id": "q-tool-passkey-repo-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.searchRepos",
+          "scout.vetIdea",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-tool-passkey-wallet-recovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-tool-passkeykit-smart-wallet",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.searchHackathonBuilds",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-tool-rust-soroban-sdk",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getBuilders",
+          "scout.getSkill",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-tool-sdk-repos-discovery",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.hackathonBrief",
+          "scout.searchRepos",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_sdk_cli_tools_docs"
+        ]
+      },
+      {
+        "id": "q-tool-sep41-status-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getStatus",
+          "scout.searchProjects",
+          "scout.searchRepos",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-tool-skill-detail-install",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.getSkill",
+          "scout.listSkills",
+          "stellarDocs.search_sdk_cli_tools_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-tool-smart-wallet-repos-discovery",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.searchRepos",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-tool-soroban-auth-audit-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-tool-taxonomy-dispatch-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.resolveProject",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-tool-wallets-comparison",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.getClusters",
+          "scout.searchProjects",
+          "scout.searchResearch",
+          "scout.vetIdea",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-tool-which-sdk-comparison",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.compareHackathons",
+          "scout.getPeople",
+          "scout.getSkill",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects"
+        ]
+      },
+      {
+        "id": "q-tool-zk-repo-live",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.explainRepo",
+          "scout.hackathonBrief",
+          "scout.searchHackathonBuilds",
+          "scout.searchRepos",
+          "stellarDocs.search_rpc_horizon_data_docs"
+        ]
+      },
+      {
+        "id": "q-x402-payment-verification",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.getHackathon",
+          "scout.searchHackathonBuilds"
+        ]
+      },
+      {
+        "id": "q-zk-circuit-setup",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ]
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "stellarDocs.search_asset_token_docs"
+        ]
+      },
+      {
+        "id": "q-zk-nullifier-storage",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.compareHackathons",
+          "scout.getHackathon",
+          "scout.getStatus",
+          "scout.searchHackathonBuilds",
+          "scout.searchResearch"
+        ]
+      },
+      {
+        "id": "q-zk-poseidon-input-encoding",
+        "reasons": [
+          "ordered-top-five-diff",
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "lumenloop.find_av_passages",
+          "scout.analyzeEcosystem",
+          "stellarDocs.search_docs_in_category",
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      },
+      {
+        "id": "q-zk-proof-systems-stellar",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchHackathonBuilds",
+          "scout.searchProjects",
+          "scout.searchRepos"
+        ]
+      },
+      {
+        "id": "q-zk-verification-resource-budget",
+        "reasons": [
+          "changed-operation-in-top-five"
+        ],
+        "changedOperationIdsInTopFive": [
+          "scout.listContracts",
+          "scout.searchResearch",
+          "stellarDocs.search_protocol_concepts_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ]
+      }
+    ],
+    "notSelectedIds": [
+      "q-defi-aquarius-what-is",
+      "q-defi-skill-project-dossier",
+      "q-gap-lumen-content-tag-vocabulary",
+      "q-infra-testnet-vs-futurenet"
+    ]
+  }
+}

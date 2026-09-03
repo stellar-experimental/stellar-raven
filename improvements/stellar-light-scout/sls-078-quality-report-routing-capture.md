@@ -1,7 +1,7 @@
 ---
 id: sls-078
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-08-27
 upstreamTitle: Narrow quality-report routing to source-calibration questions
 evidence:
@@ -9,6 +9,7 @@ evidence:
   - routing evaluation: the operation entered 56 of 338 legacy and 26 of 122 extended top-five results; unrelated top-one captures occurred in both sets
   - routing evaluation: excluding the operation changed extended strict routing from 88/109/116 to 90/109/117 and removed unrelated top-one captures
   - upstream issue filed 2026-08-28: https://github.com/Stellar-Light/stellarlight/issues/1087
+  - 2026-09-03 live Scout OpenAPI 1.9.23 GET /api/quality x-routing contains eight self-referential Scout or Stellar Light source-calibration phrases and excludes generic technical, protocol, SDK, and operational questions in notFor
 recurrences:
   - date: 2026-08-28
     evidence: OpenAPI 1.9.1 changes only the quality-report response schema and keeps the broad x-routing contract byte-identical to 1.8.110
@@ -37,6 +38,20 @@ question about unlimited research depth and a question about Soroban
 Excluding the operation changed extended strict routing from 88/109/116 to
 90/109/117. It also restored the relevant documentation operations for those
 unrelated queries.
+
+### Fixed upstream recheck (2026-09-03)
+
+Live Scout OpenAPI 1.9.23 gives `GET /api/quality` eight self-referential
+Scout or Stellar Light source-calibration phrases in `x-routing`. Its `notFor`
+excludes generic technical, protocol, SDK, and operational questions. The prior
+standalone generic terms are absent. Upstream issue #1087 is closed as
+completed.
+
+The upstream contract is fixed. A separate Raven response-schema keyword
+projection caused 90 unrelated `scout.getQualityReport` captures in the
+reviewed 1.9.23 candidate. That local residual does not reproduce this upstream
+defect. The general Raven scoring TODO tracks the repair. Raven keeps
+`GET /api/quality` excluded until that repair passes review.
 
 ## Recommendation
 

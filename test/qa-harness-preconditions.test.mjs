@@ -34,6 +34,7 @@ import {
   buildAgentSpawn,
   collectionAggregates,
   parseOptionalIdsFlag,
+  parseRuntimeAdapterFlags,
   probeLiveSurface
 } from "../eval/qa/run-qa.mjs";
 import {
@@ -923,6 +924,59 @@ describe("P3 — the bound server revision is verified from its listener", () =>
     expect(() => assertStableGitWorktreeIdentity(before, { ...before, dirty: true })).toThrow(
       /worktree changed during paid calls/
     );
+  });
+});
+
+describe("P3b — exact-old-runtime adapter flags fail closed", () => {
+  const runnerRevision = "a".repeat(40);
+  const serverRevision = "b".repeat(40);
+  const implementationSha256 = "c".repeat(64);
+  const complete = [
+    "--adapter-mode", "add-missing",
+    "--adapter-revision", runnerRevision,
+    "--expect-adapter-sha256", implementationSha256,
+    "--upstream-port", "8790"
+  ];
+
+  it("pins the adapter mode, bytes, runner revision, and private port", () => {
+    expect(parseRuntimeAdapterFlags(complete, {
+      publicPort: 8788,
+      runnerRevision,
+      serverRevision,
+      localImplementationSha256: implementationSha256
+    })).toEqual({
+      schema: "exact-old-runtime-adapter-v1",
+      mode: "add-missing",
+      adapterRevision: runnerRevision,
+      implementationSha256,
+      publicPort: 8788,
+      upstreamPort: 8790,
+      sourceRevision: serverRevision
+    });
+  });
+
+  it("rejects partial adapter configuration and byte mismatches", () => {
+    expect(() => parseRuntimeAdapterFlags(complete.slice(0, 2), {
+      publicPort: 8788,
+      runnerRevision,
+      serverRevision,
+      localImplementationSha256: implementationSha256
+    })).toThrow(/requires --adapter-mode/);
+    expect(() => parseRuntimeAdapterFlags(complete, {
+      publicPort: 8788,
+      runnerRevision,
+      serverRevision,
+      localImplementationSha256: "d".repeat(64)
+    })).toThrow(/does not match/);
+  });
+
+  it("requires the adapter from the clean runner revision", () => {
+    expect(() => parseRuntimeAdapterFlags(complete, {
+      publicPort: 8788,
+      runnerRevision: "d".repeat(40),
+      serverRevision,
+      localImplementationSha256: implementationSha256
+    })).toThrow(/clean runner revision/);
   });
 });
 

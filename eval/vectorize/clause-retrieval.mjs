@@ -43,6 +43,12 @@ export function encodeFloat32Vectors(vectors, dimensions = MODEL.dimensions) {
   return bytes.toString("base64");
 }
 
+export function assertClauseArtifactInputEpoch(expectedInputs, actualInputs) {
+  if (JSON.stringify(expectedInputs) !== JSON.stringify(actualInputs)) {
+    throw new Error("surface-expired: clause artifact input drift");
+  }
+}
+
 export function loadClauseArtifact({ requireCatalogMatch = true, artifactPath = CLAUSE_ARTIFACT_PATH } = {}) {
   const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
   if (artifact.schemaVersion !== 1 || artifact.experiment !== CLAUSE_POLICY.id) throw new Error("clause artifact schema drift");
@@ -59,13 +65,17 @@ export function loadClauseArtifact({ requireCatalogMatch = true, artifactPath = 
   if (!requireCatalogMatch) return { artifact, clauses: artifact.clauses, vectors };
 
   const live = loadClauseSource();
-  if (JSON.stringify(artifact.inputs) !== JSON.stringify(live.inputs)) throw new Error("clause artifact input drift");
-  if (artifact.clauseSetSha256 !== clauseSetHash(live.clauses)) throw new Error("clause artifact clause-set drift");
-  if (live.clauses.length !== artifact.clauses.length) throw new Error("clause artifact clause count drift");
+  assertClauseArtifactInputEpoch(artifact.inputs, live.inputs);
+  if (artifact.clauseSetSha256 !== clauseSetHash(live.clauses)) {
+    throw new Error("surface-expired: clause artifact clause-set drift");
+  }
+  if (live.clauses.length !== artifact.clauses.length) {
+    throw new Error("surface-expired: clause artifact clause count drift");
+  }
   for (let index = 0; index < live.clauses.length; index += 1) {
     const { text, ...expected } = live.clauses[index];
     if (JSON.stringify(expected) !== JSON.stringify(artifact.clauses[index])) {
-      throw new Error(`clause artifact clause drift at ${expected.entryId}:${expected.source}:${expected.index}`);
+      throw new Error(`surface-expired: clause artifact clause drift at ${expected.entryId}:${expected.source}:${expected.index}`);
     }
   }
   return { artifact, clauses: live.clauses, vectors };

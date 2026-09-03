@@ -34,8 +34,8 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-08-05",
-    "reverifyBy": "2026-09-03",
+    "asOf": "2026-09-03",
+    "reverifyBy": "2026-12-17",
     "sources": [
       {
         "class": "C",
@@ -110,9 +110,11 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-c)",
+      "date": "2026-09-03",
+      "by": "2026-09-03 truth-maintenance golden health review; `.agents/rounds/2026-09-03-truth-maintenance/golden-sol.md`",
       "evidence": [
+        "C defined issue-only totals and backlog semantics. D confirmed GitHub issue and pull-request distinctions.",
+        "Sibling sweep 2026-09-03: q-tool-developer-leaderboard-live keeps backlog separate from activity; no contradiction found.",
         "C: https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=10 at 2026-08-05T20:45:09.140Z returned 880 project rows in scope, dataAsOf 2026-08-05T19:33:42.232Z, and rank/openIssuesTotal/repoCount/lastActivityAt fields with explicit metric definitions.",
         "A/F: GitHub issue-search semantics and a live keybase/client sample independently separated 4,046 open issues from 210 open pull requests while REST open_issues_count reported 4,257, confirming that the REST field is not issue-only.",
         "Uncertainty remains scope-bound: Scout confirms its cached included-repository rollup, not every project aggregate or a live GitHub census.",
