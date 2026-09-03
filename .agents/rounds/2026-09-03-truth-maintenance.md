@@ -6,8 +6,8 @@ This round checks current service quality and the measurable effect of work sinc
 It covers live drift, routing, end-to-end QA, live-data execution, golden health, upstream findings,
 production smoke checks, and issue or pull-request follow-up.
 
-The current repository revision is `2ee801f80d626e68f010392a7d541aab7997349d`.
-The deployed runtime remains `0c71b99c02425307be5ef5c5c4ff1ef05935663d` because later changes are evaluation records only.
+The final measured candidate revision is `65d2f98dd80305e9a2b9000c46e9a91ba0557cbc`.
+The deployed runtime remains `0c71b99c02425307be5ef5c5c4ff1ef05935663d` until this round merges and deploys.
 
 The primary current-quality measurement is a fresh full 500-case QA collection.
 The designed sample-30 headline remains separate.
@@ -184,8 +184,27 @@ The candidate arm also supplies the current-quality result.
 
 The exact-old-runtime adapter and P6 self-test wrapper passed bounded code review.
 The paired printer now rejects any missing, reversed, mixed, or drifting adapter topology.
-No paid call has started.
-The remaining launch gates are clean revisions, real-runtime proof, final pins, and one delta review.
+The clean runner and candidate revision is `65d2f98dd80305e9a2b9000c46e9a91ba0557cbc`.
+The exact-old-runtime proof passed for both service arms.
+The final independent launch review returned `LAUNCH-OK`.
+
+The frozen stability register has SHA-256
+`06d3835b63ae05f40f808b9890628add8b905f32f60a65df19cbee1a751f9480`.
+It contains 538 cases from 197 prior artifacts.
+The paid P6 self-test passed all seven calls and reported complete costs.
+It spent `$0.2536528` against the `$3.50` cap.
+The first `npm` invocation stopped before payment because its wrapper changed the environment pin.
+The reviewed direct-Node correction preserved the full-arm environment pin and passed.
+
+The live pre-arm refresh stayed stable for Lumenloop, Stellar Docs settings, and 650 Docs titles.
+Scout advertised `1.9.23` with canonical inventory SHA-256
+`ec0c345b297220e8225c211adcc8c8eae91d07c24f33b645ad0142f2abd4fee5`.
+Both paired arms must use this same live upstream interval.
+The committed routing inventory intentionally remains Scout `1.9.1` after the recorded rejection.
+
+The candidate arm did not start a paid call.
+The external approval service requires explicit permission to send repository QA cases and service
+transcripts to Anthropic Claude Sonnet 5 for answering and judging.
 
 ## Golden verdict
 
@@ -217,6 +236,12 @@ The round added proposed findings `sd-049` and `sk-021` for those verified upstr
 | `sls-079` | lifecycle and deployment conflation | no upstream issue | never filed | no comment applies | Stellars Finance is `Pre-Release` with separate Testnet deployment | resolved and drained | regression |
 | `sls-023` | RWA product deployments | `Stellar-Light/stellarlight#494` | closed 2026-08-11 | residual comment remains | DTCC product exists; generic deployment remains `unknown`; assets remain absent | partial; keep active | next drift or owner activity |
 | `sls-033` | wallet taxonomy and availability | `Stellar-Light/stellarlight#742` | closed 2026-08-13 | residual comment remains | 71 exact wallet rows; 9 lack `productKind`; 38 lack availability | recurrence; keep active | next drift or owner activity |
+
+The required free `sls-080` monitor passed on 2026-09-03.
+It returned `MaxSupportedProtocolVersion uint32 = 28`, `answerSource: knowledge-note`,
+`generatedAt: 2026-09-03T18:20:47.059Z`, and
+`scannedRef: 82660510ecda7fd365a14d08badb9d85fa22bc32`.
+The source file at that exact revision also defines the value as `28`.
 
 ## Own-repo todos
 
@@ -278,7 +303,7 @@ Replacement Codex panes `w16:p1R` and `w16:p1S` now hold the pre-spend and golde
 
 ## Final checklist
 
-- [ ] Final pre-spend delta review returns `LAUNCH-OK` after the real-runtime proof.
+- [x] Final pre-spend delta review returns `LAUNCH-OK` after the real-runtime proof.
 - [ ] Spawned pane IDs and final agent states are recorded.
 - [x] Drift artifacts are generated and classified.
 - [x] Routing and protocol-history results are recorded.
@@ -287,6 +312,6 @@ Replacement Codex panes `w16:p1R` and `w16:p1S` now hold the pre-spend and golde
 - [x] Golden changes carry independent source classes and root-cause records.
 - [ ] Proposed and reported improvements have live state and deterministic next actions.
 - [ ] Production smoke checks pass.
-- [ ] Baseline repository validation and secrets scanning pass.
+- [x] Baseline repository validation and secrets scanning pass.
 - [ ] Independent closeout review passes.
 - [ ] Owned Herdr panes and agents are closed without touching unrelated resources.
