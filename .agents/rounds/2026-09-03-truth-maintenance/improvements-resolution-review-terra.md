@@ -52,6 +52,56 @@ The comment must state the live recheck and the generated immutable source perma
 
 READY
 
+## Post-resolution audit — 2026-09-03
+
+The resolver created four receipts in `improvements/resolved.json`.
+They cover `sls-073`, `sls-077`, `sls-078`, and `sls-079` exactly once.
+Each receipt uses source commit `884c0e38c57c9e03b36751e105048352b896978d`.
+That commit contains all four pre-deletion finding files.
+Each receipt points to its matching immutable source file.
+
+The four active finding files are deleted.
+The generated index states `Total findings: 64`.
+The active Markdown finding count is also 64.
+`npm run improvements:lint` passes with 64 findings.
+The normal reference search finds no active finding copy.
+
+The remaining `sls-077` and `sls-078` references occur in a dated 2026-08-27 eval record.
+The dated 2026-08-29 audit records also retain historical references.
+These references describe past evidence and remain valid history.
+The current local `sls-078` residual remains in `.agents/TODO.md` without an active upstream finding link.
+
+The three posted comments exist and contain the expected dated rechecks and immutable source links.
+Their exact URLs are:
+
+- `https://github.com/Stellar-Light/stellarlight/issues/1025#issuecomment-5529711483`
+- `https://github.com/Stellar-Light/stellarlight/issues/1086#issuecomment-5529711476`
+- `https://github.com/Stellar-Light/stellarlight/issues/1087#issuecomment-5529711487`
+
+The round ledger records only comment IDs, not these direct URLs.
+Its rows 214 through 216 therefore do not meet the required receipt form.
+`sls-079` correctly has no upstream comment.
+
+Required action: replace the three comment IDs in the round ledger with the three exact URLs above.
+Then rerun `npm run improvements:lint` and the normal reference search.
+
+CHANGES-REQUIRED
+
+## Post-resolution audit superseding verdict — 2026-09-03
+
+The final receipt-format check passes.
+The ledger contains each required direct comment URL once.
+The URLs cover `sls-073`, `sls-077`, and `sls-078`.
+`sls-079` correctly has no upstream comment.
+
+`npm run improvements:lint` passes with 64 findings.
+The normal reference search finds only dated historical evidence records.
+The four resolved receipts, four deletions, source snapshot, and index count remain valid.
+
+This verdict supersedes the earlier receipt-format finding.
+
+PASS
+
 ## `sls-077` — issued response enum
 
 Issue `Stellar-Light/stellarlight#1086` is closed as completed.
@@ -141,3 +191,41 @@ No upstream comment applies because this finding was never filed.
 Remove `--dry-run` after the printed resolved receipt is accepted.
 
 READY
+
+## Final post-resolution verdict — 2026-09-03
+
+The final receipt-format check passes.
+The ledger contains each required direct comment URL once.
+The URLs cover `sls-073`, `sls-077`, and `sls-078`.
+`sls-079` correctly has no upstream comment.
+
+`npm run improvements:lint` passes with 64 findings.
+The normal reference search finds only dated historical evidence records.
+The four resolved receipts, four deletions, source snapshot, and index count remain valid.
+
+This verdict supersedes the earlier receipt-format finding.
+
+PASS
+
+## Post-resolution audit final — 2026-09-03
+
+The four resolved receipts, four deletions, source snapshot, and index count passed this audit.
+The normal improvements lint passes with 64 active findings.
+Historical references remain only in dated evidence records.
+The three upstream comments exist and contain the required rechecks and source permalinks.
+
+The round ledger records comment IDs instead of the three required direct comment URLs.
+It must contain the URLs listed in the earlier post-resolution audit section.
+This is the only unresolved receipt-format defect.
+
+Required action: add the three direct comment URLs to ledger rows 214 through 216.
+Then rerun `npm run improvements:lint` and the normal reference search.
+
+CHANGES-REQUIRED
+
+## Final superseding verdict — 2026-09-03
+
+The three direct comment URLs now exist in the round ledger.
+No receipt-format finding remains.
+
+PASS
