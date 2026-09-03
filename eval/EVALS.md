@@ -17,8 +17,8 @@ the headline wins.
 | `eval/run-routing.mjs` — legacy 338 strict | `search` ranking, offline | free, seconds — **every scoring/catalog change** | **GATE**: committed absolute baseline with a ±1% band. The authoritative input fingerprints, accepted totals, timestamp, and decision note live in `eval/gates.json`; `--gate` exits 1 on breach and CI runs it on every push/PR. Historical movements are recorded in `eval/README.md`. |
 | — skills lane (23, hand-authored) | skills routing | free, same run | **GATE**: must not fall below the current top-1 floor in `eval/gates.json`; top-3/top-5/card@5 remain visible diagnostics. |
 | — extended lane (122, real-user phrasing) | `search` on jitsu-mined questions | free, same run | Diagnostic; **target metric for retrieval work**. Read the latest local result for the current tree. Local results are not committed and do not define the gate baseline. |
-| — protocol-history lane (8 positives, 4 controls) | `search` routing to a cited research corpus | free, same run | Frozen diagnostic. Positives require `scout.searchResearch` in the top five. Controls forbid any top-five capture. |
-| `npm run eval:protocol-history` — original plus blind review sets (19 positives, 13 controls) | protocol-history routing and symmetric false captures | free, seconds — every candidate for this work | Frozen diagnostic. It fails unless every positive has `scout.searchResearch` in the top five and every control excludes it. |
+| — protocol-history v1 lane (8 positives, 4 controls) | `search` routing to a cited research corpus | free, same run | Historical frozen diagnostic inside `run-routing.mjs`. Positives require `scout.searchResearch` in the top five. Controls forbid any top-five capture. |
+| `npm run eval:protocol-history` — v2 original plus blind sets (19 required, 9 forbidden, 4 neutral) | protocol-history routing and symmetric false captures | free, seconds — every candidate for this work | Versioned frozen diagnostic. Every required case needs `scout.searchResearch` in the top five. Forbidden cases exclude it. Neutral ranks remain diagnostic only. |
 | — accept-either views (corpus `acceptable_cards` ∪ overlay) | label-tolerance context | free, same run | Diagnostic only; never the headline |
 | `eval/discovery/` | one-search, agent-allowed-≤3-search, and mined-query replay source-family / usable-route discovery | one-shot/replay free; agent arm paid; after discovery guidance or retrieval-shape work | Diagnostic: 43 adjudicated cases; `familyHit@3` + `usableOp@5`; paired miss classification; 91-query LumenLoop replay lane |
 | `eval/agentic/` | agent-driven `search`, live server | ~$, minutes — after major search-behavior changes | Diagnostic (label-ambiguity analysis) |
@@ -77,7 +77,7 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
    belongs in `expected_any`, not in the strict headline.
 2. **Lanes never merge.** The legacy 338, skills 23 (active; +8 documented-inert
    `retiredCases` in `eval/skills-cases.json` after the 2026-07-03 onboarding-skills
-   retirement, ADR-0002), extended 122, protocol-history diagnostics 12 and 20,
+   retirement, ADR-0002), extended 122, protocol-history v1 diagnostic 12, v2 diagnostics 12 and 20,
    membership-frozen canonical live-data 15
    (`live-data-canonical-v3`; the carried v2 ten are a subset of it, and v2-denominated
    aggregates stay v2-denominated), and opt-in live-digest
