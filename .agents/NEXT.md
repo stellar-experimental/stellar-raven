@@ -32,7 +32,7 @@ or monitor-only.
   7/19 required and captures 5/9 forbidden cases. The three-attempt box stays spent.
 - The Raven capability-boundary observation is monitor-only. A trigger-based free audit replaces
   the obsolete diagnostic-design block. No prompt, paid diagnostic, or product change is active.
-- `improvements/` contains 66 active findings: 60 `reported-upstream`, three `proposed`, and
+- `improvements/` contains 64 active findings: 57 `reported-upstream`, four `proposed`, and
   three `declined-upstream`. `ll-019` carries the 2026-09-02 A/V `created_at` recurrence.
   Issues stellar-docs#2805, stellar-docs PR #2806, and lumenloop-backend#35 remain open.
 - Corpus lint: 0 errors and 62 warnings. Do not chase these counts to zero.
