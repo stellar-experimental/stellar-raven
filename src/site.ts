@@ -880,6 +880,11 @@ main.auth{flex:1;display:flex;align-items:center;justify-content:center;padding:
 .card .sub{color:var(--dim);font-size:15px;max-width:35ch;margin:14px auto 0;line-height:1.55;
   text-wrap:balance}
 .card .sub b{color:var(--fog);font-weight:600}
+.card .dest{color:var(--dim);font-size:13px;max-width:38ch;margin:12px auto 0;line-height:1.5;
+  text-wrap:balance;overflow-wrap:anywhere}
+.card .dest-code{font-family:var(--mono);font-size:12px;color:var(--fog)}
+.card .unverified{color:var(--dim);font-size:12.5px;max-width:38ch;margin:8px auto 0;line-height:1.5;
+  text-wrap:balance}
 .panel-h{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
   color:var(--dim);padding:28px 34px 4px}
 .scopes{list-style:none;margin:0;padding:0 34px}
@@ -945,9 +950,29 @@ export function consentPage(args: {
   scopes: string[];
   csrfToken: string;
   formAction: string;
+  /**
+   * The validated redirect target for THIS authorization request
+   * (AuthRequest.redirectUri, already checked against the client's registered
+   * URIs by parseAuthRequest). Rendered as plain text so the approver sees
+   * where the authorization code actually goes. Unknown when the stubbed test
+   * caller omits it.
+   */
+  redirectDestination?: string;
+  /**
+   * Whether the client name above is app-supplied (DCR/CIMD) and therefore
+   * not a Raven-verified identity. Shown as a fixed qualifier line.
+   */
+  clientNameUnverified?: boolean;
 }): string {
   const clientName = escapeHtml(args.clientName.trim() || "Unknown MCP client");
   const initial = escapeHtml((args.clientName.trim() || "?").charAt(0).toUpperCase());
+  const destination = (args.redirectDestination ?? "").trim();
+  const redirectLine = destination
+    ? `<p class="dest">Authorization code goes to <code class="dest-code">${escapeHtml(destination)}</code></p>`
+    : ``;
+  const unverifiedLine = args.clientNameUnverified
+    ? `<p class="unverified">Client name supplied by the app — not verified by Stellar Raven.</p>`
+    : ``;
   const scopes = args.scopes.length ? args.scopes : ["(no scopes requested)"];
   const scopeItems = scopes
     .map((s) => {
@@ -969,6 +994,7 @@ export function consentPage(args: {
       <div class="node raven">${ravenSvg("rv")}</div></div>
     <h1>${clientName} wants to connect</h1>
     <p class="sub">It will access <b>Stellar Raven</b> for you once you sign in with WorkOS.</p>
+    ${redirectLine}${unverifiedLine}
   </div>
   <div class="panel-h">This connection grants</div>
   <ul class="scopes">${scopeItems}</ul>

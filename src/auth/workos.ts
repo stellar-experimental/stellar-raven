@@ -49,6 +49,7 @@ import {
 } from "../site";
 import { OG_PNG_BASE64 } from "../og";
 import { logEvent } from "../observability.ts";
+import { isInsecureRedirectUri } from "./redirects";
 import { skillHealthResponse } from "../skills/canary.ts";
 import { mintDemoCookie, parseDemoParkedState } from "../demo/auth";
 
@@ -167,7 +168,10 @@ export const WorkOSAuthHandler = {
         clientName: client?.clientName?.trim() || oauthReq.clientId || "Unknown MCP client",
         scopes: oauthReq.scope,
         csrfToken,
-        formAction: `/authorize${url.search}`
+        formAction: `/authorize${url.search}`,
+        redirectDestination: oauthReq.redirectUri,
+        // DCR and CIMD names are app-supplied text, never a verified identity.
+        clientNameUnverified: true
       });
       return new Response(body, {
         headers: {
@@ -453,6 +457,18 @@ async function resolveAuthRequest(
 ): Promise<ResolvedAuthRequest> {
   try {
     const parsed = await provider.parseAuthRequest(request);
+    // OAuth 2.1 requires TLS for non-loopback redirect URIs. The library's
+    // registration-time check still accepts plain http://, so enforce here —
+    // on the validated request, covering both DCR-registered and CIMD clients.
+    // Loopback (RFC 8252), custom schemes (native apps), and https stay legal.
+    // Bare error (no redirectUri/state/issuer): RFC 6749 §4.1.2.1 forbids
+    // redirecting to an invalid redirect URI, so this renders a local 400
+    // instead of 303ing the browser to the cleartext target.
+    if (parsed.redirectUri && isInsecureRedirectUri(parsed.redirectUri)) {
+      throw new AuthorizationError("invalid_request", {
+        description: "redirect_uri must use https for non-loopback hosts."
+      });
+    }
     if (!parsed.codeChallenge || parsed.codeChallengeMethod !== "S256") {
       throw new AuthorizationError("invalid_request", {
         description: "PKCE is required: send code_challenge with code_challenge_method=S256.",
