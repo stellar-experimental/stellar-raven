@@ -524,3 +524,293 @@ Closed channels, missing processes, and missing exit events cannot keep the supe
 
 No repair path made a network call or a paid call. A later independent review can assess the repair
 commit. This author reconciliation does not grant launch authorization.
+
+---
+
+# Independent repair re-review — commit `9cf49a4`
+
+Date: 2026-09-04
+
+Reviewer: Claude Code, Opus 5, `xhigh` effort. Reviewer differs from the author and the design author.
+
+Reviewed commit: `9cf49a4b41e084a9d9fe30ebbda9330c0a197b1a` ("eval: repair paired collection launch
+gate"), on top of the reviewed `79080bd` and this report's commit `2a9fdea`.
+
+This section is additive. It does not change the first review's `CHANGES-REQUIRED` verdict for
+`79080bd`, which stands as the historical record for that commit.
+
+I made no paid call, no network call, no deployment, and no product-code change.
+
+## Verdict
+
+PASS.
+
+The blocking finding F1 is fixed and I verified the fix against running code, not only by reading.
+Every cancellation now settles within a bounded drain, and no path can hang without a timer.
+
+F2 through F8 are all addressed, most of them more thoroughly than my repairs asked for. Every
+item on the orchestrator's additional checklist is implemented and tested.
+
+Nine residual findings remain (G1 through G9). All are low severity. None blocks a paid launch,
+none can produce a wrong verdict, and none can cause unbounded spend. G1 and G2 are worth fixing
+before the manifest is authorized; the rest are hardening, documentation, and test-realism items.
+
+## Method
+
+I read the repair diff and the current source of the supervisor, the control module, the printer,
+and `run-qa.mjs` before reading the author's updated report. I then ran the full gate set and
+wrote twenty-two adversarial probe cases across six temporary files inside the repository root,
+plus one real out-of-process Node IPC experiment. Every temporary file was deleted; the tree is
+clean.
+
+The repair commit appended an "Author repair reconciliation" section to this report. It is clearly
+labeled as the author's, it states that it does not change my verdict, and it does not. I left it
+in place.
+
+## Prior findings — disposition
+
+| Finding | Disposition | Evidence |
+|---|---|---|
+| F1 bounded drain and forced settlement | FIXED | Probes D1, D2, D7 |
+| F2 arm-distinguishing and shared command flags | FIXED | Source read, committed table, probes E5, E6 |
+| F3 exit-before-complete IPC ordering | FIXED | Real IPC experiment, probes D3, D4 |
+| F4 test coverage of new branches | FIXED, with G7 | Committed suite read, full run |
+| F5 alternation and timestamps | FIXED, with G2 | Source read, probe G1 |
+| F6 `.dev.vars` equality | FIXED, with G3, G4, G9 | Source read, probes E1–E4 |
+| F7 strict `meta` access, mode rejection | FIXED | Diff read, committed tests |
+| F8 distinct server revisions | FIXED | Probes F1–F4 |
+
+### F1 — bounded drain, `SIGTERM`, `SIGKILL`, forced settlement
+
+`cancel()` no longer clears the only watchdog. It clears the deadline, then either calls
+`beginTermination()` immediately (hard) or arms `drainTimer` for
+`PAIRED_COLLECTION_DRAIN_MS = 30_000` (soft). `beginTermination` sends `SIGTERM` to every arm that
+has not exited, then arms `terminationTimer` for
+`PAIRED_COLLECTION_TERMINATION_GRACE_MS = 5_000`, which sends `SIGKILL` and calls `settleFailure()`.
+`settleFailure` rejects without waiting for any exit event
+(`eval/qa/paired-collection-supervisor.mjs:483`).
+
+- **D1** A soft cancellation where neither child ever exits settles on real short timers, with
+  `["SIGTERM", "SIGKILL"]` delivered to both arms. The first review's hang is gone.
+- **D2** The deadline with no exits settles the same way.
+- **D7** The exclusive `wx` marker survives forced settlement, and `main()` now preserves the
+  control directory on the failure path (`:733`), so a surviving child still cannot authorize spend.
+
+Worst-case time from any cancellation to settlement is 35 s soft, 5 s hard. The only remaining
+long wait is the four-hour deadline, which is the specified contract.
+
+### F2 — exact shared and arm-specific flags before spend
+
+`validateCommand` and `validatePairedCollectionPlan` now check, before any child is spawned:
+
+- `--adapter-mode` is `add-missing` for baseline and `verify-native` for candidate;
+- `--server-revision` is 40 hex, differs across arms, **and equals each server worktree's HEAD**;
+- `--expect-sha256` is a valid SHA-256 and differs across arms;
+- `--adapter-revision` is shared **and equals both runner worktrees' HEAD**;
+- `--port` and `--upstream-port` are valid and the four are pairwise distinct;
+- `--variant`, `--surface`, `--search-tool`, `--model`, `--judge-model`, `--max-panel-cases` are
+  present and equal across arms;
+- `--judge-model`, `--max-panel-cases`, `--judge-panel` agree between each arm's collection and
+  judge commands;
+- `flagValue` additionally rejects a value that begins with `--`.
+
+Binding the frozen revisions to the actual worktree HEADs goes beyond what I asked for and is the
+strongest part of the repair. Probe **E6** confirms a flag-shaped value is rejected; probe **E5**
+confirms a `--judge-panel` present only in the collection commands is rejected. The committed
+fifteen-case table covers the rest.
+
+### F3 — exit, complete, and IPC-close ordering
+
+`evaluateExit` now requires both `exited` and `disconnected` before deciding, and an exit without
+IPC closure arms `ipcDrainTimer` for `PAIRED_COLLECTION_IPC_DRAIN_MS = 1_000`, after which the
+supervisor hard-cancels.
+
+I ran a real out-of-process experiment (six spawns, three child shutdown modes, two payload sizes)
+to establish the actual Node ordering rather than assume it:
+
+| child shutdown | payload | parent event order |
+|---|---|---|
+| `send` then `process.disconnect()` | 10 B / 200 KB | `message → disconnect → exit → close` |
+| `send` then `process.exit()` in the send callback | 10 B / 200 KB | `message → disconnect → exit → close` |
+| `send` then synchronous `process.exit()` | 10 B | `message → disconnect → exit → close` |
+| `send` then synchronous `process.exit()` | 200 KB | `disconnect → exit → close` — **message lost** |
+
+Three conclusions. Node does emit `disconnect` even when a child exits without disconnecting, so
+the new `disconnected` requirement cannot deadlock the success path. `disconnect` normally precedes
+`exit`, so the drain window is rarely needed. A child that calls `process.exit()` synchronously
+after a large `send` loses the message entirely — `run-qa.mjs` avoids this by awaiting the send
+callback before disconnecting (`eval/qa/paired-collection-control.mjs:106`), and if it ever did
+lose the message the supervisor fails closed with no receipt.
+
+- **D3** The real order (`complete → disconnect → exit`) resolves correctly. The committed test
+  covers only the reverse order, so this probe closes the more likely production case.
+- **D4** An exit whose IPC never closes hard-cancels with `baseline IPC did not close after child exit`.
+
+### F4 — test coverage
+
+The committed suite now covers malformed IPC, malformed readiness, readiness `realpath` failure,
+malformed failure data, duplicate readiness, wrong row index, wrong row ID, a row before readiness,
+an early `complete`, an absent artifact, an artifact outside the results directory, bounded hard
+termination with no exits, closed IPC with failing termination, the exclusive marker, fifteen
+command-mismatch cases, `.dev.vars` drift, changed control bytes, six judge-stamp shapes, a
+cross-arm judge identity that is valid but different, intra-arm port drift across a repeat, and
+equal server revisions both in-process and through the real CLI. A new
+`test/qa-paired-collection-control.test.mjs` covers the child side with an injected process.
+
+The suite grew from 1,853 to 1,886 tests, all passing. See G7 for what is still uncovered.
+
+### F5 — alternation and timestamps
+
+`releaseAfterBarrier` sends to `ARMS` for even next-indices and to the reversed order for odd ones,
+and the receipt records `firstReleasedArm` per row plus `collectionStartedAt`, `releasedAt`,
+`completedAt`, `postflightAt`, per-arm `finishedAt`, and a final `finishedAt`. See G2 for the
+resolution limit.
+
+### F6 — `.dev.vars` equality without values
+
+`devVarsIdentity` parses each server worktree's `.dev.vars`, rejects malformed and duplicate lines,
+sorts the pairs, and returns `{ names, sha256 }`. The plan stores names and one hash; no value is
+stored. Probe **E2** confirms comments, blank lines, CRLF, and values containing `=` parse
+correctly. Probe **E3** confirms duplicate and malformed lines are rejected.
+
+### F7 and F8
+
+`results.meta?.comparabilityReasons` fixes the `TypeError`, and the no-`meta` case has a committed
+test asserting zero judge calls. `--paired-control-arm` validation moved above the `--judge-stored`
+branch and now rejects both an invalid value and any use outside `--no-judge` collection, with a
+committed CLI test asserting `paidCalls() === []`. The printer rejects equal cross-arm revisions and
+intra-arm revision drift. Probes **F1** through **F4** confirm the printer behavior, including the
+`calibrationFromPairedArtifacts` path, and confirm no crash when `sourceIdentity` is absent.
+
+## Residual findings
+
+### G1 — the receipt artifact is not bound to this collection
+
+`artifactPathFromArm` checks that the reported path resolves to a real file below that arm's
+`eval/qa/results` directory. It reads nothing from the file.
+
+Probe **H1**: with both arms reporting a stale, pre-existing, `comparable: false` artifact from an
+earlier run that still sits in the results directory, the supervisor issues a normal
+`qa-paired-collection-receipt-v1` receipt naming those files.
+
+Not reachable through the real child, which reports its own `outPath`. It matters because the
+receipt is the operator's go/no-go for the paid stored-judge phase, and a wrong artifact there costs
+that phase before the printer objects. The repair is cheap and uses values the supervisor already
+holds: read the reported artifact and require `meta.comparable === true` and
+`meta.inputSnapshot.caseIdsSha256 === plan.selected.idsSha256`.
+
+### G2 — `releasedAt` cannot evidence the alternation, and the committed test hides that
+
+Probe **G1** ran the barrier with the production `now()`. Every `releasedAt` value in the receipt is
+the identical ISO millisecond string for both arms and both rows:
+`2026-09-04T08:41:52.050Z` four times.
+
+The committed test asserts `rowTimeline[0].releasedAt.baseline < rowTimeline[0].releasedAt.candidate`
+and the reverse for row 1. That assertion holds only because the test injects a monotonic counter
+clock. With the real clock the comparison is false in both directions, so the test does not
+demonstrate what its name claims about the shipped receipt.
+
+`firstReleasedArm` is deterministic and auditable, so P2's alternation requirement is met as a
+record. Two options: record a monotonic `process.hrtime.bigint()` companion for each release, or
+drop the ordering assertion from the test and state in `eval/qa/README.md` that `firstReleasedArm`
+is the ordering record and `releasedAt` is wall-clock only.
+
+Separately, note that alternation here orders two IPC writes in one event-loop turn. It does not
+control when each child actually issues its provider call. That is the honest strength of the
+mechanism and should be described that way in the round ledger, not as enforced first-mover
+ordering under load.
+
+### G3 — two different sort orders for the same `.dev.vars` name list
+
+`devVarsIdentity` sorts with `localeCompare`. The plan check requires strictly ascending order by
+code unit (`names[index - 1] < name`). These disagree on mixed-case names.
+
+Probe **E1**: with `.dev.vars` containing `BETA` and `alpha`, `devVarsIdentity` produces
+`["alpha", "BETA"]`, and a plan that faithfully records that exact order is rejected with
+`devVars.names must be a sorted unique name list`.
+
+Fail-closed, and unreachable with this repository's all-uppercase secret names. Use one comparator
+in both places.
+
+### G4 — a missing `.dev.vars` surfaces a raw `ENOENT`
+
+Probe **E4**: deleting a server worktree's `.dev.vars` produces
+`ENOENT: no such file or directory, open '…/baselineServer/.dev.vars'` rather than a launch-gate
+message. Fail-closed, but the operator gets a bare filesystem error and an absolute path. Wrap the
+read.
+
+### G5 — the executing supervisor's own bytes are not pinned
+
+`pairedCollectionSupervisorSha256` and `pairedCollectionControlSha256` are checked against the two
+runner worktree copies. Probe **E7**: a plan validates even when the running
+`paired-collection-supervisor.mjs` hashes to a different value than the pin
+(`038febf8f824…` running against `0834c2d60725…` pinned).
+
+Defense in depth only: both runner worktrees are bound to the adapter revision, and the operator
+runs `npm run eval:qa:paired:collect` from one of them. One line closes it — compare
+`sha256(readFileSync(fileURLToPath(import.meta.url)))` against the pin.
+
+### G6 — `--cases` may resolve outside both runner worktrees
+
+Probe **E8**: adding `--cases <path outside every worktree>` to both collection commands validates
+successfully; the validator reads and hashes that external file for both arms.
+
+Comparability is unaffected, because the content and file hashes must still match the frozen values.
+What it defeats is P5's property that each runner worktree independently reproduces the corpus: one
+shared external file would satisfy both arms. Require the resolved cases path to be inside its own
+runner worktree.
+
+### G7 — two correct branches remain untested
+
+Both verified correct by probe, neither covered by the committed suite:
+
+- intra-arm server-revision drift, `each arm must keep one exact server revision`
+  (`eval/qa/paired-verdict.mjs:451`) — probe **F1**;
+- the `ipcDrainTimer` cancellation, `IPC did not close after child exit`
+  (`eval/qa/paired-collection-supervisor.mjs:600`) — probe **D4**.
+
+Probes **D3** (the real `disconnect`-before-`exit` order) and **D5** (a closed peer channel at
+release) are also worth committing.
+
+### G8 — `eval/EVALS.md` and `run-evals/SKILL.md` were not updated
+
+`eval/qa/README.md` carries the full repaired contract. Neither `eval/EVALS.md` item 12 nor the
+`run-evals` skill mentions the bounded drain, the distinct revisions and surface hashes, the adapter
+modes, the four distinct ports, the `.dev.vars` identity, or the receipt contents. Neither document
+now contains a false statement, so this is completeness, not drift. They are the two files an
+operator reads first.
+
+### G9 — `devVars.sha256` is derived from secret values
+
+The manifest stores no value, which is what P5 asked for. It does store a SHA-256 over the canonical
+name-value pairs. With this repository's high-entropy secrets that hash is not invertible, but it is
+still a secret-derived artifact. Keep the manifest out of the repository, or salt the digest with a
+random per-run value recorded beside it. `eval/qa/README.md` should say which.
+
+## Checks run
+
+| Command | Result |
+|---|---|
+| `npm test` | PASS, 107 files, 1,886 tests |
+| `npm run typecheck` | PASS |
+| `npm run build` | PASS |
+| `npm run eval:qa:paired:validate` | PASS, all gates true |
+| `npm run secrets:scan -- --tree` | PASS |
+| `git diff --check` | PASS |
+| Real Node IPC ordering experiment, six spawns | Table above; local processes only |
+| Probes D1–D7, E1–E8, F1–F4, G1, H1 (22 cases, six temporary files) | As reported; all files deleted, tree clean |
+
+I did not run `npm run test:smoke`. The repair touches no path under `src/executor` or `src/demo`.
+
+## Before a paid launch
+
+1. Fix G1. It is the one residual finding with money attached, and the check is two field
+   comparisons the supervisor already holds.
+2. Fix G2, or restate the alternation claim honestly in the round ledger and drop the misleading
+   test assertion.
+3. Fix G3 through G6 and commit the G7 tests, or record each as accepted.
+4. Update `eval/EVALS.md` and the `run-evals` skill (G8), and record the manifest handling rule (G9).
+5. Produce the manifest instance with hashes recomputed at the final merged runner revision.
+6. Obtain the new owner authorization. This re-review grants none.
+
+This re-review authorizes no spend, no deployment, and no merge.
