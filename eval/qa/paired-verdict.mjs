@@ -9,6 +9,11 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { RUNTIME_ADAPTER_SCHEMA } from "./exact-old-runtime-adapter.mjs";
+import {
+  REMOTE_IDENTITY_GUARD_SCHEMA,
+  compareRemoteIdentityVectors,
+  parseRemoteIdentityVector
+} from "./remote-identity-guard.mjs";
 
 export const PAIRED_VERDICT_METHOD = "qa-paired-ordinal-ni-v1";
 export const CASE_INPUT_IDENTITY = "qa-judge-case-v2";
@@ -146,6 +151,7 @@ function tieringTuple(result) {
 }
 
 function collectionTuple(result) {
+  const remoteGuard = result.meta?.remoteIdentityGuard;
   return {
     variant: result.meta?.variant ?? null,
     surface: result.meta?.surface ?? null,
@@ -157,7 +163,14 @@ function collectionTuple(result) {
     agentBinarySha256: result.meta?.agentBinary?.sha256 ?? null,
     agentEnvironmentSha256: result.meta?.agentEnvironment?.inherited?.sha256 ?? null,
     qaImplementationSha256: result.meta?.sourceIdentity?.qaImplementationSha256 ?? null,
-    caseIdentitySchema: result.meta?.caseIdentitySchema ?? null
+    caseIdentitySchema: result.meta?.caseIdentitySchema ?? null,
+    remoteIdentity: remoteGuard
+      ? {
+          schema: remoteGuard.schema ?? null,
+          probeSha256: remoteGuard.probe?.sha256 ?? null,
+          baselineVector: remoteGuard.baselineVector ?? null
+        }
+      : null
   };
 }
 
@@ -209,6 +222,35 @@ function artifactProblems(result, label) {
     result.meta?.completeness?.aggregatesAllowed !== true
   ) {
     problems.push(reason("artifact-incomplete", `${label} does not have complete, allowed aggregates`));
+  }
+  const remoteGuard = result.meta?.remoteIdentityGuard;
+  try {
+    if (
+      remoteGuard?.schema !== REMOTE_IDENTITY_GUARD_SCHEMA ||
+      remoteGuard.matches !== true ||
+      remoteGuard.failure !== null ||
+      remoteGuard.sameAuthorizationResumeAllowed !== false ||
+      remoteGuard.requiresNewAuthorization !== false ||
+      remoteGuard.probe?.matches !== true ||
+      !/^[a-f0-9]{64}$/.test(remoteGuard.probe?.sha256 ?? "") ||
+      remoteGuard.probe.sha256 !== remoteGuard.probe.expectedSha256 ||
+      !Number.isInteger(remoteGuard.completedAnsweringCalls) ||
+      remoteGuard.completedAnsweringCalls < result.rows.length ||
+      remoteGuard.successfulCaptureCount !== remoteGuard.completedAnsweringCalls * 2 ||
+      !Array.isArray(remoteGuard.captures) ||
+      remoteGuard.captures.length !== remoteGuard.successfulCaptureCount
+    ) {
+      throw new Error("incomplete guard record");
+    }
+    parseRemoteIdentityVector(remoteGuard.baselineVector);
+    parseRemoteIdentityVector(remoteGuard.finalVector);
+    if (!compareRemoteIdentityVectors(remoteGuard.baselineVector, remoteGuard.finalVector).matches) {
+      throw new Error("guard vectors differ");
+    }
+  } catch {
+    problems.push(
+      reason("remote-identity-guard", `${label} does not contain a complete remote identity guard`)
+    );
   }
   return problems;
 }
@@ -362,7 +404,10 @@ function comparisonProblems(baselineRuns, candidateRuns) {
     !expectedTuple.resultsSchema ||
     !expectedTuple.agentBinarySha256 ||
     !expectedTuple.agentEnvironmentSha256 ||
-    !expectedTuple.qaImplementationSha256
+    !expectedTuple.qaImplementationSha256 ||
+    expectedTuple.remoteIdentity?.schema !== REMOTE_IDENTITY_GUARD_SCHEMA ||
+    !expectedTuple.remoteIdentity?.probeSha256 ||
+    !expectedTuple.remoteIdentity?.baselineVector
   ) {
     problems.push(reason("measurement-tuple", "the load-bearing collection tuple is incomplete"));
   }

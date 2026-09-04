@@ -154,9 +154,9 @@ npm run eval:qa:lint -- --since <ref>      # + gospel-change guard vs that ref (
 npm run eval:qa:register                   # --seed to baseline, --check for CI-style dry run
 
 # Run the battery (boot the server first; see below)
-node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256>
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe <executable> --expect-remote-identity-probe-sha256 <probe-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe <executable> --expect-remote-identity-probe-sha256 <probe-sha256>
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd <usd> --port 8788 --server-revision <commit> --expect-sha256 <surface-sha256> --expect-agent-binary-sha256 <wrapper-sha256> --expect-agent-environment-sha256 <environment-sha256> --remote-identity-probe <executable> --expect-remote-identity-probe-sha256 <probe-sha256>
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json    # plan regrade, offline
 ```
 
@@ -180,14 +180,51 @@ commit into the Worker's MCP `serverInfo`.
 
 Every `run-qa.mjs` mode requires `--expect-agent-binary-sha256 <wrapper-sha256>` and
 `--expect-agent-environment-sha256 <environment-sha256>`. Collection runs also require
-`--server-revision <commit>` and `--expect-sha256 <surface-sha256>`. These flags pin the source
-revision, the bound server, the capped Claude executable, and the inherited Claude environment
-before spending. The runner checks the listener, revision, clean state, compiled source revision,
-and surface again after collection. It rejects a comparison if these values change.
-It still writes the paid rows. It marks the artifact as non-comparable and suppresses aggregates.
+`--server-revision <commit>` and `--expect-sha256 <surface-sha256>`. Collection also requires
+`--remote-identity-probe <executable>` and its SHA-256 pin. These flags pin all local inputs before
+spending. The runner checks the local inputs again after collection.
+
+The remote probe must make only free, read-only requests. It must print one JSON object to stdout.
+The runner calls it before and after each answering call. The runner stores only validated fields
+and vector hashes. It never stores raw stdout or stderr.
+
+The probe output has this exact contract:
+
+```json
+{
+  "schema": "qa-remote-identity-vector-v1",
+  "services": {
+    "scout": {
+      "openapiVersion": "1.9.30",
+      "canonicalOpenapiSha256": "<64 lowercase hex characters>"
+    },
+    "lumenloop": {
+      "advertisedContractIdentity": "openapi-1.0.0",
+      "canonicalInventorySha256": "<64 lowercase hex characters>"
+    },
+    "stellarDocs": {
+      "indexSettingsSha256": "<64 lowercase hex characters>",
+      "canonicalTitleSetSha256": "<64 lowercase hex characters>"
+    }
+  }
+}
+```
+
+The probe must canonicalize JSON by sorting object keys recursively. It must keep array order when
+the service defines that order. It must sort set-like arrays before hashing. It must omit request
+timestamps and other volatile telemetry.
+
+The Scout hash covers the complete live OpenAPI document. The Lumenloop hash covers its advertised
+tool, skill, and OpenAPI inventory. The Stellar Docs hashes cover index settings and sorted page
+title records. The identity fields must use only public, stable values.
+
+Any probe failure stops before the next paid call. Any vector change has the same effect. The
+artifact preserves completed rows and lists unattempted IDs. It sets `meta.comparable: false` and
+`meta.aggregatesSuppressed: true`. It records the changed service and both vectors. A stopped
+artifact cannot resume under the same authorization.
 
 Every `run-qa.mjs` mode requires the budget, binary, and environment flags exactly once as spaced pairs.
-Collection also requires the server revision and surface SHA-256 flags in that form.
+Collection also requires both server pins and both remote probe pins in that form.
 The runner rejects an absent, duplicate, missing, malformed, or mismatched required
 flag before an answering-agent or judge call. Compute the environment value after all
 Claude-related environment variables have their final values. Use the same shell for this command
@@ -781,6 +818,7 @@ share the result schema, prompt append, agent binary, agent environment, QA impl
 judge-tier contract. The load-bearing tier fields are policy, threshold, `judgePanel`, pinned
 register source and hash, effective `maxPanelCases`, its source, and the scaled default policy.
 Both artifacts must be complete and stamp `meta.comparable: true`.
+Their `meta.remoteIdentityGuard.baselineVector` values must match exactly.
 
 Paired collection requires a frozen stability register. Generate it once, then pass the same file
 to every arm and repeat:

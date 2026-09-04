@@ -74,6 +74,11 @@
  *                      required SHA-256 pin for the inherited Claude
  *                      environment. It must match before any answering-agent
  *                      or judge call.
+ *   --remote-identity-probe path
+ *                      required executable that prints one exact
+ *                      qa-remote-identity-vector-v1 JSON object.
+ *   --expect-remote-identity-probe-sha256
+ *                      required SHA-256 of the remote identity probe bytes.
  *   --no-judge         collect answers only (judge later)
  *   --judge-stored F   two-phase mode, phase 2: judge a saved --no-judge
  *                      results file IN PLACE (no server, no agent). Judges
@@ -196,6 +201,11 @@ import {
   resumeSpendLedger,
   spendLedgerRecord
 } from "./spend-budget.mjs";
+import {
+  createRemoteIdentityGuard,
+  remoteIdentityProbeIdentity,
+  runRemoteIdentityGuardedCall
+} from "./remote-identity-guard.mjs";
 
 // Variant→tool mapping post-ADR-0001: A (host-side ranked query) shipped as
 // `search` (the `search_ranked` A/B alias retired with the decision). B
@@ -216,6 +226,7 @@ const RUN_QA_VALUE_FLAGS = [
   "--expect-agent-binary-sha256",
   "--expect-adapter-sha256",
   "--expect-agent-environment-sha256",
+  "--expect-remote-identity-probe-sha256",
   "--expect-sha256",
   "--ids",
   "--judge-model",
@@ -225,6 +236,7 @@ const RUN_QA_VALUE_FLAGS = [
   "--max-panel-cases",
   "--model",
   "--port",
+  "--remote-identity-probe",
   "--sample",
   "--search-tool",
   "--server-revision",
@@ -1525,6 +1537,21 @@ export function collectionAggregates(rows, cases, { judging }) {
   };
 }
 
+export function applyCollectionComparability(aggregates, comparabilityReasons) {
+  const comparable = comparabilityReasons.length === 0;
+  if (comparable) return { comparable, ...aggregates };
+  return {
+    comparable,
+    completeness: {
+      ...aggregates.completeness,
+      aggregatesAllowed: false,
+      reasons: [...aggregates.completeness.reasons, ...comparabilityReasons]
+    },
+    summary: null,
+    metrics: null
+  };
+}
+
 async function main() {
   const args = process.argv.slice(2);
   assertRunQaCliSyntax(args);
@@ -1607,6 +1634,11 @@ async function main() {
   const spendLedger = createSpendLedger(maxBudgetUsd);
   const serverRevisionArgument = parseRequiredFlagValue(args, "--server-revision");
   const expectedSurfaceSha256 = parseRequiredFlagValue(args, "--expect-sha256");
+  const remoteIdentityProbe = remoteIdentityProbeIdentity(
+    parseRequiredFlagValue(args, "--remote-identity-probe"),
+    parseRequiredFlagValue(args, "--expect-remote-identity-probe-sha256")
+  );
+  const remoteIdentityGuard = createRemoteIdentityGuard({ probeIdentity: remoteIdentityProbe });
   const serverRevision = assertPinnedServerRevision(serverRevisionArgument);
   const collectionSourceIdentity = assertCollectionSourceIdentity(sourceIdentity(serverRevision));
   const runtimeAdapter = parseRuntimeAdapterFlags(args, {
@@ -1727,32 +1759,39 @@ async function main() {
       const rowJudgeAttempts = [];
       let stopError = null;
       for (let attemptNumber = 1; attemptNumber <= 2; attemptNumber++) {
-        let authorization;
-        try {
-          authorization = authorizeSpend(spendLedger, {
-            method: "agent",
-            id: c.id,
-            attempt: attemptNumber
-          });
-        } catch (error) {
-          stopError = error;
-          break;
-        }
+        let run;
         const attemptStartedAt = Date.now();
-        const run = runAgent(c.question, {
-          surface,
-          searchTool,
-          allowedTools,
-          mcpConfigPath,
-          model,
-          agentCwd,
-          agentCommand: agentBinary.resolvedPath,
-          maxBudgetUsd: authorization.maxBudgetUsd
-        });
-        const attempt = agentAttemptRecord(run, attemptNumber, Date.now() - attemptStartedAt);
-        answerAttempts.push(attempt);
         try {
-          recordSpend(spendLedger, authorization, run.costUsd);
+          run = runRemoteIdentityGuardedCall({
+            guard: remoteIdentityGuard,
+            context: { id: c.id, attempt: attemptNumber },
+            authorize: () => authorizeSpend(spendLedger, {
+              method: "agent",
+              id: c.id,
+              attempt: attemptNumber
+            }),
+            call: (authorization) => runAgent(c.question, {
+              surface,
+              searchTool,
+              allowedTools,
+              mcpConfigPath,
+              model,
+              agentCwd,
+              agentCommand: agentBinary.resolvedPath,
+              maxBudgetUsd: authorization.maxBudgetUsd
+            }),
+            onCompleted: (completedRun) => {
+              const attempt = agentAttemptRecord(
+                completedRun,
+                attemptNumber,
+                Date.now() - attemptStartedAt
+              );
+              answerAttempts.push(attempt);
+            },
+            recordSpend: (authorization, completedRun) => {
+              recordSpend(spendLedger, authorization, completedRun.costUsd);
+            }
+          });
         } catch (error) {
           stopError = error;
           break;
@@ -1909,24 +1948,28 @@ async function main() {
 
   const finalSourceIdentity = sourceIdentity(serverRevision);
   const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
+  const remoteIdentityGuardRecord = remoteIdentityGuard.record();
   const comparabilityReasons = [
     ...(collectionError ? [`collection failed: ${String(collectionError.message ?? collectionError)}`] : []),
     ...(postflightError ? [`postflight failed: ${String(postflightError.message ?? postflightError)}`] : []),
     ...(!collectionSourceIdentityGuard.matches
       ? [`source identity changed: ${collectionSourceIdentityGuard.changedKeys.join(", ")}`]
+      : []),
+    ...(!remoteIdentityGuardRecord.matches
+      ? [
+          remoteIdentityGuardRecord.failure?.reason === "identity-changed"
+            ? `remote service identity changed: ${remoteIdentityGuardRecord.failure.changedServices.join(", ")}`
+            : "remote identity probe unavailable"
+        ]
       : [])
   ];
-  const comparable = comparabilityReasons.length === 0;
   const aggregates = collectionAggregates(rows, cases, { judging: !noJudge });
-  const completeness = comparable
-    ? aggregates.completeness
-    : {
-        ...aggregates.completeness,
-        aggregatesAllowed: false,
-        reasons: [...aggregates.completeness.reasons, ...comparabilityReasons]
-      };
-  const summary = comparable ? aggregates.summary : null;
-  const metrics = comparable ? aggregates.metrics : null;
+  const {
+    comparable,
+    completeness,
+    summary,
+    metrics
+  } = applyCollectionComparability(aggregates, comparabilityReasons);
   const selectedIds = cases.map((c) => c.id);
   const unattemptedIds = selectedIds.filter((id) => !rows.some((row) => row.id === id));
   const totals = costTotals(rows);
@@ -2000,6 +2043,7 @@ async function main() {
           },
           sourceIdentity: collectionSourceIdentity,
           sourceIdentityGuard: collectionSourceIdentityGuard,
+          remoteIdentityGuard: remoteIdentityGuardRecord,
           comparable,
           comparabilityReasons,
           runtimeAdapter: runtimeAdapter

@@ -270,12 +270,23 @@ a failed comparison.
 The runner still writes paid rows after a failed final check. It marks them non-comparable and
 suppresses all aggregates.
 
+Collection also requires a pinned remote identity probe. The probe must use only free, read-only
+requests. It must emit the exact `qa-remote-identity-vector-v1` contract from `eval/qa/README.md`.
+The vector covers Scout, Lumenloop, and Stellar Docs. It excludes timestamps and volatile telemetry.
+The runner calls the probe before and after every answering call.
+
+Stop after any probe failure or identity change. The runner preserves completed rows and lists
+unattempted IDs. It records the changed service and both vectors. It marks the artifact
+non-comparable and suppresses aggregates. Never resume that artifact under the same authorization.
+
 ```sh
 SERVER_REVISION=<clean 40-character server commit>
 node eval/report-live-surface.mjs --port "$PORT" --expect-source-revision "$SERVER_REVISION" --json /tmp/raven-eval-surface.json
 SURFACE_SHA256=<surfaceSha256 from the report>
 AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
 AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
+REMOTE_IDENTITY_PROBE=<absolute path to the reviewed probe executable>
+REMOTE_IDENTITY_PROBE_SHA256=<SHA-256 of that executable>
 ```
 
 Compute `AGENT_ENVIRONMENT_SHA256` after every Claude-related environment variable has its final
@@ -284,7 +295,8 @@ SHA-256. It does not emit environment values.
 
 Every `run-qa.mjs` mode requires exactly one budget, binary, and environment pair.
 This includes `--judge-stored`. Collection also requires one server-revision pair and one
-surface-SHA-256 pair. Do not use the `--flag=value` form for any required pair.
+surface-SHA-256 pair. Collection also requires one probe path and probe SHA-256 pair.
+Do not use the `--flag=value` form for any required pair.
 
 The QA runner starts each answering agent in a temporary directory outside the repository.
 It uses `--setting-sources ""`, `--disable-slash-commands`, and `--strict-mcp-config`.
@@ -303,14 +315,14 @@ Confirm `agent.mcpServers` reports the explicit `raven` server as `connected` in
 npm run eval:routing -- --gate            # exit 1 on gate breach or changed denominator
 
 # QA headline (sample) — variant A = the shipped `search` tool
-node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"
+node eval/qa/run-qa.mjs --variant A --sample 30 --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256"
 # targeted smoke: --ids a,b,c ; collect-only: --no-judge ; overrides: --model/--judge-model
 
 # QA live-data lane (grounding behavior; graded behaviorally, never on snapshot values)
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256"
 
 # Opt-in digest supplement — run and report separately from the canonical lane
-node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256"
+node eval/qa/run-qa.mjs --cases eval/qa/corpus/live/live-digest-supplement-cases.json --max-budget-usd "$MAX_BUDGET_USD" --port "$PORT" --server-revision "$SERVER_REVISION" --expect-sha256 "$SURFACE_SHA256" --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256"
 
 # Plan regrade (offline, reads stored transcripts)
 npm run eval:plan -- eval/qa/results/<stamp>-variantA.json

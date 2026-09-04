@@ -18,12 +18,37 @@ import {
   statisticalDecision
 } from "../eval/qa/paired-verdict.mjs";
 import { runPairedVerdictValidation } from "../eval/qa/validate-paired-verdict.mjs";
+import {
+  REMOTE_IDENTITY_GUARD_SCHEMA,
+  REMOTE_IDENTITY_VECTOR_SCHEMA
+} from "../eval/qa/remote-identity-guard.mjs";
 
 const REGISTER_HASH = "c".repeat(64);
 const ADAPTER_REVISION = "a".repeat(40);
 const BASELINE_REVISION = "b".repeat(40);
 const CANDIDATE_REVISION = "d".repeat(40);
 const ADAPTER_SHA256 = "e".repeat(64);
+const REMOTE_PROBE_SHA256 = "f".repeat(64);
+
+function remoteVector() {
+  return {
+    schema: REMOTE_IDENTITY_VECTOR_SCHEMA,
+    services: {
+      scout: {
+        openapiVersion: "1.9.30",
+        canonicalOpenapiSha256: "1".repeat(64)
+      },
+      lumenloop: {
+        advertisedContractIdentity: "openapi-1.0.0",
+        canonicalInventorySha256: "2".repeat(64)
+      },
+      stellarDocs: {
+        indexSettingsSha256: "3".repeat(64),
+        canonicalTitleSetSha256: "4".repeat(64)
+      }
+    }
+  };
+}
 
 function tiering(overrides = {}) {
   return {
@@ -54,6 +79,7 @@ function result(grades, {
   comparable = true
 } = {}) {
   const ids = grades.map((_, index) => `case-${String(index).padStart(3, "0")}`);
+  const remoteIdentity = remoteVector();
   return {
     meta: {
       variant: "A",
@@ -75,6 +101,24 @@ function result(grades, {
       agentBinary: { sha256: "binary" },
       agentEnvironment: { inherited: { sha256: "environment" } },
       sourceIdentity: { qaImplementationSha256: "implementation" },
+      remoteIdentityGuard: {
+        schema: REMOTE_IDENTITY_GUARD_SCHEMA,
+        probe: {
+          contract: REMOTE_IDENTITY_VECTOR_SCHEMA,
+          sha256: REMOTE_PROBE_SHA256,
+          expectedSha256: REMOTE_PROBE_SHA256,
+          matches: true
+        },
+        matches: true,
+        baselineVector: remoteIdentity,
+        finalVector: structuredClone(remoteIdentity),
+        successfulCaptureCount: ids.length * 2,
+        completedAnsweringCalls: ids.length,
+        captures: Array.from({ length: ids.length * 2 }, (_, index) => ({ sequence: index + 1 })),
+        failure: null,
+        sameAuthorizationResumeAllowed: false,
+        requiresNewAuthorization: false
+      },
       ...tuple
     },
     rows: grades.map((grade, index) => {
@@ -462,6 +506,19 @@ describe("paired QA verdict", () => {
       result(Array(100).fill("partial"), { tuple: { judgeTiering: unpinned } }),
       result(Array(100).fill("partial"), { tuple: { judgeTiering: unpinned } })
     );
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "measurement-tuple" })
+    );
+  });
+
+  it("rejects different remote identity vectors", () => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    candidate.meta.remoteIdentityGuard.baselineVector.services.scout.openapiVersion = "1.9.31";
+    candidate.meta.remoteIdentityGuard.finalVector.services.scout.openapiVersion = "1.9.31";
+    const compared = compare(baseline, candidate);
 
     expect(compared.verdict).toBe("INDETERMINATE");
     expect(compared.reasons).toContainEqual(
