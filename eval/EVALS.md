@@ -133,6 +133,14 @@ replaced two. The 499→500 boundary also needs a common-id set or a disclosed m
     A missing baseline is a separate guard failure, not a probe failure.
     Any missing capture, probe failure, or changed vector makes the artifact non-comparable.
     The runner suppresses all aggregates after such a failure.
+12. **Concurrent paired collection has one supervisor.** Use
+    `npm run eval:qa:paired:collect -- --plan <plan.json>`. The plan freezes the exact ordered IDs,
+    selected content, cases bytes, commands, four worktrees, and input hashes. The supervisor
+    enforces a row barrier, shared cancellation, child exits, and a four-hour deadline. It emits a
+    receipt only after both arms finish. Different cross-arm ports are valid when each arm's own
+    listener and adapter attestations remain stable. Collection uses `$80` per arm. Stored judging
+    raises the same artifact ledger to the cumulative `$120` arm cap. A failed collection produces
+    no paired aggregate or receipt.
 
 ## Primary artifact: service-improvement recommendations
 

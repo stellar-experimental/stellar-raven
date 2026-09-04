@@ -208,6 +208,7 @@ import {
   remoteIdentityProbeIdentity,
   runRemoteIdentityGuardedCall
 } from "./remote-identity-guard.mjs";
+import { createPairedCollectionChildControl } from "./paired-collection-control.mjs";
 
 // Variant→tool mapping post-ADR-0001: A (host-side ranked query) shipped as
 // `search` (the `search_ranked` A/B alias retired with the decision). B
@@ -238,6 +239,7 @@ const RUN_QA_VALUE_FLAGS = [
   "--max-budget-usd",
   "--max-panel-cases",
   "--model",
+  "--paired-control-arm",
   "--port",
   "--remote-identity-probe",
   "--sample",
@@ -1181,7 +1183,7 @@ export async function judgeStoredResults(
 ) {
   const sourceText = readFileSync(resultsPath, "utf8");
   const results = JSON.parse(sourceText);
-  if (results.meta?.comparable === false) {
+  if (results.meta?.comparable !== true) {
     throw new Error(
       `--judge-stored: artifact is non-comparable: ${(results.meta.comparabilityReasons ?? []).join("; ") || "collection guard failed"}`
     );
@@ -1680,6 +1682,19 @@ async function main() {
   const judgePanel = parseJudgePanel(argVal("--judge-panel"));
   const stabilityRegister = prepareStabilityRegister();
   const noJudge = args.includes("--no-judge");
+  const pairedControlArm = argVal("--paired-control-arm");
+  if (pairedControlArm && !noJudge) {
+    throw new Error("--paired-control-arm requires --no-judge");
+  }
+  if (pairedControlArm && !["baseline", "candidate"].includes(pairedControlArm)) {
+    throw new Error("--paired-control-arm must be baseline or candidate");
+  }
+  const pairedControl = pairedControlArm
+    ? createPairedCollectionChildControl({
+        arm: pairedControlArm,
+        cancellationFile: process.env.QA_PAIRED_CANCELLATION_FILE
+      })
+    : null;
   const spendLedger = createSpendLedger(maxBudgetUsd);
   const serverRevisionArgument = parseRequiredFlagValue(args, "--server-revision");
   const expectedSurfaceSha256 = parseRequiredFlagValue(args, "--expect-sha256");
@@ -1765,6 +1780,15 @@ async function main() {
   console.log(
     `run-qa: surface ${surface} · variant ${variant}${surface === "search-execute" ? ` (search tool "${searchTool}")` : ""} · ${battery.contract ? `contract ${battery.contract} · ` : ""}active ${lifecyclePartition.active.length} of ${cases.length} selected cases · excluded quarantined IDs: ${lifecyclePartition.quarantinedIds.join(", ") || "none"} · server :${port} · ${preflightResult.exposedNames.length} exposed tool(s) · agent ${model} · judge ${noJudge ? "OFF" : `${judgeModel}${judgePanel > 1 ? ` forced panel ${judgePanel}` : ` tiered (${stabilityRegister.status})`}`}`
   );
+  if (pairedControl) {
+    const selectedIds = cases.map((c) => c.id);
+    await pairedControl.ready({
+      runnerWorktree: process.cwd(),
+      serverWorktree: runtimeAdapter ? listenerPair.upstream.cwd : serverProcess.cwd,
+      selectedIdsSha256: sha256(JSON.stringify(selectedIds)),
+      selectedContentSha256: sha256(JSON.stringify(cases))
+    });
+  }
 
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "qa-mcp-"));
   // Precondition P2: the answering agent runs here, not in the repository.
@@ -1819,11 +1843,14 @@ async function main() {
           run = runRemoteIdentityGuardedCall({
             guard: remoteIdentityGuard,
             context: { id: c.id, attempt: attemptNumber },
-            authorize: () => authorizeSpend(spendLedger, {
-              method: "agent",
-              id: c.id,
-              attempt: attemptNumber
-            }),
+            authorize: () => {
+              pairedControl?.assertActive();
+              return authorizeSpend(spendLedger, {
+                method: "agent",
+                id: c.id,
+                attempt: attemptNumber
+              });
+            },
             call: (authorization) => runAgent(c.question, {
               surface,
               searchTool,
@@ -1958,9 +1985,11 @@ async function main() {
         throw new Error(`answering harness failed: ${firstAttempt.agent.failure.reason}`);
       }
       if (stopError) throw stopError;
+      if (pairedControl) await pairedControl.rowComplete({ index: i, id: c.id });
     }
   } catch (error) {
     collectionError = error;
+    pairedControl?.failed(error);
   } finally {
     rmSync(tmpDir, { recursive: true, force: true });
     rmSync(agentCwd, { recursive: true, force: true });
@@ -2009,13 +2038,29 @@ async function main() {
   const finalSourceIdentity = sourceIdentity(serverRevision);
   const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
   const remoteIdentityGuardRecord = remoteIdentityGuard.record();
-  const comparabilityReasons = collectionComparabilityReasons({
+  let comparabilityReasons = collectionComparabilityReasons({
     collectionError,
     postflightError,
     remoteIdentityPostflightError,
     collectionSourceIdentityGuard,
     remoteIdentityGuardRecord
   });
+  if (pairedControl && comparabilityReasons.length === 0) {
+    try {
+      await pairedControl.postflightComplete();
+    } catch (error) {
+      collectionError = error;
+      comparabilityReasons = collectionComparabilityReasons({
+        collectionError,
+        postflightError,
+        remoteIdentityPostflightError,
+        collectionSourceIdentityGuard,
+        remoteIdentityGuardRecord
+      });
+    }
+  } else if (pairedControl && comparabilityReasons.length > 0 && !collectionError) {
+    pairedControl.failed(new Error(comparabilityReasons.join("; ")));
+  }
   const aggregates = collectionAggregates(rows, cases, { judging: !noJudge });
   const {
     comparable,
@@ -2152,6 +2197,9 @@ async function main() {
       2
     ) + "\n"
   );
+  if (pairedControl && comparable) {
+    await pairedControl.complete({ resultsPath: outPath });
+  }
   console.log(`\nwrote ${outPath}`);
   console.log("\n" + formatFiveTrackSummary(tracks));
   if (!completeness.aggregatesAllowed) {
@@ -2169,6 +2217,7 @@ async function main() {
     }), "after"));
   }
   if (!comparable) {
+    pairedControl?.close();
     throw new Error(
       `QA collection is non-comparable; saved evidence at ${outPath}: ${comparabilityReasons.join("; ")}`
     );

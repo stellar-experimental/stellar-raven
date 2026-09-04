@@ -163,6 +163,16 @@ function collectionTuple(result) {
     promptAppend: result.meta?.promptAppend ?? null,
     agentBinarySha256: result.meta?.agentBinary?.sha256 ?? null,
     agentEnvironmentSha256: result.meta?.agentEnvironment?.inherited?.sha256 ?? null,
+    judgeBinary: {
+      sha256: result.meta?.judgeBinary?.sha256 ?? null,
+      expectedSha256: result.meta?.judgeBinary?.expectedSha256 ?? null,
+      matches: result.meta?.judgeBinary?.matches ?? null
+    },
+    judgeEnvironment: {
+      sha256: result.meta?.judgeEnvironment?.sha256 ?? null,
+      expectedSha256: result.meta?.judgeEnvironment?.expectedSha256 ?? null,
+      matches: result.meta?.judgeEnvironment?.matches ?? null
+    },
     qaImplementationSha256: result.meta?.sourceIdentity?.qaImplementationSha256 ?? null,
     caseIdentitySchema: result.meta?.caseIdentitySchema ?? null,
     remoteIdentity: remoteGuard
@@ -223,6 +233,27 @@ function artifactProblems(result, label) {
     result.meta?.completeness?.aggregatesAllowed !== true
   ) {
     problems.push(reason("artifact-incomplete", `${label} does not have complete, allowed aggregates`));
+  }
+  const agentBinary = result.meta?.agentBinary;
+  const agentEnvironment = result.meta?.agentEnvironment?.inherited;
+  const judgeBinary = result.meta?.judgeBinary;
+  const judgeEnvironment = result.meta?.judgeEnvironment;
+  const validIdentity = (identity) =>
+    /^[a-f0-9]{64}$/.test(identity?.sha256 ?? "") &&
+    identity.expectedSha256 === identity.sha256 &&
+    identity.matches === true;
+  if (
+    !validIdentity(agentBinary) ||
+    !validIdentity(agentEnvironment) ||
+    !validIdentity(judgeBinary) ||
+    !validIdentity(judgeEnvironment) ||
+    judgeBinary.sha256 !== agentBinary.sha256 ||
+    judgeEnvironment.sha256 !== agentEnvironment.sha256
+  ) {
+    problems.push(reason(
+      "binary-environment-pairing",
+      `${label} does not contain matching expected collection and stored-judge binary and environment stamps`
+    ));
   }
   const remoteGuard = result.meta?.remoteIdentityGuard;
   try {
@@ -355,22 +386,36 @@ function adapterPairingProblems(baselineRuns, candidateRuns) {
   if (adapters.length === artifacts.length) {
     const expected = {
       adapterRevision: adapters[0].adapterRevision,
-      implementationSha256: adapters[0].implementationSha256,
-      publicPort: adapters[0].publicPort,
-      upstreamPort: adapters[0].upstreamPort
+      implementationSha256: adapters[0].implementationSha256
     };
     for (const { result, label } of artifacts) {
       const adapter = result.meta.runtimeAdapter;
       const actual = {
         adapterRevision: adapter.adapterRevision,
-        implementationSha256: adapter.implementationSha256,
-        publicPort: adapter.publicPort,
-        upstreamPort: adapter.upstreamPort
+        implementationSha256: adapter.implementationSha256
       };
       if (!same(actual, expected)) {
         problems.push(reason(
           "runtime-adapter-pairing",
-          `${label} does not use the shared adapter revision, hash, and ports`
+          `${label} does not use the shared adapter revision and hash`
+        ));
+      }
+    }
+    for (const arm of ["baseline", "candidate"]) {
+      const armAdapters = artifacts
+        .filter((artifact) => artifact.label.startsWith(arm))
+        .map(({ result }) => result.meta.runtimeAdapter);
+      const ports = {
+        publicPort: armAdapters[0].publicPort,
+        upstreamPort: armAdapters[0].upstreamPort
+      };
+      if (armAdapters.some((adapter) => !same({
+        publicPort: adapter.publicPort,
+        upstreamPort: adapter.upstreamPort
+      }, ports))) {
+        problems.push(reason(
+          "runtime-adapter-pairing",
+          `${arm} runs do not keep one internally attested port pair`
         ));
       }
     }
@@ -428,6 +473,8 @@ function comparisonProblems(baselineRuns, candidateRuns) {
     !expectedTuple.resultsSchema ||
     !expectedTuple.agentBinarySha256 ||
     !expectedTuple.agentEnvironmentSha256 ||
+    !expectedTuple.judgeBinary.sha256 ||
+    !expectedTuple.judgeEnvironment.sha256 ||
     !expectedTuple.qaImplementationSha256 ||
     expectedTuple.remoteIdentity?.schema !== REMOTE_IDENTITY_GUARD_SCHEMA ||
     !expectedTuple.remoteIdentity?.probeSha256 ||

@@ -30,6 +30,8 @@ const BASELINE_REVISION = "b".repeat(40);
 const CANDIDATE_REVISION = "d".repeat(40);
 const ADAPTER_SHA256 = "e".repeat(64);
 const REMOTE_PROBE_SHA256 = "f".repeat(64);
+const BINARY_SHA256 = "5".repeat(64);
+const ENVIRONMENT_SHA256 = "6".repeat(64);
 
 function remoteVector() {
   return {
@@ -100,8 +102,28 @@ function result(grades, {
         caseIdsSha256: createHash("sha256").update(JSON.stringify(ids)).digest("hex")
       },
       judgeTiering: tiering(),
-      agentBinary: { sha256: "binary" },
-      agentEnvironment: { inherited: { sha256: "environment" } },
+      agentBinary: {
+        sha256: BINARY_SHA256,
+        expectedSha256: BINARY_SHA256,
+        matches: true
+      },
+      agentEnvironment: {
+        inherited: {
+          sha256: ENVIRONMENT_SHA256,
+          expectedSha256: ENVIRONMENT_SHA256,
+          matches: true
+        }
+      },
+      judgeBinary: {
+        sha256: BINARY_SHA256,
+        expectedSha256: BINARY_SHA256,
+        matches: true
+      },
+      judgeEnvironment: {
+        sha256: ENVIRONMENT_SHA256,
+        expectedSha256: ENVIRONMENT_SHA256,
+        matches: true
+      },
       sourceIdentity: { qaImplementationSha256: "implementation" },
       remoteIdentityGuard: {
         schema: REMOTE_IDENTITY_GUARD_SCHEMA,
@@ -166,8 +188,8 @@ function result(grades, {
 function withRuntimeAdapter(run, arm, overrides = {}) {
   const mode = arm === "baseline" ? "add-missing" : "verify-native";
   const sourceRevision = arm === "baseline" ? BASELINE_REVISION : CANDIDATE_REVISION;
-  const publicPort = 8788;
-  const upstreamPort = 8790;
+  const publicPort = overrides.publicPort ?? 8788;
+  const upstreamPort = overrides.upstreamPort ?? 8790;
   const listenerPair = {
     verification: "dual-listener-process-cwd",
     adapter: {
@@ -509,6 +531,19 @@ describe("paired QA verdict", () => {
     expect(compared.reasons.map((item) => item.code)).toContain("measurement-tuple");
   });
 
+  it("rejects a stored-judge binary hash mismatch", () => {
+    const baseline = result(Array(100).fill("partial"));
+    const candidate = result(Array(100).fill("partial"));
+    candidate.meta.judgeBinary.sha256 = "7".repeat(64);
+    candidate.meta.judgeBinary.expectedSha256 = "7".repeat(64);
+    const compared = compare(baseline, candidate);
+
+    expect(compared.verdict).toBe("INDETERMINATE");
+    expect(compared.reasons).toContainEqual(
+      expect.objectContaining({ code: "binary-environment-pairing" })
+    );
+  });
+
   it("rejects a forced judge-panel size change", () => {
     const baseline = result(Array(100).fill("partial"), {
       tuple: { judgePanel: 2, judgeTiering: tiering({ policy: "forced-panel", judgePanel: 2 }) }
@@ -607,18 +642,11 @@ describe("paired QA verdict", () => {
       candidate.meta.runtimeAdapter.attestation.implementationSha256 = "f".repeat(64);
       candidate.meta.runtimeAdapter.attestationAfter.implementationSha256 = "f".repeat(64);
     }],
-    ["mixed public port", (_baseline, candidate) => {
-      candidate.meta.runtimeAdapter.publicPort = 8787;
+    ["artifact public port drift", (_baseline, candidate) => {
       candidate.meta.port = 8787;
-      candidate.meta.listenerPair.adapter.port = 8787;
-      candidate.meta.listenerPairAfter.adapter.port = 8787;
     }],
-    ["mixed private port", (_baseline, candidate) => {
-      candidate.meta.runtimeAdapter.upstreamPort = 8791;
+    ["listener private port drift", (_baseline, candidate) => {
       candidate.meta.listenerPair.upstream.port = 8791;
-      candidate.meta.listenerPairAfter.upstream.port = 8791;
-      candidate.meta.runtimeAdapter.attestation.upstream.port = 8791;
-      candidate.meta.runtimeAdapter.attestationAfter.upstream.port = 8791;
     }],
     ["reversed modes", (baseline, candidate) => {
       baseline.meta.runtimeAdapter.mode = "verify-native";
@@ -657,6 +685,23 @@ describe("paired QA verdict", () => {
     expect(compared.reasons).toContainEqual(
       expect.objectContaining({ code: "runtime-adapter-pairing" })
     );
+  });
+
+  it("accepts different internally attested port pairs across arms", () => {
+    const baseline = withRuntimeAdapter(
+      result(Array(100).fill("partial")),
+      "baseline",
+      { publicPort: 8789, upstreamPort: 8791 }
+    );
+    const candidate = withRuntimeAdapter(
+      result(Array(100).fill("partial")),
+      "candidate",
+      { publicPort: 8788, upstreamPort: 8790 }
+    );
+    const compared = comparePairedArtifacts({ baselineRuns: [baseline], candidateRuns: [candidate] });
+
+    expect(compared.verdict).toBe("PASS");
+    expect(compared.reasons.some((item) => item.code === "runtime-adapter-pairing")).toBe(false);
   });
 
   it("keeps strict equality with the experimental margin boundary indeterminate", () => {

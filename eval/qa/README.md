@@ -870,6 +870,57 @@ The runner skips regeneration for this option. It stamps
 `--judge-stored` resume must reuse the same path. Unpinned resumes can refresh the register.
 Artifacts from those unpinned resumes cannot enter the paired comparison.
 
+Concurrent paired collection uses one manifest-driven supervisor:
+
+```sh
+npm run eval:qa:paired:collect -- --plan /absolute/path/to/paired-collection-plan.json
+```
+
+The manifest uses `qa-paired-collection-plan-v1`. It records the exact ordered `selected.ids`
+array. It also records the hashes of that array, the selected case content, and the cases file.
+It records four distinct worktree roots: two runner worktrees and two server worktrees. All four
+must belong to one Git repository. Both runner worktrees must reproduce the same cases and runner
+bytes before either child starts a paid call.
+
+Each arm records exact `collectionCommand` and `judgeCommand` argument arrays. The executable must
+be the absolute `process.execPath`. The collection command must use explicit `--ids` and
+`--no-judge`; `--sample` is forbidden. The judge command uses `{artifact}` as its frozen result
+placeholder. Each collection command includes its supervisor-owned `--paired-control-arm` value.
+The supervisor runs only the collection commands. An operator runs each recorded
+judge command later, after replacing `{artifact}` with the successful receipt path.
+
+Each arm records these input hashes: answering binary, answering environment, judge binary, judge
+environment, adapter implementation, remote identity probe, remote identity vector, stability
+register, `run-qa.mjs`, and `paired-verdict.mjs`. The collection and judge binary pins must match. Their environment pins
+must also match. Every listed hash must match across arms. Surface and server revision pins remain
+arm-specific inside each exact command.
+
+The manifest also records the exact paired JSON comparison command. It records an accepted
+two-answering-agent capacity decision and its free evidence. A missing capacity record blocks the
+launch. The resulting estimate describes behavior under that accepted concurrent load.
+
+The proposed two-arm cap is cumulative within each artifact. Collection uses `$80` per arm.
+Stored judging raises that same ledger to `$120` per arm. It does not create a separate `$40`
+ledger. The manifest therefore records `collectionUsd: 80`, `cumulativeUsd: 120`, and
+`twoArmCumulativeUsd: 240`. The validator rejects a reset or a transferred cap.
+
+The supervisor enforces a four-hour deadline. It starts both arms only after both readiness
+records match the manifest. It releases row N+1 only after both arms complete row N. A shared
+cancellation file stops every later spend authorization. A guard failure, budget failure, child
+exit, ordering failure, readiness mismatch, or deadline cancels both arms. The supervisor prints a
+`qa-paired-collection-receipt-v1` JSON receipt only after both complete artifacts exit cleanly. It
+prints no aggregate or receipt on failure.
+
+The paired printer permits different port pairs across the two arms. Each artifact must still
+contain matching preflight and postflight listener and adapter attestations for its own ports.
+Repeats within one arm must reuse that arm's port pair.
+
+Stored judging requires `meta.comparable === true` before its first judge authorization. A missing,
+null, or malformed value stops judging. The final paired tuple includes the judge binary and judge
+environment hashes. Each artifact must carry valid expected hashes and `matches: true` stamps for
+collection and judging. The judge stamps must equal the collection stamps within each arm, and
+both arms must match.
+
 The repeat rule is fixed. Stop after an initial `PASS` or `FAIL`. After an initial statistical
 `INDETERMINATE`, run exactly one complete repeat of both arms with the same pins and IDs. Combine
 the two pairs by ID and stop. Do not repeat a guard failure, a denominator below 100, or a

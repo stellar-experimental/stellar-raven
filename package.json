@@ -46,6 +46,7 @@
     "eval:qa:lint": "node eval/qa/lint-corpus.mjs",
     "eval:qa:register": "node eval/qa/register-helper.mjs",
     "eval:qa:paired": "node eval/qa/paired-verdict.mjs",
+    "eval:qa:paired:collect": "node eval/qa/paired-collection-supervisor.mjs",
     "eval:qa:paired:validate": "node eval/qa/validate-paired-verdict.mjs",
     "eval:qa": "node eval/qa/run-qa.mjs",
     "eval:temporal:selftest": "node eval/temporal/score-temporal.mjs --self-test",

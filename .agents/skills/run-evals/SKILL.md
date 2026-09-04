@@ -514,6 +514,27 @@ Record the `--json` form in the round ledger. It includes `verdict`, the adjacen
 `transitions.perLook` records each look's T1/T1 attempts before union exclusion.
 `transitions.perId` records the first look for final eligible IDs.
 
+For concurrent paired collection, use
+`npm run eval:qa:paired:collect -- --plan <absolute-plan.json>`. The
+`qa-paired-collection-plan-v1` manifest freezes the ordered ID list and its content hash. It also
+freezes exact collection and stored-judge commands, four distinct worktrees, and all input hashes.
+It also freezes the paired comparison command and records the accepted two-agent capacity evidence.
+The supervisor starts answer-only arms together and applies one barrier after every row. It uses a
+shared cancellation marker before every later authorization. It stops both arms on a guard stop,
+budget stop, child exit, ordering failure, or the four-hour deadline. It emits no receipt on
+failure. Do not launch two independent `run-qa.mjs` processes as a substitute.
+
+The proposed two-arm method uses cumulative caps. Each `--no-judge` command uses
+`--max-budget-usd 80`. Each later `--judge-stored` command raises that artifact's same ledger to
+`--max-budget-usd 120`. The judge phase does not use a new `$40` cap. The two artifacts therefore
+have a `$240` cumulative maximum before separate approved diagnostics. The manifest validates this
+sequence before collection.
+
+Stored judging requires `meta.comparable === true` before any judge authorization. The paired
+tuple requires valid expected and matching binary and environment stamps for collection and
+stored judging. The stamps must match within each arm and across both arms. Cross-arm listener
+ports may differ. Each artifact must still pass its own preflight and postflight port attestations.
+
 Run `npm run eval:qa:paired:validate` after any method change. The simulator reports look-1 and
 two-look tables at n=90 and n=100. It reports 0, 5, 8, 10, 12, and 16-point losses. Its gates
 require no-change `FAIL` at most 5%, two-look no-change `PASS` at least 80%, 12-point-loss `FAIL`

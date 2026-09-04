@@ -532,6 +532,29 @@ describe("run-qa --judge-stored", () => {
     }
   });
 
+  it.each([
+    ["missing", undefined],
+    ["null", null],
+    ["string", "true"],
+    ["number", 1]
+  ])("refuses a %s comparable stamp before judge spend", async (_label, comparable) => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-comparable-"));
+    try {
+      const { resultsPath } = writeFixture(root);
+      const results = JSON.parse(readFileSync(resultsPath, "utf8"));
+      if (comparable === undefined) delete results.meta.comparable;
+      else results.meta.comparable = comparable;
+      writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+      const calls = [];
+      await expect(
+        judgeStoredResults(resultsPath, { judge: stubJudge(calls), log: () => {} })
+      ).rejects.toThrow(/artifact is non-comparable/);
+      expect(calls).toEqual([]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("does not restore aggregates for an incomplete original collection", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-"));
     try {
