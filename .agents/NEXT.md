@@ -1,7 +1,8 @@
 # NEXT — current handoff
 
-Updated 2026-09-04 after the truth-maintenance round stopped its paid pair and landed its repairs.
-Read this first.
+Updated 2026-09-04. The truth-maintenance round stopped its paid pair and landed its repairs.
+Sol then returned `CHANGES-REQUIRED` on measurement revision 2. Commit `1847ffd` enforced the
+paired launch contract. The round is open. Read this first.
 `TODO.md` holds the full item text.
 This file only ranks and sequences. Delete or rewrite this file when the block is done.
 No unconditional paid or external block remains. Every paid, filing, deployment, and golden action
@@ -9,12 +10,37 @@ is owner-blocked. A short list of free documentation and review actions is machi
 
 ## State at handoff
 
-- `main` is at `2ee801f` (PR #122). Production runs Worker Version
-  `f62b64fa-1fb7-4c25-970d-7f98c83ab302` from source commit `0c71b99`. The deployment record is
-  `.agents/rounds/2026-09-02-agent-queue-deployment.md`. Production carries the envelope
-  serialization fault that `795fa41` repairs.
-- Branch `codex/tm-final-synthesis` carries the whole round on top of `main`. It is unmerged and
-  undeployed. Its ledger is `.agents/rounds/2026-09-03-truth-maintenance.md`.
+- `main` is at `2ee801f` (PR #122). The last recorded deployment state, from 2026-09-02, is
+  Worker Version `f62b64fa-1fb7-4c25-970d-7f98c83ab302` from source commit `0c71b99`. The record
+  is `.agents/rounds/2026-09-02-agent-queue-deployment.md`. Nobody re-verified the live Worker
+  after that record. That recorded state carries the envelope serialization fault that `795fa41`
+  repairs.
+- Branch `codex/truth-maintenance-2026-09-03` carries the whole round on top of `main`. It
+  contains the work through `dc0761d`. It is unmerged and undeployed. Its ledger is
+  `.agents/rounds/2026-09-03-truth-maintenance.md`. The older branch `codex/tm-final-synthesis`
+  stopped at `cbdfc5b` and lacks `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d`.
+- The paired launch contract is enforced at `1847ffd`. The plan schema is
+  `qa-paired-collection-plan-v2`. Launch requires `--authorized-plan-sha256` equal to the canonical
+  plan SHA-256. The plan freezes every paid command array and the flip Claude pins. It binds the
+  fixed capacity contract with 24-hour freshness. It requires exactly 200 selected and 500 active
+  corpus IDs with all four corpus hashes. Report: `launch-contract-repair-sol.md`. No independent
+  review of `1847ffd` is recorded.
+- The free two-agent capacity check is complete. The authoritative v2 `PASS` artifact has SHA-256
+  `f94663390187a52a89007ca22a23530c873cb8e00b4117bece045265a56c2423` and completed at
+  `2026-09-04T10:25:17.815Z`. It expires at `2026-09-05T10:25:17.815Z`. It proves the technical
+  gate only. The owner has not accepted the concurrent-load estimand.
+- Measurement design revision 2 received `CHANGES-REQUIRED` from Sol (`final-synthesis-review-sol.md`,
+  P1 to P3 and S1 to S3). Revision 3 repairs all six against `1847ffd`. Nobody has reviewed
+  revision 3. It authorizes nothing.
+- The full validation after `1847ffd` is complete. The orchestrator ran it on the root branch
+  with the work through `dc0761d`. `npm run typecheck`, `npm test` (108 files, 1,971 tests),
+  `npm run test:smoke` (4 files, 83 tests), and `npm run build` passed. `eval:selftest`,
+  `eval:compile`, `eval:qa:lint -- --stale` (0 errors, 62 warnings), `eval:qa:register -- --check`,
+  `eval:routing` (gate), `eval:qa:paired:validate`, and `improvements:lint` passed.
+  `eval:qa:compile` produced 500 cases with content SHA-256 `c5d0c804…7b43e`.
+  `eval:protocol-history` stopped correctly as `source-expired` with no scored question.
+  `improvements:index` produced 70 findings. The documentation-only correction after this
+  validation still needs final diff and secret checks.
 - The 2026-09-04 candidate arm completed 500 rows and stopped as a diagnostic. Raw counts: 199
   correct, 230 partial, 71 wrong. Raw shares: strict 39.8%, half-credit 62.8%, core-answer-correct
   92.6%. Cost `$190.1686672`. Scout changed from `1.9.23` to `1.9.30` inside the arm. The executor
@@ -44,16 +70,20 @@ is owner-blocked. A short list of free documentation and review actions is machi
 
 ### Machine-ready (free, no authority needed)
 
-1. Run the baseline validation on the branch before a pull request: `npm run typecheck`,
-   `npm test`, `npm run test:smoke`, `npm run build`, and `npm run secrets:scan -- --tree`.
-   The repair lanes ran these per branch. Nobody ran them on the combined branch.
-2. Record the dated Scout 1.9.30 rejection in `eval/README.md` beside the 1.9.23 decision. The
-   evidence is `.agents/rounds/2026-09-03-truth-maintenance/scout-1.9.30-drift-terra.md`.
-3. Obtain an independent re-review of `revised-impact-measurement-fable.md` revision 2. The
-   reviewer must not be Fable 5.1 and must not be the orchestrator. Sol high or Opus high fit.
-4. Run the free two-agent capacity check for the concurrent topology and record its evidence. It
-   uses public read-only requests only. It writes nothing upstream.
-5. Obtain an independent closeout review of the round ledger and this handoff.
+1. Obtain an independent review of `revised-impact-measurement-fable.md` revision 3 and of the
+   launch contract at `1847ffd`. The reviewer must not be Fable 5.1 and must not be the
+   orchestrator. Sol high or Opus high fit. Revision 2 received `CHANGES-REQUIRED`.
+2. Obtain an independent closeout review of the round ledger and this handoff.
+
+Complete since the previous handoff:
+
+- The full validation after `1847ffd` is complete on the root branch. See "State at handoff".
+  The documentation-only correction after it still needs final diff and secret checks.
+- The dated Scout 1.9.30 rejection is recorded in `eval/README.md` beside the 1.9.23 decision
+  (commit `bd8d2d2`).
+- The free two-agent capacity check ran twice. The authoritative v2 `PASS` artifact is recorded
+  in `paired-capacity-check-terra.md` (commit `dc0761d`). The owner acceptance of the
+  concurrent load is a separate open decision.
 
 ### Trigger-only and monitor-only
 
@@ -81,7 +111,9 @@ is owner-blocked. A short list of free documentation and review actions is machi
 
 ### Paid-authority-blocked
 
-- The supervised paired subset method, revision 2. See owner decision A.
+- The supervised paired subset method, revision 3. See owner decision A. The owner's general
+  approval of paid eval work for this round is not this authorization. Only a signed external
+  record that names the canonical plan SHA-256 and covers every command array is.
 - The stopped baseline arm, candidate rerun, both flip rejudges, the canonical live-data method,
   and the digest method. None may start under the old plan. A new method needs its own
   authorization.
@@ -114,23 +146,30 @@ no filing, no deployment.
 ### A. Authorize the supervised paired subset measurement
 
 Question: sign the authorization block in
-`.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md`, or do not.
-The block lists every method, cap, manifest field, stop rule, and review requirement. It needs
-these ten answers first.
+`.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md` revision 3, or
+do not. The block lists every method, cap, manifest field, command array, stop rule, and review
+requirement. The signed record lives outside the plan file. It must name the canonical plan
+SHA-256 printed by `npm run eval:qa:paired:plan-sha256`. The signature covers that hash and
+every command array in the plan. The arrays are capacity, P6, both collections, both stored
+judges, both flip re-judges, and the comparison. Any plan edit after the signature voids it. The
+general round approval of 2026-09-03 is not this authorization. It needs these ten answers first.
 
 1. Retire or retain the 2026-09-03 `$882.50` plan. Recommended: retire.
 2. Denominator: 200 selected (recommended), 150 selected, or 500 under a reviewed deadline change.
 3. Two concurrent server pairs under the supervisor (recommended), or sequential Option B.
 4. Answer-only collection with stored judging (recommended).
-5. Accept the concurrent-load estimand after the free capacity check records its evidence.
+5. Accept the concurrent-load estimand. The free v2 capacity artifact exists and passed the
+   fixed technical gate. It does not accept the estimand. This decision is still open.
 6. Keep the landed whole-arm guard stop for this look. Decide Option E separately.
 7. Launch window: weekend UTC start, four-hour deadline, no retry in the same authorization.
 8. Keep `0.08` as the experimental no-change radius. Print the `0.05` and `0.10` tables.
 9. Keep the candidate-only T4 or T5 rule terminal.
-10. Run the P6 judge self-test once at `$3.50` with direct Node.
+10. Run the P6 judge self-test once at `$3.50` through the exact frozen wrapper command.
 
-Evidence needed before signing: the independent `LAUNCH-OK` re-review of revision 2, the free
-capacity evidence, and one clean launch revision. Maximum spend: `$273.50`. Safe default: no spend.
+Evidence needed before signing: the independent `LAUNCH-OK` review of revision 3. Also needed: a
+capacity artifact at most 24 hours old at launch, one clean launch revision, and the printed
+canonical plan SHA-256. The full validation after `1847ffd` is complete. Maximum spend:
+`$273.50`. Safe default: no spend.
 
 ### B. Authorize upstream filing for the ten verified findings
 
@@ -194,9 +233,10 @@ Safe default: no rejudge spend; grades stand as diagnostic values.
 
 ### E. Merge and deployment authority
 
-Question: merge `codex/tm-final-synthesis` and deploy the repaired runtime? Evidence: the
-machine-ready checks, the closeout review, and the fact that production carries the envelope
-fault. Deployment needs its own explicit authority and post-deployment verification.
+Question: merge `codex/truth-maintenance-2026-09-03` and deploy the repaired runtime? Evidence:
+the completed full validation, the closeout review, and the fact that the last recorded
+deployment state carries the envelope fault. Deployment needs its own explicit authority and
+post-deployment verification.
 
 ### F. Authorize the general Raven scoring repair
 
@@ -246,8 +286,11 @@ confidence radius. A same-tuple pair from decision A recalibrates it. Safe defau
 
 ## Conditional programs
 
-- Paired QA: the supervisor and the remote identity guard are landed. No collection occurs without
-  the signed authorization in decision A, the independent re-review, and the final manifest.
+- Paired QA: the supervisor, the remote identity guard, and the v2 launch contract are landed. No
+  collection occurs without the signed external authorization in decision A. That record names
+  the canonical plan SHA-256. Collection also needs the independent `LAUNCH-OK` review of
+  revision 3 and the owner acceptance of the concurrent load. It needs a capacity artifact at
+  most 24 hours old and the final manifest.
 - Repository recovery: keep the exact free monitor in `TODO.md`. The durable record is the
   `sls-080` receipt. Source parity authorizes no paid collection. Use `sls-082` for a distinct
   defect.
@@ -261,13 +304,18 @@ confidence radius. A same-tuple pair from decision A recalibrates it. Safe defau
 - Friendbot, vendor short-token, and the Docs enumeration ceiling remain monitor-only until their
   recorded bars fire.
 
-## Completed blocks
+## Completed repair work
 
-- Truth-maintenance round 2026-09-03 to 2026-09-04: `.agents/rounds/2026-09-03-truth-maintenance.md`
-  and its report directory. Key reports: `post-candidate-stop-audit-sol.md`,
-  `post-candidate-measurement-fable.md`, `remote-identity-guard-review-opus.md`,
-  `paired-collection-supervisor-review-opus.md`, `scout-1.9.30-drift-terra.md`,
-  `revised-impact-measurement-review-sol.md`.
+The truth-maintenance round 2026-09-03 stays open. Its closeout gates are the revision 3 review
+and the closeout review above. The items below are complete.
+
+- Repair work inside the open round: `.agents/rounds/2026-09-03-truth-maintenance.md`, section
+  "Repairs after the stop (2026-09-04)", and its report directory. Key reports:
+  `post-candidate-stop-audit-sol.md`, `post-candidate-measurement-fable.md`,
+  `remote-identity-guard-review-opus.md`, `paired-collection-supervisor-review-opus.md`,
+  `scout-1.9.30-drift-terra.md`, `revised-impact-measurement-review-sol.md`,
+  `final-synthesis-review-sol.md`, `launch-contract-repair-sol.md`,
+  `paired-capacity-check-terra.md`.
 - Raven monitor and protocol-history PH2 decisions: `.agents/rounds/2026-09-03-owner-decisions.md`.
 - Production deployment of `0c71b99`: `.agents/rounds/2026-09-02-agent-queue-deployment.md`.
 - Earlier: ids selector guards, residual fail-closed runner flags, protocol-history free evidence,
@@ -292,6 +340,7 @@ confidence radius. A same-tuple pair from decision A recalibrates it. Safe defau
 
 ## Suggested sequence
 
-Run the machine-ready checks and the two independent reviews first. Then bring decisions A to J
+Run the two independent reviews first. Then bring decisions A to J
 to the owner in one sitting. Keep each paid action, filing action, and production action behind
 its separate authorization. No current item has authorization for evaluation ladder stages 3 or 4.
+The general round approval does not move any item to stage 3.

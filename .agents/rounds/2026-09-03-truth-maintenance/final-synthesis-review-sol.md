@@ -484,3 +484,33 @@ Revision 2 does not earn `LAUNCH-OK`.
 
 The required verdict is `CHANGES-REQUIRED`.
 
+
+---
+
+## Reconciliation after the launch-contract repair (2026-09-04)
+
+Author of this section: Claude Fable 5.1, the revision 2 author, during the documentation repair
+on branch `codex/tm-final-docs-repair` at `dc0761d`. This section does not change the review
+verdict above. Revision 2 keeps its `CHANGES-REQUIRED` verdict. The reconciliation below records
+where each finding was repaired. It is not an independent review. Revision 3 still needs its own
+independent review by a lane that is not Fable 5.1 and not the orchestrator.
+
+| Finding | Repair | Evidence |
+| --- | --- | --- |
+| P1 | The supervisor requires `--authorized-plan-sha256` and rejects any plan whose canonical SHA-256 differs. The plan schema is `qa-paired-collection-plan-v2`. The plan freezes the exact P6, capacity, collection, stored-judge, flip, and comparison command arrays. Each flip command pins the Claude path, binary SHA-256, and environment SHA-256, and requires `--allow-empty`. The owner signature covers the hash and every command array. | Code: `1847ffd`. Report: `launch-contract-repair-sol.md`. Design: revision 3 sections "Exact command arrays" and "Strict new-authorization block". |
+| P2 | The capacity gate is a fixed contract: one exact command, two barrier-released captures, 14 expected responses by service, zero errors, retries, or `Retry-After`, matching vectors, overlapping windows, 120,000 ms limits, and 86,400,000 ms freshness. The plan binds the instrument bytes and the artifact bytes. | Code: `1847ffd`. Evidence: `paired-capacity-check-terra.md`, authoritative v2 artifact `f9466339…56c2423` committed at `dc0761d`. |
+| P3 | The plan requires `selected.count: 200`, exactly 200 unique ordered IDs, `selected.activeCorpusCount: 500`, and `selected.activeCorpusIdsSha256`. Both runner worktrees recompute the cases-file hash, the selected content hash, the ordered 200-ID hash, and the ordered 500-ID hash. | Code: `1847ffd`. Recomputation at `dc0761d`: all four values match revision 2. |
+| S1 | Revision 3 names `1847ffd` as the final supervisor contract and `codex/truth-maintenance-2026-09-03` at `dc0761d` as the whole-round branch. The repair table in the ledger now lists `a5ac32f`, `5603d6d`, `1847ffd`, and `dc0761d`. Every provisional contract hash is recomputed at `dc0761d`. | `revised-impact-measurement-fable.md` revision 3; ledger `## Repairs after the stop (2026-09-04)`; `launch-contract-repair-sol.md`. |
+| S2 | `NEXT.md` renames the block to completed repair work and keeps the round open. The ledger checklist keeps the closeout review and the production smoke checks open. | `.agents/NEXT.md`; ledger `## Final checklist`. |
+| S3 | Production is labeled as the last recorded deployment state from 2026-09-02. No document states the live Worker as a current fact. | `.agents/NEXT.md`; ledger `## Scope` and `## Final checklist`. |
+
+Unchanged boundaries after this reconciliation:
+
+- Every paid method remains unapproved. The owner's general round approval is not the strict
+  paid authorization for revision 3.
+- The owner acceptance of the concurrent-load estimand remains open.
+- Upstream filing remains blocked on explicit owner authority.
+- Every human golden and product judgment blocker in the handoff remains open.
+- The earlier full combined validation ran before `1847ffd`. The orchestrator then completed the
+  full validation on the root branch with the work through `dc0761d`. The documentation-only
+  correction after it still needs final diff and secret checks.

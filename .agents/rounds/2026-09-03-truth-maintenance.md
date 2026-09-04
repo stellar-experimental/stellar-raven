@@ -7,7 +7,11 @@ It covers live drift, routing, end-to-end QA, live-data execution, golden health
 production smoke checks, and issue or pull-request follow-up.
 
 The final measured candidate revision is `65d2f98dd80305e9a2b9000c46e9a91ba0557cbc`.
-The deployed runtime remains `0c71b99c02425307be5ef5c5c4ff1ef05935663d` until this round merges and deploys.
+The last recorded deployment state, from 2026-09-02, is `0c71b99c02425307be5ef5c5c4ff1ef05935663d`.
+It stays the deployed runtime until this round merges and deploys.
+Nobody re-verified the live Worker after that record.
+The whole round lives on branch `codex/truth-maintenance-2026-09-03`. It contains the work
+through `dc0761d`.
 
 The primary current-quality measurement is a fresh full 500-case QA collection.
 The designed sample-30 headline remains separate.
@@ -334,9 +338,31 @@ Updated 2026-09-04.
 - [x] Golden changes carry independent source classes and root-cause records.
 - [x] Proposed and reported improvements have live state and deterministic next actions. See
       `## Improvements state (2026-09-04)`.
-- [ ] Production smoke checks pass. No deployment happened. Production still runs `0c71b99`.
-- [x] Baseline repository validation and secrets scanning passed on each repair branch. This
-      synthesis ran the improvements lint, the QA corpus lint, and the diff check only.
+- [ ] Production smoke checks pass. No deployment happened. The last recorded deployment state,
+      from 2026-09-02, is `0c71b99`. Nobody re-verified the live Worker after that record.
+- [x] Baseline repository validation and secrets scanning passed on each repair branch. The
+      launch-contract repair lane ran the full baseline validation at `e5c835e` before `1847ffd`
+      landed here. See `launch-contract-repair-sol.md`.
+- [x] Fresh full validation after `1847ffd`. The orchestrator completed it on the root branch
+      `codex/truth-maintenance-2026-09-03` with the work through `dc0761d`. Results:
+      `npm run typecheck` passed; `npm test` passed with 108 files and 1,971 tests;
+      `npm run test:smoke` passed with 4 files and 83 tests; `npm run build` passed;
+      `eval:selftest` passed; `eval:compile` passed; `eval:qa:compile` produced 500 cases with
+      content SHA-256 `c5d0c804…7b43e`; `eval:qa:lint -- --stale` passed with 0 errors and 62
+      warnings; `eval:qa:register -- --check` passed; `eval:routing` passed its gate;
+      `eval:qa:paired:validate` passed; `eval:protocol-history` stopped correctly as
+      `source-expired` with no scored question; `improvements:index` produced 70 findings;
+      `improvements:lint` passed. The documentation-only correction after this validation still
+      needs final diff and secret checks.
+- [x] The Scout 1.9.30 rejection is recorded in `eval/README.md` beside the 1.9.23 decision
+      (commit `bd8d2d2`).
+- [x] The free two-agent capacity check is complete. The authoritative v2 `PASS` artifact is
+      recorded in `paired-capacity-check-terra.md` (commit `dc0761d`).
+- [x] Independent review of measurement design revision 2: `final-synthesis-review-sol.md`
+      returned `CHANGES-REQUIRED` (commit `f766893`). P1 to P3 are repaired in `1847ffd`. S1 to
+      S3 are repaired in this documentation pass.
+- [ ] Independent review of measurement design revision 3 returns `LAUNCH-OK`. Nobody has
+      reviewed revision 3.
 - [ ] Independent closeout review passes. This synthesis has not been reviewed.
 - [ ] Owned Herdr panes and agents are closed without touching unrelated resources.
 
@@ -427,8 +453,11 @@ Recurrence evidence for existing findings: `sd-046` (two rows), `sd-044`, `sd-03
 
 ## Repairs after the stop (2026-09-04)
 
-Each repair landed on its own branch and was carried onto `codex/tm-final-synthesis`. The table
-names the commit on this branch and the reviewed commit in the report.
+Each repair landed on its own branch and was carried onto `codex/truth-maintenance-2026-09-03`.
+That branch is the actual whole-round branch. It contains the work through `dc0761d`. The branch
+`codex/tm-final-synthesis` stopped at `cbdfc5b`. It does not contain `a5ac32f`, `5603d6d`,
+`1847ffd`, or `dc0761d`. The table names the commit on the round branch and the reviewed commit
+in the report.
 
 | Repair | This branch | Report commit | Independent review | Verdict |
 |---|---|---|---|---|
@@ -444,7 +473,13 @@ names the commit on this branch and the reviewed commit in the report.
 | Remote identity guard | `de9af0a`, `14a6f66`, `c781866`, `e3fe47a` | `2ca5880`, `8cd724d`, `5d47ab6`, `f2e2d10` | Opus 5 `xhigh`, `remote-identity-guard-review-opus.md` | final `PASS`; R1 and R4 stay as operational items |
 | Revised impact measurement, revision 1 | `74e756d` | `f101cee` | Sol high, `revised-impact-measurement-review-sol.md` | `CHANGES-REQUIRED`, S1 to S6 and P1 to P7 |
 | Paired collection supervisor and launch gate | `9bbcdbd`, `d36aa05`, `6934e1c`, `e0df186` | `79080bd`, `9cf49a4`, `1292b60` | Opus 5 `xhigh`, `paired-collection-supervisor-review-opus.md` | `CHANGES-REQUIRED` then `PASS` twice; H1 to H3 closed |
-| Remaining-work audit | `2e4f028` | same | none needed | one documentation reconciliation remained; this synthesis performs it |
+| Remaining-work audit | `2e4f028` | same | none needed | one documentation reconciliation remained; the synthesis at `b5dca1c` performed it |
+| Paired artifact content identity (I1) | `a5ac32f` | same | Opus 5 `xhigh`, `paired-collection-supervisor-review-opus.md` I1 closure, `5603d6d` | `PASS`; `meta.inputSnapshot.casesSha256` is mandatory |
+| Free two-agent capacity check, v1 instrument | `bd8d2d2` | same | orchestrator verification, `paired-capacity-check-terra.md` | `TECHNICAL PASS`; the v1 artifact is provisional and cannot enter a v2 plan; also records Scout 1.9.30 in `eval/README.md` |
+| Independent review of measurement revision 2 | `f766893` | same | Sol high, `final-synthesis-review-sol.md` | `CHANGES-REQUIRED`, P1 to P3 and S1 to S3 |
+| Launch contract enforcement, P1 to P3 | `1847ffd` | `e5c835e` | none recorded; `launch-contract-repair-sol.md` is the implementation report | plan schema `qa-paired-collection-plan-v2`; external authorized plan hash; fixed capacity contract; corpus counts; flip identity pins |
+| Authoritative v2 capacity evidence | `dc0761d` | same | orchestrator verification, `paired-capacity-check-terra.md` | `accepted: true`; artifact `f9466339…56c2423`; expires `2026-09-05T10:25:17.815Z` |
+| Measurement design revision 3 and documentation repair | this pass | same | none yet; revision 3 needs an independent review | S1 to S3 repaired; revision 3 unreviewed and unapproved |
 
 Remote identity guard contract, as landed: the committed probe `eval/qa/probe-remote-identities.mjs`
 hashes the Scout OpenAPI document, the Lumenloop tool, skill, and OpenAPI inventory, and the Stellar
@@ -457,14 +492,23 @@ returned vector `afd993854a981d4a5a3026ad047347c7a62a1b731b887ec08d48d5b9e07bbc7
 `1.9.30`. Two operational items remain: R1, Scout release cadence can prevent a valid long pair;
 R4, the Docs enumeration fails closed above 1,000 records while the live set has 650.
 
-Paired supervisor contract, as landed: `npm run eval:qa:paired:collect -- --plan <plan.json>`
-validates a `qa-paired-collection-plan-v1` manifest, spawns both `--no-judge` children, enforces
-a row barrier with alternating release order, shares one cancellation marker, applies a four-hour
-deadline with a bounded drain, and prints a `qa-paired-collection-receipt-v1` receipt only after
-both comparable artifacts exit cleanly. The manifest freezes explicit `--ids`, four distinct
-worktrees, twelve input hashes, a salted value-free `.dev.vars` identity, an accepted two-agent
-capacity record, and cumulative caps of `$80` collection and `$120` stored judging per arm. The
-review record names Opus 5 at `xhigh` for all three reviews, per the Herdr start record.
+Paired supervisor contract, as landed at `1847ffd`. The launch command is
+`npm run eval:qa:paired:collect -- --plan <plan.json> --authorized-plan-sha256 <sha256>`. The
+supervisor validates a `qa-paired-collection-plan-v2` manifest against the supplied canonical
+SHA-256. It spawns both `--no-judge` children and enforces a row barrier with alternating release
+order. It shares one cancellation marker and applies a four-hour deadline with a bounded drain.
+It prints a `qa-paired-collection-receipt-v1` receipt only after both comparable artifacts exit
+cleanly.
+
+The manifest freezes exactly 200 selected IDs and exactly 500 unique active corpus IDs. It
+records all four corpus hashes, four distinct worktrees, and twelve input hashes. It records a
+salted value-free `.dev.vars` identity. It binds the fixed capacity contract with its instrument
+bytes, artifact bytes, and 24-hour freshness. It freezes the exact P6 wrapper command and the
+exact comparison command. It freezes both exact flip re-judge commands with Claude path, binary,
+and environment pins. It sets cumulative caps of `$80` collection and `$120` stored judging per
+arm. The owner authorization record stays outside the plan. The owner signature covers the
+canonical hash and every command array. The Opus review record names Opus 5 at `xhigh` for all
+three supervisor reviews and the I1 closure. No independent review of `1847ffd` is recorded.
 
 ## Scout 1.9.30 decision (2026-09-04)
 
@@ -516,12 +560,21 @@ No valid two-week causal measurement exists. No baseline artifact exists. The ca
 non-comparable. The `$882.50` plan is spent for P6 and the candidate and stopped for every other
 method. Its remainder does not transfer.
 
-The revised design is `revised-impact-measurement-fable.md`, revision 2. It proposes a supervised
-200-case paired subset under a `$273.50` maximum with cumulative per-arm caps. It corrects the stale
-request counts, timings, caps, hashes, and topology claims from revision 1 against the final
-supervisor contract. Nobody has reviewed revision 2. The method is not approved for paid execution.
-It needs an independent re-review, the owner decisions, a signed authorization block, a final
-manifest at one clean launch revision, and a weekend window.
+The revised design is `revised-impact-measurement-fable.md`, revision 3. It proposes a supervised
+200-case paired subset under a `$273.50` maximum with cumulative per-arm caps. Revision 2 received
+`CHANGES-REQUIRED` from Sol in `final-synthesis-review-sol.md` (P1 to P3, S1 to S3). Commit
+`1847ffd` repaired P1 to P3 in the launch contract. Revision 3 binds the design to that contract.
+The plan schema is `qa-paired-collection-plan-v2`. The launch requires an external authorized
+canonical plan SHA-256. The plan freezes every paid command array and the flip Claude pins. It
+binds the fixed capacity contract with 24-hour freshness. It requires exactly 200 selected and
+500 active corpus IDs. Both runners recompute all four corpus hashes.
+
+Nobody has reviewed revision 3. The method is not approved for paid execution. The owner's general
+approval of paid work for this round is not the strict paid authorization. The owner has not
+accepted the concurrent-load estimand. The method still needs an independent `LAUNCH-OK` review of
+revision 3 and the ten owner decisions. It also needs the signed external authorization that
+names the plan hash. It needs a final manifest at one clean launch revision, a capacity artifact
+at most 24 hours old, and a weekend window.
 
 ## Decisions (2026-09-04)
 
@@ -533,9 +586,16 @@ manifest at one clean launch revision, and a weekend window.
 - Scout 1.9.30 is rejected. Scout 1.9.1 stays committed.
 - The remote identity guard is a launch requirement for every future paid live run.
 - The paired supervisor is the only permitted way to collect two arms at once.
-- The revised paired method is unapproved. The old plan does not transfer.
-- Production deployment waits for round closeout and explicit deployment authority. The deployed
-  runtime carries the envelope serialization fault that `795fa41` repairs.
+- The revised paired method is unapproved. The old plan does not transfer. The general round
+  approval of 2026-09-03 is not the strict paid authorization for revision 3. Only a signed
+  external record that names the canonical plan SHA-256 and covers every command array is.
+- The owner acceptance of the concurrent-load estimand stays open. The free v2 capacity artifact
+  proves the technical gate only.
+- Production deployment waits for round closeout and explicit deployment authority. The last
+  recorded deployment state, from 2026-09-02, carries the envelope serialization fault that
+  `795fa41` repairs.
+- The round stays open until the revision 3 review and the closeout review pass. The full
+  validation after `1847ffd` is complete.
 - Monitor-only programs stay monitor-only. The PH2 and Raven capability-boundary decisions from
   `.agents/rounds/2026-09-03-owner-decisions.md` are unchanged.
 
@@ -550,9 +610,13 @@ manifest at one clean launch revision, and a weekend window.
 | Paid eval execution | P6 passed; candidate arm completed and stopped as a diagnostic; baseline never started | artifact `2026-09-04T05-40-51-variantA.json`, `post-candidate-stop-audit-sol.md` |
 | Eval result review | all 500 rows reviewed once; disagreements recorded for adjudication | the three shard reviews and `post-candidate-measurement-fable.md` |
 | Repairs | envelope, coverage metric, evidence support, remote guard, and supervisor landed with independent `PASS` reviews on the branch | `## Repairs after the stop (2026-09-04)` |
-| Measurement design | revision 2 written; unreviewed; unapproved | `revised-impact-measurement-fable.md` |
+| Measurement design | revision 2 reviewed `CHANGES-REQUIRED`; revision 3 written; unreviewed; unapproved | `revised-impact-measurement-fable.md`, `final-synthesis-review-sol.md` |
+| Launch contract repair | P1 to P3 enforced in code at `1847ffd`; no independent review recorded | `launch-contract-repair-sol.md` |
+| Free capacity check | complete; authoritative v2 `PASS` artifact recorded at `dc0761d`; owner acceptance open | `paired-capacity-check-terra.md` |
 | Final independent closeout review | not done | this synthesis is unreviewed |
 
-Remaining risk: the branch is unmerged and undeployed. Production still runs `0c71b99` with the
-envelope fault. The handoff and owner decisions are in `.agents/NEXT.md`. The queue is in
-`.agents/TODO.md`.
+Remaining risk: the branch `codex/truth-maintenance-2026-09-03` is unmerged and undeployed. The
+last recorded deployment state, from 2026-09-02, is `0c71b99` with the envelope fault. The full
+validation after `1847ffd` is complete. The documentation-only correction after it still needs
+final diff and secret checks. The handoff and owner decisions are in `.agents/NEXT.md`. The queue
+is in `.agents/TODO.md`.

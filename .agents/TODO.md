@@ -336,12 +336,21 @@ lost one ID and returned `INDETERMINATE` at 99 eligible IDs. A candidate-only T4
 Landed on 2026-09-04 with independent `PASS` reviews: the remote identity guard, the paired
 collection supervisor `npm run eval:qa:paired:collect`, distinct cross-arm port pairs, stored-judge
 identity stamps, and cumulative per-arm caps. The printer now requires one shared remote identity
-vector, one probe hash, and different exact server revisions across arms. The full contract is in
-`eval/qa/README.md` and `eval/EVALS.md` item 12.
+vector, one probe hash, and different exact server revisions across arms. Commit `1847ffd` then
+enforced the v2 launch contract. The plan schema is `qa-paired-collection-plan-v2`. The launch
+requires an external authorized canonical plan SHA-256. The plan freezes every paid command array
+and the flip Claude pins. It binds a fixed capacity contract with 24-hour freshness. It requires
+exactly 200 selected and 500 active corpus IDs. No independent review of `1847ffd` is recorded.
+The full contract is in `eval/qa/README.md` and `eval/EVALS.md` item 12.
 
-Permitted now: free validator work on a pre-registered selected denominator above 100, the free
-two-agent capacity check, and independent review of the revised design. Review denominator and
-candidate-only rules before the first new look. Never change either rule after reading a paid look.
+The free two-agent capacity check is complete. The authoritative v2 `PASS` artifact is recorded in
+`.agents/rounds/2026-09-03-truth-maintenance/paired-capacity-check-terra.md`. It expires at
+`2026-09-05T10:25:17.815Z`. A launch after that time needs a fresh artifact.
+
+Permitted now: free validator work on a pre-registered selected denominator above 100. Also
+permitted: a fresh free capacity artifact when the current one expires, and independent review of
+design revision 3. Review denominator and candidate-only rules before the first new look. Never
+change either rule after reading a paid look.
 
 The spend trigger is a signed authorization for the revised method in
 `.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md`, plus the
@@ -362,14 +371,21 @@ records the promotion decision.
 ### Execute the supervised paired subset only after a signed authorization
 
 Trigger only when the round ledger carries the complete signed authorization block from
-`.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md` revision 2,
-an independent `LAUNCH-OK` re-review of that revision, the ten owner decisions, and one clean
-launch revision. Revision 2 is unreviewed on 2026-09-04. Revision 1 received `CHANGES-REQUIRED`.
+`.agents/rounds/2026-09-03-truth-maintenance/revised-impact-measurement-fable.md` revision 3,
+an independent `LAUNCH-OK` review of that revision, the ten owner decisions including the
+concurrent-load acceptance, and one clean launch revision. The signed record lives outside the
+plan. It names the canonical plan SHA-256 from `npm run eval:qa:paired:plan-sha256`. The owner
+signature covers that hash and every command array in the plan. The owner's general approval of
+paid work for the round is not this authorization. Revision 1 and revision 2 received
+`CHANGES-REQUIRED`. Revision 3 is unreviewed on 2026-09-04.
 
 The method is one supervised 200-ID answer-only pair, stored judging one arm after the other, one
-paired comparison, and two flip rejudge batches. Caps: P6 `$3.50`; collection `$80` per arm;
-stored judging cumulative `$120` per arm; two-arm cumulative `$240`; flip rejudges `$15` each;
-maximum `$273.50`. The manifest stays uncommitted and is deleted after the run.
+paired comparison, and two frozen flip rejudge commands with `--allow-empty` and Claude identity
+pins. Caps: P6 `$3.50`; collection `$80` per arm; stored judging cumulative `$120` per arm;
+two-arm cumulative `$240`; flip rejudges `$15` each; maximum `$273.50`. The plan uses
+`qa-paired-collection-plan-v2`. The launch command carries `--authorized-plan-sha256`. The
+capacity artifact must be at most 24 hours old at launch. The manifest stays uncommitted and is
+deleted after the run.
 
 Done when: the paired JSON, both flip batches, the recalibrated simulator output, and the all-row
 review are recorded in the round ledger and `eval/qa/README.md` as a labeled paired diagnostic, or
